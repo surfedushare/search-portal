@@ -28,14 +28,14 @@ class MaterialSearchAPIView(APIView):
     def post(self, request, *args, **kwargs):
         # TODO validation of page, page_size
         d = request.data
-        query = d.get("query", "")
+        queries = d.get("query", [])
         page = d.get("page", 1)
         page_size = d.get("page_size", 5)
         ordering = d.get("ordering")
         filters = d.get("filters", dict())
 
         ac = XmlEndpointApiClient()
-        res = ac.search(query=query)
+        res = ac.search(queries=queries)
 
         # f_params = dict()
 
@@ -54,11 +54,11 @@ class MaterialFiltersAPIView(APIView):
     def post(self, request, *args, **kwargs):
         # TODO
         d = request.data
-        query = d.get("query", "")
+        queries = d.get("query", [])
         filters = d.get("filters", dict())
 
         ac = XmlEndpointApiClient()
-        res = ac.drilldowns(_get_filter_categories(), query=query)
+        res = ac.drilldowns(_get_filter_categories(), queries=queries)
 
         # check_and_update_filters()
         #

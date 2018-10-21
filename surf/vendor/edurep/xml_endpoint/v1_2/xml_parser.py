@@ -110,17 +110,18 @@ item_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
 def _parse_vcard(vcard):
     # "BEGIN:VCARD FN:Edurep Delen N:;Edurep Delen VERSION:3.0 END:VCARD"
     rv = dict()
-    items = vcard.split("\n")
-    for item in items:
-        m = item_regex.match(item)
-        if m:
-            rv[m.groups()[0]] = m.groups()[1]
-    # keys = [(m.groups()[0], m.start(0), m.end(0))
-    #         for m in regex.finditer(vcard)]
-    # end_idx = len(vcard)
-    # for key, key_start_idx, key_end_idx in keys[::-1]:
-    #     rv[key] = vcard[key_end_idx:end_idx:].strip()
-    #     end_idx = key_start_idx
+    if vcard:
+        items = vcard.split("\n")
+        for item in items:
+            m = item_regex.match(item)
+            if m:
+                rv[m.groups()[0]] = m.groups()[1]
+        # keys = [(m.groups()[0], m.start(0), m.end(0))
+        #         for m in regex.finditer(vcard)]
+        # end_idx = len(vcard)
+        # for key, key_start_idx, key_end_idx in keys[::-1]:
+        #     rv[key] = vcard[key_end_idx:end_idx:].strip()
+        #     end_idx = key_start_idx
     return rv
 
 
