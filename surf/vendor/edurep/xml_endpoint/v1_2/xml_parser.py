@@ -11,7 +11,8 @@ _NS = {
     "dc": "http://purl.org/dc/elements/1.1/",
     "meresco_srw": "http://meresco.org/namespace/srw#",
     "dd": "http://meresco.org/namespace/drilldown",
-    "czp": "http://www.imsglobal.org/xsd/imsmd_v1p2"
+    "czp": "http://www.imsglobal.org/xsd/imsmd_v1p2",
+    "sad": "http://xsd.kennisnet.nl/smd/sad"
 }
 
 _TECH_FORMAT_LOM = "lom.technical.format"
@@ -50,6 +51,8 @@ _METADATA_CONTRIBUTE_PATH = "./srw:recordData/czp:lom/czp:metametadata/czp:contr
 _CONTRIBUTE_ROLE_PATH = "./czp:role/czp:value/czp:langstring"
 _CONTRIBUTE_VCARD_PATH = "./czp:centity/czp:vcard"
 _CONTRIBUTE_DATETIME_PATH = "./czp:date/czp:datetime"
+_NUMBER_OF_RATINGS_PATH = "./srw:extraRecordData/recordData/sad:smbAggregatedData/sad:numberOfRatings"
+_AVERAGE_RATINGS_PATH = "./srw:extraRecordData/recordData/sad:smbAggregatedData/sad:averageNormalizedRating"
 
 
 def _parse_record(elem):
@@ -73,6 +76,8 @@ def _parse_record(elem):
         author=author,
         creator=creator,
         format=MIME_TYPE_TECH_FORMAT.get(_find_elem_text(elem, _FORMAT_PATH)),
+        number_of_ratings=int(_find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)),
+        average_rating=float(_find_elem_text(elem, _AVERAGE_RATINGS_PATH)),
     )
 
 

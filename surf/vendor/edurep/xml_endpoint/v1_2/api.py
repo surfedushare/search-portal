@@ -22,6 +22,7 @@ _BASE_QUERY = "edurep"
 _API_VERSION = "1.2"
 _OPERATION = "searchRetrieve"
 _RECORD_PACKING = "xml"
+_EXTRA_RECORD_SCHEMA = "smbAggregatedData"
 
 
 class XmlEndpointApiClient:
@@ -63,6 +64,7 @@ class XmlEndpointApiClient:
                           query=quote_plus(query),
                           startRecord=startRecord,
                           maximumRecords=maximumRecords)
+        parameters["x-recordSchema"] = _EXTRA_RECORD_SCHEMA
 
         if drilldown_names and isinstance(drilldown_names, list):
             parameters["x-term-drilldown"] = ",".join(drilldown_names)
