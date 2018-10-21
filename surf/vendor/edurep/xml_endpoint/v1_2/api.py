@@ -21,6 +21,7 @@ _DATE_FORMAT = "%Y-%m-%d"
 _BASE_QUERY = "edurep"
 _API_VERSION = "1.2"
 _OPERATION = "searchRetrieve"
+_RECORD_PACKING = "xml"
 
 
 class XmlEndpointApiClient:
@@ -33,6 +34,14 @@ class XmlEndpointApiClient:
     def drilldowns(self, drilldown_names, query=None, filters=None):
         return self._call(query=query, filters=filters,
                           drilldown_names=drilldown_names)
+
+    def search(self, query, drilldown_names=None, filters=None,
+               sort_keys=None, page=1, page_size=5):
+        return self._call(query=query, filters=filters,
+                          drilldown_names=drilldown_names,
+                          sort_keys=sort_keys,
+                          startRecord=page,
+                          maximumRecords=page_size)
 
     @staticmethod
     def _call(query=None, filters=None, drilldown_names=None,
@@ -50,6 +59,7 @@ class XmlEndpointApiClient:
 
         parameters = dict(version=version,
                           operation=operation,
+                          recordPacking=_RECORD_PACKING,
                           query=quote_plus(query),
                           startRecord=startRecord,
                           maximumRecords=maximumRecords)
@@ -70,11 +80,6 @@ class XmlEndpointApiClient:
 
         url = "{}?{}".format(_LOM_SRU_ENDPOINT, parameters)
         return parse_response(requests.get(url).text)
-
-    # def drilldowns(self, drilldown_names, query=_BASE_QUERY, filters=None,
-    #                page=1, page_size=5, sort_keys=None):
-    #
-    # # http://wszoeken.edurep.kennisnet.nl:8000/edurep/sruns?version=1.2&operation=searchRetrieve&query=fiets&startRecord=1&maximumRecords=5&x-api-key=DevWiki
 
 
 def _filter_dict_to_cql(filters):

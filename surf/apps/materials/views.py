@@ -34,14 +34,18 @@ class MaterialSearchAPIView(APIView):
         ordering = d.get("ordering")
         filters = d.get("filters", dict())
 
-        f_params = dict()
+        ac = XmlEndpointApiClient()
+        res = ac.search(query=query)
 
-        for f, v in filters.items():
-            for p in v:
-                f_params.setdefault(f, []).append(p)
+        # f_params = dict()
 
-        return Response(dict(query=query, page=page, page_size=page_size,
-                             filters=f_params))
+        # for f, v in filters.items():
+        #     for p in v:
+        #         f_params.setdefault(f, []).append(p)
+        #
+        # return Response(dict(query=query, page=page, page_size=page_size,
+        #                      filters=f_params))
+        return Response(res)
 
 
 class MaterialFiltersAPIView(APIView):
