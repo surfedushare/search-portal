@@ -26,7 +26,7 @@ class MaterialSearchAPIView(APIView):
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
-        # TODO validation of page, page_size
+        # TODO to be implemented
         d = request.data
         queries = d.get("query", [])
         page = d.get("page", 1)
@@ -52,7 +52,7 @@ class MaterialFiltersAPIView(APIView):
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
-        # TODO
+        # TODO to be implemented
         d = request.data
         queries = d.get("query", [])
         filters = d.get("filters", dict())
