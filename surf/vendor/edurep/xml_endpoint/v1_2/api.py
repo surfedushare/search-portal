@@ -21,6 +21,8 @@ _DATE_FORMAT = "%Y-%m-%d"
 _BASE_QUERY = "edurep"
 _API_VERSION = "1.2"
 _OPERATION = "searchRetrieve"
+_RECORD_PACKING = "xml"
+_EXTRA_RECORD_SCHEMA = "smbAggregatedData"
 
 
 class XmlEndpointApiClient:
@@ -30,19 +32,28 @@ class XmlEndpointApiClient:
         response = requests.get(url)
         return response.json()[1]
 
-    def drilldowns(self, drilldown_names, query=None, filters=None):
-        return self._call(query=query, filters=filters,
+    def drilldowns(self, drilldown_names, queries=None, filters=None):
+        return self._call(queries=queries, filters=filters,
                           drilldown_names=drilldown_names)
 
+    def search(self, queries, drilldown_names=None, filters=None,
+               sort_keys=None, page=1, page_size=5):
+        return self._call(queries=queries, filters=filters,
+                          drilldown_names=drilldown_names,
+                          sort_keys=sort_keys,
+                          startRecord=page,
+                          maximumRecords=page_size)
+
     @staticmethod
-    def _call(query=None, filters=None, drilldown_names=None,
+    def _call(queries=None, filters=None, drilldown_names=None,
               startRecord=1, maximumRecords=0, sort_keys=None,
               version="1.2", operation="searchRetrieve"):
 
-        if not query:
+        if not queries:
             query = _BASE_QUERY
         else:
-            query = '{} AND ("{}")'.format(_BASE_QUERY, query)
+            query = " AND ".join('("{}")'.format(q) for q in queries)
+            query = '{} AND {}'.format(_BASE_QUERY, query)
 
         filters = _filter_dict_to_cql(filters)
         if filters:
@@ -50,9 +61,11 @@ class XmlEndpointApiClient:
 
         parameters = dict(version=version,
                           operation=operation,
+                          recordPacking=_RECORD_PACKING,
                           query=quote_plus(query),
                           startRecord=startRecord,
                           maximumRecords=maximumRecords)
+        parameters["x-recordSchema"] = _EXTRA_RECORD_SCHEMA
 
         if drilldown_names and isinstance(drilldown_names, list):
             parameters["x-term-drilldown"] = ",".join(drilldown_names)
@@ -70,11 +83,6 @@ class XmlEndpointApiClient:
 
         url = "{}?{}".format(_LOM_SRU_ENDPOINT, parameters)
         return parse_response(requests.get(url).text)
-
-    # def drilldowns(self, drilldown_names, query=_BASE_QUERY, filters=None,
-    #                page=1, page_size=5, sort_keys=None):
-    #
-    # # http://wszoeken.edurep.kennisnet.nl:8000/edurep/sruns?version=1.2&operation=searchRetrieve&query=fiets&startRecord=1&maximumRecords=5&x-api-key=DevWiki
 
 
 def _filter_dict_to_cql(filters):

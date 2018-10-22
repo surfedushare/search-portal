@@ -26,35 +26,39 @@ class MaterialSearchAPIView(APIView):
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
-        # TODO validation of page, page_size
+        # TODO to be implemented
         d = request.data
-        query = d.get("query", "")
+        queries = d.get("query", [])
         page = d.get("page", 1)
         page_size = d.get("page_size", 5)
         ordering = d.get("ordering")
         filters = d.get("filters", dict())
 
-        f_params = dict()
+        ac = XmlEndpointApiClient()
+        res = ac.search(queries=queries)
 
-        for f, v in filters.items():
-            for p in v:
-                f_params.setdefault(f, []).append(p)
+        # f_params = dict()
 
-        return Response(dict(query=query, page=page, page_size=page_size,
-                             filters=f_params))
+        # for f, v in filters.items():
+        #     for p in v:
+        #         f_params.setdefault(f, []).append(p)
+        #
+        # return Response(dict(query=query, page=page, page_size=page_size,
+        #                      filters=f_params))
+        return Response(res)
 
 
 class MaterialFiltersAPIView(APIView):
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
-        # TODO
+        # TODO to be implemented
         d = request.data
-        query = d.get("query", "")
+        queries = d.get("query", [])
         filters = d.get("filters", dict())
 
         ac = XmlEndpointApiClient()
-        res = ac.drilldowns(_get_filter_categories(), query=query)
+        res = ac.drilldowns(_get_filter_categories(), queries=queries)
 
         # check_and_update_filters()
         #
