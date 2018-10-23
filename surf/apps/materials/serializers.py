@@ -22,3 +22,7 @@ class SearchRequestSerializer(serializers.Serializer):
     filters = serializers.ListField(child=SearchFilterSerializer(),
                                     required=False,
                                     allow_null=True)
+
+
+class KeywordsSerializer(serializers.Serializer):
+    query = serializers.CharField()

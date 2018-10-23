@@ -32,8 +32,8 @@ _EXTRA_RECORD_SCHEMA = "smbAggregatedData"
 
 class XmlEndpointApiClient:
 
-    def autocomplete(self, prefix):
-        url = "{}?prefix={}".format(_AUTOCOMPLETE_ENDPOINT, prefix)
+    def autocomplete(self, query):
+        url = "{}?prefix={}".format(_AUTOCOMPLETE_ENDPOINT, query)
         response = requests.get(url)
         return response.json()[1]
 
