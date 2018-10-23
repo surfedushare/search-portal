@@ -53,9 +53,23 @@ Surf API
 
 
 + Response 200 (application/json)
+    + Attributes (SearchResult)
 
-    + Attributes(SearchResult)
+## Keywords Resource [/api/v1/materials/keywords/]
 
+### GET [GET /api/v1/materials/keywords/{?query}]
+
++ Parameters
+  + query (string) - query string
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[string])
 
 # Data Structures
 

@@ -1,22 +1,8 @@
-from django.shortcuts import render
-
 from rest_framework.views import APIView
 from rest_framework import exceptions
 
-from rest_framework import (
-    mixins,
-    viewsets,
-    permissions
-)
-
 from rest_framework.response import Response
 
-from rest_framework.decorators import (
-    detail_route,
-    list_route
-)
-
-from surf.apps.filters.utils import check_and_update_filters
 from surf.apps.filters.models import FilterCategory
 
 from surf.apps.materials import serializers
@@ -29,7 +15,6 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 
 class MaterialSearchAPIView(APIView):
     permission_classes = []
-
     serializer_class = serializers.SearchRequestSerializer
 
     def post(self, request, *args, **kwargs):
@@ -63,30 +48,6 @@ class MaterialSearchAPIView(APIView):
         return Response(rv)
 
 
-class MaterialFiltersAPIView(APIView):
-    permission_classes = []
-
-    def post(self, request, *args, **kwargs):
-        # TODO to be implemented
-        d = request.data
-        queries = d.get("query", [])
-        filters = d.get("filters", dict())
-
-        ac = XmlEndpointApiClient()
-        res = ac.drilldowns(_get_filter_categories(), queries=queries)
-
-        # check_and_update_filters()
-        #
-        # f_params = dict()
-        #
-        # for f, v in filters.items():
-        #     for p in v:
-        #         f_params.setdefault(f, []).append(p)
-
-        # return Response(dict(query=query, filters=f_params))
-        return Response(res)
-
-
 def _get_filter_categories():
     return ["{}:{}".format(f.edurep_field_id, f.max_item_count)
             for f in FilterCategory.objects.all()]
@@ -94,13 +55,13 @@ def _get_filter_categories():
 
 class KeywordsAPIView(APIView):
     permission_classes = []
+    serializer_class = serializers.KeywordsSerializer
 
     def get(self, request, *args, **kwargs):
-        d = request.GET
-        query = d.get("query", "")
-        if not query:
-            exceptions.ValidationError("Empty query")
+        serializer = self.serializer_class(data=request.GET)
+        serializer.is_valid(raise_exception=True)
+        data = dict(serializer.validated_data)
 
         ac = XmlEndpointApiClient()
-        res = ac.autocomplete(query)
+        res = ac.autocomplete(**data)
         return Response(res)

@@ -19,7 +19,6 @@ from django.conf.urls import url, include
 
 from surf.apps.materials.views import (
     MaterialSearchAPIView,
-    MaterialFiltersAPIView,
     KeywordsAPIView
 )
 
@@ -30,7 +29,6 @@ admin.site.index_title = 'Surf'
 apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
-    url(r'^materials/filters/', MaterialFiltersAPIView.as_view()),
 ]
 
 urlpatterns = [
