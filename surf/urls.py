@@ -17,19 +17,29 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 
+from rest_framework import routers
+
 from surf.apps.materials.views import (
     MaterialSearchAPIView,
     KeywordsAPIView
+)
+
+from surf.apps.filters.views import (
+    FilterCategoryViewSet
 )
 
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
 
+default_router = routers.DefaultRouter()
+
+default_router.register(r'filter-categories', FilterCategoryViewSet)
+
 apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
-]
+] + default_router.urls
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
