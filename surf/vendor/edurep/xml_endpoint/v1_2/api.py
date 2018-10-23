@@ -7,14 +7,19 @@ from urllib.parse import quote_plus
 import logging
 
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import parse_response
+from surf.vendor.edurep.xml_endpoint.v1_2.choices import TECH_FORMAT_MIME_TYPES
 
 logger = logging.getLogger()
+
+TECH_FORMAT_FIELD_ID = "lom.technical.format"
+AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
+PUBLISHER_DATE_FILED_ID = "lom.lifecycle.contribute.publisherdate"
 
 _API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 _AUTOCOMPLETE_ENDPOINT = "{}/autocomplete".format(_API_ENDPOINT)
 _LOM_SRU_ENDPOINT = "{}/edurep/sruns".format(_API_ENDPOINT)
 
-_DATE_TYPE_FIELDS = set("lom.lifecycle.contribute.publisherdate")
+_DATE_TYPE_FIELDS = set(PUBLISHER_DATE_FILED_ID)
 
 _DATE_FORMAT = "%Y-%m-%d"
 
@@ -32,30 +37,30 @@ class XmlEndpointApiClient:
         response = requests.get(url)
         return response.json()[1]
 
-    def drilldowns(self, drilldown_names, queries=None, filters=None):
-        return self._call(queries=queries, filters=filters,
+    def drilldowns(self, drilldown_names, search_text=None, filters=None):
+        return self._call(search_text=search_text, filters=filters,
                           drilldown_names=drilldown_names)
 
-    def search(self, queries, drilldown_names=None, filters=None,
-               sort_keys=None, page=1, page_size=5):
-        return self._call(queries=queries, filters=filters,
+    def search(self, search_text, drilldown_names=None, filters=None,
+               ordering=None, page=1, page_size=5):
+        return self._call(search_text=search_text, filters=filters,
                           drilldown_names=drilldown_names,
-                          sort_keys=sort_keys,
+                          ordering=ordering,
                           startRecord=page,
                           maximumRecords=page_size)
 
     @staticmethod
-    def _call(queries=None, filters=None, drilldown_names=None,
-              startRecord=1, maximumRecords=0, sort_keys=None,
+    def _call(search_text=None, filters=None, drilldown_names=None,
+              startRecord=1, maximumRecords=0, ordering=None,
               version="1.2", operation="searchRetrieve"):
 
-        if not queries:
+        if not search_text:
             query = _BASE_QUERY
         else:
-            query = " AND ".join('("{}")'.format(q) for q in queries)
+            query = " AND ".join('("{}")'.format(q) for q in search_text)
             query = '{} AND {}'.format(_BASE_QUERY, query)
 
-        filters = _filter_dict_to_cql(filters)
+        filters = _filter_list_to_cql(filters)
         if filters:
             query = "{} AND {}".format(query, filters)
 
@@ -70,8 +75,8 @@ class XmlEndpointApiClient:
         if drilldown_names and isinstance(drilldown_names, list):
             parameters["x-term-drilldown"] = ",".join(drilldown_names)
 
-        if sort_keys and isinstance(sort_keys, list):
-            sort_keys = sort_keys[0]
+        if ordering and isinstance(ordering, list):
+            sort_keys = ordering[0]
             if sort_keys.startswith("-"):
                 sort_keys = "{},,1".format("".join(sort_keys[1::]))
             else:
@@ -85,11 +90,11 @@ class XmlEndpointApiClient:
         return parse_response(requests.get(url).text)
 
 
-def _filter_dict_to_cql(filters):
-    if not filters or not isinstance(filters, dict):
+def _filter_list_to_cql(filters):
+    if not filters or not isinstance(filters, list):
         return None
 
-    filters_cqls = [_filter_to_cql(f, v) for f, v in filters.items()]
+    filters_cqls = [_filter_to_cql(f["id"], f["items"]) for f in filters]
     return " AND ".join(["({})".format(f) for f in filters_cqls if f])
 
 
@@ -99,6 +104,10 @@ def _filter_to_cql(field_id, values):
 
     if field_id in _DATE_TYPE_FIELDS:
         return _date_filter_to_cql(field_id, values)
+
+    elif field_id == TECH_FORMAT_FIELD_ID:
+        return _tech_format_filter_to_cql(field_id, values)
+
     else:
         return _list_filter_to_cql(field_id, values)
 
@@ -120,3 +129,12 @@ def _date_filter_to_cql(field_id, date_range):
 def _list_filter_to_cql(field_id, values):
     return " OR ".join(['{} exact "{}"'.format(field_id, v)
                         for v in values])
+
+
+def _tech_format_filter_to_cql(field_id, values):
+    m_types = list()
+    for v in values:
+        m_types_cqls = ['{} exact "{}"'.format(field_id, vi)
+                        for vi in TECH_FORMAT_MIME_TYPES.get(v, [])]
+        m_types.append(" OR ".join(m_types_cqls))
+    return " OR ".join(m_types)

@@ -19,33 +19,48 @@ from rest_framework.decorators import (
 from surf.apps.filters.utils import check_and_update_filters
 from surf.apps.filters.models import FilterCategory
 
-from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
+from surf.apps.materials import serializers
+
+from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+    XmlEndpointApiClient,
+    AUTHOR_FIELD_ID
+)
 
 
 class MaterialSearchAPIView(APIView):
     permission_classes = []
 
+    serializer_class = serializers.SearchRequestSerializer
+
     def post(self, request, *args, **kwargs):
-        # TODO to be implemented
-        d = request.data
-        queries = d.get("query", [])
-        page = d.get("page", 1)
-        page_size = d.get("page_size", 5)
-        ordering = d.get("ordering")
-        filters = d.get("filters", dict())
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = dict(serializer.validated_data)
+
+        author = data.pop("author", None)
+        if author:
+            filters = data.get("filters", [])
+            filters.append(dict(id=AUTHOR_FIELD_ID, items=[author]))
+            data["filters"] = filters
+
+        return_records = data.pop("return_records", None)
+        return_filters = data.pop("return_filters", None)
+
+        if not return_records:
+            data["page_size"] = 0
+
+        if return_filters:
+            data["drilldown_names"] = _get_filter_categories()
 
         ac = XmlEndpointApiClient()
-        res = ac.search(queries=queries)
+        res = ac.search(**data)
 
-        # f_params = dict()
-
-        # for f, v in filters.items():
-        #     for p in v:
-        #         f_params.setdefault(f, []).append(p)
-        #
-        # return Response(dict(query=query, page=page, page_size=page_size,
-        #                      filters=f_params))
-        return Response(res)
+        rv = dict(records=res["records"],
+                  records_total=res["recordcount"],
+                  filters=res["drilldowns"],
+                  page=data["page"],
+                  page_size=data["page_size"])
+        return Response(rv)
 
 
 class MaterialFiltersAPIView(APIView):
