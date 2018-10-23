@@ -71,6 +71,21 @@ Surf API
 + Response 200 (application/json)
     + Attributes (array[string])
 
+# Group Filters
+
+## FilterCategories Collection [/api/v1/filter-categories/]
+
+### GET [GET /api/v1/filter-categories/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[FilterCategory])
+
 # Data Structures
 
 ## Material (object)
@@ -104,3 +119,12 @@ Surf API
  - page: `1` (number) - page number
  - page_size: `5` (number) - page size
  - records_total: `10000` (number) - total count of found materials
+
+## FilterCategoryItem (object)
+ - id: `c001f86a-4f8f-4420-bd78-381c615ecedc` (string) - filter category item id
+ - title: `Aardrijkskunde` (string) - filter category item title
+
+## FilterCategory (object)
+ - id: `lom.classification.obk.discipline.id` (string) - filter category id
+ - title: `Vakgebied` (string) - filter category title
+ - items: (array[FilterCategoryItem]) - filter category items
