@@ -63,7 +63,7 @@ def _parse_record(elem):
     creator = contributors.get("creator", {}).get("name")
 
     return dict(
-        id=_find_elem_text(elem, _RECORD_ID_PATH),
+        external_id=_find_elem_text(elem, _RECORD_ID_PATH),
         object_id=_find_elem_text(elem, _OBJECT_ID_PATH),
         url=_find_elem_text(elem, _URL_PATH),
         title=_find_elem_text(elem, _TITLE_PATH),
@@ -103,7 +103,6 @@ def _parse_contributor(e):
     return {role: dict(vcard=vcard, datetime=dtime, name=name)}
 
 
-# regex = re.compile(r"([A-Z-]+):", re.IGNORECASE)
 item_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
 
 
@@ -116,12 +115,6 @@ def _parse_vcard(vcard):
             m = item_regex.match(item)
             if m:
                 rv[m.groups()[0]] = m.groups()[1]
-        # keys = [(m.groups()[0], m.start(0), m.end(0))
-        #         for m in regex.finditer(vcard)]
-        # end_idx = len(vcard)
-        # for key, key_start_idx, key_end_idx in keys[::-1]:
-        #     rv[key] = vcard[key_end_idx:end_idx:].strip()
-        #     end_idx = key_start_idx
     return rv
 
 
@@ -140,11 +133,11 @@ def _parse_drilldowns(root):
                 rv[term_id] = _parse_drilldowns_term(dd)
     except Exception:
         pass
-    return [dict(id=k, items=v) for k, v in rv.items()]
+    return [dict(external_id=k, items=v) for k, v in rv.items()]
 
 
 def _parse_drilldowns_term(elem):
-    return [dict(id=item.text, count=int(item.attrib["count"]))
+    return [dict(external_id=item.text, count=int(item.attrib["count"]))
             for item in elem]
 
 
@@ -157,7 +150,7 @@ def _parse_drilldowns_tech_format(elem):
             continue
         items[item_id] = items.get(item_id, 0) + int(item.attrib["count"])
 
-    return [dict(id=k, count=v) for k, v in items.items()]
+    return [dict(external_id=k, count=v) for k, v in items.items()]
 
 
 def _find_elem_text(root, elem_path):

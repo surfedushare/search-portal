@@ -94,7 +94,9 @@ def _filter_list_to_cql(filters):
     if not filters or not isinstance(filters, list):
         return None
 
-    filters_cqls = [_filter_to_cql(f["id"], f["items"]) for f in filters]
+    filters_cqls = [_filter_to_cql(f["external_id"], f["items"])
+                    for f in filters]
+
     return " AND ".join(["({})".format(f) for f in filters_cqls if f])
 
 
