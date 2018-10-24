@@ -24,5 +24,12 @@ class SearchRequestSerializer(serializers.Serializer):
                                     allow_null=True)
 
 
-class KeywordsSerializer(serializers.Serializer):
+class KeywordsRequestSerializer(serializers.Serializer):
     query = serializers.CharField()
+
+
+class MaterialsRequestSerializer(serializers.Serializer):
+    external_id = serializers.CharField(required=False)
+    collection_id = serializers.CharField(required=False)
+    page = serializers.IntegerField(required=False, default=1)
+    page_size = serializers.IntegerField(required=False, default=5)

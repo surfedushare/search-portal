@@ -5,20 +5,24 @@ from rest_framework.response import Response
 
 from surf.apps.filters.models import FilterCategory
 
-from surf.apps.materials import serializers
+from surf.apps.materials.serializers import (
+    SearchRequestSerializer,
+    KeywordsRequestSerializer,
+    MaterialsRequestSerializer
+)
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
-    AUTHOR_FIELD_ID
+    AUTHOR_FIELD_ID,
+    PUBLISHER_FIELD_ID
 )
 
 
 class MaterialSearchAPIView(APIView):
     permission_classes = []
-    serializer_class = serializers.SearchRequestSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer = SearchRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = dict(serializer.validated_data)
 
@@ -26,6 +30,8 @@ class MaterialSearchAPIView(APIView):
         if author:
             filters = data.get("filters", [])
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
+            # filters.append(dict(external_id=PUBLISHER_FIELD_ID,
+            #                     items=[author]))
             data["filters"] = filters
 
         return_records = data.pop("return_records", None)
@@ -55,13 +61,30 @@ def _get_filter_categories():
 
 class KeywordsAPIView(APIView):
     permission_classes = []
-    serializer_class = serializers.KeywordsSerializer
 
     def get(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.GET)
+        serializer = KeywordsRequestSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         data = dict(serializer.validated_data)
 
         ac = XmlEndpointApiClient()
         res = ac.autocomplete(**data)
+        return Response(res)
+
+
+class MaterialAPIView(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        serializer = MaterialsRequestSerializer(data=request.GET)
+        serializer.is_valid(raise_exception=True)
+        data = dict(serializer.validated_data)
+
+        if "external_id" in data:
+            ac = XmlEndpointApiClient()
+            res = ac.get_materials_by_id([data["external_id"]])
+            res = res.get("records", [])
+        else:
+            # TODO to be implemented
+            res = []
         return Response(res)
