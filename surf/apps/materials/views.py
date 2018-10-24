@@ -25,7 +25,7 @@ class MaterialSearchAPIView(APIView):
         author = data.pop("author", None)
         if author:
             filters = data.get("filters", [])
-            filters.append(dict(id=AUTHOR_FIELD_ID, items=[author]))
+            filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
             data["filters"] = filters
 
         return_records = data.pop("return_records", None)

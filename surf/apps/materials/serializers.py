@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 class SearchFilterSerializer(serializers.Serializer):
-    id = serializers.CharField()
+    external_id = serializers.CharField()
     items = serializers.ListField(child=serializers.CharField())
 
 

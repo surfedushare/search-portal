@@ -13,7 +13,7 @@ Surf API
 
 # Group Materials
 
-## SearchResult Resource [/api/v1/materials/search/]
+## Search Result Resource [/api/v1/materials/search/]
 
 ### POST [POST /api/v1/materials/search/]
 
@@ -31,14 +31,14 @@ Surf API
                 "page_size": 5,
                 "filters": [
                     {
-                        "id": "lom.technical.format",
+                        "external_id": "lom.technical.format",
                         "items": [
                             "audio",
                             "video"
                         ]
                     },
                     {
-                        "id": "lom.general.aggregationlevel",
+                        "external_id": "lom.general.aggregationlevel",
                         "items": [
                             "1",
                             "3"
@@ -53,7 +53,7 @@ Surf API
 
 
 + Response 200 (application/json)
-    + Attributes (SearchResult)
+    + Attributes (Search Result)
 
 ## Keywords Resource [/api/v1/materials/keywords/]
 
@@ -84,12 +84,77 @@ Surf API
             Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
-    + Attributes (array[FilterCategory])
+    + Attributes (array[Filter Category])
+
+## Filter Collection [/api/v1/filters/]
+
+### GET [GET /api/v1/filters/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Filter])
+
+### POST [POST /api/v1/filters/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Filter Create)
+
++ Response 201 (application/json)
+    + Attributes (Filter)
+
+## Filter Resource  [/api/v1/filters/{id}/]
+
+### GET [GET /api/v1/filters/{id}/]
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the filter.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Filter)
+
+### PUT [PUT /api/v1/filters/{id}/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Filter Create)
+
++ Response 201 (application/json)
+    + Attributes (Filter)
+
+### DELETE [DELETE /api/v1/filters/{id}/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 204
 
 # Data Structures
 
 ## Material (object)
- - id: `edurep_delen:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material id in edurep
+ - external_id: `edurep_delen:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material id in edurep
  - object_id: `urn:uuid:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URI
  - url: `http://delen.edurep.nl/download.php?id=887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URL
  - title: `test1` (string) - title of material
@@ -105,26 +170,45 @@ Surf API
  - number_of_ratings: `1` (number) - number of ratings for material
  - average_rating: `1.0` (number) - average ratings of material (from 0 to 5)
 
-## FilterExtraDataItem (object)
- - id: `5e86dc82-1981-48df-bbe5-abd4a9b3767b` (string) - filter item id
+## Filter Extra Data item (object)
+ - external_id: `5e86dc82-1981-48df-bbe5-abd4a9b3767b` (string) - filter item id
  - count: `17143` (number) - found material count for filter item
 
-## FilterExtraData (object)
- - id: `lom.classification.obk.discipline.id` (string) - filter category id
- - items: (array[FilterExtraDataItem]) - extra data for each filter item
+## Filter Extra Data (object)
+ - external_id: `lom.classification.obk.discipline.id` (string) - filter category id
+ - items: (array[Filter Extra Data item]) - extra data for each filter item
 
-## SearchResult (object)
+## Search Result (object)
  - records: (array[Material]) - found materials
- - filters: (array[FilterExtraData]) - found materials count for each filter item
+ - filters: (array[Filter Extra Data]) - found materials count for each filter item
  - page: `1` (number) - page number
  - page_size: `5` (number) - page size
  - records_total: `10000` (number) - total count of found materials
 
-## FilterCategoryItem (object)
- - id: `c001f86a-4f8f-4420-bd78-381c615ecedc` (string) - filter category item id
+## Filter Category item (object)
+ - id: `15301dad-467f-4138-a575-8c11acfd7998` (string) - filter category item id
+ - external_id: `c001f86a-4f8f-4420-bd78-381c615ecedc` (string) - filter category item external id in EduRep
  - title: `Aardrijkskunde` (string) - filter category item title
 
-## FilterCategory (object)
- - id: `lom.classification.obk.discipline.id` (string) - filter category id
+## Filter Category (object)
+ - id: `fedbba4d-f6b6-4b00-bd84-44ea913e44eb` (string) - filter category id
+ - external_id: `lom.classification.obk.discipline.id` (string) - filter category external id in EduRep
  - title: `Vakgebied` (string) - filter category title
- - items: (array[FilterCategoryItem]) - filter category items
+ - items: (array[Filter Category item]) - filter category items
+
+## Filter item (object)
+ - id: `b5fda3b2-3a95-4886-81a9-bed5a4cfb5af` (string) - filter item id
+ - category_item_id: `684de1cd-d875-4f08-b3b8-f99a1067485b` (string) - filter category item id
+ - category_id: `7530b31b-f6af-41c9-aceb-3ee64a950516` (string) - filter category item id
+
+## Filter (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - filter id
+ - title: `test filter` (string) - filter title
+ - items: (array[Filter item]) - filter items
+
+## Filter Create item (object)
+ - category_item_id: `684de1cd-d875-4f08-b3b8-f99a1067485b` (string) - filter category item id
+
+## Filter Create (object)
+ - title: `test filter` (string) - filter title
+ - items: (array[Filter Create item], optional) - filter items

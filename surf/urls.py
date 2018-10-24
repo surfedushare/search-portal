@@ -25,7 +25,8 @@ from surf.apps.materials.views import (
 )
 
 from surf.apps.filters.views import (
-    FilterCategoryViewSet
+    FilterCategoryViewSet,
+    FilterViewSet
 )
 
 admin.site.site_header = 'Surf'
@@ -35,6 +36,7 @@ admin.site.index_title = 'Surf'
 default_router = routers.DefaultRouter()
 
 default_router.register(r'filter-categories', FilterCategoryViewSet)
+default_router.register(r'filters', FilterViewSet)
 
 apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),
