@@ -11,7 +11,7 @@ Surf API
 5xx errors are server errors and should be handled with repeated requests.
 
 
-# Group Materials
+# Group Search
 
 ## Search Result Resource [/api/v1/materials/search/]
 
@@ -55,6 +55,8 @@ Surf API
 + Response 200 (application/json)
     + Attributes (Search Result)
 
+# Group Keywords
+
 ## Keywords Resource [/api/v1/materials/keywords/]
 
 ### GET [GET /api/v1/materials/keywords/{?query}]
@@ -71,9 +73,30 @@ Surf API
 + Response 200 (application/json)
     + Attributes (array[string])
 
-# Group Filters
+# Group Materials
 
-## FilterCategories Collection [/api/v1/filter-categories/]
+## Material Collection [/api/v1/materials/]
+
+### GET [GET /api/v1/materials/{?external_id, collection_id}]
+
++ Parameters
+  + external_id (string, optional) - filter materials by external id
+  + collection_id (string, optional) - filter by `collection id` (will be ignored if external_id is specified)
+  + page (number, optional) - page number (by default `1`, will be ignored if external_id is specified)
+  + page_size (number, optional) - page size (by default `5`, will be ignored if external_id is specified)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Material])
+
+# Group Filter Categories
+
+## Filter Categories Collection [/api/v1/filter-categories/]
 
 ### GET [GET /api/v1/filter-categories/]
 
@@ -85,6 +108,8 @@ Surf API
 
 + Response 200 (application/json)
     + Attributes (array[Filter Category])
+
+# Group Filters
 
 ## Filter Collection [/api/v1/filters/]
 

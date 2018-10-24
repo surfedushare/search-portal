@@ -13,6 +13,7 @@ logger = logging.getLogger()
 
 TECH_FORMAT_FIELD_ID = "lom.technical.format"
 AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
+PUBLISHER_FIELD_ID = "lom.lifecycle.contribute.publisher"
 PUBLISHER_DATE_FILED_ID = "lom.lifecycle.contribute.publisherdate"
 
 _API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
@@ -38,21 +39,23 @@ class XmlEndpointApiClient:
         return response.json()[1]
 
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
-        return self._call(search_text=search_text, filters=filters,
-                          drilldown_names=drilldown_names)
+        return self._search(search_text=search_text, filters=filters,
+                            drilldown_names=drilldown_names)
 
     def search(self, search_text, drilldown_names=None, filters=None,
                ordering=None, page=1, page_size=5):
-        return self._call(search_text=search_text, filters=filters,
-                          drilldown_names=drilldown_names,
-                          ordering=ordering,
-                          startRecord=page,
-                          maximumRecords=page_size)
+        return self._search(search_text=search_text, filters=filters,
+                            drilldown_names=drilldown_names,
+                            ordering=ordering,
+                            start_record=page,
+                            maximum_records=page_size)
 
-    @staticmethod
-    def _call(search_text=None, filters=None, drilldown_names=None,
-              startRecord=1, maximumRecords=0, ordering=None,
-              version="1.2", operation="searchRetrieve"):
+    def get_materials_by_id(self, external_ids, page=1, page_size=5):
+        return self._call(query=" OR ".join(external_ids),
+                          start_record=page, maximum_records=page_size)
+
+    def _search(self, search_text=None, filters=None, drilldown_names=None,
+                start_record=1, maximum_records=0, ordering=None):
 
         if not search_text:
             query = _BASE_QUERY
@@ -64,23 +67,36 @@ class XmlEndpointApiClient:
         if filters:
             query = "{} AND {}".format(query, filters)
 
+        return self._call(query=query,
+                          drilldown_names=drilldown_names,
+                          ordering=ordering,
+                          start_record=start_record,
+                          maximum_records=maximum_records)
+
+    @staticmethod
+    def _call(query, drilldown_names=None,
+              start_record=1, maximum_records=0, ordering=None,
+              version="1.2", operation="searchRetrieve"):
+
         parameters = dict(version=version,
                           operation=operation,
                           recordPacking=_RECORD_PACKING,
                           query=quote_plus(query),
-                          startRecord=startRecord,
-                          maximumRecords=maximumRecords)
+                          startRecord=start_record,
+                          maximumRecords=maximum_records)
         parameters["x-recordSchema"] = _EXTRA_RECORD_SCHEMA
 
         if drilldown_names and isinstance(drilldown_names, list):
             parameters["x-term-drilldown"] = ",".join(drilldown_names)
 
-        if ordering and isinstance(ordering, list):
-            sort_keys = ordering[0]
-            if sort_keys.startswith("-"):
-                sort_keys = "{},,1".format("".join(sort_keys[1::]))
+        if ordering:
+            if isinstance(ordering, list):
+                ordering = ordering[0]
+
+            if ordering.startswith("-"):
+                sort_keys = "{},,1".format("".join(ordering[1::]))
             else:
-                sort_keys = "{},,0".format(sort_keys)
+                sort_keys = "{},,0".format(ordering)
             parameters["sortKeys"] = sort_keys
 
         parameters = "&".join(["{}={}".format(k, v)
