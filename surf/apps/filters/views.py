@@ -1,28 +1,39 @@
-from rest_framework import (
-    viewsets,
-    mixins
+from rest_framework.viewsets import (
+    GenericViewSet,
+    ModelViewSet
 )
 
-from surf.apps.filters import models, serializers
+from rest_framework.mixins import ListModelMixin
+from rest_framework.permissions import IsAuthenticated
+
+from surf.apps.filters.models import (
+    FilterCategory,
+    Filter
+)
+
+from surf.apps.filters.serializers import (
+    FilterCategorySerializer,
+    FilterSerializer
+)
 
 
-class FilterCategoryViewSet(mixins.ListModelMixin,
-                            viewsets.GenericViewSet):
+class FilterCategoryViewSet(ListModelMixin,
+                            GenericViewSet):
 
-    queryset = models.FilterCategory.objects.all()
-    serializer_class = serializers.FilterCategorySerializer
+    queryset = FilterCategory.objects.all()
+    serializer_class = FilterCategorySerializer
     permission_classes = []
 
 
-class FilterViewSet(viewsets.ModelViewSet):
-    queryset = models.Filter.objects.none()
-    serializer_class = serializers.FilterSerializer
-    permission_classes = []
+class FilterViewSet(ModelViewSet):
+    queryset = Filter.objects.none()
+    serializer_class = FilterSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
 
         if not user or not user.is_active:
-            return models.Filter.objects.none()
+            return Filter.objects.none()
 
-        return models.Filter.objects.filter(owner_id=user.id).all()
+        return Filter.objects.filter(owner_id=user.id).all()
