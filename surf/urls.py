@@ -22,7 +22,8 @@ from rest_framework import routers
 from surf.apps.materials.views import (
     MaterialSearchAPIView,
     KeywordsAPIView,
-    MaterialAPIView
+    MaterialAPIView,
+    CollectionViewSet
 )
 
 from surf.apps.filters.views import (
@@ -38,6 +39,7 @@ default_router = routers.DefaultRouter()
 
 default_router.register(r'filter-categories', FilterCategoryViewSet)
 default_router.register(r'filters', FilterViewSet)
+default_router.register(r'collections', CollectionViewSet)
 
 apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),

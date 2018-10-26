@@ -21,6 +21,7 @@ class Collection(UUIDModel):
                                      on_delete=django_models.CASCADE)
 
     materials = django_models.ManyToManyField(Material,
+                                              blank=True,
                                               related_name="collections")
 
     def __str__(self):

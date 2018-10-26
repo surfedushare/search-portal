@@ -23,34 +23,7 @@ Surf API
 
             Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
-    + Body
-
-            {
-                "search_text": ["some searched text"],
-                "page": 1,
-                "page_size": 5,
-                "filters": [
-                    {
-                        "external_id": "lom.technical.format",
-                        "items": [
-                            "audio",
-                            "video"
-                        ]
-                    },
-                    {
-                        "external_id": "lom.general.aggregationlevel",
-                        "items": [
-                            "1",
-                            "3"
-                        ]
-                    }
-                ],
-                "ordering": "-lom.lifecycle.contribute.publisherdate",
-                "author": "Material author",
-                "return_records": true,
-                "return_filters": true
-            }
-
+    + Attributes (Search Request)
 
 + Response 200 (application/json)
     + Attributes (Search Result)
@@ -75,15 +48,15 @@ Surf API
 
 # Group Materials
 
-## Material Collection [/api/v1/materials/]
+## Material Array [/api/v1/materials/]
 
-### GET [GET /api/v1/materials/{?external_id, collection_id}]
+### GET [GET /api/v1/materials/{?external_id,collection_id,page,page_size}]
 
 + Parameters
   + external_id (string, optional) - filter materials by external id
-  + collection_id (string, optional) - filter by `collection id` (will be ignored if external_id is specified)
-  + page (number, optional) - page number (by default `1`, will be ignored if external_id is specified)
-  + page_size (number, optional) - page size (by default `5`, will be ignored if external_id is specified)
+  + collection_id (string, optional) - filter by `collection id`, will be ignored if external_id is specified
+  + page (number, optional) - page number, by default `1`, will be ignored if external_id is specified
+  + page_size (number, optional) - page size, by default `5`, will be ignored if external_id is specified
 
 + Request (application/json)
 
@@ -94,9 +67,120 @@ Surf API
 + Response 200 (application/json)
     + Attributes (array[Material])
 
+# Group Collections
+
+## Collection Array [/api/v1/collections/]
+
+### GET [GET /api/v1/collections/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Collection])
+
+### POST [POST /api/v1/collections/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Collection Create)
+
++ Response 201 (application/json)
+    + Attributes (Collection)
+
+## Collection Resource  [/api/v1/collections/{id}/]
+
+### GET [GET /api/v1/collections/{id}/]
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Collection)
+
+### PUT [PUT /api/v1/collections/{id}/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Collection Create)
+
++ Response 201 (application/json)
+    + Attributes (Collection)
+
+### DELETE [DELETE /api/v1/collections/{id}/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 204
+
+## Collection Materials Array  [/api/v1/collections/{id}/materials/]
+
+### GET [GET /api/v1/collections/{id}/materials/{?page,page_size}]
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+  + page (number, optional) - page number, by default `1`
+  + page_size (number, optional) - page size, by default `5`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Material])
+
+### POST [POST /api/v1/collections/{id}/materials/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Material Short])
+
++ Response 201 (application/json)
+    + Attributes (array[Material Short])
+
+### DELETE [DELETE /api/v1/collections/{id}/materials/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Material Short])
+
++ Response 204
+    + Attributes (array[Material Short])
+
 # Group Filter Categories
 
-## Filter Categories Collection [/api/v1/filter-categories/]
+## Filter Categories Array [/api/v1/filter-categories/]
 
 ### GET [GET /api/v1/filter-categories/]
 
@@ -111,7 +195,7 @@ Surf API
 
 # Group Filters
 
-## Filter Collection [/api/v1/filters/]
+## Filter Array [/api/v1/filters/]
 
 ### GET [GET /api/v1/filters/]
 
@@ -178,6 +262,23 @@ Surf API
 
 # Data Structures
 
+## Request Filter Data (object)
+ - external_id: `lom.classification.obk.discipline.id` (string) - filter category id
+ - items: (array[string]) - list of exteral_id of filter items
+
+## Search Request (object)
+ - search_text: (array[string]) - list of searched texts
+ - filters: (array[Request Filter Data], optional) - filters to search materials
+ - page: `1` (number, optional) - page number, default `1`
+ - page_size: `5` (number, optional) - page size, default `5`
+ - ordering: `-lom.lifecycle.contribute.publisherdate` (string, optional) - field identifier by which result is sorted
+ - author: `Material author` (string, optional) - author whose materials will be searched
+ - return_records: `true` (boolean, optional) - return found materials if `true`, default `true`
+ - return_filters: `true` (boolean, optional) - return extra data by filters if `true`, default `true`
+
+## Material Short (object)
+ - external_id: `edurep_delen:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material id in edurep
+
 ## Material (object)
  - external_id: `edurep_delen:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material id in edurep
  - object_id: `urn:uuid:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URI
@@ -237,3 +338,11 @@ Surf API
 ## Filter Create (object)
  - title: `test filter` (string) - filter title
  - items: (array[Filter Create item], optional) - filter items
+
+## Collection (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
+ - title: `test collection` (string) - collection title
+ - materials_count: `3` (number) - the number of materials in collection
+
+## Collection Create (object)
+ - title: `test collection` (string) - collection title

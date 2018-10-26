@@ -1,14 +1,23 @@
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
-from rest_framework import exceptions
-
 from rest_framework.response import Response
+from rest_framework.exceptions import AuthenticationFailed
+
+from rest_framework.decorators import (
+    detail_route,
+    list_route
+)
 
 from surf.apps.filters.models import FilterCategory
+from surf.apps.materials.models import Collection, Material
 
 from surf.apps.materials.serializers import (
     SearchRequestSerializer,
     KeywordsRequestSerializer,
-    MaterialsRequestSerializer
+    MaterialsRequestSerializer,
+    CollectionSerializer,
+    CollectionMaterialsRequestSerializer,
+    MaterialShortSerializer
 )
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
@@ -88,3 +97,82 @@ class MaterialAPIView(APIView):
             # TODO to be implemented
             res = []
         return Response(res)
+
+
+class CollectionViewSet(ModelViewSet):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
+    permission_classes = []
+
+    def create(self, request, *args, **kwargs):
+        self._check_access(request)
+        return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        self._check_access(request, instance=self.get_object())
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        self._check_access(request, instance=self.get_object())
+        return super().destroy(request, *args, **kwargs)
+
+    @detail_route(methods=['get', 'post', 'delete'])
+    def materials(self, request, pk=None, **kwargs):
+        instance = self.get_object()
+
+        if request.method == "GET":
+            serializer = CollectionMaterialsRequestSerializer(data=request.GET)
+            serializer.is_valid(raise_exception=True)
+            data = dict(serializer.validated_data)
+
+            ids = [m.external_id
+                   for m in instance.materials.order_by("id").all()]
+
+            res = []
+            if ids:
+                ac = XmlEndpointApiClient()
+                res = ac.get_materials_by_id(ids, **data)
+                res = res.get("records", [])
+            return Response(res)
+
+        self._check_access(request, instance=instance)
+        data = []
+        for d in request.data:
+            serializer = MaterialShortSerializer(data=d)
+            serializer.is_valid(raise_exception=True)
+            data.append(dict(serializer.validated_data))
+
+        if request.method == "POST":
+            self._add_materials(instance, data)
+        elif request.method == "DELETE":
+            self._delete_materials(instance, data)
+
+        return Response([m.external_id for m in instance.materials.all()])
+
+    @staticmethod
+    def _add_materials(instance, materials):
+        for material in materials:
+            m_external_id = material["external_id"]
+            m, _ = Material.objects.get_or_create(
+                external_id=m_external_id,
+                defaults=dict(external_id=m_external_id))
+            instance.materials.add(m)
+
+    @staticmethod
+    def _delete_materials(instance, materials):
+        for material in materials:
+            m_external_id = material["external_id"]
+            try:
+                m = Material.objects.get(external_id=m_external_id)
+                instance.materials.remove(m)
+            except Material.DoesNotExist:
+                pass
+
+    @staticmethod
+    def _check_access(request, instance=None):
+        user = request.user
+        if not user or not user.is_active:
+            raise AuthenticationFailed()
+
+        if instance and (instance.owner_id != user.id):
+            raise AuthenticationFailed()
