@@ -6,12 +6,23 @@ from urllib.parse import quote_plus
 
 import logging
 
-from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import parse_response
-from surf.vendor.edurep.xml_endpoint.v1_2.choices import TECH_FORMAT_MIME_TYPES
+from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
+    parse_response,
+    TECH_FORMAT_LOM,
+    CUSTOM_THEME_ID,
+    DISCIPLINE_ID_LOM,
+)
+
+from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
+    TECH_FORMAT_MIME_TYPES,
+    CUSTOM_THEME_DISCIPLINES
+)
 
 logger = logging.getLogger()
 
-TECH_FORMAT_FIELD_ID = "lom.technical.format"
+TECH_FORMAT_FIELD_ID = TECH_FORMAT_LOM
+CUSTOM_THEME_FIELD_ID = CUSTOM_THEME_ID
+DISCIPLINE_FIELD_ID = DISCIPLINE_ID_LOM
 AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
 PUBLISHER_FIELD_ID = "lom.lifecycle.contribute.publisher"
 PUBLISHER_DATE_FILED_ID = "lom.lifecycle.contribute.publisherdate"
@@ -20,7 +31,7 @@ _API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 _AUTOCOMPLETE_ENDPOINT = "{}/autocomplete".format(_API_ENDPOINT)
 _LOM_SRU_ENDPOINT = "{}/edurep/sruns".format(_API_ENDPOINT)
 
-_DATE_TYPE_FIELDS = set(PUBLISHER_DATE_FILED_ID)
+_DATE_TYPE_FIELDS = {PUBLISHER_DATE_FILED_ID}
 
 _DATE_FORMAT = "%Y-%m-%d"
 
@@ -126,6 +137,9 @@ def _filter_to_cql(field_id, values):
     elif field_id == TECH_FORMAT_FIELD_ID:
         return _tech_format_filter_to_cql(field_id, values)
 
+    elif field_id == CUSTOM_THEME_FIELD_ID:
+        return _custom_theme_filter_to_cql(DISCIPLINE_ID_LOM, values)
+
     else:
         return _list_filter_to_cql(field_id, values)
 
@@ -150,9 +164,19 @@ def _list_filter_to_cql(field_id, values):
 
 
 def _tech_format_filter_to_cql(field_id, values):
-    m_types = list()
+    return _aggregate_filed_filter_to_cql(field_id, values,
+                                          TECH_FORMAT_MIME_TYPES)
+
+
+def _custom_theme_filter_to_cql(field_id, values):
+    return _aggregate_filed_filter_to_cql(field_id, values,
+                                          CUSTOM_THEME_DISCIPLINES)
+
+
+def _aggregate_filed_filter_to_cql(field_id, values, aggregate_field_items):
+    items = list()
     for v in values:
-        m_types_cqls = ['{} exact "{}"'.format(field_id, vi)
-                        for vi in TECH_FORMAT_MIME_TYPES.get(v, [])]
-        m_types.append(" OR ".join(m_types_cqls))
-    return " OR ".join(m_types)
+        v_cqls = ['({} exact "{}")'.format(field_id, item)
+                  for item in aggregate_field_items.get(v, [])]
+        items.extend(v_cqls)
+    return " OR ".join(items)
