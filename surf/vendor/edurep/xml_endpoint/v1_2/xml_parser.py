@@ -2,7 +2,10 @@ from xml.etree import ElementTree as ET
 
 import re
 
-from surf.vendor.edurep.xml_endpoint.v1_2.choices import MIME_TYPE_TECH_FORMAT
+from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
+    MIME_TYPE_TECH_FORMAT,
+    DISCIPLINE_CUSTOM_THEME
+)
 
 _NS = {
     "srw": "http://www.loc.gov/zing/srw/",
@@ -15,7 +18,9 @@ _NS = {
     "sad": "http://xsd.kennisnet.nl/smd/sad"
 }
 
-_TECH_FORMAT_LOM = "lom.technical.format"
+TECH_FORMAT_LOM = "lom.technical.format"
+DISCIPLINE_ID_LOM = "lom.classification.obk.discipline.id"
+CUSTOM_THEME_ID = "custom_theme.id"
 
 
 def parse_response(xml_text):
@@ -127,11 +132,14 @@ def _parse_drilldowns(root):
         drilldowns = root.findall(_DRILLDOWN_PATH, namespaces=_NS)[0]
         for dd in drilldowns:
             term_id = dd.attrib["name"]
-            if term_id == _TECH_FORMAT_LOM:
+            if term_id == TECH_FORMAT_LOM:
                 rv[term_id] = _parse_drilldowns_tech_format(dd)
+            elif term_id == DISCIPLINE_ID_LOM:
+                rv[term_id] = _parse_drilldowns_term(dd)
+                rv[CUSTOM_THEME_ID] = _parse_drilldowns_custom_theme(dd)
             else:
                 rv[term_id] = _parse_drilldowns_term(dd)
-    except Exception:
+    except Exception as e:
         pass
     return [dict(external_id=k, items=v) for k, v in rv.items()]
 
@@ -142,15 +150,24 @@ def _parse_drilldowns_term(elem):
 
 
 def _parse_drilldowns_tech_format(elem):
-    items = dict()
-    for item in elem:
-        mime_type = item.text
-        item_id = MIME_TYPE_TECH_FORMAT.get(mime_type)
-        if not item_id:
-            continue
-        items[item_id] = items.get(item_id, 0) + int(item.attrib["count"])
+    return _parse_aggregate_field_drilldowns(elem, MIME_TYPE_TECH_FORMAT)
 
-    return [dict(external_id=k, count=v) for k, v in items.items()]
+
+def _parse_drilldowns_custom_theme(elem):
+    return _parse_aggregate_field_drilldowns(elem, DISCIPLINE_CUSTOM_THEME)
+
+
+def _parse_aggregate_field_drilldowns(elem, aggregate_field_map):
+    fields = dict()
+    for item in elem:
+        item_id = item.text
+        field_id = aggregate_field_map.get(item_id)
+        if not field_id:
+            continue
+        fields[field_id] = fields.get(field_id, 0) + int(item.attrib["count"])
+
+    fields = sorted(fields.items(), key=lambda kv: kv[1], reverse=True)
+    return [dict(external_id=k, count=v) for k, v in fields]
 
 
 def _find_elem_text(root, elem_path):

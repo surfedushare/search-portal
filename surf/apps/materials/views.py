@@ -9,6 +9,7 @@ from rest_framework.decorators import (
 )
 
 from surf.apps.filters.models import FilterCategory
+from surf.apps.filters.utils import IGNORED_FIELDS
 from surf.apps.materials.models import Collection, Material
 
 from surf.apps.materials.serializers import (
@@ -65,7 +66,8 @@ class MaterialSearchAPIView(APIView):
 
 def _get_filter_categories():
     return ["{}:{}".format(f.edurep_field_id, f.max_item_count)
-            for f in FilterCategory.objects.all()]
+            for f in FilterCategory.objects.all()
+            if f.edurep_field_id not in IGNORED_FIELDS]
 
 
 class KeywordsAPIView(APIView):
