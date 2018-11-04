@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from surf.apps.materials.models import (
     Collection,
-    Material
+    Material,
+    ApplaudMaterial
 )
 
 
@@ -66,3 +67,28 @@ class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         fields = ('id', 'title', 'materials_count',)
+
+
+class ApplaudMaterialSerializer(serializers.ModelSerializer):
+    material = MaterialShortSerializer()
+
+    def create(self, validated_data):
+        material_external_id = validated_data["material"]["external_id"]
+        material, _ = Material.objects.get_or_create(
+            external_id=material_external_id,
+            defaults=dict(external_id=material_external_id))
+        validated_data["material"] = material
+
+        request = self.context.get("request")
+        user = request.user
+        validated_data["user_id"] = user.id
+
+        instance, _ = ApplaudMaterial.objects.get_or_create(
+            **validated_data,
+            defaults=validated_data)
+
+        return instance
+
+    class Meta:
+        model = ApplaudMaterial
+        fields = ('material',)
