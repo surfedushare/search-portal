@@ -67,6 +67,50 @@ Surf API
 + Response 200 (application/json)
     + Attributes (array[Material])
 
+# Group Applaud Materials
+
+## Applaud Material Array [/api/v1/applaud-materials/]
+
+### GET [GET /api/v1/applaud-materials/{?material__external_id}]
+
++ Parameters
+  + material__external_id (string, optional) - filter applauds by material external id in edurep
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Applaud Material])
+
+### POST [POST /api/v1/applaud-materials/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Applaud Material)
+
++ Response 201 (application/json)
+    + Attributes (Applaud Material)
+
+### DELETE [DELETE /api/v1/applaud-materials/{?material__external_id}]
+
++ Parameters
+  + material__external_id (string, optional) - filter applauds by material external id in edurep
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 204
+
 # Group Collections
 
 ## Collection Array [/api/v1/collections/]
@@ -346,3 +390,6 @@ Surf API
 
 ## Collection Create (object)
  - title: `test collection` (string) - collection title
+
+## Applaud Material (object)
+  - material: (Material Short) - applauded material
