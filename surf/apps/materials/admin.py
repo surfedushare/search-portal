@@ -12,3 +12,10 @@ class MaterialAdmin(admin.ModelAdmin):
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ("title", "owner", )
     ordering = ("title",)
+
+
+@admin.register(models.ApplaudMaterial)
+class ApplaudMaterialAdmin(admin.ModelAdmin):
+    list_display = ("material", "user", )
+    ordering = ("material", "user", )
+    list_filter = ("material", "user", )
