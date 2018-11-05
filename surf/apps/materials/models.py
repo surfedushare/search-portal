@@ -26,3 +26,16 @@ class Collection(UUIDModel):
 
     def __str__(self):
         return self.title
+
+
+class ApplaudMaterial(UUIDModel):
+    user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
+                                    related_name='applauds',
+                                    on_delete=django_models.CASCADE)
+
+    material = django_models.ForeignKey(Material,
+                                        related_name="applauds",
+                                        on_delete=django_models.CASCADE)
+
+    def __str__(self):
+        return "{} - {}".format(self.user.username, self.material.external_id)

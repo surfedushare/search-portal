@@ -17,13 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 
-from rest_framework import routers
-
 from surf.apps.materials.views import (
     MaterialSearchAPIView,
     KeywordsAPIView,
     MaterialAPIView,
-    CollectionViewSet
+    CollectionViewSet,
+    ApplaudMaterialViewSet
 )
 
 from surf.apps.filters.views import (
@@ -31,21 +30,23 @@ from surf.apps.filters.views import (
     FilterViewSet
 )
 
+from surf.routers import CustomRouter
+
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
 
-default_router = routers.DefaultRouter()
-
-default_router.register(r'filter-categories', FilterCategoryViewSet)
-default_router.register(r'filters', FilterViewSet)
-default_router.register(r'collections', CollectionViewSet)
+router = CustomRouter()
+router.register(r'filter-categories', FilterCategoryViewSet)
+router.register(r'filters', FilterViewSet)
+router.register(r'collections', CollectionViewSet)
+router.register(r'applaud-materials', ApplaudMaterialViewSet)
 
 apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
-] + default_router.urls
+] + router.urls
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),

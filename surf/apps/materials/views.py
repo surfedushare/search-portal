@@ -1,16 +1,28 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import (
+    ModelViewSet,
+    GenericViewSet
+)
+
+from rest_framework.mixins import (
+    ListModelMixin,
+    CreateModelMixin
+)
+
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-
-from rest_framework.decorators import (
-    detail_route,
-    list_route
-)
+from rest_framework.decorators import detail_route, action
 
 from surf.apps.filters.models import FilterCategory
 from surf.apps.filters.utils import IGNORED_FIELDS
-from surf.apps.materials.models import Collection, Material
+from surf.apps.core.mixins import ListDestroyModelMixin
+
+from surf.apps.materials.models import (
+    Collection,
+    Material,
+    ApplaudMaterial
+)
 
 from surf.apps.materials.serializers import (
     SearchRequestSerializer,
@@ -18,8 +30,11 @@ from surf.apps.materials.serializers import (
     MaterialsRequestSerializer,
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
-    MaterialShortSerializer
+    MaterialShortSerializer,
+    ApplaudMaterialSerializer
 )
+
+from surf.apps.materials.filters import ApplaudMaterialFilter
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
@@ -118,7 +133,7 @@ class CollectionViewSet(ModelViewSet):
         self._check_access(request, instance=self.get_object())
         return super().destroy(request, *args, **kwargs)
 
-    @detail_route(methods=['get', 'post', 'delete'])
+    @action(methods=['get', 'post', 'delete'], detail=True)
     def materials(self, request, pk=None, **kwargs):
         instance = self.get_object()
 
@@ -178,3 +193,18 @@ class CollectionViewSet(ModelViewSet):
 
         if instance and (instance.owner_id != user.id):
             raise AuthenticationFailed()
+
+
+class ApplaudMaterialViewSet(ListModelMixin,
+                             CreateModelMixin,
+                             ListDestroyModelMixin,
+                             GenericViewSet):
+    queryset = ApplaudMaterial.objects.all()
+    serializer_class = ApplaudMaterialSerializer
+    permission_classes = [IsAuthenticated]
+    filter_class = ApplaudMaterialFilter
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(user_id=self.request.user.id)
+        return qs
