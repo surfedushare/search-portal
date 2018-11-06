@@ -61,9 +61,11 @@ class XmlEndpointApiClient:
                             start_record=page,
                             maximum_records=page_size)
 
-    def get_materials_by_id(self, external_ids, page=1, page_size=5):
+    def get_materials_by_id(self, external_ids, page=1, page_size=5,
+                            drilldown_names=None):
         return self._call(query=" OR ".join(external_ids),
-                          start_record=page, maximum_records=page_size)
+                          start_record=page, maximum_records=page_size,
+                          drilldown_names=drilldown_names)
 
     def _search(self, search_text=None, filters=None, drilldown_names=None,
                 start_record=1, maximum_records=0, ordering=None):
@@ -92,7 +94,7 @@ class XmlEndpointApiClient:
         parameters = dict(version=version,
                           operation=operation,
                           recordPacking=_RECORD_PACKING,
-                          query=quote_plus(query),
+                          query=quote_plus(query, safe=''),
                           startRecord=start_record,
                           maximumRecords=maximum_records)
         parameters["x-recordSchema"] = _EXTRA_RECORD_SCHEMA

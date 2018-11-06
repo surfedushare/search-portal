@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.decorators import detail_route, action
+from rest_framework.decorators import action
 
 from surf.apps.filters.models import FilterCategory
 from surf.apps.filters.utils import IGNORED_FIELDS
@@ -39,7 +39,9 @@ from surf.apps.materials.filters import ApplaudMaterialFilter
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     AUTHOR_FIELD_ID,
-    PUBLISHER_FIELD_ID
+    PUBLISHER_FIELD_ID,
+    DISCIPLINE_FIELD_ID,
+    CUSTOM_THEME_FIELD_ID
 )
 
 
@@ -107,13 +109,31 @@ class MaterialAPIView(APIView):
         data = dict(serializer.validated_data)
 
         if "external_id" in data:
-            ac = XmlEndpointApiClient()
-            res = ac.get_materials_by_id([data["external_id"]])
-            res = res.get("records", [])
+            res = _get_material_details_by_id(data["external_id"])
         else:
             # TODO to be implemented
             res = []
         return Response(res)
+
+
+_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
+
+
+def _get_material_details_by_id(material_id):
+    ac = XmlEndpointApiClient()
+    res = ac.get_materials_by_id(['"{}"'.format(material_id)],
+                                 drilldown_names=[_DISCIPLINE_FILTER])
+
+    themes = []
+    for f in res.get("drilldowns", []):
+        if f["external_id"] == CUSTOM_THEME_FIELD_ID:
+            themes = [item["external_id"] for item in f["items"]]
+
+    rv = res.get("records", [])
+    for material in rv:
+        material["themes"] = themes
+
+    return rv
 
 
 class CollectionViewSet(ModelViewSet):
@@ -142,7 +162,7 @@ class CollectionViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             data = dict(serializer.validated_data)
 
-            ids = [m.external_id
+            ids = ['"{}"'.format(m.external_id)
                    for m in instance.materials.order_by("id").all()]
 
             res = []
