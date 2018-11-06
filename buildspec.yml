@@ -9,7 +9,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...          
-      - docker build -t mqd-surf-backend .
+      - docker build -t mqd-surf-backend:latest .
       - docker tag mqd-surf-backend:latest 233549791968.dkr.ecr.eu-central-1.amazonaws.com/mqd-surf-backend:latest  
   post_build:
     commands:
