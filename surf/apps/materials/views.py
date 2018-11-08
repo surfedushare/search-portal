@@ -236,12 +236,15 @@ class ApplaudMaterialViewSet(ListModelMixin,
 
 
 def _add_extra_parameters_to_materials(user, materials):
-    if not user or not user.id:
-        return materials
-
     for m in materials:
-        qs = Material.objects.prefetch_related("collections")
-        qs = qs.filter(collections__owner_id=user.id,
-                       external_id=m["external_id"])
-        m["has_bookmark"] = qs.exists()
+        if user and user.id:
+            qs = Material.objects.prefetch_related("collections")
+            qs = qs.filter(collections__owner_id=user.id,
+                           external_id=m["external_id"])
+            m["has_bookmark"] = qs.exists()
+
+        qs = ApplaudMaterial.objects.prefetch_related("material")
+        qs = qs.filter(material__external_id=m["external_id"])
+        m["number_of_applauds"] = qs.count()
+
     return materials
