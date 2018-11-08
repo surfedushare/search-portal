@@ -41,7 +41,8 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID,
     PUBLISHER_FIELD_ID,
     DISCIPLINE_FIELD_ID,
-    CUSTOM_THEME_FIELD_ID
+    CUSTOM_THEME_FIELD_ID,
+    PUBLISHER_DATE_FILED_ID
 )
 
 
@@ -114,9 +115,15 @@ class MaterialAPIView(APIView):
         if "external_id" in data:
             res = _get_material_details_by_id(data["external_id"])
             res = _add_extra_parameters_to_materials(request.user, res)
+
         else:
-            # TODO to be implemented
-            res = []
+            ac = XmlEndpointApiClient()
+            res = ac.search([],
+                            ordering="-{}".format(PUBLISHER_DATE_FILED_ID),
+                            page_size=4)
+
+            res = _add_extra_parameters_to_materials(request.user,
+                                                     res["records"])
         return Response(res)
 
 
