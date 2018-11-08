@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.decorators import detail_route, action
+from rest_framework.decorators import action
 
 from surf.apps.filters.models import FilterCategory
 from surf.apps.filters.utils import IGNORED_FIELDS
@@ -39,7 +39,9 @@ from surf.apps.materials.filters import ApplaudMaterialFilter
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     AUTHOR_FIELD_ID,
-    PUBLISHER_FIELD_ID
+    PUBLISHER_FIELD_ID,
+    DISCIPLINE_FIELD_ID,
+    CUSTOM_THEME_FIELD_ID
 )
 
 
@@ -71,7 +73,10 @@ class MaterialSearchAPIView(APIView):
         ac = XmlEndpointApiClient()
         res = ac.search(**data)
 
-        rv = dict(records=res["records"],
+        records = _add_extra_parameters_to_materials(request.user,
+                                                     res["records"])
+
+        rv = dict(records=records,
                   records_total=res["recordcount"],
                   filters=res["drilldowns"],
                   page=data["page"],
@@ -107,13 +112,32 @@ class MaterialAPIView(APIView):
         data = dict(serializer.validated_data)
 
         if "external_id" in data:
-            ac = XmlEndpointApiClient()
-            res = ac.get_materials_by_id([data["external_id"]])
-            res = res.get("records", [])
+            res = _get_material_details_by_id(data["external_id"])
+            res = _add_extra_parameters_to_materials(request.user, res)
         else:
             # TODO to be implemented
             res = []
         return Response(res)
+
+
+_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
+
+
+def _get_material_details_by_id(material_id):
+    ac = XmlEndpointApiClient()
+    res = ac.get_materials_by_id(['"{}"'.format(material_id)],
+                                 drilldown_names=[_DISCIPLINE_FILTER])
+
+    themes = []
+    for f in res.get("drilldowns", []):
+        if f["external_id"] == CUSTOM_THEME_FIELD_ID:
+            themes = [item["external_id"] for item in f["items"]]
+
+    rv = res.get("records", [])
+    for material in rv:
+        material["themes"] = themes
+
+    return rv
 
 
 class CollectionViewSet(ModelViewSet):
@@ -142,7 +166,7 @@ class CollectionViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             data = dict(serializer.validated_data)
 
-            ids = [m.external_id
+            ids = ['"{}"'.format(m.external_id)
                    for m in instance.materials.order_by("id").all()]
 
             res = []
@@ -150,6 +174,7 @@ class CollectionViewSet(ModelViewSet):
                 ac = XmlEndpointApiClient()
                 res = ac.get_materials_by_id(ids, **data)
                 res = res.get("records", [])
+                res = _add_extra_parameters_to_materials(request.user, res)
             return Response(res)
 
         self._check_access(request, instance=instance)
@@ -208,3 +233,18 @@ class ApplaudMaterialViewSet(ListModelMixin,
         qs = super().get_queryset()
         qs = qs.filter(user_id=self.request.user.id)
         return qs
+
+
+def _add_extra_parameters_to_materials(user, materials):
+    for m in materials:
+        if user and user.id:
+            qs = Material.objects.prefetch_related("collections")
+            qs = qs.filter(collections__owner_id=user.id,
+                           external_id=m["external_id"])
+            m["has_bookmark"] = qs.exists()
+
+        qs = ApplaudMaterial.objects.prefetch_related("material")
+        qs = qs.filter(material__external_id=m["external_id"])
+        m["number_of_applauds"] = qs.count()
+
+    return materials
