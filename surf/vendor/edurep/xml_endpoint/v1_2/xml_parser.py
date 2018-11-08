@@ -83,6 +83,8 @@ def _parse_record(elem):
         format=MIME_TYPE_TECH_FORMAT.get(_find_elem_text(elem, _FORMAT_PATH)),
         number_of_ratings=int(_find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)),
         average_rating=float(_find_elem_text(elem, _AVERAGE_RATINGS_PATH)),
+        themes=[],
+        has_bookmark=False
     )
 
 

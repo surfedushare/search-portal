@@ -33,12 +33,8 @@ class FilterCategoryAdmin(admin.ModelAdmin):
     def get_actions(self, request):
         actions = super().get_actions(request)
         if not request.user.is_superuser:
-            if 'restore_invoices' in actions:
-                del actions['restore_invoices']
-            if 'set_invoice_amounts' in actions:
-                del actions['set_invoice_amounts']
-            if 'validate_order_countries' in actions:
-                del actions['validate_order_countries']
+            if 'fill_filter_category' in actions:
+                del actions['fill_filter_category']
         return actions
 
 

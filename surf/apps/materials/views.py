@@ -73,7 +73,10 @@ class MaterialSearchAPIView(APIView):
         ac = XmlEndpointApiClient()
         res = ac.search(**data)
 
-        rv = dict(records=res["records"],
+        records = _add_extra_parameters_to_materials(request.user,
+                                                     res["records"])
+
+        rv = dict(records=records,
                   records_total=res["recordcount"],
                   filters=res["drilldowns"],
                   page=data["page"],
@@ -110,6 +113,7 @@ class MaterialAPIView(APIView):
 
         if "external_id" in data:
             res = _get_material_details_by_id(data["external_id"])
+            res = _add_extra_parameters_to_materials(request.user, res)
         else:
             # TODO to be implemented
             res = []
@@ -170,6 +174,7 @@ class CollectionViewSet(ModelViewSet):
                 ac = XmlEndpointApiClient()
                 res = ac.get_materials_by_id(ids, **data)
                 res = res.get("records", [])
+                res = _add_extra_parameters_to_materials(request.user, res)
             return Response(res)
 
         self._check_access(request, instance=instance)
@@ -228,3 +233,15 @@ class ApplaudMaterialViewSet(ListModelMixin,
         qs = super().get_queryset()
         qs = qs.filter(user_id=self.request.user.id)
         return qs
+
+
+def _add_extra_parameters_to_materials(user, materials):
+    if not user or not user.id:
+        return materials
+
+    for m in materials:
+        qs = Material.objects.prefetch_related("collections")
+        qs = qs.filter(collections__owner_id=user.id,
+                       external_id=m["external_id"])
+        m["has_bookmark"] = qs.exists()
+    return materials
