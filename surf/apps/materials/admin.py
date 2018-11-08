@@ -19,3 +19,10 @@ class ApplaudMaterialAdmin(admin.ModelAdmin):
     list_display = ("material", "user", )
     ordering = ("material", "user", )
     list_filter = ("material", "user", )
+
+
+@admin.register(models.ViewMaterial)
+class ViewMaterialAdmin(admin.ModelAdmin):
+    list_display = ("material", "user", )
+    ordering = ("material", "user", )
+    list_filter = ("material", "user", )

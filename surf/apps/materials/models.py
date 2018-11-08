@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models as django_models
 from django.conf import settings
 
@@ -36,6 +38,34 @@ class ApplaudMaterial(UUIDModel):
     material = django_models.ForeignKey(Material,
                                         related_name="applauds",
                                         on_delete=django_models.CASCADE)
+
+    def __str__(self):
+        return "{} - {}".format(self.user.username, self.material.external_id)
+
+
+class ViewMaterial(UUIDModel):
+    viewed_at = django_models.DateTimeField(default=datetime.now)
+
+    user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
+                                    related_name='material_views',
+                                    on_delete=django_models.CASCADE)
+
+    material = django_models.ForeignKey(Material,
+                                        related_name="material_views",
+                                        on_delete=django_models.CASCADE)
+
+    @staticmethod
+    def add_unique_view(user, material_external_id):
+        if not user or not user.id:
+            return
+
+        m, _ = Material.objects.get_or_create(
+            external_id=material_external_id,
+            defaults=dict(external_id=material_external_id))
+
+        ViewMaterial.objects.update_or_create(
+            user_id=user.id, material_id=m.id,
+            defaults=dict(viewed_at=datetime.now()))
 
     def __str__(self):
         return "{} - {}".format(self.user.username, self.material.external_id)

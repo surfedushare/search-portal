@@ -85,7 +85,8 @@ def _parse_record(elem):
         average_rating=float(_find_elem_text(elem, _AVERAGE_RATINGS_PATH)),
         themes=[],
         has_bookmark=False,
-        number_of_applauds=0
+        number_of_applauds=0,
+        number_of_views=0
     )
 
 

@@ -21,7 +21,8 @@ from surf.apps.core.mixins import ListDestroyModelMixin
 from surf.apps.materials.models import (
     Collection,
     Material,
-    ApplaudMaterial
+    ApplaudMaterial,
+    ViewMaterial
 )
 
 from surf.apps.materials.serializers import (
@@ -115,6 +116,7 @@ class MaterialAPIView(APIView):
         if "external_id" in data:
             res = _get_material_details_by_id(data["external_id"])
             res = _add_extra_parameters_to_materials(request.user, res)
+            ViewMaterial.add_unique_view(request.user, data["external_id"])
 
         else:
             ac = XmlEndpointApiClient()
@@ -253,5 +255,9 @@ def _add_extra_parameters_to_materials(user, materials):
         qs = ApplaudMaterial.objects.prefetch_related("material")
         qs = qs.filter(material__external_id=m["external_id"])
         m["number_of_applauds"] = qs.count()
+
+        qs = ViewMaterial.objects.prefetch_related("material")
+        qs = qs.filter(material__external_id=m["external_id"])
+        m["number_of_views"] = qs.count()
 
     return materials
