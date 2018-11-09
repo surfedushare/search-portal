@@ -32,6 +32,11 @@ from surf.apps.filters.views import (
 
 from surf.routers import CustomRouter
 
+from surf.apps.users.views import (
+    auth_begin_handler,
+    auth_complete_handler
+)
+
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
@@ -52,4 +57,7 @@ urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
+
+    url(r'^login/surfconext/', auth_begin_handler),
+    url(r'^complete/surfconext/', auth_complete_handler),
 ]

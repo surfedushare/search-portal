@@ -6,3 +6,4 @@ django-filter==2.0.0
 psycopg2-binary==2.7.4
 django-jet==1.0.7
 requests==2.18.4
+oic==0.14.0

@@ -162,3 +162,20 @@ LOGGING = {
         },
     },
 }
+
+OIDC_CONFIG = {
+    "version": "1.0",
+    "verify_ssl": False,
+    "response_type": "code",
+    "redirect_uri": "http://127.0.0.1:8000/complete/surfconext/",
+    "client_id": "",
+    "client_secret": "",
+    "issuer": "https://oidc.surfconext.nl/",
+    "authorization_endpoint": "https://oidc.surfconext.nl/authorize",
+    "userinfo_endpoint": "https://oidc.surfconext.nl/userinfo",
+    "token_endpoint": "https://oidc.surfconext.nl/token",
+    "revocation_endpoint": "https://oidc.surfconext.nl/revoke",
+    "jwks_uri": "https://oidc.surfconext.nl/jwk",
+    "scope": ["openid"],
+    "acr_values": ["password", "mail_two_factor",]
+}
