@@ -40,7 +40,6 @@ from surf.apps.materials.filters import ApplaudMaterialFilter
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     AUTHOR_FIELD_ID,
-    PUBLISHER_FIELD_ID,
     DISCIPLINE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID,
     PUBLISHER_DATE_FILED_ID
@@ -48,19 +47,25 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 
 
 class MaterialSearchAPIView(APIView):
+    """
+    View class that provides search action for Material by filters, author
+    lookup text.
+    """
+
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
+        # validate request parameters
         serializer = SearchRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = dict(serializer.validated_data)
 
+        # add additional filter by Author
+        # if input data contains `author` parameter
         author = data.pop("author", None)
         if author:
             filters = data.get("filters", [])
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
-            # filters.append(dict(external_id=PUBLISHER_FIELD_ID,
-            #                     items=[author]))
             data["filters"] = filters
 
         return_records = data.pop("return_records", None)
@@ -87,15 +92,24 @@ class MaterialSearchAPIView(APIView):
 
 
 def _get_filter_categories():
+    """
+    Make list of filter categories in format "edurep_field_id:item_count"
+    :return: list of "edurep_field_id:item_count"
+    """
     return ["{}:{}".format(f.edurep_field_id, f.max_item_count)
             for f in FilterCategory.objects.all()
             if f.edurep_field_id not in IGNORED_FIELDS]
 
 
 class KeywordsAPIView(APIView):
+    """
+    View class that provides search of keywords by text.
+    """
+
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
+        # validate request parameters
         serializer = KeywordsRequestSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         data = dict(serializer.validated_data)
@@ -106,19 +120,29 @@ class KeywordsAPIView(APIView):
 
 
 class MaterialAPIView(APIView):
+    """
+    View class that provides retrieving Material by its edurep id (external_id)
+    or retrieving overview of materials.
+    If external_id is exist in request data then `get()` method returns
+    material by external_id, otherwise it returns overview of materials.
+    """
+
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
+        # validate request parameters
         serializer = MaterialsRequestSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         data = dict(serializer.validated_data)
 
         if "external_id" in data:
+            # return Material by its edured id
             res = _get_material_details_by_id(data["external_id"])
             res = _add_extra_parameters_to_materials(request.user, res)
             ViewMaterial.add_unique_view(request.user, data["external_id"])
 
         else:
+            # return overview of Materials
             ac = XmlEndpointApiClient()
             res = ac.search([],
                             ordering="-{}".format(PUBLISHER_DATE_FILED_ID),
@@ -133,15 +157,22 @@ _DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
 
 
 def _get_material_details_by_id(material_id):
+    """
+    Request from EduRep and return details of material by its EduRep id
+    :param material_id: id of material in EduRep
+    :return: list of requested materials
+    """
     ac = XmlEndpointApiClient()
     res = ac.get_materials_by_id(['"{}"'.format(material_id)],
                                  drilldown_names=[_DISCIPLINE_FILTER])
 
+    # define themes for requested material
     themes = []
     for f in res.get("drilldowns", []):
         if f["external_id"] == CUSTOM_THEME_FIELD_ID:
             themes = [item["external_id"] for item in f["items"]]
 
+    # set themes for requested material
     rv = res.get("records", [])
     for material in rv:
         material["themes"] = themes
@@ -150,20 +181,28 @@ def _get_material_details_by_id(material_id):
 
 
 class CollectionViewSet(ModelViewSet):
+    """
+    View class that provides CRUD methos for Collection and `get`, `add`
+    and `delete` methods for its materials.
+    """
+
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
     permission_classes = []
 
     def create(self, request, *args, **kwargs):
-        self._check_access(request)
+        # only active and authorized users can create collection
+        self._check_access(request.user)
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        self._check_access(request, instance=self.get_object())
+        # only active owners can update collection
+        self._check_access(request.user, instance=self.get_object())
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
-        self._check_access(request, instance=self.get_object())
+        # only active owners can delete collection
+        self._check_access(request.user, instance=self.get_object())
         return super().destroy(request, *args, **kwargs)
 
     @action(methods=['get', 'post', 'delete'], detail=True)
@@ -171,6 +210,7 @@ class CollectionViewSet(ModelViewSet):
         instance = self.get_object()
 
         if request.method == "GET":
+            # validate request parameters
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
             data = dict(serializer.validated_data)
@@ -186,9 +226,11 @@ class CollectionViewSet(ModelViewSet):
                 res = _add_extra_parameters_to_materials(request.user, res)
             return Response(res)
 
-        self._check_access(request, instance=instance)
+        # only owners can add/delete materials to/from collection
+        self._check_access(request.user, instance=instance)
         data = []
         for d in request.data:
+            # validate request parameters
             serializer = MaterialShortSerializer(data=d)
             serializer.is_valid(raise_exception=True)
             data.append(dict(serializer.validated_data))
@@ -202,6 +244,12 @@ class CollectionViewSet(ModelViewSet):
 
     @staticmethod
     def _add_materials(instance, materials):
+        """
+        Add materials to collection
+        :param instance: collection instance
+        :param materials: added materials
+        :return:
+        """
         for material in materials:
             m_external_id = material["external_id"]
             m, _ = Material.objects.get_or_create(
@@ -211,6 +259,12 @@ class CollectionViewSet(ModelViewSet):
 
     @staticmethod
     def _delete_materials(instance, materials):
+        """
+        Delete materials from collection
+        :param instance: collection instance
+        :param materials: added materials
+        :return:
+        """
         for material in materials:
             m_external_id = material["external_id"]
             try:
@@ -220,8 +274,14 @@ class CollectionViewSet(ModelViewSet):
                 pass
 
     @staticmethod
-    def _check_access(request, instance=None):
-        user = request.user
+    def _check_access(user, instance=None):
+        """
+        Check if user is active and owner of collection (if collection
+        is not None)
+        :param user: user
+        :param instance: collection instance
+        :return:
+        """
         if not user or not user.is_active:
             raise AuthenticationFailed()
 
@@ -233,18 +293,31 @@ class ApplaudMaterialViewSet(ListModelMixin,
                              CreateModelMixin,
                              ListDestroyModelMixin,
                              GenericViewSet):
+    """
+    View class that provides `get`, `create` and `delete` methods
+    for Applaud Material.
+    """
+
     queryset = ApplaudMaterial.objects.all()
     serializer_class = ApplaudMaterialSerializer
     permission_classes = [IsAuthenticated]
     filter_class = ApplaudMaterialFilter
 
     def get_queryset(self):
+        # filter only "applauds" of current user
         qs = super().get_queryset()
         qs = qs.filter(user_id=self.request.user.id)
         return qs
 
 
 def _add_extra_parameters_to_materials(user, materials):
+    """
+    Add additional parameters for materials (bookmark, number of applauds,
+    number of views)
+    :param user: user who requested material
+    :param materials: array of materials
+    :return: updated array of materials
+    """
     for m in materials:
         if user and user.id:
             qs = Material.objects.prefetch_related("collections")

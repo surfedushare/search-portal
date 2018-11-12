@@ -16,24 +16,27 @@ from surf.apps.filters.serializers import (
     FilterSerializer
 )
 
+from surf.apps.core.permissions import IsActive
+
 
 class FilterCategoryViewSet(ListModelMixin,
                             GenericViewSet):
-
+    """
+    Viewset class that provides `list()` action for Filter Category.
+    """
     queryset = FilterCategory.objects.all()
     serializer_class = FilterCategorySerializer
     permission_classes = []
 
 
 class FilterViewSet(ModelViewSet):
+    """
+    Viewset class that provides CRUD actions for Filter.
+    """
     queryset = Filter.objects.none()
     serializer_class = FilterSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsActive]
 
     def get_queryset(self):
         user = self.request.user
-
-        if not user or not user.is_active:
-            return Filter.objects.none()
-
         return Filter.objects.filter(owner_id=user.id).all()
