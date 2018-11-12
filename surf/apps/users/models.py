@@ -1,4 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models as django_models
+
+from surf.apps.core.models import UUIDModel
 
 
 class UserManager(BaseUserManager):
@@ -40,3 +43,48 @@ class User(AbstractUser):
         verbose_name = "User"
         verbose_name_plural = "Users"
         ordering = ("username",)
+
+
+class SurfConextAuth(UUIDModel):
+    user = django_models.ForeignKey(User,
+                                    related_name='surfconext_auth',
+                                    on_delete=django_models.CASCADE)
+
+    display_name = django_models.CharField(max_length=100)
+    external_id = django_models.CharField(max_length=255)
+    access_token = django_models.CharField(max_length=255)
+
+    @staticmethod
+    def update_or_create_user(display_name, external_id, access_token):
+        rv = SurfConextAuth.objects.filter(external_id=external_id).first()
+        if not rv:
+            u, _ = User.objects.get_or_create(
+                username=external_id,
+                defaults=dict(username=external_id, first_name=display_name))
+
+            rv = u.surfconext_auth
+            if rv:
+                rv.external_id = external_id
+                rv.display_name = display_name
+                rv.access_token = access_token
+                rv.save()
+
+            else:
+                rv = SurfConextAuth.objects.create(user_id=u.id,
+                                                   external_id=external_id,
+                                                   display_name=display_name,
+                                                   access_token=access_token)
+        else:
+            rv.access_token = access_token
+            rv.display_name = display_name
+            rv.save()
+
+        return rv
+
+    def __str__(self):
+        return self.display_name
+
+    class Meta:
+        verbose_name = "SurfConext Auth"
+        verbose_name_plural = "SurfConext Auths"
+        ordering = ("display_name",)

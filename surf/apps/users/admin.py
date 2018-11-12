@@ -7,3 +7,8 @@ from surf.apps.users import models
 @admin.register(models.User)
 class UserAdmin(DjangoUserAdmin):
     pass
+
+
+@admin.register(models.SurfConextAuth)
+class SurfConextAuthAdmin(DjangoUserAdmin):
+    pass
