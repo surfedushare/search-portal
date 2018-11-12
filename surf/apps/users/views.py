@@ -87,6 +87,7 @@ def auth_complete_handler(request):
     token_response = _make_token_request(request.session, auth_code, client)
     access_token = token_response["access_token"]
     user = _update_or_create_user(access_token, client)
+    request.user = user
 
     redirect_url = request.session.get("redirect_url")
     if redirect_url:
