@@ -1,3 +1,14 @@
+from urllib.parse import urlparse
+
+import logging
+
+from rest_framework.exceptions import (
+    AuthenticationFailed,
+    ValidationError
+)
+
+from rest_framework.authtoken.models import Token
+
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.conf import settings
@@ -8,47 +19,51 @@ from oic.oic.message import AuthorizationResponse
 from oic.oic.message import ProviderConfigurationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
-_verify_ssl = settings.OIDC_CONFIG.get("verify_ssl", False)
-_response_type = settings.OIDC_CONFIG.get("response_type", "")
-_redirect_uri = settings.OIDC_CONFIG.get("redirect_uri", "")
-_client_id = settings.OIDC_CONFIG.get("client_id", "")
-_client_secret = settings.OIDC_CONFIG.get("client_secret", "")
+from surf.apps.users.models import SurfConextAuth
 
-_behaviour = {
-    "scope": settings.OIDC_CONFIG.get("scope", []),
-    "acr_values": settings.OIDC_CONFIG.get("acr_values", [])
+_OIDC_CONFIG = settings.OIDC_CONFIG
+
+_AUTH_REQUEST_TEMPLATE = {
+    "scope": _OIDC_CONFIG.get("scope", []),
+    "acr_values": _OIDC_CONFIG.get("acr_values", []),
+    "response_type": _OIDC_CONFIG.get("response_type", ""),
+    "redirect_uri": _OIDC_CONFIG.get("redirect_uri", ""),
+    "client_id": _OIDC_CONFIG.get("client_id", "")
 }
 
-op_config = dict(
-    version=settings.OIDC_CONFIG.get("version", "1.0"),
-    issuer=settings.OIDC_CONFIG.get("issuer", ""),
+_OP_CONFIG = dict(
+    version=_OIDC_CONFIG.get("version", "1.0"),
+    issuer=_OIDC_CONFIG.get("issuer", ""),
+    authorization_endpoint=_OIDC_CONFIG.get("authorization_endpoint", ""),
+    userinfo_endpoint=_OIDC_CONFIG.get("userinfo_endpoint", ""),
+    token_endpoint=_OIDC_CONFIG.get("token_endpoint", ""),
+    jwks_uri=_OIDC_CONFIG.get("jwks_uri", ""))
 
-    authorization_endpoint=settings.OIDC_CONFIG.get(
-        "authorization_endpoint", ""),
+_OP_INFO = ProviderConfigurationResponse(**_OP_CONFIG)
 
-    userinfo_endpoint=settings.OIDC_CONFIG.get("userinfo_endpoint", ""),
-    token_endpoint=settings.OIDC_CONFIG.get("token_endpoint", ""),
-    jwks_uri=settings.OIDC_CONFIG.get("jwks_uri", ""))
-
-op_info = ProviderConfigurationResponse(**op_config)
+logger = logging.getLogger(__name__)
 
 
 def auth_begin_handler(request):
-    session = request.session
+    """
+    This method starts OpenID Connect Authorization flow
+    :param request:
+    :return: redirect URL of authorization endpoint
+    """
 
     redirect_url = request.GET.get('redirect_url', None)
-    session["redirect_url"] = redirect_url
-    session["state"] = rndstr()
-    session["nonce"] = rndstr()
+    if not _check_redirect_url(redirect_url):
+        raise ValidationError("Unallowed redirect_url")
+
+    request.session["redirect_url"] = redirect_url
+    request.session["state"] = rndstr()
+    request.session["nonce"] = rndstr()
 
     request_args = {
-        "response_type": _response_type,
-        "state": session["state"],
-        "nonce": session["nonce"],
-        "redirect_uri": _redirect_uri,
-        "client_id": _client_id
+        "state": request.session["state"],
+        "nonce": request.session["nonce"],
     }
-    request_args.update(_behaviour)
+    request_args.update(_AUTH_REQUEST_TEMPLATE)
 
     client = _create_oidc_client()
     auth_req = client.construct_AuthorizationRequest(request_args=request_args)
@@ -57,52 +72,76 @@ def auth_begin_handler(request):
 
 
 def auth_complete_handler(request):
-    qs = request.GET
-    session = request.session
-
-    request_args = {
-        "response_type": _response_type,
-        "state": session["state"],
-        "nonce": session["nonce"],
-        "redirect_uri": _redirect_uri,
-        "client_id": _client_id
-    }
-    request_args.update(_behaviour)
+    """
+    This method is called by authorization provider and finishes
+    OpenID Connect Authorization flow
+    :param request:
+    :return: redirect URL to frontend endpoint with access token in cookies
+    """
 
     client = _create_oidc_client()
-    auth_response = _parse_authentication_response(request.session, qs, client)
+    auth_response = _parse_authentication_response(request.session,
+                                                   request.GET,
+                                                   client)
     auth_code = auth_response["code"]
-    token_response = _make_token_request(session, auth_code, client)
-    print("!!! token_response: {}".format(token_response))
+    token_response = _make_token_request(request.session, auth_code, client)
     access_token = token_response["access_token"]
-    userinfo = _make_userinfo_request(session, access_token, client)
-    print("!!! userinfo: {}".format(userinfo))
+    user = _update_or_create_user(access_token, client)
 
-    # TODO handle errors
-    # TODO read user profile/teams/communities
-    # TODO create/update user details
-    # TODO create user token
-
-    redirect_url = session.get("redirect_url")
+    redirect_url = request.session.get("redirect_url")
     if redirect_url:
+        if not _check_redirect_url(redirect_url):
+            raise ValidationError("Unallowed redirect_url")
+
         response = redirect(redirect_url)
-        response.set_cookie("access_token", access_token)
+        response.set_cookie("access_token", user.auth_token)
         return response
 
-    return JsonResponse(dict(access_token=access_token))
+    return JsonResponse(dict(access_token=user.auth_token))
+
+
+def _update_or_create_user(access_token, client):
+    userinfo = client.do_user_info_request(access_token=access_token)
+
+    sca = SurfConextAuth.update_or_create_user(
+        userinfo["preferred_username"],
+        userinfo["sub"],
+        access_token)
+
+    Token.objects.filter(user=sca.user).delete()
+    token = Token.objects.create(user=sca.user)
+    sca.user.auth_token = token
+
+    # TODO create/update user communities
+
+    return sca.user
 
 
 def _create_oidc_client():
-    client = Client(client_id=_client_id,
-                    verify_ssl=_verify_ssl,
+    """
+    Create OIDC client to Auth Provider
+    :return: OIDC client
+    """
+
+    client = Client(client_id=_OIDC_CONFIG.get("client_id", ""),
+                    verify_ssl=_OIDC_CONFIG.get("verify_ssl", False),
                     client_authn_method=CLIENT_AUTHN_METHOD)
 
-    client.set_client_secret(_client_secret)
-    client.handle_provider_config(op_info, op_config["issuer"])
+    client.set_client_secret(_OIDC_CONFIG.get("client_secret", ""))
+    client.handle_provider_config(_OP_INFO, _OP_CONFIG["issuer"])
     return client
 
 
 def _parse_authentication_response(session, auth_response, client):
+    """
+    Parse and check data received from Auth Provider after
+    authorization code request
+    :param session: user session
+    :param auth_response: received data
+    :param client: OIDC client
+    :return: parsed response data
+    """
+
     query_string = []
     for k, v in auth_response.items():
         if isinstance(v, list):
@@ -114,33 +153,74 @@ def _parse_authentication_response(session, auth_response, client):
                                           info=query_string,
                                           sformat="urlencoded")
 
-    if auth_response["state"] != session["state"]:
-        raise Exception("The OIDC state does not match.")
+    if "error" in auth_response:
+        err_msg = "Authentication flow error. {}".format(
+            auth_response["error"])
+        raise AuthenticationFailed(err_msg)
 
+    state = session.get("state")
+    if not state or (auth_response["state"] != session["state"]):
+        raise AuthenticationFailed("The OIDC state does not match.")
+
+    nonce = session.get("nonce")
     if "id_token" in auth_response and \
-                    auth_response["id_token"]["nonce"] != session["nonce"]:
-        raise Exception("The OIDC nonce does not match.")
+                    auth_response["id_token"]["nonce"] != nonce:
+        raise AuthenticationFailed("The OIDC nonce does not match.")
 
     return auth_response
 
 
 def _make_token_request(session, auth_code, client):
+    """
+    Request token by authorization code
+    :param session: user session
+    :param auth_code: authorization code
+    :param client: OIDC client
+    :return: received data after token request
+    """
+
     args = {
         "code": auth_code,
-        "redirect_uri": _redirect_uri,
+        "redirect_uri": _OIDC_CONFIG.get("redirect_uri", ""),
         "client_id": client.client_id,
         "client_secret": client.client_secret
     }
 
+    scope = _OIDC_CONFIG.get("scope", ["openid"]),
+    scope = " ".join(scope)
     token_response = client.do_access_token_request(
-        scope="openid",
-        state=session["state"],
+        scope=scope,
+        state=session.get("state", ""),
         request_args=args)
 
     return token_response
 
 
-def _make_userinfo_request(session, access_token, client):
-    userinfo_response = client.do_user_info_request(
-        access_token=access_token)
-    return userinfo_response
+ALL = '*'
+
+
+def _check_redirect_url(redirect_url):
+    """
+    Check if redirect url in list of allowed endpoints
+    :param redirect_url: redirect url
+    :return: True if redirect url is allowed, False otherwise
+    """
+    if not redirect_url:
+        return True
+
+    allowed_endpoints = settings.ALLOWED_REDIRECT_ENDPOINTS
+
+    if ALL in allowed_endpoints:
+        return True
+
+    try:
+        endpoint = urlparse(redirect_url).netloc
+
+    except Exception:
+        logger.exception("invalid redirect_url: {}".format(redirect_url))
+        return False
+
+    if not endpoint:
+        return False
+
+    return endpoint in allowed_endpoints
