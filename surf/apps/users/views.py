@@ -187,7 +187,7 @@ def _make_token_request(session, auth_code, client):
         "client_secret": client.client_secret
     }
 
-    scope = _OIDC_CONFIG.get("scope", ["openid"]),
+    scope = _OIDC_CONFIG.get("scope", ["openid"])
     scope = " ".join(scope)
     token_response = client.do_access_token_request(
         scope=scope,
