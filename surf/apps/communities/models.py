@@ -3,6 +3,8 @@ from django.conf import settings
 
 from surf.apps.core.models import UUIDModel
 
+from surf.apps.materials.models import Collection
+
 
 class Community(UUIDModel):
     external_id = django_models.CharField(max_length=255,
@@ -36,6 +38,10 @@ class Community(UUIDModel):
     is_available = django_models.BooleanField(
         verbose_name="Is community available in service",
         default=True)
+
+    collections = django_models.ManyToManyField(Collection,
+                                                blank=True,
+                                                related_name="communities")
 
     class Meta:
         ordering = ['name']

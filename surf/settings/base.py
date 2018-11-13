@@ -29,7 +29,6 @@ ALLOWED_REDIRECT_ENDPOINTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'jet.dashboard',
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -96,6 +95,8 @@ DATABASES = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
     ),
 
     'DEFAULT_FILTER_BACKENDS': (
