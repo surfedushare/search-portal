@@ -62,7 +62,7 @@ class SurfConextAuth(UUIDModel):
                 username=external_id,
                 defaults=dict(username=external_id, first_name=display_name))
 
-            rv = u.surfconext_auth
+            rv = u.surfconext_auth.first()
             if rv:
                 rv.external_id = external_id
                 rv.display_name = display_name
