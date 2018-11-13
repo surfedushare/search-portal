@@ -7,3 +7,4 @@ psycopg2-binary==2.7.4
 django-jet==1.0.7
 requests==2.18.4
 oic==0.14.0
+Pillow==5.3.0

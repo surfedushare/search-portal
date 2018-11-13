@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'surf.apps.users',
     'surf.apps.filters',
     'surf.apps.materials',
+    'surf.apps.communities',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -149,6 +150,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'static', 'media')
+MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'users.User'
 
