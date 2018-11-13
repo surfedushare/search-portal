@@ -10,5 +10,5 @@ class UserAdmin(DjangoUserAdmin):
 
 
 @admin.register(models.SurfConextAuth)
-class SurfConextAuthAdmin(DjangoUserAdmin):
+class SurfConextAuthAdmin(admin.ModelAdmin):
     pass
