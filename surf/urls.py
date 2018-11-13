@@ -19,6 +19,8 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 
+from surf.routers import CustomRouter
+
 from surf.apps.materials.views import (
     MaterialSearchAPIView,
     KeywordsAPIView,
@@ -32,12 +34,12 @@ from surf.apps.filters.views import (
     FilterViewSet
 )
 
-from surf.routers import CustomRouter
-
 from surf.apps.users.views import (
     auth_begin_handler,
     auth_complete_handler
 )
+
+from surf.apps.communities.views import CommunityViewSet
 
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
@@ -48,6 +50,7 @@ router.register(r'filter-categories', FilterCategoryViewSet)
 router.register(r'filters', FilterViewSet)
 router.register(r'collections', CollectionViewSet)
 router.register(r'applaud-materials', ApplaudMaterialViewSet)
+router.register(r'communities', CommunityViewSet)
 
 apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),

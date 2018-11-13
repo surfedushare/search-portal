@@ -182,7 +182,7 @@ def _get_material_details_by_id(material_id):
 
 class CollectionViewSet(ModelViewSet):
     """
-    View class that provides CRUD methos for Collection and `get`, `add`
+    View class that provides CRUD methods for Collection and `get`, `add`
     and `delete` methods for its materials.
     """
 
