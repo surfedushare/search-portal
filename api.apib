@@ -219,6 +219,51 @@ s
 + Response 204
     + Attributes (array[Material Short])
 
+# Group Communities
+
+## Community Array [/api/v1/communities/]
+
+### GET [GET /api/v1/communities/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Community])
+
+
+## Community Resource  [/api/v1/communities/{id}/]
+
+### GET [GET /api/v1/communities/{id}/]
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Community)
+
+### PUT [PUT /api/v1/communities/{id}/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Community Create)
+
++ Response 201 (application/json)
+    + Attributes (Community)
+
 # Group Filter Categories
 
 ## Filter Categories Array [/api/v1/filter-categories/]
@@ -394,3 +439,17 @@ s
 
 ## Applaud Material (object)
   - material: (Material Short) - applauded material
+
+## Community (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - community id
+ - external_id: `` (string) - unique id of related group in SurfConext
+ - name: `test community` (string) - community name
+ - description: `test community desc` (string) - community description
+ - website_url: `https://test-community.org` (string) - community website URL
+ - members_count: `5` (number) - the number of members in community
+ - is_admin: `true` (boolean) - is the user community administrator
+
+## Community Create (object)
+ - name: `test community` (string) - community name
+ - description: `test community desc` (string) - community description
+ - website_url: `https://test-community.org` (string) - community website URL
