@@ -262,7 +262,7 @@ class CollectionViewSet(ModelViewSet):
         """
         Delete materials from collection
         :param instance: collection instance
-        :param materials: added materials
+        :param materials: deleted materials
         :return:
         """
         for material in materials:

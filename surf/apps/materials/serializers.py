@@ -52,7 +52,14 @@ class MaterialShortSerializer(serializers.ModelSerializer):
         fields = ('external_id',)
 
 
-class CollectionSerializer(serializers.ModelSerializer):
+class CollectionShortSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Collection
+        fields = ('id',)
+
+
+class CollectionSerializer(CollectionShortSerializer):
     materials_count = serializers.SerializerMethodField()
 
     def get_materials_count(self, obj):
