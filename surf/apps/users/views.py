@@ -95,10 +95,10 @@ def auth_complete_handler(request):
             raise ValidationError("Unallowed redirect_url")
 
         response = redirect(redirect_url)
-        response.set_cookie("access_token", user.auth_token)
+        response.set_cookie("access_token", user.auth_token.key)
         return response
 
-    return JsonResponse(dict(access_token=user.auth_token))
+    return JsonResponse(dict(access_token=user.auth_token.key))
 
 
 def _update_or_create_user(access_token, client):
