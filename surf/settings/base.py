@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
 
     'surf',
     'surf.apps.users',
