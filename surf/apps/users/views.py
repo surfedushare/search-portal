@@ -51,6 +51,16 @@ def login_handler(request, **kwargs):
     return redirect("/login/surfconext/?{}".format(query_string))
 
 
+def logout_handler(request, **kwargs):
+    """
+    This method handle user log out.
+    """
+    if request.user and request.user.is_authenticated:
+        Token.objects.filter(user=request.user).delete()
+
+    return JsonResponse(dict(detail="Successfully logged out."))
+
+
 def auth_begin_handler(request):
     """
     This method starts OpenID Connect Authorization flow
