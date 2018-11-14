@@ -10,6 +10,45 @@ Surf API
 4xx errors are client errors, so the only way to handle them is to validate input data and repeat request.
 5xx errors are server errors and should be handled with repeated requests.
 
+# Group Authentication
+
+## Login  [/api/v1/login/]
+
+### GET [GET /api/v1/login/{?redirect_url}]
+
++ Parameters
+    + redirect_url (string, optional) - redirect URL after authorization
+
++ Response 200 (application/json)
+    + Attributes (Login Response)
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                non_field_errors: [
+                    "Unable to log in with provided credentials."
+                ]
+            }
+
+## Logout  [/api/v1/logout/]
+
+### GET [GET /api/v1/logout/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 7ca57767ae16bb878f62946b0a8bb0385c9607d8
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                detail: "Successfully logged out."
+            }
 
 # Group Search
 
@@ -389,6 +428,9 @@ Surf API
 + Response 204
 
 # Data Structures
+
+## Login Response (object)
+ - access_token: `7644a13d1c3a8f135e404b851f5858238a6f34ab` (string) - access token
 
 ## Request Filter Data (object)
  - external_id: `lom.classification.obk.discipline.id` (string) - filter category id
