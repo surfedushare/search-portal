@@ -46,13 +46,13 @@ class User(AbstractUser):
 
 
 class SurfConextAuth(UUIDModel):
-    user = django_models.ForeignKey(User,
-                                    related_name='surfconext_auth',
-                                    on_delete=django_models.CASCADE)
+    user = django_models.OneToOneField(User,
+                                       related_name='surfconext_auth',
+                                       on_delete=django_models.CASCADE)
 
     display_name = django_models.CharField(max_length=100)
     external_id = django_models.CharField(max_length=255)
-    access_token = django_models.CharField(max_length=255)
+    access_token = django_models.TextField()
 
     @staticmethod
     def update_or_create_user(display_name, external_id, access_token):
