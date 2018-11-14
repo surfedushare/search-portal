@@ -264,6 +264,48 @@ Surf API
 + Response 201 (application/json)
     + Attributes (Community)
 
+## Community Collections Array  [/api/v1/communities/{id}/collections/]
+
+### GET [GET /api/v1/communities/{id}/collections/]
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Collection])
+
+### POST [POST /api/v1/communities/{id}/collections/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Collection Short])
+
++ Response 201 (application/json)
+    + Attributes (array[Collection])
+
+### DELETE [DELETE /api/v1/communities/{id}/collections/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Collection Short])
+
++ Response 204
+    + Attributes (array[Collection])
+
 # Group Filter Categories
 
 ## Filter Categories Array [/api/v1/filter-categories/]
@@ -436,6 +478,9 @@ Surf API
 
 ## Collection Create (object)
  - title: `test collection` (string) - collection title
+
+## Collection Short (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
 
 ## Applaud Material (object)
   - material: (Material Short) - applauded material
