@@ -46,9 +46,9 @@ class User(AbstractUser):
 
 
 class SurfConextAuth(UUIDModel):
-    user = django_models.ForeignKey(User,
-                                    related_name='surfconext_auth',
-                                    on_delete=django_models.CASCADE)
+    user = django_models.OneToOneField(User,
+                                       related_name='surfconext_auth',
+                                       on_delete=django_models.CASCADE)
 
     display_name = django_models.CharField(max_length=100)
     external_id = django_models.CharField(max_length=255)
@@ -62,7 +62,7 @@ class SurfConextAuth(UUIDModel):
                 username=external_id,
                 defaults=dict(username=external_id, first_name=display_name))
 
-            rv = u.surfconext_auth.first()
+            rv = u.surfconext_auth
             if rv:
                 rv.external_id = external_id
                 rv.display_name = display_name
