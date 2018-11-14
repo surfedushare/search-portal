@@ -36,7 +36,8 @@ from surf.apps.filters.views import (
 
 from surf.apps.users.views import (
     auth_begin_handler,
-    auth_complete_handler
+    auth_complete_handler,
+    login_handler
 )
 
 from surf.apps.communities.views import CommunityViewSet
@@ -53,6 +54,7 @@ router.register(r'applaud-materials', ApplaudMaterialViewSet)
 router.register(r'communities', CommunityViewSet)
 
 apipatterns = [
+    url(r'^login/', login_handler),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),

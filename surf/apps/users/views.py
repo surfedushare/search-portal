@@ -2,11 +2,7 @@ from urllib.parse import urlparse
 
 import logging
 
-from rest_framework.exceptions import (
-    AuthenticationFailed,
-    ValidationError
-)
-
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authtoken.models import Token
 
 from django.shortcuts import redirect
@@ -44,6 +40,17 @@ _OP_INFO = ProviderConfigurationResponse(**_OP_CONFIG)
 logger = logging.getLogger(__name__)
 
 
+def login_handler(request, **kwargs):
+    """
+    This method handle user log in.
+    It redirects user to SurfConext OpenID Connect authorization flow
+    """
+    query_string = "&".join(["{}={}".format(k, v)
+                             for k, v in request.GET.items()])
+
+    return redirect("/login/surfconext/?{}".format(query_string))
+
+
 def auth_begin_handler(request):
     """
     This method starts OpenID Connect Authorization flow
@@ -53,7 +60,7 @@ def auth_begin_handler(request):
 
     redirect_url = request.GET.get('redirect_url', None)
     if not _check_redirect_url(redirect_url):
-        raise ValidationError("Unallowed redirect_url")
+        raise AuthenticationFailed("Unallowed redirect_url")
 
     request.session["redirect_url"] = redirect_url
     request.session["state"] = rndstr()
@@ -92,7 +99,7 @@ def auth_complete_handler(request):
     redirect_url = request.session.get("redirect_url")
     if redirect_url:
         if not _check_redirect_url(redirect_url):
-            raise ValidationError("Unallowed redirect_url")
+            raise AuthenticationFailed("Unallowed redirect_url")
 
         response = redirect(redirect_url)
         response.set_cookie("access_token", user.auth_token.key)
