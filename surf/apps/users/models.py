@@ -62,8 +62,8 @@ class SurfConextAuth(UUIDModel):
                 username=external_id,
                 defaults=dict(username=external_id, first_name=display_name))
 
-            rv = u.surfconext_auth
-            if rv:
+            if hasattr(u, "surfconext_auth") and u.surfconext_auth:
+                rv = u.surfconext_auth
                 rv.external_id = external_id
                 rv.display_name = display_name
                 rv.access_token = access_token
