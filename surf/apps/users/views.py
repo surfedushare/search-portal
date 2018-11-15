@@ -4,6 +4,8 @@ import logging
 
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from django.shortcuts import redirect
 from django.http import JsonResponse
@@ -16,6 +18,8 @@ from oic.oic.message import ProviderConfigurationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 from surf.apps.users.models import SurfConextAuth
+from surf.apps.communities.models import Community
+from surf.vendor.surfconext.voot.api import VootApiClient
 
 _OIDC_CONFIG = settings.OIDC_CONFIG
 
@@ -51,14 +55,18 @@ def login_handler(request, **kwargs):
     return redirect("/login/surfconext/?{}".format(query_string))
 
 
-def logout_handler(request, **kwargs):
+class LogoutAPIView(APIView):
     """
-    This method handle user log out.
+    View class that provides user log out.
     """
-    if request.user and request.user.is_authenticated:
-        Token.objects.filter(user=request.user).delete()
 
-    return JsonResponse(dict(detail="Successfully logged out."))
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated:
+            Token.objects.filter(user=request.user).delete()
+
+        return Response(dict(detail="Successfully logged out."))
 
 
 def auth_begin_handler(request):
@@ -100,9 +108,9 @@ def auth_complete_handler(request):
     auth_response = _parse_authentication_response(request.session,
                                                    request.GET,
                                                    client)
-    auth_code = auth_response["code"]
+    auth_code = auth_response.get("code", "")
     token_response = _make_token_request(request.session, auth_code, client)
-    access_token = token_response["access_token"]
+    access_token = token_response.get("access_token", "")
     user = _update_or_create_user(access_token, client)
     request.user = user
 
@@ -122,17 +130,54 @@ def _update_or_create_user(access_token, client):
     userinfo = client.do_user_info_request(access_token=access_token)
 
     sca = SurfConextAuth.update_or_create_user(
-        userinfo["preferred_username"],
-        userinfo["sub"],
+        userinfo.get("preferred_username", ""),
+        userinfo.get("sub", ""),
         access_token)
 
     Token.objects.filter(user=sca.user).delete()
     token = Token.objects.create(user=sca.user)
     sca.user.auth_token = token
 
-    # TODO create/update user communities
+    _update_or_create_user_communities(sca.user, access_token)
 
     return sca.user
+
+
+_MEMBERSHIP_TYPE_MEMBER = "member"
+_MEMBERSHIP_TYPE_ADMIN = "admin"
+
+
+def _update_or_create_user_communities(user, access_token):
+    """
+    Create or update user communities according to his SurfConext groups
+    :param user: user instance
+    :param access_token: token to access to SurfConext
+    :return:
+    """
+    vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
+    groups = vac.get_groups(access_token)
+    communities = []
+    admin_communities = []
+    for g in groups:
+        try:
+            membership = g["membership"]["basic"]
+            if membership == _MEMBERSHIP_TYPE_ADMIN:
+                c, _ = Community.objects.get_or_create(
+                    external_id=g["id"],
+                    defaults=dict(name=g["displayName"],
+                                  description=g["description"]))
+                communities.append(c)
+                admin_communities.append(c)
+
+            elif membership == _MEMBERSHIP_TYPE_MEMBER:
+                c = Community.objects.get(external_id=g["id"])
+                communities.append(c)
+
+        except (KeyError, Community.DoesNotExist):
+            pass
+
+    user.communities.set(communities)
+    user.admin_communities.set(admin_communities)
 
 
 def _create_oidc_client():
@@ -146,7 +191,7 @@ def _create_oidc_client():
                     client_authn_method=CLIENT_AUTHN_METHOD)
 
     client.set_client_secret(_OIDC_CONFIG.get("client_secret", ""))
-    client.handle_provider_config(_OP_INFO, _OP_CONFIG["issuer"])
+    client.handle_provider_config(_OP_INFO, _OP_CONFIG.get("issuer", ""))
     return client
 
 
@@ -182,7 +227,7 @@ def _parse_authentication_response(session, auth_response, client):
 
     nonce = session.get("nonce")
     if "id_token" in auth_response and \
-                    auth_response["id_token"]["nonce"] != nonce:
+                    auth_response["id_token"].get("nonce") != nonce:
         raise AuthenticationFailed("The OIDC nonce does not match.")
 
     return auth_response

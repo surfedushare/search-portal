@@ -179,12 +179,14 @@ OIDC_CONFIG = {
     "redirect_uri": "http://127.0.0.1:8000/complete/surfconext/",
     "client_id": "",
     "client_secret": "",
-    "issuer": "https://oidc.surfconext.nl/",
-    "authorization_endpoint": "https://oidc.surfconext.nl/authorize",
-    "userinfo_endpoint": "https://oidc.surfconext.nl/userinfo",
-    "token_endpoint": "https://oidc.surfconext.nl/token",
-    "revocation_endpoint": "https://oidc.surfconext.nl/revoke",
-    "jwks_uri": "https://oidc.surfconext.nl/jwk",
+    "issuer": "https://oidc.test.surfconext.nl/",
+    "authorization_endpoint": "https://oidc.test.surfconext.nl/authorize",
+    "userinfo_endpoint": "https://oidc.test.surfconext.nl/userinfo",
+    "token_endpoint": "https://oidc.test.surfconext.nl/token",
+    "revocation_endpoint": "https://oidc.test.surfconext.nl/revoke",
+    "jwks_uri": "https://oidc.test.surfconext.nl/jwk",
     "scope": ["openid"],
     "acr_values": ["password", "mail_two_factor",]
 }
+
+VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
