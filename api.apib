@@ -262,7 +262,10 @@ Surf API
 
 ## Community Array [/api/v1/communities/]
 
-### GET [GET /api/v1/communities/]
+### GET [GET /api/v1/communities/{?material_id}]
+
++ Parameters
+  + material_id: `external id` (string) - Filter by material external id in community collections.
 
 + Request (application/json)
 
@@ -447,11 +450,11 @@ Surf API
  - return_filters: `true` (boolean, optional) - return extra data by filters if `true`, default `true`
 
 ## Material Short (object)
- - external_id: `edurep_delen:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material id in edurep
+ - external_id: `external_id` (string) - material id in edurep
 
 ## Material (object)
- - external_id: `edurep_delen:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material id in edurep
- - object_id: `urn:uuid:887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URI
+ - external_id: `external_id` (string) - material id in edurep
+ - object_id: `urn.uuid.887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URI
  - url: `http://delen.edurep.nl/download.php?id=887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URL
  - title: `test1` (string) - title of material
  - description: `test` (string) - material description
@@ -529,7 +532,7 @@ Surf API
 
 ## Community (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - community id
- - external_id: `` (string) - unique id of related group in SurfConext
+ - external_id: `urn:collab:group:test.surfconext.nl:nl:surfnet:diensten:admin_team_mujina` (string) - unique id of related group in SurfConext
  - name: `test community` (string) - community name
  - description: `test community desc` (string) - community description
  - website_url: `https://test-community.org` (string) - community website URL

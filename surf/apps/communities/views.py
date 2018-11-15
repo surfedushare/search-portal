@@ -25,6 +25,8 @@ from surf.apps.materials.serializers import (
     CollectionShortSerializer
 )
 
+from surf.apps.communities.filters import CommunityFilter
+
 
 class CommunityViewSet(ListModelMixin,
                        RetrieveModelMixin,
@@ -36,6 +38,7 @@ class CommunityViewSet(ListModelMixin,
 
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
+    filter_class = CommunityFilter
     permission_classes = []
 
     def get_serializer_class(self):
