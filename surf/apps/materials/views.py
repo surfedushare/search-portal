@@ -172,10 +172,14 @@ def _get_material_details_by_id(material_id):
         if f["external_id"] == CUSTOM_THEME_FIELD_ID:
             themes = [item["external_id"] for item in f["items"]]
 
-    # set themes for requested material
+    # set extra details for requested material
     rv = res.get("records", [])
     for material in rv:
         material["themes"] = themes
+
+        m = Material.objects.filter(external_id=material_id).first()
+        if m:
+            material["number_of_collections"] = m.collections.count()
 
     return rv
 

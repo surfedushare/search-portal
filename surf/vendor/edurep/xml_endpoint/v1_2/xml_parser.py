@@ -86,7 +86,8 @@ def _parse_record(elem):
         themes=[],
         has_bookmark=False,
         number_of_applauds=0,
-        number_of_views=0
+        number_of_views=0,
+        number_of_collections=0,
     )
 
 

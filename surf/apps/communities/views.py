@@ -124,6 +124,5 @@ class CommunityViewSet(ListModelMixin,
         if collection_ids:
             qs = Collection.objects.filter(Q(id__in=collection_ids),
                                            ~Q(owner_id=user.id))
-            print(qs.all())
             if qs.exists():
                 raise AuthenticationFailed()
