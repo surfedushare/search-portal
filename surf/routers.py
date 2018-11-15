@@ -1,6 +1,7 @@
 # imports
 from rest_framework.routers import DefaultRouter
 
+#test message remove after
 
 class CustomRouter(DefaultRouter):
 
