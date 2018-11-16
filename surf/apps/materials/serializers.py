@@ -47,6 +47,7 @@ class CollectionMaterialsRequestSerializer(serializers.Serializer):
 
 
 class MaterialShortSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Material
         fields = ('external_id',)
@@ -61,19 +62,27 @@ class CollectionShortSerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(CollectionShortSerializer):
     materials_count = serializers.SerializerMethodField()
+    is_owner = serializers.SerializerMethodField()
 
-    def get_materials_count(self, obj):
+    @staticmethod
+    def get_materials_count(obj):
         return obj.materials.count()
 
+    def get_is_owner(self, obj):
+        user = _get_and_check_user_from_context(self.context)
+        return bool(user and user.id == obj.owner_id)
+
     def create(self, validated_data):
-        request = self.context.get("request")
-        user = request.user
-        validated_data["owner_id"] = user.id
+        user = _get_and_check_user_from_context(self.context)
+        if user:
+            validated_data["owner_id"] = user.id
+
         return super().create(validated_data)
 
     class Meta:
         model = Collection
-        fields = ('id', 'title', 'materials_count',)
+        fields = ('id', 'title', 'materials_count',
+                  'is_shared', 'is_owner',)
 
 
 class ApplaudMaterialSerializer(serializers.ModelSerializer):
@@ -86,9 +95,9 @@ class ApplaudMaterialSerializer(serializers.ModelSerializer):
             defaults=dict(external_id=material_external_id))
         validated_data["material"] = material
 
-        request = self.context.get("request")
-        user = request.user
-        validated_data["user_id"] = user.id
+        user = _get_and_check_user_from_context(self.context)
+        if user:
+            validated_data["user_id"] = user.id
 
         instance, _ = ApplaudMaterial.objects.get_or_create(
             **validated_data,
@@ -99,3 +108,15 @@ class ApplaudMaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApplaudMaterial
         fields = ('material',)
+
+
+def _get_and_check_user_from_context(context):
+    request = context.get("request")
+    if not request:
+        return None
+
+    user = request.user
+    if user and user.is_authenticated:
+        return user
+    else:
+        return None
