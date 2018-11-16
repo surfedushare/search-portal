@@ -44,6 +44,9 @@ class Filter(UUIDModel):
                                      related_name='filters',
                                      on_delete=django_models.CASCADE)
 
+    start_date = django_models.DateField(blank=True, null=True)
+    end_date = django_models.DateField(blank=True, null=True)
+
     def __str__(self):
         return self.title
 

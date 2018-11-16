@@ -34,13 +34,16 @@ class FilterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get("request")
-        user = request.user
-
-        if not user or not user.id:
+        if not request:
             raise TypeError("Invalid user")
 
-        rv = models.Filter.objects.create(title=validated_data["title"],
-                                          owner_id=user.id)
+        user = request.user
+        if not user or not user.is_authenticated:
+            raise TypeError("Invalid user")
+
+        validated_data["owner_id"] = user.id
+        validated_data.pop("items", None)
+        rv = super().create(validated_data)
 
         for it in self.initial_data.get("items", []):
             rv.items.create(category_item_id=it["category_item_id"])
@@ -48,8 +51,8 @@ class FilterSerializer(serializers.ModelSerializer):
         return rv
 
     def update(self, instance, validated_data):
-        instance.title = validated_data["title"]
-        instance.save()
+        validated_data.pop("items", None)
+        instance = super().update(instance, validated_data)
 
         if "items" in self.initial_data:
             instance.items.all().delete()
@@ -60,4 +63,4 @@ class FilterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Filter
-        fields = ('id', 'title', 'items',)
+        fields = ('id', 'title', 'items', 'start_date', 'end_date',)

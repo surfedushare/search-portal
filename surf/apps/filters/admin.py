@@ -17,9 +17,11 @@ class FilterItemAdmin(admin.ModelAdmin):
     list_filter = ("filter",)
 
 
-def fill_filter_category(modeladmin, request, queryset):
+def fill_filter_category(model_admin, request, queryset):
     for fc in queryset.all():
         update_filter_category(fc)
+
+
 fill_filter_category.short_description = "Fill filter category items"
 
 
@@ -33,8 +35,7 @@ class FilterCategoryAdmin(admin.ModelAdmin):
     def get_actions(self, request):
         actions = super().get_actions(request)
         if not request.user.is_superuser:
-            if 'fill_filter_category' in actions:
-                del actions['fill_filter_category']
+            actions.pop('fill_filter_category', None)
         return actions
 
 

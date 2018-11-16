@@ -15,7 +15,8 @@ class CommunitySerializer(CommunityUpdateSerializer):
     is_admin = serializers.SerializerMethodField()
     is_member = serializers.SerializerMethodField()
 
-    def get_members_count(self, obj):
+    @staticmethod
+    def get_members_count(obj):
         return obj.members.count()
 
     def get_is_admin(self, obj):

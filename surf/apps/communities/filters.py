@@ -35,10 +35,7 @@ class CommunityFilter(filters.FilterSet):
 
 
 def _get_and_check_user_from_request(request):
-    if not request:
-        return None
-
-    if request.user and request.user.is_authenticated:
+    if request and request.user and request.user.is_authenticated:
         return request.user
 
     return None
