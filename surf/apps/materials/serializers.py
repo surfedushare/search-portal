@@ -63,10 +63,15 @@ class CollectionShortSerializer(serializers.ModelSerializer):
 class CollectionSerializer(CollectionShortSerializer):
     materials_count = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()
+    communities_count = serializers.SerializerMethodField()
 
     @staticmethod
     def get_materials_count(obj):
         return obj.materials.count()
+
+    @staticmethod
+    def get_communities_count(obj):
+        return obj.community_cnt
 
     def get_is_owner(self, obj):
         user = _get_and_check_user_from_context(self.context)
@@ -81,7 +86,7 @@ class CollectionSerializer(CollectionShortSerializer):
 
     class Meta:
         model = Collection
-        fields = ('id', 'title', 'materials_count',
+        fields = ('id', 'title', 'materials_count', 'communities_count',
                   'is_shared', 'is_owner',)
 
 

@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://surf.mqd.me
+HOST: https://surf.stg.mqd.me
 
 # Surf
 
@@ -151,7 +151,11 @@ Surf API
 
 ## Collection Array [/api/v1/collections/]
 
-### GET [GET /api/v1/collections/]
+### GET [GET /api/v1/collections/{?is_owner,is_shared}]
+
++ Parameters
+  + is_owner: `true` (boolan) - filter/exclude user collections.
+  + is_shared: `true` (boolan) - filter/exclude shared collections.
 
 + Request (application/json)
 
@@ -524,6 +528,7 @@ Surf API
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
  - title: `test collection` (string) - collection title
  - materials_count: `3` (number) - the number of materials in collection
+ - communities_count: `10` (number) - the number of communities related with collection
  - is_shared: `false` (boolean) - set true if collection was shared by owner
  - is_owner: `false` (boolean) - set true if the user is owner of collection
 

@@ -1,3 +1,5 @@
+from django.db.models import Q, Count
+
 from rest_framework.viewsets import (
     ModelViewSet,
     GenericViewSet
@@ -35,7 +37,10 @@ from surf.apps.materials.serializers import (
     ApplaudMaterialSerializer
 )
 
-from surf.apps.materials.filters import ApplaudMaterialFilter
+from surf.apps.materials.filters import (
+    ApplaudMaterialFilter,
+    CollectionFilter
+)
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
@@ -192,7 +197,24 @@ class CollectionViewSet(ModelViewSet):
 
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
+    filter_class = CollectionFilter
     permission_classes = []
+
+    def get_queryset(self):
+        qs = Collection.objects.annotate(community_cnt=Count('communities'))
+
+        # shared collections
+        filters = Q(is_shared=True)
+
+        # add own collections
+        user = self.request.user
+        if user and user.is_active:
+            filters |= Q(owner_id=user.id)
+
+        # add collections in communities
+        filters |= Q(community_cnt__gt=0)
+
+        return qs.filter(filters)
 
     def create(self, request, *args, **kwargs):
         # only active and authorized users can create collection
