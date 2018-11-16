@@ -262,10 +262,12 @@ Surf API
 
 ## Community Array [/api/v1/communities/]
 
-### GET [GET /api/v1/communities/{?material_id}]
+### GET [GET /api/v1/communities/{?material_id,is_member,is_admin}]
 
 + Parameters
   + material_id: `external id` (string) - Filter by material external id in community collections.
+  + is_member: `true` (boolean) - Filter/exclude communities where user is member.
+  + is_admin: `true` (boolean) - Filter/exclude communities where user is admin.
 
 + Request (application/json)
 
