@@ -10,7 +10,8 @@ class MaterialAdmin(admin.ModelAdmin):
 
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ("title", "owner", )
+    list_display = ("title", "owner", "is_shared",)
+    list_filter = ("owner", "is_shared",)
     ordering = ("title",)
 
 

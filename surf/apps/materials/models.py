@@ -26,6 +26,8 @@ class Collection(UUIDModel):
                                               blank=True,
                                               related_name="collections")
 
+    is_shared = django_models.BooleanField(default=False)
+
     def __str__(self):
         return self.title
 
