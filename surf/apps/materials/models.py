@@ -4,11 +4,21 @@ from django.db import models as django_models
 from django.conf import settings
 
 from surf.apps.core.models import UUIDModel
+from surf.apps.themes.models import Theme
+from surf.apps.filters.models import FilterCategoryItem
 
 
 class Material(UUIDModel):
     external_id = django_models.CharField(max_length=255,
                                           verbose_name="EduRep material id")
+
+    themes = django_models.ManyToManyField(Theme,
+                                           blank=True,
+                                           related_name="materials")
+
+    disciplines = django_models.ManyToManyField(FilterCategoryItem,
+                                                blank=True,
+                                                related_name="materials")
 
     def __str__(self):
         return self.external_id

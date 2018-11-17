@@ -1,11 +1,32 @@
 from django.contrib import admin
+from django import forms
 
 from surf.apps.materials import models
+from surf.apps.filters.models import FilterCategoryItem
+from surf.vendor.edurep.xml_endpoint.v1_2.api import DISCIPLINE_FIELD_ID
+
+
+class MaterialForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        try:
+            qs = FilterCategoryItem.objects
+
+            d_qs = qs.filter(category__edurep_field_id=DISCIPLINE_FIELD_ID)
+            self.fields['disciplines'].queryset = d_qs.all()
+        except AttributeError:
+            pass
+
+    class Meta:
+        model = models.Theme
+        fields = '__all__'
 
 
 @admin.register(models.Material)
 class MaterialAdmin(admin.ModelAdmin):
-    pass
+    form = MaterialForm
 
 
 @admin.register(models.Collection)
