@@ -16,7 +16,8 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 
-from surf.apps.filters.models import FilterCategory
+from surf.apps.filters.models import FilterCategory, FilterCategoryItem
+from surf.apps.themes.models import Theme
 from surf.apps.filters.utils import IGNORED_FIELDS
 from surf.apps.core.mixins import ListDestroyModelMixin
 
@@ -283,9 +284,18 @@ class CollectionViewSet(ModelViewSet):
         """
         for material in materials:
             m_external_id = material["external_id"]
+
+            details = _get_material_details_by_id(m_external_id)
+            if not details:
+                continue
+
             m, _ = Material.objects.get_or_create(
                 external_id=m_external_id,
                 defaults=dict(external_id=m_external_id))
+
+            _add_material_themes(m, details[0].get("themes", []))
+            _add_material_disciplines(m, details[0].get("disciplines", []))
+
             instance.materials.add(m)
 
     @staticmethod
@@ -318,6 +328,26 @@ class CollectionViewSet(ModelViewSet):
 
         if instance and (instance.owner_id != user.id):
             raise AuthenticationFailed()
+
+
+def _add_material_themes(material, themes):
+    ts = []
+    for t_id in themes:
+        try:
+            ts.append(Theme.objects.get(external_id=t_id))
+        except Theme.DoesNotExist:
+            pass
+    material.themes.set(ts)
+
+
+def _add_material_disciplines(material, disciplines):
+    ds = []
+    for d_id in disciplines:
+        try:
+            ds.append(FilterCategoryItem.objects.get(external_id=d_id))
+        except FilterCategoryItem.DoesNotExist:
+            pass
+    material.disciplines.set(ds)
 
 
 class ApplaudMaterialViewSet(ListModelMixin,
