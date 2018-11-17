@@ -57,11 +57,6 @@ Surf API
 ### POST [POST /api/v1/materials/search/]
 
 + Request (application/json)
-
-    + Headers
-
-            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
-
     + Attributes (Search Request)
 
 + Response 200 (application/json)
@@ -78,10 +73,6 @@ Surf API
 
 + Request (application/json)
 
-    + Headers
-
-            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
-
 + Response 200 (application/json)
     + Attributes (array[string])
 
@@ -95,10 +86,6 @@ Surf API
   + external_id (string, optional) - filter materials by external id
 
 + Request (application/json)
-
-    + Headers
-
-            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
     + Attributes (array[Material])
@@ -282,10 +269,6 @@ Surf API
 
 + Request (application/json)
 
-    + Headers
-
-            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
-
 + Response 200 (application/json)
     + Attributes (array[Theme])
 
@@ -298,12 +281,20 @@ Surf API
 
 + Request (application/json)
 
-    + Headers
-
-            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
-
 + Response 200 (application/json)
     + Attributes (Theme)
+
+## Theme Disciplines Array  [/api/v1/themes/{id}/disciplines/]
+
+### GET [GET /api/v1/themes/{id}/disciplines/]
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (array[Discipline])
 
 # Group Communities
 
@@ -413,10 +404,6 @@ Surf API
 ### GET [GET /api/v1/filter-categories/]
 
 + Request (application/json)
-
-    + Headers
-
-            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
     + Attributes (array[Filter Category])
@@ -532,7 +519,8 @@ Surf API
  - format: `image` (string) - material technical format
  - number_of_ratings: `1` (number) - number of ratings for material
  - average_rating: `1.0` (number) - average ratings of material (from 0 to 5)
- - themes: (array[string]) - array of themes identifiers
+ - themes: (array[string]) - array of identifiers of related themes
+ - disciplines: (array[string]) - array of identifiers of related disciplines
  - has_bookmark: (boolean) - is material bookmarked
  - number_of_applauds: (number) - the number of applauds for this material
  - number_of_views: (number) - the number of unique views of material
@@ -623,3 +611,5 @@ Surf API
  - external_id: `theme external id` (string) - theme external id
  - title: `theme title` (string) - theme title
  - description `theme description` (string) - theme description
+
+## Discipline (Filter Category item)
