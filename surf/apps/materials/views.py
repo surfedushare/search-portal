@@ -171,16 +171,20 @@ def _get_material_details_by_id(material_id):
     res = ac.get_materials_by_id(['"{}"'.format(material_id)],
                                  drilldown_names=[_DISCIPLINE_FILTER])
 
-    # define themes for requested material
+    # define themes and disciplines for requested material
     themes = []
+    disciplines = []
     for f in res.get("drilldowns", []):
         if f["external_id"] == CUSTOM_THEME_FIELD_ID:
             themes = [item["external_id"] for item in f["items"]]
+        elif f["external_id"] == DISCIPLINE_FIELD_ID:
+            disciplines = [item["external_id"] for item in f["items"]]
 
     # set extra details for requested material
     rv = res.get("records", [])
     for material in rv:
         material["themes"] = themes
+        material["disciplines"] = disciplines
 
         m = Material.objects.filter(external_id=material_id).first()
         if m:
@@ -263,6 +267,7 @@ class CollectionViewSet(ModelViewSet):
 
         if request.method == "POST":
             self._add_materials(instance, data)
+
         elif request.method == "DELETE":
             self._delete_materials(instance, data)
 
