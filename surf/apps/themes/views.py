@@ -10,9 +10,8 @@ from rest_framework.mixins import (
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.themes.models import Theme
 from surf.apps.themes.serializers import ThemeSerializer
-from surf.vendor.edurep.xml_endpoint.v1_2.api import CUSTOM_THEME_FIELD_ID
 
 
 class ThemeViewSet(ListModelMixin,
@@ -22,11 +21,7 @@ class ThemeViewSet(ListModelMixin,
     View class that provides `GET` method for Themes.
     """
 
-    queryset = FilterCategoryItem.objects.all()
+    queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
     permission_classes = []
-
-    def get_queryset(self):
-        return FilterCategoryItem.objects.filter(
-            category__edurep_field_id=CUSTOM_THEME_FIELD_ID
-        ).all()
+    lookup_field = 'filter_category_item__id'
