@@ -274,6 +274,37 @@ Surf API
 + Response 204
     + Attributes (array[Material Short])
 
+# Group Themes
+
+## Themes Array [/api/v1/themes/]
+
+### GET [GET /api/v1/themes/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Theme])
+
+## Theme Resource  [/api/v1/themes/{id}/]
+
+### GET [GET /api/v1/themes/{id}/]
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Theme)
+
 # Group Communities
 
 ## Community Array [/api/v1/communities/]
@@ -586,3 +617,8 @@ Surf API
  - website_url: `https://test-community.org` (string) - community website URL
  - logo: `logo data` (string) - community logo
  - featured_image: `featured image data` (string) - community featured image
+
+## Theme (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - theme internal id
+ - external_id: `theme external id` (string) - theme external id
+ - title: `theme title` (string) - theme title
