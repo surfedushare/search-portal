@@ -71,7 +71,7 @@ class CollectionSerializer(CollectionShortSerializer):
 
     @staticmethod
     def get_communities_count(obj):
-        return obj.community_cnt
+        return obj.community_cnt if hasattr(obj, "community_cnt") else 0
 
     def get_is_owner(self, obj):
         user = _get_and_check_user_from_context(self.context)

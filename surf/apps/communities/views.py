@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from rest_framework.viewsets import GenericViewSet
 
@@ -74,8 +74,10 @@ class CommunityViewSet(ListModelMixin,
 
         res = []
         if instance.collections.exists():
-            res = CollectionSerializer(many=True).to_representation(
-                instance.collections.all())
+            qs = instance.collections.annotate(
+                community_cnt=Count('communities'))
+
+            res = CollectionSerializer(many=True).to_representation(qs.all())
 
         return Response(res)
 
