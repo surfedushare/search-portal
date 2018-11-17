@@ -42,6 +42,7 @@ from surf.apps.users.views import (
 )
 
 from surf.apps.communities.views import CommunityViewSet
+from surf.apps.themes.views import ThemeViewSet
 
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
@@ -53,6 +54,7 @@ router.register(r'filters', FilterViewSet)
 router.register(r'collections', CollectionViewSet)
 router.register(r'applaud-materials', ApplaudMaterialViewSet)
 router.register(r'communities', CommunityViewSet)
+router.register(r'themes', ThemeViewSet)
 
 apipatterns = [
     url(r'^login/', login_handler),
