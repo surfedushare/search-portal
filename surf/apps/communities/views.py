@@ -72,6 +72,7 @@ class CommunityViewSet(ListModelMixin,
 
             if request.method == "POST":
                 self._add_collections(instance, data)
+
             elif request.method == "DELETE":
                 self._delete_collections(instance, data)
 
@@ -149,7 +150,7 @@ class CommunityViewSet(ListModelMixin,
         :param collection_ids: list of identifiers of collections
         added/deleted to/from community
         """
-        if not user or not user.is_active:
+        if not user or not user.is_authenticated:
             raise AuthenticationFailed()
 
         if instance and (not instance.admins.filter(id=user.id).exists()):

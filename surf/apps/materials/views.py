@@ -64,7 +64,7 @@ class MaterialSearchAPIView(APIView):
         # validate request parameters
         serializer = SearchRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = dict(serializer.validated_data)
+        data = serializer.validated_data
 
         # add additional filter by Author
         # if input data contains `author` parameter
@@ -118,11 +118,14 @@ class KeywordsAPIView(APIView):
         # validate request parameters
         serializer = KeywordsRequestSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
-        data = dict(serializer.validated_data)
+        data = serializer.validated_data
 
         ac = XmlEndpointApiClient()
         res = ac.autocomplete(**data)
         return Response(res)
+
+
+_MATERIALS_COUNT_IN_OVERVIEW = 4
 
 
 class MaterialAPIView(APIView):
@@ -139,7 +142,7 @@ class MaterialAPIView(APIView):
         # validate request parameters
         serializer = MaterialsRequestSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
-        data = dict(serializer.validated_data)
+        data = serializer.validated_data
 
         if "external_id" in data:
             # return Material by its edured id
@@ -152,7 +155,7 @@ class MaterialAPIView(APIView):
             ac = XmlEndpointApiClient()
             res = ac.search([],
                             ordering="-{}".format(PUBLISHER_DATE_FILED_ID),
-                            page_size=4)
+                            page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
             res = _add_extra_parameters_to_materials(request.user,
                                                      res["records"])
@@ -244,7 +247,7 @@ class CollectionViewSet(ModelViewSet):
             # validate request parameters
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
-            data = dict(serializer.validated_data)
+            data = serializer.validated_data
 
             ids = ['"{}"'.format(m.external_id)
                    for m in instance.materials.order_by("id").all()]
@@ -264,7 +267,7 @@ class CollectionViewSet(ModelViewSet):
             # validate request parameters
             serializer = MaterialShortSerializer(data=d)
             serializer.is_valid(raise_exception=True)
-            data.append(dict(serializer.validated_data))
+            data.append(serializer.validated_data)
 
         if request.method == "POST":
             self._add_materials(instance, data)
@@ -290,13 +293,9 @@ class CollectionViewSet(ModelViewSet):
             if not details:
                 continue
 
-            m, _ = Material.objects.get_or_create(
-                external_id=m_external_id,
-                defaults=dict(external_id=m_external_id))
-
+            m, _ = Material.objects.get_or_create(external_id=m_external_id)
             _add_material_themes(m, details[0].get("themes", []))
             _add_material_disciplines(m, details[0].get("disciplines", []))
-
             instance.materials.add(m)
 
     @staticmethod

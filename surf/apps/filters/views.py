@@ -16,8 +16,6 @@ from surf.apps.filters.serializers import (
     FilterSerializer
 )
 
-from surf.apps.core.permissions import IsActive
-
 
 class FilterCategoryViewSet(ListModelMixin,
                             GenericViewSet):
@@ -35,7 +33,7 @@ class FilterViewSet(ModelViewSet):
     """
     queryset = Filter.objects.none()
     serializer_class = FilterSerializer
-    permission_classes = [IsAuthenticated, IsActive]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user

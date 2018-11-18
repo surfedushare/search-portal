@@ -57,12 +57,17 @@ class SurfConextAuth(UUIDModel):
     @staticmethod
     def update_or_create_user(display_name, external_id, access_token):
         rv = SurfConextAuth.objects.filter(external_id=external_id).first()
-        if not rv:
+        if rv:
+            rv.access_token = access_token
+            rv.display_name = display_name
+            rv.save()
+
+        else:
             u, _ = User.objects.get_or_create(
                 username=external_id,
-                defaults=dict(username=external_id, first_name=display_name))
+                defaults=dict(first_name=display_name))
 
-            if hasattr(u, "surfconext_auth") and u.surfconext_auth:
+            if getattr(u, "surfconext_auth", None):
                 rv = u.surfconext_auth
                 rv.external_id = external_id
                 rv.display_name = display_name
@@ -74,10 +79,6 @@ class SurfConextAuth(UUIDModel):
                                                    external_id=external_id,
                                                    display_name=display_name,
                                                    access_token=access_token)
-        else:
-            rv.access_token = access_token
-            rv.display_name = display_name
-            rv.save()
 
         return rv
 

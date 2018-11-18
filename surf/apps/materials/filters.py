@@ -17,7 +17,7 @@ class CollectionFilter(filters.FilterSet):
     def filter_is_owner(self, qs, name, value):
         user_ids = []
 
-        if self.request and self.request.user:
+        if self.request:
             user = self.request.user
             if user and user.is_authenticated:
                 user_ids.append(user.id)

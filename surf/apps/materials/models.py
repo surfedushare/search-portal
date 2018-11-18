@@ -71,9 +71,7 @@ class ViewMaterial(UUIDModel):
         if not user or not user.id:
             return
 
-        m, _ = Material.objects.get_or_create(
-            external_id=material_external_id,
-            defaults=dict(external_id=material_external_id))
+        m, _ = Material.objects.get_or_create(external_id=material_external_id)
 
         ViewMaterial.objects.update_or_create(
             user_id=user.id, material_id=m.id,

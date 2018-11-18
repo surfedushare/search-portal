@@ -35,6 +35,7 @@ def check_and_update_filters():
 
         if not ac:
             ac = WidgetEndpointApiClient()
+
         _update_filter_category(f_category, ac)
 
 
@@ -110,6 +111,4 @@ def _update_category_item(filter_category, item_id, item_title):
     FilterCategoryItem.objects.get_or_create(
         category_id=filter_category.id,
         external_id=item_id,
-        defaults=dict(category=filter_category,
-                      external_id=item_id,
-                      title=item_title))
+        defaults=dict(title=item_title))

@@ -13,9 +13,8 @@ class MaterialForm(forms.ModelForm):
 
         try:
             qs = FilterCategoryItem.objects
-
-            d_qs = qs.filter(category__edurep_field_id=DISCIPLINE_FIELD_ID)
-            self.fields['disciplines'].queryset = d_qs.all()
+            qs = qs.filter(category__edurep_field_id=DISCIPLINE_FIELD_ID)
+            self.fields['disciplines'].queryset = qs.all()
         except AttributeError:
             pass
 

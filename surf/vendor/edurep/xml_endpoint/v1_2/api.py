@@ -46,8 +46,13 @@ class XmlEndpointApiClient:
 
     def autocomplete(self, query):
         url = "{}?prefix={}".format(_AUTOCOMPLETE_ENDPOINT, query)
+
         response = requests.get(url)
-        return response.json()[1]
+        if response and response.status_code != requests.codes.ok:
+            response.raise_for_status()
+
+        _, keywords = response.json()
+        return keywords
 
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
         return self._search(search_text=search_text, filters=filters,
@@ -70,11 +75,11 @@ class XmlEndpointApiClient:
     def _search(self, search_text=None, filters=None, drilldown_names=None,
                 start_record=1, maximum_records=0, ordering=None):
 
-        if not search_text:
-            query = _BASE_QUERY
-        else:
+        if search_text:
             query = " AND ".join('("{}")'.format(q) for q in search_text)
             query = '{} AND {}'.format(_BASE_QUERY, query)
+        else:
+            query = _BASE_QUERY
 
         filters = _filter_list_to_cql(filters)
         if filters:
@@ -116,7 +121,12 @@ class XmlEndpointApiClient:
                                for k, v in parameters.items()])
 
         url = "{}?{}".format(_LOM_SRU_ENDPOINT, parameters)
-        return parse_response(requests.get(url).text)
+
+        response = requests.get(url)
+        if response and response.status_code != requests.codes.ok:
+            response.raise_for_status()
+
+        return parse_response(response.text)
 
 
 def _filter_list_to_cql(filters):

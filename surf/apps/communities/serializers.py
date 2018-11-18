@@ -21,13 +21,13 @@ class CommunitySerializer(CommunityUpdateSerializer):
 
     def get_is_admin(self, obj):
         request = self.context.get("request")
-        if request and request.user:
+        if request and request.user and request.user.is_authenticated:
             return obj.admins.filter(id=request.user.id).exists()
         return False
 
     def get_is_member(self, obj):
         request = self.context.get("request")
-        if request and request.user:
+        if request and request.user and request.user.is_authenticated:
             return obj.members.filter(id=request.user.id).exists()
         return False
 

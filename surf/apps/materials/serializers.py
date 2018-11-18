@@ -71,7 +71,7 @@ class CollectionSerializer(CollectionShortSerializer):
 
     @staticmethod
     def get_communities_count(obj):
-        return obj.community_cnt if hasattr(obj, "community_cnt") else 0
+        return getattr(obj, "community_cnt", 0)
 
     def get_is_owner(self, obj):
         user = _get_and_check_user_from_context(self.context)
@@ -94,19 +94,15 @@ class ApplaudMaterialSerializer(serializers.ModelSerializer):
     material = MaterialShortSerializer()
 
     def create(self, validated_data):
-        material_external_id = validated_data["material"]["external_id"]
-        material, _ = Material.objects.get_or_create(
-            external_id=material_external_id,
-            defaults=dict(external_id=material_external_id))
+        external_id = validated_data["material"]["external_id"]
+        material, _ = Material.objects.get_or_create(external_id=external_id)
         validated_data["material"] = material
 
         user = _get_and_check_user_from_context(self.context)
         if user:
             validated_data["user_id"] = user.id
 
-        instance, _ = ApplaudMaterial.objects.get_or_create(
-            **validated_data,
-            defaults=validated_data)
+        instance, _ = ApplaudMaterial.objects.get_or_create(**validated_data)
 
         return instance
 
