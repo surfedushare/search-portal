@@ -14,6 +14,9 @@ from rest_framework.response import Response
 
 from surf.apps.communities.models import Community
 from surf.apps.materials.models import Collection
+from surf.apps.themes.models import Theme
+from surf.apps.communities.filters import CommunityFilter
+from surf.apps.themes.serializers import ThemeSerializer
 
 from surf.apps.communities.serializers import (
     CommunitySerializer,
@@ -24,8 +27,6 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
 )
-
-from surf.apps.communities.filters import CommunityFilter
 
 
 class CommunityViewSet(ListModelMixin,
@@ -81,6 +82,20 @@ class CommunityViewSet(ListModelMixin,
 
         return Response(res)
 
+    @action(methods=['get'], detail=True)
+    def themes(self, request, pk=None, **kwargs):
+        instance = self.get_object()
+
+        ids = instance.collections.values_list("materials__themes__id",
+                                               flat=True)
+        qs = Theme.objects.filter(id__in=ids)
+
+        res = []
+        if qs.exists():
+            res = ThemeSerializer(many=True).to_representation(qs.all())
+
+        return Response(res)
+
     @staticmethod
     def _add_collections(instance, collections):
         """
@@ -89,12 +104,10 @@ class CommunityViewSet(ListModelMixin,
         :param collections: added collections
         :return:
         """
-        for c in collections:
-            try:
-                c = Collection.objects.get(id=c["id"])
-                instance.collections.add(c)
-            except Collection.DoesNotExist:
-                pass
+
+        collections = [c["id"] for c in collections]
+        collections = Collection.objects.filter(id__in=collections).all()
+        instance.collections.add(*collections)
 
     @staticmethod
     def _delete_collections(instance, collections):
@@ -104,12 +117,11 @@ class CommunityViewSet(ListModelMixin,
         :param collections: deleted collections
         :return:
         """
-        for c in collections:
-            try:
-                c = Collection.objects.get(id=c["id"])
-                instance.collections.remove(c)
-            except Collection.DoesNotExist:
-                pass
+
+        collections = [c["id"] for c in collections]
+        collections = Collection.objects.filter(id__in=collections).all()
+        instance.collections.remove(*collections)
+
 
     @staticmethod
     def _check_access(user, instance=None, collection_ids=None):

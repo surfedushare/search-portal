@@ -282,6 +282,7 @@ class CollectionViewSet(ModelViewSet):
         :param materials: added materials
         :return:
         """
+
         for material in materials:
             m_external_id = material["external_id"]
 
@@ -306,13 +307,10 @@ class CollectionViewSet(ModelViewSet):
         :param materials: deleted materials
         :return:
         """
-        for material in materials:
-            m_external_id = material["external_id"]
-            try:
-                m = Material.objects.get(external_id=m_external_id)
-                instance.materials.remove(m)
-            except Material.DoesNotExist:
-                pass
+
+        materials = [m["external_id"] for m in materials]
+        materials = Material.objects.filter(external_id__in=materials).all()
+        instance.materials.remove(*materials)
 
     @staticmethod
     def _check_access(user, instance=None):
@@ -323,6 +321,7 @@ class CollectionViewSet(ModelViewSet):
         :param instance: collection instance
         :return:
         """
+
         if not user or not user.is_active:
             raise AuthenticationFailed()
 
@@ -331,22 +330,12 @@ class CollectionViewSet(ModelViewSet):
 
 
 def _add_material_themes(material, themes):
-    ts = []
-    for t_id in themes:
-        try:
-            ts.append(Theme.objects.get(external_id=t_id))
-        except Theme.DoesNotExist:
-            pass
+    ts = Theme.objects.filter(external_id__in=themes).all()
     material.themes.set(ts)
 
 
 def _add_material_disciplines(material, disciplines):
-    ds = []
-    for d_id in disciplines:
-        try:
-            ds.append(FilterCategoryItem.objects.get(external_id=d_id))
-        except FilterCategoryItem.DoesNotExist:
-            pass
+    ds = FilterCategoryItem.objects.filter(external_id__in=disciplines).all()
     material.disciplines.set(ds)
 
 
