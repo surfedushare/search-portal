@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Count
 
 from rest_framework.viewsets import GenericViewSet
 
@@ -16,6 +16,10 @@ from surf.apps.communities.models import Community
 from surf.apps.themes.serializers import ThemeSerializer
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
 from surf.apps.communities.serializers import CommunitySerializer
+from surf.apps.materials.serializers import CollectionSerializer
+
+
+_COLLECTIONS_COUNT_IN_OVERVIEW = 4
 
 
 class ThemeViewSet(ListModelMixin,
@@ -55,5 +59,26 @@ class ThemeViewSet(ListModelMixin,
             ).to_representation(
                 Community.objects.filter(id__in=ids).all()
             )
+
+        return Response(res)
+
+    @action(methods=['get'], detail=True, url_path="community-collections")
+    def community_collections(self, request, pk=None, **kwargs):
+        instance = self.get_object()
+
+        qs = Material.objects.filter(themes__id=instance.id)
+        ids = qs.values_list('collections__id', flat=True)
+        qs = Collection.objects.filter(id__in=ids, communities__isnull=False)
+        qs = qs.annotate(community_cnt=Count('communities'))
+        cs = qs.all()
+        if qs.count() > _COLLECTIONS_COUNT_IN_OVERVIEW:
+            cs = cs[:_COLLECTIONS_COUNT_IN_OVERVIEW]
+
+        res = []
+        if cs:
+            res = CollectionSerializer(
+                many=True,
+                context=self.get_serializer_context()
+            ).to_representation(cs)
 
         return Response(res)
