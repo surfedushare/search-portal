@@ -15,8 +15,10 @@ from rest_framework.response import Response
 from surf.apps.communities.models import Community
 from surf.apps.materials.models import Collection
 from surf.apps.themes.models import Theme
+from surf.apps.filters.models import FilterCategoryItem
 from surf.apps.communities.filters import CommunityFilter
 from surf.apps.themes.serializers import ThemeSerializer
+from surf.apps.filters.serializers import FilterCategoryItemSerializer
 
 from surf.apps.communities.serializers import (
     CommunitySerializer,
@@ -93,6 +95,21 @@ class CommunityViewSet(ListModelMixin,
         res = []
         if qs.exists():
             res = ThemeSerializer(many=True).to_representation(qs.all())
+
+        return Response(res)
+
+    @action(methods=['get'], detail=True)
+    def disciplines(self, request, pk=None, **kwargs):
+        instance = self.get_object()
+
+        ids = instance.collections.values_list("materials__disciplines__id",
+                                               flat=True)
+        qs = FilterCategoryItem.objects.filter(id__in=ids)
+
+        res = []
+        if qs.exists():
+            res = FilterCategoryItemSerializer(many=True).to_representation(
+                qs.all())
 
         return Response(res)
 
