@@ -23,6 +23,7 @@ from surf.routers import CustomRouter
 
 from surf.apps.materials.views import (
     MaterialSearchAPIView,
+    MaterialRatingAPIView,
     KeywordsAPIView,
     MaterialAPIView,
     CollectionViewSet,
@@ -61,6 +62,7 @@ apipatterns = [
     url(r'^logout/', LogoutAPIView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
+    url(r'^materials/rating/', MaterialRatingAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
 ] + router.urls
 

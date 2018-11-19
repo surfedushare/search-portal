@@ -1,4 +1,5 @@
 from django.db.models import Q, Count
+from django.conf import settings
 
 from rest_framework.viewsets import (
     ModelViewSet,
@@ -35,7 +36,8 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
-    ApplaudMaterialSerializer
+    ApplaudMaterialSerializer,
+    MaterialRatingSerializer
 )
 
 from surf.apps.materials.filters import (
@@ -50,6 +52,8 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     CUSTOM_THEME_FIELD_ID,
     PUBLISHER_DATE_FILED_ID
 )
+
+from surf.vendor.edurep.smb.soap.api import SmbSoapApiClient
 
 
 class MaterialSearchAPIView(APIView):
@@ -195,6 +199,30 @@ def _get_material_details_by_id(material_id):
             material["number_of_collections"] = m.collections.count()
 
     return rv
+
+
+class MaterialRatingAPIView(APIView):
+    """
+    View class that provides setting the rating of Material by user.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        # validate request parameters
+        serializer = MaterialRatingSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        surfconext_auth = getattr(request.user, "surfconext_auth")
+        if surfconext_auth:
+            sac = SmbSoapApiClient()
+            sac.send_rating(data["material_url"],
+                            data["rating"],
+                            settings.EDUREP_SOAP_SUPPLIER_ID,
+                            surfconext_auth.external_id)
+
+        return Response(data)
 
 
 class CollectionViewSet(ModelViewSet):

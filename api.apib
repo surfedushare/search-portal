@@ -62,11 +62,28 @@ Surf API
 + Response 200 (application/json)
     + Attributes (Search Result)
 
+# Group Material Ratings
+
+## Material Rating Resource [/api/v1/materials/rating/]
+
+### POST [POST /api/v1/materials/rating/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Material rating)
+
++ Response 200 (application/json)
+    + Attributes (Material rating)
+
 # Group Keywords
 
-## Keywords Resource [/api/v1/materials/keywords/]
+## Keywords Resource [/api/v1/keywords/]
 
-### GET [GET /api/v1/materials/keywords/{?query}]
+### GET [GET /api/v1/keywords/{?query}]
 
 + Parameters
   + query (string) - query string
@@ -547,6 +564,10 @@ Surf API
  - author: `Material author` (string, optional) - author whose materials will be searched
  - return_records: `true` (boolean, optional) - return found materials if `true`, default `true`
  - return_filters: `true` (boolean, optional) - return extra data by filters if `true`, default `true`
+
+## Material Rating (object)
+ - material_url: `http://libguides.ru.nl/mendeley` (string) - material URL
+ - rating: `1` (number) - rating of material, from 1 to 5
 
 ## Material Short (object)
  - external_id: `external_id` (string) - material id in edurep

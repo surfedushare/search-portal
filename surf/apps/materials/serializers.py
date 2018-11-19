@@ -34,6 +34,11 @@ class KeywordsRequestSerializer(serializers.Serializer):
     query = serializers.CharField()
 
 
+class MaterialRatingSerializer(serializers.Serializer):
+    material_url = serializers.CharField()
+    rating = serializers.IntegerField()
+
+
 class MaterialsRequestSerializer(serializers.Serializer):
     external_id = serializers.CharField(required=False)
     collection_id = serializers.CharField(required=False)

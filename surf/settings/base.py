@@ -191,3 +191,5 @@ OIDC_CONFIG = {
 }
 
 VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
+
+EDUREP_SOAP_SUPPLIER_ID = ""
