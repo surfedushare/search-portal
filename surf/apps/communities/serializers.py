@@ -12,12 +12,23 @@ class CommunityUpdateSerializer(serializers.ModelSerializer):
 
 class CommunitySerializer(CommunityUpdateSerializer):
     members_count = serializers.SerializerMethodField()
+    collections_count = serializers.SerializerMethodField()
+    materials_count = serializers.SerializerMethodField()
     is_admin = serializers.SerializerMethodField()
     is_member = serializers.SerializerMethodField()
 
     @staticmethod
     def get_members_count(obj):
         return obj.members.count()
+
+    @staticmethod
+    def get_collections_count(obj):
+        return obj.collections.count()
+
+    @staticmethod
+    def get_materials_count(obj):
+        ids = obj.collections.values_list("materials__id", flat=True)
+        return len(set(ids))
 
     def get_is_admin(self, obj):
         request = self.context.get("request")
@@ -35,4 +46,5 @@ class CommunitySerializer(CommunityUpdateSerializer):
         model = Community
         fields = ('id', 'external_id', 'name', 'description', 'website_url',
                   'logo', 'featured_image', 'members_count',
+                  'collections_count', 'materials_count',
                   'is_admin', 'is_member',)
