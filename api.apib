@@ -355,7 +355,7 @@ Surf API
             Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
-    + Attributes (array[Community])
+    + Attributes (Pagination Community Response)
 
 
 ## Community Resource  [/api/v1/communities/{id}/]
@@ -548,6 +548,11 @@ Surf API
 
 # Data Structures
 
+## Pagination Response (object)
+ - count: `1023` (number) - the number of elements in response
+ - next: `https://api.example.org/accounts/?page=5` (string) - the URL of next page
+ - previous: `https://api.example.org/accounts/?page=3` (string) - the URL of previous page
+
 ## Login Response (object)
  - access_token: `7644a13d1c3a8f135e404b851f5858238a6f34ab` (string) - access token
 
@@ -676,6 +681,9 @@ Surf API
  - website_url: `https://test-community.org` (string) - community website URL
  - logo: `logo data` (string) - community logo
  - featured_image: `featured image data` (string) - community featured image
+
+## Pagination Community Response (Pagination Response)
+ - results: Community (array[Community])
 
 ## Theme (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - theme internal id
