@@ -123,7 +123,7 @@ Surf API
             Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
-    + Attributes (array[Applaud Material])
+    + Attributes (Applaud Material Response)
 
 ### POST [POST /api/v1/applaud-materials/]
 
@@ -168,7 +168,7 @@ Surf API
             Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
-    + Attributes (array[Collection])
+    + Attributes (Pagination Collection Response)
 
 ### POST [POST /api/v1/collections/]
 
@@ -287,7 +287,7 @@ Surf API
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (array[Theme])
+    + Attributes (Pagination Theme Response)
 
 ## Theme Resource  [/api/v1/themes/{id}/]
 
@@ -471,7 +471,7 @@ Surf API
 + Request (application/json)
 
 + Response 200 (application/json)
-    + Attributes (array[Filter Category])
+    + Attributes (Pagination Filter Category Response)
 
 # Group Filters
 
@@ -486,7 +486,7 @@ Surf API
             Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
-    + Attributes (array[Filter])
+    + Attributes (Pagination Filter Response)
 
 ### POST [POST /api/v1/filters/]
 
@@ -625,6 +625,9 @@ Surf API
  - title: `Vakgebied` (string) - filter category title
  - items: (array[Filter Category item]) - filter category items
 
+## Pagination Filter Category Response (Pagination Response)
+ - results: Filter Category (array[Filter Category])
+
 ## Filter item (object)
  - id: `b5fda3b2-3a95-4886-81a9-bed5a4cfb5af` (string) - filter item id
  - category_item_id: `684de1cd-d875-4f08-b3b8-f99a1067485b` (string) - filter category item id
@@ -644,6 +647,9 @@ Surf API
  - title: `test filter` (string) - filter title
  - items: (array[Filter Create item], optional) - filter items
 
+## Pagination Filter Response (Pagination Response)
+ - results: Filter (array[Filter])
+
 ## Collection (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
  - title: `test collection` (string) - collection title
@@ -658,8 +664,14 @@ Surf API
 ## Collection Short (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
 
+## Pagination Collection Response (Pagination Response)
+ - results: Collection (array[Collection])
+
 ## Applaud Material (object)
   - material: (Material Short) - applauded material
+
+## Pagination Applaud Material Response (Pagination Response)
+ - results: Applaud Material (array[Applaud Material])
 
 ## Community (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - community id
@@ -690,5 +702,8 @@ Surf API
  - external_id: `theme external id` (string) - theme external id
  - title: `theme title` (string) - theme title
  - description `theme description` (string) - theme description
+
+## Pagination Theme Response (Pagination Response)
+ - results: Theme (array[Theme])
 
 ## Discipline (Filter Category item)
