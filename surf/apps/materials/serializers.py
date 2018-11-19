@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from surf.apps.materials.models import (
     Collection,
@@ -14,8 +15,13 @@ class SearchFilterSerializer(serializers.Serializer):
 
 class SearchRequestSerializer(serializers.Serializer):
     search_text = serializers.ListField(child=serializers.CharField())
-    page = serializers.IntegerField(required=False, default=1)
-    page_size = serializers.IntegerField(required=False, default=5)
+    page = serializers.IntegerField(required=False, default=1,
+                                    validators=[MinValueValidator(1)])
+
+    page_size = serializers.IntegerField(required=False, default=5,
+                                         validators=[MinValueValidator(0),
+                                                     MaxValueValidator(10)])
+
     return_records = serializers.BooleanField(required=False, default=True)
     return_filters = serializers.BooleanField(required=False, default=True)
 
@@ -36,19 +42,29 @@ class KeywordsRequestSerializer(serializers.Serializer):
 
 class MaterialRatingSerializer(serializers.Serializer):
     material_url = serializers.CharField()
-    rating = serializers.IntegerField()
+    rating = serializers.IntegerField(validators=[MinValueValidator(1),
+                                                  MaxValueValidator(5)])
 
 
 class MaterialsRequestSerializer(serializers.Serializer):
     external_id = serializers.CharField(required=False)
     collection_id = serializers.CharField(required=False)
-    page = serializers.IntegerField(required=False, default=1)
-    page_size = serializers.IntegerField(required=False, default=5)
+
+    page = serializers.IntegerField(required=False, default=1,
+                                    validators=[MinValueValidator(1)])
+
+    page_size = serializers.IntegerField(required=False, default=5,
+                                         validators=[MinValueValidator(0),
+                                                     MaxValueValidator(10)])
 
 
 class CollectionMaterialsRequestSerializer(serializers.Serializer):
-    page = serializers.IntegerField(required=False, default=1)
-    page_size = serializers.IntegerField(required=False, default=5)
+    page = serializers.IntegerField(required=False, default=1,
+                                    validators=[MinValueValidator(1)])
+
+    page_size = serializers.IntegerField(required=False, default=5,
+                                         validators=[MinValueValidator(0),
+                                                     MaxValueValidator(10)])
 
 
 class MaterialShortSerializer(serializers.ModelSerializer):
