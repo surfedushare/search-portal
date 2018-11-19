@@ -39,7 +39,8 @@ from surf.apps.users.views import (
     auth_begin_handler,
     auth_complete_handler,
     login_handler,
-    LogoutAPIView
+    LogoutAPIView,
+    UserDetailsAPIView
 )
 
 from surf.apps.communities.views import CommunityViewSet
@@ -60,6 +61,7 @@ router.register(r'themes', ThemeViewSet)
 apipatterns = [
     url(r'^login/', login_handler),
     url(r'^logout/', LogoutAPIView.as_view()),
+    url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/rating/', MaterialRatingAPIView.as_view()),

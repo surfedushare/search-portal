@@ -50,6 +50,21 @@ Surf API
                 detail: "Successfully logged out."
             }
 
+# Group Users
+
+## User Profile Resource [/api/v1/users/me/]
+
+### GET [GET /api/v1/users/me/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 7ca57767ae16bb878f62946b0a8bb0385c9607d8
+
++ Response 200 (application/json)
+    + Attributes (User Profile)
+
 # Group Search
 
 ## Search Result Resource [/api/v1/materials/search/]
@@ -555,6 +570,10 @@ Surf API
 
 ## Login Response (object)
  - access_token: `7644a13d1c3a8f135e404b851f5858238a6f34ab` (string) - access token
+
+## User Profile (object)
+ - id": `1` (number) - user ID
+ - full_name `User name` (string) - user full name
 
 ## Request Filter Data (object)
  - external_id: `lom.classification.obk.discipline.id` (string) - filter category id

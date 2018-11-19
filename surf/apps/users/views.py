@@ -6,6 +6,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import redirect
 from django.http import JsonResponse
@@ -19,6 +20,7 @@ from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 from surf.apps.users.models import SurfConextAuth
 from surf.apps.communities.models import Community
+from surf.apps.users.serializers import UserDetailsSerializer
 from surf.vendor.surfconext.voot.api import VootApiClient
 
 _OIDC_CONFIG = settings.OIDC_CONFIG
@@ -67,6 +69,18 @@ class LogoutAPIView(APIView):
             Token.objects.filter(user=request.user).delete()
 
         return Response(dict(detail="Successfully logged out."))
+
+
+class UserDetailsAPIView(APIView):
+    """
+    View class that provides detail information about current user .
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        res = UserDetailsSerializer().to_representation(request.user)
+        return Response(res)
 
 
 def auth_begin_handler(request):
