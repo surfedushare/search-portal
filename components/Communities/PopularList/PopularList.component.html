@@ -1,0 +1,15 @@
+
+<section class="popular-list">
+  <h2>Community’s</h2>
+  Open leermaterialen vanuit vakcommunity’s
+  <ul class="popular-list__items">
+    <li class="popular-list__item" v-for="community in communities">
+      <nuxt-link :to="`/communities/${community.id}`">
+        <h3>{{community.name}}</h3>
+        {{community.materials_count}} leermaterialen
+      </nuxt-link>
+    </li>
+  </ul>
+  <nuxt-link to="/communities/">Alle Community's</nuxt-link>
+</section>
+

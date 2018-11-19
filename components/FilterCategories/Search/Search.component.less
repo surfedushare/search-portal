@@ -1,0 +1,36 @@
+.search {
+  &__fields {
+    display: flex;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+    background-color: #ffffff;
+    padding: 10px;
+    margin: 0 0 20px;
+  }
+
+  &__input {
+    flex: 1 1 auto;
+  }
+
+  &__themes {
+    display: flex;
+    width: 100%;
+
+    &_title {
+      flex-shrink: 0;
+    }
+
+    &_items {
+      padding: 0;
+      margin: 0 0 0 20px;
+      flex: 1 1 auto;
+    }
+
+    &_item {
+      padding: 0;
+      margin: 0 20px 0 0;
+      list-style: none;
+      display: inline-block;
+    }
+  }
+}

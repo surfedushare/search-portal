@@ -1,0 +1,20 @@
+<div class="star-rating" :class="{['star-rating--' + type]: type}">
+  <label class="star-rating__star" v-for="rating in ratings"
+         :class="{
+           'is-selected': ((temp_value >= rating) && value != null),
+           'is-disabled': disabled
+         }"
+         @click="setValue(rating)"
+         @mouseover="star_over(rating)"
+         @mouseout="star_out"
+  >
+    <input
+      class="star-rating star-rating__checkbox"
+      type="radio"
+      :value="rating"
+      name="name"
+      v-model="temp_value"
+      :disabled="disabled">
+  </label>
+  <div class="star-rating__counter">({{counter}})</div>
+</div>

@@ -1,0 +1,14 @@
+
+<section class="themes">
+  <h2>Thema’s</h2>
+  Zoek en vind open leermaterialen op thema
+  <ul class="themes__list">
+    <li
+      class="themes__item"
+      v-for="theme in themes"
+    >
+      <nuxt-link :to="`/themes/${theme.id}/`">{{theme.title}}</nuxt-link>
+    </li>
+  </ul>
+</section>
+

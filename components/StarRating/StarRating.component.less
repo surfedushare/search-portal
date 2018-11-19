@@ -1,0 +1,86 @@
+@import "./../../assets/styles/variables";
+.star-rating {
+  &__checkbox {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+  }
+
+  &__star {
+    display: inline-block;
+
+    &:before {
+      display: inline-block;
+      content: '';
+      border-radius: 50%;
+      border: solid 1px #2bc4f1;
+      background: transparent;
+      transition: background-color .2s ease-out;
+
+      .is-danger & {
+        //border-color: @danger;
+      }
+    }
+  }
+
+  &--default &__star {
+    padding-right: 10px;
+
+    //.review__rating &{
+    //  @media @tablet{
+    //    padding-right: 22px;
+    //  }
+    //  @media @mobile{
+    //    padding-right: 0;
+    //    padding-left: 22px;
+    //    &:first-child{
+    //      padding-left: 0;
+    //    }
+    //  }
+    //}
+
+    &:before {
+      width: 17px;
+      height: 17px;
+      box-sizing: border-box;
+      .review__rating &{
+        //@media @tablet{
+        //  width: 32px;
+        //  height: 32px;
+        //}
+        //@media @mobile{
+        //  width: 32px;
+        //  height: 32px;
+        //}
+      }
+    }
+  }
+
+  &--min &__star {
+    padding-right: 5px;
+
+    &:before {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  &__star:hover {
+    cursor: pointer;
+  }
+
+  &__star.is-selected {
+    &:before {
+      background-color: #2bc4f1;
+    }
+  }
+
+  &__star.is-disabled:hover {
+    cursor: default;
+  }
+}

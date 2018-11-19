@@ -1,0 +1,37 @@
+
+<section class="search">
+  <form action="">
+    <div class="search__fields">
+      <input
+        type="text"
+        placeholder="Zoek op trefwoorden"
+        class="search__input"
+      >
+      <div class="search__chooser">
+        <select
+          name="categories"
+          id=""
+          v-model="active_category_id"
+        >
+          <option
+            v-for="category in filter_categories"
+            :value="category.id"
+          >{{category.title}}</option>
+        </select>
+      </div>
+      <button type="submit">
+        Zoeken
+      </button>
+    </div>
+    <div class="search__themes">
+      <h4 class="search__themes_title">Filter zoekresultaten op</h4>
+      <ul v-if="active_category" class="search__themes_items">
+        <li v-for="item in active_category.items" class="search__themes_item">
+          <input type="checkbox" :id="item.id">
+          <label :for="item.id">{{item.title}}</label>
+        </li>
+      </ul>
+    </div>
+  </form>
+</section>
+

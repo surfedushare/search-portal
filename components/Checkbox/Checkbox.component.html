@@ -1,0 +1,40 @@
+<label
+  :for="id"
+  class="checkbox"
+  :class="{
+    'is-danger': errors.has(name) || hasError,
+    'checkbox--active': inputVal,
+    'checkbox--focused': focused,
+    'checkbox--large': large
+  }"
+
+>
+  <svg class="checkbox_img" width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="02.-Support-Points-Desktop-|-Registration-Client" transform="translate(-695.000000, -679.000000)">
+        <rect fill="#FFFFFF" x="0" y="0" width="1440" height="1824"></rect>
+        <g id="Part-01-|-Registration" transform="translate(0.000000, 150.000000)">
+          <g id="Form-/-Checkbox-(Checked)-Copy" transform="translate(695.000000, 513.000000)">
+            <g id="Group-5" transform="translate(0.000000, 14.000000)">
+              <g id="icn_checkbox_on" transform="translate(0.000000, 2.000000)">
+                <rect stroke="#2BC4F1" stroke-width="1.5" fill="#FFFFFF" x="0.75" y="0.75" width="16.5" height="16.5" rx="2"></rect>
+                <polygon id="Rectangle-34" fill="#2BC4F1" points="7.33333333 13 4 9.66666667 5.33333333 8.33333333 7.33333333 10.3333333 12.6666667 5 14 6.33333333"></polygon>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </svg>
+  <input
+    type="checkbox"
+    :id="id"
+    :name="name"
+    v-model="inputVal"
+    v-validate="{required: required || false}"
+    @focus="focused = true"
+    @blur="focused = false"
+    @change="change"
+  ><span class="checkbox__text"><span v-html="label"></span><slot></slot></span>
+</label>
+

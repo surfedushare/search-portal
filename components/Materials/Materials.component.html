@@ -1,0 +1,17 @@
+
+<section class="materials">
+  <h2>Uitgelicht open leermateriaal</h2>
+  <ul>
+    <li v-for="material in materials">
+      <h3>{{material.title}}</h3>
+      {{material.author}} <br>
+      {{material.publisher}} <br>
+      {{material.publish_datetime}}<br>
+      <StarRating
+        v-model="material.average_rating"
+        :counter="material.number_of_ratings"
+        :disabled="true"
+      />
+    </li>
+  </ul>
+</section>
