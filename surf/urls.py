@@ -65,6 +65,7 @@ apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/rating/', MaterialRatingAPIView.as_view()),
+    url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
 ] + router.urls
 

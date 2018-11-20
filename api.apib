@@ -122,6 +122,18 @@ Surf API
 + Response 200 (application/json)
     + Attributes (array[Material])
 
+## Material Resource  [/api/v1/materials/{external_id_base64}/]
+
+### GET [GET /api/v1/materials/{external_id_base64}/]
+
++ Parameters
+  + external_id_base64: `d3VyX3N0YWZmOm9haTpsaWJyYXJ5Lnd1ci5ubDp3dXJwdWJzLzUzOTYyNg==` (string) - External id of material in base64 format.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Material)
+
 # Group Applaud Materials
 
 ## Applaud Material Array [/api/v1/applaud-materials/]
@@ -598,6 +610,7 @@ Surf API
 
 ## Material (object)
  - external_id: `external_id` (string) - material id in edurep
+ - external_id_base64: `external_id_base64` (string) - material id in edurep in base64 format
  - object_id: `urn.uuid.887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URI
  - url: `http://delen.edurep.nl/download.php?id=887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URL
  - title: `test1` (string) - title of material
@@ -605,6 +618,7 @@ Surf API
  - keywords: (array[string]) - keywords for material
  - language: `nl` (string) - material language
  - aggregationlevel: `1` (string) - aggregation level of material
+ - copyright: `cc-by-sa-30` (string) - material copyrights
  - publisher: `wikiwijs_repository` (string) - publisher name
  - publish_datetime: `2018-09-19T01:08:08+02:00` (string) - publish datetime
  - author: `awar rashkany` (string) - author name

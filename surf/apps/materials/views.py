@@ -1,5 +1,8 @@
+from base64 import urlsafe_b64decode
+
 from django.db.models import Q, Count
 from django.conf import settings
+from django.http import Http404
 
 from rest_framework.viewsets import (
     ModelViewSet,
@@ -148,11 +151,11 @@ class MaterialAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
+        if "external_id" in kwargs:
+            return self.get_material(request, kwargs["external_id"])
+
         if "external_id" in data:
-            # return Material by its edured id
-            res = _get_material_details_by_id(data["external_id"])
-            res = _add_extra_parameters_to_materials(request.user, res)
-            ViewMaterial.add_unique_view(request.user, data["external_id"])
+            res = _get_material_by_external_id(request, data["external_id"])
 
         else:
             # return overview of Materials
@@ -164,6 +167,31 @@ class MaterialAPIView(APIView):
             res = _add_extra_parameters_to_materials(request.user,
                                                      res["records"])
         return Response(res)
+
+    @staticmethod
+    def get_material(request, external_id):
+        external_id = external_id.encode("utf-8")
+        external_id = urlsafe_b64decode(external_id).decode("utf-8")
+        res = _get_material_by_external_id(request, external_id)
+
+        if not res:
+            raise Http404('No materials matches the given query.')
+
+        return Response(res[0])
+
+
+def _get_material_by_external_id(request, external_id):
+    """
+    Get Materials by edured id and register unique view of materials
+    :param request:
+    :param external_id: edured id of material
+    :return: list of materials
+    """
+
+    rv = _get_material_details_by_id(external_id)
+    rv = _add_extra_parameters_to_materials(request.user, rv)
+    ViewMaterial.add_unique_view(request.user, external_id)
+    return rv
 
 
 _DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
