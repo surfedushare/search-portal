@@ -61,6 +61,9 @@ _CONTRIBUTE_DATETIME_PATH = "./czp:date/czp:datetime"
 _NUMBER_OF_RATINGS_PATH = "./srw:extraRecordData/recordData/sad:smbAggregatedData/sad:numberOfRatings"
 _AVERAGE_RATINGS_PATH = "./srw:extraRecordData/recordData/sad:smbAggregatedData/sad:averageNormalizedRating"
 _COPYRIGHT_PATH = "./srw:recordData/czp:lom/czp:rights/czp:copyrightandotherrestrictions/czp:value/czp:langstring"
+_CLASSIFICATION_PATH = "./srw:recordData/czp:lom/czp:classification"
+_CLASSIFICATION_PURPOSE_PATH = "./czp:purpose/czp:value/czp:langstring"
+_CLASSIFICATION_TAXON_ID_PATH = "./czp:taxonpath/czp:taxon/czp:id"
 
 
 def _parse_record(elem):
@@ -69,6 +72,10 @@ def _parse_record(elem):
     publish_datetime = contributors.get("publisher", {}).get("datetime")
     author = contributors.get("author", {}).get("name")
     creator = contributors.get("creator", {}).get("name")
+
+    classifications = _parse_classifications(elem)
+    disciplines = list(classifications.get("discipline", []))
+    educationallevels = list(classifications.get("educational level", []))
 
     external_id = _find_elem_text(elem, _RECORD_ID_PATH)
     external_id_base64 = urlsafe_b64encode(external_id.encode("utf-8"))
@@ -92,7 +99,8 @@ def _parse_record(elem):
         number_of_ratings=int(_find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)),
         average_rating=float(_find_elem_text(elem, _AVERAGE_RATINGS_PATH)),
         themes=[],
-        disciplines=[],
+        disciplines=disciplines,
+        educationallevels=educationallevels,
         has_bookmark=False,
         number_of_applauds=0,
         number_of_views=0,
@@ -135,6 +143,25 @@ def _parse_vcard(vcard):
             if m:
                 rv[m.groups()[0]] = m.groups()[1]
     return rv
+
+
+def _parse_classifications(elem):
+    rv = dict()
+    elements = elem.findall(_CLASSIFICATION_PATH, namespaces=_NS)
+    for e in elements:
+        k, v = _parse_classification(e)
+        rv[k] = rv.setdefault(k, set()).union(v)
+    return rv
+
+
+def _parse_classification(e):
+    name = _find_elem_text(e, _CLASSIFICATION_PURPOSE_PATH)
+    ids = set()
+    elements = e.findall(_CLASSIFICATION_TAXON_ID_PATH, namespaces=_NS)
+    for e in elements:
+        ids.add(e.text)
+    print("{} : {}".format(name, ids))
+    return name, ids
 
 
 _DRILLDOWN_PATH = "./srw:extraResponseData/dd:drilldown/dd:term-drilldown"
