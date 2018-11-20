@@ -175,10 +175,13 @@ def _parse_aggregate_field_drilldowns(elem, aggregate_field_map):
     fields = dict()
     for item in elem:
         item_id = item.text
-        field_id = aggregate_field_map.get(item_id)
-        if not field_id:
+        field_ids = aggregate_field_map.get(item_id)
+        if not field_ids:
             continue
-        fields[field_id] = fields.get(field_id, 0) + int(item.attrib["count"])
+        if not isinstance(field_ids, list):
+            field_ids = [field_ids]
+        for f_id in field_ids:
+            fields[f_id] = fields.get(f_id, 0) + int(item.attrib["count"])
 
     fields = sorted(fields.items(), key=lambda kv: kv[1], reverse=True)
     return [dict(external_id=k, count=v) for k, v in fields]

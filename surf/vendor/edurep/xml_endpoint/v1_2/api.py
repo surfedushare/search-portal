@@ -68,9 +68,15 @@ class XmlEndpointApiClient:
 
     def get_materials_by_id(self, external_ids, page=1, page_size=5,
                             drilldown_names=None):
-        return self._call(query=" OR ".join(external_ids),
-                          start_record=page, maximum_records=page_size,
-                          drilldown_names=drilldown_names)
+        id_set = set(external_ids)
+        rv = self._call(query=" OR ".join(external_ids),
+                        start_record=page, maximum_records=page_size,
+                        drilldown_names=drilldown_names)
+
+        rv["records"] = [m for m in rv["records"]
+                         if m["external_id"] in id_set or
+                         '"{}"'.format(m["external_id"]) in id_set]
+        return rv
 
     def _search(self, search_text=None, filters=None, drilldown_names=None,
                 start_record=1, maximum_records=0, ordering=None):
