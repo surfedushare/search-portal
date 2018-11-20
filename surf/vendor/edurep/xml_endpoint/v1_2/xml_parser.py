@@ -58,6 +58,7 @@ _CONTRIBUTE_VCARD_PATH = "./czp:centity/czp:vcard"
 _CONTRIBUTE_DATETIME_PATH = "./czp:date/czp:datetime"
 _NUMBER_OF_RATINGS_PATH = "./srw:extraRecordData/recordData/sad:smbAggregatedData/sad:numberOfRatings"
 _AVERAGE_RATINGS_PATH = "./srw:extraRecordData/recordData/sad:smbAggregatedData/sad:averageNormalizedRating"
+_COPYRIGHT_PATH = "./srw:recordData/czp:lom/czp:rights/czp:copyrightandotherrestrictions/czp:value/czp:langstring"
 
 
 def _parse_record(elem):
@@ -76,6 +77,7 @@ def _parse_record(elem):
         keywords=_find_elems_text(elem, _KEYWORD_PATH),
         language=_find_elem_text(elem, _LANGUAGE_PATH),
         aggregationlevel=_find_elem_text(elem, _AGGREGATIONAL_LEVEL_PATH),
+        copyright=_find_elem_text(elem, _COPYRIGHT_PATH),
         publisher=publisher,
         publish_datetime=publish_datetime,
         author=author,
