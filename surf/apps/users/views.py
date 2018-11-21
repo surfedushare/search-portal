@@ -136,7 +136,8 @@ def auth_complete_handler(request):
         # add access_token to redirect_url
         if '?' not in redirect_url:
             redirect_url = "{}?".format(redirect_url)
-        redirect_url = "{}&access_token={}".format(redirect_url, access_token)
+        redirect_url = "{}&access_token={}".format(redirect_url,
+                                                   user.auth_token.key)
 
         response = redirect(redirect_url)
         response.set_cookie("access_token", user.auth_token.key)
