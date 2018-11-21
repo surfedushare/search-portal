@@ -133,6 +133,11 @@ def auth_complete_handler(request):
         if not _check_redirect_url(redirect_url):
             raise AuthenticationFailed("Unallowed redirect_url")
 
+        # add access_token to redirect_url
+        if '?' not in redirect_url:
+            redirect_url = "{}?".format(redirect_url)
+        redirect_url = "{}&access_token={}".format(redirect_url, access_token)
+
         response = redirect(redirect_url)
         response.set_cookie("access_token", user.auth_token.key)
         return response
