@@ -5,11 +5,13 @@ from surf.vendor.edurep.widget_endpoint.v3.api import WidgetEndpointApiClient
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     PUBLISHER_DATE_FILED_ID,
     CUSTOM_THEME_FIELD_ID,
-    DISCIPLINE_FIELD_ID
+    DISCIPLINE_FIELD_ID,
+    COPYRIGHT_FIELD_ID
 )
 
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
-    CUSTOM_THEME_DISCIPLINES
+    CUSTOM_THEME_DISCIPLINES,
+    CUSTOM_COPYRIGHTS
 )
 
 from surf.apps.filters.models import (
@@ -45,6 +47,9 @@ def update_filter_category(filter_category):
     if filter_category.edurep_field_id == CUSTOM_THEME_FIELD_ID:
         _update_themes(filter_category)
 
+    elif filter_category.edurep_field_id == COPYRIGHT_FIELD_ID:
+        _update_copyrights(filter_category)
+
     elif filter_category.edurep_field_id not in IGNORED_FIELDS:
         _update_filter_category(filter_category, ac)
 
@@ -74,6 +79,14 @@ def _update_themes(theme_category):
             if d:
                 ds.append(d)
         t.disciplines.set(ds)
+
+
+def _update_copyrights(copyrights_category):
+    for copyright_id, copyright_data in CUSTOM_COPYRIGHTS.items():
+        FilterCategoryItem.objects.get_or_create(
+            category_id=copyrights_category.id,
+            external_id=copyright_id,
+            defaults=dict(title=copyright_data["title"]))
 
 
 def _update_filter_category(filter_category, api_client):

@@ -4,10 +4,16 @@ from xml.etree import ElementTree as ET
 
 import re
 
+import logging
+
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
     MIME_TYPE_TECH_FORMAT,
-    DISCIPLINE_CUSTOM_THEME
+    DISCIPLINE_CUSTOM_THEME,
+    EDUREP_COPYRIGHTS
 )
+
+
+logger = logging.getLogger(__name__)
 
 _NS = {
     "srw": "http://www.loc.gov/zing/srw/",
@@ -23,6 +29,7 @@ _NS = {
 TECH_FORMAT_LOM = "lom.technical.format"
 DISCIPLINE_ID_LOM = "lom.classification.obk.discipline.id"
 CUSTOM_THEME_ID = "custom_theme.id"
+COPYRIGHT_ID_LOM = "lom.rights.copyrightandotherrestrictions"
 
 
 def parse_response(xml_text):
@@ -80,6 +87,8 @@ def _parse_record(elem):
     external_id = _find_elem_text(elem, _RECORD_ID_PATH)
     external_id_base64 = urlsafe_b64encode(external_id.encode("utf-8"))
     external_id_base64 = external_id_base64.decode("utf-8")
+
+    copyright = EDUREP_COPYRIGHTS.get(_find_elem_text(elem, _COPYRIGHT_PATH))
     return dict(
         external_id=_find_elem_text(elem, _RECORD_ID_PATH),
         external_id_base64=external_id_base64,
@@ -90,7 +99,7 @@ def _parse_record(elem):
         keywords=_find_elems_text(elem, _KEYWORD_PATH),
         language=_find_elem_text(elem, _LANGUAGE_PATH),
         aggregationlevel=_find_elem_text(elem, _AGGREGATIONAL_LEVEL_PATH),
-        copyright=_find_elem_text(elem, _COPYRIGHT_PATH),
+        copyright=copyright,
         publisher=publisher,
         publish_datetime=publish_datetime,
         author=author,
@@ -178,10 +187,14 @@ def _parse_drilldowns(root):
             elif term_id == DISCIPLINE_ID_LOM:
                 rv[term_id] = _parse_drilldowns_term(dd)
                 rv[CUSTOM_THEME_ID] = _parse_drilldowns_custom_theme(dd)
+            elif term_id == COPYRIGHT_ID_LOM:
+                rv[term_id] = _parse_drilldowns_copyrights(dd)
             else:
                 rv[term_id] = _parse_drilldowns_term(dd)
-    except Exception as e:
-        pass
+
+    except Exception:
+        logger.exception("Drilldowns parse error")
+
     return [dict(external_id=k, items=v) for k, v in rv.items()]
 
 
@@ -196,6 +209,10 @@ def _parse_drilldowns_tech_format(elem):
 
 def _parse_drilldowns_custom_theme(elem):
     return _parse_aggregate_field_drilldowns(elem, DISCIPLINE_CUSTOM_THEME)
+
+
+def _parse_drilldowns_copyrights(elem):
+    return _parse_aggregate_field_drilldowns(elem, EDUREP_COPYRIGHTS)
 
 
 def _parse_aggregate_field_drilldowns(elem, aggregate_field_map):

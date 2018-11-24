@@ -11,11 +11,13 @@ from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
     TECH_FORMAT_LOM,
     CUSTOM_THEME_ID,
     DISCIPLINE_ID_LOM,
+    COPYRIGHT_ID_LOM
 )
 
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
     TECH_FORMAT_MIME_TYPES,
-    CUSTOM_THEME_DISCIPLINES
+    CUSTOM_THEME_DISCIPLINES,
+    CUSTOM_COPYRIGHTS
 )
 
 logger = logging.getLogger()
@@ -23,6 +25,7 @@ logger = logging.getLogger()
 TECH_FORMAT_FIELD_ID = TECH_FORMAT_LOM
 CUSTOM_THEME_FIELD_ID = CUSTOM_THEME_ID
 DISCIPLINE_FIELD_ID = DISCIPLINE_ID_LOM
+COPYRIGHT_FIELD_ID = COPYRIGHT_ID_LOM
 AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
 PUBLISHER_FIELD_ID = "lom.lifecycle.contribute.publisher"
 PUBLISHER_DATE_FILED_ID = "lom.lifecycle.contribute.publisherdate"
@@ -157,6 +160,12 @@ def _filter_to_cql(field_id, values):
 
     elif field_id == CUSTOM_THEME_FIELD_ID:
         return _custom_theme_filter_to_cql(DISCIPLINE_ID_LOM, values)
+
+    elif field_id == COPYRIGHT_FIELD_ID:
+        vs = list()
+        for v in values:
+            vs.extend(CUSTOM_COPYRIGHTS.get(v, {}).get("external_ids", []))
+        return _list_filter_to_cql(field_id, vs)
 
     else:
         return _list_filter_to_cql(field_id, values)

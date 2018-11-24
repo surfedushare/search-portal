@@ -135,3 +135,27 @@ for d in _DISCIPLINE_ENTRIES:
     discipline_id, theme = d["id"], d["theme"]
     DISCIPLINE_CUSTOM_THEME.setdefault(discipline_id, []).append(theme)
     CUSTOM_THEME_DISCIPLINES.setdefault(theme, []).append(discipline_id)
+
+
+CUSTOM_COPYRIGHTS = {
+    "yes": {"external_ids": ["yes"],
+            "title": "Restricted access"},
+    "cc-by": {"external_ids": ["cc-by-30", "cc-by-40"],
+              "title": "Naamsvermelding"},
+    "cc-by-nc": {"external_ids": ["cc-by-nc-30", "cc-by-nc-40"],
+                 "title": "Naamsvermelding-NietCmmercieel"},
+    "cc-by-nc-nd": {"external_ids": ["cc-by-nc-nd-30", "cc-by-nc-nd-40"],
+                    "title": "Naamsvermelding-NietCmmercieel-GeenAfgeleideWerken"},
+    "cc-by-nc-sa": {"external_ids": ["cc-by-nc-sa-30", "cc-by-nc-sa-40"],
+                    "title": "Naamsvermelding-NietCmmercieel-GelijkDelen"},
+    "cc-by-nd": {"external_ids": ["cc-by-nd-30", "cc-by-nd-40"],
+                 "title": "Naamsvermelding-GeenAfgeleideWerken"},
+    "cc-by-sa": {"external_ids": ["cc-by-sa-30", "cc-by-sa-40"],
+                 "title": "Naamsvermelding-GelijkDelen"},
+}
+
+EDUREP_COPYRIGHTS = dict()
+
+for cc_id, cc_data in CUSTOM_COPYRIGHTS.items():
+    for id in cc_data["external_ids"]:
+        EDUREP_COPYRIGHTS[id] = cc_id
