@@ -188,9 +188,9 @@ def _get_material_by_external_id(request, external_id):
     :return: list of materials
     """
 
+    ViewMaterial.add_unique_view(request.user, external_id)
     rv = _get_material_details_by_id(external_id)
     rv = _add_extra_parameters_to_materials(request.user, rv)
-    ViewMaterial.add_unique_view(request.user, external_id)
     return rv
 
 
