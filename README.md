@@ -1,6 +1,6 @@
-# Surf Catalog backend
+# SURF Catalog backend
 
-This repository contains backend for Surf Catalog. It is written on
+This repository contains backend for SURF Catalog. It is written on
 Python 3 and is based on Django Framework.
 
 REST API documentation is in the file `api.apib`.
