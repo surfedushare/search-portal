@@ -1,0 +1,30 @@
+from .base import *
+
+SECRET_KEY = '<put your SECRET_KEY here>'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'surf',
+        'USER': '<put your DB user name here>',
+        'PASSWORD': '<put your DB user password here>',
+        'HOST': 'postgres',
+        'PORT': 5432,
+    }
+}
+
+ALLOWED_HOSTS = ['*']  # specify the list of allowed hosts or '*' to allow all
+ALLOWED_REDIRECT_ENDPOINTS = ['*']  # specify the list of allowed redirection endpoints or '*' to allow all
+
+EDUREP_SOAP_SUPPLIER_ID = "<put here your SUPPLIER ID to send SOAP messages to EduRep>"
+
+# You can rewrite Surf OIDC config if you need
+# OIDC_CONFIG["client_id"] = "<put your SURF APP Client ID here>"
+# OIDC_CONFIG["client_secret"] = "<put your SURF APP Client Secret here>"
+# OIDC_CONFIG["redirect_uri"] = "https://surf.stg.mqd.me/complete/surfconext/"
+# OIDC_CONFIG["issuer"] = "https://oidc.test.surfconext.nl/"
+# OIDC_CONFIG["authorization_endpoint"] = "https://oidc.test.surfconext.nl/authorize"
+# OIDC_CONFIG["userinfo_endpoint"] = "https://oidc.test.surfconext.nl/userinfo"
+# OIDC_CONFIG["token_endpoint"] = "https://oidc.test.surfconext.nl/token"
+# OIDC_CONFIG["revocation_endpoint"] = "https://oidc.test.surfconext.nl/revoke"
+# OIDC_CONFIG["jwks_uri"] = "https://oidc.test.surfconext.nl/jwk"
