@@ -1,13 +1,54 @@
 
 <section class="main-header">
   <div class="main-header__wrapper">
-    <nuxt-link to="/" class="main-header">
-      Logo
+    <nuxt-link to="/" class="main-header__logo">
+      SURF
     </nuxt-link>
-    <Menu />
+    <Menu class="main-header__menu" />
     <div class="main-header__actions">
-      <button>Inloggen</button>
-      <button>Lang</button>
+      <div class="main-header__user" v-if="isAuthenticated">
+        <div class="main-header__user_name arrow-link">{{user.full_name}}</div>
+        <nav class="main-header__user_menu">
+          <ul class="main-header__user_menu_items">
+            <li class="main-header__user_menu_item">
+              <a class="main-header__user_menu_link" href="/">
+                Mijn Filterselecties
+              </a>
+            </li>
+            <li class="main-header__user_menu_item">
+              <a class="main-header__user_menu_link" href="/">
+                Mijn Collecties
+              </a>
+            </li>
+            <li class="main-header__user_menu_item">
+              <a class="main-header__user_menu_link" href="/">
+                Mijn Community
+              </a>
+            </li>
+            <li class="main-header__user_menu_item">
+              <a
+                class="main-header__user_menu_link"
+                href="/logout/"
+                @click.prevent="logout()"
+              >
+                Uitloggen
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div
+        class="main-header__login"
+        v-else
+      >
+        <a
+          :href="getLoginLink()"
+          class="button"
+        >
+          Inloggen
+        </a>
+      </div>
+      <!--<button>Lang</button>-->
     </div>
   </div>
 </section>

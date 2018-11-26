@@ -1,3 +1,66 @@
+@import './../../../assets/styles/variables';
 .popular-list {
+  &__description {
+    font-size: 20px;
+    line-height: 1.15;
+    margin: 3px 0 32px;
+  }
 
+  &__items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    list-style: none;
+    margin: 0 0 30px;
+    position: relative;
+  }
+
+  &__title {
+    line-height: 1.2;
+    margin: 0 0 6px;
+    position: relative;
+    padding: 0 70px 0 0;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      background: url('./../../../assets/images/arrow-bold-grey.svg') 50% 50% /
+        contain no-repeat;
+    }
+  }
+
+  &__link {
+    text-decoration: none;
+    color: @dark-grey;
+    padding: 11px 0 1px 23px;
+    display: block;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: @dark-blue;
+      border-radius: 2px;
+    }
+  }
+
+  &--all {
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 50px;
+    a {
+      text-decoration: none;
+    }
+  }
 }

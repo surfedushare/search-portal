@@ -1,16 +1,14 @@
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'themes',
   props: [],
-  mounted() {
-    this.$store.dispatch('getThemes')
-  },
+  mounted() {},
   data() {
-    return {}
+    return {};
   },
   methods: {},
   computed: {
     ...mapGetters(['themes'])
   }
-}
+};

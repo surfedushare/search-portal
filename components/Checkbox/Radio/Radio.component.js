@@ -8,7 +8,7 @@ export default {
     id: {
       type: String,
       default: function() {
-        return 'radio-id-' + this._uid
+        return 'radio-id-' + this._uid;
       }
     },
     name: {
@@ -46,29 +46,29 @@ export default {
   computed: {
     state() {
       if (this.modelValue === undefined) {
-        return this.checked
+        return this.checked;
       }
-      return this.modelValue === this.value
+      return this.modelValue === this.value;
     }
   },
   methods: {
     onChange() {
-      this.toggle()
+      this.toggle();
     },
     toggle() {
-      this.$emit('input', this.state ? '' : this.value)
+      this.$emit('input', this.state ? '' : this.value);
     }
   },
   watch: {
     checked(newValue) {
       if (newValue !== this.state) {
-        this.toggle()
+        this.toggle();
       }
     }
   },
   mounted() {
     if (this.checked && !this.state) {
-      this.toggle()
+      this.toggle();
     }
   }
-}
+};

@@ -4,18 +4,18 @@ export default {
   },
   getters: {
     communities(state) {
-      return state.communities
+      return state.communities;
     }
   },
   actions: {
-    async getCommunities({ commit }) {
-      const communities = await this.$axios.$get('communities/')
-      commit('SET_COMMUNITIES', communities)
+    async getCommunities({ commit }, { params }) {
+      const communities = await this.$axios.$get('communities/', { params });
+      commit('SET_COMMUNITIES', communities);
     }
   },
   mutations: {
     SET_COMMUNITIES(state, payload) {
-      state.communities = payload
+      state.communities = payload;
     }
   }
-}
+};

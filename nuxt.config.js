@@ -18,6 +18,10 @@ module.exports = {
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro'
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://use.typekit.net/eya4qgt.css'
       }
     ]
   },
@@ -33,13 +37,26 @@ module.exports = {
   css: [
     '@/assets/styles/normalize.css',
     '@/assets/styles/variables.less',
-    '@/assets/styles/common.less'
+    '@/assets/styles/common.less',
+    '@/assets/styles/forms.less'
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {
+      src: '~/plugins/auth',
+      ssr: false
+    },
+    {
+      src: '~/plugins/vSelect',
+      ssr: false
+    },
+    {
+      src: '~/plugins/infiniteScroll',
+      ssr: false
+    }
   ],
 
   /*
@@ -72,8 +89,8 @@ module.exports = {
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
-        })
+        });
       }
     }
   }
-}
+};

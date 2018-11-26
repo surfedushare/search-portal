@@ -1,4 +1,4 @@
-import Menu from './Menu'
+import Menu from './Menu';
 export default {
   name: 'main-footer',
   props: [],
@@ -7,8 +7,8 @@ export default {
   },
   mounted() {},
   data() {
-    return {}
+    return {};
   },
   methods: {},
   computed: {}
-}
+};

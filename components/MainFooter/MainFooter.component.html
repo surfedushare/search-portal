@@ -1,6 +1,6 @@
 
 <section class="main-footer">
-  <div class="center_block">
+  <div class="center_block main-footer__top_block">
     <div class="main-footer__quotes">
       “The best collaborations create something bigger than the sum of what each person can create on their own.”
     </div>
@@ -9,20 +9,23 @@
       <div class="main-footer__info_text">SURF is the collaborative ICT organisation for Dutch education and research. SURF offers students, lecturers and scientists in the Netherlands access to the best possible internet and ICT facilities.</div>
       <nuxt-link
         to="SURF.nl"
-        class="main-footer__info_link"
+        class="main-footer__info_link arrow-link"
       >
         SURF.nl
       </nuxt-link>
     </div>
+    <div class="main-footer__links">
+      <h3>Links</h3>
+      <nav>
+        <nuxt-link to="/" class="main-footer__link arrow-link">Onderwijs thema's</nuxt-link>
+        <nuxt-link to="/communities/" class="main-footer__link arrow-link">Community's</nuxt-link>
+        <nuxt-link to="/how-does-it-work/" class="main-footer__link arrow-link">Hoe werkt het?</nuxt-link>
+      </nav>
+    </div>
   </div>
-  <div class="main-footer__links">
-    <h3>Links</h3>
-    <nav>
-      <nuxt-link to="/">Onderwijs thema's</nuxt-link>
-      <nuxt-link to="/communities/">Community's</nuxt-link>
-      <nuxt-link to="/">Hoe werkt het?</nuxt-link>
-    </nav>
+  <div class="main-footer__bottom_block">
+    <nuxt-link to="/">Logo</nuxt-link>
+    <Menu />
   </div>
-  <Menu />
 </section>
 

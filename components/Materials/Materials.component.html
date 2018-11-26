@@ -1,17 +1,69 @@
 
 <section class="materials">
-  <h2>Uitgelicht open leermateriaal</h2>
-  <ul>
-    <li v-for="material in materials">
-      <h3>{{material.title}}</h3>
-      {{material.author}} <br>
-      {{material.publisher}} <br>
-      {{material.publish_datetime}}<br>
-      <StarRating
-        v-model="material.average_rating"
-        :counter="material.number_of_ratings"
-        :disabled="true"
-      />
+  <ul class="materials__items" v-if="extended_materials">
+    <li
+      :class="[`materials__item--items-in-line-${itemsInLine}`]"
+      v-for="material in extended_materials" class="materials__item"
+    >
+      <div class="materials__bookmark" v-if="material.has_bookmark">Bookmark</div>
+      <div class="materials__item_wrapper">
+        <h3 class="materials__item_title">
+          <nuxt-link
+            class="materials__item_link"
+            :to="`/materials/${material.external_id_base64}/`"
+          >
+            {{material.title}}
+          </nuxt-link>
+        </h3>
+        <div
+          v-if="material.author"
+          class="materials__item_author"
+        >
+          {{material.author}}
+        </div>
+        <div
+          v-if="material.publisher"
+          class="materials__item_publisher"
+        >
+          {{material.publisher}}
+        </div>
+        <div class="materials__item_date">
+          {{material.date || null}}
+        </div>
+        <div
+          v-if="itemsInLine === 1"
+          class="materials__item_publisher"
+        >
+          {{material.description}}
+        </div><br>
+        <div v-if="material.disciplines && material.disciplines.length">
+          <span v-for="discipline in material.disciplines">{{discipline.title}}</span>
+        </div>
+        <div v-if="material.educationallevels && material.educationallevels.length">
+          <span v-for="educationallevel in material.educationallevels">{{educationallevel.title}}</span>
+        </div>
+        <div
+          v-if="material.format"
+          class="materials__item_format"
+        >
+          {{ material.format }}
+        </div>
+        <footer class="materials__item_footer">
+          <StarRating
+            v-model="material.average_rating"
+            :counter="material.number_of_ratings"
+            :disabled="true"
+          />
+          <div class="materials__item_actions">
+            <div class="materials__item_applauds">{{material.number_of_applauds}}</div>
+            <a
+              class="materials__item_external_link"
+              target="_blank"
+              :href="material.url"
+            >External link</a>
+          </div>
+        </footer>
+      </div>
     </li>
   </ul>
 </section>

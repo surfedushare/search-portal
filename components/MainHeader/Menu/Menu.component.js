@@ -1,10 +1,23 @@
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'menu-block',
   props: [],
   mounted() {},
   data() {
-    return {}
+    return {
+      isShowSubMenu: false
+    };
   },
-  methods: {},
-  computed: {}
-}
+  methods: {
+    toggleSubMenu() {
+      this.isShowSubMenu = !this.isShowSubMenu;
+    },
+    closeSubMenu() {
+      this.isShowSubMenu = false;
+    }
+  },
+  computed: {
+    ...mapGetters(['themes'])
+  }
+};

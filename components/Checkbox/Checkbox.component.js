@@ -17,22 +17,22 @@ export default {
     return {
       inputVal: this.value,
       focused: false
-    }
+    };
   },
   watch: {
     value(value) {
-      this.inputVal = value
+      this.inputVal = value;
     }
   },
   methods: {
     change() {
-      const inputVal = !this.value
+      const inputVal = !this.value;
       if (this.emit_root) {
-        this.$root.$emit('input', { data: this.data, value: inputVal })
+        this.$root.$emit('input', { data: this.data, value: inputVal });
       } else {
-        this.$emit('input', inputVal)
+        this.$emit('input', inputVal);
       }
     }
   },
   computed: {}
-}
+};

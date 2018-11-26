@@ -1,4 +1,4 @@
-@import "./../../assets/styles/variables";
+@import './../../assets/styles/variables';
 .star-rating {
   &__checkbox {
     position: absolute;
@@ -17,10 +17,11 @@
     &:before {
       display: inline-block;
       content: '';
-      border-radius: 50%;
-      border: solid 1px #2bc4f1;
-      background: transparent;
-      transition: background-color .2s ease-out;
+      border-radius: 0;
+      border: 0;
+      background: url('./../../assets/images/full-star-grey.svg') 50% 50% /
+        contain no-repeat;
+      transition: background-color 0.2s ease-out;
 
       .is-danger & {
         //border-color: @danger;
@@ -29,7 +30,8 @@
   }
 
   &--default &__star {
-    padding-right: 10px;
+    padding-right: 3px;
+    vertical-align: middle;
 
     //.review__rating &{
     //  @media @tablet{
@@ -45,10 +47,10 @@
     //}
 
     &:before {
-      width: 17px;
-      height: 17px;
+      width: 18px;
+      height: 18px;
       box-sizing: border-box;
-      .review__rating &{
+      .review__rating & {
         //@media @tablet{
         //  width: 32px;
         //  height: 32px;
@@ -76,11 +78,16 @@
 
   &__star.is-selected {
     &:before {
-      background-color: #2bc4f1;
+      background-image: url('./../../assets/images/full-star-green.svg');
     }
   }
 
   &__star.is-disabled:hover {
     cursor: default;
+  }
+
+  &__counter {
+    display: inline-block;
+    vertical-align: text-bottom;
   }
 }

@@ -1,34 +1,53 @@
 
-<section class="search">
-  <form action="">
+<section class="search" :class="{'search--hide-categories': hideCategories}">
+  <form
+    action="/materials/search/"
+    @submit.prevent="onSubmit"
+  >
     <div class="search__fields">
-      <input
-        type="text"
-        placeholder="Zoek op trefwoorden"
-        class="search__input"
-      >
-      <div class="search__chooser">
+      <div class="search__input">Label</div>
+      <div class="search__autocomplete">
+        <v-select
+          :options="keywords"
+          :multiple="true"
+          placeholder="Zoek op trefwoorden"
+          @search="onSearch"
+          taggable
+          inputId="tags"
+          push-tags
+          v-model="formData.search_text"
+          name="keywords"
+        ></v-select>
+      </div>
+      <div class="search__chooser search__select" v-if="!hideCategories">
         <select
           name="categories"
           id=""
-          v-model="active_category_id"
+          v-model="formData.filters[0].external_id"
+          v-if="filter_categories"
         >
           <option
-            v-for="category in filter_categories"
-            :value="category.id"
+            v-for="category in filter_categories.results"
+            :value="category.external_id"
           >{{category.title}}</option>
         </select>
       </div>
-      <button type="submit">
+      <button class="button" type="submit">
         Zoeken
       </button>
     </div>
-    <div class="search__themes">
+    <div class="search__themes" v-if="!hideFilter">
       <h4 class="search__themes_title">Filter zoekresultaten op</h4>
       <ul v-if="active_category" class="search__themes_items">
         <li v-for="item in active_category.items" class="search__themes_item">
-          <input type="checkbox" :id="item.id">
-          <label :for="item.id">{{item.title}}</label>
+          <input
+            type="checkbox"
+            :id="item.external_id"
+            :value="item.external_id"
+            v-model="filter[item.external_id]"
+            name="search_category"
+          >
+          <label :for="item.external_id">{{item.title}}</label>
         </li>
       </ul>
     </div>

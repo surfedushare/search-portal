@@ -1,9 +1,52 @@
 
 <section class="menu">
   <nav>
-    <nuxt-link to="/">Thema’s</nuxt-link>
-    <nuxt-link to="/communities/">Community's</nuxt-link>
-    <nuxt-link to="/">Hoe werk het?</nuxt-link>
+    <ul class="menu__list">
+      <li class="menu__list_item">
+        <a
+          href="/themes/"
+          @click.prevent="toggleSubMenu"
+          class="menu__link arrow-link-grey"
+          :class="{'nuxt-link-active': isShowSubMenu}"
+        >
+          Thema’s
+        </a>
+        <transition name="fade">
+          <div class="menu__sub" v-if="isShowSubMenu">
+            <h3 class="title">Thema’s</h3>
+            <ul v-if="themes" class="menu__sub_list">
+              <li v-for="theme in themes.results" class="menu__sub_list_item">
+                <nuxt-link
+                  class="menu__sub_link arrow-link"
+                  :to="`/themes/${theme.id}/`"
+                  @click.native="closeSubMenu"
+                >
+                  {{theme.title}}
+                </nuxt-link>
+              </li>
+            </ul>
+          </div>
+        </transition>
+      </li>
+      <li class="menu__list_item">
+        <nuxt-link
+          to="/communities/"
+          class="menu__link"
+          @click.native="closeSubMenu"
+        >
+          Community's
+        </nuxt-link>
+      </li>
+      <li class="menu__list_item">
+        <nuxt-link
+          to="/how-does-it-work/"
+          class="menu__link"
+          @click.native="closeSubMenu"
+        >
+          Hoe werk het?
+        </nuxt-link>
+      </li>
+    </ul>
   </nav>
 </section>
 

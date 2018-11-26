@@ -4,18 +4,18 @@ export default {
   },
   getters: {
     themes(state) {
-      return state.themes
+      return state.themes;
     }
   },
   actions: {
     async getThemes({ commit }) {
-      const themes = await this.$axios.$get('themes/')
-      commit('SET_THEMES', themes)
+      const themes = await this.$axios.$get('themes/');
+      commit('SET_THEMES', themes);
     }
   },
   mutations: {
     SET_THEMES(state, payload) {
-      state.themes = payload
+      state.themes = payload;
     }
   }
-}
+};

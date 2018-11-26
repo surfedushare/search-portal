@@ -1,13 +1,18 @@
 
 <section class="themes">
   <h2>Thema’s</h2>
-  Zoek en vind open leermaterialen op thema
-  <ul class="themes__list">
+  <div class="themes__description">Zoek en vind open leermaterialen op thema</div>
+  <ul class="themes__list" v-if="themes">
     <li
       class="themes__item"
-      v-for="theme in themes"
+      v-for="theme in themes.results"
     >
-      <nuxt-link :to="`/themes/${theme.id}/`">{{theme.title}}</nuxt-link>
+      <nuxt-link
+        class="arrow-link"
+        :to="`/themes/${theme.id}/`"
+      >
+        {{theme.title}}
+      </nuxt-link>
     </li>
   </ul>
 </section>

@@ -7,14 +7,16 @@
 </template>
 
 <script>
-import MainHeader from './../components/MainHeader'
-import MainFooter from './../components/MainFooter'
+import MainHeader from './../components/MainHeader';
+import MainFooter from './../components/MainFooter';
 
 export default {
   components: {
     MainHeader,
     MainFooter
   },
-  mounted() {}
-}
+  mounted() {
+    this.$store.dispatch('getThemes');
+  }
+};
 </script>

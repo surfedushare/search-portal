@@ -1,3 +1,131 @@
+@import './../../assets/styles/variables';
 .materials {
+  &__items {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 
+  &__item {
+    margin: 0 0 23px;
+    list-style: none;
+    background-color: #fff;
+    position: relative;
+    font-size: 16px;
+    line-height: 1.44;
+    word-break: break-word;
+
+    &--items-in-line-1 {
+      width: 100%;
+    }
+
+    &--items-in-line-2 {
+      width: ~'calc(50% - 18px)';
+    }
+
+    &--items-in-line-3 {
+      width: ~'calc(33.333% - 18px)';
+    }
+
+    &--items-in-line-4 {
+      width: ~'calc(25% - 18px)';
+    }
+
+    &_wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      padding: 44px 17px 96px;
+      height: 100%;
+      box-shadow: 5px 5px 10px 5px rgba(204, 204, 204, 0.4);
+    }
+
+    &_title {
+      line-height: 1.2;
+    }
+
+    &_link {
+      color: @black;
+      text-decoration: none;
+    }
+
+    &_author {
+      .materials__item--items-in-line-1 & {
+        font-weight: bold;
+        display: inline-block;
+      }
+    }
+
+    &_publisher {
+      .materials__item--items-in-line-1 & {
+        display: inline-block;
+      }
+    }
+
+    &_format {
+      //text-transform: uppercase;
+    }
+
+    &_applauds {
+      background: @green url('./../../assets/images/clap_white.svg') 2px 50%
+        no-repeat;
+      background-size: 20px 20px;
+      height: 25px;
+      border-radius: 4px;
+      color: #fff;
+      display: inline-block;
+      font-family: @second-font;
+      font-size: 16px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      padding: 0 6px 0 23px;
+      letter-spacing: -0.7px;
+      min-width: 58px;
+    }
+
+    &_external_link {
+      background: @yellow url('./../../assets/images/open-link-black.svg') 50%
+        50% no-repeat;
+      background-size: 20px 20px;
+      margin: 0 0 0 10px;
+      display: inline-block;
+      width: 35px;
+      height: 25px;
+      border-radius: 4px;
+      overflow: hidden;
+      color: transparent;
+    }
+  }
+
+  &__bookmark {
+    width: 24px;
+    height: 39px;
+    position: absolute;
+    right: 17px;
+    top: -3px;
+    overflow: hidden;
+    color: transparent;
+    background: url('./../../assets/images/label.svg') 50% 0 no-repeat;
+  }
+
+  &__item_footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: @light-grey;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__item_actions {
+    display: flex;
+    align-items: center;
+  }
 }

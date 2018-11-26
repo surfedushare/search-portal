@@ -5,7 +5,7 @@ body {
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: @main-font;
   font-size: 16px;
   font-weight: normal;
   font-style: normal;
@@ -39,11 +39,9 @@ body {
 
 h1,
 .h1 {
-  font-family: ProximaSoft;
+  font-family: @second-font;
   font-size: 40px;
   font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
   line-height: 1.25;
   letter-spacing: normal;
   color: @black;
@@ -51,49 +49,34 @@ h1,
 
 h2,
 .h2 {
-  font-family: ProximaSoft;
+  font-family: @second-font;
   font-size: 38px;
   font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: @black;
 }
 
 h3,
 .h3 {
-  font-family: ProximaSoft;
+  font-family: @second-font;
   font-size: 22px;
   font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: @black;
 }
 
 h4,
 .h4 {
-  font-family: ProximaSoft;
+  font-family: @second-font;
   font-size: 16px;
   font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
   color: @black;
 }
 
 h5,
 .h5 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: @main-font;
   font-size: 20px;
   font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
   line-height: 1.15;
-  letter-spacing: normal;
   color: @black;
 }
 
@@ -127,12 +110,9 @@ h5,
   opacity: 0;
 }
 
+a,
 .link {
   color: @dark-blue;
-
-  &:hover {
-    color: @dark-blue;
-  }
 }
 
 .disable_block {
@@ -142,7 +122,33 @@ h5,
 
 .center_block {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.arrow-link {
+  &-grey:after,
+  &:after {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 16px;
+    vertical-align: middle;
+  }
+
+  &:after {
+    background: url('./../../assets/images/arrow-text.svg') 50% 50% / contain no-repeat;
+  }
+
+  &-grey:after {
+    background: url('./../../assets/images/arrow-text-grey.svg') 50% 50% / contain no-repeat;
+  }
+}
+
+pre {
+  max-width: 100%;
+  white-space: pre-wrap;
 }

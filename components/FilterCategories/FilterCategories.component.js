@@ -1,10 +1,14 @@
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'filter-categories',
   props: [],
   mounted() {},
   data() {
-    return {}
+    return {};
   },
   methods: {},
-  computed: {}
-}
+  computed: {
+    ...mapGetters(['filter_categories'])
+  }
+};

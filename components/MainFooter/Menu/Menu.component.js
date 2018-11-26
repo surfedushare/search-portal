@@ -3,8 +3,8 @@ export default {
   props: [],
   mounted() {},
   data() {
-    return {}
+    return {};
   },
   methods: {},
   computed: {}
-}
+};

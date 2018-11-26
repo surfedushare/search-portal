@@ -1,5 +1,23 @@
 
 <section class="filter-categories">
-  <h1>filter-categories Component</h1>
+  <h3>Filteren</h3>
+  <a href="#">Selectie opslaan</a>
+  <a href="#">Reset filters</a>
+  <div class="select">
+    <select name="my" >
+      <option value="">Mijn filter selecties</option>
+    </select>
+  </div>
+  <ul v-if="filter_categories && filter_categories">
+    <li v-for="category in filter_categories.results">
+      <h4>{{ category.title }}</h4>
+      <ul v-if="false">
+        <li v-for="item in category.items">
+          <input type="checkbox" :id="item.id">
+          <label :for="item.id">{{item.title}}</label>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </section>
 
