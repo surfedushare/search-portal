@@ -1,6 +1,6 @@
 import requests
 
-_API_ENDPOINT = "http://smb.edurep.kennisnet.nl/smdBroker/ws"
+_DEFAULT_API_ENDPOINT = "http://smb.edurep.kennisnet.nl/smdBroker/ws"
 
 _REQUEST_HEADERS = {'content-type': 'application/soap+xml'}
 # _REQUEST_HEADERS = {'content-type': 'text/xml'}
@@ -29,10 +29,13 @@ _REQUEST_TEMPLATE = """
 
 class SmbSoapApiClient:
 
+    def __init__(self, api_endpoint=_DEFAULT_API_ENDPOINT):
+        self.api_endpoint = api_endpoint
+
     def send_rating(self, info, rating, supplier_id, user_id):
         body = _REQUEST_TEMPLATE.format(info, rating, supplier_id, user_id)
 
-        response = requests.post(_API_ENDPOINT, data=body,
+        response = requests.post(self.api_endpoint, data=body,
                                  headers=_REQUEST_HEADERS)
 
         if response and response.status_code != requests.codes.ok:

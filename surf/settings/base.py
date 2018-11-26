@@ -194,5 +194,8 @@ OIDC_CONFIG = {
 }
 
 VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
+EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
+EDUREP_XML_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
+EDUREP_SOAP_API_ENDPOINT = "http://smb.edurep.kennisnet.nl/smdBroker/ws"
 
 EDUREP_SOAP_SUPPLIER_ID = ""

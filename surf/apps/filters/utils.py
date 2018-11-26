@@ -1,5 +1,7 @@
 from django.db.models import Count
 
+from django.conf import settings
+
 from surf.vendor.edurep.widget_endpoint.v3.api import WidgetEndpointApiClient
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
@@ -36,13 +38,15 @@ def check_and_update_filters():
             continue
 
         if not ac:
-            ac = WidgetEndpointApiClient()
+            ac = WidgetEndpointApiClient(
+                api_endpoint=settings.EDUREP_JSON_API_ENDPOINT)
 
         _update_filter_category(f_category, ac)
 
 
 def update_filter_category(filter_category):
-    ac = WidgetEndpointApiClient()
+    ac = WidgetEndpointApiClient(
+        api_endpoint=settings.EDUREP_JSON_API_ENDPOINT)
 
     if filter_category.edurep_field_id == CUSTOM_THEME_FIELD_ID:
         _update_themes(filter_category)

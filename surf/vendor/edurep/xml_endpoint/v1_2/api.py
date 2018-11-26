@@ -30,9 +30,7 @@ AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
 PUBLISHER_FIELD_ID = "lom.lifecycle.contribute.publisher"
 PUBLISHER_DATE_FILED_ID = "lom.lifecycle.contribute.publisherdate"
 
-_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
-_AUTOCOMPLETE_ENDPOINT = "{}/autocomplete".format(_API_ENDPOINT)
-_LOM_SRU_ENDPOINT = "{}/edurep/sruns".format(_API_ENDPOINT)
+_DEFAULT_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 
 _DATE_TYPE_FIELDS = {PUBLISHER_DATE_FILED_ID}
 
@@ -47,8 +45,11 @@ _EXTRA_RECORD_SCHEMA = "smbAggregatedData"
 
 class XmlEndpointApiClient:
 
+    def __init__(self, api_endpoint=_DEFAULT_API_ENDPOINT):
+        self.api_endpoint = api_endpoint
+
     def autocomplete(self, query):
-        url = "{}?prefix={}".format(_AUTOCOMPLETE_ENDPOINT, query)
+        url = "{}/autocomplete?prefix={}".format(self.api_endpoint, query)
 
         response = requests.get(url)
         if response and response.status_code != requests.codes.ok:
@@ -100,8 +101,7 @@ class XmlEndpointApiClient:
                           start_record=start_record,
                           maximum_records=maximum_records)
 
-    @staticmethod
-    def _call(query, drilldown_names=None,
+    def _call(self, query, drilldown_names=None,
               start_record=1, maximum_records=0, ordering=None,
               version="1.2", operation="searchRetrieve"):
 
@@ -129,7 +129,7 @@ class XmlEndpointApiClient:
         parameters = "&".join(["{}={}".format(k, v)
                                for k, v in parameters.items()])
 
-        url = "{}?{}".format(_LOM_SRU_ENDPOINT, parameters)
+        url = "{}/edurep/sruns?{}".format(self.api_endpoint, parameters)
 
         response = requests.get(url)
         if response and response.status_code != requests.codes.ok:

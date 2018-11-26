@@ -90,7 +90,9 @@ class MaterialSearchAPIView(APIView):
         if return_filters:
             data["drilldown_names"] = _get_filter_categories()
 
-        ac = XmlEndpointApiClient()
+        ac = XmlEndpointApiClient(
+            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
         res = ac.search(**data)
 
         records = _add_extra_parameters_to_materials(request.user,
@@ -127,7 +129,9 @@ class KeywordsAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        ac = XmlEndpointApiClient()
+        ac = XmlEndpointApiClient(
+            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
         res = ac.autocomplete(**data)
         return Response(res)
 
@@ -159,7 +163,9 @@ class MaterialAPIView(APIView):
 
         else:
             # return overview of Materials
-            ac = XmlEndpointApiClient()
+            ac = XmlEndpointApiClient(
+                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
             res = ac.search([],
                             ordering="-{}".format(PUBLISHER_DATE_FILED_ID),
                             page_size=_MATERIALS_COUNT_IN_OVERVIEW)
@@ -203,7 +209,9 @@ def _get_material_details_by_id(material_id):
     :param material_id: id of material in EduRep
     :return: list of requested materials
     """
-    ac = XmlEndpointApiClient()
+    ac = XmlEndpointApiClient(
+        api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
     res = ac.get_materials_by_id(['"{}"'.format(material_id)],
                                  drilldown_names=[_DISCIPLINE_FILTER])
 
@@ -244,7 +252,9 @@ class MaterialRatingAPIView(APIView):
 
         surfconext_auth = getattr(request.user, "surfconext_auth")
         if surfconext_auth:
-            sac = SmbSoapApiClient()
+            sac = SmbSoapApiClient(
+                api_endpoint=settings.EDUREP_SOAP_API_ENDPOINT)
+
             sac.send_rating(data["material_url"],
                             data["rating"],
                             settings.EDUREP_SOAP_SUPPLIER_ID,
@@ -310,7 +320,9 @@ class CollectionViewSet(ModelViewSet):
 
             res = []
             if ids:
-                ac = XmlEndpointApiClient()
+                ac = XmlEndpointApiClient(
+                    api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
                 res = ac.get_materials_by_id(ids, **data)
                 res = res.get("records", [])
                 res = _add_extra_parameters_to_materials(request.user, res)
