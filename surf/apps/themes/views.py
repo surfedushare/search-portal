@@ -36,6 +36,10 @@ class ThemeViewSet(ListModelMixin,
 
     @action(methods=['get'], detail=True)
     def disciplines(self, request, pk=None, **kwargs):
+        """
+        Returns disciplines related to the theme
+        """
+
         instance = self.get_object()
 
         res = []
@@ -47,23 +51,36 @@ class ThemeViewSet(ListModelMixin,
 
     @action(methods=['get'], detail=True)
     def communities(self, request, pk=None, **kwargs):
+        """
+        Returns the communities related to the theme
+        """
+
         instance = self.get_object()
 
         qs = Collection.objects.filter(materials__themes__id=instance.id)
         ids = qs.values_list('communities__id', flat=True)
-        res = []
-        if ids:
-            res = CommunitySerializer(
-                many=True,
-                context=self.get_serializer_context()
-            ).to_representation(
-                Community.objects.filter(id__in=ids).all()
-            )
+        qs = Community.objects.filter(id__in=ids)
 
+        context = self.get_serializer_context()
+        page = self.paginate_queryset(qs)
+        if page is not None:
+            serializer = CommunitySerializer(page, many=True, context=context)
+            return self.get_paginated_response(serializer.data)
+
+        res = CommunitySerializer(
+            many=True, context=context
+        ).to_representation(
+            qs.all()
+        )
         return Response(res)
 
     @action(methods=['get'], detail=True, url_path="community-collections")
     def community_collections(self, request, pk=None, **kwargs):
+        """
+        Returns the overview of collections from communities
+        related to the theme
+        """
+
         instance = self.get_object()
 
         qs = Material.objects.filter(themes__id=instance.id)

@@ -57,36 +57,50 @@ class CommunityViewSet(ListModelMixin,
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def collections(self, request, pk=None, **kwargs):
+        """
+        Returns community collections
+        """
+
         instance = self.get_object()
 
+        qs = instance.collections
         if request.method in {"POST", "DELETE"}:
             # validate request parameters
             serializer = CollectionShortSerializer(many=True,
                                                    data=request.data)
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
+            collection_ids = [d["id"] for d in data]
 
             self._check_access(request.user,
                                instance=instance,
-                               collection_ids=[d["id"] for d in data])
+                               collection_ids=collection_ids)
 
             if request.method == "POST":
                 self._add_collections(instance, data)
+                qs = qs.filter(id__in=collection_ids)
 
             elif request.method == "DELETE":
                 self._delete_collections(instance, data)
+                return Response()
 
-        res = []
-        if instance.collections.exists():
-            qs = instance.collections.annotate(
-                community_cnt=Count('communities'))
+        qs = qs.annotate(community_cnt=Count('communities'))
 
-            res = CollectionSerializer(many=True).to_representation(qs.all())
+        if request.method == "GET":
+            page = self.paginate_queryset(qs)
+            if page is not None:
+                serializer = CollectionSerializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
 
+        res = CollectionSerializer(many=True).to_representation(qs.all())
         return Response(res)
 
     @action(methods=['get'], detail=True)
     def themes(self, request, pk=None, **kwargs):
+        """
+        Returns themes related to community
+        """
+
         instance = self.get_object()
 
         ids = instance.collections.values_list("materials__themes__id",
@@ -101,6 +115,10 @@ class CommunityViewSet(ListModelMixin,
 
     @action(methods=['get'], detail=True)
     def disciplines(self, request, pk=None, **kwargs):
+        """
+        Returns disciplines related to collection materials
+        """
+
         instance = self.get_object()
 
         ids = instance.collections.values_list("materials__disciplines__id",
