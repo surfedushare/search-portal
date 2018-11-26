@@ -17,6 +17,7 @@
           push-tags
           v-model="formData.search_text"
           name="keywords"
+          :resetOnOptionsChange="true"
         ></v-select>
       </div>
       <div class="search__chooser search__select" v-if="!hideCategories">

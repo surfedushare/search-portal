@@ -37,7 +37,7 @@
   border-radius: 7px;
   background: transparent;
   box-sizing: border-box;
-  height: 36px;
+  height: 50px;
 
   &::-ms-expand {
     display: none;
@@ -46,12 +46,13 @@
   &:before {
     content: '';
     position: absolute;
-    right: 8px;
+    right: 14px;
     top: 50%;
-    transform: translate(0, -50%);
-    border-top: 8px solid @dark-blue;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
+    transform: translate(0, -50%) rotate(90deg);
+    width: 13px;
+    height: 16px;
+    background: url('./../../assets/images/arrow-text-grey.svg') 50% 50% no-repeat;
+    background-size: contain;
   }
 
   &--focused {
@@ -60,7 +61,8 @@
 
   select {
     width: 100%;
-    height: 35px;
+    height: 48px;
+    min-height: 100%;
     font-family: 'Lato';
     font-size: 16px;
     font-weight: normal;
@@ -73,12 +75,13 @@
     appearance: none;
     box-shadow: none;
     display: block;
-    color: #000;
+    color: @dark-grey;
     border-radius: 0;
     border: 0;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0 12px;
     box-sizing: border-box;
+    cursor: pointer;
 
     &::-ms-expand {
       display: none;

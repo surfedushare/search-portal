@@ -20,11 +20,18 @@ export default {
     };
   },
   watch: {
+    /**
+     * Watcher for v-model
+     * @param value
+     */
     value(value) {
       this.inputVal = value;
     }
   },
   methods: {
+    /**
+     * Event: change
+     */
     change() {
       const inputVal = !this.value;
       if (this.emit_root) {

@@ -15,9 +15,7 @@ export default {
   components: {
     StarRating
   },
-  mounted() {
-    console.log(11111, this);
-  },
+  mounted() {},
   data() {
     return {};
   },

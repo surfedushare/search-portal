@@ -37,13 +37,49 @@
       position: relative;
       overflow: hidden;
       border-radius: 10px;
-      padding: 44px 17px 96px;
       height: 100%;
       box-shadow: 5px 5px 10px 5px rgba(204, 204, 204, 0.4);
     }
 
+    &--items-in-line-1 &_wrapper {
+      padding: 32px 23px 32px 35px;
+      display: flex;
+    }
+
+    &_main_info {
+
+    }
+
+    &--items-in-line-1 &_main_info {
+      flex: 1 1 auto;
+    }
+
+    &_subinfo {
+
+    }
+
+    &--items-in-line-1 &_subinfo {
+      flex-shrink: 0;
+      width: 230px;
+      margin: 0 0 0 40px;
+    }
+
+    &--items-in-line-2 &_wrapper,
+    &--items-in-line-3 &_wrapper,
+    &--items-in-line-4 &_wrapper {
+      padding: 44px 17px 96px;
+    }
+
     &_title {
       line-height: 1.2;
+    }
+
+    &--items-in-line-1 &_title {
+      margin: 0 0 10px;
+    }
+
+    &--items-in-line-1 &_date {
+      padding: 3px 0 0;
     }
 
     &_link {
@@ -91,13 +127,39 @@
       background: @yellow url('./../../assets/images/open-link-black.svg') 50%
         50% no-repeat;
       background-size: 20px 20px;
-      margin: 0 0 0 10px;
+      margin: 0 0 0 7px;
       display: inline-block;
       width: 35px;
       height: 25px;
       border-radius: 4px;
       overflow: hidden;
       color: transparent;
+    }
+
+    &_footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &--items-in-line-2 &_footer,
+    &--items-in-line-3 &_footer,
+    &--items-in-line-4 &_footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: @light-grey;
+      padding: 15px;
+    }
+
+    &_actions {
+      display: flex;
+      align-items: center;
+    }
+
+    &_description {
+      padding: 16px 0 0;
     }
   }
 
@@ -110,22 +172,5 @@
     overflow: hidden;
     color: transparent;
     background: url('./../../assets/images/label.svg') 50% 0 no-repeat;
-  }
-
-  &__item_footer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: @light-grey;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__item_actions {
-    display: flex;
-    align-items: center;
   }
 }

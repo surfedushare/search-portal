@@ -2,12 +2,11 @@
   <section class="container search">
     <div>
       <div
-        v-if="!materials_loading"
         class="search__info"
       >
         <div class="center_block">
           <div class="search__info_top">
-            <nuxt-link to="/">Home</nuxt-link>
+            <BreadCrumbs :items="items" />
             <h2 v-if="materials">Zoekresultaten ({{ materials.records_total }})</h2>
           </div>
           <Search
@@ -15,14 +14,19 @@
             :hide-categories="true"
             :hide-filter="true"
             v-model="search"
-            class="main__info_search"
+            class="search__info_search"
           />
         </div>
       </div>
-      <div class="center_block">
+      <div class="search__tools center_block">
+        <div class="select">
+          <select name="tools__filter">
+            <option value="">Sorteren op</option>
+          </select>
+        </div>
         <button
-          class="button"
-          @click.prevent="changeCount"
+          class="search__tools_type_button"
+          @click.prevent="changeViewType"
         >
           Kaartweergave
         </button>
@@ -35,7 +39,9 @@
       >
         <div class="search__filter">
           <div class="search__filter_sticky">
-            <FilterCategories />
+            <FilterCategories
+              v-model="search"
+            />
           </div>
         </div>
 
@@ -62,6 +68,7 @@ import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';
 import Themes from '~/components/Themes';
 import Spinner from '~/components/Spinner';
+import BreadCrumbs from '~/components/BreadCrumbs';
 
 export default {
   components: {
@@ -70,16 +77,30 @@ export default {
     PopularList,
     Materials,
     Themes,
-    Spinner
+    Spinner,
+    BreadCrumbs
   },
   data() {
     return {
       search_text: [],
-      search: false
+      search: false,
+      items: [
+        {
+          title: 'Home',
+          url: '/'
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
+  },
+  watch: {
+    search(search) {
+      if (search) {
+        this.$store.dispatch('searchMaterials', search);
+      }
+    }
   },
   mounted() {
     const search = Object.assign({}, this.$route.query, {
@@ -91,6 +112,9 @@ export default {
     this.$store.dispatch('searchMaterials', search);
   },
   methods: {
+    /**
+     * Load next materials
+     */
     loadMore() {
       const { search } = this;
       const { page_size, page, records_total } = this.materials;
@@ -101,8 +125,15 @@ export default {
         );
       }
     },
-    changeCount() {
-      this.$store.dispatch('searchMaterialsInLine', 3);
+    /**
+     * Change 1 item in line to 3 and back.
+     */
+    changeViewType() {
+      if (this.materials_in_line === 1) {
+        this.$store.dispatch('searchMaterialsInLine', 3);
+      } else {
+        this.$store.dispatch('searchMaterialsInLine', 1);
+      }
     }
   }
 };
@@ -114,14 +145,22 @@ export default {
   position: relative;
   z-index: 1;
   &__info {
-    padding: 104px 0 0;
-    margin-bottom: 191px;
+    padding: 97px 0 0;
+    margin-bottom: 82px;
     position: relative;
+    min-height: 300px;
 
     &_top {
       border-radius: 20px;
       background: fade(@light-grey, 90%);
-      padding: 65px 46px;
+      padding: 65px 576px 65px 46px;
+      min-height: 274px;
+      margin: 0 0 -68px;
+    }
+
+    &_search {
+      width: 996px;
+      margin: auto;
     }
 
     &_title {
@@ -145,16 +184,44 @@ export default {
       font-size: 16px;
       font-weight: bold;
     }
-
-    &_search {
-      width: 996px;
-      margin: auto;
-    }
   }
 
   &__wrapper {
     display: flex;
     position: relative;
+  }
+
+  &__tools {
+    width: 100%;
+    justify-content: flex-end;
+    display: flex;
+    margin-bottom: -30px;
+    position: relative;
+    z-index: 1;
+
+    &_type_button {
+      border-radius: 0;
+      border: 0;
+      color: @dark-blue;
+      background: transparent url('./../../assets/images/card-view-copy.svg') 0
+        50% no-repeat;
+      font-family: @second-font;
+      font-size: 16px;
+      font-weight: bold;
+      height: 50px;
+      padding: 0 8px 0 40px;
+      margin: 0 0 0 31px;
+      cursor: pointer;
+
+      &:focus,
+      &:active {
+        outline: none;
+      }
+    }
+    .select {
+      height: 50px;
+      width: 251px;
+    }
   }
 
   &__filter {
@@ -167,6 +234,8 @@ export default {
       top: 0;
       left: 0;
       width: 100%;
+      padding-top: 102px;
+      padding-bottom: 102px;
     }
   }
 
@@ -174,6 +243,7 @@ export default {
     position: relative;
     margin: 0 0 132px;
     flex: 1 1 auto;
+    padding: 98px 0 0;
   }
 }
 </style>

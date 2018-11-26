@@ -1,20 +1,32 @@
 
 <section class="filter-categories">
-  <h3>Filteren</h3>
-  <a href="#">Selectie opslaan</a>
-  <a href="#">Reset filters</a>
-  <div class="select">
+  <h3 class="filter-categories__title">Filteren</h3>
+  <div class="filter-categories__links">
+    <a href="#" class="filter-categories__save">Selectie opslaan</a>
+    <nuxt-link to="/" class="filter-categories__reset">Reset filters</nuxt-link>
+  </div>
+  <div class="select filter-categories__select">
     <select name="my" >
       <option value="">Mijn filter selecties</option>
     </select>
   </div>
-  <ul v-if="filter_categories && filter_categories">
-    <li v-for="category in filter_categories.results">
-      <h4>{{ category.title }}</h4>
-      <ul v-if="false">
-        <li v-for="item in category.items">
-          <input type="checkbox" :id="item.id">
-          <label :for="item.id">{{item.title}}</label>
+
+  <ul v-if="categories" class="filter-categories__items">
+    <li v-for="(category, index) in categories.results" class="filter-categories__item">
+      <h4
+        @click="onToggleCategory(category.id)"
+        class="filter-categories__item_title"
+      >{{ category.title }}</h4>
+      <ul v-if="category.selected"  class="filter-categories__subitems">
+        <li v-for="(item, indexItem) in category.items" class="filter-categories__subitem">
+          <input
+            type="checkbox"
+            :id="item.external_id"
+            :value="item.external_id"
+            v-model="filter[index].items[indexItem]"
+            @change="onChange"
+          >
+          <label :for="item.external_id">{{item.title}}</label>
         </li>
       </ul>
     </li>

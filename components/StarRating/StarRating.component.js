@@ -22,19 +22,29 @@ export default {
     };
   },
   methods: {
+    /**
+     * MouseOver on star items
+     * @param index - index of element
+     */
     star_over(index) {
       if (!this.disabled) {
         this.temp_value = index;
-        // return this.value = index;
       }
     },
 
+    /**
+     * MouseOut on star items
+     */
     star_out() {
       if (!this.disabled) {
         return (this.temp_value = this.value);
       }
     },
 
+    /**
+     * Set v-model value
+     * @param value
+     */
     setValue(value) {
       if (!this.disabled) {
         this.$emit('input', value);
