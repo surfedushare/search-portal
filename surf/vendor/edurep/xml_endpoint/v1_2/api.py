@@ -186,7 +186,7 @@ def _date_filter_to_cql(field_id, date_range):
 
 
 def _list_filter_to_cql(field_id, values):
-    return " OR ".join(['{} exact "{}"'.format(field_id, v)
+    return " OR ".join(['({} exact "{}")'.format(field_id, v)
                         for v in values])
 
 
