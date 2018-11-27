@@ -14,7 +14,6 @@ and docker-compose.
 
 ```sh
 git clone git@github.com:surfedushare/surf-backend.git
-
 cd surf-backend
 ```
 
@@ -25,7 +24,6 @@ according to template file `surf/settings/local.py.template`
 
 ```sh
 python3 -m venv .venv
-
 source .venv/bin/activate
 ```
 
@@ -51,5 +49,5 @@ sudo docker-compose -f docker-compose-local.yml up -d
 * Requires [Django Filter](https://github.com/carltongibson/django-filter/)
 * Requires [Psycopg](http://initd.org/psycopg/)
 * Requires [Requests](https://github.com/requests/requests)
-* Requires [pyoidc](https://github.com/rohe/pyoidc)
+* Requires [PyOidc](https://github.com/rohe/pyoidc)
 * Requires [Pillow](https://github.com/python-pillow/Pillow)

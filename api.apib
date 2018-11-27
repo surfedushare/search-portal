@@ -513,7 +513,7 @@ Surf API
             Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
 
 + Response 200 (application/json)
-    + Attributes (Pagination Filter Response)
+    + Attributes (array[Filter Short])
 
 ### POST [POST /api/v1/filters/]
 
@@ -674,15 +674,20 @@ Surf API
  - end_Date: `2018-10-15` (string) - end date for filtration
  - items: (array[Filter item]) - filter items
 
+## Filter Short (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - filter id
+ - title: `test filter` (string) - filter title
+ - start_Date: `2018-10-15` (string) - start date for filtration
+ - end_Date: `2018-10-15` (string) - end date for filtration
+
 ## Filter Create item (object)
  - category_item_id: `684de1cd-d875-4f08-b3b8-f99a1067485b` (string) - filter category item id
 
 ## Filter Create (object)
  - title: `test filter` (string) - filter title
  - items: (array[Filter Create item], optional) - filter items
-
-## Pagination Filter Response (Pagination Response)
- - results: Filter (array[Filter])
+ - start_Date: `2018-10-15` (string) - start date for filtration
+ - end_Date: `2018-10-15` (string) - end date for filtration
 
 ## Collection (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id

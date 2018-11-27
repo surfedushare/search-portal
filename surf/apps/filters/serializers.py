@@ -29,7 +29,14 @@ class FilterItemSerializer(serializers.ModelSerializer):
         fields = ('id', 'category_item_id', 'category_id',)
 
 
-class FilterSerializer(serializers.ModelSerializer):
+class FilterShortSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Filter
+        fields = ('id', 'title', 'start_date', 'end_date',)
+
+
+class FilterSerializer(FilterShortSerializer):
     items = FilterItemSerializer(many=True, required=False)
 
     def create(self, validated_data):

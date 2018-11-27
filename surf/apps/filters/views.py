@@ -13,7 +13,8 @@ from surf.apps.filters.models import (
 
 from surf.apps.filters.serializers import (
     FilterCategorySerializer,
-    FilterSerializer
+    FilterSerializer,
+    FilterShortSerializer
 )
 
 
@@ -34,6 +35,13 @@ class FilterViewSet(ModelViewSet):
     queryset = Filter.objects.none()
     serializer_class = FilterSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = None
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return FilterShortSerializer
+
+        return FilterSerializer
 
     def get_queryset(self):
         user = self.request.user
