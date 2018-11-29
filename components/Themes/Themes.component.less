@@ -25,4 +25,20 @@
   a {
     text-decoration: none;
   }
+
+  &.material__info_thems{
+    width: 50%;
+    h2{
+      font-size: 22px;
+      padding: 0 0 7px;
+      margin: 0 0 32px;
+      border-bottom: 1px solid #f4f4f4;
+    }
+    .themes__description{
+      display: none;
+    }
+    .themes__item:nth-child(2) ~ .themes__item{
+      display: none;
+    }
+  }
 }

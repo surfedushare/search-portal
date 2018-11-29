@@ -63,6 +63,17 @@
     }
   }
 
+  &--big &__star {
+    padding-right: 0;
+    vertical-align: middle;
+
+    &:before {
+      width: 28px;
+      height: 28px;
+      box-sizing: border-box;
+    }
+  }
+
   &--min &__star {
     padding-right: 5px;
 
@@ -89,5 +100,13 @@
   &__counter {
     display: inline-block;
     vertical-align: text-bottom;
+    .star-rating--big &{
+      font-weight: bold;
+      font-size: 18px;
+    }
+    &_big{
+      display: block;
+      margin: -6px 0 0 6px;
+    }
   }
 }
