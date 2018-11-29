@@ -1,7 +1,8 @@
 
 <section class="popular-list">
-  <h2>Community’s</h2>
-  <div class="popular-list__description">Open leermaterialen vanuit vakcommunity’s</div>
+  <h2 v-if="type !== 'material'">Community’s</h2>
+  <h3 v-else>In collectie van</h3>
+  <div class="popular-list__description" v-if="type !== 'material'">Open leermaterialen vanuit vakcommunity’s</div>
   <ul class="popular-list__items" v-if="communities">
     <li class="popular-list__item" v-for="community in communities.results">
       <nuxt-link
@@ -13,7 +14,7 @@
       </nuxt-link>
     </li>
   </ul>
-  <div class="popular-list--all">
+  <div class="popular-list--all"  v-if="type !== 'material'">
     <nuxt-link
       to="/communities/"
       class="arrow-link"

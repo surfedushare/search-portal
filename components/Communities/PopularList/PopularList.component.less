@@ -1,5 +1,10 @@
 @import './../../../assets/styles/variables';
 .popular-list {
+  &.material__info_communities{
+    h3{
+      margin-bottom: 39px;
+    }
+  }
   &__description {
     font-size: 20px;
     line-height: 1.15;
@@ -10,12 +15,29 @@
     list-style: none;
     padding: 0;
     margin: 0;
+
+    .material__info_communities &{
+      display: flex;
+    }
   }
 
   &__item {
     list-style: none;
     margin: 0 0 30px;
     position: relative;
+
+    .material__info_communities &{
+      width: 50%;
+      &:nth-child(2){
+        margin-left: 10px;
+      }
+    }
+
+    &:nth-child(2) ~ .popular-list__item{
+      .material__info_communities &{
+        display: none;
+      }
+    }
   }
 
   &__title {

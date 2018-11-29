@@ -16,5 +16,10 @@
       v-model="temp_value"
       :disabled="disabled">
   </label>
-  <span class="star-rating__counter">({{counter}})</span>
+  <span class="star-rating__counter" v-if="type === 'default'">({{counter}})</span>
+  <span class="star-rating__counter" v-else >{{temp_value}} / 5</span>
+  <span class="star-rating__counter_big" v-if="type === 'big'" >
+    {{counter}} waarderingen
+  </span>
+
 </div>

@@ -1,0 +1,37 @@
+<div class="material__left">
+  <div class="material__left_sticky">
+    <div class="material__grey_block">
+      <h4>Vakgebieden</h4>
+      Biologie
+      <h4>Leerniveaus</h4>
+      WO Bachelor
+      <h4>Soort materiaal</h4>
+      Video
+      <h4>Bestandsformaat</h4>
+      {{ material.format }}
+      <h4>Publicatiedatum</h4>
+      {{ material.date }}
+      <h4>Taal</h4>
+      {{ material.language }}
+      <h4>Gebruiksrechten</h4>
+      <span
+        class="material__grey_block-copyright"
+        :class="material.copyright"
+      ></span>
+      Naamsvermelding - Gelijk delen
+      <a
+        :href="material.url"
+        class="button button--full-width material__grey_block-btn"
+        target="_blank"
+      >Open link</a>
+    </div>
+    <div class="material__left-box">
+      <h3>Materiaal toevoegen aan collectie</h3>
+      <p>Om collecties te kunnen maken moet u eerst inloggen</p>
+      <a
+        href="/login/"
+        class="arrow-link"
+      >Inloggen met SURFconext</a>
+    </div>
+  </div>
+</div>
