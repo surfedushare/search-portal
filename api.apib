@@ -1,9 +1,9 @@
 FORMAT: 1A
 HOST: https://surf.stg.mqd.me
 
-# Surf
+# SURF
 
-Surf API
+SURF API
 
 ## Errors
 
@@ -23,8 +23,8 @@ You can get token after login.
 
 ## Login  [/api/v1/login/]
 Redirects user to SURFconext authentication endpoint for authentication by
-OpenID flow. After user is authenticated he can be redirected to specified
-redirect URL.
+OpenID Connect flow. After user is authenticated he can be redirected
+to specified redirect URL (redirect URL should be added to ).
 
 ### GET [GET /api/v1/login/{?redirect_url}]
 
@@ -771,7 +771,7 @@ Deletes user filter by its identifier.
 
 ## Community (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - community id
- - external_id: `urn:collab:group:test.surfconext.nl:nl:surfnet:diensten:admin_team_mujina` (string) - unique id of related group in SurfConext
+ - external_id: `urn:collab:group:test.surfconext.nl:nl:surfnet:diensten:admin_team_mujina` (string) - unique id of related group in SURFconext
  - name: `test community` (string) - community name
  - description: `test community desc` (string) - community description
  - website_url: `https://test-community.org` (string) - community website URL
