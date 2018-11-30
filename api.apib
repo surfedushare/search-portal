@@ -7,12 +7,24 @@ Surf API
 
 ## Errors
 
-4xx errors are client errors, so the only way to handle them is to validate input data and repeat request.
+4xx errors are client errors, so the only way to handle them is to validate
+input data and repeat request.
 5xx errors are server errors and should be handled with repeated requests.
 
 # Group Authentication
 
+## Note
+All authorized requests should be with authorization header
+
+```http
+Authorization: Token 7ca57767ae16bb878f62946b0a8bb0385c9607d8
+```
+You can get token after login.
+
 ## Login  [/api/v1/login/]
+Redirects user to SURFconext authentication endpoint for authentication by
+OpenID flow. After user is authenticated he can be redirected to specified
+redirect URL.
 
 ### GET [GET /api/v1/login/{?redirect_url}]
 
@@ -33,6 +45,7 @@ Surf API
             }
 
 ## Logout  [/api/v1/logout/]
+Deletes the Token object assigned to the current User object.
 
 ### GET [GET /api/v1/logout/]
 
@@ -55,6 +68,7 @@ Surf API
 ## User Profile Resource [/api/v1/users/me/]
 
 ### GET [GET /api/v1/users/me/]
+Returns some detailed information about current user.
 
 + Request (application/json)
 
@@ -70,6 +84,7 @@ Surf API
 ## Search Result Resource [/api/v1/materials/search/]
 
 ### POST [POST /api/v1/materials/search/]
+Provides a search for materials in Edurep using some search text and/or filters.
 
 + Request (application/json)
     + Attributes (Search Request)
@@ -82,6 +97,7 @@ Surf API
 ## Material Rating Resource [/api/v1/materials/rating/]
 
 ### POST [POST /api/v1/materials/rating/]
+Allows to set material rating by current user.
 
 + Request (application/json)
 
@@ -99,6 +115,7 @@ Surf API
 ## Keywords Resource [/api/v1/keywords/]
 
 ### GET [GET /api/v1/keywords/{?query}]
+Returns keywords for query text.
 
 + Parameters
   + query (string) - query string
@@ -113,6 +130,8 @@ Surf API
 ## Material Array [/api/v1/materials/]
 
 ### GET [GET /api/v1/materials/{?external_id}]
+Returns an overview from 4 materials if `external_id` is not specified.
+Returns details of material by its Edurep identifier if `external_id` is set.
 
 + Parameters
   + external_id (string, optional) - filter materials by external id
@@ -125,6 +144,7 @@ Surf API
 ## Material Resource  [/api/v1/materials/{external_id_base64}/]
 
 ### GET [GET /api/v1/materials/{external_id_base64}/]
+Returns details of material by base64 representation of its Edurep identifier.
 
 + Parameters
   + external_id_base64: `d3VyX3N0YWZmOm9haTpsaWJyYXJ5Lnd1ci5ubDp3dXJwdWJzLzUzOTYyNg==` (string) - External id of material in base64 format.
@@ -139,6 +159,7 @@ Surf API
 ## Applaud Material Array [/api/v1/applaud-materials/]
 
 ### GET [GET /api/v1/applaud-materials/{?material__external_id}]
+Returns an array of records with information about materials applauded by user.
 
 + Parameters
   + material__external_id (string, optional) - filter applauds by material external id in edurep
@@ -153,6 +174,7 @@ Surf API
     + Attributes (Pagination Applaud Material Response)
 
 ### POST [POST /api/v1/applaud-materials/]
+Marks the material as applauded by current user.
 
 + Request (application/json)
 
@@ -166,6 +188,7 @@ Surf API
     + Attributes (Applaud Material)
 
 ### DELETE [DELETE /api/v1/applaud-materials/{?material__external_id}]
+Removes applauds of current user for the materials.
 
 + Parameters
   + material__external_id (string, optional) - filter applauds by material external id in edurep
@@ -183,10 +206,15 @@ Surf API
 ## Collection Array [/api/v1/collections/]
 
 ### GET [GET /api/v1/collections/{?is_owner,is_shared}]
+Returns the array of collections, available for current user.
+Available collections for user are:
+* collections, created by user
+* shared collections
+* collections of communities
 
 + Parameters
-  + is_owner: `true` (boolan) - filter/exclude user collections.
-  + is_shared: `true` (boolan) - filter/exclude shared collections.
+  + is_owner: `true` (boolean, optional) - filter/exclude user collections.
+  + is_shared: `true` (boolean, optional) - filter/exclude shared collections.
 
 + Request (application/json)
 
@@ -198,6 +226,7 @@ Surf API
     + Attributes (Pagination Collection Response)
 
 ### POST [POST /api/v1/collections/]
+Creates collection by current user.
 
 + Request (application/json)
 
@@ -213,6 +242,7 @@ Surf API
 ## Collection Resource  [/api/v1/collections/{id}/]
 
 ### GET [GET /api/v1/collections/{id}/]
+Returns the collection by its identifier if collection is available for user.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
@@ -227,6 +257,7 @@ Surf API
     + Attributes (Collection)
 
 ### PUT [PUT /api/v1/collections/{id}/]
+Changes the collection by its identifier if the user is owner of collection.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
@@ -243,6 +274,7 @@ Surf API
     + Attributes (Collection)
 
 ### DELETE [DELETE /api/v1/collections/{id}/]
+Deletes the collection by its identifier if the user is owner of collection.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
@@ -258,6 +290,8 @@ Surf API
 ## Collection Materials Array  [/api/v1/collections/{id}/materials/]
 
 ### GET [GET /api/v1/collections/{id}/materials/{?page,page_size}]
+Returns the array of materials from specified collection if collection
+is available for user.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
@@ -274,6 +308,7 @@ Surf API
     + Attributes (array[Material])
 
 ### POST [POST /api/v1/collections/{id}/materials/]
+Adds materials to specified collection if the user is owner of collection.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
@@ -290,6 +325,7 @@ Surf API
     + Attributes (array[Material Short])
 
 ### DELETE [DELETE /api/v1/collections/{id}/materials/]
+Deletes materials from specified collection if the user is owner of collection.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
@@ -310,6 +346,7 @@ Surf API
 ## Themes Array [/api/v1/themes/]
 
 ### GET [GET /api/v1/themes/]
+Returns array of themes.
 
 + Request (application/json)
 
@@ -319,6 +356,7 @@ Surf API
 ## Theme Resource  [/api/v1/themes/{id}/]
 
 ### GET [GET /api/v1/themes/{id}/]
+Returns the theme by its identifier.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
@@ -331,6 +369,7 @@ Surf API
 ## Theme Disciplines Array  [/api/v1/themes/{id}/disciplines/]
 
 ### GET [GET /api/v1/themes/{id}/disciplines/]
+Returns array of disciplines of specified theme.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
@@ -343,6 +382,8 @@ Surf API
 ## Theme Communities Array  [/api/v1/themes/{id}/communities/]
 
 ### GET [GET /api/v1/themes/{id}/communities/]
+Returns array of communities which collections contain the material
+related to specified theme.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
@@ -355,6 +396,8 @@ Surf API
 ## Theme Collections Array  [/api/v1/themes/{id}/community-collections/]
 
 ### GET [GET /api/v1/themes/{id}/community-collections/]
+Returns an overview from 4 community collections which contain the material
+related to specified theme.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
@@ -369,11 +412,12 @@ Surf API
 ## Community Array [/api/v1/communities/]
 
 ### GET [GET /api/v1/communities/{?material_id,is_member,is_admin}]
+Returns array of communities.
 
 + Parameters
-  + material_id: `external id` (string) - Filter by material external id in community collections.
-  + is_member: `true` (boolean) - Filter/exclude communities where user is member.
-  + is_admin: `true` (boolean) - Filter/exclude communities where user is admin.
+  + material_id: `external id` (string, optional) - Filter by material external id in community collections.
+  + is_member: `true` (boolean, optional) - Filter/exclude communities where user is member.
+  + is_admin: `true` (boolean, optional) - Filter/exclude communities where user is admin.
 
 + Request (application/json)
 
@@ -388,6 +432,7 @@ Surf API
 ## Community Resource  [/api/v1/communities/{id}/]
 
 ### GET [GET /api/v1/communities/{id}/]
+Returns community by its identifier.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
@@ -402,6 +447,7 @@ Surf API
     + Attributes (Community)
 
 ### PUT [PUT /api/v1/communities/{id}/]
+Changes community by its identifier if the user is admin of community.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
@@ -420,6 +466,7 @@ Surf API
 ## Community Collections Array  [/api/v1/communities/{id}/collections/]
 
 ### GET [GET /api/v1/communities/{id}/collections/]
+Returns array of community collections.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
@@ -434,6 +481,7 @@ Surf API
     + Attributes (Pagination Collection Response)
 
 ### POST [POST /api/v1/communities/{id}/collections/]
+Adds collections to specified community if current user is admin of community.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
@@ -450,6 +498,7 @@ Surf API
     + Attributes (array[Collection])
 
 ### DELETE [DELETE /api/v1/communities/{id}/collections/]
+Deletes collections from community if current user is admin of community.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
@@ -468,6 +517,7 @@ Surf API
 ## Community Themes Array  [/api/v1/communities/{id}/themes/]
 
 ### GET [GET /api/v1/communities/{id}/themes/]
+Returns array of themes related to materials from community collections.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
@@ -480,6 +530,7 @@ Surf API
 ## Community Disciplines Array  [/api/v1/communities/{id}/disciplines/]
 
 ### GET [GET /api/v1/communities/{id}/disciplines/]
+Returns array of disciplines related to materials from community collections.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
@@ -494,6 +545,7 @@ Surf API
 ## Filter Categories Array [/api/v1/filter-categories/]
 
 ### GET [GET /api/v1/filter-categories/]
+Returns array of filter categories and their items.
 
 + Request (application/json)
 
@@ -505,6 +557,7 @@ Surf API
 ## Filter Array [/api/v1/filters/]
 
 ### GET [GET /api/v1/filters/]
+Returns array of filters for current user.
 
 + Request (application/json)
 
@@ -516,6 +569,7 @@ Surf API
     + Attributes (array[Filter Short])
 
 ### POST [POST /api/v1/filters/]
+Adds the filter for current user.
 
 + Request (application/json)
 
@@ -531,6 +585,7 @@ Surf API
 ## Filter Resource  [/api/v1/filters/{id}/]
 
 ### GET [GET /api/v1/filters/{id}/]
+Returns user filter by its identifier.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the filter.
@@ -545,6 +600,7 @@ Surf API
     + Attributes (Filter)
 
 ### PUT [PUT /api/v1/filters/{id}/]
+Changes user filter by its identifier.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the filter.
@@ -561,6 +617,7 @@ Surf API
     + Attributes (Filter)
 
 ### DELETE [DELETE /api/v1/filters/{id}/]
+Deletes user filter by its identifier.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the filter.
@@ -589,10 +646,10 @@ Surf API
 
 ## Request Filter Data (object)
  - external_id: `lom.classification.obk.discipline.id` (string) - filter category id
- - items: (array[string]) - list of exteral_id of filter items
+ - items: (array[string]) - array of exteral_id of filter items
 
 ## Search Request (object)
- - search_text: (array[string]) - list of searched texts
+ - search_text: (array[string]) - array of searched texts
  - filters: (array[Request Filter Data], optional) - filters to search materials
  - page: `1` (number, optional) - page number, default `1`
  - page_size: `5` (number, optional) - page size, default `5`
@@ -686,8 +743,8 @@ Surf API
 ## Filter Create (object)
  - title: `test filter` (string) - filter title
  - items: (array[Filter Create item], optional) - filter items
- - start_Date: `2018-10-15` (string) - start date for filtration
- - end_Date: `2018-10-15` (string) - end date for filtration
+ - start_Date: `2018-10-15` (string, optional) - start date for filtration
+ - end_Date: `2018-10-15` (string, optional) - end date for filtration
 
 ## Collection (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
@@ -728,10 +785,10 @@ Surf API
 
 ## Community Create (object)
  - name: `test community` (string) - community name
- - description: `test community desc` (string) - community description
- - website_url: `https://test-community.org` (string) - community website URL
- - logo: `logo data` (string) - community logo
- - featured_image: `featured image data` (string) - community featured image
+ - description: `test community desc` (string, optional) - community description
+ - website_url: `https://test-community.org` (string, optional) - community website URL
+ - logo: `logo data` (string, optional) - community logo
+ - featured_image: `featured image data` (string, optional) - community featured image
 
 ## Pagination Community Response (Pagination Response)
  - results: Community (array[Community])
@@ -740,7 +797,7 @@ Surf API
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - theme internal id
  - external_id: `theme external id` (string) - theme external id
  - title: `theme title` (string) - theme title
- - description `theme description` (string) - theme description
+ - description `theme description` (string, optional) - theme description
 
 ## Pagination Theme Response (Pagination Response)
  - results: Theme (array[Theme])
