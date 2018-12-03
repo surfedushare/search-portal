@@ -169,7 +169,6 @@ def _parse_classification(e):
     elements = e.findall(_CLASSIFICATION_TAXON_ID_PATH, namespaces=_NS)
     for e in elements:
         ids.add(e.text)
-    print("{} : {}".format(name, ids))
     return name, ids
 
 

@@ -13,6 +13,7 @@ class ApplaudMaterialFilter(filters.FilterSet):
 
 class CollectionFilter(filters.FilterSet):
     is_owner = CharFilter(method="filter_is_owner")
+    material_id = CharFilter(method="filter_by_material_id")
 
     def filter_is_owner(self, qs, name, value):
         user_ids = []
@@ -28,6 +29,9 @@ class CollectionFilter(filters.FilterSet):
         else:
             return qs.exclude(owner_id__in=user_ids)
 
+    def filter_by_material_id(self, qs, name, value):
+        return qs.filter(materials__external_id=value)
+
     class Meta:
         model = Collection
-        fields = ('is_shared', 'is_owner',)
+        fields = ('is_shared', 'is_owner', 'material_id',)
