@@ -19,11 +19,7 @@
         </div>
       </div>
       <div class="search__tools center_block">
-        <div class="select">
-          <select name="tools__filter">
-            <option value="">Sorteren op</option>
-          </select>
-        </div>
+        <DatesRange />
         <button
           class="search__tools_type_button"
           @click.prevent="changeViewType"
@@ -41,6 +37,7 @@
           <div class="search__filter_sticky">
             <FilterCategories
               v-model="search"
+              :show-popup-save-filter="showPopupSaveFilter"
             />
           </div>
         </div>
@@ -57,6 +54,39 @@
         </div>
       </div>
     </div>
+    <transition name="fade">
+      <Popup
+        v-if="isShow"
+        :close="close"
+        :is-show="isShow"
+        class="save_filter"
+      >
+        <slot>
+          <h2 class="save_filter__title">Selectie opslaan</h2>
+          <form
+            action=""
+            @submit.prevent="onSaveFilter"
+          >
+            <div class="form__item">
+              <input
+                v-model="formData.name"
+                type="text"
+                placeholder="Name"
+                class="input"
+                required="required"
+                name="name"
+              >
+            </div>
+            <button
+              class="button"
+              type="submit"
+            >
+              Save
+            </button>
+          </form>
+        </slot>
+      </Popup>
+    </transition>
   </section>
 </template>
 
@@ -69,6 +99,8 @@ import Materials from '~/components/Materials';
 import Themes from '~/components/Themes';
 import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
+import Popup from '~/components/Popup';
+import DatesRange from '~/components/DatesRange';
 
 export default {
   components: {
@@ -78,12 +110,22 @@ export default {
     Materials,
     Themes,
     Spinner,
-    BreadCrumbs
+    BreadCrumbs,
+    Popup,
+    DatesRange
   },
   data() {
     return {
       search_text: [],
       search: false,
+      isShow: false,
+      date_range: {
+        external_id: 'lom.lifecycle.contribute.publisherdate',
+        items: ['2018-01-05', '2018-06-09']
+      },
+      formData: {
+        name: null
+      },
       items: [
         {
           title: 'Home',
@@ -134,6 +176,15 @@ export default {
       } else {
         this.$store.dispatch('searchMaterialsInLine', 1);
       }
+    },
+    showPopupSaveFilter() {
+      this.isShow = true;
+    },
+    close() {
+      this.isShow = false;
+    },
+    onSaveFilter() {
+      console.log(111);
     }
   }
 };
@@ -143,7 +194,7 @@ export default {
 @import './../../assets/styles/variables';
 .search {
   position: relative;
-  z-index: 1;
+
   &__info {
     padding: 97px 0 0;
     margin-bottom: 82px;
@@ -244,6 +295,12 @@ export default {
     margin: 0 0 132px;
     flex: 1 1 auto;
     padding: 98px 0 0;
+  }
+}
+
+.save_filter {
+  &__title {
+    margin: 0 0 30px;
   }
 }
 </style>

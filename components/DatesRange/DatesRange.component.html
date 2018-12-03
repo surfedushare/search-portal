@@ -1,0 +1,34 @@
+
+<section class="dates-range">
+  <div class="select">
+    <input
+      type="text"
+      class="select__item"
+      placeholder="Sorteren op"
+    >
+  </div>
+  <div class="dates-range__popup">
+    <div class="dates-range__form-group">
+      <label class="vdp-datepicker__label">Vanaf</label>
+      <Datepicker
+        :format="format"
+        v-model="formData.start_date"
+        :disabledDates="{from: formData.end_date}"
+        :monday-first="true"
+        placeholder="Selecteer datum"
+      ></Datepicker>
+    </div>
+    <div class="dates-range__form-group">
+      <label class="vdp-datepicker__label">Tot</label>
+      <Datepicker
+        :format="format"
+        v-model="formData.end_date"
+        :disabledDates="{to: formData.start_date}"
+        :monday-first="true"
+        placeholder="Selecteer datum"
+      ></Datepicker>
+    </div>
+  </div>
+  <pre>{{ formData }}</pre>
+</section>
+

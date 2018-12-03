@@ -2,12 +2,20 @@
 <section class="filter-categories">
   <h3 class="filter-categories__title">Filteren</h3>
   <div class="filter-categories__links">
-    <a href="#" class="filter-categories__save">Selectie opslaan</a>
+    <a
+      href="#"
+      v-if="isAuthenticated"
+      class="filter-categories__save"
+      @click.prevent="showPopupSaveFilter()"
+    >
+      Selectie opslaan
+    </a>
     <nuxt-link to="/" class="filter-categories__reset">Reset filters</nuxt-link>
   </div>
-  <div class="select filter-categories__select">
+  <div class="select filter-categories__select" v-if="filters && filters.results.length">
     <select name="my" >
       <option value="">Mijn filter selecties</option>
+      <option :value="filter" v-for="filter in filters.results">{{ filter.title }}</option>
     </select>
   </div>
 

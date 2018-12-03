@@ -2,11 +2,15 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'filter-categories',
-  props: ['value'],
-  mounted() {},
+  props: ['value', 'showPopupSaveFilter'],
+  components: {},
+  mounted() {
+    this.$store.dispatch('getFilters');
+  },
   data() {
     return {
-      selected: []
+      selected: [],
+      isShow: false
     };
   },
   methods: {
@@ -58,46 +62,9 @@ export default {
       this.setFilter();
     }
   },
-  watch: {
-    // filter: {
-    //   handler(filter) {
-    //     const { categories } = this;
-    //     if (filter && categories) {
-    //       const filters = filter.reduce((prev, next) => {
-    //         const hasItems = next.items.find(item => item);
-    //         if (hasItems) {
-    //           prev.push({
-    //             external_id: next.external_id,
-    //             items: next.items.reduce((prevChild, nextChild, index) => {
-    //               if (nextChild) {
-    //                 const category = categories.results.find(
-    //                   category => category.external_id === next.external_id
-    //                 );
-    //                 prevChild.push(category.items[index].external_id);
-    //               }
-    //               return prevChild;
-    //             }, [])
-    //           });
-    //         }
-    //         return prev;
-    //       }, []);
-    //
-    //       this.$emit(
-    //         'input',
-    //         Object.assign({}, this.value, {
-    //           filters
-    //         })
-    //       );
-    //
-    //       console.log(1111, filters);
-    //     }
-    //   },
-    //   deep: true
-    // },
-    value() {}
-  },
+  watch: {},
   computed: {
-    ...mapGetters(['filter_categories']),
+    ...mapGetters(['filter_categories', 'isAuthenticated', 'filters']),
     filter() {
       const { value, filtered_categories } = this;
       if (value && filtered_categories) {

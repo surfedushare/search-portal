@@ -6,6 +6,7 @@ import filterCategories from './modules/filter-categories';
 import communities from './modules/communities';
 import materials from './modules/materials';
 import themes from './modules/themes';
+import filters from './modules/filters';
 
 Vue.use(Vuex);
 
@@ -16,7 +17,8 @@ const store = () =>
       filterCategories,
       communities,
       materials,
-      themes
+      themes,
+      filters
     }
   });
 export default store;

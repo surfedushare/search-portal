@@ -1,8 +1,9 @@
 
 <section class="bread-crumbs">
   <nuxt-link
-    v-for="item in items"
+    v-for="(item, index) in items"
     :to="item.url"
+    :key="index"
     class="bread-crumbs__link"
   >
     {{ item.title }}
