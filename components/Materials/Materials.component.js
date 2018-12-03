@@ -26,7 +26,6 @@ export default {
     ...mapGetters(['disciplines', 'educationallevels']),
     extended_materials() {
       const { materials, disciplines, educationallevels } = this;
-      console.log(materials, disciplines, educationallevels);
       if (materials && disciplines && educationallevels) {
         return materials.records.map(material => {
           return Object.assign({}, material, {

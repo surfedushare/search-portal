@@ -118,6 +118,12 @@ export default {
     loadMore() {
       const { search } = this;
       const { page_size, page, records_total } = this.materials;
+      // console.log(
+      //   1111,
+      //   records_total,
+      //   page_size * page,
+      //   records_total > page_size * page
+      // );
       if (records_total > page_size * page) {
         this.$store.dispatch(
           'searchNextPageMaterials',

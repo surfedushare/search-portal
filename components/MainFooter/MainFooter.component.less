@@ -19,12 +19,32 @@
     line-height: 1.2;
     letter-spacing: normal;
     color: #fff;
-    background: fade(@green, 90%);
-    border-radius: 20px;
     width: 407px;
     padding: 54px 37px 47px;
     margin: 3px 57px 0 47px;
     flex-shrink: 0;
+    position: relative;
+    .bg{
+      background: @green;
+      opacity: 0.9;
+      position: absolute;
+      border-radius: 20px 20px 20px 0;
+      height: 100%;
+      left: 0;
+      top: 0;
+      width: 100%;
+      z-index: -1;
+      &:before {
+        content: '';
+        background: url('./../../assets/images/green-buble.svg') 0 0
+        no-repeat;
+        position: absolute;
+        bottom: -37px;
+        left: -43px;
+        width: 63px;
+        height: 58px;
+        }
+      }
   }
 
   h3 {

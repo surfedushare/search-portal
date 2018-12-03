@@ -1,6 +1,34 @@
 @import './../../../assets/styles/variables';
 .preview {
   padding: 50px 0 0 100px;
+  position: relative;
+
+  &__bg_block{
+    position: absolute;
+    top: -2px;
+    left: 0;
+    img{
+      border-radius: 21px;
+    }
+    &:before{
+      content: '';
+      position: absolute;
+      background: url("./../../../assets/images/combined-shape.svg") no-repeat 0 0;
+      right: -100px;
+      top: 0;
+      height: 109px;
+      width: 119px;
+    }
+    &:after{
+      content: '';
+      position: absolute;
+      background: url("./../../../assets/images/message.svg") no-repeat 0 0;
+      right: -82px;
+      top: 22px;
+      height: 33px;
+      width: 35px;
+    }
+  }
 
   &__text_block {
     background: fade(@light-grey, 90%);
