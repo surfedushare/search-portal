@@ -1,0 +1,18 @@
+
+<section class="disciplines">
+  <h2>Vakgebieden</h2>
+  <div class="disciplines__description">Zoek en vind leermaterialen op vakgebied</div>
+  <ul class="disciplines__list" v-if="disciplines">
+    <li
+      class="disciplines__item"
+      v-for="theme in disciplines"
+    >
+      <nuxt-link
+        :to="`/`"
+      >
+        {{theme.title}}
+      </nuxt-link>
+    </li>
+  </ul>
+</section>
+

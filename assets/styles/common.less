@@ -29,6 +29,35 @@ body {
 
 .container {
 }
+.tile {
+  position: relative;
+  word-break: break-word;
+
+  &--items-in-line-1 {
+    width: 100%;
+  }
+
+  &--items-in-line-2 {
+    width: ~'calc(50% - 18px)';
+  }
+
+  &--items-in-line-3 {
+    width: ~'calc(33.333% - 18px)';
+  }
+
+  &--items-in-line-4 {
+    width: ~'calc(25% - 18px)';
+  }
+
+
+  &__wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 5px rgba(204, 204, 204, 0.4);
+  }
+}
 
 *,
 *:before,

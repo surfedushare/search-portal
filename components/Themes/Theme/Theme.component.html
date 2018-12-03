@@ -1,0 +1,46 @@
+<div v-if="theme" class="theme">
+  <div class="center_block">
+    <div class="theme__info ">
+      <img src="./../../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
+           srcset="./../../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+             ./../../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+           class="theme__info_bg">
+        <nuxt-link
+          to="/"
+          class="theme__info_all">
+          Thema&apos;s
+        </nuxt-link>
+        <h2 class="theme__info_ttl">{{ theme.title }}</h2>
+        <Search class="theme__info_search" />
+    </div>
+  </div>
+  <div class="center_block theme__row">
+    <div class="theme__description">
+      <h2>Over het thema <br>
+        {{ theme.title }}</h2>
+      <p>{{ theme.description }}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laborisnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" />
+  </div>
+  <div class="theme__materials_and_communities theme__row center_block">
+    <Materials
+    :materials="materials"
+    :items-in-line="2"
+    class="theme__materials">
+      <template slot="header-info">
+        <h2>Uitgelicht</h2>
+        <p>Uitgelichte leermaterialen in het thema Gezondheid</p>
+      </template>
+    </Materials>
+    <PopularList
+      :page_size="2"
+      class="theme__communities"
+    >
+      <template slot="header-info">
+        <h2>Community’s</h2>
+        <div class="popular-list__description">Vakcommunity’s binnen het thema Gezondheid</div>
+      </template>
+    </PopularList>
+  </div>
+</div>
