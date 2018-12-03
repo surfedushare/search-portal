@@ -87,6 +87,9 @@ class CollectionSerializer(CollectionShortSerializer):
     is_owner = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
 
+    owner_name = serializers.CharField(
+        source="owner.surfconext_auth.display_name", read_only=True)
+
     @staticmethod
     def get_materials_count(obj):
         return obj.materials.count()
@@ -109,7 +112,7 @@ class CollectionSerializer(CollectionShortSerializer):
     class Meta:
         model = Collection
         fields = ('id', 'title', 'materials_count', 'communities_count',
-                  'is_shared', 'is_owner',)
+                  'is_shared', 'is_owner', 'owner_name', )
 
 
 class ApplaudMaterialSerializer(serializers.ModelSerializer):
