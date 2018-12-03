@@ -1,6 +1,11 @@
 <div class="material__info">
   <h1 class="material__info_ttl">{{ material.title }}</h1>
-  <div class="material__info_author"><nuxt-link to="/">{{ material.author }}</nuxt-link> {{ material.publisher }}</div>
+  <div class="material__info_author">
+    <nuxt-link
+      :to="authorUrl">
+      {{ material.author }}</nuxt-link>
+    {{ material.publisher }}
+  </div>
   <h3 class="material__info_subttl">Kwaliteit</h3>
   <div class="material__info_quality">
     <div class="quality__applauds">
@@ -54,5 +59,9 @@
     <Themes class="material__info_thems" :material="material"/>
     <Keywords class="material__info_keywords" :material="material" />
   </div>
-  <PopularList class="material__info_communities" :type="'material'" :page_size="2"/>
+  <PopularList class="material__info_communities" :type="'material'" :page_size="2">
+    <template slot="header-info">
+      <h3>In collectie van</h3>
+    </template>
+  </PopularList>
 </div>

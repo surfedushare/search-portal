@@ -3,8 +3,13 @@
     <div>
       <div class="main__info">
         <div class="center_block">
+          <img
+            class="main__info_bg"
+            src="./../assets/images/pictures/header-image.jpg"
+            alt="header-image">
           <h2>Open leermaterialen</h2>
           <div class="main__info_block">
+            <div class="bg"/>
             <h2 class="main__info_title">13.231 open leermaterialen uit het hoger onderwijs</h2>
             <ul class="main__info_items">
               <li class="main__info_item">Vrij te gebruiken</li>
@@ -17,7 +22,12 @@
       </div>
       <div class="center_block main__thems_and_communities">
         <Themes class="main__thems" />
-        <PopularList class="main__communities" />
+        <PopularList class="main__communities">
+          <template slot="header-info">
+            <h2>Community’s</h2>
+            <div class="popular-list__description">Open leermaterialen vanuit vakcommunity’s</div>
+          </template>
+        </PopularList>
       </div>
       <div class="main__materials">
         <div class="center_block">
@@ -88,6 +98,14 @@ export default {
       z-index: -1;
     }
 
+    &_bg {
+      position: absolute;
+      top: 183px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+    }
+
     &_title {
       line-height: 1.25;
       color: #fff;
@@ -104,15 +122,36 @@ export default {
       background: url('./../assets/images/check-white.svg') 0 0 no-repeat;
     }
     &_block {
-      background: fade(@dark-blue, 90%);
+      /*background: fade(@dark-blue, 90%); */
       color: #fff;
       width: 572px;
-      border-radius: 20px;
       margin: -39px 0 99px 541px;
-      padding: 31px 48px 40px;
       font-family: @second-font;
+      padding: 31px 48px 40px;
       font-size: 16px;
       font-weight: bold;
+      position: relative;
+      & .bg {
+        background: @dark-blue;
+        opacity: 0.9;
+        position: absolute;
+        border-radius: 0 20px 20px 20px;
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+        &:before {
+          content: '';
+          background: url('./../assets/images/buble-background-blue.svg') 0 0
+            no-repeat;
+          position: absolute;
+          top: -36px;
+          left: -46px;
+          width: 63px;
+          height: 58px;
+        }
+      }
     }
 
     &_search {
@@ -139,6 +178,7 @@ export default {
 
   &__materials {
     position: relative;
+    margin: 0 0 200px;
 
     &_title {
       margin: 0 0 32px;

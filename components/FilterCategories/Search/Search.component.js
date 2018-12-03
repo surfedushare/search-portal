@@ -86,16 +86,18 @@ export default {
     ...mapGetters(['filter_categories', 'materials_keywords']),
 
     active_category() {
-      const { filter_categories } = this;
-      const { external_id } = this.formData.filters[0];
-      if (filter_categories && filter_categories.results) {
+      const { filter_categories, hideFilter } = this;
+      if (filter_categories && filter_categories.results && !hideFilter) {
+        const { external_id } = this.formData.filters[0];
         if (external_id) {
           return filter_categories.results.find(
             item => item.external_id === external_id
           );
         }
-        this.formData.filters[0].external_id =
-          filter_categories.results[0].external_id;
+        if (external_id !== null) {
+          this.formData.filters[0].external_id =
+            filter_categories.results[0].external_id;
+        }
         return filter_categories.results[0];
       }
       return false;

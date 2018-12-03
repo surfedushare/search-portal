@@ -1,8 +1,6 @@
 
 <section class="popular-list">
-  <h2 v-if="type !== 'material'">Community’s</h2>
-  <h3 v-else>In collectie van</h3>
-  <div class="popular-list__description" v-if="type !== 'material'">Open leermaterialen vanuit vakcommunity’s</div>
+  <slot name="header-info"></slot>
   <ul class="popular-list__items" v-if="communities">
     <li class="popular-list__item" v-for="community in communities.results">
       <nuxt-link

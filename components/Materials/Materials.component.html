@@ -1,12 +1,14 @@
 
 <section class="materials">
+  <slot name="header-info"></slot>
   <ul class="materials__items" v-if="extended_materials">
     <li
-      :class="[`materials__item--items-in-line-${itemsInLine}`]"
-      v-for="material in extended_materials" class="materials__item"
+      :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
+      v-for="material in extended_materials"
+      class="materials__item tile"
     >
       <div class="materials__bookmark" v-if="material.has_bookmark">Bookmark</div>
-      <div class="materials__item_wrapper">
+      <div class="materials__item_wrapper tile__wrapper">
         <div class="materials__item_main_info">
           <h3 class="materials__item_title">
             <nuxt-link
