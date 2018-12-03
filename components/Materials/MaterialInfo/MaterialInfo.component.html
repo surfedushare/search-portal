@@ -1,0 +1,58 @@
+<div class="material__info">
+  <h1 class="material__info_ttl">{{ material.title }}</h1>
+  <div class="material__info_author"><nuxt-link to="/">{{ material.author }}</nuxt-link> {{ material.publisher }}</div>
+  <h3 class="material__info_subttl">Kwaliteit</h3>
+  <div class="material__info_quality">
+    <div class="quality__applauds">
+      {{ material.number_of_applauds}}
+      </div>
+    <div class="quality__collections">
+      <span class="quality__collections_count">
+        {{material.number_of_collections}}
+      </span>
+      <span class="quality__collections_txt">Collecties</span>
+    </div>
+    <div class="quality__views">
+      <div class="quality__views_count">
+        {{material.number_of_views}}
+      </div>
+      <div class="quality__views_txt">Bekeken</div>
+    </div>
+    <div class="quality__star">
+      <StarRating
+        v-model="material.average_rating"
+        :counter="material.number_of_ratings"
+        :type="'big'"
+      />
+      <nuxt-link to="/">
+        Geef waardering
+      </nuxt-link>
+    </div>
+    <div class="quality__social">
+      <!--<vue-goodshare-linkedin-->
+        <!--has_icon-->
+        <!--has_counter-->
+        <!--button_design="outline"-->
+        <!--page_url="https://github.com"-->
+      <!--&gt;</vue-goodshare-linkedin>-->
+
+      <!--<vue-goodshare-twitter-->
+        <!--has_icon-->
+        <!--has_counter-->
+        <!--button_design="outline"-->
+        <!--page_url="https://github.com"-->
+      <!--&gt;</vue-goodshare-twitter>-->
+    </div>
+  </div>
+  <h3 class="material__info_subttl">Samenvatting</h3>
+  <div
+    class="material__info_description"
+    v-html="material.description">
+   </div>
+
+  <div class="material__info_thems_and_communities">
+    <Themes class="material__info_thems" :material="material"/>
+    <Keywords class="material__info_keywords" :material="material" />
+  </div>
+  <PopularList class="material__info_communities" :type="'material'" :page_size="2"/>
+</div>

@@ -1,4 +1,4 @@
-const pkg = require('./package')
+const pkg = require('./package');
 
 module.exports = {
   mode: 'spa',
@@ -55,6 +55,10 @@ module.exports = {
     },
     {
       src: '~/plugins/infiniteScroll',
+      ssr: false
+    },
+    {
+      src: '~/plugins/vueGoodshare',
       ssr: false
     }
   ],

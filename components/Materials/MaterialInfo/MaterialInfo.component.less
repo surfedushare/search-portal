@@ -1,0 +1,133 @@
+@import './../../../assets/styles/variables';
+.material {
+  &__info{
+    flex: 1 1 auto;
+    &_ttl{
+      margin: 28px 0;
+    }
+    &_author{
+      font-family: @second-font;
+      font-size: 16px;
+      margin: -10px 0 64px;
+      a{
+        text-decoration: none;
+        margin-right: 13px;
+        font-weight: bold;
+      }
+    }
+    &_subttl{
+      margin: 0 0 39px;
+    }
+    &_quality{
+      margin: 44px 0 24px;
+      justify-content: space-between;
+      align-items: flex-start;
+      display: flex;
+      .star-rating{
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+    &_description{
+      margin-bottom: 53px;
+      p{
+        margin-bottom: 23px;
+      }
+    }
+    &_thems_and_communities{
+      margin-bottom: 43px;
+      display: flex;
+    }
+  }
+}
+
+.quality{
+  &__applauds{
+    display: inline-block;
+    position: relative;
+    margin: 6px 38px 0 52px;
+    padding: 2px 10px;
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(104, 109, 117, 0.65);
+    background: #f4f4f4;
+
+    &:before{
+      content: '';
+      background: url("./../../../assets/images/clap_green.svg") no-repeat 50% 50%;
+      border: 2px solid #009f4d;
+      border-radius: 50%;
+      height: 42px;
+      width: 42px;
+      display: inline-block;
+      vertical-align: middle;
+      position: absolute;
+      top: -7px;
+      left: -50px;
+    }
+  }
+  &__collections{
+    display: inline-block;
+    font-family: @second-font;
+    font-size: 16px;
+    margin: 0 13px 0 0;
+    color: #000;
+    &_count{
+      padding-left: 34px;
+      background: url("./../../../assets/images/collection.svg") no-repeat 0 0;
+      background-size: 28px 22px;
+      color: #050e1d;
+      display: block;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    &_txt{
+      display: block;
+      font-family: @second-font;
+      font-size: 16px;
+      margin: -5px 0 0 2px;
+      letter-spacing: -0.2px;
+    }
+  }
+  &__views{
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 43px 0 0;
+    &_count{
+      padding-left: 24px;
+      background: url("./../../../assets/images/look_black.svg") no-repeat 0 0;
+      background-size: 23px 23px;
+      color: #050e1d;
+      display: block;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    &_txt{
+      display: block;
+      font-family: @second-font;
+      font-size: 16px;
+      margin: -5px 0 0 4px;
+      letter-spacing: -0.6px;
+    }
+  }
+  &__star{
+    display: inline-block;
+    max-width: 190px;
+    margin: -2px 0 0;
+    a{
+      text-decoration: none;
+      margin-left: 5px;
+      font-family: @second-font;
+      font-weight: bold;
+    }
+  }
+  &__social{
+    display: inline-block;
+    vertical-align: top;
+    width: 225px;
+.title-social{
+  display: none;
+}
+  }
+}
