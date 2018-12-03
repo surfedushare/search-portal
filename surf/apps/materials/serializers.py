@@ -10,7 +10,8 @@ from surf.apps.materials.models import (
 
 class SearchFilterSerializer(serializers.Serializer):
     external_id = serializers.CharField()
-    items = serializers.ListField(child=serializers.CharField())
+    items = serializers.ListField(child=serializers.CharField(
+        allow_null=True, allow_blank=True))
 
 
 class SearchRequestSerializer(serializers.Serializer):
