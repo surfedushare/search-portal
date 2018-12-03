@@ -131,6 +131,9 @@ _DISCIPLINE_ENTRIES = [
 DISCIPLINE_CUSTOM_THEME = dict()
 CUSTOM_THEME_DISCIPLINES = dict()
 
+for empty_theme in {"Interdisciplinair"}:
+    CUSTOM_THEME_DISCIPLINES[empty_theme] = []
+
 for d in _DISCIPLINE_ENTRIES:
     discipline_id, theme = d["id"], d["theme"]
     DISCIPLINE_CUSTOM_THEME.setdefault(discipline_id, []).append(theme)
