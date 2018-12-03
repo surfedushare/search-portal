@@ -39,6 +39,15 @@
   box-sizing: border-box;
   height: 50px;
 
+  &--no-border {
+    border-color: transparent;
+  }
+
+  &--auto-height {
+    height: auto;
+    min-height: 50px;
+  }
+
   &::-ms-expand {
     display: none;
   }
@@ -56,6 +65,12 @@
     background-size: contain;
   }
 
+  &--auto-height:before {
+    height: 50px;
+    transform: translate(0, 0) rotate(90deg);
+    top: 0;
+  }
+
   &--focused {
     border-bottom-color: @dark-blue;
   }
@@ -70,7 +85,7 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: 1.5;
+    line-height: 48px;
     background-color: transparent;
     background-image: none;
     -moz-appearance: none;
@@ -137,7 +152,7 @@
     border: 0;
     height: 50px;
     background: rgba(204, 204, 204, 0.2)
-      url('./../../assets/images/calendar.svg') 0 50% no-repeat;
+      url('./../../assets/images/calendar.svg') 7px 50% no-repeat;
     background-size: 15px 16px;
     font-family: @second-font;
     font-size: 16px;
@@ -147,7 +162,7 @@
     line-height: 1.44;
     padding: 0 30px;
     color: @black;
-    margin: 0 0 7px;
+    width: 100%;
 
     &::placeholder {
       color: @dark-grey;

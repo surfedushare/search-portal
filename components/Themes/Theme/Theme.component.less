@@ -6,7 +6,7 @@
     margin: 0 0 125px;
     border-radius: 20px;
     position: relative;
-    &_bg{
+    &_bg {
       position: absolute;
       right: 26px;
       top: -51px;
@@ -14,10 +14,10 @@
       border-radius: 21px;
       height: 298px;
     }
-    &_ttl{
+    &_ttl {
       padding: 0 0 55px;
       position: relative;
-      &:before{
+      &:before {
         content: '';
         min-width: 100%;
         position: absolute;
@@ -30,25 +30,25 @@
         z-index: -1;
       }
     }
-    &_all{
+    &_all {
       text-decoration: none;
       font-weight: bold;
       margin-bottom: 11px;
       display: inline-block;
     }
-    &_search{
+    &_search {
       margin: 0 56px;
-      .search__fields{
+      .search__fields {
         margin-bottom: 33px;
       }
     }
   }
-  &__row{
+  &__row {
     display: flex;
     justify-content: space-between;
     margin: 0 auto 114px;
   }
-  &__description{
+  &__description {
     background-color: rgba(244, 244, 244, 0.9);
     position: relative;
     border-radius: 20px;
@@ -56,39 +56,40 @@
     margin: 40px 0 0 23px;
     padding: 66px 26px 67px 79px;
 
-    h2{
+    h2 {
       line-height: 1.2;
       margin-bottom: 17px;
     }
 
-    &:before{
+    &:before {
       content: '';
-      background: url("./../../../assets/images/combined-shape.svg") no-repeat 0 0;
+      background: url('./../../../assets/images/combined-shape.svg') no-repeat 0
+        0;
       position: absolute;
       left: -23px;
       top: -40px;
       width: 119px;
       height: 109px;
     }
-    &:after{
+    &:after {
       content: '';
       position: absolute;
-      background: url("./../../../assets/images/message.svg") no-repeat 0 0;
+      background: url('./../../../assets/images/message.svg') no-repeat 0 0;
       left: 44px;
       top: -17px;
       height: 33px;
       width: 35px;
     }
   }
-  &__disciplines{
+  &__disciplines {
     width: calc(50% - 60px);
     padding: 29px 10px 0 54px;
   }
 
-  &__materials{
+  &__materials {
     width: calc(50% - 15px);
   }
-  &__communities{
+  &__communities {
     width: calc(50% - 115px);
   }
 }

@@ -1,7 +1,11 @@
 
 <section class="materials">
   <slot name="header-info"></slot>
-  <ul class="materials__items" v-if="extended_materials">
+  <ul
+    class="materials__items"
+    v-if="extended_materials && extended_materials.length"
+    :class="{loading: materials_loading}"
+  >
     <li
       :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
       v-for="material in extended_materials"
@@ -54,13 +58,14 @@
             {{ material.format }}
           </div>
           <div class="materials__item_keywords" v-if="material.keywords && material.keywords.length">
-            <span class="materials__item_keyword" v-for="keyword in material.keywords">{{keyword}}</span>
+            <span class="materials__item_keyword" v-for="keyword in material.keywords">{{keyword}} </span>
           </div>
           <footer class="materials__item_footer">
             <StarRating
               v-model="material.average_rating"
               :counter="material.number_of_ratings"
               :disabled="true"
+              :dark-stars="itemsInLine !== 1"
             />
             <div class="materials__item_actions">
               <div class="materials__item_applauds">{{material.number_of_applauds}}</div>
@@ -75,4 +80,5 @@
       </div>
     </li>
   </ul>
+  <div class="not_found" v-else-if="!materials_loading">Not found</div>
 </section>

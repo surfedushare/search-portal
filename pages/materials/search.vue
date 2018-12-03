@@ -9,6 +9,11 @@
             <BreadCrumbs :items="items" />
             <h2 v-if="materials">Zoekresultaten ({{ materials.records_total }})</h2>
           </div>
+          <img 
+            src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
+            srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+            class="search__info_bg"
+          >
           <Search
             v-if="search"
             :hide-categories="true"
@@ -18,15 +23,24 @@
           />
         </div>
       </div>
+
       <div class="search__tools center_block">
-        <DatesRange />
+        <DatesRange
+          v-model="dates_range"
+          class="search__tools_dates"
+        />
         <button
+          :class="{
+            'search__tools_type_button--list': materials_in_line === 3,
+            'search__tools_type_button--cards': materials_in_line === 1
+          }"
           class="search__tools_type_button"
           @click.prevent="changeViewType"
         >
           Kaartweergave
         </button>
       </div>
+
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="materials_loading"
@@ -50,7 +64,7 @@
             :materials="materials"
             :items-in-line="materials_in_line"
           />
-          <Spinner />
+          <Spinner v-if="materials_loading" />
         </div>
       </div>
     </div>
@@ -121,7 +135,11 @@ export default {
       isShow: false,
       date_range: {
         external_id: 'lom.lifecycle.contribute.publisherdate',
-        items: ['2018-01-05', '2018-06-09']
+        items: [null, null]
+      },
+      dates_range: {
+        start_date: null,
+        end_date: null
       },
       formData: {
         name: null
@@ -142,9 +160,33 @@ export default {
       if (search) {
         this.$store.dispatch('searchMaterials', search);
       }
+    },
+    dates_range(dates) {
+      const { filters } = this.search;
+      const current_dates = filters.find(
+        item => item.external_id === 'lom.lifecycle.contribute.publisherdate'
+      );
+      let new_filters = [];
+
+      if (current_dates) {
+        const index = filters.indexOf(current_dates);
+        new_filters[index] = {
+          external_id: 'lom.lifecycle.contribute.publisherdate',
+          items: [dates.start_date || '', dates.end_date || '']
+        };
+      } else {
+        new_filters = [
+          {
+            external_id: 'lom.lifecycle.contribute.publisherdate',
+            items: [dates.start_date || '', dates.end_date || '']
+          }
+        ];
+      }
+      this.search = Object.assign({}, this.search, { filters: new_filters });
     }
   },
   mounted() {
+    // Parsing url query
     const search = Object.assign({}, this.$route.query, {
       filters: JSON.parse(this.$route.query.filters),
       search_text: JSON.parse(this.$route.query.search_text)
@@ -160,12 +202,7 @@ export default {
     loadMore() {
       const { search } = this;
       const { page_size, page, records_total } = this.materials;
-      // console.log(
-      //   1111,
-      //   records_total,
-      //   page_size * page,
-      //   records_total > page_size * page
-      // );
+
       if (records_total > page_size * page) {
         this.$store.dispatch(
           'searchNextPageMaterials',
@@ -210,9 +247,18 @@ export default {
     &_top {
       border-radius: 20px;
       background: fade(@light-grey, 90%);
-      padding: 65px 576px 65px 46px;
+      padding: 65px 576px 95px 46px;
       min-height: 274px;
       margin: 0 0 -68px;
+    }
+
+    &_bg {
+      position: absolute;
+      right: 146px;
+      top: 45px;
+      width: 510px;
+      height: 298px;
+      border-radius: 21px;
     }
 
     &_search {
@@ -256,12 +302,14 @@ export default {
     position: relative;
     z-index: 1;
 
+    &_dates {
+      width: 251px;
+    }
+
     &_type_button {
       border-radius: 0;
       border: 0;
       color: @dark-blue;
-      background: transparent url('./../../assets/images/card-view-copy.svg') 0
-        50% no-repeat;
       font-family: @second-font;
       font-size: 16px;
       font-weight: bold;
@@ -269,6 +317,16 @@ export default {
       padding: 0 8px 0 40px;
       margin: 0 0 0 31px;
       cursor: pointer;
+
+      &--cards {
+        background: transparent url('./../../assets/images/card-view-copy.svg')
+          0 50% no-repeat;
+      }
+
+      &--list {
+        background: transparent url('./../../assets/images/list-view-copy.svg')
+          0 50% no-repeat;
+      }
 
       &:focus,
       &:active {

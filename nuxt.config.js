@@ -3,6 +3,11 @@ const pkg = require('./package');
 module.exports = {
   mode: 'spa',
 
+  env: {
+    logoutURL:
+      process.env.LOGOUT_URL || 'https://engine.test.surfconext.nl/logout'
+  },
+
   /*
   ** Headers of the page
   */
@@ -58,9 +63,13 @@ module.exports = {
       ssr: false
     },
     {
-      src: '~/plugins/vueGoodshare',
+      src: '~/plugins/axios',
       ssr: false
     }
+    // {
+    //   src: '~/plugins/vueGoodshare',
+    //   ssr: false
+    // }
   ],
 
   /*

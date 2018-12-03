@@ -5,7 +5,9 @@ export default {
   props: ['value', 'showPopupSaveFilter'],
   components: {},
   mounted() {
-    this.$store.dispatch('getFilters');
+    if (this.isAuthenticated) {
+      this.$store.dispatch('getFilters');
+    }
   },
   data() {
     return {
@@ -27,10 +29,14 @@ export default {
         this.selected = selected;
       }
     },
+    /**
+     * Set filter for v-model
+     * @returns {*} - filters
+     */
     setFilter() {
       const { categories, filter } = this;
       if (filter && categories) {
-        const filters = filter.reduce((prev, next) => {
+        let filters = filter.reduce((prev, next) => {
           const hasItems = next.items.find(item => item);
           if (hasItems) {
             prev.push({
@@ -49,13 +55,13 @@ export default {
           return prev;
         }, []);
 
-        this.$emit(
-          'input',
-          Object.assign({}, this.value, {
-            filters
-          })
-        );
-        console.log(1111, filters);
+        filters = Object.assign({}, this.value, {
+          filters
+        });
+
+        this.$emit('input', filters);
+
+        return filters;
       }
     },
     onChange() {

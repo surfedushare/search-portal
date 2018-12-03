@@ -23,9 +23,8 @@
       <div class="search__chooser search__select" v-if="!hideCategories">
         <select
           name="categories"
-          id=""
-          v-model="formData.filters[0].external_id"
           v-if="filter_categories"
+          @change="onChangeCategory"
         >
           <option
             v-for="category in filter_categories.results"

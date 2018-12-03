@@ -8,6 +8,10 @@ export default {
         return 'default';
       }
     },
+    darkStars: {
+      type: Boolean,
+      default: false
+    },
     value: null,
     id: String,
     counter: [String, Number],

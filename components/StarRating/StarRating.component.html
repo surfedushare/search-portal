@@ -1,12 +1,15 @@
 <div class="star-rating" :class="{['star-rating--' + type]: type}">
-  <label class="star-rating__star" v-for="rating in ratings"
-         :class="{
-           'is-selected': ((temp_value >= rating) && value != null),
-           'is-disabled': disabled
-         }"
-         @click="setValue(rating)"
-         @mouseover="star_over(rating)"
-         @mouseout="star_out"
+  <label
+    class="star-rating__star"
+    v-for="rating in ratings"
+     :class="{
+       'is-selected': ((temp_value >= rating) && value != null),
+       'is-disabled': disabled,
+       'star-rating__star--dark-stars': darkStars
+     }"
+     @click="setValue(rating)"
+     @mouseover="star_over(rating)"
+     @mouseout="star_out"
   >
     <input
       class="star-rating star-rating__checkbox"
