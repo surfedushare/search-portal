@@ -205,7 +205,7 @@ Removes applauds of current user for the materials.
 
 ## Collection Array [/api/v1/collections/]
 
-### GET [GET /api/v1/collections/{?is_owner,is_shared}]
+### GET [GET /api/v1/collections/{?is_owner,is_shared,material_id}]
 Returns the array of collections, available for current user.
 Available collections for user are:
 * collections, created by user
@@ -215,6 +215,7 @@ Available collections for user are:
 + Parameters
   + is_owner: `true` (boolean, optional) - filter/exclude user collections.
   + is_shared: `true` (boolean, optional) - filter/exclude shared collections.
+  + material_id: `material identifier` (string, optional) - filter collections by external id of material.
 
 + Request (application/json)
 
@@ -727,15 +728,15 @@ Deletes user filter by its identifier.
 ## Filter (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - filter id
  - title: `test filter` (string) - filter title
- - start_Date: `2018-10-15` (string) - start date for filtration
- - end_Date: `2018-10-15` (string) - end date for filtration
+ - start_date: `2018-10-15` (string) - start date for filtration
+ - end_date: `2018-10-15` (string) - end date for filtration
  - items: (array[Filter item]) - filter items
 
 ## Filter Short (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - filter id
  - title: `test filter` (string) - filter title
- - start_Date: `2018-10-15` (string) - start date for filtration
- - end_Date: `2018-10-15` (string) - end date for filtration
+ - start_date: `2018-10-15` (string) - start date for filtration
+ - end_date: `2018-10-15` (string) - end date for filtration
 
 ## Filter Create item (object)
  - category_item_id: `684de1cd-d875-4f08-b3b8-f99a1067485b` (string) - filter category item id
@@ -743,8 +744,8 @@ Deletes user filter by its identifier.
 ## Filter Create (object)
  - title: `test filter` (string) - filter title
  - items: (array[Filter Create item], optional) - filter items
- - start_Date: `2018-10-15` (string, optional) - start date for filtration
- - end_Date: `2018-10-15` (string, optional) - end date for filtration
+ - start_date: `2018-10-15` (string, optional) - start date for filtration
+ - end_date: `2018-10-15` (string, optional) - end date for filtration
 
 ## Collection (object)
  - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
@@ -803,3 +804,4 @@ Deletes user filter by its identifier.
  - results: Theme (array[Theme])
 
 ## Discipline (Filter Category item)
+ - materials_count: `3` (number) - the number of materials related to this discipline

@@ -1,4 +1,5 @@
 from django.db.models import Count
+from django.conf import settings
 
 from rest_framework.viewsets import GenericViewSet
 
@@ -13,13 +14,23 @@ from rest_framework.response import Response
 from surf.apps.themes.models import Theme
 from surf.apps.materials.models import Material, Collection
 from surf.apps.communities.models import Community
-from surf.apps.themes.serializers import ThemeSerializer
-from surf.apps.filters.serializers import FilterCategoryItemSerializer
+
+from surf.apps.themes.serializers import (
+    ThemeSerializer,
+    ThemeDisciplineSerializer
+)
+
 from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.serializers import CollectionSerializer
 
+from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+    XmlEndpointApiClient,
+    DISCIPLINE_FIELD_ID,
+)
+
 
 _COLLECTIONS_COUNT_IN_OVERVIEW = 4
+_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
 
 
 class ThemeViewSet(ListModelMixin,
@@ -44,8 +55,33 @@ class ThemeViewSet(ListModelMixin,
 
         res = []
         if instance.disciplines.exists():
-            res = FilterCategoryItemSerializer(many=True).to_representation(
-                instance.disciplines.all())
+            items = [d.external_id for d in instance.disciplines.all()]
+            filters = dict(external_id=DISCIPLINE_FIELD_ID, items=items)
+
+            ac = XmlEndpointApiClient(
+                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
+            drilldowns = ac.drilldowns([_DISCIPLINE_FILTER],
+                                       filters=[filters])
+            if drilldowns:
+                drilldowns = drilldowns.get("drilldowns", [])
+                for f in drilldowns:
+                    if f["external_id"] == DISCIPLINE_FIELD_ID:
+                        drilldowns = {item["external_id"]: item["count"]
+                                      for item in f["items"]}
+                        break
+                else:
+                    drilldowns = None
+
+            context = self.get_serializer_context()
+            if drilldowns:
+                context["extra"] = dict(drilldowns=drilldowns)
+
+            res = ThemeDisciplineSerializer(
+                many=True, context=context
+            ).to_representation(
+                instance.disciplines.all()
+            )
 
         return Response(res)
 
