@@ -35,6 +35,7 @@ _DEFAULT_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 _DATE_TYPE_FIELDS = {PUBLISHER_DATE_FILED_ID}
 
 _DATE_FORMAT = "%Y-%m-%d"
+_EDUREP_DATE_FORMAT = "%Y%m%d"
 
 _BASE_QUERY = "edurep"
 _API_VERSION = "1.2"
@@ -175,8 +176,12 @@ def _date_filter_to_cql(field_id, date_range):
     if len(date_range) != 2:
         return None
 
-    date_from, date_to = [int(datetime.strptime(d, _DATE_FORMAT).timestamp())
-                          if d else 0 for d in date_range]
+    date_range = [datetime.strptime(d, _DATE_FORMAT)
+                  if d else None for d in date_range]
+
+    date_from, date_to = [d.strftime(_EDUREP_DATE_FORMAT)
+                          if d else None for d in date_range]
+
     conditions = []
     if date_from:
         conditions.append('({} >= "{}")'.format(field_id, date_from))
@@ -206,4 +211,4 @@ def _aggregate_filed_filter_to_cql(field_id, values, aggregate_field_items):
         v_cqls = ['({} exact "{}")'.format(field_id, item)
                   for item in aggregate_field_items.get(v, [])]
         items.extend(v_cqls)
-    return " OR ".join(items)
+    return " OR ".join(items) if items else None
