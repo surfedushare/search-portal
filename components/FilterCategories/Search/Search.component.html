@@ -32,7 +32,11 @@
           >{{category.title}}</option>
         </select>
       </div>
-      <button class="button" type="submit">
+      <button
+        class="button"
+        type="submit"
+        :disabled="formData.search_text && !formData.search_text.length"
+      >
         Zoeken
       </button>
     </div>

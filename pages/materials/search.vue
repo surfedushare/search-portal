@@ -8,12 +8,12 @@
           <div class="search__info_top">
             <BreadCrumbs :items="items" />
             <h2 v-if="materials">Zoekresultaten ({{ materials.records_total }})</h2>
+            <img
+              src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
+              srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+              class="search__info_bg"
+            >
           </div>
-          <img 
-            src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
-            class="search__info_bg"
-          >
           <Search
             v-if="search"
             :hide-categories="true"
@@ -37,7 +37,7 @@
           class="search__tools_type_button"
           @click.prevent="changeViewType"
         >
-          Kaartweergave
+          {{ materials_in_line === 1 ? 'Kaartweergave' : 'Lijstweergave' }}
         </button>
       </div>
 
@@ -57,7 +57,6 @@
         </div>
 
         <div
-          v-if="materials"
           class="search__materials"
         >
           <Materials
@@ -68,6 +67,7 @@
         </div>
       </div>
     </div>
+
     <transition name="fade">
       <Popup
         v-if="isShow"
@@ -101,6 +101,7 @@
         </slot>
       </Popup>
     </transition>
+
   </section>
 </template>
 
@@ -131,12 +132,9 @@ export default {
   data() {
     return {
       search_text: [],
-      search: false,
+      search: {},
       isShow: false,
-      date_range: {
-        external_id: 'lom.lifecycle.contribute.publisherdate',
-        items: [null, null]
-      },
+      publisherdate: 'lom.lifecycle.contribute.publisherdate',
       dates_range: {
         start_date: null,
         end_date: null
@@ -153,7 +151,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
+    ...mapGetters([
+      'materials',
+      'materials_loading',
+      'materials_in_line',
+      'active_filter'
+    ])
   },
   watch: {
     search(search) {
@@ -161,36 +164,41 @@ export default {
         this.$store.dispatch('searchMaterials', search);
       }
     },
+    active_filter(active_filter) {
+      this.dates_range = {
+        start_date: active_filter.start_date,
+        end_date: active_filter.end_date
+      };
+    },
     dates_range(dates) {
       const { filters } = this.search;
-      const current_dates = filters.find(
-        item => item.external_id === 'lom.lifecycle.contribute.publisherdate'
+      let new_filters = filters ? filters.slice(0) : [];
+      const current_dates = new_filters.find(
+        item => item.external_id === this.publisherdate
       );
-      let new_filters = [];
+      const index = current_dates
+        ? new_filters.indexOf(current_dates)
+        : new_filters.length;
 
-      if (current_dates) {
-        const index = filters.indexOf(current_dates);
-        new_filters[index] = {
-          external_id: 'lom.lifecycle.contribute.publisherdate',
-          items: [dates.start_date || '', dates.end_date || '']
-        };
-      } else {
-        new_filters = [
-          {
-            external_id: 'lom.lifecycle.contribute.publisherdate',
-            items: [dates.start_date || '', dates.end_date || '']
-          }
-        ];
-      }
+      new_filters[index] = {
+        external_id: this.publisherdate,
+        items: [dates.start_date || null, dates.end_date || null]
+      };
+
       this.search = Object.assign({}, this.search, { filters: new_filters });
     }
   },
   mounted() {
-    // Parsing url query
-    const search = Object.assign({}, this.$route.query, {
-      filters: JSON.parse(this.$route.query.filters),
-      search_text: JSON.parse(this.$route.query.search_text)
-    });
+    const { query } = this.$route;
+    let search = { search_text: [], filters: [] };
+
+    if (Object.keys(query).length) {
+      // Parsing url query
+      search = Object.assign({}, query, {
+        filters: JSON.parse(query.filters),
+        search_text: JSON.parse(query.search_text)
+      });
+    }
 
     this.search = search;
     this.$store.dispatch('searchMaterials', search);
@@ -200,14 +208,16 @@ export default {
      * Load next materials
      */
     loadMore() {
-      const { search } = this;
-      const { page_size, page, records_total } = this.materials;
+      const { search, materials } = this;
+      if (materials && search) {
+        const { page_size, page, records_total } = materials;
 
-      if (records_total > page_size * page) {
-        this.$store.dispatch(
-          'searchNextPageMaterials',
-          Object.assign({}, search, { page: page + 1 })
-        );
+        if (records_total > page_size * page) {
+          this.$store.dispatch(
+            'searchNextPageMaterials',
+            Object.assign({}, search, { page: page + 1 })
+          );
+        }
       }
     },
     /**
@@ -227,7 +237,14 @@ export default {
       this.isShow = false;
     },
     onSaveFilter() {
-      console.log(111);
+      this.$store
+        .dispatch('postFilter', {
+          title: this.formData.name,
+          items: this.search
+        })
+        .then(() => {
+          this.close();
+        });
     }
   }
 };
@@ -250,12 +267,13 @@ export default {
       padding: 65px 576px 95px 46px;
       min-height: 274px;
       margin: 0 0 -68px;
+      position: relative;
     }
 
     &_bg {
       position: absolute;
-      right: 146px;
-      top: 45px;
+      right: 26px;
+      top: -45px;
       width: 510px;
       height: 298px;
       border-radius: 21px;

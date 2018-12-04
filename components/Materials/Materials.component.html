@@ -40,9 +40,8 @@
           <div
             v-if="itemsInLine === 1 && material.description"
             class="materials__item_description"
-          >
-            {{material.description}}
-          </div><br>
+            v-html="material.description"
+          ></div><br>
         </div>
         <div class="materials__item_subinfo">
           <div v-if="material.disciplines && material.disciplines.length">
@@ -71,6 +70,7 @@
             <div class="materials__item_actions">
               <div class="materials__item_applauds">{{material.number_of_applauds}}</div>
               <a
+                v-if="material.url"
                 class="materials__item_external_link"
                 target="_blank"
                 :href="material.url"

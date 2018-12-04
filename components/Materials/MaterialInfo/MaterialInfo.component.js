@@ -1,8 +1,9 @@
+import { mapGetters } from 'vuex';
 import StarRating from '~/components/StarRating';
 import PopularList from '~/components/Communities/PopularList';
 import Themes from '~/components/Themes';
 import Keywords from '~/components/Keywords';
-import { mapGetters } from 'vuex';
+import { generateSearchMaterialsQuery } from './../../_helpers';
 export default {
   name: 'material-info',
   props: ['material'],
@@ -27,17 +28,11 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapGetters(['communities']),
+    ...mapGetters(['isAuthenticated', 'communities']),
     authorUrl() {
       if (this.material) {
         this.formData.author = this.material.author;
-        return {
-          path: '/materials/search/',
-          query: Object.assign({}, this.formData, {
-            filters: JSON.stringify(this.formData.filters),
-            search_text: JSON.stringify(this.formData.search_text)
-          })
-        };
+        return generateSearchMaterialsQuery(this.formData);
       }
     }
   }

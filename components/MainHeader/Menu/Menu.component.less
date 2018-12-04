@@ -15,7 +15,6 @@
 
   &__link {
     color: @dark-grey;
-    text-decoration: none;
     border-radius: 7px;
     border: 1px solid transparent;
     display: inline-block;
@@ -56,17 +55,15 @@
       list-style: none;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      align-items: stretch;
 
       &_item {
-        width: 270px;
+        min-width: 24%;
         margin: 0 0 20px;
       }
     }
 
     &_link {
-      text-decoration: none;
-
       &:after {
         margin: 0 0 0 7px;
       }

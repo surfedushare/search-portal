@@ -10,7 +10,6 @@
     width: 100%;
     justify-content: space-between;
     a {
-      text-decoration: none;
       font-family: @second-font;
       font-size: 16px;
       font-weight: bold;
@@ -55,12 +54,15 @@
 
     &:after {
       content: '';
-      background: url('./../../assets/images/plus-black.svg') 50% 50% no-repeat;
-      background-size: contain;
       display: inline-block;
       width: 20px;
       height: 20px;
       margin: 2px 5px 0 0;
+      background: url('./../../assets/images/plus-black.svg') 50% 50% / contain no-repeat;
+    }
+
+    &--hide:after {
+      background: url('./../../assets/images/min-black.svg') 50% 50% / contain  no-repeat;
     }
   }
 
@@ -78,7 +80,7 @@
   }
 
   &__subitems {
-    padding: 17px 0 0;
+    padding: 17px 0 30px;
     margin: 0;
     list-style: none;
   }
@@ -97,6 +99,19 @@
     label {
       margin: 0 0 0 7px;
       cursor: pointer;
+    }
+
+    &--show-more {
+      padding-top: 10px;
+      font-size: 14px;
+
+      a {
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
     }
   }
 }

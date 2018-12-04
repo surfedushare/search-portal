@@ -19,8 +19,18 @@
   transition: background-color 0.2s;
   cursor: pointer;
 
-  &:hover {
-    background: @orange;
+  &[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &:hover:not([disabled]) {
+    background: @orange-hover;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
   }
 
   &--full-width {

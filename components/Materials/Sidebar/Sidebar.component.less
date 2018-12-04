@@ -1,36 +1,50 @@
 @import './../../../assets/styles/variables';
 .material {
-  &__left{
+  &__left {
     width: 282px;
     flex-shrink: 0;
     margin: 0 124px 0 0;
     padding: 40px 0 0;
-    &-box{
-      background: url("./../../../assets/images/keurmerk.svg") no-repeat 1px 8px;
+    &-box {
+      background: url('./../../../assets/images/keurmerk.svg') no-repeat 1px 8px;
       padding: 3px 0 0 35px;
-      h3{
+      .h3 {
         line-height: 1.2;
         margin: 0 0 6px;
+        text-align: left;
+        border: 0;
+        background: transparent;
+        border-radius: 0;
+        display: block;
       }
-      p{
+
+      button.h3 {
+        cursor: pointer;
+
+        &:focus,
+        &:active {
+          outline: none;
+        }
+      }
+      p {
         margin: 0 0 14px;
       }
-      a{
+      a {
         font-family: @second-font;
         text-decoration: none;
         font-weight: bold;
-        &:after{
+        &:after {
           margin: 0 0 0 10px;
         }
       }
     }
-    &_sticky{
+    &_sticky {
       position: sticky;
       top: 120px;
       left: 0;
     }
   }
-  &__back{
+  &__back {
     font-family: @second-font;
     font-size: 16px;
     font-weight: bold;
@@ -38,40 +52,47 @@
     margin-bottom: 64px;
     display: inline-block;
   }
-  &__grey_block{
+  &__grey_block {
     border-radius: 10px;
     padding: 32px 25px 26px;
     background-color: fade(@light-grey, 90%);
     margin: 0 0 30px;
 
-    h4{
+    h4 {
       line-height: 20px;
       margin: 5px 0 0;
-      &:first-child{
+      &:first-child {
         margin: 0;
       }
     }
 
-    &-copyright{
-      &.cc-by{
-        background: url("../../../assets/images/by-black.svg") no-repeat 0 0, url("../../../assets/images/sa-black.svg") no-repeat 23px 0;
+    &-copyright {
+      &.cc-by {
+        background: url('../../../assets/images/by-black.svg') no-repeat 0 0,
+          url('../../../assets/images/sa-black.svg') no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-nc,
-      &.cc-by-nc-sa{
-        background: url("../../../assets/images/by-black.svg") no-repeat 0 0, url("../../../assets/images/nc-black.svg") no-repeat 23px 0, url("../../../assets/images/sa-black.svg") no-repeat 46px 0;
+      &.cc-by-nc-sa {
+        background: url('../../../assets/images/by-black.svg') no-repeat 0 0,
+          url('../../../assets/images/nc-black.svg') no-repeat 23px 0,
+          url('../../../assets/images/sa-black.svg') no-repeat 46px 0;
         background-size: contain;
       }
-      &.cc-by-nd{
-        background: url("../../../assets/images/by-black.svg") no-repeat 0 0, url("../../../assets/images/nd-black.svg") no-repeat 23px 0;
+      &.cc-by-nd {
+        background: url('../../../assets/images/by-black.svg') no-repeat 0 0,
+          url('../../../assets/images/nd-black.svg') no-repeat 23px 0;
         background-size: contain;
       }
-      &.cc-by-sa{
-        background: url("../../../assets/images/by-black.svg") no-repeat 0 0, url("../../../assets/images/nc-black.svg") no-repeat 23px 0;
+      &.cc-by-sa {
+        background: url('../../../assets/images/by-black.svg') no-repeat 0 0,
+          url('../../../assets/images/nc-black.svg') no-repeat 23px 0;
         background-size: contain;
       }
-      &.cc-by-nc-nd{
-        background: url("../../../assets/images/by-black.svg") no-repeat 0 0, url("../../../assets/images/nc-black.svg") no-repeat 23px 0, url("../../../assets/images/nd-black.svg") no-repeat 46px 0;
+      &.cc-by-nc-nd {
+        background: url('../../../assets/images/by-black.svg') no-repeat 0 0,
+          url('../../../assets/images/nc-black.svg') no-repeat 23px 0,
+          url('../../../assets/images/nd-black.svg') no-repeat 46px 0;
         background-size: contain;
       }
       &.yes:before{
@@ -84,9 +105,9 @@
       display: block;
       background-size: contain;
     }
-    &-btn{
+    &-btn {
       margin: 19px 0 0;
-      background-image: url("./../../../assets/images/open-link-black.svg");
+      background-image: url('./../../../assets/images/open-link-black.svg');
       background-position: 12px 12px;
       background-repeat: no-repeat;
       background-size: 25px;

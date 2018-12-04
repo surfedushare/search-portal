@@ -13,3 +13,15 @@ export const debounce = function(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 };
+
+export const generateSearchMaterialsQuery = (
+  data = { filters: [], search_text: [] }
+) => {
+  return {
+    path: '/materials/search/',
+    query: Object.assign({}, data, {
+      filters: JSON.stringify(data.filters),
+      search_text: JSON.stringify(data.search_text)
+    })
+  };
+};
