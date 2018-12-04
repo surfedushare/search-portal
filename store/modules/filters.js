@@ -1,10 +1,14 @@
 export default {
   state: {
-    filters: null
+    filters: null,
+    active_filter: null
   },
   getters: {
     filters(state) {
       return state.filters;
+    },
+    active_filter(state) {
+      return state.active_filter;
     }
   },
   actions: {
@@ -49,10 +53,11 @@ export default {
           search_text: items.search_text
         }
       );
-      console.log(1, resp);
-      // const filter = await this.$axios.$post('filters/', resp);
-      // console.log(2, filter);
-      // commit('EXTEND_FILTERS', filter);
+      const filter = await this.$axios.$post('filters/', resp);
+      commit('EXTEND_FILTERS', filter);
+    },
+    setActiveFilter({ commit }, filter) {
+      commit('EXTEND_FILTERS', filter);
     }
   },
   mutations: {

@@ -25,7 +25,9 @@ export default {
   },
   actions: {
     async getThemes({ commit }) {
-      const themes = await this.$axios.$get('themes/');
+      const themes = await this.$axios.$get('themes/', {
+        params: { page_size: 100 }
+      });
       commit('SET_THEMES', themes);
     },
     async getTheme({ commit }, id) {

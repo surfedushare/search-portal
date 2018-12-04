@@ -96,6 +96,9 @@ export default {
     },
     onFilterSelected(e) {
       this.$store.dispatch('getFilter', { id: e.target.value });
+    },
+    resetFilter() {
+      location.reload();
     }
   },
   watch: {

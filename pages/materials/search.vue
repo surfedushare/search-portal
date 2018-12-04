@@ -171,7 +171,7 @@ export default {
 
       new_filters[index] = {
         external_id: this.publisherdate,
-        items: [dates.start_date || '', dates.end_date || '']
+        items: [dates.start_date || null, dates.end_date || null]
       };
 
       this.search = Object.assign({}, this.search, { filters: new_filters });
@@ -226,10 +226,14 @@ export default {
       this.isShow = false;
     },
     onSaveFilter() {
-      this.$store.dispatch('postFilter', {
-        title: this.formData.name,
-        items: this.search
-      });
+      this.$store
+        .dispatch('postFilter', {
+          title: this.formData.name,
+          items: this.search
+        })
+        .then(() => {
+          this.close();
+        });
     }
   }
 };

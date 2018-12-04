@@ -10,7 +10,7 @@
     >
       Selectie opslaan
     </a>
-    <nuxt-link to="/" class="filter-categories__reset">Reset filters</nuxt-link>
+    <a href="/materials/search/" @click="resetFilter" class="filter-categories__reset">Reset filters</a>
   </div>
   <div class="select filter-categories__select" v-if="filters && filters.length">
     <select name="my" @change="onFilterSelected">
