@@ -21,7 +21,10 @@
         </div>
       </div>
       <div class="center_block main__thems_and_communities">
-        <Themes class="main__thems" />
+        <Themes
+          :themes="themes"
+          class="main__thems"
+        />
         <PopularList
           :communities="communities"
           class="main__communities"
@@ -64,7 +67,7 @@ export default {
     Preview
   },
   computed: {
-    ...mapGetters(['materials', 'communities'])
+    ...mapGetters(['materials', 'communities', 'themes'])
   },
   mounted() {
     this.$store.dispatch('searchMaterials', {

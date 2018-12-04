@@ -16,7 +16,10 @@
         </div>
       </div>
       <div class="center_block main__thems_and_communities">
-        <Themes class="main__thems" />
+        <Themes
+          :themes="themes"
+          class="main__thems"
+        />
         <PopularList class="main__communities" />
       </div>
       <div class="main__materials">
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Search from '~/components/FilterCategories/Search/index.vue';
 import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';
@@ -38,6 +42,9 @@ export default {
     PopularList,
     Materials,
     Themes
+  },
+  computed: {
+    ...mapGetters(['themes'])
   }
 };
 </script>
