@@ -11,7 +11,11 @@
           <h2 class="community__info_ttl">{{ community_info.name }}</h2>
         </div>
       </div>
-      <Search class="community__info_search" :hide-filter="true" />
+      <Search
+        class="community__info_search"
+        :hide-filter="true"
+        :hide-categories="true"
+      />
     </div>
     <div class="community__row">
       <div class="community__description">
