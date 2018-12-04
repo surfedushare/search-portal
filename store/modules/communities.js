@@ -8,7 +8,7 @@ export default {
     }
   },
   actions: {
-    async getCommunities({ commit }, { params }) {
+    async getCommunities({ commit }, { params = {} } = {}) {
       const communities = await this.$axios.$get('communities/', { params });
       commit('SET_COMMUNITIES', communities);
     }

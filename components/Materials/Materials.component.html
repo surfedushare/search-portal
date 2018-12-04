@@ -59,6 +59,7 @@
           <div class="materials__item_keywords" v-if="material.keywords && material.keywords.length">
             <span class="materials__item_keyword" v-for="keyword in material.keywords">{{keyword}} </span>
           </div>
+          <div class="materials__item_copyrights" :class="material.copyright"></div>
           <footer class="materials__item_footer">
             <StarRating
               v-model="material.average_rating"

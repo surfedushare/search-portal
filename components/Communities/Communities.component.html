@@ -1,5 +1,35 @@
-
 <section class="communities">
-  <h1>communities Component</h1>
+  <div class="center_block">
+    <div class="communities__info ">
+      <img
+        class="communities__info_bg"
+        src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
+        srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+             ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+      >
+      <BreadCrumbs
+        :items="[{title:'Home', url: '/'}, {title:`Community's`, url: '/communities/'} ]"/>
+      <h2 class="communities__info_ttl">Community's</h2>
+      <Search class="communities__info_search" />
+    </div>
+    <ul class="communities__items" v-if="communities">
+      <li
+        v-for="communitie in communities.results"
+        class="communities__item tile tile--items-in-line-3 materials__item--items-in-line-3"
+      >
+        <div class="communities__item_wrapper tile__wrapper">
+          <div class="communities__item_logo" v-if="communitie.logo"><img :src="`${communitie.logo}`" alt=""></div>
+          <h3 class="communities__item_name">{{ communitie.name }}</h3>
+          <div class="communities__item_count">{{ communitie.materials_count }} leermaterialen</div>
+          <div class="communities__item_description">{{ communitie.description }}</div>
+          <nuxt-link
+          :to="`/communities/${communitie.id}`"
+          class="arrow-link communities__item_link">
+            Bekijken
+          </nuxt-link>
+        </div>
+      </li>
+    </ul>
+  </div>
 </section>
 

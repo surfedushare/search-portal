@@ -4,6 +4,8 @@ import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';
 import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
+import Collections from '~/components/Collections';
+import BreadCrumbs from '~/components/BreadCrumbs';
 
 export default {
   name: 'theme',
@@ -13,7 +15,9 @@ export default {
     PopularList,
     Materials,
     Themes,
-    Disciplines
+    Disciplines,
+    Collections,
+    BreadCrumbs
   },
   mounted() {
     this.$store.dispatch('searchMaterials', {
@@ -22,7 +26,10 @@ export default {
     });
     this.$store.dispatch('getTheme', this.$route.params.id);
     this.$store.dispatch('getThemeDisciplines', this.$route.params.id);
-    this.$store.dispatch('getThemeCommunities', this.$route.params.id);
+    this.$store.dispatch('getThemeCommunities', {
+      id: this.$route.params.id,
+      params: { page_size: 2 }
+    });
     this.$store.dispatch('getThemeCollections', this.$route.params.id);
   },
   data() {

@@ -22,7 +22,10 @@
       </div>
       <div class="center_block main__thems_and_communities">
         <Themes class="main__thems" />
-        <PopularList class="main__communities">
+        <PopularList
+          :communities="communities"
+          class="main__communities"
+        >
           <template slot="header-info">
             <h2>Community’s</h2>
             <div class="popular-list__description">Open leermaterialen vanuit vakcommunity’s</div>
@@ -61,13 +64,14 @@ export default {
     Preview
   },
   computed: {
-    ...mapGetters(['materials'])
+    ...mapGetters(['materials', 'communities'])
   },
   mounted() {
     this.$store.dispatch('searchMaterials', {
       page_size: 4,
       search_text: []
     });
+    this.$store.dispatch('getCommunities', { params: { page_size: 3 } });
   }
 };
 </script>
