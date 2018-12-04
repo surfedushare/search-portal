@@ -1,0 +1,34 @@
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    class="save_filter"
+  >
+    <slot>
+      <h2 class="popup__title">Selectie opslaan</h2>
+      <form
+        action=""
+        @submit.prevent="onSaveFilter"
+      >
+        <div class="form__item">
+          <input
+            v-model="formData.name"
+            type="text"
+            placeholder="Name"
+            class="input"
+            required="required"
+            name="name"
+            @change="onNameChanged"
+          >
+        </div>
+        <button
+          class="button"
+          type="submit"
+        >
+          Save
+        </button>
+      </form>
+    </slot>
+  </Popup>
+</transition>

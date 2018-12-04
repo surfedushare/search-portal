@@ -20,11 +20,16 @@ export default {
     BreadCrumbs
   },
   mounted() {
-    this.$store.dispatch('searchMaterials', {
-      page_size: 2,
-      search_text: []
+    this.$store.dispatch('getTheme', this.$route.params.id).then(theme => {
+      this.$store.dispatch('searchMaterials', {
+        page_size: 2,
+        search_text: [],
+        filters: [
+          { external_id: 'custom_theme.id', items: [theme.external_id] }
+        ],
+        return_filters: false
+      });
     });
-    this.$store.dispatch('getTheme', this.$route.params.id);
     this.$store.dispatch('getThemeDisciplines', this.$route.params.id);
     this.$store.dispatch('getThemeCommunities', {
       id: this.$route.params.id,

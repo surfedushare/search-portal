@@ -32,6 +32,7 @@ body {
 .tile {
   position: relative;
   word-break: break-word;
+  margin-bottom: 23px;
 
   &--items-in-line-1 {
     width: 100%;
@@ -39,14 +40,23 @@ body {
 
   &--items-in-line-2 {
     width: ~'calc(50% - 18px)';
+    &:not(:nth-child(2n + 1)) {
+      margin-left: 18px;
+    }
   }
 
   &--items-in-line-3 {
     width: ~'calc(33.333% - 18px)';
+    &:not(:nth-child(3n + 1)) {
+      margin-left: 18px;
+    }
   }
 
   &--items-in-line-4 {
     width: ~'calc(25% - 18px)';
+    &:not(:nth-child(4n + 1)) {
+      margin-left: 18px;
+    }
   }
 
 

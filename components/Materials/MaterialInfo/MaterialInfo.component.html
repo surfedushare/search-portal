@@ -2,8 +2,11 @@
   <h1 class="material__info_ttl">{{ material.title }}</h1>
   <div class="material__info_author">
     <nuxt-link
-      :to="authorUrl">
-      {{ material.author }}</nuxt-link>
+      :to="authorUrl"
+      v-if="material.author"
+    >
+      {{ material.author }}
+    </nuxt-link>
     {{ material.publisher }}
   </div>
   <h3 class="material__info_subttl">Kwaliteit</h3>
@@ -27,12 +30,16 @@
       <StarRating
         v-model="material.average_rating"
         :counter="material.number_of_ratings"
-        :type="'big'"
+        type="big"
         :disabled="true"
       />
-      <nuxt-link to="/" v-if="isAuthenticated">
+      <a
+        href="/save-rating/"
+        v-if="isAuthenticated"
+        @click.prevent="showPopupSaveRating"
+      >
         Geef waardering
-      </nuxt-link>
+      </a>
     </div>
     <div class="quality__social">
       <!--<vue-goodshare-linkedin-->
@@ -66,7 +73,7 @@
   </template>
 
   <div class="material__info_thems_and_communities">
-    <Themes class="material__info_thems" :themes="material"/>
+    <Themes class="material__info_thems" :themes="material_themes"/>
     <Keywords class="material__info_keywords" :material="material" />
   </div>
   <PopularList
@@ -77,4 +84,10 @@
       <h3>In collectie van</h3>
     </template>
   </PopularList>
+  <SaveRating
+    :close="close"
+    :on-save-rating="onSaveRating"
+    v-model="formData"
+    :is-show="isShow"
+  ></SaveRating>
 </div>

@@ -44,11 +44,24 @@
           ></div><br>
         </div>
         <div class="materials__item_subinfo">
-          <div v-if="material.disciplines && material.disciplines.length">
-            <span v-for="discipline in material.disciplines">{{discipline.title}}</span>
+          <div
+            v-if="material.disciplines && material.disciplines.length"
+            class="materials__item_disciplines"
+          >
+            <span v-for="discipline in material.disciplines" class="materials__item_discipline">
+              {{discipline.title}}
+            </span>
           </div>
-          <div v-if="material.educationallevels && material.educationallevels.length">
-            <span v-for="educationallevel in material.educationallevels">{{educationallevel.title}}</span>
+          <div
+            v-if="material.educationallevels && material.educationallevels.length"
+            class="materials__item_educationallevels"
+          >
+            <span
+              v-for="educationallevel in material.educationallevels"
+              class="materials__item_educationallevel"
+            >
+              {{educationallevel.title}}
+            </span>
           </div>
           <div
             v-if="material.format"

@@ -68,40 +68,12 @@
       </div>
     </div>
 
-    <transition name="fade">
-      <Popup
-        v-if="isShow"
-        :close="close"
-        :is-show="isShow"
-        class="save_filter"
-      >
-        <slot>
-          <h2 class="save_filter__title">Selectie opslaan</h2>
-          <form
-            action=""
-            @submit.prevent="onSaveFilter"
-          >
-            <div class="form__item">
-              <input
-                v-model="formData.name"
-                type="text"
-                placeholder="Name"
-                class="input"
-                required="required"
-                name="name"
-              >
-            </div>
-            <button
-              class="button"
-              type="submit"
-            >
-              Save
-            </button>
-          </form>
-        </slot>
-      </Popup>
-    </transition>
-
+    <SaveFilter
+      :close="close"
+      :on-save-filter="onSaveFilter"
+      v-model="formData"
+      :is-show="isShow"
+    />
   </section>
 </template>
 
@@ -114,8 +86,8 @@ import Materials from '~/components/Materials';
 import Themes from '~/components/Themes';
 import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import Popup from '~/components/Popup';
 import DatesRange from '~/components/DatesRange';
+import SaveFilter from '~/components/Popup/SaveFilter';
 
 export default {
   components: {
@@ -126,7 +98,7 @@ export default {
     Themes,
     Spinner,
     BreadCrumbs,
-    Popup,
+    SaveFilter,
     DatesRange
   },
   data() {
@@ -388,12 +360,6 @@ export default {
     margin: 0 0 132px;
     flex: 1 1 auto;
     padding: 98px 0 0;
-  }
-}
-
-.save_filter {
-  &__title {
-    margin: 0 0 30px;
   }
 }
 </style>
