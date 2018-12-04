@@ -53,6 +53,13 @@ def add_default_filters(filters):
         filters.append(
             dict(external_id=EDUCATIONAL_LEVEL_FIELD_ID, items=items))
 
+    # add default filters for Copyrights if needed
+    if not filter_categories.get(COPYRIGHT_FIELD_ID):
+        items = FilterCategoryItem.objects.filter(
+            category__edurep_field_id=COPYRIGHT_FIELD_ID).all()
+        items = [it.external_id for it in items]
+        filters.append(dict(external_id=COPYRIGHT_FIELD_ID, items=items))
+
     return filters
 
 
