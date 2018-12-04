@@ -16,7 +16,8 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
     CUSTOM_THEME_DISCIPLINES,
-    CUSTOM_COPYRIGHTS
+    CUSTOM_COPYRIGHTS,
+    DISCIPLINE_ENTRIES
 )
 
 from surf.apps.filters.models import (
@@ -99,6 +100,10 @@ def update_filter_category(filter_category):
     elif filter_category.edurep_field_id == COPYRIGHT_FIELD_ID:
         _update_copyrights(filter_category)
 
+    elif filter_category.edurep_field_id == DISCIPLINE_FIELD_ID:
+        _update_filter_category(filter_category, ac)
+        _update_themes_disciplines(filter_category)
+
     elif filter_category.edurep_field_id not in IGNORED_FIELDS:
         _update_filter_category(filter_category, ac)
 
@@ -133,6 +138,20 @@ def _update_themes(theme_category):
             if d:
                 ds.append(d)
         t.disciplines.set(ds)
+
+
+def _update_themes_disciplines(discipline_category):
+    """
+    Updates all disciplines related to themes in database
+    :param discipline_category: DB instance of Discipline filter category
+    """
+
+    for d in DISCIPLINE_ENTRIES:
+        # get or create Discipline category item
+        FilterCategoryItem.objects.get_or_create(
+            category_id=discipline_category.id,
+            external_id=d["id"],
+            defaults=dict(title=d["name"]))
 
 
 def _update_copyrights(copyrights_category):
