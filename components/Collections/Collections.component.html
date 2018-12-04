@@ -2,10 +2,10 @@
 <section class="collections">
   <slot name="header-info">
   </slot>
-  <ul class="collections__items" v-if="collections">
+  <ul class="collections__items" v-if="collections && collections.length">
     <li
       :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
-      v-for="collection in collections.results"
+      v-for="collection in collections"
       class="collections__item tile"
     >
       <div class="collections__item_wrapper tile__wrapper">
@@ -27,4 +27,5 @@
       </div>
     </li>
   </ul>
+  <div class="collections__info" v-else>No collections</div>
 </section>
