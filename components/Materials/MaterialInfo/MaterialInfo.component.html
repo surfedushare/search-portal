@@ -28,8 +28,9 @@
         v-model="material.average_rating"
         :counter="material.number_of_ratings"
         :type="'big'"
+        :disabled="true"
       />
-      <nuxt-link to="/">
+      <nuxt-link to="/" v-if="isAuthenticated">
         Geef waardering
       </nuxt-link>
     </div>
@@ -49,11 +50,13 @@
       <!--&gt;</vue-goodshare-twitter>-->
     </div>
   </div>
-  <h3 class="material__info_subttl">Samenvatting</h3>
-  <div
-    class="material__info_description"
-    v-html="material.description">
-   </div>
+  <template v-if="material.description">
+    <h3 class="material__info_subttl">Samenvatting</h3>
+    <div
+      class="material__info_description"
+      v-html="material.description">
+    </div>
+  </template>
 
   <div class="material__info_thems_and_communities">
     <Themes class="material__info_thems" :material="material"/>

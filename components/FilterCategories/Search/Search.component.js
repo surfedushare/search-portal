@@ -11,6 +11,9 @@ export default {
       type: Boolean,
       default: false
     },
+    'active-category-external-id': {
+      type: String
+    },
     value: {
       type: Object,
       default: () => ({
@@ -90,6 +93,11 @@ export default {
         }
       },
       deep: true
+    },
+    value(value) {
+      this.formData = {
+        ...value
+      };
     }
   },
   computed: {
@@ -100,13 +108,14 @@ export default {
      * @returns {*} - false or active category
      */
     active_category() {
-      const { filter_categories, hideFilter } = this;
+      const { filter_categories, hideFilter, activeCategoryExternalId } = this;
 
       if (filter_categories && filter_categories.results && !hideFilter) {
         const { external_id } = this.formData.filters[0];
-        if (external_id) {
+        const current_external_id = external_id || activeCategoryExternalId;
+        if (current_external_id) {
           return filter_categories.results.find(
-            item => item.external_id === external_id
+            item => item.external_id === current_external_id
           );
         }
         if (external_id !== null) {

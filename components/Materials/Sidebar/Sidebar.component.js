@@ -1,3 +1,5 @@
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'sidebar',
   props: {
@@ -8,6 +10,17 @@ export default {
   data() {
     return {};
   },
-  methods: {},
-  computed: {}
+  methods: {
+    getLoginLink() {
+      return `${this.$axios.defaults.baseURL}/login/?redirect_url=${
+        window.location
+      }`;
+    },
+    addToCollection() {
+      console.log(1111);
+    }
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated'])
+  }
 };

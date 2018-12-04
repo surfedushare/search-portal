@@ -20,7 +20,12 @@
   cursor: pointer;
 
   &:hover {
-    background: @orange;
+    background: @orange-hover;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
   }
 
   &--full-width {

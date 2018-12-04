@@ -142,6 +142,11 @@ h5,
 a,
 .link {
   color: @dark-blue;
+  text-decoration: none;
+
+  &:not(.button):hover {
+    text-decoration: underline;
+  }
 }
 
 .disable_block {

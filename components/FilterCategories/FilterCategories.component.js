@@ -11,8 +11,11 @@ export default {
   },
   data() {
     return {
+      publisherdate: 'lom.lifecycle.contribute.publisherdate',
       selected: [],
-      isShow: false
+      show_all: [],
+      isShow: false,
+      visible_items: 10
     };
   },
   methods: {
@@ -29,12 +32,25 @@ export default {
         this.selected = selected;
       }
     },
+    onToggleShowAll(id) {
+      const show_all = [...this.show_all];
+      const index = show_all.indexOf(id);
+      if (index !== -1) {
+        this.show_all = [
+          ...show_all.slice(0, index),
+          ...show_all.slice(index + 1)
+        ];
+      } else {
+        show_all.push(id);
+        this.show_all = show_all;
+      }
+    },
     /**
      * Set filter for v-model
      * @returns {*} - filters
      */
     setFilter() {
-      const { categories, filter } = this;
+      const { categories, filter, publisherdate } = this;
       if (filter && categories) {
         let filters = filter.reduce((prev, next) => {
           const hasItems = next.items.find(item => item);
@@ -55,6 +71,17 @@ export default {
           return prev;
         }, []);
 
+        const publisherdate_item = this.value.filters.find(
+          item => item.external_id === publisherdate
+        );
+
+        if (publisherdate_item) {
+          filters.push({
+            external_id: publisherdate,
+            items: [...publisherdate_item.items]
+          });
+        }
+
         filters = Object.assign({}, this.value, {
           filters
         });
@@ -66,9 +93,18 @@ export default {
     },
     onChange() {
       this.setFilter();
+    },
+    onFilterSelected(e) {
+      this.$store.dispatch('getFilter', { id: e.target.value });
     }
   },
-  watch: {},
+  watch: {
+    isAuthenticated(isAuthenticated) {
+      if (isAuthenticated) {
+        this.$store.dispatch('getFilters');
+      }
+    }
+  },
   computed: {
     ...mapGetters(['filter_categories', 'isAuthenticated', 'filters']),
     filter() {
@@ -98,19 +134,23 @@ export default {
     filtered_categories() {
       const { filter_categories } = this;
       if (filter_categories) {
-        return filter_categories.results.filter(
-          item => item.external_id !== 'lom.lifecycle.contribute.publisherdate'
-        );
+        return filter_categories.results.map(item => {
+          return {
+            ...item,
+            hide: item.external_id === 'lom.lifecycle.contribute.publisherdate'
+          };
+        });
       }
       return false;
     },
     categories() {
-      const { selected, filtered_categories } = this;
+      const { selected, show_all, filtered_categories } = this;
       if (selected && filtered_categories) {
         return Object.assign({}, filtered_categories, {
           results: filtered_categories.map(category => {
             return Object.assign({}, category, {
               selected: selected.indexOf(category.id) !== -1,
+              show_all: show_all.indexOf(category.id) !== -1,
               items: [...category.items]
             });
           })

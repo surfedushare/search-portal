@@ -35,7 +35,8 @@ export default {
       'themeDisciplines',
       'themeCommunities',
       'themeCollections',
-      'materials'
+      'materials',
+      'filter'
     ])
     // themesList() {
     //   if (this.material) {

@@ -12,21 +12,30 @@
     </a>
     <nuxt-link to="/" class="filter-categories__reset">Reset filters</nuxt-link>
   </div>
-  <div class="select filter-categories__select" v-if="filters && filters.results.length">
-    <select name="my" >
-      <option value="">Mijn filter selecties</option>
-      <option :value="filter" v-for="filter in filters.results">{{ filter.title }}</option>
+  <div class="select filter-categories__select" v-if="filters && filters.length">
+    <select name="my" @change="onFilterSelected">
+      <option value="" hidden>Mijn filter selecties</option>
+      <option :value="filter.id" v-for="filter in filters">{{ filter.title }}</option>
     </select>
   </div>
 
   <ul v-if="categories" class="filter-categories__items">
-    <li v-for="(category, index) in categories.results" class="filter-categories__item">
+    <li
+      v-for="(category, index) in categories.results"
+      class="filter-categories__item"
+      v-if="!category.hide"
+    >
       <h4
         @click="onToggleCategory(category.id)"
         class="filter-categories__item_title"
+        :class="{'filter-categories__item_title--hide': category.selected}"
       >{{ category.title }}</h4>
       <ul v-if="category.selected"  class="filter-categories__subitems">
-        <li v-for="(item, indexItem) in category.items" class="filter-categories__subitem">
+        <li
+          v-for="(item, indexItem) in category.items"
+          class="filter-categories__subitem"
+          v-if="category.show_all || indexItem < visible_items"
+        >
           <input
             type="checkbox"
             :id="item.external_id"
@@ -35,6 +44,22 @@
             @change="onChange"
           >
           <label :for="item.external_id">{{item.title}}</label>
+        </li>
+        <li v-if="category.items.length > visible_items" class="filter-categories__subitem--show-more">
+          <a
+            href="/show-more/"
+            @click.prevent="onToggleShowAll(category.id)"
+            v-if="category.show_all"
+          >
+            Hide
+          </a>
+          <a
+            href="/show-more/"
+            @click.prevent="onToggleShowAll(category.id)"
+            v-else
+          >
+            Bekijk meer ({{ category.items.length - visible_items }})
+          </a>
         </li>
       </ul>
     </li>

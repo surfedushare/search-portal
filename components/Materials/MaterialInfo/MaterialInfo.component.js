@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex';
 import StarRating from '~/components/StarRating';
 import PopularList from '~/components/Communities/PopularList';
 import Themes from '~/components/Themes';
@@ -24,6 +25,7 @@ export default {
   },
   methods: {},
   computed: {
+    ...mapGetters(['isAuthenticated']),
     authorUrl() {
       if (this.material) {
         this.formData.author = this.material.author;
