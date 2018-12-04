@@ -16,7 +16,9 @@
         </div>
       </div>
       <div class="center_block main__thems_and_communities">
-        <Themes class="main__thems" />
+        <Themes
+          :themes="themes"
+          class="main__thems" />
         <PopularList class="main__communities" />
       </div>
       <div class="main__materials">
@@ -38,6 +40,9 @@ export default {
     PopularList,
     Materials,
     Themes
+  },
+  computed: {
+    ...mapGetters(['themes'])
   }
 };
 </script>
