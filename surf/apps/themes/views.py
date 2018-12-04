@@ -22,6 +22,7 @@ from surf.apps.themes.serializers import (
 
 from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.serializers import CollectionSerializer
+from surf.apps.filters.utils import add_default_filters
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
@@ -56,13 +57,16 @@ class ThemeViewSet(ListModelMixin,
         res = []
         if instance.disciplines.exists():
             items = [d.external_id for d in instance.disciplines.all()]
-            filters = dict(external_id=DISCIPLINE_FIELD_ID, items=items)
+            filters = [dict(external_id=DISCIPLINE_FIELD_ID, items=items)]
+
+            # add default filters to search materials
+            filters = add_default_filters(filters)
 
             ac = XmlEndpointApiClient(
                 api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
             drilldowns = ac.drilldowns([_DISCIPLINE_FILTER],
-                                       filters=[filters])
+                                       filters=filters)
             if drilldowns:
                 drilldowns = drilldowns.get("drilldowns", [])
                 for f in drilldowns:

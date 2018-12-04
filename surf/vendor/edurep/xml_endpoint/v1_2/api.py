@@ -28,11 +28,12 @@ DISCIPLINE_FIELD_ID = DISCIPLINE_ID_LOM
 COPYRIGHT_FIELD_ID = COPYRIGHT_ID_LOM
 AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
 PUBLISHER_FIELD_ID = "lom.lifecycle.contribute.publisher"
-PUBLISHER_DATE_FILED_ID = "lom.lifecycle.contribute.publisherdate"
+PUBLISHER_DATE_FIELD_ID = "lom.lifecycle.contribute.publisherdate"
+EDUCATIONAL_LEVEL_FIELD_ID = "lom.classification.obk.educationallevel.id"
 
 _DEFAULT_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 
-_DATE_TYPE_FIELDS = {PUBLISHER_DATE_FILED_ID}
+_DATE_TYPE_FIELDS = {PUBLISHER_DATE_FIELD_ID}
 
 _DATE_FORMAT = "%Y-%m-%d"
 _EDUREP_DATE_FORMAT = "%Y%m%d"

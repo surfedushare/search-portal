@@ -1,3 +1,5 @@
+import re
+
 from django.db.models import Count
 
 from django.conf import settings
@@ -5,10 +7,11 @@ from django.conf import settings
 from surf.vendor.edurep.widget_endpoint.v3.api import WidgetEndpointApiClient
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    PUBLISHER_DATE_FILED_ID,
+    PUBLISHER_DATE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID,
     DISCIPLINE_FIELD_ID,
-    COPYRIGHT_FIELD_ID
+    COPYRIGHT_FIELD_ID,
+    EDUCATIONAL_LEVEL_FIELD_ID
 )
 
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
@@ -23,11 +26,41 @@ from surf.apps.filters.models import (
 
 from surf.apps.themes.models import Theme
 
-IGNORED_FIELDS = {PUBLISHER_DATE_FILED_ID,
+IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
                   CUSTOM_THEME_FIELD_ID}
+
+_MBO_HBO_WO_REGEX = re.compile(r"^(MBO|HBO|WO)(.*)$", re.IGNORECASE)
+_HBO_WO_REGEX = re.compile(r"^(HBO|WO)(.*)$", re.IGNORECASE)
+
+
+def add_default_filters(filters):
+    """
+    Adds default filters to search materials in EduRep
+    :param filters: current filters
+    :return: updated list of filters
+    """
+
+    filter_categories = {f.get("external_id"): f.get("items", [])
+                         for f in filters}
+
+    # add default filters for Educational Level if needed
+    if not filter_categories.get(EDUCATIONAL_LEVEL_FIELD_ID):
+        items = FilterCategoryItem.objects.filter(
+            category__edurep_field_id=EDUCATIONAL_LEVEL_FIELD_ID).all()
+        items = [it.external_id for it in items
+                 if _HBO_WO_REGEX.match(it.title)]
+
+        filters.append(
+            dict(external_id=EDUCATIONAL_LEVEL_FIELD_ID, items=items))
+
+    return filters
 
 
 def check_and_update_filters():
+    """
+    Updates filter categories and their items in database
+    """
+
     ac = None
 
     qs = FilterCategory.objects
@@ -45,6 +78,11 @@ def check_and_update_filters():
 
 
 def update_filter_category(filter_category):
+    """
+    Updates filter category and its items
+    :param filter_category: filter category DB instance
+    """
+
     ac = WidgetEndpointApiClient(
         api_endpoint=settings.EDUREP_JSON_API_ENDPOINT)
 
@@ -59,6 +97,11 @@ def update_filter_category(filter_category):
 
 
 def _update_themes(theme_category):
+    """
+    Updates all themes and their disciplines in database
+    :param theme_category: DB instance of Theme filter category
+    """
+
     for theme_id, disciplines in CUSTOM_THEME_DISCIPLINES.items():
         # get or create Theme category item
 
@@ -86,6 +129,11 @@ def _update_themes(theme_category):
 
 
 def _update_copyrights(copyrights_category):
+    """
+    Updates all copyrights in database
+    :param copyrights_category: DB instance of Copyrights filter category
+    """
+
     for copyright_id, copyright_data in CUSTOM_COPYRIGHTS.items():
         FilterCategoryItem.objects.get_or_create(
             category_id=copyrights_category.id,
@@ -94,6 +142,12 @@ def _update_copyrights(copyrights_category):
 
 
 def _update_filter_category(filter_category, api_client):
+    """
+    Updates filter category according to data received from EduRep
+    :param filter_category: filter category DB instance
+    :param api_client: api client to EduRep
+    """
+
     category_id = filter_category.edurep_field_id
     drilldown_name = "{}:{}".format(category_id,
                                     filter_category.max_item_count)
@@ -125,7 +179,17 @@ def _update_nested_items(filter_category, items):
 
 
 def _update_category_item(filter_category, item_id, item_title):
+    if not _is_valid_category_item(filter_category, item_id, item_title):
+        return
+
     FilterCategoryItem.objects.get_or_create(
         category_id=filter_category.id,
         external_id=item_id,
         defaults=dict(title=item_title))
+
+
+def _is_valid_category_item(filter_category, item_id, item_title):
+    if filter_category.edurep_field_id != EDUCATIONAL_LEVEL_FIELD_ID:
+        return True
+
+    return _MBO_HBO_WO_REGEX.match(item_title) is not None

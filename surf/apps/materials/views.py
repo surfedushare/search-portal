@@ -22,7 +22,7 @@ from rest_framework.decorators import action
 
 from surf.apps.filters.models import FilterCategory, FilterCategoryItem
 from surf.apps.themes.models import Theme
-from surf.apps.filters.utils import IGNORED_FIELDS
+from surf.apps.filters.utils import IGNORED_FIELDS, add_default_filters
 from surf.apps.core.mixins import ListDestroyModelMixin
 
 from surf.apps.materials.models import (
@@ -53,7 +53,7 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID,
     DISCIPLINE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID,
-    PUBLISHER_DATE_FILED_ID
+    PUBLISHER_DATE_FIELD_ID
 )
 
 from surf.vendor.edurep.smb.soap.api import SmbSoapApiClient
@@ -73,13 +73,18 @@ class MaterialSearchAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
+        filters = data.get("filters", [])
+
         # add additional filter by Author
         # if input data contains `author` parameter
         author = data.pop("author", None)
         if author:
-            filters = data.get("filters", [])
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
-            data["filters"] = filters
+
+        # add default filters to search materials
+        filters = add_default_filters(filters)
+
+        data["filters"] = filters
 
         return_records = data.pop("return_records", None)
         return_filters = data.pop("return_filters", None)
@@ -166,8 +171,12 @@ class MaterialAPIView(APIView):
             ac = XmlEndpointApiClient(
                 api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
+            # add default filters to search materials
+            filters = add_default_filters([])
+
             res = ac.search([],
-                            ordering="-{}".format(PUBLISHER_DATE_FILED_ID),
+                            filters=filters,
+                            ordering="-{}".format(PUBLISHER_DATE_FIELD_ID),
                             page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
             res = _add_extra_parameters_to_materials(request.user,
