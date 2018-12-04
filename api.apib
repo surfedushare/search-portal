@@ -755,6 +755,7 @@ Deletes user filter by its identifier.
  - is_shared: `false` (boolean) - set true if collection was shared by owner
  - is_owner: `false` (boolean) - set true if the user is owner of collection
  - owner_name: `Author name` (string) - the name of collection owner
+ - communities: (array[Community Short], optional) - communities which contain this collection
 
 ## Collection Create (object)
  - title: `test collection` (string) - collection title
@@ -791,6 +792,10 @@ Deletes user filter by its identifier.
  - website_url: `https://test-community.org` (string, optional) - community website URL
  - logo: `logo data` (string, optional) - community logo
  - featured_image: `featured image data` (string, optional) - community featured image
+
+## Community Short (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - community id
+ - name: `test community` (string) - community name
 
 ## Pagination Community Response (Pagination Response)
  - results: Community (array[Community])
