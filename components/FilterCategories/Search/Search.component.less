@@ -1,5 +1,7 @@
 @import "./../../../assets/styles/variables";
 .search {
+  position: relative;
+  z-index: 10;
   &__fields {
     display: flex;
     padding: 16px;
@@ -48,6 +50,10 @@
       padding: 0;
       margin: 0 0 0 20px;
       flex: 1 1 auto;
+
+      &--inline {
+        margin-top: -12px;
+      }
     }
 
     &_item {
@@ -69,6 +75,7 @@
     box-sizing: border-box;
     height: 67px;
     cursor: pointer;
+    z-index: 4;
 
     &--wrap {
       overflow: inherit;
@@ -131,6 +138,7 @@
   .button {
     margin: 0 0 0 30px;
     position: relative;
+    z-index: 4;
   }
 
   .v-select {
@@ -151,6 +159,6 @@
     box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
     background-color: #ffffff;
     min-height: 100%;
-
+    z-index: 3;
   }
 }

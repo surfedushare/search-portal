@@ -30,7 +30,7 @@
       v-if="!category.hide"
     >
       <h4
-        @click="onToggleCategory(category.id)"
+        @click="onToggleCategory(category.external_id)"
         class="filter-categories__item_title"
         :class="{'filter-categories__item_title--hide': category.selected}"
       >{{ category.title }}</h4>

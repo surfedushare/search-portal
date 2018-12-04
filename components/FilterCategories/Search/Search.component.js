@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex';
 import { debounce, generateSearchMaterialsQuery } from './../../_helpers';
+import DatesRange from './../../DatesRange';
 export default {
   name: 'search',
   props: {
@@ -27,12 +28,19 @@ export default {
   mounted() {
     this.$store.dispatch('getFilterCategories');
   },
+  components: {
+    DatesRange
+  },
   data() {
     return {
       filter: {},
       active_category_id: null,
       formData: {
         ...this.value
+      },
+      dates_range: {
+        start_date: null,
+        end_date: null
       }
     };
   },
@@ -92,6 +100,12 @@ export default {
       this.formData = {
         ...value
       };
+    },
+    dates_range(dates_range) {
+      this.formData.filters[0].items = [
+        dates_range.start_date,
+        dates_range.end_date
+      ];
     }
   },
   computed: {

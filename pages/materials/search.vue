@@ -200,6 +200,17 @@ export default {
       });
     }
 
+    const publisherdate = search.filters.find(
+      item => item.external_id === this.publisherdate
+    );
+
+    if (publisherdate) {
+      this.dates_range = {
+        start_date: publisherdate.items[0],
+        end_date: publisherdate.items[1]
+      };
+    }
+
     this.search = search;
     this.$store.dispatch('searchMaterials', search);
   },

@@ -16,6 +16,7 @@ export default {
       selected: [],
       show_all: [],
       isShow: false,
+      isInit: false,
       visible_items: 10
     };
   },
@@ -105,6 +106,13 @@ export default {
     }
   },
   watch: {
+    value(value) {
+      const { isInit } = this;
+      if (value && value.filters && !isInit) {
+        this.selected = value.filters.map(filter => filter.external_id);
+        this.isInit = true;
+      }
+    },
     isAuthenticated(isAuthenticated) {
       if (isAuthenticated) {
         this.$store.dispatch('getFilters');
@@ -185,12 +193,12 @@ export default {
       return false;
     },
     filtered_categories() {
-      const { filter_categories } = this;
+      const { filter_categories, publisherdate } = this;
       if (filter_categories) {
         return filter_categories.results.map(item => {
           return {
             ...item,
-            hide: item.external_id === 'lom.lifecycle.contribute.publisherdate'
+            hide: item.external_id === publisherdate
           };
         });
       }
@@ -202,7 +210,7 @@ export default {
         return Object.assign({}, filtered_categories, {
           results: filtered_categories.map(category => {
             return Object.assign({}, category, {
-              selected: selected.indexOf(category.id) !== -1,
+              selected: selected.indexOf(category.external_id) !== -1,
               show_all: show_all.indexOf(category.id) !== -1,
               items: [...category.items]
             });

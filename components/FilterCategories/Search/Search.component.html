@@ -42,7 +42,17 @@
     </div>
     <div class="search__themes" v-if="!hideFilter">
       <h4 class="search__themes_title">Filter zoekresultaten op</h4>
-      <ul v-if="active_category" class="search__themes_items">
+      <div
+        v-if="active_category && active_category.external_id === 'lom.lifecycle.contribute.publisherdate'"
+        class="search__themes_items search__themes_items--inline"
+      >
+        <DatesRange
+          v-model="dates_range"
+          :hide-select="true"
+          :inline="true"
+        ></DatesRange>
+      </div>
+      <ul v-else-if="active_category" class="search__themes_items">
         <li v-for="item in active_category.items" class="search__themes_item">
           <input
             type="checkbox"

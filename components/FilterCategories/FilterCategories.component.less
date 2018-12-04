@@ -58,11 +58,13 @@
       width: 20px;
       height: 20px;
       margin: 2px 5px 0 0;
-      background: url('./../../assets/images/plus-black.svg') 50% 50% / contain no-repeat;
+      background: url('./../../assets/images/plus-black.svg') 50% 50% / contain
+        no-repeat;
     }
 
     &--hide:after {
-      background: url('./../../assets/images/min-black.svg') 50% 50% / contain  no-repeat;
+      background: url('./../../assets/images/min-black.svg') 50% 50% / contain
+        no-repeat;
     }
   }
 
@@ -70,6 +72,8 @@
     padding: 0;
     margin: 0;
     list-style: none;
+    max-height: ~'calc(100vh - 300px)';
+    overflow: auto;
   }
 
   &__item {
