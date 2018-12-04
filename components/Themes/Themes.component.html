@@ -2,7 +2,7 @@
 <section class="themes">
   <h2>Thema’s</h2>
   <div class="themes__description">Zoek en vind open leermaterialen op thema</div>
-  <ul class="themes__list" v-if="themes">
+  <ul class="themes__list" v-if="themesList.length">
     <li
       class="themes__item"
       v-for="theme in themesList"
@@ -15,5 +15,6 @@
       </nuxt-link>
     </li>
   </ul>
+  <div class="themes__info" v-else>No themes</div>
 </section>
 

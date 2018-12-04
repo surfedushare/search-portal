@@ -52,14 +52,24 @@
   <h3 class="material__info_subttl">Samenvatting</h3>
   <div
     class="material__info_description"
-    v-html="material.description">
+    v-html="material.description"
+    v-if="material.description">
+    No description
+   </div>
+  <div
+    class="material__info_description"
+    v-else>
+    No description
    </div>
 
   <div class="material__info_thems_and_communities">
     <Themes class="material__info_thems" :material="material"/>
     <Keywords class="material__info_keywords" :material="material" />
   </div>
-  <PopularList class="material__info_communities" :type="'material'" :page_size="2">
+  <PopularList
+    class="material__info_communities"
+    :type="'material'"
+    :communities="communities">
     <template slot="header-info">
       <h3>In collectie van</h3>
     </template>

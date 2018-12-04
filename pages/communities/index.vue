@@ -1,20 +1,15 @@
 <template>
   <section class="container main">
-    <div>
-      <Search />
-      <PopularList />
-    </div>
+    <Communities/>
   </section>
 </template>
 
 <script>
-import Search from '~/components/FilterCategories/Search/index.vue';
-import PopularList from '~/components/Communities/PopularList';
+import Communities from '~/components/Communities';
 
 export default {
   components: {
-    Search,
-    PopularList
+    Communities
   }
 };
 </script>

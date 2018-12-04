@@ -38,9 +38,10 @@ export default {
       );
       commit('SET_DISCIPLINES', themeDisciplines);
     },
-    async getThemeCommunities({ commit }, id) {
+    async getThemeCommunities({ commit }, { params, id }) {
       const themeCommunities = await this.$axios.$get(
-        `themes/${id}/communities`
+        `themes/${id}/communities`,
+        { params }
       );
       commit('SET_COMMUNITIES', themeCommunities);
     },
