@@ -18,8 +18,8 @@ export default {
       disabled: {},
       format: 'yyyy-MM-dd',
       formData: {
-        start_date: null,
-        end_date: null
+        start_date: this.value.start_date || null,
+        end_date: this.value.end_date || null
       }
     };
   },
@@ -27,23 +27,11 @@ export default {
     ClickOutside
   },
   watch: {
-    'formData.start_date'(date) {
-      this.$emit(
-        'input',
-        Object.assign({}, this.value, {
-          start_date: formatDate(date, 'YYYY-MM-DD')
-          // start_date: date
-        })
-      );
-    },
-    'formData.end_date'(date) {
-      this.$emit(
-        'input',
-        Object.assign({}, this.value, {
-          end_date: formatDate(date, 'YYYY-MM-DD')
-          // end_date: date
-        })
-      );
+    value(value) {
+      this.formData = {
+        start_date: value.start_date ? new Date(value.start_date) : null,
+        end_date: value.end_date ? new Date(value.end_date) : null
+      };
     }
   },
   methods: {
@@ -53,6 +41,24 @@ export default {
 
     hide() {
       this.opened = false;
+    },
+    onSelectedStartDate(date) {
+      this.$emit(
+        'input',
+        Object.assign({}, this.value, {
+          start_date: formatDate(date, 'YYYY-MM-DD')
+          // start_date: date
+        })
+      );
+    },
+    onSelectedEndDate(date) {
+      this.$emit(
+        'input',
+        Object.assign({}, this.value, {
+          end_date: formatDate(date, 'YYYY-MM-DD')
+          // end_date: date
+        })
+      );
     }
   },
   computed: {}

@@ -8,12 +8,12 @@
           <div class="search__info_top">
             <BreadCrumbs :items="items" />
             <h2 v-if="materials">Zoekresultaten ({{ materials.records_total }})</h2>
+            <img
+              src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
+              srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+              class="search__info_bg"
+            >
           </div>
-          <img 
-            src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
-            class="search__info_bg"
-          >
           <Search
             v-if="search"
             :hide-categories="true"
@@ -151,13 +151,24 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
+    ...mapGetters([
+      'materials',
+      'materials_loading',
+      'materials_in_line',
+      'active_filter'
+    ])
   },
   watch: {
     search(search) {
       if (search) {
         this.$store.dispatch('searchMaterials', search);
       }
+    },
+    active_filter(active_filter) {
+      this.dates_range = {
+        start_date: active_filter.start_date,
+        end_date: active_filter.end_date
+      };
     },
     dates_range(dates) {
       const { filters } = this.search;
@@ -256,12 +267,13 @@ export default {
       padding: 65px 576px 95px 46px;
       min-height: 274px;
       margin: 0 0 -68px;
+      position: relative;
     }
 
     &_bg {
       position: absolute;
-      right: 146px;
-      top: 45px;
+      right: 26px;
+      top: -45px;
       width: 510px;
       height: 298px;
       border-radius: 21px;

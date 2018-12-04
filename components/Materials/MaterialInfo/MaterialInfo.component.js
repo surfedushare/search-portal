@@ -3,6 +3,7 @@ import StarRating from '~/components/StarRating';
 import PopularList from '~/components/Communities/PopularList';
 import Themes from '~/components/Themes';
 import Keywords from '~/components/Keywords';
+import { generateSearchMaterialsQuery } from './../../_helpers';
 export default {
   name: 'material-info',
   props: ['material'],
@@ -31,13 +32,7 @@ export default {
     authorUrl() {
       if (this.material) {
         this.formData.author = this.material.author;
-        return {
-          path: '/materials/search/',
-          query: Object.assign({}, this.formData, {
-            filters: JSON.stringify(this.formData.filters),
-            search_text: JSON.stringify(this.formData.search_text)
-          })
-        };
+        return generateSearchMaterialsQuery(this.formData);
       }
     }
   }

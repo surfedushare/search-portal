@@ -1,7 +1,11 @@
 export default {
   state: {
     filters: null,
-    active_filter: null
+    active_filter: {
+      id: false,
+      start_date: null,
+      end_date: null
+    }
   },
   getters: {
     filters(state) {
@@ -18,6 +22,7 @@ export default {
     },
     async getFilter({ commit }, { id }) {
       const filter = await this.$axios.$get(`filters/${id}/`);
+      this.dispatch('setActiveFilter', filter);
       commit('SET_FILTER', filter);
     },
     async postFilter({ commit }, { title, items }) {
@@ -54,10 +59,11 @@ export default {
         }
       );
       const filter = await this.$axios.$post('filters/', resp);
+      this.dispatch('setActiveFilter', filter);
       commit('EXTEND_FILTERS', filter);
     },
     setActiveFilter({ commit }, filter) {
-      commit('EXTEND_FILTERS', filter);
+      commit('SET_ACTIVE_FILTER', filter);
     }
   },
   mutations: {
@@ -74,6 +80,9 @@ export default {
     },
     EXTEND_FILTERS(state, payload) {
       state.filters = [...state.filters, payload];
+    },
+    SET_ACTIVE_FILTER(state, payload) {
+      state.active_filter = payload;
     }
   }
 };

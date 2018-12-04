@@ -33,6 +33,11 @@
       line-height: 25px;
       padding: 0 33px;
       position: relative;
+      max-width: 200px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: inline-block;
 
       .close {
         position: absolute;

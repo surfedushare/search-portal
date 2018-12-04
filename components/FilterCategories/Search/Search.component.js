@@ -1,5 +1,5 @@
 import { mapGetters } from 'vuex';
-import { debounce } from './../../_helpers';
+import { debounce, generateSearchMaterialsQuery } from './../../_helpers';
 export default {
   name: 'search',
   props: {
@@ -59,13 +59,7 @@ export default {
         });
     }, 350),
     onSubmit() {
-      this.$router.push({
-        path: '/materials/search/',
-        query: Object.assign({}, this.formData, {
-          filters: JSON.stringify(this.formData.filters),
-          search_text: JSON.stringify(this.formData.search_text)
-        })
-      });
+      this.$router.push(generateSearchMaterialsQuery(this.formData));
       this.$emit('input', this.formData);
     },
     onChangeCategory(event) {

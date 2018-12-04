@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex';
+import { generateSearchMaterialsQuery } from '../_helpers';
 
 export default {
   name: 'filter-categories',
@@ -86,6 +87,8 @@ export default {
           filters
         });
 
+        this.$router.push(generateSearchMaterialsQuery(filters));
+
         this.$emit('input', filters);
 
         return filters;
@@ -106,10 +109,57 @@ export default {
       if (isAuthenticated) {
         this.$store.dispatch('getFilters');
       }
+    },
+    active_filter(active_filter) {
+      const { filter_categories, publisherdate, value } = this;
+      if (active_filter && filter_categories) {
+        const publisherdate_item = filter_categories.results.find(
+          item => item.external_id === publisherdate
+        );
+        const normailze_filter = active_filter.items.reduce((prev, next) => {
+          prev[next.category_id] = prev[next.category_id] || [];
+          prev[next.category_id].push(next.category_item_id);
+          return prev;
+        }, {});
+        const filters = filter_categories.results.reduce(
+          (search, category) => {
+            const category_items = normailze_filter[category.id];
+            if (category_items) {
+              search.filters.push({
+                external_id: category.external_id,
+                items: category.items
+                  .filter(item => category_items.indexOf(item.id) !== -1)
+                  .map(item => item.external_id)
+              });
+            }
+            return search;
+          },
+          {
+            page: 1,
+            page_size: value.page_size,
+            filters: [
+              {
+                external_id: publisherdate_item.external_id,
+                items: [active_filter.start_date, active_filter.end_date]
+              }
+            ],
+            search_text: active_filter.search_text || []
+          }
+        );
+
+        this.$router.push(generateSearchMaterialsQuery(filters));
+
+        this.$emit('input', filters);
+      }
     }
   },
   computed: {
-    ...mapGetters(['filter_categories', 'isAuthenticated', 'filters']),
+    ...mapGetters([
+      'filter_categories',
+      'isAuthenticated',
+      'filters',
+      'active_filter'
+    ]),
     filter() {
       const { value, filtered_categories } = this;
       if (value && filtered_categories) {
