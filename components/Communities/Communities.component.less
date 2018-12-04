@@ -1,3 +1,112 @@
-
+@import url('../../assets/styles/variables');
 .communities {
+  padding: 96px 0 199px;
+  &:before {
+    content: '';
+    left: 0;
+    right: 50%;
+    height: 353px;
+    top: 354px;
+    border-radius: 0 65px 65px 0;
+    margin: 0 432px 0 0;
+    pointer-events: none;
+    border-right: 1px solid #686d75;
+    border-top: 1px solid #686d75;
+    border-bottom: 1px solid #686d75;
+    position: absolute;
+    z-index: -1;
+  }
+  &__info {
+    padding: 70px 36px 0;
+    margin: 0 0 80px;
+    border-radius: 20px;
+    position: relative;
+    &_bg{
+      position: absolute;
+      right: 26px;
+      top: -51px;
+      width: 510px;
+      border-radius: 21px;
+      height: 298px;
+    }
+    &_ttl{
+      padding: 0 0 49px;
+      position: relative;
+      &:before{
+        content: '';
+        min-width: 100%;
+        position: absolute;
+        background-color: rgba(244, 244, 244, 0.9);
+        right: -48px;
+        left: -48px;
+        top: -98px;
+        bottom: -70px;
+        border-radius: 20px;
+        z-index: -1;
+      }
+    }
+    &_all{
+      text-decoration: none;
+      font-weight: bold;
+      margin-bottom: 11px;
+      display: inline-block;
+    }
+    &_search{
+      margin: 0 66px;
+      .search__fields{
+        margin-bottom: 33px;
+      }
+    }
+  }
+  &__items{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style: none;
+    z-index: 1;
+  }
+  &__item{
+    background: #fff;
+    margin-bottom: 24px;
+    &_wrapper{
+      padding: 28px 25px 45px 48px;
+      border-radius: 20px;
+      position: relative;
+      &:before{
+        content: '';
+        position: absolute;
+        width: 5px;
+        height: 92px;
+        background: #0077c8;
+        border-radius: 5px;
+        top: 25px;
+        left: 0;
+      }
+    }
+    &_logo{
+      margin-bottom: 22px;
+      height: 52px;
+      width: 120px;
+      background-color: #fafafa;
+      img{
+        display: block;
+      }
+    }
+    &_name{
+      line-height: 1.2;
+      margin-bottom: 36px;
+    }
+    &_count{
+      margin-bottom: 14px;
+    }
+    &_description{
+      margin-bottom: 37px;
+    }
+    &_link{
+      text-decoration: none;
+      font-weight: bold;
+    }
+  }
 }

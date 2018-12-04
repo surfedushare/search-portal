@@ -3,7 +3,7 @@
   &__info{
     flex: 1 1 auto;
     &_ttl{
-      margin: 28px 0;
+      margin: 28px 0 28px;
     }
     &_author{
       font-family: @second-font;
@@ -16,7 +16,9 @@
       }
     }
     &_subttl{
-      margin: 0 0 39px;
+      margin: 0 0 32px;
+      border-bottom: 1px solid #f4f4f4;
+      padding-bottom: 7px;
     }
     &_quality{
       margin: 44px 0 24px;
@@ -52,10 +54,12 @@
     font-weight: bold;
     color: rgba(104, 109, 117, 0.65);
     background: #f4f4f4;
+    border-radius: 2px;
 
     &:before{
       content: '';
       background: url("./../../../assets/images/clap_green.svg") no-repeat 50% 50%;
+      background-size: 25px 25px;
       border: 2px solid #009f4d;
       border-radius: 50%;
       height: 42px;
@@ -65,6 +69,17 @@
       position: absolute;
       top: -7px;
       left: -50px;
+    }
+    &:after{
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: -10px;
+      height: 5px;
+      width: 5px;
+      border: 5px solid transparent;
+      border-right: 5px solid #f4f4f4;
     }
   }
   &__collections{

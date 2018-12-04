@@ -2,6 +2,7 @@ import StarRating from '~/components/StarRating';
 import PopularList from '~/components/Communities/PopularList';
 import Themes from '~/components/Themes';
 import Keywords from '~/components/Keywords';
+import { mapGetters } from 'vuex';
 export default {
   name: 'material-info',
   props: ['material'],
@@ -11,7 +12,9 @@ export default {
     PopularList,
     Keywords
   },
-  mounted() {},
+  mounted() {
+    this.$store.dispatch('getCommunities', { params: { page_size: 2 } });
+  },
   data() {
     return {
       formData: {
@@ -24,6 +27,7 @@ export default {
   },
   methods: {},
   computed: {
+    ...mapGetters(['communities']),
     authorUrl() {
       if (this.material) {
         this.formData.author = this.material.author;
