@@ -93,7 +93,7 @@ class XmlEndpointApiClient:
         else:
             query = _BASE_QUERY
 
-        filters = _filter_list_to_cql(filters)
+        filters = filter_list_to_cql(filters)
         if filters:
             query = "{} AND {}".format(query, filters)
 
@@ -140,7 +140,13 @@ class XmlEndpointApiClient:
         return parse_response(response.text)
 
 
-def _filter_list_to_cql(filters):
+def filter_list_to_cql(filters):
+    """
+    Creates CQL string by list of filters
+    :param filters: list of filters
+    :return: query string in CQL
+    """
+
     if not filters or not isinstance(filters, list):
         return None
 

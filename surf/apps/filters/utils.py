@@ -159,7 +159,9 @@ def _update_filter_category(filter_category, api_client):
     drilldown_name = "{}:{}".format(category_id,
                                     filter_category.max_item_count)
 
-    res = api_client.drilldowns([drilldown_name])
+    res = api_client.drilldowns([drilldown_name],
+                                filters=add_default_filters([]))
+
     items = res.get(category_id)
     if not items:
         return
