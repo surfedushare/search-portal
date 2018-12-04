@@ -38,17 +38,12 @@ export default {
   computed: {
     ...mapGetters(['material', 'material_communities', 'materials'])
   },
-  watch: {
-    material(material) {
-      if (material) {
-        this.$store.dispatch('getMaterialCommunities', {
-          params: {
-            material_id: material.external_id
-          }
-        });
-      }
-    }
-  },
+  // watch: {
+  //   material(material) {
+  //     if (material) {
+  //     }
+  //   }
+  // },
   mounted() {
     this.$store.dispatch('searchMaterials', {
       page_size: 4,

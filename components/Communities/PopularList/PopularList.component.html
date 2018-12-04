@@ -1,24 +1,29 @@
 
 <section class="popular-list">
   <slot name="header-info"></slot>
-  <ul class="popular-list__items" v-if="communities">
-    <li class="popular-list__item" v-for="community in communities.results">
+  <template v-if="communities && communities.results && communities.results.length">
+    <ul class="popular-list__items">
+      <li class="popular-list__item" v-for="community in communities.results">
+        <nuxt-link
+          class="popular-list__link"
+          :to="`/communities/${community.id}/`"
+        >
+          <h3 class="popular-list__title">{{community.name}}</h3>
+          {{community.materials_count}} leermaterialen
+        </nuxt-link>
+      </li>
+    </ul>
+    <div class="popular-list--all"  v-if="type !== 'material'">
       <nuxt-link
-        class="popular-list__link"
-        :to="`/communities/${community.id}/`"
+        to="/communities/"
+        class="arrow-link"
       >
-        <h3 class="popular-list__title">{{community.name}}</h3>
-        {{community.materials_count}} leermaterialen
+        Alle Community's
       </nuxt-link>
-    </li>
-  </ul>
-  <div class="popular-list--all"  v-if="type !== 'material'">
-    <nuxt-link
-      to="/communities/"
-      class="arrow-link"
-    >
-      Alle Community's
-    </nuxt-link>
+    </div>
+  </template>
+  <div v-else>
+    No communities
   </div>
 </section>
 

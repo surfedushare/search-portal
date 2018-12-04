@@ -16,7 +16,13 @@ export default {
     SaveRating
   },
   mounted() {
-    this.$store.dispatch('getCommunities', { params: { page_size: 2 } });
+    // this.$store.dispatch('getCommunities', { params: { page_size: 2 } });
+
+    this.$store.dispatch('getMaterialCommunities', {
+      params: {
+        material_id: this.material.external_id
+      }
+    });
   },
   data() {
     return {
@@ -48,7 +54,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'communities', 'themes']),
+    ...mapGetters(['isAuthenticated', 'material_communities', 'themes']),
     authorUrl() {
       if (this.material) {
         this.formData.author = this.material.author;

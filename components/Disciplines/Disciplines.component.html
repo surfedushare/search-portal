@@ -10,7 +10,8 @@
       <nuxt-link
         :to="generateLink(theme)"
       >
-        {{theme.title}} ({{theme.materials_count}})
+        {{theme.title}} ({{theme.materials_count || '0'}})
+        <span></span>
       </nuxt-link>
     </li>
   </ul>
