@@ -1,0 +1,52 @@
+<section class="community">
+  <div class="center_block" v-if="community_info">
+    <div class="community__info">
+      <div class="community__info_wrapper">
+        <div class="community__info_logo" v-if="community_info.logo">
+          <img :src="`${ community_info.logo }`"  alt="" />
+        </div>
+        <div class="community__info_title">
+          <BreadCrumbs
+            :items="[{title:'Home', url: '/'}, {title:`Communitie`, url: `/communities/${community_info.id}`} ]"/>
+          <h2 class="community__info_ttl">{{ community_info.name }}</h2>
+        </div>
+      </div>
+      <Search class="community__info_search" :hide-filter="true" />
+    </div>
+    <div class="community__row">
+      <div class="community__description">
+        <img
+          class="community__description_img"
+          :src="`${ community_info.featured_image }`"
+          alt="">
+        <h2 class="community__description_ttl">Over de community</h2>
+        <p class="community__description_txt">
+          {{ community_info.description }}
+        </p>
+        <a :href="`${ community_info.website_url }`" v-if="community_info.website_url" class="community__description_link arrow-link">Bezoek website</a>
+      </div>
+      <div class="community__themas_and_disciplines">
+        <Themes
+          :themes="community_themes"
+          class="community__themas"/>
+        <Disciplines class="community__disciplines" :disciplines="community_disciplines" />
+      </div>
+    </div>
+    <Collections
+    :collections="community_collections"
+    class="community__collections">
+      <template slot="header-info">
+        <h2>Collecties</h2>
+      </template>
+    </Collections>
+    <Materials
+      :materials="materials"
+      class="community__materials"
+    >
+      <template slot="header-info">
+        <h2>Uitgelicht</h2>
+      </template>
+    </Materials>
+  </div>
+</section>
+

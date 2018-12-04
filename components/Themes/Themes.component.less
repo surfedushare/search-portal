@@ -1,9 +1,16 @@
 @import url('./../../assets/styles/variables');
 .themes {
+  &.community__themas{
+    margin: 0 0 53px;
+  }
+
   &__description {
     font-size: 20px;
     line-height: 1.15;
     margin: 3px 0 41px;
+    .community__themas &{
+      margin: 3px 0 51px;
+    }
   }
 
   &__list {

@@ -2,12 +2,10 @@
 <section class="collections">
   <slot name="header-info">
   </slot>
-
-
   <ul class="collections__items" v-if="collections">
     <li
       :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
-      v-for="collection in collections"
+      v-for="collection in collections.results"
       class="collections__item tile"
     >
       <div class="collections__item_wrapper tile__wrapper">

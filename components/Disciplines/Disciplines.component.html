@@ -2,7 +2,7 @@
 <section class="disciplines">
   <h2>Vakgebieden</h2>
   <div class="disciplines__description">Zoek en vind leermaterialen op vakgebied</div>
-  <ul class="disciplines__list" v-if="disciplines">
+  <ul class="disciplines__list" v-if="disciplines && disciplines.length">
     <li
       class="disciplines__item"
       v-for="theme in disciplines"
@@ -14,5 +14,6 @@
       </nuxt-link>
     </li>
   </ul>
+  <div class="disciplines__info" v-else>No disciplines</div>
 </section>
 
