@@ -168,7 +168,8 @@ export default {
       // Parsing url query
       search = Object.assign({}, query, {
         filters: JSON.parse(query.filters),
-        search_text: JSON.parse(query.search_text)
+        search_text: JSON.parse(query.search_text),
+        return_filters: false
       });
     }
 
