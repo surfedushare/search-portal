@@ -1,21 +1,5 @@
-const formatDate = str => {
-  if (str) {
-    const d = new Date(str);
-    const curr_date = d.getDate();
-    const curr_month = d.getMonth() + 1;
-    const curr_year = d.getFullYear();
+import { formatDate } from './_helpers';
 
-    return (
-      (curr_date < 10 ? '0' + curr_date : curr_date) +
-      '/' +
-      (curr_month < 10 ? '0' + curr_month : curr_month) +
-      '/' +
-      curr_year
-    );
-  }
-
-  return false;
-};
 export default {
   state: {
     materials: null,

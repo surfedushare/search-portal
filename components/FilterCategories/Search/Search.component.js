@@ -16,7 +16,7 @@ export default {
       default: () => ({
         page_size: 10,
         page: 1,
-        filters: [{ external_id: null }],
+        filters: [{}],
         search_text: []
       })
     }
@@ -38,6 +38,9 @@ export default {
       loading(true);
       this.search(loading, search, this);
     },
+    /**
+     * Searching keywords with debounce 350ms
+     */
     search: debounce((loading, search, vm) => {
       vm.$store
         .dispatch('searchMaterialsKeywords', {
@@ -53,7 +56,6 @@ export default {
         });
     }, 350),
     onSubmit() {
-      // this.$store.dispatch('searchMaterials', this.formData)
       this.$router.push({
         path: '/materials/search/',
         query: Object.assign({}, this.formData, {
@@ -62,12 +64,20 @@ export default {
         })
       });
       this.$emit('input', this.formData);
+    },
+    onChangeCategory(event) {
+      this.formData.filters = [
+        {
+          ...this.formData.filters[0],
+          external_id: event.target.value
+        }
+      ];
     }
   },
   watch: {
     active_category(category) {
       if (category) {
-        // this.formData.filters[0].external_id = category.external_id;
+        // Clearing filters when category changed
         this.formData.filters[0].items = [];
       }
     },
@@ -85,8 +95,13 @@ export default {
   computed: {
     ...mapGetters(['filter_categories', 'materials_keywords']),
 
+    /**
+     * Get the active category
+     * @returns {*} - false or active category
+     */
     active_category() {
       const { filter_categories, hideFilter } = this;
+
       if (filter_categories && filter_categories.results && !hideFilter) {
         const { external_id } = this.formData.filters[0];
         if (external_id) {
@@ -102,6 +117,11 @@ export default {
       }
       return false;
     },
+
+    /**
+     * Get keywords
+     * @returns {default.getters.materials_keywords|Array}
+     */
     keywords() {
       return this.materials_keywords || [];
     }

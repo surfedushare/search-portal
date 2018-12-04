@@ -23,7 +23,7 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapGetters(['disciplines', 'educationallevels']),
+    ...mapGetters(['disciplines', 'educationallevels', 'materials_loading']),
     extended_materials() {
       const { materials, disciplines, educationallevels } = this;
       if (materials && disciplines && educationallevels) {

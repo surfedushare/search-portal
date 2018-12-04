@@ -5,10 +5,10 @@
   "author": "Yurii Dunaev",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
+    "dev": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout nuxt",
+    "build": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout nuxt build",
+    "start": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout nuxt start",
+    "generate": "cross-env NODE_ENV=dev LOGOUT_URL=https://engine.test.surfconext.nl/logout nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
@@ -16,9 +16,11 @@
     "@nuxtjs/axios": "^5.0.0",
     "cross-env": "^5.2.0",
     "nuxt": "^2.0.0",
+    "vue-click-outside": "^1.0.7",
     "vue-goodshare": "^1.1.0",
     "vue-infinite-scroll": "^2.0.2",
     "vue-select": "^2.5.1",
+    "vuejs-datepicker": "^1.5.4",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

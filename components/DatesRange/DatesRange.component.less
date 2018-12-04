@@ -1,0 +1,33 @@
+.dates-range {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 50px;
+
+  &__opener {
+    border: solid 1px rgba(0, 0, 0, 0.12);
+    border-radius: 7px;
+
+    &--opened {
+      border-bottom: 0;
+      border-radius: 7px 7px 0 0;
+    }
+  }
+
+  &__popup {
+    padding: 12px;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    border-left: solid 1px rgba(0, 0, 0, 0.12);
+    border-right: solid 1px rgba(0, 0, 0, 0.12);
+    border-bottom: solid 1px rgba(0, 0, 0, 0.12);
+    border-radius: 0 0 7px 7px;
+    background: #fff;
+    width: 100%;
+  }
+
+  &__form-group:not(:last-child) {
+    margin: 0 0 7px;
+  }
+}

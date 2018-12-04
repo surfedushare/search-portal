@@ -18,8 +18,8 @@ export default {
     },
     logout() {
       this.$store.dispatch('logout').then(() => {
-        location.reload();
-        //window.location = 'https://engine.surfconext.nl/logout';
+        // location.reload();
+        window.location = process.env.logoutURL;
       });
     }
   },
