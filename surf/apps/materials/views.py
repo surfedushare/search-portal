@@ -264,7 +264,7 @@ class MaterialRatingAPIView(APIView):
             sac = SmbSoapApiClient(
                 api_endpoint=settings.EDUREP_SOAP_API_ENDPOINT)
 
-            sac.send_rating(data["material_url"],
+            sac.send_rating(data["object_id"],
                             data["rating"],
                             settings.EDUREP_SOAP_SUPPLIER_ID,
                             surfconext_auth.external_id)

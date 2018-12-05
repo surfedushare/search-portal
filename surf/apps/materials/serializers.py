@@ -44,7 +44,7 @@ class KeywordsRequestSerializer(serializers.Serializer):
 
 
 class MaterialRatingSerializer(serializers.Serializer):
-    material_url = serializers.CharField()
+    object_id = serializers.CharField()
     rating = serializers.IntegerField(validators=[MinValueValidator(1),
                                                   MaxValueValidator(5)])
 
