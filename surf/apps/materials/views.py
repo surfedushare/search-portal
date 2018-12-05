@@ -352,7 +352,9 @@ class CollectionViewSet(ModelViewSet):
         elif request.method == "DELETE":
             self._delete_materials(instance, data)
 
-        return Response([m.external_id for m in instance.materials.all()])
+        res = MaterialShortSerializer(many=True).to_representation(
+            instance.materials.all())
+        return Response(res)
 
     @staticmethod
     def _add_materials(instance, materials):
