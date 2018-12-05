@@ -18,10 +18,12 @@
             {{ collection.title }}
           </nuxt-link>
         </h3>
-        <nuxt-link to="/"
+        <nuxt-link
+          :to="`/communities/${community.id}/`"
           class="collections__item_link"
+          v-for="community in collection.communities"
           >
-          Naam community
+          {{community.name}}
         </nuxt-link>
         <p class="collections__item_count">{{ collection.materials_count }} items</p>
       </div>
