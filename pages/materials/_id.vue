@@ -80,4 +80,7 @@ export default {
     margin: 0 auto 124px;
   }
 }
+.main__materials_title {
+  margin: 0 0 32px;
+}
 </style>
