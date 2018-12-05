@@ -191,6 +191,9 @@ def _parse_drilldowns(root):
             else:
                 rv[term_id] = _parse_drilldowns_term(dd)
 
+    except IndexError:
+        pass
+
     except Exception:
         logger.exception("Drilldowns parse error")
 

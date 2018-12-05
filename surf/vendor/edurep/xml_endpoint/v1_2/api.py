@@ -215,6 +215,8 @@ def _custom_theme_filter_to_cql(field_id, values):
 def _aggregate_filed_filter_to_cql(field_id, values, aggregate_field_items):
     items = list()
     for v in values:
+        if v not in aggregate_field_items:
+            continue
         v_cqls = ['({} exact "{}")'.format(field_id, item)
                   for item in aggregate_field_items.get(v, [])]
         items.extend(v_cqls)
