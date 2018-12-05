@@ -1,0 +1,41 @@
+
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    class="save-material-in-collection"
+  >
+    <slot>
+      <h2 class="popup__title">Materiaal toevoegen aan collectie</h2>
+      <form
+        action=""
+        @submit.prevent="onSaveMaterial"
+      >
+        <div class="form__item">
+          <div class="select">
+            <select
+              name="collections"
+              v-model="collection"
+            >
+              <option value="">Select</option>
+              <option
+                :value="collection.id"
+                v-for="collection in my_collections.results"
+              >
+                {{collection.title}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <button
+          class="button"
+          type="submit"
+        >
+          Save
+        </button>
+      </form>
+    </slot>
+  </Popup>
+</transition>
+
