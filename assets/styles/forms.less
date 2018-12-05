@@ -99,7 +99,6 @@
     background-color: transparent;
     background-image: none;
     -moz-appearance: none;
-    appearance: none;
     box-shadow: none;
     display: block;
     color: @dark-grey;
@@ -109,12 +108,19 @@
     padding: 0 0 0 12px;
     box-sizing: border-box;
     cursor: pointer;
+    -ms-appearance: none;
+    appearance: none;
 
     &::-ms-expand {
       display: none;
     }
+    &::-ms-value {
+      background: transparent;
+      color: @dark-grey;
+    }
 
     &--focused &,
+    &:active,
     &:focus {
       outline: none;
     }

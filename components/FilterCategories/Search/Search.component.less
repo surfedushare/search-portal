@@ -123,8 +123,13 @@
       &::-ms-expand {
         display: none;
       }
+      &::-ms-value {
+        background: transparent;
+        color: @dark-grey;
+      }
 
       &--focused &,
+      &:active,
       &:focus {
         outline: none;
       }
