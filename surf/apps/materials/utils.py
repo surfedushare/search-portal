@@ -7,7 +7,7 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
 
 def update_materials_data(materials):
     """
-    Updates material extra data from EduRep
+    Updates materials extra data from EduRep
     :param materials: list of material DB instances
     """
 

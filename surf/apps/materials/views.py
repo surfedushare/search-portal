@@ -1,5 +1,7 @@
 from base64 import urlsafe_b64decode
 
+import json
+
 from django.db.models import Q, Count
 from django.conf import settings
 from django.http import Http404
@@ -372,7 +374,17 @@ class CollectionViewSet(ModelViewSet):
             if not details:
                 continue
 
-            m, _ = Material.objects.get_or_create(external_id=m_external_id)
+            keywords =details[0].get("keywords")
+            if keywords:
+                keywords = json.dumps(keywords)
+
+            m, _ = Material.objects.update_or_create(
+                external_id=m_external_id,
+                defaults=dict(material_url=details[0].get("url"),
+                              title=details[0].get("title"),
+                              description=details[0].get("description"),
+                              keywords=keywords))
+
             _add_material_themes(m, details[0].get("themes", []))
             _add_material_disciplines(m, details[0].get("disciplines", []))
             instance.materials.add(m)
