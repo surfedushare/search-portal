@@ -12,6 +12,10 @@ export default {
       type: Boolean,
       default: false
     },
+    hideCounter: {
+      type: Boolean,
+      default: false
+    },
     value: null,
     id: String,
     counter: [String, Number],

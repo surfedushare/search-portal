@@ -180,7 +180,7 @@ export default {
         return filtered_categories.map(item => {
           const current_item = filter[item.external_id];
 
-          return current_item
+          return current_item && current_item.items
             ? Object.assign({}, current_item, {
                 items: item.items.map(
                   el => current_item.items.indexOf(el.external_id) !== -1

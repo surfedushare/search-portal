@@ -12,7 +12,7 @@ export default {
     Collection
   },
   computed: {
-    // ...mapGetters(['collection'])
+    ...mapGetters(['isAuthenticated', 'material_communities', 'themes'])
   },
   mounted() {
     // this.$store.dispatch('getMaterialCommunities', {

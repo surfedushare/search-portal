@@ -15,19 +15,22 @@
         action=""
         @submit.prevent="onSaveRating"
       >
-        <div class="form__item">
-          <StarRating
-            v-model="rating"
-            :counter="0"
-            type="big"
-          />
+        <div class="save-rating__items">
+          <div >
+            <StarRating
+              v-model="rating"
+              :counter="0"
+              type="big"
+              :hide-counter="true"
+            />
+          </div>
+          <button
+            class="button"
+            type="submit"
+          >
+            Beoordeling opslaan
+          </button>
         </div>
-        <button
-          class="button"
-          type="submit"
-        >
-          Beoordeling opslaan
-        </button>
       </form>
     </slot>
   </Popup>

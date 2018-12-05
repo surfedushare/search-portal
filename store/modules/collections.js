@@ -1,6 +1,6 @@
 export default {
   state: {
-    my_collections: null
+    my_collections: false
   },
   getters: {
     my_collections(state) {
@@ -22,8 +22,8 @@ export default {
       { state, commit },
       { collection_id, data }
     ) {
-      const material = await this.$axios.$get(
-        `collections/${collection_id}/`,
+      const material = await this.$axios.$post(
+        `collections/${collection_id}/materials/`,
         data
       );
       commit('SET_MATERIAL_TO_MY_COLLECTION', material);

@@ -21,7 +21,7 @@
   </label>
   <span class="star-rating__counter" v-if="type === 'default'">({{counter}})</span>
   <span class="star-rating__counter" v-else >{{temp_value}} / 5</span>
-  <span class="star-rating__counter_big" v-if="type === 'big'" >
+  <span class="star-rating__counter_big" v-if="type === 'big' && !hideCounter" >
     {{counter}} waarderingen
   </span>
 

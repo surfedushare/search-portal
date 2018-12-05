@@ -39,6 +39,7 @@
         v-else
         class="h3"
         @click.prevent="addToCollection"
+        v-if="!material.has_bookmark"
       >
         Materiaal toevoegen aan collectie
       </button>
@@ -48,5 +49,6 @@
     :material="material"
     :is-show="isShow"
     :close="close"
+    v-if="isShow"
   />
 </div>
