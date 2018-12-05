@@ -1,14 +1,19 @@
 import { mapGetters } from 'vuex';
+import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection';
 
 export default {
   name: 'sidebar',
   props: {
     material: {}
   },
-  components: {},
+  components: {
+    SaveMaterialInCollection
+  },
   mounted() {},
   data() {
-    return {};
+    return {
+      isShow: false
+    };
   },
   methods: {
     getLoginLink() {
@@ -16,8 +21,11 @@ export default {
         window.location
       }`;
     },
+    close() {
+      this.isShow = false;
+    },
     addToCollection() {
-      console.log(1111);
+      this.isShow = true;
     }
   },
   computed: {
