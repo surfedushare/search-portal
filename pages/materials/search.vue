@@ -177,10 +177,10 @@ export default {
       item => item.external_id === this.publisherdate
     );
 
-    if (publisherdate) {
+    if (publisherdate && publisherdate.items) {
       this.dates_range = {
-        start_date: publisherdate.items[0],
-        end_date: publisherdate.items[1]
+        start_date: publisherdate.items[0] || null,
+        end_date: publisherdate.items[1] || null
       };
     }
 
