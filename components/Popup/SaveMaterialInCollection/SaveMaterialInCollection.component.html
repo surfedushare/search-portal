@@ -18,7 +18,7 @@
               name="collections"
               v-model="collection"
             >
-              <option value="">Select</option>
+              <option :value="false" hidden>Select</option>
               <option
                 :value="collection.id"
                 v-for="collection in my_collections.results"

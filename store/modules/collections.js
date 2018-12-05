@@ -1,6 +1,6 @@
 export default {
   state: {
-    my_collections: null
+    my_collections: false
   },
   getters: {
     my_collections(state) {
