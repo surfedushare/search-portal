@@ -361,6 +361,7 @@ export default {
     margin: 0 0 132px;
     flex: 1 1 auto;
     padding: 98px 0 0;
+    width: 100%;
   }
 }
 </style>
