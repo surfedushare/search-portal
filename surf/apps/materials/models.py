@@ -20,6 +20,11 @@ class Material(UUIDModel):
                                                 blank=True,
                                                 related_name="materials")
 
+    material_url = django_models.URLField(blank=True, null=True)
+    title = django_models.TextField(blank=True, null=True)
+    description = django_models.TextField(blank=True, null=True)
+    keywords = django_models.TextField(blank=True, null=True)
+
     def __str__(self):
         return self.external_id
 
