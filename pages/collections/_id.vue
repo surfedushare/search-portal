@@ -1,25 +1,25 @@
 <template>
-  <section class="container main">
-    <Collections/>
+  <section class="container main collection">
+    <Collection/>
   </section>
 </template>
 
 <script>
-import Collections from '~/components/Collections';
+import Collection from '~/components/Collections/Collection';
 
 export default {
   components: {
-    Collections
-  },
-  mounted() {
-    this.$store.dispatch('getMaterialCommunities', {
-      params: {
-        material_id: this.material.external_id
-      }
-    });
+    Collection
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'material_communities', 'themes'])
+    // ...mapGetters(['collection'])
+  },
+  mounted() {
+    // this.$store.dispatch('getMaterialCommunities', {
+    //   params: {
+    //     material_id: this.material.external_id
+    //   }
+    // });
   }
 };
 </script>
