@@ -1,11 +1,76 @@
 @import './../../../assets/styles/variables';
-.collections {
+.collection {
   width: 100%;
-  &.community__collections h2{
-    margin-bottom: 37px;
-  }
-  h2{
-    margin-bottom: 81px;
+  padding: 95px 0 100px;
+
+  &__info {
+    padding: 0 55px 0;
+    margin: 0 0 205px;
+    position: relative;
+    &_wrapper{
+      display: block;
+      padding-top: 32px;
+      position: relative;
+      .bread-crumbs{
+        margin-bottom: 0;
+      }
+      &:before{
+        content: '';
+        min-width: 100%;
+        position: absolute;
+        background-color: rgba(244, 244, 244, 0.9);
+        right: -36px;
+        left: -36px;
+        top: 0;
+        bottom: -70px;
+        border-radius: 20px;
+        z-index: -1;
+      }
+    }
+    &_logo {
+      display: inline-block;
+      vertical-align: top;
+      width: 230px;
+      height: 136px;
+      background: #ffffff;
+      border-radius: 10px;
+    }
+    &_title{
+      display: inline-block;
+      vertical-align: top;
+      padding: 33px 0 43px 48px;
+    }
+    &_bg{
+      position: absolute;
+      right: 26px;
+      top: -51px;
+      width: 510px;
+      border-radius: 21px;
+      height: 298px;
+    }
+    &_ttl{
+      padding: 0 0 8px;
+      position: relative;
+    }
+    &_subttl{
+      padding: 0 0 7px;
+      font-size: 20px;
+      line-height: 1.15;
+      font-family: @main-font;
+      position: relative;
+    }
+    &_all{
+      text-decoration: none;
+      font-weight: bold;
+      margin-bottom: 11px;
+      display: inline-block;
+    }
+    &_search{
+      margin: 0 66px;
+      .search__fields{
+        margin-bottom: 33px;
+      }
+    }
   }
   &__items {
     padding: 0;

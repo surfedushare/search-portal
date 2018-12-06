@@ -1,10 +1,12 @@
+
 <template>
   <section class="container main collection">
-    <Collection/>
+    <Collection :collection="my_collection"/>
   </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Collection from '~/components/Collections/Collection';
 
 export default {
@@ -12,14 +14,10 @@ export default {
     Collection
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'material_communities', 'themes'])
+    ...mapGetters(['my_collection'])
   },
   mounted() {
-    // this.$store.dispatch('getMaterialCommunities', {
-    //   params: {
-    //     material_id: this.material.external_id
-    //   }
-    // });
+    this.$store.dispatch('getMyCollection', this.$route.params.id);
   }
 };
 </script>

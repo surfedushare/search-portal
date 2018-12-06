@@ -1,31 +1,52 @@
 
-<section class="collections">
-  <slot name="header-info">
-  </slot>
-  <ul class="collections__items" v-if="collections && collections.length">
-    <li
-      :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
-      v-for="collection in collections"
-      class="collections__item tile"
-    >
-      <div class="collections__item_wrapper tile__wrapper">
-        <div class="collections__item_header">Collectie</div>
-        <h3 class="collections__item_ttl">
-          <nuxt-link
-            :to="`/collections/${collection.id}`"
-                     class="collections__item_ttl_link"
-          >
-            {{ collection.title }}
-          </nuxt-link>
-        </h3>
-        <nuxt-link to="/"
-          class="collections__item_link"
-          >
-          Naam community
-        </nuxt-link>
-        <p class="collections__item_count">{{ collection.materials_count }} items</p>
+<section class="collection">
+  <div class="center_block">
+    <div class="collection__info">
+      <div class="collection__info_wrapper">
+        <div class="collection__info_title">
+          <BreadCrumbs
+            :items="[{title:'Home', url: '/'}, {title:`Collection's`, url: `/collections/${collection.id}`} ]"/>
+          <h2 class="collection__info_ttl">{{ collection.title }}</h2>
+          <p class="collection__info_subttl">{{ collection.materials_count }} leermaterialen</p>
+        </div>
       </div>
-    </li>
-  </ul>
-  <div class="collections__info" v-else>No collections</div>
+      <DirectSearch
+        class="collection__info_search"
+      >
+        <template name="social_box"></template>
+        <template name="filer">
+          <a href="/">Lijstweergave</a>
+        </template>
+      </DirectSearch>
+    </div>
+  </div>
+  <pre>{{collection}}</pre>
+  <!--<slot name="header-info">-->
+  <!--</slot>-->
+  <!--<ul class="collections__items" v-if="collections && collections.length">-->
+    <!--<li-->
+      <!--:class="[`tile&#45;&#45;items-in-line-${itemsInLine}`, `materials__item&#45;&#45;items-in-line-${itemsInLine}`]"-->
+      <!--v-for="collection in collections"-->
+      <!--class="collections__item tile"-->
+    <!--&gt;-->
+      <!--<div class="collections__item_wrapper tile__wrapper">-->
+        <!--<div class="collections__item_header">Collectie</div>-->
+        <!--<h3 class="collections__item_ttl">-->
+          <!--<nuxt-link-->
+            <!--:to="`/collections/${collection.id}`"-->
+                     <!--class="collections__item_ttl_link"-->
+          <!--&gt;-->
+            <!--{{ collection.title }}-->
+          <!--</nuxt-link>-->
+        <!--</h3>-->
+        <!--<nuxt-link to="/"-->
+          <!--class="collections__item_link"-->
+          <!--&gt;-->
+          <!--Naam community-->
+        <!--</nuxt-link>-->
+        <!--<p class="collections__item_count">{{ collection.materials_count }} items</p>-->
+      <!--</div>-->
+    <!--</li>-->
+  <!--</ul>-->
+  <!--<div class="collections__info" v-else>No collections</div>-->
 </section>
