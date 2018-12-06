@@ -15,15 +15,7 @@ export default {
     Keywords,
     SaveRating
   },
-  mounted() {
-    // this.$store.dispatch('getCommunities', { params: { page_size: 2 } });
-
-    this.$store.dispatch('getMaterialCommunities', {
-      params: {
-        material_id: this.material.external_id
-      }
-    });
-  },
+  mounted() {},
   data() {
     return {
       isShow: false,
@@ -41,16 +33,6 @@ export default {
     },
     close() {
       this.isShow = false;
-    },
-    onSaveRating() {
-      this.$store
-        .dispatch('postFilter', {
-          title: this.formData.name,
-          items: this.search
-        })
-        .then(() => {
-          this.close();
-        });
     }
   },
   computed: {

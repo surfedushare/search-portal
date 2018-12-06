@@ -7,6 +7,7 @@ export default {
   components: {},
   mounted() {
     if (this.isAuthenticated) {
+      this.$store.dispatch('setActiveFilter', { id: false });
       this.$store.dispatch('getFilters');
     }
   },
@@ -120,7 +121,7 @@ export default {
     },
     active_filter(active_filter) {
       const { filter_categories, publisherdate, value } = this;
-      if (active_filter && filter_categories) {
+      if (active_filter && active_filter.items && filter_categories) {
         const publisherdate_item = filter_categories.results.find(
           item => item.external_id === publisherdate
         );

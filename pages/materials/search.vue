@@ -25,10 +25,17 @@
       </div>
 
       <div class="search__tools center_block">
-        <DatesRange
-          v-model="dates_range"
-          class="search__tools_dates"
-        />
+        <div
+          :class="{'select--open': search.ordering === 'lom.lifecycle.contribute.publisherdate'}"
+          class="select"
+        >
+          <div 
+            class="select__item"
+            @click="changeOrdering"
+          >
+            Sorteren op
+          </div>
+        </div>
         <button
           :class="{
             'search__tools_type_button--list': materials_in_line === 3,
@@ -86,8 +93,8 @@ import Materials from '~/components/Materials';
 import Themes from '~/components/Themes';
 import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import DatesRange from '~/components/DatesRange';
 import SaveFilter from '~/components/Popup/SaveFilter';
+import { generateSearchMaterialsQuery } from '~/components/_helpers';
 
 export default {
   components: {
@@ -98,8 +105,7 @@ export default {
     Themes,
     Spinner,
     BreadCrumbs,
-    SaveFilter,
-    DatesRange
+    SaveFilter
   },
   data() {
     return {
@@ -137,10 +143,12 @@ export default {
       }
     },
     active_filter(active_filter) {
-      this.dates_range = {
-        start_date: active_filter.start_date,
-        end_date: active_filter.end_date
-      };
+      if (active_filter) {
+        this.dates_range = {
+          start_date: active_filter.start_date,
+          end_date: active_filter.end_date
+        };
+      }
     },
     dates_range(dates) {
       const { filters } = this.search;
@@ -229,6 +237,17 @@ export default {
         .then(() => {
           this.close();
         });
+    },
+    changeOrdering() {
+      const { search } = this;
+      if (search.ordering === 'lom.lifecycle.contribute.publisherdate') {
+        this.search.ordering = '-lom.lifecycle.contribute.publisherdate';
+      } else {
+        this.search.ordering = 'lom.lifecycle.contribute.publisherdate';
+      }
+      this.search.page = 1;
+      this.$store.dispatch('searchMaterials', Object.assign({}, this.search));
+      this.$router.push(generateSearchMaterialsQuery(this.search));
     }
   }
 };

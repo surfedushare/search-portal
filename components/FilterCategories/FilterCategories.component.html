@@ -18,7 +18,7 @@
       @change="onFilterSelected"
       v-model="active_filter.id"
     >
-      <option :value="false" hidden>Mijn filter selecties</option>
+      <option :value="false">Mijn filter selecties</option>
       <option :value="filter.id" v-for="filter in filters">{{ filter.title }}</option>
     </select>
   </div>

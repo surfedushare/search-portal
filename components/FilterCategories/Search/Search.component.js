@@ -36,7 +36,8 @@ export default {
       filter: {},
       active_category_id: null,
       formData: {
-        ...this.value
+        ...this.value,
+        ordering: '-lom.lifecycle.contribute.publisherdate'
       },
       dates_range: {
         start_date: null,

@@ -21,7 +21,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    setMaterial(material) {
+      this.$store.commit('SET_MATERIAL', material);
+    }
+  },
   computed: {
     ...mapGetters(['disciplines', 'educationallevels', 'materials_loading']),
     extended_materials() {
