@@ -464,6 +464,25 @@ Changes community by its identifier if the user is admin of community.
 + Response 201 (application/json)
     + Attributes (Community)
 
+## Community Materials Search [/api/v1/communities/{id}/search/]
+
+### POST [POST /api/v1/communities/{id}/search/]
+Searches and returns array of materials that are part of the community collections.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Search Request Short)
+
++ Response 200 (application/json)
+    + Attributes (Search Result)
+
 ## Community Collections Array  [/api/v1/communities/{id}/collections/]
 
 ### GET [GET /api/v1/communities/{id}/collections/]
@@ -658,6 +677,11 @@ Deletes user filter by its identifier.
  - author: `Material author` (string, optional) - author whose materials will be searched
  - return_records: `true` (boolean, optional) - return found materials if `true`, default `true`
  - return_filters: `true` (boolean, optional) - return extra data by filters if `true`, default `true`
+
+## Search Request Short (object)
+ - search_text: (array[string]) - array of searched texts
+ - page: `1` (number, optional) - page number, default `1`
+ - page_size: `5` (number, optional) - page size, default `5`
 
 ## Material Rating (object)
  - object_id: `urn:uuid:786d79d9-08a9-43d7-82dd-2598a4505eab` (string) - material URN in EduRep

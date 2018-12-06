@@ -39,6 +39,19 @@ class SearchRequestSerializer(serializers.Serializer):
                                     allow_null=True)
 
 
+class SearchRequestShortSerializer(serializers.Serializer):
+    search_text = serializers.ListField(child=serializers.CharField())
+    page = serializers.IntegerField(required=False, default=1,
+                                    validators=[MinValueValidator(1)])
+
+    page_size = serializers.IntegerField(required=False, default=5,
+                                         validators=[MinValueValidator(0),
+                                                     MaxValueValidator(10)])
+
+    ordering = serializers.CharField(required=False, allow_blank=True,
+                                     allow_null=True)
+
+
 class KeywordsRequestSerializer(serializers.Serializer):
     query = serializers.CharField()
 
