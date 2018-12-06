@@ -8,6 +8,11 @@ export default {
     return {};
   },
   methods: {
+    /**
+     * Generate link URL
+     * @param discipline
+     * @returns {{path, query}}
+     */
     generateLink(discipline) {
       return generateSearchMaterialsQuery({
         page: 1,

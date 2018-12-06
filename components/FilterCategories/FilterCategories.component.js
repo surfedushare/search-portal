@@ -22,6 +22,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Open/close filter category
+     * @param id filter category
+     */
     onToggleCategory(id) {
       const selected = [...this.selected];
       const index = selected.indexOf(id);
@@ -35,6 +39,10 @@ export default {
         this.selected = selected;
       }
     },
+    /**
+     * open/collapse category items
+     * @param id filter category
+     */
     onToggleShowAll(id) {
       const show_all = [...this.show_all];
       const index = show_all.indexOf(id);
@@ -99,6 +107,10 @@ export default {
     onChange() {
       this.setFilter();
     },
+    /**
+     * Get the full filter info
+     * @param e - event
+     */
     onFilterSelected(e) {
       this.$store.dispatch('getFilter', { id: e.target.value });
     },
@@ -107,6 +119,10 @@ export default {
     }
   },
   watch: {
+    /**
+     * Watcher on change parent v-model
+     * @param value
+     */
     value(value) {
       const { isInit } = this;
       if (value && value.filters && !isInit) {
@@ -114,11 +130,19 @@ export default {
         this.isInit = true;
       }
     },
+    /**
+     * Watcher on change user authentication
+     * @param isAuthenticated
+     */
     isAuthenticated(isAuthenticated) {
       if (isAuthenticated) {
         this.$store.dispatch('getFilters');
       }
     },
+    /**
+     * Generating search query on change the active filter
+     * @param active_filter
+     */
     active_filter(active_filter) {
       const { filter_categories, publisherdate, value } = this;
       if (active_filter && active_filter.items && filter_categories) {
@@ -169,6 +193,10 @@ export default {
       'filters',
       'active_filter'
     ]),
+    /**
+     * generate filter items
+     * @returns {*}
+     */
     filter() {
       const { value, filtered_categories } = this;
       if (value && filtered_categories) {
@@ -193,6 +221,10 @@ export default {
 
       return false;
     },
+    /**
+     * generate filtered categories
+     * @returns {*}
+     */
     filtered_categories() {
       const { filter_categories, publisherdate } = this;
       if (filter_categories) {
@@ -205,6 +237,10 @@ export default {
       }
       return false;
     },
+    /**
+     * generate categories
+     * @returns {*}
+     */
     categories() {
       const { selected, show_all, filtered_categories } = this;
       if (selected && filtered_categories) {

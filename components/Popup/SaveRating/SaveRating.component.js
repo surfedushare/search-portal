@@ -16,6 +16,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * Save rating
+     */
     onSaveRating() {
       this.submitting = true;
       this.$store.dispatch('setMaterialRating', this.rating).then(() => {

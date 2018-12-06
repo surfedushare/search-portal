@@ -11,11 +11,18 @@ export default {
     return {};
   },
   methods: {
+    /**
+     * generate login URL
+     * @returns {string}
+     */
     getLoginLink() {
       return `${this.$axios.defaults.baseURL}/login/?redirect_url=${
         window.location
       }`;
     },
+    /**
+     * logout event
+     */
     logout() {
       this.$store.dispatch('logout').then(() => {
         // location.reload();

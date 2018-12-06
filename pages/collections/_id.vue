@@ -14,12 +14,6 @@ export default {
   computed: {
     ...mapGetters(['isAuthenticated', 'material_communities', 'themes'])
   },
-  mounted() {
-    // this.$store.dispatch('getMaterialCommunities', {
-    //   params: {
-    //     material_id: this.material.external_id
-    //   }
-    // });
-  }
+  mounted() {}
 };
 </script>

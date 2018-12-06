@@ -28,6 +28,10 @@ export default {
   },
   computed: {
     ...mapGetters(['disciplines', 'educationallevels', 'materials_loading']),
+    /**
+     * Extend to the material fields "disciplines" & "educationallevels"
+     * @returns {*}
+     */
     extended_materials() {
       const { materials, disciplines, educationallevels } = this;
       if (materials && disciplines && educationallevels) {

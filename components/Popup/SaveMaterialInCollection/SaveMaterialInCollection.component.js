@@ -16,6 +16,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * Save material
+     */
     onSaveMaterial() {
       this.submitting = true;
       this.$store

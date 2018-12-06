@@ -37,12 +37,20 @@ export default {
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'material_communities', 'themes']),
+    /**
+     * generate author URL
+     * @returns {{path, query}}
+     */
     authorUrl() {
       if (this.material) {
         this.formData.author = this.material.author;
         return generateSearchMaterialsQuery(this.formData);
       }
     },
+    /**
+     * get material themes
+     * @returns {*}
+     */
     material_themes() {
       const { material, themes } = this;
 

@@ -19,17 +19,30 @@ export default {
     };
   },
   methods: {
+    /**
+     * generate login URL
+     * @returns {string}
+     */
     getLoginLink() {
       return `${this.$axios.defaults.baseURL}/login/?redirect_url=${
         window.location
       }`;
     },
+    /**
+     * Close popup
+     */
     close() {
       this.isShow = false;
     },
+    /**
+     * Show popup
+     */
     addToCollection() {
       this.isShow = true;
     },
+    /**
+     * Triggering event the save material
+     */
     onSaveMaterial() {
       this.submitting = true;
       this.$store
