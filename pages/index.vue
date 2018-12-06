@@ -7,7 +7,7 @@
             class="main__info_bg"
             src="./../assets/images/pictures/header-image.jpg"
             alt="header-image">
-          <h2>Open leermaterialen</h2>
+          <h2 class="main__info_main-title">Open leermaterialen</h2>
           <div class="main__info_block">
             <div class="bg"/>
             <h2 class="main__info_title">13.231 open leermaterialen uit het hoger onderwijs</h2>
@@ -38,9 +38,7 @@
       <div class="main__materials">
         <div class="center_block">
           <h2 class="main__materials_title">Uitgelicht open leermateriaal</h2>
-          <Materials
-            :materials="materials"
-          />
+          <Materials :materials="materials"/>
         </div>
       </div>
       <div class="center_block">
@@ -85,24 +83,28 @@ export default {
   position: relative;
   z-index: 1;
   &__info {
-    padding: 104px 0 0;
-    margin-bottom: 191px;
+    @media @desktop {
+      padding: 104px 0 0;
+      margin-bottom: 191px;
+    }
     position: relative;
 
     &:before {
-      content: '';
-      right: 0;
-      left: 50%;
-      height: 353px;
-      top: 303px;
-      border-radius: 65px 0 0 65px;
-      margin: 0 0 0 420px;
-      pointer-events: none;
-      border-left: 1px solid #686d75;
-      border-top: 1px solid #686d75;
-      border-bottom: 1px solid #686d75;
-      position: absolute;
-      z-index: -1;
+      @media @desktop {
+        content: '';
+        right: 0;
+        left: 50%;
+        height: 353px;
+        top: 303px;
+        border-radius: 65px 0 0 65px;
+        margin: 0 0 0 420px;
+        pointer-events: none;
+        border-left: 1px solid #686d75;
+        border-top: 1px solid #686d75;
+        border-bottom: 1px solid #686d75;
+        position: absolute;
+        z-index: -1;
+      }
     }
 
     &_bg {
@@ -111,16 +113,33 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       z-index: -1;
+      @media @mobile, @tablet {
+        top: 10px;
+        border-radius: 10px;
+        width: 100%;
+      }
     }
 
     &_title {
       line-height: 1.25;
       color: #fff;
       margin: 0 0 16px;
+      @media @mobile, @tablet {
+        font-size: 16px;
+      }
+    }
+
+    &_main-title {
+      @media @mobile, @tablet {
+        display: none;
+      }
     }
     &_items {
       padding: 0;
       margin: 0;
+      @media @mobile, @tablet {
+        font-size: 12px;
+      }
     }
     &_item {
       margin: 0;
@@ -138,6 +157,14 @@ export default {
       font-size: 16px;
       font-weight: bold;
       position: relative;
+
+      @media @mobile, @tablet {
+        margin: 50px 0 0 10px;
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 350px;
+      }
+
       & .bg {
         background: @dark-blue;
         opacity: 0.9;
@@ -164,23 +191,37 @@ export default {
     &_search {
       width: 996px;
       margin: auto;
+
+      @media @mobile, @tablet {
+        width: 100%;
+        margin-top: 25px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+      }
     }
   }
 
   &__thems_and_communities {
-    display: flex;
+    @media @desktop {
+      display: flex;
+    }
     align-items: start;
     justify-content: space-between;
     margin-bottom: 97px;
   }
 
   &__thems {
-    width: 521px;
+    @media @desktop {
+      width: 521px;
+    }
   }
 
   &__communities {
-    width: 485px;
-    padding: 0 86px 0 0;
+    @media @desktop {
+      width: 485px;
+      padding: 0 86px 0 0;
+    }
   }
 
   &__materials {

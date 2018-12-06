@@ -14,7 +14,10 @@
   }
 
   &__list {
-    display: flex;
+    @media @desktop {
+      display: flex;
+    }
+
     flex-wrap: wrap;
     padding: 0;
     margin: 0;
@@ -28,8 +31,11 @@
   }
 
   &__item {
-    width: 50%;
     margin: 0 0 22px;
+
+    @media @desktop {
+      width: 50%;
+    }
   }
 
   &.material__info_thems {

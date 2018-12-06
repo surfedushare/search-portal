@@ -33,8 +33,11 @@
   &__text_block {
     background: fade(@light-grey, 90%);
     border-radius: 20px;
-    padding: 56px 50px 43px 410px;
     margin: 0 0 168px;
+
+    @media @desktop {
+      padding: 56px 50px 43px 410px;
+    }
   }
 
   &__title {
