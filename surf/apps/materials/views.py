@@ -320,6 +320,15 @@ class CollectionViewSet(ModelViewSet):
         self._check_access(request.user, instance=self.get_object())
         return super().destroy(request, *args, **kwargs)
 
+    @action(methods=['post'], detail=True)
+    def search(self, request, pk=None, **kwargs):
+        """
+        Search materials that are part of the collection
+        """
+
+        instance = self.get_object()
+        return get_materials_search_response(instance.materials, request)
+
     @action(methods=['get', 'post', 'delete'], detail=True)
     def materials(self, request, pk=None, **kwargs):
         instance = self.get_object()

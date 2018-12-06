@@ -288,6 +288,25 @@ Deletes the collection by its identifier if the user is owner of collection.
 
 + Response 204
 
+## Community Materials Search [/api/v1/communities/{id}/search/]
+
+### POST [POST /api/v1/collections/{id}/search/]
+Searches and returns array of materials that are part of collection.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Search Request Short)
+
++ Response 200 (application/json)
+    + Attributes (Search Result)
+
 ## Collection Materials Array  [/api/v1/collections/{id}/materials/]
 
 ### GET [GET /api/v1/collections/{id}/materials/{?page,page_size}]
