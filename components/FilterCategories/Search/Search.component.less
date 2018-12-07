@@ -4,14 +4,16 @@
   z-index: 10;
   &__fields {
     padding: 15px;
+    text-align: center;
     @media @desktop {
       display: flex;
       padding: 16px;
       margin: 0 0 25px;
       position: relative;
     }
-    .theme__info_search &{
+    .theme__info_search & {
       margin: 0 0 33px;
+
     }
   }
 
@@ -153,7 +155,11 @@
   }
 
   .button {
-    margin: 0 0 0 30px;
+    margin-top: 15px;
+    max-width: 150px;
+    @media @desktop {
+      margin: 0 0 0 30px;
+    }
     position: relative;
     z-index: 4;
   }

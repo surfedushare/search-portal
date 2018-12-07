@@ -2,10 +2,14 @@
   <section class="container main">
     <div>
       <div class="main__info">
-        <div class="center_block">
+        <div class="center_block center-header">
           <img
             class="main__info_bg"
             src="./../assets/images/pictures/header-image.jpg"
+            alt="header-image">
+          <img
+            class="main__info_bg-mobile"
+            src="./../assets/images/pictures/lab-21-windesheim-voor-surf-018@2x.jpg"
             alt="header-image">
           <h2 class="main__info_main-title">Open leermaterialen</h2>
           <div class="main__info_block">
@@ -114,10 +118,22 @@ export default {
       transform: translateX(-50%);
       z-index: -1;
       @media @mobile, @tablet {
-        top: 10px;
-        border-radius: 10px;
-        width: 100%;
+        display: none;
       }
+    }
+
+    &_bg-mobile {
+      @media @desktop {
+        display: none;
+      }
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+      top: 70px;
+      border-radius: 10px;
+      width: 100%;
+      padding: 0 30px;
     }
 
     &_title {
@@ -159,7 +175,7 @@ export default {
       position: relative;
 
       @media @mobile, @tablet {
-        margin: 50px 0 0 10px;
+        margin: 50px 0 0 0;
         padding: 10px 20px;
         width: 100%;
         max-width: 350px;
@@ -175,6 +191,11 @@ export default {
         top: 0;
         width: 100%;
         z-index: -1;
+        @media @mobile, @tablet {
+          right: 10px;
+          left: 10px;
+          width: auto;
+        }
         &:before {
           content: '';
           background: url('./../assets/images/buble-background-blue.svg') 0 0
@@ -184,6 +205,12 @@ export default {
           left: -46px;
           width: 63px;
           height: 58px;
+
+          @media @tablet, @mobile {
+            left: -24px;
+            top: -19px;
+            height: 30px;
+          }
         }
       }
     }

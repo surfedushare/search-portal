@@ -21,9 +21,12 @@
     line-height: 1.2;
     letter-spacing: normal;
     color: #fff;
-    width: 407px;
+    max-width: 407px;
+    margin: 0 0 0 40px;
     padding: 54px 37px 47px;
-    margin: 3px 57px 0 47px;
+    @media @desktop {
+      margin: 3px 57px 0 47px;
+    }
     flex-shrink: 0;
     position: relative;
     .bg{
@@ -133,10 +136,11 @@
       border-top: 1px solid #686d75;
       position: absolute;
       z-index: -1;
-      width: 100%;
-      margin-right: -20px;
+      //width: 100%;
+      //margin-right: -20px;
 
       height: 230px;
+      width: calc(100% - 20px);
       @media @desktop {
         left: 50%;
         margin: 0 0 0 -600px;
