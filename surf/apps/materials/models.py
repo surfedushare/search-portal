@@ -9,13 +9,20 @@ from surf.apps.filters.models import FilterCategoryItem
 
 
 class Material(UUIDModel):
+    """
+    Implementation of EduRep Material model.
+    """
+
+    # identifier of material in EduRep
     external_id = django_models.CharField(max_length=255,
                                           verbose_name="EduRep material id")
 
+    # list of related themes
     themes = django_models.ManyToManyField(Theme,
                                            blank=True,
                                            related_name="materials")
 
+    # list of related disciplines
     disciplines = django_models.ManyToManyField(FilterCategoryItem,
                                                 blank=True,
                                                 related_name="materials")
@@ -30,17 +37,24 @@ class Material(UUIDModel):
 
 
 class Collection(UUIDModel):
+    """
+    Implementation of Collection model.
+    """
+
     title = django_models.CharField(max_length=255)
 
+    # the user who created the collection
     owner = django_models.ForeignKey(settings.AUTH_USER_MODEL,
                                      verbose_name="Owner",
                                      related_name='collections',
                                      on_delete=django_models.CASCADE)
 
+    # the list of collection materials
     materials = django_models.ManyToManyField(Material,
                                               blank=True,
                                               related_name="collections")
 
+    # does owner share the collection
     is_shared = django_models.BooleanField(default=False)
 
     def __str__(self):
@@ -48,6 +62,11 @@ class Collection(UUIDModel):
 
 
 class ApplaudMaterial(UUIDModel):
+    """
+    Implementation of Material applaud model. This model is used to collect
+    data about material applauds by users.
+    """
+
     user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
                                     related_name='applauds',
                                     on_delete=django_models.CASCADE)
@@ -61,6 +80,11 @@ class ApplaudMaterial(UUIDModel):
 
 
 class ViewMaterial(UUIDModel):
+    """
+    Implementation of Material view model. This model is used to collect
+    data about material unique view by users.
+    """
+
     viewed_at = django_models.DateTimeField(default=datetime.now)
 
     user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -73,6 +97,12 @@ class ViewMaterial(UUIDModel):
 
     @staticmethod
     def add_unique_view(user, material_external_id):
+        """
+        Updates unique view data
+        :param user: user instance
+        :param material_external_id: external identifier of material
+        """
+
         if not user or not user.id:
             return
 

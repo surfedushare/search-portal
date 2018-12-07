@@ -1,7 +1,7 @@
 # SURF Catalog backend
 
 This repository contains backend for SURF Catalog. It is written on
-Python 3 and is based on Django Framework.
+Python 3.6 and is based on Django Framework.
 
 REST API documentation is in the file `api.apib`.
 
@@ -32,7 +32,7 @@ This code is implemented in Django application `communities`
 This code is implemented in Django application `stats`
 (`surf/apps/stats`)
 
-Each Django application contains (may contain) the following modules:
+Django application has next structure:
 
 * `migrations/` - the package with DB migration scripts
 
@@ -58,6 +58,12 @@ API clients to EduRep API, SURFconext API are implemented in packages
 You can install and run application locally by using docker
 and docker-compose.
 
+* Install docker according to the
+[manuals](https://docs.docker.com/install/overview/) from official site
+
+* Install docker-compose according to the
+[manual](https://docs.docker.com/compose/install/#install-compose)
+
 * Clone the repository to local directory:
 
 ```sh
@@ -75,7 +81,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-* Install docker and docker-compose:
+* Install python libraries for docker and docker-compose to virtual
+environment:
 
 ```sh
 pip install docker docker-compose
@@ -85,6 +92,12 @@ pip install docker docker-compose
 
 ```sh
 sudo docker-compose -f docker-compose-local.yml up -d
+```
+
+* Create the first Django admin of the application
+
+```sh
+sudo docker-compose -f docker-compose-local.yml exec backend python manage.py createsuperuser
 ```
 
 # References

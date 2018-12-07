@@ -7,6 +7,12 @@ from surf.apps.materials.models import Collection
 
 
 class Community(UUIDModel):
+    """
+    Implementation of Community model. Communities are related to
+    SURFconext Teams.
+    """
+
+    # identifier of SURFconext Team
     external_id = django_models.CharField(max_length=255,
                                           verbose_name="SurfConext group id")
 
@@ -23,22 +29,26 @@ class Community(UUIDModel):
 
     website_url = django_models.URLField(blank=True, null=True)
 
+    # list of community administrators
     admins = django_models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         verbose_name="Administrators",
         related_name='admin_communities',
         blank=True)
 
+    # list of community members
     members = django_models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         verbose_name="Members",
         related_name='communities',
         blank=True)
 
+    # is this community available for users
     is_available = django_models.BooleanField(
         verbose_name="Is community available in service",
         default=True)
 
+    # list of community collections
     collections = django_models.ManyToManyField(Collection,
                                                 blank=True,
                                                 related_name="communities")
