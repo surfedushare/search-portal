@@ -33,7 +33,7 @@ class FilterShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Filter
-        fields = ('id', 'title', 'start_date', 'end_date',)
+        fields = ('id', 'title', 'start_date', 'end_date', 'materials_count',)
 
 
 class FilterSerializer(FilterShortSerializer):
@@ -70,4 +70,5 @@ class FilterSerializer(FilterShortSerializer):
 
     class Meta:
         model = models.Filter
-        fields = ('id', 'title', 'items', 'start_date', 'end_date',)
+        fields = ('id', 'title', 'items', 'start_date', 'end_date',
+                  'materials_count',)

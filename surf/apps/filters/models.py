@@ -46,6 +46,7 @@ class Filter(UUIDModel):
 
     start_date = django_models.DateField(blank=True, null=True)
     end_date = django_models.DateField(blank=True, null=True)
+    materials_count = django_models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
