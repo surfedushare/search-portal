@@ -6,32 +6,47 @@
     class="save-rating"
   >
     <slot>
-      <h2 class="popup__title">Bedankt voor het bekijken</h2>
-      <div class="popup__subtext">
-        We hopen dat je met dit leermateriaal aan de slag kunt en horen graag wat je ervan vindt.
-      </div>
-      <h3>Hoeveel sterren geef jij dit leermateriaal?</h3>
-      <form
-        action=""
-        @submit.prevent="onSaveRating"
-      >
-        <div class="save-rating__items">
-          <div >
-            <StarRating
-              v-model="rating"
-              :counter="0"
-              type="big"
-              :hide-counter="true"
-            />
-          </div>
-          <button
-            class="button"
-            type="submit"
-          >
-            Beoordeling opslaan
-          </button>
+      <template v-if="saved">
+        <h2 class="popup__title">Bedankt voor je waardering</h2>
+        <div class="popup__subtext">
+          We hopen dat je met dit leermateriaal aan de slag kunt!
         </div>
-      </form>
+        <button
+          class="button"
+          @click.prevent="close"
+        >
+          Venster sluiten
+        </button>
+      </template>
+      <template v-else>
+        <h2 class="popup__title">Bedankt voor het bekijken</h2>
+        <div class="popup__subtext">
+          We hopen dat je met dit leermateriaal aan de slag kunt en horen graag wat je ervan vindt.
+        </div>
+        <h3>Hoeveel sterren geef jij dit leermateriaal?</h3>
+        <form
+          action=""
+          @submit.prevent="onSaveRating"
+        >
+          <div class="save-rating__items">
+            <div >
+              <StarRating
+                v-model="rating"
+                :counter="0"
+                type="big"
+                :hide-counter="true"
+              />
+            </div>
+            <button
+              class="button"
+              type="submit"
+              :disabled="submitting"
+            >
+              Beoordeling opslaan
+            </button>
+          </div>
+        </form>
+      </template>
     </slot>
   </Popup>
 </transition>

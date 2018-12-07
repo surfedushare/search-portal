@@ -2,7 +2,7 @@ import Popup from '~/components/Popup';
 import StarRating from '~/components/StarRating';
 export default {
   name: 'save-rating',
-  props: ['value', 'is-show', 'close', 'on-save-rating'],
+  props: ['value', 'is-show', 'close', 'material'],
   components: {
     Popup,
     StarRating
@@ -10,9 +10,24 @@ export default {
   mounted() {},
   data() {
     return {
+      saved: false,
+      submitting: false,
       rating: 0
     };
   },
-  methods: {},
+  methods: {
+    /**
+     * Save rating
+     */
+    onSaveRating() {
+      this.submitting = true;
+      this.$store.dispatch('setMaterialRating', this.rating).then(() => {
+        this.$store.dispatch('getMaterial', this.$route.params.id).then(() => {
+          this.submitting = false;
+          this.saved = true;
+        });
+      });
+    }
+  },
   computed: {}
 };

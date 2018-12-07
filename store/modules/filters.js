@@ -16,9 +16,13 @@ export default {
     }
   },
   actions: {
-    async getFilters({ commit }) {
+    async getFilters({ state, commit }) {
+      if (state.filters) {
+        return state.filters;
+      }
       const filters = await this.$axios.$get('filters/');
       commit('SET_FILTERS', filters);
+      return filters;
     },
     async getFilter({ commit }, { id }) {
       const filter = await this.$axios.$get(`filters/${id}/`);

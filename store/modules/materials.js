@@ -4,6 +4,7 @@ export default {
   state: {
     materials: null,
     material: null,
+    material_loading: null,
     material_communities: null,
     materials_keywords: null,
     materials_loading: false,
@@ -15,6 +16,9 @@ export default {
     },
     material(state) {
       return state.material;
+    },
+    material_loading(state) {
+      return state.material_loading;
     },
     material_communities(state) {
       return state.material_communities;
@@ -32,8 +36,10 @@ export default {
   actions: {
     async getMaterial({ commit }, id) {
       // commit('SET_MATERIAL', null);
+      commit('SET_MATERIAL_LOADING', true);
       const material = await this.$axios.$get(`materials/${id}/`);
       commit('SET_MATERIAL', material);
+      commit('SET_MATERIAL_LOADING', false);
     },
     async getMaterials({ commit }) {
       const materials = await this.$axios.$get('materials/');
@@ -42,6 +48,16 @@ export default {
     async getMaterialCommunities({ commit }, { params }) {
       const communities = await this.$axios.$get('communities/', { params });
       commit('SET_MATERIAL_COMMUNITIES', communities);
+    },
+    async setMaterialRating({ commit }, rating) {
+      return await this.$axios.$post('materials/rating/', rating);
+    },
+    async setApplaudMaterial({ commit }, { external_id }) {
+      return await this.$axios.$post('applaud-materials/', {
+        material: {
+          external_id: external_id
+        }
+      });
     },
     async searchMaterials({ commit }, search) {
       commit('SET_MATERIALS_LOADING', true);
@@ -106,6 +122,9 @@ export default {
     },
     SET_MATERIALS_LOADING(state, payload) {
       state.materials_loading = payload;
+    },
+    SET_MATERIAL_LOADING(state, payload) {
+      state.material_loading = payload;
     },
     SET_MATERIALS_IN_LINE(state, payload) {
       state.materials_in_line = payload;

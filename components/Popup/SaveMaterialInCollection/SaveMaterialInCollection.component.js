@@ -11,19 +11,33 @@ export default {
   },
   data() {
     return {
-      collection: null
+      collection: null,
+      submitting: false
     };
   },
   methods: {
+    /**
+     * Save material
+     */
     onSaveMaterial() {
-      this.$store.dispatch('setMaterialInMyCollection', {
-        collection_id: this.collection,
-        data: [
-          {
-            external_id: this.material.external_id
-          }
-        ]
-      });
+      this.submitting = true;
+      this.$store
+        .dispatch('setMaterialInMyCollection', {
+          collection_id: this.collection,
+          data: [
+            {
+              external_id: this.material.external_id
+            }
+          ]
+        })
+        .then(() => {
+          this.$store
+            .dispatch('getMaterial', this.$route.params.id)
+            .then(() => {
+              this.submitting = false;
+              this.close();
+            });
+        });
     }
   },
   computed: {

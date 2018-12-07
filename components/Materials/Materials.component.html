@@ -18,6 +18,7 @@
             <nuxt-link
               class="materials__item_link"
               :to="`/materials/${material.external_id_base64}/`"
+              @click.native="setMaterial(material)"
             >
               {{material.title}}
             </nuxt-link>

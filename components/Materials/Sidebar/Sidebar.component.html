@@ -5,12 +5,12 @@
       Biologie
       <h4>Leerniveaus</h4>
       WO Bachelor
-      <h4>Soort materiaal</h4>
-      Video
+      <!--<h4>Soort materiaal</h4>-->
+      <!--Video-->
       <h4>Bestandsformaat</h4>
       {{ material.format }}
       <h4>Publicatiedatum</h4>
-      {{ material.date }}
+      {{ material.date || '-' }}
       <h4>Taal</h4>
       {{ material.language }}
       <h4>Gebruiksrechten</h4>
@@ -27,7 +27,7 @@
       >Open link</a>
     </div>
     <div class="material__left-box">
-      <template  v-if="!isAuthenticated">
+      <template v-if="!isAuthenticated">
         <h3 class="h3">Materiaal toevoegen aan collectie</h3>
         <p>Om collecties te kunnen maken moet u eerst inloggen</p>
         <a
@@ -36,13 +36,13 @@
         >Inloggen met SURFconext</a>
       </template>
       <button
-        v-else
+        v-else-if="!material.has_bookmark"
         class="h3"
         @click.prevent="addToCollection"
-        v-if="!material.has_bookmark"
       >
         Materiaal toevoegen aan collectie
       </button>
+
     </div>
   </div>
   <SaveMaterialInCollection

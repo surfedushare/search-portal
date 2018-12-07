@@ -36,7 +36,8 @@ export default {
       filter: {},
       active_category_id: null,
       formData: {
-        ...this.value
+        ...this.value,
+        ordering: '-lom.lifecycle.contribute.publisherdate'
       },
       dates_range: {
         start_date: null,
@@ -45,6 +46,11 @@ export default {
     };
   },
   methods: {
+    /**
+     * search event
+     * @param search
+     * @param loading
+     */
     onSearch(search, loading) {
       loading(true);
       this.search(loading, search, this);
@@ -66,6 +72,9 @@ export default {
           loading(false);
         });
     }, 350),
+    /**
+     * Submit form
+     */
     onSubmit() {
       this.$router.push(generateSearchMaterialsQuery(this.formData));
       this.$emit('input', this.formData);

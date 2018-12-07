@@ -42,6 +42,10 @@ export default {
     hide() {
       this.opened = false;
     },
+    /**
+     * Emit start date to parent v-model
+     * @param date
+     */
     onSelectedStartDate(date) {
       this.$emit(
         'input',
@@ -51,6 +55,10 @@ export default {
         })
       );
     },
+    /**
+     * Emit end date to parent v-model
+     * @param date
+     */
     onSelectedEndDate(date) {
       this.$emit(
         'input',
