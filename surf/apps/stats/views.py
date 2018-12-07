@@ -1,3 +1,7 @@
+"""
+This module contains implementation of REST API views for stats app.
+"""
+
 from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response

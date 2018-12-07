@@ -1,3 +1,7 @@
+"""
+This module contains implementation of models for filters app.
+"""
+
 from django.db import models as django_models
 from django.conf import settings
 from django.core import validators

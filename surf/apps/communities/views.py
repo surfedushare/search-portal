@@ -1,3 +1,7 @@
+"""
+This module contains implementation of REST API views for communities app.
+"""
+
 from django.db.models import Q, Count
 
 from rest_framework.viewsets import GenericViewSet
@@ -46,6 +50,10 @@ class CommunityViewSet(ListModelMixin,
     permission_classes = []
 
     def get_serializer_class(self):
+        """
+        Returns serializer class depending on action method
+        """
+
         if self.action == 'update':
             return CommunityUpdateSerializer
 
@@ -150,7 +158,7 @@ class CommunityViewSet(ListModelMixin,
     @staticmethod
     def _add_collections(instance, collections):
         """
-        Add collections to community
+        Adds collections to community
         :param instance: community instance
         :param collections: added collections
         :return:
@@ -163,9 +171,9 @@ class CommunityViewSet(ListModelMixin,
     @staticmethod
     def _delete_collections(instance, collections):
         """
-        Delete collections from community
+        Deletes collections from community
         :param instance: community instance
-        :param collections: deleted collections
+        :param collections: collections that should be deleted
         :return:
         """
 

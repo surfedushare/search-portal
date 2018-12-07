@@ -1,3 +1,7 @@
+"""
+This module contains implementation of models for users app.
+"""
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models as django_models
 
@@ -5,9 +9,21 @@ from surf.apps.core.models import UUIDModel
 
 
 class UserManager(BaseUserManager):
+    """
+    Implementation of User manager class.
+    """
+
     use_in_migrations = True
 
     def _create_user(self, username, email, password, **extra_fields):
+        """
+        Implements user creation by his `username`, `email`, `password`
+        :param username:
+        :param email:
+        :param password:
+        :param extra_fields:
+        :return: created user
+        """
         if not username:
             raise ValueError('The given username must be set')
         email = self.normalize_email(email)
@@ -18,11 +34,26 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, username, email=None, password=None, **extra_fields):
+        """
+        Creates user by his `username`, `email`, `password`
+        :param username:
+        :param email:
+        :param password:
+        :param extra_fields:
+        :return: created user
+        """
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(username, email, password, **extra_fields)
 
     def create_superuser(self, username, password, **extra_fields):
+        """
+        Creates superuser by his `username`, `password`
+        :param username:
+        :param password:
+        :param extra_fields:
+        :return: created superuser
+        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -35,6 +66,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    """
+    Implementation of Django custom User model.
+    """
     REQUIRED_FIELDS = []
 
     objects = UserManager()
@@ -46,23 +80,44 @@ class User(AbstractUser):
 
 
 class SurfConextAuth(UUIDModel):
+    """
+    Implementation of SURFconext User model.
+    """
+
+    # related Django user
     user = django_models.OneToOneField(User,
                                        related_name='surfconext_auth',
                                        on_delete=django_models.CASCADE)
 
+    # field `preferred_username` of SURFconext user
     display_name = django_models.CharField(max_length=100)
+
+    # field `edu_person_targeted_id` of SURFconext user
     external_id = django_models.CharField(max_length=255)
+
+    # SURFconext user access token
     access_token = django_models.TextField()
 
     @staticmethod
     def update_or_create_user(display_name, external_id, access_token):
+        """
+        Updates SURFconext user data or creates new if the user does not exist.
+        :param display_name: SURFconext user preferred username
+        :param external_id: SURFconext user identifier
+        :param access_token: SURFconext user access token
+        :return: created/updated user instance
+        """
+
         rv = SurfConextAuth.objects.filter(external_id=external_id).first()
         if rv:
+            # SURFconext user DB instance exists, so we should only update it
             rv.access_token = access_token
             rv.display_name = display_name
             rv.save()
 
         else:
+            # SURFconext user DB instance does not exist,
+            # so we should create it
             u, _ = User.objects.get_or_create(
                 username=external_id,
                 defaults=dict(first_name=display_name))

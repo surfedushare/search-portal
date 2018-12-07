@@ -1,3 +1,7 @@
+"""
+This module contains implementation of models for themes app.
+"""
+
 from django.db import models as django_models
 
 from surf.apps.core.models import UUIDModel

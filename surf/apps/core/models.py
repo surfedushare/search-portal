@@ -1,3 +1,7 @@
+"""
+This module contains implementation of core models.
+"""
+
 import uuid
 
 from django.db import models

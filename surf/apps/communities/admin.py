@@ -1,3 +1,7 @@
+"""
+This module provides django admin functionality for communities app.
+"""
+
 from django.contrib import admin
 
 from surf.apps.communities import models

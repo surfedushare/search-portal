@@ -1,3 +1,7 @@
+"""
+This module contains some common functions for filters app.
+"""
+
 import re
 
 from django.db.models import Count

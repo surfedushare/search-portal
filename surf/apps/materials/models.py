@@ -1,3 +1,7 @@
+"""
+This module contains implementation of models for materials app.
+"""
+
 from datetime import datetime
 
 from django.db import models as django_models

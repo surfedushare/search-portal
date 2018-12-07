@@ -1,3 +1,7 @@
+"""
+This module contains some common functions for materials app.
+"""
+
 import json
 
 from django.conf import settings

@@ -1,3 +1,7 @@
+"""
+This module contains implementation of REST API views for themes app.
+"""
+
 from django.db.models import Count
 from django.conf import settings
 

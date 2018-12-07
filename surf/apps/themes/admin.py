@@ -1,3 +1,7 @@
+"""
+This module provides django admin functionality for themes app.
+"""
+
 from django import forms
 from django.contrib import admin
 

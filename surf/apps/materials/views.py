@@ -1,3 +1,7 @@
+"""
+This module contains implementation of REST API views for materials app.
+"""
+
 from base64 import urlsafe_b64decode
 
 from collections import OrderedDict
@@ -191,6 +195,12 @@ class MaterialAPIView(APIView):
 
     @staticmethod
     def get_material(request, external_id):
+        """
+        Returns the list of materials by external id
+        :param request: request instance
+        :param external_id: external id of material
+        :return:
+        """
         external_id = external_id.encode("utf-8")
         external_id = urlsafe_b64decode(external_id).decode("utf-8")
         res = _get_material_by_external_id(request, external_id)
@@ -407,7 +417,7 @@ class CollectionViewSet(ModelViewSet):
         """
         Delete materials from collection
         :param instance: collection instance
-        :param materials: deleted materials
+        :param materials: materials that should be removed from collection
         :return:
         """
 

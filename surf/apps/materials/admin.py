@@ -1,3 +1,7 @@
+"""
+This module provides django admin functionality for materials app.
+"""
+
 from django.contrib import admin
 from django import forms
 

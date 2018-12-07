@@ -1,3 +1,7 @@
+"""
+This module contains implementation of REST API views for users app.
+"""
+
 from urllib.parse import urlparse
 
 import logging

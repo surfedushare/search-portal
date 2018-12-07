@@ -1,3 +1,7 @@
+"""
+This module contains implementation of core mixins.
+"""
+
 from rest_framework.response import Response
 from rest_framework import status
 

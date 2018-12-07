@@ -1,3 +1,7 @@
+"""
+This module provides django admin functionality for filters app.
+"""
+
 from django.contrib import admin
 
 from surf.apps.filters import models
