@@ -1,8 +1,9 @@
 
-<section class="direct_search" :class="{'search--hide-categories': hideCategories}">
+<section class="direct_search">
   <form
     action="/materials/search/"
     @submit.prevent="onSubmit"
+    class="direct_search__wrapper"
   >
     <div class="direct_search__fields">
       <div class="direct_search__autocomplete">
@@ -21,7 +22,7 @@
       </div>
     </div>
     <slot name="social_box"></slot>
-    <slot name="filer"></slot>
+    <slot name="filter"></slot>
   </form>
 </section>
 

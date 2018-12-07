@@ -34,8 +34,14 @@ export default {
      */
     extended_materials() {
       const { materials, disciplines, educationallevels } = this;
+      let arrMaterials;
       if (materials && disciplines && educationallevels) {
-        return materials.records.map(material => {
+        if (materials.records) {
+          arrMaterials = materials.records;
+        } else {
+          arrMaterials = materials;
+        }
+        return arrMaterials.map(material => {
           return Object.assign({}, material, {
             disciplines: material.disciplines.reduce((prev, id) => {
               const item = disciplines.items[id];

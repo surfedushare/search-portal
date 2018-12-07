@@ -1,8 +1,9 @@
+import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
 
 export default {
-  name: 'collections',
+  name: 'collection',
   props: {
     collection: {
       default: false

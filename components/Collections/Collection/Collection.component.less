@@ -1,11 +1,8 @@
 @import './../../../assets/styles/variables';
 .collection {
-  width: 100%;
-  padding: 95px 0 100px;
-
   &__info {
     padding: 0 55px 0;
-    margin: 0 0 205px;
+    margin: 0 0 97px;
     position: relative;
     &_wrapper{
       display: block;
@@ -39,6 +36,7 @@
       display: inline-block;
       vertical-align: top;
       padding: 33px 0 43px 48px;
+      background: url('./../../../assets/images/keurmerk.svg') 1px 70px no-repeat;
     }
     &_bg{
       position: absolute;
@@ -66,65 +64,10 @@
       display: inline-block;
     }
     &_search{
-      margin: 0 66px;
+      margin: 0 50px;
       .search__fields{
         margin-bottom: 33px;
       }
-    }
-  }
-  &__items {
-    padding: 0;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  &__description{
-    font-size: 20px;
-    line-height: 1.15;
-    margin: 1px 0 76px;
-  }
-
-  &__item {
-    //margin: 0 0 23px;
-    list-style: none;
-    background-color: #fff;
-    position: relative;
-    font-size: 16px;
-    line-height: 1.44;
-
-    &_wrapper{
-      padding: 31px 18px 44px;
-    }
-    &_header{
-      padding: 0 10px 0 31px;
-      position: relative;
-      margin: 0 0 43px;
-      font-weight: bold;
-      font-family: @second-font;
-      &:before{
-        content: '';
-        background: url("./../../../assets/images/keurmerk.svg") no-repeat 0 0;
-        height: 39px;
-        width: 24px;
-        position: absolute;
-        top: -8px;
-        left: 0;
-      }
-    }
-    &_ttl{
-      line-height: 1.2;
-      margin-bottom: 58px;
-      &_link{
-        text-decoration: none;
-        color: @black;
-      }
-    }
-    &_link{
-      text-decoration: none;
-      font-weight: bold;
-      margin-bottom: 5px;
-      display: inline-block;
     }
   }
 }

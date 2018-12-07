@@ -1,7 +1,8 @@
 export default {
   state: {
     my_collections: false,
-    my_collection: false
+    my_collection: false,
+    my_collection_materials: false
   },
   getters: {
     my_collections(state) {
@@ -9,6 +10,9 @@ export default {
     },
     my_collection(state) {
       return state.my_collection;
+    },
+    my_collection_materials(state) {
+      return state.my_collection_materials;
     }
   },
   actions: {
@@ -34,12 +38,18 @@ export default {
       { state, commit },
       { collection_id, data }
     ) {
+      console.log(collection_id, data);
       const material = await this.$axios.$post(
         `collections/${collection_id}/materials/`,
         data
       );
       commit('SET_MATERIAL_TO_MY_COLLECTION', material);
       return data;
+    },
+    async getMaterialInMyCollection({ state, commit }, id) {
+      const materials = await this.$axios.$get(`collections/${id}/materials/`);
+      commit('GET_MATERIAL_TO_MY_COLLECTION', materials);
+      return materials;
     }
   },
   mutations: {
@@ -51,6 +61,9 @@ export default {
     },
     SET_MATERIAL_TO_MY_COLLECTION(state, payload) {
       // state.my_collections = payload;
+    },
+    GET_MATERIAL_TO_MY_COLLECTION(state, payload) {
+      state.my_collection_materials = payload;
     }
   }
 };

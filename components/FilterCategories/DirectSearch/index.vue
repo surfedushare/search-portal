@@ -5,7 +5,7 @@
 </style>
 <style lang="less">
 @import './../../../assets/styles/variables';
-.search {
+.direct_search {
   .v-select {
     flex-wrap: wrap;
     overflow: hidden;
@@ -19,6 +19,12 @@
       .open-indicator {
         display: none;
       }
+    }
+
+    input {
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
     }
 
     .selected-tag {
@@ -83,8 +89,7 @@
       }
     }
     .dropdown-menu > li > a {
-      background: url('./../../../assets/images/search-grey.svg') 21px 50%
-        no-repeat;
+      background: url('./../../../assets/images/search.svg') 21px 50% no-repeat;
       background-size: 20px 20px;
     }
   }
@@ -95,13 +100,16 @@
     font-family: @second-font;
   }
 }
-.search .v-select.searchable .dropdown-toggle {
+.direct_search .v-select.searchable .dropdown-toggle {
   width: 100%;
   border: 0;
-  padding: 0 400px 0 59px;
-  background: url('./../../../assets/images/search-grey.svg') 21px 50% no-repeat;
+  padding: 0 40px;
+  background: url('./../../../assets/images/search.svg') 9px 50% no-repeat
+    #ffffff;
+  background-size: 20px;
+  border-radius: 7px;
   font-size: 16px;
-  height: 99px;
+  height: 51px;
   align-items: center;
 }
 
@@ -109,7 +117,7 @@
   padding-right: 140px;
 }
 
-.search .v-select .dropdown-menu {
+.direct_search .v-select .dropdown-menu {
   display: block;
   position: relative;
   top: 0;
