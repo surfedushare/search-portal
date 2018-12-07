@@ -4,6 +4,16 @@
     margin: 0 0 53px;
   }
 
+  @media @mobile, @tablet {
+    padding-top: 66px;
+  }
+
+  h2 {
+    @media @mobile, @tablet {
+      font-size: 22px;
+    }
+  }
+
   &__description {
     font-size: 20px;
     line-height: 1.15;
@@ -35,6 +45,12 @@
 
     @media @desktop {
       width: 50%;
+    }
+
+    ::after {
+      @media @tablet, @mobile {
+        float: right;
+      }
     }
   }
 

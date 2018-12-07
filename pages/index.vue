@@ -162,6 +162,11 @@ export default {
       list-style: none;
       padding: 5px 0 8px 40px;
       background: url('./../assets/images/check-white.svg') 0 0 no-repeat;
+
+      @media @mobile, @tablet {
+        background-size: 20px;
+        background-position-x: 10px;
+      }
     }
     &_block {
       /*background: fade(@dark-blue, 90%); */
@@ -230,12 +235,13 @@ export default {
   }
 
   &__thems_and_communities {
+    margin-bottom: 50px;
     @media @desktop {
       display: flex;
+      margin-bottom: 97px;
     }
     align-items: start;
     justify-content: space-between;
-    margin-bottom: 97px;
   }
 
   &__thems {
@@ -257,6 +263,11 @@ export default {
 
     &_title {
       margin: 0 0 32px;
+
+      @media @mobile, @tablet {
+        font-size: 22px;
+        margin: 0 0 20px;
+      }
     }
 
     &:before {
