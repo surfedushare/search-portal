@@ -64,6 +64,23 @@ def add_default_filters(filters):
     return filters
 
 
+def get_all_materials_filters():
+    """
+    Returns filters to get all available materials from EduRep
+    :return: list of filters
+    """
+
+    rv = []
+    for filter_id in {EDUCATIONAL_LEVEL_FIELD_ID, COPYRIGHT_FIELD_ID}:
+        items = FilterCategoryItem.objects.filter(
+            category__edurep_field_id=filter_id).all()
+
+        items = [it.external_id for it in items]
+        rv.append(dict(external_id=filter_id, items=items))
+
+    return rv
+
+
 def check_and_update_filters():
     """
     Updates filter categories and their items in database

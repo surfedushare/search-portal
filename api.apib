@@ -669,6 +669,18 @@ Deletes user filter by its identifier.
 
 + Response 204
 
+# Group Statistics
+
+## Statistics [/api/v1/stats/]
+
+### GET [GET /api/v1/stats/all-materials/]
+Returns the number of all available materials.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Number Value)
+
 # Data Structures
 
 ## Pagination Response (object)
@@ -854,3 +866,6 @@ Deletes user filter by its identifier.
 
 ## Discipline (Filter Category item)
  - materials_count: `3` (number) - the number of materials related to this discipline
+
+## Number Value (object)
+ - value: `2` (number) - the value of requested parameter
