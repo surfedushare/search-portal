@@ -7,7 +7,7 @@ export default {
   components: {},
   mounted() {
     if (this.isAuthenticated) {
-      this.$store.dispatch('setActiveFilter', { id: false });
+      this.$store.dispatch('setActiveFilter', { id: '' });
       this.$store.dispatch('getFilters');
     }
   },

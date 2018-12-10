@@ -1,6 +1,6 @@
 export default {
   state: {
-    filters: null,
+    filters: [{ id: '' }],
     active_filter: {
       id: false,
       start_date: null,
@@ -25,9 +25,13 @@ export default {
       return filters;
     },
     async getFilter({ commit }, { id }) {
-      const filter = await this.$axios.$get(`filters/${id}/`);
-      this.dispatch('setActiveFilter', filter);
-      commit('SET_FILTER', filter);
+      if (id && id.length) {
+        const filter = await this.$axios.$get(`filters/${id}/`);
+        this.dispatch('setActiveFilter', filter);
+        commit('SET_FILTER', filter);
+      } else {
+        commit('SET_FILTER', { id });
+      }
     },
     async postFilter({ commit }, { title, items }) {
       const { filters } = items;
@@ -72,9 +76,10 @@ export default {
   },
   mutations: {
     SET_FILTERS(state, payload) {
-      state.filters = payload;
+      state.filters = [...state.filters, ...payload];
     },
     SET_FILTER(state, payload) {
+      console.log(state.filters);
       state.filters = state.filters.map(filter => {
         if (filter.id === payload.id) {
           return payload;

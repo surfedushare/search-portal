@@ -18,9 +18,10 @@
       @change="onFilterSelected"
       v-model="active_filter.id"
     >
-      <option :value="false">Mijn filter selecties</option>
+      <option value="">Mijn filter selecties</option>
       <option :value="filter.id" v-for="filter in filters">{{ filter.title }}</option>
     </select>
+    11111{{active_filter}}
   </div>
 
   <ul v-if="categories" class="filter-categories__items">
