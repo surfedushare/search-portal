@@ -11,7 +11,9 @@ from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
     TECH_FORMAT_LOM,
     CUSTOM_THEME_ID,
     DISCIPLINE_ID_LOM,
-    COPYRIGHT_ID_LOM
+    COPYRIGHT_ID_LOM,
+    EXTRA_RECORD_SCHEMA,
+    SMO_RECORD_SCHEMA
 )
 
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
@@ -41,8 +43,9 @@ _EDUREP_DATE_FORMAT = "%Y%m%d"
 _BASE_QUERY = "edurep"
 _API_VERSION = "1.2"
 _OPERATION = "searchRetrieve"
-_RECORD_PACKING = "xml"
-_EXTRA_RECORD_SCHEMA = "smbAggregatedData"
+_XML_RECORD_PACKING = "xml"
+_EDUREP_SEARCH_METHOD = "edurep/sruns"
+_SMO_SEARCH_METHOD = "smo/sruns"
 
 
 class XmlEndpointApiClient:
@@ -86,6 +89,20 @@ class XmlEndpointApiClient:
                          '"{}"'.format(m["external_id"]) in id_set]
         return rv
 
+    def get_user_reviews(self, user_id, material_urn=None,
+                         page=1, page_size=5):
+
+        query = "smo.userId={}".format(user_id)
+        if material_urn:
+            query = '{} AND smo.hReview.info="{}"'.format(query, material_urn)
+
+        start_record = _get_start_record_by_page(page, page_size)
+        return self._call(query=query,
+                          start_record=start_record,
+                          maximum_records=page_size,
+                          record_schema=SMO_RECORD_SCHEMA,
+                          api_method=_SMO_SEARCH_METHOD)
+
     def _search(self, search_text=None, filters=None, drilldown_names=None,
                 start_record=1, maximum_records=0, ordering=None):
 
@@ -107,15 +124,18 @@ class XmlEndpointApiClient:
 
     def _call(self, query, drilldown_names=None,
               start_record=1, maximum_records=0, ordering=None,
-              version="1.2", operation="searchRetrieve"):
+              version="1.2", operation="searchRetrieve",
+              record_schema=EXTRA_RECORD_SCHEMA,
+              record_packing=_XML_RECORD_PACKING,
+              api_method=_EDUREP_SEARCH_METHOD):
 
         parameters = dict(version=version,
                           operation=operation,
-                          recordPacking=_RECORD_PACKING,
+                          recordPacking=record_packing,
                           query=quote_plus(query, safe=''),
                           startRecord=start_record,
                           maximumRecords=maximum_records)
-        parameters["x-recordSchema"] = _EXTRA_RECORD_SCHEMA
+        parameters["x-recordSchema"] = record_schema
 
         if drilldown_names and isinstance(drilldown_names, list):
             parameters["x-term-drilldown"] = ",".join(drilldown_names)
@@ -133,13 +153,13 @@ class XmlEndpointApiClient:
         parameters = "&".join(["{}={}".format(k, v)
                                for k, v in parameters.items()])
 
-        url = "{}/edurep/sruns?{}".format(self.api_endpoint, parameters)
+        url = "{}/{}?{}".format(self.api_endpoint, api_method, parameters)
 
         response = requests.get(url)
         if response and response.status_code != requests.codes.ok:
             response.raise_for_status()
 
-        return parse_response(response.text)
+        return parse_response(response.text, record_schema=record_schema)
 
 
 def _get_start_record_by_page(page, page_size):

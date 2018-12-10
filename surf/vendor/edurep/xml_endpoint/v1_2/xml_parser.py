@@ -23,7 +23,9 @@ _NS = {
     "meresco_srw": "http://meresco.org/namespace/srw#",
     "dd": "http://meresco.org/namespace/drilldown",
     "czp": "http://www.imsglobal.org/xsd/imsmd_v1p2",
-    "sad": "http://xsd.kennisnet.nl/smd/sad"
+    "sad": "http://xsd.kennisnet.nl/smd/sad",
+    "smd": "http://xsd.kennisnet.nl/smd/1.0/",
+    "hreview": "http://xsd.kennisnet.nl/smd/hreview/1.0/"
 }
 
 TECH_FORMAT_LOM = "lom.technical.format"
@@ -31,11 +33,14 @@ DISCIPLINE_ID_LOM = "lom.classification.obk.discipline.id"
 CUSTOM_THEME_ID = "custom_theme.id"
 COPYRIGHT_ID_LOM = "lom.rights.copyrightandotherrestrictions"
 
+EXTRA_RECORD_SCHEMA = "smbAggregatedData"
+SMO_RECORD_SCHEMA = "smo"
 
-def parse_response(xml_text):
+
+def parse_response(xml_text, record_schema=EXTRA_RECORD_SCHEMA):
     root = ET.fromstring(xml_text)
     return dict(recordcount=_parse_number_of_records(root),
-                records=_parse_records(root),
+                records=_parse_records(root, record_schema),
                 drilldowns=_parse_drilldowns(root))
 
 
@@ -44,10 +49,6 @@ def _parse_number_of_records(root):
         return int(root.find("srw:numberOfRecords", namespaces=_NS).text)
     except Exception:
         return 0
-
-
-def _parse_records(root):
-    return _parse_item_list(root, "srw:records", _parse_record)
 
 
 _RECORD_ID_PATH = "srw:recordIdentifier"
@@ -89,6 +90,12 @@ def _parse_record(elem):
     external_id_base64 = external_id_base64.decode("utf-8")
 
     copyright = EDUREP_COPYRIGHTS.get(_find_elem_text(elem, _COPYRIGHT_PATH))
+
+    number_of_ratings = _find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)
+    number_of_ratings = int(number_of_ratings) if number_of_ratings else 0
+
+    average_rating = _find_elem_text(elem, _AVERAGE_RATINGS_PATH)
+    average_rating = float(average_rating) if average_rating else 0
     return dict(
         external_id=_find_elem_text(elem, _RECORD_ID_PATH),
         external_id_base64=external_id_base64,
@@ -105,8 +112,8 @@ def _parse_record(elem):
         author=author,
         creator=creator,
         format=MIME_TYPE_TECH_FORMAT.get(_find_elem_text(elem, _FORMAT_PATH)),
-        number_of_ratings=int(_find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)),
-        average_rating=float(_find_elem_text(elem, _AVERAGE_RATINGS_PATH)),
+        number_of_ratings=number_of_ratings,
+        average_rating=average_rating,
         themes=[],
         disciplines=disciplines,
         educationallevels=educationallevels,
@@ -115,6 +122,41 @@ def _parse_record(elem):
         number_of_views=0,
         number_of_collections=0,
     )
+
+
+_REVIEW_INFO_PATH = "./srw:recordData/smd:smo/hreview:hReview/hreview:info"
+_REVIEW_RATING_PATH = "./srw:recordData/smd:smo/hreview:hReview/hreview:rating"
+_REVIEW_DATE_PATH = "./srw:recordData/smd:smo/hreview:hReview/hreview:dtreviewed"
+_SUPPLIER_ID_PATH = "./srw:recordData/smd:smo/smd:supplierId"
+_USER_ID_PATH = "./srw:recordData/smd:smo/smd:userId"
+_SMO_ID_PATH = "./srw:recordData/smd:smo/smd:smoId"
+
+
+def _parse_smo_record(elem):
+    rating = _find_elem_text(elem, _REVIEW_RATING_PATH)
+    rating = float(rating) if rating else 0
+    return dict(
+        external_id=_find_elem_text(elem, _RECORD_ID_PATH),
+        object_id=_find_elem_text(elem, _REVIEW_INFO_PATH),
+        supplier_id=_find_elem_text(elem, _SUPPLIER_ID_PATH),
+        user_id=_find_elem_text(elem, _USER_ID_PATH),
+        smo_id=_find_elem_text(elem, _SMO_ID_PATH),
+        rating=rating,
+    )
+
+
+_RECORD_HANDLERS = {
+    EXTRA_RECORD_SCHEMA: _parse_record,
+    SMO_RECORD_SCHEMA: _parse_smo_record
+}
+
+
+def _parse_records(root, record_schema):
+    try:
+        handler = _RECORD_HANDLERS[record_schema]
+    except KeyError:
+        handler = _parse_record
+    return _parse_item_list(root, "srw:records", handler)
 
 
 _VCARD_FORMATED_NAME_KEY = "FN"
