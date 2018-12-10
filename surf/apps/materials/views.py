@@ -277,8 +277,20 @@ class MaterialRatingAPIView(APIView):
 
         surfconext_auth = getattr(request.user, "surfconext_auth")
         if surfconext_auth:
+            ac = XmlEndpointApiClient(
+                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
             sac = SmbSoapApiClient(
                 api_endpoint=settings.EDUREP_SOAP_API_ENDPOINT)
+
+            reviews = ac.get_user_reviews(surfconext_auth.external_id,
+                                          material_urn=data["object_id"])
+            reviews = reviews.get("records", [])
+
+            print(reviews)
+            for r in reviews:
+                sac.remove_review(r["external_id"],
+                                  settings.EDUREP_SOAP_SUPPLIER_ID)
 
             sac.send_rating(data["object_id"],
                             data["rating"],
