@@ -3,8 +3,34 @@ This module provides django admin functionality for communities app.
 """
 
 from django.contrib import admin
+from django import forms
+from django.db.models import Q
 
 from surf.apps.communities import models
+
+
+class CommunityForm(forms.ModelForm):
+    """
+    Implementation of Community Form class.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        try:
+            # choose only SurfTeam instances not related to Community instances
+            qs = models.SurfTeam.objects
+            conditions = Q(community__isnull=True)
+            if self.instance and self.instance.pk:
+                conditions |= Q(community__id=self.instance.pk)
+            qs = qs.filter(conditions)
+            self.fields['surf_team'].queryset = qs.all()
+        except AttributeError:
+            pass
+
+    class Meta:
+        model = models.Community
+        exclude = ("external_id", "admins", "members",)
 
 
 @admin.register(models.Community)
@@ -16,6 +42,7 @@ class CommunityAdmin(admin.ModelAdmin):
     list_display = ("custom_name", "custom_description", "is_available",)
     list_filter = ("is_available",)
     exclude = ("external_id", "admins", "members",)
+    form = CommunityForm
 
     def custom_name(self, obj):
         if obj.name:
