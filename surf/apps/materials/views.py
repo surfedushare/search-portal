@@ -287,7 +287,6 @@ class MaterialRatingAPIView(APIView):
                                           material_urn=data["object_id"])
             reviews = reviews.get("records", [])
 
-            print(reviews)
             for r in reviews:
                 sac.remove_review(r["external_id"],
                                   settings.EDUREP_SOAP_SUPPLIER_ID)
