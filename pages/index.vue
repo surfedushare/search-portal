@@ -54,7 +54,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Search from '~/components/FilterCategories/Search/index.vue';
+import Search from '~/components/FilterCategories/Search';
 import Materials from '~/components/Materials';
 import PopularList from '~/components/Communities/PopularList';
 import Themes from '~/components/Themes';

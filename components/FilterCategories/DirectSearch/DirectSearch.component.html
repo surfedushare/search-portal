@@ -1,0 +1,28 @@
+
+<section class="direct_search">
+  <form
+    action="/materials/search/"
+    @submit.prevent="onSubmit"
+    class="direct_search__wrapper"
+  >
+    <div class="direct_search__fields">
+      <div class="direct_search__autocomplete">
+        <v-select
+          :options="keywords"
+          :multiple="true"
+          placeholder="Zoek op trefwoorden"
+          @search="onSearch"
+          taggable
+          inputId="tags"
+          push-tags
+          v-model="formData.search_text"
+          name="keywords"
+          :resetOnOptionsChange="true"
+        ></v-select>
+      </div>
+    </div>
+    <slot name="social_box"></slot>
+    <slot name="filter"></slot>
+  </form>
+</section>
+

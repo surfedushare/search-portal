@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import Search from '~/components/FilterCategories/Search/index.vue';
+import Search from '~/components/FilterCategories/Search';
 import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
@@ -18,10 +18,11 @@ export default {
     Materials
   },
   mounted() {
-    this.$store.dispatch('getCommunity', this.$route.params.id);
-    this.$store.dispatch('getCommunityThemes', this.$route.params.id);
-    this.$store.dispatch('getCommunityDisciplines', this.$route.params.id);
-    this.$store.dispatch('getCommunityCollections', this.$route.params.id);
+    const { community } = this.$route.params;
+    this.$store.dispatch('getCommunity', community);
+    this.$store.dispatch('getCommunityThemes', community);
+    this.$store.dispatch('getCommunityDisciplines', community);
+    this.$store.dispatch('getCommunityCollections', community);
     this.$store.dispatch('searchMaterials', {
       page_size: 4,
       search_text: []

@@ -1,5 +1,5 @@
 import BreadCrumbs from '~/components/BreadCrumbs';
-import Search from '~/components/FilterCategories/Search/index.vue';
+import Search from '~/components/FilterCategories/Search';
 import { mapGetters } from 'vuex';
 
 export default {

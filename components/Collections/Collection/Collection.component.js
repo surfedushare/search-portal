@@ -1,15 +1,18 @@
+import { mapGetters } from 'vuex';
+import BreadCrumbs from '~/components/BreadCrumbs';
+import DirectSearch from '~/components/FilterCategories/DirectSearch';
+
 export default {
-  name: 'collections',
+  name: 'collection',
   props: {
-    collections: {
+    collection: {
       default: false
-    },
-    'items-in-line': {
-      type: Number,
-      default: 4
     }
   },
-  components: {},
+  components: {
+    BreadCrumbs,
+    DirectSearch
+  },
   mounted() {},
   data() {
     return {};

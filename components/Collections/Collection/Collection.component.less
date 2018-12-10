@@ -1,65 +1,109 @@
 @import './../../../assets/styles/variables';
-.collections {
-  width: 100%;
-  &.community__collections h2{
-    margin-bottom: 37px;
-  }
-  h2{
-    margin-bottom: 81px;
-  }
-  &__items {
-    padding: 0;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  &__description{
-    font-size: 20px;
-    line-height: 1.15;
-    margin: 1px 0 76px;
-  }
-
-  &__item {
-    //margin: 0 0 23px;
-    list-style: none;
-    background-color: #fff;
+.collection {
+  &__info {
+    padding: 0 55px 0;
+    margin: 0 0 97px;
     position: relative;
-    font-size: 16px;
-    line-height: 1.44;
-
     &_wrapper{
-      padding: 31px 18px 44px;
-    }
-    &_header{
-      padding: 0 10px 0 31px;
+      display: flex;
+      padding-top: 32px;
       position: relative;
-      margin: 0 0 43px;
-      font-weight: bold;
-      font-family: @second-font;
+      justify-content: space-between;
+
+      .bread-crumbs{
+        margin-bottom: 0;
+      }
       &:before{
         content: '';
-        background: url("./../../../assets/images/keurmerk.svg") no-repeat 0 0;
-        height: 39px;
-        width: 24px;
+        min-width: 100%;
         position: absolute;
-        top: -8px;
-        left: 0;
+        background-color: rgba(244, 244, 244, 0.9);
+        right: -36px;
+        left: -36px;
+        top: 0;
+        bottom: -70px;
+        border-radius: 20px;
+        z-index: -1;
       }
+    }
+    &_logo {
+      display: inline-block;
+      vertical-align: top;
+      width: 230px;
+      height: 136px;
+      background: #ffffff;
+      border-radius: 10px;
+    }
+    &_title{
+      display: inline-block;
+      vertical-align: top;
+      padding: 33px 0 43px 48px;
+      background: url('./../../../assets/images/keurmerk.svg') 1px 70px no-repeat;
+    }
+    &_bg{
+      position: absolute;
+      right: 26px;
+      top: -51px;
+      width: 510px;
+      border-radius: 21px;
+      height: 298px;
     }
     &_ttl{
-      line-height: 1.2;
-      margin-bottom: 58px;
-      &_link{
-        text-decoration: none;
-        color: @black;
-      }
+      padding: 0 0 8px;
+      position: relative;
     }
-    &_link{
+    &_subttl{
+      padding: 0 0 7px;
+      font-size: 20px;
+      line-height: 1.15;
+      font-family: @main-font;
+      position: relative;
+    }
+    &_all{
       text-decoration: none;
       font-weight: bold;
-      margin-bottom: 5px;
+      margin-bottom: 11px;
       display: inline-block;
+    }
+    &_search{
+      margin: 0 50px;
+      .search__fields{
+        margin-bottom: 33px;
+      }
+    }
+    &_filter{
+      width: 45%;
+      display: flex;
+      margin: 0 -10px 0 0;
+      padding-top: 5px;
+      align-items: center;
+      justify-content: flex-end;
+      &__link{
+        font-weight: bold;
+        padding-left: 30px;
+        position: relative;
+        font-size: 16px;
+        font-family: @second-font;
+      }
+      &__edit{
+        a{
+          background: url("./../../../assets/images/edit.svg") no-repeat 0 50%;
+          background-size: 30px;
+        }
+      }
+      &__delete{
+        margin-left: 32px;
+        a{
+          background: url("./../../../assets/images/trash.svg") no-repeat 0 50%;
+          background-size: 30px;
+        }
+      }
+      &__button{
+        margin-left: 38px;
+        a{
+          padding: 13px 60px;
+        }
+      }
     }
   }
 }
