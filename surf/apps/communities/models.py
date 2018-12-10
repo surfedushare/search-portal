@@ -54,12 +54,7 @@ class Community(UUIDModel):
                                             related_name="community",
                                             null=True)
 
-    # identifier of SURFconext Team
-    # should be removed
-    external_id = django_models.CharField(max_length=255,
-                                          verbose_name="SurfConext group id")
-
-    name = django_models.CharField(max_length=255)
+    name = django_models.CharField(max_length=255, blank=True)
     description = django_models.TextField(blank=True)
 
     logo = django_models.ImageField(upload_to='communities',
@@ -72,22 +67,6 @@ class Community(UUIDModel):
 
     website_url = django_models.URLField(blank=True, null=True)
 
-    # list of community administrators
-    # should be removed
-    admins = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Administrators",
-        related_name='admin_communities',
-        blank=True)
-
-    # list of community members
-    # should be removed
-    members = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Members",
-        related_name='communities',
-        blank=True)
-
     # is this community available for users
     is_available = django_models.BooleanField(
         verbose_name="Is community available in service",
@@ -97,6 +76,25 @@ class Community(UUIDModel):
     collections = django_models.ManyToManyField(Collection,
                                                 blank=True,
                                                 related_name="communities")
+
+    # identifier of SURFconext Team
+    external_id = django_models.CharField(max_length=255,
+                                          verbose_name="SurfConext group id",
+                                          null=True, blank=True)
+
+    # list of community administrators
+    admins = django_models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Administrators",
+        related_name='admin_communities',
+        blank=True)
+
+    # list of community members
+    members = django_models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Members",
+        related_name='communities',
+        blank=True)
 
     class Meta:
         ordering = ['name']
