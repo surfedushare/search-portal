@@ -96,7 +96,7 @@ export default {
       ];
     },
 
-    showThemes() {
+    showMobileFilterOptions() {
       this.showMobileFilter = !this.showMobileFilter;
     }
   },
