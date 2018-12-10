@@ -13,7 +13,8 @@
         <h3 class="collections__item_ttl">
           <nuxt-link
             :to="`/collections/${collection.id}/`"
-                     class="collections__item_ttl_link"
+            class="collections__item_ttl_link"
+            :key="`${collection.id}`"
           >
             {{ collection.title }}
           </nuxt-link>
@@ -22,6 +23,7 @@
           :to="`/communities/${community.id}/`"
           class="collections__item_link"
           v-for="community in collection.communities"
+          :key="`${community.id}`"
           >
           {{community.name}}
         </nuxt-link>
