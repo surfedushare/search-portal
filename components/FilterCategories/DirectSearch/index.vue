@@ -98,6 +98,8 @@
   .v-select input[type='search']:focus {
     font-size: 16px;
     font-family: @second-font;
+    padding: 0;
+    margin: 0;
   }
 }
 .direct_search .v-select.searchable .dropdown-toggle {

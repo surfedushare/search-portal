@@ -1,0 +1,33 @@
+
+<section class="collections">
+  <slot name="header-info">
+  </slot>
+  <ul class="collections__items" v-if="collections && collections.length">
+    <li
+      :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
+      v-for="collection in collections"
+      class="collections__item tile"
+    >
+      <div class="collections__item_wrapper tile__wrapper">
+        <div class="collections__item_header">Filterselectie</div>
+        <h3 class="collections__item_ttl">
+          <nuxt-link
+            :to="`/collections/${collection.id}/`"
+                     class="collections__item_ttl_link"
+          >
+            {{ collection.title }}
+          </nuxt-link>
+        </h3>
+        <nuxt-link
+          :to="`/communities/${community.id}/`"
+          class="collections__item_link"
+          v-for="community in collection.communities"
+          >
+          {{community.name}}
+        </nuxt-link>
+        <p class="collections__item_count">{{ collection.materials_count }} items</p>
+      </div>
+    </li>
+  </ul>
+  <div class="collections__info" v-else>No collections</div>
+</section>

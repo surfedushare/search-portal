@@ -5,9 +5,11 @@
     margin: 0 0 97px;
     position: relative;
     &_wrapper{
-      display: block;
+      display: flex;
       padding-top: 32px;
       position: relative;
+      justify-content: space-between;
+
       .bread-crumbs{
         margin-bottom: 0;
       }
@@ -67,6 +69,40 @@
       margin: 0 50px;
       .search__fields{
         margin-bottom: 33px;
+      }
+    }
+    &_filter{
+      width: 45%;
+      display: flex;
+      margin: 0 -10px 0 0;
+      padding-top: 5px;
+      align-items: center;
+      justify-content: flex-end;
+      &__link{
+        font-weight: bold;
+        padding-left: 30px;
+        position: relative;
+        font-size: 16px;
+        font-family: @second-font;
+      }
+      &__edit{
+        a{
+          background: url("./../../../assets/images/edit.svg") no-repeat 0 50%;
+          background-size: 30px;
+        }
+      }
+      &__delete{
+        margin-left: 32px;
+        a{
+          background: url("./../../../assets/images/trash.svg") no-repeat 0 50%;
+          background-size: 30px;
+        }
+      }
+      &__button{
+        margin-left: 38px;
+        a{
+          padding: 13px 60px;
+        }
       }
     }
   }
