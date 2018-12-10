@@ -18,17 +18,17 @@ class CommunityFilter(filters.FilterSet):
     is_admin = CharFilter(method="filter_is_admin")
 
     def filter_is_member(self, qs, name, value):
-        return self._filter_by_user_communities(qs, "communities", value)
+        return self._filter_by_user_communities(qs, "teams", value)
 
     def filter_is_admin(self, qs, name, value):
-        return self._filter_by_user_communities(qs, "admin_communities", value)
+        return self._filter_by_user_communities(qs, "admin_teams", value)
 
-    def _filter_by_user_communities(self, qs, community_attr_name, value):
+    def _filter_by_user_communities(self, qs, team_attr_name, value):
         """
         Add condition to queryset to filter/exclude of communities
         by user membership
         :param qs: queryset instance
-        :param community_attr_name: attribute name of community list
+        :param team_attr_name: attribute name of SURF team list
         :param value: if true then filter communities where user is membership,
         if false - exclude these communities
         :return: updated queryset instance
@@ -37,9 +37,10 @@ class CommunityFilter(filters.FilterSet):
         community_ids = []
         user = _get_and_check_user_from_request(self.request)
         if user:
-            user_communities = getattr(user, community_attr_name, [])
-            if user_communities:
-                community_ids = user_communities.values_list('id', flat=True)
+            user_teams = getattr(user, team_attr_name, [])
+            if user_teams:
+                community_ids = user_teams.values_list('community__id',
+                                                       flat=True)
 
         value = value in {True, "True", "true", "1"}
         if value:

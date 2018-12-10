@@ -194,7 +194,8 @@ class CommunityViewSet(ListModelMixin,
         if not user or not user.is_authenticated:
             raise AuthenticationFailed()
 
-        if instance and (not instance.admins.filter(id=user.id).exists()):
+        if instance and (
+                not instance.surf_team.admins.filter(id=user.id).exists()):
             raise AuthenticationFailed()
 
         if collection_ids:
