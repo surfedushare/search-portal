@@ -6,6 +6,8 @@ import json
 
 from django.conf import settings
 
+from surf.apps.communities.models import Community
+
 from surf.apps.materials.models import (
     Material,
     ApplaudMaterial,
@@ -65,5 +67,11 @@ def add_extra_parameters_to_materials(user, materials):
         qs = ViewMaterial.objects.prefetch_related("material")
         qs = qs.filter(material__external_id=m["external_id"])
         m["number_of_views"] = qs.count()
+
+        communities = Community.objects.filter(
+            collections__materials__external_id=m["external_id"])
+
+        m["communities"] = [dict(id=c.id, name=c.name) for c in
+                            communities.all()]
 
     return materials
