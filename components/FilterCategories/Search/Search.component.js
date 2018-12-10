@@ -37,6 +37,7 @@ export default {
   },
   data() {
     return {
+      showMobileFilter: false,
       filter: {},
       previous_category_id: null,
       active_category_id: null,
@@ -93,6 +94,10 @@ export default {
           external_id: event.target.value
         }
       ];
+    },
+
+    showThemes() {
+      this.showMobileFilter = !this.showMobileFilter;
     }
   },
   watch: {
