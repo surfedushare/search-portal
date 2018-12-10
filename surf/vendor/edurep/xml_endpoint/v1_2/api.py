@@ -66,17 +66,19 @@ class XmlEndpointApiClient:
 
     def search(self, search_text, drilldown_names=None, filters=None,
                ordering=None, page=1, page_size=5):
+        start_record = _get_start_record_by_page(page, page_size)
         return self._search(search_text=search_text, filters=filters,
                             drilldown_names=drilldown_names,
                             ordering=ordering,
-                            start_record=page,
+                            start_record=start_record,
                             maximum_records=page_size)
 
     def get_materials_by_id(self, external_ids, page=1, page_size=5,
                             drilldown_names=None):
+        start_record = _get_start_record_by_page(page, page_size)
         id_set = set(external_ids)
         rv = self._call(query=" OR ".join(external_ids),
-                        start_record=page, maximum_records=page_size,
+                        start_record=start_record, maximum_records=page_size,
                         drilldown_names=drilldown_names)
 
         rv["records"] = [m for m in rv["records"]
@@ -138,6 +140,10 @@ class XmlEndpointApiClient:
             response.raise_for_status()
 
         return parse_response(response.text)
+
+
+def _get_start_record_by_page(page, page_size):
+    return page_size * (page - 1) + 1
 
 
 def filter_list_to_cql(filters):

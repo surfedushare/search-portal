@@ -352,15 +352,24 @@ class CollectionViewSet(ModelViewSet):
             ids = ['"{}"'.format(m.external_id)
                    for m in instance.materials.order_by("id").all()]
 
-            res = []
+            rv = dict(records=[],
+                      records_total=0,
+                      filters=[],
+                      page=data["page"],
+                      page_size=data["page_size"])
+
             if ids:
                 ac = XmlEndpointApiClient(
                     api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
                 res = ac.get_materials_by_id(ids, **data)
-                res = res.get("records", [])
-                res = add_extra_parameters_to_materials(request.user, res)
-            return Response(res)
+                records = res.get("records", [])
+                records = add_extra_parameters_to_materials(request.user,
+                                                            records)
+                rv["records"] = records
+                rv["records_total"] = res["recordcount"]
+
+            return Response(rv)
 
         # only owners can add/delete materials to/from collection
         self._check_access(request.user, instance=instance)
