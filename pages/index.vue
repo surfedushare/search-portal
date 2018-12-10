@@ -2,12 +2,16 @@
   <section class="container main">
     <div>
       <div class="main__info">
-        <div class="center_block">
+        <div class="center_block center-header">
           <img
             class="main__info_bg"
             src="./../assets/images/pictures/header-image.jpg"
             alt="header-image">
-          <h2>Open leermaterialen</h2>
+          <img
+            class="main__info_bg-mobile"
+            src="./../assets/images/pictures/lab-21-windesheim-voor-surf-018@2x.jpg"
+            alt="header-image">
+          <h2 class="main__info_main-title">Open leermaterialen</h2>
           <div class="main__info_block">
             <div class="bg"/>
             <h2 class="main__info_title">13.231 open leermaterialen uit het hoger onderwijs</h2>
@@ -38,9 +42,7 @@
       <div class="main__materials">
         <div class="center_block">
           <h2 class="main__materials_title">Uitgelicht open leermateriaal</h2>
-          <Materials
-            :materials="materials"
-          />
+          <Materials :materials="materials"/>
         </div>
       </div>
       <div class="center_block">
@@ -85,24 +87,28 @@ export default {
   position: relative;
   z-index: 1;
   &__info {
-    padding: 104px 0 0;
-    margin-bottom: 191px;
+    @media @desktop {
+      padding: 104px 0 0;
+      margin-bottom: 191px;
+    }
     position: relative;
 
     &:before {
-      content: '';
-      right: 0;
-      left: 50%;
-      height: 353px;
-      top: 303px;
-      border-radius: 65px 0 0 65px;
-      margin: 0 0 0 420px;
-      pointer-events: none;
-      border-left: 1px solid #686d75;
-      border-top: 1px solid #686d75;
-      border-bottom: 1px solid #686d75;
-      position: absolute;
-      z-index: -1;
+      @media @desktop {
+        content: '';
+        right: 0;
+        left: 50%;
+        height: 353px;
+        top: 303px;
+        border-radius: 65px 0 0 65px;
+        margin: 0 0 0 420px;
+        pointer-events: none;
+        border-left: 1px solid #686d75;
+        border-top: 1px solid #686d75;
+        border-bottom: 1px solid #686d75;
+        position: absolute;
+        z-index: -1;
+      }
     }
 
     &_bg {
@@ -111,22 +117,56 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       z-index: -1;
+      @media @mobile, @tablet {
+        display: none;
+      }
+    }
+
+    &_bg-mobile {
+      @media @desktop {
+        display: none;
+      }
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+      top: 70px;
+      border-radius: 10px;
+      width: 100%;
+      padding: 0 30px;
     }
 
     &_title {
       line-height: 1.25;
       color: #fff;
       margin: 0 0 16px;
+      @media @mobile, @tablet {
+        font-size: 16px;
+      }
+    }
+
+    &_main-title {
+      @media @mobile, @tablet {
+        display: none;
+      }
     }
     &_items {
       padding: 0;
       margin: 0;
+      @media @mobile, @tablet {
+        font-size: 12px;
+      }
     }
     &_item {
       margin: 0;
       list-style: none;
       padding: 5px 0 8px 40px;
       background: url('./../assets/images/check-white.svg') 0 0 no-repeat;
+
+      @media @mobile, @tablet {
+        background-size: 20px;
+        background-position-x: 10px;
+      }
     }
     &_block {
       /*background: fade(@dark-blue, 90%); */
@@ -138,6 +178,14 @@ export default {
       font-size: 16px;
       font-weight: bold;
       position: relative;
+
+      @media @mobile, @tablet {
+        margin: 50px 0 0 0;
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 350px;
+      }
+
       & .bg {
         background: @dark-blue;
         opacity: 0.9;
@@ -148,6 +196,11 @@ export default {
         top: 0;
         width: 100%;
         z-index: -1;
+        @media @mobile, @tablet {
+          right: 10px;
+          left: 10px;
+          width: auto;
+        }
         &:before {
           content: '';
           background: url('./../assets/images/buble-background-blue.svg') 0 0
@@ -157,6 +210,12 @@ export default {
           left: -46px;
           width: 63px;
           height: 58px;
+
+          @media @tablet, @mobile {
+            left: -24px;
+            top: -19px;
+            height: 30px;
+          }
         }
       }
     }
@@ -164,23 +223,38 @@ export default {
     &_search {
       width: 996px;
       margin: auto;
+
+      @media @mobile, @tablet {
+        width: 100%;
+        margin-top: 25px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+      }
     }
   }
 
   &__thems_and_communities {
-    display: flex;
+    margin-bottom: 50px;
+    @media @desktop {
+      display: flex;
+      margin-bottom: 97px;
+    }
     align-items: start;
     justify-content: space-between;
-    margin-bottom: 97px;
   }
 
   &__thems {
-    width: 521px;
+    @media @desktop {
+      width: 521px;
+    }
   }
 
   &__communities {
-    width: 485px;
-    padding: 0 86px 0 0;
+    @media @desktop {
+      width: 485px;
+      padding: 0 86px 0 0;
+    }
   }
 
   &__materials {
@@ -189,6 +263,11 @@ export default {
 
     &_title {
       margin: 0 0 32px;
+
+      @media @mobile, @tablet {
+        font-size: 22px;
+        margin: 0 0 20px;
+      }
     }
 
     &:before {

@@ -4,7 +4,9 @@
   position: relative;
 
   &__top_block {
-    display: flex;
+    @media @desktop {
+      display: flex;
+    }
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 138px;
@@ -19,9 +21,12 @@
     line-height: 1.2;
     letter-spacing: normal;
     color: #fff;
-    width: 407px;
+    max-width: 407px;
+    margin: 0 0 0 40px;
     padding: 54px 37px 47px;
-    margin: 3px 57px 0 47px;
+    @media @desktop {
+      margin: 3px 57px 0 47px;
+    }
     flex-shrink: 0;
     position: relative;
     .bg{
@@ -52,6 +57,10 @@
   }
 
   &__info {
+    @media @mobile, @tablet {
+      padding-top: 60px;
+    }
+
     &_text {
       margin: 0 0 10px;
     }
@@ -67,6 +76,10 @@
     flex-shrink: 0;
     width: 226px;
     margin: 0 54px 0 68px;
+    @media @mobile, @tablet {
+      margin: 0;
+      padding-top: 30px;
+    }
   }
 
   &__link {
@@ -81,12 +94,14 @@
   }
 
   &__bottom_block {
-    width: 1040px;
+    @media @desktop {
+      width: 1040px;
+      display: flex;
+      height: 139px;
+    }
     margin: auto;
-    display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 139px;
     z-index: 1;
     padding: 0 0 15px;
 
@@ -94,10 +109,17 @@
       content: '';
       right: 50%;
       left: 0;
-      height: 137px;
+      height: 180px;
+      margin-left: -25px;
+      width: 100%;
+      @media @desktop {
+        height: 137px;
+        margin: 0 -600px 0 0;
+        width: auto;
+      }
       bottom: 0;
       border-radius: 0 60px 0 0;
-      margin: 0 -600px 0 0;
+
       pointer-events: none;
       position: absolute;
       z-index: -1;
@@ -107,20 +129,30 @@
     &:after {
       content: '';
       right: 0;
-      left: 50%;
-      height: 186px;
       bottom: 0;
       border-radius: 40px 0 0 0;
-      margin: 0 0 0 -600px;
       pointer-events: none;
       border-left: 1px solid #686d75;
       border-top: 1px solid #686d75;
       position: absolute;
       z-index: -1;
+      //width: 100%;
+      //margin-right: -20px;
+
+      height: 230px;
+      width: calc(100% - 20px);
+      @media @desktop {
+        left: 50%;
+        margin: 0 0 0 -600px;
+        height: 186px;
+      }
     }
   }
 
   &__logo {
+    padding-left: 45px;
+    @media @desktop {
     padding: 31px 0 0 21px;
+    }
   }
 }

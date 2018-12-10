@@ -1,14 +1,28 @@
 @import './../../../assets/styles/variables';
 .preview {
-  padding: 50px 0 0 100px;
   position: relative;
+  @media @desktop {
+    padding: 50px 0 0 100px;
+  }
 
-  &__bg_block{
+  &__bg_block {
     position: absolute;
-    top: -2px;
+    top: -80px;
     left: 0;
-    img{
+
+    @media @desktop {
+      top: -2px;
+    }
+
+    img {
       border-radius: 21px;
+
+      @media @tablet, @mobile {
+        width: 100%;
+        padding-right: 80px;
+        padding-left: 20px;
+
+      }
     }
     &:before{
       content: '';
@@ -18,6 +32,10 @@
       top: 0;
       height: 109px;
       width: 119px;
+
+      @media @mobile, @tablet {
+        right: 0;
+      }
     }
     &:after{
       content: '';
@@ -27,21 +45,38 @@
       top: 22px;
       height: 33px;
       width: 35px;
+      @media @mobile, @tablet {
+        right: 18px;
+      }
     }
   }
 
   &__text_block {
     background: fade(@light-grey, 90%);
     border-radius: 20px;
-    padding: 56px 50px 43px 410px;
-    margin: 0 0 168px;
+    margin: 100px 0 168px;
+    padding-top: 80px;
+    padding-left: 15px;
+    padding-right: 15px;
+    @media @desktop {
+      padding: 56px 50px 43px 410px;
+      margin: 0 0 168px;
+    }
   }
 
   &__title {
     margin: 0 0 20px;
+    @media @mobile, @tablet {
+      font-size: 22px;
+    }
   }
 
   &__text {
     margin: 0 0 44px;
+  }
+  .button {
+    @media @mobile, @tablet {
+      margin-bottom: 24px;
+    }
   }
 }

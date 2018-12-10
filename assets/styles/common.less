@@ -171,8 +171,21 @@ a,
   max-width: 1300px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 50px;
-  padding-right: 50px;
+
+  padding-left: 25px;
+  padding-right: 25px;
+  @media @desktop {
+    padding-left: 50px;
+    padding-right: 50px;
+
+  }
+}
+
+.center-header {
+  @media @tablet, @mobile {
+    padding-left: 38px;
+    padding-right: 38px;
+  }
 }
 
 .arrow-link {
