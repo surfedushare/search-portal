@@ -11,11 +11,28 @@ class CommunityUpdateSerializer(serializers.ModelSerializer):
 
 
 class CommunitySerializer(CommunityUpdateSerializer):
+    external_id = serializers.CharField(source="surf_team.external_id")
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
     is_admin = serializers.SerializerMethodField()
     is_member = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_name(obj):
+        if obj.name:
+            return obj.name
+        else:
+            return obj.surf_team.name
+
+    @staticmethod
+    def get_description(obj):
+        if obj.description:
+            return obj.description
+        else:
+            return obj.surf_team.description
 
     @staticmethod
     def get_members_count(obj):
