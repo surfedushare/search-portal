@@ -23,7 +23,7 @@ from oic.oic.message import ProviderConfigurationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 from surf.apps.users.models import SurfConextAuth
-from surf.apps.communities.models import Community
+from surf.apps.communities.models import SurfTeam
 from surf.apps.users.serializers import UserDetailsSerializer
 from surf.vendor.surfconext.voot.api import VootApiClient
 
@@ -173,35 +173,35 @@ _MEMBERSHIP_TYPE_ADMIN = "admin"
 
 def _update_or_create_user_communities(user, access_token):
     """
-    Create or update user communities according to his SurfConext groups
+    Create or update SurfTeam instances according to SURFconext groups of user
     :param user: user instance
-    :param access_token: token to access to SurfConext
+    :param access_token: token to access to SURFconext
     :return:
     """
     vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
     groups = vac.get_groups(access_token)
-    communities = []
-    admin_communities = []
+    teams = []
+    admin_teams = []
     for g in groups:
         try:
             membership = g["membership"]["basic"]
             if membership == _MEMBERSHIP_TYPE_ADMIN:
-                c, _ = Community.objects.get_or_create(
+                t, _ = SurfTeam.objects.get_or_create(
                     external_id=g["id"],
                     defaults=dict(name=g["displayName"],
                                   description=g["description"]))
-                communities.append(c)
-                admin_communities.append(c)
+                teams.append(t)
+                admin_teams.append(t)
 
             elif membership == _MEMBERSHIP_TYPE_MEMBER:
-                c = Community.objects.get(external_id=g["id"])
-                communities.append(c)
+                t = SurfTeam.objects.get(external_id=g["id"])
+                teams.append(t)
 
-        except (KeyError, Community.DoesNotExist):
+        except (KeyError, SurfTeam.DoesNotExist):
             pass
 
-    user.communities.set(communities)
-    user.admin_communities.set(admin_communities)
+    user.teams.set(teams)
+    user.admin_teams.set(admin_teams)
 
 
 def _create_oidc_client():
