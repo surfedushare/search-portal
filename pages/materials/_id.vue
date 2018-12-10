@@ -1,6 +1,9 @@
 <template>
   <section class="container main material">
-    <Navigation />
+    <Navigation
+      :materials="materials"
+      :material="material"
+    />
 
     <div
       v-if="material"
@@ -50,10 +53,13 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('searchMaterials', {
-      page_size: 4,
-      search_text: []
-    });
+    const { materials } = this;
+    if (!materials) {
+      this.$store.dispatch('searchMaterials', {
+        page_size: 4,
+        search_text: []
+      });
+    }
     this.$store.dispatch('getMaterial', this.$route.params.id);
   }
 };

@@ -59,9 +59,20 @@ export default {
         }
       });
     },
+    async getApplaudMaterial({ commit }, { external_id }) {
+      return await this.$axios.$get('applaud-materials/', {
+        params: {
+          material__external_id: external_id
+        }
+      });
+    },
     async searchMaterials({ commit }, search) {
       commit('SET_MATERIALS_LOADING', true);
       const materials = await this.$axios.$post('materials/search/', search);
+      materials.search_text = search.search_text;
+      materials.filters = search.filters;
+      materials.ordering = search.ordering;
+
       commit('SET_MATERIALS', materials);
       commit('SET_MATERIALS_LOADING', false);
     },

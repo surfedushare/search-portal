@@ -15,10 +15,25 @@ export default {
     Keywords,
     SaveRating
   },
-  mounted() {},
+  mounted() {
+    if (this.isAuthenticated) {
+      this.$store
+        .dispatch('getApplaudMaterial', {
+          external_id: this.material.external_id
+        })
+        .then(applaud => {
+          this.is_applauded = !!applaud.count;
+          this.is_loading_applaud = false;
+        });
+    } else {
+      this.is_loading_applaud = false;
+    }
+  },
   data() {
     return {
       isShow: false,
+      is_loading_applaud: true,
+      is_applauded: false,
       formData: {
         page_size: 10,
         page: 1,
@@ -31,8 +46,25 @@ export default {
     showPopupSaveRating() {
       this.isShow = true;
     },
+
     close() {
       this.isShow = false;
+    },
+
+    setApplaudMaterial(material) {
+      this.is_loading_applaud = true;
+      this.$store
+        .dispatch('setApplaudMaterial', {
+          external_id: material.external_id
+        })
+        .then(() => {
+          this.is_applauded = true;
+          this.$store
+            .dispatch('getMaterial', this.$route.params.id)
+            .then(() => {
+              this.is_loading_applaud = false;
+            });
+        });
     }
   },
   computed: {

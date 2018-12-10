@@ -1,17 +1,30 @@
-<div class="material__list">
-  <a
-    class="material__list_prev"
-    href="#">
-    Vorige
-  </a>
-  <a
+<div
+  class="material__list"
+  v-if="materials && materials.records && materials.records.length"
+>
+  <div class="material__list_prev">
+    <nuxt-link
+      class="material__list_prev_link"
+      v-if="links.prev"
+      :to="`/materials/${links.prev.external_id_base64}/`"
+    >
+      Vorige
+    </nuxt-link>
+  </div>
+  <nuxt-link
     class="material__list_all"
-    href="#">
+    :to="links.filter"
+    v-if="links.filter"
+  >
     terug naar zoekresultaten
-  </a>
-  <a
-    class="material__list_next"
-    href="#">
-    Volgende
-  </a>
+  </nuxt-link>
+  <div class="material__list_next">
+    <nuxt-link
+      class="material__list_next_link"
+      v-if="links.next"
+      :to="`/materials/${links.next.external_id_base64}/`"
+    >
+      Volgende
+    </nuxt-link>
+  </div>
 </div>

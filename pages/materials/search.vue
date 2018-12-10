@@ -140,6 +140,7 @@ export default {
     search(search) {
       if (search) {
         this.$store.dispatch('searchMaterials', search);
+        // this.$store.dispatch('setActiveFilter', Object.assign({}, search));
       }
     },
     active_filter(active_filter) {
@@ -175,8 +176,8 @@ export default {
     if (Object.keys(query).length) {
       // Parsing url query
       search = Object.assign({}, query, {
-        filters: JSON.parse(query.filters),
-        search_text: JSON.parse(query.search_text),
+        filters: query.filters ? JSON.parse(query.filters) : [],
+        search_text: query.search_text ? JSON.parse(query.search_text) : [],
         return_filters: false
       });
     }

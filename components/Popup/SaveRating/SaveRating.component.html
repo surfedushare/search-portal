@@ -11,12 +11,14 @@
         <div class="popup__subtext">
           We hopen dat je met dit leermateriaal aan de slag kunt!
         </div>
-        <button
-          class="button"
-          @click.prevent="close"
-        >
-          Venster sluiten
-        </button>
+        <div>
+          <button
+            class="button button--width-auto"
+            @click.prevent="close"
+          >
+            Venster sluiten
+          </button>
+        </div>
       </template>
       <template v-else>
         <h2 class="popup__title">Bedankt voor het bekijken</h2>
@@ -33,7 +35,7 @@
               <StarRating
                 v-model="rating"
                 :counter="0"
-                type="big"
+                type="giant"
                 :hide-counter="true"
               />
             </div>

@@ -15,6 +15,10 @@ export default {
     'active-category-external-id': {
       type: String
     },
+    placeholder: {
+      type: String,
+      default: 'Zoek op trefwoorden'
+    },
     value: {
       type: Object,
       default: () => ({
@@ -34,8 +38,11 @@ export default {
   data() {
     return {
       filter: {},
+      previous_category_id: null,
       active_category_id: null,
       formData: {
+        page_size: 10,
+        page: 1,
         ...this.value,
         ordering: '-lom.lifecycle.contribute.publisherdate'
       },
@@ -90,7 +97,8 @@ export default {
   },
   watch: {
     active_category(category) {
-      if (category) {
+      if (category && this.previous_category_id !== category.external_id) {
+        this.previous_category_id = category.external_id;
         // Clearing filters when category changed
         this.formData.filters[0].items = [];
       }
@@ -131,14 +139,17 @@ export default {
         const { external_id } = this.formData.filters[0];
         const current_external_id = external_id || activeCategoryExternalId;
         if (current_external_id) {
-          return filter_categories.results.find(
+          const active_category = filter_categories.results.find(
             item => item.external_id === current_external_id
           );
+          this.previous_category_id = active_category.external_id;
+          return active_category;
         }
         if (external_id !== null) {
           this.formData.filters[0].external_id =
             filter_categories.results[0].external_id;
         }
+        this.previous_category_id = filter_categories.results[0].external_id;
         return filter_categories.results[0];
       }
       return false;

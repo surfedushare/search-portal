@@ -38,7 +38,16 @@ export default {
     this.$store.dispatch('getThemeCollections', this.$route.params.id);
   },
   data() {
-    return {};
+    return {
+      search: {
+        filters: [
+          {
+            external_id: 'lom.technical.format',
+            items: []
+          }
+        ]
+      }
+    };
   },
   methods: {},
   computed: {
@@ -62,5 +71,15 @@ export default {
     //   }
     //   return false;
     // }
+  },
+  watch: {
+    theme(theme) {
+      if (theme) {
+        this.search.filters.push({
+          external_id: 'custom_theme.id',
+          items: [theme.external_id]
+        });
+      }
+    }
   }
 };

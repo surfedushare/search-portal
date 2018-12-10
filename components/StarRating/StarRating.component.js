@@ -25,8 +25,16 @@ export default {
   mounted() {},
   data() {
     return {
-      temp_value: this.value,
-      ratings: [1, 2, 3, 4, 5]
+      temp_value: Math.round(this.value),
+      ratings: [1, 2, 3, 4, 5],
+      types: [
+        'Niet beoordeeld',
+        'Slecht',
+        'Tevreden',
+        'Normaal',
+        'Goed',
+        'Perfect'
+      ]
     };
   },
   methods: {
