@@ -60,7 +60,7 @@
       content: '';
       background: url("./../../../assets/images/clap_green.svg") no-repeat 50% 50%;
       background-size: 25px 25px;
-      border: 2px solid #009f4d;
+      border: 2px solid @green;
       border-radius: 50%;
       height: 42px;
       width: 42px;
@@ -70,6 +70,22 @@
       top: -7px;
       left: -50px;
     }
+
+    &--applauded,
+    &:hover {
+      text-decoration: none;
+
+      &:before {
+        background: @green url("./../../../assets/images/clap_white.svg") no-repeat 50% 50%;
+        background-size: 25px 25px;
+      }
+    }
+
+    &--saving {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
     &:after{
       content: '';
       position: absolute;

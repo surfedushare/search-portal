@@ -1,6 +1,18 @@
 @import "./../../../assets/styles/variables";
 .menu {
-  text-align: right;
+  @media @desktop {
+    text-align: right;
+  }
+
+  &__links {
+    @media @mobile, @tablet {
+      padding-left: 45px;
+      display: table;
+      a {
+        display: table-row;
+      }
+    }
+  }
 
   &__link {
     font-family: @second-font;

@@ -6,7 +6,7 @@
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 auto 25px;
+    //margin: 0 auto 25px;
     width: 100%;
     max-width: 1300px;
     display: flex;
@@ -21,7 +21,7 @@
       width: 87px;
       padding-left: 19px;
       position: relative;
-      &:before{
+      &_link:before{
         content: '';
         transform: rotate(180deg);
         background: url('./../../../assets/images/arrow-text.svg') 50% 50% / contain no-repeat;
@@ -41,7 +41,7 @@
       width: 87px;
       padding-right: 19px;
       position: relative;
-      &:after{
+      &_link:after{
         content: '';
         background: url('./../../../assets/images/arrow-text.svg') 50% 50% / contain no-repeat;
         display: inline-block;

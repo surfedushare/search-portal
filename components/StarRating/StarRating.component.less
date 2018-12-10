@@ -13,6 +13,7 @@
 
   &__star {
     display: inline-block;
+    vertical-align: middle;
 
     &:before {
       display: inline-block;
@@ -31,6 +32,16 @@
     &--dark-stars:before {
       background: url('./../../assets/images/full-star-dark-grey.svg') 50% 50% /
         contain no-repeat;
+    }
+  }
+
+  &--giant &__star{
+    padding: 0 23px 0 0;
+
+    &:before {
+      width: 44px;
+      height: 44px;
+      background-image: url('./../../assets/images/full-star-border-green.svg');
     }
   }
 
@@ -114,5 +125,18 @@
       display: block;
       margin: -6px 0 0 6px;
     }
+  }
+
+  &__counter_text {
+    opacity: 0.69;
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: @dark-grey;
+    background: @light-grey;
+    margin: 0 0 0 6px;
+    padding: 2px 18px;
+    vertical-align: middle;
   }
 }

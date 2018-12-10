@@ -98,10 +98,17 @@
 .search .v-select.searchable .dropdown-toggle {
   width: 100%;
   border: 0;
-  padding: 0 400px 0 59px;
-  background: url('./../../../assets/images/search-grey.svg') 21px 50% no-repeat;
+  background: url('./../../../assets/images/search-grey.svg') 14px 50% no-repeat;
   font-size: 16px;
-  height: 99px;
+  height: 67px;
+  padding-left: 40px;
+  background-size: 20px;
+  @media @desktop {
+    height: 99px;
+    padding: 0 400px 0 59px;
+    background-position-x: 21px;
+    background-size: initial;
+  }
   align-items: center;
 }
 

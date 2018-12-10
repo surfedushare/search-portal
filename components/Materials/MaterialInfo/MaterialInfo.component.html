@@ -11,9 +11,18 @@
   </div>
   <h3 class="material__info_subttl">Kwaliteit</h3>
   <div class="material__info_quality">
-    <div class="quality__applauds">
+    <a
+      :href="`/applaud-materials/?material__external_id=${material.external_id}`"
+      class="quality__applauds"
+      v-if="isAuthenticated && !is_applauded"
+      @click.prevent="setApplaudMaterial(material)"
+      :class="{'quality__applauds--saving': is_loading_applaud}"
+    >
       {{ material.number_of_applauds}}
-      </div>
+    </a>
+    <div class="quality__applauds" v-else :class="{'quality__applauds--applauded': is_applauded}">
+      {{ material.number_of_applauds}}
+    </div>
     <div class="quality__collections">
       <span class="quality__collections_count">
         {{material.number_of_collections}}
