@@ -15,3 +15,12 @@ class CommunityAdmin(admin.ModelAdmin):
 
     list_display = ("external_id", "name", "description", "is_available",)
     list_filter = ("is_available",)
+
+
+@admin.register(models.SurfTeam)
+class SurfTeamAdmin(admin.ModelAdmin):
+    """
+    Provides admin options and functionality for SURFconext Team model.
+    """
+
+    list_display = ("external_id", "name", "description",)
