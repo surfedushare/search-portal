@@ -40,6 +40,11 @@ export default {
       }
       return state.my_collection;
     },
+    async postMyCollection({ state, commit }, data) {
+      const collection = await this.$axios.$post(`collections/`, data);
+      commit('ADD_MY_COLLECTION', collection);
+      return collection;
+    },
     async setMaterialInMyCollection(
       { state, commit },
       { collection_id, data }
@@ -88,6 +93,12 @@ export default {
     },
     SET_MY_COLLECTION(state, payload) {
       state.my_collection = payload;
+    },
+    ADD_MY_COLLECTION(state, payload) {
+      state.my_collections = {
+        ...state.my_collections,
+        results: [...state.my_collections.results, payload]
+      };
     },
     SET_MATERIAL_TO_MY_COLLECTION(state, payload) {
       // state.my_collections = payload;

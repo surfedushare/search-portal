@@ -1,29 +1,37 @@
 
 <div class="collection__info" v-if="collection">
-  <div class="collection__info_wrapper">
-    <div class="collection__info_title">
-      <BreadCrumbs
-        v-if="!collection.is_owner"
-        :items="[{title:'Home', url: '/'}, {title:`Collection's`, url: `/collections/${collection.id}`} ]"/>
-      <BreadCrumbs
-        v-else
-        :items="[{title:'Profiel', url: '/my/'}, {title:`Mijn Collecties`, url: `/my/collections/`} , {title:`Collectie`, url: `/collections/${collection.id}/`} ]"/>
+  <form action="">
 
-      <h2 class="collection__info_ttl">{{ collection.title }}</h2>
-      <p class="collection__info_subttl">{{ collection.materials_count }} leermaterialen</p>
+    <div class="collection__info_wrapper">
+      <div class="collection__info_title">
+        <BreadCrumbs
+          v-if="!collection.is_owner"
+          :items="[{title:'Home', url: '/'}, {title:`Collection's`, url: `/collections/${collection.id}`} ]"/>
+        <BreadCrumbs
+          v-else
+          :items="[{title:'Profiel', url: '/my/'}, {title:`Mijn Collecties`, url: `/my/collections/`} , {title:`Collectie`, url: `/collections/${collection.id}/`} ]"/>
+
+        <h2
+          class="collection__info_ttl"
+          :contenteditable="contenteditable"
+        >
+          {{ collection_title }}
+        </h2>
+        <p class="collection__info_subttl">{{ collection.materials_count }} leermaterialen</p>
+      </div>
+      <div class="collection__info_filter" v-if="collection.is_owner">
+        <div class="collection__info_filter__edit">
+          <a href="#" class="collection__info_filter__link">Bewerken</a>
+        </div>
+        <div class="collection__info_filter__delete">
+          <a href="#"  class="collection__info_filter__link">Verwijderen</a>
+        </div>
+        <div class="collection__info_filter__button">
+          <a href="#" class="button">Opslaan</a>
+        </div>
+      </div>
     </div>
-    <div class="collection__info_filter" v-if="collection.is_owner">
-      <div class="collection__info_filter__edit">
-        <a href="#" class="collection__info_filter__link">Bewerken</a>
-      </div>
-      <div class="collection__info_filter__delete">
-        <a href="#"  class="collection__info_filter__link">Verwijderen</a>
-      </div>
-      <div class="collection__info_filter__button">
-        <a href="#" class="button">Opslaan</a>
-      </div>
-    </div>
-  </div>
+  </form>
   <DirectSearch class="collection__info_search">
     <template slot="social_box">
       <div class="collection__info_search__social direct_search__social"/>

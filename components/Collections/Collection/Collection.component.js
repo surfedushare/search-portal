@@ -15,8 +15,14 @@ export default {
   },
   mounted() {},
   data() {
-    return {};
+    return {
+      contenteditable: true
+    };
   },
   methods: {},
-  computed: {}
+  computed: {
+    collection_title() {
+      return this.collection ? this.collection.title : false;
+    }
+  }
 };
