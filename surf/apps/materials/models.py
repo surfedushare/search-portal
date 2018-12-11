@@ -118,3 +118,17 @@ class ViewMaterial(UUIDModel):
 
     def __str__(self):
         return "{} - {}".format(self.user.username, self.material.external_id)
+
+
+class SharedResourceCounter(UUIDModel):
+    """
+    Implementation of model for counter of shared resource.
+    This model is used to store counter values for different shared objects.
+    """
+
+    counter_key = django_models.CharField(max_length=255)
+    counter_value = django_models.IntegerField(default=0)
+    extra = django_models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return "{} - {}".format(self.counter_key, self.extra)
