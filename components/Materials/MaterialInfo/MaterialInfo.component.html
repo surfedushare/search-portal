@@ -44,26 +44,28 @@
       />
       <a
         href="/save-rating/"
-        v-if="isAuthenticated"
+        v-if="isAuthenticated && !rating"
         @click.prevent="showPopupSaveRating"
       >
         Geef waardering
       </a>
     </div>
     <div class="quality__social">
-      <!--<vue-goodshare-linkedin-->
-        <!--has_icon-->
-        <!--has_counter-->
-        <!--button_design="outline"-->
-        <!--page_url="https://github.com"-->
-      <!--&gt;</vue-goodshare-linkedin>-->
-
-      <!--<vue-goodshare-twitter-->
-        <!--has_icon-->
-        <!--has_counter-->
-        <!--button_design="outline"-->
-        <!--page_url="https://github.com"-->
-      <!--&gt;</vue-goodshare-twitter>-->
+      <social-sharing
+        :url="href"
+        :title="material.title"
+        :description="material.description"
+        inline-template
+      >
+        <div class="quality__social_links" style="display:none;">
+          <network network="linkedin" class="quality__social_link">
+            <i class="quality__social--linkedin"></i><span class="quality__social_counter">{{'1'}}</span>
+          </network>
+          <network network="twitter" class="quality__social_link">
+            <i class="quality__social--twitter"></i> <span class="quality__social_counter">{{'2'}}</span>
+          </network>
+        </div>
+      </social-sharing>
     </div>
   </div>
   <template v-if="material.description">

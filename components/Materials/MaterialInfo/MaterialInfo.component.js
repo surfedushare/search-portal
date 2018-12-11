@@ -25,15 +25,24 @@ export default {
           this.is_applauded = !!applaud.count;
           this.is_loading_applaud = false;
         });
+      this.$store
+        .dispatch('getMaterialRating', this.material.object_id)
+        .then(rating => {
+          this.rating = rating.records[0];
+        });
     } else {
       this.is_loading_applaud = false;
     }
+
+    this.href = window.location.href;
   },
   data() {
     return {
+      href: '',
       isShow: false,
       is_loading_applaud: true,
       is_applauded: false,
+      rating: false,
       formData: {
         page_size: 10,
         page: 1,

@@ -52,6 +52,13 @@ export default {
     async setMaterialRating({ commit }, rating) {
       return await this.$axios.$post('materials/rating/', rating);
     },
+    async getMaterialRating({ commit }, id) {
+      return await this.$axios.$get('materials/rating/', {
+        params: {
+          object_id: id
+        }
+      });
+    },
     async setApplaudMaterial({ commit }, { external_id }) {
       return await this.$axios.$post('applaud-materials/', {
         material: {

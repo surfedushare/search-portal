@@ -65,11 +65,11 @@ module.exports = {
     {
       src: '~/plugins/axios',
       ssr: false
+    },
+    {
+      src: '~/plugins/SocialSharing',
+      ssr: false
     }
-    // {
-    //   src: '~/plugins/vueGoodshare',
-    //   ssr: false
-    // }
   ],
 
   /*
