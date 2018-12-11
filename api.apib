@@ -153,7 +153,7 @@ Returns details of material by its Edurep identifier if `external_id` is set.
 
 + Parameters
   + external_id (string, optional) - filter materials by external id
-  + shared (string, optional) - share type if material was shared
+  + shared: `linkedin` (string, optional) - sharing type if material was shared
 
 + Request (application/json)
 
@@ -167,7 +167,7 @@ Returns details of material by base64 representation of its Edurep identifier.
 
 + Parameters
   + external_id_base64: `d3VyX3N0YWZmOm9haTpsaWJyYXJ5Lnd1ci5ubDp3dXJwdWJzLzUzOTYyNg==` (string) - External id of material in base64 format.
-  + shared (string, optional) - share type if material was shared
+  + shared: `linkedin` (string, optional) - sharing type if material was shared
 
 + Request (application/json)
 
@@ -262,11 +262,12 @@ Creates collection by current user.
 
 ## Collection Resource  [/api/v1/collections/{id}/]
 
-### GET [GET /api/v1/collections/{id}/]
+### GET [GET /api/v1/collections/{id}/{?shared}]
 Returns the collection by its identifier if collection is available for user.
 
 + Parameters
   + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+  + shared: `linkedin` (string, optional) - sharing type if collection was shared
 
 + Request (application/json)
 
@@ -849,6 +850,7 @@ Returns the number of all available materials.
  - is_owner: `false` (boolean) - set true if the user is owner of collection
  - owner_name: `Author name` (string) - the name of collection owner
  - communities: (array[Community Short], optional) - communities which contain this collection
+ - sharing_counters: (array[Shared Resource Counter]) - array of counters for each sharing type
 
 ## Collection Create (object)
  - title: `test collection` (string) - collection title

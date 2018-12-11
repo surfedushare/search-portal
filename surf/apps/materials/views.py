@@ -39,7 +39,9 @@ from surf.apps.materials.models import (
     Material,
     ApplaudMaterial,
     ViewMaterial,
-    SharedResourceCounter
+    SharedResourceCounter,
+    RESOURCE_TYPE_MATERIAL,
+    RESOURCE_TYPE_COLLECTION
 )
 
 from surf.apps.materials.serializers import (
@@ -71,10 +73,6 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 )
 
 from surf.vendor.edurep.smb.soap.api import SmbSoapApiClient
-
-
-RESOURCE_TYPE_MATERIAL = "material"
-RESOURCE_TYPE_COLLECTION = "collection"
 
 
 class MaterialSearchAPIView(APIView):
@@ -238,9 +236,11 @@ def _get_material_by_external_id(request, external_id, shared=None):
 
     if shared:
         # increase share counter
-        counter_key = _create_counter_key(RESOURCE_TYPE_MATERIAL,
-                                          external_id,
-                                          share_type=shared)
+        counter_key = SharedResourceCounter.create_counter_key(
+            RESOURCE_TYPE_MATERIAL,
+            external_id,
+            share_type=shared)
+
         SharedResourceCounter.increase_counter(counter_key, extra=shared)
 
     rv = _get_material_details_by_id(external_id)
@@ -388,6 +388,22 @@ class CollectionViewSet(ModelViewSet):
         filters |= Q(community_cnt__gt=0)
 
         return qs.filter(filters)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        shared = request.GET.get("shared")
+        if shared:
+            # increase sharing counter
+            counter_key = SharedResourceCounter.create_counter_key(
+                RESOURCE_TYPE_COLLECTION,
+                str(instance.id),
+                share_type=shared)
+
+            SharedResourceCounter.increase_counter(counter_key, extra=shared)
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         # only active and authorized users can create collection
@@ -679,7 +695,9 @@ def add_share_counters_to_materials(materials):
     """
 
     for m in materials:
-        key = _create_counter_key(RESOURCE_TYPE_MATERIAL, m["external_id"])
+        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,
+                                                       m["external_id"])
+
         qs = SharedResourceCounter.objects.filter(counter_key__contains=key)
 
         m["sharing_counters"] = SharedResourceCounterSerializer(
@@ -687,10 +705,3 @@ def add_share_counters_to_materials(materials):
         ).to_representation(qs.all())
 
     return materials
-
-
-def _create_counter_key(resource_type, resource_id, share_type=None):
-    if share_type:
-        return "{}__{}__{}__".format(resource_type, resource_id, share_type)
-    else:
-        return "{}__{}__".format(resource_type, resource_id)

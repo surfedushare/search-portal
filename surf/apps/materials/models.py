@@ -12,6 +12,10 @@ from surf.apps.themes.models import Theme
 from surf.apps.filters.models import FilterCategoryItem
 
 
+RESOURCE_TYPE_MATERIAL = "material"
+RESOURCE_TYPE_COLLECTION = "collection"
+
+
 class Material(UUIDModel):
     """
     Implementation of EduRep Material model.
@@ -147,6 +151,21 @@ class SharedResourceCounter(UUIDModel):
 
         c.counter_value += 1
         c.save()
+
+    @staticmethod
+    def create_counter_key(resource_type, resource_id, share_type=None):
+        """
+        Creates counter key by resource type, id and sharing type
+        :param resource_type: the type of resource
+        :param resource_id: the identifier of resource
+        :param share_type: sharing type of resource (optional)
+        :return: created counter key
+        """
+        if share_type:
+            return "{}__{}__{}__".format(resource_type, resource_id,
+                                         share_type)
+        else:
+            return "{}__{}__".format(resource_type, resource_id)
 
     def __str__(self):
         return "{} - {}".format(self.counter_key, self.extra)
