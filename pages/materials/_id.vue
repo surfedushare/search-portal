@@ -70,7 +70,9 @@ export default {
 @import './../../assets/styles/variables';
 .material {
   padding: 32px 0 152px;
-
+  @media @tablet, @mobile {
+    padding-bottom: 100px;
+  }
   &:before {
     content: '';
     left: 0;
@@ -95,9 +97,10 @@ export default {
   }
 
   &__wrapper {
-    margin: 0 auto 124px;
+    margin: 0 auto 50px;
     @media @desktop {
       display: flex;
+      margin: 0 auto 124px;
     }
   }
 }
