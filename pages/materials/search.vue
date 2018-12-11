@@ -286,6 +286,13 @@ export default {
           width: 330px;
         }
       }
+
+      @media @tablet {
+        padding: 65px 46px 95px 46px;
+        h2 {
+          font-size: 28px;
+        }
+      }
     }
 
     &_bg {
@@ -305,7 +312,7 @@ export default {
     }
 
     &_search {
-      width: 996px;
+      max-width: 996px;
       margin: auto;
 
       @media @mobile, @tablet {

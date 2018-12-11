@@ -78,18 +78,27 @@ export default {
     height: 353px;
     top: 114px;
     border-radius: 0 65px 65px 0;
-    margin: 0 432px 0 0;
     pointer-events: none;
     border-right: 1px solid #686d75;
     border-top: 1px solid #686d75;
     border-bottom: 1px solid #686d75;
     position: absolute;
     z-index: -1;
+    margin: 0 40px 0 0;
+    @media @desktop {
+      margin: 0 432px 0 0;
+    }
+
+    @media @tablet {
+      margin: 0 270px 0 0;
+    }
   }
 
   &__wrapper {
-    display: flex;
     margin: 0 auto 124px;
+    @media @desktop {
+      display: flex;
+    }
   }
 }
 .main__materials_title {

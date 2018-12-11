@@ -2,8 +2,11 @@
 .material {
   &__info{
     flex: 1 1 auto;
-    &_ttl{
+    &_ttl {
       margin: 28px 0 28px;
+      @media @mobile, @tablet {
+        font-size: 28px;
+      }
     }
     &_author{
       font-family: @second-font;
@@ -25,6 +28,10 @@
       justify-content: space-between;
       align-items: flex-start;
       display: flex;
+
+      @media @mobile {
+        display: initial;
+      }
       .star-rating{
         display: inline-block;
         vertical-align: top;
@@ -37,8 +44,9 @@
       }
     }
     &_thems_and_communities{
-      margin-bottom: 43px;
-      display: flex;
+      @media @desktop {
+        display: flex;
+      }
     }
   }
 }
@@ -104,6 +112,9 @@
     font-size: 16px;
     margin: 0 13px 0 0;
     color: #000;
+    @media @mobile {
+      vertical-align: top;
+    }
     &_count{
       padding-left: 34px;
       background: url("./../../../assets/images/collection.svg") no-repeat 0 0;
@@ -146,6 +157,9 @@
     display: inline-block;
     max-width: 195px;
     margin: -2px 0 0;
+    @media @mobile {
+      padding-top: 40px;
+    }
     a{
       text-decoration: none;
       margin-left: 5px;

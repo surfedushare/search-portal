@@ -1,0 +1,52 @@
+
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    class="add-collection"
+  >
+    <slot>
+      <template v-if="saved">
+        <h2 class="popup__title">Collectie Aangemaakt</h2>
+        <div class="popup__subtext">Super! Je collectie is aangemaakt en het materiaal toegevoegd.</div>
+        <div>
+          <button
+            class="button"
+            @click.prevent="close"
+          >
+            Bekijken
+          </button>
+        </div>
+      </template>
+      <template v-else>
+        <h2 class="popup__title">Privé collectie maken</h2>
+        <div class="popup__subtext">Maak een nieuwe privé collectie aan om materiaal in op te slaan en deel deze eventueel met anderen. Je voegt nieuwe items toe vanaf de materiaal pagina.</div>
+        <form
+          action=""
+          @submit.prevent="onSaveCollection"
+        >
+          <div class="form__item">
+            <input
+              v-model="formData.title"
+              type="text"
+              placeholder="Naam voor collectie"
+              class="input"
+              required="required"
+              name="title"
+            >
+          </div>
+          <button
+            class="button"
+            type="submit"
+            :disabled="submitting"
+          >
+            Collectie maken
+          </button>
+        </form>
+      </template>
+    </slot>
+  </Popup>
+</transition>
+
+

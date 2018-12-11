@@ -19,12 +19,19 @@
         />
       </div>
       <div class="collections__add">
-        <a
-          href="/"
-          class="collections__add__link button">Nieuwe collectie
-        </a>
+        <button
+          class="collections__add__link button"
+          @click.prevent="showAddCollection"
+        >
+          Nieuwe collectie
+        </button>
       </div>
       <Collections :collections="my_collections.results"/>
+      <AddCollection
+        v-if="isShow"
+        :close="close"
+        :is-show="isShow"
+      />
     </div>
   </section>
 </template>
@@ -35,21 +42,39 @@ import BreadCrumbs from '~/components/BreadCrumbs';
 import Materials from '~/components/Materials';
 import Collections from '~/components/Collections';
 import Search from '~/components/FilterCategories/Search';
+import AddCollection from '~/components/Popup/AddCollection';
 
 export default {
   components: {
     Collections,
     BreadCrumbs,
     Materials,
-    Search
+    Search,
+    AddCollection
+  },
+  data() {
+    return {
+      isShow: false
+    };
   },
   computed: {
     ...mapGetters(['my_collections', 'my_collection_materials'])
   },
   mounted() {
-    console.log(this.$route);
     // this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
     this.$store.dispatch('getMyCollections');
+  },
+  methods: {
+    showAddCollection() {
+      console.log(11111);
+      this.isShow = true;
+    },
+    addCollection() {
+      console.log(11111);
+    },
+    close() {
+      this.isShow = false;
+    }
   }
 };
 </script>
@@ -105,6 +130,8 @@ export default {
     display: flex;
     justify-content: flex-end;
     margin-bottom: -55px;
+    position: relative;
+
     &__link {
       padding: 13px 43px 13px 51px;
       background-image: url('./../../assets/images/plus-black.svg');
