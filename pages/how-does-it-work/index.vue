@@ -16,7 +16,6 @@
           :hide-categories="true"
           :hide-filter="true"
           class="how_work__info_search"
-          placeholder="Zoeken"
         />
       </div>
       <div class="how_work__desc">
@@ -59,12 +58,7 @@ export default {
   data() {
     return {
       search: {
-        filters: [
-          {
-            external_id: 'lom.technical.format',
-            items: []
-          }
-        ]
+        search_text: []
       }
     };
   },
@@ -73,7 +67,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('searchMaterials', {
-      page_size: 2,
+      page_size: 4,
       search_text: [],
       return_filters: false
     });

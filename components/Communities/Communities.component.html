@@ -24,7 +24,9 @@
           <div class="communities__item_description">{{ communitie.description }}</div>
           <nuxt-link
           :to="`/communities/${communitie.id}/`"
-          class="arrow-link communities__item_link">
+          class="arrow-link communities__item_link"
+          :key="`${communitie.id}`"
+          >
             Bekijken
           </nuxt-link>
         </div>
