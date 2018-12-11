@@ -25,9 +25,13 @@ export default {
       return filters;
     },
     async getFilter({ commit }, { id }) {
-      const filter = await this.$axios.$get(`filters/${id}/`);
-      this.dispatch('setActiveFilter', filter);
-      commit('SET_FILTER', filter);
+      if (id && id.length) {
+        const filter = await this.$axios.$get(`filters/${id}/`);
+        this.dispatch('setActiveFilter', filter);
+        commit('SET_FILTER', filter);
+      } else {
+        commit('SET_FILTER', { id });
+      }
     },
     async postFilter({ commit }, { title, items }) {
       const { filters } = items;

@@ -70,7 +70,7 @@ export default {
       commit('SET_MATERIALS_LOADING', true);
       const materials = await this.$axios.$post('materials/search/', search);
       materials.search_text = search.search_text;
-      materials.filters = search.filters;
+      materials.active_filters = search.filters;
       materials.ordering = search.ordering;
 
       commit('SET_MATERIALS', materials);
@@ -96,8 +96,9 @@ export default {
   },
   mutations: {
     SET_MATERIALS(state, payload) {
+      const records = payload.records || payload;
       state.materials = Object.assign({}, payload, {
-        records: payload.records.map(record => {
+        records: records.map(record => {
           return Object.assign(
             { date: formatDate(record.publish_datetime) },
             record

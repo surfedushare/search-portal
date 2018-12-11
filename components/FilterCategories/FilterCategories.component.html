@@ -12,13 +12,12 @@
     </a>
     <a href="/materials/search/" @click="resetFilter" class="filter-categories__reset">Reset filters</a>
   </div>
-  <div class="select filter-categories__select" v-if="filters && filters.length">
+  <div class="select filter-categories__select" v-if="isAuthenticated && filters && filters.length">
     <select
       name="my_filters"
       @change="onFilterSelected"
-      v-model="active_filter.id"
     >
-      <option :value="false">Mijn filter selecties</option>
+      <option value="">Mijn filter selecties</option>
       <option :value="filter.id" v-for="filter in filters">{{ filter.title }}</option>
     </select>
   </div>
@@ -39,6 +38,7 @@
           v-for="(item, indexItem) in category.items"
           class="filter-categories__subitem"
           v-if="category.show_all || indexItem < visible_items"
+          :class="{'filter-categories__subitem--empty': item.is_empty}"
         >
           <input
             type="checkbox"

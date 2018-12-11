@@ -23,7 +23,7 @@ export default {
               prev: materialIndex ? records[materialIndex - 1] : null,
               filter:
                 generateSearchMaterialsQuery({
-                  filters: materials.filters,
+                  filters: materials.active_filters,
                   page: 1,
                   page_size: materials.page_size,
                   search_text: materials.search_text,

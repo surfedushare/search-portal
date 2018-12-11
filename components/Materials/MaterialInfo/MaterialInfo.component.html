@@ -13,7 +13,7 @@
   <div class="material__info_quality">
     <a
       :href="`/applaud-materials/?material__external_id=${material.external_id}`"
-      class="quality__applauds"
+      class="quality__applauds quality__applauds--link"
       v-if="isAuthenticated && !is_applauded"
       @click.prevent="setApplaudMaterial(material)"
       :class="{'quality__applauds--saving': is_loading_applaud}"

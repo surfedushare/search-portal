@@ -1,12 +1,16 @@
 export default {
   state: {
     filter_categories: null,
+    filter_categories_loading: null,
     disciplines: null,
     educationallevels: null
   },
   getters: {
     filter_categories(state) {
       return state.filter_categories;
+    },
+    filter_categories_loading(state) {
+      return state.filter_categories_loading;
     },
     disciplines(state) {
       return state.disciplines;
@@ -17,10 +21,15 @@ export default {
   },
   actions: {
     async getFilterCategories({ state, commit }) {
-      if (!state.filter_categories) {
+      if (!state.filter_categories && !state.filter_categories_loading) {
+        commit('SET_FILTER_CATEGORIES_LOADING', true);
         const filter = await this.$axios.$get('filter-categories/');
         commit('SET_FILTER_CATEGORIES', filter);
+        commit('SET_FILTER_CATEGORIES_LOADING', false);
+
+        return state.filter_categories;
       }
+      return state.filter_categories;
     }
   },
   mutations: {
@@ -44,6 +53,9 @@ export default {
           return prev;
         }, {})
       });
+    },
+    SET_FILTER_CATEGORIES_LOADING(state, payload) {
+      state.filter_categories_loading = payload;
     }
   }
 };

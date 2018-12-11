@@ -84,8 +84,12 @@ export default {
      * Submit form
      */
     onSubmit() {
-      this.$router.push(generateSearchMaterialsQuery(this.formData));
-      this.$emit('input', this.formData);
+      if (this.$listeners.submit) {
+        this.$emit('submit', this.formData);
+      } else {
+        this.$router.push(generateSearchMaterialsQuery(this.formData));
+        this.$emit('input', this.formData);
+      }
     },
     onChangeCategory(event) {
       this.formData.filters = [
