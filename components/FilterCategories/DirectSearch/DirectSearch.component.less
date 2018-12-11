@@ -4,13 +4,23 @@
   z-index: 10;
   border-radius: 20px;
   box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-  background: url("../../../assets/images/collection-white.svg") no-repeat 20px 55%  @dark-blue;
-  background-size: 30px;
+  @media @desktop {
+    background: url("../../../assets/images/collection-white.svg") no-repeat 20px 55%  @dark-blue;
+    background-size: 30px;
+  }
+  @media @mobile, @tablet {
+    background-color:@dark-blue;
+  }
 
   &__wrapper{
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media @mobile, @tablet {
+      display: initial;
+      padding: 15px;
+    }
   }
   &__fields {
     display: flex;
@@ -18,6 +28,10 @@
     width: calc(50% - 99px);
     height: 51px;
     position: relative;
+    @media @mobile, @tablet {
+      margin: 0 15px;
+      width: auto;
+    }
     .theme__info_search &{
       margin: 0 0 33px;
     }
@@ -34,6 +48,12 @@
     width: 19%;
     min-height: 100%;
     color: #fff;
+
+    @media @mobile, @tablet {
+      margin-top: 15px;
+      width: auto;
+      text-align: center;
+    }
   }
 
   &__tools {
@@ -48,9 +68,11 @@
       font-size: 16px;
       height: 50px;
       padding: 0 8px 0 40px;
-      margin: 0 0 0 31px;
       cursor: pointer;
 
+      @media @desktop {
+        margin: 0 0 0 31px;
+      }
       &--cards {
         background: transparent url('./../../../assets/images/card-view-white.svg')
         0 50% no-repeat;

@@ -57,7 +57,13 @@ body {
   &--items-in-line-4 {
     width: ~'calc(25% - 18px)';
     &:not(:nth-child(4n + 1)) {
-      margin-left: 24px;
+      @media @desktop, @tablet {
+        margin-left: 24px;
+      }
+    }
+
+    @media @mobile {
+      width: 100%;
     }
   }
 
