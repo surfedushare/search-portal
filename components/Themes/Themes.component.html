@@ -2,10 +2,10 @@
 <section class="themes">
   <h2>Thema’s</h2>
   <div class="themes__description">Zoek en vind open leermaterialen op thema</div>
-  <ul class="themes__list" v-if="themes && themes.results && themes.results.length">
+  <ul class="themes__list" v-if="currentThemes">
     <li
       class="themes__item"
-      v-for="theme in themes.results"
+      v-for="theme in currentThemes"
     >
       <nuxt-link
         class="arrow-link"
