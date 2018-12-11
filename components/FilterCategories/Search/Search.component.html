@@ -65,6 +65,26 @@
         </li>
       </ul>
     </div>
+    <div class="search__themes_mobile" v-if="!hideFilter">
+      <button class="search__themes_mobile_button" @click.prevent="showMobileFilterOptions"
+              :class="{
+            'search__themes_mobile_button--plus': showMobileFilter === false,
+            'search__themes_mobile_button--minus': showMobileFilter === true
+          }">Filter opties
+      </button>
+      <ul v-if="showMobileFilter" class="search__themes_items">
+        <li v-for="item in active_category.items" class="search__themes_item">
+          <input
+            type="checkbox"
+            :id="item.external_id"
+            :value="item.external_id"
+            v-model="filter[item.external_id]"
+            name="search_category"
+          >
+          <label :for="item.external_id">{{item.title}}</label>
+        </li>
+      </ul>
+    </div>
   </form>
 </section>
 
