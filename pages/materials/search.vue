@@ -7,7 +7,7 @@
         <div class="center_block">
           <div class="search__info_top">
             <BreadCrumbs :items="items" />
-            <h2 v-if="materials">Zoekresultaten ({{ materials.records_total }})</h2>
+            <h2 v-if="materials && !materials_loading">Zoekresultaten {{ `(${materials.records_total})` }}</h2>
             <img
               src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
               srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
@@ -137,10 +137,9 @@ export default {
     ])
   },
   watch: {
-    search(search) {
-      if (search) {
+    search(search, prev) {
+      if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search);
-        // this.$store.dispatch('setActiveFilter', Object.assign({}, search));
       }
     },
     active_filter(active_filter) {
@@ -177,8 +176,7 @@ export default {
       // Parsing url query
       search = Object.assign({}, query, {
         filters: query.filters ? JSON.parse(query.filters) : [],
-        search_text: query.search_text ? JSON.parse(query.search_text) : [],
-        return_filters: false
+        search_text: query.search_text ? JSON.parse(query.search_text) : []
       });
     }
 

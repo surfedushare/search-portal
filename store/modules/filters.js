@@ -1,6 +1,6 @@
 export default {
   state: {
-    filters: [{ id: '' }],
+    filters: null,
     active_filter: {
       id: false,
       start_date: null,
@@ -76,10 +76,9 @@ export default {
   },
   mutations: {
     SET_FILTERS(state, payload) {
-      state.filters = [...state.filters, ...payload];
+      state.filters = payload;
     },
     SET_FILTER(state, payload) {
-      console.log(state.filters);
       state.filters = state.filters.map(filter => {
         if (filter.id === payload.id) {
           return payload;

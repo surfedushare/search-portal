@@ -72,9 +72,8 @@ export default {
     ...mapGetters(['materials', 'communities', 'themes'])
   },
   mounted() {
-    this.$store.dispatch('searchMaterials', {
-      page_size: 4,
-      search_text: []
+    this.$store.dispatch('getMaterials', {
+      page_size: 4
     });
     this.$store.dispatch('getCommunities', { params: { page_size: 3 } });
   }

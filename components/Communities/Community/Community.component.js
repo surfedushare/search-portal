@@ -5,6 +5,7 @@ import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import Materials from '~/components/Materials';
+import { generateSearchMaterialsQuery } from '../../_helpers';
 
 export default {
   name: 'community',
@@ -31,7 +32,17 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    searchInCommunity(data) {
+      console.log(
+        11111,
+        generateSearchMaterialsQuery(
+          data,
+          `/communities/${this.$route.params.community}/search/`
+        )
+      );
+    }
+  },
   computed: {
     ...mapGetters([
       'community_info',

@@ -10,6 +10,14 @@ export default {
     'items-in-line': {
       type: Number,
       default: 4
+    },
+    'items-length': {
+      type: [Number, String],
+      default: 'auto'
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -28,6 +36,9 @@ export default {
   },
   computed: {
     ...mapGetters(['disciplines', 'educationallevels', 'materials_loading']),
+    current_loading() {
+      return this.materials_loading || this.loading;
+    },
     /**
      * Extend to the material fields "disciplines" & "educationallevels"
      * @returns {*}

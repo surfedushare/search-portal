@@ -1,8 +1,11 @@
+import { formatDate } from './_helpers';
+
 export default {
   state: {
     my_collections: false,
     my_collection: false,
-    my_collection_materials: false
+    my_collection_materials: false,
+    my_collection_materials_loading: false
   },
   getters: {
     my_collections(state) {
@@ -13,6 +16,9 @@ export default {
     },
     my_collection_materials(state) {
       return state.my_collection_materials;
+    },
+    my_collection_materials_loading(state) {
+      return state.my_collection_materials_loading;
     }
   },
   actions: {
@@ -38,7 +44,6 @@ export default {
       { state, commit },
       { collection_id, data }
     ) {
-      console.log(collection_id, data);
       const material = await this.$axios.$post(
         `collections/${collection_id}/materials/`,
         data
@@ -46,9 +51,34 @@ export default {
       commit('SET_MATERIAL_TO_MY_COLLECTION', material);
       return data;
     },
-    async getMaterialInMyCollection({ state, commit }, id) {
-      const materials = await this.$axios.$get(`collections/${id}/materials/`);
+    async getMaterialInMyCollection(
+      { state, commit },
+      { id, page_size, page }
+    ) {
+      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
+      const materials = await this.$axios.$get(`collections/${id}/materials/`, {
+        params: {
+          page_size,
+          page
+        }
+      });
       commit('GET_MATERIAL_TO_MY_COLLECTION', materials);
+      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
+      return materials;
+    },
+    async getNextPeMaterialInMyCollection(
+      { state, commit },
+      { id, page_size, page }
+    ) {
+      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
+      const materials = await this.$axios.$get(`collections/${id}/materials/`, {
+        params: {
+          page_size,
+          page
+        }
+      });
+      commit('SET_NEXT_PAGE_MATERIALS_TO_MY_COLLECTION', materials);
+      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
       return materials;
     }
   },
@@ -63,7 +93,32 @@ export default {
       // state.my_collections = payload;
     },
     GET_MATERIAL_TO_MY_COLLECTION(state, payload) {
-      state.my_collection_materials = payload;
+      const records = payload.records || payload;
+      state.my_collection_materials = Object.assign({}, payload, {
+        records: records.map(record => {
+          return Object.assign(
+            { date: formatDate(record.publish_datetime) },
+            record
+          );
+        })
+      });
+    },
+    SET_NEXT_PAGE_MATERIALS_TO_MY_COLLECTION(state, payload) {
+      const records = state.my_collection_materials.records || [];
+      state.my_collection_materials = Object.assign({}, payload, {
+        records: [
+          ...records,
+          ...payload.records.map(record => {
+            return Object.assign(
+              { date: formatDate(record.publish_datetime) },
+              record
+            );
+          })
+        ]
+      });
+    },
+    SET_MATERIAL_TO_MY_COLLECTION_LOADING(state, payload) {
+      state.my_collection_materials_loading = payload;
     }
   }
 };

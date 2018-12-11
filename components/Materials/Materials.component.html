@@ -4,12 +4,13 @@
   <ul
     class="materials__items"
     v-if="extended_materials && extended_materials.length"
-    :class="{loading: materials_loading}"
+    :class="{loading: current_loading}"
   >
     <li
       :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
-      v-for="material in extended_materials"
+      v-for="(material, index) in extended_materials"
       class="materials__item tile"
+      v-if="itemsLength !== 'auto' ? index < itemsLength : true"
     >
       <div class="materials__bookmark" v-if="material.has_bookmark">Bookmark</div>
       <div class="materials__item_wrapper tile__wrapper">
@@ -95,5 +96,5 @@
       </div>
     </li>
   </ul>
-  <div class="not_found" v-else-if="!materials_loading">Not found</div>
+  <div class="not_found" v-else-if="!current_loading">Not found</div>
 </section>

@@ -15,10 +15,11 @@ export const debounce = function(func, wait, immediate) {
 };
 
 export const generateSearchMaterialsQuery = (
-  data = { filters: [], search_text: [] }
+  data = { filters: [], search_text: [] },
+  path = '/materials/search/'
 ) => {
   return {
-    path: '/materials/search/',
+    path: path,
     query: Object.assign({}, data, {
       filters: JSON.stringify(data.filters),
       search_text: JSON.stringify(data.search_text)

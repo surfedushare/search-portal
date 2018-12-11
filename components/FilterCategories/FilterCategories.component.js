@@ -7,7 +7,6 @@ export default {
   components: {},
   mounted() {
     if (this.isAuthenticated) {
-      this.$store.dispatch('setActiveFilter', { id: '' });
       this.$store.dispatch('getFilters');
     }
   },
@@ -116,6 +115,11 @@ export default {
     },
     resetFilter() {
       location.reload();
+    },
+    isShowCategoryItem({ category, item, indexItem }) {
+      return (
+        !item.is_empty && (category.show_all || indexItem < this.visible_items)
+      );
     }
   },
   watch: {
@@ -191,7 +195,8 @@ export default {
       'filter_categories',
       'isAuthenticated',
       'filters',
-      'active_filter'
+      'active_filter',
+      'materials'
     ]),
     /**
      * generate filter items
@@ -199,7 +204,7 @@ export default {
      */
     filter() {
       const { value, filtered_categories } = this;
-      if (value && filtered_categories) {
+      if (value && value.filters && filtered_categories) {
         const filter = value.filters.reduce((prev, next) => {
           prev[next.external_id] = next;
 
@@ -242,14 +247,26 @@ export default {
      * @returns {*}
      */
     categories() {
-      const { selected, show_all, filtered_categories } = this;
-      if (selected && filtered_categories) {
+      const { selected, show_all, filtered_categories, materials } = this;
+      if (selected && filtered_categories && materials && materials.filters) {
+        const not_empty_ids = materials.filters.reduce((prev, next) => {
+          prev.push(...next.items.map(item => item.external_id));
+          return prev;
+        }, []);
+
         return Object.assign({}, filtered_categories, {
           results: filtered_categories.map(category => {
             return Object.assign({}, category, {
               selected: selected.indexOf(category.external_id) !== -1,
               show_all: show_all.indexOf(category.id) !== -1,
-              items: [...category.items]
+              items: [
+                ...category.items.map(item => {
+                  return {
+                    ...item,
+                    is_empty: not_empty_ids.indexOf(item.external_id) === -1
+                  };
+                })
+              ]
             });
           })
         });

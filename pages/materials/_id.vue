@@ -18,6 +18,7 @@
         <Materials
           v-if="materials"
           :materials="materials"
+          :items-length="4"
         />
       </div>
     </div>
