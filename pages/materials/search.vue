@@ -411,6 +411,11 @@ export default {
     flex-shrink: 0;
     margin: 0 64px 0 0;
 
+    @media @mobile {
+      width: 100%;
+      margin: 0;
+    }
+
     &_sticky {
       position: sticky;
       top: 0;
@@ -427,6 +432,10 @@ export default {
     flex: 1 1 auto;
     padding: 98px 0 0;
     width: 100%;
+
+    @media @mobile {
+      padding: 0;
+    }
   }
 }
 </style>
