@@ -83,6 +83,21 @@ class CollectionMaterialsRequestSerializer(serializers.Serializer):
                                                      MaxValueValidator(10)])
 
 
+class MaterialRatingsRequestSerializer(serializers.Serializer):
+    object_id = serializers.CharField(required=False)
+
+    page = serializers.IntegerField(required=False, default=1,
+                                    validators=[MinValueValidator(1)])
+
+    page_size = serializers.IntegerField(required=False, default=10,
+                                         validators=[MinValueValidator(0),
+                                                     MaxValueValidator(10)])
+
+
+class MaterialRatingResponseSerializer(MaterialRatingSerializer):
+    smo_id = serializers.CharField()
+
+
 class MaterialShortSerializer(serializers.ModelSerializer):
 
     class Meta:

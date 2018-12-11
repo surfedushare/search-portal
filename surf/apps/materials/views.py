@@ -50,7 +50,9 @@ from surf.apps.materials.serializers import (
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
     ApplaudMaterialSerializer,
-    MaterialRatingSerializer
+    MaterialRatingSerializer,
+    MaterialRatingsRequestSerializer,
+    MaterialRatingResponseSerializer
 )
 
 from surf.apps.materials.filters import (
@@ -264,10 +266,46 @@ def _get_material_details_by_id(material_id):
 
 class MaterialRatingAPIView(APIView):
     """
-    View class that provides setting the rating of Material by user.
+    Provides methods for getting and setting a material rating by the user.
     """
 
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # validate request parameters
+        serializer = MaterialRatingsRequestSerializer(data=request.GET)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        page, page_size = data["page"], data["page_size"]
+
+        rv = dict(records=[],
+                  records_total=0,
+                  page=page,
+                  page_size=page_size)
+
+        surfconext_auth = getattr(request.user, "surfconext_auth")
+        if surfconext_auth:
+            ac = XmlEndpointApiClient(
+                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
+            object_id = data.get("object_id")
+
+            # request material reviews from EduRep
+            reviews = ac.get_user_reviews(surfconext_auth.external_id,
+                                          material_urn=object_id,
+                                          page=page,
+                                          page_size=page_size)
+            res = reviews.get("records", [])
+
+            # validate response data
+            serializer = MaterialRatingResponseSerializer(many=True, data=res)
+            serializer.is_valid(raise_exception=True)
+
+            rv["records"] = serializer.validated_data
+            rv["records_total"] = reviews["recordcount"]
+
+        return Response(rv)
 
     def post(self, request, *args, **kwargs):
         # validate request parameters
@@ -283,14 +321,17 @@ class MaterialRatingAPIView(APIView):
             sac = SmbSoapApiClient(
                 api_endpoint=settings.EDUREP_SOAP_API_ENDPOINT)
 
+            # request material reviews from EduRep
             reviews = ac.get_user_reviews(surfconext_auth.external_id,
                                           material_urn=data["object_id"])
             reviews = reviews.get("records", [])
 
+            # remove old reviews in EduRep before send a new one
             for r in reviews:
                 sac.remove_review(r["external_id"],
                                   settings.EDUREP_SOAP_SUPPLIER_ID)
 
+            # send material rating to EduRep
             sac.send_rating(data["object_id"],
                             data["rating"],
                             settings.EDUREP_SOAP_SUPPLIER_ID,
