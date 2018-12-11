@@ -342,7 +342,7 @@ Adds materials to specified collection if the user is owner of collection.
 
     + Attributes (array[Material Short])
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
     + Attributes (array[Material Short])
 
 ### DELETE [DELETE /api/v1/collections/{id}/materials/]
@@ -359,7 +359,7 @@ Deletes materials from specified collection if the user is owner of collection.
 
     + Attributes (array[Material Short])
 
-+ Response 204
++ Response 200
     + Attributes (array[Material Short])
 
 # Group Themes
@@ -534,7 +534,7 @@ Adds collections to specified community if current user is admin of community.
 
     + Attributes (array[Collection Short])
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
     + Attributes (array[Collection])
 
 ### DELETE [DELETE /api/v1/communities/{id}/collections/]
@@ -551,7 +551,7 @@ Deletes collections from community if current user is admin of community.
 
     + Attributes (array[Collection Short])
 
-+ Response 204
++ Response 200
     + Attributes (array[Collection])
 
 ## Community Themes Array  [/api/v1/communities/{id}/themes/]
