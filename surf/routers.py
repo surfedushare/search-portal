@@ -1,3 +1,7 @@
+"""
+This module contains router for SURF Catalog backend
+"""
+
 from rest_framework.routers import DefaultRouter
 
 

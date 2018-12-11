@@ -1,3 +1,7 @@
+"""
+This module contains API view serializers for themes app.
+"""
+
 from rest_framework import serializers
 
 from surf.apps.themes.models import Theme
@@ -7,6 +11,10 @@ from surf.apps.filters.serializers import FilterCategoryItemSerializer
 
 
 class ThemeSerializer(serializers.ModelSerializer):
+    """
+    Theme instance serializer
+    """
+
     id = serializers.UUIDField(source="filter_category_item.id")
     title = serializers.CharField(source="filter_category_item.title")
 
@@ -16,6 +24,10 @@ class ThemeSerializer(serializers.ModelSerializer):
 
 
 class ThemeDisciplineSerializer(FilterCategoryItemSerializer):
+    """
+    Theme discipline instance serializer
+    """
+
     materials_count = serializers.SerializerMethodField()
 
     def get_materials_count(self, obj):

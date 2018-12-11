@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# list of allowed endpoints to redirect
 ALLOWED_REDIRECT_ENDPOINTS = []
 
 
@@ -177,6 +179,7 @@ LOGGING = {
     },
 }
 
+# OpenID Connect configuration
 OIDC_CONFIG = {
     "version": "1.0",
     "verify_ssl": False,

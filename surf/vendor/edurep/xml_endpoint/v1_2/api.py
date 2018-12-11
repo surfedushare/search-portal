@@ -1,3 +1,7 @@
+"""
+This module provides integration with XML-based endpoint of EduRep API.
+"""
+
 import requests
 
 from datetime import datetime
@@ -49,6 +53,9 @@ _SMO_SEARCH_METHOD = "smo/sruns"
 
 
 class XmlEndpointApiClient:
+    """
+    Class provides integration with XML-based endpoint of EduRep API
+    """
 
     def __init__(self, api_endpoint=_DEFAULT_API_ENDPOINT):
         self.api_endpoint = api_endpoint

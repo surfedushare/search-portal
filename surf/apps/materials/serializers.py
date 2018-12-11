@@ -1,3 +1,7 @@
+"""
+This module contains API view serializers for materials app.
+"""
+
 from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -11,6 +15,10 @@ from surf.apps.materials.models import (
 
 
 class SharedResourceCounterSerializer(serializers.ModelSerializer):
+    """
+    Shared resource counter instance serializer
+    """
+
     sharing_type = serializers.CharField(source="extra")
 
     class Meta:
@@ -19,6 +27,10 @@ class SharedResourceCounterSerializer(serializers.ModelSerializer):
 
 
 class SearchFilterSerializer(serializers.Serializer):
+    """
+    Serializer for filters in material search request
+    """
+
     external_id = serializers.CharField()
 
     items = serializers.ListField(
@@ -27,6 +39,10 @@ class SearchFilterSerializer(serializers.Serializer):
 
 
 class SearchRequestSerializer(serializers.Serializer):
+    """
+    Serializer for material search request
+    """
+
     search_text = serializers.ListField(child=serializers.CharField())
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
@@ -50,6 +66,10 @@ class SearchRequestSerializer(serializers.Serializer):
 
 
 class SearchRequestShortSerializer(serializers.Serializer):
+    """
+    Serializer for material search request with a few parameters
+    """
+
     search_text = serializers.ListField(child=serializers.CharField())
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
@@ -63,16 +83,28 @@ class SearchRequestShortSerializer(serializers.Serializer):
 
 
 class KeywordsRequestSerializer(serializers.Serializer):
+    """
+    Serializer for keywords request
+    """
+
     query = serializers.CharField()
 
 
 class MaterialRatingSerializer(serializers.Serializer):
+    """
+    Material rating instance serializer
+    """
+
     object_id = serializers.CharField()
     rating = serializers.IntegerField(validators=[MinValueValidator(1),
                                                   MaxValueValidator(5)])
 
 
 class MaterialsRequestSerializer(serializers.Serializer):
+    """
+    Serializer for materials request
+    """
+
     external_id = serializers.CharField(required=False)
     collection_id = serializers.CharField(required=False)
     shared = serializers.CharField(required=False)
@@ -86,6 +118,10 @@ class MaterialsRequestSerializer(serializers.Serializer):
 
 
 class CollectionMaterialsRequestSerializer(serializers.Serializer):
+    """
+    Serializer for collection materials request
+    """
+
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
 
@@ -95,6 +131,10 @@ class CollectionMaterialsRequestSerializer(serializers.Serializer):
 
 
 class MaterialRatingsRequestSerializer(serializers.Serializer):
+    """
+    Serializer for materials ratings request
+    """
+
     object_id = serializers.CharField(required=False)
 
     page = serializers.IntegerField(required=False, default=1,
@@ -106,10 +146,17 @@ class MaterialRatingsRequestSerializer(serializers.Serializer):
 
 
 class MaterialRatingResponseSerializer(MaterialRatingSerializer):
+    """
+    Material rating instance serializer with extra fields
+    """
+
     smo_id = serializers.CharField()
 
 
 class MaterialShortSerializer(serializers.ModelSerializer):
+    """
+    Material instance serializer with external id only
+    """
 
     class Meta:
         model = Material
@@ -117,6 +164,9 @@ class MaterialShortSerializer(serializers.ModelSerializer):
 
 
 class CollectionShortSerializer(serializers.ModelSerializer):
+    """
+    Collection instance serializer with id only
+    """
 
     class Meta:
         model = Collection
@@ -124,6 +174,10 @@ class CollectionShortSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(CollectionShortSerializer):
+    """
+    Collection instance serializer
+    """
+
     materials_count = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
@@ -179,6 +233,10 @@ class CollectionSerializer(CollectionShortSerializer):
 
 
 class ApplaudMaterialSerializer(serializers.ModelSerializer):
+    """
+    Material applaud instance serializer
+    """
+
     material = MaterialShortSerializer()
 
     def create(self, validated_data):

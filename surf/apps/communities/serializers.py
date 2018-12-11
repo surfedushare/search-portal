@@ -1,3 +1,7 @@
+"""
+This module contains API view serializers for communities app.
+"""
+
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community
@@ -6,6 +10,10 @@ from surf.apps.filters.serializers import FilterCategoryItemSerializer
 
 
 class CommunityUpdateSerializer(serializers.ModelSerializer):
+    """
+    Community instance serializer for update methods
+    """
+
     class Meta:
         model = Community
         fields = ('name', 'description', 'website_url',
@@ -13,6 +21,10 @@ class CommunityUpdateSerializer(serializers.ModelSerializer):
 
 
 class CommunitySerializer(CommunityUpdateSerializer):
+    """
+    Community instance serializer for get methods
+    """
+
     external_id = serializers.CharField(source="surf_team.external_id")
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
@@ -70,6 +82,10 @@ class CommunitySerializer(CommunityUpdateSerializer):
 
 
 class CommunityDisciplineSerializer(FilterCategoryItemSerializer):
+    """
+    Community discipline instance serializer
+    """
+
     materials_count = serializers.SerializerMethodField()
 
     def get_materials_count(self, obj):
