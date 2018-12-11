@@ -38,7 +38,8 @@ from surf.apps.materials.models import (
     Collection,
     Material,
     ApplaudMaterial,
-    ViewMaterial
+    ViewMaterial,
+    SharedResourceCounter
 )
 
 from surf.apps.materials.serializers import (
@@ -52,7 +53,8 @@ from surf.apps.materials.serializers import (
     ApplaudMaterialSerializer,
     MaterialRatingSerializer,
     MaterialRatingsRequestSerializer,
-    MaterialRatingResponseSerializer
+    MaterialRatingResponseSerializer,
+    SharedResourceCounterSerializer
 )
 
 from surf.apps.materials.filters import (
@@ -69,6 +71,10 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 )
 
 from surf.vendor.edurep.smb.soap.api import SmbSoapApiClient
+
+
+RESOURCE_TYPE_MATERIAL = "material"
+RESOURCE_TYPE_COLLECTION = "collection"
 
 
 class MaterialSearchAPIView(APIView):
@@ -173,10 +179,14 @@ class MaterialAPIView(APIView):
         data = serializer.validated_data
 
         if "external_id" in kwargs:
-            return self.get_material(request, kwargs["external_id"])
+            return self.get_material(request,
+                                     kwargs["external_id"],
+                                     shared=data.get("shared"))
 
         if "external_id" in data:
-            res = _get_material_by_external_id(request, data["external_id"])
+            res = _get_material_by_external_id(request,
+                                               data["external_id"],
+                                               shared=data.get("shared"))
 
         else:
             # return overview of Materials
@@ -196,16 +206,17 @@ class MaterialAPIView(APIView):
         return Response(res)
 
     @staticmethod
-    def get_material(request, external_id):
+    def get_material(request, external_id, shared=None):
         """
         Returns the list of materials by external id
         :param request: request instance
         :param external_id: external id of material
+        :param shared: share type of material
         :return:
         """
         external_id = external_id.encode("utf-8")
         external_id = urlsafe_b64decode(external_id).decode("utf-8")
-        res = _get_material_by_external_id(request, external_id)
+        res = _get_material_by_external_id(request, external_id, shared=shared)
 
         if not res:
             raise Http404('No materials matches the given query.')
@@ -213,17 +224,28 @@ class MaterialAPIView(APIView):
         return Response(res[0])
 
 
-def _get_material_by_external_id(request, external_id):
+def _get_material_by_external_id(request, external_id, shared=None):
     """
     Get Materials by edured id and register unique view of materials
     :param request:
     :param external_id: edured id of material
+    :param shared: share type of material
     :return: list of materials
     """
 
+    # increase unique view counter
     ViewMaterial.add_unique_view(request.user, external_id)
+
+    if shared:
+        # increase share counter
+        counter_key = _create_counter_key(RESOURCE_TYPE_MATERIAL,
+                                          external_id,
+                                          share_type=shared)
+        SharedResourceCounter.increase_counter(counter_key, extra=shared)
+
     rv = _get_material_details_by_id(external_id)
     rv = add_extra_parameters_to_materials(request.user, rv)
+    rv = add_share_counters_to_materials(rv)
     return rv
 
 
@@ -647,3 +669,28 @@ def _get_paginated_materials_response(qs, materials, request_data):
         ('records', materials),
         ('filters', [])
     ]))
+
+
+def add_share_counters_to_materials(materials):
+    """
+    Add share counter values for materials.
+    :param materials: array of materials
+    :return: updated array of materials
+    """
+
+    for m in materials:
+        key = _create_counter_key(RESOURCE_TYPE_MATERIAL, m["external_id"])
+        qs = SharedResourceCounter.objects.filter(counter_key__contains=key)
+
+        m["sharing_counters"] = SharedResourceCounterSerializer(
+            many=True
+        ).to_representation(qs.all())
+
+    return materials
+
+
+def _create_counter_key(resource_type, resource_id, share_type=None):
+    if share_type:
+        return "{}__{}__{}__".format(resource_type, resource_id, share_type)
+    else:
+        return "{}__{}__".format(resource_type, resource_id)

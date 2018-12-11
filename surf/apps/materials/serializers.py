@@ -4,8 +4,17 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from surf.apps.materials.models import (
     Collection,
     Material,
-    ApplaudMaterial
+    ApplaudMaterial,
+    SharedResourceCounter
 )
+
+
+class SharedResourceCounterSerializer(serializers.ModelSerializer):
+    sharing_type = serializers.CharField(source="extra")
+
+    class Meta:
+        model = SharedResourceCounter
+        fields = ('sharing_type', 'counter_value',)
 
 
 class SearchFilterSerializer(serializers.Serializer):
@@ -65,6 +74,7 @@ class MaterialRatingSerializer(serializers.Serializer):
 class MaterialsRequestSerializer(serializers.Serializer):
     external_id = serializers.CharField(required=False)
     collection_id = serializers.CharField(required=False)
+    shared = serializers.CharField(required=False)
 
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])

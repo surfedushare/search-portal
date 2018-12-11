@@ -130,5 +130,23 @@ class SharedResourceCounter(UUIDModel):
     counter_value = django_models.IntegerField(default=0)
     extra = django_models.CharField(max_length=255, null=True, blank=True)
 
+    @staticmethod
+    def increase_counter(counter_key, extra=None):
+        """
+        Increases the counter value by its key
+        :param counter_key: key of counter
+        :param extra: extra data for counter
+        """
+
+        if not counter_key:
+            return
+
+        c, _ = SharedResourceCounter.objects.get_or_create(
+            counter_key=counter_key,
+            defaults=dict(extra=extra))
+
+        c.counter_value += 1
+        c.save()
+
     def __str__(self):
         return "{} - {}".format(self.counter_key, self.extra)
