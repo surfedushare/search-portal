@@ -1,7 +1,10 @@
 export default {
-  name: 'collections',
+  name: 'materials_filters',
   props: {
-    collections: {
+    materials_filters: {
+      default: false
+    },
+    user: {
       default: false
     },
     'items-in-line': {
