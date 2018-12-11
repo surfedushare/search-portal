@@ -113,7 +113,9 @@
 }
 
 .search--hide-categories .v-select.searchable .dropdown-toggle {
-  padding-right: 140px;
+  @media @desktop {
+    padding-right: 140px;
+  }
 }
 
 .search .v-select .dropdown-menu {

@@ -4,7 +4,7 @@
       <div
         class="search__info"
       >
-        <div class="center_block">
+        <div class="center_block center-header">
           <div class="search__info_top">
             <BreadCrumbs :items="items" />
             <h2 v-if="materials && !materials_loading">Zoekresultaten {{ `(${materials.records_total})` }}</h2>
@@ -36,6 +36,7 @@
             Sorteren op
           </div>
         </div>
+
         <button
           :class="{
             'search__tools_type_button--list': materials_in_line === 3,
@@ -263,6 +264,9 @@ export default {
     position: relative;
     min-height: 300px;
 
+    @media @mobile {
+      overflow: hidden;
+    }
     &_top {
       border-radius: 20px;
       background: fade(@light-grey, 90%);
@@ -270,6 +274,18 @@ export default {
       min-height: 274px;
       margin: 0 0 -68px;
       position: relative;
+
+      @media @mobile {
+        padding: initial;
+        margin: -20px -20px -100px -20px;
+        padding-top: 20px;
+        padding-left: 20px;
+
+        h2 {
+          font-size: 24px;
+          width: 330px;
+        }
+      }
     }
 
     &_bg {
@@ -279,11 +295,26 @@ export default {
       width: 510px;
       height: 298px;
       border-radius: 21px;
+      @media @mobile, @tablet {
+        z-index: -1;
+        right: -20px;
+      }
+      @media @mobile {
+        right: -50px;
+      }
     }
 
     &_search {
       width: 996px;
       margin: auto;
+
+      @media @mobile, @tablet {
+        width: 100%;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+      }
     }
 
     &_title {
@@ -310,7 +341,9 @@ export default {
   }
 
   &__wrapper {
-    display: flex;
+    @media @desktop {
+      display: flex;
+    }
     position: relative;
   }
 
@@ -352,10 +385,17 @@ export default {
       &:active {
         outline: none;
       }
+
+      @media @mobile {
+        display: none;
+      }
     }
     .select {
       height: 50px;
       width: 251px;
+      @media @mobile {
+        width: 100%;
+      }
     }
   }
 

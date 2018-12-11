@@ -70,6 +70,38 @@
       list-style: none;
       display: inline-block;
     }
+
+    @media @mobile, @tablet {
+      display: none;
+    }
+  }
+
+  &__themes_mobile {
+    padding-bottom: 17px;
+    text-align: center;
+
+    @media @desktop {
+      display: none;
+    }
+
+    &_button {
+      border: none;
+      color: #0077c8;
+      font-family: proxima-soft;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0 0 1px 25px;
+      &--plus {
+        background: transparent url('./../../../assets/images/plus-copy.svg') 0 50% no-repeat;
+        background-size: 18px;
+      }
+
+      &--minus {
+        background: transparent url('./../../../assets/images/min.svg') 0 50% no-repeat;
+        background-size: 18px;
+      }
+    }
   }
 
   &__select {

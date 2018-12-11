@@ -10,7 +10,7 @@
       <BreadCrumbs
         :items="[{title:'Home', url: '/'}, {title:`Community's`, url: '/communities/'} ]"/>
       <h2 class="communities__info_ttl">Community's</h2>
-      <Search class="communities__info_search" :hide-filter="true"  />
+      <Search class="communities__info_search" :hide-filter="true" :hide-categories="true"  />
     </div>
     <ul class="communities__items" v-if="communities">
       <li
