@@ -74,6 +74,13 @@
           <div class="materials__item_keywords" v-if="material.keywords && material.keywords.length">
             <span class="materials__item_keyword" v-for="keyword in material.keywords">{{keyword}} </span>
           </div>
+          <nuxt-link
+            :to="`/communities/${community.id}`"
+            class="materials__item_community_link"
+            v-for="community in material.communities"
+          >
+            {{ community.name }}
+          </nuxt-link>
           <div class="materials__item_copyrights" :class="material.copyright"></div>
           <footer class="materials__item_footer">
             <StarRating

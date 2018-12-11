@@ -9,10 +9,13 @@ export default {
   computed: {
     currentThemes() {
       const themes = this.themes;
-      if (themes && themes.results && themes.results.length) {
-        return themes.results;
+      if (themes) {
+        if (themes.results) {
+          return themes.results.length ? themes.results : false;
+        }
+        return themes;
       }
-      return themes;
+      return false;
     }
   }
 };
