@@ -6,5 +6,13 @@ export default {
     return {};
   },
   methods: {},
-  computed: {}
+  computed: {
+    currentThemes() {
+      const themes = this.themes;
+      if (themes && themes.results && themes.results.length) {
+        return themes.results;
+      }
+      return themes;
+    }
+  }
 };

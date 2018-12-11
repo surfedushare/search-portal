@@ -1,31 +1,32 @@
 
 <template>
-  <section class="container main collections filters">
+  <section class="container main collections my_filters">
     <div class="center_block">
-      <div class="collections__info ">
+      <div class="my_filters__info ">
         <img
           src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
           srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
          ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
-          class="collections__info_bg">
+          class="my_filters__info_bg">
         <BreadCrumbs
           :items="[{title:'Profiel', url: '/my/'}, {title:`Mijn Filters`, url: `/my/filters/`} ]"/>
-        <h2 class="collections__info_ttl">Mijn Filters</h2>
+        <h2 class="my_filters__info_ttl">Mijn Filters</h2>
         <Search
           :hide-categories="true"
           :hide-filter="true"
-          class="collections__info_search"
+          class="my_filters__info_search"
           active-category-external-id="lom.technical.format"
         />
       </div>
-      <div class="collections__add">
+      <div class="my_filters__add">
         <a
           href="/"
-          class="collections__add__link button">Nieuwe collectie
+          class="my_filters__add__link button">Nieuwe collectie
         </a>
       </div>
-      <CollectionsFilters
-        :collections="my_collections.results"/>
+      <MaterialsFilters
+        :materials_filters="filters"
+        :user="user"/>
     </div>
   </section>
 </template>
@@ -33,30 +34,29 @@
 <script>
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import Materials from '~/components/Materials';
-import CollectionsFilters from '~/components/CollectionsFilters';
+import MaterialsFilters from '~/components/MaterialsFilters';
 import Search from '~/components/FilterCategories/Search';
 
 export default {
   components: {
-    CollectionsFilters,
+    MaterialsFilters,
     BreadCrumbs,
-    Materials,
     Search
   },
   computed: {
-    ...mapGetters(['my_collections', 'my_collection_materials'])
+    ...mapGetters(['filters', 'user'])
   },
   mounted() {
     console.log(this.$route);
     // this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
-    this.$store.dispatch('getMyCollections');
+    this.$store.dispatch('getFilters');
   }
 };
 </script>
+
 <style lang="less">
 @import './../../assets/styles/variables';
-.collections {
+.my_filters {
   width: 100%;
   padding: 101px 0 47px;
 
