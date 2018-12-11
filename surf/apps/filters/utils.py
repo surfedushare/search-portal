@@ -11,6 +11,7 @@ from django.conf import settings
 from surf.vendor.edurep.widget_endpoint.v3.api import WidgetEndpointApiClient
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+    XmlEndpointApiClient,
     PUBLISHER_DATE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID,
     DISCIPLINE_FIELD_ID,
@@ -36,6 +37,37 @@ IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
 
 _MBO_HBO_WO_REGEX = re.compile(r"^(MBO|HBO|WO)(.*)$", re.IGNORECASE)
 _HBO_WO_REGEX = re.compile(r"^(HBO|WO)(.*)$", re.IGNORECASE)
+
+_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
+
+
+def get_material_count_by_disciplines(discipline_ids):
+    """
+    Returns the number of materials for each discipline
+    :param discipline_ids: identifiers if disciplines in EduRep
+    :return: dictionary with number of materials in EduRep for each discipline
+    """
+
+    # add default filters to search materials
+    filters = get_all_materials_filters()
+    filters.append(dict(external_id=DISCIPLINE_FIELD_ID, items=discipline_ids))
+
+    ac = XmlEndpointApiClient(
+        api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
+    drilldowns = ac.drilldowns([_DISCIPLINE_FILTER],
+                               filters=filters)
+    if drilldowns:
+        drilldowns = drilldowns.get("drilldowns", [])
+        for f in drilldowns:
+            if f["external_id"] == DISCIPLINE_FIELD_ID:
+                drilldowns = {item["external_id"]: item["count"]
+                              for item in f["items"]}
+                break
+        else:
+            drilldowns = None
+
+    return drilldowns if drilldowns else dict()
 
 
 def add_default_filters(filters):
@@ -200,7 +232,7 @@ def _update_filter_category(filter_category, api_client):
                                     filter_category.max_item_count)
 
     res = api_client.drilldowns([drilldown_name],
-                                filters=add_default_filters([]))
+                                filters=get_all_materials_filters())
 
     items = res.get(category_id)
     if not items:

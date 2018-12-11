@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community
+from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.filters.serializers import FilterCategoryItemSerializer
 
 
 class CommunityUpdateSerializer(serializers.ModelSerializer):
@@ -65,3 +67,21 @@ class CommunitySerializer(CommunityUpdateSerializer):
                   'logo', 'featured_image', 'members_count',
                   'collections_count', 'materials_count',
                   'is_admin', 'is_member',)
+
+
+class CommunityDisciplineSerializer(FilterCategoryItemSerializer):
+    materials_count = serializers.SerializerMethodField()
+
+    def get_materials_count(self, obj):
+        try:
+            if self.context:
+                drilldowns = self.context["extra"]["drilldowns"]
+                return drilldowns.get(obj.external_id, 0)
+        except KeyError:
+            pass
+
+        return 0
+
+    class Meta:
+        model = FilterCategoryItem
+        fields = ('id', 'external_id', 'title', 'materials_count',)

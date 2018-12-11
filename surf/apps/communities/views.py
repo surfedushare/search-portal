@@ -22,12 +22,13 @@ from surf.apps.themes.models import Theme
 from surf.apps.filters.models import FilterCategoryItem
 from surf.apps.communities.filters import CommunityFilter
 from surf.apps.themes.serializers import ThemeSerializer
-from surf.apps.filters.serializers import FilterCategoryItemSerializer
 from surf.apps.materials.views import get_materials_search_response
+from surf.apps.filters.utils import get_material_count_by_disciplines
 
 from surf.apps.communities.serializers import (
     CommunitySerializer,
-    CommunityUpdateSerializer
+    CommunityUpdateSerializer,
+    CommunityDisciplineSerializer
 )
 
 from surf.apps.materials.serializers import (
@@ -148,10 +149,17 @@ class CommunityViewSet(ListModelMixin,
                                                flat=True)
         qs = FilterCategoryItem.objects.filter(id__in=ids)
 
-        res = []
-        if qs.exists():
-            res = FilterCategoryItemSerializer(many=True).to_representation(
-                qs.all())
+        items = [d.external_id for d in qs.all()]
+        drilldowns = get_material_count_by_disciplines(items)
+        context = self.get_serializer_context()
+        if drilldowns:
+            context["extra"] = dict(drilldowns=drilldowns)
+
+        res = CommunityDisciplineSerializer(
+            many=True, context=context
+        ).to_representation(
+            qs.all()
+        )
 
         return Response(res)
 

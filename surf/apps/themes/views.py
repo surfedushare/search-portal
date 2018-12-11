@@ -3,7 +3,6 @@ This module contains implementation of REST API views for themes app.
 """
 
 from django.db.models import Count
-from django.conf import settings
 
 from rest_framework.viewsets import GenericViewSet
 
@@ -26,16 +25,10 @@ from surf.apps.themes.serializers import (
 
 from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.serializers import CollectionSerializer
-from surf.apps.filters.utils import add_default_filters
-
-from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    XmlEndpointApiClient,
-    DISCIPLINE_FIELD_ID,
-)
+from surf.apps.filters.utils import get_material_count_by_disciplines
 
 
 _COLLECTIONS_COUNT_IN_OVERVIEW = 4
-_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
 
 
 class ThemeViewSet(ListModelMixin,
@@ -61,26 +54,7 @@ class ThemeViewSet(ListModelMixin,
         res = []
         if instance.disciplines.exists():
             items = [d.external_id for d in instance.disciplines.all()]
-            filters = [dict(external_id=DISCIPLINE_FIELD_ID, items=items)]
-
-            # add default filters to search materials
-            filters = add_default_filters(filters)
-
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
-            drilldowns = ac.drilldowns([_DISCIPLINE_FILTER],
-                                       filters=filters)
-            if drilldowns:
-                drilldowns = drilldowns.get("drilldowns", [])
-                for f in drilldowns:
-                    if f["external_id"] == DISCIPLINE_FIELD_ID:
-                        drilldowns = {item["external_id"]: item["count"]
-                                      for item in f["items"]}
-                        break
-                else:
-                    drilldowns = None
-
+            drilldowns = get_material_count_by_disciplines(items)
             context = self.get_serializer_context()
             if drilldowns:
                 context["extra"] = dict(drilldowns=drilldowns)
