@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import StarRating from '~/components/StarRating';
 import PopularList from '~/components/Communities/PopularList';
+import numeral from 'numeral';
 import Themes from '~/components/Themes';
 import Keywords from '~/components/Keywords';
 import SaveRating from '~/components/Popup/SaveRating';
@@ -30,6 +31,10 @@ export default {
         .then(rating => {
           this.rating = rating.records[0];
         });
+      // this.$store.dispatch('getMaterialShare', {
+      //   id: this.material.object_id,
+      //   shared: this.shared_link
+      // });
     } else {
       this.is_loading_applaud = false;
     }
@@ -39,6 +44,7 @@ export default {
   data() {
     return {
       href: '',
+      shared_link: false,
       isShow: false,
       is_loading_applaud: true,
       is_applauded: false,
@@ -87,6 +93,9 @@ export default {
         this.formData.author = this.material.author;
         return generateSearchMaterialsQuery(this.formData);
       }
+    },
+    contedNumber() {
+      return numeral(this.material.number_of_views).format('0a');
     },
     /**
      * get material themes
