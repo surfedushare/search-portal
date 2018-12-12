@@ -9,7 +9,7 @@
          ./../../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="my_filters__info_bg">
         <BreadCrumbs
-          :items="[{title:'Profiel', url: '/my/'}, {title:`Mijn Filters`, url: `/my/filters/`} ]"/>
+          :items="[{title:`Mijn Filters`, url: `/my/filters/`} ]"/>
         <h2 class="my_filters__info_ttl">Mijn Filters</h2>
         <Search
           :hide-categories="true"

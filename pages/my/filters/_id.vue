@@ -9,7 +9,6 @@
         <div class="my_filter__info_title">
           <BreadCrumbs
             :items="[
-              {title:'Profiel', url: '/my/'},
               {title:`Mijn selecties`, url: `/my/filters/`},
               {title:`Selectie`, url: `/my/filters/${data.id}`}]"
           />
@@ -352,7 +351,7 @@ export default {
     display: flex;
     justify-content: space-between;
     background: url('./../../../assets/images/filters.svg') 54px 96px no-repeat;
-    background-size: 30px;
+    background-size: 30px 30px;
 
     .bread-crumbs {
       margin-bottom: 0;
@@ -388,6 +387,7 @@ export default {
       display: inline-block;
       vertical-align: top;
       min-width: 50%;
+      flex: 1 1 auto;
     }
 
     &_filter {
@@ -407,14 +407,14 @@ export default {
       &__edit {
         a {
           background: url('./../../../assets/images/edit.svg') no-repeat 0 50%;
-          background-size: 30px;
+          background-size: 30px 30px;
         }
       }
       &__delete {
         margin-left: 32px;
         a {
           background: url('./../../../assets/images/trash.svg') no-repeat 0 50%;
-          background-size: 30px;
+          background-size: 30px 30px;
         }
       }
       &__button {
