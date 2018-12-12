@@ -1,6 +1,6 @@
 <template>
   <section class="container main how_work">
-    <div class="center_block">
+    <div class="center_block how_work__center-header">
       <div class="how_work__info">
         <img
           src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
@@ -18,6 +18,8 @@
           class="how_work__info_search"
         />
       </div>
+    </div>
+    <div class="center_block">
       <div class="how_work__desc">
         <div class="how_work__bg_block">
           <img
@@ -78,12 +80,28 @@ export default {
 <style lang="less">
 @import './../../assets/styles/variables';
 .how_work {
+  &__center-header {
+    @media @mobile {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+    @media @tablet {
+      padding-left: 38px;
+      padding-right: 38px;
+    }
+  }
   padding: 96px 0 115px;
+  @media @mobile {
+    overflow: hidden;
+  }
   &__info {
     padding: 70px 37px 0;
     margin: 0 0 223px;
     border-radius: 20px;
     position: relative;
+    @media @tablet {
+      padding: 70px 48px 0;
+    }
     &_bg {
       position: absolute;
       right: 26px;
@@ -104,6 +122,10 @@ export default {
     &_ttl {
       padding: 0 0 49px;
       position: relative;
+      @media @mobile {
+        margin: 0;
+        font-size: 28px;
+      }
       &:before {
         content: '';
         min-width: 100%;
