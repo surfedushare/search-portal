@@ -5,9 +5,18 @@
     flex-shrink: 0;
     margin: 0 124px 0 0;
     padding: 40px 0 0;
+    @media @mobile {
+      width: 100%;
+    }
     &-box {
       background: url('./../../../assets/images/keurmerk.svg') no-repeat 1px 8px;
       padding: 3px 0 0 35px;
+
+      @media @mobile {
+        background-position-x: 24px;
+        padding-left: 57px;
+        padding-right: 52px;
+      }
       .h3 {
         line-height: 1.2;
         margin: 0 0 6px;

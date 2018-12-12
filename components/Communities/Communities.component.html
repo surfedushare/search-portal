@@ -1,5 +1,5 @@
 <section class="communities">
-  <div class="center_block">
+  <div class="center_block center-header communities__center-header">
     <div class="communities__info ">
       <img
         class="communities__info_bg"
@@ -12,6 +12,8 @@
       <h2 class="communities__info_ttl">Community's</h2>
       <Search class="communities__info_search" :hide-filter="true" :hide-categories="true"  />
     </div>
+  </div>
+  <div class="center_block">
     <ul class="communities__items" v-if="communities">
       <li
         v-for="communitie in communities.results"
