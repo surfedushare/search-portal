@@ -8,6 +8,7 @@ import materials from './modules/materials';
 import themes from './modules/themes';
 import filters from './modules/filters';
 import collections from './modules/collections';
+import statistic from './modules/statistic';
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ const store = () =>
       materials,
       themes,
       filters,
-      collections
+      collections,
+      statistic
     }
   });
 export default store;
