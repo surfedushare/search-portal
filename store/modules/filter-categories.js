@@ -27,7 +27,7 @@ export default {
         commit('SET_FILTER_CATEGORIES', filter);
         commit('SET_FILTER_CATEGORIES_LOADING', false);
 
-        return state.filter_categories;
+        return filter;
       }
       return state.filter_categories;
     }

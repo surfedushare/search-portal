@@ -11,15 +11,38 @@
             :items="[
               {title:'Profiel', url: '/my/'},
               {title:`Mijn selecties`, url: `/my/filters/`},
-              {title:`Selectie`, url: `/my/filters/${data.id}`}]"/>
-          <h2 class="my_filter__info_ttl">{{ data.title }}</h2>
-          <p class="my_filter__info_subttl">{{ data.materials_count }} resultaten</p>
+              {title:`Selectie`, url: `/my/filters/${data.id}`}]"
+          />
+          <h2
+            ref="title"
+            :contenteditable="contenteditable"
+            class="my_filter__info_ttl"
+            @blur="onChangeTitle"
+          >
+            {{ filter_title }}
+          </h2>
+          <p
+            v-if="materials"
+            class="my_filter__info_subttl"
+          >
+            {{ materials.records_total }} resultaten
+          </p>
         </div>
         <div class="my_filter__info_filter">
           <div class="my_filter__info_filter__edit">
             <a
+              v-if="contenteditable"
               class="my_filter__info_filter__link"
               href="#"
+              @click.prevent="setEditable(false)"
+            >
+              Annuleren
+            </a>
+            <a
+              v-else
+              href="#"
+              class="my_filter__info_filter__link"
+              @click.prevent="setEditable(true)"
             >
               Bewerken
             </a>
@@ -28,23 +51,26 @@
             <a
               href="#"
               class="my_filter__info_filter__link"
+              @click.prevent="deleteFilter"
             >
               Verwijderen
             </a>
           </div>
           <div class="my_filter__info_filter__button">
-            <a
-              href="#"
+            <button
+              :disabled="materials && !materials.records_total"
               class="button"
+              @click.prevent="saveFilter"
             >
               Opslaan
-            </a>
+            </button>
           </div>
         </div>
       </div>
       <masonry
         :cols="{default: 4, 1000: 3, 700: 2, 400: 1}"
         :gutter="{default: '60px', 700: '15px'}"
+        :class="{'filter-categories--loading': materials_loading || !all_filters}"
       >
         <div
           v-for="category in all_filters"
@@ -66,10 +92,18 @@
               <input
                 :id="filter.external_id"
                 :value="filter.external_id"
+                :checked="filter.checked"
                 type="checkbox"
-                @change="onChange($event, filter)"
+                @change="onChange($event, filter, category.external_id)"
               >
-              <label :for="filter.external_id">{{ filter.title }} ({{ filter.count }})</label>
+              <label :for="filter.external_id">
+                {{ filter.title }}&nbsp;({{ filter.count }})
+                <span
+                  v-if="category.external_id === 'lom.rights.copyrightandotherrestrictions'"
+                  :class="filter.external_id"
+                  class="filter-categories__subitem_icon filter-categories__subitem_icon--inline"
+                />
+              </label>
             </li>
           </ul>
         </div>
@@ -89,7 +123,11 @@ export default {
   data() {
     return {
       checked_filter: [],
-      data: null
+      checked_categories_filter: [],
+      filters_count: false,
+      contenteditable: false,
+      data: null,
+      filter_title: null
     };
   },
   computed: {
@@ -98,32 +136,42 @@ export default {
       'materials',
       'filters',
       'filter_categories',
+      'materials_loading',
       'user',
       'isAuthenticated'
     ]),
     all_filters() {
-      const { materials, filter_categories } = this;
-      if (materials && filter_categories) {
+      const { filters_count, filter_categories, data } = this;
+      if (filters_count && filter_categories) {
         const { results } = filter_categories;
-        const { filters } = materials;
 
-        return filters.map(category => {
-          const current_filter = results.find(
+        return results.map(category => {
+          const current_filter = filters_count.find(
             filter => filter.external_id === category.external_id
           );
           return {
             ...category,
             ...current_filter,
-            items: category.items.map(item => {
-              const current_item = current_filter.items.find(
-                filter => filter.external_id === item.external_id
-              );
+            items: category.items.reduce((prev, item) => {
+              const current_item =
+                current_filter.items.find(
+                  filter => filter.external_id === item.external_id
+                ) || {};
 
-              return {
-                ...item,
-                ...current_item
-              };
-            })
+              if (current_item && current_item.count) {
+                const ids =
+                  data && data.items
+                    ? data.items.map(item => item.category_item_id)
+                    : false;
+                prev.push({
+                  ...item,
+                  ...current_item,
+                  checked: ids ? ids.indexOf(item.external_id) !== -1 : false
+                });
+              }
+
+              return prev;
+            }, [])
           };
         });
       }
@@ -136,6 +184,20 @@ export default {
       if (isAuthenticated) {
         this.getData();
       }
+    },
+    contenteditable(isEditable) {
+      const { title } = this.$refs;
+      this.$nextTick().then(() => {
+        title.focus();
+      });
+      if (!isEditable) {
+        this.resetData();
+      }
+    },
+    collection(collection) {
+      if (collection) {
+        this.setTitle(collection.title);
+      }
     }
   },
   mounted() {
@@ -145,23 +207,54 @@ export default {
   },
   methods: {
     getData() {
-      this.$store.dispatch('searchMaterials', {
-        return_records: false,
-        search_text: []
-      });
+      this.$store
+        .dispatch('searchMaterials', {
+          return_records: false,
+          search_text: []
+          // filters: [
+          //   {
+          //     external_id: 'lom.classification.obk.educationallevel.id',
+          //     items: [
+          //       'be140797-803f-4b9e-81cc-5572c711e09c',
+          //       'f33b30ee-3c82-4ead-bc20-4255be9ece2d',
+          //       'de952b8b-efa5-4395-92c0-193812130c67',
+          //       'f3ac3fbb-5eae-49e0-8494-0a44855fff25',
+          //       'a598e56e-d1a6-4907-9e2c-3da64e59f9ae',
+          //       '00ace3c7-d7a8-41e6-83b1-7f13a9af7668',
+          //       '654931e1-6f8b-4f72-aa4b-92c99c72c347',
+          //       '8beca7eb-95a5-4c7d-9704-2d2a2fc4bc65',
+          //       'bbbd99c6-cf49-4980-baed-12388f8dcff4',
+          //       '18656a7c-95a5-4831-8085-020d3151aceb',
+          //       '2998f2e0-449d-4911-86a2-f4cbf1a20b56'
+          //     ]
+          //   }
+          // ]
+        })
+        .then(data => {
+          this.filters_count = data.filters.slice(0);
+        });
 
       this.$store
         .dispatch('getDetailFilter', {
           id: this.$route.params.id
         })
         .then(data => {
-          this.data = data;
+          this.data = Object.assign({}, data, {
+            items: data.items.slice(0)
+          });
+          this.setTitle(data.title);
+        })
+        .catch(err => {
+          if (err.response.status === 404) {
+            this.$router.push('/my/filters/');
+          }
         });
 
       this.$store.dispatch('getFilterCategories');
     },
-    onChange($event, filter) {
-      if ($event.target.checked) {
+    onChange($event, filter, external_id) {
+      const { checked } = $event.target;
+      if (checked) {
         this.data.items.push({
           category_item_id: filter.external_id
         });
@@ -172,6 +265,68 @@ export default {
         );
         this.data.materials_count -= filter.count;
       }
+
+      this.changeCheckedCategories(checked, filter, external_id);
+    },
+    changeCheckedCategories(checked, filter, external_id) {
+      const current_category_index = this.checked_categories_filter.findIndex(
+        filter => filter.external_id === external_id
+      );
+
+      if (current_category_index !== -1) {
+        let items = this.checked_categories_filter[
+          current_category_index
+        ].items.slice(0);
+
+        if (checked) {
+          items.push(filter.external_id);
+        } else {
+          items = items.filter(item => item !== filter.external_id);
+        }
+
+        this.checked_categories_filter[current_category_index] = {
+          ...this.checked_categories_filter[current_category_index],
+          items: items
+        };
+      } else {
+        this.checked_categories_filter.push({
+          external_id: external_id,
+          items: [filter.external_id]
+        });
+      }
+
+      this.$store.dispatch('searchMaterials', {
+        return_records: false,
+        search_text: [],
+        filters: this.checked_categories_filter
+      });
+    },
+    saveFilter() {
+      this.$store.dispatch('deleteMyFilter', this.$route.params.id).then(() => {
+        this.$router.push('/my/filters/');
+      });
+    },
+    deleteFilter() {
+      this.$store.dispatch('saveMyFilter', this.data).then(() => {
+        // this.$router.push('/my/filters/');
+      });
+    },
+    setEditable(isEditable) {
+      this.contenteditable = isEditable;
+    },
+    setTitle(title) {
+      this.filter_title = title;
+      if (this.$refs.title) {
+        this.$refs.title.innerText = title;
+      }
+    },
+    onChangeTitle() {
+      this.setTitle(this.$refs.title.innerText);
+    },
+    resetData() {
+      this.setTitle(this.data.title);
+      console.log(111111, this.active_filter);
+      this.data = this.active_filter;
     }
   }
 };
@@ -211,6 +366,10 @@ export default {
     &_ttl {
       padding: 0 0 8px;
       position: relative;
+
+      &:focus {
+        outline: none;
+      }
     }
     &_subttl {
       padding: 0 0 7px;
