@@ -85,6 +85,7 @@
             :to="`/communities/${community.id}`"
             class="materials__item_community_link"
             v-for="community in material.communities"
+            :key="`${community.id}`"
           >
             {{ community.name }}
           </nuxt-link>

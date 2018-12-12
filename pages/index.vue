@@ -14,7 +14,9 @@
           <h2 class="main__info_main-title">Open leermaterialen</h2>
           <div class="main__info_block">
             <div class="bg"/>
-            <h2 class="main__info_title">13.231 open leermaterialen uit het hoger onderwijs</h2>
+            <h2
+              v-if="statistic"
+              class="main__info_title" >{{ statistic.value }} open leermaterialen uit het hoger onderwijs</h2>
             <ul class="main__info_items">
               <li class="main__info_item">Vrij te gebruiken</li>
               <li class="main__info_item">Op kwaliteit beoordeeld</li>
@@ -69,13 +71,14 @@ export default {
     Preview
   },
   computed: {
-    ...mapGetters(['materials', 'communities', 'themes'])
+    ...mapGetters(['materials', 'communities', 'themes', 'statistic'])
   },
   mounted() {
     this.$store.dispatch('getMaterials', {
       page_size: 4
     });
     this.$store.dispatch('getCommunities', { params: { page_size: 3 } });
+    this.$store.dispatch('getStatistic');
   }
 };
 </script>
