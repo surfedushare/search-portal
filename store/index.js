@@ -9,6 +9,7 @@ import themes from './modules/themes';
 import filters from './modules/filters';
 import collections from './modules/collections';
 import statistic from './modules/statistic';
+import headerMenu from './modules/header-menu';
 
 Vue.use(Vuex);
 
@@ -22,7 +23,8 @@ const store = () =>
       themes,
       filters,
       collections,
-      statistic
+      statistic,
+      headerMenu
     }
   });
 export default store;
