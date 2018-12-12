@@ -31,7 +31,7 @@
     </div>
     <div class="quality__views">
       <div class="quality__views_count">
-        {{material.number_of_views}}
+        {{ contedNumber }}
       </div>
       <div class="quality__views_txt">Bekeken</div>
     </div>
@@ -57,13 +57,16 @@
         :description="material.description"
         inline-template
       >
-        <div class="quality__social_links" style="display:none;">
+        <div class="quality__social_links">
           <network network="linkedin" class="quality__social_link">
             <i class="quality__social--linkedin"></i><span class="quality__social_counter">{{'1'}}</span>
           </network>
           <network network="twitter" class="quality__social_link">
             <i class="quality__social--twitter"></i> <span class="quality__social_counter">{{'2'}}</span>
           </network>
+          <a href="#share_link" class="quality__social_link">
+            <i class="quality__social--share"></i> <span class="quality__social_counter">{{'3'}}</span>
+          </a>
         </div>
       </social-sharing>
     </div>

@@ -16,7 +16,7 @@
             <div class="bg"/>
             <h2
               v-if="statistic"
-              class="main__info_title" >{{ statistic.value }} open leermaterialen uit het hoger onderwijs</h2>
+              class="main__info_title" >{{ contedNumber }} open leermaterialen uit het hoger onderwijs</h2>
             <ul class="main__info_items">
               <li class="main__info_item">Vrij te gebruiken</li>
               <li class="main__info_item">Op kwaliteit beoordeeld</li>
@@ -57,6 +57,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Search from '~/components/FilterCategories/Search';
+import numeral from 'numeral';
 import Materials from '~/components/Materials';
 import PopularList from '~/components/Communities/PopularList';
 import Themes from '~/components/Themes';
@@ -71,7 +72,12 @@ export default {
     Preview
   },
   computed: {
-    ...mapGetters(['materials', 'communities', 'themes', 'statistic'])
+    ...mapGetters(['materials', 'communities', 'themes', 'statistic']),
+    contedNumber() {
+      return numeral(this.statistic.value)
+        .format('0,0')
+        .replace(',', '.');
+    }
   },
   mounted() {
     this.$store.dispatch('getMaterials', {
