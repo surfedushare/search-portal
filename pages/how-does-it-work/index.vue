@@ -91,6 +91,15 @@ export default {
       width: 510px;
       border-radius: 21px;
       height: 298px;
+
+      @media @mobile, @tablet {
+        padding: 0;
+        z-index: -1;
+        right: -20px;
+      }
+      @media @mobile {
+        right: -50px;
+      }
     }
     &_ttl {
       padding: 0 0 49px;
@@ -110,6 +119,18 @@ export default {
     }
     &_search {
       margin: 0 66px;
+      @media @mobile, @tablet {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+        margin-bottom: 180px;
+        margin-left: -20px;
+        margin-right: -20px;
+      }
+      @media @tablet {
+        margin-left: -48px;
+        margin-right: -48px;
+      }
       .search__fields {
         margin-bottom: 33px;
       }
