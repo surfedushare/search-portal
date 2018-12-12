@@ -9,7 +9,7 @@
          ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="collections__info_bg">
         <BreadCrumbs
-          :items="[{title:'Profiel', url: '/my/'}, {title:`Mijn Collecties`, url: `/my/collections/`} ]"/>
+          :items="[{title:`Mijn Collecties`, url: `/my/collections/`} ]"/>
         <h2 class="collections__info_ttl">Mijn Collecties</h2>
         <Search
           :hide-categories="true"

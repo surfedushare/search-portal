@@ -9,7 +9,6 @@
         <div class="my_filter__info_title">
           <BreadCrumbs
             :items="[
-              {title:'Profiel', url: '/my/'},
               {title:`Mijn selecties`, url: `/my/filters/`},
               {title:`Selectie`, url: `/my/filters/${data.id}`}]"/>
           <h2 class="my_filter__info_ttl">{{ data.title }}</h2>
