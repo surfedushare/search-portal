@@ -29,9 +29,11 @@ export default {
     if (collection) {
       this.setTitle(collection.title);
     }
+    this.href = window.location.href;
   },
   data() {
     return {
+      href: '',
       collection_title: null
     };
   },

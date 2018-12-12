@@ -15,6 +15,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.0.0",
     "cross-env": "^5.2.0",
+    "numeral": "^2.0.6",
     "nuxt": "^2.0.0",
     "vue-click-outside": "^1.0.7",
     "vue-infinite-scroll": "^2.0.2",

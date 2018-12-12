@@ -1,6 +1,6 @@
 @import './../../../assets/styles/variables';
 .material {
-  &__info{
+  &__info {
     flex: 1 1 auto;
     &_ttl {
       margin: 28px 0 28px;
@@ -8,44 +8,44 @@
         font-size: 28px;
       }
     }
-    &_author{
+    &_author {
       font-family: @second-font;
       font-size: 16px;
       margin: -10px 0 64px;
-      a{
+      a {
         text-decoration: none;
         margin-right: 13px;
         font-weight: bold;
       }
     }
-    &_subttl{
+    &_subttl {
       margin: 0 0 32px;
       border-bottom: 1px solid #f4f4f4;
       padding-bottom: 7px;
     }
-    &_quality{
-      margin: 44px 0 24px;
-      justify-content: space-between;
+    &_quality {
+      margin: 34px 0 24px;
+      justify-content: flex-start;
       align-items: flex-start;
       display: flex;
 
       @media @mobile {
         display: initial;
       }
-      .star-rating{
-        display: inline-block;
+      .star-rating {
+        display: block;
         vertical-align: top;
       }
     }
-    &_description{
+    &_description {
       @media @desktop {
         margin-bottom: 53px;
       }
-      p{
+      p {
         margin-bottom: 23px;
       }
     }
-    &_thems_and_communities{
+    &_thems_and_communities {
       @media @desktop {
         display: flex;
       }
@@ -53,11 +53,11 @@
   }
 }
 
-.quality{
-  &__applauds{
+.quality {
+  &__applauds {
     display: inline-block;
     position: relative;
-    margin: 6px 38px 0 52px;
+    margin: 6px 48px 0 52px;
     padding: 2px 10px;
     font-family: @second-font;
     font-size: 16px;
@@ -66,9 +66,10 @@
     background: #f4f4f4;
     border-radius: 2px;
 
-    &:before{
+    &:before {
       content: '';
-      background: url("./../../../assets/images/clap_green.svg") no-repeat 50% 50%;
+      background: url('./../../../assets/images/clap_green.svg') no-repeat 50%
+        50%;
       background-size: 25px 25px;
       border: 2px solid @green;
       border-radius: 50%;
@@ -86,7 +87,8 @@
       text-decoration: none;
 
       &:before {
-        background: @green url("./../../../assets/images/clap_white.svg") no-repeat 50% 50%;
+        background: @green url('./../../../assets/images/clap_white.svg')
+          no-repeat 50% 50%;
         background-size: 25px 25px;
       }
     }
@@ -96,7 +98,7 @@
       opacity: 0.5;
     }
 
-    &:after{
+    &:after {
       content: '';
       position: absolute;
       top: 50%;
@@ -108,25 +110,25 @@
       border-right: 5px solid #f4f4f4;
     }
   }
-  &__collections{
+  &__collections {
     display: inline-block;
     font-family: @second-font;
     font-size: 16px;
-    margin: 0 13px 0 0;
+    margin: 0 17px 0 0;
     color: #000;
     @media @mobile {
       vertical-align: top;
     }
-    &_count{
+    &_count {
       padding-left: 34px;
-      background: url("./../../../assets/images/collection.svg") no-repeat 0 0;
+      background: url('./../../../assets/images/collection.svg') no-repeat 0 0;
       background-size: 28px 22px;
       color: #050e1d;
       display: block;
       font-weight: bold;
       letter-spacing: 2px;
     }
-    &_txt{
+    &_txt {
       display: block;
       font-family: @second-font;
       font-size: 16px;
@@ -134,24 +136,24 @@
       letter-spacing: -0.2px;
     }
   }
-  &__views{
+  &__views {
     display: inline-block;
     vertical-align: top;
-    margin: 0 43px 0 0;
+    margin: 0 48px 0 0;
     @media @mobile {
       padding-left: 30px;
       margin: 0;
     }
-    &_count{
+    &_count {
       padding-left: 24px;
-      background: url("./../../../assets/images/look_black.svg") no-repeat 0 0;
+      background: url('./../../../assets/images/look_black.svg') no-repeat 0 0;
       background-size: 23px 23px;
       color: #050e1d;
       display: block;
       font-weight: bold;
       letter-spacing: 2px;
     }
-    &_txt{
+    &_txt {
       display: block;
       font-family: @second-font;
       font-size: 16px;
@@ -159,25 +161,22 @@
       letter-spacing: -0.6px;
     }
   }
-  &__star{
+  &__star {
     display: inline-block;
-    max-width: 195px;
-    margin: -2px 0 0;
+    width: 225px;
+    margin: -2px 20px 0 0;
     @media @mobile {
       padding-top: 40px;
     }
-    a{
+    a {
       text-decoration: none;
       margin-left: 5px;
       font-family: @second-font;
       font-weight: bold;
     }
   }
-  &__social{
-    display: inline-block;
-    vertical-align: top;
-    width: 225px;
-    .title-social{
+  &__social {
+    .title-social {
       display: none;
     }
   }

@@ -41,6 +41,11 @@ export default {
       commit('SET_MATERIAL', material);
       commit('SET_MATERIAL_LOADING', false);
     },
+    async getMaterialShare({ commit }, params) {
+      // commit('SET_MATERIAL', null);
+      const material = await this.$axios.$get(`materials/`, { params });
+      commit('SET_MATERIAL', material);
+    },
     async getMaterials({ commit }) {
       const materials = await this.$axios.$get('materials/');
       commit('SET_MATERIALS', materials);
