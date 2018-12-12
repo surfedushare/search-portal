@@ -4,9 +4,9 @@
     <div class="center_block">
       <div class="my_filters__info ">
         <img
-          src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-          srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-         ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+          src="./../../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
+          srcset="./../../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+         ./../../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="my_filters__info_bg">
         <BreadCrumbs
           :items="[{title:'Profiel', url: '/my/'}, {title:`Mijn Filters`, url: `/my/filters/`} ]"/>
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="less">
-@import './../../assets/styles/variables';
+@import './../../../assets/styles/variables';
 .my_filters {
   width: 100%;
   padding: 101px 0 47px;
@@ -108,7 +108,7 @@ export default {
     margin-bottom: -55px;
     &__link {
       padding: 13px 43px 13px 51px;
-      background-image: url('./../../assets/images/plus-black.svg');
+      background-image: url('./../../../assets/images/plus-black.svg');
       background-position: 10px 50%;
       background-repeat: no-repeat;
       background-size: 24px;

@@ -33,6 +33,13 @@ export default {
         commit('SET_FILTER', { id });
       }
     },
+    async getDetailFilter({ commit }, { id }) {
+      console.log(id);
+      if (id && id.length) {
+        const filter = await this.$axios.$get(`filters/${id}/`);
+        this.dispatch('setActiveFilter', filter);
+      }
+    },
     async postFilter({ commit }, { title, items }) {
       const { filters } = items;
       const external_ids = filters.map(item => item.external_id);

@@ -18,6 +18,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    contenteditable: {
+      type: Boolean,
+      default: false
     }
   },
   components: {

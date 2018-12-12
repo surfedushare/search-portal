@@ -3,10 +3,10 @@ import { generateSearchMaterialsQuery } from '../_helpers';
 
 export default {
   name: 'filter-categories',
-  props: ['value', 'showPopupSaveFilter'],
+  props: ['value', 'showPopupSaveFilter', 'full-filter'],
   components: {},
   mounted() {
-    if (this.isAuthenticated) {
+    if (this.isAuthenticated && !this.fullFilter) {
       this.$store.dispatch('getFilters');
     }
   },
@@ -139,7 +139,7 @@ export default {
      * @param isAuthenticated
      */
     isAuthenticated(isAuthenticated) {
-      if (isAuthenticated) {
+      if (isAuthenticated && !this.fullFilter) {
         this.$store.dispatch('getFilters');
       }
     },

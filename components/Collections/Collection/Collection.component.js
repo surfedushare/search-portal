@@ -1,4 +1,3 @@
-import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
 
@@ -7,22 +6,64 @@ export default {
   props: {
     collection: {
       default: false
+    },
+    contenteditable: {
+      default: false
+    },
+    setEditable: {
+      default: false
+    },
+    changeViewType: {
+      default: false
+    },
+    'items-in-line': {
+      default: 4
     }
   },
   components: {
     BreadCrumbs,
     DirectSearch
   },
-  mounted() {},
+  mounted() {
+    const { collection } = this;
+    if (collection) {
+      this.setTitle(collection.title);
+    }
+  },
   data() {
     return {
-      contenteditable: true
+      collection_title: null
     };
   },
-  methods: {},
-  computed: {
-    collection_title() {
-      return this.collection ? this.collection.title : false;
+  methods: {
+    setTitle(title) {
+      this.collection_title = title;
+      if (this.$refs.title) {
+        this.$refs.title.innerText = title;
+      }
+    },
+    onChangeTitle() {
+      this.setTitle(this.$refs.title.innerText);
+    },
+    resetData() {
+      this.setTitle(this.collection.title);
+    }
+  },
+  computed: {},
+  watch: {
+    contenteditable(isEditable) {
+      const { title } = this.$refs;
+      this.$nextTick().then(() => {
+        title.focus();
+      });
+      if (!isEditable) {
+        this.resetData();
+      }
+    },
+    collection(collection) {
+      if (collection) {
+        this.setTitle(collection.title);
+      }
     }
   }
 };

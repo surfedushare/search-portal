@@ -2,7 +2,13 @@
 <template>
   <section class="container main collection">
     <div class="center_block">
-      <Collection :collection="my_collection"/>
+      <Collection
+        :collection="my_collection"
+        :contenteditable="contenteditable"
+        :set-editable="setEditable"
+        :change-view-type="changeViewType"
+        :items-in-line="materials_in_line"
+      />
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="my_collection_materials_loading"
@@ -10,8 +16,9 @@
       >
         <Materials
           :materials="my_collection_materials"
-          :items-in-line="4"
+          :items-in-line="materials_in_line"
           :loading="my_collection_materials_loading"
+          :contenteditable="contenteditable"
           class="collection__materials"
         />
         <Spinner v-if="my_collection_materials_loading" />
@@ -32,6 +39,12 @@ export default {
     Materials,
     Spinner
   },
+  data() {
+    return {
+      contenteditable: false,
+      materials_in_line: 4
+    };
+  },
   computed: {
     ...mapGetters([
       'my_collection',
@@ -51,7 +64,7 @@ export default {
   },
   methods: {
     /**
-     * Load next materials
+     * Load next collections
      */
     loadMore() {
       const { my_collection_materials } = this;
@@ -65,6 +78,19 @@ export default {
             Object.assign({}, { id, page: page + 1, page_size })
           );
         }
+      }
+    },
+    setEditable(isEditable) {
+      this.contenteditable = isEditable;
+    },
+    /**
+     * Change 1 item in line to 4 and back.
+     */
+    changeViewType() {
+      if (this.materials_in_line === 1) {
+        this.materials_in_line = 4;
+      } else {
+        this.materials_in_line = 1;
       }
     }
   }

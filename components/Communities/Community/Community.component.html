@@ -23,6 +23,7 @@
         <img
           class="community__description_img"
           :src="`${ community_info.featured_image }`"
+          v-if="community_info.featured_image"
           alt="">
         <h2 class="community__description_ttl">Over de community</h2>
         <p class="community__description_txt">

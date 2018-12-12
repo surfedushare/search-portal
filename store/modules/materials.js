@@ -82,6 +82,7 @@ export default {
 
       commit('SET_MATERIALS', materials);
       commit('SET_MATERIALS_LOADING', false);
+      return materials;
     },
     async searchNextPageMaterials({ commit }, search) {
       commit('SET_MATERIALS_LOADING', true);
