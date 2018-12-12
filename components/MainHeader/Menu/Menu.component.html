@@ -19,7 +19,7 @@
                 <nuxt-link
                   class="menu__sub_link arrow-link"
                   :to="`/themes/${theme.id}/`"
-                  @click.native="closeSubMenu"
+                  @click.native="closeSubMenu(true)"
                 >
                   {{theme.title}}
                 </nuxt-link>
@@ -32,7 +32,7 @@
         <nuxt-link
           to="/communities/"
           class="menu__link"
-          @click.native="closeSubMenu"
+          @click.native="closeSubMenu(true)"
         >
           Community's
         </nuxt-link>
@@ -41,7 +41,7 @@
         <nuxt-link
           to="/how-does-it-work/"
           class="menu__link"
-          @click.native="closeSubMenu"
+          @click.native="closeSubMenu(true)"
         >
           Hoe werk het?
         </nuxt-link>

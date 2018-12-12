@@ -13,11 +13,17 @@ export default {
     toggleSubMenu() {
       this.isShowSubMenu = !this.isShowSubMenu;
     },
-    closeSubMenu() {
+    closeSubMenu(hide = false) {
       this.isShowSubMenu = false;
+      if (hide === true) {
+        this.hideMenu();
+      }
+    },
+    hideMenu() {
+      this.$store.commit('SET_HEADER_MENU_STATE', false);
     }
   },
   computed: {
-    ...mapGetters(['themes'])
+    ...mapGetters(['themes', 'show_header_menu'])
   }
 };
