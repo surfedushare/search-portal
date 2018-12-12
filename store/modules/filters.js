@@ -37,6 +37,17 @@ export default {
       const filter = await this.$axios.$post(`filters/`, data);
       commit('ADD_MY_FILTER', filter);
     },
+    async saveMyFilter({ commit }, data) {
+      console.log(data);
+      // await this.$axios.$delete(`filters/${id}/`);
+      // commit('DELETE_MY_FILTER', id);
+      // this.dispatch('setActiveFilter', null);
+    },
+    async deleteMyFilter({ commit }, id) {
+      await this.$axios.$delete(`filters/${id}/`);
+      commit('DELETE_MY_FILTER', id);
+      this.dispatch('setActiveFilter', null);
+    },
     async getDetailFilter({ commit }, { id }) {
       if (id && id.length) {
         const filter = await this.$axios.$get(`filters/${id}/`);
@@ -99,6 +110,9 @@ export default {
     },
     ADD_MY_FILTER(state, payload) {
       state.filters = [payload, ...state.filters];
+    },
+    DELETE_MY_FILTER(state, id) {
+      state.filters = state.filters.filter(filter => filter.id !== id);
     },
     EXTEND_FILTERS(state, payload) {
       state.filters = [...state.filters, payload];

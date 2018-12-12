@@ -57,7 +57,7 @@
     </div>
   </div>
   <div class="main-header__mobile">
-    <button class="main-header__menu_button"></button>
+    <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
     <nuxt-link to="/" class="main-header__mobile_logo">
       <img
         src="./../../assets/images/surflogo.png"
@@ -65,6 +65,12 @@
         class="main-header__logo_img"
       >
     </nuxt-link>
+    <div class="main-header__mobile_menu" v-if="show_header_menu">
+      <div class="main-header__mobile_login">
+        <a :href="getLoginLink()" class="button">Inloggen</a>
+      </div>
+      <Menu class="main-header__menu" />
+    </div>
   </div>
 </section>
 
