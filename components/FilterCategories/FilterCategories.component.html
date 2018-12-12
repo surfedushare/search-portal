@@ -33,7 +33,7 @@
         class="filter-categories__item_title"
         :class="{'filter-categories__item_title--hide': category.selected}"
       >{{ category.title }}</h4>
-      <ul v-if="category.selected"  class="filter-categories__subitems">
+      <ul v-if="category.selected" class="filter-categories__subitems">
         <li
           v-for="(item, indexItem) in category.items"
           class="filter-categories__subitem"

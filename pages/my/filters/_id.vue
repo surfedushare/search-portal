@@ -42,17 +42,26 @@
           </div>
         </div>
       </div>
-      <ul class="my_filter__list">
-        <li
+      <masonry
+        :cols="{default: 4, 1000: 3, 700: 2, 400: 1}"
+        :gutter="{default: '60px', 700: '15px'}"
+      >
+        <div
           v-for="category in all_filters"
+          v-if="!category.hide"
           :key="category.external_id"
-          class="my_filter__list_item"
+          class="filter-categories__item"
         >
-          <h4>{{ category.external_id }}</h4>
-          <ul>
+          <h4
+            class="filter-categories__item_title"
+          >
+            {{ category.title }}
+          </h4>
+          <ul class="filter-categories__subitems">
             <li
               v-for="filter in category.items"
               :key="filter.external_id"
+              class="filter-categories__subitem"
             >
               <input
                 :id="filter.external_id"
@@ -60,11 +69,11 @@
                 type="checkbox"
                 @change="onChange($event, filter)"
               >
-              <label :for="filter.external_id">{{ filter.external_id }} ({{ filter.count }})</label>
+              <label :for="filter.external_id">{{ filter.title }} ({{ filter.count }})</label>
             </li>
           </ul>
-        </li>
-      </ul>
+        </div>
+      </masonry>
     </div>
   </section>
 </template>
@@ -79,13 +88,48 @@ export default {
   },
   data() {
     return {
-      all_filters: null,
       checked_filter: [],
       data: null
     };
   },
   computed: {
-    ...mapGetters(['active_filter', 'user', 'isAuthenticated'])
+    ...mapGetters([
+      'active_filter',
+      'materials',
+      'filters',
+      'filter_categories',
+      'user',
+      'isAuthenticated'
+    ]),
+    all_filters() {
+      const { materials, filter_categories } = this;
+      if (materials && filter_categories) {
+        const { results } = filter_categories;
+        const { filters } = materials;
+
+        return filters.map(category => {
+          const current_filter = results.find(
+            filter => filter.external_id === category.external_id
+          );
+          return {
+            ...category,
+            ...current_filter,
+            items: category.items.map(item => {
+              const current_item = current_filter.items.find(
+                filter => filter.external_id === item.external_id
+              );
+
+              return {
+                ...item,
+                ...current_item
+              };
+            })
+          };
+        });
+      }
+
+      return false;
+    }
   },
   watch: {
     isAuthenticated(isAuthenticated) {
@@ -101,14 +145,10 @@ export default {
   },
   methods: {
     getData() {
-      this.$store
-        .dispatch('searchMaterials', {
-          return_records: false,
-          search_text: []
-        })
-        .then(data => {
-          this.all_filters = data.filters;
-        });
+      this.$store.dispatch('searchMaterials', {
+        return_records: false,
+        search_text: []
+      });
 
       this.$store
         .dispatch('getDetailFilter', {
@@ -117,6 +157,8 @@ export default {
         .then(data => {
           this.data = data;
         });
+
+      this.$store.dispatch('getFilterCategories');
     },
     onChange($event, filter) {
       if ($event.target.checked) {
@@ -231,4 +273,6 @@ export default {
     }
   }
 }
+</style>
+<style src="./../../../components/FilterCategories/FilterCategories.component.less" scoped lang="less">
 </style>

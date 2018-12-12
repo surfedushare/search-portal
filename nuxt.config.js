@@ -69,6 +69,10 @@ module.exports = {
     {
       src: '~/plugins/SocialSharing',
       ssr: false
+    },
+    {
+      src: '~/plugins/VueMasonry',
+      ssr: false
     }
   ],
 

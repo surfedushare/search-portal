@@ -1,5 +1,4 @@
-/**
- * Created by urijdunaev on 2018-12-12.
- */
+import Vue from 'vue';
+import VueMasonry from 'vue-masonry-css';
 
-'use strict';
+Vue.use(VueMasonry);
