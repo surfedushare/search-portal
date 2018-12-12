@@ -97,7 +97,7 @@ export default {
     ADD_MY_COLLECTION(state, payload) {
       state.my_collections = {
         ...state.my_collections,
-        results: [...state.my_collections.results, payload]
+        results: [payload, ...state.my_collections.results]
       };
     },
     SET_MATERIAL_TO_MY_COLLECTION(state, payload) {

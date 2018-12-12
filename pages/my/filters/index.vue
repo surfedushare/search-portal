@@ -19,15 +19,23 @@
         />
       </div>
       <div class="my_filters__add">
-        <a
-          href="/"
-          class="my_filters__add__link button">Nieuwe collectie
-        </a>
+        <button
+          class="my_filters__add__link button"
+          @click.prevent="showAddFilter"
+        >
+          Nieuwe selectie
+        </button>
       </div>
       <MaterialsFilters
         :materials_filters="filters"
-        :user="user"/>
+        :user="user"
+      />
     </div>
+    <AddFilter
+      v-if="isShow"
+      :close="close"
+      :is-show="isShow"
+    />
   </section>
 </template>
 
@@ -36,20 +44,42 @@ import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import MaterialsFilters from '~/components/MaterialsFilters';
 import Search from '~/components/FilterCategories/Search';
+import AddFilter from '~/components/Popup/AddFilter';
 
 export default {
   components: {
     MaterialsFilters,
     BreadCrumbs,
-    Search
+    Search,
+    AddFilter
+  },
+  data() {
+    return {
+      isShow: false
+    };
   },
   computed: {
-    ...mapGetters(['filters', 'user'])
+    ...mapGetters(['filters', 'user', 'isAuthenticated'])
+  },
+  watch: {
+    isAuthenticated(isAuthenticated) {
+      if (isAuthenticated) {
+        this.$store.dispatch('getFilters');
+      }
+    }
   },
   mounted() {
-    console.log(this.$route);
-    // this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
-    this.$store.dispatch('getFilters');
+    if (this.isAuthenticated) {
+      this.$store.dispatch('getFilters');
+    }
+  },
+  methods: {
+    showAddFilter() {
+      this.isShow = true;
+    },
+    close() {
+      this.isShow = false;
+    }
   }
 };
 </script>

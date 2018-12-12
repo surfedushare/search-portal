@@ -66,11 +66,7 @@ export default {
   },
   methods: {
     showAddCollection() {
-      console.log(11111);
       this.isShow = true;
-    },
-    addCollection() {
-      console.log(11111);
     },
     close() {
       this.isShow = false;

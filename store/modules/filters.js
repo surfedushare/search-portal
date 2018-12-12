@@ -33,11 +33,15 @@ export default {
         commit('SET_FILTER', { id });
       }
     },
+    async postMyFilter({ commit }, data) {
+      const filter = await this.$axios.$post(`filters/`, data);
+      commit('ADD_MY_FILTER', filter);
+    },
     async getDetailFilter({ commit }, { id }) {
-      console.log(id);
       if (id && id.length) {
         const filter = await this.$axios.$get(`filters/${id}/`);
         this.dispatch('setActiveFilter', filter);
+        return filter;
       }
     },
     async postFilter({ commit }, { title, items }) {
@@ -92,6 +96,9 @@ export default {
         }
         return filter;
       });
+    },
+    ADD_MY_FILTER(state, payload) {
+      state.filters = [payload, ...state.filters];
     },
     EXTEND_FILTERS(state, payload) {
       state.filters = [...state.filters, payload];
