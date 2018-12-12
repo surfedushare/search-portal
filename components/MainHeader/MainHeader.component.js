@@ -28,9 +28,13 @@ export default {
         // location.reload();
         window.location = process.env.logoutURL;
       });
+    },
+
+    toggleMobileMenu() {
+      this.$store.commit('SET_HEADER_MENU_STATE', !this.show_header_menu);
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user'])
+    ...mapGetters(['isAuthenticated', 'user', 'show_header_menu'])
   }
 };

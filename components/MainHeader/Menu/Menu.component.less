@@ -21,6 +21,10 @@
     margin: 0 35px;
     padding: 5px 10px;
 
+    @media @mobile, @tablet {
+      padding-left: 0;
+      margin-left: 0;
+    }
     &.nuxt-link-active {
       background: @light-grey;
 
@@ -37,16 +41,25 @@
   }
 
   &__sub {
-    position: absolute;
-    left: 0;
-    top: 100%;
+    @media @mobile, @tablet {
+      padding-top: 20px;
+      padding-right: 15px;
+    }
+    @media @desktop {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      padding: 152px 123px;
+      box-shadow: 0 5px 30px 0 rgba(170, 170, 170, 0.2);
+    }
     width: 100%;
-    box-shadow: 0 5px 30px 0 rgba(170, 170, 170, 0.2);
     background-color: #fff;
-    padding: 152px 123px;
 
     h3 {
       margin: 0 0 30px;
+      @media @mobile, @tablet {
+        display: none;
+      }
     }
 
     &_list {
@@ -60,12 +73,21 @@
       &_item {
         min-width: 24%;
         margin: 0 0 20px;
+        @media @mobile, @tablet {
+          width: 100%;
+        }
       }
     }
 
     &_link {
       &:after {
-        margin: 0 0 0 7px;
+        @media @desktop {
+          margin: 0 0 0 7px;
+        }
+        @media @mobile, @tablet {
+          float: right;
+          margin-top: 6px;
+        }
       }
 
       &.nuxt-link-exact-active {
