@@ -7,7 +7,10 @@
     :class="{loading: current_loading}"
   >
     <li
-      :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
+      :class="[
+        `tile--items-in-line-${itemsInLine}`,
+        `materials__item--items-in-line-${itemsInLine}`
+      ]"
       v-for="(material, index) in extended_materials"
       class="materials__item tile"
       v-if="itemsLength !== 'auto' ? index < itemsLength : true"
@@ -15,7 +18,10 @@
       <div class="materials__bookmark" v-if="material.has_bookmark">Bookmark</div>
       <div class="materials__item_wrapper tile__wrapper">
         <div class="materials__item_main_info">
-          <button class="materials__item_delete" v-if="contenteditable">Delete</button>
+          <button
+            class="materials__item_delete"
+            v-if="contenteditable"
+          >Delete</button>
           <h3 class="materials__item_title">
             <nuxt-link
               class="materials__item_link"
