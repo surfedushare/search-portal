@@ -4,44 +4,76 @@
     <div
       class="center_block">
       <div
-        v-if="active_filter"
+        v-if="data"
         class="my_filter__info" >
         <div class="my_filter__info_title">
           <BreadCrumbs
             :items="[
               {title:'Profiel', url: '/my/'},
               {title:`Mijn selecties`, url: `/my/filters/`},
-              {title:`Selectie`, url: `/my/filters/${active_filter.id}`}]"/>
-          <h2 class="my_filter__info_ttl">{{ active_filter.title }}</h2>
-          <p class="my_filter__info_subttl">{{ active_filter.materials_count }} resultaten</p>
+              {title:`Selectie`, url: `/my/filters/${data.id}`}]"/>
+          <h2 class="my_filter__info_ttl">{{ data.title }}</h2>
+          <p class="my_filter__info_subttl">{{ data.materials_count }} resultaten</p>
         </div>
         <div class="my_filter__info_filter">
           <div class="my_filter__info_filter__edit">
             <a
               class="my_filter__info_filter__link"
-              href="#" >Bewerken</a>
+              href="#"
+            >
+              Bewerken
+            </a>
           </div>
           <div class="my_filter__info_filter__delete">
             <a
               href="#"
-              class="my_filter__info_filter__link">Verwijderen</a>
+              class="my_filter__info_filter__link"
+            >
+              Verwijderen
+            </a>
           </div>
           <div class="my_filter__info_filter__button">
             <a
               href="#"
-              class="button">Opslaan</a>
+              class="button"
+            >
+              Opslaan
+            </a>
           </div>
         </div>
       </div>
-      <div class="my_filter__list">
-        <div class="my_filter__list_item">
-          <div class="my_filter__list_title">Leerniveau</div>
-          <!--<pre>{{ active_filter }}</pre>-->
-          <FilterCategories
-            :full-filter="true"
-          />
+      <masonry
+        :cols="{default: 4, 1000: 3, 700: 2, 400: 1}"
+        :gutter="{default: '60px', 700: '15px'}"
+      >
+        <div
+          v-for="category in all_filters"
+          v-if="!category.hide"
+          :key="category.external_id"
+          class="filter-categories__item"
+        >
+          <h4
+            class="filter-categories__item_title"
+          >
+            {{ category.title }}
+          </h4>
+          <ul class="filter-categories__subitems">
+            <li
+              v-for="filter in category.items"
+              :key="filter.external_id"
+              class="filter-categories__subitem"
+            >
+              <input
+                :id="filter.external_id"
+                :value="filter.external_id"
+                type="checkbox"
+                @change="onChange($event, filter)"
+              >
+              <label :for="filter.external_id">{{ filter.title }} ({{ filter.count }})</label>
+            </li>
+          </ul>
         </div>
-      </div>
+      </masonry>
     </div>
   </section>
 </template>
@@ -49,15 +81,55 @@
 <script>
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import FilterCategories from '~/components/FilterCategories';
 
 export default {
   components: {
-    BreadCrumbs,
-    FilterCategories
+    BreadCrumbs
+  },
+  data() {
+    return {
+      checked_filter: [],
+      data: null
+    };
   },
   computed: {
-    ...mapGetters(['active_filter', 'user', 'isAuthenticated'])
+    ...mapGetters([
+      'active_filter',
+      'materials',
+      'filters',
+      'filter_categories',
+      'user',
+      'isAuthenticated'
+    ]),
+    all_filters() {
+      const { materials, filter_categories } = this;
+      if (materials && filter_categories) {
+        const { results } = filter_categories;
+        const { filters } = materials;
+
+        return filters.map(category => {
+          const current_filter = results.find(
+            filter => filter.external_id === category.external_id
+          );
+          return {
+            ...category,
+            ...current_filter,
+            items: category.items.map(item => {
+              const current_item = current_filter.items.find(
+                filter => filter.external_id === item.external_id
+              );
+
+              return {
+                ...item,
+                ...current_item
+              };
+            })
+          };
+        });
+      }
+
+      return false;
+    }
   },
   watch: {
     isAuthenticated(isAuthenticated) {
@@ -68,24 +140,38 @@ export default {
   },
   mounted() {
     if (this.isAuthenticated) {
-      console.log(this.$route.params.id, this.isAuthenticated);
       this.getData();
     }
   },
   methods: {
     getData() {
+      this.$store.dispatch('searchMaterials', {
+        return_records: false,
+        search_text: []
+      });
+
       this.$store
-        .dispatch('searchMaterials', {
-          return_records: false,
-          search_text: []
+        .dispatch('getDetailFilter', {
+          id: this.$route.params.id
         })
-        .then(filters => {
-          console.log(115623, filters);
-          this.$store.commit('SET_FILTERS', filters);
-          this.$store.dispatch('getDetailFilter', {
-            id: this.$route.params.id
-          });
+        .then(data => {
+          this.data = data;
         });
+
+      this.$store.dispatch('getFilterCategories');
+    },
+    onChange($event, filter) {
+      if ($event.target.checked) {
+        this.data.items.push({
+          category_item_id: filter.external_id
+        });
+        this.data.materials_count += filter.count;
+      } else {
+        this.data.items = this.data.items.filter(
+          item => item.category_item_id !== filter.external_id
+        );
+        this.data.materials_count -= filter.count;
+      }
     }
   }
 };
@@ -187,4 +273,6 @@ export default {
     }
   }
 }
+</style>
+<style src="./../../../components/FilterCategories/FilterCategories.component.less" scoped lang="less">
 </style>
