@@ -25,7 +25,7 @@
             v-if="materials"
             class="my_filter__info_subttl"
           >
-            {{ materials.records_total }} resultaten
+            {{ data.materials_count }} resultaten
           </p>
         </div>
         <div class="my_filter__info_filter">
@@ -67,6 +67,7 @@
           </div>
         </div>
       </div>
+
       <masonry
         :cols="{default: 4, 1000: 3, 700: 2, 400: 1}"
         :gutter="{default: '60px', 700: '15px'}"
@@ -239,9 +240,7 @@ export default {
           id: this.$route.params.id
         })
         .then(data => {
-          this.data = Object.assign({}, data, {
-            items: data.items.slice(0)
-          });
+          this.setDefaultData(data);
           this.setTitle(data.title);
         })
         .catch(err => {
@@ -252,21 +251,25 @@ export default {
 
       this.$store.dispatch('getFilterCategories');
     },
+    setDefaultData(data) {
+      this.data = Object.assign({}, data, {
+        items: data.items.slice(0)
+      });
+    },
     onChange($event, filter, external_id) {
       const { checked } = $event.target;
       if (checked) {
         this.data.items.push({
           category_item_id: filter.external_id
         });
-        this.data.materials_count += filter.count;
       } else {
         this.data.items = this.data.items.filter(
           item => item.category_item_id !== filter.external_id
         );
-        this.data.materials_count -= filter.count;
       }
 
       this.changeCheckedCategories(checked, filter, external_id);
+      this.setEditable(true);
     },
     changeCheckedCategories(checked, filter, external_id) {
       const current_category_index = this.checked_categories_filter.findIndex(
@@ -295,11 +298,15 @@ export default {
         });
       }
 
-      this.$store.dispatch('searchMaterials', {
-        return_records: false,
-        search_text: [],
-        filters: this.checked_categories_filter
-      });
+      this.$store
+        .dispatch('searchMaterials', {
+          return_records: false,
+          search_text: [],
+          filters: this.checked_categories_filter
+        })
+        .then(data => {
+          this.data.materials_count = data.records_total;
+        });
     },
     saveFilter() {
       this.$store.dispatch('deleteMyFilter', this.$route.params.id).then(() => {
@@ -325,8 +332,7 @@ export default {
     },
     resetData() {
       this.setTitle(this.data.title);
-      console.log(111111, this.active_filter);
-      this.data = this.active_filter;
+      this.setDefaultData(this.active_filter);
     }
   }
 };
