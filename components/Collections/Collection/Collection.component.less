@@ -4,6 +4,9 @@
     padding: 0 55px 0;
     margin: 0 0 97px;
     position: relative;
+    @media @mobile {
+      padding: 0 27px 0;
+    }
     &_wrapper {
       display: flex;
       padding-top: 32px;
@@ -68,7 +71,9 @@
       display: inline-block;
     }
     &_search {
-      margin: 0 50px;
+      @media @desktop, @tablet {
+        margin: 0 50px;
+      }
       .search__fields {
         margin-bottom: 33px;
       }
