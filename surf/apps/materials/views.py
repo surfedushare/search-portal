@@ -28,11 +28,16 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 
-from surf.apps.filters.models import FilterCategory, FilterCategoryItem
-from surf.apps.themes.models import Theme
+from surf.apps.filters.models import FilterCategory
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_filters
 from surf.apps.core.mixins import ListDestroyModelMixin
-from surf.apps.materials.utils import add_extra_parameters_to_materials
+
+from surf.apps.materials.utils import (
+    add_extra_parameters_to_materials,
+    get_material_details_by_id,
+    add_material_themes,
+    add_material_disciplines
+)
 
 from surf.apps.materials.models import (
     Collection,
@@ -67,8 +72,6 @@ from surf.apps.materials.filters import (
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     AUTHOR_FIELD_ID,
-    DISCIPLINE_FIELD_ID,
-    CUSTOM_THEME_FIELD_ID,
     PUBLISHER_DATE_FIELD_ID
 )
 
@@ -243,46 +246,9 @@ def _get_material_by_external_id(request, external_id, shared=None):
 
         SharedResourceCounter.increase_counter(counter_key, extra=shared)
 
-    rv = _get_material_details_by_id(external_id)
+    rv = get_material_details_by_id(external_id)
     rv = add_extra_parameters_to_materials(request.user, rv)
     rv = add_share_counters_to_materials(rv)
-    return rv
-
-
-_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
-
-
-def _get_material_details_by_id(material_id):
-    """
-    Request from EduRep and return details of material by its EduRep id
-    :param material_id: id of material in EduRep
-    :return: list of requested materials
-    """
-    ac = XmlEndpointApiClient(
-        api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
-    res = ac.get_materials_by_id(['"{}"'.format(material_id)],
-                                 drilldown_names=[_DISCIPLINE_FILTER])
-
-    # define themes and disciplines for requested material
-    themes = []
-    disciplines = []
-    for f in res.get("drilldowns", []):
-        if f["external_id"] == CUSTOM_THEME_FIELD_ID:
-            themes = [item["external_id"] for item in f["items"]]
-        elif f["external_id"] == DISCIPLINE_FIELD_ID:
-            disciplines = [item["external_id"] for item in f["items"]]
-
-    # set extra details for requested material
-    rv = res.get("records", [])
-    for material in rv:
-        material["themes"] = themes
-        material["disciplines"] = disciplines
-
-        m = Material.objects.filter(external_id=material_id).first()
-        if m:
-            material["number_of_collections"] = m.collections.count()
-
     return rv
 
 
@@ -492,7 +458,7 @@ class CollectionViewSet(ModelViewSet):
         for material in materials:
             m_external_id = material["external_id"]
 
-            details = _get_material_details_by_id(m_external_id)
+            details = get_material_details_by_id(m_external_id)
             if not details:
                 continue
 
@@ -507,8 +473,8 @@ class CollectionViewSet(ModelViewSet):
                               description=details[0].get("description"),
                               keywords=keywords))
 
-            _add_material_themes(m, details[0].get("themes", []))
-            _add_material_disciplines(m, details[0].get("disciplines", []))
+            add_material_themes(m, details[0].get("themes", []))
+            add_material_disciplines(m, details[0].get("disciplines", []))
             instance.materials.add(m)
 
     @staticmethod
@@ -539,16 +505,6 @@ class CollectionViewSet(ModelViewSet):
 
         if instance and (instance.owner_id != user.id):
             raise AuthenticationFailed()
-
-
-def _add_material_themes(material, themes):
-    ts = Theme.objects.filter(external_id__in=themes).all()
-    material.themes.set(ts)
-
-
-def _add_material_disciplines(material, disciplines):
-    ds = FilterCategoryItem.objects.filter(external_id__in=disciplines).all()
-    material.disciplines.set(ds)
 
 
 class ApplaudMaterialViewSet(ListModelMixin,
