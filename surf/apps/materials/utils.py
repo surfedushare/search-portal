@@ -92,7 +92,7 @@ def add_extra_parameters_to_materials(user, materials):
             collections__materials__external_id=m["external_id"])
 
         m["communities"] = [dict(id=c.id, name=c.name) for c in
-                            communities.all()]
+                            communities.distinct().all()]
 
     return materials
 
