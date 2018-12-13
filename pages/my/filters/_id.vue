@@ -379,7 +379,6 @@ export default {
           end_date: this.data.end_date || null
         })
         .then(data => {
-          console.log(data);
           this.setDefaultData(data);
           this.submitting = false;
         });

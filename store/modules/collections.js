@@ -33,12 +33,14 @@ export default {
       return state.my_collections;
     },
     async getMyCollection({ state, commit }, id) {
-      if (!state.my_collection) {
-        const collection = await this.$axios.$get(`collections/${id}/`);
-        commit('SET_MY_COLLECTION', collection);
-        return collection;
-      }
-      return state.my_collection;
+      const collection = await this.$axios.$get(`collections/${id}/`);
+      commit('SET_MY_COLLECTION', collection);
+      return collection;
+    },
+    async deleteMyCollection({ state, commit }, id) {
+      const collection = await this.$axios.$delete(`collections/${id}/`);
+      commit('DELETE_MY_COLLECTION', id);
+      return collection;
     },
     async postMyCollection({ state, commit }, data) {
       const collection = await this.$axios.$post(`collections/`, data);
@@ -98,6 +100,16 @@ export default {
       state.my_collections = {
         ...state.my_collections,
         results: [payload, ...state.my_collections.results]
+      };
+    },
+    DELETE_MY_COLLECTION(state, id) {
+      state.my_collections = {
+        ...state.my_collections,
+        results: state.my_collections.results
+          ? state.my_collections.results.filter(
+              collection => collection.id !== id
+            )
+          : []
       };
     },
     SET_MATERIAL_TO_MY_COLLECTION(state, payload) {

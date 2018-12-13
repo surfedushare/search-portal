@@ -35,20 +35,60 @@
           class="arrow-link"
         >Inloggen met SURFconext</a>
       </template>
-      <button
-        v-else-if="!material.has_bookmark"
-        class="h3"
-        @click.prevent="addToCollection"
+      <template v-else-if="isAuthenticated && my_collections && !my_collections.results.length">
+        <h3 class="h3">Materiaal toevoegen aan collectie</h3>
+        <p>U heeft nog geen collecties. Maak uw eerste collectie aan.</p>
+        <a
+          href="/add_collection/"
+          @click=""
+          class="add-link"
+          @click.prevent="addCollection"
+        >Collectie maken</a>
+      </template>
+      <template v-else-if="isAuthenticated && my_collections && my_collections.results && !material.has_bookmark">
+        <h3 class="h3">Materiaal toevoegen aan collectie</h3>
+        <div class="select material__left_select">
+          <select
+            name="collections"
+            v-model="collection"
+            @change="onSaveMaterial"
+            :disabled="submitting"
+          >
+            <option value="">Selecteer collectie</option>
+            <option :value="collection.id" v-for="collection in my_collections.results">
+              {{collection.title}}
+            </option>
+          </select>
+        </div>
+      </template>
+      <template
+        v-else-if="material.has_bookmark"
       >
-        Materiaal toevoegen aan collectie
-      </button>
-
+        <h3 class="h3">Materiaal toevoegen aan collectie</h3>
+        <div class="select material__left_select">
+          <select
+            name="collections"
+            v-model="collection"
+            :disabled="submitting"
+          >
+            <option value="">Selecteer collectie</option>
+            <option :value="collection.id" v-for="collection in my_collections.results">
+              {{collection.title}}
+            </option>
+          </select>
+        </div>
+      </template>
     </div>
   </div>
   <SaveMaterialInCollection
     :material="material"
-    :is-show="isShow"
-    :close="close"
-    v-if="isShow"
+    :is-show="isShowSaveMaterial"
+    :close="closeSaveMaterial"
+    v-if="isShowSaveMaterial"
+  />
+  <AddCollection
+    :is-show="isShowAddCollection"
+    :close="closeAddCollection"
+    v-if="isShowAddCollection"
   />
 </div>

@@ -40,7 +40,13 @@
           </a>
         </div>
         <div class="collection__info_filter__delete">
-          <a href="#"  class="collection__info_filter__link">Verwijderen</a>
+          <a
+            href="#"
+            class="collection__info_filter__link"
+            @click.prevent="deleteCollection(collection.id)"
+          >
+            Verwijderen
+          </a>
         </div>
         <div class="collection__info_filter__button">
           <a href="#" class="button">Opslaan</a>

@@ -60,7 +60,11 @@ export default {
       page_size: 10,
       page: 1
     });
-    this.$store.dispatch('getMyCollection', id);
+    this.$store.dispatch('getMyCollection', id).catch(err => {
+      if (err.response.status === 404) {
+        this.$router.push('/');
+      }
+    });
   },
   methods: {
     /**

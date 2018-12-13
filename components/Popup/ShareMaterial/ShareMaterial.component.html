@@ -1,0 +1,29 @@
+
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    class="share-material"
+  >
+    <slot>
+      <h2 class="popup__title">Materiaal delen</h2>
+      <div class="popup__subtext">Deel deze inspiratie met jouw collega’s of studenten.</div>
+      <div>
+        <h4>Delen via URL</h4>
+        <div class="share-material__actions">
+          <div class="share-material__actions_link link">{{link}}</div>
+          <button
+            class="button"
+            v-clipboard:copy="link"
+            v-clipboard:success="onCopy"
+          >
+            {{saved ? 'Link gekopieerd' : 'Link kopiëren'}}
+          </button>
+        </div>
+      </div>
+    </slot>
+  </Popup>
+</transition>
+
+
