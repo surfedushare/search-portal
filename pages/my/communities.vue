@@ -9,7 +9,7 @@
          ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="communities__info_bg">
         <BreadCrumbs
-          :items="[{title:`Mijn Community`, url: `/my/communities/`} ]"/>
+          :items="[{title:`Home`, url: `/`} ]"/>
         <h2 class="communities__info_ttl">Mijn Community</h2>
         <Search
           :hide-categories="true"

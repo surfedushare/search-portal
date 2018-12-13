@@ -8,9 +8,7 @@
         class="my_filter__info" >
         <div class="my_filter__info_title">
           <BreadCrumbs
-            :items="[
-              {title:`Mijn selecties`, url: `/my/filters/`},
-              {title:`Selectie`, url: `/my/filters/${data.id}`}]"
+            :items="[{title:`Mijn selecties`, url: `/my/filters/`}]"
           />
           <h2
             ref="title"
