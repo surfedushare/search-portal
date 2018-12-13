@@ -1,12 +1,22 @@
 
 <section class="bread-crumbs">
-  <nuxt-link
+  <template
     v-for="(item, index) in items"
-    :to="item.url"
-    class="bread-crumbs__link"
-    :key="index"
   >
-    {{ item.title }}
-  </nuxt-link>
+    <nuxt-link
+      v-if="item.url"
+      :to="item.url"
+      class="bread-crumbs__link"
+      :key="index"
+    >
+      {{ item.title }}
+    </nuxt-link>
+    <span
+      v-else
+      class="bread-crumbs__link"
+      :key="index"
+    >
+      {{ item.title }}</span>
+  </template>
 </section>
 
