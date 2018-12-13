@@ -12,14 +12,15 @@ export default {
     this.popupItem = this.$el;
   },
   data() {
+    const { value } = this;
     return {
       opened: false,
       disabledDates: {},
       disabled: {},
       format: 'yyyy-MM-dd',
       formData: {
-        start_date: this.value.start_date || null,
-        end_date: this.value.end_date || null
+        start_date: value.start_date ? new Date(value.start_date) : null,
+        end_date: value.end_date ? new Date(value.end_date) : null
       }
     };
   },

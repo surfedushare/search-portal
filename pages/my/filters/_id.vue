@@ -57,7 +57,7 @@
           </div>
           <div class="my_filter__info_filter__button">
             <button
-              :disabled="materials && !materials.records_total"
+              :disabled="materials && !materials.records_total || submitting"
               class="button"
               @click.prevent="saveFilter"
             >
@@ -76,14 +76,28 @@
           v-for="category in all_filters"
           v-if="!category.hide"
           :key="category.external_id"
-          class="filter-categories__item"
+          class="filter-categories__item filter-categories__item--full-visible"
         >
           <h4
             class="filter-categories__item_title"
           >
             {{ category.title }}
           </h4>
-          <ul class="filter-categories__subitems">
+          <div
+            v-if="category.external_id === 'lom.lifecycle.contribute.publisherdate'"
+            class="filter-categories__subitems"
+          >
+            <DatesRange
+              v-if="data"
+              :inline="true"
+              :hide-select="true"
+              v-model="data"
+            />
+          </div>
+          <ul
+            v-else
+            class="filter-categories__subitems"
+          >
             <li
               v-for="filter in category.items"
               :key="filter.external_id"
@@ -115,16 +129,19 @@
 <script>
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
+import DatesRange from '~/components/DatesRange';
 
 export default {
   components: {
-    BreadCrumbs
+    BreadCrumbs,
+    DatesRange
   },
   data() {
     return {
       checked_filter: [],
       checked_categories_filter: [],
       filters_count: false,
+      submitting: false,
       contenteditable: false,
       data: null,
       filter_title: null
@@ -163,10 +180,12 @@ export default {
                   data && data.items
                     ? data.items.map(item => item.category_item_id)
                     : false;
+                const checked = ids ? ids.indexOf(item.id) !== -1 : false;
+
                 prev.push({
                   ...item,
                   ...current_item,
-                  checked: ids ? ids.indexOf(item.id) !== -1 : false
+                  checked
                 });
               }
 
@@ -187,10 +206,11 @@ export default {
     },
     contenteditable(isEditable) {
       const { title } = this.$refs;
-      this.$nextTick().then(() => {
-        title.focus();
-      });
-      if (!isEditable) {
+      if (isEditable) {
+        this.$nextTick().then(() => {
+          title.focus();
+        });
+      } else {
         this.resetData();
       }
     },
@@ -198,6 +218,12 @@ export default {
       if (collection) {
         this.setTitle(collection.title);
       }
+    },
+    'data.start_date'() {
+      this.getFilterResults();
+    },
+    'data.end_date'() {
+      this.getFilterResults();
     }
   },
   mounted() {
@@ -239,20 +265,35 @@ export default {
           id: this.$route.params.id
         })
         .then(data => {
-          this.setDefaultData(data);
-          this.setTitle(data.title);
+          this.$store.dispatch('getFilterCategories').then(() => {
+            this.setDefaultData(data);
+            this.setTitle(data.title);
+          });
         })
         .catch(err => {
           if (err.response.status === 404) {
             this.$router.push('/my/filters/');
           }
         });
-
-      this.$store.dispatch('getFilterCategories');
     },
     setDefaultData(data) {
       this.data = Object.assign({}, data, {
         items: data.items.slice(0)
+      });
+
+      if (!this.filter_categories) return;
+
+      const { results } = this.filter_categories;
+
+      data.items.forEach(item => {
+        const category = results.find(
+          category => category.id === item.category_id
+        );
+        this.changeCheckedCategories(
+          true,
+          category.items.find(filter => filter.id === item.category_item_id),
+          category.external_id
+        );
       });
     },
     onChange($event, filter, external_id) {
@@ -269,11 +310,29 @@ export default {
 
       this.changeCheckedCategories(checked, filter, external_id);
       this.setEditable(true);
+      this.getFilterResults();
+    },
+    getFilterResults() {
+      this.$store
+        .dispatch('searchMaterials', {
+          return_records: false,
+          search_text: [],
+          filters: [
+            ...this.checked_categories_filter,
+            {
+              external_id: 'lom.lifecycle.contribute.publisherdate',
+              items: [this.data.start_date || null, this.data.end_date || null]
+            }
+          ]
+        })
+        .then(data => {
+          this.data.materials_count = data.records_total;
+        });
     },
     changeCheckedCategories(checked, filter, external_id) {
       const { checked_categories_filter } = this;
       const current_category_index = checked_categories_filter.findIndex(
-        filter => filter.external_id === external_id
+        category_filter => category_filter.external_id === external_id
       );
 
       if (current_category_index !== -1) {
@@ -287,38 +346,43 @@ export default {
           items = items.filter(item => item !== filter.external_id);
         }
 
-        this.checked_categories_filter = checked_categories_filter.map(
-          (category, index) => {
-            if (index === current_category_index) {
-              return {
-                ...category,
-                items: items
-              };
+        if (items.length) {
+          this.checked_categories_filter = checked_categories_filter.map(
+            (category, index) => {
+              if (index === current_category_index) {
+                return {
+                  ...category,
+                  items: items
+                };
+              }
+              return category;
             }
-            return category;
-          }
-        );
+          );
+        } else {
+          this.checked_categories_filter = checked_categories_filter.filter(
+            (category, index) => index !== current_category_index
+          );
+        }
       } else {
         this.checked_categories_filter.push({
           external_id: external_id,
           items: [filter.external_id]
         });
       }
-
-      this.$store
-        .dispatch('searchMaterials', {
-          return_records: false,
-          search_text: [],
-          filters: this.checked_categories_filter
-        })
-        .then(data => {
-          this.data.materials_count = data.records_total;
-        });
     },
     saveFilter() {
-      this.$store.dispatch('saveMyFilter', this.data).then(() => {
-        // this.$router.push('/my/filters/');
-      });
+      this.submitting = true;
+      this.$store
+        .dispatch('saveMyFilter', {
+          ...this.data,
+          start_date: this.data.start_date || null,
+          end_date: this.data.end_date || null
+        })
+        .then(data => {
+          console.log(data);
+          this.setDefaultData(data);
+          this.submitting = false;
+        });
     },
     deleteFilter() {
       this.$store.dispatch('deleteMyFilter', this.$route.params.id).then(() => {
@@ -330,6 +394,7 @@ export default {
     },
     setTitle(title) {
       this.filter_title = title;
+      this.data.title = title;
       if (this.$refs.title) {
         this.$refs.title.innerText = title;
       }

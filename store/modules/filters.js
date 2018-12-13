@@ -41,6 +41,7 @@ export default {
       const filter = await this.$axios.$put(`filters/${data.id}/`, data);
       commit('SET_FILTER', filter);
       this.dispatch('setActiveFilter', filter);
+      return filter;
     },
     async deleteMyFilter({ commit }, id) {
       await this.$axios.$delete(`filters/${id}/`);
