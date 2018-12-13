@@ -61,8 +61,7 @@ class SearchRequestSerializer(serializers.Serializer):
                                    allow_null=True)
 
     filters = serializers.ListField(child=SearchFilterSerializer(),
-                                    required=False,
-                                    allow_null=True)
+                                    default=[])
 
 
 class SearchRequestShortSerializer(serializers.Serializer):
