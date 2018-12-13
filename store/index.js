@@ -10,6 +10,7 @@ import filters from './modules/filters';
 import collections from './modules/collections';
 import statistic from './modules/statistic';
 import headerMenu from './modules/header-menu';
+import headerSubMenu from './modules/header-sub-menu';
 
 Vue.use(Vuex);
 
@@ -24,7 +25,8 @@ const store = () =>
       filters,
       collections,
       statistic,
-      headerMenu
+      headerMenu,
+      headerSubMenu
     }
   });
 export default store;

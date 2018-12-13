@@ -8,6 +8,7 @@
     font-size: 16px;
     font-weight: bold;
     margin-right: -2px;
+    position: relative;
     &:after{
       content: '';
       display: inline-block;
@@ -16,6 +17,9 @@
       vertical-align: middle;
       margin: -2px 0 0 -2px;
       background: url('./../../assets/images/arrow-text.svg') 50% 50% / contain no-repeat;
+      .search__info &{
+        display: none;
+      }
     }
     &.nuxt-link-exact-active{
       color: @black;
