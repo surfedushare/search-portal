@@ -8,17 +8,22 @@
     <div class="main-footer__info">
       <h3>Over SURF</h3>
       <div class="main-footer__info_text">SURF is the collaborative ICT organisation for Dutch education and research. SURF offers students, lecturers and scientists in the Netherlands access to the best possible internet and ICT facilities.</div>
-      <nuxt-link
-        to="SURF.nl"
+      <a
+        href="https://www.surf.nl/"
+        target="_blank"
         class="main-footer__info_link arrow-link"
       >
         SURF.nl
-      </nuxt-link>
+      </a>
     </div>
     <div class="main-footer__links">
       <h3>Links</h3>
       <nav>
-        <nuxt-link to="/" class="main-footer__link arrow-link">Onderwijs thema's</nuxt-link>
+        <a
+          @click.prevent="toggleSubMenuThemes"
+          href="/themes/"
+          class="main-footer__link arrow-link"
+        >Onderwijs thema's</a>
         <nuxt-link to="/communities/" class="main-footer__link arrow-link">Community's</nuxt-link>
         <nuxt-link to="/how-does-it-work/" class="main-footer__link arrow-link">Hoe werkt het?</nuxt-link>
       </nav>

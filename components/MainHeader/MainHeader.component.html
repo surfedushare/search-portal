@@ -24,7 +24,7 @@
                 Mijn Collecties
               </a>
             </li>
-            <li class="main-header__user_menu_item">
+            <li class="main-header__user_menu_item" v-if="user.is_admin">
               <a class="main-header__user_menu_link" href="/my/communities/">
                 Mijn Community
               </a>

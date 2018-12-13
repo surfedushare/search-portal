@@ -4,7 +4,7 @@
       :materials="materials"
       :material="material"
     />
-
+    <MaterialTitleMobile :material="material"/>
     <div
       v-if="material"
       class="center_block material__wrapper"
@@ -30,6 +30,7 @@ import { mapGetters } from 'vuex';
 import Materials from '~/components/Materials';
 import Sidebar from '~/components/Materials/Sidebar';
 import MaterialInfo from '~/components/Materials/MaterialInfo';
+import MaterialTitleMobile from '~/components/Materials/MaterialTitleMobile';
 import Navigation from '~/components/Materials/Navigation';
 
 export default {
@@ -37,7 +38,8 @@ export default {
     Materials,
     Sidebar,
     MaterialInfo,
-    Navigation
+    Navigation,
+    MaterialTitleMobile
   },
   computed: {
     ...mapGetters(['material', 'material_communities', 'materials'])
