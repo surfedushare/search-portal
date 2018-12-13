@@ -61,7 +61,6 @@ export default {
     ...mapGetters(['my_collections', 'my_collection_materials'])
   },
   mounted() {
-    // this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
     this.$store.dispatch('getMyCollections');
   },
   methods: {

@@ -37,6 +37,15 @@ export default {
       commit('SET_MY_COLLECTION', collection);
       return collection;
     },
+    async checkMaterialInCollection({ state, commit }, id) {
+      const collection = await this.$axios.$get('collections/', {
+        params: {
+          is_owner: true,
+          material_id: id
+        }
+      });
+      return collection;
+    },
     async deleteMyCollection({ state, commit }, id) {
       const collection = await this.$axios.$delete(`collections/${id}/`);
       commit('DELETE_MY_COLLECTION', id);

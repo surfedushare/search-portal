@@ -13,9 +13,16 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getMyCollections');
+    console.log(this.material);
+    this.$store
+      .dispatch('checkMaterialInCollection', this.material.external_id)
+      .then(collections => {
+        console.log(2222, collections);
+      });
   },
   data() {
     return {
+      collection: '',
       submitting: false,
       isShowSaveMaterial: false,
       isShowAddCollection: false
@@ -80,17 +87,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'isAuthenticated',
-      'my_collections',
-      'material_communities'
-    ]),
-    collection() {
-      const { my_collections } = this;
-      if (my_collections && my_collections.results.length) {
-        console.log(1111, my_collections.results);
-      }
-      return '';
-    }
+    ...mapGetters(['isAuthenticated', 'my_collections', 'material_communities'])
+    // collection() {
+    //   const { my_collections } = this;
+    //   if (my_collections && my_collections.results.length) {
+    //     console.log(1111, my_collections.results);
+    //   }
+    //   return '';
+    // }
   }
 };
