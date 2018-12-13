@@ -166,7 +166,7 @@ export default {
                 prev.push({
                   ...item,
                   ...current_item,
-                  checked: ids ? ids.indexOf(item.external_id) !== -1 : false
+                  checked: ids ? ids.indexOf(item.id) !== -1 : false
                 });
               }
 
@@ -259,11 +259,11 @@ export default {
       const { checked } = $event.target;
       if (checked) {
         this.data.items.push({
-          category_item_id: filter.external_id
+          category_item_id: filter.id
         });
       } else {
         this.data.items = this.data.items.filter(
-          item => item.category_item_id !== filter.external_id
+          item => item.category_item_id !== filter.id
         );
       }
 
@@ -271,12 +271,13 @@ export default {
       this.setEditable(true);
     },
     changeCheckedCategories(checked, filter, external_id) {
-      const current_category_index = this.checked_categories_filter.findIndex(
+      const { checked_categories_filter } = this;
+      const current_category_index = checked_categories_filter.findIndex(
         filter => filter.external_id === external_id
       );
 
       if (current_category_index !== -1) {
-        let items = this.checked_categories_filter[
+        let items = checked_categories_filter[
           current_category_index
         ].items.slice(0);
 
@@ -286,10 +287,17 @@ export default {
           items = items.filter(item => item !== filter.external_id);
         }
 
-        this.checked_categories_filter[current_category_index] = {
-          ...this.checked_categories_filter[current_category_index],
-          items: items
-        };
+        this.checked_categories_filter = checked_categories_filter.map(
+          (category, index) => {
+            if (index === current_category_index) {
+              return {
+                ...category,
+                items: items
+              };
+            }
+            return category;
+          }
+        );
       } else {
         this.checked_categories_filter.push({
           external_id: external_id,
@@ -308,13 +316,13 @@ export default {
         });
     },
     saveFilter() {
-      this.$store.dispatch('deleteMyFilter', this.$route.params.id).then(() => {
-        this.$router.push('/my/filters/');
+      this.$store.dispatch('saveMyFilter', this.data).then(() => {
+        // this.$router.push('/my/filters/');
       });
     },
     deleteFilter() {
-      this.$store.dispatch('saveMyFilter', this.data).then(() => {
-        // this.$router.push('/my/filters/');
+      this.$store.dispatch('deleteMyFilter', this.$route.params.id).then(() => {
+        this.$router.push('/my/filters/');
       });
     },
     setEditable(isEditable) {
@@ -330,8 +338,32 @@ export default {
       this.setTitle(this.$refs.title.innerText);
     },
     resetData() {
+      const { active_filter } = this;
       this.setTitle(this.data.title);
-      this.setDefaultData(this.active_filter);
+      this.setDefaultData(active_filter);
+      const ids = active_filter.items.map(item => item.category_item_id);
+
+      if (ids && ids.length) {
+        this.checked_categories_filter = this.checked_categories_filter.reduce(
+          (prev, next) => {
+            const items = next.items.filter(
+              item => ids.indexOf(item.external_id) !== -1
+            );
+
+            if (items && items.length) {
+              prev.push({
+                ...next,
+                items
+              });
+            }
+
+            return prev;
+          },
+          []
+        );
+      } else {
+        this.checked_categories_filter = [];
+      }
     }
   }
 };
