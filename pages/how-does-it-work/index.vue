@@ -9,7 +9,7 @@
           class="how_work__info_bg"
         >
         <BreadCrumbs
-          :items="[{title:'Home', url: '/'}, {title:`Hoe werkt het?`, url: '/how-does-it-work/'} ]"/>
+          :items="[{title:'Home', url: '/'} ]"/>
         <h2 class="how_work__info_ttl">Hoe werkt het?</h2>
         <Search
           v-model="search"

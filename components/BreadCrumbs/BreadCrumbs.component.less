@@ -21,6 +21,7 @@
         display: none;
       }
     }
+    span&,
     &.nuxt-link-exact-active{
       color: @black;
       pointer-events: none;
@@ -29,8 +30,13 @@
       }
     }
 
-    &:hover {
+    a&:hover {
       color: @black;
+    }
+    &:last-child {
+      &:after{
+        display: none;
+      }
     }
   }
 }
