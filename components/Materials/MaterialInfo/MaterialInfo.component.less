@@ -5,10 +5,13 @@
     &_ttl {
       margin: 28px 0 28px;
       @media @mobile, @tablet {
-        font-size: 28px;
+        display: none;
       }
     }
     &_author {
+      @media @mobile, @tablet {
+        display: none;
+      }
       font-family: @second-font;
       font-size: 16px;
       margin: -10px 0 64px;
@@ -22,6 +25,9 @@
       margin: 0 0 32px;
       border-bottom: 1px solid #f4f4f4;
       padding-bottom: 7px;
+      @media @mobile, @tablet {
+        padding-top: 30px;
+      }
     }
     &_quality {
       margin: 34px 0 24px;
