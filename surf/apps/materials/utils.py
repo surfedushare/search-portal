@@ -29,9 +29,6 @@ def update_materials_data(materials):
     :param materials: list of material DB instances
     """
 
-    ac = XmlEndpointApiClient(
-        api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
     for material in materials:
         details = get_material_details_by_id(material.external_id)
         if not details:
