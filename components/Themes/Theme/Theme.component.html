@@ -21,8 +21,7 @@
     <div class="theme__description">
       <h2>Over het thema <br>
         {{ theme.title }}</h2>
-      <p>{{ theme.description }}
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laborisnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>{{ theme.description }}</p>
     </div>
     <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" :theme="theme"/>
   </div>
@@ -33,7 +32,7 @@
     class="theme__materials">
       <template slot="header-info">
         <h2>Uitgelicht</h2>
-        <p class="materials__description">Uitgelichte leermaterialen in het thema Gezondheid</p>
+        <p class="materials__description">Uitgelichte leermaterialen in het thema {{ theme.title }}</p>
       </template>
     </Materials>
     <PopularList
@@ -42,7 +41,7 @@
     >
       <template slot="header-info">
         <h2>Community’s</h2>
-        <div class="popular-list__description">Vakcommunity’s binnen het thema Gezondheid</div>
+        <div class="popular-list__description">Vakcommunity’s binnen het thema {{ theme.title }}</div>
       </template>
     </PopularList>
   </div>

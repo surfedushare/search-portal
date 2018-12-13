@@ -15,8 +15,8 @@
           <div class="main__info_block">
             <div class="bg"/>
             <h2
-              v-if="statistic"
-              class="main__info_title" >{{ contedNumber }} open leermaterialen uit het hoger onderwijs</h2>
+
+              class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>open leermaterialen uit het hoger onderwijs</h2>
             <ul class="main__info_items">
               <li class="main__info_item">Vrij te gebruiken</li>
               <li class="main__info_item">Op kwaliteit beoordeeld</li>

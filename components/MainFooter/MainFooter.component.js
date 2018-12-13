@@ -1,4 +1,6 @@
 import Menu from './Menu';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'main-footer',
   props: [],
@@ -7,8 +9,23 @@ export default {
   },
   mounted() {},
   data() {
-    return {};
+    return {
+      isShowSubMenu: this.show_sub_menu
+    };
   },
-  methods: {},
-  computed: {}
+  methods: {
+    toggleSubMenuThemes() {
+      console.log('footer', this.isShowSubMenu);
+      this.isShowSubMenu = !this.isShowSubMenu;
+      this.$store.dispatch('setSubMenuShow', this.isShowSubMenu);
+    }
+  },
+  watch: {
+    show_sub_menu(show_sub_menu) {
+      this.isShowSubMenu = show_sub_menu;
+    }
+  },
+  computed: {
+    ...mapGetters(['show_sub_menu'])
+  }
 };
