@@ -131,6 +131,9 @@
       height: 109px;
       transform: scaleX(-1);
       z-index: 1;
+      @media @mobile, @tablet {
+        left: 30px;
+      }
     }
     &:after {
       content: '';
@@ -142,6 +145,9 @@
       width: 35px;
       transform: scaleX(-1);
       z-index: 2;
+      @media @mobile, @tablet {
+        left: 48px;
+      }
     }
 
     &_img{
@@ -153,6 +159,12 @@
       top: -127px;
       right: 40px;
       background: rgba(245, 245, 245, 0.7);
+      @media @mobile, @tablet {
+        width: 55%;
+        top: -38px;
+        right: 30px;
+        height: auto;
+      }
     }
     &_ttl{
       margin-bottom: 19px;

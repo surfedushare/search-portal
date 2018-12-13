@@ -49,6 +49,11 @@ export default {
     },
     resetData() {
       this.setTitle(this.collection.title);
+    },
+    deleteCollection(id) {
+      this.$store.dispatch('deleteMyCollection', id).then(() => {
+        this.$router.push('/my/collections/');
+      });
     }
   },
   computed: {},

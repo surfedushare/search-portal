@@ -18,6 +18,7 @@
     "numeral": "^2.0.6",
     "nuxt": "^2.0.0",
     "vue-click-outside": "^1.0.7",
+    "vue-clipboard2": "^0.2.1",
     "vue-infinite-scroll": "^2.0.2",
     "vue-select": "^2.5.1",
     "vue-social-sharing": "^2.3.3",

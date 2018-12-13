@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex';
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection';
+import AddCollection from './../../Popup/AddCollection';
 
 export default {
   name: 'sidebar',
@@ -7,7 +8,8 @@ export default {
     material: {}
   },
   components: {
-    SaveMaterialInCollection
+    SaveMaterialInCollection,
+    AddCollection
   },
   mounted() {
     this.$store.dispatch('getMyCollections');
@@ -15,7 +17,8 @@ export default {
   data() {
     return {
       submitting: false,
-      isShow: false
+      isShowSaveMaterial: false,
+      isShowAddCollection: false
     };
   },
   methods: {
@@ -29,22 +32,35 @@ export default {
       }`;
     },
     /**
-     * Close popup
+     * Show AddCollection popup
      */
-    close() {
-      this.isShow = false;
+    addCollection() {
+      this.isShowAddCollection = true;
     },
     /**
-     * Show popup
+     * Close AddCollection popup
+     */
+    closeAddCollection() {
+      this.isShowAddCollection = false;
+    },
+    /**
+     * Show SaveMaterial popup
      */
     addToCollection() {
-      this.isShow = true;
+      this.isShowSaveMaterial = true;
+    },
+    /**
+     * Close SaveMaterial popup
+     */
+    closeSaveMaterial() {
+      this.isShowSaveMaterial = false;
     },
     /**
      * Triggering event the save material
      */
     onSaveMaterial() {
       this.submitting = true;
+
       this.$store
         .dispatch('setMaterialInMyCollection', {
           collection_id: this.collection,
@@ -64,6 +80,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'my_collections', 'material_communities'])
+    ...mapGetters([
+      'isAuthenticated',
+      'my_collections',
+      'material_communities'
+    ]),
+    collection() {
+      const { my_collections } = this;
+      if (my_collections && my_collections.results.length) {
+        console.log(1111, my_collections.results);
+      }
+      return '';
+    }
   }
 };
