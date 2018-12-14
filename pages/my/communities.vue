@@ -22,6 +22,7 @@
         <form
           action="/"
           class="communities__form_in"
+          @submit.prevent="onSubmit"
         >
           <div class="communities__form__column">
             <div class="communities__form__row">
@@ -33,6 +34,8 @@
               <input
                 id="name"
                 v-model="formData.name"
+                name="name"
+                required="required"
                 type="text"
                 class="communities__form__input"
                 placeholder="Landelijk Overleg Opleidingen Verpleegkunde">
@@ -46,6 +49,8 @@
               <textarea
                 id="description"
                 v-model="formData.description"
+                name="description"
+                required="required"
                 class="communities__form__textarea"
                 placeholder="De community hbovpk is hét digitale ontmoetingspunt voor hbo-docenten verpleegkunde. Doel van de community is delen van kennis en leermaterialen en het uitwisselen van ervaringen. "/>
             </div>
@@ -58,6 +63,8 @@
               <input
                 id="website"
                 v-model="formData.website_url"
+                required="required"
+                name="website"
                 type="text"
                 class="communities__form__input"
                 placeholder="Geef hier de URL ">
@@ -82,8 +89,7 @@
           <div class="communities__form__buttons">
             <button
               type="submit"
-              class="button communities__form__button"
-              @click.prevent="onSubmit">Opslaan</button>
+              class="button communities__form__button">Opslaan</button>
           </div>
         </form>
       </div>
@@ -188,13 +194,13 @@ export default {
 
       for (let item in this.formData) {
         const el = this.formData[item];
-
         if (el) {
           if (Array.isArray(el)) {
             data.append(item, JSON.stringify(el));
             // console.log(data.append(item, JSON.stringify(el)));
           } else {
-            data.append(item, el);
+            let ElValue = el ? el : null;
+            data.append(item, ElValue);
           }
         }
       }
