@@ -7,6 +7,7 @@
       class="material__list_prev_link"
       v-if="links.prev"
       :to="`/materials/${links.prev.external_id_base64}/`"
+      @click.native="setMaterial(links.prev)"
     >
       Vorige
     </nuxt-link>
@@ -23,6 +24,7 @@
       class="material__list_next_link"
       v-if="links.next"
       :to="`/materials/${links.next.external_id_base64}/`"
+      @click.native="setMaterial(links.next)"
     >
       Volgende
     </nuxt-link>

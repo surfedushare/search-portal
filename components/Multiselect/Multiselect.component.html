@@ -9,8 +9,24 @@
     class="select__item"
     @click="toggle"
   >
-    {{ placeholder }}
+    <div v-if="first_checked_item">
+      <input
+        type="checkbox"
+        checked="checked"
+        :id="`checked_${first_checked_item.id}`"
+        disabled="disabled"
+      >
+      <label
+        :for="`checked_${first_checked_item.id}`"
+      >
+        {{ first_checked_item.title }}
+      </label>
+    </div>
+    <template v-else>
+      {{ placeholder }}
+    </template>
   </div>
+
   <div
     class="select__subitems"
     v-show="opened"

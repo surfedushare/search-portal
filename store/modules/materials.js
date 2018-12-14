@@ -97,9 +97,32 @@ export default {
       commit('SET_MATERIALS_LOADING', false);
       return materials;
     },
+    async searchMaterialsInCommunity({ commit }, { id, search }) {
+      commit('SET_MATERIALS_LOADING', true);
+      const materials = await this.$axios.$post(
+        `communities/${id}/search/`,
+        search
+      );
+      materials.search_text = search.search_text;
+      materials.active_filters = search.filters;
+      materials.ordering = search.ordering;
+
+      commit('SET_MATERIALS', materials);
+      commit('SET_MATERIALS_LOADING', false);
+      return materials;
+    },
     async searchNextPageMaterials({ commit }, search) {
       commit('SET_MATERIALS_LOADING', true);
       const materials = await this.$axios.$post('materials/search/', search);
+      commit('SET_NEXT_PAGE_MATERIALS', materials);
+      commit('SET_MATERIALS_LOADING', false);
+    },
+    async searchNextPageMaterialsCommunity({ commit }, { id, search }) {
+      commit('SET_MATERIALS_LOADING', true);
+      const materials = await this.$axios.$post(
+        `communities/${id}/search/`,
+        search
+      );
       commit('SET_NEXT_PAGE_MATERIALS', materials);
       commit('SET_MATERIALS_LOADING', false);
     },
