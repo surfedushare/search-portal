@@ -49,7 +49,14 @@
           </a>
         </div>
         <div class="collection__info_filter__button">
-          <a href="#" class="button">Opslaan</a>
+          <button
+            class="button"
+            type="submit"
+            @click.prevent="onSubmit"
+            :disabled="submitting"
+          >
+            Opslaan
+          </button>
         </div>
       </div>
     </div>

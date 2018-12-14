@@ -5,11 +5,14 @@
       <Collection
         :collection="my_collection"
         :contenteditable="contenteditable"
+        :submitting="submitting"
         :set-editable="setEditable"
         :change-view-type="changeViewType"
         :items-in-line="materials_in_line"
         v-model="search"
+        @onSubmit="onSubmit"
       />
+
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="my_collection_materials_loading"
@@ -44,6 +47,7 @@ export default {
   data() {
     return {
       contenteditable: false,
+      submitting: false,
       materials_in_line: 4,
       formData: {
         materials_for_deleting: []
@@ -118,6 +122,10 @@ export default {
     },
     setEditable(isEditable) {
       this.contenteditable = isEditable;
+
+      if (!isEditable) {
+        this.formData.materials_for_deleting = [];
+      }
     },
     /**
      * Change 1 item in line to 4 and back.
@@ -128,6 +136,15 @@ export default {
       } else {
         this.materials_in_line = 1;
       }
+    },
+
+    onSubmit(data) {
+      this.submitting = true;
+      this.$store.dispatch('putMyCollection', {
+        ...this.my_collection,
+        ...data
+      });
+      console.log(11111, data, this.formData);
     }
   }
 };

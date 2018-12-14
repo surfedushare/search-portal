@@ -37,6 +37,14 @@ export default {
       commit('SET_MY_COLLECTION', collection);
       return collection;
     },
+    async putMyCollection({ state, commit }, data) {
+      const collection = await this.$axios.$put(
+        `collections/${data.id}/`,
+        data
+      );
+      commit('SET_MY_COLLECTION', collection);
+      return collection;
+    },
     async checkMaterialInCollection({ state, commit }, id) {
       const collection = await this.$axios.$get('collections/', {
         params: {
