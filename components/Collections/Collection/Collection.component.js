@@ -1,5 +1,6 @@
 import BreadCrumbs from '~/components/BreadCrumbs';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
+import ShareMaterialCollection from '~/components/Popup/ShareMaterialCollection';
 
 export default {
   name: 'collection',
@@ -22,7 +23,8 @@ export default {
   },
   components: {
     BreadCrumbs,
-    DirectSearch
+    DirectSearch,
+    ShareMaterialCollection
   },
   mounted() {
     const { collection } = this;
@@ -34,7 +36,9 @@ export default {
   data() {
     return {
       href: '',
-      collection_title: null
+      collection_title: null,
+      isShowShareMaterial: false,
+      is_copied: false
     };
   },
   methods: {
@@ -54,6 +58,16 @@ export default {
       this.$store.dispatch('deleteMyCollection', id).then(() => {
         this.$router.push('/my/collections/');
       });
+    },
+    showShareMaterial() {
+      this.isShowShareMaterial = true;
+    },
+
+    closeShareMaterial() {
+      this.isShowShareMaterial = false;
+      if (this.is_copied) {
+        this.closeSocialSharing('link');
+      }
     }
   },
   computed: {},
