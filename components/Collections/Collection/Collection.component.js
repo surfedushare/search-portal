@@ -1,6 +1,7 @@
 import BreadCrumbs from '~/components/BreadCrumbs';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
 import ShareMaterialCollection from '~/components/Popup/ShareMaterialCollection';
+import ShareCollection from '~/components/Popup/ShareCollection';
 
 export default {
   name: 'collection',
@@ -27,12 +28,14 @@ export default {
   components: {
     BreadCrumbs,
     DirectSearch,
-    ShareMaterialCollection
+    ShareMaterialCollection,
+    ShareCollection
   },
   mounted() {
     const { collection } = this;
     if (collection) {
       this.setTitle(collection.title);
+      this.setSocialCounters();
     }
     this.href = window.location.href;
   },
@@ -42,6 +45,7 @@ export default {
       collection_title: null,
       search: {},
       isShowShareMaterial: false,
+      isShowShareCollection: false,
       is_copied: false
     };
   },
@@ -76,6 +80,69 @@ export default {
 
     onSubmit() {
       this.$emit('onSubmit', { title: this.collection_title });
+    },
+
+    setSocialCounters() {
+      this.$nextTick().then(() => {
+        const { collection } = this;
+        const { social_counters } = this.$refs;
+
+        if (collection && collection.sharing_counters && social_counters) {
+          const share = collection.sharing_counters.reduce(
+            (prev, next) => {
+              prev[next.sharing_type] = next;
+              return prev;
+            },
+            {
+              linkedin: {
+                counter_value: 0
+              },
+              twitter: {
+                counter_value: 0
+              },
+              link: {
+                counter_value: 0
+              }
+            }
+          );
+
+          if (share.linkedin) {
+            social_counters.querySelector('#linkedin_counter').innerText =
+              share.linkedin.counter_value;
+          }
+          if (share.twitter) {
+            social_counters.querySelector('#twitter_counter').innerText =
+              share.twitter.counter_value;
+          }
+          if (share.link) {
+            social_counters.querySelector('#url_counter').innerText =
+              share.link.counter_value;
+          }
+        }
+      });
+    },
+    closeSocialSharing(type) {
+      this.$store
+        .dispatch('setCollectionSocial', {
+          id: this.$route.params.id,
+          params: {
+            shared: type
+          }
+        })
+        .then(() => {
+          this.setSocialCounters();
+        });
+    },
+
+    showShareCollection() {
+      this.isShowShareCollection = true;
+    },
+
+    closeShareCollection() {
+      this.isShowShareCollection = false;
+      if (this.is_copied) {
+        this.closeSocialSharing('link');
+      }
     }
   },
   computed: {},
@@ -95,6 +162,7 @@ export default {
     collection(collection) {
       if (collection) {
         this.setTitle(collection.title);
+        this.setSocialCounters();
       }
     }
   }
