@@ -30,8 +30,6 @@ export default {
         items = this.value.filter(el => el !== item.id);
       }
 
-      console.log(11111, items);
-
       this.$emit('input', items);
     }
   },

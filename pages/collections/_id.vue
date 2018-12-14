@@ -139,12 +139,45 @@ export default {
     },
 
     onSubmit(data) {
+      const { my_collection } = this;
+      const { materials_for_deleting } = this.formData;
       this.submitting = true;
-      this.$store.dispatch('putMyCollection', {
-        ...this.my_collection,
-        ...data
-      });
-      console.log(11111, data, this.formData);
+      this.$store
+        .dispatch('putMyCollection', {
+          ...this.my_collection,
+          ...data
+        })
+        .then(() => {
+          if (!materials_for_deleting || !materials_for_deleting.length) {
+            this.submitting = false;
+            this.setEditable(false);
+          }
+        });
+      if (materials_for_deleting && materials_for_deleting.length) {
+        this.$store
+          .dispatch('removeMaterialFromMyCollection', {
+            collection_id: my_collection.id,
+            data: materials_for_deleting.map(material => {
+              return {
+                external_id: material
+              };
+            })
+          })
+          .then(() => {
+            this.$store
+              .dispatch('getMaterialInMyCollection', {
+                id: my_collection.id,
+                params: {
+                  page_size: this.search.page_size,
+                  page: 1
+                }
+              })
+              .then(() => {
+                this.submitting = false;
+                this.setEditable(false);
+              });
+          });
+      }
     }
   }
 };

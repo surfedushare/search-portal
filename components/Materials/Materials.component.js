@@ -24,8 +24,8 @@ export default {
       default: false
     },
     value: {
-      type: Array,
-      default: []
+      // type: Array,
+      // default: []
     }
   },
   components: {
@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      selected_materials: this.value
+      selected_materials: this.value || []
     };
   },
   methods: {
