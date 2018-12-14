@@ -27,6 +27,13 @@ export default {
     async getCommunities({ commit }, { params = {} } = {}) {
       const communities = await this.$axios.$get('communities/', { params });
       commit('SET_COMMUNITIES', communities);
+      return communities;
+    },
+    async putCommunities({ commit }, { id, data = {} } = {}) {
+      console.log(data, id);
+      const communities = await this.$axios.$put(`communities/${id}/`, data);
+      commit('SET_COMMUNITIES', communities);
+      return communities;
     },
     async getCommunity({ commit }, id) {
       const community_info = await this.$axios.$get(`communities/${id}/`);

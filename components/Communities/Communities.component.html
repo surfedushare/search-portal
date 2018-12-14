@@ -20,19 +20,19 @@
   <div class="center_block">
     <ul class="communities__items" v-if="communities">
       <li
-        v-for="communitie in communities.results"
+        v-for="community in communities.results"
         class="communities__item tile tile--items-in-line-3 materials__item--items-in-line-3"
       >
         <div class="communities__item_wrapper tile__wrapper">
-          <div class="communities__item_logo" v-if="communitie.logo"><img :src="`${communitie.logo}`" alt=""></div>
-          <h3 class="communities__item_name">{{ communitie.name }}</h3>
-          <div class="communities__item_count">{{ communitie.materials_count }} leermaterialen</div>
-          <div class="communities__item_description">{{ communitie.description }}</div>
+          <div class="communities__item_logo" v-if="community.logo"><img :src="`${community.logo}`" alt=""></div>
+          <h3 class="communities__item_name">{{ community.name }}</h3>
+          <div class="communities__item_count">{{ community.materials_count }} leermaterialen</div>
+          <div class="communities__item_description">{{ community.description }}</div>
           <nuxt-link
-          :to="`/communities/${communitie.id}/`"
+          :to="`/communities/${community.id}/`"
           class="arrow-link communities__item_link"
-          :key="`${communitie.id}`"
-          @click.native="setCommunity(communitie)"
+          :key="`${community.id}`"
+          @click.native="setCommunity(community)"
           >
             Bekijken
           </nuxt-link>
