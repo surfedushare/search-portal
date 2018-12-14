@@ -5,10 +5,10 @@
       <div class="collection__info_title">
         <BreadCrumbs
           v-if="!collection.is_owner"
-          :items="[{title:'Home', url: '/'}, {title:`Collection's`, url: `/collections/${collection.id}`} ]"/>
+          :items="[{title:'Home', url: '/'}, {title:`Collection's`, url: `/collections/`} ]"/>
         <BreadCrumbs
           v-else
-          :items="[{title:`Mijn Collecties`, url: `/my/collections/`} , {title:`Collectie`, url: `/collections/${collection.id}/`} ]"/>
+          :items="[{title:`Mijn Collecties`, url: `/my/collections/`} ]"/>
 
         <h2
           class="collection__info_ttl"
