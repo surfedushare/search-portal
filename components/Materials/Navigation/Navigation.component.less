@@ -12,6 +12,10 @@
     max-width: 1300px;
     display: flex;
     justify-content: space-between;
+    @media @mobile, @tablet {
+      padding: 0 20px 20px 20px;
+      text-align: center;
+    }
     a{
       text-decoration: none;
       display: inline-block;
@@ -19,7 +23,7 @@
       box-sizing: border-box;
     }
     &_prev{
-      width: 95px;
+      width: 80px;
       padding-left: 19px;
       position: relative;
       &_link:before{
