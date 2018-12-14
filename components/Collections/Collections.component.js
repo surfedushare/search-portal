@@ -14,6 +14,10 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    setMyCollection(collection) {
+      this.$store.commit('SET_MY_COLLECTION', collection);
+    }
+  },
   computed: {}
 };

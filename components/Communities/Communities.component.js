@@ -15,7 +15,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    setCommunity(community) {
+      this.$store.commit('SET_COMMUNITY', community);
+    }
+  },
   computed: {
     ...mapGetters(['communities'])
   }

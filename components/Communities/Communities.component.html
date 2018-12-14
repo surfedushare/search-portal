@@ -32,6 +32,7 @@
           :to="`/communities/${communitie.id}/`"
           class="arrow-link communities__item_link"
           :key="`${communitie.id}`"
+          @click.native="setCommunity(communitie)"
           >
             Bekijken
           </nuxt-link>

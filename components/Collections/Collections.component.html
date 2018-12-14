@@ -15,6 +15,7 @@
             :to="`/collections/${collection.id}/`"
             class="collections__item_ttl_link"
             :key="`${collection.id}`"
+            @click.native="setMyCollection(collection)"
           >
             {{ collection.title }}
           </nuxt-link>
