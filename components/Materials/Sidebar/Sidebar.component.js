@@ -19,8 +19,9 @@ export default {
     this.$store
       .dispatch('checkMaterialInCollection', this.material.external_id)
       .then(collections => {
-        this.my_checked_collections = collections.results.map(item => item.id);
-        this.checked_collections = this.my_checked_collections.slice(0);
+        const checked_collections = collections.results.map(item => item.id);
+        this.my_checked_collections = checked_collections;
+        this.checked_collections = checked_collections.slice(0);
 
         this.$nextTick().then(() => {
           this.full_loading = true;
