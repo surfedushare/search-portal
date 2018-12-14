@@ -37,6 +37,13 @@ export default {
       commit('SET_MY_COLLECTION', collection);
       return collection;
     },
+    async setCollectionSocial({ commit }, { id, params }) {
+      const collection = await this.$axios.$get(`collections/${id}/`, {
+        params
+      });
+      commit('SET_MY_COLLECTION', collection);
+      return collection;
+    },
     async putMyCollection({ state, commit }, data) {
       const collection = await this.$axios.$put(
         `collections/${data.id}/`,

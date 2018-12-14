@@ -135,6 +135,7 @@
           v-if="isShow"
           :close="close"
           :is-show="isShow"
+          :is-shared="true"
         />
       </div>
     </div>
@@ -171,12 +172,9 @@ export default {
   },
   methods: {
     showAddCollection() {
-      console.log(11111);
       this.isShow = true;
     },
-    addCollection() {
-      console.log(11111);
-    },
+    addCollection() {},
     close() {
       this.isShow = false;
     }
