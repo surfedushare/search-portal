@@ -113,6 +113,7 @@
   font-size: 16px;
   height: 51px;
   align-items: center;
+  overflow: auto;
 }
 
 .search--hide-categories .v-select.searchable .dropdown-toggle {

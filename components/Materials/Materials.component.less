@@ -25,6 +25,13 @@
     position: relative;
     font-size: 16px;
     line-height: 1.44;
+    margin-bottom: 50px;
+
+    &_wrapper--selected {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     @media @mobile, @tablet {
       width: 100%;
       margin-left: 0;
@@ -40,19 +47,21 @@
 
 
     &_delete {
-      background: url('./../../assets/images/close-black.svg') 50% 50% no-repeat;
+      background: @light-grey url('./../../assets/images/close-grey.svg') 50% 50% no-repeat;
       background-size: 20px 20px;
       position: absolute;
-      left: 10px;
-      top: 10px;
-      width: 20px;
-      height: 20px;
-      border: 1px solid @dark-grey;
+      left: 50%;
+      top: -20px;
+      width: 40px;
+      height: 40px;
       color: transparent;
       overflow: hidden;
       padding: 0;
       cursor: pointer;
       z-index: 10;
+      border-radius: 50%;
+      transform: translate(-50%, 0);
+      border: 0;
 
       &:focus {
         outline: none;

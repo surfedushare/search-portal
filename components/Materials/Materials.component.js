@@ -22,6 +22,10 @@ export default {
     contenteditable: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: Array,
+      default: []
     }
   },
   components: {
@@ -31,11 +35,23 @@ export default {
     this.$store.dispatch('getFilterCategories');
   },
   data() {
-    return {};
+    return {
+      selected_materials: []
+    };
   },
   methods: {
     setMaterial(material) {
       this.$store.commit('SET_MATERIAL', material);
+    },
+    selectMaterial(material) {
+      if (this.selected_materials.indexOf(material.external_id) === -1) {
+        this.selected_materials.push(material.external_id);
+      } else {
+        this.selected_materials = this.selected_materials.filter(
+          item => item !== material.external_id
+        );
+      }
+      this.$emit('input', this.selected_materials);
     }
   },
   computed: {
@@ -48,7 +64,12 @@ export default {
      * @returns {*}
      */
     extended_materials() {
-      const { materials, disciplines, educationallevels } = this;
+      const {
+        materials,
+        disciplines,
+        educationallevels,
+        selected_materials
+      } = this;
       let arrMaterials;
       if (materials && disciplines && educationallevels) {
         if (materials.records) {
@@ -57,26 +78,35 @@ export default {
           arrMaterials = materials;
         }
         return arrMaterials.map(material => {
-          return Object.assign({}, material, {
-            disciplines: material.disciplines.reduce((prev, id) => {
-              const item = disciplines.items[id];
+          return Object.assign(
+            {
+              selected: selected_materials.indexOf(material.external_id) !== -1
+            },
+            material,
+            {
+              disciplines: material.disciplines.reduce((prev, id) => {
+                const item = disciplines.items[id];
 
-              if (item) {
-                prev.push(item);
-              }
+                if (item) {
+                  prev.push(item);
+                }
 
-              return prev;
-            }, []),
-            educationallevels: material.educationallevels.reduce((prev, id) => {
-              const item = educationallevels.items[id];
+                return prev;
+              }, []),
+              educationallevels: material.educationallevels.reduce(
+                (prev, id) => {
+                  const item = educationallevels.items[id];
 
-              if (item) {
-                prev.push(item);
-              }
+                  if (item) {
+                    prev.push(item);
+                  }
 
-              return prev;
-            }, [])
-          });
+                  return prev;
+                },
+                []
+              )
+            }
+          );
         });
       }
 

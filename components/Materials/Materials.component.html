@@ -16,12 +16,18 @@
       v-if="itemsLength !== 'auto' ? index < itemsLength : true"
     >
       <div class="materials__bookmark" v-if="material.has_bookmark">Bookmark</div>
-      <div class="materials__item_wrapper tile__wrapper">
+      <button
+        class="materials__item_delete"
+        v-if="contenteditable"
+        @click="selectMaterial(material)"
+      >
+        Delete
+      </button>
+      <div
+        :class="{'materials__item_wrapper--selected': material.selected}"
+        class="materials__item_wrapper tile__wrapper"
+      >
         <div class="materials__item_main_info">
-          <button
-            class="materials__item_delete"
-            v-if="contenteditable"
-          >Delete</button>
           <h3 class="materials__item_title">
             <nuxt-link
               class="materials__item_link"

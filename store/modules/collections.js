@@ -75,31 +75,29 @@ export default {
         data
       });
     },
-    async getMaterialInMyCollection(
-      { state, commit },
-      { id, page_size, page }
-    ) {
+    async getMaterialInMyCollection({ state, commit }, { id, params }) {
       commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
       const materials = await this.$axios.$get(`collections/${id}/materials/`, {
-        params: {
-          page_size,
-          page
-        }
+        params
       });
       commit('GET_MATERIAL_TO_MY_COLLECTION', materials);
       commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
       return materials;
     },
-    async getNextPeMaterialInMyCollection(
-      { state, commit },
-      { id, page_size, page }
-    ) {
+    async searchMaterialInMyCollection({ state, commit }, { id, params }) {
+      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
+      const materials = await this.$axios.$post(
+        `collections/${id}/search/`,
+        params
+      );
+      commit('GET_MATERIAL_TO_MY_COLLECTION', materials);
+      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
+      return materials;
+    },
+    async getNextPeMaterialInMyCollection({ state, commit }, { id, params }) {
       commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
       const materials = await this.$axios.$get(`collections/${id}/materials/`, {
-        params: {
-          page_size,
-          page
-        }
+        params
       });
       commit('SET_NEXT_PAGE_MATERIALS_TO_MY_COLLECTION', materials);
       commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);

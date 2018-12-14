@@ -37,6 +37,7 @@ export default {
     return {
       href: '',
       collection_title: null,
+      search: {},
       isShowShareMaterial: false,
       is_copied: false
     };
@@ -72,6 +73,9 @@ export default {
   },
   computed: {},
   watch: {
+    search(search) {
+      this.$emit('input', search);
+    },
     contenteditable(isEditable) {
       const { title } = this.$refs;
       this.$nextTick().then(() => {

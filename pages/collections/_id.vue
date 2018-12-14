@@ -8,6 +8,7 @@
         :set-editable="setEditable"
         :change-view-type="changeViewType"
         :items-in-line="materials_in_line"
+        v-model="search"
       />
       <div
         v-infinite-scroll="loadMore"
@@ -15,6 +16,7 @@
         infinite-scroll-distance="10"
       >
         <Materials
+          v-model="formData.materials_for_deleting"
           :materials="my_collection_materials"
           :items-in-line="materials_in_line"
           :loading="my_collection_materials_loading"
@@ -42,7 +44,16 @@ export default {
   data() {
     return {
       contenteditable: false,
-      materials_in_line: 4
+      materials_in_line: 4,
+      formData: {
+        materials_for_deleting: []
+      },
+      search: {
+        page_size: 10,
+        page: 1,
+        filters: [],
+        search_text: []
+      }
     };
   },
   computed: {
@@ -53,12 +64,30 @@ export default {
       'my_collection_materials_loading'
     ])
   },
+  watch: {
+    search(search) {
+      if (search) {
+        const { id } = this.$route.params;
+
+        this.$store.dispatch('searchMaterialInMyCollection', {
+          id,
+          params: {
+            ...search,
+            page_size: 10,
+            page: 1
+          }
+        });
+      }
+    }
+  },
   mounted() {
     const { id } = this.$route.params;
     this.$store.dispatch('getMaterialInMyCollection', {
       id,
-      page_size: 10,
-      page: 1
+      params: {
+        page_size: this.search.page_size,
+        page: 1
+      }
     });
     this.$store.dispatch('getMyCollection', id).catch(err => {
       if (err.response.status === 404) {
@@ -71,7 +100,7 @@ export default {
      * Load next collections
      */
     loadMore() {
-      const { my_collection_materials } = this;
+      const { my_collection_materials, search } = this;
       const { id } = this.$route.params;
       if (my_collection_materials) {
         const { page_size, page, records_total } = my_collection_materials;
@@ -79,7 +108,10 @@ export default {
         if (records_total > page_size * page) {
           this.$store.dispatch(
             'getNextPeMaterialInMyCollection',
-            Object.assign({}, { id, page: page + 1, page_size })
+            Object.assign(
+              {},
+              { id, params: { ...search, page: page + 1, page_size } }
+            )
           );
         }
       }

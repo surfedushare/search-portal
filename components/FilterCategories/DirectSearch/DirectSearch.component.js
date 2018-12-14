@@ -9,7 +9,7 @@ export default {
       default: () => ({
         page_size: 10,
         page: 1,
-        filters: [{}],
+        filters: [],
         search_text: []
       })
     }
@@ -59,6 +59,9 @@ export default {
       this.$router.push(generateSearchMaterialsQuery(this.formData));
       this.$emit('input', this.formData);
     },
+    setKeywords() {
+      this.$emit('input', this.formData);
+    },
     onChangeCategory(event) {
       this.formData.filters = [
         {
@@ -99,30 +102,6 @@ export default {
   },
   computed: {
     ...mapGetters(['filter_categories', 'materials_keywords']),
-
-    /**
-     * Get the active category
-     * @returns {*} - false or active category
-     */
-    active_category() {
-      const { filter_categories, hideFilter, activeCategoryExternalId } = this;
-
-      if (filter_categories && filter_categories.results && !hideFilter) {
-        const { external_id } = this.formData.filters[0];
-        const current_external_id = external_id || activeCategoryExternalId;
-        if (current_external_id) {
-          return filter_categories.results.find(
-            item => item.external_id === current_external_id
-          );
-        }
-        if (external_id !== null) {
-          this.formData.filters[0].external_id =
-            filter_categories.results[0].external_id;
-        }
-        return filter_categories.results[0];
-      }
-      return false;
-    },
 
     /**
      * Get keywords
