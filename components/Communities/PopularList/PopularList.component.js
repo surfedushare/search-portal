@@ -10,7 +10,7 @@ export default {
     computed_communities() {
       const { communities } = this;
       if (communities) {
-        if (communities.results && communities.results.length) {
+        if (communities.results) {
           return communities.results;
         }
 
