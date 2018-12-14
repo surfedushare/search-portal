@@ -1,0 +1,912 @@
+FORMAT: 1A
+HOST: https://surf.stg.mqd.me
+
+# SURF
+
+SURF API
+
+## Errors
+
+4xx errors are client errors, so the only way to handle them is to validate
+input data and repeat request.
+5xx errors are server errors and should be handled with repeated requests.
+
+# Group Authentication
+
+## Note
+All authorized requests should be with authorization header
+
+```http
+Authorization: Token 7ca57767ae16bb878f62946b0a8bb0385c9607d8
+```
+You can get token after login.
+
+## Login  [/api/v1/login/]
+Redirects user to SURFconext authentication endpoint for authentication by
+OpenID Connect flow. After user is authenticated he can be redirected
+to specified redirect URL (redirect URL should be added to ).
+
+### GET [GET /api/v1/login/{?redirect_url}]
+
++ Parameters
+    + redirect_url (string, optional) - redirect URL after authorization
+
++ Response 200 (application/json)
+    + Attributes (Login Response)
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                non_field_errors: [
+                    "Unable to log in with provided credentials."
+                ]
+            }
+
+## Logout  [/api/v1/logout/]
+Deletes the Token object assigned to the current User object.
+
+### GET [GET /api/v1/logout/]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 7ca57767ae16bb878f62946b0a8bb0385c9607d8
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                detail: "Successfully logged out."
+            }
+
+# Group Users
+
+## User Profile Resource [/api/v1/users/me/]
+
+### GET [GET /api/v1/users/me/]
+Returns some detailed information about current user.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 7ca57767ae16bb878f62946b0a8bb0385c9607d8
+
++ Response 200 (application/json)
+    + Attributes (User Profile)
+
+# Group Search
+
+## Search Result Resource [/api/v1/materials/search/]
+
+### POST [POST /api/v1/materials/search/]
+Provides a search for materials in Edurep using some search text and/or filters.
+
++ Request (application/json)
+    + Attributes (Search Request)
+
++ Response 200 (application/json)
+    + Attributes (Search Result)
+
+# Group Material Ratings
+
+## Material Rating Resource [/api/v1/materials/rating/]
+
+### GET [GET /api/v1/materials/rating/{?object_id,page,page_size}]
+Returns ratings of materials set by current user.
+
++ Parameters
+  + object_id: `urn:uuid:13be625a-0c84-481f-ace8-a029fc40830e` (string, optional) - The unique number of material.
+  + page (number, optional) - page number, by default `1`
+  + page_size (number, optional) - page size, by default `10`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Material Rating Response)
+
+### POST [POST /api/v1/materials/rating/]
+Allows to set material rating by current user. Old rating set by user for this
+material will be removed.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Material Rating)
+
++ Response 200 (application/json)
+    + Attributes (Material Rating)
+
+# Group Keywords
+
+## Keywords Resource [/api/v1/keywords/]
+
+### GET [GET /api/v1/keywords/{?query}]
+Returns keywords for query text.
+
++ Parameters
+  + query (string) - query string
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (array[string])
+
+# Group Materials
+
+## Material Array [/api/v1/materials/]
+
+### GET [GET /api/v1/materials/{?external_id,shared}]
+Returns an overview from 4 materials if `external_id` is not specified.
+Returns details of material by its Edurep identifier if `external_id` is set.
+
++ Parameters
+  + external_id (string, optional) - filter materials by external id
+  + shared: `linkedin` (string, optional) - sharing type if material was shared
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (array[Material])
+
+## Material Resource  [/api/v1/materials/{external_id_base64}/]
+
+### GET [GET /api/v1/materials/{external_id_base64}/{?shared}]
+Returns details of material by base64 representation of its Edurep identifier.
+
++ Parameters
+  + external_id_base64: `d3VyX3N0YWZmOm9haTpsaWJyYXJ5Lnd1ci5ubDp3dXJwdWJzLzUzOTYyNg==` (string) - External id of material in base64 format.
+  + shared: `linkedin` (string, optional) - sharing type if material was shared
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Material)
+
+# Group Applaud Materials
+
+## Applaud Material Array [/api/v1/applaud-materials/]
+
+### GET [GET /api/v1/applaud-materials/{?material__external_id}]
+Returns an array of records with information about materials applauded by user.
+
++ Parameters
+  + material__external_id (string, optional) - filter applauds by material external id in edurep
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Pagination Applaud Material Response)
+
+### POST [POST /api/v1/applaud-materials/]
+Marks the material as applauded by current user.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Applaud Material)
+
++ Response 201 (application/json)
+    + Attributes (Applaud Material)
+
+### DELETE [DELETE /api/v1/applaud-materials/{?material__external_id}]
+Removes applauds of current user for the materials.
+
++ Parameters
+  + material__external_id (string, optional) - filter applauds by material external id in edurep
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 204
+
+# Group Collections
+
+## Collection Array [/api/v1/collections/]
+
+### GET [GET /api/v1/collections/{?is_owner,is_shared,material_id}]
+Returns the array of collections, available for current user.
+Available collections for user are:
+* collections, created by user
+* shared collections
+* collections of communities
+
++ Parameters
+  + is_owner: `true` (boolean, optional) - filter/exclude user collections.
+  + is_shared: `true` (boolean, optional) - filter/exclude shared collections.
+  + material_id: `material identifier` (string, optional) - filter collections by external id of material.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Pagination Collection Response)
+
+### POST [POST /api/v1/collections/]
+Creates collection by current user.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Collection Create)
+
++ Response 201 (application/json)
+    + Attributes (Collection)
+
+## Collection Resource  [/api/v1/collections/{id}/]
+
+### GET [GET /api/v1/collections/{id}/{?shared}]
+Returns the collection by its identifier if collection is available for user.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+  + shared: `linkedin` (string, optional) - sharing type if collection was shared
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Collection)
+
+### PUT [PUT /api/v1/collections/{id}/]
+Changes the collection by its identifier if the user is owner of collection.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Collection Create)
+
++ Response 201 (application/json)
+    + Attributes (Collection)
+
+### DELETE [DELETE /api/v1/collections/{id}/]
+Deletes the collection by its identifier if the user is owner of collection.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 204
+
+## Collection Materials Search [/api/v1/collections/{id}/search/]
+
+### POST [POST /api/v1/collections/{id}/search/]
+Searches and returns array of materials that are part of collection.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Search Request Short)
+
++ Response 200 (application/json)
+    + Attributes (Search Result)
+
+## Collection Materials Array  [/api/v1/collections/{id}/materials/]
+
+### GET [GET /api/v1/collections/{id}/materials/{?page,page_size}]
+Returns the array of materials from specified collection if collection
+is available for user.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+  + page (number, optional) - page number, by default `1`
+  + page_size (number, optional) - page size, by default `5`
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Search Result)
+
+### POST [POST /api/v1/collections/{id}/materials/]
+Adds materials to specified collection if the user is owner of collection.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Material Short])
+
++ Response 200 (application/json)
+    + Attributes (array[Material Short])
+
+### DELETE [DELETE /api/v1/collections/{id}/materials/]
+Deletes materials from specified collection if the user is owner of collection.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the collection.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Material Short])
+
++ Response 200
+    + Attributes (array[Material Short])
+
+# Group Themes
+
+## Themes Array [/api/v1/themes/]
+
+### GET [GET /api/v1/themes/]
+Returns array of themes.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Pagination Theme Response)
+
+## Theme Resource  [/api/v1/themes/{id}/]
+
+### GET [GET /api/v1/themes/{id}/]
+Returns the theme by its identifier.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Theme)
+
+## Theme Disciplines Array  [/api/v1/themes/{id}/disciplines/]
+
+### GET [GET /api/v1/themes/{id}/disciplines/]
+Returns array of disciplines of specified theme.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (array[Discipline])
+
+## Theme Communities Array  [/api/v1/themes/{id}/communities/]
+
+### GET [GET /api/v1/themes/{id}/communities/]
+Returns array of communities which collections contain the material
+related to specified theme.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Pagination Community Response)
+
+## Theme Collections Array  [/api/v1/themes/{id}/community-collections/]
+
+### GET [GET /api/v1/themes/{id}/community-collections/]
+Returns an overview from 4 community collections which contain the material
+related to specified theme.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique internal ID of the theme.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (array[Collection])
+
+# Group Communities
+
+## Community Array [/api/v1/communities/]
+
+### GET [GET /api/v1/communities/{?material_id,is_member,is_admin}]
+Returns array of communities.
+
++ Parameters
+  + material_id: `external id` (string, optional) - Filter by material external id in community collections.
+  + is_member: `true` (boolean, optional) - Filter/exclude communities where user is member.
+  + is_admin: `true` (boolean, optional) - Filter/exclude communities where user is admin.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Pagination Community Response)
+
+
+## Community Resource  [/api/v1/communities/{id}/]
+
+### GET [GET /api/v1/communities/{id}/]
+Returns community by its identifier.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Community)
+
+### PUT [PUT /api/v1/communities/{id}/]
+Changes community by its identifier if the user is admin of community.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Community Create)
+
++ Response 201 (application/json)
+    + Attributes (Community)
+
+## Community Materials Search [/api/v1/communities/{id}/search/]
+
+### POST [POST /api/v1/communities/{id}/search/]
+Searches and returns array of materials that are part of the community collections.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Search Request Short)
+
++ Response 200 (application/json)
+    + Attributes (Search Result)
+
+## Community Collections Array  [/api/v1/communities/{id}/collections/]
+
+### GET [GET /api/v1/communities/{id}/collections/]
+Returns array of community collections.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Pagination Collection Response)
+
+### POST [POST /api/v1/communities/{id}/collections/]
+Adds collections to specified community if current user is admin of community.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Collection Short])
+
++ Response 200 (application/json)
+    + Attributes (array[Collection])
+
+### DELETE [DELETE /api/v1/communities/{id}/collections/]
+Deletes collections from community if current user is admin of community.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (array[Collection Short])
+
++ Response 200
+    + Attributes (array[Collection])
+
+## Community Themes Array  [/api/v1/communities/{id}/themes/]
+
+### GET [GET /api/v1/communities/{id}/themes/]
+Returns array of themes related to materials from community collections.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (array[Theme])
+
+## Community Disciplines Array  [/api/v1/communities/{id}/disciplines/]
+
+### GET [GET /api/v1/communities/{id}/disciplines/]
+Returns array of disciplines related to materials from community collections.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the community.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (array[Discipline])
+
+# Group Filter Categories
+
+## Filter Categories Array [/api/v1/filter-categories/]
+
+### GET [GET /api/v1/filter-categories/]
+Returns array of filter categories and their items.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Pagination Filter Category Response)
+
+# Group Filters
+
+## Filter Array [/api/v1/filters/]
+
+### GET [GET /api/v1/filters/]
+Returns array of filters for current user.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (array[Filter Short])
+
+### POST [POST /api/v1/filters/]
+Adds the filter for current user.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Filter Create)
+
++ Response 201 (application/json)
+    + Attributes (Filter)
+
+## Filter Resource  [/api/v1/filters/{id}/]
+
+### GET [GET /api/v1/filters/{id}/]
+Returns user filter by its identifier.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the filter.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 200 (application/json)
+    + Attributes (Filter)
+
+### PUT [PUT /api/v1/filters/{id}/]
+Changes user filter by its identifier.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the filter.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
+    + Attributes (Filter Create)
+
++ Response 201 (application/json)
+    + Attributes (Filter)
+
+### DELETE [DELETE /api/v1/filters/{id}/]
+Deletes user filter by its identifier.
+
++ Parameters
+  + id: `c808167b-4ece-4862-8eed-b9346827eec1` (string) - The unique ID of the filter.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Token 77d4f58da328105d92d0a255780fcf3a6b51403c
+
++ Response 204
+
+# Group Statistics
+
+## Statistics [/api/v1/stats/]
+
+### GET [GET /api/v1/stats/all-materials/]
+Returns the number of all available materials.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Number Value)
+
+# Data Structures
+
+## Pagination Response (object)
+ - count: `1023` (number) - the number of elements in response
+ - next: `https://api.example.org/accounts/?page=5` (string) - the URL of next page
+ - previous: `https://api.example.org/accounts/?page=3` (string) - the URL of previous page
+
+## Login Response (object)
+ - access_token: `7644a13d1c3a8f135e404b851f5858238a6f34ab` (string) - access token
+
+## User Profile (object)
+ - id: `1` (number) - user ID
+ - full_name `User name` (string) - user full name
+ - is_admin `true` (boolean) - true if user is admin of any community
+
+## Request Filter Data (object)
+ - external_id: `lom.classification.obk.discipline.id` (string) - filter category id
+ - items: (array[string]) - array of exteral_id of filter items
+
+## Search Request (object)
+ - search_text: (array[string]) - array of searched texts
+ - filters: (array[Request Filter Data], optional) - filters to search materials
+ - page: `1` (number, optional) - page number, default `1`
+ - page_size: `5` (number, optional) - page size, default `5`
+ - ordering: `-lom.lifecycle.contribute.publisherdate` (string, optional) - field identifier by which result is sorted
+ - author: `Material author` (string, optional) - author whose materials will be searched
+ - return_records: `true` (boolean, optional) - return found materials if `true`, default `true`
+ - return_filters: `true` (boolean, optional) - return extra data by filters if `true`, default `true`
+
+## Search Request Short (object)
+ - search_text: (array[string]) - array of searched texts
+ - page: `1` (number, optional) - page number, default `1`
+ - page_size: `5` (number, optional) - page size, default `5`
+
+## Shared Resource Counter (object)
+ - sharing_type: `linkedin` (string) - the sharing type
+ - counter_value: `1` (number) - the value of sharing counter
+
+## Material Rating (object)
+ - object_id: `urn:uuid:786d79d9-08a9-43d7-82dd-2598a4505eab` (string) - material URN in EduRep
+ - rating: `1` (number) - rating of material, from 1 to 5
+
+## Material Rating Extra (Material Rating)
+ - smo_id: `surfzoekportal.0329a6d7-3576-4bb1-92fb-8dbc594c86ef` (string) - identifier of record in EduRep
+
+## Material Rating Response (object)
+ - records: (array[Material Rating Extra]) - array of ratings
+ - page: `1` (number) - page number
+ - page_size: `10` (number) - page size
+ - records_total: `10000` (number) - total number of material ratings
+
+## Material Short (object)
+ - external_id: `external_id` (string) - material id in edurep
+
+## Material (object)
+ - external_id: `external_id` (string) - material id in edurep
+ - external_id_base64: `external_id_base64` (string) - material id in edurep in base64 format
+ - object_id: `urn.uuid.887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URI
+ - url: `http://delen.edurep.nl/download.php?id=887f1f83-b821-449e-9b08-c5571bcfbda2` (string) - material URL
+ - title: `test1` (string) - title of material
+ - description: `test` (string) - material description
+ - keywords: (array[string]) - keywords for material
+ - language: `nl` (string) - material language
+ - aggregationlevel: `1` (string) - aggregation level of material
+ - copyright: `cc-by-sa-30` (string) - material copyrights
+ - publisher: `wikiwijs_repository` (string) - publisher name
+ - publish_datetime: `2018-09-19T01:08:08+02:00` (string) - publish datetime
+ - author: `awar rashkany` (string) - author name
+ - creator: `Mendy` (string) - creator name
+ - format: `image` (string) - material technical format
+ - number_of_ratings: `1` (number) - number of ratings for material
+ - average_rating: `1.0` (number) - average ratings of material (from 0 to 5)
+ - themes: (array[string]) - array of identifiers of related themes
+ - disciplines: (array[string]) - array of identifiers of related disciplines
+ - educationallevels: (array[string]) - array of identifiers of related educational levels
+ - has_bookmark: (boolean) - is material bookmarked
+ - number_of_applauds: (number) - the number of applauds for this material
+ - number_of_views: (number) - the number of unique views of material
+ - communities: (array[Community Short]) - communities which collections contain this material
+ - sharing_counters: (array[Shared Resource Counter]) - array of counters for each sharing type
+
+## Filter Extra Data item (object)
+ - external_id: `5e86dc82-1981-48df-bbe5-abd4a9b3767b` (string) - filter item id
+ - count: `17143` (number) - found material count for filter item
+
+## Filter Extra Data (object)
+ - external_id: `lom.classification.obk.discipline.id` (string) - filter category id
+ - items: (array[Filter Extra Data item]) - extra data for each filter item
+
+## Search Result (object)
+ - records: (array[Material]) - found materials
+ - filters: (array[Filter Extra Data]) - found materials count for each filter item
+ - page: `1` (number) - page number
+ - page_size: `5` (number) - page size
+ - records_total: `10000` (number) - total count of found materials
+
+## Filter Category item (object)
+ - id: `15301dad-467f-4138-a575-8c11acfd7998` (string) - filter category item id
+ - external_id: `c001f86a-4f8f-4420-bd78-381c615ecedc` (string) - filter category item external id in EduRep
+ - title: `Aardrijkskunde` (string) - filter category item title
+
+## Filter Category (object)
+ - id: `fedbba4d-f6b6-4b00-bd84-44ea913e44eb` (string) - filter category id
+ - external_id: `lom.classification.obk.discipline.id` (string) - filter category external id in EduRep
+ - title: `Vakgebied` (string) - filter category title
+ - items: (array[Filter Category item]) - filter category items
+
+## Pagination Filter Category Response (Pagination Response)
+ - results: Filter Category (array[Filter Category])
+
+## Filter item (object)
+ - id: `b5fda3b2-3a95-4886-81a9-bed5a4cfb5af` (string) - filter item id
+ - category_item_id: `684de1cd-d875-4f08-b3b8-f99a1067485b` (string) - filter category item id
+ - category_id: `7530b31b-f6af-41c9-aceb-3ee64a950516` (string) - filter category item id
+
+## Filter (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - filter id
+ - title: `test filter` (string) - filter title
+ - start_date: `2018-10-15` (string) - start date for filtration in format YYYY-MM-DD or null if start date is not set
+ - end_date: `2018-10-15` (string) - end date for filtration in format YYYY-MM-DD or null if end date is not set
+ - materials_count: `123` (number) - the number of all materials according to filter
+ - items: (array[Filter item]) - filter items
+
+## Filter Short (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - filter id
+ - title: `test filter` (string) - filter title
+ - start_date: `2018-10-15` (string) - start date for filtration in format YYYY-MM-DD or null if start date is not set
+ - end_date: `2018-10-15` (string) - end date for filtration in format YYYY-MM-DD or null if start date is not set
+ - materials_count: `123` (number) - the number of all materials according to filter
+
+## Filter Create item (object)
+ - category_item_id: `684de1cd-d875-4f08-b3b8-f99a1067485b` (string) - filter category item id
+
+## Filter Create (object)
+ - title: `test filter` (string) - filter title
+ - items: (array[Filter Create item], optional) - filter items
+ - start_date: `2018-10-15` (string, optional) - start date for filtration in format YYYY-MM-DD or null if start date is not set
+ - end_date: `2018-10-15` (string, optional) - end date for filtration in format YYYY-MM-DD or null if start date is not set
+ - materials_count: `123` (number, optional) - the number of all materials according to filter, default 0
+
+## Collection (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
+ - title: `test collection` (string) - collection title
+ - materials_count: `3` (number) - the number of materials in collection
+ - communities_count: `10` (number) - the number of communities related with collection
+ - is_shared: `false` (boolean) - set true if collection was shared by owner
+ - is_owner: `false` (boolean) - set true if the user is owner of collection
+ - owner_name: `Author name` (string) - the name of collection owner
+ - communities: (array[Community Short], optional) - communities which contain this collection
+ - sharing_counters: (array[Shared Resource Counter]) - array of counters for each sharing type
+
+## Collection Create (object)
+ - title: `test collection` (string) - collection title
+
+## Collection Short (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - collection id
+
+## Pagination Collection Response (Pagination Response)
+ - results: Collection (array[Collection])
+
+## Applaud Material (object)
+  - material: (Material Short) - applauded material
+
+## Pagination Applaud Material Response (Pagination Response)
+ - results: Applaud Material (array[Applaud Material])
+
+## Community (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - community id
+ - external_id: `urn:collab:group:test.surfconext.nl:nl:surfnet:diensten:admin_team_mujina` (string) - unique id of related group in SURFconext
+ - name: `test community` (string) - community name
+ - description: `test community desc` (string) - community description
+ - website_url: `https://test-community.org` (string) - community website URL
+ - logo: `logo data` (string) - community logo
+ - featured_image: `featured image data` (string) - community featured image
+ - members_count: `5` (number) - the number of members in community
+ - materials_count: `2` (number) - the number of materials in community collections
+ - collections_count: `3` (number) - the number of collections in community
+ - is_admin: `true` (boolean) - is the user community administrator
+ - is_member: `true` (boolean) - is the user community member
+
+## Community Create (object)
+ - name: `test community` (string) - community name
+ - description: `test community desc` (string, optional) - community description
+ - website_url: `https://test-community.org` (string, optional) - community website URL
+ - logo: `logo data` (string, optional) - community logo
+ - featured_image: `featured image data` (string, optional) - community featured image
+
+## Community Short (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - community id
+ - name: `test community` (string) - community name
+
+## Pagination Community Response (Pagination Response)
+ - results: Community (array[Community])
+
+## Theme (object)
+ - id: `137e1106-1702-48bd-8ab2-914e3d434511` (string) - theme internal id
+ - external_id: `theme external id` (string) - theme external id
+ - title: `theme title` (string) - theme title
+ - description `theme description` (string, optional) - theme description
+
+## Pagination Theme Response (Pagination Response)
+ - results: Theme (array[Theme])
+
+## Discipline (Filter Category item)
+ - materials_count: `3` (number) - the number of materials related to this discipline
+
+## Number Value (object)
+ - value: `2` (number) - the value of requested parameter

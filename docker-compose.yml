@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:9.6
+    volumes:
+      - /docker/surf-backend/postgresql/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=surf
+      - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_DB=surf
+    healthcheck:
+        test: su postgres -c "psql -c "SELECT 'DBD::Pg ping test'""
+    restart: unless-stopped
+
+  backend:
+    image: "registry.head.mqd.me/surf-backend:develop"
+    environment:
+      - DJANGO_SETTINGS_MODULE=surf.settings.local
+      - DO_DJANGO_INIT=true
+    volumes:
+      - /docker/surf-backend/settings/local.py:/src/surf/settings/local.py
+      - /docker/surf-backend/static:/src/static
+    ports:
+      - "127.0.0.1:8091:8080"
+    links:
+      - postgres:database
+    depends_on:
+      - postgres
+    restart: unless-stopped
