@@ -23,10 +23,7 @@ export default {
       type: Boolean,
       default: false
     },
-    value: {
-      type: Array,
-      default: []
-    }
+    value: {}
   },
   components: {
     StarRating

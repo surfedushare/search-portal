@@ -32,6 +32,7 @@
               </label>
               <input
                 id="name"
+                v-model="formData.name"
                 type="text"
                 class="communities__form__input"
                 placeholder="Landelijk Overleg Opleidingen Verpleegkunde">
@@ -44,6 +45,7 @@
               </label>
               <textarea
                 id="description"
+                v-model="formData.description"
                 class="communities__form__textarea"
                 placeholder="De community hbovpk is hét digitale ontmoetingspunt voor hbo-docenten verpleegkunde. Doel van de community is delen van kennis en leermaterialen en het uitwisselen van ervaringen. "/>
             </div>
@@ -55,6 +57,7 @@
               </label>
               <input
                 id="website"
+                v-model="formData.website_url"
                 type="text"
                 class="communities__form__input"
                 placeholder="Geef hier de URL ">
@@ -62,58 +65,25 @@
           </div>
           <div class="communities__form__column">
             <div class="communities__form__row communities__form__file">
-              <label
-                for="logo"
-                class="communities__form__file_label">
-                Logo
-              </label>
-              <input
-                id="logo"
-                type="file"
-                class="communities__form__file_input"
-              >
-              <span class="communities__form__file_text">
-                File upload
-              </span>
-              <div class="communities__form__file_buttons">
-                <a
-                  href="#"
-                  class="communities__form__file_button _delete"/>
-                <a
-                  href="#"
-                  class="communities__form__file_button _upload">
-                  upload
-                </a>
-              </div>
+              <InputFile
+                ref="file-logo"
+                :imagesrc="formData.logo"
+                :title="'Logo'"
+              />
             </div>
             <div class="communities__form__row communities__form__file">
-              <label
-                for="featured_image"
-                class="communities__form__file_label">
-                Uitgelichte afbeelding
-              </label>
-              <input
-                id="featured_image"
-                type="file"
-                class="communities__form__file_input"
-              >
-              <span class="communities__form__file_text">
-                File upload
-              </span>
-              <div class="communities__form__file_buttons">
-                <a
-                  href="#"
-                  class="communities__form__file_button _delete"/>
-                <a
-                  href="#"
-                  class="communities__form__file_button _upload">
-                  upload
-                </a>
-              </div>
+              <InputFile
+                ref="file-img"
+                :imagesrc="formData.featured_image"
+                :title="'Uitgelichte afbeelding'"
+              />
             </div>
           </div>
           <div class="communities__form__buttons">
-            <button class="button communities__form__button">Opslaan</button>
+            <button
+              type="submit"
+              class="button communities__form__button"
+              @click.prevent="onSubmit">Opslaan</button>
           </div>
         </form>
       </div>
@@ -148,6 +118,7 @@ import Materials from '~/components/Materials';
 import Collections from '~/components/Collections';
 import Search from '~/components/FilterCategories/Search';
 import AddCollection from '~/components/Popup/AddCollection';
+import InputFile from '~/components/InputFile';
 
 export default {
   components: {
@@ -155,18 +126,44 @@ export default {
     BreadCrumbs,
     Materials,
     Search,
-    AddCollection
+    AddCollection,
+    InputFile
   },
   data() {
     return {
-      isShow: false
+      isShow: false,
+      image_logo: '',
+      formData: {
+        name: false,
+        description: false,
+        website_url: false,
+        logo: false,
+        featured_image: false
+      }
     };
   },
   computed: {
-    ...mapGetters(['my_collections', 'my_collection_materials'])
+    ...mapGetters(['my_collections', 'communities'])
   },
   mounted() {
-    // this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
+    this.$store
+      .dispatch('getCommunities', { params: { is_admin: true } })
+      .then(item => {
+        const {
+          id,
+          name,
+          description,
+          website_url,
+          logo,
+          featured_image
+        } = item.results[0];
+        this.formData.id = id;
+        this.formData.name = name;
+        this.formData.description = description;
+        this.formData.website_url = website_url;
+        this.formData.logo = logo;
+        this.formData.featured_image = featured_image;
+      });
     this.$store.dispatch('getMyCollections');
   },
   methods: {
@@ -179,6 +176,54 @@ export default {
     },
     close() {
       this.isShow = false;
+    },
+    onSubmit() {
+      const data = this.normalizeFormData();
+      this.$store.dispatch('putCommunities', {
+        id: this.formData.id,
+        data: data
+      });
+      // putCommunities
+    },
+    normalizeFormData() {
+      let data = new FormData();
+
+      for (let item in this.formData) {
+        const el = this.formData[item];
+
+        if (el) {
+          if (Array.isArray(el)) {
+            data.append(item, JSON.stringify(el));
+            // console.log(data.append(item, JSON.stringify(el)));
+          } else {
+            data.append(item, el);
+          }
+        }
+      }
+
+      if (
+        this.$refs['file-logo'].$el.querySelector('input[type="file"]').files[0]
+      ) {
+        data.set(
+          'logo',
+          this.$refs['file-logo'].$el.querySelector('input[type="file"]')
+            .files[0]
+        );
+      } else {
+        data.delete('logo');
+      }
+      if (
+        this.$refs['file-img'].$el.querySelector('input[type="file"]').files[0]
+      ) {
+        data.set(
+          'featured_image',
+          this.$refs['file-img'].$el.querySelector('input[type="file"]')
+            .files[0]
+        );
+      } else {
+        data.delete('featured_image');
+      }
+      return data;
     }
   }
 };
@@ -282,63 +327,6 @@ export default {
       color: #686d75;
       &:focus {
         outline: none;
-      }
-    }
-    &__file {
-      border: none;
-      border-radius: 20px;
-      background-color: rgba(244, 244, 244, 0.9);
-      padding: 12px 24px;
-      margin: 24px 0 28px;
-      font-size: 16px;
-      line-height: 1.44;
-      color: #686d75;
-      position: relative;
-      &_label {
-        margin: 10px 0 28px;
-        display: block;
-        font-family: @second-font;
-        font-weight: bold;
-        color: #353535;
-      }
-      &_input {
-        position: absolute;
-        opacity: 0;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        &:focus {
-          outline: none;
-        }
-      }
-      &_text {
-        margin: 0 0 13px;
-        display: block;
-      }
-      &_buttons {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        margin: 0 -4px 0 0;
-        position: relative;
-      }
-      &_button {
-        display: inline-block;
-        min-height: 20px;
-        min-width: 20px;
-        background-size: 20px;
-        font-weight: bold;
-        &._delete {
-          background: url('./../../assets/images/trash.svg') no-repeat 0 50%;
-        }
-        &._upload {
-          background: url('./../../assets/images/open-link.svg') no-repeat 100%
-            50%;
-          background-size: 15px;
-          padding: 0 18px 0 0;
-          margin-left: 12px;
-        }
       }
     }
     &__buttons {
