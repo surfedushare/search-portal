@@ -132,6 +132,11 @@ export default {
         dates_range.start_date,
         dates_range.end_date
       ];
+    },
+    'formData.search_text'(search_text) {
+      if (search_text && !search_text.length) {
+        this.$emit('onEmptySearchText', true);
+      }
     }
   },
   computed: {

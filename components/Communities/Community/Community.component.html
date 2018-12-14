@@ -16,44 +16,60 @@
         :hide-filter="true"
         :hide-categories="true"
         @submit="searchInCommunity"
+        @onEmptySearchText="onEmptySearchText"
       />
     </div>
-    <div class="community__row">
-      <div class="community__description">
-        <img
-          class="community__description_img"
-          :src="`${ community_info.featured_image }`"
-          v-if="community_info.featured_image"
-          alt="">
-        <h2 class="community__description_ttl">Over de community</h2>
-        <p class="community__description_txt">
-          {{ community_info.description }}
-        </p>
-        <a :href="`${ community_info.website_url }`" v-if="community_info.website_url" class="community__description_link arrow-link">Bezoek website</a>
-      </div>
-      <div class="community__themas_and_disciplines">
-        <Themes
-          :themes="community_themes"
-          class="community__themas"/>
-        <Disciplines class="community__disciplines" :disciplines="community_disciplines" />
-      </div>
-    </div>
-    <Collections
-      v-if="community_collections"
-      :collections="community_collections.results"
-      class="community__collections">
-      <template slot="header-info">
-        <h2>Collecties</h2>
-      </template>
-    </Collections>
-    <Materials
-      :materials="materials"
-      class="community__materials"
+
+    <div
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="materials_loading"
+      infinite-scroll-distance="10"
+      v-if="isSearch"
     >
-      <template slot="header-info">
-        <h2>Uitgelicht</h2>
-      </template>
-    </Materials>
+      <Materials
+        :materials="materials"
+        :items-in-line="4"
+      />
+      <Spinner v-if="materials_loading" />
+    </div>
+    <template v-else>
+      <div class="community__row">
+        <div class="community__description">
+          <img
+            class="community__description_img"
+            :src="`${ community_info.featured_image }`"
+            v-if="community_info.featured_image"
+            alt="">
+          <h2 class="community__description_ttl">Over de community</h2>
+          <p class="community__description_txt">
+            {{ community_info.description }}
+          </p>
+          <a :href="`${ community_info.website_url }`" v-if="community_info.website_url" class="community__description_link arrow-link">Bezoek website</a>
+        </div>
+        <div class="community__themas_and_disciplines">
+          <Themes
+            :themes="community_themes"
+            class="community__themas"/>
+          <Disciplines class="community__disciplines" :disciplines="community_disciplines" />
+        </div>
+      </div>
+      <Collections
+        v-if="community_collections"
+        :collections="community_collections.results"
+        class="community__collections">
+        <template slot="header-info">
+          <h2>Collecties</h2>
+        </template>
+      </Collections>
+      <Materials
+        :materials="materials"
+        class="community__materials"
+      >
+        <template slot="header-info">
+          <h2>Uitgelicht</h2>
+        </template>
+      </Materials>
+    </template>
   </div>
 </section>
 

@@ -5,7 +5,8 @@ import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import Materials from '~/components/Materials';
-import { generateSearchMaterialsQuery } from '../../_helpers';
+import Spinner from '~/components/Spinner';
+// import { generateSearchMaterialsQuery } from '../../_helpers';
 
 export default {
   name: 'community',
@@ -16,7 +17,8 @@ export default {
     Themes,
     Disciplines,
     Collections,
-    Materials
+    Materials,
+    Spinner
   },
   mounted() {
     const { community } = this.$route.params;
@@ -30,17 +32,61 @@ export default {
     });
   },
   data() {
-    return {};
+    return {
+      isSearch: false,
+      search: false
+    };
   },
   methods: {
     searchInCommunity(data) {
-      console.log(
-        11111,
-        generateSearchMaterialsQuery(
-          data,
-          `/communities/${this.$route.params.community}/search/`
-        )
-      );
+      const { community } = this.$route.params;
+
+      if (data.search_text && data.search_text.length) {
+        this.isSearch = true;
+        this.search = data;
+        this.$store.dispatch('searchMaterialsInCommunity', {
+          id: community,
+          search: {
+            page_size: 10,
+            page: 1,
+            search_text: data.search_text
+          }
+        });
+      } else {
+        this.isSearch = false;
+        this.$store.dispatch('searchMaterials', {
+          page_size: 4,
+          search_text: []
+        });
+      }
+    },
+    /**
+     * Load next materials
+     */
+    loadMore() {
+      const { search, materials } = this;
+      const { community } = this.$route.params;
+      if (materials && search) {
+        const { page_size, page, records_total } = materials;
+
+        if (records_total > page_size * page) {
+          this.$store.dispatch('searchMaterialsInCommunity', {
+            id: community,
+            search: {
+              page_size: 10,
+              page: page + 1,
+              search_text: data.search_text
+            }
+          });
+        }
+      }
+    },
+    onEmptySearchText() {
+      this.isSearch = false;
+      this.$store.dispatch('searchMaterials', {
+        page_size: 4,
+        search_text: []
+      });
     }
   },
   computed: {
@@ -49,7 +95,8 @@ export default {
       'community_disciplines',
       'community_themes',
       'community_collections',
-      'materials'
+      'materials',
+      'materials_loading'
     ])
   }
 };
