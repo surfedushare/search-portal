@@ -19,14 +19,14 @@
             {{ material_filter.title }}
           </nuxt-link>
         </h3>
-        <nuxt-link
-          :to="`/my/`"
-          class="my_filters__item_link"
-          v-if="user"
-          :key="`${user.id}`"
-          >
-          {{user.full_name}}
-        </nuxt-link>
+        <!--<nuxt-link-->
+          <!--:to="`/my/`"-->
+          <!--class="my_filters__item_link"-->
+          <!--v-if="user"-->
+          <!--:key="`${user.id}`"-->
+          <!--&gt;-->
+          <!--{{user.full_name}}-->
+        <!--</nuxt-link>-->
         <p class="my_filters__item_count">{{ material_filter.materials_count }} zoekresultaten</p>
       </div>
     </li>
