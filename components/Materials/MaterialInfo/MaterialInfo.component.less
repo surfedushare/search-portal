@@ -72,7 +72,9 @@
     color: rgba(104, 109, 117, 0.65);
     background: #f4f4f4;
     border-radius: 2px;
-
+    @media @mobile {
+      margin-right: 20px;
+    }
     &:before {
       content: '';
       background: url('./../../../assets/images/clap_green.svg') no-repeat 50%
@@ -125,6 +127,8 @@
     color: #000;
     @media @mobile {
       vertical-align: top;
+      margin: 0;
+      padding-left: 5%;
     }
     &_count {
       padding-left: 34px;
@@ -148,8 +152,8 @@
     vertical-align: top;
     margin: 0 48px 0 0;
     @media @mobile {
-      padding-left: 30px;
       margin: 0;
+      float: right;
     }
     &_count {
       padding-left: 24px;

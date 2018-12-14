@@ -7,7 +7,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    setMaterial(material) {
+      this.$store.commit('SET_MATERIAL', material);
+    }
+  },
   computed: {
     links() {
       const { materials, material } = this;

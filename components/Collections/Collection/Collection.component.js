@@ -14,6 +14,9 @@ export default {
     setEditable: {
       default: false
     },
+    submitting: {
+      default: false
+    },
     changeViewType: {
       default: false
     },
@@ -69,6 +72,10 @@ export default {
       if (this.is_copied) {
         this.closeSocialSharing('link');
       }
+    },
+
+    onSubmit() {
+      this.$emit('onSubmit', { title: this.collection_title });
     }
   },
   computed: {},

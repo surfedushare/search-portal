@@ -23,7 +23,10 @@ export default {
       type: Boolean,
       default: false
     },
-    value: {}
+    value: {
+      // type: Array,
+      // default: []
+    }
   },
   components: {
     StarRating
@@ -33,7 +36,7 @@ export default {
   },
   data() {
     return {
-      selected_materials: []
+      selected_materials: this.value || []
     };
   },
   methods: {
@@ -41,14 +44,21 @@ export default {
       this.$store.commit('SET_MATERIAL', material);
     },
     selectMaterial(material) {
-      if (this.selected_materials.indexOf(material.external_id) === -1) {
-        this.selected_materials.push(material.external_id);
+      let selected_materials = this.value.slice(0);
+
+      if (selected_materials.indexOf(material.external_id) === -1) {
+        selected_materials.push(material.external_id);
       } else {
-        this.selected_materials = this.selected_materials.filter(
+        selected_materials = selected_materials.filter(
           item => item !== material.external_id
         );
       }
-      this.$emit('input', this.selected_materials);
+      this.$emit('input', selected_materials);
+    }
+  },
+  watch: {
+    value(value) {
+      this.selected_materials = value;
     }
   },
   computed: {

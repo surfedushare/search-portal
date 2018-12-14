@@ -5,11 +5,14 @@
       <Collection
         :collection="my_collection"
         :contenteditable="contenteditable"
+        :submitting="submitting"
         :set-editable="setEditable"
         :change-view-type="changeViewType"
         :items-in-line="materials_in_line"
         v-model="search"
+        @onSubmit="onSubmit"
       />
+
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="my_collection_materials_loading"
@@ -44,6 +47,7 @@ export default {
   data() {
     return {
       contenteditable: false,
+      submitting: false,
       materials_in_line: 4,
       formData: {
         materials_for_deleting: []
@@ -118,6 +122,10 @@ export default {
     },
     setEditable(isEditable) {
       this.contenteditable = isEditable;
+
+      if (!isEditable) {
+        this.formData.materials_for_deleting = [];
+      }
     },
     /**
      * Change 1 item in line to 4 and back.
@@ -127,6 +135,48 @@ export default {
         this.materials_in_line = 4;
       } else {
         this.materials_in_line = 1;
+      }
+    },
+
+    onSubmit(data) {
+      const { my_collection } = this;
+      const { materials_for_deleting } = this.formData;
+      this.submitting = true;
+      this.$store
+        .dispatch('putMyCollection', {
+          ...this.my_collection,
+          ...data
+        })
+        .then(() => {
+          if (!materials_for_deleting || !materials_for_deleting.length) {
+            this.submitting = false;
+            this.setEditable(false);
+          }
+        });
+      if (materials_for_deleting && materials_for_deleting.length) {
+        this.$store
+          .dispatch('removeMaterialFromMyCollection', {
+            collection_id: my_collection.id,
+            data: materials_for_deleting.map(material => {
+              return {
+                external_id: material
+              };
+            })
+          })
+          .then(() => {
+            this.$store
+              .dispatch('getMaterialInMyCollection', {
+                id: my_collection.id,
+                params: {
+                  page_size: this.search.page_size,
+                  page: 1
+                }
+              })
+              .then(() => {
+                this.submitting = false;
+                this.setEditable(false);
+              });
+          });
       }
     }
   }

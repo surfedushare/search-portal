@@ -66,7 +66,38 @@
       >
     </nuxt-link>
     <div class="main-header__mobile_menu" v-if="show_header_menu">
-      <div class="main-header__mobile_login">
+      <div class="main-header__user" v-if="isAuthenticated">
+        <div class="main-header__user_name arrow-link"><span class="link">{{user.full_name}}</span></div>
+        <nav class="main-header__user_menu">
+          <ul class="main-header__user_menu_items">
+            <li class="main-header__user_menu_item">
+              <a class="main-header__user_menu_link" href="/my/filters/">
+                Mijn Filterselecties
+              </a>
+            </li>
+            <li class="main-header__user_menu_item">
+              <a class="main-header__user_menu_link" href="/my/collections/">
+                Mijn Collecties
+              </a>
+            </li>
+            <li class="main-header__user_menu_item" v-if="user.is_admin">
+              <a class="main-header__user_menu_link" href="/my/communities/">
+                Mijn Community
+              </a>
+            </li>
+            <li class="main-header__user_menu_item">
+              <a
+                class="main-header__user_menu_link"
+                href="/logout/"
+                @click.prevent="logout()"
+              >
+                Uitloggen
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div v-else class="main-header__mobile_login">
         <a :href="getLoginLink()" class="button">Inloggen</a>
       </div>
       <Menu class="main-header__menu" />
