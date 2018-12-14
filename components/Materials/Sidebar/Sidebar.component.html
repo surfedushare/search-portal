@@ -45,38 +45,29 @@
           @click.prevent="addCollection"
         >Collectie maken</a>
       </template>
-      <template v-else-if="isAuthenticated && my_collections && my_collections.results && !material.has_bookmark">
+      <template v-else-if="!material.has_bookmark">
         <h3 class="h3">Materiaal toevoegen aan collectie</h3>
-        <div class="select material__left_select">
-          <select
-            name="collections"
-            v-model="collection"
-            @change="onSaveMaterial"
-            :disabled="submitting"
-          >
-            <option value="">Selecteer collectie</option>
-            <option :value="collection.id" v-for="collection in my_collections.results">
-              {{collection.title}}
-            </option>
-          </select>
-        </div>
+        <Multiselect
+          v-if="full_loading && my_collections.results"
+          v-model="checked_collections"
+          :items="my_collections.results"
+          placeholder="Selecteer collectie"
+          class="material__left_select"
+          :disabled="submitting"
+        ></Multiselect>
       </template>
       <template
         v-else-if="material.has_bookmark"
       >
         <h3 class="h3">Materiaal toevoegen aan collectie</h3>
-        <div class="select material__left_select">
-          <select
-            name="collections"
-            v-model="collection"
-            :disabled="submitting"
-          >
-            <option value="">Selecteer collectie</option>
-            <option :value="collection.id" v-for="collection in my_collections.results">
-              {{collection.title}}
-            </option>
-          </select>
-        </div>
+        <Multiselect
+          v-if="full_loading && my_collections.results"
+          v-model="checked_collections"
+          :items="my_collections.results"
+          placeholder="Selecteer collectie"
+          class="material__left_select"
+          :disabled="submitting"
+        ></Multiselect>
       </template>
     </div>
   </div>

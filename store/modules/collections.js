@@ -67,6 +67,14 @@ export default {
       commit('SET_MATERIAL_TO_MY_COLLECTION', material);
       return data;
     },
+    async removeMaterialFromMyCollection(
+      { state, commit },
+      { collection_id, data }
+    ) {
+      return this.$axios.$delete(`collections/${collection_id}/materials/`, {
+        data
+      });
+    },
     async getMaterialInMyCollection(
       { state, commit },
       { id, page_size, page }

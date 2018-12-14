@@ -139,7 +139,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'material_communities', 'themes']),
+    ...mapGetters(['isAuthenticated', 'themes']),
     /**
      * generate author URL
      * @returns {{path, query}}

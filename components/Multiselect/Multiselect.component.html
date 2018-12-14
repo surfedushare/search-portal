@@ -1,0 +1,33 @@
+
+<section
+  class="select select--auto-height multiselect"
+  :class="{'select--open': opened, 'select--disabled': disabled}"
+  v-click-outside="hide"
+  v-if="value && items"
+>
+  <div
+    class="select__item"
+    @click="toggle"
+  >
+    {{ placeholder }}
+  </div>
+  <div
+    class="select__subitems"
+    v-show="opened"
+  >
+    <div
+      class="select__subitem"
+      v-for="(item, index) in items"
+    >
+      <input
+        type="checkbox"
+        v-model="elements[index]"
+        :value="item.id"
+        :id="item.id"
+        @change="onChange($event, item)"
+      >
+      <label :for="item.id">{{item.title}}</label>
+    </div>
+  </div>
+</section>
+

@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection';
 import AddCollection from './../../Popup/AddCollection';
+import Multiselect from './../../Multiselect';
 
 export default {
   name: 'sidebar',
@@ -9,20 +10,28 @@ export default {
   },
   components: {
     SaveMaterialInCollection,
-    AddCollection
+    AddCollection,
+    Multiselect
   },
   mounted() {
     this.$store.dispatch('getMyCollections');
-    console.log(this.material);
+
     this.$store
       .dispatch('checkMaterialInCollection', this.material.external_id)
       .then(collections => {
-        console.log(2222, collections);
+        this.my_checked_collections = collections.results.map(item => item.id);
+        this.checked_collections = this.my_checked_collections.slice(0);
+
+        this.$nextTick().then(() => {
+          this.full_loading = true;
+        });
       });
   },
   data() {
     return {
+      full_loading: false,
       collection: '',
+      checked_collections: [],
       submitting: false,
       isShowSaveMaterial: false,
       isShowAddCollection: false
@@ -65,35 +74,94 @@ export default {
     /**
      * Triggering event the save material
      */
-    onSaveMaterial() {
+    onSaveMaterial(collection) {
       this.submitting = true;
 
-      this.$store
-        .dispatch('setMaterialInMyCollection', {
-          collection_id: this.collection,
-          data: [
+      return this.$store.dispatch('setMaterialInMyCollection', {
+        collection_id: collection.id || collection,
+        data: [
+          {
+            external_id: this.material.external_id
+          }
+        ]
+      });
+    },
+    /**
+     * Triggering event the remove material
+     */
+    onRemoveMaterial(collection) {
+      this.submitting = true;
+
+      return this.$store.dispatch('removeMaterialFromMyCollection', {
+        collection_id: collection.id || collection,
+        data: [
+          {
+            external_id: this.material.external_id
+          }
+        ]
+      });
+    }
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'my_collections', 'material_communities'])
+  },
+  watch: {
+    checked_collections(collections) {
+      if (this.full_loading) {
+        let collections_for_material = {};
+        if (collections.length) {
+          collections_for_material = collections.reduce(
+            (prev, next) => {
+              if (this.my_checked_collections.indexOf(next) === -1) {
+                prev.add.push(next);
+              }
+              if (prev.delete.length) {
+                prev.delete = prev.delete.filter(item => item !== next);
+              }
+              return prev;
+            },
             {
-              external_id: this.material.external_id
+              add: [],
+              delete: this.my_checked_collections.slice(0)
             }
-          ]
-        })
-        .then(() => {
+          );
+        } else {
+          collections_for_material = {
+            add: [],
+            delete: this.my_checked_collections.slice(0)
+          };
+        }
+
+        const requests = [];
+
+        if (
+          collections_for_material.add &&
+          collections_for_material.add.length
+        ) {
+          collections_for_material.add.forEach(collection => {
+            requests.push(this.onSaveMaterial(collection));
+          });
+        }
+
+        if (
+          collections_for_material.delete &&
+          collections_for_material.delete.length
+        ) {
+          collections_for_material.delete.forEach(collection => {
+            requests.push(this.onRemoveMaterial(collection));
+          });
+        }
+
+        Promise.all(requests).then(() => {
           this.$store
             .dispatch('getMaterial', this.$route.params.id)
             .then(() => {
               this.submitting = false;
             });
         });
+
+        this.my_checked_collections = collections.slice(0);
+      }
     }
-  },
-  computed: {
-    ...mapGetters(['isAuthenticated', 'my_collections', 'material_communities'])
-    // collection() {
-    //   const { my_collections } = this;
-    //   if (my_collections && my_collections.results.length) {
-    //     console.log(1111, my_collections.results);
-    //   }
-    //   return '';
-    // }
   }
 };

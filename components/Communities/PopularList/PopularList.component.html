@@ -1,9 +1,9 @@
 
 <section class="popular-list">
   <slot name="header-info"></slot>
-  <template v-if="communities && communities.results && communities.results.length">
+  <template v-if="computed_communities">
     <ul class="popular-list__items">
-      <li class="popular-list__item" v-for="community in communities.results">
+      <li class="popular-list__item" v-for="community in computed_communities">
         <nuxt-link
           class="popular-list__link"
           :to="`/communities/${community.id}/`"

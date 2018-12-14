@@ -52,6 +52,11 @@
   background: transparent;
   box-sizing: border-box;
   height: 50px;
+  font-family: @second-font;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
 
   &--no-border {
     border-color: transparent;
@@ -79,14 +84,23 @@
     background-size: contain;
   }
 
-  &--open:before {
-    transform: translate(0, -50%) rotate(-90deg);
-  }
-
   &--auto-height:before {
     height: 50px;
     transform: translate(0, 0) rotate(90deg);
     top: 0;
+  }
+
+  &--open {
+    overflow: inherit;
+    height: auto;
+    &:before {
+      transform: translate(0, 0) rotate(-90deg);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 
   &--focused {
@@ -136,6 +150,32 @@
 
   &--not-choose select {
     color: rgba(0, 0, 0, 0.38);
+  }
+
+  &__subitems {
+    position: relative;
+    width: 100%;
+    padding: 0 12px 8px;
+    max-height: 200px;
+    overflow: auto;
+  }
+
+  &__subitem {
+    display: flex;
+    align-items: center;
+
+    input {
+      margin: 0 8px 0 0;
+    }
+
+    label {
+      display: block;
+      cursor: pointer;
+    }
+
+    &:not(:last-child) {
+      padding-bottom: 8px;
+    }
   }
 }
 
