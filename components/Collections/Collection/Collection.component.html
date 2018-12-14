@@ -74,8 +74,9 @@
             </network>
           </div>
         </social-sharing>
-        <a href="#share_link" class="quality__social_link">
-          <i class="quality__social--share quality__social_ico"></i> <span class="quality__social_counter">{{'3'}}</span>
+        <a href="#share_link" class="quality__social_link"  @click.prevent="showShareMaterial">
+          <i class="quality__social--share quality__social_ico"></i>
+          <span class="quality__social_counter"  id="url_counter"> 0 </span>
         </a>
       </div>
     </template>
@@ -94,4 +95,11 @@
       </div>
     </template>
   </DirectSearch>
+  <ShareMaterialCollection
+    v-if="isShowShareMaterial"
+    :close="closeShareMaterial"
+    :is-show="isShowShareMaterial"
+    :material="collection"
+    v-model="is_copied"
+  ></ShareMaterialCollection>
 </div>
