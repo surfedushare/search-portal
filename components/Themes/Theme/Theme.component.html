@@ -19,9 +19,8 @@
   </div>
   <div class="center_block theme__row">
     <div class="theme__description">
-      <h2>Over het thema <br>
-        {{ theme.title }}</h2>
-      <p>{{ theme.description }}</p>
+      <h2>Over het thema <br>{{ theme.title }}</h2>
+      <p v-if="theme.description && theme.description !== null">{{ theme.description }}</p>
     </div>
     <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" :theme="theme"/>
   </div>
