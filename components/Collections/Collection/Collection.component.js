@@ -34,7 +34,8 @@ export default {
   data() {
     return {
       href: '',
-      collection_title: null
+      collection_title: null,
+      search: {}
     };
   },
   methods: {
@@ -58,6 +59,9 @@ export default {
   },
   computed: {},
   watch: {
+    search(search) {
+      this.$emit('input', search);
+    },
     contenteditable(isEditable) {
       const { title } = this.$refs;
       this.$nextTick().then(() => {

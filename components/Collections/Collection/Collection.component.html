@@ -54,7 +54,10 @@
       </div>
     </div>
   </form>
-  <DirectSearch class="collection__info_search">
+  <DirectSearch
+    class="collection__info_search"
+    v-model="search"
+  >
     <template slot="social_box">
       <div class="collection__info_search__social direct_search__social quality__social _white_color">
         <social-sharing
