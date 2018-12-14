@@ -61,6 +61,11 @@ class XmlEndpointApiClient:
         self.api_endpoint = api_endpoint
 
     def autocomplete(self, query):
+        """
+        Requests and returns keywords by query text from EduRep
+        :param query: text to search keywords
+        :return: list of keywords
+        """
         url = "{}/autocomplete?prefix={}".format(self.api_endpoint, query)
 
         response = requests.get(url)
@@ -71,11 +76,32 @@ class XmlEndpointApiClient:
         return keywords
 
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
+        """
+        Returns drilldowns (list of filter categories with the number of
+        materials for each of them) for specified `drilldown_names`,
+        `search_text` and `filters`
+        :param drilldown_names: list of LOM identifiers of filter categories
+        :param search_text: list of searched text
+        :param filters: list of filters to search
+        :return: dictionary with drilldowns data
+        """
         return self._search(search_text=search_text, filters=filters,
                             drilldown_names=drilldown_names)
 
     def search(self, search_text, drilldown_names=None, filters=None,
                ordering=None, page=1, page_size=5):
+        """
+        Searches and returns materials in EduRep according to specified
+        parameters
+        :param search_text: list of searched text
+        :param drilldown_names: list of LOM identifiers of filter categories
+        :param filters: list of filters to search
+        :param ordering: LOM identifier of field by which materials should
+        be sorted
+        :param page: the number of page
+        :param page_size: the number of materials on page
+        :return: dictionary with materials and drilldowns data
+        """
         start_record = _get_start_record_by_page(page, page_size)
         return self._search(search_text=search_text, filters=filters,
                             drilldown_names=drilldown_names,
@@ -85,6 +111,14 @@ class XmlEndpointApiClient:
 
     def get_materials_by_id(self, external_ids, page=1, page_size=5,
                             drilldown_names=None):
+        """
+        Requests and returns materials by their external id from EduRep
+        :param external_ids: list of material identifiers
+        :param page: the number of page
+        :param page_size: the number of materials on page
+        :param drilldown_names: list of LOM identifiers of filter categories
+        :return: dictionary with materials and drilldowns data
+        """
         start_record = _get_start_record_by_page(page, page_size)
         id_set = set(external_ids)
         rv = self._call(query=" OR ".join(external_ids),
@@ -98,6 +132,15 @@ class XmlEndpointApiClient:
 
     def get_user_reviews(self, user_id, material_urn=None,
                          page=1, page_size=5):
+        """
+        Requests and returns list of reviews have done by user for specified
+        material
+        :param user_id: identifier of user
+        :param material_urn: URN of material
+        :param page: the number of page
+        :param page_size: the number of materials on page
+        :return: dictionary with review data
+        """
 
         query = "smo.userId={}".format(user_id)
         if material_urn:
@@ -112,6 +155,17 @@ class XmlEndpointApiClient:
 
     def _search(self, search_text=None, filters=None, drilldown_names=None,
                 start_record=1, maximum_records=0, ordering=None):
+        """
+        Search materials according to specified parameters
+        :param search_text: list of searched text
+        :param filters: list of filters to search
+        :param drilldown_names: list of LOM identifiers of filter categories
+        :param start_record: the number of start record
+        :param maximum_records: the number of records in response
+        :param ordering: LOM identifier of field by which materials should
+        be sorted
+        :return: dictionary with materials and drilldowns data
+        """
 
         if search_text:
             query = " AND ".join('("{}")'.format(q) for q in search_text)
@@ -135,6 +189,21 @@ class XmlEndpointApiClient:
               record_schema=EXTRA_RECORD_SCHEMA,
               record_packing=_XML_RECORD_PACKING,
               api_method=_EDUREP_SEARCH_METHOD):
+        """
+        Send request to EduRep
+        :param query: query string
+        :param drilldown_names: list of LOM identifiers of filter categories
+        :param start_record: the number of start record
+        :param maximum_records: the number of records in response
+        :param ordering: LOM identifier of field by which materials should
+        be sorted
+        :param version: the version of EduRep API
+        :param operation: request operation
+        :param record_schema:
+        :param record_packing:
+        :param api_method: api method
+        :return: parsed response
+        """
 
         parameters = dict(version=version,
                           operation=operation,
@@ -170,6 +239,11 @@ class XmlEndpointApiClient:
 
 
 def _get_start_record_by_page(page, page_size):
+    """
+    Transformed page number to start record number
+    :param page: the number of page
+    :param page_size: the number of materials on page
+    """
     return page_size * (page - 1) + 1
 
 

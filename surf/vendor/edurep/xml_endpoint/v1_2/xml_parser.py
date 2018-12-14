@@ -1,3 +1,7 @@
+"""
+This module provides parsing methods for XML-based EduRep API response.
+"""
+
 from base64 import urlsafe_b64encode
 
 from xml.etree import ElementTree as ET
@@ -38,6 +42,11 @@ SMO_RECORD_SCHEMA = "smo"
 
 
 def parse_response(xml_text, record_schema=EXTRA_RECORD_SCHEMA):
+    """
+    Parses xml-response from EduRep
+    :param xml_text: response text
+    :param record_schema:
+    """
     root = ET.fromstring(xml_text)
     return dict(recordcount=_parse_number_of_records(root),
                 records=_parse_records(root, record_schema),
@@ -75,6 +84,9 @@ _CLASSIFICATION_TAXON_ID_PATH = "./czp:taxonpath/czp:taxon/czp:id"
 
 
 def _parse_record(elem):
+    """
+    Parses record element
+    """
     contributors = _parse_contributors(elem)
     publisher = contributors.get("publisher", {}).get("name")
     publish_datetime = contributors.get("publisher", {}).get("datetime")
@@ -133,6 +145,10 @@ _SMO_ID_PATH = "./srw:recordData/smd:smo/smd:smoId"
 
 
 def _parse_smo_record(elem):
+    """
+    Parses SMO record element
+    """
+
     rating = _find_elem_text(elem, _REVIEW_RATING_PATH)
     rating = float(rating) if rating else 0
     return dict(
