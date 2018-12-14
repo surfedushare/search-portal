@@ -31,7 +31,7 @@
               v-if="contenteditable"
               class="my_filter__info_filter__link"
               href="#"
-              @click.prevent="setEditable(false)"
+              @click.prevent="onUneditable()"
             >
               Annuleren
             </a>
@@ -39,7 +39,7 @@
               v-else
               href="#"
               class="my_filter__info_filter__link"
-              @click.prevent="setEditable(true)"
+              @click.prevent="onEditable()"
             >
               Bewerken
             </a>
@@ -200,16 +200,6 @@ export default {
     isAuthenticated(isAuthenticated) {
       if (isAuthenticated) {
         this.getData();
-      }
-    },
-    contenteditable(isEditable) {
-      const { title } = this.$refs;
-      if (isEditable) {
-        this.$nextTick().then(() => {
-          title.focus();
-        });
-      } else {
-        this.resetData();
       }
     },
     collection(collection) {
@@ -378,6 +368,7 @@ export default {
         })
         .then(data => {
           this.setDefaultData(data);
+          this.setEditable(false);
           this.submitting = false;
         });
     },
@@ -388,6 +379,21 @@ export default {
     },
     setEditable(isEditable) {
       this.contenteditable = isEditable;
+    },
+    onEditable() {
+      this.setEditable(true);
+      this.focusOnTitle();
+    },
+    onUneditable() {
+      this.setEditable(false);
+      this.resetData();
+    },
+    focusOnTitle() {
+      const { title } = this.$refs;
+
+      this.$nextTick().then(() => {
+        title.focus();
+      });
     },
     setTitle(title) {
       this.filter_title = title;
@@ -401,7 +407,7 @@ export default {
     },
     resetData() {
       const { active_filter } = this;
-      this.setTitle(this.data.title);
+      this.setTitle(this.active_filter.title);
       this.setDefaultData(active_filter);
       const ids = active_filter.items.map(item => item.category_item_id);
 
