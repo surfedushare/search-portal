@@ -73,16 +73,18 @@
         <a
           href="#"
           @click.prevent="showShareMaterial"
+          v-if="collection.is_owner"
           style="color:#fff; margin-right: 10px;"
         >
           set public
         </a>
         <template
-          v-if="collection.is_shared"
+          v-show="collection.is_shared"
         >
           <social-sharing
             :url="href"
             :title="collection_title"
+            :class="{'disable_share': !collection.is_owner}"
             inline-template
             v-cloak
             @close="closeSocialSharing"
@@ -99,6 +101,7 @@
           <a href="#share_link"
              class="quality__social_link"
              @click.prevent="showShareCollection"
+             :class="{'disable_share': !collection.is_owner}"
           >
             <i class="quality__social--share quality__social_ico"></i>
             <span class="quality__social_counter"  id="url_counter"></span>

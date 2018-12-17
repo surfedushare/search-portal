@@ -114,6 +114,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    headers: { Pragma: 'no-cache' },
     baseURL: 'https://surf.stg.mqd.me/api/v1/'
   },
 

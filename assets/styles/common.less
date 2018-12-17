@@ -250,6 +250,9 @@ pre {
     justify-content: flex-start;
     &_links {
       display: flex;
+      &.disable_share {
+        pointer-events: none;
+      }
     }
     &_link {
       display: flex;
@@ -269,6 +272,10 @@ pre {
       }
       &:not(.button):hover {
         text-decoration: none;
+      }
+
+      &.disable_share {
+        pointer-events: none;
       }
     }
     &--linkedin {

@@ -118,12 +118,15 @@ export default {
         z-index: -1;
       }
     }
+    .center-header {
+      position: relative;
+    }
 
     &_bg {
       position: absolute;
-      top: 183px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 80px;
+      left: 50px;
+      width: calc(100% - 100px);
       z-index: -1;
       @media @mobile, @tablet {
         display: none;
@@ -135,8 +138,7 @@ export default {
         display: none;
       }
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 0;
       z-index: -1;
       top: 70px;
       border-radius: 10px;
@@ -172,7 +174,7 @@ export default {
       background: url('./../assets/images/check-white.svg') 0 0 no-repeat;
 
       @media @mobile, @tablet {
-        background-size: 20px;
+        background-size: 20px 20px;
         background-position-x: 10px;
       }
     }

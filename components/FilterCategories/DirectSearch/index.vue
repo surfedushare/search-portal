@@ -108,7 +108,7 @@
   padding: 0 40px;
   background: url('./../../../assets/images/search.svg') 9px 50% no-repeat
     #ffffff;
-  background-size: 20px;
+  background-size: 20px 20px;
   border-radius: 7px;
   font-size: 16px;
   height: 51px;
