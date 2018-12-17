@@ -114,6 +114,9 @@
   height: 51px;
   align-items: center;
   overflow: auto;
+  @media @mobile {
+    padding-right: 5px;
+  }
 }
 
 .search--hide-categories .v-select.searchable .dropdown-toggle {
