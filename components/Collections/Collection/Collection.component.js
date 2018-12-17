@@ -51,13 +51,17 @@ export default {
   },
   methods: {
     setTitle(title) {
-      this.collection_title = title;
-      if (this.$refs.title) {
-        this.$refs.title.innerText = title;
+      if (title) {
+        this.collection_title = title;
+        // if (this.$refs.title) {
+        //   this.$refs.title.innerText = title;
+        // }
       }
     },
     onChangeTitle() {
-      this.setTitle(this.$refs.title.innerText);
+      if (this.$refs.title) {
+        this.setTitle(this.$refs.title.innerText);
+      }
     },
     resetData() {
       this.setTitle(this.collection.title);

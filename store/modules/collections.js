@@ -23,14 +23,14 @@ export default {
   },
   actions: {
     async getMyCollections({ state, commit }) {
-      if (!state.my_collections) {
-        const collections = await this.$axios.$get('collections/', {
-          params: { is_owner: true }
-        });
-        commit('SET_MY_COLLECTIONS', collections);
-        return collections;
-      }
-      return state.my_collections;
+      const collections = await this.$axios.$get('collections/', {
+        params: {
+          timestamp: Date.now(),
+          is_owner: true
+        }
+      });
+      commit('SET_MY_COLLECTIONS', collections);
+      return collections;
     },
     async getMyCollection({ state, commit }, id) {
       const collection = await this.$axios.$get(`collections/${id}/`);
@@ -92,12 +92,18 @@ export default {
     },
     async getMaterialInMyCollection({ state, commit }, { id, params }) {
       commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
-      const materials = await this.$axios.$get(`collections/${id}/materials/`, {
-        params
-      });
-      commit('GET_MATERIAL_TO_MY_COLLECTION', materials);
+      const materialsInfo = await this.$axios.$get(
+        `collections/${id}/materials/`,
+        {
+          params: {
+            ...params,
+            timestamp: Date.now()
+          }
+        }
+      );
+      commit('SET_MATERIAL_TO_MY_COLLECTION', materialsInfo);
       commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
-      return materials;
+      return materialsInfo;
     },
     async searchMaterialInMyCollection({ state, commit }, { id, params }) {
       commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
@@ -143,7 +149,7 @@ export default {
       };
     },
     SET_MATERIAL_TO_MY_COLLECTION(state, payload) {
-      // state.my_collections = payload;
+      state.my_collection_materials = payload;
     },
     GET_MATERIAL_TO_MY_COLLECTION(state, payload) {
       const records = payload.records || payload;

@@ -214,7 +214,7 @@ export default {
             .files[0]
         );
       } else {
-        data.delete('logo');
+        data.set('logo', '');
       }
       if (
         this.$refs['file-img'].$el.querySelector('input[type="file"]').files[0]
@@ -225,7 +225,7 @@ export default {
             .files[0]
         );
       } else {
-        data.delete('featured_image');
+        data.set('featured_image', '');
       }
       return data;
     }
@@ -357,7 +357,7 @@ export default {
     background-image: url('./../../assets/images/plus-black.svg');
     background-position: 10px 50%;
     background-repeat: no-repeat;
-    background-size: 24px;
+    background-size: 24px 24px;
   }
 }
 </style>

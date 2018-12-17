@@ -142,17 +142,6 @@ export default {
       const { my_collection } = this;
       const { materials_for_deleting } = this.formData;
       this.submitting = true;
-      this.$store
-        .dispatch('putMyCollection', {
-          ...this.my_collection,
-          ...data
-        })
-        .then(() => {
-          if (!materials_for_deleting || !materials_for_deleting.length) {
-            this.submitting = false;
-            this.setEditable(false);
-          }
-        });
       if (materials_for_deleting && materials_for_deleting.length) {
         this.$store
           .dispatch('removeMaterialFromMyCollection', {
@@ -164,18 +153,36 @@ export default {
             })
           })
           .then(() => {
-            this.$store
-              .dispatch('getMaterialInMyCollection', {
-                id: my_collection.id,
-                params: {
-                  page_size: this.search.page_size,
-                  page: 1
-                }
-              })
-              .then(() => {
-                this.submitting = false;
-                this.setEditable(false);
+            this.$nextTick().then(() => {
+              this.$store.dispatch('putMyCollection', {
+                ...this.my_collection,
+                ...data
               });
+              this.$store
+                .dispatch('getMaterialInMyCollection', {
+                  id: my_collection.id,
+                  params: {
+                    page_size: this.search.page_size,
+                    page: 1
+                  }
+                })
+                .then(() => {
+                  this.submitting = false;
+                  this.setEditable(false);
+                });
+            });
+          });
+      } else {
+        this.$store
+          .dispatch('putMyCollection', {
+            ...this.my_collection,
+            ...data
+          })
+          .then(() => {
+            if (!materials_for_deleting || !materials_for_deleting.length) {
+              this.submitting = false;
+              this.setEditable(false);
+            }
           });
       }
     }

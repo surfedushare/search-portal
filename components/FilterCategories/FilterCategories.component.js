@@ -114,6 +114,7 @@ export default {
       this.$store.dispatch('getFilter', { id: e.target.value });
     },
     resetFilter() {
+      this.$route.push('/materials/search/');
       location.reload();
     },
     isShowCategoryItem({ category, item, indexItem }) {
