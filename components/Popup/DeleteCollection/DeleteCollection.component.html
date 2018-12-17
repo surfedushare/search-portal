@@ -1,0 +1,26 @@
+
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    class="delete-collection"
+  >
+    <slot>
+      <h2 class="popup__title">Materiaal verwijderen</h2>
+      <div class="popup__subtext">Weet je zeker dat je dit materiaal wilt verwijderen?</div>
+      <div>
+        <div class="share-collection__actions">
+          <button
+            class="button"
+            @click="deleteCollection(collection.id)"
+          >
+            Ja, verwijderen
+          </button>
+        </div>
+      </div>
+    </slot>
+  </Popup>
+</transition>
+
+

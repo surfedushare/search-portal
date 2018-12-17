@@ -43,7 +43,7 @@
           <a
             href="#"
             class="collection__info_filter__link"
-            @click.prevent="deleteCollection(collection.id)"
+            @click.prevent="deleteCollection"
           >
             Verwijderen
           </a>
@@ -138,4 +138,9 @@
     :collection="collection"
     v-model="is_copied"
   ></ShareCollection>
+  <DeleteCollection
+    :close="closeDeleteCollection"
+    :is-show="isShowDeleteCollection"
+    :collection="collection"
+  ></DeleteCollection>
 </div>
