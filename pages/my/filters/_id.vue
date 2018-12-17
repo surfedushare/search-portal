@@ -534,7 +534,7 @@ export default {
       background-image: url('./../../../assets/images/plus-black.svg');
       background-position: 10px 50%;
       background-repeat: no-repeat;
-      background-size: 24px;
+      background-size: 24px 24px;
     }
   }
 }

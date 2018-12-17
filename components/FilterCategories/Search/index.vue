@@ -102,7 +102,7 @@
   font-size: 16px;
   height: 67px;
   padding-left: 40px;
-  background-size: 20px;
+  background-size: 20px 20px;
   @media @desktop {
     height: 99px;
     padding: 0 400px 0 59px;
