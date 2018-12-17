@@ -87,6 +87,11 @@
             </div>
           </div>
           <div class="communities__form__buttons">
+            <div
+              v-if="is_saved"
+              class="success" >
+              &#10004; Gegevens opgeslagen!
+            </div>
             <button
               type="submit"
               class="button communities__form__button">Opslaan</button>
@@ -138,6 +143,7 @@ export default {
   },
   data() {
     return {
+      is_saved: false,
       isShow: false,
       image_logo: '',
       formData: {
@@ -183,11 +189,17 @@ export default {
     },
     onSubmit() {
       const data = this.normalizeFormData();
-      this.$store.dispatch('putCommunities', {
-        id: this.formData.id,
-        data: data
-      });
-      // putCommunities
+      this.$store
+        .dispatch('putCommunities', {
+          id: this.formData.id,
+          data: data
+        })
+        .then(() => {
+          this.is_saved = true;
+          setTimeout(() => {
+            this.is_saved = false;
+          }, 1000);
+        });
     },
     normalizeFormData() {
       let data = new FormData();
@@ -337,6 +349,11 @@ export default {
       text-align: right;
       width: 100%;
       margin: 10px 0 0;
+      .success {
+        display: inline-block;
+        margin: 0 20px 0 0;
+        color: #008800;
+      }
     }
     &__button {
       padding: 13px 60px;

@@ -156,6 +156,7 @@ export default {
     }
 
     &_main-title {
+      opacity: 0;
       @media @mobile, @tablet {
         display: none;
       }
