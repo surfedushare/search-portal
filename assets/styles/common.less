@@ -261,7 +261,10 @@ pre {
       }
     }
     &_links {
-      display: flex;
+      display: inline-flex;
+      @media @desktop {
+        display: flex;
+      }
       &.disable_share {
         pointer-events: none;
       }
