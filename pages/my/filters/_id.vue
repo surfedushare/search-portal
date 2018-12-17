@@ -444,15 +444,24 @@ export default {
   padding: 101px 0 47px;
 
   &__info {
-    padding: 59px 45px 95px 103px;
+    padding: 25px;
     margin: 0 0 113px;
     border-radius: 20px;
     position: relative;
-    display: flex;
     justify-content: space-between;
     background: url('./../../../assets/images/filters.svg') 54px 96px no-repeat;
     background-size: 30px 30px;
 
+    @media @desktop {
+      display: flex;
+      padding: 59px 45px 95px 103px;
+    }
+
+    @media @mobile, @tablet {
+      background: url('./../../../assets/images/filters.svg') 20px 53px
+        no-repeat;
+      background-size: 30px 30px;
+    }
     .bread-crumbs {
       margin-bottom: 0;
     }
@@ -469,6 +478,10 @@ export default {
       z-index: -1;
     }
     &_ttl {
+      @media @mobile, @tablet {
+        padding-left: 30px;
+        font-size: 26px;
+      }
       padding: 0 0 8px;
       position: relative;
 
@@ -491,12 +504,18 @@ export default {
     }
 
     &_filter {
-      width: 45%;
-      display: flex;
+      text-align: center;
       margin: 0;
       padding-top: 15px;
-      align-items: center;
-      justify-content: flex-end;
+      @media @desktop, @tablet {
+        width: 45%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      @media @tablet {
+        width: 100%;
+      }
       &__link {
         font-weight: bold;
         padding-left: 30px;
@@ -505,6 +524,9 @@ export default {
         font-family: @second-font;
       }
       &__edit {
+        @media @mobile {
+          display: flex;
+        }
         a {
           background: url('./../../../assets/images/edit.svg') no-repeat 0 50%;
           background-size: 30px 30px;
@@ -512,6 +534,11 @@ export default {
       }
       &__delete {
         margin-left: 32px;
+        @media @mobile {
+          padding: 15px 0;
+          display: flex;
+          margin: 0;
+        }
         a {
           background: url('./../../../assets/images/trash.svg') no-repeat 0 50%;
           background-size: 30px 30px;
@@ -519,6 +546,9 @@ export default {
       }
       &__button {
         margin-left: 50px;
+        @media @mobile {
+          margin: 0;
+        }
         a {
           padding: 13px 60px;
         }
