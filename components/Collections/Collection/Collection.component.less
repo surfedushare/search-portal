@@ -5,13 +5,17 @@
     margin: 0 0 97px;
     position: relative;
     @media @mobile {
-      padding: 0 27px 0;
+      //padding: 0;
+      padding: 0 25px 0;
     }
     &_wrapper {
-      display: flex;
-      padding-top: 32px;
       position: relative;
-      justify-content: space-between;
+
+      @media @desktop {
+        display: flex;
+        padding-top: 32px;
+        justify-content: space-between;
+      }
 
       .bread-crumbs {
         margin-bottom: 0;
@@ -27,6 +31,11 @@
         bottom: -70px;
         border-radius: 20px;
         z-index: -1;
+
+        @media @mobile {
+          right: -25px;
+          left: -25px;
+        }
       }
     }
     &_logo {
@@ -44,6 +53,10 @@
       padding: 33px 0 43px 48px;
       background: url('./../../../assets/images/keurmerk.svg') 1px 70px
         no-repeat;
+
+      @media @mobile, @tablet {
+        padding: 45px 0 30px 40px;
+      }
     }
     &_bg {
       position: absolute;
@@ -54,6 +67,9 @@
       height: 298px;
     }
     &_ttl {
+      @media @tablet, @mobile {
+        font-size: 26px;
+      }
       padding: 0 0 8px;
       position: relative;
       word-break: break-word;
@@ -84,12 +100,22 @@
       }
     }
     &_filter {
-      width: 45%;
-      display: flex;
-      margin: 0 -10px 0 0;
+      text-align: center;
+      //margin: 0 -10px 0 0;
+      padding-bottom: 20px;
       padding-top: 5px;
-      align-items: center;
-      justify-content: flex-end;
+      @media @desktop, @tablet {
+        width: 45%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      @media @tablet {
+        width: 100%;
+      }
+      @media @desktop {
+        padding-bottom: 0;
+      }
       &__link {
         font-weight: bold;
         padding-left: 30px;
@@ -98,6 +124,9 @@
         font-family: @second-font;
       }
       &__edit {
+        @media @mobile {
+          display: flex;
+        }
         a {
           background: url('./../../../assets/images/edit.svg') no-repeat 0 50%;
           background-size: 30px 30px;
@@ -105,6 +134,11 @@
       }
       &__delete {
         margin-left: 32px;
+        @media @mobile {
+          padding: 15px 0;
+          display: flex;
+          margin: 0;
+        }
         a {
           background: url('./../../../assets/images/trash.svg') no-repeat 0 50%;
           background-size: 30px 30px;
@@ -112,6 +146,9 @@
       }
       &__button {
         margin-left: 38px;
+        @media @mobile {
+          margin: 0;
+        }
         a {
           padding: 13px 60px;
         }

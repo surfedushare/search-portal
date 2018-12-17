@@ -1,7 +1,7 @@
 
 <template>
   <section class="container main collections">
-    <div class="center_block">
+    <div class="center_block center-header collections__center-header">
       <div class="collections__info ">
         <img
           src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
@@ -18,6 +18,8 @@
           active-category-external-id="lom.technical.format"
         />
       </div>
+    </div>
+    <div class="center_block">
       <div class="collections__add">
         <button
           class="collections__add__link button"
@@ -77,10 +79,17 @@ export default {
 @import './../../assets/styles/variables';
 .collections {
   width: 100%;
-  padding: 101px 0 47px;
-
+  padding: 0 0 47px;
+  &__center-header {
+    padding-top: 101px;
+    overflow: hidden;
+    @media @mobile {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
   &__info {
-    padding: 64px 38px 0;
+    padding: 64px 48px 0;
     margin: 0 0 87px;
     border-radius: 20px;
     position: relative;
@@ -91,10 +100,21 @@ export default {
       width: 510px;
       border-radius: 21px;
       height: 298px;
+      @media @mobile, @tablet {
+        padding: 0;
+        z-index: -1;
+        right: -20px;
+      }
+      @media @mobile {
+        right: -50px;
+      }
     }
     &_ttl {
       padding: 0 0 49px;
       position: relative;
+      @media @mobile, @tablet {
+        font-size: 26px;
+      }
       &:before {
         content: '';
         min-width: 100%;
@@ -116,6 +136,18 @@ export default {
     }
     &_search {
       margin: 0 65px;
+      @media @mobile, @tablet {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+        margin-bottom: 180px;
+        margin-left: -20px;
+        margin-right: -20px;
+      }
+      @media @tablet {
+        margin-left: -48px;
+        margin-right: -48px;
+      }
       .search__fields {
         margin-bottom: 33px;
       }
@@ -124,7 +156,7 @@ export default {
   &__add {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: -55px;
+    margin-bottom: 55px;
     position: relative;
 
     &__link {
