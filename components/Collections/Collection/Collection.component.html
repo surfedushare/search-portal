@@ -71,6 +71,7 @@
         ref="social_counters"
       >
         <a
+          class="set_public"
           href="#"
           @click.prevent="showShareMaterial"
           v-if="collection.is_owner"
@@ -98,14 +99,16 @@
               </network>
             </div>
           </social-sharing>
-          <a href="#share_link"
-             class="quality__social_link"
-             @click.prevent="showShareCollection"
-             :class="{'disable_share': !collection.is_owner}"
-          >
-            <i class="quality__social--share quality__social_ico"></i>
-            <span class="quality__social_counter"  id="url_counter"></span>
-          </a>
+          <div class="quality__social_links">
+            <a href="#share_link"
+               class="quality__social_link"
+               @click.prevent="showShareCollection"
+               :class="{'disable_share': !collection.is_owner}"
+            >
+              <i class="quality__social--share quality__social_ico"></i>
+              <span class="quality__social_counter"  id="url_counter"></span>
+            </a>
+          </div>
         </template>
       </div>
     </template>
