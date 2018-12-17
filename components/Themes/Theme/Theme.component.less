@@ -6,7 +6,9 @@
   }
   &__info {
     h2 {
-      font-size: 26px;
+      @media @mobile, @tablet {
+        font-size: 26px;
+      }
     }
 
     padding: 64px 48px 0;
