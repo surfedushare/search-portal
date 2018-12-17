@@ -89,12 +89,21 @@ export default {
 .my_filters {
   width: 100%;
   padding: 101px 0 47px;
+  overflow: hidden;
 
   &__info {
     padding: 64px 38px 0;
     margin: 0 0 87px;
     border-radius: 20px;
     position: relative;
+    @media @tablet {
+      margin-left: 25px;
+      margin-right: 25px;
+    }
+    @media @mobile {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
     &_bg {
       position: absolute;
       right: 26px;
@@ -102,10 +111,21 @@ export default {
       width: 510px;
       border-radius: 21px;
       height: 298px;
+      @media @mobile, @tablet {
+        padding: 0;
+        z-index: -1;
+        right: -30px;
+      }
+      @media @mobile {
+        right: -60px;
+      }
     }
     &_ttl {
       padding: 0 0 49px;
       position: relative;
+      @media @mobile, @tablet {
+        font-size: 26px;
+      }
       &:before {
         content: '';
         min-width: 100%;
@@ -127,6 +147,19 @@ export default {
     }
     &_search {
       margin: 0 65px;
+      @media @mobile, @tablet {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+        margin-bottom: 180px;
+        margin-left: -20px;
+        margin-right: -20px;
+      }
+
+      @media @tablet {
+        margin-left: -48px;
+        margin-right: -48px;
+      }
       .search__fields {
         margin-bottom: 33px;
       }
