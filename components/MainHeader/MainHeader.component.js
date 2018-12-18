@@ -32,6 +32,13 @@ export default {
 
     toggleMobileMenu() {
       this.$store.commit('SET_HEADER_MENU_STATE', !this.show_header_menu);
+    },
+
+    /**
+     * hide mobile menu
+     */
+    hideMobileMenu() {
+      this.$store.commit('SET_HEADER_MENU_STATE', false);
     }
   },
   computed: {
