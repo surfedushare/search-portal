@@ -52,6 +52,16 @@
     display: flex;
     flex-direction: column;
     background: #fff;
+    @media @mobile, @tablet {
+      padding: 35px;
+      max-height: 95%
+    }
+
+    .form__item {
+      @media @mobile {
+        display: inline-flex;
+      }
+    }
   }
 
   &--fixed &__center {
