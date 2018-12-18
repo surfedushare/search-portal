@@ -1,3 +1,9 @@
+/**
+ * formatting date
+ * @param str - String
+ * @param format - String
+ * @returns {*} - formatted date
+ */
 export const formatDate = (str, format) => {
   if (str) {
     const d = new Date(str);
