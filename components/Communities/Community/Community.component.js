@@ -38,6 +38,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Search on submit the form
+     * @param data - Object
+     */
     searchInCommunity(data) {
       const { community } = this.$route.params;
 
@@ -81,6 +85,9 @@ export default {
         }
       }
     },
+    /**
+     * Search on clearing the search_text field
+     */
     onEmptySearchText() {
       this.isSearch = false;
       this.$store.dispatch('searchMaterials', {

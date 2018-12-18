@@ -12,6 +12,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * The change name event
+     */
     onNameChanged() {
       this.$emit('input', this.formData);
     }

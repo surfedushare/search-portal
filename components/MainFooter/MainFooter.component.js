@@ -14,13 +14,19 @@ export default {
     };
   },
   methods: {
+    /**
+     * Toggling visibility the themes menu
+     */
     toggleSubMenuThemes() {
-      console.log('footer', this.isShowSubMenu);
       this.isShowSubMenu = !this.isShowSubMenu;
       this.$store.dispatch('setSubMenuShow', this.isShowSubMenu);
     }
   },
   watch: {
+    /**
+     * §
+     * @param show_sub_menu - Boolean
+     */
     show_sub_menu(show_sub_menu) {
       this.isShowSubMenu = show_sub_menu;
     }

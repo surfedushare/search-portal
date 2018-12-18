@@ -14,14 +14,22 @@ export default {
     ClickOutside
   },
   methods: {
+    /**
+     * Toggling the popup visibility
+     */
     toggle() {
       this.opened = !this.opened;
     },
-
+    /**
+     * Hide the popup
+     */
     hide() {
       this.opened = false;
     },
 
+    /**
+     * Get current items array on change item checking
+     */
     onChange($event, item) {
       let items = [];
       if ($event.target.checked) {
@@ -34,6 +42,10 @@ export default {
     }
   },
   computed: {
+    /**
+     * Get first checked item
+     * @returns {*} - item
+     */
     first_checked_item() {
       const { value, items } = this;
       if (value && value[0] && items) {

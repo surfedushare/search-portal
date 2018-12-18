@@ -120,6 +120,10 @@ export default {
         }
       }
     },
+    /**
+     * Set editable to the collection
+     * @param isEditable - Boolean
+     */
     setEditable(isEditable) {
       this.contenteditable = isEditable;
 
@@ -137,7 +141,10 @@ export default {
         this.materials_in_line = 1;
       }
     },
-
+    /**
+     * Save collection
+     * @param data - Object
+     */
     onSubmit(data) {
       const { my_collection } = this;
       const { materials_for_deleting } = this.formData;

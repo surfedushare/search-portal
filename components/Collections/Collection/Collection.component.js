@@ -50,6 +50,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Set collection title
+     * @param title - String
+     */
     setTitle(title) {
       if (title) {
         this.collection_title = title;
@@ -58,34 +62,53 @@ export default {
         // }
       }
     },
+    /**
+     * Trigger on the change collection title
+     */
     onChangeTitle() {
       if (this.$refs.title) {
         this.setTitle(this.$refs.title.innerText);
       }
     },
+    /**
+     * Reset changed data
+     */
     resetData() {
       this.setTitle(this.collection.title);
     },
+    /**
+     * Deleting collection by id
+     * @param id - String
+     */
     deleteCollection(id) {
       this.$store.dispatch('deleteMyCollection', id).then(() => {
         this.$router.push('/my/collections/');
       });
     },
+    /**
+     * Show the popup "Share material"
+     */
     showShareMaterial() {
       this.isShowShareMaterial = true;
     },
-
+    /**
+     * Hide the popup "Share material"
+     */
     closeShareMaterial() {
       this.isShowShareMaterial = false;
       if (this.is_copied) {
         this.closeSocialSharing('link');
       }
     },
-
+    /**
+     * Saving the collection
+     */
     onSubmit() {
       this.$emit('onSubmit', { title: this.collection_title });
     },
-
+    /**
+     * Set counters value for share buttons
+     */
     setSocialCounters() {
       this.$nextTick().then(() => {
         const { collection } = this;
@@ -125,6 +148,10 @@ export default {
         }
       });
     },
+    /**
+     * Event close social popups
+     * @param type - String - social type
+     */
     closeSocialSharing(type) {
       this.$store
         .dispatch('setCollectionSocial', {
@@ -137,11 +164,15 @@ export default {
           this.setSocialCounters();
         });
     },
-
+    /**
+     * Show the popup "Share collection"
+     */
     showShareCollection() {
       this.isShowShareCollection = true;
     },
-
+    /**
+     * Close the popup "Share collection"
+     */
     closeShareCollection() {
       this.isShowShareCollection = false;
       if (this.is_copied) {
@@ -149,11 +180,18 @@ export default {
       }
     }
   },
-  computed: {},
   watch: {
+    /**
+     * Watcher on the search field
+     * @param search - String
+     */
     search(search) {
       this.$emit('input', search);
     },
+    /**
+     * Watcher on the contenteditable field
+     * @param isEditable - Boolean
+     */
     contenteditable(isEditable) {
       const { title } = this.$refs;
       this.$nextTick().then(() => {
@@ -163,6 +201,10 @@ export default {
         this.resetData();
       }
     },
+    /**
+     * Watcher on the collection object
+     * @param collection - Object
+     */
     collection(collection) {
       if (collection) {
         this.setTitle(collection.title);

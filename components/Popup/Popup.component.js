@@ -11,11 +11,18 @@ export default {
     };
   },
   methods: {
+    /**
+     * Close popup on press Escape button
+     * @param e - Event
+     */
     closeOnEsc(e) {
       if (e.keyCode === 27) {
         this.onClose();
       }
     },
+    /**
+     * Close popup
+     */
     onClose() {
       if (!this.disableClose) {
         if (this.close) {
@@ -29,9 +36,17 @@ export default {
   },
   computed: {},
   watch: {
+    /**
+     * Watcher on change the "isShow" field
+     * @param isShow - Boolean
+     */
     isShow(isShow) {
       this.show = isShow;
     },
+    /**
+     * Watcher on change the "auto_width" field
+     * @param auto_width - String
+     */
     auto_width(auto_width) {
       this.width_auto = auto_width ? 'auto' : 'fixed';
     }

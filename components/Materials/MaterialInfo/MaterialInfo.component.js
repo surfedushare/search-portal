@@ -60,18 +60,29 @@ export default {
     };
   },
   methods: {
+    /**
+     * Show the popup "Save rating"
+     */
     showPopupSaveRating() {
       this.isShow = true;
     },
-
-    close() {
+    /**
+     * Close the popup "Save rating"
+     */
+    closePopupSaveRating() {
       this.isShow = false;
     },
 
+    /**
+     * Show the popup "Share rating"
+     */
     showShareMaterial() {
       this.isShowShareMaterial = true;
     },
 
+    /**
+     * Close the popup "Share rating"
+     */
     closeShareMaterial() {
       this.isShowShareMaterial = false;
       if (this.is_copied) {
@@ -79,6 +90,10 @@ export default {
       }
     },
 
+    /**
+     * Saving the applaud for material
+     * @param material - Object
+     */
     setApplaudMaterial(material) {
       this.is_loading_applaud = true;
       this.$store
@@ -94,6 +109,9 @@ export default {
             });
         });
     },
+    /**
+     * Set counters value for share buttons
+     */
     setSocialCounters() {
       setTimeout(() => {
         this.$nextTick().then(() => {
@@ -135,6 +153,10 @@ export default {
         });
       }, 400);
     },
+    /**
+     * Event close social popups
+     * @param type - String - social type
+     */
     closeSocialSharing(type) {
       this.$store
         .dispatch('setMaterialSocial', {
@@ -160,17 +182,12 @@ export default {
         return generateSearchMaterialsQuery(this.formData);
       }
     },
+    /**
+     * Get formatted 'number_of_views'
+     * @returns String
+     */
     contedNumber() {
       return numeral(this.material.number_of_views).format('0a');
-    },
-    linkedin_counter() {
-      const { material } = this;
-
-      if (material) {
-        return 2;
-      }
-
-      return 0;
     },
     /**
      * get material themes

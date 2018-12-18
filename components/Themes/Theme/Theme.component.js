@@ -59,20 +59,12 @@ export default {
       'materials',
       'filter'
     ])
-    // themesList() {
-    //   if (this.material) {
-    //     return this.themes.results.filter(theme => {
-    //       if (this.material.themes.indexOf(theme.title) >= 0) {
-    //         return theme;
-    //       }
-    //     });
-    //   } else if (this.themes) {
-    //     return this.themes.results;
-    //   }
-    //   return false;
-    // }
   },
   watch: {
+    /**
+     * Watcher on change the theme object
+     * @param theme - Object
+     */
     theme(theme) {
       if (theme) {
         this.search.filters.push({

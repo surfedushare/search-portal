@@ -44,17 +44,6 @@ export default {
   computed: {
     ...mapGetters(['material', 'material_communities', 'materials'])
   },
-  watch: {
-    // material(material) {
-    //   if (material) {
-    //     this.$store.dispatch('getMaterialCommunities', {
-    //       params: {
-    //         material_id: this.material.external_id
-    //       }
-    //     });
-    //   }
-    // }
-  },
   mounted() {
     const { materials } = this;
     if (!materials) {

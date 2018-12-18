@@ -15,6 +15,10 @@ export default {
     return {};
   },
   methods: {
+    /**
+     * Set my collection on click
+     * @param collection - {Object}
+     */
     setMyCollection(collection) {
       this.$store.commit('SET_MY_COLLECTION', collection);
     }

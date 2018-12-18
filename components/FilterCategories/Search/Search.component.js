@@ -91,6 +91,10 @@ export default {
         this.$emit('input', this.formData);
       }
     },
+    /**
+     * Event on change the filter category
+     * @param event
+     */
     onChangeCategory(event) {
       this.formData.filters = [
         {
@@ -105,6 +109,10 @@ export default {
     }
   },
   watch: {
+    /**
+     * Watcher on the active category item
+     * @param category - Object
+     */
     active_category(category) {
       if (category && this.previous_category_id !== category.external_id) {
         this.previous_category_id = category.external_id;
@@ -112,6 +120,10 @@ export default {
         this.formData.filters[0].items = [];
       }
     },
+    /**
+     * Watcher on the filter item
+     * @param category - Object
+     */
     filter: {
       handler(filter) {
         if (filter) {
@@ -122,17 +134,29 @@ export default {
       },
       deep: true
     },
+    /**
+     * Watcher on the v-model
+     * @param value - Object
+     */
     value(value) {
       this.formData = {
         ...value
       };
     },
+    /**
+     * Watcher on the dates_range field
+     * @param dates_range - Object
+     */
     dates_range(dates_range) {
       this.formData.filters[0].items = [
         dates_range.start_date,
         dates_range.end_date
       ];
     },
+    /**
+     * Watcher on the formData.search_text field
+     * @param search_text - String
+     */
     'formData.search_text'(search_text) {
       if (search_text && !search_text.length) {
         this.$emit('onEmptySearchText', true);
@@ -141,7 +165,6 @@ export default {
   },
   computed: {
     ...mapGetters(['filter_categories', 'materials_keywords']),
-
     /**
      * Get the active category
      * @returns {*} - false or active category
@@ -168,7 +191,6 @@ export default {
       }
       return false;
     },
-
     /**
      * Get keywords
      * @returns {default.getters.materials_keywords|Array}

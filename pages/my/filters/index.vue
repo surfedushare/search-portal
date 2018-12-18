@@ -74,9 +74,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * Show the popup 'Add filter'
+     */
     showAddFilter() {
       this.isShow = true;
     },
+    /**
+     * Close the popup 'Add filter'
+     */
     close() {
       this.isShow = false;
     }

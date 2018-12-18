@@ -138,11 +138,19 @@ export default {
     ])
   },
   watch: {
+    /**
+     * Watcher on the search field
+     * @param search - String
+     **/
     search(search, prev) {
       if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search);
       }
     },
+    /**
+     * Watcher on the 'active_filter' field
+     * @param active_filter - Object
+     **/
     active_filter(active_filter) {
       if (active_filter) {
         this.dates_range = {
@@ -151,6 +159,10 @@ export default {
         };
       }
     },
+    /**
+     * Watcher on the dates_range field
+     * @param dates - Object
+     */
     dates_range(dates) {
       const { filters } = this.search;
       let new_filters = filters ? filters.slice(0) : [];
@@ -222,12 +234,21 @@ export default {
         this.$store.dispatch('searchMaterialsInLine', 1);
       }
     },
+    /**
+     * Show the popup 'Save filter'
+     */
     showPopupSaveFilter() {
       this.isShow = true;
     },
+    /**
+     * Close the popup 'Save filter'
+     */
     close() {
       this.isShow = false;
     },
+    /**
+     * Save filter
+     */
     onSaveFilter() {
       this.$store
         .dispatch('postFilter', {
@@ -238,6 +259,9 @@ export default {
           this.close();
         });
     },
+    /**
+     * Event the ordering items
+     */
     changeOrdering() {
       const { search } = this;
       if (search.ordering === 'lom.lifecycle.contribute.publisherdate') {

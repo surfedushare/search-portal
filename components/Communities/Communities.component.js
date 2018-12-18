@@ -16,6 +16,10 @@ export default {
     return {};
   },
   methods: {
+    /**
+     * Set community on click
+     * @param community - {Object}
+     */
     setCommunity(community) {
       this.$store.commit('SET_COMMUNITY', community);
     }

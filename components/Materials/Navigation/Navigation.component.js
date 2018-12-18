@@ -8,11 +8,23 @@ export default {
     return {};
   },
   methods: {
+    /**
+     * Set material on click
+     * @param material - {Object}
+     */
     setMaterial(material) {
       this.$store.commit('SET_MATERIAL', material);
     }
   },
   computed: {
+    /**
+     * Generating the navigation links
+     * @returns {
+     *   prev: {Object},
+     *   filter: {Object},
+     *   next: {Object},
+     * }
+     */
     links() {
       const { materials, material } = this;
       if (materials) {

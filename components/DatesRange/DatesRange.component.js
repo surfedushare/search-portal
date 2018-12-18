@@ -36,10 +36,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * Toggling the popup visibility
+     */
     toggle() {
       this.opened = !this.opened;
     },
-
+    /**
+     * Hiding popup
+     */
     hide() {
       this.opened = false;
     },

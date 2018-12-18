@@ -73,6 +73,10 @@ export default {
   },
   computed: {
     ...mapGetters(['materials', 'communities', 'themes', 'statistic']),
+    /**
+     * Get formatted 'number_of_views'
+     * @returns String
+     */
     contedNumber() {
       return numeral(this.statistic.value)
         .format('0,0')

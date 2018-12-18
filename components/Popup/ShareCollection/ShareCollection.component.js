@@ -19,6 +19,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * The copy text on clipboard
+     */
     onCopy() {
       this.saved = true;
       this.$emit('input', true);

@@ -40,9 +40,17 @@ export default {
     };
   },
   methods: {
+    /**
+     * Set material on click
+     * @param material - {Object}
+     */
     setMaterial(material) {
       this.$store.commit('SET_MATERIAL', material);
     },
+    /**
+     * Select material
+     * @param material - {Object}
+     */
     selectMaterial(material) {
       let selected_materials = this.value.slice(0);
 

@@ -180,13 +180,22 @@ export default {
     this.$store.dispatch('getMyCollections');
   },
   methods: {
+    /**
+     * Show the popup 'Add collection'
+     */
     showAddCollection() {
       this.isShow = true;
     },
-    addCollection() {},
+    /**
+     * Close the popup 'Add collection'
+     */
     close() {
       this.isShow = false;
     },
+    addCollection() {},
+    /**
+     * Save community data
+     */
     onSubmit() {
       const data = this.normalizeFormData();
       this.$store
@@ -201,6 +210,10 @@ export default {
           }, 1000);
         });
     },
+    /**
+     * Generate the FormData
+     * @returns {FormData}
+     */
     normalizeFormData() {
       let data = new FormData();
 
@@ -209,7 +222,6 @@ export default {
         if (el) {
           if (Array.isArray(el)) {
             data.append(item, JSON.stringify(el));
-            // console.log(data.append(item, JSON.stringify(el)));
           } else {
             let ElValue = el ? el : null;
             data.append(item, ElValue);

@@ -113,6 +113,9 @@ export default {
     onFilterSelected(e) {
       this.$store.dispatch('getFilter', { id: e.target.value });
     },
+    /**
+     * Event the reset filter
+     */
     resetFilter() {
       this.$route.push('/materials/search/');
       location.reload();
@@ -252,7 +255,7 @@ export default {
       return false;
     },
     /**
-     * generate categories
+     * generate extending categories
      * @returns {*}
      */
     categories() {

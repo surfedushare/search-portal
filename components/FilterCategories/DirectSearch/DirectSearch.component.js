@@ -34,6 +34,11 @@ export default {
     };
   },
   methods: {
+    /**
+     * search event
+     * @param search
+     * @param loading
+     */
     onSearch(search, loading) {
       loading(true);
       this.search(loading, search, this);
@@ -55,13 +60,23 @@ export default {
           loading(false);
         });
     }, 350),
+    /**
+     * Submit form
+     */
     onSubmit() {
       this.$router.push(generateSearchMaterialsQuery(this.formData));
       this.$emit('input', this.formData);
     },
+    /**
+     * Event on changing the keywords
+     */
     setKeywords() {
       this.$emit('input', this.formData);
     },
+    /**
+     * Event on changing the category
+     * @param event
+     */
     onChangeCategory(event) {
       this.formData.filters = [
         {
@@ -72,12 +87,20 @@ export default {
     }
   },
   watch: {
+    /**
+     * Watcher on the active category item
+     * @param category - Object
+     */
     active_category(category) {
       if (category) {
         // Clearing filters when category changed
         this.formData.filters[0].items = [];
       }
     },
+    /**
+     * Watcher on the filter item
+     * @param category - Object
+     */
     filter: {
       handler(filter) {
         if (filter) {
@@ -88,11 +111,19 @@ export default {
       },
       deep: true
     },
+    /**
+     * Watcher on the v-model
+     * @param value - Object
+     */
     value(value) {
       this.formData = {
         ...value
       };
     },
+    /**
+     * Watcher on the dates_range field
+     * @param dates_range - Object
+     */
     dates_range(dates_range) {
       this.formData.filters[0].items = [
         dates_range.start_date,

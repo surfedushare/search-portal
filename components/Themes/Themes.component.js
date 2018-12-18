@@ -7,6 +7,10 @@ export default {
   },
   methods: {},
   computed: {
+    /**
+     * Get the current theme
+     * @returns {*}
+     */
     currentThemes() {
       const themes = this.themes;
       if (themes) {

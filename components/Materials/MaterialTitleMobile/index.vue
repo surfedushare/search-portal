@@ -28,6 +28,10 @@ export default {
     }
   },
   computed: {
+    /**
+     * Get author URL
+     * @returns {{path, query}}
+     */
     authorUrl() {
       let formData = {
         page_size: 10,

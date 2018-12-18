@@ -107,6 +107,10 @@ export default {
     ...mapGetters(['isAuthenticated', 'my_collections', 'material_communities'])
   },
   watch: {
+    /**
+     * Get checked collection
+     * @param collections - Array
+     */
     checked_collections(collections) {
       if (this.full_loading) {
         let collections_for_material = {};

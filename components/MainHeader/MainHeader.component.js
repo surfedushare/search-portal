@@ -30,6 +30,9 @@ export default {
       });
     },
 
+    /**
+     * Toggling visibility the mobile menu
+     */
     toggleMobileMenu() {
       this.$store.commit('SET_HEADER_MENU_STATE', !this.show_header_menu);
     }

@@ -16,6 +16,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * The save filter event
+     */
     onSaveFilter() {
       this.submitting = true;
       this.$store.dispatch('postMyFilter', this.formData).then(() => {

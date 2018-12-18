@@ -17,6 +17,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * The save collection event
+     */
     onSaveCollection() {
       this.submitting = true;
       this.$store.dispatch('postMyCollection', this.formData).then(() => {
