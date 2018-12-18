@@ -199,6 +199,14 @@ export default {
       'active_filter',
       'materials'
     ]),
+    active_filter_id() {
+      const { active_filter } = this;
+      if (active_filter) {
+        return active_filter.id || '';
+      }
+
+      return '';
+    },
     /**
      * generate filter items
      * @returns {*}

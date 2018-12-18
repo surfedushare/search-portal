@@ -16,9 +16,15 @@
     <select
       name="my_filters"
       @change="onFilterSelected"
+      :value="active_filter_id"
     >
       <option value="">Mijn filter selecties</option>
-      <option :value="filter.id" v-for="filter in filters">{{ filter.title }}</option>
+      <option
+        :value="filter.id"
+        v-for="filter in filters"
+      >
+        {{ filter.title }}
+      </option>
     </select>
   </div>
 

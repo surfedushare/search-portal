@@ -28,7 +28,7 @@ export default {
       if (id && id.length) {
         const filter = await this.$axios.$get(`filters/${id}/`);
         this.dispatch('setActiveFilter', filter);
-        commit('SET_FILTER', filter);
+        commit('MERGE_FILTERS', filter);
       } else {
         commit('SET_FILTER', { id });
       }
@@ -120,6 +120,15 @@ export default {
     },
     EXTEND_FILTERS(state, payload) {
       state.filters = [...state.filters, payload];
+    },
+    MERGE_FILTERS(state, payload) {
+      state.filters = state.filters.map(filter => {
+        if (filter.id === payload.id) {
+          return payload;
+        }
+
+        return filter;
+      });
     },
     SET_ACTIVE_FILTER(state, payload) {
       state.active_filter = payload;
