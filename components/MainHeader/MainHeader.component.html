@@ -65,10 +65,10 @@
         class="main-header__logo_img"
       >
     </nuxt-link>
-    <div class="main-header__mobile_menu" v-if="show_header_menu">
+    <div class="main-header__mobile_menu" v-if="show_header_menu" onclick="">
       <div class="main-header__user" v-if="isAuthenticated">
-        <div class="main-header__user_name arrow-link"><span class="link">{{user.full_name}}</span></div>
-        <nav class="main-header__user_menu" onclick="">
+        <div class="main-header__user_name arrow-link" onclick=""><span class="link">{{user.full_name}}</span></div>
+        <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
             <li class="main-header__user_menu_item">
               <a class="main-header__user_menu_link" href="/my/filters/">
