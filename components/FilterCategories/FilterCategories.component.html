@@ -18,7 +18,7 @@
       @change="onFilterSelected"
       :value="active_filter_id"
     >
-      <option value="">Mijn filter selecties</option>
+      <option value="" disabled>Mijn filter selecties</option>
       <option
         :value="filter.id"
         v-for="filter in filters"
