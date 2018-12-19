@@ -40,6 +40,8 @@ _HBO_WO_REGEX = re.compile(r"^(HBO|WO)(.*)$", re.IGNORECASE)
 
 _DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
 
+_MAX_DISCIPLINES_IN_FILTER = 20
+
 
 def get_material_count_by_disciplines(discipline_ids):
     """
@@ -48,26 +50,41 @@ def get_material_count_by_disciplines(discipline_ids):
     :return: dictionary with number of materials in EduRep for each discipline
     """
 
+    rv = dict()
+
     # add default filters to search materials
     filters = get_all_materials_filters()
-    filters.append(dict(external_id=DISCIPLINE_FIELD_ID, items=discipline_ids))
 
     ac = XmlEndpointApiClient(
         api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
-    drilldowns = ac.drilldowns([_DISCIPLINE_FILTER],
-                               filters=filters)
-    if drilldowns:
-        drilldowns = drilldowns.get("drilldowns", [])
-        for f in drilldowns:
-            if f["external_id"] == DISCIPLINE_FIELD_ID:
-                drilldowns = {item["external_id"]: item["count"]
-                              for item in f["items"]}
-                break
+    discipline_ids = list(discipline_ids)
+    while discipline_ids:
+        # request drilldowns only for part of disciplines
+        if len(discipline_ids) > _MAX_DISCIPLINES_IN_FILTER:
+            ds = discipline_ids[:_MAX_DISCIPLINES_IN_FILTER:]
+            discipline_ids = discipline_ids[_MAX_DISCIPLINES_IN_FILTER::]
         else:
-            drilldowns = None
+            ds, discipline_ids = discipline_ids, []
 
-    return drilldowns if drilldowns else dict()
+        fs = [dict(external_id=DISCIPLINE_FIELD_ID, items=ds)]
+        fs.extend(filters)
+
+        drilldowns = ac.drilldowns([_DISCIPLINE_FILTER], filters=fs)
+        if drilldowns:
+            drilldowns = drilldowns.get("drilldowns", [])
+            for f in drilldowns:
+                if f["external_id"] == DISCIPLINE_FIELD_ID:
+                    drilldowns = {item["external_id"]: item["count"]
+                                  for item in f["items"]}
+                    break
+            else:
+                drilldowns = None
+
+        if drilldowns:
+            rv.update({k: drilldowns[k] for k in ds if k in drilldowns})
+
+    return rv
 
 
 def add_default_filters(filters):
