@@ -84,7 +84,10 @@
           >
             {{ material.format }}
           </div>
-          <div class="materials__item_keywords" v-if="material.keywords && material.keywords.length">
+          <div
+            class="materials__item_keywords"
+            v-if="material.keywords && material.keywords.length && itemsInLine === 1"
+          >
             <span class="materials__item_keyword" v-for="keyword in material.keywords">{{keyword}} </span>
           </div>
           <nuxt-link
