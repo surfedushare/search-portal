@@ -9,12 +9,14 @@
     class="select__item"
     @click="toggle"
   >
-    <div v-if="first_checked_item">
+    <div
+      v-if="first_checked_item"
+      :class="{'select__item--disabled': true}"
+    >
       <input
         type="checkbox"
         checked="checked"
         :id="`checked_${first_checked_item.id}`"
-        disabled="disabled"
       >
       <label
         :for="`checked_${first_checked_item.id}`"
