@@ -169,7 +169,6 @@ class XmlEndpointApiClient:
 
         if search_text:
             query = " AND ".join('("{}")'.format(q) for q in search_text)
-            query = '{} AND {}'.format(_BASE_QUERY, query)
         else:
             query = _BASE_QUERY
 
@@ -205,6 +204,7 @@ class XmlEndpointApiClient:
         :return: parsed response
         """
 
+        print(query)
         parameters = dict(version=version,
                           operation=operation,
                           recordPacking=record_packing,
