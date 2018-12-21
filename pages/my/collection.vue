@@ -2,7 +2,10 @@
 <template>
   <section class="container main collection">
     <div class="center_block">
-      <Collection :collection="my_collection"/>
+      <Collection
+        :collection="my_collection"
+        :user="user"
+      />
       <Materials
         :materials="my_collection_materials"
         :items-in-line="4"
@@ -22,7 +25,7 @@ export default {
     Materials
   },
   computed: {
-    ...mapGetters(['my_collection', 'my_collection_materials'])
+    ...mapGetters(['my_collection', 'my_collection_materials', 'user'])
   },
   mounted() {
     this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);

@@ -70,22 +70,37 @@
         class="collection__info_search__social direct_search__social quality__social _white_color"
         ref="social_counters"
       >
-        <a
-          class="set_public"
-          href="#"
-          @click.prevent="showShareMaterial"
-          v-if="collection.is_owner"
-          style="color:#fff; margin-right: 10px;"
-        >
-          set public
-        </a>
+        <div class="quality__check-sharing" v-if="collection.is_owner">
+          <span class="quality__check-sharing--ttl">Openbaar</span>
+          <label class="share-collection_switch" >
+            <input
+              type="checkbox"
+              v-model="is_shared"
+              @change="changeShared"
+            >
+            <span class="share-collection_slider round">
+              <span class="on">Aan</span>
+              <span class="off">Uit</span>
+            </span>
+          </label>
+        </div>
+        <!--<a-->
+          <!--class="set_public"-->
+          <!--href="#"-->
+          <!--@click.prevent="showShareMaterial"-->
+          <!--v-if="collection.is_owner"-->
+          <!--style="color:#fff; margin-right: 10px;"-->
+        <!--&gt;-->
+          <!--set public-->
+        <!--</a>-->
+
         <template
           v-show="collection.is_shared"
         >
           <social-sharing
             :url="href"
             :title="collection_title"
-            :class="{'disable_share': !collection.is_owner}"
+            :class="{'disable_share': !collection.is_owner, 'disable_share_check': !is_shared}"
             inline-template
             v-cloak
             @close="closeSocialSharing"
@@ -103,7 +118,7 @@
             <a href="#share_link"
                class="quality__social_link"
                @click.prevent="showShareCollection"
-               :class="{'disable_share': !collection.is_owner}"
+               :class="{'disable_share': !collection.is_owner, 'disable_share_check': !is_shared}"
             >
               <i class="quality__social--share quality__social_ico"></i>
               <span class="quality__social_counter"  id="url_counter"></span>

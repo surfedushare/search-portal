@@ -24,6 +24,9 @@ export default {
     },
     'items-in-line': {
       default: 4
+    },
+    user: {
+      default: false
     }
   },
   components: {
@@ -49,7 +52,8 @@ export default {
       isShowShareMaterial: false,
       isShowDeleteCollection: false,
       isShowShareCollection: false,
-      is_copied: false
+      is_copied: false,
+      is_shared: this.collection.is_shared
     };
   },
   methods: {
@@ -97,6 +101,15 @@ export default {
      */
     showShareMaterial() {
       this.isShowShareMaterial = true;
+    },
+    /**
+     * The change shared event
+     */
+    changeShared() {
+      this.$store.dispatch(
+        'putMyCollection',
+        Object.assign({}, this.collection, { is_shared: this.is_shared })
+      );
     },
     /**
      * Hide the popup "Share material"
@@ -194,6 +207,13 @@ export default {
      */
     search(search) {
       this.$emit('input', search);
+    },
+    /**
+     * Watcher on the 'collection.is_shared' field
+     * @param is_shared - Boolean
+     */
+    'collection.is_shared'(is_shared) {
+      this.is_shared = is_shared;
     },
     /**
      * Watcher on the contenteditable field
