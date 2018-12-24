@@ -29,6 +29,11 @@
         <Spinner v-if="my_collection_materials_loading" />
       </div>
     </div>
+    <DeleteCollection
+      :close="closeDeleteMaterials"
+      :is-show="isShowDeleteMaterials"
+      :deletefunction="deleteMaterials"
+    />
   </section>
 </template>
 
@@ -37,17 +42,21 @@ import { mapGetters } from 'vuex';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
 import Collection from '~/components/Collections/Collection';
+import DeleteCollection from '~/components/Popup/DeleteCollection';
 
 export default {
   components: {
     Collection,
     Materials,
-    Spinner
+    Spinner,
+    DeleteCollection
   },
   data() {
     return {
       contenteditable: false,
+      isShowDeleteMaterials: false,
       submitting: false,
+      submitData: false,
       materials_in_line: 4,
       formData: {
         materials_for_deleting: []
@@ -132,6 +141,50 @@ export default {
       }
     },
     /**
+     * Deleting collection by id
+     * @param id - String
+     */
+    deleteMaterialsPopup() {
+      this.isShowDeleteMaterials = true;
+    },
+    closeDeleteMaterials() {
+      this.isShowDeleteMaterials = false;
+    },
+    deleteMaterials() {
+      const { my_collection } = this;
+      const { materials_for_deleting } = this.formData;
+      this.$store
+        .dispatch('removeMaterialFromMyCollection', {
+          collection_id: my_collection.id,
+          data: materials_for_deleting.map(material => {
+            return {
+              external_id: material
+            };
+          })
+        })
+        .then(() => {
+          this.$nextTick().then(() => {
+            this.$store.dispatch('putMyCollection', {
+              ...this.my_collection,
+              ...this.submitData
+            });
+            this.$store
+              .dispatch('getMaterialInMyCollection', {
+                id: my_collection.id,
+                params: {
+                  page_size: this.search.page_size,
+                  page: 1
+                }
+              })
+              .then(() => {
+                this.closeDeleteMaterials();
+                this.submitting = false;
+                this.setEditable(false);
+              });
+          });
+        });
+    },
+    /**
      * Change 1 item in line to 4 and back.
      */
     changeViewType() {
@@ -146,39 +199,11 @@ export default {
      * @param data - Object
      */
     onSubmit(data) {
-      const { my_collection } = this;
       const { materials_for_deleting } = this.formData;
       this.submitting = true;
+      this.submitData = data;
       if (materials_for_deleting && materials_for_deleting.length) {
-        this.$store
-          .dispatch('removeMaterialFromMyCollection', {
-            collection_id: my_collection.id,
-            data: materials_for_deleting.map(material => {
-              return {
-                external_id: material
-              };
-            })
-          })
-          .then(() => {
-            this.$nextTick().then(() => {
-              this.$store.dispatch('putMyCollection', {
-                ...this.my_collection,
-                ...data
-              });
-              this.$store
-                .dispatch('getMaterialInMyCollection', {
-                  id: my_collection.id,
-                  params: {
-                    page_size: this.search.page_size,
-                    page: 1
-                  }
-                })
-                .then(() => {
-                  this.submitting = false;
-                  this.setEditable(false);
-                });
-            });
-          });
+        this.deleteMaterialsPopup();
       } else {
         this.$store
           .dispatch('putMyCollection', {

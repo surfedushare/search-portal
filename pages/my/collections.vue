@@ -28,7 +28,12 @@
           Nieuwe collectie
         </button>
       </div>
-      <Collections :collections="my_collections.results"/>
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="my_collections_loading"
+        infinite-scroll-distance="10">
+        <Collections :collections="my_collections.results"/>
+      </div>
       <AddCollection
         v-if="isShow"
         :close="close"
@@ -60,12 +65,25 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['my_collections', 'my_collection_materials'])
+    ...mapGetters([
+      'my_collections',
+      'my_collection_materials',
+      'my_collections_loading'
+    ])
   },
   mounted() {
     this.$store.dispatch('getMyCollections');
   },
   methods: {
+    /**
+     * Load next collections
+     */
+    loadMore() {
+      const { my_collections, my_collections_loading } = this;
+      if (my_collections.next && !my_collections_loading) {
+        this.$store.dispatch('getMyCollectionsNextPage');
+      }
+    },
     showAddCollection() {
       this.isShow = true;
     },

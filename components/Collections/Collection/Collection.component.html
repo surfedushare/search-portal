@@ -43,7 +43,7 @@
           <a
             href="#"
             class="collection__info_filter__link"
-            @click.prevent="deleteCollection"
+            @click.prevent="deleteCollectionPopup"
           >
             Verwijderen
           </a>
@@ -159,6 +159,6 @@
   <DeleteCollection
     :close="closeDeleteCollection"
     :is-show="isShowDeleteCollection"
-    :collection="collection"
+    :deletefunction="deleteCollection"
   ></DeleteCollection>
 </div>

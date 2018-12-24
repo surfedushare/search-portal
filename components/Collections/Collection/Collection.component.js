@@ -87,11 +87,19 @@ export default {
      * Deleting collection by id
      * @param id - String
      */
-    deleteCollection(id) {
+    deleteCollectionPopup() {
       this.isShowDeleteCollection = true;
-      // this.$store.dispatch('deleteMyCollection', id).then(() => {
-      //   this.$router.push('/my/collections/');
-      // });
+    },
+    /**
+     * Deleting collection by id
+     * @param id - String
+     */
+    deleteCollection() {
+      this.$store
+        .dispatch('deleteMyCollection', this.$route.params.id)
+        .then(() => {
+          this.$router.push('/my/collections/');
+        });
     },
     closeDeleteCollection() {
       this.isShowDeleteCollection = false;
