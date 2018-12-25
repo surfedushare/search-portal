@@ -1,23 +1,29 @@
 import { mapGetters } from 'vuex';
 import { generateSearchMaterialsQuery } from '../_helpers';
+import DatesRange from '~/components/DatesRange';
 
 export default {
   name: 'filter-categories',
   props: ['value', 'showPopupSaveFilter', 'full-filter'],
-  components: {},
+  components: { DatesRange },
   mounted() {
     if (this.isAuthenticated && !this.fullFilter) {
       this.$store.dispatch('getFilters');
     }
   },
   data() {
+    const publisherdate = 'lom.lifecycle.contribute.publisherdate';
     return {
-      publisherdate: 'lom.lifecycle.contribute.publisherdate',
+      publisherdate,
       selected: [],
       show_all: [],
       isShow: false,
       isInit: false,
-      visible_items: 10
+      visible_items: 10,
+      data: {
+        start_date: null,
+        end_date: null
+      }
     };
   },
   methods: {
@@ -90,6 +96,10 @@ export default {
             external_id: publisherdate,
             items: [...publisherdate_item.items]
           });
+          this.data = {
+            start_date: publisherdate_item.items[0],
+            end_date: publisherdate_item.items[1]
+          };
         }
 
         filters = Object.assign({}, this.value, {
@@ -132,11 +142,51 @@ export default {
      * @param value
      */
     value(value) {
-      const { isInit } = this;
+      const { isInit, publisherdate } = this;
       if (value && value.filters && !isInit) {
         this.selected = value.filters.map(filter => filter.external_id);
+
+        const publisherdate_item = this.value.filters.find(
+          item => item.external_id === publisherdate
+        );
+        if (publisherdate_item) {
+          this.data.start_date = publisherdate_item.items[0];
+          this.data.end_date = publisherdate_item.items[1];
+        }
+        console.log(publisherdate_item);
         this.isInit = true;
       }
+    },
+
+    data(data) {
+      let { publisherdate } = this;
+      let filters = this.value.filters.slice(0);
+
+      const publisherdate_item = filters.find(
+        item => item.external_id === publisherdate
+      );
+
+      if (publisherdate_item) {
+        filters = filters.map(item => {
+          if (item.external_id === publisherdate) {
+            return {
+              external_id: publisherdate,
+              items: [data.start_date || null, data.end_date || null]
+            };
+          }
+          return item;
+        });
+      } else {
+        filters.push({
+          external_id: publisherdate,
+          items: [data.start_date || null, data.end_date || null]
+        });
+      }
+
+      const request = Object.assign({}, this.value, { filters });
+
+      this.$emit('input', request);
+      this.$router.push(generateSearchMaterialsQuery(request));
     },
     /**
      * Watcher on change user authentication
@@ -247,8 +297,8 @@ export default {
       if (filter_categories) {
         return filter_categories.results.map(item => {
           return {
-            ...item,
-            hide: item.external_id === publisherdate
+            ...item
+            // hide: item.external_id === publisherdate
           };
         });
       }
