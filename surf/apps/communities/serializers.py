@@ -59,6 +59,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
     @staticmethod
     def get_materials_count(obj):
         ids = obj.collections.values_list("materials__id", flat=True)
+        ids = [i for i in ids if i]
         return len(set(ids))
 
     def get_is_admin(self, obj):
