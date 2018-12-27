@@ -67,6 +67,9 @@
       white-space: nowrap;
     }
 
+    .no-options {
+      display: none !important;
+    }
     .dropdown-menu .active > a {
       color: @dark-grey;
       background: rgba(50, 50, 50, 0.1);
@@ -118,7 +121,7 @@
   }
 }
 
-.search .v-select .dropdown-menu {
+.search .v-select.searching .dropdown-menu {
   display: block;
   position: relative;
   top: 0;

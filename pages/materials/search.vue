@@ -29,7 +29,7 @@
           :class="{'select--open': search.ordering === 'lom.lifecycle.contribute.publisherdate'}"
           class="select"
         >
-          <div 
+          <div
             class="select__item"
             @click="changeOrdering"
           >
@@ -253,7 +253,8 @@ export default {
       this.$store
         .dispatch('postFilter', {
           title: this.formData.name,
-          items: this.search
+          items: this.search,
+          materials_count: this.materials.records_total
         })
         .then(() => {
           this.close();

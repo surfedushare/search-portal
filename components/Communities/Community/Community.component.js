@@ -86,6 +86,16 @@ export default {
       }
     },
     /**
+     * Load next collections
+     */
+    loadMoreCollections() {
+      const { community_collections, community_collections_loading } = this;
+
+      if (community_collections.next && !community_collections_loading) {
+        this.$store.dispatch('getCommunityCollectionsNextPage');
+      }
+    },
+    /**
      * Search on clearing the search_text field
      */
     onEmptySearchText() {
@@ -102,6 +112,7 @@ export default {
       'community_disciplines',
       'community_themes',
       'community_collections',
+      'community_collections_loading',
       'materials',
       'materials_loading'
     ])

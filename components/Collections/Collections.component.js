@@ -1,3 +1,5 @@
+import Spinner from './../Spinner';
+
 export default {
   name: 'collections',
   props: {
@@ -7,9 +9,13 @@ export default {
     'items-in-line': {
       type: Number,
       default: 4
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
-  components: {},
+  components: { Spinner },
   mounted() {},
   data() {
     return {};
@@ -20,6 +26,7 @@ export default {
      * @param collection - {Object}
      */
     setMyCollection(collection) {
+      this.$store.commit('SET_MATERIAL_TO_MY_COLLECTION', false);
       this.$store.commit('SET_MY_COLLECTION', collection);
     }
   },

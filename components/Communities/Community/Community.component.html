@@ -1,5 +1,5 @@
 <section class="community">
-  <div class="center_block" v-if="community_info">
+  <div class="center_block">
     <div class="community__info">
       <div class="community__info_wrapper">
         <div class="community__info_logo" v-if="community_info.logo">
@@ -44,7 +44,13 @@
           <p class="community__description_txt">
             {{ community_info.description }}
           </p>
-          <a :href="`${ community_info.website_url }`" v-if="community_info.website_url" class="community__description_link arrow-link">Bezoek website</a>
+          <a
+            :href="`${ community_info.website_url }`"
+            v-if="community_info.website_url"
+            class="community__description_link arrow-link"
+          >
+            Bezoek website
+          </a>
         </div>
         <div class="community__themas_and_disciplines">
           <Themes
@@ -53,14 +59,21 @@
           <Disciplines class="community__disciplines" :disciplines="community_disciplines" />
         </div>
       </div>
-      <Collections
-        v-if="community_collections"
-        :collections="community_collections.results"
-        class="community__collections">
-        <template slot="header-info">
-          <h2>Collecties</h2>
-        </template>
-      </Collections>
+      <div
+        v-infinite-scroll="loadMoreCollections"
+        infinite-scroll-disabled="community_collections_loading"
+        infinite-scroll-distance="10"
+      >
+        <Collections
+          v-if="community_collections"
+          :collections="community_collections.results"
+          class="community__collections">
+          <template slot="header-info">
+            <h2>Collecties</h2>
+          </template>
+        </Collections>
+        <Spinner v-if="community_collections_loading" />
+      </div>
       <Materials
         :materials="materials"
         class="community__materials"

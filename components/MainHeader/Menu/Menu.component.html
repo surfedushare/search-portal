@@ -30,7 +30,7 @@
       </li>
       <li class="menu__list_item">
         <nuxt-link
-          to="/communities/"
+          :to="localePath('communities')"
           class="menu__link"
           @click.native="closeSubMenu(true)"
         >

@@ -268,6 +268,10 @@ pre {
       &.disable_share {
         pointer-events: none;
       }
+      &.disable_share_check {
+        pointer-events: none;
+        opacity: 0.5;
+      }
     }
     &_link {
       display: flex;
@@ -291,6 +295,10 @@ pre {
 
       &.disable_share {
         pointer-events: none;
+      }
+      &.disable_share_check {
+        pointer-events: none;
+        opacity: 0.5;
       }
     }
     &--linkedin {
@@ -329,10 +337,10 @@ pre {
 
     &._white_color {
       justify-content: flex-end;
-      .quality__social_link{
+      .quality__social_link {
         margin: 0 6px 0 3px;
       }
-      .quality__social_link i{
+      .quality__social_link i {
         margin: 0 7px 0 0;
         border-color: #fff;
       }
@@ -354,6 +362,18 @@ pre {
           border-right-color: #ffffff;
         }
       }
+    }
+  }
+  &__check-sharing {
+    display: inline-block;
+    margin-right: 5px;
+    &--ttl {
+      font-family: @second-font;
+      font-weight: bold;
+      vertical-align: middle;
+      font-size: 16px;
+      color: #ffffff;
+      display: inline-block;
     }
   }
 }

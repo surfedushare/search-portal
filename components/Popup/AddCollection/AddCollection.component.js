@@ -1,7 +1,7 @@
 import Popup from '~/components/Popup';
 export default {
   name: 'add-collection',
-  props: ['is-show', 'close', 'is-shared'],
+  props: ['is-show', 'close', 'is-shared', 'submit-method'],
   components: {
     Popup
   },
@@ -22,10 +22,15 @@ export default {
      */
     onSaveCollection() {
       this.submitting = true;
-      this.$store.dispatch('postMyCollection', this.formData).then(() => {
-        this.saved = true;
-        this.submitting = false;
-      });
+      this.$store
+        .dispatch(this.submitMethod || 'postMyCollection', this.formData)
+        .then(collection => {
+          this.saved = true;
+          this.submitting = false;
+          if (this.$listeners.submitted) {
+            this.$emit('submitted', collection);
+          }
+        });
     }
   },
   computed: {}

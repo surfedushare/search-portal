@@ -48,7 +48,7 @@
             <a
               href="#"
               class="my_filter__info_filter__link"
-              @click.prevent="deleteFilter"
+              @click.prevent="deleteFilterPopup"
             >
               Verwijderen
             </a>
@@ -90,6 +90,7 @@
               :inline="true"
               :hide-select="true"
               v-model="data"
+              :disable-future-days="true"
             />
           </div>
           <ul
@@ -121,6 +122,12 @@
         </div>
       </masonry>
     </div>
+
+    <DeleteCollection
+      :close="closeDeleteFilter"
+      :is-show="isShowDeleteFilter"
+      :deletefunction="deleteFilter"
+    />
   </section>
 </template>
 
@@ -128,16 +135,19 @@
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import DatesRange from '~/components/DatesRange';
+import DeleteCollection from '~/components/Popup/DeleteCollection';
 
 export default {
   components: {
     BreadCrumbs,
-    DatesRange
+    DatesRange,
+    DeleteCollection
   },
   data() {
     return {
       checked_filter: [],
       checked_categories_filter: [],
+      isShowDeleteFilter: false,
       filters_count: false,
       submitting: false,
       contenteditable: false,
@@ -371,6 +381,12 @@ export default {
           this.setEditable(false);
           this.submitting = false;
         });
+    },
+    closeDeleteFilter() {
+      this.isShowDeleteFilter = false;
+    },
+    deleteFilterPopup() {
+      this.isShowDeleteFilter = true;
     },
     deleteFilter() {
       this.$store.dispatch('deleteMyFilter', this.$route.params.id).then(() => {

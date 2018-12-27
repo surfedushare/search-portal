@@ -1,5 +1,5 @@
 
-<section class="dates-range">
+<section class="dates-range" :class="{[`dates-range--${theme}`]: theme}">
   <div class="dates-range__opener" :class="{'dates-range__opener--opened': opened}" v-if="!hideSelect">
     <div
       class="select select--no-border"
@@ -21,7 +21,9 @@
       <Datepicker
         :format="format"
         :value="formData.start_date"
-        :disabledDates="{from: formData.end_date}"
+        :disabledDates="{
+          from: formData.end_date || (disableFutureDays ? new Date() : false)
+        }"
         :monday-first="true"
         placeholder="Selecteer datum"
         @selected="onSelectedStartDate"
@@ -33,7 +35,10 @@
       <Datepicker
         :format="format"
         :value="formData.end_date"
-        :disabledDates="{to: formData.start_date}"
+        :disabledDates="{
+          to: formData.start_date,
+          from: disableFutureDays ? new Date() : false
+        }"
         :monday-first="true"
         placeholder="Selecteer datum"
         @selected="onSelectedEndDate"

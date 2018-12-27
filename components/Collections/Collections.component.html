@@ -16,8 +16,7 @@
             class="collections__item_ttl_link"
             :key="`${collection.id}`"
             @click.native="setMyCollection(collection)"
-          >
-            {{ collection.title }}
+          >{{ collection.title }}
           </nuxt-link>
         </h3>
         <nuxt-link
@@ -25,12 +24,12 @@
           class="collections__item_link"
           v-for="community in collection.communities"
           :key="`${community.id}`"
-          >
-          {{community.name}}
+          >{{community.name}}
         </nuxt-link>
         <p class="collections__item_count">{{ collection.materials_count }} items</p>
       </div>
     </li>
   </ul>
-  <div class="collections__info" v-else>No collections</div>
+  <div v-if="loading"><Spinner /></div>
+  <div class="collections__info" v-else-if="collections && !collections.length">No collections</div>
 </section>

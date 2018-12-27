@@ -1,7 +1,7 @@
 
 <section class="main-header">
   <div class="main-header__wrapper">
-    <nuxt-link to="/" class="main-header__logo">
+    <nuxt-link :to="localePath('index')" class="main-header__logo">
       <img
         src="./../../assets/images/surflogo.png"
         srcset="./../../assets/images/surflogo@2x.png 2x, ./../../assets/images/surflogo@3x.png 3x"
@@ -15,19 +15,19 @@
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
             <li class="main-header__user_menu_item">
-              <a class="main-header__user_menu_link" href="/my/filters/">
+              <nuxt-link class="main-header__user_menu_link" to="/my/filters/">
                 Mijn Filterselecties
-              </a>
+              </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
-              <a class="main-header__user_menu_link" href="/my/collections/">
+              <nuxt-link class="main-header__user_menu_link" to="/my/collections/">
                 Mijn Collecties
-              </a>
+              </nuxt-link>
             </li>
             <li class="main-header__user_menu_item" v-if="user.is_admin">
-              <a class="main-header__user_menu_link" href="/my/communities/">
+              <nuxt-link class="main-header__user_menu_link" to="/my/communities/">
                 Mijn Community
-              </a>
+              </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
               <a
@@ -52,8 +52,16 @@
           Inloggen
         </a>
       </div>
-      <button
-        class="main-header__lang">Lang</button>
+      <nuxt-link
+        class="main-header__lang"
+        :to="switchLocalePath('nl-NL')"
+        v-if="$i18n.locale === 'en'"
+      >Lang</nuxt-link>
+      <nuxt-link
+        class="main-header__lang"
+        :to="switchLocalePath('en')"
+        v-if="$i18n.locale === 'nl-NL'"
+      >Lang</nuxt-link>
     </div>
   </div>
   <div class="main-header__mobile">
@@ -71,19 +79,19 @@
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
             <li class="main-header__user_menu_item">
-              <a class="main-header__user_menu_link" href="/my/filters/">
+              <nuxt-link class="main-header__user_menu_link" to="/my/filters/">
                 Mijn Filterselecties
-              </a>
+              </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
-              <a class="main-header__user_menu_link" href="/my/collections/">
+              <nuxt-link class="main-header__user_menu_link" to="/my/collections/">
                 Mijn Collecties
-              </a>
+              </nuxt-link>
             </li>
             <li class="main-header__user_menu_item" v-if="user.is_admin">
-              <a class="main-header__user_menu_link" href="/my/communities/">
+              <nuxt-link class="main-header__user_menu_link" to="/my/communities/">
                 Mijn Community
-              </a>
+              </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
               <a

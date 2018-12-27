@@ -6,16 +6,18 @@
           <img
             class="main__info_bg"
             src="./../assets/images/pictures/header-image.jpg"
-            alt="header-image">
+            alt="header-image"
+          >
           <img
             class="main__info_bg-mobile"
             src="./../assets/images/pictures/lab-21-windesheim-voor-surf-018@2x.jpg"
-            alt="header-image">
+            alt="header-image"
+          >
           <h2 class="main__info_main-title">Open leermaterialen</h2>
+          {{ $t('open_materials') }}
           <div class="main__info_block">
-            <div class="bg"/>
+            <div class="bg" />
             <h2
-
               class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>open leermaterialen uit het hoger onderwijs</h2>
             <ul class="main__info_items">
               <li class="main__info_item">Vrij te gebruiken</li>

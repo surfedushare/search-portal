@@ -8,9 +8,9 @@ module.exports = {
       process.env.LOGOUT_URL || 'https://engine.test.surfconext.nl/logout'
   },
 
-  /*
-  ** Headers of the page
-  */
+  /**
+   * Headers of the page
+   */
   head: {
     title: 'Surf | Open Leermaterialen',
     meta: [
@@ -53,14 +53,14 @@ module.exports = {
     ]
   },
 
-  /*
-  ** Customize the progress-bar color
-  */
+  /**
+   * Customize the progress-bar color
+   */
   loading: { color: '#0077c8' },
 
-  /*
-  ** Global CSS
-  */
+  /**
+   * Global CSS
+   */
   css: [
     '@/assets/styles/normalize.css',
     '@/assets/styles/variables.less',
@@ -68,9 +68,9 @@ module.exports = {
     '@/assets/styles/forms.less'
   ],
 
-  /*
-  ** Plugins to load before mounting the App
-  */
+  /**
+   * Plugins to load before mounting the App
+   */
   plugins: [
     {
       src: '~/plugins/auth',
@@ -102,29 +102,54 @@ module.exports = {
     }
   ],
 
-  /*
-  ** Nuxt.js modules
-  */
+  /**
+   * Nuxt.js modules
+   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    [
+      'nuxt-i18n',
+      {
+        locales: [
+          {
+            code: 'en',
+            iso: 'en-US',
+            file: 'en/surf-en.json'
+          },
+          {
+            code: 'nl-NL',
+            iso: 'nl-NL',
+            file: 'nl-NL/surf-nl-NL.json'
+          }
+        ],
+        defaultLocale: 'nl-NL',
+        vueI18n: {
+          fallbackLocale: 'nl-NL'
+        },
+        lazy: true,
+        langDir: 'static/locales/'
+      }
+    ]
   ],
-  /*
-  ** Axios module configuration
-  */
+  /**
+   * Axios module configuration
+   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     headers: { Pragma: 'no-cache' },
     baseURL: 'https://surf.stg.mqd.me/api/v1/'
   },
 
-  /*
-  ** Build configuration
-  */
+  /**
+   * Build configuration
+   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+    /**
+     * You can extend webpack config here
+     * @param config
+     * @param ctx
+     */
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {

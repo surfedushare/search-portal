@@ -40,7 +40,7 @@
         :class="{'filter-categories__item_title--hide': category.selected}"
       >{{ category.title }}</h4>
       <div
-        v-if="category.external_id === 'lom.lifecycle.contribute.publisherdate' && category.selected"
+        v-if="category.external_id === publisherdate && category.selected"
         class="filter-categories__subitems"
       >
         <DatesRange
@@ -48,6 +48,8 @@
           :inline="true"
           :hide-select="true"
           v-model="data"
+          theme="min"
+          :disable-future-days="true"
         />
       </div>
       <ul v-else-if="category.selected" class="filter-categories__subitems">

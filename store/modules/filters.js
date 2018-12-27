@@ -55,7 +55,7 @@ export default {
         return filter;
       }
     },
-    async postFilter({ commit }, { title, items }) {
+    async postFilter({ commit }, { title, items, materials_count }) {
       const { filters } = items;
       const external_ids = filters.map(item => item.external_id);
 
@@ -66,14 +66,16 @@ export default {
           if (index !== -1) {
             const filter_items = filters[index].items;
 
-            filter.items.push(
-              ...items.reduce((arr, item) => {
-                if (filter_items.indexOf(item.external_id) !== -1) {
-                  arr.push({ category_item_id: item.id });
-                }
-                return arr;
-              }, [])
-            );
+            if (filter_items) {
+              filter.items.push(
+                ...items.reduce((arr, item) => {
+                  if (filter_items.indexOf(item.external_id) !== -1) {
+                    arr.push({ category_item_id: item.id });
+                  }
+                  return arr;
+                }, [])
+              );
+            }
 
             if (external_id === 'lom.lifecycle.contribute.publisherdate') {
               filter.start_date = filter_items[0];
@@ -84,6 +86,7 @@ export default {
         },
         {
           title,
+          materials_count,
           items: [],
           search_text: items.search_text
         }

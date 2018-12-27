@@ -1,10 +1,11 @@
 export default {
   state: {
     communities: null,
-    community_info: null,
+    community_info: {},
     community_themes: null,
     community_disciplines: null,
-    community_collections: null
+    community_collections: null,
+    community_collections_loading: null
   },
   getters: {
     communities(state) {
@@ -21,6 +22,9 @@ export default {
     },
     community_collections(state) {
       return state.community_collections;
+    },
+    community_collections_loading(state) {
+      return state.community_collections_loading;
     }
   },
   actions: {
@@ -52,10 +56,29 @@ export default {
       commit('SET_COMMUNITY_DISCIPLINES', community_disciplines);
     },
     async getCommunityCollections({ commit }, id) {
+      commit('SET_COMMUNITY_COLLECTIONS_LOADING', true);
       const community_collections = await this.$axios.$get(
         `communities/${id}/collections/`
       );
       commit('SET_COMMUNITY_COLLECTIONS', community_collections);
+      commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
+    },
+    async getCommunityCollectionsNextPage({ commit, state }) {
+      commit('SET_COMMUNITY_COLLECTIONS_LOADING', true);
+      const community_collections = await this.$axios.$get(
+        state.community_collections.next
+      );
+
+      commit('SET_COMMUNITY_COLLECTIONS_NEXT', community_collections);
+      commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
+    },
+    async postCommunityCollection({ state, commit }, data) {
+      const collection = await this.$axios.$post(`collections/`, data);
+      commit('ADD_COMMUNITY_COLLECTION', collection);
+      return collection;
+    },
+    async setCommunityCollection({ commit }, { id, data }) {
+      return this.$axios.$post(`communities/${id}/collections/`, data);
     }
   },
   mutations: {
@@ -73,6 +96,23 @@ export default {
     },
     SET_COMMUNITY_COLLECTIONS(state, payload) {
       state.community_collections = payload;
+    },
+    SET_COMMUNITY_COLLECTIONS_NEXT(state, payload) {
+      state.community_collections = {
+        ...state.community_collections,
+        next: payload.next,
+        results: [...state.community_collections.results, ...payload.results]
+      };
+    },
+    ADD_COMMUNITY_COLLECTION(state, payload) {
+      const results = state.community_collections.results || [];
+      state.community_collections = {
+        ...state.community_collections,
+        results: [payload, ...results]
+      };
+    },
+    SET_COMMUNITY_COLLECTIONS_LOADING(state, payload) {
+      state.community_collections_loading = payload;
     }
   }
 };

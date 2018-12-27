@@ -107,16 +107,28 @@
             Nieuwe collectie
           </button>
         </div>
-        <Collections :collections="my_collections.results" >
-          <template slot="header-info">
-            <h2>Collecties</h2>
-          </template>
-        </Collections>
+        <div
+          v-infinite-scroll="loadMore"
+          infinite-scroll-disabled="community_collections_loading"
+          infinite-scroll-distance="10"
+        >
+          <Collections
+            v-if="community_collections"
+            :collections="community_collections.results"
+            :loading="community_collections_loading"
+          >
+            <template slot="header-info">
+              <h2>Collecties</h2>
+            </template>
+          </Collections>
+        </div>
         <AddCollection
           v-if="isShow"
           :close="close"
           :is-show="isShow"
           :is-shared="true"
+          submit-method="postCommunityCollection"
+          @submitted="saveCollection"
         />
       </div>
     </div>
@@ -156,7 +168,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['my_collections', 'communities'])
+    ...mapGetters([
+      'community_collections',
+      'community_collections_loading',
+      'communities'
+    ])
   },
   mounted() {
     this.$store
@@ -176,10 +192,19 @@ export default {
         this.formData.website_url = website_url;
         this.formData.logo = logo;
         this.formData.featured_image = featured_image;
+        this.$store.dispatch('getCommunityCollections', id);
       });
-    this.$store.dispatch('getMyCollections');
   },
   methods: {
+    /**
+     * Load next collections
+     */
+    loadMore() {
+      const { community_collections, community_collections_loading } = this;
+      if (community_collections.next && !community_collections_loading) {
+        this.$store.dispatch('getCommunityCollectionsNextPage');
+      }
+    },
     /**
      * Show the popup 'Add collection'
      */
@@ -252,6 +277,16 @@ export default {
         data.set('featured_image', '');
       }
       return data;
+    },
+    saveCollection(collection) {
+      this.$store.dispatch('setCommunityCollection', {
+        id: this.formData.id,
+        data: [
+          {
+            id: collection.id
+          }
+        ]
+      });
     }
   }
 };

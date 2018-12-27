@@ -23,7 +23,18 @@ export default {
       data: {
         start_date: null,
         end_date: null
-      }
+      },
+      filter_sort: [
+        'custom_theme.id',
+        'lom.classification.obk.discipline.id',
+        'lom.technical.format',
+        'lom.classification.obk.educationallevel.id',
+        'lom.general.language',
+        'lom.lifecycle.contribute.publisher',
+        'lom.rights.copyrightandotherrestrictions',
+        'lom.general.aggregationlevel',
+        'lom.lifecycle.contribute.publisherdate'
+      ]
     };
   },
   methods: {
@@ -144,7 +155,9 @@ export default {
     value(value) {
       const { isInit, publisherdate } = this;
       if (value && value.filters && !isInit) {
-        this.selected = value.filters.map(filter => filter.external_id);
+        this.selected = value.filters
+          .filter(filter => filter.items && filter.items.length)
+          .map(filter => filter.external_id);
 
         const publisherdate_item = this.value.filters.find(
           item => item.external_id === publisherdate
@@ -234,7 +247,7 @@ export default {
                 items: [active_filter.start_date, active_filter.end_date]
               }
             ],
-            search_text: active_filter.search_text || []
+            search_text: active_filter.search_text || value.search_text || []
           }
         );
 
@@ -293,14 +306,22 @@ export default {
      * @returns {*}
      */
     filtered_categories() {
-      const { filter_categories, publisherdate } = this;
+      const { filter_categories, filter_sort } = this;
       if (filter_categories) {
-        return filter_categories.results.map(item => {
-          return {
-            ...item
-            // hide: item.external_id === publisherdate
-          };
-        });
+        return filter_categories.results.reduce((prev, item) => {
+          // return {
+          //   ...item
+          //   // hide: item.external_id === publisherdate
+          // };
+
+          const index = prev.indexOf(item.external_id);
+
+          if (index !== -1) {
+            prev[index] = item;
+          }
+
+          return prev;
+        }, filter_sort.slice(0));
       }
       return false;
     },

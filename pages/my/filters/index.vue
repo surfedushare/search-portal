@@ -175,6 +175,8 @@ export default {
     display: flex;
     justify-content: flex-end;
     margin-bottom: -55px;
+    position: relative;
+
     &__link {
       padding: 13px 43px 13px 51px;
       background-image: url('./../../../assets/images/plus-black.svg');

@@ -5,7 +5,8 @@ export default {
     my_collections: false,
     my_collection: false,
     my_collection_materials: false,
-    my_collection_materials_loading: false
+    my_collection_materials_loading: false,
+    my_collections_loading: false
   },
   getters: {
     my_collections(state) {
@@ -19,10 +20,14 @@ export default {
     },
     my_collection_materials_loading(state) {
       return state.my_collection_materials_loading;
+    },
+    my_collections_loading(state) {
+      return state.my_collections_loading;
     }
   },
   actions: {
     async getMyCollections({ state, commit }) {
+      commit('SET_MY_COLLECTIONS_LOADING', true);
       const collections = await this.$axios.$get('collections/', {
         params: {
           timestamp: Date.now(),
@@ -30,6 +35,20 @@ export default {
         }
       });
       commit('SET_MY_COLLECTIONS', collections);
+      commit('SET_MY_COLLECTIONS_LOADING', false);
+      return collections;
+    },
+    async getMyCollectionsNextPage({ state, commit }) {
+      commit('SET_MY_COLLECTIONS_LOADING', true);
+      const collections = await this.$axios.$get(state.my_collections.next, {
+        params: {
+          timestamp: Date.now(),
+          is_owner: true
+        }
+      });
+
+      commit('SET_MY_COLLECTIONS_NEXT', collections);
+      commit('SET_MY_COLLECTIONS_LOADING', false);
       return collections;
     },
     async getMyCollection({ state, commit }, id) {
@@ -129,6 +148,13 @@ export default {
     SET_MY_COLLECTIONS(state, payload) {
       state.my_collections = payload;
     },
+    SET_MY_COLLECTIONS_NEXT(state, payload) {
+      state.my_collections = {
+        ...state.my_collections,
+        next: payload.next,
+        results: [...state.my_collections.results, ...payload.results]
+      };
+    },
     SET_MY_COLLECTION(state, payload) {
       state.my_collection = payload;
     },
@@ -175,6 +201,9 @@ export default {
           })
         ]
       });
+    },
+    SET_MY_COLLECTIONS_LOADING(state, payload) {
+      state.my_collections_loading = payload;
     },
     SET_MATERIAL_TO_MY_COLLECTION_LOADING(state, payload) {
       state.my_collection_materials_loading = payload;

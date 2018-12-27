@@ -21,10 +21,24 @@ export default {
      */
     onSaveFilter() {
       this.submitting = true;
-      this.$store.dispatch('postMyFilter', this.formData).then(() => {
-        this.saved = true;
-        this.submitting = false;
-      });
+
+      this.$store
+        .dispatch('searchMaterials', {
+          return_records: false,
+          search_text: [],
+          filters: []
+        })
+        .then(data => {
+          this.$store
+            .dispatch('postMyFilter', {
+              ...this.formData,
+              materials_count: data.records_total
+            })
+            .then(() => {
+              this.saved = true;
+              this.submitting = false;
+            });
+        });
     }
   },
   computed: {}
