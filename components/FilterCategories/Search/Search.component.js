@@ -12,6 +12,10 @@ export default {
       type: Boolean,
       default: false
     },
+    'show-selected-category': {
+      type: [Boolean, String],
+      default: false
+    },
     'active-category-external-id': {
       type: String
     },
@@ -109,6 +113,33 @@ export default {
 
     showMobileFilterOptions() {
       this.showMobileFilter = !this.showMobileFilter;
+    },
+
+    changeFilterCategory($event) {
+      const { external_id } = this.filter_category;
+      const current_filter = this.formData.filters.find(
+        filter => filter.external_id === external_id
+      );
+      if (current_filter) {
+        this.formData.filters = this.formData.filters.map(filter => {
+          if (filter.external_id === external_id) {
+            return {
+              external_id: this.filter_category.external_id,
+              items: [$event.target.value]
+            };
+          }
+
+          return filter;
+        });
+      } else {
+        this.formData.filters = [
+          ...this.formData.filters,
+          {
+            external_id: this.filter_category.external_id,
+            items: [$event.target.value]
+          }
+        ];
+      }
     }
   },
   watch: {
@@ -168,6 +199,21 @@ export default {
   },
   computed: {
     ...mapGetters(['filter_categories', 'materials_keywords']),
+    filter_category() {
+      const { filter_categories, showSelectedCategory } = this;
+
+      if (
+        filter_categories &&
+        filter_categories.results &&
+        showSelectedCategory
+      ) {
+        return filter_categories.results.find(
+          category => category.external_id === showSelectedCategory
+        );
+      }
+
+      return false;
+    },
     /**
      * Get the active category
      * @returns {*} - false or active category
@@ -182,6 +228,8 @@ export default {
           const active_category = filter_categories.results.find(
             item => item.external_id === current_external_id
           );
+          this.formData.filters[0].external_id = active_category.external_id;
+
           this.previous_category_id = active_category.external_id;
           return active_category;
         }

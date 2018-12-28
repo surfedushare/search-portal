@@ -25,7 +25,18 @@
       <div class="search__chooser search__select" v-if="!hideCategories">
         <select
           name="categories"
-          v-if="filter_categories"
+          @change="changeFilterCategory"
+          v-if="showSelectedCategory && filter_category"
+        >
+          <option value="" hidden>{{ filter_category.title }}</option>
+          <option
+            v-for="category in filter_category.items"
+            :value="category.external_id"
+          >{{category.title}}</option>
+        </select>
+        <select
+          name="categories"
+          v-else-if="filter_categories"
           @change="onChangeCategory"
         >
           <option
@@ -91,4 +102,3 @@
     </div>
   </form>
 </section>
-

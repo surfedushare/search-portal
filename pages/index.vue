@@ -25,7 +25,11 @@
               <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
             </ul>
           </div>
-          <Search class="main__info_search" />
+          <Search
+            show-selected-category="lom.classification.obk.educationallevel.id"
+            class="main__info_search"
+            active-category-external-id="lom.technical.format"
+          />
         </div>
       </div>
       <div class="center_block main__thems_and_communities">
