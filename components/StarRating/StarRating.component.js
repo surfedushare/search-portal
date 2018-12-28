@@ -28,12 +28,12 @@ export default {
       temp_value: Math.round(this.value),
       ratings: [1, 2, 3, 4, 5],
       types: [
-        'Niet beoordeeld',
-        'Slecht',
-        'Tevreden',
-        'Normaal',
-        'Goed',
-        'Perfect'
+        this.$t('Not-judged'),
+        this.$t('Bad'),
+        this.$t('Tevreden'),
+        this.$t('Normal'),
+        this.$t('Good'),
+        this.$t('Perfect')
       ]
     };
   },

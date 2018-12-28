@@ -1,7 +1,6 @@
-
 <template>
   <section class="container main collection">
-    <Collection :collection="my_collection"/>
+    <Collection :collection="my_collection" />
   </section>
 </template>
 

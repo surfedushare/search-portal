@@ -14,13 +14,17 @@ export const debounce = function(func, wait, immediate) {
   };
 };
 
-export const generateSearchMaterialsQuery = (
+export const generateSearchMaterialsQuery = function(
   data = { filters: [], search_text: [] },
   path = '/materials/search/'
-) => {
+) {
   const filters = data.filters
     ? data.filters.filter(item => Object.keys(item).length)
     : [];
+
+  if (this && this.$i18n.locale !== 'nl-NL') {
+    path = `/${this.$i18n.locale}${path}`;
+  }
 
   return {
     path: path,

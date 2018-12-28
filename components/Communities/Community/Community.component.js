@@ -6,7 +6,6 @@ import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
-// import { generateSearchMaterialsQuery } from '../../_helpers';
 
 export default {
   name: 'community',

@@ -6,7 +6,7 @@
     class="save_filter"
   >
     <slot>
-      <h2 class="popup__title">Selectie opslaan</h2>
+      <h2 class="popup__title">{{ $t('Save-selection') }}</h2>
       <form
         action=""
         @submit.prevent="onSaveFilter"
@@ -15,7 +15,7 @@
           <input
             v-model="formData.name"
             type="text"
-            placeholder="Name"
+            :placeholder="$t('Name')"
             class="input"
             required="required"
             name="name"
@@ -26,7 +26,7 @@
           class="button"
           type="submit"
         >
-          Save
+          {{ $t('save') }}
         </button>
       </form>
     </slot>

@@ -6,10 +6,10 @@
     <nuxt-link
       class="material__list_prev_link"
       v-if="links.prev"
-      :to="`/materials/${links.prev.external_id_base64}/`"
+      :to="localePath({name: 'materials-id', params: {id: links.prev.external_id_base64}})"
       @click.native="setMaterial(links.prev)"
     >
-      Vorige
+      {{ $t('Previous') }}
     </nuxt-link>
   </div>
   <nuxt-link
@@ -17,16 +17,16 @@
     :to="links.filter"
     v-if="links.filter"
   >
-    terug naar zoekresultaten
+    {{ $t('back-to-search-results') }}
   </nuxt-link>
   <div class="material__list_next">
     <nuxt-link
       class="material__list_next_link"
       v-if="links.next"
-      :to="`/materials/${links.next.external_id_base64}/`"
+      :to="localePath({name: 'materials-id', params: {id: links.next.external_id_base64}})"
       @click.native="setMaterial(links.next)"
     >
-      Volgende
+      {{ $t('Next') }}
     </nuxt-link>
   </div>
 </div>

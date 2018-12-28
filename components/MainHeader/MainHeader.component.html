@@ -15,18 +15,18 @@
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
             <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" to="/my/filters/">
-                Mijn Filterselecties
+              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-filters'})">
+                {{ $t('my_filters') }}
               </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" to="/my/collections/">
-                Mijn Collecties
+              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-collections'})">
+                {{ $t('My-collections') }}
               </nuxt-link>
             </li>
             <li class="main-header__user_menu_item" v-if="user.is_admin">
-              <nuxt-link class="main-header__user_menu_link" to="/my/communities/">
-                Mijn Community
+              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
+                {{ $t('My-community') }}
               </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
@@ -35,7 +35,7 @@
                 href="/logout/"
                 @click.prevent="logout()"
               >
-                Uitloggen
+                {{ $t('logout') }}
               </a>
             </li>
           </ul>
@@ -49,7 +49,7 @@
           :href="getLoginLink()"
           class="button"
         >
-          Inloggen
+          {{ $t('login') }}
         </a>
       </div>
       <nuxt-link
@@ -79,18 +79,18 @@
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
             <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" to="/my/filters/">
-                Mijn Filterselecties
+              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-filters'})">
+                {{ $t('my_filters') }}
               </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" to="/my/collections/">
-                Mijn Collecties
+              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-collections'})">
+                {{ $t('My-collections') }}
               </nuxt-link>
             </li>
             <li class="main-header__user_menu_item" v-if="user.is_admin">
-              <nuxt-link class="main-header__user_menu_link" to="/my/communities/">
-                Mijn Community
+              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
+                {{ $t('My-community') }}
               </nuxt-link>
             </li>
             <li class="main-header__user_menu_item">
@@ -99,14 +99,14 @@
                 href="/logout/"
                 @click.prevent="logout()"
               >
-                Uitloggen
+                {{ $t('logout') }}
               </a>
             </li>
           </ul>
         </nav>
       </div>
       <div v-else class="main-header__mobile_login">
-        <a :href="getLoginLink()" class="button">Inloggen</a>
+        <a :href="getLoginLink()" class="button">{{ $t('login') }}</a>
       </div>
       <Menu class="main-header__menu" />
     </div>

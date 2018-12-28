@@ -7,7 +7,7 @@
         <div class="center_block center-header">
           <div class="search__info_top">
             <BreadCrumbs :items="items" />
-            <h2 v-if="materials && !materials_loading">Zoekresultaten {{ `(${materials.records_total})` }}</h2>
+            <h2 v-if="materials && !materials_loading">{{ $t('Search-results') }} {{ `(${materials.records_total})` }}</h2>
             <img
               src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
               srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
@@ -33,7 +33,7 @@
             class="select__item"
             @click="changeOrdering"
           >
-            Sorteren op
+            {{ $t('Sort-by') }}
           </div>
         </div>
 
@@ -45,7 +45,7 @@
           class="search__tools_type_button"
           @click.prevent="changeViewType"
         >
-          {{ materials_in_line === 1 ? 'Kaartweergave' : 'Lijstweergave' }}
+          {{ materials_in_line === 1 ? $t('Card-view') : $t('List-view') }}
         </button>
       </div>
 
@@ -121,12 +121,7 @@ export default {
       formData: {
         name: null
       },
-      items: [
-        {
-          title: 'Home',
-          url: '/'
-        }
-      ]
+      items: [{ title: this.$t('Home'), url: this.localePath('index') }]
     };
   },
   computed: {
@@ -208,6 +203,7 @@ export default {
     this.$store.dispatch('searchMaterials', search);
   },
   methods: {
+    generateSearchMaterialsQuery,
     /**
      * Load next materials
      */
@@ -272,7 +268,7 @@ export default {
       }
       this.search.page = 1;
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search));
-      this.$router.push(generateSearchMaterialsQuery(this.search));
+      this.$router.push(this.generateSearchMaterialsQuery(this.search));
     }
   }
 };

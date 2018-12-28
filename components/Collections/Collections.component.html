@@ -9,27 +9,28 @@
       class="collections__item tile"
     >
       <div class="collections__item_wrapper tile__wrapper">
-        <div class="collections__item_header">Collectie</div>
+        <div class="collections__item_header">{{ $t('Collection') }}</div>
         <h3 class="collections__item_ttl">
           <nuxt-link
-            :to="`/collections/${collection.id}/`"
+            :to="localePath({name: 'collections-id', params: {id: collection.id}})"
             class="collections__item_ttl_link"
             :key="`${collection.id}`"
             @click.native="setMyCollection(collection)"
-          >{{ collection.title }}
+          >
+            {{ collection.title }}
           </nuxt-link>
         </h3>
         <nuxt-link
-          :to="`/communities/${community.id}/`"
+          :to="localePath({name: 'communities-community', params: {community: community.id}})"
           class="collections__item_link"
           v-for="community in collection.communities"
           :key="`${community.id}`"
           >{{community.name}}
         </nuxt-link>
-        <p class="collections__item_count">{{ collection.materials_count }} items</p>
+        <p class="collections__item_count">{{ $tc('items', collection.materials_count) }}</p>
       </div>
     </li>
   </ul>
   <div v-if="loading"><Spinner /></div>
-  <div class="collections__info" v-else-if="collections && !collections.length">No collections</div>
+  <div class="collections__info" v-else-if="collections && !collections.length">$t('No-collections')</div>
 </section>

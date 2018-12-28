@@ -3,11 +3,11 @@
   <div class="center_block main-footer__top_block">
     <div class="main-footer__quotes">
       <div class="bg"></div>
-      “The best collaborations create something bigger than the sum of what each person can create on their own.”
+      {{ $t('Footer-quote') }}
     </div>
     <div class="main-footer__info">
-      <h3>Over SURF</h3>
-      <div class="main-footer__info_text">SURF is the collaborative ICT organisation for Dutch education and research. SURF offers students, lecturers and scientists in the Netherlands access to the best possible internet and ICT facilities.</div>
+      <h3>{{ $t('Footer-info-title') }}</h3>
+      <div class="main-footer__info_text">{{ $t('Footer-info-text') }}</div>
       <a
         href="https://www.surf.nl/"
         target="_blank"
@@ -23,15 +23,26 @@
           @click.prevent="toggleSubMenuThemes"
           href="/themes/"
           class="main-footer__link arrow-link"
-        >Onderwijs thema's</a>
-        <nuxt-link to="/communities/" class="main-footer__link arrow-link">Community's</nuxt-link>
-        <nuxt-link to="/how-does-it-work/" class="main-footer__link arrow-link">Hoe werkt het?</nuxt-link>
+        >{{ $t('Education-themes') }}</a>
+        <nuxt-link
+          to="/communities/"
+          :to="localePath('communities')"
+          class="main-footer__link arrow-link"
+        >
+          {{ $t('Communities') }}
+        </nuxt-link>
+        <nuxt-link
+          :to="localePath('how-does-it-work')"
+          class="main-footer__link arrow-link"
+        >
+          {{ $t('How-does-it-work') }}
+        </nuxt-link>
       </nav>
     </div>
   </div>
   <div class="main-footer__bottom_block">
     <div class="main-footer__logo">
-      <nuxt-link to="/">
+      <nuxt-link :to="localePath('index')">
         <img
           src="./../../assets/images/surflogo.png"
           srcset="./../../assets/images/surflogo@2x.png 2x, ./../../assets/images/surflogo@3x.png 3x"

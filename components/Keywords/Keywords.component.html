@@ -1,6 +1,6 @@
 
 <section class="keywords">
-  <h2>Trefwoorden</h2>
+  <h2>{{ $t('Keywords') }}</h2>
   <ul class="keywords__list" v-if="material.keywords.length">
     <li
       class="keywords__item"
@@ -13,6 +13,6 @@
       </span>
     </li>
   </ul>
-  <div class="keywords__info" v-else>No keywords</div>
+  <div class="keywords__info" v-else>{{ $t('No-keywords') }}</div>
 </section>
 

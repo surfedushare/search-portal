@@ -10,7 +10,7 @@
         <v-select
           :options="keywords"
           :multiple="true"
-          placeholder="Zoek op trefwoorden"
+          :placeholder="$t('Search-by-keywords')"
           @search="onSearch"
           @input="setKeywords"
           taggable

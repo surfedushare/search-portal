@@ -8,7 +8,7 @@
     >
       <div
         class="select__item"
-      >Sorteren op</div>
+      >{{ $t('Sort-by') }}</div>
     </div>
   </div>
   <div
@@ -17,7 +17,7 @@
     :class="{'dates-range__popup--inline': inline}"
   >
     <div class="dates-range__form-group">
-      <label class="vdp-datepicker__label">Vanaf</label>
+      <label class="vdp-datepicker__label">{{ $t('From') }}</label>
       <Datepicker
         :format="format"
         :value="formData.start_date"
@@ -25,13 +25,13 @@
           from: formData.end_date || (disableFutureDays ? new Date() : false)
         }"
         :monday-first="true"
-        placeholder="Selecteer datum"
+        :placeholder="$t('Select-date')"
         @selected="onSelectedStartDate"
         :clear-button="true"
       ></Datepicker>
     </div>
     <div class="dates-range__form-group">
-      <label class="vdp-datepicker__label">Tot</label>
+      <label class="vdp-datepicker__label">{{ $t('To') }}</label>
       <Datepicker
         :format="format"
         :value="formData.end_date"
@@ -40,7 +40,7 @@
           from: disableFutureDays ? new Date() : false
         }"
         :monday-first="true"
-        placeholder="Selecteer datum"
+        :placeholder="$t('Select-date')"
         @selected="onSelectedEndDate"
         :clear-button="true"
       ></Datepicker>

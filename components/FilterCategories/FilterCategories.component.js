@@ -38,6 +38,7 @@ export default {
     };
   },
   methods: {
+    generateSearchMaterialsQuery,
     /**
      * Open/close filter category
      * @param id filter category
@@ -117,7 +118,7 @@ export default {
           filters
         });
 
-        this.$router.push(generateSearchMaterialsQuery(filters));
+        this.$router.push(this.generateSearchMaterialsQuery(filters));
 
         this.$emit('input', filters);
 
@@ -199,7 +200,7 @@ export default {
       const request = Object.assign({}, this.value, { filters });
 
       this.$emit('input', request);
-      this.$router.push(generateSearchMaterialsQuery(request));
+      this.$router.push(this.generateSearchMaterialsQuery(request));
     },
     /**
      * Watcher on change user authentication
@@ -251,7 +252,7 @@ export default {
           }
         );
 
-        this.$router.push(generateSearchMaterialsQuery(filters));
+        this.$router.push(this.generateSearchMaterialsQuery(filters));
 
         this.$emit('input', filters);
       }

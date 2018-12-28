@@ -8,6 +8,7 @@ export default {
     return {};
   },
   methods: {
+    generateSearchMaterialsQuery,
     /**
      * Set material on click
      * @param material - {Object}
@@ -38,7 +39,7 @@ export default {
             return {
               prev: materialIndex ? records[materialIndex - 1] : null,
               filter:
-                generateSearchMaterialsQuery({
+                this.generateSearchMaterialsQuery({
                   filters: materials.active_filters,
                   page: 1,
                   page_size: materials.page_size,

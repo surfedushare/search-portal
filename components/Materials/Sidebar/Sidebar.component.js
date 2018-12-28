@@ -104,7 +104,44 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'my_collections', 'material_communities'])
+    ...mapGetters([
+      'isAuthenticated',
+      'my_collections',
+      'material_communities',
+      'disciplines',
+      'educationallevels'
+    ]),
+    /**
+     * Extend to the material fields "disciplines" & "educationallevels"
+     * @returns {*}
+     */
+    extended_material() {
+      const { material, disciplines, educationallevels } = this;
+      if (material && disciplines && educationallevels) {
+        return Object.assign({}, material, {
+          disciplines: material.disciplines.reduce((prev, id) => {
+            const item = disciplines.items[id];
+
+            if (item) {
+              prev.push(item);
+            }
+
+            return prev;
+          }, []),
+          educationallevels: material.educationallevels.reduce((prev, id) => {
+            const item = educationallevels.items[id];
+
+            if (item) {
+              prev.push(item);
+            }
+
+            return prev;
+          }, [])
+        });
+      }
+
+      return false;
+    }
   },
   watch: {
     /**

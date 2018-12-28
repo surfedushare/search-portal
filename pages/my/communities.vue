@@ -9,8 +9,9 @@
          ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="communities__info_bg">
         <BreadCrumbs
-          :items="[{title:`Home`, url: `/`} ]"/>
-        <h2 class="communities__info_ttl">Mijn Community</h2>
+          :items="[{title: $t('Home'), url: localePath('index')}]"
+        />
+        <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
         <Search
           :hide-categories="true"
           :hide-filter="true"
@@ -28,8 +29,9 @@
             <div class="communities__form__row">
               <label
                 for="name"
-                class="communities__form__label">
-                Naam
+                class="communities__form__label"
+              >
+                {{ $t('Name') }}
               </label>
               <input
                 id="name"
@@ -38,13 +40,14 @@
                 required="required"
                 type="text"
                 class="communities__form__input"
-                placeholder="Landelijk Overleg Opleidingen Verpleegkunde">
+              >
             </div>
             <div class="communities__form__row">
               <label
                 for="description"
-                class="communities__form__label">
-                Omschrijving
+                class="communities__form__label"
+              >
+                {{ $t('Description') }}
               </label>
               <textarea
                 id="description"
@@ -52,13 +55,14 @@
                 name="description"
                 required="required"
                 class="communities__form__textarea"
-                placeholder="De community hbovpk is hét digitale ontmoetingspunt voor hbo-docenten verpleegkunde. Doel van de community is delen van kennis en leermaterialen en het uitwisselen van ervaringen. "/>
+              />
             </div>
             <div class="communities__form__row">
               <label
                 for="website"
-                class="communities__form__label">
-                Website
+                class="communities__form__label"
+              >
+                {{ $t('Website') }}
               </label>
               <input
                 id="website"
@@ -67,7 +71,8 @@
                 name="website"
                 type="text"
                 class="communities__form__input"
-                placeholder="Geef hier de URL ">
+                placeholder="Geef hier de URL "
+              >
             </div>
           </div>
           <div class="communities__form__column">
@@ -75,14 +80,14 @@
               <InputFile
                 ref="file-logo"
                 :imagesrc="formData.logo"
-                :title="'Logo'"
+                :title="$t('Logo')"
               />
             </div>
             <div class="communities__form__row communities__form__file">
               <InputFile
                 ref="file-img"
                 :imagesrc="formData.featured_image"
-                :title="'Uitgelichte afbeelding'"
+                :title="$t('Featured-image')"
               />
             </div>
           </div>
@@ -90,11 +95,11 @@
             <div
               v-if="is_saved"
               class="success" >
-              &#10004; Gegevens opgeslagen!
+              &#10004; {{ $t('Data-saved') }}
             </div>
             <button
               type="submit"
-              class="button communities__form__button">Opslaan</button>
+              class="button communities__form__button">{{ $t('save') }}</button>
           </div>
         </form>
       </div>
@@ -104,7 +109,7 @@
             class="collections__add__link button"
             @click.prevent="showAddCollection"
           >
-            Nieuwe collectie
+            {{ $t('New-collection') }}
           </button>
         </div>
         <div
@@ -118,7 +123,7 @@
             :loading="community_collections_loading"
           >
             <template slot="header-info">
-              <h2>Collecties</h2>
+              <h2>{{ $t('Collections-2') }}</h2>
             </template>
           </Collections>
         </div>

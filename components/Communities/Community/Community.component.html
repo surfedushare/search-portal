@@ -7,7 +7,10 @@
         </div>
         <div class="community__info_title">
           <BreadCrumbs
-            :items="[{title:'Home', url: '/'}, {title:`Community's`, url: `/communities/`} ]"/>
+            :items="[
+              {title: $t('Home'), url: localePath('index')},
+              {title: $t('Communities'), url: localePath('communities')}
+            ]"/>
           <h2 class="community__info_ttl">{{ community_info.name }}</h2>
         </div>
       </div>
@@ -40,7 +43,7 @@
             :src="`${ community_info.featured_image }`"
             v-if="community_info.featured_image"
             alt="">
-          <h2 class="community__description_ttl">Over de community</h2>
+          <h2 class="community__description_ttl">{{ $t('About-the-community') }}</h2>
           <p class="community__description_txt">
             {{ community_info.description }}
           </p>
@@ -49,14 +52,18 @@
             v-if="community_info.website_url"
             class="community__description_link arrow-link"
           >
-            Bezoek website
+            {{ $t('Visit-website') }}
           </a>
         </div>
         <div class="community__themas_and_disciplines">
           <Themes
             :themes="community_themes"
-            class="community__themas"/>
-          <Disciplines class="community__disciplines" :disciplines="community_disciplines" />
+            class="community__themas"
+          />
+          <Disciplines
+            class="community__disciplines"
+            :disciplines="community_disciplines"
+          />
         </div>
       </div>
       <div
@@ -69,7 +76,7 @@
           :collections="community_collections.results"
           class="community__collections">
           <template slot="header-info">
-            <h2>Collecties</h2>
+            <h2>{{ $t('Collections-2') }}</h2>
           </template>
         </Collections>
         <Spinner v-if="community_collections_loading" />
@@ -79,7 +86,7 @@
         class="community__materials"
       >
         <template slot="header-info">
-          <h2>Uitgelicht</h2>
+          <h2>{{ $t('Uitgelicht') }}</h2>
         </template>
       </Materials>
     </template>

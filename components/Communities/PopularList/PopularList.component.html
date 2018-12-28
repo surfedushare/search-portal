@@ -6,25 +6,25 @@
       <li class="popular-list__item" v-for="community in computed_communities">
         <nuxt-link
           class="popular-list__link"
-          :to="`/communities/${community.id}/`"
+          :to="localePath({name: 'communities-community', params: {community: community.id}})"
           @click.native="setCommunity(community)"
         >
           <h3 class="popular-list__title">{{community.name}}</h3>
-          {{community.materials_count}} leermaterialen
+          {{ $tc('learning-materials', community.materials_count) }}
         </nuxt-link>
       </li>
     </ul>
     <div class="popular-list--all"  v-if="type !== 'material'">
       <nuxt-link
-        to="/communities/"
+        :to="localePath('communities')"
         class="arrow-link"
       >
-        Alle Community's
+        {{ $t('All-Communities') }}
       </nuxt-link>
     </div>
   </template>
   <div v-else>
-    No communities
+    {{ $t('No-communities') }}
   </div>
 </section>
 

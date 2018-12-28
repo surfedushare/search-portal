@@ -19,7 +19,7 @@
           name="keywords"
           :resetOnOptionsChange="true"
         >
-          <span slot="no-options">Sorry, geen resultaten gevonden.</span>
+          <span slot="no-options">{{ $t('Sorry-no-results-found') }}</span>
         </v-select>
       </div>
       <div class="search__chooser search__select" v-if="!hideCategories">
@@ -39,11 +39,11 @@
         type="submit"
         :disabled="formData.search_text && !formData.search_text.length"
       >
-        Zoeken
+        {{ $t('Search') }}
       </button>
     </div>
     <div class="search__themes" v-if="!hideFilter">
-      <h4 class="search__themes_title">Filter zoekresultaten op</h4>
+      <h4 class="search__themes_title">{{ $t('Filter-search-results') }}</h4>
       <div
         v-if="active_category && active_category.external_id === 'lom.lifecycle.contribute.publisherdate'"
         class="search__themes_items search__themes_items--inline"
@@ -72,7 +72,9 @@
               :class="{
             'search__themes_mobile_button--plus': showMobileFilter === false,
             'search__themes_mobile_button--minus': showMobileFilter === true
-          }">Filter opties
+          }"
+      >
+        {{ $t('Filter-options') }}
       </button>
       <ul v-if="showMobileFilter" class="search__themes_items">
         <li v-for="item in active_category.items" class="search__themes_item">

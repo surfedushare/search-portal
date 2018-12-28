@@ -9,10 +9,10 @@
       class="my_filters__item tile"
     >
       <div class="my_filters__item_wrapper tile__wrapper">
-        <div class="my_filters__item_header">Filterselectie</div>
+        <div class="my_filters__item_header">{{ $t('Filter-selection') }}</div>
         <h3 class="my_filters__item_ttl">
           <nuxt-link
-            :to="`/my/filters/${material_filter.id}/`"
+            :to="localePath({name: 'my-filters-id', params: {id: material_filter.id}})"
             class="my_filters__item_ttl_link"
             :key="`${material_filter.id}`"
           >
@@ -27,9 +27,9 @@
           <!--&gt;-->
           <!--{{user.full_name}}-->
         <!--</nuxt-link>-->
-        <p class="my_filters__item_count">{{ material_filter.materials_count }} zoekresultaten</p>
+        <p class="my_filters__item_count">{{ $tc('search-results', material_filter.materials_count) }}</p>
       </div>
     </li>
   </ul>
-  <div class="my_filters__info" v-else>No filters</div>
+  <div class="my_filters__info" v-else>{{ $t('No-filters') }}</div>
 </section>

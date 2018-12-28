@@ -1,7 +1,7 @@
 
 <section class="themes">
-  <h2>Thema’s</h2>
-  <div class="themes__description">Zoek en vind open leermaterialen op thema</div>
+  <h2>{{ $t('Themes') }}</h2>
+  <div class="themes__description">{{ $t('Search-and-find-open-learning-materials-by-theme') }}</div>
   <ul class="themes__list" v-if="currentThemes">
     <li
       class="themes__item"
@@ -9,12 +9,12 @@
     >
       <nuxt-link
         class="arrow-link"
-        :to="`/themes/${theme.id}/`"
+        :to="localePath({name: 'themes-id', params: {id: theme.id}})"
       >
         {{theme.title}}
       </nuxt-link>
     </li>
   </ul>
-  <div class="themes__info" v-else>No themes</div>
+  <div class="themes__info" v-else>{{ $t('No-themes') }}</div>
 </section>
 

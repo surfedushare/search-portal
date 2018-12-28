@@ -5,10 +5,14 @@
       <div class="collection__info_title">
         <BreadCrumbs
           v-if="!collection.is_owner"
-          :items="[{title:'Home', url: '/'}, {title:`Collection's`, url: `/collections/`} ]"/>
+          :items="[
+            {title: $t('Home'), url: localePath('index')}
+          ]"
+        />
         <BreadCrumbs
           v-else
-          :items="[{title:`Mijn Collecties`, url: `/my/collections/`} ]"/>
+          :items="[{title: $t('My-collections'), url: localePath({name: 'my-collections'})} ]"
+        />
 
         <h2
           class="collection__info_ttl"
@@ -18,7 +22,7 @@
         >
           {{collection_title}}
         </h2>
-        <p class="collection__info_subttl">{{ collection.materials_count }} leermaterialen</p>
+        <p class="collection__info_subttl">{{ $tc('learning-materials', collection.materials_count) }}</p>
       </div>
       <div class="collection__info_filter" v-if="collection.is_owner">
         <div class="collection__info_filter__edit">
@@ -28,7 +32,7 @@
             @click.prevent="setEditable(false)"
             v-if="contenteditable"
           >
-            Annuleren
+            {{$t('cancel')}}
           </a>
           <a
             href="#"
@@ -36,7 +40,7 @@
             @click.prevent="setEditable(true)"
             v-else
           >
-            Bewerken
+            {{$t('edit')}}
           </a>
         </div>
         <div class="collection__info_filter__delete">
@@ -45,7 +49,7 @@
             class="collection__info_filter__link"
             @click.prevent="deleteCollectionPopup"
           >
-            Verwijderen
+            {{$t('remove')}}
           </a>
         </div>
         <div class="collection__info_filter__button">
@@ -55,7 +59,7 @@
             @click.prevent="onSubmit"
             :disabled="submitting"
           >
-            Opslaan
+            {{$t('save')}}
           </button>
         </div>
       </div>
@@ -71,7 +75,7 @@
         ref="social_counters"
       >
         <div class="quality__check-sharing" v-if="collection.is_owner">
-          <span class="quality__check-sharing--ttl">Openbaar</span>
+          <span class="quality__check-sharing--ttl">{{$t('public')}}</span>
           <label class="share-collection_switch" >
             <input
               type="checkbox"
@@ -79,8 +83,8 @@
               @change="changeShared"
             >
             <span class="share-collection_slider round">
-              <span class="on">Aan</span>
-              <span class="off">Uit</span>
+              <span class="on">{{$t('to')}}</span>
+              <span class="off">{{$t('from')}}</span>
             </span>
           </label>
         </div>
@@ -137,7 +141,7 @@
           }"
           @click.prevent="changeViewType"
         >
-          {{ itemsInLine === 1 ? 'Kaartweergave' : 'Lijstweergave' }}
+          {{ itemsInLine === 1 ? $t('Card-view') : $t('List-view') }}
         </button>
       </div>
     </template>

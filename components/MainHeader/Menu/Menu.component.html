@@ -8,21 +8,18 @@
           @click.prevent="toggleSubMenu"
           class="menu__link arrow-link-grey"
           :class="{'nuxt-link-active': isShowSubMenu}"
-        >
-          Thema’s
-        </a>
+        >{{ $t('Themes') }}</a>
         <transition name="fade">
           <div class="menu__sub" v-if="isShowSubMenu">
-            <h3 class="title">Thema’s</h3>
+            <h3 class="title">{{ $t('Themes') }}</h3>
             <ul v-if="themes" class="menu__sub_list">
               <li v-for="theme in themes.results" class="menu__sub_list_item">
                 <nuxt-link
                   class="menu__sub_link arrow-link"
-                  :to="`/themes/${theme.id}/`"
+                  :to="localePath({name: 'themes-id', params: {id: theme.id}})"
                   @click.native="closeSubMenu(true)"
                 >
-                  {{theme.title}}
-                </nuxt-link>
+                  {{theme.title}}</nuxt-link>
               </li>
             </ul>
           </div>
@@ -34,16 +31,16 @@
           class="menu__link"
           @click.native="closeSubMenu(true)"
         >
-          Community's
+          {{ $t('Communities') }}
         </nuxt-link>
       </li>
       <li class="menu__list_item">
         <nuxt-link
-          to="/how-does-it-work/"
+          :to="localePath('how-does-it-work')"
           class="menu__link"
           @click.native="closeSubMenu(true)"
         >
-          Hoe werk het?
+          {{ $t('How-does-it-work') }}
         </nuxt-link>
       </li>
     </ul>

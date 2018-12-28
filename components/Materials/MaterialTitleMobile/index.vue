@@ -41,9 +41,12 @@ export default {
       };
       if (this.material) {
         formData.author = this.material.author;
-        return generateSearchMaterialsQuery(this.formData);
+        return this.generateSearchMaterialsQuery(this.formData);
       }
     }
+  },
+  methods: {
+    generateSearchMaterialsQuery
   }
 };
 </script>

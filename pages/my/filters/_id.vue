@@ -8,7 +8,7 @@
         class="my_filter__info" >
         <div class="my_filter__info_title">
           <BreadCrumbs
-            :items="[{title:`Mijn selecties`, url: `/my/filters/`}]"
+            :items="[{title: $t('My-selections'), url: localePath({name: 'my-filters'})} ]"
           />
           <h2
             ref="title"
@@ -22,7 +22,7 @@
             v-if="materials"
             class="my_filter__info_subttl"
           >
-            {{ data.materials_count }} resultaten
+            {{ $tc('search-results', data.materials_count) }}
           </p>
         </div>
         <div class="my_filter__info_filter">
@@ -33,7 +33,7 @@
               href="#"
               @click.prevent="onUneditable()"
             >
-              Annuleren
+              {{ $t('cancel') }}
             </a>
             <a
               v-else
@@ -41,7 +41,7 @@
               class="my_filter__info_filter__link"
               @click.prevent="onEditable()"
             >
-              Bewerken
+              {{ $t('edit') }}
             </a>
           </div>
           <div class="my_filter__info_filter__delete">
@@ -50,7 +50,7 @@
               class="my_filter__info_filter__link"
               @click.prevent="deleteFilterPopup"
             >
-              Verwijderen
+              {{ $t('remove') }}
             </a>
           </div>
           <div class="my_filter__info_filter__button">
@@ -59,7 +59,7 @@
               class="button"
               @click.prevent="saveFilter"
             >
-              Opslaan
+              {{ $t('save') }}
             </button>
           </div>
         </div>

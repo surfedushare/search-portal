@@ -7,25 +7,25 @@
   >
     <slot>
       <template v-if="saved">
-        <h2 class="popup__title">Bedankt voor je waardering</h2>
+        <h2 class="popup__title">{{ $t('Thank-you-for-your-appreciation') }}</h2>
         <div class="popup__subtext">
-          We hopen dat je met dit leermateriaal aan de slag kunt!
+          {{ $t('We-hope-you-can-get-started-with-this-learning-mat') }}
         </div>
         <div>
           <button
             class="button button--width-auto"
             @click.prevent="close"
           >
-            Venster sluiten
+            {{ $t('Close-window') }}
           </button>
         </div>
       </template>
       <template v-else>
-        <h2 class="popup__title">Bedankt voor het bekijken</h2>
+        <h2 class="popup__title">{{ $t('Thanks-for-watching') }}</h2>
         <div class="popup__subtext">
-          We hopen dat je met dit leermateriaal aan de slag kunt en horen graag wat je ervan vindt.
+          {{ $t('We-hope-that-you-can-get-started-with-this-learnin') }}
         </div>
-        <h3>Hoeveel sterren geef jij dit leermateriaal?</h3>
+        <h3>{{ $t('How-many-stars-do-you-give-this-learning-material') }}</h3>
         <form
           action=""
           @submit.prevent="onSaveRating"
@@ -44,7 +44,7 @@
               type="submit"
               :disabled="submitting"
             >
-              Beoordeling opslaan
+              {{ $t('Save-review') }}
             </button>
           </div>
         </form>

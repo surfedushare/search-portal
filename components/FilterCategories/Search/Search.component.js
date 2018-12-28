@@ -17,7 +17,9 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Zoek op trefwoorden'
+      default: function() {
+        return this.$t('Search-by-keywords');
+      }
     },
     value: {
       type: Object,
@@ -54,6 +56,7 @@ export default {
     };
   },
   methods: {
+    generateSearchMaterialsQuery,
     /**
      * search event
      * @param search
@@ -87,7 +90,7 @@ export default {
       if (this.$listeners.submit) {
         this.$emit('submit', this.formData);
       } else {
-        this.$router.push(generateSearchMaterialsQuery(this.formData));
+        this.$router.push(this.generateSearchMaterialsQuery(this.formData));
         this.$emit('input', this.formData);
       }
     },

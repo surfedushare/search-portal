@@ -8,20 +8,20 @@
   >
     <slot>
       <template v-if="saved">
-        <h2 class="popup__title">Selectie Aangemaakt</h2>
-        <div class="popup__subtext">Super! Je selectie is aangemaakt.</div>
+        <h2 class="popup__title">{{ $t('Selection-created') }}</h2>
+        <div class="popup__subtext">{{ $t('Selection-created-text') }}</div>
         <div>
           <button
             class="button"
             @click.prevent="close"
           >
-            Bekijken
+            {{ $t('See') }}
           </button>
         </div>
       </template>
       <template v-else>
-        <h2 class="popup__title">Selectie maken</h2>
-        <div class="popup__subtext">Maak een nieuwe selectie.</div>
+        <h2 class="popup__title">{{ $t('Make-selection') }}</h2>
+        <div class="popup__subtext">{{ $t('Make-a-new-selection') }}</div>
         <form
           action=""
           @submit.prevent="onSaveFilter"
@@ -30,7 +30,7 @@
             <input
               v-model="formData.title"
               type="text"
-              placeholder="Naam voor selectie"
+              :placeholder="$t('Name-for-selection')"
               class="input"
               required="required"
               name="title"
@@ -41,7 +41,7 @@
             type="submit"
             :disabled="submitting"
           >
-            Selectie maken
+            {{ $t('Make-selection') }}
           </button>
         </form>
       </template>

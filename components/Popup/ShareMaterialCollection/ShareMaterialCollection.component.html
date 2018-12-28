@@ -7,8 +7,8 @@
     class="share-collection"
   >
     <slot>
-      <h2 class="popup__title">Collectie delen</h2>
-      <div class="popup__subtext">Deel deze inspiratie met jouw collega’s of studenten.</div>
+      <h2 class="popup__title">{{ $t('Share-collection') }}</h2>
+      <div class="popup__subtext">{{ $t('Share-this-inspiration-with-your-colleagues-or-stu') }}</div>
       <div>
         <div class="share-collection__popular">
           <label class="share-collection_switch" >
@@ -18,10 +18,10 @@
               @change="changeShared"
             >
             <span class="share-collection_slider round">
-              <span class="on">Aan</span>
-              <span class="off">Uit</span>
+              <span class="on">{{ $t('to') }}</span>
+              <span class="off">{{ $t('from') }}</span>
             </span>
-            <span class="share-collection__popular_label">Collectie openbaar delen in en uit schakelen</span>
+            <span class="share-collection__popular_label">{{ $t('Enable-and-disable-the-collection-of-public-sharin') }}</span>
           </label>
         </div>
         <div class="share-collection__actions">
@@ -31,7 +31,7 @@
             v-clipboard:copy="link"
             v-clipboard:success="onCopy"
           >
-            {{saved ? 'Link gekopieerd' : 'Link kopiëren'}}
+            {{saved ? $t('Link-copied') : $t('Copy-link')}}
           </button>
         </div>
       </div>

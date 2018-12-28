@@ -9,7 +9,7 @@
     </nuxt-link>
     {{ material.publisher }}
   </div>
-  <h3 class="material__info_subttl">Kwaliteit</h3>
+  <h3 class="material__info_subttl">{{ $t('Quality') }}</h3>
   <div class="material__info_quality">
     <a
       :href="`/applaud-materials/?material__external_id=${material.external_id}`"
@@ -27,13 +27,13 @@
       <span class="quality__collections_count">
         {{material.number_of_collections}}
       </span>
-      <span class="quality__collections_txt">Collecties</span>
+      <span class="quality__collections_txt">{{ $t('Collections-2') }}</span>
     </div>
     <div class="quality__views">
       <div class="quality__views_count">
         {{ contedNumber }}
       </div>
-      <div class="quality__views_txt">Bekeken</div>
+      <div class="quality__views_txt">{{ $t('Viewed') }}</div>
     </div>
     <div class="quality__star">
       <StarRating
@@ -47,7 +47,7 @@
         v-if="isAuthenticated && !rating"
         @click.prevent="showPopupSaveRating"
       >
-        Geef waardering
+        {{ $t('Geef-waardering') }}
       </a>
     </div>
     <div class="quality__social" ref="social_counters">
@@ -77,17 +77,18 @@
     </div>
   </div>
   <template v-if="material.description">
-    <h3 class="material__info_subttl">Samenvatting</h3>
+    <h3 class="material__info_subttl">{{ $t('Resume') }}</h3>
     <div
       class="material__info_description"
     v-html="material.description"
     v-if="material.description">
-    No description
+      {{ $t('No-description') }}
    </div>
-  <div
-    class="material__info_description"
-    v-else>
-    No description
+    <div
+      class="material__info_description"
+      v-else
+    >
+      {{ $t('No-description') }}
     </div>
   </template>
 
@@ -101,7 +102,7 @@
     :communities="material.communities"
   >
     <template slot="header-info">
-      <h3>In collectie van</h3>
+      <h3>{{ $t('In-the-collection-of') }}</h3>
     </template>
   </PopularList>
   <SaveRating

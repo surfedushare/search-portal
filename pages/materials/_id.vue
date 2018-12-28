@@ -4,17 +4,19 @@
       :materials="materials"
       :material="material"
     />
-    <MaterialTitleMobile :material="material"/>
+    <MaterialTitleMobile :material="material" />
     <div
       v-if="material"
       class="center_block material__wrapper"
     >
-      <Sidebar :material="material"/>
-      <MaterialInfo :material="material"/>
+      <Sidebar :material="material" />
+      <MaterialInfo :material="material" />
     </div>
     <div class="main__materials">
       <div class="center_block">
-        <h2 class="main__materials_title">Ook interessant voor jou</h2>
+        <h2 class="main__materials_title">
+          {{ $t('Also-interesting-for-you') }}
+        </h2>
         <Materials
           v-if="materials"
           :materials="materials"

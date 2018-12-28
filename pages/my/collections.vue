@@ -9,8 +9,9 @@
          ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="collections__info_bg">
         <BreadCrumbs
-          :items="[{title:`Home`, url: `/`} ]"/>
-        <h2 class="collections__info_ttl">Mijn Collecties</h2>
+          :items="[{title: $t('Home'), url: localePath('index')}]"
+        />
+        <h2 class="collections__info_ttl">{{ $t('My-collections') }}</h2>
         <Search
           :hide-categories="true"
           :hide-filter="true"
@@ -25,7 +26,7 @@
           class="collections__add__link button"
           @click.prevent="showAddCollection"
         >
-          Nieuwe collectie
+          {{ $t('New-collection') }}
         </button>
       </div>
       <div
@@ -43,7 +44,6 @@
         :close="close"
         :is-show="isShow"
       />
-      111
     </div>
   </section>
 </template>

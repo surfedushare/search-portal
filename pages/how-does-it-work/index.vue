@@ -9,8 +9,9 @@
           class="how_work__info_bg"
         >
         <BreadCrumbs
-          :items="[{title:'Home', url: '/'} ]"/>
-        <h2 class="how_work__info_ttl">Hoe werkt het?</h2>
+          :items="[{title: $t('Home'), url: localePath('index')}]"
+        />
+        <h2 class="how_work__info_ttl">{{ $t('How-does-it-work') }}</h2>
         <Search
           v-model="search"
           :hide-categories="true"
@@ -30,10 +31,8 @@
           >
         </div>
         <div class="how_work__txt_block">
-          <h2 class="how_work__txt_block__ttl">Over het portaal</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laborisnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laborisnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laborisnisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate</p>
+          <h2 class="how_work__txt_block__ttl">{{ $t('About-the-portal') }}</h2>
+          <div v-html="$t('About-the-portal-text')" />
         </div>
       </div>
       <h2 class="how_work__materials_title">Uitgelicht</h2>

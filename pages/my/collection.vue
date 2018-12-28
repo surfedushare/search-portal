@@ -1,4 +1,3 @@
-
 <template>
   <section class="container main collection">
     <div class="center_block">
@@ -9,7 +8,8 @@
       <Materials
         :materials="my_collection_materials"
         :items-in-line="4"
-        class="collection__materials"/>
+        class="collection__materials"
+      />
     </div>
   </section>
 </template>

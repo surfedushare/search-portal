@@ -23,7 +23,7 @@
   <span class="star-rating__counter_text" v-else-if="type === 'giant'" >{{types[temp_value]}}</span>
   <span class="star-rating__counter" v-else >{{temp_value}} / 5</span>
   <span class="star-rating__counter_big" v-if="type === 'big' && !hideCounter" >
-    {{counter}} waarderingen
+    {{counter}} {{ $t('ratings') }}
   </span>
 
 </div>

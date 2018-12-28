@@ -9,8 +9,9 @@
          ./../../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="my_filters__info_bg">
         <BreadCrumbs
-          :items="[{title:`Home`, url: `/`} ]"/>
-        <h2 class="my_filters__info_ttl">Mijn Filters</h2>
+          :items="[{title: $t('Home'), url: localePath('index')}]"
+        />
+        <h2 class="my_filters__info_ttl">{{ $t('My-filters') }}</h2>
         <Search
           :hide-categories="true"
           :hide-filter="true"
@@ -23,7 +24,7 @@
           class="my_filters__add__link button"
           @click.prevent="showAddFilter"
         >
-          Nieuwe selectie
+          {{ $t('New-selection') }}
         </button>
       </div>
       <MaterialsFilters

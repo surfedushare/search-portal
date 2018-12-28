@@ -1,52 +1,69 @@
 <div class="material__left">
   <div class="material__left_sticky">
     <div class="material__grey_block">
-      <h4>Vakgebieden</h4>
-      Biologie
-      <h4>Leerniveaus</h4>
-      WO Bachelor
+      <template
+        v-if="extended_material.disciplines && extended_material.disciplines.length"
+      >
+        <h4>{{ $t('Discipline') }}</h4>
+
+        <span v-for="discipline in extended_material.disciplines">
+          {{discipline.title}}
+        </span>
+      </template>
+      <template
+        v-if="extended_material.educationallevels && extended_material.educationallevels.length"
+        class="materials__item_educationallevels"
+      >
+        <h4>{{ $t('Learning-levels') }}</h4>
+        <span
+          v-for="educationallevel in extended_material.educationallevels"
+          class="materials__item_educationallevel"
+        >
+          {{educationallevel.title}}
+        </span>
+      </template>
       <!--<h4>Soort materiaal</h4>-->
       <!--Video-->
-      <h4>Bestandsformaat</h4>
-      {{ material.format }}
-      <h4>Publicatiedatum</h4>
-      {{ material.date || '-' }}
-      <h4>Taal</h4>
-      {{ material.language }}
-      <h4>Gebruiksrechten</h4>
+      <h4>{{ $t('File-format') }}</h4>
+      {{ extended_material.format }}
+      <h4>{{ $t('Publication-date') }}</h4>
+      {{ extended_material.date || '-' }}
+      <h4>{{ $t('Language') }}</h4>
+      {{ extended_material.language }}
+      <h4>{{ $t('Rights-of-use') }}</h4>
       <span
         class="material__grey_block-copyright"
-        :class="material.copyright"
+        :class="extended_material.copyright"
       ></span>
-      Naamsvermelding - Gelijk delen
+      {{ $t('Naamsvermelding-Gelijk-delen') }}
       <a
-        v-if="material.url"
-        :href="material.url"
+        v-if="extended_material.url"
+        :href="extended_material.url"
         class="button button--full-width material__grey_block-btn"
         target="_blank"
-      >Open link</a>
+      >{{ $t('Open-link') }}</a>
     </div>
     <div class="material__left-box">
       <template v-if="!isAuthenticated">
-        <h3 class="h3">Materiaal toevoegen aan collectie</h3>
-        <p>Om collecties te kunnen maken moet u eerst inloggen</p>
+        <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
+        <p>{{ $t('To-be-able-to-make-collections-you-must-first-log') }}</p>
         <a
           :href="getLoginLink()"
           class="arrow-link"
         >Inloggen met SURFconext</a>
       </template>
       <template v-else-if="isAuthenticated && my_collections && !my_collections.results.length">
-        <h3 class="h3">Materiaal toevoegen aan collectie</h3>
-        <p>U heeft nog geen collecties. Maak uw eerste collectie aan.</p>
+        <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
+        <p>{{ $t('You-do-not-have-any-collections-yet-Create-your-fi') }}</p>
         <a
           href="/add_collection/"
           @click=""
           class="add-link"
           @click.prevent="addCollection"
-        >Collectie maken</a>
+        >{{ $t('Make-a-collection') }}</a>
       </template>
-      <template v-else-if="!material.has_bookmark">
-        <h3 class="h3">Materiaal toevoegen aan collectie</h3>
+      <template v-else-if="!extended_material.has_bookmark">
+        <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <Multiselect
           v-if="full_loading && my_collections.results"
           v-model="checked_collections"
@@ -57,9 +74,9 @@
         ></Multiselect>
       </template>
       <template
-        v-else-if="material.has_bookmark"
+        v-else-if="extended_material.has_bookmark"
       >
-        <h3 class="h3">Materiaal toevoegen aan collectie</h3>
+        <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <Multiselect
           v-if="full_loading && my_collections.results"
           v-model="checked_collections"

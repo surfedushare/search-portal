@@ -1,7 +1,7 @@
 
 <section class="disciplines">
-  <h2>Vakgebieden</h2>
-  <div class="disciplines__description">Zoek en vind leermaterialen op vakgebied</div>
+  <h2>{{ $t('Discipline') }}</h2>
+  <div class="disciplines__description">{{ $t('Search-and-find') }}</div>
   <ul class="disciplines__list" v-if="disciplines && disciplines.length">
     <li
       class="disciplines__item"
@@ -15,6 +15,6 @@
       </nuxt-link>
     </li>
   </ul>
-  <div class="disciplines__info" v-else>No disciplines</div>
+  <div class="disciplines__info" v-else>{{ $t('No-disciplines') }}</div>
 </section>
 

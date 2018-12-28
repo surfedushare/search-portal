@@ -8,6 +8,7 @@ export default {
     return {};
   },
   methods: {
+    generateSearchMaterialsQuery: generateSearchMaterialsQuery,
     /**
      * Generate link URL
      * @param discipline
@@ -27,7 +28,7 @@ export default {
           items: [theme.external_id]
         });
       }
-      return generateSearchMaterialsQuery({
+      return this.generateSearchMaterialsQuery({
         page: 1,
         page_size: 10,
         filters: filters,

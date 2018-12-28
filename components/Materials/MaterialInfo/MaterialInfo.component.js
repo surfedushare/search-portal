@@ -60,6 +60,7 @@ export default {
     };
   },
   methods: {
+    generateSearchMaterialsQuery,
     /**
      * Show the popup "Save rating"
      */
@@ -179,7 +180,7 @@ export default {
     authorUrl() {
       if (this.material) {
         this.formData.author = this.material.author;
-        return generateSearchMaterialsQuery(this.formData);
+        return this.generateSearchMaterialsQuery(this.formData);
       }
     },
     /**

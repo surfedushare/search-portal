@@ -8,15 +8,12 @@
       :to="item.url"
       class="bread-crumbs__link"
       :key="index"
-    >
-      {{ item.title }}
-    </nuxt-link>
+    >{{ item.title }}</nuxt-link>
     <span
       v-else
       class="bread-crumbs__link"
       :key="index"
-    >
-      {{ item.title }}</span>
+    >{{ item.title }}</span>
   </template>
 </section>
 

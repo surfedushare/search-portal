@@ -34,6 +34,7 @@ export default {
     };
   },
   methods: {
+    generateSearchMaterialsQuery,
     /**
      * search event
      * @param search
@@ -64,7 +65,7 @@ export default {
      * Submit form
      */
     onSubmit() {
-      this.$router.push(generateSearchMaterialsQuery(this.formData));
+      this.$router.push(this.generateSearchMaterialsQuery(this.formData));
       this.$emit('input', this.formData);
     },
     /**

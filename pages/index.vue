@@ -13,16 +13,16 @@
             src="./../assets/images/pictures/lab-21-windesheim-voor-surf-018@2x.jpg"
             alt="header-image"
           >
-          <h2 class="main__info_main-title">Open leermaterialen</h2>
-          {{ $t('open_materials') }}
+          <h2 class="main__info_main-title">{{ $t('Open-learning-materials') }}</h2>
+
           <div class="main__info_block">
             <div class="bg" />
             <h2
-              class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>open leermaterialen uit het hoger onderwijs</h2>
+              class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>{{ $t('open-learning-materials-from-higher-education') }}</h2>
             <ul class="main__info_items">
-              <li class="main__info_item">Vrij te gebruiken</li>
-              <li class="main__info_item">Op kwaliteit beoordeeld</li>
-              <li class="main__info_item">Inspiratie op jouw vakgebied</li>
+              <li class="main__info_item">{{ $t('Free-to-use') }}</li>
+              <li class="main__info_item">{{ $t('Judged-by-quality') }}</li>
+              <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
             </ul>
           </div>
           <Search class="main__info_search" />
@@ -38,15 +38,15 @@
           class="main__communities"
         >
           <template slot="header-info">
-            <h2>Community’s</h2>
-            <div class="popular-list__description">Open leermaterialen vanuit vakcommunity’s</div>
+            <h2>{{ $t('Communities') }}</h2>
+            <div class="popular-list__description">{{ $t('Open-learning-materials-from-professional-communit') }}</div>
           </template>
         </PopularList>
       </div>
       <div class="main__materials">
         <div class="center_block">
-          <h2 class="main__materials_title">Uitgelicht open leermateriaal</h2>
-          <Materials :materials="materials"/>
+          <h2 class="main__materials_title">{{ $t('Featured-open-learning-material') }}</h2>
+          <Materials :materials="materials" />
         </div>
       </div>
       <div class="center_block">

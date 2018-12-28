@@ -31,7 +31,7 @@
           <h3 class="materials__item_title">
             <nuxt-link
               class="materials__item_link"
-              :to="`/materials/${material.external_id_base64}/`"
+              :to="localePath({name: 'materials-id', params: {id: material.external_id_base64}})"
               @click.native="setMaterial(material)"
             >{{material.title}}
             </nuxt-link>
@@ -90,7 +90,7 @@
             <span class="materials__item_keyword" v-for="keyword in material.keywords">{{keyword}} </span>
           </div>
           <nuxt-link
-            :to="`/communities/${community.id}`"
+            :to="localePath({name: 'communities-community', params: {community: community.id}})"
             class="materials__item_community_link"
             v-for="community in material.communities"
             :key="`${community.id}`"
@@ -119,5 +119,5 @@
       </div>
     </li>
   </ul>
-  <div class="not_found" v-else-if="!current_loading">Not found</div>
+  <div class="not_found" v-else-if="!current_loading">{{ $t('Not-found') }}</div>
 </section>

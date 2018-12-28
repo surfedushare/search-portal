@@ -6,7 +6,7 @@
     :is-show="isShow"
     class="save-material-in-collection"
   >
-    <slot><h2 class="popup__title">Materiaal toevoegen aan collectie</h2>
+    <slot><h2 class="popup__title">{{ $t('Add-material-to-collection') }}</h2>
       <form
         action=""
         @submit.prevent="onSaveMaterial"
@@ -17,7 +17,7 @@
               name="collections"
               v-model="collection"
             >
-              <option :value="false" hidden>Select</option>
+              <option :value="false" hidden>{{ $t('Select') }}</option>
               <option
                 :value="collection.id"
                 v-for="collection in my_collections.results"
@@ -32,7 +32,7 @@
           type="submit"
           :disabled="submitting"
         >
-          Save
+          {{ $t('save') }}
         </button>
       </form>
     </slot>
