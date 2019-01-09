@@ -10,7 +10,13 @@
     >
       {{ $t('Save-selection') }}
     </a>
-    <a href="/materials/search/" @click="resetFilter" class="filter-categories__reset">{{ $t('Reset-filters') }}</a>
+    <a
+      href="/materials/search/"
+      @click.prevent="resetFilter"
+      class="filter-categories__reset"
+    >
+      {{ $t('Reset-filters') }}
+    </a>
   </div>
   <div class="select filter-categories__select" v-if="isAuthenticated && filters && filters.length">
     <select

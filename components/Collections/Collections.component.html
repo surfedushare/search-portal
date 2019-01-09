@@ -32,5 +32,5 @@
     </li>
   </ul>
   <div v-if="loading"><Spinner /></div>
-  <div class="collections__info" v-else-if="collections && !collections.length">$t('No-collections')</div>
+  <div class="collections__info" v-else-if="collections && !collections.length">{{ $t('No-collections') }}</div>
 </section>

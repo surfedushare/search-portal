@@ -139,7 +139,11 @@ export default {
      * Event the reset filter
      */
     resetFilter() {
-      this.$route.push('/materials/search/');
+      this.$router.push(
+        this.generateSearchMaterialsQuery({
+          search_text: this.value.search_text
+        })
+      );
       location.reload();
     },
     isShowCategoryItem({ category, item, indexItem }) {
@@ -167,7 +171,6 @@ export default {
           this.data.start_date = publisherdate_item.items[0];
           this.data.end_date = publisherdate_item.items[1];
         }
-        console.log(publisherdate_item);
         this.isInit = true;
       }
     },

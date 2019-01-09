@@ -48,7 +48,7 @@
       <button
         class="button"
         type="submit"
-        :disabled="formData.search_text && !formData.search_text.length"
+        :disabled="!formData.search_text || (formData.search_text && !formData.search_text.length)"
       >
         {{ $t('Search') }}
       </button>
