@@ -78,7 +78,13 @@ export default {
       return collection;
     },
     async setCommunityCollection({ commit }, { id, data }) {
-      return this.$axios.$post(`communities/${id}/collections/`, data);
+      const community_collections = await this.$axios.$post(
+        `communities/${id}/collections/`,
+        data
+      );
+
+      commit('EXTEND_COMMUNITY_COLLECTION', community_collections);
+      return community_collections;
     }
   },
   mutations: {
@@ -109,6 +115,20 @@ export default {
       state.community_collections = {
         ...state.community_collections,
         results: [payload, ...results]
+      };
+    },
+    EXTEND_COMMUNITY_COLLECTION(state, payload) {
+      const results = state.community_collections.results || [];
+      const payloadItem = payload[0];
+
+      state.community_collections = {
+        ...state.community_collections,
+        results: results.map(item => {
+          if (item.id === payloadItem.id) {
+            return payloadItem;
+          }
+          return item;
+        })
       };
     },
     SET_COMMUNITY_COLLECTIONS_LOADING(state, payload) {

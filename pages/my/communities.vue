@@ -211,7 +211,11 @@ export default {
      */
     loadMore() {
       const { community_collections, community_collections_loading } = this;
-      if (community_collections.next && !community_collections_loading) {
+      if (
+        community_collections &&
+        community_collections.next &&
+        !community_collections_loading
+      ) {
         this.$store.dispatch('getCommunityCollectionsNextPage');
       }
     },
