@@ -386,8 +386,11 @@ Deletes materials from specified collection if the user is owner of collection.
 
 ## Themes Array [/api/v1/themes/]
 
-### GET [GET /api/v1/themes/]
+### GET [GET /api/v1/themes/{?discipline_id}]
 Returns array of themes.
+
++ Parameters
+  + discipline_id: `discipline external identifier` (string, optional) - filter themes by external id of discipline.
 
 + Request (application/json)
 

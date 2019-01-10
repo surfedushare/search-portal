@@ -23,6 +23,7 @@ from surf.apps.themes.serializers import (
     ThemeDisciplineSerializer
 )
 
+from surf.apps.themes.filters import ThemeFilter
 from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.serializers import CollectionSerializer
 from surf.apps.filters.utils import get_material_count_by_disciplines
@@ -40,6 +41,7 @@ class ThemeViewSet(ListModelMixin,
 
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
+    filter_class = ThemeFilter
     permission_classes = []
     lookup_field = 'filter_category_item__id'
 
