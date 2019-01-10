@@ -67,6 +67,6 @@ class FilterCategoryItemAdmin(admin.ModelAdmin):
     Provides admin options and functionality for FilterCategoryItem model.
     """
 
-    list_display = ("title", "external_id", "category", )
+    list_display = ("title", "external_id", "category", "order",)
     ordering = ("title", )
     list_filter = ("category",)

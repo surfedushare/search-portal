@@ -23,7 +23,12 @@ class FilterCategorySerializer(serializers.ModelSerializer):
     """
 
     external_id = serializers.CharField(source="edurep_field_id")
-    items = FilterCategoryItemSerializer(many=True)
+    items = serializers.SerializerMethodField('get_items_list')
+
+    @staticmethod
+    def get_items_list(instance):
+        items = instance.items.order_by('order').all()
+        return FilterCategoryItemSerializer(many=True).to_representation(items)
 
     class Meta:
         model = models.FilterCategory
