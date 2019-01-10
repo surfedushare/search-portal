@@ -108,6 +108,10 @@ export default {
 
                 return prev;
               }, []),
+              description:
+                material.description && material.description.length > 200
+                  ? material.description.slice(0, 200) + '...'
+                  : material.description,
               educationallevels: material.educationallevels.reduce(
                 (prev, id) => {
                   const item = educationallevels.items[id];

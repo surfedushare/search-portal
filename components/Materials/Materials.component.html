@@ -62,20 +62,27 @@
             v-if="material.disciplines && material.disciplines.length"
             class="materials__item_disciplines"
           >
-            <span v-for="discipline in material.disciplines" class="materials__item_discipline">
+            <span
+              v-for="(discipline, index) in material.disciplines"
+              v-if="index < 2"
+              class="materials__item_discipline"
+            >
               {{discipline.title}}
             </span>
+            {{ material.disciplines.length < 2 ? '' : '...' }}
           </div>
           <div
             v-if="material.educationallevels && material.educationallevels.length"
             class="materials__item_educationallevels"
           >
             <span
-              v-for="educationallevel in material.educationallevels"
+              v-for="(educationallevel, index) in material.educationallevels"
+              v-if="index < 2"
               class="materials__item_educationallevel"
             >
               {{educationallevel.title}}
             </span>
+            {{ material.educationallevels.length < 2 ? '' : '...' }}
           </div>
           <div
             v-if="material.format"
@@ -87,7 +94,12 @@
             class="materials__item_keywords"
             v-if="material.keywords && material.keywords.length && itemsInLine === 1"
           >
-            <span class="materials__item_keyword" v-for="keyword in material.keywords">{{keyword}} </span>
+            <span
+              class="materials__item_keyword"
+              v-for="(keyword, index) in material.keywords"
+              v-if="index < 2"
+            >{{keyword}} </span>
+            {{ material.keywords.length < 2 ? '' : '...' }}
           </div>
           <nuxt-link
             :to="localePath({name: 'communities-community', params: {community: community.id}})"
