@@ -12,8 +12,8 @@
         <transition name="fade">
           <div class="menu__sub" v-if="isShowSubMenu">
             <h3 class="title">{{ $t('Themes') }}</h3>
-            <ul v-if="themes" class="menu__sub_list">
-              <li v-for="theme in themes.results" class="menu__sub_list_item">
+            <ul v-if="sortedThemes" class="menu__sub_list">
+              <li v-for="theme in sortedThemes" class="menu__sub_list_item">
                 <nuxt-link
                   class="menu__sub_link arrow-link"
                   :to="localePath({name: 'themes-id', params: {id: theme.id}})"
