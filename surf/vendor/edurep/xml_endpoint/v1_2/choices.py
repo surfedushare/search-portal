@@ -202,8 +202,6 @@ for d in DISCIPLINE_ENTRIES:
 
 
 CUSTOM_COPYRIGHTS = {
-    "yes": {"external_ids": ["yes"],
-            "title": "Restricted access"},
     "cc-by": {"external_ids": ["cc-by-30", "cc-by-40"],
               "title": "Naamsvermelding"},
     "cc-by-nc": {"external_ids": ["cc-by-nc-30", "cc-by-nc-40"],
