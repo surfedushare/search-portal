@@ -25,11 +25,20 @@ export default {
     Materials
   },
   computed: {
-    ...mapGetters(['my_collection', 'my_collection_materials', 'user'])
+    ...mapGetters([
+      'my_collection',
+      'my_collection_materials',
+      'user',
+      'isAuthenticated'
+    ])
   },
   mounted() {
-    this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
-    this.$store.dispatch('getMyCollection', this.$route.params.id);
+    if (this.isAuthenticated) {
+      this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
+      this.$store.dispatch('getMyCollection', this.$route.params.id);
+    } else {
+      this.$router.push('/');
+    }
   }
 };
 </script>

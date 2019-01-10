@@ -227,6 +227,8 @@ export default {
   mounted() {
     if (this.isAuthenticated) {
       this.getData();
+    } else {
+      this.$router.push('/');
     }
   },
   methods: {

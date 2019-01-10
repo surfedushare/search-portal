@@ -33,11 +33,10 @@ export default {
         .then(rating => {
           this.rating = rating.records[0];
         });
-
-      this.setSocialCounters();
     } else {
       this.is_loading_applaud = false;
     }
+    this.setSocialCounters();
 
     this.href = window.location.href;
   },
@@ -114,12 +113,14 @@ export default {
      * Set counters value for share buttons
      */
     setSocialCounters() {
-      setTimeout(() => {
+      let isSetChanges = false;
+      const interval = setInterval(() => {
         this.$nextTick().then(() => {
           const { material } = this;
           const { social_counters } = this.$refs;
+          const linkedIn = social_counters.querySelector('#linkedin_counter');
 
-          if (material && material.sharing_counters) {
+          if (material && material.sharing_counters && linkedIn) {
             const share = material.sharing_counters.reduce(
               (prev, next) => {
                 prev[next.sharing_type] = next;
@@ -139,8 +140,7 @@ export default {
             );
 
             if (share.linkedin) {
-              social_counters.querySelector('#linkedin_counter').innerText =
-                share.linkedin.counter_value;
+              linkedIn.innerText = share.linkedin.counter_value;
             }
             if (share.twitter) {
               social_counters.querySelector('#twitter_counter').innerText =
@@ -150,9 +150,13 @@ export default {
               social_counters.querySelector('#url_counter').innerText =
                 share.link.counter_value;
             }
+            if (linkedIn) {
+              isSetChanges = true;
+              clearInterval(interval);
+            }
           }
         });
-      }, 400);
+      }, 200);
     },
     /**
      * Event close social popups

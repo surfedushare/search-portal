@@ -138,43 +138,56 @@ export default {
      * Set counters value for share buttons
      */
     setSocialCounters() {
-      this.$nextTick().then(() => {
-        const { collection } = this;
-        const { social_counters } = this.$refs;
+      let isSetChanges = false;
+      const interval = setInterval(() => {
+        this.$nextTick().then(() => {
+          const { collection } = this;
+          const { social_counters } = this.$refs;
+          const linkedIn = social_counters.querySelector('#linkedin_counter');
 
-        if (collection && collection.sharing_counters && social_counters) {
-          const share = collection.sharing_counters.reduce(
-            (prev, next) => {
-              prev[next.sharing_type] = next;
-              return prev;
-            },
-            {
-              linkedin: {
-                counter_value: 0
+          if (
+            collection &&
+            collection.sharing_counters &&
+            social_counters &&
+            linkedIn
+          ) {
+            const share = collection.sharing_counters.reduce(
+              (prev, next) => {
+                prev[next.sharing_type] = next;
+                return prev;
               },
-              twitter: {
-                counter_value: 0
-              },
-              link: {
-                counter_value: 0
+              {
+                linkedin: {
+                  counter_value: 0
+                },
+                twitter: {
+                  counter_value: 0
+                },
+                link: {
+                  counter_value: 0
+                }
               }
-            }
-          );
+            );
 
-          if (share.linkedin) {
-            social_counters.querySelector('#linkedin_counter').innerText =
-              share.linkedin.counter_value;
+            if (share.linkedin) {
+              social_counters.querySelector('#linkedin_counter').innerText =
+                share.linkedin.counter_value;
+            }
+            if (share.twitter) {
+              social_counters.querySelector('#twitter_counter').innerText =
+                share.twitter.counter_value;
+            }
+            if (share.link) {
+              social_counters.querySelector('#url_counter').innerText =
+                share.link.counter_value;
+            }
+            if (linkedIn) {
+              isSetChanges = true;
+              clearInterval(interval);
+            }
           }
-          if (share.twitter) {
-            social_counters.querySelector('#twitter_counter').innerText =
-              share.twitter.counter_value;
-          }
-          if (share.link) {
-            social_counters.querySelector('#url_counter').innerText =
-              share.link.counter_value;
-          }
-        }
-      });
+        });
+      }, 200);
     },
     /**
      * Event close social popups

@@ -73,11 +73,16 @@ export default {
     ...mapGetters([
       'my_collections',
       'my_collection_materials',
-      'my_collections_loading'
+      'my_collections_loading',
+      'isAuthenticated'
     ])
   },
   mounted() {
-    this.$store.dispatch('getMyCollections');
+    if (this.isAuthenticated) {
+      this.$store.dispatch('getMyCollections');
+    } else {
+      this.$router.push('/');
+    }
   },
   methods: {
     /**

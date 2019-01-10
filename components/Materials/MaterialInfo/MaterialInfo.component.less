@@ -35,9 +35,10 @@
       justify-content: flex-start;
       align-items: flex-start;
       display: flex;
+      flex-wrap: wrap;
 
       @media @mobile {
-        display: initial;
+        //display: initial;
       }
       .star-rating {
         display: block;
@@ -174,10 +175,16 @@
   }
   &__star {
     display: inline-block;
-    width: 225px;
-    margin: -2px 20px 0 0;
-    @media @mobile {
+
+    @media @desktop {
+      width: 225px;
+      margin: -2px 20px 0 0;
+      flex-shrink: 0;
+    }
+
+    @media @mobile, @tablet {
       padding-top: 40px;
+      width: 100%;
     }
     a {
       text-decoration: none;
@@ -187,8 +194,10 @@
     }
   }
   &__social {
-    @media @mobile {
+    @media @mobile, @tablet {
       padding: 40px 0;
+      display: flex;
+      width: 100%;
     }
     .title-social {
       display: none;

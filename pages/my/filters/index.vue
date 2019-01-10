@@ -72,6 +72,8 @@ export default {
   mounted() {
     if (this.isAuthenticated) {
       this.$store.dispatch('getFilters');
+    } else {
+      this.$router.push('/');
     }
   },
   methods: {

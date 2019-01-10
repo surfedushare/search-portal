@@ -176,29 +176,34 @@ export default {
     ...mapGetters([
       'community_collections',
       'community_collections_loading',
-      'communities'
+      'communities',
+      'isAuthenticated'
     ])
   },
   mounted() {
-    this.$store
-      .dispatch('getCommunities', { params: { is_admin: true } })
-      .then(item => {
-        const {
-          id,
-          name,
-          description,
-          website_url,
-          logo,
-          featured_image
-        } = item.results[0];
-        this.formData.id = id;
-        this.formData.name = name;
-        this.formData.description = description;
-        this.formData.website_url = website_url;
-        this.formData.logo = logo;
-        this.formData.featured_image = featured_image;
-        this.$store.dispatch('getCommunityCollections', id);
-      });
+    if (this.isAuthenticated) {
+      this.$store
+        .dispatch('getCommunities', { params: { is_admin: true } })
+        .then(item => {
+          const {
+            id,
+            name,
+            description,
+            website_url,
+            logo,
+            featured_image
+          } = item.results[0];
+          this.formData.id = id;
+          this.formData.name = name;
+          this.formData.description = description;
+          this.formData.website_url = website_url;
+          this.formData.logo = logo;
+          this.formData.featured_image = featured_image;
+          this.$store.dispatch('getCommunityCollections', id);
+        });
+    } else {
+      this.$router.push('/');
+    }
   },
   methods: {
     /**

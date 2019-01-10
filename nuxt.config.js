@@ -1,11 +1,13 @@
 const pkg = require('./package');
+const prodBaseUrl = 'https://surfcatalog-stage.firebaseapp.com';
 
 module.exports = {
   mode: 'spa',
 
   env: {
     logoutURL:
-      process.env.LOGOUT_URL || 'https://engine.test.surfconext.nl/logout'
+      process.env.LOGOUT_URL || 'https://engine.test.surfconext.nl/logout',
+    prodBaseUrl
   },
 
   /**
@@ -20,6 +22,11 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content: 'Open Leermaterialen'
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: prodBaseUrl + '/social-image.jpg'
       }
     ],
     link: [
