@@ -144,7 +144,9 @@ export default {
           search_text: this.value.search_text
         })
       );
-      location.reload();
+      this.$nextTick().then(() => {
+        location.reload();
+      });
     },
     isShowCategoryItem({ category, item, indexItem }) {
       return (
