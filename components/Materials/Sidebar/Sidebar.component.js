@@ -109,15 +109,16 @@ export default {
       'my_collections',
       'material_communities',
       'disciplines',
-      'educationallevels'
+      'educationallevels',
+      'languages'
     ]),
     /**
      * Extend to the material fields "disciplines" & "educationallevels"
      * @returns {*}
      */
     extended_material() {
-      const { material, disciplines, educationallevels } = this;
-      if (material && disciplines && educationallevels) {
+      const { material, disciplines, educationallevels, languages } = this;
+      if (material && disciplines && educationallevels && languages) {
         return Object.assign({}, material, {
           disciplines: material.disciplines.reduce((prev, id) => {
             const item = disciplines.items[id];
@@ -136,7 +137,13 @@ export default {
             }
 
             return prev;
-          }, [])
+          }, []),
+          language_title: languages.items.reduce((prev, language) => {
+            if (language.external_id === material.language) {
+              prev = language.title;
+            }
+            return prev;
+          }, '')
         });
       }
 

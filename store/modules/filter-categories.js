@@ -3,7 +3,8 @@ export default {
     filter_categories: null,
     filter_categories_loading: null,
     disciplines: null,
-    educationallevels: null
+    educationallevels: null,
+    languages: null
   },
   getters: {
     filter_categories(state) {
@@ -17,6 +18,9 @@ export default {
     },
     educationallevels(state) {
       return state.educationallevels;
+    },
+    languages(state) {
+      return state.languages;
     }
   },
   actions: {
@@ -53,6 +57,10 @@ export default {
           return prev;
         }, {})
       });
+      const languages = payload.results.find(
+        item => item.external_id.search('lom.general.language') !== -1
+      );
+      state.languages = Object.assign({}, languages);
     },
     SET_FILTER_CATEGORIES_LOADING(state, payload) {
       state.filter_categories_loading = payload;

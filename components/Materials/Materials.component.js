@@ -70,7 +70,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['disciplines', 'educationallevels', 'materials_loading']),
+    ...mapGetters([
+      'disciplines',
+      'educationallevels',
+      'materials_loading',
+      'languages'
+    ]),
     current_loading() {
       return this.materials_loading || this.loading;
     },
@@ -83,10 +88,11 @@ export default {
         materials,
         disciplines,
         educationallevels,
-        selected_materials
+        selected_materials,
+        languages
       } = this;
       let arrMaterials;
-      if (materials && disciplines && educationallevels) {
+      if (materials && disciplines && educationallevels && languages) {
         if (materials.records) {
           arrMaterials = materials.records;
         } else {
@@ -123,7 +129,13 @@ export default {
                   return prev;
                 },
                 []
-              )
+              ),
+              language_title: languages.items.reduce((prev, language) => {
+                if (language.external_id === material.language) {
+                  prev = language.title;
+                }
+                return prev;
+              }, '')
             }
           );
         });
