@@ -85,20 +85,18 @@ export default {
     },
     /**
      * Deleting collection by id
-     * @param id - String
      */
     deleteCollectionPopup() {
       this.isShowDeleteCollection = true;
     },
     /**
      * Deleting collection by id
-     * @param id - String
      */
     deleteCollection() {
       this.$store
         .dispatch('deleteMyCollection', this.$route.params.id)
         .then(() => {
-          this.$router.push('/my/collections/');
+          this.$router.push(this.localePath({ name: 'my-collections' }));
         });
     },
     closeDeleteCollection() {

@@ -392,7 +392,7 @@ export default {
     },
     deleteFilter() {
       this.$store.dispatch('deleteMyFilter', this.$route.params.id).then(() => {
-        this.$router.push('/my/filters/');
+        this.$router.push(this.localePath({ name: 'my-filters' }));
       });
     },
     setEditable(isEditable) {

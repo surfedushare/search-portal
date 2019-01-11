@@ -50,7 +50,7 @@
         <a
           :href="getLoginLink()"
           class="arrow-link"
-        >Inloggen met SURFconext</a>
+        >{{$t('Log-in-with-SURFconext')}}</a>
       </template>
       <template v-else-if="isAuthenticated && my_collections && !my_collections.results.length">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
@@ -68,7 +68,7 @@
           v-if="full_loading && my_collections.results"
           v-model="checked_collections"
           :items="my_collections.results"
-          placeholder="Selecteer collectie"
+          :placeholder="$t('Select-collection')"
           class="material__left_select"
           :disabled="submitting"
         ></Multiselect>
@@ -81,7 +81,7 @@
           v-if="full_loading && my_collections.results"
           v-model="checked_collections"
           :items="my_collections.results"
-          placeholder="Selecteer collectie"
+          :placeholder="$t('Select-collection')"
           class="material__left_select"
           :disabled="submitting"
         ></Multiselect>
