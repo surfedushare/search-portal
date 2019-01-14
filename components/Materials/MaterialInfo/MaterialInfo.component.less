@@ -152,6 +152,10 @@
     display: inline-block;
     vertical-align: top;
     margin: 0 48px 0 0;
+
+    @media only screen and (min-width: 701px) and (max-width: 1365px) {
+      width: 50%;
+    }
     @media @mobile {
       margin: 0;
       float: right;
@@ -182,6 +186,10 @@
       flex-shrink: 0;
     }
 
+    @media only screen and (min-width: 701px) and (max-width: 1365px) {
+      padding-top: 40px;
+    }
+
     @media @mobile, @tablet {
       padding-top: 40px;
       width: 100%;
@@ -194,6 +202,9 @@
     }
   }
   &__social {
+    @media only screen and (min-width: 701px) and (max-width: 1365px) {
+      padding: 40px 0;
+    }
     @media @mobile, @tablet {
       padding: 40px 0;
       display: flex;

@@ -163,7 +163,8 @@ export default {
       'filter_categories',
       'materials_loading',
       'user',
-      'isAuthenticated'
+      'isAuthenticated',
+      'user_loading'
     ]),
     all_filters() {
       const { filters_count, filter_categories, data } = this;
@@ -227,7 +228,7 @@ export default {
   mounted() {
     if (this.isAuthenticated) {
       this.getData();
-    } else {
+    } else if (!this.user_loading) {
       this.$router.push('/');
     }
   },

@@ -60,7 +60,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['filters', 'user', 'isAuthenticated'])
+    ...mapGetters(['filters', 'user', 'isAuthenticated', 'user_loading'])
   },
   watch: {
     isAuthenticated(isAuthenticated) {
@@ -72,7 +72,7 @@ export default {
   mounted() {
     if (this.isAuthenticated) {
       this.$store.dispatch('getFilters');
-    } else {
+    } else if (!this.user_loading) {
       this.$router.push('/');
     }
   },

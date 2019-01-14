@@ -29,14 +29,15 @@ export default {
       'my_collection',
       'my_collection_materials',
       'user',
-      'isAuthenticated'
+      'isAuthenticated',
+      'user_loading'
     ])
   },
   mounted() {
     if (this.isAuthenticated) {
       this.$store.dispatch('getMaterialInMyCollection', this.$route.params.id);
       this.$store.dispatch('getMyCollection', this.$route.params.id);
-    } else {
+    } else if (!this.user_loading) {
       this.$router.push('/');
     }
   }

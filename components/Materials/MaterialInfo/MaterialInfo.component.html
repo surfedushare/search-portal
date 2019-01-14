@@ -96,10 +96,12 @@
     <Themes class="material__info_thems" :themes="material_themes"/>
     <Keywords class="material__info_keywords" :material="material" />
   </div>
+
   <PopularList
     class="material__info_communities"
     :type="'material'"
     :communities="material.communities"
+    v-if="material.communities && material.communities.length"
   >
     <template slot="header-info">
       <h3>{{ $t('In-the-collection-of') }}</h3>

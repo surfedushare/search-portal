@@ -74,13 +74,21 @@ export default {
       'my_collections',
       'my_collection_materials',
       'my_collections_loading',
-      'isAuthenticated'
+      'isAuthenticated',
+      'user_loading'
     ])
+  },
+  watch: {
+    isAuthenticated(isAuthenticated) {
+      if (isAuthenticated) {
+        this.$store.dispatch('getMyCollections');
+      }
+    }
   },
   mounted() {
     if (this.isAuthenticated) {
       this.$store.dispatch('getMyCollections');
-    } else {
+    } else if (!this.user_loading) {
       this.$router.push('/');
     }
   },

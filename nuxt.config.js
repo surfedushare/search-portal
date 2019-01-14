@@ -18,15 +18,46 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'twitter:card', content: 'summary_large_image' },
       {
         hid: 'description',
         name: 'description',
         content: 'Open Leermaterialen'
       },
       {
+        hid: 'og:title',
+        property: 'og:title',
+        content: 'Surf | Open Leermaterialen'
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: 'Open Leermaterialen'
+      },
+      {
         hid: 'og:image',
         property: 'og:image',
         content: prodBaseUrl + '/social-image.jpg'
+      },
+      {
+        hid: 'og:image:width',
+        property: 'og:image:width',
+        content: '510'
+      },
+      {
+        hid: 'og:image:height',
+        property: 'og:image:height',
+        content: '298'
+      },
+      {
+        hid: 'og:image:alt',
+        property: 'og:image:alt',
+        content: 'Open Leermaterialen'
+      },
+      {
+        hid: 'og:type',
+        property: 'og:type',
+        content: 'article'
       }
     ],
     link: [

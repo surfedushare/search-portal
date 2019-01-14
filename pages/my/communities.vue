@@ -177,11 +177,26 @@ export default {
       'community_collections',
       'community_collections_loading',
       'communities',
-      'isAuthenticated'
+      'isAuthenticated',
+      'user_loading'
     ])
+  },
+  watch: {
+    isAuthenticated(isAuthenticated) {
+      if (isAuthenticated) {
+        this.getCommunities();
+      }
+    }
   },
   mounted() {
     if (this.isAuthenticated) {
+      this.getCommunities();
+    } else if (!this.user_loading) {
+      this.$router.push('/');
+    }
+  },
+  methods: {
+    getCommunities() {
       this.$store
         .dispatch('getCommunities', { params: { is_admin: true } })
         .then(item => {
@@ -201,11 +216,7 @@ export default {
           this.formData.featured_image = featured_image;
           this.$store.dispatch('getCommunityCollections', id);
         });
-    } else {
-      this.$router.push('/');
-    }
-  },
-  methods: {
+    },
     /**
      * Load next collections
      */

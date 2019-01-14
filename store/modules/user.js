@@ -16,8 +16,10 @@ export default {
   },
   actions: {
     async getUser({ commit }) {
+      commit('USER_LOADING', true);
       const user = await this.$axios.$get('users/me/');
       commit('SET_USER', user);
+      commit('USER_LOADING', false);
     },
     async login({ commit }, { token }) {
       commit('USER_LOADING', true);

@@ -152,7 +152,7 @@ export default {
     },
     SET_NEXT_PAGE_MATERIALS(state, payload) {
       const records = state.materials.records || [];
-      state.materials = Object.assign({}, payload, {
+      state.materials = Object.assign({}, state.materials, payload, {
         records: [
           ...records,
           ...payload.records.map(record => {

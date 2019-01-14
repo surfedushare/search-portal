@@ -1,4 +1,5 @@
 import { generateSearchMaterialsQuery } from './../../_helpers';
+import { mapGetters } from 'vuex';
 export default {
   name: 'navigation',
   props: ['materials', 'material'],
@@ -18,6 +19,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['materials_loading']),
     /**
      * Generating the navigation links
      * @returns {
@@ -27,7 +29,7 @@ export default {
      * }
      */
     links() {
-      const { materials, material } = this;
+      const { materials, material, materials_loading } = this;
       if (materials) {
         const { records } = materials;
         if (records && records.length && material) {
@@ -36,6 +38,27 @@ export default {
           );
 
           if (materialIndex !== -1) {
+            const { page_size, page, records_total } = materials;
+
+            if (
+              records_total > page_size * page &&
+              materialIndex + 1 === page * page_size &&
+              !materials_loading
+            ) {
+              this.$store.dispatch(
+                'searchNextPageMaterials',
+                Object.assign(
+                  {},
+                  {
+                    filters: materials.active_filters,
+                    page: page + 1,
+                    page_size: materials.page_size,
+                    search_text: materials.search_text,
+                    ordering: materials.ordering
+                  }
+                )
+              );
+            }
             return {
               prev: materialIndex ? records[materialIndex - 1] : null,
               filter:
