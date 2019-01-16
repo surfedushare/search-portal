@@ -1,5 +1,6 @@
 const pkg = require('./package');
-const prodBaseUrl = 'https://surfcatalog-stage.firebaseapp.com';
+const prodBaseUrl =
+  process.env.PROD_URL || 'https://surfcatalog-stage.firebaseapp.com';
 
 module.exports = {
   mode: 'spa',
@@ -176,7 +177,7 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     headers: { Pragma: 'no-cache' },
-    baseURL: 'https://surf.stg.mqd.me/api/v1/'
+    baseURL: process.env.BASE_URL || 'https://surf.stg.mqd.me/api/v1/'
   },
 
   /**
