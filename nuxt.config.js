@@ -146,6 +146,7 @@ module.exports = {
    */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
+
     '@nuxtjs/axios',
     [
       'nuxt-i18n',
@@ -168,7 +169,10 @@ module.exports = {
         },
         lazy: true,
         langDir: 'static/locales/'
-      }
+      },
+      // Doc: https://github.com/pimlie/nuxt-matomo
+      'nuxt-matomo',
+      { matomoUrl: 'https://webstats.surf.nl/', siteId: 54 }
     ]
   ],
   /**
