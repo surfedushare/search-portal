@@ -51,6 +51,8 @@ class FilterCategoryItem(UUIDModel):
                                         related_name='items',
                                         on_delete=django_models.CASCADE)
 
+    order = django_models.IntegerField(default=0)
+
     def __str__(self):
         return self.title
 
