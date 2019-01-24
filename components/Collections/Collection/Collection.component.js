@@ -3,6 +3,7 @@ import DirectSearch from '~/components/FilterCategories/DirectSearch';
 import ShareMaterialCollection from '~/components/Popup/ShareMaterialCollection';
 import ShareCollection from '~/components/Popup/ShareCollection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
+import { validateHREF } from '~/components/_helpers';
 
 export default {
   name: 'collection',
@@ -42,7 +43,7 @@ export default {
       this.setTitle(collection.title);
       this.setSocialCounters();
     }
-    this.href = window.location.href;
+    this.href = validateHREF(window.location.href);
   },
   data() {
     return {

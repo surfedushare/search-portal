@@ -138,6 +138,10 @@ module.exports = {
     {
       src: '~/plugins/VueClipboard',
       ssr: false
+    },
+    {
+      src: '~/plugins/veeValidate',
+      ssr: false
     }
   ],
 

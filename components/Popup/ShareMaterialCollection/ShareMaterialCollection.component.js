@@ -1,4 +1,5 @@
 import Popup from '~/components/Popup';
+import { validateHREF } from '~/components/_helpers';
 export default {
   name: 'share-material',
   props: ['is-show', 'close', 'collection', 'value'],
@@ -6,7 +7,7 @@ export default {
     Popup
   },
   mounted() {
-    this.link = window.location.href;
+    this.link = validateHREF(window.location.href);
   },
   data() {
     return {
@@ -20,6 +21,7 @@ export default {
     };
   },
   methods: {
+    validateHREF,
     /**
      * The copy text on clipboard
      */

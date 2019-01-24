@@ -6,7 +6,7 @@ import Themes from '~/components/Themes';
 import Keywords from '~/components/Keywords';
 import ShareMaterial from '~/components/Popup/ShareMaterial';
 import SaveRating from '~/components/Popup/SaveRating';
-import { generateSearchMaterialsQuery } from './../../_helpers';
+import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers';
 export default {
   name: 'material-info',
   props: ['material'],
@@ -38,7 +38,7 @@ export default {
     }
     this.setSocialCounters();
 
-    this.href = window.location.href;
+    this.href = validateHREF(window.location.href);
   },
   data() {
     return {

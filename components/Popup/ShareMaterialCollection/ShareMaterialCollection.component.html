@@ -24,7 +24,7 @@
             <span class="share-collection__popular_label">{{ $t('Enable-and-disable-the-collection-of-public-sharin') }}</span>
           </label>
         </div>
-        <div class="share-collection__actions">
+        <div class="share-collection__actions" v-if="link">
           <div class="share-collection__actions_link link">{{link}}</div>
           <button
             class="button"

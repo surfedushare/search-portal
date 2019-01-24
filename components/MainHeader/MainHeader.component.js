@@ -1,5 +1,7 @@
 import { mapGetters } from 'vuex';
 import Menu from './Menu';
+import { validateHREF } from '~/components/_helpers';
+
 export default {
   name: 'main-header',
   props: [],
@@ -16,9 +18,9 @@ export default {
      * @returns {string}
      */
     getLoginLink() {
-      return `${this.$axios.defaults.baseURL}/login/?redirect_url=${
-        window.location
-      }`;
+      return `${
+        this.$axios.defaults.baseURL
+      }/login/?redirect_url=${validateHREF(window.location.href)}`;
     },
     /**
      * logout event
