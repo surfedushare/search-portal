@@ -15,7 +15,7 @@ module.exports = {
    * Headers of the page
    */
   head: {
-    title: 'Surf | Open Leermaterialen',
+    title: 'SURF | Open Leermaterialen',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -28,7 +28,7 @@ module.exports = {
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'Surf | Open Leermaterialen'
+        content: 'SURF | Open Leermaterialen'
       },
       {
         hid: 'og:description',
