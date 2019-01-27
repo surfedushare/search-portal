@@ -34,10 +34,11 @@
                 {{ $t('Name') }}
               </label>
               <input
+                v-validate="'required'"
                 id="name"
+                :class="{'is-danger': errors.has('name')}"
                 v-model="formData.name"
                 name="name"
-                required="required"
                 type="text"
                 class="communities__form__input"
               >
@@ -50,7 +51,9 @@
                 {{ $t('Description') }}
               </label>
               <textarea
+                v-validate="'required'"
                 id="description"
+                :class="{'is-danger': errors.has('description')}"
                 v-model="formData.description"
                 name="description"
                 required="required"
@@ -65,9 +68,10 @@
                 {{ $t('Website') }}
               </label>
               <input
+                v-validate="'required|url:require_protocol'"
                 id="website"
+                :class="{'is-danger': errors.has('website')}"
                 v-model="formData.website_url"
-                required="required"
                 name="website"
                 type="text"
                 class="communities__form__input"
@@ -98,8 +102,12 @@
               &#10004; {{ $t('Data-saved') }}
             </div>
             <button
+              :disabled="is_submitting|| !!(errors.items && errors.items.length)"
               type="submit"
-              class="button communities__form__button">{{ $t('save') }}</button>
+              class="button communities__form__button"
+            >
+              {{ $t('save') }}
+            </button>
           </div>
         </form>
       </div>
@@ -161,12 +169,13 @@ export default {
   data() {
     return {
       is_saved: false,
+      is_submitting: false,
       isShow: false,
       image_logo: '',
       formData: {
         name: false,
         description: false,
-        website_url: false,
+        website_url: '',
         logo: false,
         featured_image: false
       }
@@ -247,18 +256,32 @@ export default {
      * Save community data
      */
     onSubmit() {
-      const data = this.normalizeFormData();
-      this.$store
-        .dispatch('putCommunities', {
-          id: this.formData.id,
-          data: data
-        })
-        .then(() => {
-          this.is_saved = true;
-          setTimeout(() => {
-            this.is_saved = false;
-          }, 1000);
-        });
+      this.error = null;
+      this.is_submitting = true;
+
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          const data = this.normalizeFormData();
+          this.$store
+            .dispatch('putCommunities', {
+              id: this.formData.id,
+              data: data
+            })
+            .then(() => {
+              this.is_submitting = false;
+              this.is_saved = true;
+              setTimeout(() => {
+                this.is_saved = false;
+              }, 1000);
+            })
+            .catch(err => {
+              this.error = err;
+              this.is_submitting = false;
+            });
+        } else {
+          this.is_submitting = false;
+        }
+      });
     },
     /**
      * Generate the FormData

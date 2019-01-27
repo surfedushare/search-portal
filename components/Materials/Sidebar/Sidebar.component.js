@@ -2,6 +2,7 @@ import { mapGetters } from 'vuex';
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection';
 import AddCollection from './../../Popup/AddCollection';
 import Multiselect from './../../Multiselect';
+import { validateHREF } from '~/components/_helpers';
 
 export default {
   name: 'sidebar',
@@ -44,9 +45,9 @@ export default {
      * @returns {string}
      */
     getLoginLink() {
-      return `${this.$axios.defaults.baseURL}/login/?redirect_url=${
-        window.location
-      }`;
+      return `${
+        this.$axios.defaults.baseURL
+      }/login/?redirect_url=${validateHREF(window.location.href)}`;
     },
     /**
      * Show AddCollection popup
