@@ -102,6 +102,40 @@ export default {
           }
         ]
       });
+    },
+    /**
+     * generate copyright external link
+     * @param copyright
+     * @returns {string}
+     */
+    copyrightURL(copyright) {
+      let str = '';
+
+      switch (copyright) {
+        case 'cc-by':
+          str = 'https://creativecommons.org/licenses/by/4.0/legalcode';
+          break;
+        case 'cc-by-nc':
+          str = 'https://creativecommons.org/licenses/by-nc/4.0/legalcode';
+          break;
+        case 'cc-by-nc-nd':
+          str = 'https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode';
+          break;
+        case 'cc-by-nc-sa':
+          str = 'https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode';
+          break;
+        case 'cc-by-nd':
+          str = 'https://creativecommons.org/licenses/by-nd/4.0/legalcode';
+          break;
+        case 'cc-by-sa':
+          str = 'https://creativecommons.org/licenses/by-sa/4.0/legalcode';
+          break;
+        default:
+          str = 'https://creativecommons.org/licenses/';
+          break;
+      }
+
+      return str;
     }
   },
   computed: {

@@ -31,10 +31,12 @@
       <h4>{{ $t('Language') }}</h4>
       {{ extended_material.language_title }}
       <h4>{{ $t('Rights-of-use') }}</h4>
-      <span
+      <a
         class="material__grey_block-copyright"
         :class="extended_material.copyright"
-      ></span>
+        :href="copyrightURL(extended_material.copyright)"
+        target="_blank"
+      ></a>
       {{ $t('Naamsvermelding-Gelijk-delen') }}
       <a
         v-if="extended_material.url"
