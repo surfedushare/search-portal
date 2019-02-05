@@ -6,11 +6,12 @@
       class="keywords__item"
       v-for="keyword in material.keywords"
     >
-      <span
+      <nuxt-link
+        :to="url(keyword)"
         class="keywords__item-link"
       >
         {{keyword}}
-      </span>
+      </nuxt-link>
     </li>
   </ul>
   <div class="keywords__info" v-else>{{ $t('No-keywords') }}</div>
