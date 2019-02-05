@@ -45,6 +45,33 @@
         target="_blank"
       >{{ $t('Open-link') }}</a>
     </div>
+
+    <div class="quality__social material__social" ref="social_counters">
+      <social-sharing
+        :url="href"
+        :title="material.title"
+        :description="material.description"
+        inline-template
+        v-cloak
+        @close="closeSocialSharing"
+      >
+        <div class="quality__social_links">
+          <network network="linkedin" class="quality__social_link">
+            <i class="quality__social--linkedin"></i>
+            <span class="quality__social_counter" id="linkedin_counter"></span>
+          </network>
+          <network network="twitter" class="quality__social_link">
+            <i class="quality__social--twitter"></i>
+            <span class="quality__social_counter" id="twitter_counter"></span>
+          </network>
+        </div>
+      </social-sharing>
+      <a href="#share_link" class="quality__social_link" @click.prevent="showShareMaterial">
+        <i class="quality__social--share"></i>
+        <span class="quality__social_counter" id="url_counter"></span>
+      </a>
+    </div>
+
     <div class="material__left-box">
       <template v-if="!isAuthenticated">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
@@ -101,4 +128,11 @@
     :close="closeAddCollection"
     v-if="isShowAddCollection"
   />
+  <ShareMaterial
+    v-if="isShowShareMaterial"
+    :close="closeShareMaterial"
+    :is-show="isShowShareMaterial"
+    :material="material"
+    v-model="is_copied"
+  ></ShareMaterial>
 </div>

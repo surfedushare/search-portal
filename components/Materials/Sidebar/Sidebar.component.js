@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection';
 import AddCollection from './../../Popup/AddCollection';
+import ShareMaterial from '~/components/Popup/ShareMaterial';
 import Multiselect from './../../Multiselect';
 import { validateHREF } from '~/components/_helpers';
 
@@ -12,6 +13,7 @@ export default {
   components: {
     SaveMaterialInCollection,
     AddCollection,
+    ShareMaterial,
     Multiselect
   },
   mounted() {
@@ -28,6 +30,7 @@ export default {
           this.full_loading = true;
         });
       });
+    this.setSocialCounters();
   },
   data() {
     return {
@@ -36,6 +39,7 @@ export default {
       checked_collections: [],
       submitting: false,
       isShowSaveMaterial: false,
+      isShowShareMaterial: false,
       isShowAddCollection: false
     };
   },
@@ -136,6 +140,90 @@ export default {
       }
 
       return str;
+    },
+
+    /**
+     * Show the popup "Share rating"
+     */
+    showShareMaterial() {
+      this.isShowShareMaterial = true;
+    },
+
+    /**
+     * Close the popup "Share rating"
+     */
+    closeShareMaterial() {
+      this.isShowShareMaterial = false;
+      if (this.is_copied) {
+        this.closeSocialSharing('link');
+      }
+    },
+
+    /**
+     * Set counters value for share buttons
+     */
+    setSocialCounters() {
+      let isSetChanges = false;
+      const interval = setInterval(() => {
+        this.$nextTick().then(() => {
+          const { material } = this;
+          const { social_counters } = this.$refs;
+          const linkedIn = social_counters.querySelector('#linkedin_counter');
+
+          if (material && material.sharing_counters && linkedIn) {
+            const share = material.sharing_counters.reduce(
+              (prev, next) => {
+                prev[next.sharing_type] = next;
+                return prev;
+              },
+              {
+                linkedin: {
+                  counter_value: 0
+                },
+                twitter: {
+                  counter_value: 0
+                },
+                link: {
+                  counter_value: 0
+                }
+              }
+            );
+
+            if (share.linkedin) {
+              linkedIn.innerText = share.linkedin.counter_value;
+            }
+            if (share.twitter) {
+              social_counters.querySelector('#twitter_counter').innerText =
+                share.twitter.counter_value;
+            }
+            if (share.link) {
+              social_counters.querySelector('#url_counter').innerText =
+                share.link.counter_value;
+            }
+            if (linkedIn) {
+              isSetChanges = true;
+              clearInterval(interval);
+            }
+          }
+        });
+      }, 200);
+    },
+
+    /**
+     * Event close social popups
+     * @param type - String - social type
+     */
+    closeSocialSharing(type) {
+      this.$store
+        .dispatch('setMaterialSocial', {
+          id: this.$route.params.id,
+          params: {
+            shared: type
+          }
+        })
+        .then(() => {
+          this.setSocialCounters();
+        });
     }
   },
   computed: {
