@@ -1,6 +1,6 @@
 
 <template>
-  <section class="container main collections my_filter">
+  <section class="container main my_filter">
     <div
       class="center_block">
       <div
