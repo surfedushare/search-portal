@@ -149,6 +149,8 @@ export default {
     },
     closeDeleteMaterials() {
       this.isShowDeleteMaterials = false;
+      this.submitting = false;
+      this.setEditable(false);
     },
     deleteMaterials() {
       const { my_collection } = this;
