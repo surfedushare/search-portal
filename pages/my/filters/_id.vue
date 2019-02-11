@@ -55,7 +55,7 @@
           </div>
           <div class="my_filter__info_filter__button">
             <button
-              :disabled="materials && !materials.records_total || submitting"
+              :disabled="submitting"
               class="button"
               @click.prevent="saveFilter"
             >

@@ -48,10 +48,10 @@
       <button
         class="button"
         type="submit"
-        :disabled="!formData.search_text || (formData.search_text && !formData.search_text.length)"
       >
         {{ $t('Search') }}
       </button>
+      <!--:disabled="!formData.search_text || (formData.search_text && !formData.search_text.length)"-->
     </div>
     <div class="search__themes" v-if="!hideFilter">
       <h4 class="search__themes_title">{{ $t('Filter-search-results') }}</h4>

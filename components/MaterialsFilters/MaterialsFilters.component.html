@@ -11,24 +11,25 @@
       <div class="my_filters__item_wrapper tile__wrapper">
         <div class="my_filters__item_header">{{ $t('Filter-selection') }}</div>
         <h3 class="my_filters__item_ttl">
-          <nuxt-link
-            :to="localePath({name: 'my-filters-id', params: {id: material_filter.id}})"
-            class="my_filters__item_ttl_link"
-            :key="`${material_filter.id}`"
-          >
-            {{ material_filter.title }}
-          </nuxt-link>
+          {{ material_filter.title }}
         </h3>
         <!--<nuxt-link-->
-          <!--:to="`/my/`"-->
-          <!--class="my_filters__item_link"-->
-          <!--v-if="user"-->
-          <!--:key="`${user.id}`"-->
-          <!--&gt;-->
-          <!--{{user.full_name}}-->
+        <!--:to="`/my/`"-->
+        <!--class="my_filters__item_link"-->
+        <!--v-if="user"-->
+        <!--:key="`${user.id}`"-->
+        <!--&gt;-->
+        <!--{{user.full_name}}-->
         <!--</nuxt-link>-->
         <p class="my_filters__item_count">{{ $tc('search-results', material_filter.materials_count) }}</p>
       </div>
+      <nuxt-link
+        :to="localePath({name: 'my-filters-id', params: {id: material_filter.id}})"
+        class="my_filters__item_ttl_link"
+        :key="`${material_filter.id}`"
+      >
+        {{ material_filter.title }}
+      </nuxt-link>
     </li>
   </ul>
   <div class="my_filters__info" v-else>{{ $t('No-filters') }}</div>

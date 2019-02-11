@@ -304,11 +304,20 @@ pre {
     &--linkedin {
       background: url('./../images/linked-in.svg') no-repeat 50% 50%;
     }
+    &_link:hover &--linkedin {
+      background: @dark-blue url('./../images/linked-in-white.svg') no-repeat 50% 50%;
+    }
     &--twitter {
       background: url('./../images/twitter.svg') no-repeat 50% 50%;
     }
+    &_link:hover &--twitter {
+      background: @dark-blue url('./../images/twitter-white.svg') no-repeat 50% 50%;
+    }
     &--share {
       background: url('./../images/link-copy.svg') no-repeat 50% 50%;
+    }
+    &_link:hover &--share {
+      background: @dark-blue url('./../images/link-copy-white.svg') no-repeat 50% 50%;
     }
     &_counter {
       display: inline-block;
