@@ -1,6 +1,6 @@
 
 <template>
-  <section class="container main collections my_filters">
+  <section class="container main my_filters">
     <div class="center_block">
       <div class="my_filters__info ">
         <img
@@ -12,12 +12,6 @@
           :items="[{title: $t('Home'), url: localePath('index')}]"
         />
         <h2 class="my_filters__info_ttl">{{ $t('My-filters') }}</h2>
-        <Search
-          :hide-categories="true"
-          :hide-filter="true"
-          class="my_filters__info_search"
-          active-category-external-id="lom.technical.format"
-        />
       </div>
       <div class="my_filters__add">
         <button
@@ -105,6 +99,8 @@ export default {
     margin: 0 0 87px;
     border-radius: 20px;
     position: relative;
+    min-height: 271px;
+
     @media @tablet {
       margin-left: 25px;
       margin-right: 25px;

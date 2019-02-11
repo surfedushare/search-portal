@@ -1,6 +1,6 @@
 
 <template>
-  <section class="container main collections my_filter">
+  <section class="container main my_filter">
     <div
       class="center_block">
       <div
@@ -55,7 +55,7 @@
           </div>
           <div class="my_filter__info_filter__button">
             <button
-              :disabled="materials && !materials.records_total || submitting"
+              :disabled="submitting"
               class="button"
               @click.prevent="saveFilter"
             >

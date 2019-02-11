@@ -29,15 +29,20 @@
           <h3 class="communities__item_name">{{ community.name }}</h3>
           <div class="communities__item_count">{{ $tc('learning-materials', community.materials_count) }}</div>
           <div class="communities__item_description">{{ community.description }}</div>
-          <nuxt-link
-          :to="localePath({name: 'communities-community', params: {community: community.id}})"
+          <div
           class="arrow-link communities__item_link"
-          :key="`${community.id}`"
-          @click.native="setCommunity(community)"
           >
             {{ $t('See') }}
-          </nuxt-link>
+          </div>
         </div>
+        <nuxt-link
+          :to="localePath({name: 'communities-community', params: {community: community.id}})"
+          class="communities__item_link_wrapper"
+          :key="`${community.id}`"
+          @click.native="setCommunity(community)"
+        >
+          {{ $t('See') }}
+        </nuxt-link>
       </li>
     </ul>
   </div>

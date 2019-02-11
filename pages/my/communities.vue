@@ -12,12 +12,6 @@
           :items="[{title: $t('Home'), url: localePath('index')}]"
         />
         <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
-        <Search
-          :hide-categories="true"
-          :hide-filter="true"
-          class="communities__info_search"
-          active-category-external-id="lom.technical.format"
-        />
       </div>
       <div class="communities__form">
         <form
@@ -350,6 +344,8 @@ export default {
     margin: 0 0 93px;
     border-radius: 20px;
     position: relative;
+    min-height: 271px;
+
     &_bg {
       position: absolute;
       right: 26px;

@@ -12,12 +12,6 @@
           :items="[{title: $t('Home'), url: localePath('index')}]"
         />
         <h2 class="collections__info_ttl">{{ $t('My-collections') }}</h2>
-        <Search
-          :hide-categories="true"
-          :hide-filter="true"
-          class="collections__info_search"
-          active-category-external-id="lom.technical.format"
-        />
       </div>
     </div>
     <div class="center_block">
@@ -129,6 +123,8 @@ export default {
     margin: 0 0 87px;
     border-radius: 20px;
     position: relative;
+    min-height: 271px;
+
     &_bg {
       position: absolute;
       right: 26px;

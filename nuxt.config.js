@@ -5,6 +5,10 @@ const prodBaseUrl =
 module.exports = {
   mode: 'spa',
 
+  router: {
+    middleware: 'matomo'
+  },
+
   env: {
     logoutURL:
       process.env.LOGOUT_URL || 'https://engine.test.surfconext.nl/logout',
@@ -149,8 +153,10 @@ module.exports = {
    * Nuxt.js modules
    */
   modules: [
-    // Doc: https://github.com/nuxt-community/axios-module#usage
+    // Doc: https://github.com/pimlie/nuxt-matomo
+    ['nuxt-matomo', { matomoUrl: '//webstats.surf.nl/', siteId: 54 }],
 
+    // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     [
       'nuxt-i18n',
@@ -173,10 +179,7 @@ module.exports = {
         },
         lazy: true,
         langDir: 'static/locales/'
-      },
-      // Doc: https://github.com/pimlie/nuxt-matomo
-      'nuxt-matomo',
-      { matomoUrl: 'https://webstats.surf.nl/', siteId: 54 }
+      }
     ]
   ],
   /**

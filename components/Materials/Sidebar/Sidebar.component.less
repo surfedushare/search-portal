@@ -12,6 +12,7 @@
     &-box {
       background: url('./../../../assets/images/keurmerk.svg') no-repeat 1px 8px;
       padding: 3px 0 0 35px;
+      margin-top: 37px;
 
       @media @mobile {
         background-position-x: 24px;
@@ -70,7 +71,7 @@
     border-radius: 10px;
     padding: 32px 25px 26px;
     background-color: fade(@light-grey, 90%);
-    margin: 0 0 30px;
+    margin: 0 0 34px;
 
     h4 {
       line-height: 20px;
@@ -126,6 +127,16 @@
       background-repeat: no-repeat;
       background-size: 25px 25px;
       padding: 13px 23px 13px 36px;
+    }
+  }
+
+  &__social {
+    @media @mobile, @tablet {
+      display: flex;
+      width: 100%;
+    }
+    .title-social {
+      display: none;
     }
   }
 }

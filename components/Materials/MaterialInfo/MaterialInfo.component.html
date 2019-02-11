@@ -14,15 +14,11 @@
     <a
       :href="`/applaud-materials/?material__external_id=${material.external_id}`"
       class="quality__applauds quality__applauds--link"
-      v-if="isAuthenticated && !is_applauded"
       @click.prevent="setApplaudMaterial(material)"
       :class="{'quality__applauds--saving': is_loading_applaud}"
     >
       {{ material.number_of_applauds}}
     </a>
-    <div class="quality__applauds" v-else :class="{'quality__applauds--applauded': is_applauded}">
-      {{ material.number_of_applauds}}
-    </div>
     <div class="quality__collections">
       <span class="quality__collections_count">
         {{material.number_of_collections}}
@@ -48,31 +44,6 @@
         @click.prevent="showPopupSaveRating"
       >
         {{ $t('Geef-waardering') }}
-      </a>
-    </div>
-    <div class="quality__social" ref="social_counters">
-      <social-sharing
-        :url="href"
-        :title="material.title"
-        :description="material.description"
-        inline-template
-        v-cloak
-        @close="closeSocialSharing"
-      >
-        <div class="quality__social_links">
-          <network network="linkedin" class="quality__social_link">
-            <i class="quality__social--linkedin"></i>
-            <span class="quality__social_counter" id="linkedin_counter"></span>
-          </network>
-          <network network="twitter" class="quality__social_link">
-            <i class="quality__social--twitter"></i>
-            <span class="quality__social_counter" id="twitter_counter"></span>
-          </network>
-        </div>
-      </social-sharing>
-      <a href="#share_link" class="quality__social_link" @click.prevent="showShareMaterial">
-        <i class="quality__social--share"></i>
-        <span class="quality__social_counter" id="url_counter"></span>
       </a>
     </div>
   </div>
@@ -114,11 +85,4 @@
     :is-show="isShow"
     :material="material"
   ></SaveRating>
-  <ShareMaterial
-    v-if="isShowShareMaterial"
-    :close="closeShareMaterial"
-    :is-show="isShowShareMaterial"
-    :material="material"
-    v-model="is_copied"
-  ></ShareMaterial>
 </div>
