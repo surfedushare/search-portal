@@ -39,6 +39,7 @@ class Material(UUIDModel):
     title = django_models.TextField(blank=True, null=True)
     description = django_models.TextField(blank=True, null=True)
     keywords = django_models.TextField(blank=True, null=True)
+    applaud_count = django_models.IntegerField(default=0)
 
     def __str__(self):
         return self.external_id
