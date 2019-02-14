@@ -2,6 +2,9 @@ from .base import *
 
 SECRET_KEY = '<put your SECRET_KEY here>'
 
+# run debug turned off in production!
+DEBUG = False
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -13,8 +16,8 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['*']  # specify the list of allowed hosts or '*' to allow all
-ALLOWED_REDIRECT_ENDPOINTS = ['*']  # specify the list of allowed redirection endpoints or '*' to allow all
+ALLOWED_HOSTS = []  # specify the list of allowed hosts or '*' to allow all
+ALLOWED_REDIRECT_ENDPOINTS = []  # specify the list of allowed redirection endpoints or '*' to allow all
 
 EDUREP_SOAP_SUPPLIER_ID = "<put here your SUPPLIER ID to send SOAP messages to EduRep>"
 

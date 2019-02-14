@@ -54,6 +54,13 @@ INSTALLED_APPS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -182,7 +189,7 @@ LOGGING = {
 # OpenID Connect configuration
 OIDC_CONFIG = {
     "version": "1.0",
-    "verify_ssl": False,
+    "verify_ssl": True,
     "response_type": "code",
     "redirect_uri": "http://127.0.0.1:8000/complete/surfconext/",
     "client_id": "",
