@@ -237,23 +237,31 @@ class ApplaudMaterialSerializer(serializers.ModelSerializer):
     """
 
     material = MaterialShortSerializer()
+    applaud_count = serializers.IntegerField(read_only=True)
 
     def create(self, validated_data):
         external_id = validated_data["material"]["external_id"]
         material, _ = Material.objects.get_or_create(external_id=external_id)
         validated_data["material"] = material
 
+        lookup_fields = {"material": material}
         user = _get_and_check_user_from_context(self.context)
         if user:
-            validated_data["user_id"] = user.id
+            lookup_fields["user_id"] = user.id
+        else:
+            lookup_fields["user__isnull"] = True
 
-        instance, _ = ApplaudMaterial.objects.get_or_create(**validated_data)
+        instance, _ = ApplaudMaterial.objects.get_or_create(
+            **lookup_fields, defaults=validated_data)
+
+        instance.applaud_count += 1
+        instance.save()
 
         return instance
 
     class Meta:
         model = ApplaudMaterial
-        fields = ('material',)
+        fields = ('material', 'applaud_count', )
 
 
 def _get_and_check_user_from_context(context):
