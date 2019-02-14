@@ -81,7 +81,8 @@ def add_extra_parameters_to_materials(user, materials):
         qs = ApplaudMaterial.objects.prefetch_related("material")
         qs = qs.filter(material__external_id=m["external_id"])
         qs = qs.aggregate(applaud_cnt=Sum("applaud_count"))
-        m["number_of_applauds"] = qs.get("applaud_cnt", 0)
+        applaud_cnt = qs.get("applaud_cnt")
+        m["number_of_applauds"] = applaud_cnt if applaud_cnt else 0
 
         qs = ViewMaterial.objects.prefetch_related("material")
         qs = qs.filter(material__external_id=m["external_id"])
