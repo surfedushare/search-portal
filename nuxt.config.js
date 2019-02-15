@@ -87,10 +87,6 @@ module.exports = {
       },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro'
-      },
-      {
-        rel: 'stylesheet',
         href: 'https://use.typekit.net/eya4qgt.css'
       }
     ]
