@@ -31,9 +31,11 @@ export default {
         });
       });
     this.setSocialCounters();
+    this.href = validateHREF(window.location.href);
   },
   data() {
     return {
+      href: '',
       full_loading: false,
       collection: '',
       checked_collections: [],
