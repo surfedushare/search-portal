@@ -204,7 +204,6 @@ class XmlEndpointApiClient:
         :return: parsed response
         """
 
-        print(query)
         parameters = dict(version=version,
                           operation=operation,
                           recordPacking=record_packing,

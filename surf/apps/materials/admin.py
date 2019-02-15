@@ -73,7 +73,7 @@ class ApplaudMaterialAdmin(admin.ModelAdmin):
     Provides admin options and functionality for ApplaudMaterial model.
     """
 
-    list_display = ("material", "user", )
+    list_display = ("material", "user", "applaud_count", )
     ordering = ("material", "user", )
     list_filter = ("material", "user", )
 

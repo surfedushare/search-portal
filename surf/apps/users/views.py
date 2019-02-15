@@ -211,7 +211,7 @@ def _create_oidc_client():
     """
 
     client = Client(client_id=_OIDC_CONFIG.get("client_id", ""),
-                    verify_ssl=_OIDC_CONFIG.get("verify_ssl", False),
+                    verify_ssl=_OIDC_CONFIG.get("verify_ssl", True),
                     client_authn_method=CLIENT_AUTHN_METHOD)
 
     client.set_client_secret(_OIDC_CONFIG.get("client_secret", ""))

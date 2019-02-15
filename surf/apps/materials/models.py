@@ -77,14 +77,18 @@ class ApplaudMaterial(UUIDModel):
 
     user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
                                     related_name='applauds',
-                                    on_delete=django_models.CASCADE)
+                                    on_delete=django_models.CASCADE,
+                                    null=True, blank=True)
 
     material = django_models.ForeignKey(Material,
                                         related_name="applauds",
                                         on_delete=django_models.CASCADE)
 
+    applaud_count = django_models.IntegerField(default=0)
+
     def __str__(self):
-        return "{} - {}".format(self.user.username, self.material.external_id)
+        username = self.user.username if self.user else None
+        return "{} - {}".format(username, self.material.external_id)
 
 
 class ViewMaterial(UUIDModel):

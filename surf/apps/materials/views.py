@@ -22,7 +22,7 @@ from rest_framework.mixins import (
     CreateModelMixin
 )
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
@@ -30,7 +30,6 @@ from rest_framework.decorators import action
 
 from surf.apps.filters.models import FilterCategory
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_filters
-from surf.apps.core.mixins import ListDestroyModelMixin
 
 from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
@@ -509,7 +508,6 @@ class CollectionViewSet(ModelViewSet):
 
 class ApplaudMaterialViewSet(ListModelMixin,
                              CreateModelMixin,
-                             ListDestroyModelMixin,
                              GenericViewSet):
     """
     View class that provides `get`, `create` and `delete` methods
@@ -518,13 +516,16 @@ class ApplaudMaterialViewSet(ListModelMixin,
 
     queryset = ApplaudMaterial.objects.all()
     serializer_class = ApplaudMaterialSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     filter_class = ApplaudMaterialFilter
 
     def get_queryset(self):
         # filter only "applauds" of current user
         qs = super().get_queryset()
-        qs = qs.filter(user_id=self.request.user.id)
+        if self.request.user.is_authenticated:
+            qs = qs.filter(user_id=self.request.user.id)
+        else:
+            qs = qs.none()
         return qs
 
 
