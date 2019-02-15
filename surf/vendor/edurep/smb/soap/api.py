@@ -19,11 +19,11 @@ _INSERT_TEMPLATE = """
       <smd:smo xmlns:smd="http://xsd.kennisnet.nl/smd/1.0/"
          xmlns:hreview="http://xsd.kennisnet.nl/smd/hreview/1.0/">
           <hreview:hReview>
-            <hreview:info>{}</hreview:info>
-            <hreview:rating>{}</hreview:rating>
+            <hreview:info><![CDATA[{}]]></hreview:info>
+            <hreview:rating><![CDATA[{}]]></hreview:rating>
           </hreview:hReview>
-          <smd:supplierId>{}</smd:supplierId>
-          <smd:userId>{}</smd:userId>
+          <smd:supplierId><![CDATA[{}]]></smd:supplierId>
+          <smd:userId><![CDATA[{}]]></smd:userId>
         </smd:smo>
     </smd:insertSMO>
   </soapenv:Body>
@@ -38,8 +38,8 @@ _DELETE_TEMPLATE = """
  <soapenv:Body>
   <smd:deleteSMO>
    <smd:smo>
-    <smd:smoId>{}</smd:smoId>
-    <smd:supplierId>{}</smd:supplierId>
+    <smd:smoId><![CDATA[{}]]></smd:smoId>
+    <smd:supplierId><![CDATA[{}]]></smd:supplierId>
    </smd:smo>
   </smd:deleteSMO>
  </soapenv:Body>
