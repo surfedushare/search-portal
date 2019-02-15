@@ -1,3 +1,5 @@
+import validate from 'uuid-validate';
+
 /**
  * formatting date
  * @param str - String
@@ -25,4 +27,13 @@ export const formatDate = (str, format) => {
   }
 
   return false;
+};
+
+/**
+ * Validate ID
+ * @param str
+ * @returns {Boolean}
+ */
+export const validateID = str => {
+  return validate(str, 4);
 };
