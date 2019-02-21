@@ -315,6 +315,8 @@ class MaterialRatingAPIView(APIView):
 
             # remove old reviews in EduRep before send a new one
             for r in reviews:
+                if surfconext_auth.external_id != r.get("user_id"):
+                    continue
                 sac.remove_review(r["external_id"],
                                   settings.EDUREP_SOAP_SUPPLIER_ID)
 
