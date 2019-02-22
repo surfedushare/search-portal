@@ -51,24 +51,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['themes', 'show_header_menu', 'show_sub_menu']),
-    sortedThemes() {
-      const { themes } = this;
-
-      if (themes) {
-        return themes.results.slice(0).sort((a, b) => {
-          if (a.title < b.title) {
-            return -1;
-          }
-          if (a.title > b.title) {
-            return 1;
-          }
-          return 0;
-        });
-      }
-
-      return false;
-    }
+    ...mapGetters(['sortedThemes', 'show_header_menu', 'show_sub_menu'])
   },
 
   directives: {

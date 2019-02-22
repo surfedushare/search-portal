@@ -34,7 +34,7 @@
       </div>
       <div class="center_block main__thems_and_communities">
         <Themes
-          :themes="themes"
+          :themes="sortedThemes"
           class="main__thems"
         />
         <PopularList
@@ -78,7 +78,7 @@ export default {
     Preview
   },
   computed: {
-    ...mapGetters(['materials', 'communities', 'themes', 'statistic']),
+    ...mapGetters(['materials', 'communities', 'sortedThemes', 'statistic']),
     /**
      * Get formatted 'number_of_views'
      * @returns String
