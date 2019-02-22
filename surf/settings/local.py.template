@@ -19,7 +19,15 @@ DATABASES = {
 ALLOWED_HOSTS = []  # specify the list of allowed hosts or '*' to allow all
 ALLOWED_REDIRECT_ENDPOINTS = []  # specify the list of allowed redirection endpoints or '*' to allow all
 
+CORS_ORIGIN_ALLOW_ALL = False # set to False to enable CORS in production!
+CORS_ORIGIN_WHITELIST = [] # specify the list of allowed origins
+
 EDUREP_SOAP_SUPPLIER_ID = "<put here your SUPPLIER ID to send SOAP messages to EduRep>"
+
+EDUREP_XML_API_ENDPOINT = "http://staging.edurep.kennisnet.nl:8000"
+EDUREP_SOAP_API_ENDPOINT = "http://staging.edurep.kennisnet.nl/smdBroker/ws"
+EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
+VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
 
 # You can rewrite Surf OIDC config if you need
 # OIDC_CONFIG["client_id"] = "<put your SURF APP Client ID here>"
