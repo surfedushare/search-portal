@@ -5,6 +5,11 @@ This module contains API view serializers for materials app.
 from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from surf.apps.core.serializers import (
+    EscapeRepresentationCharField,
+    EscapeOnValidationCharField
+)
+
 from surf.apps.materials.models import (
     Collection,
     Material,
@@ -94,7 +99,7 @@ class MaterialRatingSerializer(serializers.Serializer):
     Material rating instance serializer
     """
 
-    object_id = serializers.CharField()
+    object_id = EscapeOnValidationCharField()
     rating = serializers.IntegerField(validators=[MinValueValidator(1),
                                                   MaxValueValidator(5)])
 
@@ -177,6 +182,7 @@ class CollectionSerializer(CollectionShortSerializer):
     Collection instance serializer
     """
 
+    title = EscapeRepresentationCharField()
     materials_count = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()

@@ -54,6 +54,22 @@ INSTALLED_APPS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken',
+    'user-agent',
+    'accept-encoding',
+    'response-type',
+)
+
+CORS_EXPOSE_HEADERS = (
+    'content-disposition',
+)
+
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
@@ -200,7 +216,7 @@ OIDC_CONFIG = {
     "token_endpoint": "https://oidc.test.surfconext.nl/token",
     "revocation_endpoint": "https://oidc.test.surfconext.nl/revoke",
     "jwks_uri": "https://oidc.test.surfconext.nl/jwk",
-    "scope": ["openid"],
+    "scope": ["openid", "groups"],
     "acr_values": ["password", "mail_two_factor",]
 }
 
