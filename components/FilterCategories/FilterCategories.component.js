@@ -25,15 +25,15 @@ export default {
         end_date: null
       },
       filter_sort: [
-        'custom_theme.id',
-        'lom.classification.obk.discipline.id',
-        'lom.technical.format',
         'lom.classification.obk.educationallevel.id',
+        'lom.technical.format',
         'lom.general.language',
         'lom.lifecycle.contribute.publisher',
-        'lom.rights.copyrightandotherrestrictions',
+        'lom.lifecycle.contribute.publisherdate',
+        'custom_theme.id',
+        'lom.classification.obk.discipline.id',
         'lom.general.aggregationlevel',
-        'lom.lifecycle.contribute.publisherdate'
+        'lom.rights.copyrightandotherrestrictions'
       ]
     };
   },

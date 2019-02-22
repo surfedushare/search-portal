@@ -12,12 +12,12 @@
           :items="[{title: $t('Home'), url: localePath('index')}]"
         />
         <h2 class="how_work__info_ttl">{{ $t('How-does-it-work') }}</h2>
-        <Search
-          v-model="search"
-          :hide-categories="true"
-          :hide-filter="true"
-          class="how_work__info_search"
-        />
+        <!--<Search-->
+        <!--v-model="search"-->
+        <!--:hide-categories="true"-->
+        <!--:hide-filter="true"-->
+        <!--class="how_work__info_search"-->
+        <!--/>-->
       </div>
     </div>
     <div class="center_block">
