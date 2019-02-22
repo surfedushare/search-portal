@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex';
 import { generateSearchMaterialsQuery } from '../_helpers';
 
 export default {
@@ -15,12 +16,13 @@ export default {
      * @returns {{path, query}}
      */
     generateLink(discipline) {
-      const theme = this.theme;
+      const { theme, all_educationallevels } = this;
       const filters = [
         {
           external_id: 'lom.classification.obk.discipline.id',
           items: [discipline.external_id]
-        }
+        },
+        all_educationallevels
       ];
       if (theme) {
         filters.push({
@@ -37,5 +39,7 @@ export default {
       });
     }
   },
-  computed: {}
+  computed: {
+    ...mapGetters(['all_educationallevels'])
+  }
 };

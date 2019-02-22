@@ -32,64 +32,66 @@
     </select>
   </div>
 
-  <ul v-if="categories" class="filter-categories__items">
-    <li
-      v-for="(category, index) in categories.results"
-      class="filter-categories__item"
-      v-if="!category.hide"
-    >
-      <h4
-        @click="onToggleCategory(category.external_id)"
-        class="filter-categories__item_title"
-        :class="{'filter-categories__item_title--hide': category.selected}"
-      >{{ category.title }}</h4>
-      <div
-        v-if="category.external_id === publisherdate && category.selected"
-        class="filter-categories__subitems"
+  <div class="filter-categories__items">
+    <ul v-if="categories" class="filter-categories__items_wrapper">
+      <li
+        v-for="(category, index) in categories.results"
+        class="filter-categories__item"
+        v-if="!category.hide"
       >
-        <DatesRange
-          v-if="data"
-          :inline="true"
-          :hide-select="true"
-          v-model="data"
-          theme="min"
-          :disable-future-days="true"
-        />
-      </div>
-      <ul v-else-if="category.selected" class="filter-categories__subitems">
-        <li
-          v-for="(item, indexItem) in category.items"
-          class="filter-categories__subitem"
-          v-if="category.show_all || indexItem < visible_items"
-          :class="{'filter-categories__subitem--empty': item.is_empty}"
+        <h4
+          @click="onToggleCategory(category.external_id)"
+          class="filter-categories__item_title"
+          :class="{'filter-categories__item_title--hide': category.selected}"
+        >{{ category.title }}</h4>
+        <div
+          v-if="category.external_id === publisherdate && category.selected"
+          class="filter-categories__subitems"
         >
-          <input
-            type="checkbox"
-            :id="item.external_id"
-            :value="item.external_id"
-            v-model="filter[index].items[indexItem]"
-            @change="onChange"
+          <DatesRange
+            v-if="data"
+            :inline="true"
+            :hide-select="true"
+            v-model="data"
+            theme="min"
+            :disable-future-days="true"
+          />
+        </div>
+        <ul v-else-if="category.selected" class="filter-categories__subitems">
+          <li
+            v-for="(item, indexItem) in category.items"
+            class="filter-categories__subitem"
+            v-if="category.show_all || indexItem < visible_items"
+            :class="{'filter-categories__subitem--empty': item.is_empty}"
           >
-          <label :for="item.external_id">{{item.title}}</label>
-        </li>
-        <li v-if="category.items.length > visible_items" class="filter-categories__subitem--show-more">
-          <a
-            href="/show-more/"
-            @click.prevent="onToggleShowAll(category.id)"
-            v-if="category.show_all"
-          >
-            {{ $t('Hide') }}
-          </a>
-          <a
-            href="/show-more/"
-            @click.prevent="onToggleShowAll(category.id)"
-            v-else
-          >
-            {{ $t('View-more') }} ({{ category.items.length - visible_items }})
-          </a>
-        </li>
-      </ul>
-    </li>
-  </ul>
+            <input
+              type="checkbox"
+              :id="item.external_id"
+              :value="item.external_id"
+              v-model="filter[index].items[indexItem]"
+              @change="onChange"
+            >
+            <label :for="item.external_id">{{item.title}}</label>
+          </li>
+          <li v-if="category.items.length > visible_items" class="filter-categories__subitem--show-more">
+            <a
+              href="/show-more/"
+              @click.prevent="onToggleShowAll(category.id)"
+              v-if="category.show_all"
+            >
+              {{ $t('Hide') }}
+            </a>
+            <a
+              href="/show-more/"
+              @click.prevent="onToggleShowAll(category.id)"
+              v-else
+            >
+              {{ $t('View-more') }} ({{ category.items.length - visible_items }})
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </section>
 

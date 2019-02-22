@@ -101,6 +101,12 @@
           class="material__left_select"
           :disabled="submitting"
         ></Multiselect>
+        <a
+          href="/add_collection/"
+          @click=""
+          class="add-link"
+          @click.prevent="addCollection"
+        >{{ $t('Make-a-collection') }}</a>
       </template>
       <template
         v-else-if="extended_material.has_bookmark"
@@ -114,6 +120,12 @@
           class="material__left_select"
           :disabled="submitting"
         ></Multiselect>
+        <a
+          href="/add_collection/"
+          @click=""
+          class="add-link"
+          @click.prevent="addCollection"
+        >{{ $t('Make-a-collection') }}</a>
       </template>
     </div>
   </div>
