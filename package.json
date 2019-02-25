@@ -5,10 +5,10 @@
   "author": "Yurii Dunaev",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://surf.stg.mqd.me/api/v1/ PROD_URL=http://localhost:3000 nuxt",
-    "build": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://surf.stg.mqd.me/api/v1/ PROD_URL=https://surfcatalog.firebaseapp.com nuxt build",
-    "start": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://surf.stg.mqd.me/api/v1/ PROD_URL=https://surfcatalog.firebaseapp.com nuxt start",
-    "generate": "cross-env NODE_ENV=dev LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://surf.stg.mqd.me/api/v1/ PROD_URL=https://surfcatalog.firebaseapp.com nuxt generate",
+    "dev": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://back-dev.surfcatalog.nl/api/v1/ PROD_URL=http://localhost:3000 nuxt",
+    "build": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://back-dev.surfcatalog.nl/api/v1/ PROD_URL=front-dev.surfcatalog.nl nuxt build",
+    "start": "cross-env NODE_ENV=development LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://back-dev.surfcatalog.nl/api/v1/ PROD_URL=front-dev.surfcatalog.nl nuxt start",
+    "generate": "cross-env NODE_ENV=dev LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://back-dev.surfcatalog.nl/api/v1/ PROD_URL=front-dev.surfcatalog.nl nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
