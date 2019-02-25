@@ -6,8 +6,9 @@ export default function({ $axios, store }) {
     function(config) {
       // Do something before request is sent
       if (
-        (config.id && !validateID(config.id)) ||
-        (config.params && typeof config.params !== 'object')
+        // (config.id && !validateID(config.id)) ||
+        config.params &&
+        typeof config.params !== 'object'
       ) {
         throw new axios.Cancel('Operation canceled.');
       } else {

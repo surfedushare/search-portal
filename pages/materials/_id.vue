@@ -47,13 +47,13 @@ export default {
     ...mapGetters(['material', 'material_communities', 'materials'])
   },
   mounted() {
-    const { materials } = this;
-    if (!materials) {
-      this.$store.dispatch('searchMaterials', {
-        page_size: 4,
-        search_text: []
-      });
-    }
+    // const { materials } = this;
+    // if (!materials) {
+    //   this.$store.dispatch('searchMaterials', {
+    //     page_size: 4,
+    //     search_text: []
+    //   });
+    // }
     this.$store.dispatch('getMaterial', this.$route.params.id);
   }
 };

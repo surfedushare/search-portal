@@ -49,9 +49,11 @@ export default {
       commit('SET_THEMES', themes);
     },
     async getTheme({ commit }, id) {
-      const theme = await this.$axios.$get(`themes`, { id });
-      commit('SET_THEME', theme);
-      return theme;
+      if (validateID(id)) {
+        const theme = await this.$axios.$get(`themes/${id}/`);
+        commit('SET_THEME', theme);
+        return theme;
+      }
     },
     async getThemeDisciplines({ commit }, id) {
       if (validateID(id)) {
