@@ -1,6 +1,8 @@
 const pkg = require('./package');
+const config = require('./config');
+
 const prodBaseUrl =
-  process.env.PROD_URL || 'https://surfcatalog-stage.firebaseapp.com';
+  (config && config.PROD_URL) || 'https://surfcatalog-stage.firebaseapp.com';
 
 module.exports = {
   mode: 'spa',
@@ -11,7 +13,8 @@ module.exports = {
 
   env: {
     logoutURL:
-      process.env.LOGOUT_URL || 'https://engine.test.surfconext.nl/logout',
+      (config && config.LOGOUT_URL) ||
+      'https://engine.test.surfconext.nl/logout',
     prodBaseUrl
   },
 
@@ -184,7 +187,7 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     headers: { Pragma: 'no-cache' },
-    baseURL: process.env.BASE_URL || 'https://surf.stg.mqd.me/api/v1/'
+    baseURL: (config && config.BASE_URL) || 'https://surf.stg.mqd.me/api/v1/'
   },
 
   /**
