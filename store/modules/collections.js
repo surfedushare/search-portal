@@ -1,4 +1,9 @@
-import { formatDate } from './_helpers';
+import {
+  formatDate,
+  validateID,
+  validateIDString,
+  validateParams
+} from './_helpers';
 
 export default {
   state: {
@@ -52,96 +57,143 @@ export default {
       return collections;
     },
     async getMyCollection({ state, commit }, id) {
-      const collection = await this.$axios.$get(`collections/${id}/`);
-      commit('SET_MY_COLLECTION', collection);
-      return collection;
+      if (validateID(id)) {
+        const collection = await this.$axios.$get(`collections/${id}/`);
+        commit('SET_MY_COLLECTION', collection);
+        return collection;
+      } else {
+        console.error('Validate error: ', id);
+      }
     },
     async setCollectionSocial({ commit }, { id, params }) {
-      const collection = await this.$axios.$get(`collections/${id}/`, {
-        params
-      });
-      commit('SET_MY_COLLECTION', collection);
-      return collection;
+      if (validateID(id) && validateParams(params)) {
+        const collection = await this.$axios.$get(`collections/${id}/`, {
+          params
+        });
+        commit('SET_MY_COLLECTION', collection);
+        return collection;
+      } else {
+        console.error('Validate error: ', { id, params });
+      }
     },
     async putMyCollection({ state, commit }, data) {
-      const collection = await this.$axios.$put(
-        `collections/${data.id}/`,
-        data
-      );
-      commit('SET_MY_COLLECTION', collection);
-      return collection;
+      if (validateID(data.id) && validateParams(data)) {
+        const collection = await this.$axios.$put(
+          `collections/${data.id}/`,
+          data
+        );
+        commit('SET_MY_COLLECTION', collection);
+        return collection;
+      } else {
+        console.error('Validate error: ', data);
+      }
     },
     async checkMaterialInCollection({ state, commit }, id) {
-      const collection = await this.$axios.$get('collections/', {
-        params: {
-          is_owner: true,
-          material_id: id
-        }
-      });
-      return collection;
+      if (validateIDString(id)) {
+        const collection = await this.$axios.$get('collections/', {
+          params: {
+            is_owner: true,
+            material_id: id
+          }
+        });
+        return collection;
+      } else {
+        console.error('Validate error: ', id);
+      }
     },
     async deleteMyCollection({ state, commit }, id) {
-      const collection = await this.$axios.$delete(`collections/${id}/`);
-      commit('DELETE_MY_COLLECTION', id);
-      return collection;
+      if (validateID(id)) {
+        const collection = await this.$axios.$delete(`collections/${id}/`);
+        commit('DELETE_MY_COLLECTION', id);
+        return collection;
+      } else {
+        console.error('Validate error: ', id);
+      }
     },
     async postMyCollection({ state, commit }, data) {
-      const collection = await this.$axios.$post(`collections/`, data);
-      commit('ADD_MY_COLLECTION', collection);
-      return collection;
+      if (validateParams(data)) {
+        const collection = await this.$axios.$post(`collections/`, data);
+        commit('ADD_MY_COLLECTION', collection);
+        return collection;
+      } else {
+        console.error('Validate error: ', data);
+      }
     },
     async setMaterialInMyCollection(
       { state, commit },
       { collection_id, data }
     ) {
-      const material = await this.$axios.$post(
-        `collections/${collection_id}/materials/`,
-        data
-      );
-      commit('SET_MATERIAL_TO_MY_COLLECTION', material);
-      return data;
+      if (validateID(collection_id) && validateParams(data)) {
+        const material = await this.$axios.$post(
+          `collections/${collection_id}/materials/`,
+          data
+        );
+        commit('SET_MATERIAL_TO_MY_COLLECTION', material);
+        return data;
+      } else {
+        console.error('Validate error: ', { collection_id, data });
+      }
     },
     async removeMaterialFromMyCollection(
       { state, commit },
       { collection_id, data }
     ) {
-      return this.$axios.$delete(`collections/${collection_id}/materials/`, {
-        data
-      });
+      if (validateID(collection_id) && validateParams(data)) {
+        return this.$axios.$delete(`collections/${collection_id}/materials/`, {
+          data
+        });
+      } else {
+        console.error('Validate error: ', { collection_id, data });
+      }
     },
     async getMaterialInMyCollection({ state, commit }, { id, params }) {
-      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
-      const materialsInfo = await this.$axios.$get(
-        `collections/${id}/materials/`,
-        {
-          params: {
-            ...params,
-            timestamp: Date.now()
+      if (validateIDString(id) && validateParams(params)) {
+        commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
+        const materialsInfo = await this.$axios.$get(
+          `collections/${id}/materials/`,
+          {
+            params: {
+              ...params,
+              timestamp: Date.now()
+            }
           }
-        }
-      );
-      commit('SET_MATERIAL_TO_MY_COLLECTION', materialsInfo);
-      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
-      return materialsInfo;
+        );
+        commit('SET_MATERIAL_TO_MY_COLLECTION', materialsInfo);
+        commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
+        return materialsInfo;
+      } else {
+        console.error('Validate error: ', { id, params });
+      }
     },
     async searchMaterialInMyCollection({ state, commit }, { id, params }) {
-      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
-      const materials = await this.$axios.$post(
-        `collections/${id}/search/`,
-        params
-      );
-      commit('GET_MATERIAL_TO_MY_COLLECTION', materials);
-      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
-      return materials;
+      if (validateIDString(id) && validateParams(params)) {
+        commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
+        const materials = await this.$axios.$post(
+          `collections/${id}/search/`,
+          params
+        );
+        commit('GET_MATERIAL_TO_MY_COLLECTION', materials);
+        commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
+        return materials;
+      } else {
+        console.error('Validate error: ', { id, params });
+      }
     },
     async getNextPeMaterialInMyCollection({ state, commit }, { id, params }) {
-      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
-      const materials = await this.$axios.$get(`collections/${id}/materials/`, {
-        params
-      });
-      commit('SET_NEXT_PAGE_MATERIALS_TO_MY_COLLECTION', materials);
-      commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
-      return materials;
+      if (validateIDString(id) && validateParams(params)) {
+        commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', true);
+        const materials = await this.$axios.$get(
+          `collections/${id}/materials/`,
+          {
+            params
+          }
+        );
+        commit('SET_NEXT_PAGE_MATERIALS_TO_MY_COLLECTION', materials);
+        commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
+        return materials;
+      } else {
+        console.error('Validate error: ', { id, params });
+      }
     }
   },
   mutations: {
