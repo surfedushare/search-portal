@@ -35,13 +35,52 @@ export const formatDate = (str, format) => {
  * @returns {Boolean}
  */
 export const validateID = str => {
-  // try {
-  //   window.atob(str);
-  // } catch (e) {
-  //   // something failed
-  //   // if you want to be specific and only catch the error which means
-  //   // the base 64 was invalid, then check for 'e.code === 5'.
-  //   // (because 'DOMException.INVALID_CHARACTER_ERR === 5')
-  // }
-  return validate(str, 4);
+  return validate(str, 4) || validateBASE64(str);
+};
+
+/**
+ * Validate ID string
+ * @param str
+ * @returns {Boolean}
+ */
+export const validateIDString = str => {
+  return str && typeof str === 'string';
+};
+
+/**
+ * Validate base64
+ * @param str
+ * @returns {boolean}
+ */
+export const validateBASE64 = str => {
+  try {
+    window.atob(str);
+
+    return true;
+  } catch (e) {
+    // something failed
+    // if you want to be specific and only catch the error which means
+    // the base 64 was invalid, then check for 'e.code === 5'.
+    // (because 'DOMException.INVALID_CHARACTER_ERR === 5')
+
+    return false;
+  }
+};
+
+/**
+ * Validate search
+ * @param obj
+ * @returns {*|boolean}
+ */
+export const validateSearch = obj => {
+  return obj && typeof obj === 'object';
+};
+
+/**
+ * Validate params
+ * @param obj
+ * @returns {*|boolean}
+ */
+export const validateParams = obj => {
+  return obj && typeof obj === 'object';
 };

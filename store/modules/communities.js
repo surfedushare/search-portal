@@ -1,3 +1,5 @@
+import { validateID, validateIDString, validateParams } from './_helpers';
+
 export default {
   state: {
     communities: null,
@@ -29,39 +31,62 @@ export default {
   },
   actions: {
     async getCommunities({ commit }, { params = {} } = {}) {
-      const communities = await this.$axios.$get('communities/', { params });
-      commit('SET_COMMUNITIES', communities);
-      return communities;
+      if (validateParams(params)) {
+        const communities = await this.$axios.$get('communities/', { params });
+        commit('SET_COMMUNITIES', communities);
+        return communities;
+      } else {
+        console.error('Validate error: ', { params });
+      }
     },
     async putCommunities({ commit }, { id, data = {} } = {}) {
-      console.log(data, id);
-      const communities = await this.$axios.$put(`communities/${id}/`, data);
-      commit('SET_COMMUNITIES', communities);
-      return communities;
+      if (validateID(id) && validateParams(data)) {
+        const communities = await this.$axios.$put(`communities/${id}/`, data);
+        commit('SET_COMMUNITIES', communities);
+        return communities;
+      } else {
+        console.error('Validate error: ', { id, data });
+      }
     },
     async getCommunity({ commit }, id) {
-      const community_info = await this.$axios.$get(`communities/${id}/`);
-      commit('SET_COMMUNITY', community_info);
+      if (validateID(id)) {
+        const community_info = await this.$axios.$get(`communities/${id}/`);
+        commit('SET_COMMUNITY', community_info);
+      } else {
+        console.error('Validate error: ', id);
+      }
     },
     async getCommunityThemes({ commit }, id) {
-      const community_themes = await this.$axios.$get(
-        `communities/${id}/themes/`
-      );
-      commit('SET_COMMUNITY_THEMES', community_themes);
+      if (validateID(id)) {
+        const community_themes = await this.$axios.$get(
+          `communities/${id}/themes/`
+        );
+        commit('SET_COMMUNITY_THEMES', community_themes);
+      } else {
+        console.error('Validate error: ', id);
+      }
     },
     async getCommunityDisciplines({ commit }, id) {
-      const community_disciplines = await this.$axios.$get(
-        `communities/${id}/disciplines/`
-      );
-      commit('SET_COMMUNITY_DISCIPLINES', community_disciplines);
+      if (validateID(id)) {
+        const community_disciplines = await this.$axios.$get(
+          `communities/${id}/disciplines/`
+        );
+        commit('SET_COMMUNITY_DISCIPLINES', community_disciplines);
+      } else {
+        console.error('Validate error: ', id);
+      }
     },
     async getCommunityCollections({ commit }, id) {
-      commit('SET_COMMUNITY_COLLECTIONS_LOADING', true);
-      const community_collections = await this.$axios.$get(
-        `communities/${id}/collections/`
-      );
-      commit('SET_COMMUNITY_COLLECTIONS', community_collections);
-      commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
+      if (validateID(id)) {
+        commit('SET_COMMUNITY_COLLECTIONS_LOADING', true);
+        const community_collections = await this.$axios.$get(
+          `communities/${id}/collections/`
+        );
+        commit('SET_COMMUNITY_COLLECTIONS', community_collections);
+        commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
+      } else {
+        console.error('Validate error: ', id);
+      }
     },
     async getCommunityCollectionsNextPage({ commit, state }) {
       commit('SET_COMMUNITY_COLLECTIONS_LOADING', true);
@@ -73,18 +98,26 @@ export default {
       commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
     },
     async postCommunityCollection({ state, commit }, data) {
-      const collection = await this.$axios.$post(`collections/`, data);
-      commit('ADD_COMMUNITY_COLLECTION', collection);
-      return collection;
+      if (validateParams(data)) {
+        const collection = await this.$axios.$post(`collections/`, data);
+        commit('ADD_COMMUNITY_COLLECTION', collection);
+        return collection;
+      } else {
+        console.error('Validate error: ', data);
+      }
     },
     async setCommunityCollection({ commit }, { id, data }) {
-      const community_collections = await this.$axios.$post(
-        `communities/${id}/collections/`,
-        data
-      );
+      if (validateID(id) && validateParams(data)) {
+        const community_collections = await this.$axios.$post(
+          `communities/${id}/collections/`,
+          data
+        );
 
-      commit('EXTEND_COMMUNITY_COLLECTION', community_collections);
-      return community_collections;
+        commit('EXTEND_COMMUNITY_COLLECTION', community_collections);
+        return community_collections;
+      } else {
+        console.error('Validate error: ', { id, data });
+      }
     }
   },
   mutations: {
