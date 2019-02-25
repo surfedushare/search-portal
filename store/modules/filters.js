@@ -1,3 +1,5 @@
+import { validateID, validateParams } from './_helpers';
+
 export default {
   state: {
     filters: null,
@@ -25,75 +27,99 @@ export default {
       return filters;
     },
     async getFilter({ commit }, { id }) {
-      if (id && id.length) {
-        const filter = await this.$axios.$get(`filters/${id}/`);
-        this.dispatch('setActiveFilter', filter);
-        commit('MERGE_FILTERS', filter);
+      if (validateID(id)) {
+        if (id && id.length) {
+          const filter = await this.$axios.$get(`filters/${id}/`);
+          this.dispatch('setActiveFilter', filter);
+          commit('MERGE_FILTERS', filter);
+        } else {
+          commit('SET_FILTER', { id });
+        }
       } else {
-        commit('SET_FILTER', { id });
+        console.error('Validate error: ', { id });
       }
     },
     async postMyFilter({ commit }, data) {
-      const filter = await this.$axios.$post(`filters/`, data);
-      commit('ADD_MY_FILTER', filter);
+      if (validateParams(data)) {
+        const filter = await this.$axios.$post(`filters/`, data);
+        commit('ADD_MY_FILTER', filter);
+      } else {
+        console.error('Validate error: ', data);
+      }
     },
     async saveMyFilter({ commit }, data) {
-      const filter = await this.$axios.$put(`filters/${data.id}/`, data);
-      commit('SET_FILTER', filter);
-      this.dispatch('setActiveFilter', filter);
-      return filter;
-    },
-    async deleteMyFilter({ commit }, id) {
-      await this.$axios.$delete(`filters/${id}/`);
-      commit('DELETE_MY_FILTER', id);
-      this.dispatch('setActiveFilter', null);
-    },
-    async getDetailFilter({ commit }, { id }) {
-      if (id && id.length) {
-        const filter = await this.$axios.$get(`filters/${id}/`);
+      if (validateParams(data)) {
+        const filter = await this.$axios.$put(`filters/${data.id}/`, data);
+        commit('SET_FILTER', filter);
         this.dispatch('setActiveFilter', filter);
         return filter;
+      } else {
+        console.error('Validate error: ', data);
+      }
+    },
+    async deleteMyFilter({ commit }, id) {
+      if (validateID(id)) {
+        await this.$axios.$delete(`filters/${id}/`);
+        commit('DELETE_MY_FILTER', id);
+        this.dispatch('setActiveFilter', null);
+      } else {
+        console.error('Validate error: ', id);
+      }
+    },
+    async getDetailFilter({ commit }, { id }) {
+      if (validateID(id)) {
+        if (id && id.length) {
+          const filter = await this.$axios.$get(`filters/${id}/`);
+          this.dispatch('setActiveFilter', filter);
+          return filter;
+        }
+      } else {
+        console.error('Validate error: ', id);
       }
     },
     async postFilter({ commit }, { title, items, materials_count }) {
-      const { filters } = items;
-      const external_ids = filters.map(item => item.external_id);
+      if (validateParams({ title, items, materials_count })) {
+        const { filters } = items;
+        const external_ids = filters.map(item => item.external_id);
 
-      const resp = this.getters['filter_categories'].results.reduce(
-        (filter, category) => {
-          const { external_id, items } = category;
-          const index = external_ids.indexOf(external_id);
-          if (index !== -1) {
-            const filter_items = filters[index].items;
+        const resp = this.getters['filter_categories'].results.reduce(
+          (filter, category) => {
+            const { external_id, items } = category;
+            const index = external_ids.indexOf(external_id);
+            if (index !== -1) {
+              const filter_items = filters[index].items;
 
-            if (filter_items) {
-              filter.items.push(
-                ...items.reduce((arr, item) => {
-                  if (filter_items.indexOf(item.external_id) !== -1) {
-                    arr.push({ category_item_id: item.id });
-                  }
-                  return arr;
-                }, [])
-              );
+              if (filter_items) {
+                filter.items.push(
+                  ...items.reduce((arr, item) => {
+                    if (filter_items.indexOf(item.external_id) !== -1) {
+                      arr.push({ category_item_id: item.id });
+                    }
+                    return arr;
+                  }, [])
+                );
+              }
+
+              if (external_id === 'lom.lifecycle.contribute.publisherdate') {
+                filter.start_date = filter_items[0];
+                filter.end_date = filter_items[1];
+              }
             }
-
-            if (external_id === 'lom.lifecycle.contribute.publisherdate') {
-              filter.start_date = filter_items[0];
-              filter.end_date = filter_items[1];
-            }
+            return filter;
+          },
+          {
+            title,
+            materials_count,
+            items: [],
+            search_text: items.search_text
           }
-          return filter;
-        },
-        {
-          title,
-          materials_count,
-          items: [],
-          search_text: items.search_text
-        }
-      );
-      const filter = await this.$axios.$post('filters/', resp);
-      this.dispatch('setActiveFilter', filter);
-      commit('EXTEND_FILTERS', filter);
+        );
+        const filter = await this.$axios.$post('filters/', resp);
+        this.dispatch('setActiveFilter', filter);
+        commit('EXTEND_FILTERS', filter);
+      } else {
+        console.error('Validate error: ', { title, items, materials_count });
+      }
     },
     setActiveFilter({ commit }, filter) {
       commit('SET_ACTIVE_FILTER', filter);
