@@ -123,7 +123,7 @@
       </masonry>
     </div>
 
-    <DeleteCollection
+    <DeleteFilter
       :close="closeDeleteFilter"
       :is-show="isShowDeleteFilter"
       :deletefunction="deleteFilter"
@@ -135,13 +135,13 @@
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import DatesRange from '~/components/DatesRange';
-import DeleteCollection from '~/components/Popup/DeleteCollection';
+import DeleteFilter from '~/components/Popup/DeleteFilter';
 
 export default {
   components: {
     BreadCrumbs,
     DatesRange,
-    DeleteCollection
+    DeleteFilter
   },
   data() {
     return {

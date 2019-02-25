@@ -30,6 +30,11 @@
       </div>
     </div>
     <DeleteCollection
+      :close="closeDeleteCollection"
+      :is-show="isShowDeleteCollection"
+      :deletefunction="deleteCollection"
+    />
+    <DeleteMaterial
       :close="closeDeleteMaterials"
       :is-show="isShowDeleteMaterials"
       :deletefunction="deleteMaterials"
@@ -43,17 +48,20 @@ import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
 import Collection from '~/components/Collections/Collection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
+import DeleteMaterial from '~/components/Popup/DeleteMaterial';
 
 export default {
   components: {
     Collection,
     Materials,
     Spinner,
-    DeleteCollection
+    DeleteCollection,
+    DeleteMaterial
   },
   data() {
     return {
       contenteditable: false,
+      isShowDeleteCollection: false,
       isShowDeleteMaterials: false,
       submitting: false,
       submitData: false,
