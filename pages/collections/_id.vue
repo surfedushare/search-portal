@@ -32,7 +32,7 @@
     <DeleteCollection
       :close="closeDeleteCollection"
       :is-show="isShowDeleteCollection"
-      :deletefunction="deleteCollection"
+      :deletefunction="deleteMaterials"
     />
     <DeleteMaterial
       :close="closeDeleteMaterials"
@@ -157,6 +157,14 @@ export default {
     },
     closeDeleteMaterials() {
       this.isShowDeleteMaterials = false;
+      this.submitting = false;
+      this.setEditable(false);
+    },
+    deleteCollectionPopup() {
+      this.isShowDeleteCollection = true;
+    },
+    closeDeleteCollection() {
+      this.isShowDeleteCollection = false;
       this.submitting = false;
       this.setEditable(false);
     },
