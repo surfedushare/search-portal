@@ -96,11 +96,12 @@ export default {
      * Deleting collection by id
      */
     deleteCollection() {
-      this.$store
-        .dispatch('deleteMyCollection', this.$route.params.id)
-        .then(() => {
+      const { is_owner, id } = this.collection;
+      if (is_owner) {
+        this.$store.dispatch('deleteMyCollection', id).then(() => {
           this.$router.push(this.localePath({ name: 'my-collections' }));
         });
+      }
     },
     closeDeleteCollection() {
       this.isShowDeleteCollection = false;
