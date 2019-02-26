@@ -1,4 +1,5 @@
 import BreadCrumbs from '~/components/BreadCrumbs';
+import EditableContent from '~/components/EditableContent';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
 import ShareMaterialCollection from '~/components/Popup/ShareMaterialCollection';
 import ShareCollection from '~/components/Popup/ShareCollection';
@@ -32,6 +33,7 @@ export default {
   },
   components: {
     BreadCrumbs,
+    EditableContent,
     DirectSearch,
     ShareMaterialCollection,
     ShareCollection,
@@ -94,11 +96,12 @@ export default {
      * Deleting collection by id
      */
     deleteCollection() {
-      this.$store
-        .dispatch('deleteMyCollection', this.$route.params.id)
-        .then(() => {
+      const { is_owner, id } = this.collection;
+      if (is_owner) {
+        this.$store.dispatch('deleteMyCollection', id).then(() => {
           this.$router.push(this.localePath({ name: 'my-collections' }));
         });
+      }
     },
     closeDeleteCollection() {
       this.isShowDeleteCollection = false;
@@ -240,10 +243,10 @@ export default {
      * @param isEditable - Boolean
      */
     contenteditable(isEditable) {
-      const { title } = this.$refs;
-      this.$nextTick().then(() => {
-        title.focus();
-      });
+      // const { title } = this.$refs;
+      // this.$nextTick().then(() => {
+      //   title.focus();
+      // });
       if (!isEditable) {
         this.resetData();
       }

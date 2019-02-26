@@ -11,12 +11,15 @@
             :items="[{title: $t('My-selections'), url: localePath({name: 'my-filters'})} ]"
           />
           <h2
-            ref="title"
-            :contenteditable="contenteditable"
             class="my_filter__info_ttl"
-            @blur="onChangeTitle"
           >
-            {{ filter_title }}
+            <EditableContent
+              ref="title"
+              :contenteditable="contenteditable"
+              :set-text="setTitle"
+              :maxlength="20"
+              :text="filter_title"
+            />
           </h2>
           <p
             v-if="materials"
@@ -134,17 +137,20 @@
 <script>
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
+import EditableContent from '~/components/EditableContent';
 import DatesRange from '~/components/DatesRange';
 import DeleteFilter from '~/components/Popup/DeleteFilter';
 
 export default {
   components: {
     BreadCrumbs,
+    EditableContent,
     DatesRange,
     DeleteFilter
   },
   data() {
     return {
+      titleMaxLength: 20,
       checked_filter: [],
       checked_categories_filter: [],
       isShowDeleteFilter: false,
@@ -401,19 +407,20 @@ export default {
     },
     onEditable() {
       this.setEditable(true);
-      this.focusOnTitle();
+      // this.focusOnTitle();
     },
     onUneditable() {
       this.setEditable(false);
       this.resetData();
     },
-    focusOnTitle() {
-      const { title } = this.$refs;
-
-      this.$nextTick().then(() => {
-        title.focus();
-      });
-    },
+    // focusOnTitle() {
+    //   const { title } = this.$refs;
+    //   console.log(11111, title);
+    //
+    //   this.$nextTick().then(() => {
+    //     title.focus();
+    //   });
+    // },
     setTitle(title) {
       this.filter_title = title;
       this.data.title = title;
@@ -421,8 +428,17 @@ export default {
         this.$refs.title.innerText = title;
       }
     },
-    onChangeTitle() {
+    onChangeTitle(text) {
       this.setTitle(this.$refs.title.innerText);
+    },
+    onChangeTitleLength(event) {
+      const { title } = this.$refs;
+      const { titleMaxLength } = this;
+      console.log(titleMaxLength);
+      //You can add delete key event code as well over here for windows users.
+      if (title.innerText.length >= titleMaxLength && event.keyCode != 8) {
+        event.preventDefault();
+      }
     },
     resetData() {
       const { active_filter } = this;
