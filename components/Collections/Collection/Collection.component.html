@@ -16,11 +16,15 @@
 
         <h2
           class="collection__info_ttl"
-          :contenteditable="contenteditable"
-          ref="title"
-          @blur="onChangeTitle"
+          v-if="collection_title"
         >
-          {{collection_title}}
+          <EditableContent
+            ref="title"
+            :contenteditable="contenteditable"
+            :set-text="setTitle"
+            :maxlength="20"
+            :text="collection_title"
+          />
         </h2>
         <p class="collection__info_subttl">{{ $tc('learning-materials', collection.materials_count) }}</p>
       </div>

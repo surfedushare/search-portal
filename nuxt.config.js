@@ -2,7 +2,9 @@ const pkg = require('./package');
 const config = require('./config');
 
 const prodBaseUrl =
-  (config && config.PROD_URL) || 'https://surfcatalog-stage.firebaseapp.com';
+  process.env.PROD_URL ||
+  (config && config.PROD_URL) ||
+  'https://surfcatalog-stage.firebaseapp.com';
 
 module.exports = {
   mode: 'spa',

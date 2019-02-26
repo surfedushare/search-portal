@@ -1,4 +1,5 @@
 import BreadCrumbs from '~/components/BreadCrumbs';
+import EditableContent from '~/components/EditableContent';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
 import ShareMaterialCollection from '~/components/Popup/ShareMaterialCollection';
 import ShareCollection from '~/components/Popup/ShareCollection';
@@ -32,6 +33,7 @@ export default {
   },
   components: {
     BreadCrumbs,
+    EditableContent,
     DirectSearch,
     ShareMaterialCollection,
     ShareCollection,
@@ -240,10 +242,10 @@ export default {
      * @param isEditable - Boolean
      */
     contenteditable(isEditable) {
-      const { title } = this.$refs;
-      this.$nextTick().then(() => {
-        title.focus();
-      });
+      // const { title } = this.$refs;
+      // this.$nextTick().then(() => {
+      //   title.focus();
+      // });
       if (!isEditable) {
         this.resetData();
       }
