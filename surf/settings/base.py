@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'surf.apps.communities',
     'surf.apps.themes',
     'surf.apps.stats',
+    'surf.apps.locale',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
