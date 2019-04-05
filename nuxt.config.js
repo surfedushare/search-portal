@@ -17,7 +17,8 @@ module.exports = {
     logoutURL:
       (config && config.LOGOUT_URL) ||
       'https://engine.test.surfconext.nl/logout',
-    prodBaseUrl
+    prodBaseUrl,
+    localesURL: process.env.LOCALES_URL || (config && config.LOCALES_URL)
   },
 
   /**
@@ -166,12 +167,12 @@ module.exports = {
           {
             code: 'en',
             iso: 'en-US',
-            file: 'en/surf-en.json'
+            file: 'en.js'
           },
           {
             code: 'nl-NL',
             iso: 'nl-NL',
-            file: 'nl-NL/surf-nl-NL.json'
+            file: 'nl-NL.js'
           }
         ],
         defaultLocale: 'nl-NL',
@@ -179,7 +180,7 @@ module.exports = {
           fallbackLocale: 'nl-NL'
         },
         lazy: true,
-        langDir: 'static/locales/'
+        langDir: 'locales/'
       }
     ]
   ],
