@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=qwerty
       - POSTGRES_DB=surf
     healthcheck:
-        test: su postgres -c "psql -c "SELECT 'DBD::Pg ping test'""
+        test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
     restart: unless-stopped
 
   backend:
