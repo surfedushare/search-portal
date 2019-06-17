@@ -14,7 +14,9 @@ services:
     restart: unless-stopped
 
   backend:
-    image: "registry.head.mqd.me/surf-backend:develop"
+    build:
+      context: .
+      dockerfile: Dockerfile-CentOS
     environment:
       - DJANGO_SETTINGS_MODULE=surf.settings.local
       - DO_DJANGO_INIT=true
