@@ -65,25 +65,3 @@ class CollectionAdmin(admin.ModelAdmin):
     list_display = ("title", "owner", "is_shared",)
     list_filter = ("owner", "is_shared",)
     ordering = ("title",)
-
-
-@admin.register(models.ApplaudMaterial)
-class ApplaudMaterialAdmin(admin.ModelAdmin):
-    """
-    Provides admin options and functionality for ApplaudMaterial model.
-    """
-
-    list_display = ("material", "user", "applaud_count", )
-    ordering = ("material", "user", )
-    list_filter = ("material", "user", )
-
-
-@admin.register(models.ViewMaterial)
-class ViewMaterialAdmin(admin.ModelAdmin):
-    """
-    Provides admin options and functionality for ViewMaterial model.
-    """
-
-    list_display = ("material", "user", )
-    ordering = ("material", "user", )
-    list_filter = ("material", "user", )
