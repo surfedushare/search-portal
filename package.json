@@ -8,7 +8,7 @@
     "dev": "cross-env NODE_ENV=development LOCALES_URL=https://zoekportalback.surf.nl/static/locales/ LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://surf.stg.mqd.me/api/v1/ PROD_URL=http://localhost:3000 nuxt",
     "build": "cross-env NODE_ENV=development LOCALES_URL=https://zoekportalback.surf.nl/static/locales/ LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://surf.stg.mqd.me/api/v1/ PROD_URL=https://surfcatalog.firebaseapp.com nuxt build",
     "start": "cross-env NODE_ENV=development nuxt start",
-    "generate": "cross-env NODE_ENV=dev nuxt generate",
+    "generate": "cross-env NODE_ENV=dev LOCALES_URL=https://zoekportalback.surf.nl/static/locales/ LOGOUT_URL=https://engine.test.surfconext.nl/logout BASE_URL=https://surf.stg.mqd.me/api/v1/ PROD_URL=https://surfcatalog.firebaseapp.com nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
