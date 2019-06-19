@@ -27,7 +27,7 @@ class FilterCategorySerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_items_list(instance):
-        items = instance.items.order_by('order').all()
+        items = instance.items.order_by('order', 'title').all()
         return FilterCategoryItemSerializer(many=True).to_representation(items)
 
     class Meta:
