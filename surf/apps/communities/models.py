@@ -57,13 +57,17 @@ class Community(UUIDModel):
     name = django_models.CharField(max_length=255, blank=True)
     description = django_models.TextField(blank=True)
 
-    logo = django_models.ImageField(upload_to='communities',
-                                    blank=True,
-                                    null=True,)
+    logo = django_models.ImageField(
+        upload_to='communities',
+        blank=True,
+        null=True,
+        help_text="The proportion of the image should be 230x136")
 
-    featured_image = django_models.ImageField(upload_to='communities',
-                                              blank=True,
-                                              null=True,)
+    featured_image = django_models.ImageField(
+        upload_to='communities',
+        blank=True,
+        null=True,
+        help_text="The proportion of the image should be 388x227")
 
     website_url = django_models.URLField(blank=True, null=True)
 

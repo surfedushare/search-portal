@@ -5,6 +5,7 @@ This module provides django admin functionality for communities app.
 from django.contrib import admin
 from django import forms
 from django.db.models import Q
+from django.core.files.images import get_image_dimensions
 
 from surf.apps.communities import models
 
@@ -28,9 +29,29 @@ class CommunityForm(forms.ModelForm):
         except AttributeError:
             pass
 
+    def clean_logo(self):
+        picture = self.cleaned_data.get("logo")
+        validate_image_proportion(picture, 230, 136)
+        return picture
+
+    def clean_featured_image(self):
+        picture = self.cleaned_data.get("featured_image")
+        validate_image_proportion(picture, 388, 227)
+        return picture
+
     class Meta:
         model = models.Community
         exclude = ("external_id", "admins", "members",)
+
+
+def validate_image_proportion(image, width, height):
+    if not image:
+        return
+
+    w, h = get_image_dimensions(image)
+    if w * height != h * width:
+        raise forms.ValidationError(
+            "The image proportion should be {}x{}!".format(width, height))
 
 
 @admin.register(models.Community)
