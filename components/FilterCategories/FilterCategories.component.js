@@ -19,7 +19,7 @@ export default {
       show_all: [],
       isShow: false,
       isInit: false,
-      visible_items: 10,
+      visible_items: 20,
       data: {
         start_date: null,
         end_date: null
