@@ -8,7 +8,5 @@ django-jet==1.0.7
 requests==2.20.0
 oic==0.14.0
 Pillow==5.3.0
-django-tinymce==2.6.0
 django-ckeditor==5.7.1
 uwsgi==2.0.18
-django-ckeditor==5.7.1
