@@ -63,6 +63,7 @@ class CommunityAdmin(admin.ModelAdmin):
     list_display = ("custom_name", "custom_description", "is_available",)
     list_filter = ("is_available",)
     exclude = ("external_id", "admins", "members",)
+    readonly_fields = ("collections",)
     form = CommunityForm
 
     def custom_name(self, obj):
@@ -87,3 +88,4 @@ class SurfTeamAdmin(admin.ModelAdmin):
     """
 
     list_display = ("external_id", "name", "description",)
+    readonly_fields = ("admins", "members",)

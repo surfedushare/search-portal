@@ -3,33 +3,9 @@ This module provides django admin functionality for materials app.
 """
 
 from django.contrib import admin
-from django import forms
 
 from surf.apps.materials import models
-from surf.apps.filters.models import FilterCategoryItem
 from surf.apps.materials.utils import update_materials_data
-from surf.vendor.edurep.xml_endpoint.v1_2.api import DISCIPLINE_FIELD_ID
-
-
-class MaterialForm(forms.ModelForm):
-    """
-    Implementation of Material Form class.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        try:
-            # choose only Discipline filter category items
-            qs = FilterCategoryItem.objects
-            qs = qs.filter(category__edurep_field_id=DISCIPLINE_FIELD_ID)
-            self.fields['disciplines'].queryset = qs.all()
-        except AttributeError:
-            pass
-
-    class Meta:
-        model = models.Theme
-        fields = '__all__'
 
 
 def fill_material_data(model_admin, request, queryset):
@@ -46,7 +22,10 @@ class MaterialAdmin(admin.ModelAdmin):
     """
 
     actions = [fill_material_data]
-    form = MaterialForm
+    readonly_fields = (
+        'external_id', 'themes', 'disciplines', 'material_url', 'title',
+        'description', 'keywords'
+    )
 
     def get_actions(self, request):
         actions = super().get_actions(request)
@@ -64,4 +43,5 @@ class CollectionAdmin(admin.ModelAdmin):
 
     list_display = ("title", "owner", "is_shared",)
     list_filter = ("owner", "is_shared",)
+    readonly_fields = ('title', 'owner', 'materials', 'is_shared',)
     ordering = ("title",)
