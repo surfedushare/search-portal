@@ -5,4 +5,4 @@ RUN pip install --no-cache-dir -r /src/requirements/requirements.dev.txt
 COPY . /src/
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["uwsgi", "--http", "0.0.0.0:8000", "--wsgi-file", "surf/wsgi.py", "--processes", "4", "--static-map", "/static=/src/static"]
+CMD ["uwsgi", "--http", "0.0.0.0:8000", "--wsgi-file", "surf/wsgi.py", "--py-autoreload=3", "--processes", "4", "--static-map", "/static=/src/static"]
