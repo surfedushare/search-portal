@@ -156,7 +156,7 @@ module.exports = {
    */
   modules: [
     // Doc: https://github.com/pimlie/nuxt-matomo
-    ['nuxt-matomo', { matomoUrl: '//webstats.surf.nl/', siteId: 54 }],
+    ['nuxt-matomo', { matomoUrl: '//webstats.surf.nl/', siteId: 54, blockLoading: false }],
 
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
