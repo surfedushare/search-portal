@@ -36,7 +36,6 @@ class LocaleAdmin(admin.ModelAdmin):
             ),
         ]
         rv = custom_urls + urls
-        print(rv)
         return rv
 
     def process_update_i18n_json(self, request, *args, **kwargs):
