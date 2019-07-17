@@ -10,6 +10,8 @@ from urllib.parse import quote_plus
 
 import logging
 
+from surf.apps.querylog.models import QueryLog
+
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
     parse_response,
     TECH_FORMAT_LOM,
@@ -166,21 +168,23 @@ class XmlEndpointApiClient:
         be sorted
         :return: dictionary with materials and drilldowns data
         """
-
         if search_text:
             query = " AND ".join('("{}")'.format(q) for q in search_text)
         else:
             query = _BASE_QUERY
-
         filters = filter_list_to_cql(filters)
         if filters:
             query = "{} AND {}".format(query, filters)
+        result, query_url = self._call(query=query,
+                                       drilldown_names=drilldown_names,
+                                       ordering=ordering,
+                                       start_record=start_record,
+                                       maximum_records=maximum_records)
 
-        return self._call(query=query,
-                          drilldown_names=drilldown_names,
-                          ordering=ordering,
-                          start_record=start_record,
-                          maximum_records=maximum_records)
+        QueryLog(search_text=search_text[0], filters=filters, query_url=query_url,
+                 result_size=result['recordcount'], result=result).save()
+
+        return result
 
     def _call(self, query, drilldown_names=None,
               start_record=1, maximum_records=0, ordering=None,
@@ -229,12 +233,11 @@ class XmlEndpointApiClient:
                                for k, v in parameters.items()])
 
         url = "{}/{}?{}".format(self.api_endpoint, api_method, parameters)
-
         response = requests.get(url)
         if response and response.status_code != requests.codes.ok:
             response.raise_for_status()
 
-        return parse_response(response.text, record_schema=record_schema)
+        return parse_response(response.text, record_schema=record_schema), url
 
 
 def _get_start_record_by_page(page, page_size):
