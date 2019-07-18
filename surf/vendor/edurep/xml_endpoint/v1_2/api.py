@@ -123,9 +123,9 @@ class XmlEndpointApiClient:
         """
         start_record = _get_start_record_by_page(page, page_size)
         id_set = set(external_ids)
-        rv = self._call(query=" OR ".join(external_ids),
-                        start_record=start_record, maximum_records=page_size,
-                        drilldown_names=drilldown_names)
+        rv, _url = self._call(query=" OR ".join(external_ids),
+                              start_record=start_record, maximum_records=page_size,
+                              drilldown_names=drilldown_names)
 
         rv["records"] = [m for m in rv["records"]
                          if m["external_id"] in id_set or
