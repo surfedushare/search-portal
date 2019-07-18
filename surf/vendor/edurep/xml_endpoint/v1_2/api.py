@@ -172,17 +172,21 @@ class XmlEndpointApiClient:
             query = " AND ".join('("{}")'.format(q) for q in search_text)
         else:
             query = _BASE_QUERY
+            search_text = ['Empty']
         filters = filter_list_to_cql(filters)
         if filters:
             query = "{} AND {}".format(query, filters)
+        else:
+            filters = 'Empty'
         result, query_url = self._call(query=query,
                                        drilldown_names=drilldown_names,
                                        ordering=ordering,
                                        start_record=start_record,
                                        maximum_records=maximum_records)
-
-        QueryLog(search_text=search_text[0], filters=filters, query_url=query_url,
-                 result_size=result['recordcount'], result=result).save()
+        if start_record == 1:
+            # only store the first query for a search, otherwise we'll get a ton of queries from people scrolling
+            QueryLog(search_text=search_text[0], filters=filters, query_url=query_url,
+                     result_size=result['recordcount'], result=result).save()
 
         return result
 
