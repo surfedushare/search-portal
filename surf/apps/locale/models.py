@@ -16,5 +16,5 @@ class Locale(UUIDModel):
         return self.asset
 
     class Meta:
-        verbose_name = "textstring"
-        verbose_name_plural = "Localization"
+        verbose_name = "Localization"
+        verbose_name_plural = "Localizations"

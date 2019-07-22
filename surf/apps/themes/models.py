@@ -6,6 +6,7 @@ from django.db import models as django_models
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.locale.models import Locale
 
 
 class Theme(UUIDModel):
@@ -30,6 +31,9 @@ class Theme(UUIDModel):
         FilterCategoryItem,
         related_name="parent_themes",
         blank=True)
+
+    # TODO undo database migration, re-do with translationS
+    translation = django_models.ForeignKey(to=Locale, on_delete=django_models.CASCADE, null=False, blank=False)
 
     def __str__(self):
         return self.external_id
