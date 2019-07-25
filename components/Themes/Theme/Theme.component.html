@@ -21,7 +21,7 @@
   <div class="center_block theme__row">
     <div class="theme__description" >
       <h2>{{ $t('About-the-theme') }} <br>{{ theme.title_translations[$i18n.locale] }}</h2>
-      <p v-if="theme.description && theme.description_translations !== null"><span v-html="theme.description_translations[$i18n.locale]"> </span></p>
+      <p v-if="theme.description_translations !== null"><span v-html="theme.description_translations[$i18n.locale]"> </span></p>
     </div>
     <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" :theme="theme"/>
   </div>
