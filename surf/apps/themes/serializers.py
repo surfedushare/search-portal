@@ -6,9 +6,7 @@ from rest_framework import serializers
 
 from surf.apps.themes.models import Theme
 from surf.apps.filters.models import FilterCategoryItem
-from surf.apps.locale.serializers import LocaleSerializer
-from surf.apps.localeHTML.serializers import LocaleHTMLSerializer
-
+from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
 
 

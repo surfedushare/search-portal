@@ -6,8 +6,7 @@ from django.db import models as django_models
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.filters.models import FilterCategoryItem
-from surf.apps.locale.models import Locale
-from surf.apps.localeHTML.models import LocaleHTML
+from surf.apps.locale.models import Locale, LocaleHTML
 
 
 class Theme(UUIDModel):
