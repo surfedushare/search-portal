@@ -19,7 +19,6 @@ services:
       dockerfile: Dockerfile-CentOS
     environment:
       - DJANGO_SETTINGS_MODULE=surf.settings.local
-      - DO_DJANGO_INIT=true
     volumes:
       - /docker/surf-backend/settings/local.py:/src/surf/settings/local.py
       - /docker/surf-backend/static:/src/static
