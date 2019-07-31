@@ -97,6 +97,7 @@ ENV/
 .venv/
 
 .idea/
+.DS_Store
 
 static/
 database/
