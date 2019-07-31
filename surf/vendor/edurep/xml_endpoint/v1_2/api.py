@@ -178,24 +178,29 @@ class XmlEndpointApiClient:
             query = "{} AND {}".format(query, filters)
         else:
             filters = 'Empty'
-        result, query_url = self._call(query=query,
-                                       drilldown_names=drilldown_names,
-                                       ordering=ordering,
-                                       start_record=start_record,
-                                       maximum_records=maximum_records)
-        if start_record == 1:
-            # only store the first query for a search, otherwise we'll get a ton of queries from people scrolling
-            QueryLog(search_text=" ".join(search_text), filters=filters, query_url=query_url,
-                     result_size=result['recordcount'], result=result).save()
+        result = self._call(query=query,
+                            drilldown_names=drilldown_names,
+                            ordering=ordering,
+                            start_record=start_record,
+                            maximum_records=maximum_records,
+                            response_parsing=False)
 
-        return result
+        url = result.request.url
+        parsed_result = parse_response(result.text, record_schema=EXTRA_RECORD_SCHEMA)
+        # only store the first record, otherwise we store every query that occurs while scrolling
+        if start_record == 1:
+            QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
+                     result_size=parsed_result['recordcount'], result=parsed_result).save()
+
+        return parsed_result
 
     def _call(self, query, drilldown_names=None,
               start_record=1, maximum_records=0, ordering=None,
               version="1.2", operation="searchRetrieve",
               record_schema=EXTRA_RECORD_SCHEMA,
               record_packing=_XML_RECORD_PACKING,
-              api_method=_EDUREP_SEARCH_METHOD):
+              api_method=_EDUREP_SEARCH_METHOD,
+              response_parsing=True):
         """
         Send request to EduRep
         :param query: query string
@@ -240,8 +245,10 @@ class XmlEndpointApiClient:
         response = requests.get(url)
         if response and response.status_code != requests.codes.ok:
             response.raise_for_status()
-
-        return parse_response(response.text, record_schema=record_schema), url
+        if response_parsing:
+            return parse_response(response.text, record_schema=record_schema)
+        else:
+            return response
 
 
 def _get_start_record_by_page(page, page_size):
