@@ -185,7 +185,7 @@ class XmlEndpointApiClient:
                                        maximum_records=maximum_records)
         if start_record == 1:
             # only store the first query for a search, otherwise we'll get a ton of queries from people scrolling
-            QueryLog(search_text=search_text[0], filters=filters, query_url=query_url,
+            QueryLog(search_text=" ".join(search_text), filters=filters, query_url=query_url,
                      result_size=result['recordcount'], result=result).save()
 
         return result
