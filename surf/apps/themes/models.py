@@ -32,8 +32,10 @@ class Theme(UUIDModel):
         related_name="parent_themes",
         blank=True)
 
-    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE, null=True, blank=False)
-    description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE, null=True, blank=False)
+    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
+                                                     null=True, blank=False)
+    description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE,
+                                                           null=True, blank=False)
 
     def __str__(self):
         return self.external_id
