@@ -152,6 +152,12 @@ export default {
       return (
         !item.is_empty && (category.show_all || indexItem < this.visible_items)
       );
+    },
+    getTitleTranslation( category, language ) {
+      if (!(category.title_translations === undefined) && !(category.title_translations.isEmpty())){
+        return category.title_translations[language];
+      }
+      return category.title
     }
   },
   watch: {
