@@ -49,7 +49,20 @@ export default {
       }
     };
   },
-  methods: {},
+  methods: {
+    getTitleTranslation( theme, language ) {
+      if (!_.isNil(theme.title_translations) && !_.isEmpty(theme.title_translations)){
+        return theme.title_translations[language];
+      }
+      return theme.title
+    },
+    getDescriptionTranslation( theme, language ) {
+      if (!_.isNil(theme.description_translations) && !_.isEmpty(theme.description_translations)){
+        return theme.description_translations[language];
+      }
+      return theme.title
+    },
+  },
   computed: {
     ...mapGetters([
       'theme',

@@ -8,7 +8,7 @@
         <BreadCrumbs
           :items="[{title: $t('Home'), url: localePath('index')} ]"
         />
-        <h2 class="theme__info_ttl">{{ theme.title_translations[$i18n.locale] }}</h2>
+        <h2 class="theme__info_ttl">{{ getTitleTranslation(theme, $i18n.locale) }}</h2>
         <Search
           class="theme__info_search"
           :hide-categories="true"
@@ -20,8 +20,8 @@
   </div>
   <div class="center_block theme__row">
     <div class="theme__description" >
-      <h2>{{ $t('About-the-theme') }} <br>{{ theme.title_translations[$i18n.locale] }}</h2>
-      <p v-if="theme.description_translations !== null"><span v-html="theme.description_translations[$i18n.locale]"> </span></p>
+      <h2>{{ $t('About-the-theme') }} <br>{{ getTitleTranslation(theme, $i18n.locale) }}</h2>
+      <p><span v-html="getDescriptionTranslation(theme, $i18n.locale)"> </span></p>
     </div>
     <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" :theme="theme"/>
   </div>
@@ -32,7 +32,7 @@
     class="theme__materials">
       <template slot="header-info">
         <h2>{{ $t('Uitgelicht') }}</h2>
-        <p class="materials__description">{{ $t('Featured-learning-materials-in-the-theme') }} {{ theme.title_translations[$i18n.locale] }}</p>
+        <p class="materials__description">{{ $t('Featured-learning-materials-in-the-theme') }} {{ getTitleTranslation(theme, $i18n.locale) }}</p>
       </template>
     </Materials>
     <PopularList
@@ -41,7 +41,7 @@
     >
       <template slot="header-info">
         <h2>{{ $t('Communities') }}</h2>
-        <div class="popular-list__description">{{ $t('Subject-communities-within-the-theme') }} {{ theme.title_translations[$i18n.locale] }}</div>
+        <div class="popular-list__description">{{ $t('Subject-communities-within-the-theme') }} {{ getTitleTranslation(theme, $i18n.locale) }}</div>
       </template>
     </PopularList>
   </div>

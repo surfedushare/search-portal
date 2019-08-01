@@ -155,7 +155,7 @@ export default {
       );
     },
     getTitleTranslation( category, language ) {
-      if (!_.isNil(category.title_translations) && !(category.title_translations.isEmpty())){
+      if (!_.isNil(category.title_translations) && !_.isEmpty(category.title_translations)){
         return category.title_translations[language];
       }
       return category.title
