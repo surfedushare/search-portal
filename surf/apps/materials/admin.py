@@ -2,8 +2,11 @@
 This module provides django admin functionality for materials app.
 """
 
+from django import forms
 from django.contrib import admin
 
+
+from surf.apps.filters.models import FilterCategoryItem
 from surf.apps.materials import models
 from surf.apps.materials.utils import update_materials_data
 

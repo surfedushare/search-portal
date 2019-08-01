@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'ckeditor',
+
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     'surf.apps.themes',
     'surf.apps.stats',
     'surf.apps.locale',
+    'surf.apps.querylog',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -227,3 +230,27 @@ EDUREP_XML_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 EDUREP_SOAP_API_ENDPOINT = "http://smb.edurep.kennisnet.nl/smdBroker/ws"
 
 EDUREP_SOAP_SUPPLIER_ID = ""
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "width": "600px",
+        "height": "250px",
+        'toolbar_SurfToolbar': [
+            {'name': 'document', 'items': ['Source']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'insert',
+             'items': ['Image', 'Table', 'HorizontalRule', 'SpecialChar']},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+            {'name': 'links', 'items': ['Link', 'Unlink']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+        ],
+        'toolbar': 'SurfToolbar',  # put selected toolbar config here
+    }
+}

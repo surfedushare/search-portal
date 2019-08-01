@@ -45,5 +45,5 @@ class ThemeAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Theme model.
     """
-
     form = ThemeForm
+    raw_id_fields = ("title_translations", "description_translations",)

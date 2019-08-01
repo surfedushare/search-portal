@@ -73,7 +73,7 @@ apipatterns = [
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
-    path('admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
 
     url(r'^login/surfconext/', auth_begin_handler),
