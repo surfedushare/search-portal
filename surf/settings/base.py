@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'surf.apps.themes',
     'surf.apps.stats',
     'surf.apps.locale',
-    'surf.apps.localeHTML',
     'surf.apps.querylog',
 ]
 

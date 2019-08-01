@@ -1,4 +1,8 @@
 {% load i18n %}
 {% load admin_urls %}
 
-<li><a href='{% url opts|admin_urlname:"updatejson" %}' onclick="return confirm('Do you really want to update the localization (en / nl) to the front-end?') ? true : false;" class="import_link">{% trans "Update Localization" %}</a></li>
+{% if opts.model_name == "locale" %}
+<li><a href='{% url opts|admin_urlname:"updatejson" %}'
+       onclick="return confirm('Do you really want to update the localization (en / nl) to the front-end?') ? true : false;"
+       class="import_link">{% trans "Update Localization" %}</a></li>
+{% endif %}
