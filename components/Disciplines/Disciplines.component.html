@@ -5,12 +5,12 @@
   <ul class="disciplines__list" v-if="disciplines && disciplines.length">
     <li
       class="disciplines__item"
-      v-for="theme in disciplines"
+      v-for="discipline in disciplines"
     >
       <nuxt-link
-        :to="generateLink(theme)"
+        :to="generateLink(discipline)"
       >
-        {{theme.title}} ({{theme.materials_count || '0'}})
+        {{discipline.title}} ({{discipline.materials_count || '0'}})
         <span></span>
       </nuxt-link>
     </li>

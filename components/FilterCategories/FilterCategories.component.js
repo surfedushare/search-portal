@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import { generateSearchMaterialsQuery } from '../_helpers';
 import DatesRange from '~/components/DatesRange';
+import _ from 'lodash';
 
 export default {
   name: 'filter-categories',
@@ -152,6 +153,12 @@ export default {
       return (
         !item.is_empty && (category.show_all || indexItem < this.visible_items)
       );
+    },
+    getTitleTranslation( category, language ) {
+      if (!_.isNil(category.title_translations) && !(category.title_translations.isEmpty())){
+        return category.title_translations[language];
+      }
+      return category.title
     }
   },
   watch: {
