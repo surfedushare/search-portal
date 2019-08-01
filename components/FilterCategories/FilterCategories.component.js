@@ -29,7 +29,7 @@ export default {
         'lom.classification.obk.educationallevel.id',
         'lom.technical.format',
         'lom.general.language',
-        'lom.lifecycle.contribute.publisher',
+        'about.repository',
         'lom.lifecycle.contribute.publisherdate',
         'custom_theme.id',
         'lom.classification.obk.discipline.id',
