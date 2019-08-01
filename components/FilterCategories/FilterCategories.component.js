@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import { generateSearchMaterialsQuery } from '../_helpers';
 import DatesRange from '~/components/DatesRange';
+import _ from 'lodash';
 
 export default {
   name: 'filter-categories',
@@ -154,7 +155,7 @@ export default {
       );
     },
     getTitleTranslation( category, language ) {
-      if (!(category.title_translations === undefined) && !(category.title_translations.isEmpty())){
+      if (!_.isNil(category.title_translations) && !(category.title_translations.isEmpty())){
         return category.title_translations[language];
       }
       return category.title
