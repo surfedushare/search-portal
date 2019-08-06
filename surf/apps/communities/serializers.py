@@ -7,6 +7,7 @@ from rest_framework import serializers
 from surf.apps.communities.models import Community
 from surf.apps.filters.models import FilterCategoryItem
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
+from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
 
 
 class CommunityUpdateSerializer(serializers.ModelSerializer):
@@ -33,6 +34,8 @@ class CommunitySerializer(CommunityUpdateSerializer):
     is_member = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
+    title_translations = LocaleSerializer()
+    description_translations = LocaleHTMLSerializer()
 
     @staticmethod
     def get_name(obj):
@@ -83,7 +86,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
         fields = ('id', 'external_id', 'name', 'description', 'website_url',
                   'logo', 'featured_image', 'members_count',
                   'collections_count', 'materials_count',
-                  'is_admin', 'is_member',)
+                  'is_admin', 'is_member', 'title_translations', 'description_translations',)
 
 
 class CommunityDisciplineSerializer(FilterCategoryItemSerializer):
