@@ -50,7 +50,11 @@ class CommunitySerializer(CommunityUpdateSerializer):
 
     @staticmethod
     def get_members_count(obj):
-        return obj.surf_team.members.count()
+        try:
+            return obj.surf_team.members.count()
+        except Exception as exc:
+            print(exc)
+            return 0
 
     @staticmethod
     def get_collections_count(obj):
