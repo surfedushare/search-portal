@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - postgres_database:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=surf
       - POSTGRES_PASSWORD=qwerty
@@ -36,3 +36,6 @@ services:
       - postgres
     ports:
       - "8081:8080"
+
+volumes:
+  postgres_database:
