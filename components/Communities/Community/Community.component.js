@@ -6,6 +6,7 @@ import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
+import _ from 'lodash';
 
 export default {
   name: 'community',
@@ -103,7 +104,19 @@ export default {
         page_size: 4,
         search_text: []
       });
-    }
+    },
+    getTitleTranslation( community, language ) {
+      if (!_.isNil(community.title_translations) && !_.isEmpty(community.title_translations)){
+        return community.title_translations[language];
+      }
+      return community.name
+    },
+    getDescriptionTranslation( community, language ) {
+      if (!_.isNil(community.description_translations) && !_.isEmpty(community.description_translations)){
+        return community.description_translations[language];
+      }
+      return community.description
+    },
   },
   computed: {
     ...mapGetters([
