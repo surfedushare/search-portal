@@ -27,4 +27,4 @@ WORKDIR /src
 RUN python /src/manage.py collectstatic --noinput
 
 EXPOSE 8080
-CMD ["uwsgi", "--http", ":8080", "--wsgi-file", "surf/wsgi.py", "--processes", "4", "--static-map", "/static=/src/static"]
+CMD ["uwsgi", "--http", ":8080", "--wsgi-file", "surf/wsgi.py", "--processes", "4"]
