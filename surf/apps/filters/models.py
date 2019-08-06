@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core import validators
 
 from surf.apps.core.models import UUIDModel
+from surf.apps.locale.models import Locale
 
 
 class FilterCategory(UUIDModel):
@@ -14,8 +15,9 @@ class FilterCategory(UUIDModel):
     Implementation of Filter Category model. Filter Categories should be
     configured in Django admin page.
     """
-
     title = django_models.CharField(max_length=255)
+    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
+                                                     null=True, blank=False)
 
     # LOM identifier of field category in EduRep
     edurep_field_id = django_models.CharField(
