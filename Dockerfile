@@ -9,4 +9,4 @@ WORKDIR /src
 RUN pip install --no-cache-dir -r /src/requirements/requirements.prod.txt
 EXPOSE 8080
 ENTRYPOINT [ "/entrypoint.sh" ]
-CMD ["uwsgi", "--socket", ":8080", "--wsgi-file", "surf/wsgi.py", "--processes", "4", "--static-map", "/static=/src/static"]
+CMD ["uwsgi", "--http", ":8080", "--wsgi-file", "surf/wsgi.py", "--processes", "4", "--static-map", "/static=/src/static"]
