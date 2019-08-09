@@ -32,7 +32,8 @@ from surf.apps.materials.views import (
 
 from surf.apps.filters.views import (
     FilterCategoryViewSet,
-    FilterViewSet
+    FilterViewSet,
+    MpttFilterItems
 )
 
 from surf.apps.users.views import (
@@ -70,6 +71,7 @@ apipatterns = [
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^localehtml/', MaterialAPIView.as_view()),
+    url(r'^filteritems/', MpttFilterItems.as_view()),
 ] + router.urls
 
 urlpatterns = [

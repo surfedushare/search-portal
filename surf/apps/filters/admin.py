@@ -3,10 +3,10 @@ This module provides django admin functionality for filters app.
 """
 
 from django.contrib import admin
+from mptt.admin import DraggableMPTTAdmin
 
 from surf.apps.filters import models
 from surf.apps.filters.utils import update_filter_category
-
 
 @admin.register(models.Filter)
 class FilterAdmin(admin.ModelAdmin):
@@ -70,3 +70,9 @@ class FilterCategoryItemAdmin(admin.ModelAdmin):
     list_display = ("title", "external_id", "category", "order",)
     ordering = ("title", )
     list_filter = ("category",)
+
+
+@admin.register(models.MpttFilterItem)
+class MpttFilterItemAdmin(DraggableMPTTAdmin):
+    list_display = ('tree_actions', 'indented_title')
+    list_display_links = ('indented_title', )

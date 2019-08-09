@@ -1,7 +1,8 @@
 """
 This module contains implementation of REST API views for filters app.
 """
-
+from rest_framework import views, status
+from rest_framework.response import Response
 from rest_framework.viewsets import (
     GenericViewSet,
     ModelViewSet
@@ -12,7 +13,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from surf.apps.filters.models import (
     FilterCategory,
-    Filter
+    Filter,
+    MpttFilterItem
 )
 
 from surf.apps.filters.serializers import (
@@ -20,6 +22,7 @@ from surf.apps.filters.serializers import (
     FilterSerializer,
     FilterShortSerializer
 )
+from django.shortcuts import render
 
 
 class FilterCategoryViewSet(ListModelMixin,
@@ -58,3 +61,11 @@ class FilterViewSet(ModelViewSet):
 
         user = self.request.user
         return Filter.objects.filter(owner_id=user.id).all()
+
+
+class MpttFilterItems(views.APIView):
+
+    def get(self, request, **kwargs):
+        #filteritems = [filteritem.to_dict() for filteritem in MpttFilterItem.objects.all()]
+
+        return render(request, "MpttFilterItems.html", {'MpttFilterItems': MpttFilterItem.objects.all()})

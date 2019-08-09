@@ -2,7 +2,6 @@ from django.db import models
 
 from surf.apps.core.models import UUIDModel
 
-
 class Locale(UUIDModel):
 
     asset = models.CharField('Asset ID', max_length=512, unique=True)
@@ -12,6 +11,12 @@ class Locale(UUIDModel):
 
     def __str__(self):
         return self.asset
+
+    def toJSON(self):
+        return {
+            "en": self.en,
+            "nl": self.nl
+        }
 
     class Meta:
         verbose_name = "Localization"

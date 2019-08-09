@@ -9,6 +9,9 @@ from django.core import validators
 from surf.apps.core.models import UUIDModel
 from surf.apps.locale.models import Locale
 
+from mptt.models import MPTTModel, TreeForeignKey
+import json
+
 
 class FilterCategory(UUIDModel):
     """
@@ -102,3 +105,38 @@ class FilterItem(UUIDModel):
 
     def __str__(self):
         return "{} - {}".format(self.filter.title, self.category_item.title)
+
+
+class MpttFilterItem(MPTTModel):
+    name = django_models.CharField(max_length=255, unique=True)
+    parent = TreeForeignKey('self', on_delete=django_models.CASCADE, null=True, blank=True, related_name='children')
+
+    created_at = django_models.DateTimeField(auto_now_add=True)
+    updated_at = django_models.DateTimeField(auto_now=True)
+    deleted_from_edurep_at = django_models.DateTimeField(default=None, null=True, blank=True)
+
+    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE, null=True, blank=False)
+    external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=True)
+    enabled_by_default = django_models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+    def to_dict(self):
+        #'Yes' if fruit == 'Apple' else 'No'
+
+        return {
+            "name": self.name,
+            #"parent": str(self.parent),
+            "created_at": self.created_at.strftime('%c'),
+            "updated_at": self.updated_at.strftime('%c'),
+            "title_translations": self.title_translations.toJSON() if self.title_translations else None,
+            "external_id": self.external_id,
+            "enabled_by_default": self.enabled_by_default
+        }
+
+    def toJSON(self):
+        return json.dumps(self.to_dict())
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
