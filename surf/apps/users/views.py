@@ -180,6 +180,8 @@ def _update_or_create_user_communities(user, access_token):
     """
     vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
     groups = vac.get_groups(access_token)
+    if isinstance(groups, list):
+        raise TypeError(f"VootApiClient didn't return a list but returned \"{groups}\" instead.")
     teams = []
     admin_teams = []
     for g in groups:
