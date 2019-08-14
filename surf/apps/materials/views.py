@@ -92,7 +92,6 @@ class MaterialSearchAPIView(APIView):
         data = serializer.validated_data
 
         filters = data.get("filters", [])
-
         # add additional filter by Author
         # if input data contains `author` parameter
         author = data.pop("author", None)
@@ -118,8 +117,10 @@ class MaterialSearchAPIView(APIView):
 
         res = ac.search(**data)
 
-        records = add_extra_parameters_to_materials(request.user,
-                                                    res["records"])
+        if request.user:
+            records = add_extra_parameters_to_materials(request.user, res["records"])
+        else:
+            records = None
 
         rv = dict(records=records,
                   records_total=res["recordcount"],

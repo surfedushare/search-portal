@@ -119,15 +119,14 @@ class MpttFilterItem(MPTTModel):
     external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=True)
     enabled_by_default = django_models.BooleanField(default=False)
 
+    item_count = 0
+
     def __str__(self):
         return self.name
 
     def to_dict(self):
-        #'Yes' if fruit == 'Apple' else 'No'
-
         return {
             "name": self.name,
-            #"parent": str(self.parent),
             "created_at": self.created_at.strftime('%c'),
             "updated_at": self.updated_at.strftime('%c'),
             "title_translations": self.title_translations.toJSON() if self.title_translations else None,

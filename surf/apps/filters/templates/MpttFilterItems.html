@@ -2,11 +2,7 @@
 <ul>
     {% recursetree MpttFilterItems %}
         <li>
-            {% if node.title_translations %}
-                {{ node.title_translations.nl }}
-            {% else %}
-                {{ node.name }}
-            {% endif %}
+            {{ node.name }} {{ node.item_count }}
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}
