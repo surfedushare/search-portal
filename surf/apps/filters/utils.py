@@ -175,7 +175,6 @@ def check_and_update_mptt_filters():
             print(f_category.name)
         except UnicodeEncodeError as exc:
             print(exc)
-        #print(ac)
         _update_mptt_filter_category(f_category, ac)
     print("Finished Update")
 
