@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default {
   name: 'popular-list',
   props: ['type', 'communities'],
@@ -12,7 +14,19 @@ export default {
      */
     setCommunity(community) {
       this.$store.commit('SET_COMMUNITY', community);
-    }
+    },
+    getTitleTranslation( community, language ) {
+      if (!_.isNil(community.title_translations) && !_.isEmpty(community.title_translations)){
+        return community.title_translations[language];
+      }
+      return community.name
+    },
+    getDescriptionTranslation( community, language ) {
+      if (!_.isNil(community.description_translations) && !_.isEmpty(community.description_translations)){
+        return community.description_translations[language];
+      }
+      return community.description
+    },
   },
   computed: {
     /**

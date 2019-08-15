@@ -9,7 +9,7 @@
           :to="localePath({name: 'communities-community', params: {community: community.id}})"
           @click.native="setCommunity(community)"
         >
-          <h3 class="popular-list__title">{{community.name}}</h3>
+          <h3 class="popular-list__title">{{ getTitleTranslation(community, $i18n.locale) }}</h3>
           {{ $tc('learning-materials', community.materials_count) }}
         </nuxt-link>
       </li>

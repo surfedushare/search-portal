@@ -11,7 +11,7 @@
         class="arrow-link"
         :to="localePath({name: 'themes-id', params: {id: theme.id}})"
       >
-        {{theme.title}}
+        {{ getTitleTranslation(theme, $i18n.locale) }}
       </nuxt-link>
     </li>
   </ul>
