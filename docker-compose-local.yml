@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - postgres_database:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=surf
       - POSTGRES_PASSWORD=qwerty
@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 4 --static-map /static=/src/static
+    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 4
     environment:
       - DJANGO_SETTINGS_MODULE=surf.settings.local
     ports:
@@ -36,3 +36,6 @@ services:
       - postgres
     ports:
       - "8081:8080"
+
+volumes:
+  postgres_database:
