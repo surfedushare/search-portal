@@ -170,14 +170,14 @@ module.exports = {
             file: 'en.js'
           },
           {
-            code: 'nl-NL',
+            code: 'nl',
             iso: 'nl-NL',
             file: 'nl-NL.js'
           }
         ],
-        defaultLocale: 'nl-NL',
+        defaultLocale: 'nl',
         vueI18n: {
-          fallbackLocale: 'nl-NL'
+          fallbackLocale: 'nl'
         },
         lazy: true,
         langDir: 'locales/'

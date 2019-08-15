@@ -1,8 +1,7 @@
 
 <template>
   <section class="container main my_filter">
-    <div
-      class="center_block">
+    <div class="center_block">
       <div
         v-if="data"
         class="my_filter__info" >

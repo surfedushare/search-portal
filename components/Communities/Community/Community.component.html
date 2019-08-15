@@ -11,7 +11,7 @@
               {title: $t('Home'), url: localePath('index')},
               {title: $t('Communities'), url: localePath('communities')}
             ]"/>
-          <h2 class="community__info_ttl">{{ community_info.name }}</h2>
+          <h2 class="community__info_ttl">{{ getTitleTranslation(community_info, $i18n.locale) }}</h2>
         </div>
       </div>
       <Search
@@ -44,9 +44,7 @@
             v-if="community_info.featured_image"
             alt="">
           <h2 class="community__description_ttl">{{ $t('About-the-community') }}</h2>
-          <p class="community__description_txt">
-            {{ community_info.description }}
-          </p>
+          <p class="community__description_txt" v-html="getDescriptionTranslation(community_info, $i18n.locale)"></p>
           <a
             :href="`${ community_info.website_url }`"
             v-if="community_info.website_url"

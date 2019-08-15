@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import { generateSearchMaterialsQuery } from '../_helpers';
 import DatesRange from '~/components/DatesRange';
+import _ from 'lodash';
 
 export default {
   name: 'filter-categories',
@@ -28,7 +29,7 @@ export default {
         'lom.classification.obk.educationallevel.id',
         'lom.technical.format',
         'lom.general.language',
-        'lom.lifecycle.contribute.publisher',
+        'about.repository',
         'lom.lifecycle.contribute.publisherdate',
         'custom_theme.id',
         'lom.classification.obk.discipline.id',
@@ -152,6 +153,12 @@ export default {
       return (
         !item.is_empty && (category.show_all || indexItem < this.visible_items)
       );
+    },
+    getTitleTranslation( category, language ) {
+      if (!_.isNil(category.title_translations) && !_.isEmpty(category.title_translations)){
+        return category.title_translations[language];
+      }
+      return category.title
     }
   },
   watch: {

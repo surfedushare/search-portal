@@ -22,7 +22,7 @@ export const generateSearchMaterialsQuery = function(
     ? data.filters.filter(item => Object.keys(item).length)
     : [];
 
-  if (this && this.$i18n.locale !== 'nl-NL') {
+  if (this && this.$i18n.locale !== 'nl') {
     path = `/${this.$i18n.locale}${path}`;
   }
 
