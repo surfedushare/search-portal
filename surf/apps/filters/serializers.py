@@ -111,6 +111,7 @@ class FilterSerializer(FilterShortSerializer):
 
 class MpttFilterItemSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
+    title_translations = LocaleSerializer()
 
     def get_children(self, obj):
         if obj.is_leaf_node():
