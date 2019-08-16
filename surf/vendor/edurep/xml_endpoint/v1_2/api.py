@@ -123,7 +123,7 @@ class XmlEndpointApiClient:
         """
         start_record = _get_start_record_by_page(page, page_size)
         id_set = set(external_ids)
-        rv, _url = self._call(query=" OR ".join(external_ids),
+        rv = self._call(query=" OR ".join(external_ids),
                               start_record=start_record, maximum_records=page_size,
                               drilldown_names=drilldown_names)
 
