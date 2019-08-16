@@ -108,7 +108,7 @@ class FilterItem(UUIDModel):
 
 
 class MpttFilterItem(MPTTModel):
-    name = django_models.CharField(max_length=255, unique=True)
+    name = django_models.CharField(max_length=255)
     parent = TreeForeignKey('self', on_delete=django_models.CASCADE, null=True, blank=True, related_name='children')
 
     created_at = django_models.DateTimeField(auto_now_add=True)
@@ -116,8 +116,9 @@ class MpttFilterItem(MPTTModel):
     deleted_from_edurep_at = django_models.DateTimeField(default=None, null=True, blank=True)
 
     title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE, null=True, blank=False)
-    external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=True)
+    external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=True, unique=True)
     enabled_by_default = django_models.BooleanField(default=False)
+    is_hidden = django_models.BooleanField(default=False)
 
     item_count = 0
 
@@ -131,7 +132,8 @@ class MpttFilterItem(MPTTModel):
             "updated_at": self.updated_at.strftime('%c'),
             "title_translations": self.title_translations.toJSON() if self.title_translations else None,
             "external_id": self.external_id,
-            "enabled_by_default": self.enabled_by_default
+            "enabled_by_default": self.enabled_by_default,
+            "is_hidden": self.is_hidden,
         }
 
     def toJSON(self):

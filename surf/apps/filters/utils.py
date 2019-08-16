@@ -300,7 +300,7 @@ def _update_mptt_filter_category(filter_category, api_client):
     category_id = filter_category.external_id
     print(category_id)
     drilldown_name = "{}:{}".format(category_id, 0)
-    res = api_client.drilldowns([drilldown_name], filters=get_all_materials_filters())
+    res = api_client.drilldowns([drilldown_name], filters=None)
     items = res.get(category_id)
     if not items:
         return

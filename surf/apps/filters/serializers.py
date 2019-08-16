@@ -5,6 +5,7 @@ This module contains API view serializers for filters app.
 from rest_framework import serializers
 from surf.apps.locale.serializers import LocaleSerializer
 from surf.apps.filters import models
+import time
 
 
 class FilterCategoryItemSerializer(serializers.ModelSerializer):
@@ -106,3 +107,18 @@ class FilterSerializer(FilterShortSerializer):
         model = models.Filter
         fields = ('id', 'title', 'items', 'start_date', 'end_date',
                   'materials_count',)
+
+
+class MpttFilterItemSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    def get_children(self, obj):
+        if obj.is_leaf_node():
+            return None
+        else:
+            return MpttFilterItemSerializer(obj.get_children(), many=True).data
+
+    class Meta:
+        model = models.MpttFilterItem
+        fields = ('name', 'parent', 'title_translations', 'external_id', 'enabled_by_default', 'is_hidden',
+                  'item_count', 'children')

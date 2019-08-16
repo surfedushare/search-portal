@@ -1,13 +1,16 @@
 """
 This module contains implementation of REST API views for filters app.
 """
+import time
 
+from collections import OrderedDict
 from types import SimpleNamespace
 
 from django.shortcuts import render
-from rest_framework import views
+from rest_framework import views, status, generics
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import (
     GenericViewSet,
     ModelViewSet
@@ -21,7 +24,8 @@ from surf.apps.filters.models import (
 from surf.apps.filters.serializers import (
     FilterCategorySerializer,
     FilterSerializer,
-    FilterShortSerializer
+    FilterShortSerializer,
+    MpttFilterItemSerializer,
 )
 from surf.apps.materials.views import MaterialSearchAPIView
 
@@ -64,16 +68,31 @@ class FilterViewSet(ModelViewSet):
         return Filter.objects.filter(owner_id=user.id).all()
 
 
-class MpttFilterItems(views.APIView):
+class MpttFilterItems(generics.GenericAPIView):
+    serializer_class = MpttFilterItemSerializer
+    queryset = MpttFilterItem.objects.get_cached_trees()
 
-    def get(self, request, **kwargs):
-        filter_items = MpttFilterItem.objects.all()
+    def get(self, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        item_counts = self.get_counts(*args)
+        serializer = self.get_serializer(queryset, many=True)
 
-        # do an empty TODO (should it be empty _always_?)
-        # query to edurep to get the counts of the filter items
+        def update_item_counts_for_node(input_node, item_count_dict):
+            if input_node['external_id'] in item_count_dict.keys():
+                input_node['item_count'] = item_count_dict[input_node['external_id']]
+            if input_node['children'] is not None:
+                for child_node in input_node['children']:
+                    update_item_counts_for_node(child_node, item_count_dict)
+
+        for node in serializer.data:
+            update_item_counts_for_node(node, item_counts)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+    def get_counts(self, request, **kwargs):
         filters = []
         if 'filters' in request.data.keys():
             filters = request.data['filters']
+        #filters = [OrderedDict([('external_id', 'lom.classification.obk.discipline.id'), ('items', ['bc0217df-c38d-4c29-b87b-2c1c035c717f'])])]
         base_request = SimpleNamespace(**{'data': {'search_text': [], 'filters': filters}, 'user': None})
         viewer = MaterialSearchAPIView()
         response = viewer.post(request=base_request)
@@ -87,11 +106,4 @@ class MpttFilterItems(views.APIView):
                 external_id_count[sub_item['external_id']] = sub_item['count']
             external_id_count[item['external_id']] = category_count
 
-        # add the filter counts to the filter items
-        for filter_item in filter_items:
-            if filter_item.external_id in external_id_count.keys():
-                filter_item.item_count = external_id_count[filter_item.external_id]
-
-        # most likely don't filter empty items here in the futurue TODO
-        filter_items = [filter_item for filter_item in filter_items if filter_item.item_count > 0]
-        return render(request, "MpttFilterItems.html", {'MpttFilterItems': filter_items})
+        return external_id_count
