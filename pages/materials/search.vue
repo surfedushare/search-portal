@@ -96,7 +96,7 @@ import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import SaveFilter from '~/components/Popup/SaveFilter';
 import { generateSearchMaterialsQuery } from '~/components/_helpers';
-import materials from '../../store/modules/materials';
+import materials from '../../src/store/modules/materials';
 
 export default {
   components: {

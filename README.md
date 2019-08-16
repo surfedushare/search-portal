@@ -6,14 +6,19 @@
 
 ``` bash
 # install dependencies
-$ yarn install
+$ npm install
 
-# serve with hot reload at localhost:3000
-$ yarn run dev
+# serve with hot reload at localhost:8080
+$ npm run serve
 
-# build for production and launch server
-$ yarn run build
-$ yarn start
+# serve but connected to the local backed
+$ npm run integrate
+
+# build for production
+$ npm run build
+
+# build for acceptance
+$ npm run build -- --mode=acceptance
 
 # generate static project
 $ yarn run generate
