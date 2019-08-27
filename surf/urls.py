@@ -69,16 +69,14 @@ apipatterns = [
     url(r'^materials/rating/', MaterialRatingAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
+    url(r'^localehtml/', MaterialAPIView.as_view()),
 ] + router.urls
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
-    path('admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
 
     url(r'^login/surfconext/', auth_begin_handler),
     url(r'^complete/surfconext/', auth_complete_handler),
 ]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

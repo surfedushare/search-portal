@@ -4,15 +4,13 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.conf.urls import url
-
-# from django.core.files.storage import default_storage
-from django.contrib.staticfiles.storage import (
-    staticfiles_storage as default_storage
-)
-
+from django.contrib.staticfiles.storage import staticfiles_storage as default_storage
 from django.core.files.base import ContentFile
+from django import forms
 
-from surf.apps.locale.models import Locale
+from ckeditor.widgets import CKEditorWidget
+
+from surf.apps.locale.models import Locale, LocaleHTML
 
 
 @admin.register(Locale)
@@ -36,7 +34,6 @@ class LocaleAdmin(admin.ModelAdmin):
             ),
         ]
         rv = custom_urls + urls
-        print(rv)
         return rv
 
     def process_update_i18n_json(self, request, *args, **kwargs):
@@ -64,3 +61,20 @@ class LocaleAdmin(admin.ModelAdmin):
 
         return HttpResponseRedirect(
             reverse_lazy('admin:locale_locale_changelist'))
+
+
+class LocaleHTMLForm(forms.ModelForm):
+    class Meta:
+        model = LocaleHTML
+        widgets = {
+            'en': CKEditorWidget(),
+            'nl': CKEditorWidget(),
+        }
+        fields = '__all__'
+
+
+@admin.register(LocaleHTML)
+class LocaleHTMLAdmin(admin.ModelAdmin):
+    list_display = ('asset', 'en', 'nl',)
+    search_fields = ('asset', 'en', 'nl',)
+    form = LocaleHTMLForm

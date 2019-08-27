@@ -6,7 +6,7 @@ from rest_framework import serializers
 
 from surf.apps.themes.models import Theme
 from surf.apps.filters.models import FilterCategoryItem
-
+from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
 
 
@@ -17,10 +17,12 @@ class ThemeSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(source="filter_category_item.id")
     title = serializers.CharField(source="filter_category_item.title")
+    title_translations = LocaleSerializer()
+    description_translations = LocaleHTMLSerializer()
 
     class Meta:
         model = Theme
-        fields = ('id', 'external_id', 'title', 'description',)
+        fields = ('id', 'external_id', 'title', 'description', 'title_translations', 'description_translations',)
 
 
 class ThemeDisciplineSerializer(FilterCategoryItemSerializer):

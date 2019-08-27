@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - postgres_database:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=surf
       - POSTGRES_PASSWORD=qwerty
@@ -15,10 +15,10 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile-local
+      dockerfile: Dockerfile
+    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 4
     environment:
       - DJANGO_SETTINGS_MODULE=surf.settings.local
-      - DO_DJANGO_INIT=true
     ports:
       - "8080:8080"
       - "8000:8000"
@@ -29,3 +29,13 @@ services:
     depends_on:
       - postgres
     restart: unless-stopped
+
+  adminer:
+    image: adminer
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8080"
+
+volumes:
+  postgres_database:

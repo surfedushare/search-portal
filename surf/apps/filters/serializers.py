@@ -3,7 +3,7 @@ This module contains API view serializers for filters app.
 """
 
 from rest_framework import serializers
-
+from surf.apps.locale.serializers import LocaleSerializer
 from surf.apps.filters import models
 
 
@@ -22,6 +22,7 @@ class FilterCategorySerializer(serializers.ModelSerializer):
     Filter category instance serializer
     """
 
+    title_translations = LocaleSerializer()
     external_id = serializers.CharField(source="edurep_field_id")
     items = serializers.SerializerMethodField('get_items_list')
 
@@ -32,7 +33,7 @@ class FilterCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.FilterCategory
-        fields = ('id', 'external_id', 'title', 'items',)
+        fields = ('id', 'external_id', 'title', 'items', 'title_translations',)
 
 
 class FilterItemSerializer(serializers.ModelSerializer):

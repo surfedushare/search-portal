@@ -8,6 +8,7 @@ from django.conf import settings
 from surf.apps.core.models import UUIDModel
 
 from surf.apps.materials.models import Collection
+from surf.apps.locale.models import Locale, LocaleHTML
 
 
 class SurfTeam(UUIDModel):
@@ -99,6 +100,11 @@ class Community(UUIDModel):
         verbose_name="Members",
         related_name='communities',
         blank=True)
+
+    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
+                                                     null=True, blank=False)
+    description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE,
+                                                           null=True, blank=False)
 
     class Meta:
         ordering = ['name']

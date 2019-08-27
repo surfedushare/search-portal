@@ -10,6 +10,8 @@ from urllib.parse import quote_plus
 
 import logging
 
+from surf.apps.querylog.models import QueryLog
+
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
     parse_response,
     TECH_FORMAT_LOM,
@@ -122,8 +124,8 @@ class XmlEndpointApiClient:
         start_record = _get_start_record_by_page(page, page_size)
         id_set = set(external_ids)
         rv = self._call(query=" OR ".join(external_ids),
-                        start_record=start_record, maximum_records=page_size,
-                        drilldown_names=drilldown_names)
+                              start_record=start_record, maximum_records=page_size,
+                              drilldown_names=drilldown_names)
 
         rv["records"] = [m for m in rv["records"]
                          if m["external_id"] in id_set or
@@ -166,28 +168,39 @@ class XmlEndpointApiClient:
         be sorted
         :return: dictionary with materials and drilldowns data
         """
-
         if search_text:
             query = " AND ".join('("{}")'.format(q) for q in search_text)
         else:
             query = _BASE_QUERY
-
+            search_text = ['Empty']
         filters = filter_list_to_cql(filters)
         if filters:
             query = "{} AND {}".format(query, filters)
+        else:
+            filters = 'Empty'
+        result = self._call(query=query,
+                            drilldown_names=drilldown_names,
+                            ordering=ordering,
+                            start_record=start_record,
+                            maximum_records=maximum_records,
+                            response_parsing=False)
 
-        return self._call(query=query,
-                          drilldown_names=drilldown_names,
-                          ordering=ordering,
-                          start_record=start_record,
-                          maximum_records=maximum_records)
+        url = result.request.url
+        parsed_result = parse_response(result.text, record_schema=EXTRA_RECORD_SCHEMA)
+        # only store the first record, otherwise we store every query that occurs while scrolling
+        if start_record == 1:
+            QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
+                     result_size=parsed_result['recordcount'], result=parsed_result).save()
+
+        return parsed_result
 
     def _call(self, query, drilldown_names=None,
               start_record=1, maximum_records=0, ordering=None,
               version="1.2", operation="searchRetrieve",
               record_schema=EXTRA_RECORD_SCHEMA,
               record_packing=_XML_RECORD_PACKING,
-              api_method=_EDUREP_SEARCH_METHOD):
+              api_method=_EDUREP_SEARCH_METHOD,
+              response_parsing=True):
         """
         Send request to EduRep
         :param query: query string
@@ -229,12 +242,13 @@ class XmlEndpointApiClient:
                                for k, v in parameters.items()])
 
         url = "{}/{}?{}".format(self.api_endpoint, api_method, parameters)
-
         response = requests.get(url)
         if response and response.status_code != requests.codes.ok:
             response.raise_for_status()
-
-        return parse_response(response.text, record_schema=record_schema)
+        if response_parsing:
+            return parse_response(response.text, record_schema=record_schema)
+        else:
+            return response
 
 
 def _get_start_record_by_page(page, page_size):
