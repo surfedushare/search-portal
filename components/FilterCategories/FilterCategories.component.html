@@ -43,7 +43,7 @@
           @click="onToggleCategory(category.external_id)"
           class="filter-categories__item_title"
           :class="{'filter-categories__item_title--hide': category.selected}"
-        >{{ category.title }}</h4>
+         >{{ getTitleTranslation(category, $i18n.locale) }}</h4>
         <div
           v-if="category.external_id === publisherdate && category.selected"
           class="filter-categories__subitems"

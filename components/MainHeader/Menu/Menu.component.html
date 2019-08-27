@@ -19,7 +19,7 @@
                   :to="localePath({name: 'themes-id', params: {id: theme.id}})"
                   @click.native="closeSubMenu(true)"
                 >
-                  {{theme.title}}</nuxt-link>
+                  {{getThemeTitleTranslation(theme, $i18n.locale)}}</nuxt-link>
               </li>
             </ul>
           </div>

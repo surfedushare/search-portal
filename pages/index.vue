@@ -17,8 +17,7 @@
 
           <div class="main__info_block">
             <div class="bg" />
-            <h2
-              class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>{{ $t('open-learning-materials-from-higher-education') }}</h2>
+            <h2 class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>{{ $t('open-learning-materials-from-higher-education') }}</h2>
             <ul class="main__info_items">
               <li class="main__info_item">{{ $t('Free-to-use') }}</li>
               <li class="main__info_item">{{ $t('Judged-by-quality') }}</li>

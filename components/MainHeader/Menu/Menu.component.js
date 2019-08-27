@@ -32,7 +32,13 @@ export default {
      */
     hideMenu() {
       this.$store.commit('SET_HEADER_MENU_STATE', false);
-    }
+    },
+    getThemeTitleTranslation( theme, language ) {
+      if (!_.isNil(theme.title_translations) && !_.isEmpty(theme.title_translations)){
+        return theme.title_translations[language];
+      }
+      return theme.title
+    },
   },
   watch: {
     /**

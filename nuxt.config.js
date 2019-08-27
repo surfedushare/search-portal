@@ -25,7 +25,7 @@ module.exports = {
    * Headers of the page
    */
   head: {
-    title: 'Surf | Open Leermaterialen',
+    title: 'SURF | Open Leermaterialen',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -38,7 +38,7 @@ module.exports = {
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'Surf | Open Leermaterialen'
+        content: 'SURF | Open Leermaterialen'
       },
       {
         hid: 'og:description',
@@ -156,7 +156,7 @@ module.exports = {
    */
   modules: [
     // Doc: https://github.com/pimlie/nuxt-matomo
-    ['nuxt-matomo', { matomoUrl: '//webstats.surf.nl/', siteId: 54 }],
+    ['nuxt-matomo', { matomoUrl: '//webstats.surf.nl/', siteId: 54, blockLoading: false }],
 
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
@@ -170,14 +170,14 @@ module.exports = {
             file: 'en.js'
           },
           {
-            code: 'nl-NL',
+            code: 'nl',
             iso: 'nl-NL',
             file: 'nl-NL.js'
           }
         ],
-        defaultLocale: 'nl-NL',
+        defaultLocale: 'nl',
         vueI18n: {
-          fallbackLocale: 'nl-NL'
+          fallbackLocale: 'nl'
         },
         lazy: true,
         langDir: 'locales/'
