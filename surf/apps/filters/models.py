@@ -107,7 +107,7 @@ class FilterItem(UUIDModel):
         return "{} - {}".format(self.filter.title, self.category_item.title)
 
 
-class MpttFilterItem(MPTTModel):
+class MpttFilterItem(MPTTModel, UUIDModel):
     name = django_models.CharField(max_length=255)
     parent = TreeForeignKey('self', on_delete=django_models.CASCADE, null=True, blank=True, related_name='children')
 
@@ -116,7 +116,7 @@ class MpttFilterItem(MPTTModel):
     deleted_from_edurep_at = django_models.DateTimeField(default=None, null=True, blank=True)
 
     title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE, null=True, blank=False)
-    external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=True, unique=True)
+    external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=True)
     enabled_by_default = django_models.BooleanField(default=False)
     is_hidden = django_models.BooleanField(default=False)
 

@@ -115,7 +115,7 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
 
     def get_children(self, obj):
         if obj.is_leaf_node():
-            return None
+            return []
         else:
             return MpttFilterItemSerializer(obj.get_children(), many=True).data
 
