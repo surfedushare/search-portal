@@ -16,7 +16,8 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     CUSTOM_THEME_FIELD_ID,
     DISCIPLINE_FIELD_ID,
     COPYRIGHT_FIELD_ID,
-    EDUCATIONAL_LEVEL_FIELD_ID
+    EDUCATIONAL_LEVEL_FIELD_ID,
+    LANGUAGE_FIELD_ID
 )
 
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
@@ -35,7 +36,9 @@ from surf.apps.themes.models import Theme
 from surf.apps.locale.models import Locale
 
 IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
-                  CUSTOM_THEME_FIELD_ID}
+                  CUSTOM_THEME_FIELD_ID,
+                  LANGUAGE_FIELD_ID
+                  }
 
 _MBO_HBO_WO_REGEX = re.compile(r"^(MBO|HBO|WO)(.*)$", re.IGNORECASE)
 _HBO_WO_REGEX = re.compile(r"^(HBO|WO)(.*)$", re.IGNORECASE)
