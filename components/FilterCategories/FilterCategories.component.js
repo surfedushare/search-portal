@@ -321,7 +321,7 @@ export default {
     filtered_categories() {
       const { filter_categories, filter_sort } = this;
       if (filter_categories) {
-        return filter_categories.results.reduce((prev, item) => {
+        return filter_categories.reduce((prev, item) => {
           // return {
           //   ...item
           //   // hide: item.external_id === publisherdate
@@ -356,7 +356,7 @@ export default {
               selected: selected.indexOf(category.external_id) !== -1,
               show_all: show_all.indexOf(category.id) !== -1,
               items: [
-                ...category.items.map(item => {
+                ...category.children.map(item => {
                   return {
                     ...item,
                     is_empty: not_empty_ids.indexOf(item.external_id) === -1
