@@ -31,12 +31,7 @@ class Material(UUIDModel):
                                            related_name="materials")
 
     # list of related disciplines
-    disciplines = django_models.ManyToManyField(FilterCategoryItem,
-                                                blank=True,
-                                                related_name="materials")
-
-    # list of related disciplines
-    mptt_disciplines = django_models.ManyToManyField(MpttFilterItem,
+    disciplines = django_models.ManyToManyField(MpttFilterItem,
                                                 blank=True,
                                                 related_name="materials")
 
