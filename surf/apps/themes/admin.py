@@ -6,7 +6,7 @@ from django import forms
 from django.contrib import admin
 
 from surf.apps.themes import models
-from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.filters.models import MpttFilterItem
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     CUSTOM_THEME_FIELD_ID,
@@ -23,7 +23,7 @@ class ThemeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         try:
-            qs = FilterCategoryItem.objects
+            qs = MpttFilterItem.objects
 
             # choose only Theme filter category items
             t_qs = qs.filter(category__edurep_field_id=CUSTOM_THEME_FIELD_ID)

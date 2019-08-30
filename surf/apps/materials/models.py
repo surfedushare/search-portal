@@ -9,7 +9,7 @@ from django.conf import settings
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.themes.models import Theme
-from surf.apps.filters.models import FilterCategoryItem, MpttFilterItem
+from surf.apps.filters.models import MpttFilterItem
 
 
 RESOURCE_TYPE_MATERIAL = "material"

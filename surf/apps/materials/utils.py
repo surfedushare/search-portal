@@ -9,7 +9,7 @@ from django.db.models import Sum
 
 from surf.apps.communities.models import Community
 from surf.apps.themes.models import Theme
-from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.filters.models import MpttFilterItem
 
 from surf.apps.materials.models import (
     Material,
@@ -59,7 +59,7 @@ def add_material_themes(material, themes):
 
 
 def add_material_disciplines(material, disciplines):
-    ds = FilterCategoryItem.objects.filter(external_id__in=disciplines).all()
+    ds = MpttFilterItem.objects.filter(external_id__in=disciplines).all()
     material.disciplines.set(ds)
 
 

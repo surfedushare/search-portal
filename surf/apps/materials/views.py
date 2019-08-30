@@ -28,7 +28,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 
-from surf.apps.filters.models import FilterCategory
+from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_filters
 
 from surf.apps.materials.utils import (
@@ -136,8 +136,9 @@ def _get_filter_categories():
     :return: list of "edurep_field_id:item_count"
     """
     return ["{}:{}".format(f.edurep_field_id, f.max_item_count)
-            for f in FilterCategory.objects.all()
-            if f.edurep_field_id not in IGNORED_FIELDS]
+            for f in MpttFilterItem.objects.all()
+            if f.edurep_field_id not in IGNORED_FIELDS
+            and f.level == 0]
 
 
 class KeywordsAPIView(APIView):

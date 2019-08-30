@@ -5,9 +5,9 @@ This module contains API view serializers for themes app.
 from rest_framework import serializers
 
 from surf.apps.themes.models import Theme
-from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
-from surf.apps.filters.serializers import FilterCategoryItemSerializer
+from surf.apps.filters.serializers import MpttFilterItemSerializer
 
 
 class ThemeSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class ThemeSerializer(serializers.ModelSerializer):
     """
 
     id = serializers.UUIDField(source="filter_category_item.id")
-    title = serializers.CharField(source="filter_category_item.title")
+    title = serializers.CharField(source="filter_category_item.name")
     title_translations = LocaleSerializer()
     description_translations = LocaleHTMLSerializer()
 
@@ -25,7 +25,7 @@ class ThemeSerializer(serializers.ModelSerializer):
         fields = ('id', 'external_id', 'title', 'description', 'title_translations', 'description_translations',)
 
 
-class ThemeDisciplineSerializer(FilterCategoryItemSerializer):
+class ThemeDisciplineSerializer(MpttFilterItemSerializer):
     """
     Theme discipline instance serializer
     """
@@ -43,5 +43,5 @@ class ThemeDisciplineSerializer(FilterCategoryItemSerializer):
         return 0
 
     class Meta:
-        model = FilterCategoryItem
-        fields = ('id', 'external_id', 'title', 'materials_count',)
+        model = MpttFilterItem
+        fields = ('id', 'external_id', 'name', 'materials_count',)
