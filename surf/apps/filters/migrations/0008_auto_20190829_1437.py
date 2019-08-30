@@ -13,12 +13,15 @@ def migrate_filter_categories_to_mptt(apps, schema_editor):
     FilterCategory = apps.get_model('filters', 'FilterCategory')
     for filter_category in FilterCategory.objects.all():
         print(filter_category.title)
-        translation = Locale.objects.create(
-            asset=f"{filter_category.title}_auto_generated_at_{datetime.datetime.now().strftime('%c')}",
-            en=filter_category.title, nl=filter_category.title, is_fuzzy=True)
+        if not filter_category.title_translations:
+            translation = Locale.objects.create(
+                asset=f"{filter_category.title}_auto_generated_at_{datetime.datetime.now().strftime('%c')}",
+                en=filter_category.title, nl=filter_category.title, is_fuzzy=True)
+        else:
+            translation = Locale.objects.get(id=filter_category.title_translations.id)
 
         root_node = MpttFilterItem.objects.create(name=filter_category.title, title_translations=translation,
-                                      external_id=filter_category.edurep_field_id)
+                                                  external_id=filter_category.edurep_field_id)
         if filter_category.edurep_field_id == LANGUAGE_FIELD_ID:
             translation_en = Locale.objects.create(
                 asset=f"{'en'}_auto_generated_at_{datetime.datetime.now().strftime('%c')}",
