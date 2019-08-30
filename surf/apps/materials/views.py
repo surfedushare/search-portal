@@ -135,9 +135,9 @@ def _get_filter_categories():
     Make list of filter categories in format "edurep_field_id:item_count"
     :return: list of "edurep_field_id:item_count"
     """
-    return ["{}:{}".format(f.edurep_field_id, f.max_item_count)
+    return ["{}:{}".format(f.external_id, 0)
             for f in MpttFilterItem.objects.all()
-            if f.edurep_field_id not in IGNORED_FIELDS
+            if f.external_id not in IGNORED_FIELDS
             and f.level == 0]
 
 
