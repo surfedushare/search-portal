@@ -53,7 +53,7 @@ admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
 
 router = CustomRouter()
-router.register(r'filter-categories', FilterCategoryViewSet)
+router.register(r'filter-categories', FilterCategoryViewSet, basename='MpttFilterItem')
 router.register(r'filters', FilterViewSet)
 router.register(r'collections', CollectionViewSet)
 router.register(r'applaud-materials', ApplaudMaterialViewSet)

@@ -35,9 +35,11 @@ class FilterCategoryViewSet(ListModelMixin,
     """
     Viewset class that provides `list()` action for Filter Category.
     """
-    queryset = FilterCategory.objects.all()
-    serializer_class = FilterCategorySerializer
+    serializer_class = MpttFilterItemSerializer
     permission_classes = []
+
+    def get_queryset(self):
+        return MpttFilterItem.objects.get_cached_trees()
 
 
 class FilterViewSet(ModelViewSet):

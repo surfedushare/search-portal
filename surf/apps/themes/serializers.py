@@ -15,8 +15,8 @@ class ThemeSerializer(serializers.ModelSerializer):
     Theme instance serializer
     """
 
-    id = serializers.UUIDField(source="filter_category_item.id")
-    title = serializers.CharField(source="filter_category_item.name")
+    id = serializers.UUIDField(source="mptt_filter_category_item.id")
+    title = serializers.CharField(source="mptt_filter_category_item.name")
     title_translations = LocaleSerializer()
     description_translations = LocaleHTMLSerializer()
 
