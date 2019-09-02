@@ -4,9 +4,9 @@
     <div class="center_block center-header collections__center-header">
       <div class="collections__info ">
         <img
-          src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-          srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-         ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+          src="/images/pictures/rawpixel-760027-unsplash.jpg"
+          srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+         /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="collections__info_bg">
         <BreadCrumbs
           :items="[{title: $t('Home'), url: localePath('index')}]"
@@ -193,7 +193,7 @@ export default {
 
     &__link {
       padding: 13px 43px 13px 51px;
-      background-image: url('./../../assets/images/plus-black.svg');
+      background-image: url('/images/plus-black.svg');
       background-position: 10px 50%;
       background-repeat: no-repeat;
       background-size: 24px 24px;

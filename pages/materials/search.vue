@@ -9,8 +9,8 @@
             <BreadCrumbs :items="items" />
             <h2 v-if="materials && !materials_loading">{{ $t('Search-results') }} {{ `(${materials.records_total})` }}</h2>
             <img
-              src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-              srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+              src="/images/pictures/rawpixel-760027-unsplash.jpg"
+              srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
               class="search__info_bg"
             >
           </div>
@@ -438,12 +438,12 @@ export default {
       cursor: pointer;
 
       &--cards {
-        background: transparent url('./../../assets/images/card-view-copy.svg')
+        background: transparent url('/images/card-view-copy.svg')
           0 50% no-repeat;
       }
 
       &--list {
-        background: transparent url('./../../assets/images/list-view-copy.svg')
+        background: transparent url('/images/list-view-copy.svg')
           0 50% no-repeat;
       }
 

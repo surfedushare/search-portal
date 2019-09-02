@@ -483,7 +483,7 @@ export default {
     border-radius: 20px;
     position: relative;
     justify-content: space-between;
-    background: url('./../../../assets/images/filters.svg') 54px 96px no-repeat;
+    background: url('/images/filters.svg') 54px 96px no-repeat;
     background-size: 30px 30px;
 
     @media @desktop {
@@ -492,7 +492,7 @@ export default {
     }
 
     @media @mobile, @tablet {
-      background: url('./../../../assets/images/filters.svg') 20px 53px
+      background: url('/images/filters.svg') 20px 53px
         no-repeat;
       background-size: 30px 30px;
     }
@@ -562,7 +562,7 @@ export default {
           display: flex;
         }
         a {
-          background: url('./../../../assets/images/edit.svg') no-repeat 0 50%;
+          background: url('/images/edit.svg') no-repeat 0 50%;
           background-size: 30px 30px;
         }
       }
@@ -574,7 +574,7 @@ export default {
           margin: 0;
         }
         a {
-          background: url('./../../../assets/images/trash.svg') no-repeat 0 50%;
+          background: url('/images/trash.svg') no-repeat 0 50%;
           background-size: 30px 30px;
         }
       }
@@ -595,7 +595,7 @@ export default {
     margin-bottom: -55px;
     &__link {
       padding: 13px 43px 13px 51px;
-      background-image: url('./../../../assets/images/plus-black.svg');
+      background-image: url('/images/plus-black.svg');
       background-position: 10px 50%;
       background-repeat: no-repeat;
       background-size: 24px 24px;

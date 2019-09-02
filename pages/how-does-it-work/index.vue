@@ -3,9 +3,9 @@
     <div class="center_block how_work__center-header">
       <div class="how_work__info">
         <img
-          src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-          srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-             ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+          src="/images/pictures/rawpixel-760027-unsplash.jpg"
+          srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+             /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
           class="how_work__info_bg"
         >
         <BreadCrumbs
@@ -24,9 +24,9 @@
       <div class="how_work__desc">
         <div class="how_work__bg_block">
           <img
-            src="./../../assets/images/pictures/image_home.jpg"
-            srcset="./../../assets/images/pictures/image_home@2x.jpg 2x,
-               ./../../assets/images/pictures/image_home@3x.jpg 3x"
+            src="/images/pictures/image_home.jpg"
+            srcset="/images/pictures/image_home@2x.jpg 2x,
+               /images/pictures/image_home@3x.jpg 3x"
             class="preview__bg_block-img"
           >
         </div>
@@ -203,7 +203,7 @@ export default {
     &:before {
       content: '';
       position: absolute;
-      background: url('./../../assets/images/combined-shape.svg') no-repeat 0 0;
+      background: url('/images/combined-shape.svg') no-repeat 0 0;
       right: -100px;
       top: 0;
       height: 109px;
@@ -216,7 +216,7 @@ export default {
     &:after {
       content: '';
       position: absolute;
-      background: url('./../../assets/images/message.svg') no-repeat 0 0;
+      background: url('/images/message.svg') no-repeat 0 0;
       right: -82px;
       top: 22px;
       height: 33px;
