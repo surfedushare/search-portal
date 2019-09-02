@@ -25,12 +25,12 @@ def migrate_filter_categories_to_mptt(apps, schema_editor):
         if filter_category.edurep_field_id == LANGUAGE_FIELD_ID:
             translation_en = Locale.objects.create(
                 asset=f"{'en'}_auto_generated_at_{datetime.datetime.now().strftime('%c')}",
-                en='en', nl='nl', is_fuzzy=False)
+                en='en', nl='en', is_fuzzy=False)
             MpttFilterItem.objects.create(name='en', title_translations=translation_en, parent=root_node,
                                           external_id='en')
             translation_nl = Locale.objects.create(
                 asset=f"{'nl'}_auto_generated_at_{datetime.datetime.now().strftime('%c')}",
-                en='en', nl='nl', is_fuzzy=False)
+                en='nl', nl='nl', is_fuzzy=False)
             MpttFilterItem.objects.create(name='nl', title_translations=translation_nl, parent=root_node,
                                           external_id='nl')
 
