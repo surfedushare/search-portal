@@ -96,6 +96,9 @@ class MpttFilterItem(MPTTModel, UUIDModel):
     class MPTTMeta:
         order_insertion_by = ['name']
 
+    class Meta:
+        verbose_name = "filter category item"
+
 
 class Filter(UUIDModel):
     """
