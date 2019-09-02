@@ -304,7 +304,7 @@ export default {
 
           return current_item && current_item.items
             ? Object.assign({}, current_item, {
-                items: item.items.map(
+                items: item.children.map(
                   el => current_item.items.indexOf(el.external_id) !== -1
                 )
               })
@@ -319,24 +319,11 @@ export default {
      * @returns {*}
      */
     filtered_categories() {
-      const { filter_categories, filter_sort } = this;
+      const { filter_categories } = this;
       if (filter_categories) {
-        return filter_categories.reduce((prev, item) => {
-          // return {
-          //   ...item
-          //   // hide: item.external_id === publisherdate
-          // };
-
-          const index = prev.indexOf(item.external_id);
-
-          if (index !== -1) {
-            prev[index] = item;
-          }
-
-          return prev;
-        }, filter_sort.slice(0));
+        return filter_categories.results
       }
-      return false;
+      return [];
     },
     /**
      * generate extending categories

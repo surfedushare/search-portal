@@ -58,7 +58,7 @@ export default {
   mutations: {
     SET_FILTER_CATEGORIES(state, payload) {
       state.filter_categories = payload;
-      const disciplines = payload.find(
+      const disciplines = payload.results.find(
         child => child.external_id.search('discipline.id') !== -1
       );
       state.disciplines = Object.assign({}, disciplines, {
@@ -67,7 +67,7 @@ export default {
           return prev;
         }, {})
       });
-      const educationallevels = payload.find(
+      const educationallevels = payload.results.find(
         child => child.external_id.search('educationallevel.id') !== -1
       );
       state.educationallevels = Object.assign({}, educationallevels, {
@@ -76,7 +76,7 @@ export default {
           return prev;
         }, {})
       });
-      const languages = payload.find(
+      const languages = payload.results.find(
         item => item.external_id.search('lom.general.language') !== -1
       );
       state.languages = Object.assign({}, languages);
