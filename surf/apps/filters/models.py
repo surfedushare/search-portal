@@ -2,15 +2,13 @@
 This module contains implementation of models for filters app.
 """
 
-from django.db import models as django_models
 from django.conf import settings
 from django.core import validators
+from django.db import models as django_models
+from mptt.models import MPTTModel, TreeForeignKey
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.locale.models import Locale
-
-from mptt.models import MPTTModel, TreeForeignKey
-import json
 
 
 class FilterCategory(UUIDModel):
@@ -61,6 +59,7 @@ class FilterCategoryItem(UUIDModel):
     def __str__(self):
         return self.title
 
+
 class MpttFilterItem(MPTTModel, UUIDModel):
     name = django_models.CharField(max_length=255)
     parent = TreeForeignKey('self', on_delete=django_models.CASCADE, null=True, blank=True, related_name='children')
@@ -78,20 +77,6 @@ class MpttFilterItem(MPTTModel, UUIDModel):
 
     def __str__(self):
         return self.name
-
-    def to_dict(self):
-        return {
-            "name": self.name,
-            "created_at": self.created_at.strftime('%c'),
-            "updated_at": self.updated_at.strftime('%c'),
-            "title_translations": self.title_translations.toJSON() if self.title_translations else None,
-            "external_id": self.external_id,
-            "enabled_by_default": self.enabled_by_default,
-            "is_hidden": self.is_hidden,
-        }
-
-    def toJSON(self):
-        return json.dumps(self.to_dict())
 
     class MPTTMeta:
         order_insertion_by = ['name']

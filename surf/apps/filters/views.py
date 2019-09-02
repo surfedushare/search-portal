@@ -69,7 +69,6 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
         filters = []
         if 'filters' in request.data.keys():
             filters = request.data['filters']
-        #filters = [OrderedDict([('external_id', 'lom.classification.obk.discipline.id'), ('items', ['bc0217df-c38d-4c29-b87b-2c1c035c717f'])])]
         base_request = SimpleNamespace(**{'data': {'search_text': [], 'filters': filters}, 'user': None})
         viewer = MaterialSearchAPIView()
         response = viewer.post(request=base_request)

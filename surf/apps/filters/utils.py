@@ -3,7 +3,7 @@ This module contains some common functions for filters app.
 """
 
 import re
-
+from tqdm import tqdm
 from django.db.models import Count
 
 from django.conf import settings
@@ -317,6 +317,7 @@ def _update_mptt_filter_category(filter_category, api_client):
             else:
                 _update_mptt_category_item(filter_category, k, k)
 
+
 def _update_nested_items(filter_category, items):
     for item in items:
         _update_category_item(filter_category,
@@ -328,7 +329,7 @@ def _update_nested_items(filter_category, items):
 
 
 def _update_nested_mptt_items(filter_category, items):
-    for item in items:
+    for item in tqdm(items):
         _update_mptt_category_item(filter_category,
                               item["identifier"],
                               item["caption"])
@@ -350,11 +351,6 @@ def _update_category_item(filter_category, item_id, item_title):
 def _update_mptt_category_item(filter_category, item_id, item_title):
     if not _is_valid_mptt_category_item(filter_category, item_id, item_title):
         return
-    # print(filter_category.id)
-    # print(item_id)
-    # print(item_title)
-    # print(f"Parent node {filter_category.name}")
-    # print(f"I want to create category_id {filter_category.id}, external_id {item_id}, item_title {item_title}")
     # normally we'd do this with a get_or_create, however since we want to leave the manually adjusted tree intact
     # we're doing it manually.
     if not MpttFilterItem.objects.filter(name=item_title).exists():

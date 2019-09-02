@@ -5,6 +5,8 @@ from surf.apps.themes.models import Theme
 from surf.apps.filters.models import FilterCategoryItem, MpttFilterItem
 
 def clone_filter_items_to_mptt(apps, schema_editor):
+    # Somehow MPTT doesn't enjoy being imported by apps.get_model (it'll error on not having values for 'lft' and 'rgt'
+    # So use direct imports instead.
     # #Theme = apps.get_model('themes', 'Theme')
     # FilterCategoryItem = apps.get_model('filters', 'FilterCategoryItem')
     # MpttFilterItem = apps.get_model('filters', 'MpttFilterItem')

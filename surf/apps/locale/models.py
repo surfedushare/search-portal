@@ -12,12 +12,6 @@ class Locale(UUIDModel):
     def __str__(self):
         return self.asset
 
-    def toJSON(self):
-        return {
-            "en": self.en,
-            "nl": self.nl
-        }
-
     class Meta:
         verbose_name = "Localization"
         verbose_name_plural = "Localizations"
