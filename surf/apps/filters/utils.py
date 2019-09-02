@@ -175,7 +175,7 @@ def check_and_update_mptt_filters():
         if not ac:
             ac = WidgetEndpointApiClient(api_endpoint=settings.EDUREP_JSON_API_ENDPOINT)
         try:
-            print(f_category.name)
+            print(f"Filter category name: {f_category.name}")
         except UnicodeEncodeError as exc:
             print(exc)
         _update_mptt_filter_category(f_category, ac)
@@ -353,15 +353,12 @@ def _update_mptt_category_item(filter_category, item_id, item_title):
         return
     # normally we'd do this with a get_or_create, however since we want to leave the manually adjusted tree intact
     # we're doing it manually.
-    if not MpttFilterItem.objects.filter(name=item_title).exists():
+    if not MpttFilterItem.objects.filter(external_id=item_id).exists():
         translation = Locale.objects.create(
             asset=f"{item_title}_auto_generated_at_{datetime.datetime.now().strftime('%c')}",
             en=item_title, nl=item_title, is_fuzzy=True)
-
         MpttFilterItem.objects.create(name=item_title, parent=filter_category,
                                       title_translations=translation, external_id=item_id)
-    else:
-        MpttFilterItem.objects.get_or_create(name=item_title, external_id=item_id)
 
 
 def _is_valid_mptt_category_item(filter_category, item_id, item_title):

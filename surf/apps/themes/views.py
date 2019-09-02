@@ -43,7 +43,7 @@ class ThemeViewSet(ListModelMixin,
     serializer_class = ThemeSerializer
     filter_class = ThemeFilter
     permission_classes = []
-    lookup_field = 'filter_category_item__id'
+    lookup_field = 'mptt_filter_category_item__id'
 
     @action(methods=['get'], detail=True)
     def disciplines(self, request, pk=None, **kwargs):
