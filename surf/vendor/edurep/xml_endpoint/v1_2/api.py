@@ -34,6 +34,7 @@ TECH_FORMAT_FIELD_ID = TECH_FORMAT_LOM
 CUSTOM_THEME_FIELD_ID = CUSTOM_THEME_ID
 DISCIPLINE_FIELD_ID = DISCIPLINE_ID_LOM
 COPYRIGHT_FIELD_ID = COPYRIGHT_ID_LOM
+LANGUAGE_FIELD_ID = "lom.general.language"
 AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
 PUBLISHER_FIELD_ID = "lom.lifecycle.contribute.publisher"
 PUBLISHER_DATE_FIELD_ID = "lom.lifecycle.contribute.publisherdate"

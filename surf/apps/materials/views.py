@@ -28,7 +28,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 
-from surf.apps.filters.models import FilterCategory
+from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_filters
 
 from surf.apps.materials.utils import (
@@ -92,7 +92,6 @@ class MaterialSearchAPIView(APIView):
         data = serializer.validated_data
 
         filters = data.get("filters", [])
-
         # add additional filter by Author
         # if input data contains `author` parameter
         author = data.pop("author", None)
@@ -118,8 +117,10 @@ class MaterialSearchAPIView(APIView):
 
         res = ac.search(**data)
 
-        records = add_extra_parameters_to_materials(request.user,
-                                                    res["records"])
+        if request.user:
+            records = add_extra_parameters_to_materials(request.user, res["records"])
+        else:
+            records = None
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
@@ -134,9 +135,10 @@ def _get_filter_categories():
     Make list of filter categories in format "edurep_field_id:item_count"
     :return: list of "edurep_field_id:item_count"
     """
-    return ["{}:{}".format(f.edurep_field_id, f.max_item_count)
-            for f in FilterCategory.objects.all()
-            if f.edurep_field_id not in IGNORED_FIELDS]
+    return ["{}:{}".format(f.external_id, 0)
+            for f in MpttFilterItem.objects.all()
+            if f.external_id not in IGNORED_FIELDS
+            and f.level == 0]
 
 
 class KeywordsAPIView(APIView):

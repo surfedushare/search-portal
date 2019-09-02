@@ -2,7 +2,6 @@ from django.db import models
 
 from surf.apps.core.models import UUIDModel
 
-
 class Locale(UUIDModel):
 
     asset = models.CharField('Asset ID', max_length=512, unique=True)
