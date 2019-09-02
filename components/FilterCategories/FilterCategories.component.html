@@ -71,7 +71,7 @@
               v-model="filter[index].items[indexItem]"
               @change="onChange"
             >
-            <label :for="item.external_id">{{item.name}}</label>
+            <label :for="item.external_id">{{ getTitleTranslation(item, $i18n.locale) }} ({{ item.item_count }})</label>
           </li>
           <li v-if="category.items.length > visible_items" class="filter-categories__subitem--show-more">
             <a

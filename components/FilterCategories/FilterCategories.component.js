@@ -158,7 +158,7 @@ export default {
       if (!_.isNil(category.title_translations) && !_.isEmpty(category.title_translations)){
         return category.title_translations[language];
       }
-      return category.title
+      return category.name
     }
   },
   watch: {
