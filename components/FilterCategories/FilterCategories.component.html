@@ -61,7 +61,7 @@
           <li
             v-for="(item, indexItem) in category.items"
             class="filter-categories__subitem"
-            v-if="category.show_all || indexItem < visible_items"
+            v-if="category.show_all || indexItem < visible_items && !item.is_hidden"
             :class="{'filter-categories__subitem--empty': item.is_empty}"
           >
             <input
