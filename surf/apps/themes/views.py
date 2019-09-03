@@ -54,8 +54,8 @@ class ThemeViewSet(ListModelMixin,
         instance = self.get_object()
 
         res = []
-        if instance.disciplines.exists():
-            items = [d.external_id for d in instance.disciplines.all()]
+        if instance.mptt_disciplines.exists():
+            items = [d.external_id for d in instance.mptt_disciplines.all()]
             drilldowns = get_material_count_by_disciplines(items)
             context = self.get_serializer_context()
             if drilldowns:
@@ -64,7 +64,7 @@ class ThemeViewSet(ListModelMixin,
             res = ThemeDisciplineSerializer(
                 many=True, context=context
             ).to_representation(
-                instance.disciplines.all()
+                instance.mptt_disciplines.all()
             )
 
         return Response(res)
