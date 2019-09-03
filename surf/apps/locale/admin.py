@@ -15,9 +15,10 @@ from surf.apps.locale.models import Locale, LocaleHTML
 
 @admin.register(Locale)
 class LocaleAdmin(admin.ModelAdmin):
-    list_display = ('asset', 'en', 'nl',)
+    list_display = ('asset', 'en', 'nl', 'is_fuzzy',)
     search_fields = ('asset', 'en', 'nl',)
-    list_editable = ('en', 'nl',)
+    list_editable = ('en', 'nl', 'is_fuzzy',)
+    list_filter = ('is_fuzzy',)
 
     def get_model_info(self):
         app_label = self.model._meta.app_label
@@ -64,6 +65,7 @@ class LocaleAdmin(admin.ModelAdmin):
 
 
 class LocaleHTMLForm(forms.ModelForm):
+
     class Meta:
         model = LocaleHTML
         widgets = {
@@ -75,6 +77,8 @@ class LocaleHTMLForm(forms.ModelForm):
 
 @admin.register(LocaleHTML)
 class LocaleHTMLAdmin(admin.ModelAdmin):
-    list_display = ('asset', 'en', 'nl',)
+    list_display = ('asset', 'en', 'nl', 'is_fuzzy',)
     search_fields = ('asset', 'en', 'nl',)
+    list_editable = ('is_fuzzy',)
+    list_filter = ('is_fuzzy',)
     form = LocaleHTMLForm
