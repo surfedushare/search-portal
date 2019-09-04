@@ -30,7 +30,7 @@ class ThemeDisciplineSerializer(MpttFilterItemSerializer):
     Theme discipline instance serializer
     """
 
-    #materials_count = serializers.SerializerMethodField()
+    materials_count = serializers.SerializerMethodField()
 
     def get_materials_count(self, obj):
         try:
