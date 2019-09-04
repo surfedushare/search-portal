@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 export default {
   name: 'filter-categories',
-  props: ['value', 'showPopupSaveFilter', 'full-filter'],
+  props: ['showPopupSaveFilter', 'full-filter'],
   components: { DatesRange },
   mounted() {
     if (this.isAuthenticated && !this.fullFilter) {
@@ -25,17 +25,17 @@ export default {
         start_date: null,
         end_date: null
       },
-      filter_sort: [
-        'lom.classification.obk.educationallevel.id',
-        'lom.technical.format',
-        'lom.general.language',
-        'about.repository',
-        'lom.lifecycle.contribute.publisherdate',
-        'custom_theme.id',
-        'lom.classification.obk.discipline.id',
-        'lom.general.aggregationlevel',
-        'lom.rights.copyrightandotherrestrictions'
-      ]
+      // filter_sort: [
+      //   'lom.classification.obk.educationallevel.id',
+      //   'lom.technical.format',
+      //   'lom.general.language',
+      //   'about.repository',
+      //   'lom.lifecycle.contribute.publisherdate',
+      //   'custom_theme.id',
+      //   'lom.classification.obk.discipline.id',
+      //   'lom.general.aggregationlevel',
+      //   'lom.rights.copyrightandotherrestrictions'
+      // ]
     };
   },
   methods: {
@@ -44,35 +44,39 @@ export default {
      * Open/close filter category
      * @param id filter category
      */
-    onToggleCategory(id) {
-      const selected = [...this.selected];
-      const index = selected.indexOf(id);
-      if (index !== -1) {
-        this.selected = [
-          ...selected.slice(0, index),
-          ...selected.slice(index + 1)
-        ];
-      } else {
-        selected.push(id);
-        this.selected = selected;
-      }
+    onToggleCategory(category) {
+      category.isOpen = !category.isOpen;
+      this.$forceUpdate();
+      // const selected = [...this.selected];
+      // const index = selected.indexOf(id);
+      // if (index !== -1) {
+      //   this.selected = [
+      //     ...selected.slice(0, index),
+      //     ...selected.slice(index + 1)
+      //   ];
+      // } else {
+      //   selected.push(id);
+      //   this.selected = selected;
+      // }
     },
     /**
      * open/collapse category items
      * @param id filter category
      */
-    onToggleShowAll(id) {
-      const show_all = [...this.show_all];
-      const index = show_all.indexOf(id);
-      if (index !== -1) {
-        this.show_all = [
-          ...show_all.slice(0, index),
-          ...show_all.slice(index + 1)
-        ];
-      } else {
-        show_all.push(id);
-        this.show_all = show_all;
-      }
+    onToggleShowAll(category) {
+      category.show_all = !category.show_all;
+      this.$forceUpdate();
+      // const show_all = [...this.show_all];
+      // const index = show_all.indexOf(id);
+      // if (index !== -1) {
+      //   this.show_all = [
+      //     ...show_all.slice(0, index),
+      //     ...show_all.slice(index + 1)
+      //   ];
+      // } else {
+      //   show_all.push(id);
+      //   this.show_all = show_all;
+      // }
     },
     /**
      * Set filter for v-model
@@ -126,8 +130,48 @@ export default {
         return filters;
       }
     },
+    loadCategoryItems(items, parentSelected, parentExternalId) {
+      parentSelected = parentSelected || false;
+      parentExternalId = parentExternalId || null;
+      _.forEach(items, (item) => {
+        item.show_all = false;
+        item.selected = parentSelected || item.enabled_by_default;
+        item.isOpen = item.selected;
+        item.parentExternalId = parentExternalId;
+        this.loadCategoryItems(item.children, item.enabled_by_default, item.external_id);
+      })
+    },
+    getFiltersForSearch(items) {
+      return _.reduce(items, (results, item) => {
+        results = results.concat(this.getFiltersForSearch(item.children));
+        if(item.selected && !_.isNull(item.parent)) {
+          results.push(item);
+        }
+        return results;
+      }, []);
+    },
     onChange() {
-      this.setFilter();
+      const { filter_categories } = this;
+
+      let selected = this.getFiltersForSearch(filter_categories.results);
+      let selectedGroups = _.groupBy(selected, 'parentExternalId');
+      let filters = _.map(selectedGroups, (items, group) => {
+        return {
+          external_id: group,
+          items: _.map(items, (item) => { return item.external_id} )
+        }
+      });
+      let searchText = this.$store.getters.materials.search_text;
+      let ordering = this.$store.getters.materials.ordering;
+      let searchRequest = {
+          search_text: searchText,
+          ordering: ordering,
+          filters: filters
+      };
+
+      this.$router.push(this.generateSearchMaterialsQuery(searchRequest));
+      this.$store.dispatch('searchMaterials', searchRequest);
+
     },
     /**
      * Get the full filter info
@@ -166,23 +210,24 @@ export default {
      * Watcher on change parent v-model
      * @param value
      */
-    value(value) {
-      const { isInit, publisherdate } = this;
-      if (value && value.filters && !isInit) {
-        this.selected = value.filters
-          .filter(filter => filter.items && filter.items.length)
-          .map(filter => filter.external_id);
-
-        const publisherdate_item = this.value.filters.find(
-          item => item.external_id === publisherdate
-        );
-        if (publisherdate_item) {
-          this.data.start_date = publisherdate_item.items[0];
-          this.data.end_date = publisherdate_item.items[1];
-        }
-        this.isInit = true;
-      }
-    },
+    // value(value) {
+    //   console.log(value);
+    //   const { isInit, publisherdate } = this;
+    //   if (value && value.filters && !isInit) {
+    //     this.selected = value.filters
+    //       .filter(filter => filter.items && filter.items.length)
+    //       .map(filter => filter.external_id);
+    //
+    //     const publisherdate_item = this.value.filters.find(
+    //       item => item.external_id === publisherdate
+    //     );
+    //     if (publisherdate_item) {
+    //       this.data.start_date = publisherdate_item.items[0];
+    //       this.data.end_date = publisherdate_item.items[1];
+    //     }
+    //     this.isInit = true;
+    //   }
+    // },
 
     data(data) {
       let { publisherdate } = this;
@@ -321,7 +366,10 @@ export default {
     filtered_categories() {
       const { filter_categories } = this;
       if (filter_categories) {
-        return filter_categories.results
+        this.loadCategoryItems(filter_categories.results, false);
+        return _.filter(filter_categories.results, (category) => {
+          return !category.is_hidden;
+        })
       }
       return [];
     },

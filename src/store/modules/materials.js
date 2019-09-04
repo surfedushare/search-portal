@@ -126,7 +126,6 @@ export default {
         materials.search_text = search.search_text;
         materials.active_filters = search.filters;
         materials.ordering = search.ordering;
-
         commit('SET_MATERIALS', materials);
         commit('SET_MATERIALS_LOADING', false);
         return materials;
