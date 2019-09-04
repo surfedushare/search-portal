@@ -44,15 +44,17 @@ export default {
   },
   actions: {
     async getFilterCategories({ state, commit }) {
-      if (!state.filter_categories && !state.filter_categories_loading) {
-        commit('SET_FILTER_CATEGORIES_LOADING', true);
-        const filter = await this.$axios.$get('filter-categories/');
-        commit('SET_FILTER_CATEGORIES', filter);
-        commit('SET_FILTER_CATEGORIES_LOADING', false);
 
-        return filter;
+      if (_.isNil(state.filter_categories_loading)) {
+        let promise = this.$axios.get('filter-categories/').then((response) => {
+          commit('SET_FILTER_CATEGORIES', response.data);
+          commit('SET_FILTER_CATEGORIES_LOADING', null);
+          return response.data;
+        });
+        commit('SET_FILTER_CATEGORIES_LOADING', promise);
       }
-      return state.filter_categories;
+
+      return _.isNil(state.filter_categories_loading) ? state.filter_categories : state.filter_categories_loading;
     }
   },
   mutations: {
