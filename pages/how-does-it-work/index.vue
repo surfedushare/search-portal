@@ -32,7 +32,7 @@
         </div>
         <div class="how_work__txt_block">
           <h2 class="how_work__txt_block__ttl">{{ $t('About-the-portal') }}</h2>
-          <div v-html="$t('About-the-portal-text')" />
+          <div v-html="$t('html-About-the-portal-text')"></div>
         </div>
       </div>
       <h2 class="how_work__materials_title">Uitgelicht</h2>
