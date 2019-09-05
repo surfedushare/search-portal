@@ -74,5 +74,7 @@ fill_filter_category.short_description = "Fill filter category items"
 
 @admin.register(models.MpttFilterItem)
 class MpttFilterItemAdmin(DraggableMPTTAdmin):
-    list_display = ('tree_actions', 'indented_title')
-    list_display_links = ('indented_title', )
+
+    search_fields = ('name', 'external_id',)
+    list_display = ('tree_actions', 'indented_title', 'enabled_by_default', 'is_hidden')
+    list_display_links = ('indented_title',)
