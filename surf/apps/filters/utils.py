@@ -3,6 +3,8 @@ This module contains some common functions for filters app.
 """
 
 import re
+from collections import OrderedDict
+
 from tqdm import tqdm
 from django.db.models import Count
 
@@ -120,20 +122,24 @@ def add_default_filters(filters):
     return filters
 
 
-def get_default_material_filters():
+def get_default_material_filters(filters=None):
     """
     Returns filters to get all available materials from EduRep
     :return: list of filters
     """
-
-    rv = []
+    if not filters:
+        filters = []
     root_nodes = MpttFilterItem.objects.root_nodes()
     for root in root_nodes:
-        enabled_children = root.get_descendants().filter(enabled_by_default=True)
+        if root.enabled_by_default:
+            enabled_children = root.get_descendants()
+        else:
+            enabled_children = root.get_descendants().filter(enabled_by_default=True)
+
         if enabled_children:
             child_external_ids = [child.external_id for child in enabled_children]
-            rv.append(dict(external_id=root.external_id, items=child_external_ids))
-    return rv
+            filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
+    return filters
 
 
 def check_and_update_filters():
