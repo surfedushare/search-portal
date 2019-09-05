@@ -3,9 +3,9 @@ This module contains API view serializers for filters app.
 """
 
 from rest_framework import serializers
-from surf.apps.locale.serializers import LocaleSerializer
+
 from surf.apps.filters import models
-import time
+from surf.apps.locale.serializers import LocaleSerializer
 
 
 class FilterCategoryItemSerializer(serializers.ModelSerializer):

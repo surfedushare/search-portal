@@ -1,13 +1,10 @@
 """
 This module contains implementation of REST API views for filters app.
 """
-import time
 
-from collections import OrderedDict
 from types import SimpleNamespace
 
-from django.shortcuts import render
-from rest_framework import views, status, generics
+from rest_framework import status, generics
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -17,12 +14,10 @@ from rest_framework.viewsets import (
 )
 
 from surf.apps.filters.models import (
-    FilterCategory,
     Filter,
     MpttFilterItem
 )
 from surf.apps.filters.serializers import (
-    FilterCategorySerializer,
     FilterSerializer,
     FilterShortSerializer,
     MpttFilterItemSerializer,
@@ -72,7 +67,6 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
         base_request = SimpleNamespace(**{'data': {'search_text': [], 'filters': filters}, 'user': None})
         viewer = MaterialSearchAPIView()
         response = viewer.post(request=base_request)
-
         # extract the filter counts from the response
         external_id_count = {}
         for item in response.data['filters']:
@@ -81,7 +75,6 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
                 category_count += sub_item['count']
                 external_id_count[sub_item['external_id']] = sub_item['count']
             external_id_count[item['external_id']] = category_count
-
         return external_id_count
 
 

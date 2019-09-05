@@ -2,16 +2,22 @@
 This module contains some common functions for filters app.
 """
 
+import datetime
 import re
 from collections import OrderedDict
 
-from tqdm import tqdm
-from django.db.models import Count
-
 from django.conf import settings
+from django.db.models import Count
+from tqdm import tqdm
 
+from surf.apps.filters.models import (
+    FilterCategory,
+    FilterCategoryItem,
+    MpttFilterItem
+)
+from surf.apps.locale.models import Locale
+from surf.apps.themes.models import Theme
 from surf.vendor.edurep.widget_endpoint.v3.api import WidgetEndpointApiClient
-
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     PUBLISHER_DATE_FIELD_ID,
@@ -21,21 +27,11 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     EDUCATIONAL_LEVEL_FIELD_ID,
     LANGUAGE_FIELD_ID
 )
-
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
     CUSTOM_THEME_DISCIPLINES,
     CUSTOM_COPYRIGHTS,
     DISCIPLINE_ENTRIES
 )
-
-from surf.apps.filters.models import (
-    FilterCategory,
-    FilterCategoryItem,
-    MpttFilterItem
-)
-import datetime
-from surf.apps.themes.models import Theme
-from surf.apps.locale.models import Locale
 
 IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
                   CUSTOM_THEME_FIELD_ID,
