@@ -110,35 +110,6 @@ export default {
   },
   data() {
     return {
-      defaultFilter: [
-        {
-          external_id: 'lom.classification.obk.educationallevel.id',
-          items: [
-            'be140797-803f-4b9e-81cc-5572c711e09c',
-            'f33b30ee-3c82-4ead-bc20-4255be9ece2d',
-            'de952b8b-efa5-4395-92c0-193812130c67',
-            // 'f3ac3fbb-5eae-49e0-8494-0a44855fff25',
-            // 'a598e56e-d1a6-4907-9e2c-3da64e59f9ae',
-            // '00ace3c7-d7a8-41e6-83b1-7f13a9af7668',
-            // '654931e1-6f8b-4f72-aa4b-92c99c72c347',
-            // '8beca7eb-95a5-4c7d-9704-2d2a2fc4bc65',
-            'bbbd99c6-cf49-4980-baed-12388f8dcff4',
-            '18656a7c-95a5-4831-8085-020d3151aceb',
-            '2998f2e0-449d-4911-86a2-f4cbf1a20b56'
-          ]
-        },
-        {
-          external_id: 'lom.rights.copyrightandotherrestrictions',
-          items: [
-            'cc-by',
-            'cc-by-sa',
-            'cc-by-nc-sa',
-            'cc-by-nc-nd',
-            'cc-by-nd',
-            'cc-by-nc'
-          ]
-        }
-      ],
       search_text: [],
       search: {},
       isShow: false,
@@ -226,14 +197,6 @@ export default {
         start_date: publisherdate.items[0] || null,
         end_date: publisherdate.items[1] || null
       };
-    }
-
-    const hasFilter = search.filters.find(
-      filter => filter.external_id === this.defaultFilter.external_id
-    );
-
-    if (!hasFilter && search.filters && search.filters.length === 1) {
-      search.filters = [...search.filters, ...this.defaultFilter];
     }
 
     this.search = search;
