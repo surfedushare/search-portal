@@ -263,7 +263,7 @@ export default {
 
             return prev;
           }, []),
-          language_title: languages.items.reduce((prev, language) => {
+          language_title: languages.children.reduce((prev, language) => {
             if (language.external_id === material.language) {
               prev = language.title;
             }

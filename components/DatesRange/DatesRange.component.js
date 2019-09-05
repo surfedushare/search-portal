@@ -1,6 +1,6 @@
 import Datepicker from 'vuejs-datepicker';
 import ClickOutside from 'vue-click-outside';
-import { formatDate } from './../../store/modules/_helpers';
+import { formatDate } from './../../src/store/modules/_helpers';
 export default {
   name: 'dates-range',
   props: ['value', 'hide-select', 'inline', 'theme', 'disable-future-days'],

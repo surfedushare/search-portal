@@ -7,7 +7,7 @@
     </div>
     <div class="main-footer__info">
       <h3>{{ $t('Footer-info-title') }}</h3>
-      <div class="main-footer__info_text">{{ $t('Footer-info-text') }}</div>
+      <div class="main-footer__info_text" v-html="$t('html-Footer-info-text')"></div>
       <a
         href="https://www.surf.nl/"
         target="_blank"
@@ -43,8 +43,8 @@
     <div class="main-footer__logo">
       <nuxt-link :to="localePath('index')">
         <img
-          src="./../../assets/images/surflogo.png"
-          srcset="./../../assets/images/surflogo@2x.png 2x, ./../../assets/images/surflogo@3x.png 3x"
+          src="/images/surflogo.png"
+          srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
           class="main-footer__logo_img"
         >
       </nuxt-link>

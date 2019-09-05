@@ -1,50 +1,72 @@
 {
   "name": "surf-frontend",
-  "version": "1.0.0",
-  "description": "Surf",
-  "author": "Yurii Dunaev",
-  "private": true,
+  "version": "1.1.0",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development LOCALES_URL=https://zoekportalback.surf.nl/static/locales/ LOGOUT_URL=https://engine.test.surfconext.nl/logout nuxt",
-    "build": "cross-env NODE_ENV=development LOCALES_URL=https://zoekportalback.surf.nl/static/locales/ LOGOUT_URL=https://engine.test.surfconext.nl/logout nuxt build",
-    "start": "cross-env NODE_ENV=development nuxt start",
-    "generate": "cross-env NODE_ENV=dev LOCALES_URL=https://zoekportalback.surf.nl/static/locales/ LOGOUT_URL=https://engine.test.surfconext.nl/logout nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint"
+    "serve": "vue-cli-service serve",
+    "integrate": "vue-cli-service serve --mode=integration",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@nuxtjs/axios": "5.5.4",
     "axios": "0.19.0",
-    "cross-env": "5.2.0",
+    "cookie": "0.4.0",
+    "file-loader": "4.2.0",
+    "js-cookie": "2.2.1",
+    "less": "3.9.0",
+    "less-loader": "5.0.0",
     "numeral": "2.0.6",
-    "nuxt": "2.0.0",
-    "nuxt-i18n": "5.8.5",
-    "nuxt-matomo": "1.0.0",
+    "rollup": "1.19.4",
     "uuid-validate": "0.0.3",
     "vee-validate": "2.1.5",
+    "vue": "2.6.10",
+    "vue-cli": "2.9.6",
     "vue-click-outside": "1.0.7",
     "vue-clipboard2": "0.2.1",
+    "vue-i18n": "8.14.0",
     "vue-infinite-scroll": "2.0.2",
+    "vue-masonry-css": "1.0.3",
+    "vue-router": "3.0.6",
     "vue-select": "2.5.1",
     "vue-social-sharing": "2.3.3",
     "vuejs-datepicker": "1.5.4",
     "vuex": "3.0.1"
   },
   "devDependencies": {
-    "babel-eslint": "8.2.1",
-    "css-loader": "3.1.0",
-    "dotenv": "6.2.0",
-    "eslint": "5.0.1",
-    "eslint-loader": "2.0.0",
-    "eslint-plugin-vue": "4.0.0",
-    "file-loader": "4.1.0",
-    "less": "3.8.0",
-    "less-loader": "4.1.0",
-    "node-sass": "4.6.0",
-    "nodemon": "1.19.1",
-    "sass-loader": "6.0.0",
-    "vue-loader": "15.7.0",
-    "vue-masonry-css": "1.0.3",
-    "vue-template-compiler": "2.6.10"
-  }
+    "@vue/cli-plugin-babel": "3.10.0",
+    "@vue/cli-plugin-eslint": "3.0.4",
+    "@vue/cli-service": "3.10.0",
+    "babel-eslint": "10.0.2",
+    "css-loader": "3.2.0",
+    "eslint": "5.16.0",
+    "eslint-plugin-vue": "5.2.3",
+    "moxios": "0.4.0",
+    "node-sass": "4.9.4",
+    "sass-loader": "7.1.0",
+    "vue-template-compiler": "2.6.10",
+    "webpack": "4.28.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

@@ -1,0 +1,50 @@
+/*
+ * The Typekit service used to deliver this font or fonts for use on websites
+ * is provided by Adobe and is subject to these Terms of Use
+ * http://www.adobe.com/products/eulas/tou_typekit. For font license
+ * information, see the list below.
+ *
+ * proxima-soft:
+ *   - http://typekit.com/eulas/00000000000000003b9af203
+ *   - http://typekit.com/eulas/00000000000000003b9af204
+ *   - http://typekit.com/eulas/00000000000000003b9af209
+ *   - http://typekit.com/eulas/00000000000000003b9af20a
+ *   - http://typekit.com/eulas/00000000000000003b9af20e
+ *
+ * © 2009-2019 Adobe Systems Incorporated. All Rights Reserved.
+ */
+/*{"last_published":"2018-11-19 10:09:24 UTC"}*/
+
+@font-face {
+    font-family:"proxima-soft";
+    src:url("ProximaSoft-Light.woff2") format("woff2"),url("ProximaSoft-Light.woff") format("woff"),url("ProximaSoft-Light.otf") format("opentype");
+    font-display:auto;font-style:normal;font-weight:400;
+}
+
+@font-face {
+    font-family:"proxima-soft";
+    src:url("ProximaSoft-LightItalic.woff2") format("woff2"),url("ProximaSoft-LightItalic.woff") format("woff"),url("ProximaSoft-LightItalic.otf") format("opentype");
+    font-display:auto;font-style:italic;font-weight:400;
+}
+
+@font-face {
+    font-family:"proxima-soft";
+    src:url("ProximaSoft-RegularItalic.woff2") format("woff2"),url("ProximaSoft-RegularItalic.woff") format("woff"),url("ProximaSoft-RegularItalic.otf") format("opentype");
+    font-display:auto;font-style:italic;font-weight:700;
+}
+
+@font-face {
+    font-family:"proxima-soft";
+    src:url("ProximaSoft-Regular.woff2") format("woff2"),url("ProximaSoft-Regular.woff") format("woff"),url("ProximaSoft-Regular.otf") format("opentype");
+    font-display:auto;font-style:normal;font-weight:700;
+}
+
+@font-face {
+    font-family:"proxima-soft";
+    src:url("ProximaSoft-Bold.woff2") format("woff2"),url("ProximaSoft-Bold.woff") format("woff"),url("ProximaSoft-Bold.otf") format("opentype");
+    font-display:auto;font-style:normal;font-weight:900;
+}
+
+.tk-proxima-soft { font-family: "proxima-soft",sans-serif; }
+.tk-proxima-soft-condensed { font-family: "proxima-soft-condensed",sans-serif; }
+.tk-proxima-soft-extra-condensed { font-family: "proxima-soft-extra-condensed",sans-serif; }

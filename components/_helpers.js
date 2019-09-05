@@ -14,10 +14,8 @@ export const debounce = function(func, wait, immediate) {
   };
 };
 
-export const generateSearchMaterialsQuery = function(
-  data = { filters: [], search_text: [] },
-  path = '/materials/search/'
-) {
+export const generateSearchMaterialsQuery = function(data = { filters: [], search_text: [] }, path = '/materials/search/') {
+
   const filters = data.filters
     ? data.filters.filter(item => Object.keys(item).length)
     : [];

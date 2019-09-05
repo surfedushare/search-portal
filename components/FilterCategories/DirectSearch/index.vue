@@ -55,7 +55,7 @@
         height: 15px;
         text-shadow: none;
         opacity: 1;
-        background: url('./../../../assets/images/close-white.svg') 50% 50%
+        background: url('/images/close-white.svg') 50% 50%
           no-repeat;
         background-size: 15px 15px;
       }
@@ -78,18 +78,18 @@
       background: rgba(50, 50, 50, 0.1);
     }
     .dropdown-menu > .highlight > a {
-      background: @dark-blue url('./../../../assets/images/search-white.svg')
+      background: @dark-blue url('/images/search-white.svg')
         21px 50% no-repeat;
       background-size: 20px 20px;
       &:hover {
-        background: @dark-blue url('./../../../assets/images/search-white.svg')
+        background: @dark-blue url('/images/search-white.svg')
           21px 50% no-repeat;
         background-size: 20px 20px;
         color: #fff;
       }
     }
     .dropdown-menu > li > a {
-      background: url('./../../../assets/images/search.svg') 21px 50% no-repeat;
+      background: url('/images/search.svg') 21px 50% no-repeat;
       background-size: 20px 20px;
     }
   }
@@ -106,7 +106,7 @@
   width: 100%;
   border: 0;
   padding: 0 40px;
-  background: url('./../../../assets/images/search.svg') 9px 50% no-repeat
+  background: url('/images/search.svg') 9px 50% no-repeat
     #ffffff;
   background-size: 20px 20px;
   border-radius: 7px;
