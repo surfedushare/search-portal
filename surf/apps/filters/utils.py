@@ -58,10 +58,9 @@ def get_material_count_by_disciplines(discipline_ids):
     rv = dict()
 
     # add default filters to search materials
-    filters = get_all_materials_filters()
+    filters = get_default_material_filters()
 
-    ac = XmlEndpointApiClient(
-        api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+    ac = XmlEndpointApiClient(api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
     discipline_ids = list(discipline_ids)
     while discipline_ids:
@@ -85,7 +84,6 @@ def get_material_count_by_disciplines(discipline_ids):
                     break
             else:
                 drilldowns = None
-
         if drilldowns:
             rv.update({k: drilldowns[k] for k in ds if k in drilldowns})
 
@@ -122,20 +120,19 @@ def add_default_filters(filters):
     return filters
 
 
-def get_all_materials_filters():
+def get_default_material_filters():
     """
     Returns filters to get all available materials from EduRep
     :return: list of filters
     """
 
     rv = []
-    for filter_id in {EDUCATIONAL_LEVEL_FIELD_ID, COPYRIGHT_FIELD_ID}:
-        items = FilterCategoryItem.objects.filter(
-            category__edurep_field_id=filter_id).all()
-
-        items = [it.external_id for it in items]
-        rv.append(dict(external_id=filter_id, items=items))
-
+    root_nodes = MpttFilterItem.objects.root_nodes()
+    for root in root_nodes:
+        enabled_children = root.get_descendants().filter(enabled_by_default=True)
+        if enabled_children:
+            child_external_ids = [child.external_id for child in enabled_children]
+            rv.append(dict(external_id=root.external_id, items=child_external_ids))
     return rv
 
 
@@ -276,7 +273,7 @@ def _update_filter_category(filter_category, api_client):
                                     filter_category.max_item_count)
 
     res = api_client.drilldowns([drilldown_name],
-                                filters=get_all_materials_filters())
+                                filters=get_default_material_filters())
 
     items = res.get(category_id)
     if not items:

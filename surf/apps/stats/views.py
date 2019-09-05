@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from django.conf import settings
 
-from surf.apps.filters.utils import get_all_materials_filters
+from surf.apps.filters.utils import get_default_material_filters
 from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
 
 
@@ -28,6 +28,6 @@ class StatsView(ViewSet):
         ac = XmlEndpointApiClient(
             api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
-        filters = get_all_materials_filters()
+        filters = get_default_material_filters()
         res = ac.search([], filters=filters, page_size=0)
         return Response(dict(value=res.get("recordcount", 0)))

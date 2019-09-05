@@ -267,7 +267,6 @@ def filter_list_to_cql(filters):
     :param filters: list of filters
     :return: query string in CQL
     """
-
     if not filters or not isinstance(filters, list):
         return None
 
@@ -291,10 +290,7 @@ def _filter_to_cql(field_id, values):
         return _custom_theme_filter_to_cql(DISCIPLINE_ID_LOM, values)
 
     elif field_id == COPYRIGHT_FIELD_ID:
-        vs = list()
-        for v in values:
-            vs.extend(CUSTOM_COPYRIGHTS.get(v, {}).get("external_ids", []))
-        return _list_filter_to_cql(field_id, vs)
+        return _list_filter_to_cql(field_id, values)
 
     else:
         return _list_filter_to_cql(field_id, values)
