@@ -3,6 +3,7 @@ import { generateSearchMaterialsQuery } from '../_helpers';
 import DatesRange from '~/components/DatesRange';
 import _ from 'lodash';
 
+
 export default {
   name: 'filter-categories',
   props: ['showPopupSaveFilter', 'full-filter'],
@@ -25,58 +26,33 @@ export default {
         start_date: null,
         end_date: null
       },
-      // filter_sort: [
-      //   'lom.classification.obk.educationallevel.id',
-      //   'lom.technical.format',
-      //   'lom.general.language',
-      //   'about.repository',
-      //   'lom.lifecycle.contribute.publisherdate',
-      //   'custom_theme.id',
-      //   'lom.classification.obk.discipline.id',
-      //   'lom.general.aggregationlevel',
-      //   'lom.rights.copyrightandotherrestrictions'
-      // ]
+      categoryItemsById: {}
     };
   },
   methods: {
     generateSearchMaterialsQuery,
-    /**
-     * Open/close filter category
-     * @param id filter category
-     */
-    onToggleCategory(category) {
-      category.isOpen = !category.isOpen;
-      this.$forceUpdate();
-      // const selected = [...this.selected];
-      // const index = selected.indexOf(id);
-      // if (index !== -1) {
-      //   this.selected = [
-      //     ...selected.slice(0, index),
-      //     ...selected.slice(index + 1)
-      //   ];
-      // } else {
-      //   selected.push(id);
-      //   this.selected = selected;
-      // }
+    hasVisibleChildren(category) {
+      if(!category.children.length) {
+        return false;
+      }
+      return _.some(category.children, (child) => { return !child.is_hidden; })
     },
-    /**
-     * open/collapse category items
-     * @param id filter category
-     */
+    setChildrenSelected(children, value) {
+      _.forEach(children, (child) => {
+        child.selected = value;
+        this.setChildrenSelected(child.children, value);
+      });
+    },
+    onToggleCategory(category, update = true) {
+      category.isOpen = !category.isOpen;
+      _.forEach(category.children, (child) => { this.onToggleCategory(child, false); } );
+      if(update) {
+        this.$forceUpdate();
+      }
+    },
     onToggleShowAll(category) {
       category.show_all = !category.show_all;
       this.$forceUpdate();
-      // const show_all = [...this.show_all];
-      // const index = show_all.indexOf(id);
-      // if (index !== -1) {
-      //   this.show_all = [
-      //     ...show_all.slice(0, index),
-      //     ...show_all.slice(index + 1)
-      //   ];
-      // } else {
-      //   show_all.push(id);
-      //   this.show_all = show_all;
-      // }
     },
     /**
      * Set filter for v-model
@@ -130,35 +106,57 @@ export default {
         return filters;
       }
     },
-    loadCategoryItems(items, parentSelected, parentExternalId) {
-      parentSelected = parentSelected || false;
-      parentExternalId = parentExternalId || null;
+    loadCategoryItems(items, parent) {
+      let parentSelected = (_.isNull(parent)) ? false : parent.selected || parent.enabled_by_default;
+      let searchId = (_.isNull(parent)) ? null : parent.searchId;
       _.forEach(items, (item) => {
-        item.show_all = false;
+
+        // Load all items into their own lookup table
+        if(!this.categoryItemsById[item.id]) {
+          this.categoryItemsById[item.id] = item;
+        }
+        // Set values that might be relevant when loading children
+        item.searchId = searchId || item.external_id;
         item.selected = parentSelected || item.enabled_by_default;
-        item.isOpen = item.selected;
-        item.parentExternalId = parentExternalId;
-        this.loadCategoryItems(item.children, item.enabled_by_default, item.external_id);
-      })
+        // Load children and retrospecively set some parent properties
+        let hasSelectedChildren = this.loadCategoryItems(item.children, item);
+        item.show_all = false;
+        item.selected = item.isOpen = item.selected || hasSelectedChildren;
+      });
+      return _.some(items, (item) => { return item.selected; });
     },
     getFiltersForSearch(items) {
       return _.reduce(items, (results, item) => {
-        results = results.concat(this.getFiltersForSearch(item.children));
+        if(item.children.length) {
+            results = results.concat(this.getFiltersForSearch(item.children));
+        }
         if(item.selected && !_.isNull(item.parent)) {
           results.push(item);
         }
         return results;
       }, []);
     },
-    onChange() {
+    onChange(event) {
+
       const { filter_categories } = this;
 
+      // Recursively update selections
+      let changedCategory = this.categoryItemsById[event.target.dataset.categoryId];
+      if(!_.isNil(changedCategory)) {
+        this.setChildrenSelected(changedCategory.children, changedCategory.selected);
+        this.$forceUpdate();
+      }
+
+      // Create the search request from the current selection and stored data
       let selected = this.getFiltersForSearch(filter_categories.results);
-      let selectedGroups = _.groupBy(selected, 'parentExternalId');
+      let selectedGroups = _.groupBy(selected, 'searchId');
       let filters = _.map(selectedGroups, (items, group) => {
         return {
           external_id: group,
-          items: _.map(items, (item) => { return item.external_id} )
+          items: _.reject(
+            _.map(items, 'external_id'),
+            _.isEmpty
+          )
         }
       });
       let searchText = this.$store.getters.materials.search_text;
@@ -169,6 +167,7 @@ export default {
           filters: filters
       };
 
+      // Execute search
       this.$router.push(this.generateSearchMaterialsQuery(searchRequest));
       this.$store.dispatch('searchMaterials', searchRequest);
 
@@ -366,10 +365,8 @@ export default {
     filtered_categories() {
       const { filter_categories } = this;
       if (filter_categories) {
-        this.loadCategoryItems(filter_categories.results, false);
-        return _.filter(filter_categories.results, (category) => {
-          return !category.is_hidden;
-        })
+        this.loadCategoryItems(filter_categories.results, null);
+        return filter_categories.results;
       }
       return [];
     },

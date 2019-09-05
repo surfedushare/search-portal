@@ -51,33 +51,38 @@
             :disable-future-days="true"
           />
         </div>
-        <ul  v-else-if="category.children.length" v-show="category.isOpen" class="filter-categories__subitems">
+        <ul  v-else-if="hasVisibleChildren(category)" v-show="category.isOpen" class="filter-categories__subitems">
           <li v-for="(item, indexItem) in category.children" class="filter-categories__subitem"
-              v-show="category.show_all || indexItem < visible_items" v-if="!item.is_hidden"
+              v-show="!item.is_hidden && (category.show_all || indexItem < visible_items)"
               :class="{'filter-categories__subitem--empty': item.is_empty}">
-            <input
-              type="checkbox"
-              :id="item.external_id"
-              :value="item.external_id"
-              v-model="filtered_categories[index].children[indexItem].selected"
-              @change="onChange"
-            >
-            <label :for="item.external_id">{{ getTitleTranslation(item, $i18n.locale) }} ({{ item.item_count }})
-                      <li v-for="(child, childIndex) in item.children" :key="child.external_id"
-              class="filter-categories__subitem"
-              v-if="!child.is_hidden">
-            <input
-              type="checkbox"
-              :id="child.external_id"
-              :value="child.external_id"
-              @change="onChange"
-            >
-            <label>{{ getTitleTranslation(child, $i18n.locale) }} ({{ child.item_count }})</label></li>
-
-
-          </label>
-
+            <div>
+              <input
+                  type="checkbox"
+                  :id="item.external_id"
+                  :value="item.external_id"
+                  :data-category-id="item.id"
+                  v-model="filtered_categories[index].children[indexItem].selected"
+                  @change="onChange"
+                >
+                <label :for="item.external_id">
+                    {{ getTitleTranslation(item, $i18n.locale) }} ({{ item.item_count }})
+                </label>
+            </div>
+              <ul v-if="hasVisibleChildren(item)" class="category-children">
+                  <li v-for="(child, childIndex) in item.children" :key="child.external_id" class="filter-categories__subitem" v-show="!item.is_hidden">
+                      <input
+                              type="checkbox"
+                              :id="child.external_id"
+                              :value="child.external_id"
+                              :data-category-id="child.id"
+                              v-model="child.selected"
+                              @change="onChange"
+                      >
+                      <label>{{ getTitleTranslation(child, $i18n.locale) }} ({{ child.item_count }})</label>
+                  </li>
+              </ul>
           </li>
+
           <li v-if="category.children && category.children.length > visible_items" class="filter-categories__subitem--show-more">
             <a
               href="/show-more/"
