@@ -23,9 +23,6 @@ import nuxt_plugin_VueClipboard_7da67946 from './plugins/VueClipboard'
 import nuxt_plugin_veeValidate_1cb8e4d4 from './plugins/veeValidate'
 
 
-// Component: <no-ssr>
-//Vue.component(NoSSR.name, NoSSR);
-
 // Component: <nuxt-child>
 Vue.component(NuxtChild.name, NuxtChild);
 
@@ -34,14 +31,6 @@ Vue.component(NuxtLink.name, NuxtLink);
 
 // Component: <nuxt>`
 Vue.component(Nuxt.name, Nuxt);
-
-// vue-meta configuration
-// Vue.use(Meta, {
-//   keyName: 'head', // the component option name that vue-meta looks for meta info on.
-//   attribute: 'data-n-head', // the attribute name vue-meta adds to the tags it observes
-//   ssrAttribute: 'data-n-head-ssr', // the attribute name that lets vue-meta know that meta info has already been server-rendered
-//   tagIDKeyName: 'hid' // the property name that vue-meta uses to determine whether to overwrite or append a tag
-// });
 
 const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"}
 

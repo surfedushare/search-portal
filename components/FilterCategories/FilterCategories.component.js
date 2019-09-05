@@ -205,29 +205,6 @@ export default {
     }
   },
   watch: {
-    /**
-     * Watcher on change parent v-model
-     * @param value
-     */
-    // value(value) {
-    //   console.log(value);
-    //   const { isInit, publisherdate } = this;
-    //   if (value && value.filters && !isInit) {
-    //     this.selected = value.filters
-    //       .filter(filter => filter.items && filter.items.length)
-    //       .map(filter => filter.external_id);
-    //
-    //     const publisherdate_item = this.value.filters.find(
-    //       item => item.external_id === publisherdate
-    //     );
-    //     if (publisherdate_item) {
-    //       this.data.start_date = publisherdate_item.items[0];
-    //       this.data.end_date = publisherdate_item.items[1];
-    //     }
-    //     this.isInit = true;
-    //   }
-    // },
-
     data(data) {
       let { publisherdate } = this;
       let filters = this.value.filters.slice(0);

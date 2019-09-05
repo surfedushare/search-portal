@@ -134,15 +134,6 @@ export default {
   },
   watch: {
     /**
-     * Watcher on the search field
-     * @param search - String
-     **/
-    search(search, prev) {
-      // if (search && !this.materials_loading) {
-      //   this.$store.dispatch('searchMaterials', search);
-      // }
-    },
-    /**
      * Watcher on the 'active_filter' field
      * @param active_filter - Object
      **/
