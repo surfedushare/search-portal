@@ -19,6 +19,10 @@ DATABASES = {
 ALLOWED_HOSTS = []  # specify the list of allowed hosts or '*' to allow all
 ALLOWED_REDIRECT_ENDPOINTS = []  # specify the list of allowed redirection endpoints or '*' to allow all
 
+# Set these to False when there is no HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 CORS_ORIGIN_ALLOW_ALL = False # set to False to enable CORS in production!
 CORS_ORIGIN_WHITELIST = [] # specify the list of allowed origins
 

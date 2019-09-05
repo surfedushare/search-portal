@@ -214,6 +214,9 @@ CUSTOM_COPYRIGHTS = {
                  "title": "Naamsvermelding-GeenAfgeleideWerken"},
     "cc-by-sa": {"external_ids": ["cc-by-sa-30", "cc-by-sa-40"],
                  "title": "Naamsvermelding-GelijkDelen"},
+    "yes": {"external_ids": ["yes"], "title": "Somehow yes"},
+    "yes\n": {"external_ids": ["yes"], "title": "Somehow yes with a newline"},
+    "no": {"external_ids": ["no"], "title": "Somehow no"},
 }
 
 EDUREP_COPYRIGHTS = dict()

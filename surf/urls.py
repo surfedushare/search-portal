@@ -13,11 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
 from django.contrib import admin
-from django.urls import path
 from django.conf.urls import url, include
-from django.conf.urls.static import static
+
 
 from surf.routers import CustomRouter
 
@@ -32,7 +30,8 @@ from surf.apps.materials.views import (
 
 from surf.apps.filters.views import (
     FilterCategoryViewSet,
-    FilterViewSet
+    FilterViewSet,
+    MpttFilterItems
 )
 
 from surf.apps.users.views import (
@@ -46,13 +45,14 @@ from surf.apps.users.views import (
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsView
+from surf.apps.locale.views import get_localisation_strings
 
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
 
 router = CustomRouter()
-router.register(r'filter-categories', FilterCategoryViewSet)
+router.register(r'filter-categories', FilterCategoryViewSet, basename='MpttFilterItem')
 router.register(r'filters', FilterViewSet)
 router.register(r'collections', CollectionViewSet)
 router.register(r'applaud-materials', ApplaudMaterialViewSet)
@@ -70,6 +70,7 @@ apipatterns = [
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^localehtml/', MaterialAPIView.as_view()),
+    url(r'^filteritems/', MpttFilterItems.as_view()),
 ] + router.urls
 
 urlpatterns = [
@@ -79,4 +80,6 @@ urlpatterns = [
 
     url(r'^login/surfconext/', auth_begin_handler),
     url(r'^complete/surfconext/', auth_complete_handler),
+
+    url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 ]
