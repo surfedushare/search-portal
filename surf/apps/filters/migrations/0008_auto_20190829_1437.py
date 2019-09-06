@@ -37,6 +37,13 @@ def migrate_filter_categories_to_mptt(apps, schema_editor):
     check_and_update_mptt_filters()
 
 
+def undo_migrate_filter_categories_to_mptt(apps, schema_editor):
+    MpttFilterItem = apps.get_model('filters', 'MpttFilterItem')
+    Locale = apps.get_model('locale', 'Locale')
+    Locale.objects.filter(asset__contains='auto_generated').delete()
+    MpttFilterItem.objects.all().delete()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -44,5 +51,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(migrate_filter_categories_to_mptt)
+        migrations.RunPython(migrate_filter_categories_to_mptt, undo_migrate_filter_categories_to_mptt)
     ]
