@@ -354,7 +354,7 @@ def _update_mptt_category_item(filter_category, item_id, item_title):
     # we're doing it manually.
     if not MpttFilterItem.objects.filter(external_id=item_id).exists():
         translation = Locale.objects.create(
-            asset=f"{item_title}_auto_generated_at_{datetime.datetime.now().strftime('%c')}",
+            asset=f"{item_title}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
             en=item_title, nl=item_title, is_fuzzy=True)
         MpttFilterItem.objects.create(name=item_title, parent=filter_category,
                                       title_translations=translation, external_id=item_id)
