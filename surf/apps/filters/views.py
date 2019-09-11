@@ -36,9 +36,19 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
     def _update_item_counts_for_node(cls, input_node, item_count_dict):
         if input_node['external_id'] in item_count_dict.keys():
             input_node['item_count'] = item_count_dict[input_node['external_id']]
+        elif input_node['name'] in item_count_dict.keys():
+            input_node['item_count'] = item_count_dict[input_node['name']]
         if input_node['children'] is not None:
             for child_node in input_node['children']:
                 cls._update_item_counts_for_node(child_node, item_count_dict)
+
+    def remove_zero_counts(self, input_node):
+        if not input_node['external_id'] == "lom.general.language":
+            for child in input_node['children']:
+                self.remove_zero_counts(child)
+            input_node['children'] = [child for child in input_node['children']
+                                      if child['item_count'] > 0
+                                      or len(child['children']) > 0]
 
     def list(self, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -49,11 +59,13 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
             serializer = self.get_serializer(page, many=True)
             for node in serializer.data:
                 self._update_item_counts_for_node(node, item_counts)
-            return self.get_paginated_response(serializer.data)
+                self.remove_zero_counts(node)
 
+            return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(queryset, many=True)
         for node in serializer.data:
             self._update_item_counts_for_node(node, item_counts)
+            self.remove_zero_counts(node)
 
         return Response(serializer.data, status.HTTP_200_OK)
 
