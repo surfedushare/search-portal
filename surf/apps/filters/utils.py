@@ -345,7 +345,7 @@ def _update_mptt_category_item(filter_category, item_id, item_title):
 
 
 def _is_valid_mptt_category_item(filter_category, item_id, item_title):
-    if filter_category.external_id != EDUCATIONAL_LEVEL_FIELD_ID:
+    if filter_category.external_id != EDUCATIONAL_LEVEL_FIELD_ID and item_id != 'no':
         return True
 
     return _MBO_HBO_WO_REGEX.match(item_title) is not None
