@@ -115,6 +115,13 @@ export default {
         if(!this.categoryItemsById[item.id]) {
           this.categoryItemsById[item.id] = item;
         }
+        // Set relevant properties for date filters
+        if(item.external_id === this.publisherdate) {
+          item.dates = {
+            start_date: null,
+            end_date: null
+          }
+        }
         // Set values that might be relevant when loading children
         item.searchId = searchId || item.external_id;
         item.selected = parentSelected || item.enabled_by_default;
@@ -127,18 +134,22 @@ export default {
     },
     getFiltersForSearch(items) {
       return _.reduce(items, (results, item) => {
+        // Recursively find selected filters for the children
         if(item.children.length) {
             results = results.concat(this.getFiltersForSearch(item.children));
         }
+        // Add this filter if it is selected
         if(item.selected && !_.isNull(item.parent)) {
+          results.push(item);
+        }
+        // Also add this filter if a date has been selected
+        if(item.external_id === this.publisherdate && (item.dates.start_date || item.dates.end_date)) {
           results.push(item);
         }
         return results;
       }, []);
     },
     onChange(event) {
-
-      const { filter_categories } = this;
 
       // Recursively update selections
       let changedCategory = this.categoryItemsById[event.target.dataset.categoryId];
@@ -147,16 +158,32 @@ export default {
         this.$forceUpdate();
       }
 
+      this.executeSearch();
+
+    },
+    onDateChange(dates) {
+      this.executeSearch();
+    },
+    executeSearch() {
+      const { filter_categories } = this;
+
       // Create the search request from the current selection and stored data
       let selected = this.getFiltersForSearch(filter_categories.results);
       let selectedGroups = _.groupBy(selected, 'searchId');
       let filters = _.map(selectedGroups, (items, group) => {
+        if(group === this.publisherdate) {
+          let dates = items[0].dates;
+          return {
+            external_id: group,
+            items: [dates.start_date || null, dates.end_date || null]
+          }
+        }
         return {
-          external_id: group,
-          items: _.reject(
-            _.map(items, 'external_id'),
-            _.isEmpty
-          )
+            external_id: group,
+            items: _.reject(
+                _.map(items, 'external_id'),
+                _.isEmpty
+            )
         }
       });
       let searchText = this.$store.getters.materials.search_text;

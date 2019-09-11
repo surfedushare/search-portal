@@ -53,26 +53,24 @@ export default {
      * @param date
      */
     onSelectedStartDate(date) {
-      this.$emit(
-        'input',
-        Object.assign({}, this.value, {
-          start_date: formatDate(date, 'YYYY-MM-DD')
-          // start_date: date
-        })
-      );
+      this.value.start_date = date;
+      this.$emit('input', {
+        start_date: formatDate(date, 'YYYY-MM-DD'),
+        end_date: formatDate(this.value.end_date, 'YYYY-MM-DD')
+      });
+      this.$forceUpdate()
     },
     /**
      * Emit end date to parent v-model
      * @param date
      */
     onSelectedEndDate(date) {
-      this.$emit(
-        'input',
-        Object.assign({}, this.value, {
-          end_date: formatDate(date, 'YYYY-MM-DD')
-          // end_date: date
-        })
-      );
+      this.value.end_date = date;
+      this.$emit('input', {
+        start_date: formatDate(this.value.start_date, 'YYYY-MM-DD'),
+        end_date: formatDate(date, 'YYYY-MM-DD')
+      });
+      this.$forceUpdate()
     }
   },
   computed: {}

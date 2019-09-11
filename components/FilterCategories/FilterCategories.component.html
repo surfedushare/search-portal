@@ -43,10 +43,10 @@
         </h4>
         <div v-if="category.external_id === publisherdate" class="filter-categories__subitems" v-show="category.isOpen">
           <DatesRange
-            v-if="data"
             :inline="true"
             :hide-select="true"
-            v-model="data"
+            v-model="category.dates"
+            @input="onDateChange"
             theme="min"
             :disable-future-days="true"
           />
