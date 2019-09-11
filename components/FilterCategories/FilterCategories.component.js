@@ -106,23 +106,6 @@ export default {
         return filters;
       }
     },
-    getFiltersForSearch(items) {
-      return _.reduce(items, (results, item) => {
-        // Recursively find selected filters for the children
-        if(item.children.length) {
-            results = results.concat(this.getFiltersForSearch(item.children));
-        }
-        // Add this filter if it is selected
-        if(item.selected && !_.isNull(item.parent)) {
-          results.push(item);
-        }
-        // Also add this filter if a date has been selected
-        if(item.external_id === this.publisherdate && (item.dates.start_date || item.dates.end_date)) {
-          results.push(item);
-        }
-        return results;
-      }, []);
-    },
     onChange(event) {
 
       // Recursively update selections
@@ -139,33 +122,13 @@ export default {
       this.executeSearch();
     },
     executeSearch() {
-      const { filter_categories } = this;
 
-      // Create the search request from the current selection and stored data
-      let selected = this.getFiltersForSearch(filter_categories.results);
-      let selectedGroups = _.groupBy(selected, 'searchId');
-      let filters = _.map(selectedGroups, (items, group) => {
-        if(group === this.publisherdate) {
-          let dates = items[0].dates;
-          return {
-            external_id: group,
-            items: [dates.start_date || null, dates.end_date || null]
-          }
-        }
-        return {
-            external_id: group,
-            items: _.reject(
-                _.map(items, 'external_id'),
-                _.isEmpty
-            )
-        }
-      });
       let searchText = this.$store.getters.materials.search_text;
       let ordering = this.$store.getters.materials.ordering;
       let searchRequest = {
           search_text: searchText,
           ordering: ordering,
-          filters: filters
+          filters: this.$store.getters.search_filters
       };
 
       // Execute search

@@ -1,3 +1,25 @@
+const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate';
+
+
+function getFiltersForSearch(items) {
+  return _.reduce(items, (results, item) => {
+    // Recursively find selected filters for the children
+    if(item.children.length) {
+        results = results.concat(getFiltersForSearch(item.children));
+    }
+    // Add this filter if it is selected
+    if(item.selected && !_.isNull(item.parent)) {
+        results.push(item);
+    }
+    // Also add this filter if a date has been selected
+    if(item.external_id === PUBLISHER_DATE_ID && (item.dates.start_date || item.dates.end_date)) {
+        results.push(item);
+    }
+    return results;
+  }, []);
+}
+
+
 function loadCategoryFilters(items, parent) {
 
   let parentSelected = (_.isNull(parent)) ? false : parent.selected || parent.enabled_by_default;
@@ -5,7 +27,7 @@ function loadCategoryFilters(items, parent) {
   _.forEach(items, (item) => {
 
       // Set relevant properties for date filters
-      if(item.external_id === 'lom.lifecycle.contribute.publisherdate') {
+      if(item.external_id === PUBLISHER_DATE_ID) {
           item.dates = {
               start_date: null,
               end_date: null
@@ -66,6 +88,28 @@ export default {
     },
     languages(state) {
       return state.languages;
+    },
+    search_filters(state) {
+
+      let selected = getFiltersForSearch(state.filter_categories.results);
+      let selectedGroups = _.groupBy(selected, 'searchId');
+      return _.map(selectedGroups, (items, group) => {
+        if(group === PUBLISHER_DATE_ID) {
+            let dates = items[0].dates;
+            return {
+              external_id: group,
+              items: [dates.start_date || null, dates.end_date || null]
+            }
+        }
+        return {
+          external_id: group,
+          items: _.reject(
+            _.map(items, 'external_id'),
+            _.isEmpty
+          )
+        }
+      });
+
     }
   },
   actions: {
