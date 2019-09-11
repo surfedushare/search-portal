@@ -112,9 +112,7 @@ export default {
       _.forEach(items, (item) => {
 
         // Load all items into their own lookup table
-        if(!this.categoryItemsById[item.id]) {
-          this.categoryItemsById[item.id] = item;
-        }
+        this.categoryItemsById[item.id] = item;
         // Set relevant properties for date filters
         if(item.external_id === this.publisherdate) {
           item.dates = {
