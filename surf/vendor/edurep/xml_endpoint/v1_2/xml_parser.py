@@ -12,10 +12,16 @@ import logging
 
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
     MIME_TYPE_TECH_FORMAT,
-    DISCIPLINE_CUSTOM_THEME,
-    EDUREP_COPYRIGHTS
+    DISCIPLINE_CUSTOM_THEME
 )
 
+from surf.apps.filters.models import MpttFilterItem
+copyright_item = MpttFilterItem.objects.get(external_id="lom.rights.copyrightandotherrestrictions")
+DYNAMIC_COPYRIGHTS = dict()
+for item in copyright_item.children.all():
+    DYNAMIC_COPYRIGHTS[item.external_id] = item.external_id
+    for child in item.children.all():
+        DYNAMIC_COPYRIGHTS[child.external_id] = child.external_id
 
 logger = logging.getLogger(__name__)
 
@@ -101,7 +107,7 @@ def _parse_record(elem):
     external_id_base64 = urlsafe_b64encode(external_id.encode("utf-8"))
     external_id_base64 = external_id_base64.decode("utf-8")
 
-    copyright = EDUREP_COPYRIGHTS.get(_find_elem_text(elem, _COPYRIGHT_PATH))
+    copyright = DYNAMIC_COPYRIGHTS.get(_find_elem_text(elem, _COPYRIGHT_PATH))
 
     number_of_ratings = _find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)
     number_of_ratings = int(number_of_ratings) if number_of_ratings else 0
@@ -272,7 +278,7 @@ def _parse_drilldowns_custom_theme(elem):
 
 
 def _parse_drilldowns_copyrights(elem):
-    return _parse_aggregate_field_drilldowns(elem, EDUREP_COPYRIGHTS)
+    return _parse_aggregate_field_drilldowns(elem, DYNAMIC_COPYRIGHTS)
 
 
 def _parse_aggregate_field_drilldowns(elem, aggregate_field_map):
