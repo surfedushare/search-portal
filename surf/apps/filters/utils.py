@@ -133,7 +133,8 @@ def get_default_material_filters(filters=None):
             enabled_children = root.get_descendants().filter(enabled_by_default=True)
 
         if enabled_children:
-            child_external_ids = [child.external_id for child in enabled_children]
+            # if child.external_id is empty don't append it to the filters, edurep fails on empty strings
+            child_external_ids = [child.external_id for child in enabled_children if child.external_id]
             filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
     return filters
 
