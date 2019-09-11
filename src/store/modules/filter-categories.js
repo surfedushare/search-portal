@@ -1,3 +1,29 @@
+function loadCategoryFilters(items, parent) {
+
+  let parentSelected = (_.isNull(parent)) ? false : parent.selected || parent.enabled_by_default;
+  let searchId = (_.isNull(parent)) ? null : parent.searchId;
+  _.forEach(items, (item) => {
+
+      // Set relevant properties for date filters
+      if(item.external_id === 'lom.lifecycle.contribute.publisherdate') {
+          item.dates = {
+              start_date: null,
+              end_date: null
+          }
+      }
+      // Set values that might be relevant when loading children
+      item.searchId = searchId || item.external_id;
+      item.selected = parentSelected || item.enabled_by_default;
+      // Load children and retrospecively set some parent properties
+      let hasSelectedChildren = loadCategoryFilters(item.children, item);
+      item.show_all = false;
+      item.selected = item.isOpen = item.selected || hasSelectedChildren;
+
+  });
+  return _.some(items, (item) => { return item.selected; });
+
+}
+
 export default {
   state: {
     filter_categories: null,
@@ -47,6 +73,10 @@ export default {
 
       if (_.isNil(state.filter_categories_loading)) {
         let promise = this.$axios.get('filter-categories/').then((response) => {
+
+          // Preprocess the filters
+          loadCategoryFilters(response.data.results, null);
+
           commit('SET_FILTER_CATEGORIES', response.data);
           commit('SET_FILTER_CATEGORIES_LOADING', null);
           return response.data;

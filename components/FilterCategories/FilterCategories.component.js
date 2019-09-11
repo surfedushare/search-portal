@@ -106,30 +106,6 @@ export default {
         return filters;
       }
     },
-    loadCategoryItems(items, parent) {
-      let parentSelected = (_.isNull(parent)) ? false : parent.selected || parent.enabled_by_default;
-      let searchId = (_.isNull(parent)) ? null : parent.searchId;
-      _.forEach(items, (item) => {
-
-        // Load all items into their own lookup table
-        this.categoryItemsById[item.id] = item;
-        // Set relevant properties for date filters
-        if(item.external_id === this.publisherdate) {
-          item.dates = {
-            start_date: null,
-            end_date: null
-          }
-        }
-        // Set values that might be relevant when loading children
-        item.searchId = searchId || item.external_id;
-        item.selected = parentSelected || item.enabled_by_default;
-        // Load children and retrospecively set some parent properties
-        let hasSelectedChildren = this.loadCategoryItems(item.children, item);
-        item.show_all = false;
-        item.selected = item.isOpen = item.selected || hasSelectedChildren;
-      });
-      return _.some(items, (item) => { return item.selected; });
-    },
     getFiltersForSearch(items) {
       return _.reduce(items, (results, item) => {
         // Recursively find selected filters for the children
@@ -366,8 +342,18 @@ export default {
      */
     filtered_categories() {
       const { filter_categories } = this;
+
+      let self = this;
+      function setCategoryItemIds(items) {
+          _.forEach(items, (item) => {
+              self.categoryItemsById[item.id] = item;
+              setCategoryItemIds(item.children);
+          });
+      }
+
       if (filter_categories) {
-        this.loadCategoryItems(filter_categories.results, null);
+        // Load all items into their own lookup table
+        setCategoryItemIds(filter_categories.results);
         return filter_categories.results;
       }
       return [];
