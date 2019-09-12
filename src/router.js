@@ -24,6 +24,7 @@ const _e164c612 = () => import('../pages/communities/_community/index.vue' /* we
 const _0624db53 = () => import('../pages/communities/_community/search.vue' /* webpackChunkName: "pages/communities/_community/search" */).then(m => m.default || m);
 const _2cdbb9b6 = () => import('../pages/communities/_community/collections/_id.vue' /* webpackChunkName: "pages/communities/_community/collections/_id" */).then(m => m.default || m);
 const _ebbee700 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m);
+const infoPage = () => import('../pages/info.vue').then(m => m.default || m);
 
 Vue.use(Router);
 
@@ -245,6 +246,24 @@ export function createRouter () {
 			name: "communities-community-collections-id___nl"
 		},
 		{
+            path: "/en/cookies",
+            component: infoPage,
+            name: "cookies___en",
+            meta: {
+                title_translation_key: 'title-cookies-info',
+                html_translation_key: 'html-cookies-info'
+            }
+        },
+        {
+            path: "/cookies",
+            component: infoPage,
+            name: "cookies___nl",
+            meta: {
+                title_translation_key: 'title-cookies-info',
+                html_translation_key: 'html-cookies-info'
+            }
+        },
+		{
 			path: "/en/",
 			component: _ebbee700,
 			name: "index___en"
@@ -254,6 +273,7 @@ export function createRouter () {
 			component: _ebbee700,
 			name: "index___nl"
 		}
+
     ],
 
 
