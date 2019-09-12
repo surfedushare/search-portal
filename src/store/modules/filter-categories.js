@@ -5,15 +5,15 @@ function getFiltersForSearch(items) {
   return _.reduce(items, (results, item) => {
     // Recursively find selected filters for the children
     if(item.children.length) {
-        results = results.concat(getFiltersForSearch(item.children));
+      results = results.concat(getFiltersForSearch(item.children));
     }
     // Add this filter if it is selected
     if(item.selected && !_.isNull(item.parent)) {
-        results.push(item);
+      results.push(item);
     }
     // Also add this filter if a date has been selected
     if(item.external_id === PUBLISHER_DATE_ID && (item.dates.start_date || item.dates.end_date)) {
-        results.push(item);
+      results.push(item);
     }
     return results;
   }, []);
