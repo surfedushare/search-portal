@@ -3,7 +3,7 @@
     <div class="center_block info__center-header">
       <div class="info__info">
         <h2 class="info__info_ttl">{{ $t(titleKey) }}</h2>
-        <div v-html="$t(htmlKey)"></div>
+        <div class="html-content" v-html="$t(htmlKey)"></div>
       </div>
     </div>
   </section>
