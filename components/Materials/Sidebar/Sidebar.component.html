@@ -2,21 +2,21 @@
   <div class="material__left_sticky">
     <div class="material__grey_block">
       <template
-        v-if="extended_material.disciplines && extended_material.disciplines.length"
+        v-if="material.disciplines && material.disciplines.length"
       >
         <h4>{{ $t('Discipline') }}</h4>
 
-        <span v-for="discipline in extended_material.disciplines">
+        <span v-for="discipline in material.disciplines">
           {{discipline.title}}
         </span>
       </template>
       <template
-        v-if="extended_material.educationallevels && extended_material.educationallevels.length"
+        v-if="material.educationallevels && material.educationallevels.length"
         class="materials__item_educationallevels"
       >
         <h4>{{ $t('Learning-levels') }}</h4>
         <span
-          v-for="educationallevel in extended_material.educationallevels"
+          v-for="educationallevel in material.educationallevels"
           class="materials__item_educationallevel"
         >
           {{educationallevel.title}}
@@ -25,22 +25,29 @@
       <!--<h4>Soort materiaal</h4>-->
       <!--Video-->
       <h4>{{ $t('File-format') }}</h4>
-      {{ extended_material.format }}
+      {{ material.format }}
       <h4>{{ $t('Publication-date') }}</h4>
-      {{ extended_material.date || '-' }}
+      {{ material.date || '-' }}
       <h4>{{ $t('Language') }}</h4>
-      {{ extended_material.language_title }}
+      {{ material.language }}
       <h4>{{ $t('Rights-of-use') }}</h4>
       <a
         class="material__grey_block-copyright"
-        :class="extended_material.copyright"
-        :href="copyrightURL(extended_material.copyright)"
+        :class="material.copyright"
+        :href="copyrightURL(material.copyright)"
         target="_blank"
       ></a>
-      {{ $t('Naamsvermelding-Gelijk-delen') }}
+      <!-- Strip the -30 or -40 suffix to be able to use less translation strings. -->
+      <a :href="copyrightURL(material.copyright)"
+        target="_blank"
+        v-if="material.copyright !== 'yes'">{{ $t(material.copyright.substring(0, material.copyright.length - 3)) }}</a>
+      <!-- We're working with the assumption that copyright 'yes' means the strictest copyright version. -->
+      <a :href="copyrightURL(material.copyright)"
+        target="_blank"
+        v-if="material.copyright === 'yes'">{{ $t('cc-by-nc-nd') }}</a>
       <a
-        v-if="extended_material.url"
-        :href="extended_material.url"
+        v-if="material.url"
+        :href="material.url"
         class="button button--full-width material__grey_block-btn"
         target="_blank"
       >{{ $t('Open-link') }}</a>
@@ -91,7 +98,7 @@
           @click.prevent="addCollection"
         >{{ $t('Make-a-collection') }}</a>
       </template>
-      <template v-else-if="!extended_material.has_bookmark">
+      <template v-else-if="!material.has_bookmark">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <Multiselect
           v-if="full_loading && my_collections.results"
@@ -109,7 +116,7 @@
         >{{ $t('Make-a-collection') }}</a>
       </template>
       <template
-        v-else-if="extended_material.has_bookmark"
+        v-else-if="material.has_bookmark"
       >
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <Multiselect

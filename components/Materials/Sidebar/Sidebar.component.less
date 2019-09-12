@@ -10,7 +10,7 @@
       width: 100%;
     }
     &-box {
-      background: url('/images/keurmerk.svg') no-repeat 1px 8px;
+      background: url('../../../public/images/keurmerk.svg') no-repeat 1px 8px;
       padding: 3px 0 0 35px;
       margin-top: 37px;
 
@@ -83,36 +83,55 @@
     }
 
     &-copyright {
-      &.cc-by {
-        background: url('../../../public/images/by-black.svg') no-repeat 0 0,
-          url('../../../public/images/sa-black.svg') no-repeat 23px 0;
+      &.cc-by,
+      &.cc-by-30,
+      &.cc-by-40 {
+        background: url('../../../public/images/cc-black.svg') no-repeat 0 0,
+          url('../../../public/images/by-black.svg') no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-nc,
-      &.cc-by-nc-sa {
-        background: url('../../../public/images/by-black.svg') no-repeat 0 0,
-          url('../../../public/images/nc-black.svg') no-repeat 23px 0,
-          url('../../../public/images/sa-black.svg') no-repeat 46px 0;
+      &.cc-by-nc-30,
+      &.cc-by-nc-40 {
+        background: url('../../../public/images/cc-black.svg') no-repeat 0 0,
+          url('../../../public/images/by-black.svg') no-repeat 23px 0,
+          url('../../../public/images/nc-black.svg') no-repeat 46px 0;
         background-size: contain;
       }
-      &.cc-by-nd {
-        background: url('../../../public/images/by-black.svg') no-repeat 0 0,
-          url('../../../public/images/nd-black.svg') no-repeat 23px 0;
+      &.cc-by-nc-sa,
+      &.cc-by-nc-sa-30,
+      &.cc-by-nc-sa-40 {
+        background: url('../../../public/images/cc-black.svg') no-repeat 0 0,
+          url('../../../public/images/by-black.svg') no-repeat 23px 0,
+          url('../../../public/images/nc-black.svg') no-repeat 46px 0,
+          url('../../../public/images/sa-black.svg') no-repeat 69px 0;
         background-size: contain;
       }
-      &.cc-by-sa {
-        background: url('../../../public/images/by-black.svg') no-repeat 0 0,
-          url('../../../public/images/nc-black.svg') no-repeat 23px 0;
-        background-size: contain;
-      }
-      &.cc-by-nc-nd {
-        background: url('../../../public/images/by-black.svg') no-repeat 0 0,
-          url('../../../public/images/nc-black.svg') no-repeat 23px 0,
+      &.cc-by-nd,
+      &.cc-by-nd-30,
+      &.cc-by-nd-40 {
+        background: url('../../../public/images/cc-black.svg') no-repeat 0 0,
+          url('../../../public/images/by-black.svg') no-repeat 23px 0,
           url('../../../public/images/nd-black.svg') no-repeat 46px 0;
         background-size: contain;
       }
-      &.yes:before{
-        content: 'Restricted access';
+      &.cc-by-sa,
+      &.cc-by-sa-30,
+      &.cc-by-sa-40 {
+        background: url('../../../public/images/cc-black.svg') no-repeat 0 0,
+          url('../../../public/images/by-black.svg') no-repeat 23px 0,
+          url('../../../public/images/sa-black.svg') no-repeat 46px 0;
+        background-size: contain;
+      }
+      &.yes,
+      &.cc-by-nc-nd,
+      &.cc-by-nc-nd-30,
+      &.cc-by-nc-nd-40 {
+        background: url('../../../public/images/cc-black.svg') no-repeat 0 0,
+          url('../../../public/images/by-black.svg') no-repeat 23px 0,
+          url('../../../public/images/nc-black.svg') no-repeat 46px 0,
+          url('../../../public/images/nd-black.svg') no-repeat 69px 0;
+        background-size: contain;
       }
 
       height: 20px;
@@ -123,7 +142,7 @@
     }
     &-btn {
       margin: 19px 0 0;
-      background-image: url('/images/open-link-black.svg');
+      background-image: url('../../../public/images/open-link-black.svg');
       background-position: 12px 12px;
       background-repeat: no-repeat;
       background-size: 25px 25px;
