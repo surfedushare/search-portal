@@ -79,7 +79,8 @@
       </a>
     </div>
 
-    <div class="material__left-box">
+    <div class="material__left-box"
+    v-show="false">
       <template v-if="!isAuthenticated">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <p>{{ $t('To-be-able-to-make-collections-you-must-first-log') }}</p>
