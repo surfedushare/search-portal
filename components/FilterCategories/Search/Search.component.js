@@ -90,7 +90,12 @@ export default {
     /**
      * Submit form
      */
-    onSubmit() {
+    onSubmit(searchTexts) {
+      if(_.isEmpty(searchTexts)) {
+        return;
+      }
+      // Apply filters and search for any input that is not empty input
+      this.formData.search_text = searchTexts;
       this.formData.filters = this.$store.getters.search_filters;
       if (this.$listeners.submit) {
         this.$emit('submit', this.formData);
