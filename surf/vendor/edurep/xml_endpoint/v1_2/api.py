@@ -25,7 +25,6 @@ from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
     TECH_FORMAT_MIME_TYPES,
     CUSTOM_THEME_DISCIPLINES,
-    CUSTOM_COPYRIGHTS
 )
 
 logger = logging.getLogger()

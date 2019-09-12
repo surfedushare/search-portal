@@ -29,7 +29,6 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
     CUSTOM_THEME_DISCIPLINES,
-    CUSTOM_COPYRIGHTS,
     DISCIPLINE_ENTRIES
 )
 
@@ -133,7 +132,8 @@ def get_default_material_filters(filters=None):
             enabled_children = root.get_descendants().filter(enabled_by_default=True)
 
         if enabled_children:
-            child_external_ids = [child.external_id for child in enabled_children]
+            # if child.external_id is empty don't append it to the filters, edurep fails on empty strings
+            child_external_ids = [child.external_id for child in enabled_children if child.external_id]
             filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
     return filters
 
@@ -193,9 +193,6 @@ def update_filter_category(filter_category):
     if filter_category.edurep_field_id == CUSTOM_THEME_FIELD_ID:
         _update_themes(filter_category)
 
-    elif filter_category.edurep_field_id == COPYRIGHT_FIELD_ID:
-        _update_copyrights(filter_category)
-
     elif filter_category.edurep_field_id == DISCIPLINE_FIELD_ID:
         _update_filter_category(filter_category, ac)
         _update_themes_disciplines(filter_category)
@@ -248,19 +245,6 @@ def _update_themes_disciplines(discipline_category):
             category_id=discipline_category.id,
             external_id=d["id"],
             defaults=dict(title=d["name"]))
-
-
-def _update_copyrights(copyrights_category):
-    """
-    Updates all copyrights in database
-    :param copyrights_category: DB instance of Copyrights filter category
-    """
-
-    for copyright_id, copyright_data in CUSTOM_COPYRIGHTS.items():
-        FilterCategoryItem.objects.get_or_create(
-            category_id=copyrights_category.id,
-            external_id=copyright_id,
-            defaults=dict(title=copyright_data["title"]))
 
 
 def _update_filter_category(filter_category, api_client):
@@ -361,7 +345,7 @@ def _update_mptt_category_item(filter_category, item_id, item_title):
 
 
 def _is_valid_mptt_category_item(filter_category, item_id, item_title):
-    if filter_category.external_id != EDUCATIONAL_LEVEL_FIELD_ID:
+    if filter_category.external_id != EDUCATIONAL_LEVEL_FIELD_ID and item_id != 'no':
         return True
 
     return _MBO_HBO_WO_REGEX.match(item_title) is not None
