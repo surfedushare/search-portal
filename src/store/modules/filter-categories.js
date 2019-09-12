@@ -1,3 +1,6 @@
+import _ from 'lodash';
+
+
 const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate';
 
 
