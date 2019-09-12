@@ -1,10 +1,10 @@
 
 <section class="menu">
   <nav class="menu__links">
-    <a class="menu__link" href="https://www.surf.nl/privacy.html" target="_blank">{{ $t('Privacy-link') }}</a>
-    <a class="menu__link" href="https://www.surf.nl/copyright.html" target="_blank">{{ $t('Copyright') }}</a>
+    <router-link class="menu__link" :to="{name: 'privacy' + '___' + $i18n.locale}">{{ $t('Privacy-link') }}</router-link>
+    <router-link class="menu__link" :to="{name: 'copyright' + '___' + $i18n.locale}">{{ $t('Copyright') }}</router-link>
     <router-link class="menu__link" :to="{name: 'cookies' + '___' + $i18n.locale}">{{ $t('Cookies') }}</router-link>
-    <a class="menu__link" href="https://www.surf.nl/disclaimer.html" target="_blank">{{ $t('Disclaimer') }}</a>
+    <router-link class="menu__link" :to="{name: 'disclaimer' + '___' + $i18n.locale}">{{ $t('Disclaimer') }}</router-link>
   </nav>
 </section>
 

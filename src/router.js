@@ -245,7 +245,43 @@ export function createRouter () {
 			component: _2cdbb9b6,
 			name: "communities-community-collections-id___nl"
 		},
-		{
+        {
+            path: "/en/privacy",
+            component: infoPage,
+            name: "privacy___en",
+            meta: {
+                title_translation_key: 'title-privacy-info',
+                html_translation_key: 'html-privacy-info'
+            }
+        },
+        {
+            path: "/privacy",
+            component: infoPage,
+            name: "privacy___nl",
+            meta: {
+                title_translation_key: 'title-privacy-info',
+                html_translation_key: 'html-privacy-info'
+            }
+        },
+        {
+            path: "/en/copyright",
+            component: infoPage,
+            name: "copyright___en",
+            meta: {
+                title_translation_key: 'title-copyright-info',
+                html_translation_key: 'html-copyright-info'
+            }
+        },
+        {
+            path: "/copyright",
+            component: infoPage,
+            name: "copyright___nl",
+            meta: {
+                title_translation_key: 'title-copyright-info',
+                html_translation_key: 'html-copyright-info'
+            }
+        },
+        {
             path: "/en/cookies",
             component: infoPage,
             name: "cookies___en",
@@ -261,6 +297,24 @@ export function createRouter () {
             meta: {
                 title_translation_key: 'title-cookies-info',
                 html_translation_key: 'html-cookies-info'
+            }
+        },
+        {
+            path: "/en/disclaimer",
+            component: infoPage,
+            name: "disclaimer___en",
+            meta: {
+                title_translation_key: 'title-disclaimer-info',
+                html_translation_key: 'html-disclaimer-info'
+            }
+        },
+        {
+            path: "/disclaimer",
+            component: infoPage,
+            name: "disclaimer___nl",
+            meta: {
+                title_translation_key: 'title-disclaimer-info',
+                html_translation_key: 'html-disclaimer-info'
             }
         },
 		{
