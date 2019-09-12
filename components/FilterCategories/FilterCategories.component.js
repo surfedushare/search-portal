@@ -149,12 +149,12 @@ export default {
     resetFilter() {
       this.$router.push(
         this.generateSearchMaterialsQuery({
-          search_text: this.value.search_text
-        })
+          filters: [],
+          search_text: this.$store.getters.materials.search_text
+        }),
+        () => { location.reload(); },
+        () => { location.reload(); }
       );
-      this.$nextTick().then(() => {
-        location.reload();
-      });
     },
     isShowCategoryItem({ category, item, indexItem }) {
       return (
