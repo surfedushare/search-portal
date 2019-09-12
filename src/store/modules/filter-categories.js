@@ -115,7 +115,7 @@ export default {
   actions: {
     async getFilterCategories({ state, commit }) {
 
-      if (_.isNil(state.filter_categories_loading)) {
+      if (_.isNil(state.filter_categories_loading) && _.isEmpty(state.filter_categories)) {
         let promise = this.$axios.get('filter-categories/').then((response) => {
 
           // Preprocess the filters
