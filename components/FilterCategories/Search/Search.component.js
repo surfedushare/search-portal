@@ -91,6 +91,7 @@ export default {
      * Submit form
      */
     onSubmit() {
+      this.formData.filters = this.$store.getters.search_filters;
       if (this.$listeners.submit) {
         this.$emit('submit', this.formData);
       } else {
@@ -98,48 +99,47 @@ export default {
         this.$emit('input', this.formData);
       }
     },
-    /**
-     * Event on change the filter category
-     * @param event
-     */
-    onChangeCategory(event) {
-      this.formData.filters = [
-        {
-          ...this.formData.filters[0],
-          external_id: event.target.value
-        }
-      ];
-    },
 
     showMobileFilterOptions() {
       this.showMobileFilter = !this.showMobileFilter;
     },
 
-    changeFilterCategory($event) {
-      const { external_id } = this.filter_category;
-      const current_filter = this.formData.filters.find(
-        filter => filter.external_id === external_id
-      );
-      if (current_filter) {
-        this.formData.filters = this.formData.filters.map(filter => {
-          if (filter.external_id === external_id) {
-            return {
-              external_id: this.filter_category.external_id,
-              items: [$event.target.value]
-            };
-          }
+    setOnlyChildSelected(children, childId) {
+      // TODO: make this function part of a service and recursively set selected on children
+      _.forEach(children, (child) => {
+          child.selected = child.external_id === childId;
+          _.forEach(child.children, (grantChild) => {
+            grantChild.selected = child.selected;
+          });
+      });
+    },
 
-          return filter;
-        });
-      } else {
-        this.formData.filters = [
-          ...this.formData.filters,
-          {
-            external_id: this.filter_category.external_id,
-            items: [$event.target.value]
-          }
-        ];
-      }
+    changeFilterCategory($event) {
+      this.setOnlyChildSelected(this.filter_category.children, $event.target.value);
+      // const { external_id } = this.filter_category;
+      // const current_filter = this.formData.filters.find(
+      //   filter => filter.external_id === external_id
+      // );
+      // if (current_filter) {
+      //   this.formData.filters = this.formData.filters.map(filter => {
+      //     if (filter.external_id === external_id) {
+      //       return {
+      //         external_id: this.filter_category.external_id,
+      //         items: [$event.target.value]
+      //       };
+      //     }
+      //
+      //     return filter;
+      //   });
+      // } else {
+      //   this.formData.filters = [
+      //     ...this.formData.filters,
+      //     {
+      //       external_id: this.filter_category.external_id,
+      //       items: [$event.target.value]
+      //     }
+      //   ];
+      // }
     }
   },
   watch: {
@@ -202,11 +202,7 @@ export default {
     filter_category() {
       const { filter_categories, showSelectedCategory } = this;
 
-      if (
-        filter_categories &&
-        filter_categories.results &&
-        showSelectedCategory
-      ) {
+      if (filter_categories && filter_categories.results && showSelectedCategory) {
         return filter_categories.results.find(
           category => category.external_id === showSelectedCategory
         );
@@ -221,26 +217,17 @@ export default {
     active_category() {
       const { filter_categories, hideFilter, activeCategoryExternalId } = this;
 
-      if (filter_categories && filter_categories.results && !hideFilter) {
-        const { external_id } = this.formData.filters[0];
-        const current_external_id = external_id || activeCategoryExternalId;
-        if (current_external_id) {
-          const active_category = filter_categories.results.find(
-            item => item.external_id === current_external_id
-          );
-          this.formData.filters[0].external_id = active_category.external_id;
-
-          this.previous_category_id = active_category.external_id;
-          return active_category;
-        }
-        if (external_id !== null) {
-          this.formData.filters[0].external_id =
-            filter_categories.results[0].external_id;
-        }
-        this.previous_category_id = filter_categories.results[0].external_id;
-        return filter_categories.results[0];
+      if (!filter_categories || _.isEmpty(filter_categories.results) || hideFilter) {
+        return false
       }
-      return false;
+      if(activeCategoryExternalId) {
+        let ix = filter_categories.results.findIndex(
+          item => item.external_id === activeCategoryExternalId
+        );
+        return filter_categories.results[ix];
+      }
+      return filter_categories.results[0];
+
     },
     /**
      * Get keywords

@@ -126,9 +126,9 @@ export default {
       let searchText = this.$store.getters.materials.search_text;
       let ordering = this.$store.getters.materials.ordering;
       let searchRequest = {
-          search_text: searchText,
-          ordering: ordering,
-          filters: this.$store.getters.search_filters
+        search_text: searchText,
+        ordering: ordering,
+        filters: this.$store.getters.search_filters
       };
 
       // Execute search
@@ -308,10 +308,10 @@ export default {
 
       let self = this;
       function setCategoryItemIds(items) {
-          _.forEach(items, (item) => {
-              self.categoryItemsById[item.id] = item;
-              setCategoryItemIds(item.children);
-          });
+        _.forEach(items, (item) => {
+          self.categoryItemsById[item.id] = item;
+          setCategoryItemIds(item.children);
+        });
       }
 
       if (filter_categories) {

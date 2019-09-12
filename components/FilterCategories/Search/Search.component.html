@@ -34,16 +34,6 @@
             :value="category.external_id"
           >{{category.name}}</option>
         </select>
-        <select
-          name="categories"
-          v-else-if="filter_categories"
-          @change="onChangeCategory"
-        >
-          <option
-            v-for="category in filter_categories.children"
-            :value="category.external_id"
-          >{{category.name}}</option>
-        </select>
       </div>
       <button
         class="button"
@@ -55,23 +45,13 @@
     </div>
     <div class="search__themes" v-if="!hideFilter">
       <h4 class="search__themes_title">{{ $t('Filter-search-results') }}</h4>
-      <div
-        v-if="active_category && active_category.external_id === 'lom.lifecycle.contribute.publisherdate'"
-        class="search__themes_items search__themes_items--inline"
-      >
-        <DatesRange
-          v-model="dates_range"
-          :hide-select="true"
-          :inline="true"
-        ></DatesRange>
-      </div>
-      <ul v-else-if="active_category" class="search__themes_items">
+      <ul if="active_category" class="search__themes_items">
         <li v-for="item in active_category.children" v-if="!item.is_hidden" class="search__themes_item">
           <input
             type="checkbox"
             :id="item.external_id"
             :value="item.external_id"
-            v-model="filter[item.external_id]"
+            v-model="item.selected"
             name="search_category"
           >
           <label :for="item.external_id">{{item.name}}</label>
@@ -93,7 +73,7 @@
             type="checkbox"
             :id="item.external_id"
             :value="item.external_id"
-            v-model="filter[item.external_id]"
+            v-model="item.selected"
             name="search_category"
           >
           <label :for="item.external_id">{{item.name}}</label>

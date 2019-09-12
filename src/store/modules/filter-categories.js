@@ -26,20 +26,20 @@ function loadCategoryFilters(items, parent) {
   let searchId = (_.isNull(parent)) ? null : parent.searchId;
   _.forEach(items, (item) => {
 
-      // Set relevant properties for date filters
-      if(item.external_id === PUBLISHER_DATE_ID) {
-          item.dates = {
-              start_date: null,
-              end_date: null
-          }
+    // Set relevant properties for date filters
+    if(item.external_id === PUBLISHER_DATE_ID) {
+      item.dates = {
+        start_date: null,
+        end_date: null
       }
-      // Set values that might be relevant when loading children
-      item.searchId = searchId || item.external_id;
-      item.selected = parentSelected || item.enabled_by_default;
-      // Load children and retrospecively set some parent properties
-      let hasSelectedChildren = loadCategoryFilters(item.children, item);
-      item.show_all = false;
-      item.selected = item.isOpen = item.selected || hasSelectedChildren;
+    }
+    // Set values that might be relevant when loading children
+    item.searchId = searchId || item.external_id;
+    item.selected = parentSelected || item.enabled_by_default;
+    // Load children and retrospecively set some parent properties
+    let hasSelectedChildren = loadCategoryFilters(item.children, item);
+    item.show_all = false;
+    item.selected = item.isOpen = item.selected || hasSelectedChildren;
 
   });
   return _.some(items, (item) => { return item.selected; });
@@ -95,11 +95,11 @@ export default {
       let selectedGroups = _.groupBy(selected, 'searchId');
       return _.map(selectedGroups, (items, group) => {
         if(group === PUBLISHER_DATE_ID) {
-            let dates = items[0].dates;
-            return {
-              external_id: group,
-              items: [dates.start_date || null, dates.end_date || null]
-            }
+          let dates = items[0].dates;
+          return {
+            external_id: group,
+            items: [dates.start_date || null, dates.end_date || null]
+          }
         }
         return {
           external_id: group,
