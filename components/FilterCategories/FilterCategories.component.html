@@ -43,10 +43,10 @@
         </h4>
         <div v-if="category.external_id === publisherdate" class="filter-categories__subitems" v-show="category.isOpen">
           <DatesRange
-            v-if="data"
             :inline="true"
             :hide-select="true"
-            v-model="data"
+            v-model="category.dates"
+            @input="onDateChange"
             theme="min"
             :disable-future-days="true"
           />
@@ -65,7 +65,7 @@
                   @change="onChange"
                 >
                 <label :for="item.external_id">
-                    {{ getTitleTranslation(item, $i18n.locale) }} ({{ item.item_count }})
+                    {{ getTitleTranslation(item, $i18n.locale) }}
                 </label>
             </div>
               <ul v-if="hasVisibleChildren(item)" class="category-children">
@@ -78,7 +78,7 @@
                               v-model="child.selected"
                               @change="onChange"
                       >
-                      <label>{{ getTitleTranslation(child, $i18n.locale) }} ({{ child.item_count }})</label>
+                      <label>{{ getTitleTranslation(child, $i18n.locale) }}</label>
                   </li>
               </ul>
           </li>

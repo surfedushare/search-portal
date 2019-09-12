@@ -106,39 +106,7 @@ export default {
         return filters;
       }
     },
-    loadCategoryItems(items, parent) {
-      let parentSelected = (_.isNull(parent)) ? false : parent.selected || parent.enabled_by_default;
-      let searchId = (_.isNull(parent)) ? null : parent.searchId;
-      _.forEach(items, (item) => {
-
-        // Load all items into their own lookup table
-        if(!this.categoryItemsById[item.id]) {
-          this.categoryItemsById[item.id] = item;
-        }
-        // Set values that might be relevant when loading children
-        item.searchId = searchId || item.external_id;
-        item.selected = parentSelected || item.enabled_by_default;
-        // Load children and retrospecively set some parent properties
-        let hasSelectedChildren = this.loadCategoryItems(item.children, item);
-        item.show_all = false;
-        item.selected = item.isOpen = item.selected || hasSelectedChildren;
-      });
-      return _.some(items, (item) => { return item.selected; });
-    },
-    getFiltersForSearch(items) {
-      return _.reduce(items, (results, item) => {
-        if(item.children.length) {
-            results = results.concat(this.getFiltersForSearch(item.children));
-        }
-        if(item.selected && !_.isNull(item.parent)) {
-          results.push(item);
-        }
-        return results;
-      }, []);
-    },
     onChange(event) {
-
-      const { filter_categories } = this;
 
       // Recursively update selections
       let changedCategory = this.categoryItemsById[event.target.dataset.categoryId];
@@ -147,28 +115,24 @@ export default {
         this.$forceUpdate();
       }
 
-      // Create the search request from the current selection and stored data
-      let selected = this.getFiltersForSearch(filter_categories.results);
-      let selectedGroups = _.groupBy(selected, 'searchId');
-      let filters = _.map(selectedGroups, (items, group) => {
-        return {
-          external_id: group,
-          items: _.reject(
-            _.map(items, 'external_id'),
-            _.isEmpty
-          )
-        }
-      });
+      this.executeSearch();
+
+    },
+    onDateChange(dates) {
+      this.executeSearch();
+    },
+    executeSearch() {
+
       let searchText = this.$store.getters.materials.search_text;
       let ordering = this.$store.getters.materials.ordering;
       let searchRequest = {
-          search_text: searchText,
-          ordering: ordering,
-          filters: filters
+        search_text: searchText,
+        ordering: ordering,
+        filters: this.$store.getters.search_filters
       };
 
       // Execute search
-      this.$router.push(this.generateSearchMaterialsQuery(searchRequest));
+      this.$emit('input', searchRequest);  // actual search is done by the parent page
       this.$store.dispatch('searchMaterials', searchRequest);
 
     },
@@ -185,12 +149,12 @@ export default {
     resetFilter() {
       this.$router.push(
         this.generateSearchMaterialsQuery({
-          search_text: this.value.search_text
-        })
+          filters: [],
+          search_text: this.$store.getters.materials.search_text
+        }),
+        () => { location.reload(); },
+        () => { location.reload(); }
       );
-      this.$nextTick().then(() => {
-        location.reload();
-      });
     },
     isShowCategoryItem({ category, item, indexItem }) {
       return (
@@ -341,8 +305,18 @@ export default {
      */
     filtered_categories() {
       const { filter_categories } = this;
+
+      let self = this;
+      function setCategoryItemIds(items) {
+        _.forEach(items, (item) => {
+          self.categoryItemsById[item.id] = item;
+          setCategoryItemIds(item.children);
+        });
+      }
+
       if (filter_categories) {
-        this.loadCategoryItems(filter_categories.results, null);
+        // Load all items into their own lookup table
+        setCategoryItemIds(filter_categories.results);
         return filter_categories.results;
       }
       return [];

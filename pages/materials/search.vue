@@ -58,6 +58,7 @@
         <div class="search__filter">
           <div class="search__filter_sticky">
             <FilterCategories
+              v-model="search"
               :show-popup-save-filter="showPopupSaveFilter"
             />
           </div>
@@ -133,6 +134,11 @@ export default {
     ])
   },
   watch: {
+    search(search, prev) {
+      if (search && !this.materials_loading) {
+        this.$store.dispatch('searchMaterials', search);
+      }
+    },
     /**
      * Watcher on the 'active_filter' field
      * @param active_filter - Object
