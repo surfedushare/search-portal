@@ -89,9 +89,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getMaterials', {
-      page_size: 4
-    });
+    this.$store.dispatch('getMaterials', { page_size: 4 });
     this.$store.dispatch('getCommunities', { params: { page_size: 3 } });
     this.$store.dispatch('getStatistic');
   }
