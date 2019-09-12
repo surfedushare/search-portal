@@ -24,7 +24,7 @@ RUN ln -s /usr/bin/python3.6 /usr/bin/python
 # Install source
 COPY . /src
 WORKDIR /src
-RUN python /src/manage.py collectstatic --noinput
+# RUN python /src/manage.py collectstatic --noinput
 
 EXPOSE 8080
 
