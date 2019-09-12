@@ -18,10 +18,6 @@ export default {
       titleKey: this.$route.meta.title_translation_key,
       htmlKey: this.$route.meta.html_translation_key
     }
-  },
-  mounted() {
-      //debugger;
-    console.log(this.$route.meta);
   }
 };
 
