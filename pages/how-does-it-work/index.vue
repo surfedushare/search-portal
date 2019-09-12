@@ -203,7 +203,7 @@ export default {
     &:before {
       content: '';
       position: absolute;
-      background: url('../../public/images/combined-shape.svg') no-repeat 0 0;
+      background: url('/images/combined-shape.svg') no-repeat 0 0;
       right: -100px;
       top: 0;
       height: 109px;
@@ -216,7 +216,7 @@ export default {
     &:after {
       content: '';
       position: absolute;
-      background: url('../../public/images/message.svg') no-repeat 0 0;
+      background: url('/images/message.svg') no-repeat 0 0;
       right: -82px;
       top: 22px;
       height: 33px;

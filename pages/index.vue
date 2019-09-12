@@ -179,7 +179,7 @@ export default {
       margin: 0;
       list-style: none;
       padding: 5px 0 8px 40px;
-      background: url('../public/images/check-white.svg') 0 0 no-repeat;
+      background: url('/images/check-white.svg') 0 0 no-repeat;
 
       @media @mobile, @tablet {
         background-size: 20px 20px;
@@ -221,7 +221,7 @@ export default {
         }
         &:before {
           content: '';
-          background: url('../public/images/buble-background-blue.svg') 0 0
+          background: url('/images/buble-background-blue.svg') 0 0
             no-repeat;
           position: absolute;
           top: -36px;
