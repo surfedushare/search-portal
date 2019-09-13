@@ -3,8 +3,8 @@
   <div class="main-header__wrapper">
     <nuxt-link :to="localePath('index')" class="main-header__logo">
       <img
-        src="./../../assets/images/surflogo.png"
-        srcset="./../../assets/images/surflogo@2x.png 2x, ./../../assets/images/surflogo@3x.png 3x"
+        src="/images/surflogo.png"
+        srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
         class="main-header__logo_img"
       >
     </nuxt-link>
@@ -42,6 +42,7 @@
         </nav>
       </div>
       <div
+        v-show="false"
         class="main-header__login"
         v-else
       >
@@ -68,8 +69,8 @@
     <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
     <nuxt-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
       <img
-        src="./../../assets/images/surflogo.png"
-        srcset="./../../assets/images/surflogo@2x.png 2x, ./../../assets/images/surflogo@3x.png 3x"
+        src="/images/surflogo.png"
+        srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
         class="main-header__logo_img"
       >
     </nuxt-link>
@@ -105,7 +106,8 @@
           </ul>
         </nav>
       </div>
-      <div v-else class="main-header__mobile_login">
+      <div v-else class="main-header__mobile_login"
+      v-show="false">
         <a :href="getLoginLink()" class="button">{{ $t('login') }}</a>
       </div>
       <Menu class="main-header__menu" />

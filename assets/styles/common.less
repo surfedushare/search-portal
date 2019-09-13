@@ -205,12 +205,12 @@ a,
   }
 
   &:after {
-    background: url('./../../assets/images/arrow-text.svg') 50% 50% / contain
+    background: url('/images/arrow-text.svg') 50% 50% / contain
       no-repeat;
   }
 
   &-grey:after {
-    background: url('./../../assets/images/arrow-text-grey.svg') 50% 50% /
+    background: url('/images/arrow-text-grey.svg') 50% 50% /
       contain no-repeat;
   }
 }
@@ -226,7 +226,7 @@ a,
   }
 
   &:before {
-    background: url('./../../assets/images/plus-copy.svg') 50% 50% / contain
+    background: url('/images/plus-copy.svg') 50% 50% / contain
       no-repeat;
   }
 }
@@ -304,22 +304,22 @@ pre {
       }
     }
     &--linkedin {
-      background: url('./../images/linked-in.svg') no-repeat 50% 50%;
+      background: url('../../public/images/linked-in.svg') no-repeat 50% 50%;
     }
     &_link:hover &--linkedin {
-      background: @dark-blue url('./../images/linked-in-white.svg') no-repeat 50% 50%;
+      background: @dark-blue url('../../public/images/linked-in-white.svg') no-repeat 50% 50%;
     }
     &--twitter {
-      background: url('./../images/twitter.svg') no-repeat 50% 50%;
+      background: url('../../public/images/twitter.svg') no-repeat 50% 50%;
     }
     &_link:hover &--twitter {
-      background: @dark-blue url('./../images/twitter-white.svg') no-repeat 50% 50%;
+      background: @dark-blue url('../../public/images/twitter-white.svg') no-repeat 50% 50%;
     }
     &--share {
-      background: url('./../images/link-copy.svg') no-repeat 50% 50%;
+      background: url('../../public/images/link-copy.svg') no-repeat 50% 50%;
     }
     &_link:hover &--share {
-      background: @dark-blue url('./../images/link-copy-white.svg') no-repeat 50% 50%;
+      background: @dark-blue url('../../public/images/link-copy-white.svg') no-repeat 50% 50%;
     }
     &_counter {
       display: inline-block;
@@ -356,13 +356,13 @@ pre {
         border-color: #fff;
       }
       .quality__social--linkedin {
-        background: url('./../images/linked-in-white.svg') no-repeat 50% 50%;
+        background: url('../../public/images/linked-in-white.svg') no-repeat 50% 50%;
       }
       .quality__social--twitter {
-        background: url('./../images/twitter-white.svg') no-repeat 50% 50%;
+        background: url('../../public/images/twitter-white.svg') no-repeat 50% 50%;
       }
       .quality__social--share {
-        background: url('./../images/link-copy-white.svg') no-repeat 50% 50%;
+        background: url('../../public/images/link-copy-white.svg') no-repeat 50% 50%;
       }
 
       .quality__social_counter {
@@ -386,5 +386,11 @@ pre {
       color: #ffffff;
       display: inline-block;
     }
+  }
+}
+
+.html-content {
+  h1, h2, p {
+    margin: 10px 0
   }
 }

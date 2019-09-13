@@ -5,12 +5,12 @@
         <div class="center_block center-header">
           <img
             class="main__info_bg"
-            src="./../assets/images/pictures/header-image.jpg"
+            src="/images/pictures/header-image.jpg"
             alt="header-image"
           >
           <img
             class="main__info_bg-mobile"
-            src="./../assets/images/pictures/lab-21-windesheim-voor-surf-018@2x.jpg"
+            src="/images/pictures/lab-21-windesheim-voor-surf-018@2x.jpg"
             alt="header-image"
           >
           <h2 class="main__info_main-title">{{ $t('Open-learning-materials') }}</h2>
@@ -89,9 +89,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getMaterials', {
-      page_size: 4
-    });
+    this.$store.dispatch('getMaterials', { page_size: 4 });
     this.$store.dispatch('getCommunities', { params: { page_size: 3 } });
     this.$store.dispatch('getStatistic');
   }
@@ -181,7 +179,7 @@ export default {
       margin: 0;
       list-style: none;
       padding: 5px 0 8px 40px;
-      background: url('./../assets/images/check-white.svg') 0 0 no-repeat;
+      background: url('/images/check-white.svg') 0 0 no-repeat;
 
       @media @mobile, @tablet {
         background-size: 20px 20px;
@@ -223,7 +221,7 @@ export default {
         }
         &:before {
           content: '';
-          background: url('./../assets/images/buble-background-blue.svg') 0 0
+          background: url('/images/buble-background-blue.svg') 0 0
             no-repeat;
           position: absolute;
           top: -36px;

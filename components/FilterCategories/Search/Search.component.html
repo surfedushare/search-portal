@@ -2,7 +2,7 @@
 <section class="search" :class="{'search--hide-categories': hideCategories}">
   <form
     action="/materials/search/"
-    @submit.prevent="onSubmit"
+    @submit.prevent="onSubmit(formData.search_text)"
   >
     <div class="search__fields">
       <div class="search__input">Label</div>
@@ -18,6 +18,7 @@
           v-model="formData.search_text"
           name="keywords"
           :resetOnOptionsChange="true"
+          @input="onSubmit"
         >
           <span slot="no-options">{{ $t('Sorry-no-results-found') }}</span>
         </v-select>
@@ -28,21 +29,11 @@
           @change="changeFilterCategory"
           v-if="showSelectedCategory && filter_category"
         >
-          <option value="" hidden>{{ filter_category.title }}</option>
+          <option value="" hidden>{{ filter_category.name }}</option>
           <option
-            v-for="category in filter_category.items"
+            v-for="category in filter_category.children"
             :value="category.external_id"
-          >{{category.title}}</option>
-        </select>
-        <select
-          name="categories"
-          v-else-if="filter_categories"
-          @change="onChangeCategory"
-        >
-          <option
-            v-for="category in filter_categories.results"
-            :value="category.external_id"
-          >{{category.title}}</option>
+          >{{category.name}}</option>
         </select>
       </div>
       <button
@@ -55,26 +46,16 @@
     </div>
     <div class="search__themes" v-if="!hideFilter">
       <h4 class="search__themes_title">{{ $t('Filter-search-results') }}</h4>
-      <div
-        v-if="active_category && active_category.external_id === 'lom.lifecycle.contribute.publisherdate'"
-        class="search__themes_items search__themes_items--inline"
-      >
-        <DatesRange
-          v-model="dates_range"
-          :hide-select="true"
-          :inline="true"
-        ></DatesRange>
-      </div>
-      <ul v-else-if="active_category" class="search__themes_items">
-        <li v-for="item in active_category.items" class="search__themes_item">
+      <ul if="active_category" class="search__themes_items">
+        <li v-for="item in active_category.children" v-if="!item.is_hidden" class="search__themes_item">
           <input
             type="checkbox"
             :id="item.external_id"
             :value="item.external_id"
-            v-model="filter[item.external_id]"
+            v-model="item.selected"
             name="search_category"
           >
-          <label :for="item.external_id">{{item.title}}</label>
+          <label :for="item.external_id">{{item.name}}</label>
         </li>
       </ul>
     </div>
@@ -88,15 +69,15 @@
         {{ $t('Filter-options') }}
       </button>
       <ul v-if="showMobileFilter" class="search__themes_items">
-        <li v-for="item in active_category.items" class="search__themes_item">
+        <li v-for="item in active_category.children" class="search__themes_item">
           <input
             type="checkbox"
             :id="item.external_id"
             :value="item.external_id"
-            v-model="filter[item.external_id]"
+            v-model="item.selected"
             name="search_category"
           >
-          <label :for="item.external_id">{{item.title}}</label>
+          <label :for="item.external_id">{{item.name}}</label>
         </li>
       </ul>
     </div>

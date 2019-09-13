@@ -118,23 +118,48 @@ export default {
       let str = '';
 
       switch (copyright) {
+        case 'cc-by-30':
+          str = 'https://creativecommons.org/licenses/by/3.0/legalcode';
+          break;
         case 'cc-by':
+        case 'cc-by-40':
           str = 'https://creativecommons.org/licenses/by/4.0/legalcode';
           break;
         case 'cc-by-nc':
+        case 'cc-by-nc-40':
           str = 'https://creativecommons.org/licenses/by-nc/4.0/legalcode';
           break;
+        case 'cc-by-nc-30':
+          str = 'https://creativecommons.org/licenses/by-nc/3.0/legalcode';
+          break;
+        case 'yes':
         case 'cc-by-nc-nd':
+        case 'cc-by-nc-nd-40':
           str = 'https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode';
           break;
+        case 'cc-by-nc-nd-30':
+          str = 'https://creativecommons.org/licenses/by-nc-nd/3.0/legalcode';
+          break;
         case 'cc-by-nc-sa':
+        case 'cc-by-nc-sa-40':
           str = 'https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode';
           break;
+        case 'cc-by-nc-sa-30':
+          str = 'https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode';
+          break;
         case 'cc-by-nd':
+        case 'cc-by-nd-40':
           str = 'https://creativecommons.org/licenses/by-nd/4.0/legalcode';
           break;
+        case 'cc-by-nd-30':
+          str = 'https://creativecommons.org/licenses/by-nd/3.0/legalcode';
+          break;
         case 'cc-by-sa':
+        case 'cc-by-sa-40':
           str = 'https://creativecommons.org/licenses/by-sa/4.0/legalcode';
+          break;
+        case 'cc-by-sa-30':
+          str = 'https://creativecommons.org/licenses/by-sa/3.0/legalcode';
           break;
         default:
           str = 'https://creativecommons.org/licenses/';
@@ -263,7 +288,7 @@ export default {
 
             return prev;
           }, []),
-          language_title: languages.items.reduce((prev, language) => {
+          language_title: languages.children.reduce((prev, language) => {
             if (language.external_id === material.language) {
               prev = language.title;
             }

@@ -3,9 +3,10 @@ import { generateSearchMaterialsQuery } from '../_helpers';
 import DatesRange from '~/components/DatesRange';
 import _ from 'lodash';
 
+
 export default {
   name: 'filter-categories',
-  props: ['value', 'showPopupSaveFilter', 'full-filter'],
+  props: ['showPopupSaveFilter', 'full-filter'],
   components: { DatesRange },
   mounted() {
     if (this.isAuthenticated && !this.fullFilter) {
@@ -25,54 +26,33 @@ export default {
         start_date: null,
         end_date: null
       },
-      filter_sort: [
-        'lom.classification.obk.educationallevel.id',
-        'lom.technical.format',
-        'lom.general.language',
-        'about.repository',
-        'lom.lifecycle.contribute.publisherdate',
-        'custom_theme.id',
-        'lom.classification.obk.discipline.id',
-        'lom.general.aggregationlevel',
-        'lom.rights.copyrightandotherrestrictions'
-      ]
+      categoryItemsById: {}
     };
   },
   methods: {
     generateSearchMaterialsQuery,
-    /**
-     * Open/close filter category
-     * @param id filter category
-     */
-    onToggleCategory(id) {
-      const selected = [...this.selected];
-      const index = selected.indexOf(id);
-      if (index !== -1) {
-        this.selected = [
-          ...selected.slice(0, index),
-          ...selected.slice(index + 1)
-        ];
-      } else {
-        selected.push(id);
-        this.selected = selected;
+    hasVisibleChildren(category) {
+      if(!category.children.length) {
+        return false;
+      }
+      return _.some(category.children, (child) => { return !child.is_hidden; })
+    },
+    setChildrenSelected(children, value) {
+      _.forEach(children, (child) => {
+        child.selected = value;
+        this.setChildrenSelected(child.children, value);
+      });
+    },
+    onToggleCategory(category, update = true) {
+      category.isOpen = !category.isOpen;
+      _.forEach(category.children, (child) => { this.onToggleCategory(child, false); } );
+      if(update) {
+        this.$forceUpdate();
       }
     },
-    /**
-     * open/collapse category items
-     * @param id filter category
-     */
-    onToggleShowAll(id) {
-      const show_all = [...this.show_all];
-      const index = show_all.indexOf(id);
-      if (index !== -1) {
-        this.show_all = [
-          ...show_all.slice(0, index),
-          ...show_all.slice(index + 1)
-        ];
-      } else {
-        show_all.push(id);
-        this.show_all = show_all;
-      }
+    onToggleShowAll(category) {
+      category.show_all = !category.show_all;
+      this.$forceUpdate();
     },
     /**
      * Set filter for v-model
@@ -126,8 +106,35 @@ export default {
         return filters;
       }
     },
-    onChange() {
-      this.setFilter();
+    onChange(event) {
+
+      // Recursively update selections
+      let changedCategory = this.categoryItemsById[event.target.dataset.categoryId];
+      if(!_.isNil(changedCategory)) {
+        this.setChildrenSelected(changedCategory.children, changedCategory.selected);
+        this.$forceUpdate();
+      }
+
+      this.executeSearch();
+
+    },
+    onDateChange(dates) {
+      this.executeSearch();
+    },
+    executeSearch() {
+
+      let searchText = this.$store.getters.materials.search_text;
+      let ordering = this.$store.getters.materials.ordering;
+      let searchRequest = {
+        search_text: searchText,
+        ordering: ordering,
+        filters: this.$store.getters.search_filters
+      };
+
+      // Execute search
+      this.$emit('input', searchRequest);  // actual search is done by the parent page
+      this.$store.dispatch('searchMaterials', searchRequest);
+
     },
     /**
      * Get the full filter info
@@ -142,12 +149,12 @@ export default {
     resetFilter() {
       this.$router.push(
         this.generateSearchMaterialsQuery({
-          search_text: this.value.search_text
-        })
+          filters: [],
+          search_text: this.$store.getters.materials.search_text
+        }),
+        () => { location.reload(); },
+        () => { location.reload(); }
       );
-      this.$nextTick().then(() => {
-        location.reload();
-      });
     },
     isShowCategoryItem({ category, item, indexItem }) {
       return (
@@ -158,32 +165,10 @@ export default {
       if (!_.isNil(category.title_translations) && !_.isEmpty(category.title_translations)){
         return category.title_translations[language];
       }
-      return category.title
+      return category.name
     }
   },
   watch: {
-    /**
-     * Watcher on change parent v-model
-     * @param value
-     */
-    value(value) {
-      const { isInit, publisherdate } = this;
-      if (value && value.filters && !isInit) {
-        this.selected = value.filters
-          .filter(filter => filter.items && filter.items.length)
-          .map(filter => filter.external_id);
-
-        const publisherdate_item = this.value.filters.find(
-          item => item.external_id === publisherdate
-        );
-        if (publisherdate_item) {
-          this.data.start_date = publisherdate_item.items[0];
-          this.data.end_date = publisherdate_item.items[1];
-        }
-        this.isInit = true;
-      }
-    },
-
     data(data) {
       let { publisherdate } = this;
       let filters = this.value.filters.slice(0);
@@ -304,7 +289,7 @@ export default {
 
           return current_item && current_item.items
             ? Object.assign({}, current_item, {
-                items: item.items.map(
+                items: item.children.map(
                   el => current_item.items.indexOf(el.external_id) !== -1
                 )
               })
@@ -319,24 +304,22 @@ export default {
      * @returns {*}
      */
     filtered_categories() {
-      const { filter_categories, filter_sort } = this;
-      if (filter_categories) {
-        return filter_categories.results.reduce((prev, item) => {
-          // return {
-          //   ...item
-          //   // hide: item.external_id === publisherdate
-          // };
+      const { filter_categories } = this;
 
-          const index = prev.indexOf(item.external_id);
-
-          if (index !== -1) {
-            prev[index] = item;
-          }
-
-          return prev;
-        }, filter_sort.slice(0));
+      let self = this;
+      function setCategoryItemIds(items) {
+        _.forEach(items, (item) => {
+          self.categoryItemsById[item.id] = item;
+          setCategoryItemIds(item.children);
+        });
       }
-      return false;
+
+      if (filter_categories) {
+        // Load all items into their own lookup table
+        setCategoryItemIds(filter_categories.results);
+        return filter_categories.results;
+      }
+      return [];
     },
     /**
      * generate extending categories
@@ -356,7 +339,7 @@ export default {
               selected: selected.indexOf(category.external_id) !== -1,
               show_all: show_all.indexOf(category.id) !== -1,
               items: [
-                ...category.items.map(item => {
+                ...category.children.map(item => {
                   return {
                     ...item,
                     is_empty: not_empty_ids.indexOf(item.external_id) === -1

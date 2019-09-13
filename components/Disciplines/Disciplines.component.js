@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex';
 import { generateSearchMaterialsQuery } from '../_helpers';
+import _ from 'lodash';
 
 export default {
   name: 'disciplines',
@@ -9,6 +10,12 @@ export default {
     return {};
   },
   methods: {
+    getTitleTranslation( discipline, language ) {
+      if (!_.isNil(discipline.title_translations) && !_.isEmpty(discipline.title_translations)){
+        return discipline.title_translations[language];
+      }
+      return discipline.name
+      },
     generateSearchMaterialsQuery: generateSearchMaterialsQuery,
     /**
      * Generate link URL

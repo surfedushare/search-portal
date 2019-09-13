@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex';
+import _ from 'lodash';
 import Search from '~/components/FilterCategories/Search';
 import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';

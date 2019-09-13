@@ -3,9 +3,9 @@
     <div class="communities__info ">
       <img
         class="communities__info_bg"
-        src="./../../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-        srcset="./../../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-             ./../../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+        src="/images/pictures/rawpixel-760027-unsplash.jpg"
+        srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+             /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
       >
       <BreadCrumbs
         :items="[{title: $t('Home'), url: localePath('index')}]"
@@ -28,7 +28,7 @@
           <div class="communities__item_logo" v-if="community.logo"><img :src="`${community.logo}`" alt=""></div>
           <h3 class="communities__item_name">{{ getTitleTranslation(community, $i18n.locale) }}</h3>
           <div class="communities__item_count">{{ $tc('learning-materials', community.materials_count) }}</div>
-          <div class="communities__item_description" v-html="getDescriptionTranslation(community, $i18n.locale)"></div>
+          <div class="communities__item_description html-content" v-html="getDescriptionTranslation(community, $i18n.locale)"></div>
           <div
           class="arrow-link communities__item_link"
           >
