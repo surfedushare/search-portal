@@ -94,6 +94,10 @@ export default {
     },
     search_filters(state) {
 
+      if(_.isNil(state.filter_categories)) {
+        return []
+      }
+
       let selected = getFiltersForSearch(state.filter_categories.results);
       let selectedGroups = _.groupBy(selected, 'searchId');
       return _.map(selectedGroups, (items, group) => {
