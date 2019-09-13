@@ -9,7 +9,7 @@ from django.conf import settings
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.themes.models import Theme
-from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.filters.models import MpttFilterItem
 
 
 RESOURCE_TYPE_MATERIAL = "material"
@@ -31,7 +31,7 @@ class Material(UUIDModel):
                                            related_name="materials")
 
     # list of related disciplines
-    disciplines = django_models.ManyToManyField(FilterCategoryItem,
+    disciplines = django_models.ManyToManyField(MpttFilterItem,
                                                 blank=True,
                                                 related_name="materials")
 

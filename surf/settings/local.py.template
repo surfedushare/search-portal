@@ -1,5 +1,22 @@
 from .base import *
 
+#Enable sentry on acceptance server only.
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+
+def strip_sensitive_data(event, hint):
+    # modify event here
+    del event['request']['headers']['User-Agent']
+    return event
+
+
+sentry_sdk.init(
+   before_send=strip_sensitive_data,
+   dsn="https://675caa02892e429ca10884f05d65d94f@sentry.io/1725443",
+   integrations=[DjangoIntegration()]
+)
+
 SECRET_KEY = '<put your SECRET_KEY here>'
 
 # run debug turned off in production!
@@ -18,6 +35,10 @@ DATABASES = {
 
 ALLOWED_HOSTS = []  # specify the list of allowed hosts or '*' to allow all
 ALLOWED_REDIRECT_ENDPOINTS = []  # specify the list of allowed redirection endpoints or '*' to allow all
+
+# Set these to False when there is no HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 CORS_ORIGIN_ALLOW_ALL = False # set to False to enable CORS in production!
 CORS_ORIGIN_WHITELIST = [] # specify the list of allowed origins
