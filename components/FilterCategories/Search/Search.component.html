@@ -2,7 +2,7 @@
 <section class="search" :class="{'search--hide-categories': hideCategories}">
   <form
     action="/materials/search/"
-    @submit.prevent="onSubmit(formData.search_text)"
+    @submit.prevent="onSubmit(formData.search_text, true)"
   >
     <div class="search__fields">
       <div class="search__input">Label</div>
@@ -17,8 +17,10 @@
           push-tags
           v-model="formData.search_text"
           name="keywords"
+          v-on:search:blur="onBlur"
           :resetOnOptionsChange="true"
           @input="onSubmit"
+          ref="searchSelect"
         >
           <span slot="no-options">{{ $t('Sorry-no-results-found') }}</span>
         </v-select>
