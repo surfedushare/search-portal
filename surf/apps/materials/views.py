@@ -29,7 +29,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 
 from surf.apps.filters.models import MpttFilterItem
-from surf.apps.filters.utils import IGNORED_FIELDS, get_default_material_filters, add_default_filters
+from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters, add_default_filters
 
 from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
@@ -99,12 +99,7 @@ class MaterialSearchAPIView(APIView):
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
 
         # add default filters to search materials
-        add_defaults = True
-        for filter_item in filters:
-            if filter_item['items']:
-                add_defaults = False
-        if add_defaults:
-            filters = get_default_material_filters(filters)
+        filters = add_default_material_filters(filters)
 
         data["filters"] = filters
 
@@ -201,7 +196,7 @@ class MaterialAPIView(APIView):
                 api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
             # add default filters to search materials
-            filters = get_default_material_filters()
+            filters = add_default_material_filters()
 
             res = ac.search([],
                             filters=filters,
