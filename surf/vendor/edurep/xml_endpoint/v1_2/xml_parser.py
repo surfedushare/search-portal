@@ -16,12 +16,7 @@ from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
 )
 
 from surf.apps.filters.models import MpttFilterItem
-copyright_item = MpttFilterItem.objects.get(external_id="lom.rights.copyrightandotherrestrictions")
 DYNAMIC_COPYRIGHTS = dict()
-for item in copyright_item.children.all():
-    DYNAMIC_COPYRIGHTS[item.external_id] = item.external_id
-    for child in item.children.all():
-        DYNAMIC_COPYRIGHTS[child.external_id] = child.external_id
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +40,21 @@ COPYRIGHT_ID_LOM = "lom.rights.copyrightandotherrestrictions"
 
 EXTRA_RECORD_SCHEMA = "smbAggregatedData"
 SMO_RECORD_SCHEMA = "smo"
+
+
+def fill_dynamic_copyrights():
+    if MpttFilterItem.objects.filter(external_id="lom.rights.copyrightandotherrestrictions").exists():
+        copyright_item = MpttFilterItem.objects.get(external_id="lom.rights.copyrightandotherrestrictions")
+        for item in copyright_item.children.all():
+            DYNAMIC_COPYRIGHTS[item.external_id] = item.external_id
+            for child in item.children.all():
+                DYNAMIC_COPYRIGHTS[child.external_id] = child.external_id
+    else:
+        logger.debug("No MpttFilterItem found with external id lom.rights.copyrightandotherrestrictions, "
+                     "keeping dynamic copyrights empty")
+
+
+fill_dynamic_copyrights()
 
 
 def parse_response(xml_text, record_schema=EXTRA_RECORD_SCHEMA):
@@ -106,9 +116,12 @@ def _parse_record(elem):
     external_id = _find_elem_text(elem, _RECORD_ID_PATH)
     external_id_base64 = urlsafe_b64encode(external_id.encode("utf-8"))
     external_id_base64 = external_id_base64.decode("utf-8")
+    # try to update the dynamic copyrights list if it's empty,
+    # if the proper copyright item isn't in the database (an exists() call) nothing happens
+    if len(DYNAMIC_COPYRIGHTS) == 0:
+        fill_dynamic_copyrights()
 
     copyright = DYNAMIC_COPYRIGHTS.get(_find_elem_text(elem, _COPYRIGHT_PATH))
-
     number_of_ratings = _find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)
     number_of_ratings = int(number_of_ratings) if number_of_ratings else 0
 
