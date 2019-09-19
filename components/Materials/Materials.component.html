@@ -83,7 +83,7 @@
               v-if="material.format"
               class="materials__item_format"
             >
-              {{ material.format }}
+              {{ $t(material.format) }}
             </div>
             <div
               class="materials__item_keywords"
@@ -102,7 +102,7 @@
               v-for="community in material.communities"
               :key="`${community.id}`"
             >
-              {{ community.name }}
+              {{getTitleTranslation(community, $i18n.locale) }}
             </nuxt-link>
             <div class="materials__item_copyrights" :class="material.copyright"></div>
             <footer class="materials__item_footer">

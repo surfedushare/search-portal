@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex';
 import StarRating from './../StarRating';
+import _ from 'lodash';
 
 export default {
   name: 'materials',
@@ -40,6 +41,12 @@ export default {
     };
   },
   methods: {
+    getTitleTranslation( community, language ) {
+      if (!_.isNil(community.title_translations) && !_.isEmpty(community.title_translations)){
+        return community.title_translations[language];
+      }
+      return community.name
+      },
     /**
      * Set material on click
      * @param material - {Object}
