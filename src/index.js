@@ -153,35 +153,15 @@ async function createApp (ssrContext) {
   if (typeof nuxt_plugin_pluginrouting_3c9d9e30 === 'function') await nuxt_plugin_pluginrouting_3c9d9e30(app.context, inject);
   if (typeof nuxt_plugin_pluginmain_7147a387 === 'function') await nuxt_plugin_pluginmain_7147a387(app.context, inject);
   if (typeof nuxt_plugin_axios_494a31c4 === 'function') await nuxt_plugin_axios_494a31c4(app.context, inject);
-
-  if (process.client) {
-    if (typeof nuxt_plugin_plugin_fb59caba === 'function') await nuxt_plugin_plugin_fb59caba(app.context, inject);
-    if (typeof nuxt_plugin_auth_6a7e4e1e === 'function') await nuxt_plugin_auth_6a7e4e1e(app.context, inject);
-    if (typeof nuxt_plugin_vSelect_475ab648 === 'function') await nuxt_plugin_vSelect_475ab648(app.context, inject);
-    if (typeof nuxt_plugin_infiniteScroll_049132f7 === 'function') await nuxt_plugin_infiniteScroll_049132f7(app.context, inject);
-    if (typeof nuxt_plugin_axios_3566aa80 === 'function') await nuxt_plugin_axios_3566aa80(app.context, inject);
-    if (typeof nuxt_plugin_SocialSharing_3ab090d9 === 'function') await nuxt_plugin_SocialSharing_3ab090d9(app.context, inject);
-    if (typeof nuxt_plugin_VueMasonry_21187416 === 'function') await nuxt_plugin_VueMasonry_21187416(app.context, inject);
-    if (typeof nuxt_plugin_VueClipboard_7da67946 === 'function') await nuxt_plugin_VueClipboard_7da67946(app.context, inject);
-    if (typeof nuxt_plugin_veeValidate_1cb8e4d4 === 'function') await nuxt_plugin_veeValidate_1cb8e4d4(app.context, inject)
-  }
-
-  // If server-side, wait for async component to be resolved first
-  if (process.server && ssrContext && ssrContext.url) {
-    await new Promise((resolve, reject) => {
-      router.push(ssrContext.url, resolve, () => {
-        // navigated to a different route in router guard
-        const unregister = router.afterEach(async (to, from, next) => {
-          ssrContext.url = to.fullPath;
-          app.context.route = await getRouteData(to);
-          app.context.params = to.params || {};
-          app.context.query = to.query || {};
-          unregister();
-          resolve()
-        })
-      })
-    })
-  }
+  if (typeof nuxt_plugin_plugin_fb59caba === 'function') await nuxt_plugin_plugin_fb59caba(app.context, inject);
+  if (typeof nuxt_plugin_auth_6a7e4e1e === 'function') await nuxt_plugin_auth_6a7e4e1e(app.context, inject);
+  if (typeof nuxt_plugin_vSelect_475ab648 === 'function') await nuxt_plugin_vSelect_475ab648(app.context, inject);
+  if (typeof nuxt_plugin_infiniteScroll_049132f7 === 'function') await nuxt_plugin_infiniteScroll_049132f7(app.context, inject);
+  if (typeof nuxt_plugin_axios_3566aa80 === 'function') await nuxt_plugin_axios_3566aa80(app.context, inject);
+  if (typeof nuxt_plugin_SocialSharing_3ab090d9 === 'function') await nuxt_plugin_SocialSharing_3ab090d9(app.context, inject);
+  if (typeof nuxt_plugin_VueMasonry_21187416 === 'function') await nuxt_plugin_VueMasonry_21187416(app.context, inject);
+  if (typeof nuxt_plugin_VueClipboard_7da67946 === 'function') await nuxt_plugin_VueClipboard_7da67946(app.context, inject);
+  if (typeof nuxt_plugin_veeValidate_1cb8e4d4 === 'function') await nuxt_plugin_veeValidate_1cb8e4d4(app.context, inject)
 
   return {
     app,
