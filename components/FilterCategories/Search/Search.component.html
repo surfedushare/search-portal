@@ -35,7 +35,7 @@
           <option
             v-for="category in filter_category.children"
             :value="category.external_id"
-          >{{getTitleTranslation(item, $i18n.locale) }}</option>
+          >{{getTitleTranslation(category, $i18n.locale) }}</option>
         </select>
       </div>
       <button
