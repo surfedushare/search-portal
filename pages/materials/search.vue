@@ -95,7 +95,7 @@ import Themes from '~/components/Themes';
 import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import SaveFilter from '~/components/Popup/SaveFilter';
-import { generateSearchMaterialsQuery } from '~/components/_helpers';
+import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from '~/components/_helpers';
 import materials from '../../src/store/modules/materials';
 
 export default {
@@ -174,30 +174,10 @@ export default {
     }
   },
   mounted() {
-    const { query } = this.$route;
-    let search = { search_text: [], filters: [] };
-
-    if (Object.keys(query).length) {
-      // Parsing url query
-      search = Object.assign({}, query, {
-        filters: query.filters ? JSON.parse(query.filters) : [],
-        search_text: query.search_text ? JSON.parse(query.search_text) : []
-      });
-    }
-
-    const publisherdate = search.filters.find(
-      item => item.external_id === this.publisherdate
-    );
-
-    if (publisherdate && publisherdate.items) {
-      this.dates_range = {
-        start_date: publisherdate.items[0] || null,
-        end_date: publisherdate.items[1] || null
-      };
-    }
-
-    this.search = search;
-    this.$store.dispatch('searchMaterials', search);
+    let urlInfo = parseSearchMaterialsQuery(this.$route.query);
+    this.dates_range = urlInfo.dateRange;
+    this.search = urlInfo.search;
+    this.$store.dispatch('searchMaterials', urlInfo.search);
   },
   methods: {
     generateSearchMaterialsQuery,
