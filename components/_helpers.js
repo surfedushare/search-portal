@@ -1,3 +1,6 @@
+import _ from 'lodash';
+
+
 export const debounce = function(func, wait, immediate) {
   var timeout;
   return function() {
@@ -31,6 +34,26 @@ export const generateSearchMaterialsQuery = function(data = { filters: [], searc
       search_text: JSON.stringify(data.search_text)
     })
   };
+};
+
+export const parseSearchMaterialsQuery = function(query) {
+  let search = { search_text: [], filters: [] };
+  if(!_.isEmpty(query)) {
+    search = Object.assign({}, query, {
+      filters: query.filters ? JSON.parse(query.filters) : [],
+      search_text: query.search_text ? JSON.parse(query.search_text) : []
+    });
+  }
+
+  const publisherDate = search.filters.find(item => item.external_id === 'lom.lifecycle.contribute.publisherdate');
+  let dateRange = {};
+  if (publisherDate && publisherDate.items) {
+    dateRange = {
+      start_date: publisherDate.items[0] || null,
+      end_date: publisherDate.items[1] || null
+    };
+  }
+  return {search, dateRange}
 };
 
 export const validateHREF = function(href) {
