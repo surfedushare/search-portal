@@ -19,11 +19,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - DJANGO_SETTINGS_MODULE=surf.settings.local
-    volumes:
-      - /docker/surf-backend/settings/local.py:/src/surf/settings/local.py
-      - /docker/surf-backend/static:/src/static
     ports:
-      - "127.0.0.1:8091:8080"
+      - "127.0.0.1:8080:8080"
     links:
       - postgres:database
     depends_on:
