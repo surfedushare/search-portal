@@ -54,9 +54,6 @@ def fill_dynamic_copyrights():
                      "keeping dynamic copyrights empty")
 
 
-fill_dynamic_copyrights()
-
-
 def parse_response(xml_text, record_schema=EXTRA_RECORD_SCHEMA):
     """
     Parses xml-response from EduRep
