@@ -132,8 +132,8 @@ export default {
       };
 
       // Execute search
+      this.$router.push(this.generateSearchMaterialsQuery(searchRequest));
       this.$emit('input', searchRequest);  // actual search is done by the parent page
-      this.$store.dispatch('searchMaterials', searchRequest);
 
     },
     /**

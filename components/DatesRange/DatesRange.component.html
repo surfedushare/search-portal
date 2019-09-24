@@ -22,7 +22,7 @@
         :format="format"
         :value="formData.start_date"
         :disabledDates="{
-          from: value.end_date || (disableFutureDays ? new Date() : false)
+          from: formData.end_date || (disableFutureDays ? new Date() : false)
         }"
         :monday-first="true"
         :placeholder="$t('Select-date')"
@@ -36,7 +36,7 @@
         :format="format"
         :value="formData.end_date"
         :disabledDates="{
-          to: value.start_date,
+          to: formData.start_date,
           from: disableFutureDays ? new Date() : false
         }"
         :monday-first="true"

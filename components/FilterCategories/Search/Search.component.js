@@ -90,7 +90,13 @@ export default {
     /**
      * Submit form
      */
-    onSubmit(searchTexts) {
+    onSubmit(searchTexts, submitted) {
+
+      if(submitted && this.$refs.searchSelect.$refs.search.value) {
+        this.$refs.searchSelect.select(this.$refs.searchSelect.$refs.search.value);
+        return;
+      }
+
       if(_.isEmpty(searchTexts)) {
         return;
       }

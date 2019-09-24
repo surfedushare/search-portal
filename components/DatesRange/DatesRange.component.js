@@ -58,7 +58,6 @@ export default {
         start_date: formatDate(date, 'YYYY-MM-DD'),
         end_date: formatDate(this.value.end_date, 'YYYY-MM-DD')
       });
-      this.$forceUpdate()
     },
     /**
      * Emit end date to parent v-model
@@ -70,7 +69,6 @@ export default {
         start_date: formatDate(this.value.start_date, 'YYYY-MM-DD'),
         end_date: formatDate(date, 'YYYY-MM-DD')
       });
-      this.$forceUpdate()
     }
   },
   computed: {}
