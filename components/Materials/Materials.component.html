@@ -35,13 +35,13 @@
               v-if="material.author"
               class="materials__item_author"
             >
-              {{material.author}}
+              {{material.author}}<span>&nbsp;</span>
             </div>
             <div
               v-if="material.publisher"
               class="materials__item_publisher"
             >
-              &nbsp;{{material.publisher}}
+              {{material.publisher}}
             </div>
             <div class="materials__item_date">
               {{material.date || null}}
@@ -62,9 +62,9 @@
                 v-if="index < 2"
                 class="materials__item_discipline"
               >
-                {{discipline.title}}
+                {{getTitleTranslation(discipline, $i18n.locale)}}<span v-if="material.disciplines.length > 1 && index < material.disciplines.length - 1">,</span>
               </span>
-              {{ material.disciplines.length < 2 ? '' : '...' }}
+              {{ material.disciplines.length < 3 ? '' : '...' }}
             </div>
             <div
               v-if="material.educationallevels && material.educationallevels.length"
@@ -75,15 +75,15 @@
                 v-if="index < 2"
                 class="materials__item_educationallevel"
               >
-                {{educationallevel.title}}
+                {{getTitleTranslation(educationallevel, $i18n.locale) }}<span v-if="material.educationallevels.length > 1 && index < material.educationallevels.length - 1">,</span>
               </span>
-              {{ material.educationallevels.length < 2 ? '' : '...' }}
+              {{ material.educationallevels.length < 3 ? '' : '...' }}
             </div>
             <div
               v-if="material.format"
               class="materials__item_format"
             >
-              {{ material.format }}
+              {{ $t(material.format) }}
             </div>
             <div
               class="materials__item_keywords"
@@ -93,8 +93,8 @@
                 class="materials__item_keyword"
                 v-for="(keyword, index) in material.keywords"
                 v-if="index < 2"
-              >{{keyword}} </span>
-              {{ material.keywords.length < 2 ? '' : '...' }}
+              >{{keyword}}<span v-if="material.keywords.length > 1 && index < material.keywords.length - 1">, </span></span>
+              {{ material.keywords.length < 3 ? '' : '...' }}
             </div>
             <nuxt-link
               :to="localePath({name: 'communities-community', params: {community: community.id}})"
@@ -102,7 +102,7 @@
               v-for="community in material.communities"
               :key="`${community.id}`"
             >
-              {{ community.name }}
+              {{getTitleTranslation(community, $i18n.locale) }}
             </nuxt-link>
             <div class="materials__item_copyrights" :class="material.copyright"></div>
             <footer class="materials__item_footer">
@@ -119,7 +119,7 @@
                   class="materials__item_external_link"
                   target="_blank"
                   :href="material.url"
-                >External link</a>
+                ></a>
               </div>
             </footer>
           </div>
@@ -129,7 +129,6 @@
         :to="localePath({name: 'materials-id', params: {id: material.external_id_base64}})"
         @click.native="setMaterial(material)"
       >
-        {{material.title}}
       </nuxt-link>
     </li>
   </ul>

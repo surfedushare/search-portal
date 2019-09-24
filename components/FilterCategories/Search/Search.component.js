@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex';
 import { debounce, generateSearchMaterialsQuery } from './../../_helpers';
 import DatesRange from './../../DatesRange';
+import _ from 'lodash';
 export default {
   name: 'search',
   props: {
@@ -60,6 +61,12 @@ export default {
     };
   },
   methods: {
+    getTitleTranslation( filter_category, language ) {
+      if (!_.isNil(filter_category.title_translations) && !_.isEmpty(filter_category.title_translations)){
+        return filter_category.title_translations[language];
+      }
+      return filter_category.name
+      },
     generateSearchMaterialsQuery,
     /**
      * search event

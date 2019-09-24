@@ -23,31 +23,42 @@ function getFiltersForSearch(items) {
 }
 
 
-function loadCategoryFilters(items, parent) {
+function loadCategoryFilters(items, selected, dates, opened, parent) {
 
-  let parentSelected = (_.isNull(parent)) ? false : parent.selected || parent.enabled_by_default;
-  let searchId = (_.isNull(parent)) ? null : parent.searchId;
+  selected = selected || {};
+  dates = dates || { start_date: null, end_date: null };
+  opened = opened || [];
+  let searchId = (_.isNil(parent)) ? null : parent.searchId;
+
   _.forEach(items, (item) => {
 
-    // Set relevant properties for date filters
-    if(item.external_id === PUBLISHER_DATE_ID) {
-      item.dates = {
-        start_date: null,
-        end_date: null
-      }
-    }
     // Set values that might be relevant when loading children
     item.searchId = searchId || item.external_id;
-    item.selected = parentSelected || item.enabled_by_default;
+    item.selected = selected[item.external_id] || false;
+    // Set relevant properties for date filters
+    if(item.external_id === PUBLISHER_DATE_ID) {
+      item.dates = dates;
+      item.selected = dates.start_date || dates.end_date;
+    }
     // Load children and retrospecively set some parent properties
-    let hasSelectedChildren = loadCategoryFilters(item.children, item);
+    let hasSelectedChildren = loadCategoryFilters(item.children, selected, dates, opened, item);
     item.show_all = false;
-    item.selected = item.isOpen = item.selected || hasSelectedChildren;
+    item.selected = item.selected || hasSelectedChildren;
+    item.isOpen = opened.indexOf(item.id) >= 0 || item.selected || hasSelectedChildren;
 
   });
   return _.some(items, (item) => { return item.selected; });
 
 }
+
+
+function setChildrenSelected(children, value) {
+  _.forEach(children, (child, index) => {
+    child.selected = value;
+    setChildrenSelected(child.children, value);
+  });
+}
+
 
 export default {
   state: {
@@ -56,22 +67,7 @@ export default {
     disciplines: null,
     educationallevels: null,
     languages: null,
-    all_educationallevels: {
-      external_id: 'lom.classification.obk.educationallevel.id',
-      items: [
-        'be140797-803f-4b9e-81cc-5572c711e09c',
-        'f33b30ee-3c82-4ead-bc20-4255be9ece2d',
-        'de952b8b-efa5-4395-92c0-193812130c67',
-        'f3ac3fbb-5eae-49e0-8494-0a44855fff25',
-        'a598e56e-d1a6-4907-9e2c-3da64e59f9ae',
-        '00ace3c7-d7a8-41e6-83b1-7f13a9af7668',
-        '654931e1-6f8b-4f72-aa4b-92c99c72c347',
-        '8beca7eb-95a5-4c7d-9704-2d2a2fc4bc65',
-        'bbbd99c6-cf49-4980-baed-12388f8dcff4',
-        '18656a7c-95a5-4831-8085-020d3151aceb',
-        '2998f2e0-449d-4911-86a2-f4cbf1a20b56'
-      ]
-    }
+    byCategoryId: {}
   },
   getters: {
     filter_categories(state) {
@@ -85,9 +81,6 @@ export default {
     },
     educationallevels(state) {
       return state.educationallevels;
-    },
-    all_educationallevels(state) {
-      return state.all_educationallevels;
     },
     languages(state) {
       return state.languages;
@@ -126,7 +119,8 @@ export default {
         let promise = this.$axios.get('filter-categories/').then((response) => {
 
           // Preprocess the filters
-          loadCategoryFilters(response.data.results, null);
+          response.data.defaults = _.cloneDeep(response.data.results);
+          loadCategoryFilters(response.data.results);
 
           commit('SET_FILTER_CATEGORIES', response.data);
           commit('SET_FILTER_CATEGORIES_LOADING', null);
@@ -163,9 +157,34 @@ export default {
         item => item.external_id.search('lom.general.language') !== -1
       );
       state.languages = Object.assign({}, languages);
+
+      state.byCategoryId = {};
+      function setCategoryIds(items) {
+        _.forEach(items, (item) => {
+          state.byCategoryId[item.id] = item;
+          setCategoryIds(item.children);
+        });
+      }
+      setCategoryIds(payload.results);
+
     },
     SET_FILTER_CATEGORIES_LOADING(state, payload) {
       state.filter_categories_loading = payload;
+    },
+    SETUP_FILTER_CATEGORIES(state, data) {
+      let openFilters = _.filter(state.filter_categories.results, (item) => { return item.isOpen });
+      let openFilterIds = _.map(openFilters, (item) => { return item.id});
+      state.filter_categories.results = _.cloneDeep(state.filter_categories.defaults);
+      loadCategoryFilters(state.filter_categories.results, data.selected, data.dateRange, openFilterIds);
+      this.commit('SET_FILTER_CATEGORIES', state.filter_categories);
+    },
+    SET_FILTER_SELECTED(state, categoryId) {
+      let category = state.byCategoryId[categoryId];
+      if(!_.isNil(category)) {
+        setChildrenSelected(category.children, category.selected);
+      }
+      state.filter_categories = _.cloneDeep(state.filter_categories);
+      this.commit('SET_FILTER_CATEGORIES', state.filter_categories);
     }
   }
 };

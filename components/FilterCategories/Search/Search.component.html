@@ -35,7 +35,7 @@
           <option
             v-for="category in filter_category.children"
             :value="category.external_id"
-          >{{category.name}}</option>
+          >{{getTitleTranslation(category, $i18n.locale) }}</option>
         </select>
       </div>
       <button
@@ -57,7 +57,7 @@
             v-model="item.selected"
             name="search_category"
           >
-          <label :for="item.external_id"> {{item.name}}</label>
+          <label :for="item.external_id"> {{getTitleTranslation(item, $i18n.locale) }}</label>
         </li>
       </ul>
     </div>
@@ -79,7 +79,7 @@
             v-model="item.selected"
             name="search_category"
           >
-          <label :for="item.external_id">{{item.name}}</label>
+          <label :for="item.external_id">{{getTitleTranslation(item, $i18n.locale) }}</label>
         </li>
       </ul>
     </div>

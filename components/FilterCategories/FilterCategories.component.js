@@ -37,12 +37,6 @@ export default {
       }
       return _.some(category.children, (child) => { return !child.is_hidden; })
     },
-    setChildrenSelected(children, value) {
-      _.forEach(children, (child) => {
-        child.selected = value;
-        this.setChildrenSelected(child.children, value);
-      });
-    },
     onToggleCategory(category, update = true) {
       category.isOpen = !category.isOpen;
       _.forEach(category.children, (child) => { this.onToggleCategory(child, false); } );
@@ -107,16 +101,8 @@ export default {
       }
     },
     onChange(event) {
-
-      // Recursively update selections
-      let changedCategory = this.categoryItemsById[event.target.dataset.categoryId];
-      if(!_.isNil(changedCategory)) {
-        this.setChildrenSelected(changedCategory.children, changedCategory.selected);
-        this.$forceUpdate();
-      }
-
+      this.$store.commit('SET_FILTER_SELECTED', event.target.dataset.categoryId);
       this.executeSearch();
-
     },
     onDateChange(dates) {
       this.executeSearch();
@@ -169,36 +155,6 @@ export default {
     }
   },
   watch: {
-    data(data) {
-      let { publisherdate } = this;
-      let filters = this.value.filters.slice(0);
-
-      const publisherdate_item = filters.find(
-        item => item.external_id === publisherdate
-      );
-
-      if (publisherdate_item) {
-        filters = filters.map(item => {
-          if (item.external_id === publisherdate) {
-            return {
-              external_id: publisherdate,
-              items: [data.start_date || null, data.end_date || null]
-            };
-          }
-          return item;
-        });
-      } else {
-        filters.push({
-          external_id: publisherdate,
-          items: [data.start_date || null, data.end_date || null]
-        });
-      }
-
-      const request = Object.assign({}, this.value, { filters });
-
-      this.$emit('input', request);
-      this.$router.push(this.generateSearchMaterialsQuery(request));
-    },
     /**
      * Watcher on change user authentication
      * @param isAuthenticated
@@ -304,53 +260,8 @@ export default {
      * @returns {*}
      */
     filtered_categories() {
-      const { filter_categories } = this;
-
-      let self = this;
-      function setCategoryItemIds(items) {
-        _.forEach(items, (item) => {
-          self.categoryItemsById[item.id] = item;
-          setCategoryItemIds(item.children);
-        });
-      }
-
-      if (filter_categories) {
-        // Load all items into their own lookup table
-        setCategoryItemIds(filter_categories.results);
-        return filter_categories.results;
-      }
-      return [];
-    },
-    /**
-     * generate extending categories
-     * @returns {*}
-     */
-    categories() {
-      const { selected, show_all, filtered_categories, materials } = this;
-      if (selected && filtered_categories && materials && materials.filters) {
-        const not_empty_ids = materials.filters.reduce((prev, next) => {
-          prev.push(...next.items.map(item => item.external_id));
-          return prev;
-        }, []);
-
-        return Object.assign({}, filtered_categories, {
-          results: filtered_categories.map(category => {
-            return Object.assign({}, category, {
-              selected: selected.indexOf(category.external_id) !== -1,
-              show_all: show_all.indexOf(category.id) !== -1,
-              items: [
-                ...category.children.map(item => {
-                  return {
-                    ...item,
-                    is_empty: not_empty_ids.indexOf(item.external_id) === -1
-                  };
-                })
-              ]
-            });
-          })
-        });
-      }
-      return false;
+      // Return categories which builds the filter tree
+      return (this.filter_categories) ? this.$store.getters.filter_categories.results : [];
     }
   }
 };
