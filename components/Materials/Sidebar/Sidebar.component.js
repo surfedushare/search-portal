@@ -251,7 +251,13 @@ export default {
         .then(() => {
           this.setSocialCounters();
         });
-    }
+    },
+    getTitleTranslation( item, language ) {
+      if (!_.isNil(item.title_translations) && !_.isEmpty(item.title_translations)) {
+        return item.title_translations[language];
+      }
+      return item.name
+    },
   },
   computed: {
     ...mapGetters([
@@ -259,45 +265,42 @@ export default {
       'my_collections',
       'material_communities',
       'disciplines',
-      'educationallevels',
-      'languages'
     ]),
     /**
      * Extend to the material fields "disciplines" & "educationallevels"
      * @returns {*}
      */
     extended_material() {
-      const { material, disciplines, educationallevels, languages } = this;
-      if (material && disciplines && educationallevels && languages) {
-        return Object.assign({}, material, {
-          disciplines: material.disciplines.reduce((prev, id) => {
-            const item = disciplines.items[id];
+      const { material, disciplines } = this;
+      let self = this;
 
-            if (item) {
-              prev.push(item);
-            }
-
-            return prev;
-          }, []),
-          educationallevels: material.educationallevels.reduce((prev, id) => {
-            const item = educationallevels.items[id];
-
-            if (item) {
-              prev.push(item);
-            }
-
-            return prev;
-          }, []),
-          language_title: languages.children.reduce((prev, language) => {
-            if (language.external_id === material.language) {
-              prev = language.title;
-            }
-            return prev;
-          }, '')
-        });
+      if(_.isNil(material) || _.isError(material)) {
+        return material;
       }
 
-      return false;
+      if (!_.isNil(disciplines)) {
+        // TODO: material.disciplines is sometimes an Array with Object and sometimes with external_id
+        // We should make the type consistent
+        let disciplineTitles = _.map(material.disciplines, (discipline) => {
+          let disciplineObj = (_.isObject(discipline)) ? discipline : disciplines[discipline];
+          return this.getTitleTranslation(disciplineObj, self.$i18n.locale)
+        });
+        material.disciplineTitles = disciplineTitles.join(', ');
+      }
+
+
+      if (material.educationallevels.length) {
+        let educationallevelsTitles = _.map(material.educationallevels, (level) => {
+          let levelObj = (_.isObject(level)) ? level : self.$store.getters.getCategoryById(level);
+          if(_.isNil(levelObj)) {
+            return;
+          }
+          return this.getTitleTranslation(levelObj, self.$i18n.locale)
+        });
+        material.educationallevelsTitles = _.without(educationallevelsTitles, undefined).join(', ');
+      }
+
+      return material;
     }
   },
   watch: {

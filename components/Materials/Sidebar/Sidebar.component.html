@@ -1,26 +1,13 @@
 <div class="material__left">
   <div class="material__left_sticky">
     <div class="material__grey_block">
-      <template
-        v-if="material.disciplines && material.disciplines.length"
-      >
+      <template v-if="extended_material.disciplineTitles">
         <h4>{{ $t('Discipline') }}</h4>
-
-        <span v-for="discipline in material.disciplines">
-          {{discipline.title}}
-        </span>
+        <div>{{ extended_material.disciplineTitles }}</div>
       </template>
-      <template
-        v-if="material.educationallevels && material.educationallevels.length"
-        class="materials__item_educationallevels"
-      >
+      <template v-if="material.educationallevelsTitles" class="materials__item_educationallevels">
         <h4>{{ $t('Learning-levels') }}</h4>
-        <span
-          v-for="educationallevel in material.educationallevels"
-          class="materials__item_educationallevel"
-        >
-          {{educationallevel.title}}
-        </span>
+        <div>{{ extended_material.educationallevelsTitles }}</div>
       </template>
       <!--<h4>Soort materiaal</h4>-->
       <!--Video-->

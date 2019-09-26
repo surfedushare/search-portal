@@ -65,7 +65,6 @@ export default {
     filter_categories: null,
     filter_categories_loading: null,
     disciplines: null,
-    educationallevels: null,
     languages: null,
     byCategoryId: {}
   },
@@ -79,11 +78,10 @@ export default {
     disciplines(state) {
       return state.disciplines;
     },
-    educationallevels(state) {
-      return state.educationallevels;
-    },
-    languages(state) {
-      return state.languages;
+    getCategoryById(state) {
+      return (itemId) => {
+        return state.byCategoryId[itemId];
+      }
     },
     search_filters(state) {
 
@@ -134,34 +132,21 @@ export default {
   },
   mutations: {
     SET_FILTER_CATEGORIES(state, payload) {
+
       state.filter_categories = payload;
+
       const disciplines = payload.results.find(
         child => child.external_id.search('discipline.id') !== -1
       );
-      state.disciplines = Object.assign({}, disciplines, {
-        items: disciplines.children.reduce((prev, next) => {
-          prev[next.external_id] = next;
-          return prev;
-        }, {})
-      });
-      const educationallevels = payload.results.find(
-        child => child.external_id.search('educationallevel.id') !== -1
-      );
-      state.educationallevels = Object.assign({}, educationallevels, {
-        items: educationallevels.children.reduce((prev, next) => {
-          prev[next.external_id] = next;
-          return prev;
-        }, {})
-      });
-      const languages = payload.results.find(
-        item => item.external_id.search('lom.general.language') !== -1
-      );
-      state.languages = Object.assign({}, languages);
+      state.disciplines = _.reduce(disciplines.children, (obj, value) => {
+        obj[value.external_id] = value;
+        return obj;
+      }, {});
 
       state.byCategoryId = {};
       function setCategoryIds(items) {
         _.forEach(items, (item) => {
-          state.byCategoryId[item.id] = item;
+          state.byCategoryId[item.external_id] = item;
           setCategoryIds(item.children);
         });
       }

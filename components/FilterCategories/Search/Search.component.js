@@ -66,7 +66,7 @@ export default {
         return filter_category.title_translations[language];
       }
       return filter_category.name
-      },
+    },
     generateSearchMaterialsQuery,
     /**
      * search event
