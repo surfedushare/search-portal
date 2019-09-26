@@ -60,7 +60,7 @@
                   type="checkbox"
                   :id="item.external_id"
                   :value="item.external_id"
-                  :data-category-id="item.id"
+                  :data-category-id="item.external_id"
                   v-model="filtered_categories[index].children[indexItem].selected"
                   @change="onChange"
                 >
