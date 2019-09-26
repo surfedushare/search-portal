@@ -26,7 +26,7 @@ function getFiltersForSearch(items) {
 function loadCategoryFilters(items, selected, dates, opened, parent) {
 
   selected = selected || {};
-  dates = dates || { start_date: null, end_date: null };
+  dates = (_.isEmpty(dates)) ? { start_date: null, end_date: null } : dates;
   opened = opened || [];
   let searchId = (_.isNil(parent)) ? null : parent.searchId;
 
