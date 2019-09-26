@@ -79,9 +79,7 @@ export default {
   computed: {
     ...mapGetters([
       'disciplines',
-      'educationallevels',
-      'materials_loading',
-      'languages'
+      'materials_loading'
     ]),
     current_loading() {
       return this.materials_loading || this.loading;
@@ -94,17 +92,16 @@ export default {
       const {
         materials,
         disciplines,
-        educationallevels,
-        selected_materials,
-        languages
+        selected_materials
       } = this;
       let arrMaterials;
-      if (materials && disciplines && educationallevels && languages) {
+      if (materials && disciplines) {
         if (materials.records) {
           arrMaterials = materials.records;
         } else {
           arrMaterials = materials;
         }
+        let self = this;
         return arrMaterials.map(material => {
           return Object.assign(
             {
@@ -113,7 +110,7 @@ export default {
             material,
             {
               disciplines: material.disciplines.reduce((prev, id) => {
-                const item = disciplines.items[id];
+                const item = disciplines[id];
 
                 if (item) {
                   prev.push(item);
@@ -127,7 +124,7 @@ export default {
                   : material.description,
               educationallevels: material.educationallevels.reduce(
                 (prev, id) => {
-                  const item = educationallevels.items[id];
+                  const item = self.$store.getters.getCategoryById(id);
 
                   if (item) {
                     prev.push(item);
@@ -136,13 +133,7 @@ export default {
                   return prev;
                 },
                 []
-              ),
-              language_title: languages.children.reduce((prev, language) => {
-                if (language.external_id === material.language) {
-                  prev = language.title;
-                }
-                return prev;
-              }, '')
+              )
             }
           );
         });
