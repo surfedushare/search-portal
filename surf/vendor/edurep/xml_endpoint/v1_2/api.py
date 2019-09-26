@@ -188,7 +188,7 @@ class XmlEndpointApiClient:
         url = result.request.url
         parsed_result = parse_response(result.text, record_schema=EXTRA_RECORD_SCHEMA)
         # only store the first record, otherwise we store every query that occurs while scrolling
-        if start_record == 1:
+        if start_record == 1 and maximum_records > 0:
             QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
                      result_size=parsed_result['recordcount'], result=parsed_result).save()
 
