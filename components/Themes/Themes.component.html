@@ -8,10 +8,9 @@
       v-for="theme in currentThemes"
     >
       <nuxt-link
-        class="arrow-link"
         :to="localePath({name: 'themes-id', params: {id: theme.id}})"
       >
-        {{ getTitleTranslation(theme, $i18n.locale) }}
+        {{ getTitleTranslation(theme, $i18n.locale) }}&nbsp;>
       </nuxt-link>
     </li>
   </ul>
