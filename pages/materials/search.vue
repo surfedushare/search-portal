@@ -238,10 +238,10 @@ export default {
      */
     changeOrdering() {
       const { search } = this;
-      if (search.ordering === 'lom.lifecycle.contribute.publisherdate') {
-        this.search.ordering = '-lom.lifecycle.contribute.publisherdate';
-      } else {
+      if (search.ordering === '-lom.lifecycle.contribute.publisherdate') {
         this.search.ordering = 'lom.lifecycle.contribute.publisherdate';
+      } else {
+        this.search.ordering = '-lom.lifecycle.contribute.publisherdate';
       }
       this.search.page = 1;
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search));

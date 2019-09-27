@@ -13,7 +13,6 @@ export default {
         return this.generateSearchMaterialsQuery({
           search_text: [keyword],
           filters: [],
-          ordering: '-lom.lifecycle.contribute.publisherdate',
           page: 1,
           page_size: 10
         });
