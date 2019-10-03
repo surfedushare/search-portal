@@ -18,9 +18,17 @@ export default {
      * @returns {string}
      */
     getLoginLink() {
+      if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
+        return;
+      }
       return `${
         this.$axios.defaults.baseURL
       }/login/?redirect_url=${validateHREF(window.location.href)}`;
+    },
+    login () {
+      if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
+        this.$store.dispatch('login', {token: process.env.VUE_APP_SURFCONEXT_BYPASS});
+      }
     },
     /**
      * logout event

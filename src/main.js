@@ -41,6 +41,7 @@ import {
   getQueryDiff,
   globalHandleError
 } from './utils'
+import { parseSearchMaterialsQuery } from '../components/_helpers';
 
 const noopData = () => { return {} };
 const noopFetch = () => {};
@@ -568,6 +569,21 @@ async function mountApp(__app) {
   // Add router hooks
   router.beforeEach(loadAsyncComponents.bind(_app));
   router.beforeEach(render.bind(_app));
+  router.afterEach((to, from) => {
+    // Parse URL and set filters selected when
+    let urlSearch = parseSearchMaterialsQuery(to.query);
+    let selected = {};
+    if(!_.isEmpty(urlSearch.search)) {
+      _.forEach(urlSearch.search.filters, (filter) => {
+        _.reduce(filter.items, (obj, item) => {obj[item] = true; return obj}, selected);
+      });
+    }
+    // Update the store with URL values if necessary
+    if(!_.isEmpty(selected) || !_.isEmpty(urlSearch.dateRange)) {
+      let dateRange = urlSearch.dateRange;
+      _app.$store.commit('SETUP_FILTER_CATEGORIES', {selected, dateRange});
+    }
+  });
   router.afterEach(normalizeComponents);
   router.afterEach(fixPrepatch.bind(_app));
 
