@@ -578,11 +578,9 @@ async function mountApp(__app) {
         _.reduce(filter.items, (obj, item) => {obj[item] = true; return obj}, selected);
       });
     }
-    // Update the store with URL values if necessary
-    if(!_.isEmpty(selected) || !_.isEmpty(urlSearch.dateRange)) {
-      let dateRange = urlSearch.dateRange;
-      _app.$store.commit('SETUP_FILTER_CATEGORIES', {selected, dateRange});
-    }
+    // Update the store with URL values
+    let dateRange = urlSearch.dateRange;
+    _app.$store.commit('SETUP_FILTER_CATEGORIES', {selected, dateRange});
   });
   router.afterEach(normalizeComponents);
   router.afterEach(fixPrepatch.bind(_app));

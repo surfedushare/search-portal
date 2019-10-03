@@ -18,19 +18,12 @@ export default {
      * @returns {{path, query}}
      */
     generateLink(discipline) {
-      const { theme } = this;
       const filters = [
         {
           external_id: 'lom.classification.obk.discipline.id',
           items: [discipline.external_id]
         }
       ];
-      if (theme) {
-        filters.push({
-          external_id: 'custom_theme.id',
-          items: [theme.external_id]
-        });
-      }
       return this.generateSearchMaterialsQuery({
         page: 1,
         page_size: 10,
