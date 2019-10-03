@@ -25,17 +25,12 @@
       </div>
 
       <div class="search__tools center_block">
-        <div
-          :class="{'select--open': search.ordering === 'lom.lifecycle.contribute.publisherdate'}"
-          class="select"
-        >
-          <div
-            class="select__item"
-            @click="changeOrdering"
-          >
-            {{ $t('Sort-by') }}
-          </div>
-        </div>
+        <label for="search_order_select">{{ $t('sort_by') }}:	&nbsp;</label>
+        <select class="select" id="search_order_select" @change="changeOrdering" v-model="sort_order">
+          <option v-for="option in sort_order_options" v-bind:value="option.value">
+            {{ $t(option.value) }}
+          </option>
+        </select>
 
         <button
           :class="{
@@ -122,7 +117,13 @@ export default {
       formData: {
         name: null
       },
-      items: [{ title: this.$t('Home'), url: this.localePath('index') }]
+      items: [{ title: this.$t('Home'), url: this.localePath('index') }],
+      sort_order: 'relevance',
+      sort_order_options: [
+        { value: 'relevance' },
+        { value: 'date_descending' },
+        { value: 'date_ascending' }
+    ],
     };
   },
   computed: {
@@ -237,11 +238,13 @@ export default {
      * Event the ordering items
      */
     changeOrdering() {
-      const { search } = this;
-      if (search.ordering === '-lom.lifecycle.contribute.publisherdate') {
+      const { sort_order } = this;
+      if (sort_order === 'date_descending'){
+        this.search.ordering = '-lom.lifecycle.contribute.publisherdate';
+      } else if (sort_order === 'date_ascending'){
         this.search.ordering = 'lom.lifecycle.contribute.publisherdate';
       } else {
-        this.search.ordering = '-lom.lifecycle.contribute.publisherdate';
+        this.search.ordering = '';
       }
       this.search.page = 1;
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search));
@@ -434,6 +437,10 @@ export default {
     @media @mobile {
       padding: 0;
     }
+  }
+
+  label {
+    line-height:50px;
   }
 }
 </style>
