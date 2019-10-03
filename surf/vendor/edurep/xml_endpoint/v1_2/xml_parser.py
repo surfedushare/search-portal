@@ -297,7 +297,7 @@ def _parse_aggregate_field_drilldowns(elem, aggregate_field_map):
         item_id = item.text
         field_ids = aggregate_field_map.get(item_id)
         if not field_ids:
-            continue
+            field_ids = ["Unknown"]
         if not isinstance(field_ids, list):
             field_ids = [field_ids]
         for f_id in field_ids:

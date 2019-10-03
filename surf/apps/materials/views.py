@@ -200,7 +200,6 @@ class MaterialAPIView(APIView):
 
             res = ac.search([],
                             filters=filters,
-                            ordering="-{}".format(PUBLISHER_DATE_FIELD_ID),
                             page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
             res = add_extra_parameters_to_materials(request.user,
