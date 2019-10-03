@@ -1,13 +1,16 @@
 """
 This module contains API view serializers for themes app.
 """
+from collections import OrderedDict
 
 from rest_framework import serializers
 
+from surf.apps.filters.utils import add_default_material_filters
 from surf.apps.themes.models import Theme
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
 from surf.apps.filters.serializers import MpttFilterItemSerializer
+from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
 
 
 class ThemeSerializer(serializers.ModelSerializer):
@@ -33,12 +36,12 @@ class ThemeDisciplineSerializer(MpttFilterItemSerializer):
     materials_count = serializers.SerializerMethodField()
 
     def get_materials_count(self, obj):
-        try:
-            if self.context:
-                drilldowns = self.context["extra"]["drilldowns"]
-                return drilldowns.get(obj.external_id, 0)
-        except KeyError:
-            pass
+        if obj.external_id:
+            ac = XmlEndpointApiClient()
+            filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
+            filters = add_default_material_filters(filters)
+            res = ac.search([], filters=filters, page_size=0)
+            return res['recordcount']
 
         return 0
 

@@ -55,7 +55,7 @@ def get_material_count_by_disciplines(discipline_ids):
     rv = dict()
 
     # add default filters to search materials
-    filters = get_default_material_filters()
+    filters = add_default_material_filters()
 
     ac = XmlEndpointApiClient(api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
@@ -117,24 +117,31 @@ def add_default_filters(filters):
     return filters
 
 
-def get_default_material_filters(filters=None):
+def add_default_material_filters(filters=None):
     """
-    Returns filters to get all available materials from EduRep
-    :return: list of filters
+    Adds the default enabled filters to the supplied list of filters
+    :param filters: list of filters to be extended, or None to get the full list of default filters
+    :return: the extended list of filters (or the same list if none are enabled by default)
     """
     if not filters:
         filters = []
     root_nodes = MpttFilterItem.objects.root_nodes()
+    filters_external_id_list = [filter_item['external_id'] for filter_item in filters]
     for root in root_nodes:
-        if root.enabled_by_default:
-            enabled_children = root.get_descendants()
-        else:
-            enabled_children = root.get_descendants().filter(enabled_by_default=True)
-
-        if enabled_children:
-            # if child.external_id is empty don't append it to the filters, edurep fails on empty strings
-            child_external_ids = [child.external_id for child in enabled_children if child.external_id]
-            filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
+        # if the root.external_id (e.g. educational_level) is in the user-selected filters,
+        # then don't add the default filters for that root
+        if root.external_id not in filters_external_id_list:
+            if root.enabled_by_default:
+                enabled_children = root.get_descendants()
+            else:
+                enabled_children = root.get_descendants().filter(enabled_by_default=True)
+            child_external_ids = []
+            for child in enabled_children:
+                child_external_ids.extend([grand_child.external_id for grand_child in child.get_descendants()])
+            if enabled_children:
+                # if child.external_id is empty don't append it to the filters, edurep fails on empty strings
+                child_external_ids.extend([child.external_id for child in enabled_children if child.external_id])
+                filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
     return filters
 
 
@@ -259,7 +266,7 @@ def _update_filter_category(filter_category, api_client):
                                     filter_category.max_item_count)
 
     res = api_client.drilldowns([drilldown_name],
-                                filters=get_default_material_filters())
+                                filters=add_default_material_filters())
 
     items = res.get(category_id)
     if not items:
