@@ -42,7 +42,6 @@
         </nav>
       </div>
       <div
-        v-show="false"
         class="main-header__login"
         v-else
       >
@@ -107,8 +106,7 @@
           </ul>
         </nav>
       </div>
-      <div v-else class="main-header__mobile_login"
-      v-show="false">
+      <div v-else class="main-header__mobile_login">
         <a :href="getLoginLink()" class="button">{{ $t('login') }}</a>
       </div>
       <Menu class="main-header__menu" />
