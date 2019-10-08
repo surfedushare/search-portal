@@ -88,5 +88,3 @@ class SurfTeamAdmin(admin.ModelAdmin):
     """
 
     list_display = ("external_id", "name", "description",)
-    readonly_fields = ("external_id", "name", "description",
-                       "admins", "members",)
