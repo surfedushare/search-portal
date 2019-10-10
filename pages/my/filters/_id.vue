@@ -16,7 +16,7 @@
               ref="title"
               :contenteditable="contenteditable"
               :set-text="setTitle"
-              :maxlength="20"
+              :maxlength="255"
               :text="filter_title"
             />
           </h2>
