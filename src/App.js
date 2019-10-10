@@ -17,7 +17,6 @@ const layouts = { "_default": _6f6c098b }
 
 
 export default {
-  head: {"title":"Surf | Open Leermaterialen","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"twitter:card","content":"summary_large_image"},{"hid":"description","name":"description","content":"Open Leermaterialen"},{"hid":"og:title","property":"og:title","content":"Surf | Open Leermaterialen"},{"hid":"og:description","property":"og:description","content":"Open Leermaterialen"},{"hid":"og:image","property":"og:image","content":"https:\u002F\u002Ffront-dev.surfcatalog.nl\u002F\u002Fsocial-image.jpg"},{"hid":"og:image:width","property":"og:image:width","content":"510"},{"hid":"og:image:height","property":"og:image:height","content":"298"},{"hid":"og:image:alt","property":"og:image:alt","content":"Open Leermaterialen"},{"hid":"og:type","property":"og:type","content":"article"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"icon","type":"image\u002Fpng","href":"\u002Ffavicon-16x16.png","sizes":"16x16"},{"rel":"icon","type":"image\u002Fpng","href":"\u002Ffavicon-32x32.png","sizes":"32x32"},{"rel":"icon","type":"image\u002Fpng","href":"\u002Ffavicon-70x70.png","sizes":"70x70"},{"rel":"stylesheet","href":"https:\u002F\u002Fuse.typekit.net\u002Feya4qgt.css"}],"style":[],"script":[{"src":"\u002F\u002Fwebstats.surf.nl\u002Fpiwik.js","body":true,"defer":true,"async":true}]},
   render(h, props) {
     const loadingEl = h('nuxt-loading', { ref: 'loading' })
     const layoutEl = h(this.layout || 'nuxt')
