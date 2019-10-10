@@ -35,7 +35,6 @@ export default {
      */
     logout() {
       this.$store.dispatch('logout').then(() => {
-        // location.reload();
         window.location = process.env.logoutURL;
       });
     },

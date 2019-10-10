@@ -16,7 +16,7 @@
               ref="title"
               :contenteditable="contenteditable"
               :set-text="setTitle"
-              :maxlength="20"
+              :maxlength="255"
               :text="filter_title"
             />
           </h2>
@@ -491,7 +491,7 @@ export default {
       padding: 59px 45px 95px 103px;
     }
 
-    @media @mobile, @tablet {
+    @media @mobile {
       background: url('/images/filters.svg') 20px 53px
         no-repeat;
       background-size: 30px 30px;
@@ -512,7 +512,7 @@ export default {
       z-index: -1;
     }
     &_ttl {
-      @media @mobile, @tablet {
+      @media @mobile {
         padding-left: 30px;
         font-size: 26px;
       }

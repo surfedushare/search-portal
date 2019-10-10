@@ -3,6 +3,7 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  padding: 0 20px;
 
   &__top_block {
     @media @desktop {
@@ -58,7 +59,7 @@
   }
 
   &__info {
-    @media @mobile, @tablet {
+    @media @mobile {
       padding-top: 60px;
     }
 
@@ -77,7 +78,7 @@
     flex-shrink: 0;
     width: 226px;
     margin: 0 54px 0 68px;
-    @media @mobile, @tablet {
+    @media @mobile {
       margin: 0;
       padding-top: 30px;
     }
@@ -96,7 +97,6 @@
 
   &__bottom_block {
     @media @desktop {
-      width: 1040px;
       display: flex;
       height: 139px;
     }
@@ -151,9 +151,8 @@
   }
 
   &__logo {
-    padding-left: 45px;
     @media @desktop {
-    padding: 31px 0 0 21px;
+    padding: 31px 0 0;
     }
   }
 }
