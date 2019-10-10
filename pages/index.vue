@@ -135,7 +135,7 @@ export default {
       left: 50px;
       width: calc(100% - 100px);
       z-index: -1;
-      @media @mobile, @tablet {
+      @media @mobile {
         display: none;
       }
     }
@@ -157,21 +157,21 @@ export default {
       line-height: 1.25;
       color: #fff;
       margin: 0 0 16px;
-      @media @mobile, @tablet {
+      @media @mobile {
         font-size: 16px;
       }
     }
 
     &_main-title {
       opacity: 0;
-      @media @mobile, @tablet {
+      @media @mobile {
         display: none;
       }
     }
     &_items {
       padding: 0;
       margin: 0;
-      @media @mobile, @tablet {
+      @media @mobile {
         font-size: 12px;
       }
     }
@@ -181,7 +181,7 @@ export default {
       padding: 5px 0 8px 40px;
       background: url('/images/check-white.svg') 0 0 no-repeat;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         background-size: 20px 20px;
         background-position-x: 10px;
       }
@@ -197,7 +197,7 @@ export default {
       font-weight: bold;
       position: relative;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         margin: 50px 0 0 0;
         padding: 10px 20px;
         width: 100%;
@@ -214,7 +214,7 @@ export default {
         top: 0;
         width: 100%;
         z-index: -1;
-        @media @mobile, @tablet {
+        @media @mobile {
           right: 10px;
           left: 10px;
           width: auto;
@@ -239,10 +239,9 @@ export default {
     }
 
     &_search {
-      width: 996px;
       margin: auto;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         width: 100%;
         margin-top: 25px;
         background-color: #ffffff;
@@ -282,7 +281,7 @@ export default {
     &_title {
       margin: 0 0 32px;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         font-size: 22px;
         margin: 0 0 20px;
       }

@@ -108,15 +108,53 @@
                 transform: rotate(360deg)
             }
         }
+
+        /**
+         * Here we forcefully show a mobile only page on small screens.
+         * This is to prevent load problems on mobiles.
+         * A number of tickets have been made to solve these issues.
+         * Until these are fixed we notify people to use the desktop version.
+         */
+        @media only screen and (max-width: 934px) {
+
+          .desktop {
+            display: none;
+          }
+          .mobile {
+            display: block !important;
+          }
+
+        }
+        .mobile {
+          display: none;
+        }
+
+        .mobile-content {
+            margin: 40px auto;
+            max-width: 300px;
+            text-align: center;
+        }
+        .mobile-content img {
+            width: 150px;
+        }
+        .mobile-content p {
+            margin-top: 40px;
+        }
+
+
     </style>
 </head>
 <body>
 
+    <div class="mobile">
+        <div class="mobile-content">
+          <img src="/images/surflogo@3x.png">
+          <p>Het zoekportaal is gedurende de pilot niet te gebruiken op kleine schermen. Probeer je device te draaien of gebruik een computer.</p>
+          <p>During the pilot the search portal can't be used on small screens. Try to rotate your device or use a desktop computer.</p>
+        </div>
+    </div>
+
     <div id="__nuxt">
-        <script>window.addEventListener("error", function () {
-            var e = document.getElementById("nuxt-loading");
-            e && (e.className += " error")
-        })</script>
         <div id="nuxt-loading" aria-live="polite" role="status">
             <div>Loading...</div>
         </div>
