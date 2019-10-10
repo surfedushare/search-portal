@@ -189,7 +189,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'static', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'users.User'

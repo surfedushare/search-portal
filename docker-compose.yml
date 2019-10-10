@@ -19,8 +19,10 @@ services:
       dockerfile: Dockerfile
     environment:
       - DJANGO_SETTINGS_MODULE=surf.settings.local
+    volumes:
+      - /volumes/surf/media:/src/media
     ports:
-      - "127.0.0.1:8080:8080"
+      - "8080:8080"
     links:
       - postgres:database
     depends_on:
