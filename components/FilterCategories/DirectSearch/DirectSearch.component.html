@@ -6,21 +6,7 @@
     class="direct_search__wrapper"
   >
     <div class="direct_search__fields">
-      <div class="direct_search__autocomplete">
-        <v-select
-          :options="keywords"
-          :multiple="true"
-          :placeholder="$t('Search-by-keywords')"
-          @search="onSearch"
-          @input="setKeywords"
-          taggable
-          inputId="tags"
-          push-tags
-          v-model="formData.search_text"
-          name="keywords"
-          :resetOnOptionsChange="true"
-        ></v-select>
-      </div>
+
     </div>
     <slot name="social_box"></slot>
     <slot name="filter"></slot>
