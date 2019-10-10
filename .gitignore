@@ -100,4 +100,5 @@ ENV/
 .DS_Store
 
 static/
+media/
 database/
