@@ -75,8 +75,8 @@
                               :id="child.external_id"
                               :value="child.external_id"
                               :data-category-id="child.external_id"
-                              v-model="child.selected"
-                              @change="onChange"
+                              v-model="filtered_categories[index].children[indexItem].children[childIndex].selected"
+                              @change="onChange($event, item)"
                       >
                       <label>{{ getTitleTranslation(child, $i18n.locale) }}</label>
                   </li>

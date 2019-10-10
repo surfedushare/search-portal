@@ -95,7 +95,10 @@ export default {
         return filters;
       }
     },
-    onChange(event) {
+    onChange(event, parent) {
+      if(!_.isNil(parent)) {
+        parent.selected = !parent.selected;
+      }
       this.$store.commit('SET_FILTER_SELECTED', event.target.dataset.categoryId);
       this.executeSearch();
     },
