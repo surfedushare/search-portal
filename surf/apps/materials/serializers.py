@@ -182,7 +182,7 @@ class CollectionSerializer(CollectionShortSerializer):
     Collection instance serializer
     """
 
-    title = serializers.CharField()
+    title = EscapeRepresentationCharField()
     materials_count = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
