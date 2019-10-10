@@ -10,7 +10,7 @@
       <nuxt-link
         :to="generateLink(discipline)"
       >
-        {{ getTitleTranslation(discipline, $i18n.locale) }} ({{discipline.materials_count || '0'}})
+        {{ getTitleTranslation(discipline, $i18n.locale) }}&nbsp;({{discipline.materials_count || '0'}})
         <span></span>
       </nuxt-link>
     </li>

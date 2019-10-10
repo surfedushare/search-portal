@@ -91,7 +91,7 @@ export function createRouter () {
 			name: "themes___en"
 		},
 		{
-			path: "/themes",
+			path: "/themas",
 			component: _9a46b0e2,
 			name: "themes___nl"
 		},
@@ -101,7 +101,7 @@ export function createRouter () {
 			name: "how-does-it-work___en"
 		},
 		{
-			path: "/how-does-it-work",
+			path: "/hoe-werkt-het",
 			component: _e895237e,
 			name: "how-does-it-work___nl"
 		},
@@ -121,7 +121,7 @@ export function createRouter () {
 			name: "materials___en"
 		},
 		{
-			path: "/materials",
+			path: "/materialen",
 			component: _16df26dd,
 			name: "materials___nl"
 		},
@@ -131,7 +131,7 @@ export function createRouter () {
 			name: "materials-search___en"
 		},
 		{
-			path: "/materials/search",
+			path: "/materialen/zoeken",
 			component: _70c48e2d,
 			name: "materials-search___nl"
 		},
@@ -141,7 +141,7 @@ export function createRouter () {
 			name: "my-filters___en"
 		},
 		{
-			path: "/my/filters",
+			path: "/mijn/filters",
 			component: _77aed046,
 			name: "my-filters___nl"
 		},
@@ -151,7 +151,7 @@ export function createRouter () {
 			name: "my-collections___en"
 		},
 		{
-			path: "/my/collections",
+			path: "/mijn/collecties",
 			component: _169285f4,
 			name: "my-collections___nl"
 		},
@@ -161,7 +161,7 @@ export function createRouter () {
 			name: "my-collection___en"
 		},
 		{
-			path: "/my/collection",
+			path: "/mijn/collectie",
 			component: _5330bd0f,
 			name: "my-collection___nl"
 		},
@@ -171,7 +171,7 @@ export function createRouter () {
 			name: "my-communities___en"
 		},
 		{
-			path: "/my/communities",
+			path: "/mijn/communities",
 			component: _b5953cb4,
 			name: "my-communities___nl"
 		},
@@ -181,7 +181,7 @@ export function createRouter () {
 			name: "my-filters-id___en"
 		},
 		{
-			path: "/my/filters/:id",
+			path: "/mijn/filters/:id",
 			component: _1c7624f6,
 			name: "my-filters-id___nl"
 		},
@@ -191,7 +191,7 @@ export function createRouter () {
 			name: "themes-id___en"
 		},
 		{
-			path: "/themes/:id",
+			path: "/themas/:id",
 			component: _45857c92,
 			name: "themes-id___nl"
 		},
@@ -201,7 +201,7 @@ export function createRouter () {
 			name: "materials-id___en"
 		},
 		{
-			path: "/materials/:id",
+			path: "/materialen/:id",
 			component: _4ed33c85,
 			name: "materials-id___nl"
 		},
@@ -211,7 +211,7 @@ export function createRouter () {
 			name: "collections-id___en"
 		},
 		{
-			path: "/collections/:id?",
+			path: "/collecties/:id?",
 			component: _3729fb6e,
 			name: "collections-id___nl"
 		},
@@ -231,7 +231,7 @@ export function createRouter () {
 			name: "communities-community-search___en"
 		},
 		{
-			path: "/communities/:community/search",
+			path: "/communities/:community/zoeken",
 			component: _0624db53,
 			name: "communities-community-search___nl"
 		},
@@ -241,7 +241,7 @@ export function createRouter () {
 			name: "communities-community-collections-id___en"
 		},
 		{
-			path: "/communities/:community/collections/:id?",
+			path: "/communities/:community/collecties/:id?",
 			component: _2cdbb9b6,
 			name: "communities-community-collections-id___nl"
 		},

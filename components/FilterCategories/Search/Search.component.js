@@ -52,7 +52,7 @@ export default {
         page_size: 10,
         page: 1,
         ...this.value,
-        ordering: '-lom.lifecycle.contribute.publisherdate'
+        ordering: null
       },
       dates_range: {
         start_date: null,

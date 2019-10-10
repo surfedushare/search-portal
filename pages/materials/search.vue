@@ -25,18 +25,14 @@
       </div>
 
       <div class="search__tools center_block">
-        <div
-          :class="{'select--open': search.ordering === 'lom.lifecycle.contribute.publisherdate'}"
-          class="select"
-        >
-          <div
-            class="select__item"
-            @click="changeOrdering"
-          >
-            {{ $t('Sort-by') }}
-          </div>
+        <label for="search_order_select">{{ $t('sort_by') }}:	&nbsp;</label>
+        <div  class="search__chooser search__select" >
+        <select id="search_order_select" @change="changeOrdering" v-model="sort_order">
+          <option v-for="option in sort_order_options" v-bind:value="option.value">
+            &nbsp;&nbsp;{{ $t(option.value) }}
+          </option>
+        </select>
         </div>
-
         <button
           :class="{
             'search__tools_type_button--list': materials_in_line === 3,
@@ -122,7 +118,13 @@ export default {
       formData: {
         name: null
       },
-      items: [{ title: this.$t('Home'), url: this.localePath('index') }]
+      items: [{ title: this.$t('Home'), url: this.localePath('index') }],
+      sort_order: 'relevance',
+      sort_order_options: [
+        { value: 'relevance' },
+        { value: 'date_descending' },
+        { value: 'date_ascending' }
+    ],
     };
   },
   computed: {
@@ -237,11 +239,13 @@ export default {
      * Event the ordering items
      */
     changeOrdering() {
-      const { search } = this;
-      if (search.ordering === 'lom.lifecycle.contribute.publisherdate') {
+      const { sort_order } = this;
+      if (sort_order === 'date_descending'){
         this.search.ordering = '-lom.lifecycle.contribute.publisherdate';
-      } else {
+      } else if (sort_order === 'date_ascending'){
         this.search.ordering = 'lom.lifecycle.contribute.publisherdate';
+      } else {
+        this.search.ordering = '';
       }
       this.search.page = 1;
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search));
@@ -377,13 +381,11 @@ export default {
       cursor: pointer;
 
       &--cards {
-        background: transparent url('/images/card-view-copy.svg')
-          0 50% no-repeat;
+        background: transparent url('/images/card-view-copy.svg') 0 50% no-repeat;
       }
 
       &--list {
-        background: transparent url('/images/list-view-copy.svg')
-          0 50% no-repeat;
+        background: transparent url('/images/list-view-copy.svg') 0 50% no-repeat;
       }
 
       &:focus,
@@ -395,6 +397,7 @@ export default {
         display: none;
       }
     }
+
     .select {
       height: 50px;
       width: 251px;
@@ -433,6 +436,86 @@ export default {
 
     @media @mobile {
       padding: 0;
+    }
+  }
+
+  label {
+    line-height: 50px;
+  }
+  &__select {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0;
+    background: transparent;
+    box-sizing: border-box;
+    height: 67px;
+    cursor: pointer;
+    z-index: 4;
+
+    &--wrap {
+      overflow: inherit;
+    }
+
+    &::-ms-expand {
+      display: none;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translate(0, -100%) rotate(90deg);
+      width: 14px;
+      height: 14px;
+      background: url('/images/arrow-text-grey.svg') 50% 50% / contain no-repeat;
+      pointer-events: none;
+    }
+
+    select {
+      width: 100%;
+      height: 50px;
+      font-family: @main-font;
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.5;
+      background-color: transparent;
+      background-image: none;
+      -moz-appearance: none;
+      appearance: none;
+      box-shadow: none;
+      display: block;
+      color: @dark-grey;
+      border-radius: 5px;
+      border: solid 1px rgba(0, 0, 0, 0.12);
+      margin: 0;
+      padding: 0 40px 0 0;
+      cursor: pointer;
+      box-sizing: border-box;
+
+      &::-ms-expand {
+        display: none;
+      }
+      &::-ms-value {
+        background: transparent;
+        color: @dark-grey;
+      }
+      &:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+      }
+
+      &--focused &,
+      &:active,
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &--not-choose select {
+      color: rgba(0, 0, 0, 0.38);
     }
   }
 }
