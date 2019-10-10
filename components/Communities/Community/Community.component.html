@@ -14,13 +14,6 @@
           <h2 class="community__info_ttl">{{ getTitleTranslation(community_info, $i18n.locale) }}</h2>
         </div>
       </div>
-      <Search
-        class="community__info_search"
-        :hide-filter="true"
-        :hide-categories="true"
-        @submit="searchInCommunity"
-        @onEmptySearchText="onEmptySearchText"
-      />
     </div>
 
     <div
