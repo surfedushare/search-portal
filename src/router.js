@@ -7,10 +7,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const _9a46b0e2 = () => import('../pages/themes/index.vue' /* webpackChunkName: "pages/themes/index" */).then(m => m.default || m);
+
 const _e895237e = () => import('../pages/how-does-it-work/index.vue' /* webpackChunkName: "pages/how-does-it-work/index" */).then(m => m.default || m);
 const _e32cc490 = () => import('../pages/communities/index.vue' /* webpackChunkName: "pages/communities/index" */).then(m => m.default || m);
-const _16df26dd = () => import('../pages/materials/index.vue' /* webpackChunkName: "pages/materials/index" */).then(m => m.default || m);
 const _70c48e2d = () => import('../pages/materials/search.vue' /* webpackChunkName: "pages/materials/search" */).then(m => m.default || m);
 const _77aed046 = () => import('../pages/my/filters/index.vue' /* webpackChunkName: "pages/my/filters/index" */).then(m => m.default || m);
 const _169285f4 = () => import('../pages/my/collections.vue' /* webpackChunkName: "pages/my/collections" */).then(m => m.default || m);
@@ -86,16 +85,6 @@ export function createRouter () {
     scrollBehavior,
     routes: [
 		{
-			path: "/en/themes",
-			component: _9a46b0e2,
-			name: "themes___en"
-		},
-		{
-			path: "/themas",
-			component: _9a46b0e2,
-			name: "themes___nl"
-		},
-		{
 			path: "/en/how-does-it-work",
 			component: _e895237e,
 			name: "how-does-it-work___en"
@@ -114,16 +103,6 @@ export function createRouter () {
 			path: "/communities",
 			component: _e32cc490,
 			name: "communities___nl"
-		},
-		{
-			path: "/en/materials",
-			component: _16df26dd,
-			name: "materials___en"
-		},
-		{
-			path: "/materialen",
-			component: _16df26dd,
-			name: "materials___nl"
 		},
 		{
 			path: "/en/materials/search",

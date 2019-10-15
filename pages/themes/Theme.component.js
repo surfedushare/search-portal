@@ -3,7 +3,6 @@ import _ from 'lodash';
 import Search from '~/components/FilterCategories/Search';
 import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';
-import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import BreadCrumbs from '~/components/BreadCrumbs';
@@ -15,7 +14,6 @@ export default {
     Search,
     PopularList,
     Materials,
-    Themes,
     Disciplines,
     Collections,
     BreadCrumbs
