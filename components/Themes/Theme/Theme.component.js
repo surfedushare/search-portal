@@ -21,22 +21,37 @@ export default {
     BreadCrumbs
   },
   mounted() {
-    this.$store.dispatch('getTheme', this.$route.params.id).then(theme => {
-      this.$store.dispatch('searchMaterials', {
-        page_size: 2,
-        search_text: [],
-        filters: [
-          { external_id: 'custom_theme.id', items: [theme.external_id] }
-        ],
-        return_filters: false
+
+    let themeId = this.$route.params.id;
+    this.$store.dispatch('getFilterCategories').then(() => {
+
+      this.$store.dispatch('getTheme', themeId).then(theme => {
+
+        let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
+        themeCategory.selected = true;
+
+        this.theme = theme;
+        this.$store.dispatch('searchMaterials', {
+          page_size: 2,
+          search_text: [],
+          filters: this.$store.getters.search_filters,
+          return_filters: false
+        });
+
       });
+
     });
-    this.$store.dispatch('getThemeDisciplines', this.$route.params.id);
+
+    // TODO: all data fetched below is also in the getFilterCategories above
+    // We should remove these calls and use the getFilterCategories
+    // That means switching from theme.id to theme.external_id
+    this.$store.dispatch('getThemeDisciplines', themeId);
     this.$store.dispatch('getThemeCommunities', {
       id: this.$route.params.id,
       params: { page_size: 2 }
     });
-    this.$store.dispatch('getThemeCollections', this.$route.params.id);
+    this.$store.dispatch('getThemeCollections', themeId);
+
   },
   data() {
     return {
@@ -47,7 +62,8 @@ export default {
             items: []
           }
         ]
-      }
+      },
+      theme: null
     };
   },
   methods: {
@@ -73,19 +89,5 @@ export default {
       'materials',
       'filter'
     ])
-  },
-  watch: {
-    /**
-     * Watcher on change the theme object
-     * @param theme - Object
-     */
-    theme(theme) {
-      if (theme) {
-        this.search.filters.push({
-          external_id: 'custom_theme.id',
-          items: [theme.external_id]
-        });
-      }
-    }
   }
 };

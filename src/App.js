@@ -59,7 +59,8 @@ export default {
       window.$nuxt = this
     }
     // Add $nuxt.error()
-    this.error = this.nuxt.error
+    this.error = this.nuxt.error;
+    this.$store.dispatch('getFilterCategories');
   },
 
   mounted () {

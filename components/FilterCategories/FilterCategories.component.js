@@ -17,16 +17,11 @@ export default {
     const publisherdate = 'lom.lifecycle.contribute.publisherdate';
     return {
       publisherdate,
-      selected: [],
-      show_all: [],
-      isShow: false,
-      isInit: false,
       visible_items: 20,
       data: {
         start_date: null,
         end_date: null
-      },
-      categoryItemsById: {}
+      }
     };
   },
   methods: {
@@ -45,7 +40,7 @@ export default {
       }
     },
     onToggleShowAll(category) {
-      category.show_all = !category.show_all;
+      category.showAll = !category.showAll;
       this.$forceUpdate();
     },
     /**
@@ -100,7 +95,10 @@ export default {
         return filters;
       }
     },
-    onChange(event) {
+    onChange(event, parent) {
+      if(!_.isNil(parent)) {
+        parent.selected = !parent.selected;
+      }
       this.$store.commit('SET_FILTER_SELECTED', event.target.dataset.categoryId);
       this.executeSearch();
     },
@@ -144,7 +142,7 @@ export default {
     },
     isShowCategoryItem({ category, item, indexItem }) {
       return (
-        !item.is_empty && (category.show_all || indexItem < this.visible_items)
+        !item.is_empty && (category.showAll || indexItem < this.visible_items)
       );
     },
     getTitleTranslation( category, language ) {

@@ -23,11 +23,12 @@ function getFiltersForSearch(items) {
 }
 
 
-function loadCategoryFilters(items, selected, dates, opened, parent) {
+function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
 
   selected = selected || {};
   dates = (_.isEmpty(dates)) ? { start_date: null, end_date: null } : dates;
   opened = opened || [];
+  showAlls = showAlls || [];
   let searchId = (_.isNil(parent)) ? null : parent.searchId;
 
   _.forEach(items, (item) => {
@@ -41,10 +42,10 @@ function loadCategoryFilters(items, selected, dates, opened, parent) {
       item.selected = dates.start_date || dates.end_date;
     }
     // Load children and retrospecively set some parent properties
-    let hasSelectedChildren = loadCategoryFilters(item.children, selected, dates, opened, item);
-    item.show_all = false;
+    let hasSelectedChildren = loadCategoryFilters(item.children, selected, dates, opened, showAlls, item);
     item.selected = item.selected || hasSelectedChildren;
     item.isOpen = opened.indexOf(item.id) >= 0 || item.selected || hasSelectedChildren;
+    item.showAll = showAlls.indexOf(item.id) >= 0;
 
   });
   return _.some(items, (item) => { return item.selected; });
@@ -159,8 +160,16 @@ export default {
     SETUP_FILTER_CATEGORIES(state, data) {
       let openFilters = _.filter(state.filter_categories.results, (item) => { return item.isOpen });
       let openFilterIds = _.map(openFilters, (item) => { return item.id});
+      let showAllFilters = _.filter(state.filter_categories.results, (item) => { return item.showAll });
+      let showAllFilterIds = _.map(showAllFilters, (item) => { return item.id});
       state.filter_categories.results = _.cloneDeep(state.filter_categories.defaults);
-      loadCategoryFilters(state.filter_categories.results, data.selected, data.dateRange, openFilterIds);
+      loadCategoryFilters(
+        state.filter_categories.results,
+        data.selected,
+        data.dateRange,
+        openFilterIds,
+        showAllFilterIds
+      );
       this.commit('SET_FILTER_CATEGORIES', state.filter_categories);
     },
     SET_FILTER_SELECTED(state, categoryId) {
