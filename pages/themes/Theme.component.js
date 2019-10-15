@@ -21,6 +21,7 @@ export default {
   mounted() {
 
     let themeId = this.$route.params.id;
+
     this.$store.dispatch('getFilterCategories').then(() => {
 
       this.$store.dispatch('getTheme', themeId).then(theme => {
@@ -28,7 +29,6 @@ export default {
         let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
         themeCategory.selected = true;
 
-        this.theme = theme;
         this.$store.dispatch('searchMaterials', {
           page_size: 2,
           search_text: [],
@@ -60,8 +60,7 @@ export default {
             items: []
           }
         ]
-      },
-      theme: null
+      }
     };
   },
   methods: {
