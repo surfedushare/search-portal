@@ -3,7 +3,6 @@ import _ from 'lodash';
 import Search from '~/components/FilterCategories/Search';
 import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';
-import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import BreadCrumbs from '~/components/BreadCrumbs';
@@ -15,7 +14,6 @@ export default {
     Search,
     PopularList,
     Materials,
-    Themes,
     Disciplines,
     Collections,
     BreadCrumbs
@@ -23,6 +21,7 @@ export default {
   mounted() {
 
     let themeId = this.$route.params.id;
+
     this.$store.dispatch('getFilterCategories').then(() => {
 
       this.$store.dispatch('getTheme', themeId).then(theme => {
@@ -30,7 +29,6 @@ export default {
         let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
         themeCategory.selected = true;
 
-        this.theme = theme;
         this.$store.dispatch('searchMaterials', {
           page_size: 2,
           search_text: [],
@@ -62,8 +60,7 @@ export default {
             items: []
           }
         ]
-      },
-      theme: null
+      }
     };
   },
   methods: {
