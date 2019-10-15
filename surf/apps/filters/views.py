@@ -70,7 +70,7 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
         return Response(serializer.data, status.HTTP_200_OK)
 
     def get_queryset(self):
-        return MpttFilterItem.objects.get_cached_trees()
+        return MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
 
     def get_counts(self, request, **kwargs):
         filters = []
