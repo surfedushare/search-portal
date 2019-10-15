@@ -258,3 +258,20 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'SurfToolbar',  # put selected toolbar config here
     }
 }
+
+if DEBUG:
+    # Activation
+    INSTALLED_APPS += [
+        'debug_toolbar'
+    ]
+    MIDDLEWARE = MIDDLEWARE[0:4] + ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE[4:]
+
+    # Configuration
+    # NB: INTERAL_IPS doesn't work well for Docker containers
+    INTERNAL_HOSTS = [
+        '127.0.0.1:8080',
+        'localhost:8080',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
+    }
