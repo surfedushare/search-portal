@@ -5,7 +5,7 @@ This module contains API view serializers for communities app.
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community
-from surf.apps.filters.models import FilterCategoryItem
+from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
 
@@ -107,5 +107,5 @@ class CommunityDisciplineSerializer(FilterCategoryItemSerializer):
         return 0
 
     class Meta:
-        model = FilterCategoryItem
-        fields = ('id', 'external_id', 'title', 'materials_count',)
+        model = MpttFilterItem
+        fields = ('id', 'external_id', 'name', 'materials_count',)
