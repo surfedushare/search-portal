@@ -22,6 +22,7 @@ class MaterialAdmin(admin.ModelAdmin):
     Provides admin options and functionality for Material model.
     """
 
+    list_display = ("external_id", "title",)
     actions = [fill_material_data]
     readonly_fields = (
         'external_id', 'themes', 'disciplines', 'material_url', 'title',
@@ -44,5 +45,5 @@ class CollectionAdmin(admin.ModelAdmin):
 
     list_display = ("title", "owner", "is_shared",)
     list_filter = ("owner", "is_shared",)
-    readonly_fields = ('title', 'owner', 'materials', 'is_shared',)
+    readonly_fields = ('title', 'owner', 'is_shared',)
     ordering = ("title",)

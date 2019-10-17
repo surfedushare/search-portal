@@ -4,7 +4,7 @@ FROM centos:7
 RUN yum install -y \
     wget \
     gcc make \
-    zlib-dev openssl-devel sqlite-devel bzip2-devel
+    libffi-devel zlib-dev openssl-devel sqlite-devel bzip2-devel
 
 # Install Python
 RUN yum install -y https://centos7.iuscommunity.org/ius-release.rpm

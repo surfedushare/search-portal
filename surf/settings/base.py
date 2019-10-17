@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 
     'surf',
     'surf.apps.users',
@@ -189,7 +190,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'static', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'users.User'
@@ -258,3 +259,20 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'SurfToolbar',  # put selected toolbar config here
     }
 }
+
+if DEBUG:
+    # Activation
+    INSTALLED_APPS += [
+        'debug_toolbar'
+    ]
+    MIDDLEWARE = MIDDLEWARE[0:4] + ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE[4:]
+
+    # Configuration
+    # NB: INTERAL_IPS doesn't work well for Docker containers
+    INTERNAL_HOSTS = [
+        '127.0.0.1:8080',
+        'localhost:8080',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
+    }
