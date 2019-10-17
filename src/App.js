@@ -58,8 +58,6 @@ export default {
     if (typeof window !== 'undefined') {
       window.$nuxt = this
     }
-    // Add $nuxt.error()
-    this.error = this.nuxt.error;
     this.$store.dispatch('getFilterCategories');
   },
 
@@ -74,19 +72,8 @@ export default {
     }
     window.document.onkeyup = keyUp;
   },
-  watch: {
-    'nuxt.err': 'errorChanged'
-  },
 
   methods: {
-
-    errorChanged () {
-      if (this.nuxt.err && this.$loading) {
-        if (this.$loading.fail) this.$loading.fail();
-        if (this.$loading.finish) this.$loading.finish()
-      }
-    },
-
 
     setLayout(layout) {
       if (!layout || !layouts['_' + layout]) {

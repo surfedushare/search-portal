@@ -2,7 +2,6 @@ import Vue from 'vue'
 import { createRouter } from './router.js'
 import NuxtChild from './components/nuxt-child.js'
 import NuxtLink from './components/nuxt-link.js'
-import NuxtError from '../layouts/error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
 import { setContext, getLocation, getRouteData } from './utils'
@@ -170,4 +169,4 @@ async function createApp (ssrContext) {
   }
 }
 
-export { createApp, NuxtError }
+export { createApp }
