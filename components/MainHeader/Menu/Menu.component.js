@@ -37,7 +37,7 @@ export default {
       if (!_.isNil(theme.title_translations) && !_.isEmpty(theme.title_translations)){
         return theme.title_translations[language];
       }
-      return theme.name
+      return theme.title
     },
   },
   watch: {
