@@ -96,7 +96,6 @@ export default {
     }
 
     &_search {
-      width: 996px;
       margin: auto;
     }
   }

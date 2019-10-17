@@ -350,9 +350,8 @@ export default {
       position: absolute;
       right: 26px;
       top: -57px;
-      width: 510px;
+      width: 50%;
       border-radius: 21px;
-      height: 298px;
     }
     &_ttl {
       padding: 0 0 49px;

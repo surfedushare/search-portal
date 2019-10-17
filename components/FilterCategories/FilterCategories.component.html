@@ -53,7 +53,7 @@
         </div>
         <ul  v-else-if="hasVisibleChildren(category)" v-show="category.isOpen" class="filter-categories__subitems">
           <li v-for="(item, indexItem) in category.children" class="filter-categories__subitem"
-              v-if="!item.is_hidden && (category.show_all || indexItem < visible_items)"
+              v-if="!item.is_hidden && (category.showAll || indexItem < visible_items)"
               :class="{'filter-categories__subitem--empty': item.is_empty}">
             <div>
               <input
@@ -75,8 +75,8 @@
                               :id="child.external_id"
                               :value="child.external_id"
                               :data-category-id="child.external_id"
-                              v-model="child.selected"
-                              @change="onChange"
+                              v-model="filtered_categories[index].children[indexItem].children[childIndex].selected"
+                              @change="onChange($event, item)"
                       >
                       <label>{{ getTitleTranslation(child, $i18n.locale) }}</label>
                   </li>
@@ -87,7 +87,7 @@
             <a
               href="/show-more/"
               @click.prevent="onToggleShowAll(category)"
-              v-if="category.show_all"
+              v-if="category.showAll"
             >
               {{ $t('Hide') }}
             </a>

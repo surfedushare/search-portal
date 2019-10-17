@@ -301,10 +301,9 @@ export default {
       position: absolute;
       right: 26px;
       top: -45px;
-      width: 510px;
-      height: 298px;
+      width: 50%;
       border-radius: 21px;
-      @media @mobile, @tablet {
+      @media @mobile {
         z-index: -1;
         right: -20px;
       }
@@ -314,10 +313,9 @@ export default {
     }
 
     &_search {
-      max-width: 996px;
       margin: auto;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         width: 100%;
         margin-bottom: 20px;
         background-color: #ffffff;

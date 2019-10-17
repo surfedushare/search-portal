@@ -23,6 +23,7 @@
   }
 
   &__center-header {
+    padding-bottom: 32px;
     @media @mobile {
       padding-left: 30px;
       padding-right: 30px;
@@ -39,7 +40,7 @@
     }
 
     h2 {
-      @media @mobile, @tablet {
+      @media @mobile {
         font-size: 26px;
       }
     }
@@ -47,11 +48,10 @@
       position: absolute;
       right: 26px;
       top: -51px;
-      width: 510px;
+      width: 50%;
       border-radius: 21px;
-      height: 298px;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         right: -20px;
         z-index: -1;
       }
@@ -83,7 +83,7 @@
     }
     &_search{
       margin: 0 66px;
-      @media @mobile, @tablet {
+      @media @mobile {
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);

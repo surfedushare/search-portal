@@ -105,11 +105,10 @@ export default {
       position: absolute;
       right: 26px;
       top: -51px;
-      width: 510px;
+      width: 50%;
       border-radius: 21px;
-      height: 298px;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         padding: 0;
         z-index: -1;
         right: -20px;
@@ -140,7 +139,7 @@ export default {
     }
     &_search {
       margin: 0 66px;
-      @media @mobile, @tablet {
+      @media @mobile {
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
@@ -209,7 +208,7 @@ export default {
       height: 109px;
       width: 119px;
 
-      @media @mobile, @tablet {
+      @media @mobile {
         right: 0;
       }
     }
@@ -221,7 +220,7 @@ export default {
       top: 22px;
       height: 33px;
       width: 35px;
-      @media @mobile, @tablet {
+      @media @mobile {
         right: 18px;
       }
     }

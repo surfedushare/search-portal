@@ -56,11 +56,10 @@ export default {
         position: absolute;
         right: 26px;
         top: -51px;
-        width: 510px;
+        width: 50%;
         border-radius: 21px;
-        height: 298px;
 
-        @media @mobile, @tablet {
+        @media @mobile {
           padding: 0;
           z-index: -1;
           right: -20px;

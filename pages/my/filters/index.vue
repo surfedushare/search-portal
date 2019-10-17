@@ -113,10 +113,9 @@ export default {
       position: absolute;
       right: 26px;
       top: -57px;
-      width: 510px;
+      width: 50%;
       border-radius: 21px;
-      height: 298px;
-      @media @mobile, @tablet {
+      @media @mobile {
         padding: 0;
         z-index: -1;
         right: -30px;
@@ -128,7 +127,7 @@ export default {
     &_ttl {
       padding: 0 0 49px;
       position: relative;
-      @media @mobile, @tablet {
+      @media @mobile {
         font-size: 26px;
       }
       &:before {
@@ -152,7 +151,7 @@ export default {
     }
     &_search {
       margin: 0 65px;
-      @media @mobile, @tablet {
+      @media @mobile {
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
