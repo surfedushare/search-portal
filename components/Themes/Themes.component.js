@@ -12,6 +12,9 @@ export default {
       if (!_.isNil(theme.title_translations) && !_.isEmpty(theme.title_translations)){
         return theme.title_translations[language];
       }
+      if (!_.isNil(theme.name)){
+        return theme.name
+      }
       return theme.title
     },
     getDescriptionTranslation( theme, language ) {
