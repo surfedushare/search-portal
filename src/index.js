@@ -1,4 +1,7 @@
 import Vue from 'vue'
+import injector from 'vue-inject';
+Vue.use(injector);
+
 import { createRouter } from './router.js'
 import NuxtChild from './components/nuxt-child.js'
 import NuxtLink from './components/nuxt-link.js'
@@ -160,7 +163,6 @@ async function createApp (ssrContext) {
   if (typeof nuxt_plugin_SocialSharing_3ab090d9 === 'function') await nuxt_plugin_SocialSharing_3ab090d9(app.context, inject);
   if (typeof nuxt_plugin_VueMasonry_21187416 === 'function') await nuxt_plugin_VueMasonry_21187416(app.context, inject);
   if (typeof nuxt_plugin_VueClipboard_7da67946 === 'function') await nuxt_plugin_VueClipboard_7da67946(app.context, inject);
-  if (typeof nuxt_plugin_veeValidate_1cb8e4d4 === 'function') await nuxt_plugin_veeValidate_1cb8e4d4(app.context, inject)
 
   return {
     app,
