@@ -49,14 +49,25 @@ class Community(UUIDModel):
     Implementation of Community model. Communities are related to
     SURFconext Teams.
     """
-
-    surf_team = django_models.OneToOneField(SurfTeam,
-                                            on_delete=django_models.CASCADE,
-                                            related_name="community",
-                                            null=True)
-
     name = django_models.CharField(max_length=255, blank=True)
     description = django_models.TextField(blank=True)
+    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
+                                                     null=True, blank=False)
+    description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE,
+                                                           null=True, blank=False)
+
+    # list of community members
+    members = django_models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Members",
+        related_name='communities',
+        blank=True)
+
+    new_members = django_models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through='Team',
+        blank=True,
+    )
 
     logo = django_models.ImageField(
         upload_to='communities',
@@ -87,28 +98,30 @@ class Community(UUIDModel):
                                           verbose_name="SurfConext group id",
                                           null=True, blank=True)
 
-    # list of community administrators
-    admins = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Administrators",
-        related_name='admin_communities',
-        blank=True)
-
-    # list of community members
-    members = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Members",
-        related_name='communities',
-        blank=True)
-
-    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
-                                                     null=True, blank=False)
-    description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE,
-                                                           null=True, blank=False)
-
     class Meta:
         ordering = ['name']
         verbose_name_plural = 'Communities'
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        # Check whether the entered external_id is a valid URN.
+        # regex taken from the O'Reilly Regular Expressions Cookbook, 2nd Edition
+        # https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s06.html
+        regex = r"^urn:[a-z0-9][a-z0-9-]{0,31}:[a-z0-9()+,\-.:=@;$_!*'%/?#]+$"
+        if not re.match(regex, self.external_id):
+            raise ValidationError("SURFconext group id isn't a valid URN. Check "
+                                  "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
+
+
+class Team(django_models.Model):
+    community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE)
+    user = django_models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=django_models.CASCADE)
+    team_id = django_models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name = 'Member'
+
+    def clean(self):
+        self.team_id = self.community.external_id
