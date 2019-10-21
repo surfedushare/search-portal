@@ -5,6 +5,7 @@ This module contains API view serializers for communities app.
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community
+from surf.apps.communities.models import PublishStatus
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
@@ -33,6 +34,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
     is_member = serializers.SerializerMethodField()
     title_translations = LocaleSerializer()
     description_translations = LocaleHTMLSerializer()
+    publish_status = serializers.SerializerMethodField()
 
     @staticmethod
     def get_members_count(obj):
@@ -58,12 +60,16 @@ class CommunitySerializer(CommunityUpdateSerializer):
             return obj.new_members.filter(id=request.user.id).exists()
         return False
 
+    @staticmethod
+    def get_publish_status(obj):
+        return str(PublishStatus.get(obj.publish_status))
+
     class Meta:
         model = Community
         fields = ('id', 'external_id', 'name', 'description', 'website_url',
                   'logo', 'featured_image', 'members_count',
                   'collections_count', 'materials_count',
-                  'is_member', 'title_translations', 'description_translations',)
+                  'is_member', 'title_translations', 'description_translations', 'publish_status',)
 
 
 class CommunityDisciplineSerializer(FilterCategoryItemSerializer):
