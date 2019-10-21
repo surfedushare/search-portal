@@ -31,7 +31,7 @@ import {
   sanitizeComponent,
   resolveRouteComponents,
   getMatchedComponents,
-  getMatchedComponentsInstances,
+  //getMatchedComponentsInstances,
   flatMapComponents,
   setContext,
   middlewareSeries,
@@ -39,7 +39,7 @@ import {
   getLocation,
   compile,
   getQueryDiff,
-  globalHandleError
+  //globalHandleError
 } from './utils'
 import { parseSearchMaterialsQuery } from '../components/_helpers';
 
@@ -250,14 +250,14 @@ async function render (to, from, next) {
   if (app.context._errored) return next();
 
   // Set layout
-  let layout = (Components.length) ? Components[0].options.layout : 'default';
-  if (typeof layout === 'function') {
-    layout = layout(app.context)
-  }
-  layout = await this.loadLayout(layout);
+  // let layout = (Components.length) ? Components[0].options.layout : 'default';
+  // if (typeof layout === 'function') {
+  //   layout = layout(app.context)
+  // }
+  // layout = await this.loadLayout(layout);
 
   // Call middleware for layout
-  await callMiddleware.call(this, Components, app.context, layout);
+  //await callMiddleware.call(this, Components, app.context, layout);
   if (nextCalled) return;
   if (app.context._errored) return next();
 
@@ -382,49 +382,49 @@ function normalizeComponents (to, ___) {
   })
 }
 
-function showNextPage(to) {
-
-  // Set layout
-  let layout = 'default';
-
-  if (typeof layout === 'function') {
-    layout = layout(app.context)
-  }
-  this.setLayout(layout)
-}
+// function showNextPage(to) {
+//
+//   // Set layout
+//   let layout = 'default';
+//
+//   if (typeof layout === 'function') {
+//     layout = layout(app.context)
+//   }
+//   this.setLayout(layout)
+// }
 
 // When navigating on a different route but the same component is used, Vue.js
 // Will not update the instance data, so we have to update $data ourselves
-function fixPrepatch(to, ___) {
-  if (this._pathChanged === false && this._queryChanged === false) return;
-
-  Vue.nextTick(() => {
-    const matches = [];
-    const instances = getMatchedComponentsInstances(to, matches);
-    const Components = getMatchedComponents(to, matches);
-
-    instances.forEach((instance, i) => {
-      if (!instance) return;
-      // if (
-      //   !this._queryChanged &&
-      //   to.matched[matches[i]].path.indexOf(':') === -1 &&
-      //   to.matched[matches[i]].path.indexOf('*') === -1
-      // ) return // If not a dynamic route, skip
-      if (
-        instance.constructor._dataRefresh &&
-        Components[i] === instance.constructor &&
-        typeof instance.constructor.options.data === 'function'
-      ) {
-        const newData = instance.constructor.options.data.call(instance);
-        for (let key in newData) {
-          Vue.set(instance.$data, key, newData[key])
-        }
-      }
-    });
-    showNextPage.call(this, to)
-
-  })
-}
+// function fixPrepatch(to, ___) {
+//   if (this._pathChanged === false && this._queryChanged === false) return;
+//
+//   Vue.nextTick(() => {
+//     const matches = [];
+//     const instances = getMatchedComponentsInstances(to, matches);
+//     const Components = getMatchedComponents(to, matches);
+//
+//     instances.forEach((instance, i) => {
+//       if (!instance) return;
+//       // if (
+//       //   !this._queryChanged &&
+//       //   to.matched[matches[i]].path.indexOf(':') === -1 &&
+//       //   to.matched[matches[i]].path.indexOf('*') === -1
+//       // ) return // If not a dynamic route, skip
+//       if (
+//         instance.constructor._dataRefresh &&
+//         Components[i] === instance.constructor &&
+//         typeof instance.constructor.options.data === 'function'
+//       ) {
+//         const newData = instance.constructor.options.data.call(instance);
+//         for (let key in newData) {
+//           Vue.set(instance.$data, key, newData[key])
+//         }
+//       }
+//     });
+//     showNextPage.call(this, to)
+//
+//   })
+// }
 
 // function nuxtReady (_app) {
 //   window._nuxtReadyCbs.forEach((cb) => {
@@ -499,7 +499,7 @@ async function mountApp(__app) {
     _app.$store.commit('SETUP_FILTER_CATEGORIES', {selected, dateRange});
   });
   router.afterEach(normalizeComponents);
-  router.afterEach(fixPrepatch.bind(_app));
+  //router.afterEach(fixPrepatch.bind(_app));
 
   // If page already is server rendered
   if (NUXT.serverRendered) {
@@ -512,7 +512,7 @@ async function mountApp(__app) {
     // If not redirected
     if (!path) {
       normalizeComponents(router.currentRoute, router.currentRoute);
-      showNextPage.call(_app, router.currentRoute);
+      //showNextPage.call(_app, router.currentRoute);
       // Dont call fixPrepatch.call(_app, router.currentRoute, router.currentRoute) since it's first render
       mount();
       return

@@ -3,7 +3,7 @@ import { createRouter } from './router.js'
 import NuxtChild from './components/nuxt-child.js'
 import NuxtLink from './components/nuxt-link.js'
 import Nuxt from './components/nuxt.js'
-import App from './App.js'
+import App from './App.vue'
 import { setContext, getLocation, getRouteData } from './utils'
 import { createStore } from './store.js'
 
