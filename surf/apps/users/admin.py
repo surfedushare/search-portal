@@ -24,6 +24,3 @@ class SurfConextAuthAdmin(admin.ModelAdmin):
     Provides admin options and functionality for SurfConextAuth model.
     """
     pass
-
-
-admin.site.unregister(Token)
