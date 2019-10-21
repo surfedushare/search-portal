@@ -140,4 +140,6 @@ class Team(django_models.Model):
         verbose_name = 'Member'
 
     def clean(self):
+        if not self.community.external_id:
+            raise ValidationError("Community SURFconext group id isn't set, can't add users to this community.")
         self.team_id = self.community.external_id
