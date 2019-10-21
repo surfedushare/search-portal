@@ -22,7 +22,7 @@ services:
     volumes:
       - /volumes/surf/media:/src/media
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     links:
       - postgres:database
     depends_on:
