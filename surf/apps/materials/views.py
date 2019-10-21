@@ -342,8 +342,7 @@ class CollectionViewSet(ModelViewSet):
     def get_queryset(self):
         qs = Collection.objects.annotate(community_cnt=Count('communities'))
 
-        # shared collections
-        filters = Q(is_shared=True)
+        filters = Q()
 
         # add own collections
         user = self.request.user
