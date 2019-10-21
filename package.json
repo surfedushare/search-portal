@@ -15,7 +15,6 @@
     "js-cookie": "2.2.1",
     "numeral": "2.0.6",
     "uuid-validate": "0.0.3",
-    "vee-validate": "2.1.5",
     "vue": "2.6.10",
     "vue-click-outside": "1.0.7",
     "vue-clipboard2": "0.2.1",
@@ -44,7 +43,8 @@
     "npm-check": "5.9.0",
     "sass-loader": "7.1.0",
     "vue-template-compiler": "2.6.10",
-    "webpack": "4.28.4"
+    "webpack": "4.28.4",
+    "webpack-bundle-analyzer": "3.6.0"
   },
   "eslintConfig": {
     "root": true,

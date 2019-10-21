@@ -14,7 +14,6 @@ export default {
   },
   data() {
     return {
-      max_size: 1024, // 1 mb
       image: null,
       imageText: null,
       imageLink: null,

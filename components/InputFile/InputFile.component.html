@@ -15,7 +15,6 @@
     @change="onFileChange"
     class="form__file_input"
     name="file"
-    v-validate="`size:${max_size}`"
     :class="{'is-danger': errors.has('file') }"
   >
   <span class="form__file_text">
