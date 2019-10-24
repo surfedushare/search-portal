@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 export default {
   name: 'communities',
-  props: [],
+  props: ['userCommunities'],
   components: {
     Search,
     BreadCrumbs
@@ -38,6 +38,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['communities'])
+    communities() {
+      if(this.userCommunities) {
+        return this.$store.getters.getUserCommunities(this.user);
+      } else {
+        return this.$store.getters.communities.results
+      }
+    },
+    ...mapGetters(['user'])
   }
 };

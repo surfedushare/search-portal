@@ -16,7 +16,7 @@
   <div class="center_block">
     <ul class="communities__items" v-if="communities">
       <li
-        v-for="community in communities.results"
+        v-for="community in communities"
         class="communities__item tile tile--items-in-line-3 materials__item--items-in-line-3"
       >
         <div class="communities__item_wrapper tile__wrapper">
@@ -30,14 +30,14 @@
             {{ $t('See') }}
           </div>
         </div>
-        <nuxt-link
-          :to="localePath({name: 'communities-community', params: {community: community.id}})"
+        <router-link
+          :to="localePath({name: (userCommunities) ? 'my-community' : 'communities-community', params: {community: community.id}})"
           class="communities__item_link_wrapper"
           :key="`${community.id}`"
           @click.native="setCommunity(community)"
         >
           {{ $t('See') }}
-        </nuxt-link>
+        </router-link>
       </li>
     </ul>
   </div>

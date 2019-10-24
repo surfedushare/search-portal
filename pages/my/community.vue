@@ -163,8 +163,8 @@ export default {
       isShow: false,
       image_logo: '',
       formData: {
-        name: false,
-        description: false,
+        name: '',
+        description: '',
         website_url: '',
         logo: false,
         featured_image: false
@@ -177,44 +177,43 @@ export default {
       'community_collections_loading',
       'communities',
       'isAuthenticated',
-      'user_loading'
+      'user_loading',
+      'user',
+      'getUserCommunities'
     ])
   },
-  watch: {
-    isAuthenticated(isAuthenticated) {
-      if (isAuthenticated) {
-        this.getCommunities();
-      }
-    }
-  },
+
   mounted() {
-    if (this.isAuthenticated) {
-      this.getCommunities();
-    } else if (!this.user_loading) {
+    if(!this.isAuthenticated && !this.user_loading) {
       this.$router.push('/');
     }
+    this.setInitialFormData();
   },
   methods: {
-    getCommunities() {
-      this.$store
-        .dispatch('getCommunities', { params: { is_admin: true } })
-        .then(item => {
-          const {
-            id,
-            name,
-            description,
-            website_url,
-            logo,
-            featured_image
-          } = item.results[0];
-          this.formData.id = id;
-          this.formData.name = name;
-          this.formData.description = description;
-          this.formData.website_url = website_url;
-          this.formData.logo = logo;
-          this.formData.featured_image = featured_image;
-          this.$store.dispatch('getCommunityCollections', id);
-        });
+    setInitialFormData() {
+
+      if(!this.user) {
+        this.formData = {
+          name: '',
+          description: '',
+          website_url: '',
+          logo: false,
+          featured_image: false
+        }
+      }
+
+      let communities = this.getUserCommunities(this.user);
+      let community = _.find(communities, (community) => {
+        return community.id === this.$route.params.id;
+      });
+
+      this.formData.id = community.id;
+      this.formData.name = community.name;
+      this.formData.description = community.description;
+      this.formData.website_url = community.website_url;
+      this.formData.logo = community.logo;
+      this.formData.featured_image = community.featured_image;
+
     },
     /**
      * Load next collections

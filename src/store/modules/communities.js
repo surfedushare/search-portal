@@ -1,4 +1,5 @@
-import { validateID, validateIDString, validateParams } from './_helpers';
+import _ from 'lodash';
+import { validateID, validateParams } from './_helpers';
 
 export default {
   state: {
@@ -12,6 +13,16 @@ export default {
   getters: {
     communities(state) {
       return state.communities;
+    },
+    getUserCommunities(state) {
+      return (user) => {
+        if(!state.communities) {
+          return [];
+        }
+        return _.filter(state.communities.results, (community) => {
+          return user.communities.indexOf(community.id) >= 0 && community.publish_status !== 'DRAFT'
+        })
+      }
     },
     community_info(state) {
       return state.community_info;
