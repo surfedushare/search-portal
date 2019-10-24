@@ -8,7 +8,7 @@ import NuxtLink from './components/nuxt-link.js'
 import NuxtError from '../layouts/error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
-import { setContext, getLocation, getRouteData } from './utils'
+import { setContext, getLocation } from './utils'
 import { createStore } from './store.js'
 
 /* Plugins */
@@ -155,7 +155,6 @@ async function createApp (ssrContext) {
   if (typeof nuxt_plugin_pluginrouting_3c9d9e30 === 'function') await nuxt_plugin_pluginrouting_3c9d9e30(app.context, inject);
   if (typeof nuxt_plugin_pluginmain_7147a387 === 'function') await nuxt_plugin_pluginmain_7147a387(app.context, inject);
   if (typeof nuxt_plugin_axios_494a31c4 === 'function') await nuxt_plugin_axios_494a31c4(app.context, inject);
-  if (typeof nuxt_plugin_plugin_fb59caba === 'function') await nuxt_plugin_plugin_fb59caba(app.context, inject);
   if (typeof nuxt_plugin_auth_6a7e4e1e === 'function') await nuxt_plugin_auth_6a7e4e1e(app.context, inject);
   if (typeof nuxt_plugin_vSelect_475ab648 === 'function') await nuxt_plugin_vSelect_475ab648(app.context, inject);
   if (typeof nuxt_plugin_infiniteScroll_049132f7 === 'function') await nuxt_plugin_infiniteScroll_049132f7(app.context, inject);

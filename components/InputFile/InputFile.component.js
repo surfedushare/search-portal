@@ -49,7 +49,7 @@ export default {
      * Remove image
      * @param e - event
      */
-    removeImage: function(e) {
+    removeImage: function() {
       this.image = '';
       this.imageText = '';
       this.imageLink = '';
