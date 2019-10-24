@@ -334,7 +334,7 @@ class CollectionViewSet(ModelViewSet):
     and `delete` methods for its materials.
     """
 
-    queryset = Collection.objects.all()
+    queryset = Collection.objects.filter(deleted_at=None)
     serializer_class = CollectionSerializer
     filter_class = CollectionFilter
     permission_classes = []
