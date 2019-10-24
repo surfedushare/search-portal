@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { validateID } from './../store/modules/_helpers';
+
 
 export default function({ $axios, store }) {
   $axios.interceptors.request.use(
@@ -23,8 +23,10 @@ export default function({ $axios, store }) {
   $axios.onError(error => {
     const code = parseInt(error.response && error.response.status);
     if (code === 401) {
-      store.dispatch('logout');
-      location.reload();
+      store.dispatch('logout').then(() => {
+        location.reload();
+      });
+
     }
   });
 }
