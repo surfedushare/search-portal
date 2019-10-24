@@ -126,7 +126,7 @@
       </div>
       <nuxt-link
         class="materials__item_link"
-        :to="localePath({name: 'materials-id', params: {id: material.external_id_base64}})"
+        :to="localePath({name: 'materials-id', params: {id: material.external_id}})"
         @click.native="setMaterial(material)"
       >
       </nuxt-link>
