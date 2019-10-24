@@ -57,7 +57,6 @@ class CommunityAdmin(admin.ModelAdmin):
     """
     list_display = ("name", "publish_status",)
     list_filter = ("publish_status",)
-    readonly_fields = ("collections",)
     inlines = [TeamInline]
     form = CommunityForm
 
