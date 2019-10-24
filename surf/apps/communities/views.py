@@ -45,7 +45,7 @@ class CommunityViewSet(ListModelMixin,
     View class that provides `GET` and `UPDATE` methods for Community.
     """
 
-    queryset = Community.objects.all()
+    queryset = Community.objects.filter(deleted_at=None)
     serializer_class = CommunitySerializer
     filter_class = CommunityFilter
     permission_classes = []
