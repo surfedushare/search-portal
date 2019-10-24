@@ -32,10 +32,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_is_admin(obj):
-        if not obj.admin_teams:
-            return False
-
-        return obj.admin_teams.exists()
+        return Community.objects.filter(team__user=obj).exists()
 
     class Meta:
         model = User
