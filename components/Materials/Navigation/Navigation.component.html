@@ -6,7 +6,7 @@
     <nuxt-link
       class="material__list_prev_link"
       v-if="links.prev"
-      :to="localePath({name: 'materials-id', params: {id: links.prev.external_id_base64}})"
+      :to="localePath({name: 'materials-id', params: {id: links.prev.external_id}})"
       @click.native="setMaterial(links.prev)"
     >
       {{ $t('Previous') }}
@@ -23,7 +23,7 @@
     <nuxt-link
       class="material__list_next_link"
       v-if="links.next"
-      :to="localePath({name: 'materials-id', params: {id: links.next.external_id_base64}})"
+      :to="localePath({name: 'materials-id', params: {id: links.next.external_id}})"
       @click.native="setMaterial(links.next)"
     >
       {{ $t('Next') }}
