@@ -41,17 +41,13 @@ export default {
   },
   actions: {
     async getMaterial({ commit }, id) {
-      if (validateID(id)) {
-        commit('SET_MATERIAL_LOADING', true);
-        const material = await this.$axios.$get(`materials/${id}/`);
-        commit('SET_MATERIAL', material);
-        commit('SET_MATERIAL_LOADING', false);
-      } else {
-        console.error('Validate error: ', id);
-      }
+      commit('SET_MATERIAL_LOADING', true);
+      const material = await this.$axios.$get(`materials/${id}/`);
+      commit('SET_MATERIAL', material);
+      commit('SET_MATERIAL_LOADING', false);
     },
     async setMaterialSocial({ commit }, { id, params }) {
-      if (validateID(id) && validateParams(params)) {
+      if (validateParams(params)) {
         // commit('SET_MATERIAL', null);
         commit('SET_MATERIAL_LOADING', true);
         const material = await this.$axios.$get(`materials/${id}/`, { params });
