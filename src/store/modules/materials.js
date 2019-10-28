@@ -5,6 +5,11 @@ import {
   validateParams,
   validateIDString
 } from './_helpers';
+import injector from 'vue-inject';
+
+
+const $log = injector.get("$log");
+
 
 export default {
   state: {
@@ -55,7 +60,7 @@ export default {
         commit('SET_MATERIAL_LOADING', false);
         return material;
       } else {
-        console.error('Validate error: ', { id, params });
+        $log.error('Validate error: ', { id, params });
       }
     },
     async getMaterialShare({ commit }, params) {
@@ -64,7 +69,7 @@ export default {
         const material = await this.$axios.$get(`materials/`, { params });
         commit('SET_MATERIAL', material);
       } else {
-        console.error('Validate error: ', params);
+        $log.error('Validate error: ', params);
       }
     },
     async getMaterials({ commit }) {
@@ -76,7 +81,7 @@ export default {
         const communities = await this.$axios.$get('communities/', { params });
         commit('SET_MATERIAL_COMMUNITIES', communities);
       } else {
-        console.error('Validate error: ', { params });
+        $log.error('Validate error: ', { params });
       }
     },
     async setMaterialRating({ commit }, rating) {
@@ -90,7 +95,7 @@ export default {
           }
         });
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async setApplaudMaterial({ commit }, { external_id }) {
@@ -101,7 +106,7 @@ export default {
           }
         });
       } else {
-        console.error('Validate error: ', external_id);
+        $log.error('Validate error: ', external_id);
       }
     },
     async getApplaudMaterial({ commit }, { external_id }) {
@@ -112,7 +117,7 @@ export default {
           }
         });
       } else {
-        console.error('Validate error: ', external_id);
+        $log.error('Validate error: ', external_id);
       }
     },
     async searchMaterials({ commit }, search) {
@@ -126,7 +131,7 @@ export default {
         commit('SET_MATERIALS_LOADING', false);
         return materials;
       } else {
-        console.error('Validate error: ', search);
+        $log.error('Validate error: ', search);
       }
     },
     async searchMaterialsInCommunity({ commit }, { id, search }) {
@@ -144,7 +149,7 @@ export default {
         commit('SET_MATERIALS_LOADING', false);
         return materials;
       } else {
-        console.error('Validate error: ', { id, search });
+        $log.error('Validate error: ', { id, search });
       }
     },
     async searchNextPageMaterials({ commit }, search) {
@@ -154,7 +159,7 @@ export default {
         commit('SET_NEXT_PAGE_MATERIALS', materials);
         commit('SET_MATERIALS_LOADING', false);
       } else {
-        console.error('Validate error: ', search);
+        $log.error('Validate error: ', search);
       }
     },
     async searchNextPageMaterialsCommunity({ commit }, { id, search }) {
@@ -167,7 +172,7 @@ export default {
         commit('SET_NEXT_PAGE_MATERIALS', materials);
         commit('SET_MATERIALS_LOADING', false);
       } else {
-        console.error('Validate error: ', { id, search });
+        $log.error('Validate error: ', { id, search });
       }
     },
     async searchMaterialsKeywords({ commit }, { params }) {

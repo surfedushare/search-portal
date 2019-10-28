@@ -52,7 +52,7 @@ export default {
         commit('SET_COMMUNITIES', communities);
         return communities;
       } else {
-        console.error('Validate error: ', { params });
+        $log.error('Validate error: ', { params });
       }
     },
     async putCommunities({ commit }, { id, data = {} } = {}) {
