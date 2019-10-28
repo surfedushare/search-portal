@@ -191,6 +191,7 @@ export default {
     this.$store.dispatch('getCommunities').then(() => {
       this.setInitialFormData();
     });
+    this.$store.dispatch('getCommunityCollections', this.$route.params.community);
 
   },
   methods: {
