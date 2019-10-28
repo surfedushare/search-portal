@@ -189,7 +189,7 @@ export default {
   mutations: {
     SET_MATERIALS(state, payload) {
       const records = payload.records || payload;
-      payload.records.forEach((record) => {
+      records.forEach((record) => {
         record.date = formatDate(record.publish_datetime);
         let elem = document.createElement('textarea');
         elem.innerHTML = record.author;
