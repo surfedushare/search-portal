@@ -19,13 +19,24 @@ export default {
     communities(state) {
       return state.communities;
     },
+    getPublicCommunities(state) {
+      return (user) => {
+        if(!state.communities) {
+          return [];
+        }
+        return _.filter(state.communities.results, (community) => {
+          return community.publish_status === 'PUBLISHED' ||
+            user && user.communities.indexOf(community.id) >= 0 && community.publish_status !== 'DRAFT'
+        })
+      }
+    },
     getUserCommunities(state) {
       return (user) => {
         if(!state.communities) {
           return [];
         }
         return _.filter(state.communities.results, (community) => {
-          return user.communities.indexOf(community.id) >= 0 && community.publish_status !== 'DRAFT'
+          return user.communities.indexOf(community.id) >= 0;
         })
       }
     },

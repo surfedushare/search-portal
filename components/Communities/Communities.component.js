@@ -42,7 +42,7 @@ export default {
       if(this.userCommunities) {
         return this.$store.getters.getUserCommunities(this.user);
       } else {
-        return this.$store.getters.communities.results
+        return this.$store.getters.getPublicCommunities(this.user);
       }
     },
     ...mapGetters(['user'])
