@@ -15,8 +15,6 @@
     @change="onFileChange"
     class="form__file_input"
     name="file"
-    v-validate="`size:${max_size}`"
-    :class="{'is-danger': errors.has('file') }"
   >
   <span class="form__file_text">
     {{ imagePathTxt ? imagePathTxt : $t('File-upload') }}
@@ -35,5 +33,4 @@
       {{$t('upload')}}
     </a>
   </div>
-  <div v-if="errors.has('file')" class="is-danger">{{ errors.first('file') }}</div>
 </div>

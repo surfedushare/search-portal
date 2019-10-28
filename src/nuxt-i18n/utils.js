@@ -5,6 +5,10 @@
  * @return {Promise}
  */
 import axios from 'axios';
+import injector from 'vue-inject';
+
+
+const $log = injector.get('$log');
 
 
 export async function loadLanguageAsync (i18n, locale) {
@@ -26,11 +30,11 @@ export async function loadLanguageAsync (i18n, locale) {
         i18n.loadedLanguages.push(locale);
         return messages;
       } catch (error) {
-        console.error(error)
+        $log.error(error)
       }
 
     } else {
-      console.warn('[nuxt-i18n] Could not find lang file for locale ' + locale)
+      $log.warn('[nuxt-i18n] Could not find lang file for locale ' + locale)
     }
 
   }
