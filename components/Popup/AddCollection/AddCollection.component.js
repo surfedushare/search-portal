@@ -1,7 +1,7 @@
 import Popup from '~/components/Popup';
 export default {
   name: 'add-collection',
-  props: ['is-show', 'close', 'is-shared', 'submit-method'],
+  props: ['is-show', 'close', 'submit-method'],
   components: {
     Popup
   },
@@ -11,8 +11,7 @@ export default {
       saved: false,
       submitting: false,
       formData: {
-        title: null,
-        is_shared: this.isShared || false
+        title: null
       }
     };
   },

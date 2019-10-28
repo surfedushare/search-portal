@@ -129,7 +129,6 @@
           v-if="isShow"
           :close="close"
           :is-show="isShow"
-          :is-shared="true"
           submit-method="postCommunityCollection"
           @submitted="saveCollection"
         />
