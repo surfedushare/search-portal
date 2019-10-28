@@ -186,8 +186,12 @@ export default {
   mounted() {
     if(!this.isAuthenticated && !this.user_loading) {
       this.$router.push('/');
+      return;
     }
-    this.setInitialFormData();
+    this.$store.dispatch('getCommunities').then(() => {
+      this.setInitialFormData();
+    });
+
   },
   methods: {
     setInitialFormData() {
@@ -204,7 +208,7 @@ export default {
 
       let communities = this.getUserCommunities(this.user);
       let community = _.find(communities, (community) => {
-        return community.id === this.$route.params.id;
+        return community.id === this.$route.params.community;
       });
 
       this.formData.id = community.id;
