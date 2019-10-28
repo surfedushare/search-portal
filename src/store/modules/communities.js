@@ -1,5 +1,10 @@
 import _ from 'lodash';
+import injector from 'vue-inject';
 import { validateID, validateParams } from './_helpers';
+
+
+const $log = injector.get('$log');
+
 
 export default {
   state: {
@@ -56,7 +61,7 @@ export default {
         commit('SET_COMMUNITIES', communities);
         return communities;
       } else {
-        console.error('Validate error: ', { id, data });
+        $log.error('Validate error: ', { id, data });
       }
     },
     async getCommunity({ commit }, id) {
@@ -64,7 +69,7 @@ export default {
         const community_info = await this.$axios.$get(`communities/${id}/`);
         commit('SET_COMMUNITY', community_info);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityThemes({ commit }, id) {
@@ -74,7 +79,7 @@ export default {
         );
         commit('SET_COMMUNITY_THEMES', community_themes);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityDisciplines({ commit }, id) {
@@ -84,7 +89,7 @@ export default {
         );
         commit('SET_COMMUNITY_DISCIPLINES', community_disciplines);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityCollections({ commit }, id) {
@@ -96,7 +101,7 @@ export default {
         commit('SET_COMMUNITY_COLLECTIONS', community_collections);
         commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityCollectionsNextPage({ commit, state }) {
@@ -114,7 +119,7 @@ export default {
         commit('ADD_COMMUNITY_COLLECTION', collection);
         return collection;
       } else {
-        console.error('Validate error: ', data);
+        $log.error('Validate error: ', data);
       }
     },
     async setCommunityCollection({ commit }, { id, data }) {
@@ -127,7 +132,7 @@ export default {
         commit('EXTEND_COMMUNITY_COLLECTION', community_collections);
         return community_collections;
       } else {
-        console.error('Validate error: ', { id, data });
+        $log.error('Validate error: ', { id, data });
       }
     }
   },
