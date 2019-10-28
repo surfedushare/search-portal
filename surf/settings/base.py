@@ -24,6 +24,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # list of allowed endpoints to redirect
 ALLOWED_REDIRECT_ENDPOINTS = []
 
