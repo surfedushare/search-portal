@@ -6,9 +6,6 @@ export default {
   components: {
     Popup
   },
-  mounted() {
-    this.$store.dispatch('getMyCollections');
-  },
   data() {
     return {
       collection: null,
