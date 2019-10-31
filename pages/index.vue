@@ -46,7 +46,7 @@
           </template>
         </PopularList>
       </div>
-      <div class="main__materials">
+      <div class="main__materials" v-show=false>
         <div class="center_block">
           <h2 class="main__materials_title">{{ $t('Featured-open-learning-material') }}</h2>
           <Materials :materials="materials" />
