@@ -170,12 +170,12 @@ class MaterialShortSerializer(serializers.ModelSerializer):
 
 class CollectionShortSerializer(serializers.ModelSerializer):
     """
-    Collection instance serializer with id only
+    Minimal collection instance serializer
     """
 
     class Meta:
         model = Collection
-        fields = ('id',)
+        fields = ('id', 'title')
 
 
 class CollectionSerializer(CollectionShortSerializer):
