@@ -1,6 +1,6 @@
 @import url('../../../assets/styles/variables');
 .community {
-  padding: 96px 0 131px;
+  padding: 96px 0 5px;
   &:before {
     content: '';
     left: 0;
@@ -22,11 +22,9 @@
     position: relative;
 
     @media @desktop {
-      margin: 0 0 205px;
+      margin: 0 0 75px;
     }
     &_wrapper{
-      display: flex;
-      justify-content: flex-start;
       padding-top: 40px;
       position: relative;
       .bread-crumbs{
@@ -40,15 +38,13 @@
         right: -36px;
         left: -36px;
         top: 0;
-        bottom: -70px;
+        bottom: -30px;
         border-radius: 20px;
         z-index: -1;
       }
     }
     &_logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      float: left;
       width: 230px;
       height: 136px;
       background: rgba(255, 255, 255, 0.5);
@@ -60,14 +56,18 @@
       }
     }
     &_title{
-      display: inline-block;
       vertical-align: top;
+      float: right;
       width: calc(100% - 240px);
-      padding: 32px 0 0 32px;
+      padding: 10px 0 0 32px;
       @media @mobile {
         width: 100%;
         padding: initial;
       }
+    }
+    &_description{
+      clear: both;
+      padding: 5px 0 10px 0;
     }
     &_bg{
       position: absolute;
@@ -177,7 +177,6 @@
     }
   }
   &__themas_and_disciplines{
-    padding-top: 21px;
     width: calc(50% - 115px);
     @media @mobile {
       width: 100%;
