@@ -318,7 +318,8 @@ export default {
         id: this.formData.id,
         data: [
           {
-            id: collection.id
+            id: collection.id,
+            title: collection.title
           }
         ]
       });
