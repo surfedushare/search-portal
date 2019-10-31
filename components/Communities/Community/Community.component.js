@@ -6,12 +6,14 @@ import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
+import Error from '~/components/error';
 import _ from 'lodash';
 
 export default {
   name: 'community',
   props: [],
   components: {
+    Error,
     Search,
     BreadCrumbs,
     Themes,
@@ -22,7 +24,9 @@ export default {
   },
   mounted() {
     const { community } = this.$route.params;
-    this.$store.dispatch('getCommunity', community);
+    this.$store.dispatch('getCommunity', community).finally(() => {
+      this.isLoading = false;
+    });
     this.$store.dispatch('getCommunityThemes', community);
     this.$store.dispatch('getCommunityDisciplines', community);
     this.$store.dispatch('getCommunityCollections', community);
@@ -33,6 +37,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       isSearch: false,
       search: false
     };
@@ -120,13 +125,17 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'community_info',
       'community_disciplines',
       'community_themes',
       'community_collections',
       'community_collections_loading',
       'materials',
-      'materials_loading'
-    ])
+      'materials_loading',
+      'user',
+    ]),
+    community_info() {
+      let communityInfo = this.$store.getters.getCommunityInfo(this.user);
+      return (this.isLoading) ? communityInfo : null;
+    }
   }
 };

@@ -40,8 +40,16 @@ export default {
         })
       }
     },
-    community_info(state) {
-      return state.community_info;
+    getCommunityInfo(state) {
+      return (user) => {
+        if (_.isEmpty(state.community_info)) {
+          return state.community_info;
+        } else if (state.community_info.publish_status === 'PUBLISHED') {
+          return state.community_info;
+        } else if(user && user.communities.indexOf(state.community_info.id)) {
+          return state.community_info;
+        }
+      }
     },
     community_themes(state) {
       return state.community_themes;

@@ -1,137 +1,142 @@
 
 <template>
   <section class="container main communities">
-    <div class="center_block">
-      <div class="communities__info">
-        <img
-          src="/images/pictures/rawpixel-760027-unsplash.jpg"
-          srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-         /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
-          class="communities__info_bg">
-        <BreadCrumbs
-          :items="[{title: $t('Home'), url: localePath('index')}]"
-        />
-        <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
-      </div>
-      <div class="communities__form">
-        <form
-          action="/"
-          class="communities__form_in"
-          @submit.prevent="onSubmit"
-        >
-          <div class="communities__form__column">
-            <div class="communities__form__row">
-              <label
-                for="name"
-                class="communities__form__label"
+    <div v-if="!formData">
+      <error status-code="404" message-key="community-not-found"></error>
+    </div>
+    <div v-else>
+      <div class="center_block">
+        <div class="communities__info">
+          <img
+            src="/images/pictures/rawpixel-760027-unsplash.jpg"
+            srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+           /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+            class="communities__info_bg">
+          <BreadCrumbs
+            :items="[{title: $t('Home'), url: localePath('index')}]"
+          />
+          <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
+        </div>
+        <div class="communities__form">
+          <form
+            action="/"
+            class="communities__form_in"
+            @submit.prevent="onSubmit"
+          >
+            <div class="communities__form__column">
+              <div class="communities__form__row">
+                <label
+                  for="name"
+                  class="communities__form__label"
+                >
+                  {{ $t('Name') }}
+                </label>
+                <input
+                  required
+                  id="name"
+                  v-model="formData.name"
+                  name="name"
+                  type="text"
+                  class="communities__form__input"
+                >
+              </div>
+              <div class="communities__form__row">
+                <label
+                  for="description"
+                  class="communities__form__label"
+                >
+                  {{ $t('Description') }}
+                </label>
+                <textarea
+                  required
+                  id="description"
+                  v-model="formData.description"
+                  name="description"
+                  required="required"
+                  class="communities__form__textarea"
+                />
+              </div>
+              <div class="communities__form__row">
+                <label
+                  for="website"
+                  class="communities__form__label"
+                >
+                  {{ $t('Website') }}
+                </label>
+                <input
+                  id="website"
+                  v-model="formData.website_url"
+                  name="website"
+                  type="text"
+                  class="communities__form__input"
+                  placeholder="Geef hier de URL "
+                >
+              </div>
+            </div>
+            <div class="communities__form__column">
+              <div class="communities__form__row communities__form__file">
+                <InputFile
+                  ref="file-logo"
+                  :imagesrc="formData.logo"
+                  :title="$t('Logo')"
+                />
+              </div>
+              <div class="communities__form__row communities__form__file">
+                <InputFile
+                  ref="file-img"
+                  :imagesrc="formData.featured_image"
+                  :title="$t('Featured-image')"
+                />
+              </div>
+            </div>
+            <div class="communities__form__buttons">
+              <div
+                v-if="is_saved"
+                class="success" >
+                &#10004; {{ $t('Data-saved') }}
+              </div>
+              <button
+                :disabled="is_submitting"
+                type="submit"
+                class="button communities__form__button"
               >
-                {{ $t('Name') }}
-              </label>
-              <input
-                required
-                id="name"
-                v-model="formData.name"
-                name="name"
-                type="text"
-                class="communities__form__input"
-              >
+                {{ $t('save') }}
+              </button>
             </div>
-            <div class="communities__form__row">
-              <label
-                for="description"
-                class="communities__form__label"
-              >
-                {{ $t('Description') }}
-              </label>
-              <textarea
-                required
-                id="description"
-                v-model="formData.description"
-                name="description"
-                required="required"
-                class="communities__form__textarea"
-              />
-            </div>
-            <div class="communities__form__row">
-              <label
-                for="website"
-                class="communities__form__label"
-              >
-                {{ $t('Website') }}
-              </label>
-              <input
-                id="website"
-                v-model="formData.website_url"
-                name="website"
-                type="text"
-                class="communities__form__input"
-                placeholder="Geef hier de URL "
-              >
-            </div>
-          </div>
-          <div class="communities__form__column">
-            <div class="communities__form__row communities__form__file">
-              <InputFile
-                ref="file-logo"
-                :imagesrc="formData.logo"
-                :title="$t('Logo')"
-              />
-            </div>
-            <div class="communities__form__row communities__form__file">
-              <InputFile
-                ref="file-img"
-                :imagesrc="formData.featured_image"
-                :title="$t('Featured-image')"
-              />
-            </div>
-          </div>
-          <div class="communities__form__buttons">
-            <div
-              v-if="is_saved"
-              class="success" >
-              &#10004; {{ $t('Data-saved') }}
-            </div>
+          </form>
+        </div>
+        <div class="communities__collections">
+          <div class="collections__add">
             <button
-              :disabled="is_submitting"
-              type="submit"
-              class="button communities__form__button"
+              class="collections__add__link button"
+              @click.prevent="showAddCollection"
             >
-              {{ $t('save') }}
+              {{ $t('New-collection') }}
             </button>
           </div>
-        </form>
-      </div>
-      <div class="communities__collections">
-        <div class="collections__add">
-          <button
-            class="collections__add__link button"
-            @click.prevent="showAddCollection"
+          <div
+            v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="community_collections_loading"
+            infinite-scroll-distance="10"
           >
-            {{ $t('New-collection') }}
-          </button>
+            <Collections
+              v-if="community_collections"
+              :collections="community_collections.results"
+              :loading="community_collections_loading"
+            >
+              <template slot="header-info">
+                <h2>{{ $t('Collections-2') }}</h2>
+              </template>
+            </Collections>
+          </div>
+          <AddCollection
+            v-if="isShow"
+            :close="close"
+            :is-show="isShow"
+            submit-method="postCommunityCollection"
+            @submitted="saveCollection"
+          />
         </div>
-        <div
-          v-infinite-scroll="loadMore"
-          infinite-scroll-disabled="community_collections_loading"
-          infinite-scroll-distance="10"
-        >
-          <Collections
-            v-if="community_collections"
-            :collections="community_collections.results"
-            :loading="community_collections_loading"
-          >
-            <template slot="header-info">
-              <h2>{{ $t('Collections-2') }}</h2>
-            </template>
-          </Collections>
-        </div>
-        <AddCollection
-          v-if="isShow"
-          :close="close"
-          :is-show="isShow"
-          submit-method="postCommunityCollection"
-          @submitted="saveCollection"
-        />
       </div>
     </div>
   </section>
@@ -145,9 +150,12 @@ import Collections from '~/components/Collections';
 import Search from '~/components/FilterCategories/Search';
 import AddCollection from '~/components/Popup/AddCollection';
 import InputFile from '~/components/InputFile';
+import Error from '~/components/error';
+
 
 export default {
   components: {
+    Error,
     Collections,
     BreadCrumbs,
     Materials,
@@ -197,19 +205,19 @@ export default {
     setInitialFormData() {
 
       if(!this.user) {
-        this.formData = {
-          name: '',
-          description: '',
-          website_url: '',
-          logo: false,
-          featured_image: false
-        }
+        this.formData = null;
+        return;
       }
 
       let communities = this.getUserCommunities(this.user);
       let community = _.find(communities, (community) => {
         return community.id === this.$route.params.community;
       });
+
+      if(_.isNil(community)) {
+        this.formData = null;
+        return;
+      }
 
       this.formData.id = community.id;
       this.formData.name = community.name;
