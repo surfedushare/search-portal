@@ -108,12 +108,3 @@ class CommunityAdmin(admin.ModelAdmin):
             del actions["delete_selected"]
             del actions["restore_nodes"]
         return actions
-
-
-@admin.register(models.SurfTeam)
-class SurfTeamAdmin(admin.ModelAdmin):
-    """
-    Provides admin options and functionality for SURFconext Team model.
-    """
-
-    list_display = ("external_id", "name", "description",)
