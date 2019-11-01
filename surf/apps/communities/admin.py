@@ -52,9 +52,6 @@ class CommunityForm(forms.ModelForm):
     """
     publish_status = forms.TypedChoiceField(choices=PublishStatus.choices(), coerce=int)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     def clean_logo(self):
         picture = self.cleaned_data.get("logo")
         validate_image_proportion(picture, 230, 136)
