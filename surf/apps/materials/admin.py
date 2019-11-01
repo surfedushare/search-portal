@@ -4,7 +4,6 @@ This module provides django admin functionality for materials app.
 
 from django.contrib import admin
 
-
 from surf.apps.materials import models
 from surf.apps.materials.utils import update_materials_data
 
@@ -14,15 +13,19 @@ def trash_nodes(modeladmin, request, queryset):
         obj.delete()
 
 
-trash_nodes.short_description = "Trash selected %(verbose_name_plural)s"
-
-
 def restore_nodes(modeladmin, request, queryset):
     for obj in queryset:
         obj.restore()
 
 
+def sync_info_nodes(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.sync_info()
+
+
+trash_nodes.short_description = "Trash selected %(verbose_name_plural)s"
 restore_nodes.short_description = "Restore selected %(verbose_name_plural)s"
+sync_info_nodes.short_description = "Fill %(verbose_name)s data"
 
 
 class TrashListFilter(admin.SimpleListFilter):
@@ -57,7 +60,7 @@ class MaterialAdmin(admin.ModelAdmin):
         'external_id', 'themes', 'disciplines', 'material_url', 'title',
         'description', 'keywords', "deleted_at",
     )
-    actions = [restore_nodes, trash_nodes]
+    actions = [restore_nodes, trash_nodes, sync_info_nodes]
 
     def get_actions(self, request):
         actions = super().get_actions(request)
