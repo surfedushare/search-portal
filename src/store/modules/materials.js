@@ -1,10 +1,15 @@
 import {
   formatDate,
-  validateID,
   validateSearch,
   validateParams,
   validateIDString
 } from './_helpers';
+
+
+function validateID() {
+  return true;
+}
+
 
 export default {
   state: {
