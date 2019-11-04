@@ -502,9 +502,6 @@ class CollectionViewSet(ModelViewSet):
         if not user or not user.is_active:
             raise AuthenticationFailed()
 
-        if instance and (instance.owner_id != user.id):
-            raise AuthenticationFailed()
-
 
 class ApplaudMaterialViewSet(ListModelMixin,
                              CreateModelMixin,

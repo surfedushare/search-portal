@@ -121,7 +121,8 @@ class Collection(UUIDModel):
     owner = django_models.ForeignKey(settings.AUTH_USER_MODEL,
                                      verbose_name="Owner",
                                      related_name='collections',
-                                     on_delete=django_models.CASCADE)
+                                     null=True, blank=True,
+                                     on_delete=django_models.SET_NULL)
 
     # the list of collection materials
     materials = django_models.ManyToManyField(Material,
