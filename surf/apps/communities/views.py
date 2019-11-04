@@ -149,11 +149,8 @@ class CommunityViewSet(ListModelMixin,
                                                flat=True)
         qs = MpttFilterItem.objects.filter(id__in=ids)
 
-        items = [d.external_id for d in qs.all()]
-        drilldowns = get_material_count_by_disciplines(items)
         context = self.get_serializer_context()
-        if drilldowns:
-            context["extra"] = dict(drilldowns=drilldowns)
+        context["mptt_tree"] = MpttFilterItem.objects.get_cached_trees()
 
         res = CommunityDisciplineSerializer(
             many=True, context=context

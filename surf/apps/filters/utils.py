@@ -117,31 +117,33 @@ def add_default_filters(filters):
     return filters
 
 
-def add_default_material_filters(filters=None):
+def add_default_material_filters(filters=None, tree=None):
     """
     Adds the default enabled filters to the supplied list of filters
-    :param filters: list of filters to be extended, or None to get the full list of default filters
+    :param filters: list of filters to be extended, or None to get the full list of default filters,
+    :param tree: mptt filter category item tree to use instead of querying the database
     :return: the extended list of filters (or the same list if none are enabled by default)
     """
     if not filters:
         filters = []
-    root_nodes = MpttFilterItem.objects.root_nodes()
+    if not tree:
+        tree = MpttFilterItem.objects.get_cached_trees()
+    
     filters_external_id_list = [filter_item['external_id'] for filter_item in filters]
-    for root in root_nodes:
+    for root in tree:
         # if the root.external_id (e.g. educational_level) is in the user-selected filters,
         # then don't add the default filters for that root
         if root.external_id not in filters_external_id_list:
-            if root.enabled_by_default:
-                enabled_children = root.get_descendants()
-            else:
-                enabled_children = root.get_descendants().filter(enabled_by_default=True)
+            enabled_children = root.get_children()
+            if not root.enabled_by_default:
+                enabled_children = [child for child in enabled_children if child.enabled_by_default]
             child_external_ids = []
             for child in enabled_children:
-                child_external_ids.extend([grand_child.external_id for grand_child in child.get_descendants()])
+                child_external_ids.extend([grand_child.external_id for grand_child in child.get_children()])
             if enabled_children:
                 # if child.external_id is empty don't append it to the filters, edurep fails on empty strings
                 child_external_ids.extend([child.external_id for child in enabled_children if child.external_id])
-                filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
+            filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
     return filters
 
 
