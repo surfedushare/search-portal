@@ -7,6 +7,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.db import models as django_models
+from django.utils import timezone
 from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
@@ -91,6 +92,18 @@ class Material(UUIDModel):
     title = django_models.TextField(blank=True, null=True)
     description = django_models.TextField(blank=True, null=True)
     keywords = django_models.TextField(blank=True, null=True)
+    deleted_at = django_models.DateTimeField(null=True)
+
+    def restore(self):
+        self.deleted_at = None
+        self.save()
+
+    def delete(self, using=None, keep_parents=False):
+        if not self.deleted_at:
+            self.deleted_at = timezone.now()
+            self.save()
+        else:
+            super().delete(using=using, keep_parents=keep_parents)
 
     def __str__(self):
         return self.external_id
@@ -115,6 +128,18 @@ class Collection(UUIDModel):
                                               related_name="collections")
 
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
+    deleted_at = django_models.DateTimeField(null=True)
+
+    def restore(self):
+        self.deleted_at = None
+        self.save()
+
+    def delete(self, using=None, keep_parents=False):
+        if not self.deleted_at:
+            self.deleted_at = timezone.now()
+            self.save()
+        else:
+            super().delete(using=using, keep_parents=keep_parents)
 
     def __str__(self):
         return self.title
