@@ -1,9 +1,6 @@
 """
 This module provides parsing methods for XML-based EduRep API response.
 """
-
-from base64 import urlsafe_b64encode
-
 from xml.etree import ElementTree as ET
 
 import re
@@ -109,10 +106,6 @@ def _parse_record(elem):
     classifications = _parse_classifications(elem)
     disciplines = list(classifications.get("discipline", []))
     educationallevels = list(classifications.get("educational level", []))
-
-    external_id = _find_elem_text(elem, _RECORD_ID_PATH)
-    external_id_base64 = urlsafe_b64encode(external_id.encode("utf-8"))
-    external_id_base64 = external_id_base64.decode("utf-8")
     # try to update the dynamic copyrights list if it's empty,
     # if the proper copyright item isn't in the database (an exists() call) nothing happens
     if len(DYNAMIC_COPYRIGHTS) == 0:
@@ -126,7 +119,6 @@ def _parse_record(elem):
     average_rating = float(average_rating) if average_rating else 0
     return dict(
         external_id=_find_elem_text(elem, _RECORD_ID_PATH),
-        external_id_base64=external_id_base64,
         object_id=_find_elem_text(elem, _OBJECT_ID_PATH),
         url=_find_elem_text(elem, _URL_PATH),
         title=_find_elem_text(elem, _TITLE_PATH),

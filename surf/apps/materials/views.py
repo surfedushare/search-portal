@@ -2,8 +2,6 @@
 This module contains implementation of REST API views for materials app.
 """
 
-from base64 import urlsafe_b64decode
-
 from collections import OrderedDict
 
 import json
@@ -215,8 +213,6 @@ class MaterialAPIView(APIView):
         :param shared: share type of material
         :return:
         """
-        external_id = external_id.encode("utf-8")
-        external_id = urlsafe_b64decode(external_id).decode("utf-8")
         res = _get_material_by_external_id(request, external_id, shared=shared)
 
         if not res:
