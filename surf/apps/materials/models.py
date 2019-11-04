@@ -11,6 +11,7 @@ from django.utils import timezone
 from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
+from surf.apps.filters.models import MpttFilterItem
 from surf.apps.themes.models import Theme
 from surf.statusenums import PublishStatus
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
@@ -127,6 +128,7 @@ class Collection(UUIDModel):
                                               blank=True,
                                               related_name="collections")
 
+    is_shared = django_models.BooleanField(default=False)
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
     deleted_at = django_models.DateTimeField(null=True)
 
