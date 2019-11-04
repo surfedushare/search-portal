@@ -4,16 +4,17 @@ This module provides django admin functionality for communities app.
 
 from django.contrib import admin
 from django import forms
-from django.db.models import Q
 from django.core.files.images import get_image_dimensions
 
 from surf.apps.communities import models
+from surf.apps.communities.models import PublishStatus
 
 
 class CommunityForm(forms.ModelForm):
     """
     Implementation of Community Form class.
     """
+    publish_status = forms.TypedChoiceField(choices=PublishStatus.choices(), coerce=int)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -54,8 +55,8 @@ class CommunityAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Community model.
     """
-    list_display = ("custom_name", "is_available",)
-    list_filter = ("is_available",)
+    list_display = ("name", "publish_status",)
+    list_filter = ("publish_status",)
     readonly_fields = ("collections",)
     inlines = [TeamInline]
     form = CommunityForm

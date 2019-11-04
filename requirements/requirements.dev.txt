@@ -15,3 +15,4 @@ ipython==7.7.0
 django-mptt==0.9.1
 tqdm==4.35.0
 sentry-sdk==0.11.2
+django-enumfield==1.5

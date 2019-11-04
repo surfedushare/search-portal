@@ -16,7 +16,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from surf.apps.communities.models import Community
+from surf.apps.communities.models import Community, PublishStatus
 from surf.apps.materials.models import Collection, Material
 from surf.apps.themes.models import Theme
 from surf.apps.filters.models import MpttFilterItem
@@ -45,7 +45,7 @@ class CommunityViewSet(ListModelMixin,
     View class that provides `GET` and `UPDATE` methods for Community.
     """
 
-    queryset = Community.objects.filter(is_available=True).distinct()
+    queryset = Community.objects.filter(publish_status=PublishStatus.PUBLISHED).distinct()
     serializer_class = CommunitySerializer
     filter_class = CommunityFilter
     permission_classes = []
@@ -200,10 +200,6 @@ class CommunityViewSet(ListModelMixin,
         added/deleted to/from community
         """
         if not user or not user.is_authenticated:
-            raise AuthenticationFailed()
-
-        if instance and (
-                not instance.surf_team.admins.filter(id=user.id).exists()):
             raise AuthenticationFailed()
 
         if collection_ids:
