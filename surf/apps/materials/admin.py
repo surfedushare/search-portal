@@ -79,6 +79,11 @@ class MaterialAdmin(admin.ModelAdmin):
         return actions
 
 
+class CollectionMaterialInline(admin.TabularInline):
+    model = models.CollectionMaterial
+    extra = 0
+
+
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     """
@@ -89,6 +94,7 @@ class CollectionAdmin(admin.ModelAdmin):
     list_filter = ("owner", "publish_status",)
     readonly_fields = ('title', 'owner', "deleted_at",)
     ordering = ("title",)
+    inlines = [CollectionMaterialInline]
     actions = [restore_nodes, trash_nodes]
 
     def get_actions(self, request):
