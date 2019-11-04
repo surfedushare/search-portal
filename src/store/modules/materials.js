@@ -1,6 +1,5 @@
 import {
   formatDate,
-  validateID,
   validateSearch,
   validateParams,
   validateIDString
@@ -9,6 +8,12 @@ import injector from 'vue-inject';
 
 
 const $log = injector.get("$log");
+
+
+
+function validateID() {
+  return true;
+}
 
 
 export default {
