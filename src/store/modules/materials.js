@@ -2,7 +2,8 @@ import {
   formatDate,
   validateSearch,
   validateParams,
-  validateIDString
+  validateIDString,
+  decodeAuthor
 } from './_helpers';
 import injector from 'vue-inject';
 
@@ -53,6 +54,7 @@ export default {
     async getMaterial({ commit }, id) {
       commit('SET_MATERIAL_LOADING', true);
       const material = await this.$axios.$get(`materials/${id}/`);
+      decodeAuthor(material);
       commit('SET_MATERIAL', material);
       commit('SET_MATERIAL_LOADING', false);
     },
@@ -166,9 +168,7 @@ export default {
       const records = payload.records || payload;
       records.forEach((record) => {
         record.date = formatDate(record.publish_datetime);
-        let elem = document.createElement('textarea');
-        elem.innerHTML = record.author;
-        record.author = elem.value;
+        decodeAuthor(record)
       });
       state.materials = Object.assign({}, payload, {
         records: records.map(record => {

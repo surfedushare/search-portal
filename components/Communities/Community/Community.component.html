@@ -16,8 +16,15 @@
                   {title: $t('Home'), url: localePath('index')},
                   {title: $t('Communities'), url: localePath('communities')}
                 ]"/>
-            <h2 class="community__info_ttl">{{ getTitleTranslation(community_info, $i18n.locale) }}</h2>
-
+             <h2 class="community__info_ttl">{{ getTitleTranslation(community_info, $i18n.locale) }}</h2>
+             <p class="community__description_txt html-content" v-html="getDescriptionTranslation(community_info, $i18n.locale)"></p>
+             <a
+               :href="`${ community_info.website_url }`"
+               v-if="community_info.website_url"
+               class="community__description_link arrow-link"
+             >
+              {{ $t('Visit-website') }}
+             </a>
           </div>
           <div class="community__info_description">
             <p class="community__description_txt html-content"
