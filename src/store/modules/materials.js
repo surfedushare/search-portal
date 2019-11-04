@@ -134,24 +134,6 @@ export default {
         $log.error('Validate error: ', search);
       }
     },
-    async searchMaterialsInCommunity({ commit }, { id, search }) {
-      if (validateID(id) && validateSearch(search)) {
-        commit('SET_MATERIALS_LOADING', true);
-        const materials = await this.$axios.$post(
-          `communities/${id}/search/`,
-          search
-        );
-        materials.search_text = search.search_text;
-        materials.active_filters = search.filters;
-        materials.ordering = search.ordering;
-
-        commit('SET_MATERIALS', materials);
-        commit('SET_MATERIALS_LOADING', false);
-        return materials;
-      } else {
-        $log.error('Validate error: ', { id, search });
-      }
-    },
     async searchNextPageMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true);
@@ -160,19 +142,6 @@ export default {
         commit('SET_MATERIALS_LOADING', false);
       } else {
         $log.error('Validate error: ', search);
-      }
-    },
-    async searchNextPageMaterialsCommunity({ commit }, { id, search }) {
-      if (validateID(id) && validateSearch(search)) {
-        commit('SET_MATERIALS_LOADING', true);
-        const materials = await this.$axios.$post(
-          `communities/${id}/search/`,
-          search
-        );
-        commit('SET_NEXT_PAGE_MATERIALS', materials);
-        commit('SET_MATERIALS_LOADING', false);
-      } else {
-        $log.error('Validate error: ', { id, search });
       }
     },
     async searchMaterialsKeywords({ commit }, { params }) {

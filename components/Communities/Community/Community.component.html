@@ -20,19 +20,7 @@
         </div>
       </div>
 
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="materials_loading"
-        infinite-scroll-distance="10"
-        v-if="isSearch"
-      >
-        <Materials
-          :materials="materials"
-          :items-in-line="4"
-        />
-        <Spinner v-if="materials_loading" />
-      </div>
-      <template v-else>
+      <template>
         <div class="community__row">
           <div class="community__description">
             <img
@@ -61,11 +49,7 @@
             />
           </div>
         </div>
-        <div
-          v-infinite-scroll="loadMoreCollections"
-          infinite-scroll-disabled="community_collections_loading"
-          infinite-scroll-distance="10"
-        >
+        <div>
           <Collections
             v-if="community_collections"
             :collections="community_collections.results"
