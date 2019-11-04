@@ -55,6 +55,11 @@ class Community(UUIDModel):
     SURFconext Teams.
     """
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
+    surf_team = django_models.OneToOneField(SurfTeam,
+                                            on_delete=django_models.CASCADE,
+                                            related_name="community",
+                                            null=True)
+
     name = django_models.CharField(max_length=255, blank=True)
     description = django_models.TextField(blank=True)
     title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
@@ -62,6 +67,12 @@ class Community(UUIDModel):
     description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE,
                                                            null=True, blank=True)
     deleted_at = django_models.DateTimeField(null=True)
+
+    admins = django_models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Administrators",
+        related_name='admin_communities',
+        blank=True)
 
     # list of community members
     members = django_models.ManyToManyField(
