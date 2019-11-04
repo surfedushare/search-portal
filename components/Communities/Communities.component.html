@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="center_block">
-    <ul class="communities__items" v-if="communities">
+    <ul class="communities__items" v-if="communities.length">
       <li
         v-for="community in communities"
         class="communities__item tile tile--items-in-line-3 materials__item--items-in-line-3"
@@ -40,6 +40,7 @@
         </router-link>
       </li>
     </ul>
+    <h3 class="text-center" v-else>{{ $t('No-communities-available') }}</h3>
   </div>
 </section>
 
