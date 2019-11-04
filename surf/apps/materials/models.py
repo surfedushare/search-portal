@@ -117,23 +117,11 @@ class Collection(UUIDModel):
 
     title = django_models.CharField(max_length=255)
 
-    # the user who created the collection
-    owner = django_models.ForeignKey(settings.AUTH_USER_MODEL,
-                                     verbose_name="Owner",
-                                     related_name='collections',
-                                     null=True, blank=True,
-                                     on_delete=django_models.SET_NULL)
-
     # the list of collection materials
     materials = django_models.ManyToManyField(Material,
                                               blank=True,
-                                              related_name="collections")
-
-    # the list of collection materials
-    new_materials = django_models.ManyToManyField(Material,
-                                                  blank=True,
-                                                  related_name="new_collections",
-                                                  through='CollectionMaterial')
+                                              related_name="collections",
+                                              through='CollectionMaterial')
 
     is_shared = django_models.BooleanField(default=False)
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
