@@ -69,7 +69,7 @@
     <div class="material__left-box" v-show="$root.loginEnabled || isAuthenticated">
       <template v-if="!isAuthenticated">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
-        <p>{{ $t('To-be-able-to-make-collections-you-must-first-log') }}</p>
+        <p>{{ $t('To-be-able-to-add-materials-to-collections-you-must-first-log-in') }}</p>
         <a
           :href="getLoginLink()"
           class="arrow-link"
