@@ -4,7 +4,7 @@
     <div class="collection__info_wrapper">
       <div class="collection__info_title">
         <BreadCrumbs
-          v-if="!collection.is_owner"
+          v-if="!isEditor"
           :items="[
             {title: $t('Home'), url: localePath('index')}
           ]"
@@ -28,7 +28,7 @@
         </h2>
         <p class="collection__info_subttl">{{ $tc('learning-materials', collection.materials_count) }}</p>
       </div>
-      <div class="collection__info_filter" v-if="collection.is_owner">
+      <div class="collection__info_filter" v-if="isEditor">
         <div class="collection__info_filter__edit">
           <a
             href="#"

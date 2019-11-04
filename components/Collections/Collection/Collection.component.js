@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import EditableContent from '~/components/EditableContent';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
@@ -26,9 +27,6 @@ export default {
     },
     'items-in-line': {
       default: 4
-    },
-    user: {
-      default: false
     }
   },
   components: {
@@ -94,17 +92,14 @@ export default {
      * Deleting collection by id
      */
     deleteCollection() {
-      const { is_owner, id } = this.collection;
-      if (is_owner) {
-        this.$store.dispatch('deleteMyCollection', id).then(() => {
-          this.$store.dispatch('getUser');
-          if(window.history.length > 1) {
-            this.$router.go(-1);
-          } else {
-            this.$router.push(this.localePath({ name: 'my-communities' }));
-          }
-        });
-      }
+      this.$store.dispatch('deleteMyCollection', this.collection.id).then(() => {
+        this.$store.dispatch('getUser');
+        if(window.history.length > 1) {
+          this.$router.go(-1);
+        } else {
+          this.$router.push(this.localePath({ name: 'my-communities' }));
+        }
+      });
     },
     closeDeleteCollection() {
       this.isShowDeleteCollection = false;
@@ -232,6 +227,14 @@ export default {
         this.setTitle(collection.title);
         this.setSocialCounters();
       }
+    }
+  },
+  computed: {
+    ...mapGetters(['user']),
+    isEditor() {
+      return _.find(this.user.collections, (collection) => {
+        return collection.id === this.collection.id;
+      })
     }
   }
 };
