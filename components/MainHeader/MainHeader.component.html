@@ -11,23 +11,13 @@
     <Menu class="main-header__menu" />
     <div class="main-header__actions">
       <div class="main-header__user" v-if="isAuthenticated">
-        <div class="main-header__user_name arrow-link"><span class="link">{{user.full_name}}</span></div>
+        <div class="main-header__user_name arrow-link"><span class="link">{{ $t('Your-account') }}</span></div>
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
-            <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-filters'})">
-                {{ $t('my_filters') }}
-              </nuxt-link>
-            </li>
-            <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-collections'})">
-                {{ $t('My-collections') }}
-              </nuxt-link>
-            </li>
             <li class="main-header__user_menu_item" v-if="user.is_admin">
-              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
-                {{ $t('My-community') }}
-              </nuxt-link>
+              <router-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
+                {{ $t('My-communities') }}
+              </router-link>
             </li>
             <li class="main-header__user_menu_item">
               <a
@@ -50,16 +40,16 @@
           {{ $t('login') }}
         </a>
       </div>
-      <nuxt-link
+      <router-link
         class="main-header__lang main-header__lang--nl"
         :to="switchLocalePath('nl')"
         v-if="$i18n.locale === 'en'"
-      >Nederlands</nuxt-link>
-      <nuxt-link
+      >Nederlands</router-link>
+      <router-link
         class="main-header__lang main-header__lang--en"
         :to="switchLocalePath('en')"
         v-if="$i18n.locale === 'nl'"
-      >English</nuxt-link>
+      >English</router-link>
     </div>
   </div>
   <div class="main-header__mobile">
@@ -76,20 +66,10 @@
         <div class="main-header__user_name arrow-link" onclick=""><span class="link">{{user.full_name}}</span></div>
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
-            <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-filters'})">
-                {{ $t('my_filters') }}
-              </nuxt-link>
-            </li>
-            <li class="main-header__user_menu_item">
-              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-collections'})">
-                {{ $t('My-collections') }}
-              </nuxt-link>
-            </li>
             <li class="main-header__user_menu_item" v-if="user.is_admin">
-              <nuxt-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
-                {{ $t('My-community') }}
-              </nuxt-link>
+              <router-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
+                {{ $t('My-communities') }}
+              </router-link>
             </li>
             <li class="main-header__user_menu_item">
               <a

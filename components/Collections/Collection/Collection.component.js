@@ -97,7 +97,12 @@ export default {
       const { is_owner, id } = this.collection;
       if (is_owner) {
         this.$store.dispatch('deleteMyCollection', id).then(() => {
-          this.$router.push(this.localePath({ name: 'my-collections' }));
+          this.$store.dispatch('getUser');
+          if(window.history.length > 1) {
+            this.$router.go(-1);
+          } else {
+            this.$router.push(this.localePath({ name: 'my-communities' }));
+          }
         });
       }
     },

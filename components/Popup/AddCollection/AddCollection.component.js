@@ -24,6 +24,7 @@ export default {
       this.$store
         .dispatch(this.submitMethod || 'postMyCollection', this.formData)
         .then(collection => {
+          this.$store.dispatch('getUser');
           this.saved = true;
           this.submitting = false;
           if (this.$listeners.submitted) {

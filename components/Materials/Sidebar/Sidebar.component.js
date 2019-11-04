@@ -17,8 +17,6 @@ export default {
     Multiselect
   },
   mounted() {
-    this.$store.dispatch('getMyCollections');
-
     this.$store
       .dispatch('checkMaterialInCollection', this.material.external_id)
       .then(collections => {

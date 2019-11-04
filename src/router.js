@@ -7,15 +7,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const _9a46b0e2 = () => import('../pages/themes/index.vue' /* webpackChunkName: "pages/themes/index" */).then(m => m.default || m);
+
 const _e895237e = () => import('../pages/how-does-it-work/index.vue' /* webpackChunkName: "pages/how-does-it-work/index" */).then(m => m.default || m);
 const _e32cc490 = () => import('../pages/communities/index.vue' /* webpackChunkName: "pages/communities/index" */).then(m => m.default || m);
-const _16df26dd = () => import('../pages/materials/index.vue' /* webpackChunkName: "pages/materials/index" */).then(m => m.default || m);
 const _70c48e2d = () => import('../pages/materials/search.vue' /* webpackChunkName: "pages/materials/search" */).then(m => m.default || m);
 const _77aed046 = () => import('../pages/my/filters/index.vue' /* webpackChunkName: "pages/my/filters/index" */).then(m => m.default || m);
 const _169285f4 = () => import('../pages/my/collections.vue' /* webpackChunkName: "pages/my/collections" */).then(m => m.default || m);
 const _5330bd0f = () => import('../pages/my/collection.vue' /* webpackChunkName: "pages/my/collection" */).then(m => m.default || m);
 const _b5953cb4 = () => import('../pages/my/communities.vue' /* webpackChunkName: "pages/my/communities" */).then(m => m.default || m);
+const myCommunity = () => import('../pages/my/community.vue' /* webpackChunkName: "pages/my/community" */).then(m => m.default || m);
 const _1c7624f6 = () => import('../pages/my/filters/_id.vue' /* webpackChunkName: "pages/my/filters/_id" */).then(m => m.default || m);
 const _45857c92 = () => import('../pages/themes/_id.vue' /* webpackChunkName: "pages/themes/_id" */).then(m => m.default || m);
 const _4ed33c85 = () => import('../pages/materials/_id.vue' /* webpackChunkName: "pages/materials/_id" */).then(m => m.default || m);
@@ -86,16 +86,6 @@ export function createRouter () {
     scrollBehavior,
     routes: [
 		{
-			path: "/en/themes",
-			component: _9a46b0e2,
-			name: "themes___en"
-		},
-		{
-			path: "/themas",
-			component: _9a46b0e2,
-			name: "themes___nl"
-		},
-		{
 			path: "/en/how-does-it-work",
 			component: _e895237e,
 			name: "how-does-it-work___en"
@@ -114,16 +104,6 @@ export function createRouter () {
 			path: "/communities",
 			component: _e32cc490,
 			name: "communities___nl"
-		},
-		{
-			path: "/en/materials",
-			component: _16df26dd,
-			name: "materials___en"
-		},
-		{
-			path: "/materialen",
-			component: _16df26dd,
-			name: "materials___nl"
 		},
 		{
 			path: "/en/materials/search",
@@ -175,6 +155,16 @@ export function createRouter () {
 			component: _b5953cb4,
 			name: "my-communities___nl"
 		},
+    {
+      path: "/en/my/community/:community",
+      component: myCommunity,
+      name: "my-community___en"
+    },
+    {
+      path: "/mijn/community/:community",
+      component: myCommunity,
+      name: "my-community___nl"
+    },
 		{
 			path: "/en/my/filters/:id",
 			component: _1c7624f6,

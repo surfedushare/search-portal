@@ -1,3 +1,4 @@
+import injector from 'vue-inject';
 import {
   formatDate,
   validateID,
@@ -7,18 +8,17 @@ import {
 } from './_helpers';
 
 
+const $log = injector.get('$log');
+
+
 export default {
   state: {
-    my_collections: false,
     my_collection: false,
     my_collection_materials: false,
     my_collection_materials_loading: false,
     my_collections_loading: false
   },
   getters: {
-    my_collections(state) {
-      return state.my_collections;
-    },
     my_collection(state) {
       return state.my_collection;
     },
@@ -33,38 +33,13 @@ export default {
     }
   },
   actions: {
-    async getMyCollections({ state, commit }) {
-      commit('SET_MY_COLLECTIONS_LOADING', true);
-      const collections = await this.$axios.$get('collections/', {
-        params: {
-          timestamp: Date.now(),
-          is_owner: true
-        }
-      });
-      commit('SET_MY_COLLECTIONS', collections);
-      commit('SET_MY_COLLECTIONS_LOADING', false);
-      return collections;
-    },
-    async getMyCollectionsNextPage({ state, commit }) {
-      commit('SET_MY_COLLECTIONS_LOADING', true);
-      const collections = await this.$axios.$get(state.my_collections.next, {
-        params: {
-          timestamp: Date.now(),
-          is_owner: true
-        }
-      });
-
-      commit('SET_MY_COLLECTIONS_NEXT', collections);
-      commit('SET_MY_COLLECTIONS_LOADING', false);
-      return collections;
-    },
     async getMyCollection({ state, commit }, id) {
       if (validateID(id)) {
         const collection = await this.$axios.$get(`collections/${id}/`);
         commit('SET_MY_COLLECTION', collection);
         return collection;
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async setCollectionSocial({ commit }, { id, params }) {
@@ -75,7 +50,7 @@ export default {
         commit('SET_MY_COLLECTION', collection);
         return collection;
       } else {
-        console.error('Validate error: ', { id, params });
+        $log.error('Validate error: ', { id, params });
       }
     },
     async putMyCollection({ state, commit }, data) {
@@ -87,38 +62,33 @@ export default {
         commit('SET_MY_COLLECTION', collection);
         return collection;
       } else {
-        console.error('Validate error: ', data);
+        $log.error('Validate error: ', data);
       }
     },
     async checkMaterialInCollection({ state, commit }, id) {
       if (validateIDString(id)) {
-        const collection = await this.$axios.$get('collections/', {
+        return await this.$axios.$get('collections/', {
           params: {
             is_owner: true,
             material_id: id
           }
         });
-        return collection;
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async deleteMyCollection({ state, commit }, id) {
       if (validateID(id)) {
-        const collection = await this.$axios.$delete(`collections/${id}/`);
-        commit('DELETE_MY_COLLECTION', id);
-        return collection;
+        return await this.$axios.$delete(`collections/${id}/`);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async postMyCollection({ state, commit }, data) {
       if (validateParams(data)) {
-        const collection = await this.$axios.$post(`collections/`, data);
-        commit('ADD_MY_COLLECTION', collection);
-        return collection;
+        return await this.$axios.$post(`collections/`, data);
       } else {
-        console.error('Validate error: ', data);
+        $log.error('Validate error: ', data);
       }
     },
     async setMaterialInMyCollection(
@@ -133,7 +103,7 @@ export default {
         commit('SET_MATERIAL_TO_MY_COLLECTION', material);
         return data;
       } else {
-        console.error('Validate error: ', { collection_id, data });
+        $log.error('Validate error: ', { collection_id, data });
       }
     },
     async removeMaterialFromMyCollection(
@@ -145,7 +115,7 @@ export default {
           data
         });
       } else {
-        console.error('Validate error: ', { collection_id, data });
+        $log.error('Validate error: ', { collection_id, data });
       }
     },
     async getMaterialInMyCollection({ state, commit }, { id, params }) {
@@ -164,7 +134,7 @@ export default {
         commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
         return materialsInfo;
       } else {
-        console.error('Validate error: ', { id, params });
+        $log.error('Validate error: ', { id, params });
       }
     },
     async searchMaterialInMyCollection({ state, commit }, { id, params }) {
@@ -178,7 +148,7 @@ export default {
         commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
         return materials;
       } else {
-        console.error('Validate error: ', { id, params });
+        $log.error('Validate error: ', { id, params });
       }
     },
     async getNextPeMaterialInMyCollection({ state, commit }, { id, params }) {
@@ -194,39 +164,13 @@ export default {
         commit('SET_MATERIAL_TO_MY_COLLECTION_LOADING', false);
         return materials;
       } else {
-        console.error('Validate error: ', { id, params });
+        $log.error('Validate error: ', { id, params });
       }
     }
   },
   mutations: {
-    SET_MY_COLLECTIONS(state, payload) {
-      state.my_collections = payload;
-    },
-    SET_MY_COLLECTIONS_NEXT(state, payload) {
-      state.my_collections = {
-        ...state.my_collections,
-        next: payload.next,
-        results: [...state.my_collections.results, ...payload.results]
-      };
-    },
     SET_MY_COLLECTION(state, payload) {
       state.my_collection = payload;
-    },
-    ADD_MY_COLLECTION(state, payload) {
-      state.my_collections = {
-        ...state.my_collections,
-        results: [payload, ...state.my_collections.results]
-      };
-    },
-    DELETE_MY_COLLECTION(state, id) {
-      state.my_collections = {
-        ...state.my_collections,
-        results: state.my_collections.results
-          ? state.my_collections.results.filter(
-              collection => collection.id !== id
-            )
-          : []
-      };
     },
     SET_MATERIAL_TO_MY_COLLECTION(state, payload) {
       const records = payload.records || payload;
@@ -257,9 +201,6 @@ export default {
           })
         ]
       });
-    },
-    SET_MY_COLLECTIONS_LOADING(state, payload) {
-      state.my_collections_loading = payload;
     },
     SET_MATERIAL_TO_MY_COLLECTION_LOADING(state, payload) {
       state.my_collection_materials_loading = payload;

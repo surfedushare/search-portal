@@ -23,13 +23,9 @@
           {{ $t('New-collection') }}
         </button>
       </div>
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="my_collections_loading"
-        infinite-scroll-distance="10"
-      >
+      <div>
         <Collections
-          :collections="my_collections.results"
+          :collections="my_collections"
           :loading="my_collections_loading"
         />
       </div>
@@ -72,30 +68,12 @@ export default {
       'user_loading'
     ])
   },
-  watch: {
-    isAuthenticated(isAuthenticated) {
-      if (isAuthenticated) {
-        this.$store.dispatch('getMyCollections');
-      }
-    }
-  },
   mounted() {
-    if (this.isAuthenticated) {
-      this.$store.dispatch('getMyCollections');
-    } else if (!this.user_loading) {
+    if (!this.user_loading) {
       this.$router.push('/');
     }
   },
   methods: {
-    /**
-     * Load next collections
-     */
-    loadMore() {
-      const { my_collections, my_collections_loading } = this;
-      if (my_collections.next && !my_collections_loading) {
-        this.$store.dispatch('getMyCollectionsNextPage');
-      }
-    },
     showAddCollection() {
       this.isShow = true;
     },
