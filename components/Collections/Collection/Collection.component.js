@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import EditableContent from '~/components/EditableContent';
@@ -114,7 +115,6 @@ export default {
      * Set counters value for share buttons
      */
     setSocialCounters() {
-      let isSetChanges = false;
       const interval = setInterval(() => {
         this.$nextTick().then(() => {
           const { collection } = this;
@@ -158,7 +158,6 @@ export default {
                 share.link.counter_value;
             }
             if (linkedIn) {
-              isSetChanges = true;
               clearInterval(interval);
             }
           }
