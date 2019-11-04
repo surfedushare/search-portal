@@ -2,8 +2,10 @@ import {
   formatDate,
   validateID,
   validateIDString,
-  validateParams
+  validateParams,
+  decodeAuthor
 } from './_helpers';
+
 
 export default {
   state: {
@@ -227,6 +229,8 @@ export default {
       };
     },
     SET_MATERIAL_TO_MY_COLLECTION(state, payload) {
+      const records = payload.records || payload;
+      records.forEach(decodeAuthor);
       state.my_collection_materials = payload;
     },
     GET_MATERIAL_TO_MY_COLLECTION(state, payload) {

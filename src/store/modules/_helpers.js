@@ -84,3 +84,9 @@ export const validateSearch = obj => {
 export const validateParams = obj => {
   return obj && typeof obj === 'object';
 };
+
+export function decodeAuthor(material) {
+  let elem = document.createElement('textarea');
+  elem.innerHTML = material.author;
+  material.author = elem.value;
+}

@@ -1,10 +1,16 @@
 import {
   formatDate,
-  validateID,
   validateSearch,
   validateParams,
-  validateIDString
+  validateIDString,
+  decodeAuthor
 } from './_helpers';
+
+
+function validateID() {
+  return true;
+}
+
 
 export default {
   state: {
@@ -44,6 +50,7 @@ export default {
       if (validateID(id)) {
         commit('SET_MATERIAL_LOADING', true);
         const material = await this.$axios.$get(`materials/${id}/`);
+        decodeAuthor(material);
         commit('SET_MATERIAL', material);
         commit('SET_MATERIAL_LOADING', false);
       } else {
@@ -189,6 +196,10 @@ export default {
   mutations: {
     SET_MATERIALS(state, payload) {
       const records = payload.records || payload;
+      records.forEach((record) => {
+        record.date = formatDate(record.publish_datetime);
+        decodeAuthor(record)
+      });
       state.materials = Object.assign({}, payload, {
         records: records.map(record => {
           return Object.assign(
