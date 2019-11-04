@@ -10,6 +10,20 @@ from surf.apps.core.models import UUIDModel
 from surf.apps.materials.models import Collection
 from surf.apps.locale.models import Locale, LocaleHTML
 
+from django_enumfield import enum
+
+
+class PublishStatus(enum.Enum):
+    DRAFT = 0
+    REVIEW = 1
+    PUBLISHED = 2
+
+    __labels__ = {
+        DRAFT: "Draft",
+        REVIEW: "Review",
+        PUBLISHED: "Published",
+    }
+
 
 class SurfTeam(UUIDModel):
     """
@@ -49,6 +63,7 @@ class Community(UUIDModel):
     Implementation of Community model. Communities are related to
     SURFconext Teams.
     """
+    publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
     name = django_models.CharField(max_length=255, blank=True)
     description = django_models.TextField(blank=True)
     title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
