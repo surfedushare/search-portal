@@ -12,15 +12,8 @@ def copy_materials_to_new_collections(apps, schema_editor):
     CollectionMaterial = apps.get_model('materials', 'CollectionMaterial')
 
     for collection in Collection.objects.all():
-        print("GOT HERE")
-        print("GOT AAAAAAAAHERE")
-        print(collection)
-        print(collection.new_materials)
-        print(collection.materials)
         for material in collection.materials.all():
-            print("GOT HERE 2")
             CollectionMaterial.objects.create(collection=collection, material=material)
-            print("GOT HERE 3")
 
         collection.save()
 
