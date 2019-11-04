@@ -127,7 +127,8 @@ class Collection(UUIDModel):
     # the list of collection materials
     materials = django_models.ManyToManyField(Material,
                                               blank=True,
-                                              related_name="collections")
+                                              related_name="new_collections",
+                                              through='CollectionMaterial')
 
     is_shared = django_models.BooleanField(default=False)
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
@@ -146,6 +147,15 @@ class Collection(UUIDModel):
 
     def __str__(self):
         return self.title
+
+
+class CollectionMaterial(django_models.Model):
+    collection = django_models.ForeignKey(Collection, on_delete=django_models.CASCADE)
+    material = django_models.ForeignKey(Material, on_delete=django_models.CASCADE)
+    featured = django_models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Material'
 
 
 class ApplaudMaterial(UUIDModel):
