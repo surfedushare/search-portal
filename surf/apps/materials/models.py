@@ -127,8 +127,13 @@ class Collection(UUIDModel):
     # the list of collection materials
     materials = django_models.ManyToManyField(Material,
                                               blank=True,
-                                              related_name="new_collections",
-                                              through='CollectionMaterial')
+                                              related_name="collections")
+
+    # the list of collection materials
+    new_materials = django_models.ManyToManyField(Material,
+                                                  blank=True,
+                                                  related_name="new_collections",
+                                                  through='CollectionMaterial')
 
     is_shared = django_models.BooleanField(default=False)
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
