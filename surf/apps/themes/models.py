@@ -21,13 +21,6 @@ class Theme(UUIDModel):
 
     # related Filter Category item
     filter_category_item = django_models.OneToOneField(
-        FilterCategoryItem,
-        related_name="theme",
-        on_delete=django_models.SET_NULL,
-        null=True, blank=True)
-
-    # related Filter Category item
-    mptt_filter_category_item = django_models.OneToOneField(
         MpttFilterItem,
         related_name="theme",
         on_delete=django_models.SET_NULL,
@@ -35,12 +28,6 @@ class Theme(UUIDModel):
 
     # the list of related disciplines
     disciplines = django_models.ManyToManyField(
-        FilterCategoryItem,
-        related_name="parent_themes",
-        blank=True)
-
-    # the list of related disciplines
-    mptt_disciplines = django_models.ManyToManyField(
         MpttFilterItem,
         related_name="parent_themes",
         blank=True)

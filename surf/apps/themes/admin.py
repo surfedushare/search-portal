@@ -26,17 +26,17 @@ class ThemeForm(forms.ModelForm):
 
             # choose only Theme filter category items
             t_qs = qs.filter(parent__external_id=CUSTOM_THEME_FIELD_ID)
-            self.fields['mptt_filter_category_item'].queryset = t_qs.all()
+            self.fields['filter_category_item'].queryset = t_qs.all()
 
             # choose only Discipline filter category items
             d_qs = qs.filter(parent__external_id=DISCIPLINE_FIELD_ID)
-            self.fields['mptt_disciplines'].queryset = d_qs.all()
+            self.fields['disciplines'].queryset = d_qs.all()
         except AttributeError:
             pass
 
     class Meta:
         model = models.Theme
-        fields = ('description', 'external_id', 'mptt_filter_category_item', 'mptt_disciplines', 'title_translations',
+        fields = ('description', 'external_id', 'filter_category_item', 'disciplines', 'title_translations',
                   'description_translations',)
 
 
