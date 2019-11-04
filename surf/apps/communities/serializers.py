@@ -5,6 +5,7 @@ This module contains API view serializers for communities app.
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community
+from surf.apps.communities.models import PublishStatus
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
@@ -26,35 +27,19 @@ class CommunitySerializer(CommunityUpdateSerializer):
     Community instance serializer for get methods
     """
 
-    external_id = serializers.CharField(source="surf_team.external_id")
+    external_id = serializers.CharField()
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
-    is_admin = serializers.SerializerMethodField()
     is_member = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
-    description = serializers.SerializerMethodField()
     title_translations = LocaleSerializer()
     description_translations = LocaleHTMLSerializer()
-
-    @staticmethod
-    def get_name(obj):
-        if obj.name:
-            return obj.name
-        else:
-            return obj.surf_team.name
-
-    @staticmethod
-    def get_description(obj):
-        if obj.description:
-            return obj.description
-        else:
-            return obj.surf_team.description
+    publish_status = serializers.SerializerMethodField()
 
     @staticmethod
     def get_members_count(obj):
         try:
-            return obj.surf_team.members.count()
+            return obj.new_members.count()
         except Exception as exc:
             print(exc)
             return 0
@@ -69,24 +54,22 @@ class CommunitySerializer(CommunityUpdateSerializer):
         ids = [i for i in ids if i]
         return len(set(ids))
 
-    def get_is_admin(self, obj):
-        request = self.context.get("request")
-        if request and request.user and request.user.is_authenticated:
-            return obj.surf_team.admins.filter(id=request.user.id).exists()
-        return False
-
     def get_is_member(self, obj):
         request = self.context.get("request")
         if request and request.user and request.user.is_authenticated:
-            return obj.surf_team.members.filter(id=request.user.id).exists()
+            return obj.new_members.filter(id=request.user.id).exists()
         return False
+
+    @staticmethod
+    def get_publish_status(obj):
+        return str(PublishStatus.get(obj.publish_status))
 
     class Meta:
         model = Community
         fields = ('id', 'external_id', 'name', 'description', 'website_url',
                   'logo', 'featured_image', 'members_count',
                   'collections_count', 'materials_count',
-                  'is_admin', 'is_member', 'title_translations', 'description_translations',)
+                  'is_member', 'title_translations', 'description_translations', 'publish_status',)
 
 
 class CommunityDisciplineSerializer(FilterCategoryItemSerializer):

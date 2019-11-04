@@ -23,9 +23,7 @@ from oic.oic.message import ProviderConfigurationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 from surf.apps.users.models import SurfConextAuth
-from surf.apps.communities.models import SurfTeam
 from surf.apps.users.serializers import UserDetailsSerializer
-from surf.vendor.surfconext.voot.api import VootApiClient
 
 _OIDC_CONFIG = settings.OIDC_CONFIG
 
@@ -162,48 +160,11 @@ def _update_or_create_user(access_token, client):
     token = Token.objects.create(user=sca.user)
     sca.user.auth_token = token
 
-    _update_or_create_user_communities(sca.user, access_token)
-
     return sca.user
 
 
 _MEMBERSHIP_TYPE_MEMBER = "member"
 _MEMBERSHIP_TYPE_ADMIN = "admin"
-
-
-def _update_or_create_user_communities(user, access_token):
-    """
-    Create or update SurfTeam instances according to SURFconext groups of user
-    :param user: user instance
-    :param access_token: token to access to SURFconext
-    :return:
-    """
-    vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
-    groups = vac.get_groups(access_token)
-    if not isinstance(groups, list):
-        raise TypeError(f"VootApiClient didn't return a list but returned \"{groups}\" instead.")
-    teams = []
-    admin_teams = []
-    for g in groups:
-        try:
-            membership = g["membership"]["basic"]
-            if membership == _MEMBERSHIP_TYPE_ADMIN:
-                t, _ = SurfTeam.objects.get_or_create(
-                    external_id=g["id"],
-                    defaults=dict(name=g["displayName"],
-                                  description=g["description"]))
-                teams.append(t)
-                admin_teams.append(t)
-
-            elif membership == _MEMBERSHIP_TYPE_MEMBER:
-                t = SurfTeam.objects.get(external_id=g["id"])
-                teams.append(t)
-
-        except (KeyError, SurfTeam.DoesNotExist):
-            pass
-
-    user.teams.set(teams)
-    user.admin_teams.set(admin_teams)
 
 
 def _create_oidc_client():

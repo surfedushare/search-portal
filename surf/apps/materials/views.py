@@ -332,7 +332,7 @@ class CollectionViewSet(ModelViewSet):
     and `delete` methods for its materials.
     """
 
-    queryset = Collection.objects.all()
+    queryset = Collection.objects.filter(deleted_at=None)
     serializer_class = CollectionSerializer
     filter_class = CollectionFilter
     permission_classes = []
@@ -340,8 +340,7 @@ class CollectionViewSet(ModelViewSet):
     def get_queryset(self):
         qs = Collection.objects.annotate(community_cnt=Count('communities'))
 
-        # shared collections
-        filters = Q(is_shared=True)
+        filters = Q()
 
         # add own collections
         user = self.request.user
@@ -499,9 +498,6 @@ class CollectionViewSet(ModelViewSet):
         """
 
         if not user or not user.is_active:
-            raise AuthenticationFailed()
-
-        if instance and (instance.owner_id != user.id):
             raise AuthenticationFailed()
 
 
