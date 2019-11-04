@@ -2,18 +2,81 @@
 This module contains implementation of models for materials app.
 """
 
+import json
 from datetime import datetime
 
-from django.db import models as django_models
 from django.conf import settings
+from django.db import models as django_models
+from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.themes.models import Theme
-from surf.apps.filters.models import MpttFilterItem
+from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+    XmlEndpointApiClient,
+    DISCIPLINE_FIELD_ID,
+    CUSTOM_THEME_FIELD_ID
+)
 
 
 RESOURCE_TYPE_MATERIAL = "material"
 RESOURCE_TYPE_COLLECTION = "collection"
+
+class PublishStatus(enum.Enum):
+    DRAFT = 0
+    REVIEW = 1
+    PUBLISHED = 2
+
+    __labels__ = {
+        DRAFT: "Draft",
+        REVIEW: "Review",
+        PUBLISHED: "Published",
+    }
+
+
+_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
+
+
+def add_material_themes(material, themes):
+    ts = Theme.objects.filter(external_id__in=themes).all()
+    material.themes.set(ts)
+
+
+def add_material_disciplines(material, disciplines):
+    ds = MpttFilterItem.objects.filter(external_id__in=disciplines).all()
+    material.disciplines.set(ds)
+
+
+def get_material_details_by_id(material_id, api_client=None):
+    """
+    Request from EduRep and return details of material by its EduRep id
+    :param material_id: id of material in EduRep
+    :param api_client: EduRep API client (optional)
+    :return: list of requested materials
+    """
+
+    if not api_client:
+        api_client = XmlEndpointApiClient(
+            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+
+    res = api_client.get_materials_by_id(['"{}"'.format(material_id)],
+                                         drilldown_names=[_DISCIPLINE_FILTER])
+
+    # define themes and disciplines for requested material
+    themes = []
+    disciplines = []
+    for f in res.get("drilldowns", []):
+        if f["external_id"] == CUSTOM_THEME_FIELD_ID:
+            themes = [item["external_id"] for item in f["items"]]
+        elif f["external_id"] == DISCIPLINE_FIELD_ID:
+            disciplines = [item["external_id"] for item in f["items"]]
+
+    # set extra details for requested material
+    rv = res.get("records", [])
+    for material in rv:
+        material["themes"] = themes
+        material["disciplines"] = disciplines
+
+    return rv
 
 
 class Material(UUIDModel):
@@ -62,8 +125,7 @@ class Collection(UUIDModel):
                                               blank=True,
                                               related_name="collections")
 
-    # does owner share the collection
-    is_shared = django_models.BooleanField(default=False)
+    publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
 
     def __str__(self):
         return self.title
