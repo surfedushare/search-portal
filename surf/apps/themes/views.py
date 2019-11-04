@@ -14,6 +14,7 @@ from rest_framework.mixins import (
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from surf.apps.filters.models import MpttFilterItem
 from surf.apps.themes.models import Theme
 from surf.apps.materials.models import Material, Collection
 from surf.apps.communities.models import Community
@@ -55,11 +56,8 @@ class ThemeViewSet(ListModelMixin,
 
         res = []
         if instance.mptt_disciplines.exists():
-            items = [d.external_id for d in instance.mptt_disciplines.all()]
-            drilldowns = get_material_count_by_disciplines(items)
             context = self.get_serializer_context()
-            if drilldowns:
-                context["extra"] = dict(drilldowns=drilldowns)
+            context["mptt_tree"] = MpttFilterItem.objects.get_cached_trees()
 
             res = ThemeDisciplineSerializer(
                 many=True, context=context

@@ -2,13 +2,17 @@
 This module contains API view serializers for communities app.
 """
 
+from collections import OrderedDict
+
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community
 from surf.apps.communities.models import PublishStatus
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import FilterCategoryItemSerializer
+from surf.apps.filters.utils import add_default_material_filters
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
+from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
 
 
 class CommunityUpdateSerializer(serializers.ModelSerializer):
@@ -80,12 +84,13 @@ class CommunityDisciplineSerializer(FilterCategoryItemSerializer):
     materials_count = serializers.SerializerMethodField()
 
     def get_materials_count(self, obj):
-        try:
-            if self.context:
-                drilldowns = self.context["extra"]["drilldowns"]
-                return drilldowns.get(obj.external_id, 0)
-        except KeyError:
-            pass
+        if obj.external_id:
+            ac = XmlEndpointApiClient()
+            filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
+            tree = self.context["mptt_tree"]
+            filters = add_default_material_filters(filters, tree)
+            res = ac.search([], filters=filters, page_size=0)
+            return res['recordcount']
 
         return 0
 

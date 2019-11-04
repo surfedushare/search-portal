@@ -39,7 +39,8 @@ class ThemeDisciplineSerializer(MpttFilterItemSerializer):
         if obj.external_id:
             ac = XmlEndpointApiClient()
             filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
-            filters = add_default_material_filters(filters)
+            tree = self.context["mptt_tree"]
+            filters = add_default_material_filters(filters, tree)
             res = ac.search([], filters=filters, page_size=0)
             return res['recordcount']
 
