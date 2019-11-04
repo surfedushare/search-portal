@@ -1,28 +1,17 @@
 """
 This module contains implementation of models for communities app.
 """
+import re
 
-from django.db import models as django_models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import models as django_models
+from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
 
 from surf.apps.materials.models import Collection
-from surf.apps.locale.models import Locale, LocaleHTML
-
-from django_enumfield import enum
-
-
-class PublishStatus(enum.Enum):
-    DRAFT = 0
-    REVIEW = 1
-    PUBLISHED = 2
-
-    __labels__ = {
-        DRAFT: "Draft",
-        REVIEW: "Review",
-        PUBLISHED: "Published",
-    }
+from surf.statusenums import PublishStatus
 
 
 class SurfTeam(UUIDModel):

@@ -11,6 +11,7 @@ from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.themes.models import Theme
+from surf.statusenums import PublishStatus
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     DISCIPLINE_FIELD_ID,
@@ -20,18 +21,6 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 
 RESOURCE_TYPE_MATERIAL = "material"
 RESOURCE_TYPE_COLLECTION = "collection"
-
-class PublishStatus(enum.Enum):
-    DRAFT = 0
-    REVIEW = 1
-    PUBLISHED = 2
-
-    __labels__ = {
-        DRAFT: "Draft",
-        REVIEW: "Review",
-        PUBLISHED: "Published",
-    }
-
 
 _DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
 
