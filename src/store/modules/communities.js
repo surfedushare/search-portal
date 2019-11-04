@@ -32,7 +32,7 @@ export default {
     },
     getUserCommunities(state) {
       return (user) => {
-        if(!state.communities) {
+        if(!state.communities || _.isNil(user)) {
           return [];
         }
         return _.filter(state.communities.results, (community) => {
