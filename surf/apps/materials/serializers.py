@@ -15,7 +15,8 @@ from surf.apps.materials.models import (
     Material,
     ApplaudMaterial,
     SharedResourceCounter,
-    RESOURCE_TYPE_COLLECTION
+    RESOURCE_TYPE_COLLECTION,
+    PublishStatus,
 )
 
 
@@ -188,6 +189,7 @@ class CollectionSerializer(CollectionShortSerializer):
     communities_count = serializers.SerializerMethodField()
     communities = serializers.SerializerMethodField()
     sharing_counters = serializers.SerializerMethodField()
+    publish_status = serializers.SerializerMethodField()
 
     owner_name = serializers.CharField(
         source="owner.surfconext_auth.display_name", read_only=True)
@@ -223,6 +225,10 @@ class CollectionSerializer(CollectionShortSerializer):
         user = _get_and_check_user_from_context(self.context)
         return bool(user and user.id == obj.owner_id)
 
+    @staticmethod
+    def get_publish_status(obj):
+        return str(PublishStatus.get(obj.publish_status))
+
     def create(self, validated_data):
         user = _get_and_check_user_from_context(self.context)
         if user:
@@ -233,8 +239,8 @@ class CollectionSerializer(CollectionShortSerializer):
     class Meta:
         model = Collection
         fields = ('id', 'title', 'materials_count', 'communities_count',
-                  'is_shared', 'is_owner', 'owner_name', 'communities',
-                  'sharing_counters',)
+                  'is_owner', 'owner_name', 'communities',
+                  'sharing_counters', 'publish_status')
 
 
 class ApplaudMaterialSerializer(serializers.ModelSerializer):

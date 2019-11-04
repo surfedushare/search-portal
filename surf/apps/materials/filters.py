@@ -62,4 +62,4 @@ class CollectionFilter(filters.FilterSet):
 
     class Meta:
         model = Collection
-        fields = ('is_shared', 'is_owner', 'material_id',)
+        fields = ('is_owner', 'material_id', 'publish_status',)

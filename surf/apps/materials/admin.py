@@ -43,7 +43,7 @@ class CollectionAdmin(admin.ModelAdmin):
     Provides admin options and functionality for Collection model.
     """
 
-    list_display = ("title", "owner", "is_shared",)
-    list_filter = ("owner", "is_shared",)
-    readonly_fields = ('title', 'owner', 'is_shared',)
+    list_display = ("title", "owner", "publish_status",)
+    list_filter = ("owner", "publish_status",)
+    readonly_fields = ('title', 'owner',)
     ordering = ("title",)
