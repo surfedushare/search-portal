@@ -140,6 +140,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import Materials from '~/components/Materials';

@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';

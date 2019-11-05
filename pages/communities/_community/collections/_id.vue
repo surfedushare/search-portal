@@ -10,7 +10,7 @@ import injector from 'vue-inject';
 import Collection from '~/components/Collections/Collection';
 
 
-$log = injector.get('$log');
+const $log = injector.get('$log');
 
 
 export default {
