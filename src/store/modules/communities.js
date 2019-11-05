@@ -62,6 +62,17 @@ export default {
     },
     community_collections_loading(state) {
       return state.community_collections_loading;
+    },
+    getPublicCollections(state) {
+      return (user) => {
+        if(!state.community_collections) {
+          return [];
+        }
+        return _.filter(state.community_collections.results, (collection) => {
+          return collection.publish_status === 'PUBLISHED' || _.find(user.collections, {id: collection.id})
+            && collection.publish_status !== 'DRAFT'
+        })
+      }
     }
   },
   actions: {

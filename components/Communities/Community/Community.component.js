@@ -60,12 +60,16 @@ export default {
     ...mapGetters([
       'community_disciplines',
       'community_themes',
-      'community_collections',
+
       'community_collections_loading',
       'materials',
       'materials_loading',
       'user',
     ]),
+    community_collections() {
+      let communityCollections = this.$store.getters.getPublicCollections(this.user);
+      return (this.isLoading || !_.isEmpty(communityCollections)) ? communityCollections : null;
+    },
     community_info() {
       let communityInfo = this.$store.getters.getCommunityInfo(this.user);
       return (this.isLoading || !_.isEmpty(communityInfo)) ? communityInfo : null;
