@@ -72,12 +72,14 @@ apipatterns = [
 ] + router.urls
 
 urlpatterns = [
+    url('', include('social_django.urls', namespace='social')),
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
 
-    url(r'^login/surfconext/', auth_begin_handler),
-    url(r'^complete/surfconext/', auth_complete_handler),
+    #url(r'^login/surfconext/', auth_begin_handler),
+    #url(r'^complete/surfconext/', auth_complete_handler),
+
 
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 ]

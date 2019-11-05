@@ -29,6 +29,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # list of allowed endpoints to redirect
 ALLOWED_REDIRECT_ENDPOINTS = []
+ALLOWED_REDIRECT_HOSTS = []
 
 
 # Application definition
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'mptt',
+    'social_django',
 
     'corsheaders',
     'rest_framework',
@@ -148,9 +150,6 @@ REST_FRAMEWORK = {
     # )
 }
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -213,6 +212,33 @@ LOGGING = {
         },
     },
 }
+
+
+# Social Auth
+# https://python-social-auth.readthedocs.io/en/latest/index.html
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+
+AUTHENTICATION_BACKENDS = (
+    'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# https://python-social-auth.readthedocs.io/en/latest/pipeline.html
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'surf.vendor.surfconext.pipeline.require_data_permissions',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'surf.vendor.surfconext.pipeline.get_groups',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
 
 # OpenID Connect configuration
 OIDC_CONFIG = {
