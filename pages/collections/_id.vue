@@ -1,9 +1,12 @@
 
 <template>
   <section class="container main collection">
-    <div class="center_block">
+    <div v-if="!collectionInfo && !isLoading">
+      <error status-code="404" message-key="collection-not-found"></error>
+    </div>
+    <div class="center_block" v-else>
       <Collection
-        :collection="my_collection"
+        :collection="collectionInfo"
         :contenteditable="contenteditable"
         :submitting="submitting"
         :set-editable="setEditable"
@@ -49,6 +52,7 @@ import Spinner from '~/components/Spinner';
 import Collection from '~/components/Collections/Collection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
 import DeleteMaterial from '~/components/Popup/DeleteMaterial';
+import Error from '~/components/error'
 
 export default {
   components: {
@@ -56,7 +60,8 @@ export default {
     Materials,
     Spinner,
     DeleteCollection,
-    DeleteMaterial
+    DeleteMaterial,
+    Error
   },
   data() {
     return {

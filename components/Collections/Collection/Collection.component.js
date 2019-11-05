@@ -12,7 +12,7 @@ export default {
   name: 'collection',
   props: {
     collection: {
-      default: false
+      default: {}
     },
     contenteditable: {
       default: false
@@ -39,7 +39,7 @@ export default {
   },
   mounted() {
     const { collection } = this;
-    if (collection) {
+    if(!_.isEmpty(collection)) {
       this.setTitle(collection.title);
       this.setSocialCounters();
     }
@@ -222,7 +222,7 @@ export default {
      * @param collection - Object
      */
     collection(collection) {
-      if (collection) {
+      if(!_.isEmpty(collection)) {
         this.setTitle(collection.title);
         this.setSocialCounters();
       }
