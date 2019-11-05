@@ -24,7 +24,7 @@
       </div>
 
       <router-link
-        :to="localePath({name: 'collections-id', params: {id: collection.id}})"
+        :to="localePath({name: (editableContent) ? 'my-collection' : 'collections-id', params: {id: collection.id}})"
         class="collections__item_ttl_link"
         :key="`${collection.id}`"
       >

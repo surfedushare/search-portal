@@ -122,6 +122,7 @@
             <Collections
               v-if="community_collections"
               :collections="community_collections.results"
+              :editable-content="true"
               :loading="community_collections_loading"
             >
               <template slot="header-info">

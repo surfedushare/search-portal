@@ -53,7 +53,7 @@ export default {
       isShowDeleteCollection: false,
       isShowShareCollection: false,
       is_copied: false,
-      isPublished: true  // TODO: use new style publish state when available
+      isPublished: this.collection.publish_status === 'PUBLISHED'
     };
   },
   methods: {
@@ -94,7 +94,6 @@ export default {
      */
     deleteCollection() {
       this.$store.dispatch('deleteMyCollection', this.collection.id).then(() => {
-        this.$store.dispatch('getUser');
         if(window.history.length > 1) {
           this.$router.go(-1);
         } else {
@@ -226,14 +225,6 @@ export default {
         this.setTitle(collection.title);
         this.setSocialCounters();
       }
-    }
-  },
-  computed: {
-    ...mapGetters(['user']),
-    isEditor() {
-      return _.find(this.user.collections, (collection) => {
-        return collection.id === this.collection.id;
-      })
     }
   }
 };

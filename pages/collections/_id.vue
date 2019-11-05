@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      contenteditable: false,
+      contenteditable: this.$route.meta.editable,
       isShowDeleteCollection: false,
       isShowDeleteMaterials: false,
       submitting: false,
@@ -75,7 +75,8 @@ export default {
         page: 1,
         filters: [],
         search_text: []
-      }
+      },
+      isLoading: true
     };
   },
   computed: {
@@ -116,8 +117,6 @@ export default {
      * @param isEditable - Boolean
      */
     setEditable(isEditable) {
-      this.contenteditable = isEditable;
-
       if (!isEditable) {
         this.formData.materials_for_deleting = [];
       }

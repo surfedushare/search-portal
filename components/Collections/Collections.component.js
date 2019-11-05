@@ -13,6 +13,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    editableContent: {
+      type: Boolean,
+      default: false
     }
   },
   components: { Spinner }

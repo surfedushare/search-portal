@@ -136,14 +136,20 @@ export function createRouter () {
 			name: "my-collections___nl"
 		},
 		{
-			path: "/en/my/collection",
-			component: _5330bd0f,
-			name: "my-collection___en"
+			path: "/en/my/collection/:id",
+			component: _3729fb6e,
+			name: "my-collection___en",
+      meta: {
+        editable: true
+      }
 		},
 		{
-			path: "/mijn/collectie",
-			component: _5330bd0f,
-			name: "my-collection___nl"
+			path: "/mijn/collectie/:id",
+			component: _3729fb6e,
+			name: "my-collection___nl",
+      meta: {
+        editable: true
+      }
 		},
 		{
 			path: "/en/my/communities",
@@ -198,12 +204,18 @@ export function createRouter () {
 		{
 			path: "/en/collections/:id?",
 			component: _3729fb6e,
-			name: "collections-id___en"
+			name: "collections-id___en",
+      meta: {
+			  editable: false
+      }
 		},
 		{
 			path: "/collecties/:id?",
 			component: _3729fb6e,
-			name: "collections-id___nl"
+			name: "collections-id___nl",
+      meta: {
+        editable: false
+      }
 		},
 		{
 			path: "/en/communities/:community",
