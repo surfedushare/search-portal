@@ -114,11 +114,7 @@
               {{ $t('New-collection') }}
             </button>
           </div>
-          <div
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="community_collections_loading"
-            infinite-scroll-distance="10"
-          >
+          <div>
             <Collections
               v-if="community_collections"
               :collections="community_collections.results"
@@ -227,19 +223,6 @@ export default {
       this.formData.logo = community.logo;
       this.formData.featured_image = community.featured_image;
 
-    },
-    /**
-     * Load next collections
-     */
-    loadMore() {
-      const { community_collections, community_collections_loading } = this;
-      if (
-        community_collections &&
-        community_collections.next &&
-        !community_collections_loading
-      ) {
-        this.$store.dispatch('getCommunityCollectionsNextPage');
-      }
     },
     /**
      * Show the popup 'Add collection'
