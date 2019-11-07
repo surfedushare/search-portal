@@ -1,28 +1,16 @@
 <section class="community">
+  <InfoBlock :title="getTitleTranslation(community_info, $i18n.locale)"
+             :content="getDescriptionTranslation(community_info, $i18n.locale)"
+             :website_url="community_info.website_url"
+             :breadcrumb_items="[
+             {title: $t('Home'), url: localePath('index')},
+             {title: $t('Communities'), url: localePath('communities')},
+             ]"
+             :logo_src="community_info.featured_image"
+  >
+
+  </InfoBlock>
   <div class="center_block">
-    <div class="community__info">
-      <div class="community__info_wrapper">
-        <div class="community__info_logo" v-if="community_info.logo">
-          <img :src="`${ community_info.logo }`" alt=""/>
-        </div>
-        <div class="community__info_title">
-          <BreadCrumbs
-            :items="[
-              {title: $t('Home'), url: localePath('index')},
-              {title: $t('Communities'), url: localePath('communities')}
-            ]"/>
-          <h2 class="community__info_ttl">{{ getTitleTranslation(community_info, $i18n.locale) }}</h2>
-          <p class="community__description_txt html-content" v-html="getDescriptionTranslation(community_info, $i18n.locale)"></p>
-          <a
-            :href="`${ community_info.website_url }`"
-            v-if="community_info.website_url"
-            class="community__description_link arrow-link"
-          >
-            {{ $t('Visit-website') }}
-          </a>
-        </div>
-      </div>
-    </div>
     <div
       v-infinite-scroll="loadMoreCollections"
       infinite-scroll-disabled="community_collections_loading"
