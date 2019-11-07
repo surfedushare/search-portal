@@ -1,16 +1,15 @@
 <section class="community">
-  <InfoBlock :title="getTitleTranslation(community_info, $i18n.locale)"
-             :content="getDescriptionTranslation(community_info, $i18n.locale)"
-             :website_url="community_info.website_url"
-             :breadcrumb_items="[
+  <div class="center_block">
+    <InfoBlock :title="getTitleTranslation(community_info, $i18n.locale)"
+               :content="getDescriptionTranslation(community_info, $i18n.locale)"
+               :website_url="community_info.website_url"
+               :breadcrumb_items="[
              {title: $t('Home'), url: localePath('index')},
              {title: $t('Communities'), url: localePath('communities')},
              ]"
-             :logo_src="community_info.featured_image"
-  >
-
-  </InfoBlock>
-  <div class="center_block">
+               :logo_src="community_info.featured_image"
+    >
+    </InfoBlock>
     <div
       v-infinite-scroll="loadMoreCollections"
       infinite-scroll-disabled="community_collections_loading"
