@@ -35,7 +35,7 @@
           <div class="html-content" v-html="$t('html-About-the-portal-text')"></div>
         </div>
       </div>
-      <h2 class="how_work__materials_title">Uitgelicht</h2>
+      <h2 class="how_work__materials_title">{{$t('Uitgelicht')}}</h2>
       <Materials
         v-if="materials"
         :materials="materials"
