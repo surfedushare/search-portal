@@ -25,7 +25,7 @@
         :title="$t('About-the-portal')"
         :content="$t('html-About-the-portal-text')"
         />
-      <h2 class="how_work__materials_title">{{$t('Uitgelicht')}}</h2>
+      <h2 class="how_work__materials_title">{{$t('Newest-open-learning-material')}}</h2>
       <Materials
         v-if="materials"
         :materials="materials"
@@ -59,11 +59,7 @@ export default {
     ...mapGetters(['materials'])
   },
   mounted() {
-    this.$store.dispatch('searchMaterials', {
-      page_size: 4,
-      search_text: [],
-      return_filters: false
-    });
+    this.$store.dispatch('getMaterials', { page_size: 4 });
   }
 };
 </script>
