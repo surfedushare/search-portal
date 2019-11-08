@@ -240,24 +240,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-# OpenID Connect configuration
-OIDC_CONFIG = {
-    "version": "1.0",
-    "verify_ssl": True,
-    "response_type": "code",
-    "redirect_uri": "http://127.0.0.1:8000/complete/surfconext/",
-    "client_id": "",
-    "client_secret": "",
-    "issuer": "https://oidc.test.surfconext.nl/",
-    "authorization_endpoint": "https://oidc.test.surfconext.nl/authorize",
-    "userinfo_endpoint": "https://oidc.test.surfconext.nl/userinfo",
-    "token_endpoint": "https://oidc.test.surfconext.nl/token",
-    "revocation_endpoint": "https://oidc.test.surfconext.nl/revoke",
-    "jwks_uri": "https://oidc.test.surfconext.nl/jwk",
-    "scope": ["openid", "groups"],
-    "acr_values": ["password", "mail_two_factor",]
-}
-
 VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
 EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
 EDUREP_XML_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
