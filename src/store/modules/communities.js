@@ -69,7 +69,7 @@ export default {
           return [];
         }
         return _.filter(state.community_collections.results, (collection) => {
-          return collection.publish_status === 'PUBLISHED' || _.find(user.collections, {id: collection.id})
+          return collection.publish_status === 'PUBLISHED' || user && _.find(user.collections, {id: collection.id})
             && collection.publish_status !== 'DRAFT'
         })
       }

@@ -14,22 +14,23 @@
                  :logo_src="community_info.featured_image"
       >
       </InfoBlock>
-      <div
-        v-infinite-scroll="loadMoreCollections"
-        infinite-scroll-disabled="community_collections_loading"
-        infinite-scroll-distance="10"
-      >
+
+      <div>
+
         <Collections
           v-if="community_collections"
           :collections="community_collections.results"
           class="community__collections">
-
+          <template slot="header-info">
+            <h2>{{ $t('Collections-2') }}</h2>
+          </template>
         </Collections>
         <Spinner v-if="community_collections_loading"/>
       </div>
       <Materials v-show=false
                  :materials="materials"
                  class="community__materials"
+
       >
         <template slot="header-info">
           <h2>{{ $t('Uitgelicht') }}</h2>
