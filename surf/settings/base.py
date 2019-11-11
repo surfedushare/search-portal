@@ -219,6 +219,7 @@ LOGGING = {
 
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
