@@ -24,7 +24,7 @@ from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 from surf.apps.users.models import SurfConextAuth
 from surf.apps.users.serializers import UserDetailsSerializer
 
-_OIDC_CONFIG = settings.OIDC_CONFIG
+_OIDC_CONFIG = {}  # TODO: strip all OIDC from this file, it's deprecated
 
 _AUTH_REQUEST_TEMPLATE = {
     "scope": _OIDC_CONFIG.get("scope", []),
