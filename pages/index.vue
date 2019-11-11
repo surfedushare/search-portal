@@ -104,7 +104,7 @@ export default {
   &__info {
     @media @desktop {
       padding: 104px 0 0;
-      margin-bottom: 191px;
+      margin-bottom: 120px;
     }
     position: relative;
 
