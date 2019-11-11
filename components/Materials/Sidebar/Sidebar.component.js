@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection';
 import AddCollection from './../../Popup/AddCollection';

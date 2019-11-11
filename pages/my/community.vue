@@ -52,7 +52,6 @@
                   id="description"
                   v-model="formData.description"
                   name="description"
-                  required="required"
                   class="communities__form__textarea"
                 />
               </div>
@@ -143,9 +142,7 @@
 import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import Materials from '~/components/Materials';
 import Collections from '~/components/Collections';
-import Search from '~/components/FilterCategories/Search';
 import AddCollection from '~/components/Popup/AddCollection';
 import InputFile from '~/components/InputFile';
 import Error from '~/components/error';
@@ -156,8 +153,6 @@ export default {
     Error,
     Collections,
     BreadCrumbs,
-    Materials,
-    Search,
     AddCollection,
     InputFile
   },
