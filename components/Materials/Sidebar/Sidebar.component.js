@@ -295,7 +295,7 @@ export default {
           }
           return this.getTitleTranslation(levelObj, self.$i18n.locale)
         });
-        material.educationallevelsTitles = _.without(educationallevelsTitles, undefined).join(', ');
+        material.educationallevelsTitles = _.without(educationallevelsTitles, undefined).join('<br/>');
       }
 
       return material;

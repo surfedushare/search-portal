@@ -58,7 +58,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
 
 
 function setChildrenSelected(children, value) {
-  _.forEach(children, (child, index) => {
+  _.forEach(children, (child) => {
     child.selected = value;
     setChildrenSelected(child.children, value);
   });

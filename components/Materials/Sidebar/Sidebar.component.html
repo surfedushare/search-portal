@@ -7,7 +7,7 @@
       </template>
       <template v-if="material.educationallevelsTitles" class="materials__item_educationallevels">
         <h4>{{ $t('Learning-levels') }}</h4>
-        <div>{{ extended_material.educationallevelsTitles }}</div>
+        <div v-html="extended_material.educationallevelsTitles"></div>
       </template>
       <!--<h4>Soort materiaal</h4>-->
       <!--Video-->

@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
+import InfoBlock from '~/components/InfoBlock';
 import Search from '~/components/FilterCategories/Search';
 import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
@@ -20,7 +21,8 @@ export default {
     Disciplines,
     Collections,
     Materials,
-    Spinner
+    Spinner,
+    InfoBlock,
   },
   mounted() {
     const { community } = this.$route.params;
