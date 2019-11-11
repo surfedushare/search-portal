@@ -10,7 +10,6 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import redirect
 from django.http import JsonResponse
@@ -78,11 +77,24 @@ class UserDetailsAPIView(APIView):
     View class that provides detail information about current user .
     """
 
-    permission_classes = [IsAuthenticated]
-
     def get(self, request, *args, **kwargs):
-        res = UserDetailsSerializer().to_representation(request.user)
-        return Response(res)
+        if request.user.is_authenticated:
+            data = UserDetailsSerializer().to_representation(request.user)
+        else:
+            data = {}
+        permissions = request.session.get("permissions", None)
+        if permissions is None:
+            permissions = request.session["permissions"] = {}
+        data["permissions"] = permissions
+        request.session.modified = True  # this extends expiry
+        return Response(data)
+
+    def post(self, request, *args, **kwargs):
+        # TODO: we need permission validation
+        permissions = request.data.get("permissions", None)
+        if permissions:
+            request.session["permissions"] = permissions
+        return self.get(request, *args, **kwargs)
 
 
 def auth_begin_handler(request):
