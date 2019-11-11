@@ -122,14 +122,12 @@ class XmlEndpointApiClient:
         :return: dictionary with materials and drilldowns data
         """
         start_record = _get_start_record_by_page(page, page_size)
-        id_set = set(external_ids)
-        rv = self._call(query=" OR ".join(external_ids),
-                              start_record=start_record, maximum_records=page_size,
-                              drilldown_names=drilldown_names)
-
-        rv["records"] = [m for m in rv["records"]
-                         if m["external_id"] in id_set or
-                         '"{}"'.format(m["external_id"]) in id_set]
+        # meta.upload.id matches the record id exactly.
+        field_id = "meta.upload.id"
+        query = " OR ".join(['({} exact {})'.format(field_id, v) for v in external_ids])
+        rv = self._call(query=query,
+                        start_record=start_record, maximum_records=page_size,
+                        drilldown_names=drilldown_names)
         return rv
 
     def get_user_reviews(self, user_id, material_urn=None,

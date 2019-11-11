@@ -189,7 +189,7 @@ class MaterialAPIView(APIView):
                                                shared=data.get("shared"))
 
         else:
-            # return overview of Materials
+            # return overview of newest Materials
             ac = XmlEndpointApiClient(
                 api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
@@ -197,6 +197,8 @@ class MaterialAPIView(APIView):
             filters = add_default_material_filters()
 
             res = ac.search([],
+                            # sort by newest items first
+                            ordering="-lom.lifecycle.contribute.publisherdate",
                             filters=filters,
                             page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
