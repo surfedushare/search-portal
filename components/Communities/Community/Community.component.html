@@ -4,7 +4,6 @@
   </div>
   <div v-else>
     <div class="center_block">
-
       <InfoBlock :title="getTitleTranslation(community_info, $i18n.locale)"
                  :content="getDescriptionTranslation(community_info, $i18n.locale)"
                  :website_url="community_info.website_url"
@@ -15,12 +14,13 @@
                  :logo_src="community_info.featured_image"
       >
       </InfoBlock>
+
       <div>
+
         <Collections
           v-if="community_collections"
           :collections="community_collections.results"
           class="community__collections">
-
           <template slot="header-info">
             <h2>{{ $t('Collections-2') }}</h2>
           </template>
@@ -30,6 +30,8 @@
       <Materials v-show=false
                  :materials="materials"
                  class="community__materials"
+
+      >
         <template slot="header-info">
           <h2>{{ $t('Uitgelicht') }}</h2>
         </template>
