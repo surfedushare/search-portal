@@ -85,254 +85,251 @@ export function createRouter () {
     linkExactActiveClass: 'nuxt-link-exact-active',
     scrollBehavior,
     routes: [
-		{
-			path: "/en/how-does-it-work",
-			component: _e895237e,
-			name: "how-does-it-work___en"
-		},
-		{
-			path: "/hoe-werkt-het",
-			component: _e895237e,
-			name: "how-does-it-work___nl"
-		},
-		{
-			path: "/en/communities",
-			component: _e32cc490,
-			name: "communities___en"
-		},
-		{
-			path: "/communities",
-			component: _e32cc490,
-			name: "communities___nl"
-		},
-		{
-			path: "/en/materials/search",
-			component: _70c48e2d,
-			name: "materials-search___en"
-		},
-		{
-			path: "/materialen/zoeken",
-			component: _70c48e2d,
-			name: "materials-search___nl"
-		},
-		{
-			path: "/en/my/filters",
-			component: _77aed046,
-			name: "my-filters___en"
-		},
-		{
-			path: "/mijn/filters",
-			component: _77aed046,
-			name: "my-filters___nl"
-		},
-		{
-			path: "/en/my/collections",
-			component: _169285f4,
-			name: "my-collections___en"
-		},
-		{
-			path: "/mijn/collecties",
-			component: _169285f4,
-			name: "my-collections___nl"
-		},
-		{
-			path: "/en/my/collection/:id",
-			component: _3729fb6e,
-			name: "my-collection___en",
-      meta: {
-        editable: true
+      {
+        path: "/en/how-does-it-work",
+        component: _e895237e,
+        name: "how-does-it-work___en"
+      },
+      {
+        path: "/hoe-werkt-het",
+        component: _e895237e,
+        name: "how-does-it-work___nl"
+      },
+      {
+        path: "/en/communities",
+        component: _e32cc490,
+        name: "communities___en"
+      },
+      {
+        path: "/communities",
+        component: _e32cc490,
+        name: "communities___nl"
+      },
+      {
+        path: "/en/materials/search",
+        component: _70c48e2d,
+        name: "materials-search___en"
+      },
+      {
+        path: "/materialen/zoeken",
+        component: _70c48e2d,
+        name: "materials-search___nl"
+      },
+      {
+        path: "/en/my/filters",
+        component: _77aed046,
+        name: "my-filters___en"
+      },
+      {
+        path: "/mijn/filters",
+        component: _77aed046,
+        name: "my-filters___nl"
+      },
+      {
+        path: "/en/my/collections",
+        component: _169285f4,
+        name: "my-collections___en"
+      },
+      {
+        path: "/mijn/collecties",
+        component: _169285f4,
+        name: "my-collections___nl"
+      },
+      {
+        path: "/en/my/collection/:id",
+        component: _3729fb6e,
+        name: "my-collection___en",
+        meta: {
+          editable: true
+        }
+      },
+      {
+        path: "/mijn/collectie/:id",
+        component: _3729fb6e,
+        name: "my-collection___nl",
+        meta: {
+          editable: true
+        }
+      },
+      {
+        path: "/en/my/communities",
+        component: _b5953cb4,
+        name: "my-communities___en"
+      },
+      {
+        path: "/mijn/communities",
+        component: _b5953cb4,
+        name: "my-communities___nl"
+      },
+      {
+        path: "/en/my/community/:community",
+        component: myCommunity,
+        name: "my-community___en"
+      },
+      {
+        path: "/mijn/community/:community",
+        component: myCommunity,
+        name: "my-community___nl"
+      },
+      {
+        path: "/en/my/filters/:id",
+        component: _1c7624f6,
+        name: "my-filters-id___en"
+      },
+      {
+        path: "/mijn/filters/:id",
+        component: _1c7624f6,
+        name: "my-filters-id___nl"
+      },
+      {
+        path: "/en/themes/:id",
+        component: _45857c92,
+        name: "themes-id___en"
+      },
+      {
+        path: "/themas/:id",
+        component: _45857c92,
+        name: "themes-id___nl"
+      },
+      {
+        path: "/en/materials/:id",
+        component: _4ed33c85,
+        name: "materials-id___en"
+      },
+      {
+        path: "/materialen/:id",
+        component: _4ed33c85,
+        name: "materials-id___nl"
+      },
+      {
+        path: "/en/collections/:id?",
+        component: _3729fb6e,
+        name: "collections-id___en",
+        meta: {
+          editable: false
+        }
+      },
+      {
+        path: "/collecties/:id?",
+        component: _3729fb6e,
+        name: "collections-id___nl",
+        meta: {
+          editable: false
+        }
+      },
+      {
+        path: "/en/communities/:community",
+        component: _e164c612,
+        name: "communities-community___en"
+      },
+      {
+        path: "/communities/:community",
+        component: _e164c612,
+        name: "communities-community___nl"
+      },
+      {
+        path: "/en/communities/:community/search",
+        component: _0624db53,
+        name: "communities-community-search___en"
+      },
+      {
+        path: "/communities/:community/zoeken",
+        component: _0624db53,
+        name: "communities-community-search___nl"
+      },
+      {
+        path: "/en/communities/:community/collections/:id?",
+        component: _2cdbb9b6,
+        name: "communities-community-collections-id___en"
+      },
+      {
+        path: "/communities/:community/collecties/:id?",
+        component: _2cdbb9b6,
+        name: "communities-community-collections-id___nl"
+      },
+      {
+        path: "/en/privacy",
+        component: infoPage,
+        name: "privacy___en",
+        meta: {
+          title_translation_key: 'title-privacy-info',
+          html_translation_key: 'html-privacy-info'
+        }
+      },
+      {
+        path: "/privacy",
+        component: infoPage,
+        name: "privacy___nl",
+        meta: {
+          title_translation_key: 'title-privacy-info',
+          html_translation_key: 'html-privacy-info'
+        }
+      },
+      {
+        path: "/en/copyright",
+        component: infoPage,
+        name: "copyright___en",
+        meta: {
+          title_translation_key: 'title-copyright-info',
+          html_translation_key: 'html-copyright-info'
+        }
+      },
+      {
+        path: "/copyright",
+        component: infoPage,
+        name: "copyright___nl",
+        meta: {
+          title_translation_key: 'title-copyright-info',
+          html_translation_key: 'html-copyright-info'
+        }
+      },
+      {
+        path: "/en/cookies",
+        component: infoPage,
+        name: "cookies___en",
+        meta: {
+          title_translation_key: 'title-cookies-info',
+          html_translation_key: 'html-cookies-info'
+        }
+      },
+      {
+        path: "/cookies",
+        component: infoPage,
+        name: "cookies___nl",
+        meta: {
+          title_translation_key: 'title-cookies-info',
+          html_translation_key: 'html-cookies-info'
+        }
+      },
+      {
+        path: "/en/disclaimer",
+        component: infoPage,
+        name: "disclaimer___en",
+        meta: {
+          title_translation_key: 'title-disclaimer-info',
+          html_translation_key: 'html-disclaimer-info'
+        }
+      },
+      {
+        path: "/disclaimer",
+        component: infoPage,
+        name: "disclaimer___nl",
+        meta: {
+          title_translation_key: 'title-disclaimer-info',
+          html_translation_key: 'html-disclaimer-info'
+        }
+      },
+      {
+        path: "/en/",
+        component: _ebbee700,
+        name: "index___en"
+      },
+      {
+        path: "/",
+        component: _ebbee700,
+        name: "index___nl"
       }
-		},
-		{
-			path: "/mijn/collectie/:id",
-			component: _3729fb6e,
-			name: "my-collection___nl",
-      meta: {
-        editable: true
-      }
-		},
-		{
-			path: "/en/my/communities",
-			component: _b5953cb4,
-			name: "my-communities___en"
-		},
-		{
-			path: "/mijn/communities",
-			component: _b5953cb4,
-			name: "my-communities___nl"
-		},
-    {
-      path: "/en/my/community/:community",
-      component: myCommunity,
-      name: "my-community___en"
-    },
-    {
-      path: "/mijn/community/:community",
-      component: myCommunity,
-      name: "my-community___nl"
-    },
-		{
-			path: "/en/my/filters/:id",
-			component: _1c7624f6,
-			name: "my-filters-id___en"
-		},
-		{
-			path: "/mijn/filters/:id",
-			component: _1c7624f6,
-			name: "my-filters-id___nl"
-		},
-		{
-			path: "/en/themes/:id",
-			component: _45857c92,
-			name: "themes-id___en"
-		},
-		{
-			path: "/themas/:id",
-			component: _45857c92,
-			name: "themes-id___nl"
-		},
-		{
-			path: "/en/materials/:id",
-			component: _4ed33c85,
-			name: "materials-id___en"
-		},
-		{
-			path: "/materialen/:id",
-			component: _4ed33c85,
-			name: "materials-id___nl"
-		},
-		{
-			path: "/en/collections/:id?",
-			component: _3729fb6e,
-			name: "collections-id___en",
-      meta: {
-			  editable: false
-      }
-		},
-		{
-			path: "/collecties/:id?",
-			component: _3729fb6e,
-			name: "collections-id___nl",
-      meta: {
-        editable: false
-      }
-		},
-		{
-			path: "/en/communities/:community",
-			component: _e164c612,
-			name: "communities-community___en"
-		},
-		{
-			path: "/communities/:community",
-			component: _e164c612,
-			name: "communities-community___nl"
-		},
-		{
-			path: "/en/communities/:community/search",
-			component: _0624db53,
-			name: "communities-community-search___en"
-		},
-		{
-			path: "/communities/:community/zoeken",
-			component: _0624db53,
-			name: "communities-community-search___nl"
-		},
-		{
-			path: "/en/communities/:community/collections/:id?",
-			component: _2cdbb9b6,
-			name: "communities-community-collections-id___en"
-		},
-		{
-			path: "/communities/:community/collecties/:id?",
-			component: _2cdbb9b6,
-			name: "communities-community-collections-id___nl"
-		},
-        {
-            path: "/en/privacy",
-            component: infoPage,
-            name: "privacy___en",
-            meta: {
-                title_translation_key: 'title-privacy-info',
-                html_translation_key: 'html-privacy-info'
-            }
-        },
-        {
-            path: "/privacy",
-            component: infoPage,
-            name: "privacy___nl",
-            meta: {
-                title_translation_key: 'title-privacy-info',
-                html_translation_key: 'html-privacy-info'
-            }
-        },
-        {
-            path: "/en/copyright",
-            component: infoPage,
-            name: "copyright___en",
-            meta: {
-                title_translation_key: 'title-copyright-info',
-                html_translation_key: 'html-copyright-info'
-            }
-        },
-        {
-            path: "/copyright",
-            component: infoPage,
-            name: "copyright___nl",
-            meta: {
-                title_translation_key: 'title-copyright-info',
-                html_translation_key: 'html-copyright-info'
-            }
-        },
-        {
-            path: "/en/cookies",
-            component: infoPage,
-            name: "cookies___en",
-            meta: {
-                title_translation_key: 'title-cookies-info',
-                html_translation_key: 'html-cookies-info'
-            }
-        },
-        {
-            path: "/cookies",
-            component: infoPage,
-            name: "cookies___nl",
-            meta: {
-                title_translation_key: 'title-cookies-info',
-                html_translation_key: 'html-cookies-info'
-            }
-        },
-        {
-            path: "/en/disclaimer",
-            component: infoPage,
-            name: "disclaimer___en",
-            meta: {
-                title_translation_key: 'title-disclaimer-info',
-                html_translation_key: 'html-disclaimer-info'
-            }
-        },
-        {
-            path: "/disclaimer",
-            component: infoPage,
-            name: "disclaimer___nl",
-            meta: {
-                title_translation_key: 'title-disclaimer-info',
-                html_translation_key: 'html-disclaimer-info'
-            }
-        },
-		{
-			path: "/en/",
-			component: _ebbee700,
-			name: "index___en"
-		},
-		{
-			path: "/",
-			component: _ebbee700,
-			name: "index___nl"
-		}
-
     ],
-
-
     fallback: false
   })
 }
