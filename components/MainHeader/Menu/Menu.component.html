@@ -7,41 +7,41 @@
           href="/themes/"
           @click.prevent="toggleSubMenu"
           class="menu__link arrow-link-grey"
-          :class="{'nuxt-link-active': isShowSubMenu}"
+          :class="{'router-link-active': isShowSubMenu}"
         >{{ $t('Themes') }}</a>
         <transition name="fade">
           <div class="menu__sub" v-if="isShowSubMenu">
             <h3 class="title">{{ $t('Themes') }}</h3>
             <ul v-if="sortedThemes" class="menu__sub_list">
               <li v-for="theme in sortedThemes" class="menu__sub_list_item">
-                <nuxt-link
+                <router-link
                   class="menu__sub_link arrow-link"
                   :to="localePath({name: 'themes-id', params: {id: theme.id}})"
                   @click.native="closeSubMenu(true)"
                 >
-                  {{getThemeTitleTranslation(theme, $i18n.locale)}}</nuxt-link>
+                  {{getThemeTitleTranslation(theme, $i18n.locale)}}</router-link>
               </li>
             </ul>
           </div>
         </transition>
       </li>
-      <li class="menu__list_item">
-        <nuxt-link
+      <li class="menu__list_item" v-show="false">
+        <router-link
           :to="localePath('communities')"
           class="menu__link"
           @click.native="closeSubMenu(true)"
         >
           {{ $t('Communities') }}
-        </nuxt-link>
+        </router-link>
       </li>
       <li class="menu__list_item">
-        <nuxt-link
+        <router-link
           :to="localePath('how-does-it-work')"
           class="menu__link"
           @click.native="closeSubMenu(true)"
         >
           {{ $t('How-does-it-work') }}
-        </nuxt-link>
+        </router-link>
       </li>
     </ul>
   </nav>
