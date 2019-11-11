@@ -67,16 +67,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     """
-    Implementation of Django custom User model.
+    Unfortunately the Django User was replaced with a custom User for no particular reason.
+    It's hard to remove the custom User, so we're going to be stuck with it for a while.
     """
-    REQUIRED_FIELDS = []
-
-    objects = UserManager()
-
-    class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
-        ordering = ("username",)
+    pass
 
 
 class SurfConextAuth(UUIDModel):
