@@ -54,7 +54,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
 
 
 function setChildrenSelected(children, value) {
-  _.forEach(children, (child, index) => {
+  _.forEach(children, (child) => {
     child.selected = value;
     setChildrenSelected(child.children, value);
   });
@@ -158,6 +158,9 @@ export default {
       state.filter_categories_loading = payload;
     },
     SETUP_FILTER_CATEGORIES(state, data) {
+      if(_.isNil(state.filter_categories)) {
+        return;
+      }
       let openFilters = _.filter(state.filter_categories.results, (item) => { return item.isOpen });
       let openFilterIds = _.map(openFilters, (item) => { return item.id});
       let showAllFilters = _.filter(state.filter_categories.results, (item) => { return item.showAll });

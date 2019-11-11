@@ -7,7 +7,7 @@
       </template>
       <template v-if="material.educationallevelsTitles" class="materials__item_educationallevels">
         <h4>{{ $t('Learning-levels') }}</h4>
-        <div>{{ extended_material.educationallevelsTitles }}</div>
+        <div v-html="extended_material.educationallevelsTitles"></div>
       </template>
       <!--<h4>Soort materiaal</h4>-->
       <!--Video-->
@@ -66,7 +66,7 @@
       </a>
     </div>
 
-    <div class="material__left-box" v-show="$root.loginEnabled">
+    <div class="material__left-box" v-show="$root.loginEnabled || isAuthenticated">
       <template v-if="!isAuthenticated">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <p>{{ $t('To-be-able-to-make-collections-you-must-first-log') }}</p>

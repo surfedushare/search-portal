@@ -433,9 +433,8 @@ export default {
     onChangeTitleLength(event) {
       const { title } = this.$refs;
       const { titleMaxLength } = this;
-      console.log(titleMaxLength);
-      //You can add delete key event code as well over here for windows users.
-      if (title.innerText.length >= titleMaxLength && event.keyCode != 8) {
+      // You can add delete key event code as well over here for windows users.
+      if (title.innerText.length >= titleMaxLength && event.keyCode !== 8) {
         event.preventDefault();
       }
     },

@@ -1,4 +1,7 @@
 import Vue from 'vue'
+import injector from 'vue-inject';
+Vue.use(injector);
+
 import { createRouter } from './router.js'
 import NuxtChild from './components/nuxt-child.js'
 import NuxtLink from './components/nuxt-link.js'
@@ -19,7 +22,6 @@ import nuxt_plugin_axios_3566aa80 from './plugins/axios'
 import nuxt_plugin_SocialSharing_3ab090d9 from './plugins/SocialSharing'
 import nuxt_plugin_VueMasonry_21187416 from './plugins/VueMasonry'
 import nuxt_plugin_VueClipboard_7da67946 from './plugins/VueClipboard'
-import nuxt_plugin_veeValidate_1cb8e4d4 from './plugins/veeValidate'
 
 
 // Component: <nuxt-child>
@@ -31,7 +33,7 @@ Vue.component(NuxtLink.name, NuxtLink);
 // Component: <nuxt>`
 Vue.component(Nuxt.name, Nuxt);
 
-const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"}
+const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"};
 
 async function createApp (ssrContext) {
   const router = await createRouter(ssrContext);
@@ -160,7 +162,6 @@ async function createApp (ssrContext) {
   if (typeof nuxt_plugin_SocialSharing_3ab090d9 === 'function') await nuxt_plugin_SocialSharing_3ab090d9(app.context, inject);
   if (typeof nuxt_plugin_VueMasonry_21187416 === 'function') await nuxt_plugin_VueMasonry_21187416(app.context, inject);
   if (typeof nuxt_plugin_VueClipboard_7da67946 === 'function') await nuxt_plugin_VueClipboard_7da67946(app.context, inject);
-  if (typeof nuxt_plugin_veeValidate_1cb8e4d4 === 'function') await nuxt_plugin_veeValidate_1cb8e4d4(app.context, inject)
 
   return {
     app,

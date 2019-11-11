@@ -48,7 +48,7 @@
       </div>
       <div class="main__materials">
         <div class="center_block">
-          <h2 class="main__materials_title">{{ $t('Featured-open-learning-material') }}</h2>
+          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
           <Materials :materials="materials" />
         </div>
       </div>
@@ -104,7 +104,7 @@ export default {
   &__info {
     @media @desktop {
       padding: 104px 0 0;
-      margin-bottom: 191px;
+      margin-bottom: 120px;
     }
     position: relative;
 
@@ -259,11 +259,14 @@ export default {
     }
     align-items: start;
     justify-content: space-between;
+    .popular-list {
+      display: none;
+    }
   }
 
   &__thems {
     @media @desktop {
-      width: 521px;
+      width: 700px;
     }
   }
 

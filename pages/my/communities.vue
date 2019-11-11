@@ -28,9 +28,8 @@
                 {{ $t('Name') }}
               </label>
               <input
-                v-validate="'required'"
+                required
                 id="name"
-                :class="{'is-danger': errors.has('name')}"
                 v-model="formData.name"
                 name="name"
                 type="text"
@@ -45,9 +44,8 @@
                 {{ $t('Description') }}
               </label>
               <textarea
-                v-validate="'required'"
+                required
                 id="description"
-                :class="{'is-danger': errors.has('description')}"
                 v-model="formData.description"
                 name="description"
                 required="required"
@@ -62,9 +60,7 @@
                 {{ $t('Website') }}
               </label>
               <input
-                v-validate="'required|url:require_protocol'"
                 id="website"
-                :class="{'is-danger': errors.has('website')}"
                 v-model="formData.website_url"
                 name="website"
                 type="text"
@@ -96,7 +92,7 @@
               &#10004; {{ $t('Data-saved') }}
             </div>
             <button
-              :disabled="is_submitting|| !!(errors.items && errors.items.length)"
+              :disabled="is_submitting"
               type="submit"
               class="button communities__form__button"
             >
@@ -133,7 +129,6 @@
           v-if="isShow"
           :close="close"
           :is-show="isShow"
-          :is-shared="true"
           submit-method="postCommunityCollection"
           @submitted="saveCollection"
         />
@@ -253,29 +248,23 @@ export default {
       this.error = null;
       this.is_submitting = true;
 
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          const data = this.normalizeFormData();
-          this.$store
-            .dispatch('putCommunities', {
-              id: this.formData.id,
-              data: data
-            })
-            .then(() => {
-              this.is_submitting = false;
-              this.is_saved = true;
-              setTimeout(() => {
-                this.is_saved = false;
-              }, 1000);
-            })
-            .catch(err => {
-              this.error = err;
-              this.is_submitting = false;
-            });
-        } else {
+      const data = this.normalizeFormData();
+      this.$store
+        .dispatch('putCommunities', {
+          id: this.formData.id,
+          data: data
+        })
+        .then(() => {
           this.is_submitting = false;
-        }
-      });
+          this.is_saved = true;
+          setTimeout(() => {
+            this.is_saved = false;
+          }, 1000);
+        })
+        .catch(err => {
+          this.error = err;
+          this.is_submitting = false;
+        });
     },
     /**
      * Generate the FormData

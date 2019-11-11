@@ -26,15 +26,16 @@
     <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" :theme="theme"/>
   </div>
   <div class="theme__materials_and_communities theme__row center_block">
-    <Materials
-    :materials="materials"
-    :items-in-line="2"
-    class="theme__materials">
+    <Collections
+      :collections="themeCollections"
+      :items-in-line="2"
+      class="theme__materials"
+    >
       <template slot="header-info">
-        <h2>{{ $t('Uitgelicht') }}</h2>
-        <p class="materials__description">{{ $t('Featured-learning-materials-in-the-theme') }} {{ getTitleTranslation(theme, $i18n.locale) }}</p>
+        <h2>{{ $t('Collections-2') }}</h2>
       </template>
-    </Materials>
+    </Collections>
+
     <PopularList
       class="theme__communities"
       :communities="themeCommunities"
@@ -45,13 +46,15 @@
       </template>
     </PopularList>
   </div>
-  <div class="theme__collections theme__row center_block">
-    <Collections
-      :collections="themeCollections"
-    >
+  <div class="theme__collections theme__row center_block" v-show=false>
+    <Materials
+    :materials="materials"
+    :items-in-line="2"
+    class="theme__materials">
       <template slot="header-info">
-        <h2>{{ $t('Collections-2') }}</h2>
+        <h2>{{ $t('Uitgelicht') }}</h2>
+        <p class="materials__description">{{ $t('Featured-learning-materials-in-the-theme') }} {{ getTitleTranslation(theme, $i18n.locale) }}</p>
       </template>
-    </Collections>
+    </Materials>
   </div>
 </div></section>

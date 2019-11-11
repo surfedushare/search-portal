@@ -9,34 +9,12 @@
       <h3>{{ $t('Footer-info-title') }}</h3>
       <div class="main-footer__info_text html-content" v-html="$t('html-Footer-info-text')"></div>
       <a
-        href="https://www.surf.nl/"
+        href="https://www.surf.nl/expertises/digitale-leermaterialen"
         target="_blank"
         class="main-footer__info_link arrow-link"
       >
         SURF.nl
       </a>
-    </div>
-    <div class="main-footer__links">
-      <h3>Links</h3>
-      <nav>
-        <a
-          @click.prevent="toggleSubMenuThemes"
-          href="/themes/"
-          class="main-footer__link arrow-link"
-        >{{ $t('Education-themes') }}</a>
-        <nuxt-link
-          :to="localePath('communities')"
-          class="main-footer__link arrow-link"
-        >
-          {{ $t('Communities') }}
-        </nuxt-link>
-        <nuxt-link
-          :to="localePath('how-does-it-work')"
-          class="main-footer__link arrow-link"
-        >
-          {{ $t('How-does-it-work') }}
-        </nuxt-link>
-      </nav>
     </div>
   </div>
   <div class="main-footer__bottom_block">
