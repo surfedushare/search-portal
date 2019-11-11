@@ -259,11 +259,14 @@ export default {
     }
     align-items: start;
     justify-content: space-between;
+    .popular-list {
+      display: none;
+    }
   }
 
   &__thems {
     @media @desktop {
-      width: 521px;
+      width: 700px;
     }
   }
 
