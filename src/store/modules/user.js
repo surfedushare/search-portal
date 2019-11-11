@@ -12,6 +12,9 @@ export default {
     },
     isAuthenticated(state) {
       return !!state.user;
+    },
+    my_collections(state) {
+      return state.user.collections || [];
     }
   },
   actions: {

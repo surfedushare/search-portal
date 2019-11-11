@@ -1,9 +1,12 @@
 
 <template>
   <section class="container main collection">
-    <div class="center_block">
+    <div v-if="!collectionInfo && !isLoading">
+      <error status-code="404" message-key="collection-not-found"></error>
+    </div>
+    <div class="center_block" v-else>
       <Collection
-        :collection="my_collection"
+        :collection="collectionInfo"
         :contenteditable="contenteditable"
         :submitting="submitting"
         :set-editable="setEditable"
@@ -13,20 +16,16 @@
         @onSubmit="onSubmit"
       />
 
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="my_collection_materials_loading"
-        infinite-scroll-distance="10"
-      >
+      <div>
         <Materials
           v-model="formData.materials_for_deleting"
-          :materials="my_collection_materials"
+          :materials="collection_materials"
           :items-in-line="materials_in_line"
-          :loading="my_collection_materials_loading"
+          :loading="collection_materials_loading"
           :contenteditable="contenteditable"
           class="collection__materials"
         />
-        <Spinner v-if="my_collection_materials_loading" />
+        <Spinner v-if="collection_materials_loading" />
       </div>
     </div>
     <DeleteCollection
@@ -43,12 +42,14 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
 import Collection from '~/components/Collections/Collection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
 import DeleteMaterial from '~/components/Popup/DeleteMaterial';
+import Error from '~/components/error'
 
 export default {
   components: {
@@ -56,11 +57,12 @@ export default {
     Materials,
     Spinner,
     DeleteCollection,
-    DeleteMaterial
+    DeleteMaterial,
+    Error
   },
   data() {
     return {
-      contenteditable: false,
+      contenteditable: this.$route.meta.editable,
       isShowDeleteCollection: false,
       isShowDeleteMaterials: false,
       submitting: false,
@@ -74,32 +76,28 @@ export default {
         page: 1,
         filters: [],
         search_text: []
-      }
+      },
+      isLoading: true
     };
   },
   computed: {
     ...mapGetters([
-      'my_collection',
-      'my_collection_materials',
+      'collection',
+      'collection_materials',
       'materials_loading',
-      'my_collection_materials_loading'
-    ])
-  },
-  watch: {
-    search(search) {
-      if (search) {
-        const { id } = this.$route.params;
-
-        this.$store.dispatch('searchMaterialInMyCollection', {
-          id,
-          params: {
-            ...search,
-            page_size: 10,
-            page: 1
-          }
-        });
+      'collection_materials_loading',
+      'user'
+    ]),
+    collectionInfo() {
+      if (_.isEmpty(this.collection)) {
+        return this.collection;
+      } else if (this.collection.publish_status === 'PUBLISHED') {
+        return this.collection;
+      } else if(this.user && _.find(this.user.collections, {id: this.collection.id})) {
+        return this.collection;
       }
-    }
+      return {}
+    },
   },
   mounted() {
     const { id } = this.$route.params;
@@ -110,40 +108,16 @@ export default {
         page: 1
       }
     });
-    this.$store.dispatch('getMyCollection', id).catch(err => {
-      if (err.response.status === 404) {
-        this.$router.push('/');
-      }
+    this.$store.dispatch('getCollection', id).finally(() => {
+      this.isLoading = false;
     });
   },
   methods: {
-    /**
-     * Load next collections
-     */
-    loadMore() {
-      const { my_collection_materials, search } = this;
-      const { id } = this.$route.params;
-      if (my_collection_materials) {
-        const { page_size, page, records_total } = my_collection_materials;
-
-        if (records_total > page_size * page) {
-          this.$store.dispatch(
-            'getNextPeMaterialInMyCollection',
-            Object.assign(
-              {},
-              { id, params: { ...search, page: page + 1, page_size } }
-            )
-          );
-        }
-      }
-    },
     /**
      * Set editable to the collection
      * @param isEditable - Boolean
      */
     setEditable(isEditable) {
-      this.contenteditable = isEditable;
-
       if (!isEditable) {
         this.formData.materials_for_deleting = [];
       }
@@ -169,11 +143,11 @@ export default {
       this.setEditable(false);
     },
     deleteMaterials() {
-      const { my_collection } = this;
+      const { collection } = this;
       const { materials_for_deleting } = this.formData;
       this.$store
         .dispatch('removeMaterialFromMyCollection', {
-          collection_id: my_collection.id,
+          collection_id: collection.id,
           data: materials_for_deleting.map(material => {
             return {
               external_id: material
@@ -183,12 +157,12 @@ export default {
         .then(() => {
           this.$nextTick().then(() => {
             this.$store.dispatch('putMyCollection', {
-              ...this.my_collection,
+              ...this.collection,
               ...this.submitData
             });
             this.$store
               .dispatch('getMaterialInMyCollection', {
-                id: my_collection.id,
+                id: collection.id,
                 params: {
                   page_size: this.search.page_size,
                   page: 1
@@ -225,7 +199,7 @@ export default {
       } else {
         this.$store
           .dispatch('putMyCollection', {
-            ...this.my_collection,
+            ...this.collection,
             ...data
           })
           .then(() => {
@@ -239,9 +213,10 @@ export default {
   }
 };
 </script>
+
 <style lang="less">
-.collection {
-  width: 100%;
-  padding: 95px 0 215px;
-}
+  .collection {
+    width: 100%;
+    padding: 95px 0 215px;
+  }
 </style>

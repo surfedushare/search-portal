@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import EditableContent from '~/components/EditableContent';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';
@@ -10,7 +12,7 @@ export default {
   name: 'collection',
   props: {
     collection: {
-      default: false
+      default: {}
     },
     contenteditable: {
       default: false
@@ -26,9 +28,6 @@ export default {
     },
     'items-in-line': {
       default: 4
-    },
-    user: {
-      default: false
     }
   },
   components: {
@@ -40,7 +39,7 @@ export default {
   },
   mounted() {
     const { collection } = this;
-    if (collection) {
+    if(!_.isEmpty(collection)) {
       this.setTitle(collection.title);
       this.setSocialCounters();
     }
@@ -54,7 +53,7 @@ export default {
       isShowDeleteCollection: false,
       isShowShareCollection: false,
       is_copied: false,
-      isPublished: true  // TODO: use new style publish state when available
+      isPublished: this.collection.publish_status === 'PUBLISHED'
     };
   },
   methods: {
@@ -94,12 +93,13 @@ export default {
      * Deleting collection by id
      */
     deleteCollection() {
-      const { is_owner, id } = this.collection;
-      if (is_owner) {
-        this.$store.dispatch('deleteMyCollection', id).then(() => {
-          this.$router.push(this.localePath({ name: 'my-collections' }));
-        });
-      }
+      this.$store.dispatch('deleteMyCollection', this.collection.id).then(() => {
+        if(window.history.length > 1) {
+          this.$router.go(-1);
+        } else {
+          this.$router.push(this.localePath({ name: 'my-communities' }));
+        }
+      });
     },
     closeDeleteCollection() {
       this.isShowDeleteCollection = false;
@@ -114,7 +114,6 @@ export default {
      * Set counters value for share buttons
      */
     setSocialCounters() {
-      let isSetChanges = false;
       const interval = setInterval(() => {
         this.$nextTick().then(() => {
           const { collection } = this;
@@ -158,7 +157,6 @@ export default {
                 share.link.counter_value;
             }
             if (linkedIn) {
-              isSetChanges = true;
               clearInterval(interval);
             }
           }
@@ -223,7 +221,7 @@ export default {
      * @param collection - Object
      */
     collection(collection) {
-      if (collection) {
+      if(!_.isEmpty(collection)) {
         this.setTitle(collection.title);
         this.setSocialCounters();
       }

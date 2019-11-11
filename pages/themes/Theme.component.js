@@ -6,6 +6,7 @@ import Materials from '~/components/Materials';
 import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import BreadCrumbs from '~/components/BreadCrumbs';
+import Error from '~/components/error';
 
 export default {
   name: 'theme',
@@ -16,7 +17,8 @@ export default {
     Materials,
     Disciplines,
     Collections,
-    BreadCrumbs
+    BreadCrumbs,
+    Error
   },
   mounted() {
 
@@ -24,19 +26,23 @@ export default {
 
     this.$store.dispatch('getFilterCategories').then(() => {
 
-      this.$store.dispatch('getTheme', themeId).then(theme => {
+      this.$store.dispatch('getTheme', themeId)
+        .then(theme => {
 
-        let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
-        themeCategory.selected = true;
+          let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
+          themeCategory.selected = true;
 
-        this.$store.dispatch('searchMaterials', {
-          page_size: 2,
-          search_text: [],
-          filters: this.$store.getters.search_filters,
-          return_filters: false
+          this.$store.dispatch('searchMaterials', {
+            page_size: 2,
+            search_text: [],
+            filters: this.$store.getters.search_filters,
+            return_filters: false
+          });
+
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
-
-      });
 
     });
 
@@ -53,6 +59,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       search: {
         filters: [
           {

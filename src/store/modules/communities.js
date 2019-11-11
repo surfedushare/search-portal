@@ -1,4 +1,10 @@
-import { validateID, validateIDString, validateParams } from './_helpers';
+import _ from 'lodash';
+import injector from 'vue-inject';
+import { validateID, validateParams } from './_helpers';
+
+
+const $log = injector.get('$log');
+
 
 export default {
   state: {
@@ -13,8 +19,37 @@ export default {
     communities(state) {
       return state.communities;
     },
-    community_info(state) {
-      return state.community_info;
+    getPublicCommunities(state) {
+      return (user) => {
+        if(!state.communities) {
+          return [];
+        }
+        return _.filter(state.communities.results, (community) => {
+          return community.publish_status === 'PUBLISHED' ||
+            user && user.communities.indexOf(community.id) >= 0 && community.publish_status !== 'DRAFT'
+        })
+      }
+    },
+    getUserCommunities(state) {
+      return (user) => {
+        if(!state.communities || _.isNil(user)) {
+          return [];
+        }
+        return _.filter(state.communities.results, (community) => {
+          return user.communities.indexOf(community.id) >= 0;
+        })
+      }
+    },
+    getCommunityInfo(state) {
+      return (user) => {
+        if (_.isEmpty(state.community_info)) {
+          return state.community_info;
+        } else if (state.community_info.publish_status === 'PUBLISHED') {
+          return state.community_info;
+        } else if(user && user.communities.indexOf(state.community_info.id)) {
+          return state.community_info;
+        }
+      }
     },
     community_themes(state) {
       return state.community_themes;
@@ -27,6 +62,17 @@ export default {
     },
     community_collections_loading(state) {
       return state.community_collections_loading;
+    },
+    getPublicCollections(state) {
+      return (user) => {
+        if(!state.community_collections) {
+          return [];
+        }
+        return _.filter(state.community_collections.results, (collection) => {
+          return collection.publish_status === 'PUBLISHED' || _.find(user.collections, {id: collection.id})
+            && collection.publish_status !== 'DRAFT'
+        })
+      }
     }
   },
   actions: {
@@ -36,7 +82,7 @@ export default {
         commit('SET_COMMUNITIES', communities);
         return communities;
       } else {
-        console.error('Validate error: ', { params });
+        $log.error('Validate error: ', { params });
       }
     },
     async putCommunities({ commit }, { id, data = {} } = {}) {
@@ -45,7 +91,7 @@ export default {
         commit('SET_COMMUNITIES', communities);
         return communities;
       } else {
-        console.error('Validate error: ', { id, data });
+        $log.error('Validate error: ', { id, data });
       }
     },
     async getCommunity({ commit }, id) {
@@ -53,7 +99,7 @@ export default {
         const community_info = await this.$axios.$get(`communities/${id}/`);
         commit('SET_COMMUNITY', community_info);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityThemes({ commit }, id) {
@@ -63,7 +109,7 @@ export default {
         );
         commit('SET_COMMUNITY_THEMES', community_themes);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityDisciplines({ commit }, id) {
@@ -73,7 +119,7 @@ export default {
         );
         commit('SET_COMMUNITY_DISCIPLINES', community_disciplines);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityCollections({ commit }, id) {
@@ -85,7 +131,7 @@ export default {
         commit('SET_COMMUNITY_COLLECTIONS', community_collections);
         commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async getCommunityCollectionsNextPage({ commit, state }) {
@@ -103,7 +149,7 @@ export default {
         commit('ADD_COMMUNITY_COLLECTION', collection);
         return collection;
       } else {
-        console.error('Validate error: ', data);
+        $log.error('Validate error: ', data);
       }
     },
     async setCommunityCollection({ commit }, { id, data }) {
@@ -116,7 +162,7 @@ export default {
         commit('EXTEND_COMMUNITY_COLLECTION', community_collections);
         return community_collections;
       } else {
-        console.error('Validate error: ', { id, data });
+        $log.error('Validate error: ', { id, data });
       }
     }
   },

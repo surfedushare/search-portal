@@ -1,22 +1,27 @@
 <template>
   <section class="container main collection">
-    <Collection :collection="my_collection" />
+    <Collection :collection="collection" />
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import injector from 'vue-inject';
 import Collection from '~/components/Collections/Collection';
+
+
+const $log = injector.get('$log');
+
 
 export default {
   components: {
     Collection
   },
   computed: {
-    ...mapGetters(['my_collection'])
+    ...mapGetters(['collection'])
   },
   mounted() {
-    this.$store.dispatch('getMyCollection', this.$route.params.id);
+    $log.warn("Unexpectedly using pages/_community/collections/_id.vue");
   }
 };
 </script>

@@ -1,4 +1,8 @@
 import _ from 'lodash';
+import injector from 'vue-inject';
+
+
+const $log = injector.get('$log');
 
 
 const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate';
@@ -159,6 +163,7 @@ export default {
     },
     SETUP_FILTER_CATEGORIES(state, data) {
       if(_.isNil(state.filter_categories)) {
+        $log.info('Unable to setup filter categories due to missing categories');
         return;
       }
       let openFilters = _.filter(state.filter_categories.results, (item) => { return item.isOpen });
