@@ -1,11 +1,27 @@
-"""
-This module contains implementation of models for users app.
-"""
-
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models as django_models
+from django.contrib.sessions.backends.db import SessionStore as DBStore
+from django.contrib.sessions.base_session import AbstractBaseSession
+from django.db import models
+
+from rest_framework.authtoken.models import Token
 
 from surf.apps.core.models import UUIDModel
+
+
+class TokenSession(AbstractBaseSession):
+    token = models.ForeignKey(Token, on_delete=models.CASCADE, null=True, blank=True)
+
+    @classmethod
+    def get_session_store_class(cls):
+        return TokenSessionStore
+
+
+class TokenSessionStore(DBStore):
+
+    @classmethod
+    def get_model_class(cls):
+        return TokenSession
 
 
 class UserManager(BaseUserManager):
