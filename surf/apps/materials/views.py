@@ -227,11 +227,7 @@ def _get_material_by_external_id(request, external_id, shared=None):
     """
 
     # increase unique view counter
-    material, created = Material.objects.get_or_create(external_id=external_id)
-    if created:
-        Material.objects.filter(external_id=external_id).update(view_count=F('view_count') + 1)
-    else:
-        material.update(view_count=F('view_count') + 1)
+    Material.objects.filter(external_id=external_id).update(view_count=F('view_count') + 1)
 
     if shared:
         # increase share counter
@@ -263,11 +259,6 @@ class CollectionViewSet(ModelViewSet):
         qs = Collection.objects.annotate(community_cnt=Count('communities'))
 
         filters = Q()
-
-        # add own collections
-        user = self.request.user
-        if user and user.is_active:
-            filters |= Q(owner_id=user.id)
 
         # add collections in communities
         filters |= Q(community_cnt__gt=0)

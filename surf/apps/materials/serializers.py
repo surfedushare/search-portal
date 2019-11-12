@@ -197,13 +197,6 @@ class CollectionSerializer(CollectionShortSerializer):
     def get_publish_status(obj):
         return str(PublishStatus.get(obj.publish_status))
 
-    def create(self, validated_data):
-        user = _get_and_check_user_from_context(self.context)
-        if user:
-            validated_data["owner_id"] = user.id
-
-        return super().create(validated_data)
-
     class Meta:
         model = Collection
         fields = ('id', 'title', 'materials_count', 'communities_count',

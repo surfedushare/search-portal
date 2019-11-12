@@ -112,11 +112,6 @@ def _parse_record(elem):
         fill_dynamic_copyrights()
 
     copyright = DYNAMIC_COPYRIGHTS.get(_find_elem_text(elem, _COPYRIGHT_PATH))
-    number_of_ratings = _find_elem_text(elem, _NUMBER_OF_RATINGS_PATH)
-    number_of_ratings = int(number_of_ratings) if number_of_ratings else 0
-
-    average_rating = _find_elem_text(elem, _AVERAGE_RATINGS_PATH)
-    average_rating = float(average_rating) if average_rating else 0
     return dict(
         external_id=_find_elem_text(elem, _RECORD_ID_PATH),
         object_id=_find_elem_text(elem, _OBJECT_ID_PATH),
@@ -132,14 +127,10 @@ def _parse_record(elem):
         author=author,
         creator=creator,
         format=MIME_TYPE_TECH_FORMAT.get(_find_elem_text(elem, _FORMAT_PATH)),
-        number_of_ratings=number_of_ratings,
-        average_rating=average_rating,
         themes=[],
         disciplines=disciplines,
         educationallevels=educationallevels,
         has_bookmark=False,
-        number_of_applauds=0,
-        number_of_views=0,
         number_of_collections=0,
     )
 
