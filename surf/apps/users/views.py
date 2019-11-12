@@ -10,10 +10,13 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.conf import settings
+from django.contrib.sessions.models import Session
 
 from oic import rndstr
 from oic.oic import Client
@@ -21,7 +24,7 @@ from oic.oic.message import AuthorizationResponse
 from oic.oic.message import ProviderConfigurationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
-from surf.apps.users.models import SurfConextAuth
+from surf.apps.users.models import SurfConextAuth, SessionToken
 from surf.apps.users.serializers import UserDetailsSerializer
 
 _OIDC_CONFIG = {}  # TODO: strip all OIDC from this file, it's deprecated
@@ -95,6 +98,20 @@ class UserDetailsAPIView(APIView):
         if permissions:
             request.session["permissions"] = permissions
         return self.get(request, *args, **kwargs)
+
+
+class ObtainTokenAPIView(APIView):
+
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        token, created = SessionToken.objects.get_or_create(user=request.user)
+        session_key = request.session.session_key
+        if not token.sessions.filter(session_key=session_key).exists():
+            session = Session.objects.get(session_key=session_key)
+            token.sessions.add(session)
+        return Response({'token': token.key})
 
 
 def auth_begin_handler(request):

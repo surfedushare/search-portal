@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',
+    #'rest_framework.authtoken',
     'django_filters',
 
     'surf',
@@ -137,7 +137,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'surf.apps.users.authentication.SessionTokenAuthentication',
     ),
 
     'DEFAULT_FILTER_BACKENDS': (
@@ -243,7 +243,10 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
+LOGIN_REDIRECT_URL = "/login/success"
+
 VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
+
 EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
 EDUREP_XML_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 EDUREP_SOAP_API_ENDPOINT = "http://smb.edurep.kennisnet.nl/smdBroker/ws"
