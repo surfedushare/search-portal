@@ -3,10 +3,10 @@ import _ from 'lodash';
 import Search from '~/components/FilterCategories/Search';
 import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';
-import Themes from '~/components/Themes';
 import Disciplines from '~/components/Disciplines';
 import Collections from '~/components/Collections';
 import BreadCrumbs from '~/components/BreadCrumbs';
+import Error from '~/components/error';
 
 export default {
   name: 'theme',
@@ -15,30 +15,34 @@ export default {
     Search,
     PopularList,
     Materials,
-    Themes,
     Disciplines,
     Collections,
-    BreadCrumbs
+    BreadCrumbs,
+    Error
   },
   mounted() {
 
     let themeId = this.$route.params.id;
+
     this.$store.dispatch('getFilterCategories').then(() => {
 
-      this.$store.dispatch('getTheme', themeId).then(theme => {
+      this.$store.dispatch('getTheme', themeId)
+        .then(theme => {
 
-        let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
-        themeCategory.selected = true;
+          let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
+          themeCategory.selected = true;
 
-        this.theme = theme;
-        this.$store.dispatch('searchMaterials', {
-          page_size: 2,
-          search_text: [],
-          filters: this.$store.getters.search_filters,
-          return_filters: false
+          this.$store.dispatch('searchMaterials', {
+            page_size: 2,
+            search_text: [],
+            filters: this.$store.getters.search_filters,
+            return_filters: false
+          });
+
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
-
-      });
 
     });
 
@@ -55,6 +59,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       search: {
         filters: [
           {
@@ -62,8 +67,7 @@ export default {
             items: []
           }
         ]
-      },
-      theme: null
+      }
     };
   },
   methods: {

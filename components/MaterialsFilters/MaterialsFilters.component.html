@@ -13,14 +13,6 @@
         <h3 class="my_filters__item_ttl">
           {{ material_filter.title }}
         </h3>
-        <!--<nuxt-link-->
-        <!--:to="`/my/`"-->
-        <!--class="my_filters__item_link"-->
-        <!--v-if="user"-->
-        <!--:key="`${user.id}`"-->
-        <!--&gt;-->
-        <!--{{user.full_name}}-->
-        <!--</nuxt-link>-->
         <p class="my_filters__item_count">{{ $tc('search-results', material_filter.materials_count) }}</p>
       </div>
       <nuxt-link

@@ -1,16 +1,5 @@
-<template>
-  <section class="container main themes">
-    <Theme/>
-  </section>
-</template>
-
-<script>
-import Theme from '~/components/Themes/Theme';
-export default {
-  components: {
-    Theme
-  },
-  computed: {},
-  mounted() {}
-};
+<template src="./Theme.component.html"></template>
+<script src="./Theme.component.js">
 </script>
+<style src="./Theme.component.less" scoped lang="less">
+</style>

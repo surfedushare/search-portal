@@ -1,65 +1,58 @@
 <section class="community">
-  <div class="center_block">
-    <InfoBlock :title="getTitleTranslation(community_info, $i18n.locale)"
-               :content="getDescriptionTranslation(community_info, $i18n.locale)"
-               :website_url="community_info.website_url"
-               :breadcrumb_items="[
-             {title: $t('Home'), url: localePath('index')},
-             {title: $t('Communities'), url: localePath('communities')},
-             ]"
-               :logo_src="community_info.featured_image"
-    >
-    </InfoBlock>
-    <div
-      v-infinite-scroll="loadMoreCollections"
-      infinite-scroll-disabled="community_collections_loading"
-      infinite-scroll-distance="10"
-    >
-      <Collections
-        v-if="community_collections"
-        :collections="community_collections.results"
-        class="community__collections">
-        <template slot="header-info">
-          <h2>{{ $t('Collections-2') }}</h2>
-        </template>
-      </Collections>
-      <Spinner v-if="community_collections_loading"/>
-    </div>
-    <Materials v-show=false
-               :materials="materials"
-               class="community__materials"
-    >
-      <template slot="header-info">
-        <h2>{{ $t('Uitgelicht') }}</h2>
-      </template>
-    </Materials>
+  <div v-if="!community_info">
+    <error status-code="404" message-key="community-not-found"></error>
+  </div>
+  <div v-else>
+    <div class="center_block">
+      <InfoBlock :title="getTitleTranslation(community_info, $i18n.locale)"
+                 :content="getDescriptionTranslation(community_info, $i18n.locale)"
+                 :website_url="community_info.website_url"
+                 :breadcrumb_items="[
+               {title: $t('Home'), url: localePath('index')},
+               {title: $t('Communities'), url: localePath('communities')},
+               ]"
+                 :logo_src="community_info.featured_image"
+      >
+      </InfoBlock>
 
-    <div
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="materials_loading"
-      infinite-scroll-distance="10"
-      v-if="isSearch"
-    >
-      <Materials
-        :materials="materials"
-        :items-in-line="4"
-      />
-      <Spinner v-if="materials_loading"/>
-    </div>
-    <template v-else>
-      <div class="community__row">
-        <Themes
-          :themes="community_themes"
-          class="community__themas"
-        />
-        <div class="community__themas_and_disciplines">
-          <Disciplines
-            class="community__disciplines"
-            :disciplines="community_disciplines"
-          />
-        </div>
+      <div>
+
+        <Collections
+          v-if="community_collections"
+          :collections="community_collections.results"
+          class="community__collections">
+          <template slot="header-info">
+            <h2>{{ $t('Collections-2') }}</h2>
+          </template>
+        </Collections>
+        <Spinner v-if="community_collections_loading"/>
       </div>
-    </template>
+      <Materials v-show=false
+                 :materials="materials"
+                 class="community__materials"
+
+      >
+        <template slot="header-info">
+          <h2>{{ $t('Uitgelicht') }}</h2>
+        </template>
+      </Materials>
+
+      <template>
+        <div class="community__row">
+          <Themes
+            :themes="community_themes"
+            class="community__themas"
+          />
+          <div class="community__themas_and_disciplines">
+            <Disciplines
+              class="community__disciplines"
+              :disciplines="community_disciplines"
+            />
+          </div>
+        </div>
+      </template>
+
+    </div>
   </div>
 </section>
 
