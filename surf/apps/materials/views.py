@@ -340,19 +340,7 @@ class CollectionViewSet(ModelViewSet):
     permission_classes = []
 
     def get_queryset(self):
-        qs = Collection.objects.annotate(community_cnt=Count('communities'))
-
-        filters = Q()
-
-        # add own collections
-        user = self.request.user
-        if user and user.is_active:
-            filters |= Q(owner_id=user.id)
-
-        # add collections in communities
-        filters |= Q(community_cnt__gt=0)
-
-        return qs.filter(filters)
+        return Collection.objects.annotate(community_cnt=Count('communities')).filter(community_cnt__gt=0)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
