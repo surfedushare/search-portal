@@ -9,7 +9,7 @@ from rest_framework import serializers
 from surf.apps.communities.models import Community
 from surf.apps.communities.models import PublishStatus
 from surf.apps.filters.models import MpttFilterItem
-from surf.apps.filters.serializers import FilterCategoryItemSerializer
+from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.filters.utils import add_default_material_filters
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
 from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
@@ -76,7 +76,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
                   'is_member', 'title_translations', 'description_translations', 'publish_status',)
 
 
-class CommunityDisciplineSerializer(FilterCategoryItemSerializer):
+class CommunityDisciplineSerializer(MpttFilterItemSerializer):
     """
     Community discipline instance serializer
     """

@@ -5,7 +5,7 @@ This module contains implementation of models for themes app.
 from django.db import models as django_models
 
 from surf.apps.core.models import UUIDModel
-from surf.apps.filters.models import MpttFilterItem, FilterCategoryItem
+from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.models import Locale, LocaleHTML
 
 

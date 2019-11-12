@@ -7,12 +7,9 @@ import re
 from collections import OrderedDict
 
 from django.conf import settings
-from django.db.models import Count
 from tqdm import tqdm
 
 from surf.apps.filters.models import (
-    FilterCategory,
-    FilterCategoryItem,
     MpttFilterItem
 )
 from surf.apps.locale.models import Locale
@@ -23,7 +20,6 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     PUBLISHER_DATE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID,
     DISCIPLINE_FIELD_ID,
-    COPYRIGHT_FIELD_ID,
     EDUCATIONAL_LEVEL_FIELD_ID,
     LANGUAGE_FIELD_ID
 )
@@ -87,36 +83,6 @@ def get_material_count_by_disciplines(discipline_ids):
     return rv
 
 
-def add_default_filters(filters):
-    """
-    Adds default filters to search materials in EduRep
-    :param filters: current filters
-    :return: updated list of filters
-    """
-
-    filter_categories = {f.get("external_id"): f.get("items", [])
-                         for f in filters}
-
-    # add default filters for Educational Level if needed
-    if not filter_categories.get(EDUCATIONAL_LEVEL_FIELD_ID):
-        items = FilterCategoryItem.objects.filter(
-            category__edurep_field_id=EDUCATIONAL_LEVEL_FIELD_ID).all()
-        items = [it.external_id for it in items
-                 if _HBO_WO_REGEX.match(it.title)]
-
-        filters.append(
-            dict(external_id=EDUCATIONAL_LEVEL_FIELD_ID, items=items))
-
-    # add default filters for Copyrights if needed
-    if not filter_categories.get(COPYRIGHT_FIELD_ID):
-        items = FilterCategoryItem.objects.filter(
-            category__edurep_field_id=COPYRIGHT_FIELD_ID).all()
-        items = [it.external_id for it in items]
-        filters.append(dict(external_id=COPYRIGHT_FIELD_ID, items=items))
-
-    return filters
-
-
 def add_default_material_filters(filters=None, tree=None):
     """
     Adds the default enabled filters to the supplied list of filters
@@ -128,7 +94,7 @@ def add_default_material_filters(filters=None, tree=None):
         filters = []
     if not tree:
         tree = MpttFilterItem.objects.get_cached_trees()
-    
+
     filters_external_id_list = [filter_item['external_id'] for filter_item in filters]
     for root in tree:
         # if the root.external_id (e.g. educational_level) is in the user-selected filters,
@@ -145,27 +111,6 @@ def add_default_material_filters(filters=None, tree=None):
                 child_external_ids.extend([child.external_id for child in enabled_children if child.external_id])
             filters.append(OrderedDict(external_id=root.external_id, items=child_external_ids))
     return filters
-
-
-def check_and_update_filters():
-    """
-    Updates filter categories and their items in database
-    """
-
-    ac = None
-
-    qs = FilterCategory.objects
-    qs = qs.annotate(item_count=Count('items'))
-    qs = qs.filter(item_count=0)
-    for f_category in qs.all():
-        if f_category.edurep_field_id in IGNORED_FIELDS:
-            continue
-
-        if not ac:
-            ac = WidgetEndpointApiClient(
-                api_endpoint=settings.EDUREP_JSON_API_ENDPOINT)
-
-        _update_filter_category(f_category, ac)
 
 
 def check_and_update_mptt_filters():
@@ -190,26 +135,6 @@ def check_and_update_mptt_filters():
     print("Finished Update")
 
 
-def update_filter_category(filter_category):
-    """
-    Updates filter category and its items
-    :param filter_category: filter category DB instance
-    """
-
-    ac = WidgetEndpointApiClient(
-        api_endpoint=settings.EDUREP_JSON_API_ENDPOINT)
-
-    if filter_category.edurep_field_id == CUSTOM_THEME_FIELD_ID:
-        _update_themes(filter_category)
-
-    elif filter_category.edurep_field_id == DISCIPLINE_FIELD_ID:
-        _update_filter_category(filter_category, ac)
-        _update_themes_disciplines(filter_category)
-
-    elif filter_category.edurep_field_id not in IGNORED_FIELDS:
-        _update_filter_category(filter_category, ac)
-
-
 def _update_themes(theme_category):
     """
     Updates all themes and their disciplines in database
@@ -219,7 +144,7 @@ def _update_themes(theme_category):
     for theme_id, disciplines in CUSTOM_THEME_DISCIPLINES.items():
         # get or create Theme category item
 
-        ci, _ = FilterCategoryItem.objects.get_or_create(
+        ci, _ = MpttFilterItem.objects.get_or_create(
             category_id=theme_category.id,
             external_id=theme_id,
             defaults=dict(title=theme_id))
@@ -234,7 +159,7 @@ def _update_themes(theme_category):
         # set theme disciplines
         ds = []
         for d in disciplines:
-            d = FilterCategoryItem.objects.filter(
+            d = MpttFilterItem.objects.filter(
                 category__edurep_field_id=DISCIPLINE_FIELD_ID,
                 external_id=d).first()
             if d:
@@ -250,39 +175,10 @@ def _update_themes_disciplines(discipline_category):
 
     for d in DISCIPLINE_ENTRIES:
         # get or create Discipline category item
-        FilterCategoryItem.objects.get_or_create(
+        MpttFilterItem.objects.get_or_create(
             category_id=discipline_category.id,
             external_id=d["id"],
             defaults=dict(title=d["name"]))
-
-
-def _update_filter_category(filter_category, api_client):
-    """
-    Updates filter category according to data received from EduRep
-    :param filter_category: filter category DB instance
-    :param api_client: api client to EduRep
-    """
-
-    category_id = filter_category.edurep_field_id
-    drilldown_name = "{}:{}".format(category_id,
-                                    filter_category.max_item_count)
-
-    res = api_client.drilldowns([drilldown_name],
-                                filters=add_default_material_filters())
-
-    items = res.get(category_id)
-    if not items:
-        return
-
-    if category_id.endswith(".id"):
-        _update_nested_items(filter_category, items)
-
-    else:
-        for k, v in items.items():
-            if isinstance(v, dict):
-                _update_category_item(filter_category, k, v["human"])
-            else:
-                _update_category_item(filter_category, k, k)
 
 
 def _update_mptt_filter_category(filter_category, api_client):
@@ -310,34 +206,14 @@ def _update_mptt_filter_category(filter_category, api_client):
                 _update_mptt_category_item(filter_category, k, k)
 
 
-def _update_nested_items(filter_category, items):
-    for item in items:
-        _update_category_item(filter_category,
-                              item["identifier"],
-                              item["caption"])
-        children = item.get("children")
-        if children:
-            _update_nested_items(filter_category, children)
-
-
 def _update_nested_mptt_items(filter_category, items):
     for item in tqdm(items):
         _update_mptt_category_item(filter_category,
-                              item["identifier"],
-                              item["caption"])
+                                   item["identifier"],
+                                   item["caption"])
         children = item.get("children")
         if children:
             _update_nested_mptt_items(filter_category, children)
-
-
-def _update_category_item(filter_category, item_id, item_title):
-    if not _is_valid_category_item(filter_category, item_id, item_title):
-        return
-
-    FilterCategoryItem.objects.get_or_create(
-        category_id=filter_category.id,
-        external_id=item_id,
-        defaults=dict(title=item_title))
 
 
 def _update_mptt_category_item(filter_category, item_id, item_title):
@@ -360,7 +236,7 @@ def _is_valid_mptt_category_item(filter_category, item_id, item_title):
     return _MBO_HBO_WO_REGEX.match(item_title) is not None
 
 
-def _is_valid_category_item(filter_category, item_id, item_title):
+def _is_valid_category_item(filter_category, _item_id, item_title):
     if filter_category.edurep_field_id != EDUCATIONAL_LEVEL_FIELD_ID:
         return True
 

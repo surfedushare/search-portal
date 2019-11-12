@@ -27,7 +27,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 
 from surf.apps.filters.models import MpttFilterItem
-from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters, add_default_filters
+from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
 
 from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,

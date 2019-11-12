@@ -8,50 +8,6 @@ from surf.apps.filters import models
 from surf.apps.locale.serializers import LocaleSerializer
 
 
-class FilterCategoryItemSerializer(serializers.ModelSerializer):
-    """
-    Filter category item instance serializer
-    """
-
-    class Meta:
-        model = models.FilterCategoryItem
-        fields = ('id', 'external_id', 'title',)
-
-
-class FilterCategorySerializer(serializers.ModelSerializer):
-    """
-    Filter category instance serializer
-    """
-
-    title_translations = LocaleSerializer()
-    external_id = serializers.CharField(source="edurep_field_id")
-    items = serializers.SerializerMethodField('get_items_list')
-
-    @staticmethod
-    def get_items_list(instance):
-        items = instance.items.order_by('order', 'title').all()
-        return FilterCategoryItemSerializer(many=True).to_representation(items)
-
-    class Meta:
-        model = models.FilterCategory
-        fields = ('id', 'external_id', 'title', 'items', 'title_translations',)
-
-
-class FilterItemSerializer(serializers.ModelSerializer):
-    """
-    Filter item instance serializer
-    """
-
-    category_item_id = serializers.CharField(source="category_item.id")
-
-    category_id = serializers.CharField(source="category_item.category.id",
-                                        read_only=True)
-
-    class Meta:
-        model = models.FilterCategoryItem
-        fields = ('id', 'category_item_id', 'category_id',)
-
-
 class FilterShortSerializer(serializers.ModelSerializer):
     """
     Filter instance serializer with a few fields
@@ -62,12 +18,28 @@ class FilterShortSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'start_date', 'end_date', 'materials_count',)
 
 
+class MpttFilterItemSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+    title_translations = LocaleSerializer()
+
+    def get_children(self, obj):
+        if obj.is_leaf_node():
+            return []
+        else:
+            return MpttFilterItemSerializer(obj.get_children(), many=True).data
+
+    class Meta:
+        model = models.MpttFilterItem
+        fields = ('id', 'name', 'parent', 'title_translations', 'external_id', 'enabled_by_default', 'is_hidden',
+                  'item_count', 'children')
+
+
 class FilterSerializer(FilterShortSerializer):
     """
     Filter instance serializer with filter items
     """
 
-    items = FilterItemSerializer(many=True, required=False)
+    items = MpttFilterItemSerializer(many=True, required=False)
 
     def create(self, validated_data):
         # raise error in user is not set or does not authenticated
@@ -107,19 +79,3 @@ class FilterSerializer(FilterShortSerializer):
         model = models.Filter
         fields = ('id', 'title', 'items', 'start_date', 'end_date',
                   'materials_count',)
-
-
-class MpttFilterItemSerializer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
-    title_translations = LocaleSerializer()
-
-    def get_children(self, obj):
-        if obj.is_leaf_node():
-            return []
-        else:
-            return MpttFilterItemSerializer(obj.get_children(), many=True).data
-
-    class Meta:
-        model = models.MpttFilterItem
-        fields = ('id', 'name', 'parent', 'title_translations', 'external_id', 'enabled_by_default', 'is_hidden',
-                  'item_count', 'children')
