@@ -2,7 +2,8 @@
 
 from django.db import migrations
 from surf.apps.themes.models import Theme
-from surf.apps.filters.models import FilterCategoryItem, MpttFilterItem
+from surf.apps.filters.models import MpttFilterItem
+
 
 def clone_filter_items_to_mptt(apps, schema_editor):
     # Somehow MPTT doesn't enjoy being imported by apps.get_model (it'll error on not having values for 'lft' and 'rgt'
