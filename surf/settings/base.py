@@ -242,7 +242,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-LOGIN_REDIRECT_URL = "/login/success"
+LOGIN_REDIRECT_URL = "/login/success"  # TODO: prepend frontend URL?
+LOGOUT_REDIRECT_URL = "https://engine.test.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
 

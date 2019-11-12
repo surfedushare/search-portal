@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.conf.urls import url, include
 from django.urls import path
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
@@ -72,6 +73,7 @@ apipatterns = [
 
 urlpatterns = [
     url('', include('social_django.urls', namespace='social')),
+    url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
