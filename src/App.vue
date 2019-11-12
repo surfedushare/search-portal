@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="main_block">
+  <div id="app">
+    <div class="main_block ">
       <MainHeader />
       <nuxt/>
       <MainFooter />
