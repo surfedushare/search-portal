@@ -34,10 +34,8 @@ export default {
     async logout({ commit }) {
       localStorage.removeItem('surf_token');
       this.$axios.setHeader('Authorization', false);
-      const user = await this.$axios.$get('logout/');
-
       commit('SET_USER', null);
-      return user;
+      window.location = process.env.VUE_APP_BACKEND_URL + 'logout'
     }
   },
   mutations: {

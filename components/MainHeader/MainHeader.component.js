@@ -36,9 +36,7 @@ export default {
      * logout event
      */
     logout() {
-      this.$store.dispatch('logout').then(() => {
-        window.location = (process.env.VUE_APP_SURFCONEXT_BYPASS) ? '/' : process.env.VUE_APP_LOGOUT_URL;
-      });
+      this.$store.dispatch('logout');
     },
 
     /**
