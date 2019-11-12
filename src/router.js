@@ -4,8 +4,12 @@
  */
 
 
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
+import injector from 'vue-inject';
+
+
+const $log = injector.get('$log');
 
 
 const _e895237e = () => import('../pages/how-does-it-work/index.vue' /* webpackChunkName: "pages/how-does-it-work/index" */).then(m => m.default || m);
@@ -13,7 +17,6 @@ const _e32cc490 = () => import('../pages/communities/index.vue' /* webpackChunkN
 const _70c48e2d = () => import('../pages/materials/search.vue' /* webpackChunkName: "pages/materials/search" */).then(m => m.default || m);
 const _77aed046 = () => import('../pages/my/filters/index.vue' /* webpackChunkName: "pages/my/filters/index" */).then(m => m.default || m);
 const _169285f4 = () => import('../pages/my/collections.vue' /* webpackChunkName: "pages/my/collections" */).then(m => m.default || m);
-const _5330bd0f = () => import('../pages/my/collection.vue' /* webpackChunkName: "pages/my/collection" */).then(m => m.default || m);
 const _b5953cb4 = () => import('../pages/my/communities.vue' /* webpackChunkName: "pages/my/communities" */).then(m => m.default || m);
 const myCommunity = () => import('../pages/my/community.vue' /* webpackChunkName: "pages/my/community" */).then(m => m.default || m);
 const _1c7624f6 = () => import('../pages/my/filters/_id.vue' /* webpackChunkName: "pages/my/filters/_id" */).then(m => m.default || m);
@@ -68,7 +71,7 @@ const scrollBehavior = function (to, from, savedPosition) {
             position = { selector: hash }
           }
         } catch (e) {
-          console.warn('Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).')
+          $log.warn('Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).')
         }
       }
       resolve(position)
@@ -328,6 +331,29 @@ export function createRouter () {
         path: "/",
         component: _ebbee700,
         name: "index___nl"
+      },
+      {
+        path: "/login/success",
+        beforeEnter(to, from, next) {
+          window.app.$axios.get('users/obtain-token', {withCredentials: true})
+            .then((response) => {
+              window.app.store.dispatch('login', { token: response.data.token })
+                .then(() => {
+                  next({path: to.query.continue});
+                })
+                .catch((error) => {
+                  $log.warn('Unable to login due to error during store "login" dispatch');
+                  $log.error(error);
+                  next('/');
+                })
+
+            })
+            .catch((error) => {
+              $log.warn('Unable to login due to error during obtaining a token');
+              $log.error(error);
+              next('/');
+            })
+        }
       }
     ],
     fallback: false
