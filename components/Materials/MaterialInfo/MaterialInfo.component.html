@@ -17,7 +17,7 @@
       @click.prevent="setApplaudMaterial(material)"
       :class="{'quality__applauds--saving': is_loading_applaud}"
     >
-      {{ material.number_of_applauds}}
+      {{ material.applaud_count}}
     </a>
     <div class="quality__collections">
       <span class="quality__collections_count">
@@ -27,14 +27,14 @@
     </div>
     <div class="quality__views">
       <div class="quality__views_count">
-        {{ contedNumber }}
+        {{ material.view_count }}
       </div>
       <div class="quality__views_txt">{{ $t('Viewed') }}</div>
     </div>
     <div class="quality__star">
       <StarRating
-        v-model="material.average_rating"
-        :counter="material.number_of_ratings"
+        v-model="material.avg_star_rating"
+        :counter="material.count_star_rating"
         type="big"
         :disabled="true"
       />
