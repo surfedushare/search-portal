@@ -132,7 +132,7 @@ export async function setContext(app, context) {
       base: '/',
       env: {
         "logoutURL": process.env.VUE_APP_LOGOUT_URL,
-        "prodBaseUrl": process.env.VUE_APP_PROD_URL,
+        "frontendUrl": process.env.VUE_APP_FRONTEND_URL,
         "localesURL":process.env.VUE_APP_LOCALES_URL
       }
     };

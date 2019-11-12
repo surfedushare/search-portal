@@ -18,12 +18,14 @@ export default {
      * @returns {string}
      */
     getLoginLink() {
+      let currentUrl = this.$route.path;
       if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
-        return;
+        return '/' + 'login/success?continue=' + currentUrl;
       }
-      return `${
-        this.$axios.defaults.baseURL
-      }/login/?redirect_url=${validateHREF(window.location.href)}`;
+      let backendUrl = process.env.VUE_APP_BACKEND_URL;
+      let frontendUrl = process.env.VUE_APP_FRONTEND_URL;
+      let nextUrl = frontendUrl + 'login/success?continue=' + currentUrl;
+      return backendUrl + 'login/surf-conext/?next=' + nextUrl;
     },
     login () {
       if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
