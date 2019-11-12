@@ -8,6 +8,7 @@ class Migration(migrations.Migration):
     replaces = [('themes', '0006_auto_20191104_1600'), ('themes', '0007_auto_20191104_1603')]
 
     dependencies = [
+        ('filters', '0012_auto_20191112_0918'),
         ('themes', '0005_auto_20190830_0813'),
     ]
 

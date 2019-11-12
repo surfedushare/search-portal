@@ -22,10 +22,4 @@ class Migration(migrations.Migration):
             model_name='filteritem',
             name='category_item',
         ),
-        migrations.DeleteModel(
-            name='FilterCategory',
-        ),
-        migrations.DeleteModel(
-            name='FilterCategoryItem',
-        ),
     ]
