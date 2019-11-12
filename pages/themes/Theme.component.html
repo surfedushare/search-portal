@@ -32,7 +32,7 @@
     <div class="theme__materials_and_communities theme__row center_block">
       <Collections
         :collections="themeCollections"
-        :items-in-line="2"
+        :items-in-line="4"
         class="theme__materials"
       >
         <template slot="header-info">
@@ -50,10 +50,10 @@
         </template>
       </PopularList>
     </div>
-    <div class="theme__collections theme__row center_block" v-show=false>
+    <div class="theme__collections theme__row center_block">
       <Materials
       :materials="materials"
-      :items-in-line="2"
+      :items-in-line="4"
       class="theme__materials">
         <template slot="header-info">
           <h2>{{ $t('Uitgelicht') }}</h2>
