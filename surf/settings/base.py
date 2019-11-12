@@ -63,8 +63,7 @@ INSTALLED_APPS = [
     'surf.apps.querylog',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'content-type',
@@ -76,10 +75,10 @@ CORS_ALLOW_HEADERS = (
     'accept-encoding',
     'response-type',
 )
-
 CORS_EXPOSE_HEADERS = (
     'content-disposition',
 )
+CORS_ALLOW_CREDENTIALS = True
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
