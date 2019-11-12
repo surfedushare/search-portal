@@ -206,7 +206,7 @@ def _get_material_by_external_id(request, external_id, shared=None):
 
     material, created = Material.objects.get_or_create(external_id=external_id)
     if created:
-        update_materials_data([material])
+        material.sync_info()
     # increase unique view counter
     material.view_count += 1
     material.save()
