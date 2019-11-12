@@ -32,9 +32,11 @@ export default {
           let themeCategory = this.$store.getters.getCategoryById(theme.external_id);
           themeCategory.selected = true;
 
+          this.theme = theme;
           this.$store.dispatch('searchMaterials', {
-            page_size: 2,
+            page_size: 4,
             search_text: [],
+            ordering: '-lom.lifecycle.contribute.publisherdate',
             filters: this.$store.getters.search_filters,
             return_filters: false
           });
