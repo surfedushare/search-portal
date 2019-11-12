@@ -2,40 +2,25 @@
 This module contains implementation of REST API views for materials app.
 """
 
+import json
 from collections import OrderedDict
 
-import json
-
-from django.db.models import Q, Count, F
 from django.conf import settings
+from django.db.models import Q, Count
 from django.http import Http404
-
-from rest_framework.viewsets import (
-    ModelViewSet,
-    GenericViewSet
-)
-
-from rest_framework.mixins import (
-    ListModelMixin,
-    CreateModelMixin
-)
-
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import (
+    ModelViewSet
+)
 
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
-
-from surf.apps.materials.utils import (
-    add_extra_parameters_to_materials,
-    get_material_details_by_id,
-    add_material_themes,
-    add_material_disciplines
+from surf.apps.materials.filters import (
+    CollectionFilter
 )
-
 from surf.apps.materials.models import (
     Collection,
     Material,
@@ -43,7 +28,6 @@ from surf.apps.materials.models import (
     RESOURCE_TYPE_MATERIAL,
     RESOURCE_TYPE_COLLECTION
 )
-
 from surf.apps.materials.serializers import (
     SearchRequestSerializer,
     SearchRequestShortSerializer,
@@ -52,21 +36,19 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
-    MaterialRatingsRequestSerializer,
     SharedResourceCounterSerializer
 )
-
-from surf.apps.materials.filters import (
-    CollectionFilter
+from surf.apps.materials.utils import (
+    add_extra_parameters_to_materials,
+    get_material_details_by_id,
+    add_material_themes,
+    add_material_disciplines,
+    update_materials_data
 )
-
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
-    AUTHOR_FIELD_ID,
-    PUBLISHER_DATE_FIELD_ID
+    AUTHOR_FIELD_ID
 )
-
-from surf.vendor.edurep.smb.soap.api import SmbSoapApiClient
 
 
 class MaterialSearchAPIView(APIView):
@@ -108,11 +90,7 @@ class MaterialSearchAPIView(APIView):
             api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
         res = ac.search(**data)
-
-        if request.user:
-            records = add_extra_parameters_to_materials(request.user, res["records"])
-        else:
-            records = None
+        records = add_extra_parameters_to_materials(request.user, res["records"])
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
@@ -226,8 +204,12 @@ def _get_material_by_external_id(request, external_id, shared=None):
     :return: list of materials
     """
 
+    material, created = Material.objects.get_or_create(external_id=external_id)
+    if created:
+        update_materials_data([material])
     # increase unique view counter
-    Material.objects.filter(external_id=external_id).update(view_count=F('view_count') + 1)
+    material.view_count += 1
+    material.save()
 
     if shared:
         # increase share counter
