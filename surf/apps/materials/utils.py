@@ -72,12 +72,6 @@ def add_extra_parameters_to_materials(user, materials):
     :return: updated array of materials
     """
     for m in materials:
-        if user and user.id:
-            qs = Material.objects.prefetch_related("collections")
-            qs = qs.filter(collections__owner_id=user.id,
-                           external_id=m["external_id"])
-            m["has_bookmark"] = qs.exists()
-
         qs = ApplaudMaterial.objects.prefetch_related("material")
         qs = qs.filter(material__external_id=m["external_id"])
         qs = qs.aggregate(applaud_cnt=Sum("applaud_count"))
