@@ -73,8 +73,8 @@ def add_extra_parameters_to_materials(user, materials):
     """
     for m in materials:
         if user and user.id:
-            qs = Material.objects.prefetch_related("collections")
-            qs = qs.filter(collections__owner_id=user.id,
+            qs = Material.objects.prefetch_related("new_collections")
+            qs = qs.filter(new_collections__owner_id=user.id,
                            external_id=m["external_id"])
             m["has_bookmark"] = qs.exists()
 

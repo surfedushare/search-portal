@@ -27,7 +27,6 @@ from surf.apps.themes.serializers import (
 from surf.apps.themes.filters import ThemeFilter
 from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.serializers import CollectionSerializer
-from surf.apps.filters.utils import get_material_count_by_disciplines
 
 
 _COLLECTIONS_COUNT_IN_OVERVIEW = 4
@@ -44,7 +43,7 @@ class ThemeViewSet(ListModelMixin,
     serializer_class = ThemeSerializer
     filter_class = ThemeFilter
     permission_classes = []
-    lookup_field = 'mptt_filter_category_item__id'
+    lookup_field = 'filter_category_item__id'
 
     @action(methods=['get'], detail=True)
     def disciplines(self, request, pk=None, **kwargs):
@@ -55,14 +54,14 @@ class ThemeViewSet(ListModelMixin,
         instance = self.get_object()
 
         res = []
-        if instance.mptt_disciplines.exists():
+        if instance.disciplines.exists():
             context = self.get_serializer_context()
             context["mptt_tree"] = MpttFilterItem.objects.get_cached_trees()
 
             res = ThemeDisciplineSerializer(
                 many=True, context=context
             ).to_representation(
-                instance.mptt_disciplines.all()
+                instance.disciplines.all()
             )
 
         return Response(res)

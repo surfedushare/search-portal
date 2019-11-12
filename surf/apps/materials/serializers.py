@@ -15,7 +15,8 @@ from surf.apps.materials.models import (
     Material,
     ApplaudMaterial,
     SharedResourceCounter,
-    RESOURCE_TYPE_COLLECTION
+    RESOURCE_TYPE_COLLECTION,
+    PublishStatus,
 )
 
 
@@ -169,12 +170,12 @@ class MaterialShortSerializer(serializers.ModelSerializer):
 
 class CollectionShortSerializer(serializers.ModelSerializer):
     """
-    Collection instance serializer with id only
+    Minimal collection instance serializer
     """
 
     class Meta:
         model = Collection
-        fields = ('id',)
+        fields = ('id', 'title')
 
 
 class CollectionSerializer(CollectionShortSerializer):
@@ -184,13 +185,10 @@ class CollectionSerializer(CollectionShortSerializer):
 
     title = serializers.CharField()
     materials_count = serializers.SerializerMethodField()
-    is_owner = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
     communities = serializers.SerializerMethodField()
     sharing_counters = serializers.SerializerMethodField()
-
-    owner_name = serializers.CharField(
-        source="owner.surfconext_auth.display_name", read_only=True)
+    publish_status = serializers.SerializerMethodField()
 
     @staticmethod
     def get_sharing_counters(obj):
@@ -219,9 +217,9 @@ class CollectionSerializer(CollectionShortSerializer):
         else:
             return []
 
-    def get_is_owner(self, obj):
-        user = _get_and_check_user_from_context(self.context)
-        return bool(user and user.id == obj.owner_id)
+    @staticmethod
+    def get_publish_status(obj):
+        return str(PublishStatus.get(obj.publish_status))
 
     def create(self, validated_data):
         user = _get_and_check_user_from_context(self.context)
@@ -233,8 +231,7 @@ class CollectionSerializer(CollectionShortSerializer):
     class Meta:
         model = Collection
         fields = ('id', 'title', 'materials_count', 'communities_count',
-                  'is_shared', 'is_owner', 'owner_name', 'communities',
-                  'sharing_counters',)
+                  'communities', 'sharing_counters', 'publish_status')
 
 
 class ApplaudMaterialSerializer(serializers.ModelSerializer):
