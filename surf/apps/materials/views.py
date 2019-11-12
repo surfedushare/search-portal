@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 import json
 
-from django.db.models import Q, Count
+from django.db.models import Q, Count, F
 from django.conf import settings
 from django.http import Http404
 
@@ -39,8 +39,6 @@ from surf.apps.materials.utils import (
 from surf.apps.materials.models import (
     Collection,
     Material,
-    ApplaudMaterial,
-    ViewMaterial,
     SharedResourceCounter,
     RESOURCE_TYPE_MATERIAL,
     RESOURCE_TYPE_COLLECTION
@@ -54,15 +52,11 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
-    ApplaudMaterialSerializer,
-    MaterialRatingSerializer,
     MaterialRatingsRequestSerializer,
-    MaterialRatingResponseSerializer,
     SharedResourceCounterSerializer
 )
 
 from surf.apps.materials.filters import (
-    ApplaudMaterialFilter,
     CollectionFilter
 )
 
@@ -233,7 +227,11 @@ def _get_material_by_external_id(request, external_id, shared=None):
     """
 
     # increase unique view counter
-    ViewMaterial.add_unique_view(request.user, external_id)
+    material, created = Material.objects.get_or_create(external_id=external_id)
+    if created:
+        Material.objects.filter(external_id=external_id).update(view_count=F('view_count') + 1)
+    else:
+        material.update(view_count=F('view_count') + 1)
 
     if shared:
         # increase share counter
@@ -248,84 +246,6 @@ def _get_material_by_external_id(request, external_id, shared=None):
     rv = add_extra_parameters_to_materials(request.user, rv)
     rv = add_share_counters_to_materials(rv)
     return rv
-
-
-class MaterialRatingAPIView(APIView):
-    """
-    Provides methods for getting and setting a material rating by the user.
-    """
-
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, *args, **kwargs):
-        # validate request parameters
-        serializer = MaterialRatingsRequestSerializer(data=request.GET)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-
-        page, page_size = data["page"], data["page_size"]
-
-        rv = dict(records=[],
-                  records_total=0,
-                  page=page,
-                  page_size=page_size)
-
-        surfconext_auth = getattr(request.user, "surfconext_auth")
-        if surfconext_auth:
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
-            object_id = data.get("object_id")
-
-            # request material reviews from EduRep
-            reviews = ac.get_user_reviews(surfconext_auth.external_id,
-                                          material_urn=object_id,
-                                          page=page,
-                                          page_size=page_size)
-            res = reviews.get("records", [])
-
-            # validate response data
-            serializer = MaterialRatingResponseSerializer(many=True, data=res)
-            serializer.is_valid(raise_exception=True)
-
-            rv["records"] = serializer.validated_data
-            rv["records_total"] = reviews["recordcount"]
-
-        return Response(rv)
-
-    def post(self, request, *args, **kwargs):
-        # validate request parameters
-        serializer = MaterialRatingSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-
-        surfconext_auth = getattr(request.user, "surfconext_auth")
-        if surfconext_auth:
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
-            sac = SmbSoapApiClient(
-                api_endpoint=settings.EDUREP_SOAP_API_ENDPOINT)
-
-            # request material reviews from EduRep
-            reviews = ac.get_user_reviews(surfconext_auth.external_id,
-                                          material_urn=data["object_id"])
-            reviews = reviews.get("records", [])
-
-            # remove old reviews in EduRep before send a new one
-            for r in reviews:
-                if surfconext_auth.external_id != r.get("user_id"):
-                    continue
-                sac.remove_review(r["external_id"],
-                                  settings.EDUREP_SOAP_SUPPLIER_ID)
-
-            # send material rating to EduRep
-            sac.send_rating(data["object_id"],
-                            data["rating"],
-                            settings.EDUREP_SOAP_SUPPLIER_ID,
-                            surfconext_auth.external_id)
-
-        return Response(data)
 
 
 class CollectionViewSet(ModelViewSet):
@@ -501,29 +421,6 @@ class CollectionViewSet(ModelViewSet):
 
         if not user or not user.is_active:
             raise AuthenticationFailed()
-
-
-class ApplaudMaterialViewSet(ListModelMixin,
-                             CreateModelMixin,
-                             GenericViewSet):
-    """
-    View class that provides `get`, `create` and `delete` methods
-    for Applaud Material.
-    """
-
-    queryset = ApplaudMaterial.objects.all()
-    serializer_class = ApplaudMaterialSerializer
-    permission_classes = [AllowAny]
-    filter_class = ApplaudMaterialFilter
-
-    def get_queryset(self):
-        # filter only "applauds" of current user
-        qs = super().get_queryset()
-        if self.request.user.is_authenticated:
-            qs = qs.filter(user_id=self.request.user.id)
-        else:
-            qs = qs.none()
-        return qs
 
 
 def get_materials_search_response(qs, request):

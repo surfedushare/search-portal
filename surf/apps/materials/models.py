@@ -95,6 +95,15 @@ class Material(UUIDModel):
     keywords = django_models.TextField(blank=True, null=True)
     deleted_at = django_models.DateTimeField(null=True)
 
+    star_1 = django_models.PositiveIntegerField(default=0)
+    star_2 = django_models.PositiveIntegerField(default=0)
+    star_3 = django_models.PositiveIntegerField(default=0)
+    star_4 = django_models.PositiveIntegerField(default=0)
+    star_5 = django_models.PositiveIntegerField(default=0)
+    # a user can applaud a material many times more than he can star rate it
+    applaud_count = django_models.BigIntegerField(default=0)
+    view_count = django_models.BigIntegerField(default=0)
+
     def restore(self):
         self.deleted_at = None
         self.save()
@@ -149,65 +158,6 @@ class CollectionMaterial(django_models.Model):
 
     class Meta:
         verbose_name = 'Material'
-
-
-class ApplaudMaterial(UUIDModel):
-    """
-    Implementation of Material applaud model. This model is used to collect
-    data about material applauds by users.
-    """
-
-    user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
-                                    related_name='applauds',
-                                    on_delete=django_models.CASCADE,
-                                    null=True, blank=True)
-
-    material = django_models.ForeignKey(Material,
-                                        related_name="applauds",
-                                        on_delete=django_models.CASCADE)
-
-    applaud_count = django_models.IntegerField(default=0)
-
-    def __str__(self):
-        username = self.user.username if self.user else None
-        return "{} - {}".format(username, self.material.external_id)
-
-
-class ViewMaterial(UUIDModel):
-    """
-    Implementation of Material view model. This model is used to collect
-    data about material unique view by users.
-    """
-
-    viewed_at = django_models.DateTimeField(default=datetime.now)
-
-    user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
-                                    related_name='material_views',
-                                    on_delete=django_models.CASCADE)
-
-    material = django_models.ForeignKey(Material,
-                                        related_name="material_views",
-                                        on_delete=django_models.CASCADE)
-
-    @staticmethod
-    def add_unique_view(user, material_external_id):
-        """
-        Updates unique view data
-        :param user: user instance
-        :param material_external_id: external identifier of material
-        """
-
-        if not user or not user.id:
-            return
-
-        m, _ = Material.objects.get_or_create(external_id=material_external_id)
-
-        ViewMaterial.objects.update_or_create(
-            user_id=user.id, material_id=m.id,
-            defaults=dict(viewed_at=datetime.now()))
-
-    def __str__(self):
-        return "{} - {}".format(self.user.username, self.material.external_id)
 
 
 class SharedResourceCounter(UUIDModel):

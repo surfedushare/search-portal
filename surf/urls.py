@@ -22,11 +22,9 @@ from django.conf.urls.static import static
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
     MaterialSearchAPIView,
-    MaterialRatingAPIView,
     KeywordsAPIView,
     MaterialAPIView,
     CollectionViewSet,
-    ApplaudMaterialViewSet
 )
 from surf.apps.filters.views import (
     FilterCategoryViewSet,
@@ -53,7 +51,6 @@ router = CustomRouter()
 router.register(r'filter-categories', FilterCategoryViewSet, basename='MpttFilterItem')
 router.register(r'filters', FilterViewSet)
 router.register(r'collections', CollectionViewSet)
-router.register(r'applaud-materials', ApplaudMaterialViewSet)
 router.register(r'communities', CommunityViewSet)
 router.register(r'themes', ThemeViewSet)
 router.register(r'stats', StatsView, base_name="stats")
@@ -64,7 +61,6 @@ apipatterns = [
     url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
-    url(r'^materials/rating/', MaterialRatingAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^localehtml/', MaterialAPIView.as_view()),

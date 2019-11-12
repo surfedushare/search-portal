@@ -5,7 +5,6 @@ This module contains some common functions for materials app.
 import json
 
 from django.conf import settings
-from django.db.models import Sum
 
 from surf.apps.communities.models import Community
 from surf.apps.themes.models import Theme
@@ -13,8 +12,6 @@ from surf.apps.filters.models import MpttFilterItem
 
 from surf.apps.materials.models import (
     Material,
-    ApplaudMaterial,
-    ViewMaterial
 )
 
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
@@ -72,16 +69,6 @@ def add_extra_parameters_to_materials(user, materials):
     :return: updated array of materials
     """
     for m in materials:
-        qs = ApplaudMaterial.objects.prefetch_related("material")
-        qs = qs.filter(material__external_id=m["external_id"])
-        qs = qs.aggregate(applaud_cnt=Sum("applaud_count"))
-        applaud_cnt = qs.get("applaud_cnt")
-        m["number_of_applauds"] = applaud_cnt if applaud_cnt else 0
-
-        qs = ViewMaterial.objects.prefetch_related("material")
-        qs = qs.filter(material__external_id=m["external_id"])
-        m["number_of_views"] = qs.count()
-
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])
 
