@@ -57,9 +57,11 @@ class MaterialAdmin(admin.ModelAdmin):
     list_display = ("title", "external_id")
     list_filter = (TrashListFilter,)
     readonly_fields = (
-        'external_id', 'themes', 'disciplines', 'material_url', 'title',
-        'description', 'keywords', "deleted_at",
+        'title', 'material_url', 'external_id', 'themes', 'disciplines',
+        'description', 'keywords', "deleted_at", "view_count", "applaud_count",
+        'get_avg_star_rating', 'get_star_count'
     )
+    exclude = ['star_1', 'star_2', 'star_3', 'star_4', 'star_5']
     actions = [restore_nodes, trash_nodes, sync_info_nodes]
 
     def get_actions(self, request):
