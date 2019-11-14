@@ -35,7 +35,6 @@ from surf.apps.filters.views import (
     MpttFilterItems
 )
 from surf.apps.users.views import (
-    LogoutAPIView,
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
@@ -58,8 +57,6 @@ router.register(r'themes', ThemeViewSet)
 router.register(r'stats', StatsView, base_name="stats")
 
 apipatterns = [
-    #url(r'^login/', login_handler),
-    url(r'^logout/', LogoutAPIView.as_view()),
     url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^users/obtain-token/', ObtainTokenAPIView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
