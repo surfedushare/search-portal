@@ -104,6 +104,18 @@ class Material(UUIDModel):
     applaud_count = django_models.BigIntegerField(default=0)
     view_count = django_models.BigIntegerField(default=0)
 
+    def get_star_count(self):
+        return self.star_1 + self.star_2 + self.star_3 + self.star_4 + self.star_5
+    get_star_count.short_description = 'Star rating count'
+
+    def get_avg_star_rating(self):
+        total_stars = 1 * self.star_1 + 2 * self.star_2 + 3 * self.star_3 + 4 * self.star_4 + 5 * self.star_5
+        star_count = self.get_star_count()
+        if star_count > 0:
+            return round(total_stars / star_count, 1)
+        return 0
+    get_avg_star_rating.short_description = 'Average star rating'
+
     def restore(self):
         self.deleted_at = None
         self.save()

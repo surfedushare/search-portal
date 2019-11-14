@@ -76,15 +76,8 @@ def add_extra_parameters_to_materials(user, materials):
 
             m["view_count"] = material_object.view_count
             m["applaud_count"] = material_object.applaud_count
-            total_stars = 1 * material_object.star_1 + 2 * material_object.star_2 + 3 * material_object.star_3 \
-                          + 4 * material_object.star_4 + 5 * material_object.star_5
-            star_count = material_object.star_1 + material_object.star_2 + material_object.star_3 \
-                         + material_object.star_4 + material_object.star_5
-            average_star_rating = 0
-            if star_count > 0:
-                average_star_rating = round(total_stars / star_count, 1)
-            m["avg_star_rating"] = average_star_rating
-            m["count_star_rating"] = star_count
+            m["avg_star_rating"] = material_object.get_avg_star_rating()
+            m["count_star_rating"] = material_object.get_star_count()
         else:
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
 
