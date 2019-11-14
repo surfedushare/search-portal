@@ -149,10 +149,12 @@ class MaterialAPIView(APIView):
         serializer = MaterialsRequestSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-
+        # default is false in the serializer
+        count_view = data["count_view"]
         if "external_id" in kwargs:
             return self.get_material(request,
                                      kwargs["external_id"],
+                                     count_view=count_view,
                                      shared=data.get("shared"))
 
         if "external_id" in data:
@@ -179,15 +181,16 @@ class MaterialAPIView(APIView):
         return Response(res)
 
     @staticmethod
-    def get_material(request, external_id, shared=None):
+    def get_material(request, external_id, count_view, shared=None):
         """
         Returns the list of materials by external id
         :param request: request instance
         :param external_id: external id of material
         :param shared: share type of material
+        :param count_view: should the view be counted in the statistics?
         :return:
         """
-        res = _get_material_by_external_id(request, external_id, shared=shared)
+        res = _get_material_by_external_id(request, external_id, shared=shared, count_view=count_view)
 
         if not res:
             raise Http404('No materials matches the given query.')
@@ -195,7 +198,7 @@ class MaterialAPIView(APIView):
         return Response(res[0])
 
 
-def _get_material_by_external_id(request, external_id, shared=None):
+def _get_material_by_external_id(request, external_id, shared=None, count_view=False):
     """
     Get Materials by edured id and register unique view of materials
     :param request:
@@ -208,8 +211,9 @@ def _get_material_by_external_id(request, external_id, shared=None):
     if created:
         material.sync_info()
     # increase unique view counter
-    material.view_count += 1
-    material.save()
+    if count_view:
+        material.view_count += 1
+        material.save()
 
     if shared:
         # increase share counter

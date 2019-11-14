@@ -66,6 +66,8 @@ def add_extra_parameters_to_materials(user, materials):
     :param materials: array of materials
     :return: updated array of materials
     """
+    # perhaps this could be optimized by querying the database once for a list of materials
+    # however, we still want to add the 0 values for items we don't have in the database yet so this is easy for now
     for m in materials:
 
         material_object = Material.objects.filter(external_id=m["external_id"])

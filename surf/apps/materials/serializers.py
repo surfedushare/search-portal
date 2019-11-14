@@ -101,9 +101,10 @@ class MaterialsRequestSerializer(serializers.Serializer):
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
 
-    page_size = serializers.IntegerField(required=False, default=5,
+    page_size = serializers.IntegerField(required=False, default=1,
                                          validators=[MinValueValidator(0),
                                                      MaxValueValidator(10)])
+    count_view = serializers.BooleanField(required=False, default=False)
 
 
 class CollectionMaterialsRequestSerializer(serializers.Serializer):
