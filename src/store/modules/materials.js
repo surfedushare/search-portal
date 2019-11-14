@@ -91,14 +91,16 @@ export default {
         $log.error('Validate error: ', { params });
       }
     },
-    async setMaterialRating({ commit }, rating) {
-      return await this.$axios.$post('materials/rating/', rating);
+    async setMaterialRating({ commit }, params) {
+      return await this.$axios.$post('rate_material/', {
+        params
+      });
     },
     async getMaterialRating({ commit }, id) {
       if (validateIDString(id)) {
-        return await this.$axios.$get('materials/rating/', {
+        return await this.$axios.$get('rate_material/', {
           params: {
-            object_id: id
+            external_id: id
           }
         });
       } else {
@@ -107,8 +109,8 @@ export default {
     },
     async setApplaudMaterial({ commit }, { external_id }) {
       if (validateIDString(external_id)) {
-        return await this.$axios.$post('applaud-materials/', {
-          material: {
+        return await this.$axios.$post('applaud_material/', {
+          params: {
             external_id: external_id
           }
         });
@@ -118,9 +120,9 @@ export default {
     },
     async getApplaudMaterial({ commit }, { external_id }) {
       if (validateIDString(external_id)) {
-        return await this.$axios.$get('applaud-materials/', {
+        return await this.$axios.$get('applaud_material/', {
           params: {
-            material__external_id: external_id
+            external_id: external_id
           }
         });
       } else {

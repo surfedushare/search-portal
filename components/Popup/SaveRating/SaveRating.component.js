@@ -24,8 +24,8 @@ export default {
 
       this.$store
         .dispatch('setMaterialRating', {
-          rating: this.rating,
-          object_id: this.material.object_id
+          external_id: this.material.external_id,
+          star_rating: this.rating,
         })
         .then(() => {
           this.$store

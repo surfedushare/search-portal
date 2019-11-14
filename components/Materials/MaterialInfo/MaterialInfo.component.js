@@ -29,7 +29,7 @@ export default {
           this.is_loading_applaud = false;
         });
       this.$store
-        .dispatch('getMaterialRating', this.material.object_id)
+        .dispatch('getMaterialRating', this.material.external_id)
         .then(rating => {
           this.rating = rating.records[0];
         });
