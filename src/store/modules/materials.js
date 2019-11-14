@@ -51,9 +51,9 @@ export default {
     }
   },
   actions: {
-    async getMaterial({ commit }, id) {
+    async getMaterial({ commit }, {id, params}) {
       commit('SET_MATERIAL_LOADING', true);
-      const material = await this.$axios.$get(`materials/${id}/`);
+      const material = await this.$axios.$get(`materials/${id}/`, { params });
       decodeAuthor(material);
       commit('SET_MATERIAL', material);
       commit('SET_MATERIAL_LOADING', false);

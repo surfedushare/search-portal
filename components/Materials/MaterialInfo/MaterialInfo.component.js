@@ -84,7 +84,7 @@ export default {
         .then(() => {
           this.is_applauded = true;
           this.$store
-            .dispatch('getMaterial', this.$route.params.id)
+            .dispatch('getMaterial', {id: this.$route.params.id})
             .then(() => {
               this.is_loading_applaud = false;
             });

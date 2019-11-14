@@ -29,7 +29,7 @@ export default {
         })
         .then(() => {
           this.$store
-            .dispatch('getMaterial', this.$route.params.id)
+            .dispatch('getMaterial', {id: this.$route.params.id})
             .then(() => {
               this.submitting = false;
               this.saved = true;

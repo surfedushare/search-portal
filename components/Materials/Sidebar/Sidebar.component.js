@@ -354,7 +354,7 @@ export default {
 
         Promise.all(requests).then(() => {
           this.$store
-            .dispatch('getMaterial', this.$route.params.id)
+            .dispatch('getMaterial', {id: this.$route.params.id})
             .then(() => {
               this.submitting = false;
             });
