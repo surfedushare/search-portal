@@ -3,7 +3,7 @@
     class="star-rating__star"
     v-for="rating in ratings"
      :class="{
-       'is-selected': ((temp_value >= rating) && value != null),
+       'is-selected': ((avg_rating >= rating) && value != null),
        'is-disabled': disabled,
        'star-rating__star--dark-stars': darkStars
      }"
@@ -16,12 +16,12 @@
       type="radio"
       :value="rating"
       name="name"
-      v-model="temp_value"
+      v-model="avg_rating"
       :disabled="disabled">
   </label>
   <span class="star-rating__counter" v-if="type === 'default'">({{counter}})</span>
-  <span class="star-rating__counter_text" v-else-if="type === 'giant'" >{{types[temp_value]}}</span>
-  <span class="star-rating__counter" v-else >{{temp_value}} / 5</span>
+  <span class="star-rating__counter_text" v-else-if="type === 'giant'" >{{types[avg_rating]}}</span>
+  <span class="star-rating__counter" v-else >{{avg_rating}} / 5</span>
   <span class="star-rating__counter_big" v-if="type === 'big' && !hideCounter" >
     {{counter}} {{ $t('ratings') }}
   </span>
