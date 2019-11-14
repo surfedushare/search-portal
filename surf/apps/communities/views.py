@@ -186,7 +186,6 @@ class CommunityViewSet(ListModelMixin,
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.remove(*collections)
 
-
     @staticmethod
     def _check_access(user, instance=None, collection_ids=None):
         """
@@ -198,9 +197,3 @@ class CommunityViewSet(ListModelMixin,
         """
         if not user or not user.is_authenticated:
             raise AuthenticationFailed()
-
-        if collection_ids:
-            qs = Collection.objects.filter(Q(id__in=collection_ids),
-                                           ~Q(owner_id=user.id))
-            if qs.exists():
-                raise AuthenticationFailed()
