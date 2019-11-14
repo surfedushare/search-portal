@@ -65,7 +65,6 @@ export default {
       if (validateIDString(id)) {
         return await this.$axios.$get('collections/', {
           params: {
-            is_owner: true,
             material_id: id
           }
         });
