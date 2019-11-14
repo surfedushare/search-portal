@@ -93,7 +93,7 @@ class CollectionAdmin(admin.ModelAdmin):
     """
 
     list_display = ("title", "publish_status",)
-    list_filter = ("publish_status",)
+    list_filter = (TrashListFilter, "publish_status",)
     readonly_fields = ('title', "deleted_at",)
     ordering = ("title",)
     inlines = [CollectionMaterialInline]
