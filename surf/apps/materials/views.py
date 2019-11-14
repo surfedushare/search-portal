@@ -231,6 +231,7 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
 
 
 class MaterialRatingAPIView(APIView):
+    # I don't think we really need the get, but the frontend uses it so I'll leave it be
     def get(self, request, *args, **kwargs):
         external_id = request.GET['external_id']
         return Response(f"External id {external_id} is valid")
@@ -251,10 +252,11 @@ class MaterialRatingAPIView(APIView):
         if star_rating == 5:
             material_object.star_5 += 1
         material_object.save()
-        return Response(True)
+        return Response(material_object.get_avg_star_rating())
 
 
 class MaterialApplaudAPIView(APIView):
+    # I don't think we really need the get, but the frontend uses it so I'll leave it be
     def get(self, request, *args, **kwargs):
         external_id = request.GET['external_id']
         return Response(f"External id {external_id} is valid")
