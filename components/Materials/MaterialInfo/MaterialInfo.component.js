@@ -108,7 +108,7 @@ export default {
      * @returns String
      */
     contedNumber() {
-      return numeral(this.material.number_of_views).format('0a');
+      return numeral(this.material.view_count).format('0a');
     },
     /**
      * get material themes
