@@ -226,6 +226,44 @@ def _get_material_by_external_id(request, external_id, shared=None):
     return rv
 
 
+class MaterialRatingAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        external_id = request.GET['external_id']
+        return Response(f"External id {external_id} is valid")
+
+    def post(self, request, *args, **kwargs):
+        params = request.data.get('params')
+        external_id = params['external_id']
+        star_rating = params['star_rating']
+        material_object = Material.objects.get(external_id=external_id)
+        if star_rating == 1:
+            material_object.star_1 += 1
+        if star_rating == 2:
+            material_object.star_2 += 1
+        if star_rating == 3:
+            material_object.star_3 += 1
+        if star_rating == 4:
+            material_object.star_4 += 1
+        if star_rating == 5:
+            material_object.star_5 += 1
+        material_object.save()
+        return Response(True)
+
+
+class MaterialApplaudAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        external_id = request.GET['external_id']
+        return Response(f"External id {external_id} is valid")
+
+    def post(self, request, *args, **kwargs):
+        params = request.data.get('params')
+        external_id = params['external_id']
+        material_object = Material.objects.get(external_id=external_id)
+        material_object.applaud_count += 1
+        material_object.save()
+        return Response(material_object.applaud_count)
+
+
 class CollectionViewSet(ModelViewSet):
     """
     View class that provides CRUD methods for Collection and `get`, `add`

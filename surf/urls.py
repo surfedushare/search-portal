@@ -24,6 +24,8 @@ from surf.apps.materials.views import (
     MaterialSearchAPIView,
     KeywordsAPIView,
     MaterialAPIView,
+    MaterialRatingAPIView,
+    MaterialApplaudAPIView,
     CollectionViewSet,
 )
 from surf.apps.filters.views import (
@@ -60,6 +62,8 @@ apipatterns = [
     url(r'^logout/', LogoutAPIView.as_view()),
     url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
+    url(r'^rate_material/', MaterialRatingAPIView.as_view()),
+    url(r'^applaud_material/', MaterialApplaudAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
