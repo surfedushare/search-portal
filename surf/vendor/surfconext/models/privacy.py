@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed
 
 
 class DataGoalTypes:
@@ -89,13 +90,12 @@ class DataGoal(models.Model):
 class DataGoalPermissionListSerializer(serializers.ListSerializer):
 
     def create(self, validated_data):
-        print("valid", validated_data)
         user = self.context["request"].user
-        goal = DataGoal.objects.get(type=validated_data["type"])
-        # TODO: raise on anonymous user or missing goal
+        if user.is_anonymous:
+            raise AuthenticationFailed("Can't permanently store data goal permissions for anonymous users")
         permission, created = DataGoalPermission.objects.update_or_create(
             user=user,
-            goal=goal,
+            goal__type=validated_data["type"],
             defaults={"is_allowed": validated_data["is_allowed"]}
         )
         return permission

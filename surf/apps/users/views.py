@@ -87,7 +87,6 @@ class UserDetailsAPIView(APIView):
         if privacy_statement is None:
             capture_message("Trying to retrieve user details without an active privacy statement")
         permissions = request.session.get("permissions", None)
-        print("Perms:", permissions, privacy_statement)
         if privacy_statement and permissions is None:
             permissions = request.session["permissions"] = privacy_statement.get_privacy_settings(request.user)
         data["permissions"] = permissions
@@ -98,24 +97,16 @@ class UserDetailsAPIView(APIView):
         # Handle the permissions part of the data
         raw_permission = request.data.get("permissions", None)
         serializer = DataGoalPermissionSerializer(data=raw_permission, many=True, context={"request": request})
-        if not serializer.is_valid():
-            print("SOME INVALID DATA", serializer.errors)
-            # TODO: how to propagate errors to the frontend?
-        print(serializer.validated_data)
+        serializer.is_valid(raise_exception=True)
         permissions = []
         for permission_data in serializer.validated_data:
             permission = dict(permission_data)
-            print(permission)
             goal = permission.pop("goal")
             permission.update(**goal)
             permissions.append(permission)
         request.session["permissions"] = permissions
-        print(permissions)
         if request.user.is_authenticated:
             for permission in permissions:
-                print("Perm:", permission)
-                print("Perm type:", type(permission))
-                print(serializer.create)
                 serializer.create(permission)
         return self.get(request, *args, **kwargs)
 
