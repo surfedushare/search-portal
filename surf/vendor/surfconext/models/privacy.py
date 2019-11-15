@@ -36,21 +36,40 @@ class PrivacyStatement(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    def get_default_privacy_settings(self):
+        return [
+            {
+                "is_allowed": False,
+                "type": goal.type,
+                "en": goal.en,
+                "nl": goal.nl,
+                "priority": goal.priority,
+                "is_after_login": goal.is_after_login,
+                "is_notification_only": goal.is_notification_only
+            }
+            for goal in self.datagoal_set.filter(is_active=True)
+        ]
+
     def get_privacy_settings(self, user=None):
+        default_permissions = self.get_default_privacy_settings()
         # When not dealing with an authenticated user we return "not allowed" for all goals
         if user is None or user.is_anonymous:
-            return [
-                {
-                    "is_allowed": False,
-                    "type": goal.type,
-                    "priority": goal.priority,
-                    "is_after_login": goal.is_after_login,
-                    "is_notification_only": goal.is_notification_only
-                }
-                for goal in self.datagoal_set.filter(is_active=True)
-            ]
-        # Here we're dealing with a specific user. We'll return the settings for that user.
-        print("authenticated??")
+            return default_permissions
+        # Here we're dealing with a specific user.
+        # We'll return the settings for that user.
+        # Or the defaults if any are missing.
+        user_permissions_objects = list(DataGoalPermission.objects.filter(user=user))
+        if not len(user_permissions_objects):
+            return default_permissions
+        serializer = DataGoalPermissionSerializer(user_permissions_objects, many=True)
+        user_permissions = {permission["type"]: permission for permission in serializer.data}
+        current_permissions = []
+        for permission in default_permissions:
+            if permission["type"] in user_permissions:
+                current_permissions.append(user_permissions[permission["type"]])
+            else:
+                current_permissions.append(permission)
+        return current_permissions
 
     class Meta:
         ordering = ("created_at",)
@@ -93,9 +112,10 @@ class DataGoalPermissionListSerializer(serializers.ListSerializer):
         user = self.context["request"].user
         if user.is_anonymous:
             raise AuthenticationFailed("Can't permanently store data goal permissions for anonymous users")
+        goal = DataGoal.objects.get(type=validated_data["type"], is_active=True)
         permission, created = DataGoalPermission.objects.update_or_create(
             user=user,
-            goal__type=validated_data["type"],
+            goal=goal,
             defaults={"is_allowed": validated_data["is_allowed"]}
         )
         return permission

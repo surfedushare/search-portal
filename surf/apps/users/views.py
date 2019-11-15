@@ -122,6 +122,11 @@ class ObtainTokenAPIView(APIView):
         if not token.sessions.filter(session_key=session_key).exists():
             session = Session.objects.get(session_key=session_key)
             token.sessions.add(session)
+        # Now that we're starting a session with this token
+        # We need to reload permission settings into the session for the user from the database
+        # Deleting the current session permissions will force a reload when accessing those settings next time
+        if "permissions" in request.session:
+            del request.session["permissions"]
         return Response({'token': token.key})
 
 
