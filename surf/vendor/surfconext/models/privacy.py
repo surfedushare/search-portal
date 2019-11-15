@@ -125,11 +125,13 @@ class DataGoalPermissionSerializer(serializers.ModelSerializer):
 
     type = serializers.ChoiceField(source="goal.type", choices=DATA_GOAL_TYPE_CHOICES)
     priority = serializers.IntegerField(source="goal.priority", required=False)
+    en = serializers.CharField(source="goal.en", max_length=256)
+    nl = serializers.CharField(source="goal.nl", max_length=256)
     is_notification_only = serializers.BooleanField(source="goal.is_notification_only", required=False)
     is_after_login = serializers.BooleanField(source="goal.is_after_login", required=False)
 
     class Meta:
         model = DataGoalPermission
         list_serializer_class = DataGoalPermissionListSerializer
-        fields = ("id", "type", "priority", "is_notification_only", "is_after_login", "is_allowed")
-        read_only_fields = ("priority", "is_notification_only", "is_after_login")
+        fields = ("id", "type", "en", "nl", "priority", "is_notification_only", "is_after_login", "is_allowed")
+        read_only_fields = ("en", "nl", "priority", "is_notification_only", "is_after_login")
