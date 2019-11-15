@@ -23,7 +23,6 @@ class PrivacyStatementForm(forms.ModelForm):
         fields = '__all__'
 
 
-
 class PrivacyStatementAdmin(admin.ModelAdmin):
     list_display = ("name", "is_active",)
     form = PrivacyStatementForm
