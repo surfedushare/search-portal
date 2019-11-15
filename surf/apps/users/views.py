@@ -1,10 +1,6 @@
-"""
-This module contains implementation of REST API views for users app.
-"""
-
 from urllib.parse import urlparse
-
 import logging
+from sentry_sdk import capture_message
 
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authtoken.models import Token
@@ -23,6 +19,8 @@ from oic.oic import Client
 from oic.oic.message import AuthorizationResponse
 from oic.oic.message import ProviderConfigurationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
+
+from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
 
 from surf.apps.users.models import SurfConextAuth, SessionToken
 from surf.apps.users.serializers import UserDetailsSerializer
@@ -85,18 +83,34 @@ class UserDetailsAPIView(APIView):
             data = UserDetailsSerializer().to_representation(request.user)
         else:
             data = {}
+        privacy_statement = PrivacyStatement.objects.get_latest_active()
+        if privacy_statement is None:
+            capture_message("Trying to retrieve user details without an active privacy statement")
         permissions = request.session.get("permissions", None)
-        if permissions is None:
-            permissions = request.session["permissions"] = {}
+        print("Perms:", permissions, privacy_statement)
+        if privacy_statement and permissions is None:
+            permissions = request.session["permissions"] = privacy_statement.get_privacy_settings(request.user)
         data["permissions"] = permissions
         request.session.modified = True  # this extends expiry
         return Response(data)
 
     def post(self, request, *args, **kwargs):
-        # TODO: we need permission validation
-        permissions = request.data.get("permissions", None)
-        if permissions:
-            request.session["permissions"] = permissions
+        # Handle the permissions part of the data
+        raw_permission = request.data.get("permissions", None)
+        serializer = DataGoalPermissionSerializer(data=raw_permission, many=True, context={"request": request})
+        if not serializer.is_valid():
+            print("SOME INVALID DATA", serializer.errors)
+            # TODO: how to propagate errors to the frontend?
+        print(serializer.validated_data)
+        permissions = [dict(permission) for permission in serializer.validated_data]
+        request.session["permissions"] = permissions
+        print(permissions)
+        if request.user.is_authenticated:
+            for permission in permissions:
+                print("Perm:", permission)
+                print("Perm type:", type(permission))
+                print(serializer.create)
+                serializer.create(permission)
         return self.get(request, *args, **kwargs)
 
 

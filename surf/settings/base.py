@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     #'rest_framework.authtoken',
     'django_filters',
 
+    'surf.vendor.surfconext',
+
     'surf',
     'surf.apps.users',
     'surf.apps.filters',
