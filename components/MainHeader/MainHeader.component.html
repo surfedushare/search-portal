@@ -1,13 +1,13 @@
 
 <section class="main-header">
   <div class="main-header__wrapper">
-    <nuxt-link :to="localePath('index')" class="main-header__logo">
+    <router-link :to="localePath('index')" class="main-header__logo">
       <img
         src="/images/surflogo.png"
         srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
         class="main-header__logo_img"
       >
-    </nuxt-link>
+    </router-link>
     <Menu class="main-header__menu" />
     <div class="main-header__actions">
       <div class="main-header__user" v-if="isAuthenticated">
@@ -53,13 +53,13 @@
   </div>
   <div class="main-header__mobile">
     <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
-    <nuxt-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
+    <router-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
       <img
         src="/images/surflogo.png"
         srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
         class="main-header__logo_img"
       >
-    </nuxt-link>
+    </router-link>
     <div class="main-header__mobile_menu" v-if="show_header_menu" onclick="">
       <div class="main-header__user" v-if="isAuthenticated">
         <div class="main-header__user_name arrow-link" onclick=""><span class="link">{{ $t('Menu') }}</span></div>
