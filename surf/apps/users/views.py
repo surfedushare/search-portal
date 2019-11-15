@@ -78,7 +78,7 @@ class UserDetailsAPIView(APIView):
     View class that provides detail information about current user .
     """
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if request.user.is_authenticated:
             data = UserDetailsSerializer().to_representation(request.user)
         else:
@@ -93,7 +93,7 @@ class UserDetailsAPIView(APIView):
         request.session.modified = True  # this extends expiry
         return Response(data)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         # Handle the permissions part of the data
         raw_permission = request.data.get("permissions", None)
         serializer = DataGoalPermissionSerializer(data=raw_permission, many=True, context={"request": request})
@@ -104,11 +104,14 @@ class UserDetailsAPIView(APIView):
             goal = permission.pop("goal")
             permission.update(**goal)
             permissions.append(permission)
-        request.session["permissions"] = permissions
         if request.user.is_authenticated:
             for permission in permissions:
                 serializer.create(permission)
-        return self.get(request, *args, **kwargs)
+        # We'll return the permission settings however the GET endpoint would return those settings
+        # Notice that we clear the permissions from session to allow re-creation
+        if "permissions" in request.session:
+            del request.session["permissions"]
+        return self.get(request)
 
 
 class ObtainTokenAPIView(APIView):
