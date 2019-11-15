@@ -91,7 +91,7 @@ class DataGoalPermissionListSerializer(serializers.ListSerializer):
     def create(self, validated_data):
         print("valid", validated_data)
         user = self.context["request"].user
-        goal = DataGoal.objects.get(type=validated_data["goal"]["type"])
+        goal = DataGoal.objects.get(type=validated_data["type"])
         # TODO: raise on anonymous user or missing goal
         permission, created = DataGoalPermission.objects.update_or_create(
             user=user,

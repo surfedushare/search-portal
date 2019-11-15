@@ -102,7 +102,13 @@ class UserDetailsAPIView(APIView):
             print("SOME INVALID DATA", serializer.errors)
             # TODO: how to propagate errors to the frontend?
         print(serializer.validated_data)
-        permissions = [dict(permission) for permission in serializer.validated_data]
+        permissions = []
+        for permission_data in serializer.validated_data:
+            permission = dict(permission_data)
+            print(permission)
+            goal = permission.pop("goal")
+            permission.update(**goal)
+            permissions.append(permission)
         request.session["permissions"] = permissions
         print(permissions)
         if request.user.is_authenticated:
