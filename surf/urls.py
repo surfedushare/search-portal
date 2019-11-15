@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.conf.urls import url, include
 from django.urls import path
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
@@ -34,11 +35,8 @@ from surf.apps.filters.views import (
     MpttFilterItems
 )
 from surf.apps.users.views import (
-    auth_begin_handler,
-    auth_complete_handler,
-    login_handler,
-    LogoutAPIView,
-    UserDetailsAPIView
+    UserDetailsAPIView,
+    ObtainTokenAPIView
 )
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
@@ -59,9 +57,8 @@ router.register(r'themes', ThemeViewSet)
 router.register(r'stats', StatsView, base_name="stats")
 
 apipatterns = [
-    url(r'^login/', login_handler),
-    url(r'^logout/', LogoutAPIView.as_view()),
     url(r'^users/me/', UserDetailsAPIView.as_view()),
+    url(r'^users/obtain-token/', ObtainTokenAPIView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/rating/', MaterialRatingAPIView.as_view()),
@@ -72,13 +69,11 @@ apipatterns = [
 ] + router.urls
 
 urlpatterns = [
+    url('', include('social_django.urls', namespace='social')),
+    url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
-
-    url(r'^login/surfconext/', auth_begin_handler),
-    url(r'^complete/surfconext/', auth_complete_handler),
-
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 ]
 

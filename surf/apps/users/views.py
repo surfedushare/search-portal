@@ -1,20 +1,18 @@
-"""
-This module contains implementation of REST API views for users app.
-"""
-
 from urllib.parse import urlparse
-
 import logging
+from sentry_sdk import capture_message
 
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.conf import settings
+from django.contrib.sessions.models import Session
 
 from oic import rndstr
 from oic.oic import Client
@@ -22,10 +20,12 @@ from oic.oic.message import AuthorizationResponse
 from oic.oic.message import ProviderConfigurationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
-from surf.apps.users.models import SurfConextAuth
+from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
+
+from surf.apps.users.models import SurfConextAuth, SessionToken
 from surf.apps.users.serializers import UserDetailsSerializer
 
-_OIDC_CONFIG = settings.OIDC_CONFIG
+_OIDC_CONFIG = {}  # TODO: strip all OIDC from this file, it's deprecated
 
 _AUTH_REQUEST_TEMPLATE = {
     "scope": _OIDC_CONFIG.get("scope", []),
@@ -78,11 +78,59 @@ class UserDetailsAPIView(APIView):
     View class that provides detail information about current user .
     """
 
-    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        if request.user.is_authenticated:
+            data = UserDetailsSerializer().to_representation(request.user)
+        else:
+            data = {}
+        privacy_statement = PrivacyStatement.objects.get_latest_active()
+        if privacy_statement is None:
+            capture_message("Trying to retrieve user details without an active privacy statement")
+        permissions = request.session.get("permissions", None)
+        if privacy_statement and permissions is None:
+            permissions = request.session["permissions"] = privacy_statement.get_privacy_settings(request.user)
+        data["permissions"] = permissions
+        request.session.modified = True  # this extends expiry
+        return Response(data)
+
+    def post(self, request):
+        # Handle the permissions part of the data
+        raw_permission = request.data.get("permissions", None)
+        serializer = DataGoalPermissionSerializer(data=raw_permission, many=True, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        permissions = []
+        for permission_data in serializer.validated_data:
+            permission = dict(permission_data)
+            goal = permission.pop("goal")
+            permission.update(**goal)
+            permissions.append(permission)
+        if request.user.is_authenticated:
+            for permission in permissions:
+                serializer.create(permission)
+        # We'll return the permission settings however the GET endpoint would return those settings
+        # Notice that we clear the permissions from session to allow re-creation
+        if "permissions" in request.session:
+            del request.session["permissions"]
+        return self.get(request)
+
+
+class ObtainTokenAPIView(APIView):
+
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
-        res = UserDetailsSerializer().to_representation(request.user)
-        return Response(res)
+        token, created = SessionToken.objects.get_or_create(user=request.user)
+        session_key = request.session.session_key
+        if not token.sessions.filter(session_key=session_key).exists():
+            session = Session.objects.get(session_key=session_key)
+            token.sessions.add(session)
+        # Now that we're starting a session with this token
+        # We need to reload permission settings into the session for the user from the database
+        # Deleting the current session permissions will force a reload when accessing those settings next time
+        if "permissions" in request.session:
+            del request.session["permissions"]
+        return Response({'token': token.key})
 
 
 def auth_begin_handler(request):

@@ -1,11 +1,17 @@
-"""
-This module contains implementation of models for users app.
-"""
-
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models as django_models
+from django.contrib.sessions.models import Session
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+from rest_framework.authtoken.models import Token
 
 from surf.apps.core.models import UUIDModel
+
+
+class SessionToken(Token):
+    sessions = models.ManyToManyField(Session, verbose_name=_("sessions"))
 
 
 class UserManager(BaseUserManager):
@@ -67,16 +73,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     """
-    Implementation of Django custom User model.
+    Unfortunately the Django User was replaced with a custom User for no particular reason.
+    It's hard to remove the custom User, so we're going to be stuck with it for a while.
     """
-    REQUIRED_FIELDS = []
-
-    objects = UserManager()
-
-    class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
-        ordering = ("username",)
+    pass
 
 
 class SurfConextAuth(UUIDModel):
