@@ -94,6 +94,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -222,7 +223,9 @@ OIDC_CONFIG = {}  # TODO: remove this from all local settings
 
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
+SOCIAL_AUTH_LOGIN_ERROR_URL = "https://zoekportaal.surf.nl"
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
