@@ -81,6 +81,7 @@ export default {
     if (typeof window !== 'undefined') {
       window.$nuxt = this
     }
+    this.$store.dispatch('getUser');
     this.$store.dispatch('getFilterCategories');
   },
 
