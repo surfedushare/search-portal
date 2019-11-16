@@ -39,7 +39,7 @@ class PrivacyStatement(models.Model):
     def get_default_privacy_settings(self):
         return [
             {
-                "is_allowed": False,
+                "is_allowed": None,
                 "type": goal.type,
                 "en": goal.en,
                 "nl": goal.nl,
@@ -49,6 +49,17 @@ class PrivacyStatement(models.Model):
             }
             for goal in self.datagoal_set.filter(is_active=True)
         ]
+
+    def add_default_privacy_settings(self, input_permissions, default_permissions=None):
+        default_permissions = default_permissions or self.get_default_privacy_settings()
+        permissions_by_type = {permission["type"]: permission for permission in input_permissions}
+        permissions = []
+        for permission in default_permissions:
+            if permission["type"] in permissions_by_type:
+                permissions.append(permissions_by_type[permission["type"]])
+            else:
+                permissions.append(permission)
+        return permissions
 
     def get_privacy_settings(self, user=None):
         default_permissions = self.get_default_privacy_settings()
@@ -62,14 +73,7 @@ class PrivacyStatement(models.Model):
         if not len(user_permissions_objects):
             return default_permissions
         serializer = DataGoalPermissionSerializer(user_permissions_objects, many=True)
-        user_permissions = {permission["type"]: permission for permission in serializer.data}
-        current_permissions = []
-        for permission in default_permissions:
-            if permission["type"] in user_permissions:
-                current_permissions.append(user_permissions[permission["type"]])
-            else:
-                current_permissions.append(permission)
-        return current_permissions
+        return self.add_default_privacy_settings(serializer.data, default_permissions)
 
     class Meta:
         ordering = ("created_at",)

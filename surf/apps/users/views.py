@@ -89,6 +89,8 @@ class UserDetailsAPIView(APIView):
         permissions = request.session.get("permissions", None)
         if privacy_statement and permissions is None:
             permissions = request.session["permissions"] = privacy_statement.get_privacy_settings(request.user)
+        elif privacy_statement and permissions:
+            request.session["permissions"] = privacy_statement.add_default_privacy_settings(permissions)
         data["permissions"] = permissions
         request.session.modified = True  # this extends expiry
         return Response(data)
@@ -104,13 +106,17 @@ class UserDetailsAPIView(APIView):
             goal = permission.pop("goal")
             permission.update(**goal)
             permissions.append(permission)
+
+        # Either write these permissions to the user or to the session
         if request.user.is_authenticated:
             for permission in permissions:
                 serializer.create(permission)
-        # We'll return the permission settings however the GET endpoint would return those settings
-        # Notice that we clear the permissions from session to allow re-creation
-        if "permissions" in request.session:
-            del request.session["permissions"]
+            # Notice that we clear the permissions from session to allow re-creation (in GET method)
+            if "permissions" in request.session:
+                del request.session["permissions"]
+        else:
+            request.session["permissions"] = permissions
+
         return self.get(request, *args, **kwargs)
 
 
