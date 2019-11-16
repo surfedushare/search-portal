@@ -192,7 +192,6 @@ export default {
       this.setInitialFormData();
     });
     this.$store.dispatch('getCommunityCollections', this.$route.params.community);
-
   },
   methods: {
     setInitialFormData() {

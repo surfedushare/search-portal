@@ -22,7 +22,7 @@
         <div class="main-header__user_name arrow-link"><span class="link">{{ $t('Menu') }}</span></div>
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
-            <li class="main-header__user_menu_item" v-if="user.communities && user.communities.length">
+            <li class="main-header__user_menu_item">
               <router-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
                 {{ $t('My-communities') }}
               </router-link>
