@@ -1,6 +1,7 @@
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import Menu from './Menu';
-import { validateHREF } from '~/components/_helpers';
+
 
 export default {
   name: 'main-header',
@@ -27,11 +28,6 @@ export default {
       let nextUrl = frontendUrl + 'login/success?continue=' + currentUrl;
       return backendUrl + 'login/surf-conext/?next=' + nextUrl;
     },
-    login () {
-      if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
-        this.$store.dispatch('login', {token: process.env.VUE_APP_SURFCONEXT_BYPASS});
-      }
-    },
     /**
      * logout event
      */
@@ -51,9 +47,16 @@ export default {
      */
     hideMobileMenu() {
       this.$store.commit('SET_HEADER_MENU_STATE', false);
+    },
+    acknowledgeNotification(notificationType) {
+      let notification = _.find(this.user_permission_notifications, (notification) => {
+        return notification.type === notificationType;
+      });
+      notification.is_allowed = true;
+      this.$store.dispatch('postUser');
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user', 'show_header_menu'])
+    ...mapGetters(['isAuthenticated', 'user', 'show_header_menu', 'user_permission_notifications']),
   }
 };

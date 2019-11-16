@@ -1,5 +1,13 @@
 
 <section class="main-header">
+  <div id="notification-bar" v-if="user_permission_notifications.length">
+    <div class="notifications">
+      <div v-for="notification in user_permission_notifications">
+        <p class="message">{{ notification[$i18n.locale] }}</p>
+        <p class="acknowledge"><button class="button" @click="acknowledgeNotification(notification.type)">{{ $t('Ok') }}</button></p>
+      </div>
+    </div>
+  </div>
   <div class="main-header__wrapper">
     <router-link :to="localePath('index')" class="main-header__logo">
       <img
