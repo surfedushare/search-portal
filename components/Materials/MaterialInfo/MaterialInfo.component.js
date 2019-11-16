@@ -29,7 +29,7 @@ export default {
           this.is_loading_applaud = false;
         });
       this.$store
-        .dispatch('getMaterialRating', this.material.object_id)
+        .dispatch('getMaterialRating', this.material.external_id)
         .then(rating => {
           this.rating = rating.records[0];
         });
@@ -84,7 +84,7 @@ export default {
         .then(() => {
           this.is_applauded = true;
           this.$store
-            .dispatch('getMaterial', this.$route.params.id)
+            .dispatch('getMaterial', {id: this.$route.params.id})
             .then(() => {
               this.is_loading_applaud = false;
             });
@@ -108,7 +108,7 @@ export default {
      * @returns String
      */
     contedNumber() {
-      return numeral(this.material.number_of_views).format('0a');
+      return numeral(this.material.view_count).format('0a');
     },
     /**
      * get material themes
