@@ -112,12 +112,6 @@ export default {
 
     }
   },
-
-  mounted() {
-    if(!this.isAuthenticated) {
-      this.$router.push('/');
-    }
-  },
   methods: {
 
     onSubmit() {
