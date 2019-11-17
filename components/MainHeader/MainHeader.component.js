@@ -9,10 +9,6 @@ export default {
   components: {
     Menu
   },
-  mounted() {},
-  data() {
-    return {};
-  },
   methods: {
     /**
      * generate login URL

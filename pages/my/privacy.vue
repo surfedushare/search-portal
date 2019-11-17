@@ -18,7 +18,7 @@
           <div class="privacy__form__column">
             <div class="privacy__form__row" v-for="permission in permissions">
               <p class="privacy__form__label">
-                {{ $t(permission.title_translation_key) }}
+                {{ permission[$i18n.locale].title }}
               </p>
               <p>
                 <span class="choices" v-if="!permission.is_notification_only">
@@ -44,7 +44,8 @@
                   <label :for="permission.type + '-deny'" class="deny"></label>
                 </span>
                 <span class="description" :class="{'notification-only': permission.is_notification_only}">
-                  {{ permission[$i18n.locale] }}
+                  {{ permission[$i18n.locale].description }}
+                  (<router-link :to="localePath(permission.more_info_route)">{{ $t('more-info') }}</router-link>)
                 </span>
               </p>
             </div>
