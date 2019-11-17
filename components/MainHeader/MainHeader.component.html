@@ -28,6 +28,11 @@
               </router-link>
             </li>
             <li class="main-header__user_menu_item">
+              <router-link class="main-header__user_menu_link" :to="localePath({name: 'my-privacy'})">
+                {{ $t('My-privacy') }}
+              </router-link>
+            </li>
+            <li class="main-header__user_menu_item">
               <a
                 class="main-header__user_menu_link"
                 href="/logout/"

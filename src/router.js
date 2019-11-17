@@ -19,6 +19,7 @@ const _77aed046 = () => import('../pages/my/filters/index.vue' /* webpackChunkNa
 const _169285f4 = () => import('../pages/my/collections.vue' /* webpackChunkName: "pages/my/collections" */).then(m => m.default || m);
 const _b5953cb4 = () => import('../pages/my/communities.vue' /* webpackChunkName: "pages/my/communities" */).then(m => m.default || m);
 const myCommunity = () => import('../pages/my/community.vue' /* webpackChunkName: "pages/my/community" */).then(m => m.default || m);
+const myPrivacy = () => import('../pages/my/privacy.vue' /* webpackChunkName: "pages/my/privacy" */).then(m => m.default || m);
 const _1c7624f6 = () => import('../pages/my/filters/_id.vue' /* webpackChunkName: "pages/my/filters/_id" */).then(m => m.default || m);
 const _45857c92 = () => import('../pages/themes/_id.vue' /* webpackChunkName: "pages/themes/_id" */).then(m => m.default || m);
 const _4ed33c85 = () => import('../pages/materials/_id.vue' /* webpackChunkName: "pages/materials/_id" */).then(m => m.default || m);
@@ -183,6 +184,16 @@ export function createRouter () {
         path: "/mijn/filters/:id",
         component: _1c7624f6,
         name: "my-filters-id___nl"
+      },
+      {
+        path: "/en/my/privacy",
+        component: myPrivacy,
+        name: "my-privacy___en"
+      },
+      {
+        path: "/mijn/privacy",
+        component: myPrivacy,
+        name: "my-privacy___nl"
       },
       {
         path: "/en/themes/:id",
