@@ -33,16 +33,23 @@ class PrivacyStatement(models.Model):
     en = models.TextField(_("english"))
     nl = models.TextField(_("dutch"))
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    modified_at = models.DateTimeField(_("modified at"), auto_now=True)
 
     def get_default_privacy_settings(self):
         return [
             {
                 "is_allowed": None,
                 "type": goal.type,
-                "en": goal.en,
-                "nl": goal.nl,
+                "en": {
+                    "title": goal.en_title,
+                    "description": goal.en_description,
+                },
+                "nl": {
+                    "title": goal.nl_title,
+                    "description": goal.nl_description,
+                },
+                "more_info_route": goal.more_info_route,
                 "priority": goal.priority,
                 "is_after_login": goal.is_after_login,
                 "is_notification_only": goal.is_notification_only
@@ -84,27 +91,30 @@ class DataGoalPermission(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     goal = models.ForeignKey("DataGoal", on_delete=models.CASCADE)
 
-    recorded_at = models.DateTimeField(auto_now=True)
-    is_allowed = models.NullBooleanField()
-    is_retained = models.BooleanField(default=False)
+    recorded_at = models.DateTimeField(_("recorded at"), auto_now=True)
+    is_allowed = models.NullBooleanField(_("is allowed"), )
+    is_retained = models.BooleanField(_("is retained"), default=False)
 
 
 class DataGoal(models.Model):
 
     statement = models.ForeignKey(PrivacyStatement, on_delete=models.CASCADE)
-    en = models.CharField(_("english"), max_length=256)
-    nl = models.CharField(_("dutch"), max_length=256)
+    en_title = models.CharField(_("english title"), max_length=256)
+    nl_title = models.CharField(_("dutch title"), max_length=256)
+    en_description = models.CharField(_("english description"), max_length=256)
+    nl_description = models.CharField(_("dutch description"), max_length=256)
+    more_info_route = models.CharField(_("more info route"), max_length=50)
 
-    is_active = models.BooleanField(default=False)
-    type = models.CharField(choices=DATA_GOAL_TYPE_CHOICES, max_length=50)
-    priority = models.SmallIntegerField()
-    is_notification_only = models.BooleanField(default=False)
-    is_after_login = models.BooleanField(default=False)
+    is_active = models.BooleanField(_("is active"), default=False)
+    type = models.CharField(_("type"), choices=DATA_GOAL_TYPE_CHOICES, max_length=50)
+    priority = models.SmallIntegerField(_("priority"), )
+    is_notification_only = models.BooleanField(_("is notification only"), default=False)
+    is_after_login = models.BooleanField(_("is after login"), default=False)
 
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, through=DataGoalPermission)
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, through=DataGoalPermission, verbose_name=_(""))
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    modified_at = models.DateTimeField(_("modified at"), auto_now=True)
 
     class Meta:
         ordering = ("created_at", "-priority",)
@@ -129,13 +139,26 @@ class DataGoalPermissionSerializer(serializers.ModelSerializer):
 
     type = serializers.ChoiceField(source="goal.type", choices=DATA_GOAL_TYPE_CHOICES)
     priority = serializers.IntegerField(source="goal.priority", required=False)
-    en = serializers.CharField(source="goal.en", max_length=256)
-    nl = serializers.CharField(source="goal.nl", max_length=256)
+    en = serializers.SerializerMethodField()
+    nl = serializers.SerializerMethodField()
+    more_info_route = serializers.CharField(source="goal.more_info_route", max_length=50)
     is_notification_only = serializers.BooleanField(source="goal.is_notification_only", required=False)
     is_after_login = serializers.BooleanField(source="goal.is_after_login", required=False)
+
+    def get_en(self, obj):
+        return {
+            "title": obj.goal.en_title,
+            "description": obj.goal.en_description
+        }
+
+    def get_nl(self, obj):
+        return {
+            "title": obj.goal.nl_title,
+            "description": obj.goal.nl_description
+        }
 
     class Meta:
         model = DataGoalPermission
         list_serializer_class = DataGoalPermissionListSerializer
-        fields = ("id", "type", "en", "nl", "priority", "is_notification_only", "is_after_login", "is_allowed")
-        read_only_fields = ("en", "nl", "priority", "is_notification_only", "is_after_login")
+        fields = ("id", "type", "en", "nl", "more_info_route", "priority", "is_notification_only", "is_after_login", "is_allowed")
+        read_only_fields = ("en", "nl", "more_info_route", "priority", "is_notification_only", "is_after_login")

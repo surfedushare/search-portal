@@ -6,7 +6,7 @@ from ckeditor.widgets import CKEditorWidget
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoal
 
 
-class DataGoalAdminInline(admin.TabularInline):
+class DataGoalAdminInline(admin.StackedInline):
     model = DataGoal
     list_display = ("type", "is_active", "priority",)
     extra = 0
