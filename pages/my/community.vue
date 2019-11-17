@@ -177,14 +177,13 @@ export default {
       'community_collections_loading',
       'communities',
       'isAuthenticated',
-      'user_loading',
       'user',
       'getUserCommunities'
     ])
   },
 
   mounted() {
-    if(!this.isAuthenticated && !this.user_loading) {
+    if(!this.isAuthenticated) {
       this.$router.push('/');
       return;
     }
