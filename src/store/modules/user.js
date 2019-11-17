@@ -43,11 +43,11 @@ export default {
       commit('USER_LOADING', false);
     },
     async login({ commit }, { token }) {
-      commit('USER_LOADING', true);
       localStorage.setItem('surf_token', token);
       this.$axios.setHeader('Authorization', `Token ${token}`);
-      await this.dispatch('getUser');
       commit('AUTHENTICATE', true);
+      await this.dispatch('getUser');
+      commit('USER_LOADING', true);
       commit('USER_LOADING', false);
     },
     async logout({ commit }) {
