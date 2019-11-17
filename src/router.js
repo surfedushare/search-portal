@@ -348,7 +348,7 @@ export function createRouter () {
         beforeEnter(to, from, next) {
           window.app.$axios.get('users/obtain-token', {withCredentials: true})
             .then((response) => {
-              window.app.store.dispatch('login', { token: response.data.token })
+              window.app.store.dispatch('authenticate', { token: response.data.token })
                 .then(() => {
                   next({path: to.query.continue || '/' });
                 })

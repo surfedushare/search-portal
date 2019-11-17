@@ -103,9 +103,6 @@ export default {
         if(!_.isNil(permission.is_allowed) ) {
           permission.is_allowed_input = (permission.is_allowed) ? "yes" : "no"
         }
-        if(_.isNil(permission.title_translation_key)) {
-          permission.title_translation_key = permission.type.toLowerCase() + '-title-asset-key'
-        }
       });
 
       return this.user.permissions;
