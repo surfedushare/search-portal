@@ -348,7 +348,7 @@ export function createRouter () {
         beforeEnter(to, from, next) {
           let authFlowToken = to.query.partial_token || null;
           window.app.store.commit("AUTH_FLOW_TOKEN", authFlowToken);
-          next(localePath('my-privacy'))
+          next(window.app.localePath('my-privacy'))
         }
       },
       {
