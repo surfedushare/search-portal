@@ -15,12 +15,17 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Become aware of the frontend that this backend is build for
+# We whitelist this URL entirely to be able to share (login!) cookies
+FRONTEND_DOMAIN = os.environ.get("DJANGO_FRONTEND_DOMAIN", "zoekportaal.surf.nl")
+PROTOCOL = os.environ.get("DJANGO_PROTOCOL", "https")
+FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', "0")))
 
 ALLOWED_HOSTS = []
 
@@ -28,8 +33,9 @@ USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # list of allowed endpoints to redirect
-ALLOWED_REDIRECT_ENDPOINTS = []
-ALLOWED_REDIRECT_HOSTS = []
+ALLOWED_REDIRECT_HOSTS = [
+    FRONTEND_BASE_URL
+]
 
 
 # Application definition
@@ -81,9 +87,12 @@ CORS_EXPOSE_HEADERS = (
     'content-disposition',
 )
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    FRONTEND_DOMAIN
+]
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = PROTOCOL == "https"
+CSRF_COOKIE_SECURE = PROTOCOL == "https"
 
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -147,9 +156,6 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ),
 
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.JSONRenderer',
-    # )
 }
 
 
@@ -225,7 +231,7 @@ SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
-SOCIAL_AUTH_LOGIN_ERROR_URL = "https://zoekportaal.surf.nl"
+SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
@@ -241,16 +247,17 @@ SOCIAL_AUTH_PIPELINE = (
     'surf.vendor.surfconext.pipeline.require_data_permissions',
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.user.create_user',
+    #'surf.vendor.surfconext.pipeline.store_data_permissions',
     'social_core.pipeline.social_auth.associate_user',
     'surf.vendor.surfconext.pipeline.get_groups',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
 
-LOGIN_REDIRECT_URL = "/login/success"  # TODO: prepend frontend URL?
-LOGOUT_REDIRECT_URL = "https://engine.test.surfconext.nl/logout"
+LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"
+LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
-VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
+VOOT_API_ENDPOINT = "https://voot.surfconext.nl"
 
 EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
 EDUREP_XML_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
