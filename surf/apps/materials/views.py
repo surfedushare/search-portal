@@ -24,6 +24,7 @@ from surf.apps.materials.filters import (
 from surf.apps.materials.models import (
     Collection,
     Material,
+    CollectionMaterial,
     SharedResourceCounter,
     RESOURCE_TYPE_MATERIAL,
     RESOURCE_TYPE_COLLECTION
@@ -411,7 +412,7 @@ class CollectionViewSet(ModelViewSet):
 
             add_material_themes(m, details[0].get("themes", []))
             add_material_disciplines(m, details[0].get("disciplines", []))
-            instance.materials.add(m)
+            CollectionMaterial.objects.create(collection=instance, material=m)
 
     @staticmethod
     def _delete_materials(instance, materials):
