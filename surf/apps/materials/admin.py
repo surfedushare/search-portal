@@ -74,10 +74,13 @@ class MaterialAdmin(admin.ModelAdmin):
         except ValueError:
             filter_trash = False
         if filter_trash:
-            del actions["trash_nodes"]
+            if "trash_nodes" in actions.keys():
+                del actions["trash_nodes"]
         else:
-            del actions["delete_selected"]
-            del actions["restore_nodes"]
+            if "delete_selected" in actions.keys():
+                del actions["delete_selected"]
+            if "restore_nodes" in actions.keys():
+                del actions["restore_nodes"]
         return actions
 
 
