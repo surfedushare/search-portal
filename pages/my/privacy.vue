@@ -132,7 +132,7 @@ export default {
               let backendUrl = process.env.VUE_APP_BACKEND_URL;
               this.$store.commit('AUTH_FLOW_TOKEN', null);
               window.location = backendUrl +
-                '/complete/surf-conext/?partial_token=' + authFlowToken
+                'complete/surf-conext/?partial_token=' + authFlowToken
             }
           }, 1000);
         })
