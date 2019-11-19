@@ -98,7 +98,7 @@ class UserDetailsAPIView(APIView):
     def post(self, request, *args, **kwargs):
         # Handle the permissions part of the data
         raw_permission = request.data.get("permissions", None)
-        serializer = DataGoalPermissionSerializer(data=raw_permission, many=True, context={"request": request})
+        serializer = DataGoalPermissionSerializer(data=raw_permission, many=True, context={"user": request.user})
         serializer.is_valid(raise_exception=True)
         permissions = []
         for permission_data in serializer.validated_data:

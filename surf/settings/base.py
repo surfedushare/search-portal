@@ -247,7 +247,7 @@ SOCIAL_AUTH_PIPELINE = (
     'surf.vendor.surfconext.pipeline.require_data_permissions',
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.user.create_user',
-    #'surf.vendor.surfconext.pipeline.store_data_permissions',
+    'surf.vendor.surfconext.pipeline.store_data_permissions',
     'social_core.pipeline.social_auth.associate_user',
     'surf.vendor.surfconext.pipeline.get_groups',
     'social_core.pipeline.social_auth.load_extra_data',

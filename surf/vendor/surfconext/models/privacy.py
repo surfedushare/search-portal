@@ -123,7 +123,7 @@ class DataGoal(models.Model):
 class DataGoalPermissionListSerializer(serializers.ListSerializer):
 
     def create(self, validated_data):
-        user = self.context["request"].user
+        user = self.context["user"]
         if user.is_anonymous:
             raise AuthenticationFailed("Can't permanently store data goal permissions for anonymous users")
         goal = DataGoal.objects.get(type=validated_data["type"], is_active=True)

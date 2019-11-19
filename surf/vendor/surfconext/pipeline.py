@@ -1,29 +1,42 @@
 from django.conf import settings
 
 from sentry_sdk import capture_message
-
-from surf.vendor.surfconext.voot.api import VootApiClient
 from social_core.pipeline.partial import partial
+
+from surf.vendor.surfconext.models import DataGoalPermissionSerializer
+from surf.vendor.surfconext.voot.api import VootApiClient
 
 
 @partial
 def require_data_permissions(strategy, details, user=None, is_new=False, *args, **kwargs):
-    return
-    # TODO: enable this code to check user permissions half way the login procedure
-    # This will need: permission validation
-    # NB: this raises 500 when a partial state gets used twice (an event which should not occur but still)
-    if kwargs.get('ajax') or user and user.email:
+    # Check if we need decisions on privacy permissions by the user
+    # Return to the frontend if we do
+    permissions = strategy.request.session.get("permissions", [])
+    needs_privacy_confirmation = any([
+        permission for permission in permissions
+        if permission["is_after_login"]
+    ])
+    if not needs_privacy_confirmation:
         return
-    elif is_new and not details.get('permissions'):
-        permissions = strategy.request_post()
+    is_undecided = any([
+        permission for permission in permissions
+        if permission["is_allowed"] is None and permission["is_after_login"]
+    ])
+    if is_undecided:
+        current_partial = kwargs.get('current_partial')
+        return strategy.redirect(
+            "{}/login/permissions?partial_token={}".format(settings.FRONTEND_BASE_URL, current_partial)
+        )
+    # Decisions are made
+    # Passing on the permissions to the pipeline
+    details['permissions'] = permissions
 
-        if permissions:
-            details['permissions'] = permissions
-        else:
-            current_partial = kwargs.get('current_partial')
-            return strategy.redirect(
-                '/login/permissions?partial_token={0}'.format(current_partial.token)
-            )
+
+def store_data_permissions(strategy, details, user):
+    permissions = details["permissions"]
+    serializer = DataGoalPermissionSerializer(many=True, context={"user": user})
+    for permission in permissions:
+        serializer.create(permission)
 
 
 def get_groups(strategy, details, response, *args, **kwargs):
