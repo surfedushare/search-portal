@@ -66,9 +66,9 @@
                   id="website"
                   v-model="formData.website_url"
                   name="website"
-                  type="text"
+                  type="url"
                   class="communities__form__input"
-                  placeholder="Geef hier de URL "
+                  placeholder="http://www..."
                 >
               </div>
             </div>
@@ -273,6 +273,9 @@ export default {
             data.append(item, ElValue);
           }
         }
+      }
+      if (this.formData.website_url === ""){
+        data.append("website_url", "");
       }
 
       if (
