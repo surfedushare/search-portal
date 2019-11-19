@@ -127,6 +127,13 @@ export default {
           this.is_saved = true;
           setTimeout(() => {
             this.is_saved = false;
+            let authFlowToken = this.$store.getters.auth_flow_token;
+            if(!_.isNil(authFlowToken)) {
+              let backendUrl = process.env.VUE_APP_BACKEND_URL;
+              this.$store.commit('AUTH_FLOW_TOKEN', null);
+              window.location = backendUrl +
+                '/complete/surf-conext/?partial_token=' + authFlowToken
+            }
           }, 1000);
         })
         .finally(() => {
