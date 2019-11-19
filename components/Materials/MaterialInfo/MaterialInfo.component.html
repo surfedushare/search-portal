@@ -40,7 +40,6 @@
       />
       <a
         href="/save-rating/"
-        v-if="isAuthenticated && !rating"
         @click.prevent="showPopupSaveRating"
       >
         {{ $t('Geef-waardering') }}
