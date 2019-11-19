@@ -131,19 +131,20 @@ class Material(UUIDModel):
         assert self.external_id, "Can't sync info if instance doesn't have an external id"
 
         details = get_material_details_by_id(self.external_id)
-        m = details[0]
-        self.material_url = m.get("url")
-        self.title = m.get("title")
-        self.description = m.get("description")
-        keywords = m.get("keywords")
-        if keywords:
-            keywords = json.dumps(keywords)
-            self.keywords = keywords
+        if details:
+            m = details[0]
+            self.material_url = m.get("url")
+            self.title = m.get("title")
+            self.description = m.get("description")
+            keywords = m.get("keywords")
+            if keywords:
+                keywords = json.dumps(keywords)
+                self.keywords = keywords
 
-        # always save info before adding themes & disciplines
-        self.save()
-        add_material_themes(self, m.get("themes", []))
-        add_material_disciplines(self, m.get("disciplines", []))
+            # always save info before adding themes & disciplines
+            self.save()
+            add_material_themes(self, m.get("themes", []))
+            add_material_disciplines(self, m.get("disciplines", []))
 
     def __str__(self):
         return self.external_id
