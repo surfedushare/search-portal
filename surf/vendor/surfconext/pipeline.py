@@ -32,7 +32,7 @@ def require_data_permissions(strategy, details, user=None, is_new=False, *args, 
     details['permissions'] = permissions
 
 
-def store_data_permissions(strategy, details, user):
+def store_data_permissions(strategy, details, user, *args, **kwargs):
     permissions = details["permissions"]
     serializer = DataGoalPermissionSerializer(many=True, context={"user": user})
     for permission in permissions:
