@@ -344,6 +344,14 @@ export function createRouter () {
         name: "index___nl"
       },
       {
+        path: "/login/permissions",
+        beforeEnter(to, from, next) {
+          let authFlowToken = to.query.partial_token || null;
+          window.app.store.commit("AUTH_FLOW_TOKEN", authFlowToken);
+          next(localePath('my-privacy'))
+        }
+      },
+      {
         path: "/login/success",
         beforeEnter(to, from, next) {
           window.app.$axios.get('users/obtain-token', {withCredentials: true})

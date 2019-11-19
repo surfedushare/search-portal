@@ -16,7 +16,7 @@
       <div class="privacy__form" v-if="permissions.length">
         <form action="/" class="privacy__form_in" @submit.prevent="onSubmit" novalidate>
           <div class="privacy__form__column">
-            <div class="privacy__form__row" v-for="permission in permissions">
+            <div class="privacy__form__row" v-for="permission in permissions" :key="permission.type">
               <p class="privacy__form__label">
                 {{ permission[$i18n.locale].title }}
               </p>

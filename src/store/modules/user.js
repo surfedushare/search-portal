@@ -5,7 +5,8 @@ export default {
   state: {
     user: null,
     user_loading: null,
-    is_authenticated: false
+    is_authenticated: false,
+    auth_flow_token: null
   },
   getters: {
     user(state) {
@@ -27,6 +28,9 @@ export default {
       return _.filter(state.user.permissions, (permission) => {
         return permission.is_notification_only && _.isNil(permission.is_allowed) ;
       });
+    },
+    auth_flow_token(state) {
+      return state.auth_flow_token;
     }
   },
   actions: {
@@ -67,6 +71,9 @@ export default {
     },
     AUTHENTICATE(state, value) {
       state.is_authenticated = value;
+    },
+    AUTH_FLOW_TOKEN(state, token) {
+      state.auth_flow_token = token;
     }
   }
 };
