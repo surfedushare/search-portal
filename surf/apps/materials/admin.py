@@ -61,6 +61,7 @@ class MaterialAdmin(admin.ModelAdmin):
         'disciplines', 'keywords', 'view_count', 'applaud_count',
         'get_avg_star_rating', 'get_star_count', "deleted_at",
     )
+    search_fields = ('title', 'external_id', 'description', 'keywords', )
     exclude = ['star_1', 'star_2', 'star_3', 'star_4', 'star_5']
     actions = [restore_nodes, trash_nodes, sync_info_nodes]
 
