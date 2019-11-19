@@ -157,6 +157,16 @@ class DataGoalPermissionSerializer(serializers.ModelSerializer):
             "description": obj.goal.nl_description
         }
 
+    def to_internal_value(self, data):
+        internal_value = super().to_internal_value(data)
+        en_translations = data.get("en", {})
+        nl_translations = data.get("nl", {})
+        internal_value.update({
+            "en": en_translations,
+            "nl": nl_translations
+        })
+        return internal_value
+
     class Meta:
         model = DataGoalPermission
         list_serializer_class = DataGoalPermissionListSerializer
