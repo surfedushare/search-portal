@@ -59,4 +59,4 @@ def assign_communities(strategy, details, user, *args, **kwargs):
     group_urns = [group["id"] for group in details.get("groups", [])]
     communities = list(Community.objects.filter(external_id__in=group_urns))
     if len(communities):
-        user.teams.add(communities)
+        user.teams.add(*communities)
