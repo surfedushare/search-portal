@@ -358,7 +358,7 @@ export function createRouter () {
             .then((response) => {
               window.app.store.dispatch('authenticate', { token: response.data.token })
                 .then(() => {
-                  next({path: to.query.continue || '/' });
+                  next(to.query.continue || '/');
                 })
                 .catch((error) => {
                   $log.warn('Unable to login due to error during store "login" dispatch');
