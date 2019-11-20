@@ -3,15 +3,20 @@ from django.conf import settings
 from sentry_sdk import capture_message
 from social_core.pipeline.partial import partial
 
-from surf.vendor.surfconext.models import DataGoalPermissionSerializer
+from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
 from surf.vendor.surfconext.voot.api import VootApiClient
 
 
 @partial
 def require_data_permissions(strategy, details, user=None, is_new=False, *args, **kwargs):
+    # Load current privacy statement
+    privacy_statement = PrivacyStatement.objects.get_latest_active()
     # Check if we need decisions on privacy permissions by the user
     # Return to the frontend if we do
-    permissions = strategy.request.session.get("permissions", [])
+    if not is_new:
+        permissions = privacy_statement.get_privacy_settings(user=user)
+    else:
+        permissions = strategy.request.session.get("permissions", privacy_statement.get_privacy_settings(user=user))
     needs_privacy_confirmation = any([
         permission for permission in permissions
         if permission["is_after_login"]
