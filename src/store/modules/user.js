@@ -40,7 +40,7 @@ export default {
         }
         let backendUrl = process.env.VUE_APP_BACKEND_URL;
         let frontendUrl = process.env.VUE_APP_FRONTEND_URL;
-        let nextUrl = encodeURIComponent(frontendUrl + 'login/success?continue=' + currentUrl);
+        let nextUrl = frontendUrl + 'login/success?continue=' + encodeURIComponent(currentUrl);
         return backendUrl + 'login/surf-conext/?next=' + nextUrl;
       }
     }
