@@ -5,7 +5,7 @@ from social_core.pipeline.partial import partial
 
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
 from surf.vendor.surfconext.voot.api import VootApiClient
-from surf.apps.communities.models import Community
+from surf.apps.communities.models import Community, Team
 
 
 @partial
@@ -57,6 +57,8 @@ def get_groups(strategy, details, response, *args, **kwargs):
 def assign_communities(strategy, details, user, *args, **kwargs):
     user.teams.clear()
     group_urns = [group["id"] for group in details.get("groups", [])]
-    communities = list(Community.objects.filter(external_id__in=group_urns))
-    if len(communities):
-        user.team_set.add(*communities)
+    teams = []
+    for community in Community.objects.filter(external_id__in=group_urns):
+        teams.append(Team(user=user, community=community, team_id=community.external_id))
+    if len(teams):
+        Team.objects.bulk_create(teams)
