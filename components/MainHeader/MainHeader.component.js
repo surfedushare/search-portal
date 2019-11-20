@@ -21,7 +21,7 @@ export default {
      * logout event
      */
     logout() {
-      this.$store.dispatch('logout');
+      this.$store.dispatch('logout', {fully: true});
     },
 
     /**

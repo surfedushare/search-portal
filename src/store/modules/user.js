@@ -66,12 +66,14 @@ export default {
       await this.dispatch('getUser');
       commit('USER_LOADING', false);
     },
-    async logout({ commit }) {
+    async logout({ commit, fully }) {
       localStorage.removeItem('surf_token');
       this.$axios.setHeader('Authorization', false);
       commit('SET_USER', null);
       commit('AUTHENTICATE', false);
-      window.location = process.env.VUE_APP_BACKEND_URL + 'logout'
+      if(fully) {
+        window.location = process.env.VUE_APP_BACKEND_URL + 'logout'
+      }
     }
   },
   mutations: {
