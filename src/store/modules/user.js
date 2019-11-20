@@ -66,12 +66,12 @@ export default {
       await this.dispatch('getUser');
       commit('USER_LOADING', false);
     },
-    async logout({ commit }, { fully }) {
+    async logout({ commit }, payload) {
       localStorage.removeItem('surf_token');
       this.$axios.setHeader('Authorization', false);
       commit('SET_USER', null);
       commit('AUTHENTICATE', false);
-      if(fully) {
+      if(payload && payload.fully) {
         window.location = process.env.VUE_APP_BACKEND_URL + 'logout'
       }
     }
