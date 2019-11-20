@@ -15,14 +15,7 @@ export default {
      * @returns {string}
      */
     getLoginLink() {
-      let currentUrl = this.$route.path;
-      if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
-        return '/' + 'login/success?continue=' + currentUrl;
-      }
-      let backendUrl = process.env.VUE_APP_BACKEND_URL;
-      let frontendUrl = process.env.VUE_APP_FRONTEND_URL;
-      let nextUrl = frontendUrl + 'login/success?continue=' + currentUrl;
-      return backendUrl + 'login/surf-conext/?next=' + nextUrl;
+      return this.$store.getters.getLoginLink(this.$route);
     },
     /**
      * logout event

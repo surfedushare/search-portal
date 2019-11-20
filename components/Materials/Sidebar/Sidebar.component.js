@@ -50,9 +50,7 @@ export default {
      * @returns {string}
      */
     getLoginLink() {
-      return `${
-        this.$axios.defaults.baseURL
-      }/login/?redirect_url=${validateHREF(window.location.href)}`;
+      return this.$store.getters.getLoginLink(this.$route);
     },
     /**
      * Show AddCollection popup

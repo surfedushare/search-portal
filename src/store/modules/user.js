@@ -31,6 +31,18 @@ export default {
     },
     auth_flow_token(state) {
       return state.auth_flow_token;
+    },
+    getLoginLink(state) {
+      return (route) => {
+        let currentUrl = route.path + window.location.search;
+        if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
+          return '/' + 'login/success?continue=' + currentUrl;
+        }
+        let backendUrl = process.env.VUE_APP_BACKEND_URL;
+        let frontendUrl = process.env.VUE_APP_FRONTEND_URL;
+        let nextUrl = frontendUrl + 'login/success?continue=' + currentUrl;
+        return backendUrl + 'login/surf-conext/?next=' + nextUrl;
+      }
     }
   },
   actions: {
