@@ -66,7 +66,7 @@ export default {
       await this.dispatch('getUser');
       commit('USER_LOADING', false);
     },
-    async logout({ commit, fully }) {
+    async logout({ commit }, { fully }) {
       localStorage.removeItem('surf_token');
       this.$axios.setHeader('Authorization', false);
       commit('SET_USER', null);
