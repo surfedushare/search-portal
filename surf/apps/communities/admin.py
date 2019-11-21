@@ -65,6 +65,7 @@ class CommunityForm(forms.ModelForm):
     class Meta:
         model = models.Community
         fields = '__all__'
+        exclude = ['surf_team', 'admins', 'members', 'is_available']
 
 
 def validate_image_proportion(image, width, height):

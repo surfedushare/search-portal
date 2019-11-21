@@ -100,6 +100,7 @@ class CollectionAdmin(admin.ModelAdmin):
     list_filter = (TrashListFilter, "publish_status",)
     readonly_fields = ('title', "deleted_at",)
     ordering = ("title",)
+    exclude = ["is_shared"]
     inlines = [CollectionMaterialInline]
     actions = [restore_nodes, trash_nodes]
 
