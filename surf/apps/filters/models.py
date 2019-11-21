@@ -3,61 +3,11 @@ This module contains implementation of models for filters app.
 """
 
 from django.conf import settings
-from django.core import validators
 from django.db import models as django_models
 from mptt.models import MPTTModel, TreeForeignKey
 
 from surf.apps.core.models import UUIDModel
 from surf.apps.locale.models import Locale
-
-
-class FilterCategory(UUIDModel):
-    """
-    Implementation of Filter Category model. Filter Categories should be
-    configured in Django admin page.
-    """
-    title = django_models.CharField(max_length=255)
-    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
-                                                     null=True, blank=False)
-
-    # LOM identifier of field category in EduRep
-    edurep_field_id = django_models.CharField(
-        max_length=255,
-        verbose_name="Field id in EduRep")
-
-    # max number of category items that should be loaded from EduRep.
-    # 0 - should be loaded all items of category
-    max_item_count = django_models.IntegerField(
-        default=0,
-        validators=[validators.MinValueValidator(0)])
-
-    def __str__(self):
-        return self.title
-
-
-class FilterCategoryItem(UUIDModel):
-    """
-    Implementation of Filter Category item model. Filter Category items are
-    loaded from EduRep via EduRep API.
-    """
-
-    title = django_models.CharField(max_length=255)
-
-    # identifier of field category item in EduRep
-    external_id = django_models.CharField(
-        max_length=255,
-        verbose_name="Filter item id in EduRep")
-
-    # related filter category
-    category = django_models.ForeignKey(FilterCategory,
-                                        verbose_name="Filter category",
-                                        related_name='items',
-                                        on_delete=django_models.CASCADE)
-
-    order = django_models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
 
 
 class MpttFilterItem(MPTTModel, UUIDModel):
@@ -122,14 +72,10 @@ class FilterItem(UUIDModel):
                                       on_delete=django_models.CASCADE)
 
     # Filter category item related to this item
-    category_item = django_models.ForeignKey(FilterCategoryItem,
-                                             related_name='filter_items',
-                                             on_delete=django_models.CASCADE)
-    # Filter category item related to this item
     mptt_category_item = django_models.ForeignKey(MpttFilterItem,
-                                             related_name='filter_items',
-                                             on_delete=django_models.CASCADE,
+                                                  related_name='filter_items',
+                                                  on_delete=django_models.CASCADE,
                                                   null=True)
 
     def __str__(self):
-        return "{} - {}".format(self.filter.title, self.category_item.title)
+        return "{} - {}".format(self.filter.title, self.mptt_category_item.name)

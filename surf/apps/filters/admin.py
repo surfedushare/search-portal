@@ -6,9 +6,9 @@ from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin
 
 from surf.apps.filters import models
-from surf.apps.filters.utils import update_filter_category
 
-@admin.register(models.Filter)
+
+# @admin.register(models.Filter)
 class FilterAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Filter model.
@@ -18,29 +18,15 @@ class FilterAdmin(admin.ModelAdmin):
     ordering = ("title",)
 
 
-@admin.register(models.FilterItem)
+# @admin.register(models.FilterItem)
 class FilterItemAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for FilterItem model.
     """
 
-    list_display = ("filter", "category_item", )
-    ordering = ("filter__title", "category_item__title", )
+    list_display = ("filter", "mptt_category_item", )
+    ordering = ("filter__title", "mptt_category_item__name", )
     list_filter = ("filter",)
-
-
-def fill_filter_category(model_admin, request, queryset):
-    """
-    Implements the logic of action "filter category fill"
-    :param model_admin: model admin instance
-    :param request: request instance
-    :param queryset: queryset of selected filter categories
-    """
-    for fc in queryset.all():
-        update_filter_category(fc)
-
-
-fill_filter_category.short_description = "Fill filter category items"
 
 
 @admin.register(models.MpttFilterItem)

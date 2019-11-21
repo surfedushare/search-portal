@@ -4,30 +4,53 @@ This module provides django admin functionality for communities app.
 
 from django.contrib import admin
 from django import forms
-from django.db.models import Q
 from django.core.files.images import get_image_dimensions
 
 from surf.apps.communities import models
+from surf.apps.communities.models import PublishStatus
+
+
+def trash_nodes(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.delete()
+
+
+trash_nodes.short_description = "Trash selected %(verbose_name_plural)s"
+
+
+def restore_nodes(modeladmin, request, queryset):
+    for obj in queryset:
+        obj.restore()
+
+
+restore_nodes.short_description = "Restore selected %(verbose_name_plural)s"
+
+
+class TrashListFilter(admin.SimpleListFilter):
+
+    title = 'is trash'
+    parameter_name = 'trash'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('1', 'Yes'),
+            ('0', 'No'),
+        )
+
+    def queryset(self, request, queryset):
+        value = self.value() or '0'
+        try:
+            is_trash = bool(int(value))
+        except ValueError:
+            is_trash = False
+        return queryset.filter(deleted_at__isnull=not is_trash)
 
 
 class CommunityForm(forms.ModelForm):
     """
     Implementation of Community Form class.
     """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        try:
-            # choose only SurfTeam instances not related to Community instances
-            qs = models.SurfTeam.objects
-            conditions = Q(community__isnull=True)
-            if self.instance and self.instance.pk:
-                conditions |= Q(community__id=self.instance.pk)
-            qs = qs.filter(conditions)
-            self.fields['surf_team'].queryset = qs.all()
-        except AttributeError:
-            pass
+    publish_status = forms.TypedChoiceField(choices=PublishStatus.choices(), coerce=int)
 
     def clean_logo(self):
         picture = self.cleaned_data.get("logo")
@@ -41,7 +64,8 @@ class CommunityForm(forms.ModelForm):
 
     class Meta:
         model = models.Community
-        exclude = ("external_id", "admins", "members",)
+        fields = '__all__'
+        exclude = ['surf_team', 'admins', 'members', 'is_available']
 
 
 def validate_image_proportion(image, width, height):
@@ -54,36 +78,34 @@ def validate_image_proportion(image, width, height):
             "The image proportion should be {}x{}!".format(width, height))
 
 
+class TeamInline(admin.TabularInline):
+    model = models.Team
+    extra = 0
+    readonly_fields = ('team_id',)
+
+
 @admin.register(models.Community)
 class CommunityAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Community model.
     """
-
-    list_display = ("custom_name", "custom_description", "is_available",)
-    list_filter = ("is_available",)
-    exclude = ("external_id", "admins", "members",)
+    list_display = ("name", "publish_status",)
+    list_filter = ("publish_status", TrashListFilter,)
+    readonly_fields = ("deleted_at",)
+    inlines = [TeamInline]
     form = CommunityForm
 
-    def custom_name(self, obj):
-        if obj.name:
-            return obj.name
+    actions = [restore_nodes, trash_nodes]
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        try:
+            filter_trash = bool(int(request.GET.get('trash', '0')))
+        except ValueError:
+            filter_trash = False
+        if filter_trash:
+            del actions["trash_nodes"]
         else:
-            return obj.surf_team.name
-
-    def custom_description(self, obj):
-        if obj.description:
-            return obj.description
-        else:
-            return obj.surf_team.description
-
-    custom_description.short_description = 'Description'
-
-
-@admin.register(models.SurfTeam)
-class SurfTeamAdmin(admin.ModelAdmin):
-    """
-    Provides admin options and functionality for SURFconext Team model.
-    """
-
-    list_display = ("external_id", "name", "description",)
+            del actions["delete_selected"]
+            del actions["restore_nodes"]
+        return actions
