@@ -4,7 +4,6 @@
 
 import Vue from 'vue'
 import NuxtChild from './nuxt-child'
-import NuxtError from '../../layouts/error.vue'
 
 import { compile } from '../utils'
 
@@ -44,7 +43,6 @@ export default {
     }
   },
   components: {
-    NuxtChild,
-    NuxtError
+    NuxtChild
   }
 }

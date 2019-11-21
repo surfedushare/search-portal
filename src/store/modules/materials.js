@@ -5,6 +5,11 @@ import {
   validateIDString,
   decodeAuthor
 } from './_helpers';
+import injector from 'vue-inject';
+
+
+const $log = injector.get("$log");
+
 
 
 function validateID() {
@@ -47,18 +52,14 @@ export default {
   },
   actions: {
     async getMaterial({ commit }, id) {
-      if (validateID(id)) {
-        commit('SET_MATERIAL_LOADING', true);
-        const material = await this.$axios.$get(`materials/${id}/`);
-        decodeAuthor(material);
-        commit('SET_MATERIAL', material);
-        commit('SET_MATERIAL_LOADING', false);
-      } else {
-        console.error('Validate error: ', id);
-      }
+      commit('SET_MATERIAL_LOADING', true);
+      const material = await this.$axios.$get(`materials/${id}/`);
+      decodeAuthor(material);
+      commit('SET_MATERIAL', material);
+      commit('SET_MATERIAL_LOADING', false);
     },
     async setMaterialSocial({ commit }, { id, params }) {
-      if (validateID(id) && validateParams(params)) {
+      if (validateParams(params)) {
         // commit('SET_MATERIAL', null);
         commit('SET_MATERIAL_LOADING', true);
         const material = await this.$axios.$get(`materials/${id}/`, { params });
@@ -66,7 +67,7 @@ export default {
         commit('SET_MATERIAL_LOADING', false);
         return material;
       } else {
-        console.error('Validate error: ', { id, params });
+        $log.error('Validate error: ', { id, params });
       }
     },
     async getMaterialShare({ commit }, params) {
@@ -75,7 +76,7 @@ export default {
         const material = await this.$axios.$get(`materials/`, { params });
         commit('SET_MATERIAL', material);
       } else {
-        console.error('Validate error: ', params);
+        $log.error('Validate error: ', params);
       }
     },
     async getMaterials({ commit }) {
@@ -87,7 +88,7 @@ export default {
         const communities = await this.$axios.$get('communities/', { params });
         commit('SET_MATERIAL_COMMUNITIES', communities);
       } else {
-        console.error('Validate error: ', { params });
+        $log.error('Validate error: ', { params });
       }
     },
     async setMaterialRating({ commit }, rating) {
@@ -101,7 +102,7 @@ export default {
           }
         });
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async setApplaudMaterial({ commit }, { external_id }) {
@@ -112,7 +113,7 @@ export default {
           }
         });
       } else {
-        console.error('Validate error: ', external_id);
+        $log.error('Validate error: ', external_id);
       }
     },
     async getApplaudMaterial({ commit }, { external_id }) {
@@ -123,7 +124,7 @@ export default {
           }
         });
       } else {
-        console.error('Validate error: ', external_id);
+        $log.error('Validate error: ', external_id);
       }
     },
     async searchMaterials({ commit }, search) {
@@ -137,25 +138,7 @@ export default {
         commit('SET_MATERIALS_LOADING', false);
         return materials;
       } else {
-        console.error('Validate error: ', search);
-      }
-    },
-    async searchMaterialsInCommunity({ commit }, { id, search }) {
-      if (validateID(id) && validateSearch(search)) {
-        commit('SET_MATERIALS_LOADING', true);
-        const materials = await this.$axios.$post(
-          `communities/${id}/search/`,
-          search
-        );
-        materials.search_text = search.search_text;
-        materials.active_filters = search.filters;
-        materials.ordering = search.ordering;
-
-        commit('SET_MATERIALS', materials);
-        commit('SET_MATERIALS_LOADING', false);
-        return materials;
-      } else {
-        console.error('Validate error: ', { id, search });
+        $log.error('Validate error: ', search);
       }
     },
     async searchNextPageMaterials({ commit }, search) {
@@ -165,20 +148,7 @@ export default {
         commit('SET_NEXT_PAGE_MATERIALS', materials);
         commit('SET_MATERIALS_LOADING', false);
       } else {
-        console.error('Validate error: ', search);
-      }
-    },
-    async searchNextPageMaterialsCommunity({ commit }, { id, search }) {
-      if (validateID(id) && validateSearch(search)) {
-        commit('SET_MATERIALS_LOADING', true);
-        const materials = await this.$axios.$post(
-          `communities/${id}/search/`,
-          search
-        );
-        commit('SET_NEXT_PAGE_MATERIALS', materials);
-        commit('SET_MATERIALS_LOADING', false);
-      } else {
-        console.error('Validate error: ', { id, search });
+        $log.error('Validate error: ', search);
       }
     },
     async searchMaterialsKeywords({ commit }, { params }) {

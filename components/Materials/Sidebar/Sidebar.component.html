@@ -66,60 +66,29 @@
       </a>
     </div>
 
-    <div class="material__left-box" v-show="$root.loginEnabled || isAuthenticated">
+    <div class="material__left-box">
       <template v-if="!isAuthenticated">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
-        <p>{{ $t('To-be-able-to-make-collections-you-must-first-log') }}</p>
+        <p>{{ $t('To-be-able-to-add-materials-to-collections-you-must-first-log-in') }}</p>
         <a
           :href="getLoginLink()"
           class="arrow-link"
         >{{$t('Log-in-with-SURFconext')}}</a>
       </template>
-      <template v-else-if="isAuthenticated && my_collections && !my_collections.results.length">
+      <template v-else-if="isAuthenticated && my_collections && !my_collections.length">
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
-        <p>{{ $t('You-do-not-have-any-collections-yet-Create-your-fi') }}</p>
-        <a
-          href="/add_collection/"
-          @click=""
-          class="add-link"
-          @click.prevent="addCollection"
-        >{{ $t('Make-a-collection') }}</a>
+        <p>{{ $t('You-are-not-part-of-a-community-with-collections') }}</p>
       </template>
-      <template v-else-if="!material.has_bookmark">
+      <template v-else>
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <Multiselect
-          v-if="full_loading && my_collections.results"
+          v-if="full_loading && my_collections"
           v-model="checked_collections"
-          :items="my_collections.results"
+          :items="my_collections"
           :placeholder="$t('Select-collection')"
           class="material__left_select"
           :disabled="submitting"
         ></Multiselect>
-        <a
-          href="/add_collection/"
-          @click=""
-          class="add-link"
-          @click.prevent="addCollection"
-        >{{ $t('Make-a-collection') }}</a>
-      </template>
-      <template
-        v-else-if="material.has_bookmark"
-      >
-        <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
-        <Multiselect
-          v-if="full_loading && my_collections.results"
-          v-model="checked_collections"
-          :items="my_collections.results"
-          :placeholder="$t('Select-collection')"
-          class="material__left_select"
-          :disabled="submitting"
-        ></Multiselect>
-        <a
-          href="/add_collection/"
-          @click=""
-          class="add-link"
-          @click.prevent="addCollection"
-        >{{ $t('Make-a-collection') }}</a>
       </template>
     </div>
   </div>
@@ -128,11 +97,6 @@
     :is-show="isShowSaveMaterial"
     :close="closeSaveMaterial"
     v-if="isShowSaveMaterial"
-  />
-  <AddCollection
-    :is-show="isShowAddCollection"
-    :close="closeAddCollection"
-    v-if="isShowAddCollection"
   />
   <ShareMaterial
     v-if="isShowShareMaterial"

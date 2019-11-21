@@ -6,6 +6,8 @@ import Themes from '~/components/Themes';
 import Keywords from '~/components/Keywords';
 import SaveRating from '~/components/Popup/SaveRating';
 import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers';
+
+
 export default {
   name: 'material-info',
   props: ['material'],
