@@ -16,9 +16,9 @@ class UserAdmin(DjangoUserAdmin):
         result = user.get_all_user_data()
         messages.success(request, mark_safe(result))
 
-
-    # def get_actions(self, request):
-    #     actions = super().get_actions(request)
-    #     if not request.user.is_superuser:
-    #         # remove "only for admin" actions
-    #         actions.pop('export_user_data', None)
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if not request.user.is_superuser:
+            # remove "only for admin" actions
+            actions.pop('export_user_data', None)
+        return actions
