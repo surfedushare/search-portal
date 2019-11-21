@@ -25,7 +25,7 @@ export default {
   mounted() {},
   data() {
     return {
-      temp_value: Math.round(this.value),
+      avg_rating: this.value,
       ratings: [1, 2, 3, 4, 5],
       types: [
         this.$t('Not-judged'),
@@ -44,7 +44,7 @@ export default {
      */
     star_over(index) {
       if (!this.disabled) {
-        this.temp_value = index;
+        this.avg_rating = index;
       }
     },
 
@@ -53,7 +53,7 @@ export default {
      */
     star_out() {
       if (!this.disabled) {
-        return (this.temp_value = this.value);
+        return (this.avg_rating = this.value);
       }
     },
 
@@ -70,7 +70,7 @@ export default {
   computed: {},
   watch: {
     value(value) {
-      this.temp_value = value;
+      this.avg_rating = value;
     }
   }
 };

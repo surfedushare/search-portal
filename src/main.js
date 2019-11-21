@@ -23,6 +23,7 @@ if(process.env.VUE_APP_USE_SENTRY) {
 }
 
 
+import _ from 'lodash';
 import Vue from 'vue'
 import middleware from './middleware'
 import { createApp } from './index'

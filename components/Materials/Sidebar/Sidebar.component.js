@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection';
 import AddCollection from './../../Popup/AddCollection';
@@ -49,9 +50,7 @@ export default {
      * @returns {string}
      */
     getLoginLink() {
-      return `${
-        this.$axios.defaults.baseURL
-      }/login/?redirect_url=${validateHREF(window.location.href)}`;
+      return this.$store.getters.getLoginLink(this.$route);
     },
     /**
      * Show AddCollection popup
@@ -354,7 +353,7 @@ export default {
 
         Promise.all(requests).then(() => {
           this.$store
-            .dispatch('getMaterial', this.$route.params.id)
+            .dispatch('getMaterial', {id: this.$route.params.id})
             .then(() => {
               this.submitting = false;
             });

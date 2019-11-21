@@ -116,7 +116,7 @@ const setupProgress = (axios, ctx) => {
 
 export default (ctx, inject) => {
   // baseURL
-  const baseURL = process.env.VUE_APP_BASE_URL;
+  const baseURL = process.env.VUE_APP_BACKEND_URL + 'api/v1';
   // Create fresh objects for all default header scopes
   // Axios creates only one which is shared across SSR requests!
   // https://github.com/mzabriskie/axios/blob/master/lib/defaults.js

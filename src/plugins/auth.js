@@ -1,10 +1,8 @@
-export default function({ redirect, route, store }) {
-  if (route.query && route.query.access_token) {
-    store.dispatch('login', { token: route.query.access_token });
-    redirect({ path: route.path });
-  }
+export default function({ store }) {
   const token = localStorage.getItem('surf_token');
   if (token) {
-    store.dispatch('login', { token });
+    store.dispatch('authenticate', { token });
+  } else {
+    store.dispatch('getUser');
   }
 }

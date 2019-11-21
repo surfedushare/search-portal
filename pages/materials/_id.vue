@@ -54,7 +54,10 @@ export default {
     //     search_text: []
     //   });
     // }
-    this.$store.dispatch('getMaterial', this.$route.params.id);
+    this.$store.dispatch('getMaterial', {
+      id: this.$route.params.id,
+      params: {count_view: true},
+    });
   }
 };
 </script>
