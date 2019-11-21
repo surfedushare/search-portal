@@ -73,11 +73,6 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    """
-    Unfortunately the Django User was replaced with a custom User for no particular reason.
-    It's hard to remove the custom User, so we're going to be stuck with it for a while.
-    """
-
     def get_all_user_data(self):
         communities = Community.objects.filter(team__user=self)
         if communities:
