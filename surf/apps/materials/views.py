@@ -2,50 +2,33 @@
 This module contains implementation of REST API views for materials app.
 """
 
+import json
 from collections import OrderedDict
 
-import json
-
-from django.db.models import Q, Count
 from django.conf import settings
+from django.db.models import Q, Count
 from django.http import Http404
-
-from rest_framework.viewsets import (
-    ModelViewSet,
-    GenericViewSet
-)
-
-from rest_framework.mixins import (
-    ListModelMixin,
-    CreateModelMixin
-)
-
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import (
+    ModelViewSet
+)
 
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
-
-from surf.apps.materials.utils import (
-    add_extra_parameters_to_materials,
-    get_material_details_by_id,
-    add_material_themes,
-    add_material_disciplines
+from surf.apps.materials.filters import (
+    CollectionFilter
 )
-
 from surf.apps.materials.models import (
     Collection,
     Material,
-    ApplaudMaterial,
-    ViewMaterial,
+    CollectionMaterial,
     SharedResourceCounter,
     RESOURCE_TYPE_MATERIAL,
     RESOURCE_TYPE_COLLECTION
 )
-
 from surf.apps.materials.serializers import (
     SearchRequestSerializer,
     SearchRequestShortSerializer,
@@ -54,25 +37,19 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
-    ApplaudMaterialSerializer,
-    MaterialRatingSerializer,
-    MaterialRatingsRequestSerializer,
-    MaterialRatingResponseSerializer,
     SharedResourceCounterSerializer
 )
-
-from surf.apps.materials.filters import (
-    ApplaudMaterialFilter,
-    CollectionFilter
+from surf.apps.materials.utils import (
+    add_extra_parameters_to_materials,
+    get_material_details_by_id,
+    add_material_themes,
+    add_material_disciplines,
+    update_materials_data
 )
-
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
-    AUTHOR_FIELD_ID,
-    PUBLISHER_DATE_FIELD_ID
+    AUTHOR_FIELD_ID
 )
-
-from surf.vendor.edurep.smb.soap.api import SmbSoapApiClient
 
 
 class MaterialSearchAPIView(APIView):
@@ -114,11 +91,7 @@ class MaterialSearchAPIView(APIView):
             api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
         res = ac.search(**data)
-
-        if request.user:
-            records = add_extra_parameters_to_materials(request.user, res["records"])
-        else:
-            records = None
+        records = add_extra_parameters_to_materials(request.user, res["records"])
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
@@ -177,10 +150,12 @@ class MaterialAPIView(APIView):
         serializer = MaterialsRequestSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-
+        # default is false in the serializer
+        count_view = data["count_view"]
         if "external_id" in kwargs:
             return self.get_material(request,
                                      kwargs["external_id"],
+                                     count_view=count_view,
                                      shared=data.get("shared"))
 
         if "external_id" in data:
@@ -207,15 +182,16 @@ class MaterialAPIView(APIView):
         return Response(res)
 
     @staticmethod
-    def get_material(request, external_id, shared=None):
+    def get_material(request, external_id, count_view, shared=None):
         """
         Returns the list of materials by external id
         :param request: request instance
         :param external_id: external id of material
         :param shared: share type of material
+        :param count_view: should the view be counted in the statistics?
         :return:
         """
-        res = _get_material_by_external_id(request, external_id, shared=shared)
+        res = _get_material_by_external_id(request, external_id, shared=shared, count_view=count_view)
 
         if not res:
             raise Http404('No materials matches the given query.')
@@ -223,7 +199,7 @@ class MaterialAPIView(APIView):
         return Response(res[0])
 
 
-def _get_material_by_external_id(request, external_id, shared=None):
+def _get_material_by_external_id(request, external_id, shared=None, count_view=False):
     """
     Get Materials by edured id and register unique view of materials
     :param request:
@@ -232,8 +208,13 @@ def _get_material_by_external_id(request, external_id, shared=None):
     :return: list of materials
     """
 
+    material, created = Material.objects.get_or_create(external_id=external_id)
+    if created:
+        material.sync_info()
     # increase unique view counter
-    ViewMaterial.add_unique_view(request.user, external_id)
+    if count_view:
+        material.view_count += 1
+        material.save()
 
     if shared:
         # increase share counter
@@ -251,81 +232,43 @@ def _get_material_by_external_id(request, external_id, shared=None):
 
 
 class MaterialRatingAPIView(APIView):
-    """
-    Provides methods for getting and setting a material rating by the user.
-    """
-
-    permission_classes = [IsAuthenticated]
-
+    # I don't think we really need the get, but the frontend uses it so I'll leave it be
     def get(self, request, *args, **kwargs):
-        # validate request parameters
-        serializer = MaterialRatingsRequestSerializer(data=request.GET)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-
-        page, page_size = data["page"], data["page_size"]
-
-        rv = dict(records=[],
-                  records_total=0,
-                  page=page,
-                  page_size=page_size)
-
-        surfconext_auth = getattr(request.user, "surfconext_auth")
-        if surfconext_auth:
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
-            object_id = data.get("object_id")
-
-            # request material reviews from EduRep
-            reviews = ac.get_user_reviews(surfconext_auth.external_id,
-                                          material_urn=object_id,
-                                          page=page,
-                                          page_size=page_size)
-            res = reviews.get("records", [])
-
-            # validate response data
-            serializer = MaterialRatingResponseSerializer(many=True, data=res)
-            serializer.is_valid(raise_exception=True)
-
-            rv["records"] = serializer.validated_data
-            rv["records_total"] = reviews["recordcount"]
-
-        return Response(rv)
+        external_id = request.GET['external_id']
+        return Response(f"External id {external_id} is valid")
 
     def post(self, request, *args, **kwargs):
-        # validate request parameters
-        serializer = MaterialRatingSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
+        params = request.data.get('params')
+        external_id = params['external_id']
+        star_rating = params['star_rating']
+        material_object = Material.objects.get(external_id=external_id)
+        if star_rating == 1:
+            material_object.star_1 += 1
+        if star_rating == 2:
+            material_object.star_2 += 1
+        if star_rating == 3:
+            material_object.star_3 += 1
+        if star_rating == 4:
+            material_object.star_4 += 1
+        if star_rating == 5:
+            material_object.star_5 += 1
+        material_object.save()
+        return Response(material_object.get_avg_star_rating())
 
-        surfconext_auth = getattr(request.user, "surfconext_auth")
-        if surfconext_auth:
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
-            sac = SmbSoapApiClient(
-                api_endpoint=settings.EDUREP_SOAP_API_ENDPOINT)
+class MaterialApplaudAPIView(APIView):
+    # I don't think we really need the get, but the frontend uses it so I'll leave it be
+    def get(self, request, *args, **kwargs):
+        external_id = request.GET['external_id']
+        return Response(f"External id {external_id} is valid")
 
-            # request material reviews from EduRep
-            reviews = ac.get_user_reviews(surfconext_auth.external_id,
-                                          material_urn=data["object_id"])
-            reviews = reviews.get("records", [])
-
-            # remove old reviews in EduRep before send a new one
-            for r in reviews:
-                if surfconext_auth.external_id != r.get("user_id"):
-                    continue
-                sac.remove_review(r["external_id"],
-                                  settings.EDUREP_SOAP_SUPPLIER_ID)
-
-            # send material rating to EduRep
-            sac.send_rating(data["object_id"],
-                            data["rating"],
-                            settings.EDUREP_SOAP_SUPPLIER_ID,
-                            surfconext_auth.external_id)
-
-        return Response(data)
+    def post(self, request, *args, **kwargs):
+        params = request.data.get('params')
+        external_id = params['external_id']
+        material_object = Material.objects.get(external_id=external_id)
+        material_object.applaud_count += 1
+        material_object.save()
+        return Response(material_object.applaud_count)
 
 
 class CollectionViewSet(ModelViewSet):
@@ -462,7 +405,7 @@ class CollectionViewSet(ModelViewSet):
 
             add_material_themes(m, details[0].get("themes", []))
             add_material_disciplines(m, details[0].get("disciplines", []))
-            instance.materials.add(m)
+            CollectionMaterial.objects.create(collection=instance, material=m)
 
     @staticmethod
     def _delete_materials(instance, materials):
@@ -489,29 +432,6 @@ class CollectionViewSet(ModelViewSet):
 
         if not user or not user.is_active:
             raise AuthenticationFailed()
-
-
-class ApplaudMaterialViewSet(ListModelMixin,
-                             CreateModelMixin,
-                             GenericViewSet):
-    """
-    View class that provides `get`, `create` and `delete` methods
-    for Applaud Material.
-    """
-
-    queryset = ApplaudMaterial.objects.all()
-    serializer_class = ApplaudMaterialSerializer
-    permission_classes = [AllowAny]
-    filter_class = ApplaudMaterialFilter
-
-    def get_queryset(self):
-        # filter only "applauds" of current user
-        qs = super().get_queryset()
-        if self.request.user.is_authenticated:
-            qs = qs.filter(user_id=self.request.user.id)
-        else:
-            qs = qs.none()
-        return qs
 
 
 def get_materials_search_response(qs, request):

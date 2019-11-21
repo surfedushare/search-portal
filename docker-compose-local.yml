@@ -15,11 +15,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 4
+    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 2
     environment:
       - DJANGO_SETTINGS_MODULE=surf.settings.local
+      - DJANGO_FRONTEND_DOMAIN=localhost:3000
+      - DJANGO_PROTOCOL=http
+      - DJANGO_DEBUG=1
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     volumes:
       - .:/src
     links:
@@ -32,7 +35,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - "8081:8080"
+      - "127.0.0.1:8081:8080"
 
 volumes:
   postgres_database:

@@ -5,18 +5,13 @@ This module contains some common functions for materials app.
 import json
 
 from django.conf import settings
-from django.db.models import Sum
 
 from surf.apps.communities.models import Community
-from surf.apps.themes.models import Theme
 from surf.apps.filters.models import MpttFilterItem
-
 from surf.apps.materials.models import (
     Material,
-    ApplaudMaterial,
-    ViewMaterial
 )
-
+from surf.apps.themes.models import Theme
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     DISCIPLINE_FIELD_ID,
@@ -71,16 +66,20 @@ def add_extra_parameters_to_materials(user, materials):
     :param materials: array of materials
     :return: updated array of materials
     """
+    # perhaps this could be optimized by querying the database once for a list of materials
+    # however, we still want to add the 0 values for items we don't have in the database yet so this is easy for now
     for m in materials:
-        qs = ApplaudMaterial.objects.prefetch_related("material")
-        qs = qs.filter(material__external_id=m["external_id"])
-        qs = qs.aggregate(applaud_cnt=Sum("applaud_count"))
-        applaud_cnt = qs.get("applaud_cnt")
-        m["number_of_applauds"] = applaud_cnt if applaud_cnt else 0
 
-        qs = ViewMaterial.objects.prefetch_related("material")
-        qs = qs.filter(material__external_id=m["external_id"])
-        m["number_of_views"] = qs.count()
+        material_object = Material.objects.filter(external_id=m["external_id"])
+        if material_object:
+            material_object = material_object[0]
+
+            m["view_count"] = material_object.view_count
+            m["applaud_count"] = material_object.applaud_count
+            m["avg_star_rating"] = material_object.get_avg_star_rating()
+            m["count_star_rating"] = material_object.get_star_count()
+        else:
+            m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
 
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])
