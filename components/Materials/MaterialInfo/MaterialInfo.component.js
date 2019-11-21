@@ -27,11 +27,6 @@ export default {
         this.is_applauded = !!applaud.count;
         this.is_loading_applaud = false;
       });
-    this.$store
-      .dispatch('getMaterialRating', this.material.external_id)
-      .then(rating => {
-        this.rating = rating.records[0];
-      });
 
     this.href = validateHREF(window.location.href);
   },

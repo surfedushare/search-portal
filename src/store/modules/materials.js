@@ -96,17 +96,6 @@ export default {
         params
       });
     },
-    async getMaterialRating({ commit }, id) {
-      if (validateIDString(id)) {
-        return await this.$axios.$get('rate_material/', {
-          params: {
-            external_id: id
-          }
-        });
-      } else {
-        $log.error('Validate error: ', id);
-      }
-    },
     async setApplaudMaterial({ commit }, { external_id }) {
       if (validateIDString(external_id)) {
         return await this.$axios.$post('applaud_material/', {
