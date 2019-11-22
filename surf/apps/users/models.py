@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models as django_models
 from django.contrib.sessions.models import Session
@@ -7,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
 from rest_framework.authtoken.models import Token
 
+from surf.vendor.surfconext.models import DataGoalPermission
 from surf.apps.communities.models import Community
 from surf.apps.core.models import UUIDModel
 
@@ -73,6 +73,10 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+
+    def clear_all_data_goal_permissions(self):
+        DataGoalPermission.objects.filter(user=self).delete()
+
     def get_all_user_data(self):
         communities = Community.objects.filter(team__user=self)
         if communities:
