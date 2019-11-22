@@ -34,7 +34,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # list of allowed endpoints to redirect
 ALLOWED_REDIRECT_HOSTS = [
-    FRONTEND_BASE_URL
+    FRONTEND_DOMAIN
 ]
 
 

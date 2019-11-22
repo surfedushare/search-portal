@@ -87,10 +87,9 @@ class UserDetailsAPIView(APIView):
         if privacy_statement is None:
             capture_message("Trying to retrieve user details without an active privacy statement")
         permissions = request.session.get("permissions", None)
-        if privacy_statement and permissions is None:
-            permissions = request.session["permissions"] = privacy_statement.get_privacy_settings(request.user)
-        elif privacy_statement and permissions:
-            request.session["permissions"] = privacy_statement.add_default_privacy_settings(permissions)
+        if privacy_statement:
+            permissions = request.session["permissions"] = \
+                privacy_statement.get_privacy_settings(request.user, permissions)
         data["permissions"] = permissions
         request.session.modified = True  # this extends expiry
         return Response(data)

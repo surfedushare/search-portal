@@ -68,19 +68,23 @@ class PrivacyStatement(models.Model):
                 permissions.append(permission)
         return permissions
 
-    def get_privacy_settings(self, user=None):
-        default_permissions = self.get_default_privacy_settings()
+    def get_privacy_settings(self, user=None, session_permissions=None):
+        # We'll assume session permissions are in order possibly enhanced by default permissions
+        session_permissions = session_permissions or []
+        permissions = self.add_default_privacy_settings(session_permissions)
         # When not dealing with an authenticated user we return "not allowed" for all goals
         if user is None or user.is_anonymous:
-            return default_permissions
+            return permissions
         # Here we're dealing with a specific user.
         # We'll return the settings for that user.
         # Or the defaults if any are missing.
         user_permissions_objects = list(DataGoalPermission.objects.filter(user=user))
         if not len(user_permissions_objects):
-            return default_permissions
+            return permissions
+        # We take the permissions from the account
+        # If any are missing we'll use the permissions from session/default
         serializer = DataGoalPermissionSerializer(user_permissions_objects, many=True)
-        return self.add_default_privacy_settings(serializer.data, default_permissions)
+        return self.add_default_privacy_settings(serializer.data, permissions)
 
     class Meta:
         ordering = ("created_at",)
