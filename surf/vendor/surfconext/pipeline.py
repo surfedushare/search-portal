@@ -61,7 +61,7 @@ def get_groups(strategy, details, response, *args, **kwargs):
 
 
 def assign_communities(strategy, details, user, *args, **kwargs):
-    user.teams.clear()
+    user.team_set.clear()
     group_urns = [group["id"] for group in details.get("groups", [])]
     teams = []
     for community in Community.objects.filter(external_id__in=group_urns):
