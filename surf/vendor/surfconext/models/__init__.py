@@ -1,1 +1,1 @@
-from .privacy import PrivacyStatement, DataGoal, DataGoalPermission, DataGoalPermissionSerializer
+from .privacy import PrivacyStatement, DataGoal, DataGoalPermission, DataGoalPermissionSerializer, DataGoalTypes

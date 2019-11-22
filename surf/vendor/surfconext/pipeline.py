@@ -3,7 +3,7 @@ from django.conf import settings
 from sentry_sdk import capture_message
 from social_core.pipeline.partial import partial
 
-from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
+from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer, DataGoalTypes
 from surf.vendor.surfconext.voot.api import VootApiClient
 from surf.apps.communities.models import Community, Team
 
@@ -43,6 +43,15 @@ def store_data_permissions(strategy, details, user, *args, **kwargs):
 
 
 def get_groups(strategy, details, response, *args, **kwargs):
+    # Cancel data processing if permission is not given
+    permissions = details["permissions"]
+    community_permission = next(
+        permission for permission in permissions if permission["type"] == DataGoalTypes.COMMUNITIES
+    )
+    if not community_permission["is_allowed"]:
+        details["groups"] = []
+        return
+    # Retrieve team data from Voot service to connect communities later
     vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
     groups = vac.get_groups(response.get("access_token"))
     if not isinstance(groups, list):
