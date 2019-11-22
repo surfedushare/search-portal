@@ -13,7 +13,6 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.sessions.models import Session
-from django.views.decorators.csrf import csrf_exempt
 
 from oic import rndstr
 from oic.oic import Client
@@ -125,7 +124,6 @@ class ObtainTokenAPIView(APIView):
     authentication_classes = (SessionAuthentication,)
     permission_classes = (IsAuthenticated,)
 
-    @csrf_exempt
     def get(self, request, *args, **kwargs):
         token, created = SessionToken.objects.get_or_create(user=request.user)
         session_key = request.session.session_key
