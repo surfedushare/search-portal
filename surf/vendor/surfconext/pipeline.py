@@ -14,10 +14,8 @@ def require_data_permissions(strategy, details, user=None, is_new=False, *args, 
     privacy_statement = PrivacyStatement.objects.get_latest_active()
     # Check if we need decisions on privacy permissions by the user
     # Return to the frontend if we do
-    if not is_new:
-        permissions = privacy_statement.get_privacy_settings(user=user)
-    else:
-        permissions = strategy.request.session.get("permissions", privacy_statement.get_privacy_settings(user=user))
+    session_permissions = strategy.request.session.get("permissions", [])
+    permissions = privacy_statement.get_privacy_settings(user=user, session_permissions=session_permissions)
     needs_privacy_confirmation = any([
         permission for permission in permissions
         if permission["is_after_login"]
