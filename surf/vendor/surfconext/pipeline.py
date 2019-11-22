@@ -10,12 +10,14 @@ from surf.apps.communities.models import Community, Team
 
 @partial
 def require_data_permissions(strategy, details, user=None, is_new=False, *args, **kwargs):
-    # Load current privacy statement
+    # Load current privacy statement and given permissions by the user or default permission
     privacy_statement = PrivacyStatement.objects.get_latest_active()
-    # Check if we need decisions on privacy permissions by the user
-    # Return to the frontend if we do
     session_permissions = strategy.request.session.get("permissions", [])
     permissions = privacy_statement.get_privacy_settings(user=user, session_permissions=session_permissions)
+    # Passing on the permissions to the pipeline
+    details['permissions'] = permissions
+    # Check if we need decisions on privacy permissions by the user
+    # Return to the frontend if we do
     needs_privacy_confirmation = any([
         permission for permission in permissions
         if permission["is_after_login"]
@@ -31,9 +33,6 @@ def require_data_permissions(strategy, details, user=None, is_new=False, *args, 
         return strategy.redirect(
             "{}/login/permissions?partial_token={}".format(settings.FRONTEND_BASE_URL, current_partial.token)
         )
-    # Decisions are made
-    # Passing on the permissions to the pipeline
-    details['permissions'] = permissions
 
 
 def store_data_permissions(strategy, details, user, *args, **kwargs):
