@@ -21,6 +21,7 @@ class UserAdmin(DjangoUserAdmin):
     def clear_all_data_goal_permissions(self, request, queryset):
         for user in queryset:
             user.clear_all_data_goal_permissions()
+        messages.success(request, f"Data goal permissions cleared for {queryset.count()} users")
 
     def get_actions(self, request):
         actions = super().get_actions(request)
