@@ -46,7 +46,7 @@ export default {
           return state.community_info;
         } else if (state.community_info.publish_status === 'PUBLISHED') {
           return state.community_info;
-        } else if(user && user.communities.indexOf(state.community_info.id)) {
+        } else if(user && user.communities.indexOf(state.community_info.id) >= 0) {
           return state.community_info;
         }
       }
