@@ -1,4 +1,8 @@
 import _ from 'lodash';
+import injector from 'vue-inject';
+
+
+const $log = injector.get('$log');
 
 
 export default {
@@ -6,7 +10,8 @@ export default {
     user: null,
     user_loading: null,
     is_authenticated: false,
-    auth_flow_token: null
+    auth_flow_token: null,
+    api_token: null
   },
   getters: {
     user(state) {
@@ -31,6 +36,14 @@ export default {
     },
     auth_flow_token(state) {
       return state.auth_flow_token;
+    },
+    api_token(state) {
+      try {
+        return localStorage.getItem('surf_token');
+      } catch(error) {
+        $log.info('Unable to use localStorage: ' + error);
+      }
+      return state.api_token;
     },
     getLoginLink(state) {
       return (route) => {
@@ -59,7 +72,7 @@ export default {
       commit('USER_LOADING', false);
     },
     async authenticate({ commit }, { token }) {
-      localStorage.setItem('surf_token', token);
+      commit('API_TOKEN', token);
       this.$axios.setHeader('Authorization', `Token ${token}`);
       commit('AUTHENTICATE', true);
       commit('USER_LOADING', true);
@@ -67,7 +80,7 @@ export default {
       commit('USER_LOADING', false);
     },
     async logout({ commit }, payload) {
-      localStorage.removeItem('surf_token');
+      commit('API_TOKEN', null);
       this.$axios.setHeader('Authorization', false);
       commit('SET_USER', null);
       commit('AUTHENTICATE', false);
@@ -88,6 +101,14 @@ export default {
     },
     AUTH_FLOW_TOKEN(state, token) {
       state.auth_flow_token = token;
-    }
+    },
+    API_TOKEN(state, payload) {
+      state.api_token = payload;
+      try {
+        localStorage.setItem('surf_token', payload);
+      } catch(error) {
+        $log.info('Unable to use localStorage: ' + error);
+      }
+    },
   }
 };

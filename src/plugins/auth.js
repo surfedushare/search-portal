@@ -1,7 +1,6 @@
 export default function({ store }) {
-  const token = localStorage.getItem('surf_token');
-  if (token) {
-    store.dispatch('authenticate', { token });
+  if (store.api_token) {
+    store.dispatch('authenticate', { token: store.api_token });
   } else {
     store.dispatch('getUser');
   }
