@@ -1,5 +1,6 @@
 import _ from 'lodash';
 
+
 export default {
   name: 'popular-list',
   props: ['type', 'communities'],
@@ -8,13 +9,6 @@ export default {
     return {};
   },
   methods: {
-    /**
-     * Set community on click
-     * @param community - {Object}
-     */
-    setCommunity(community) {
-      this.$store.commit('SET_COMMUNITY', community);
-    },
     getTitleTranslation( community, language ) {
       if (!_.isNil(community.title_translations) && !_.isEmpty(community.title_translations)){
         return community.title_translations[language];
