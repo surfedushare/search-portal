@@ -7,6 +7,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.db import models as django_models
+from django.db.models import F
 from django.utils import timezone
 from django_enumfield import enum
 
@@ -216,7 +217,7 @@ class SharedResourceCounter(UUIDModel):
             counter_key=counter_key,
             defaults=dict(extra=extra))
 
-        c.counter_value += 1
+        c.counter_value = F('counter_value') + 1
         c.save()
 
     @staticmethod
