@@ -269,6 +269,7 @@ class MaterialApplaudAPIView(APIView):
         material_object = Material.objects.get(external_id=external_id)
         material_object.applaud_count = F('applaud_count') + 1
         material_object.save()
+        material_object.refresh_from_db()
         return Response(material_object.applaud_count)
 
 
