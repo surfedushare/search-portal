@@ -4,23 +4,22 @@
   <template v-if="computed_communities">
     <ul class="popular-list__items">
       <li class="popular-list__item" v-for="community in computed_communities">
-        <nuxt-link
+        <router-link
           class="popular-list__link"
           :to="localePath({name: 'communities-community', params: {community: community.id}})"
-          @click.native="setCommunity(community)"
         >
           <h3 class="popular-list__title">{{ getTitleTranslation(community, $i18n.locale) }}</h3>
           {{ $tc('learning-materials', community.materials_count) }}
-        </nuxt-link>
+        </router-link>
       </li>
     </ul>
     <div class="popular-list--all"  v-if="type !== 'material'">
-      <nuxt-link
+      <router-link
         :to="localePath('communities')"
         class="arrow-link"
       >
         {{ $t('All-Communities') }}
-      </nuxt-link>
+      </router-link>
     </div>
   </template>
   <div v-else>

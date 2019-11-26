@@ -40,21 +40,5 @@ export default {
 
       this.$emit('input', items);
     }
-  },
-  computed: {
-    /**
-     * Get first checked item
-     * @returns {*} - item
-     */
-    first_checked_item() {
-      const { value, items } = this;
-      if (value && value[0] && items) {
-        const id = value[0].id || value[0];
-
-        return items.find(item => item.id === id);
-      }
-
-      return false;
-    }
   }
 };
