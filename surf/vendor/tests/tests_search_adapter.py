@@ -63,8 +63,7 @@ class BaseSearchTestCase(TestCase):
         def test_material(external_id):
             # can't test for theme and copyright without creating and instantiating these values in the database
             material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language', 'aggregationlevel',
-                             'publisher', 'publish_datetime', 'author', 'creator', 'format', 'disciplines',
-                             'educationallevels']
+                             'publisher', 'publish_datetime', 'author', 'format', 'disciplines', 'educationallevels']
 
             material = self.instance.get_materials_by_id(external_ids=[external_id])
 
