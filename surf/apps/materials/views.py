@@ -6,6 +6,7 @@ import json
 from collections import OrderedDict
 
 from django.conf import settings
+from django.db.models import F
 from django.db.models import Q, Count
 from django.http import Http404
 from rest_framework.decorators import action
@@ -43,8 +44,7 @@ from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
     get_material_details_by_id,
     add_material_themes,
-    add_material_disciplines,
-    update_materials_data
+    add_material_disciplines
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
@@ -213,7 +213,7 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
         material.sync_info()
     # increase unique view counter
     if count_view:
-        material.view_count += 1
+        material.view_count = F('view_count') + 1
         material.save()
 
     if shared:
@@ -243,16 +243,17 @@ class MaterialRatingAPIView(APIView):
         star_rating = params['star_rating']
         material_object = Material.objects.get(external_id=external_id)
         if star_rating == 1:
-            material_object.star_1 += 1
+            material_object.star_1 = F('star_1') + 1
         if star_rating == 2:
-            material_object.star_2 += 1
+            material_object.star_2 = F('star_2') + 1
         if star_rating == 3:
-            material_object.star_3 += 1
+            material_object.star_3 = F('star_3') + 1
         if star_rating == 4:
-            material_object.star_4 += 1
+            material_object.star_4 = F('star_4') + 1
         if star_rating == 5:
-            material_object.star_5 += 1
+            material_object.star_5 = F('star_5') + 1
         material_object.save()
+        material_object.refresh_from_db()
         return Response(material_object.get_avg_star_rating())
 
 
@@ -266,8 +267,9 @@ class MaterialApplaudAPIView(APIView):
         params = request.data.get('params')
         external_id = params['external_id']
         material_object = Material.objects.get(external_id=external_id)
-        material_object.applaud_count += 1
+        material_object.applaud_count = F('applaud_count') + 1
         material_object.save()
+        material_object.refresh_from_db()
         return Response(material_object.applaud_count)
 
 
