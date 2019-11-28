@@ -2,6 +2,9 @@ import axios from 'axios';
 
 
 export default function({ $axios, store }) {
+
+  $axios.defaults.xsrfCookieName = 'csrftoken';
+
   $axios.interceptors.request.use(
     function(config) {
       // Do something before request is sent
