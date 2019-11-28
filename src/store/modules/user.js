@@ -73,7 +73,7 @@ export default {
     },
     async authenticate({ commit }, { token }) {
       if(token) {
-        return Promise.reject('invalid token');
+        return;
       }
       commit('API_TOKEN', token);
       this.$axios.setHeader('Authorization', `Token ${token}`);
