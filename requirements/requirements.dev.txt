@@ -20,4 +20,5 @@ social-auth-app-django==3.1.0
 django-debug-toolbar==2.0
 django-test-without-migrations==0.6
 django-nose==1.4.6
+elasticsearch==6.3.0
 git+https://github.com/mpdavis/python-jose
