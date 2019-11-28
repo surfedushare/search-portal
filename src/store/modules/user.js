@@ -108,7 +108,7 @@ export default {
     API_TOKEN(state, payload) {
       state.api_token = payload || '';
       try {
-        localStorage.setItem('surf_token', payload);
+        localStorage.setItem('surf_token', state.api_token);
       } catch(error) {
         $log.info('Unable to use localStorage: ' + error);
       }
