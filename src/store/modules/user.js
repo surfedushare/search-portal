@@ -72,7 +72,7 @@ export default {
       commit('USER_LOADING', false);
     },
     async authenticate({ commit }, { token }) {
-      if(token) {
+      if(!token) {
         return;
       }
       commit('API_TOKEN', token);
