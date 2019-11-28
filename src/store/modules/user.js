@@ -72,7 +72,7 @@ export default {
       commit('USER_LOADING', false);
     },
     async authenticate({ commit }, { token }) {
-      if(_.isNil(token)) {
+      if(token) {
         return Promise.reject('invalid token');
       }
       commit('API_TOKEN', token);
