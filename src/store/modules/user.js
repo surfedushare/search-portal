@@ -39,7 +39,7 @@ export default {
     },
     api_token(state) {
       try {
-        return localStorage.getItem('surf_token');
+        return localStorage.getItem('surf_token') || null;
       } catch(error) {
         $log.info('Unable to use localStorage: ' + error);
       }
@@ -106,7 +106,7 @@ export default {
       state.auth_flow_token = token;
     },
     API_TOKEN(state, payload) {
-      state.api_token = payload;
+      state.api_token = payload || '';
       try {
         localStorage.setItem('surf_token', payload);
       } catch(error) {
