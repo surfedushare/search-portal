@@ -72,6 +72,9 @@ export default {
       commit('USER_LOADING', false);
     },
     async authenticate({ commit }, { token }) {
+      if(_.isNil(token)) {
+        return;
+      }
       commit('API_TOKEN', token);
       this.$axios.setHeader('Authorization', `Token ${token}`);
       commit('AUTHENTICATE', true);
