@@ -37,6 +37,10 @@ class BaseSearchTestCase(TestCase):
         biologie_autocomplete = self.instance.autocomplete(query='biologie')
         self.assertGreater(len(biologie_autocomplete), 0)
         self.assertIsNot(empty_autocomplete, biologie_autocomplete)
+        self.assertIsInstance(biologie_autocomplete, list)
+        for item in biologie_autocomplete:
+            self.assertIsInstance(item, str)
+            self.assertTrue('biologie' in item)
 
     def test_drilldowns(self):
         empty_drilldowns = self.instance.drilldowns(drilldown_names=[])
@@ -80,3 +84,25 @@ class BaseSearchTestCase(TestCase):
         material_2 = test_material('wikiwijsmaken:137024')
 
         self.assertIsNot(material_1, material_2)
+
+        self.assertEqual(material_1['title'], 'Wiskundeformules in een Wikiwijs-arrangement')
+        self.assertEqual(material_1['url'], 'http://maken.wikiwijs.nl/44170/Wiskundeformules_in_een_Wikiwijs_arrangement')
+        self.assertEqual(material_1['object_id'], 'urn:wikiwijsmaken:44170')
+        self.assertEqual(material_1['publisher'], 'Wikiwijs Maken')
+        self.assertEqual(material_1['creator'], 'Wikiwijs Maken')
+        self.assertEqual(material_1['publish_datetime'], '2013-04-19T23:00:41+02:00')
+        self.assertEqual(material_1['author'], 'Marc van Maastricht')
+        self.assertEqual(material_1['number_of_collections'], 0)
+        self.assertEqual(len(material_1['educationallevels']), 49)
+        self.assertEqual(len(material_1['disciplines']), 9)
+
+        self.assertEqual(material_2['object_id'], 'urn:wikiwijsmaken:137024')
+        self.assertEqual(material_2['url'], 'https://maken.wikiwijs.nl/137024/Themales_1_Wessel_Poot')
+        self.assertEqual(material_2['title'], 'Themales 1 Wessel Poot')
+        self.assertEqual(material_2['keywords'], ['aardrijkskunde', 'adl'])
+        self.assertEqual(material_2['language'], 'nl')
+        self.assertIsNone(material_2['copyright'])
+        self.assertEqual(material_2['publisher'], 'Wikiwijs Maken')
+        self.assertEqual(material_2['author'], 'Wessel Poot')
+        self.assertEqual(material_2['creator'], 'Wikiwijs Maken')
+        self.assertEqual(material_2['format'], 'wikiwijsarrangement')
