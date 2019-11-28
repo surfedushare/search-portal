@@ -354,7 +354,7 @@ export function createRouter () {
       {
         path: "/login/success",
         beforeEnter(to, from, next) {
-          window.app.$axios.$get('users/obtain-token', {withCredentials: true})
+          window.app.$axios.$get('users/obtain-token/', {withCredentials: true})
             .then((response) => {
               let token = response.token || response.data.token;
               window.app.store.dispatch('authenticate', { token: token })
