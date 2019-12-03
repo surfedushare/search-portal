@@ -3,7 +3,7 @@ This module contains implementation of REST API views for communities app.
 """
 
 from django.db.models import Q, Count
-
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from rest_framework.viewsets import GenericViewSet
 
 from rest_framework.mixins import (
@@ -16,7 +16,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from surf.apps.communities.models import Community, PublishStatus
+from surf.apps.communities.models import Community, PublishStatus, Team
 from surf.apps.materials.models import Collection, Material
 from surf.apps.themes.models import Theme
 from surf.apps.filters.models import MpttFilterItem
@@ -197,3 +197,7 @@ class CommunityViewSet(ListModelMixin,
         """
         if not user or not user.is_authenticated:
             raise AuthenticationFailed()
+        try:
+            Team.objects.get(community=instance, user=user)
+        except ObjectDoesNotExist as exc:
+            raise AuthenticationFailed(f"User {user} is not a member of community {instance}. Error: \"{exc}\"")
