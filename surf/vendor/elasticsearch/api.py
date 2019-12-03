@@ -1,5 +1,7 @@
 from elasticsearch import Elasticsearch
 
+index = 'gamma-nl-12'
+
 
 class ElasticSearchApiClient:
     def __init__(self):
@@ -8,10 +10,29 @@ class ElasticSearchApiClient:
             http_auth=('search', ''),
             scheme="https",
             port=443,
-            )
+        )
 
     def autocomplete(self, query):
-        return None
+        query_dictionary = {
+            'suggest': {
+                "autocomplete": {
+                    'text': query,
+                    "completion": {
+                        "field": "suggest"
+                    }
+                }
+            }
+        }
+
+        result = self.elastic.search(
+            index=index,
+            doc_type='entity',
+            body=query_dictionary
+        )
+
+        autocomplete = result['suggest']['autocomplete']
+        options = autocomplete[0]['options']
+        return options
 
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
         return self._search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
@@ -22,7 +43,7 @@ class ElasticSearchApiClient:
             search_text = None
         start_record = page_size * (page - 1) + 1
         result = self.elastic.search(
-            "beta-nl-11",
+            index=index,
             q=search_text,
             body={'from': start_record,
                   'size': page_size}
@@ -35,24 +56,23 @@ class ElasticSearchApiClient:
         materials = []
         for external_id in external_ids:
             materials.append(self.elastic.search(
-                "beta-nl-11",
+                index=index,
                 body={
                     "query": {
                         "bool": {
                             "must": [{"match": {"external_id": external_id}}]
-                            }
-                        },
+                        }
+                    },
                     "from": start_record,
                     "size": page_size
-                    },
-                )
+                },
+            )
             )
 
         return materials
 
     @staticmethod
     def parse_elastic_result(search_result):
-
         material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language', 'aggregationlevel',
                          'publisher', 'publish_datetime', 'author', 'format', 'educationallevels',
                          'themes', 'disciplines']
