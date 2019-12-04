@@ -2,17 +2,17 @@
 This module contains implementation of REST API views for communities app.
 """
 
-from django.db.models import Q, Count
+import logging
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from rest_framework.viewsets import GenericViewSet
 
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.mixins import (
     ListModelMixin,
     RetrieveModelMixin,
     UpdateModelMixin
 )
 
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -35,6 +35,7 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
 )
+logger = logging.getLogger(__name__)
 
 
 class CommunityViewSet(ListModelMixin,
@@ -201,3 +202,6 @@ class CommunityViewSet(ListModelMixin,
             Team.objects.get(community=instance, user=user)
         except ObjectDoesNotExist as exc:
             raise AuthenticationFailed(f"User {user} is not a member of community {instance}. Error: \"{exc}\"")
+        except MultipleObjectsReturned as exc:
+            # if somehow there are user duplicates on a community, don't crash
+            logger.warning(f"User {user} is in community {instance} multiple times. Error: \"{exc}\"")
