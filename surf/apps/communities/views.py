@@ -4,37 +4,34 @@ This module contains implementation of REST API views for communities app.
 
 import logging
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from rest_framework.viewsets import GenericViewSet
-
+from django.db.models import Count
+from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.mixins import (
     ListModelMixin,
     RetrieveModelMixin,
     UpdateModelMixin
 )
-
-from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
-from surf.apps.communities.models import Community, PublishStatus, Team
-from surf.apps.materials.models import Collection, Material
-from surf.apps.themes.models import Theme
-from surf.apps.filters.models import MpttFilterItem
 from surf.apps.communities.filters import CommunityFilter
-from surf.apps.themes.serializers import ThemeSerializer
-from surf.apps.materials.views import get_materials_search_response
-from surf.apps.filters.utils import get_material_count_by_disciplines
-
+from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import (
     CommunitySerializer,
     CommunityUpdateSerializer,
     CommunityDisciplineSerializer
 )
-
+from surf.apps.filters.models import MpttFilterItem
+from surf.apps.materials.models import Collection, Material
 from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
 )
+from surf.apps.materials.views import get_materials_search_response
+from surf.apps.themes.models import Theme
+from surf.apps.themes.serializers import ThemeSerializer
+
 logger = logging.getLogger(__name__)
 
 
