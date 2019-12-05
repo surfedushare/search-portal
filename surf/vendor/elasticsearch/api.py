@@ -1,13 +1,14 @@
 from elasticsearch import Elasticsearch
 
-index = 'gamma-nl-12'
+index_nl = 'gamma-nl-12'
+index_en = 'gamma-en-13'
 
 
 class ElasticSearchApiClient:
     def __init__(self):
         self.elastic = Elasticsearch(
             ['elastic.surfpol.nl'],
-            http_auth=('search', ''),
+            http_auth=('search', 'Kbd5FMH8EF0gEuxgnNeNJmUBBBtc'),
             scheme="https",
             port=443,
         )
@@ -47,7 +48,7 @@ class ElasticSearchApiClient:
             search_text = None
         start_record = page_size * (page - 1) + 1
         result = self.elastic.search(
-            index=index,
+            index=[index_nl, index_en],
             q=search_text,
             body={'from': start_record,
                   'size': page_size}
@@ -60,7 +61,7 @@ class ElasticSearchApiClient:
         materials = []
         for external_id in external_ids:
             materials.append(self.elastic.search(
-                index=index,
+                index=[index_nl, index_en],
                 body={
                     "query": {
                         "bool": {
@@ -69,10 +70,9 @@ class ElasticSearchApiClient:
                     },
                     "from": start_record,
                     "size": page_size
-                },
+                    },
+                )
             )
-            )
-
         return materials
 
     @staticmethod
@@ -88,19 +88,19 @@ class ElasticSearchApiClient:
 
         # TODO
         result['records'] = []
-        for material in search_result['hits']['hits']:
+        for result in search_result['hits']['hits']:
             new_material = dict()
-            new_material['object_id'] = "NOT YET"  # TODO
-            new_material['url'] = material['_source']['url']
-            new_material['title'] = material['_source']['title']
-            new_material['description'] = material['_source']['text']
-            new_material['keywords'] = material['_source']['keywords']
-            new_material['language'] = 'nl'  # TODO
+            new_material['object_id'] = None  # TODO
+            new_material['url'] = result['_source']['url']
+            new_material['title'] = result['_source']['title']
+            new_material['description'] = result['_source']['text']
+            new_material['keywords'] = result['_source']['keywords']
+            new_material['language'] = result['_source']['language']
             new_material['aggregationlevel'] = 1  # TODO
             new_material['publisher'] = None  # TODO
             new_material['publish_datetime'] = None  # TODO
             new_material['author'] = None  # TODO
-            new_material['format'] = material['_source']['humanized_mime_type']
+            new_material['format'] = result['_source']['mime_type']
             new_material['disciplines'] = None  # TODO
             new_material['educationallevels'] = None  # TODO
             new_material['themes'] = None  # TODO
