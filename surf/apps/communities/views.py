@@ -88,16 +88,11 @@ class CommunityViewSet(ListModelMixin,
         qs = instance.collections
         if request.method in {"POST", "DELETE"}:
             # validate request parameters
-            serializer = CollectionShortSerializer(many=True,
-                                                   data=request.data)
+            serializer = CollectionShortSerializer(many=True, data=request.data)
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]
-
-            self._check_access(request.user,
-                               instance=instance,
-                               collection_ids=collection_ids)
-
+            self._check_access(request.user, instance=instance, collection_ids=collection_ids)
             if request.method == "POST":
                 self._add_collections(instance, data)
                 qs = qs.filter(id__in=collection_ids)
@@ -179,7 +174,6 @@ class CommunityViewSet(ListModelMixin,
         :param collections: collections that should be deleted
         :return:
         """
-
         collections = [c["id"] for c in collections]
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.remove(*collections)

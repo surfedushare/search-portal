@@ -3,9 +3,11 @@ This module contains implementation of REST API views for materials app.
 """
 
 import json
+import logging
 from collections import OrderedDict
 
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import F
 from django.db.models import Q, Count
 from django.http import Http404
@@ -17,6 +19,7 @@ from rest_framework.viewsets import (
     ModelViewSet
 )
 
+from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
 from surf.apps.materials.filters import (
@@ -50,6 +53,8 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     XmlEndpointApiClient,
     AUTHOR_FIELD_ID
 )
+
+logger = logging.getLogger(__name__)
 
 
 class MaterialSearchAPIView(APIView):
@@ -431,9 +436,23 @@ class CollectionViewSet(ModelViewSet):
         :param instance: collection instance
         :return:
         """
-
-        if not user or not user.is_active:
+        if not user or not user.is_authenticated:
             raise AuthenticationFailed()
+        try:
+            community = Community.objects.get(collections__in=[instance])
+            Team.objects.get(community=community, user=user)
+        except ObjectDoesNotExist as exc:
+            raise AuthenticationFailed(f"User {user} is not a member of a community that has collection {instance}. "
+                                       f"Error: \"{exc}\"")
+        except MultipleObjectsReturned as exc:
+            logger.warning(f"The collection {instance} is in multiple communities. Error:\"{exc}\"")
+            communities = Community.objects.filter(collections__in=[instance])
+            teams = Team.objects.filter(community__in=communities, user=user)
+            if len(teams) > 0:
+                logger.debug(f"At least one team satisfies the requirement of be able to delete this collection.")
+            else:
+                raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
+                                           f"Error: \"{exc}\"")
 
 
 def get_materials_search_response(qs, request):
