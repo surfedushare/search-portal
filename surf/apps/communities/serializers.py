@@ -43,7 +43,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
     @staticmethod
     def get_members_count(obj):
         try:
-            return obj.new_members.count()
+            return obj.members.count()
         except Exception as exc:
             print(exc)
             return 0
@@ -61,7 +61,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
     def get_is_member(self, obj):
         request = self.context.get("request")
         if request and request.user and request.user.is_authenticated:
-            return obj.new_members.filter(id=request.user.id).exists()
+            return obj.members.filter(id=request.user.id).exists()
         return False
 
     @staticmethod
