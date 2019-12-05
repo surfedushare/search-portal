@@ -27,12 +27,16 @@ class ElasticSearchApiClient:
         result = self.elastic.search(
             index=index,
             doc_type='entity',
-            body=query_dictionary
+            body=query_dictionary,
+            _source_include='suggest'
         )
 
         autocomplete = result['suggest']['autocomplete']
         options = autocomplete[0]['options']
-        return options
+        flat_options = list(set([item for option in options for item in option['_source']['suggest']]))
+        options_with_prefix = [option for option in flat_options if option.startswith(query)]
+        options_with_prefix.sort(key=lambda option: len(option))
+        return options_with_prefix
 
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
         return self._search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
