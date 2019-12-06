@@ -53,7 +53,21 @@
         </div>
       </div>
       <div class="center_block">
-        <Preview />
+        <section class="preview">
+          <div class="preview__bg_block">
+            <img src="/images/pictures/image_home.jpg"
+                 srcset="/images/pictures/image_home@2x.jpg 2x,
+             /images/pictures/image_home@3x.jpg 3x"
+                 class="preview__bg_block-img">
+          </div>
+          <div class="preview__text_block">
+            <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
+            <div class="preview__text html-content" v-html="$t('html-How-does-it-work-text')"></div>
+            <router-link :to="localePath('how-does-it-work')" class="button">
+              {{ $t('How-does-it-work') }}
+            </router-link>
+          </div>
+        </section>
       </div>
     </div>
   </section>
@@ -66,7 +80,6 @@ import numeral from 'numeral';
 import Materials from '~/components/Materials';
 import PopularList from '~/components/Communities/PopularList';
 import Themes from '~/components/Themes';
-import Preview from '~/components/HowDoesItWork/Preview';
 
 export default {
   components: {
@@ -74,7 +87,6 @@ export default {
     PopularList,
     Materials,
     Themes,
-    Preview
   },
   computed: {
     ...mapGetters(['materials', 'communities', 'sortedThemes', 'statistic']),
@@ -304,6 +316,88 @@ export default {
       border-bottom: 1px solid #686d75;
       position: absolute;
       z-index: -1;
+    }
+  }
+
+  .preview {
+    position: relative;
+    @media @desktop {
+      padding: 50px 0 0 100px;
+    }
+
+    &__bg_block {
+      position: absolute;
+      top: -80px;
+      left: 0;
+
+      @media @desktop {
+        top: -2px;
+      }
+
+      img {
+        border-radius: 21px;
+
+        @media @tablet, @mobile {
+          width: 100%;
+          padding-right: 80px;
+          padding-left: 20px;
+
+        }
+      }
+      &:before{
+        content: '';
+        position: absolute;
+        background: url("/images/combined-shape.svg") no-repeat 0 0;
+        right: -100px;
+        top: 0;
+        height: 109px;
+        width: 119px;
+
+        @media @mobile {
+          right: 0;
+        }
+      }
+      &:after{
+        content: '';
+        position: absolute;
+        background: url("/images/message.svg") no-repeat 0 0;
+        right: -82px;
+        top: 22px;
+        height: 33px;
+        width: 35px;
+        @media @mobile {
+          right: 18px;
+        }
+      }
+    }
+
+    &__text_block {
+      background: fade(@light-grey, 90%);
+      border-radius: 20px;
+      margin: 100px 0 168px;
+      padding-top: 80px;
+      padding-left: 15px;
+      padding-right: 15px;
+      @media @desktop {
+        padding: 56px 50px 43px 410px;
+        margin: 0 0 168px;
+      }
+    }
+
+    &__title {
+      margin: 0 0 20px;
+      @media @mobile {
+        font-size: 22px;
+      }
+    }
+
+    &__text {
+      margin: 0 0 44px;
+    }
+    .button {
+      @media @mobile {
+        margin-bottom: 24px;
+      }
     }
   }
 }
