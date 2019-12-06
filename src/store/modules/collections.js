@@ -65,7 +65,6 @@ export default {
       if (validateIDString(id)) {
         return await this.$axios.$get('collections/', {
           params: {
-            is_owner: true,
             material_id: id
           }
         });
@@ -92,12 +91,7 @@ export default {
       { collection_id, data }
     ) {
       if (validateID(collection_id) && validateParams(data)) {
-        const material = await this.$axios.$post(
-          `collections/${collection_id}/materials/`,
-          data
-        );
-        commit('SET_MATERIAL_TO_COLLECTION', material);
-        return data;
+        await this.$axios.$post(`collections/${collection_id}/materials/`, data);
       } else {
         $log.error('Validate error: ', { collection_id, data });
       }

@@ -89,6 +89,8 @@ async function createApp (ssrContext) {
   };
 
   // Make app available into store via this.app
+  // TODO: make the app available through vue-inject not the global namespace
+  window.app = app;
   store.app = app;
 
   const next = ssrContext ? ssrContext.next : location => app.router.push(location);

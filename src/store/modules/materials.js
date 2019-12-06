@@ -51,9 +51,9 @@ export default {
     }
   },
   actions: {
-    async getMaterial({ commit }, id) {
+    async getMaterial({ commit }, {id, params}) {
       commit('SET_MATERIAL_LOADING', true);
-      const material = await this.$axios.$get(`materials/${id}/`);
+      const material = await this.$axios.$get(`materials/${id}/`, { params });
       decodeAuthor(material);
       commit('SET_MATERIAL', material);
       commit('SET_MATERIAL_LOADING', false);
@@ -91,24 +91,15 @@ export default {
         $log.error('Validate error: ', { params });
       }
     },
-    async setMaterialRating({ commit }, rating) {
-      return await this.$axios.$post('materials/rating/', rating);
-    },
-    async getMaterialRating({ commit }, id) {
-      if (validateIDString(id)) {
-        return await this.$axios.$get('materials/rating/', {
-          params: {
-            object_id: id
-          }
-        });
-      } else {
-        $log.error('Validate error: ', id);
-      }
+    async setMaterialRating({ commit }, params) {
+      return await this.$axios.$post('rate_material/', {
+        params
+      });
     },
     async setApplaudMaterial({ commit }, { external_id }) {
       if (validateIDString(external_id)) {
-        return await this.$axios.$post('applaud-materials/', {
-          material: {
+        return await this.$axios.$post('applaud_material/', {
+          params: {
             external_id: external_id
           }
         });
@@ -118,9 +109,9 @@ export default {
     },
     async getApplaudMaterial({ commit }, { external_id }) {
       if (validateIDString(external_id)) {
-        return await this.$axios.$get('applaud-materials/', {
+        return await this.$axios.$get('applaud_material/', {
           params: {
-            material__external_id: external_id
+            external_id: external_id
           }
         });
       } else {

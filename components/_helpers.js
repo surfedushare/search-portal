@@ -52,7 +52,7 @@ export const parseSearchMaterialsQuery = function(query) {
 };
 
 export const validateHREF = function(href) {
-  return href.search(process.env.prodBaseUrl) === 0
+  return href.search(process.env.frontendUrl) === 0
     ? href
-    : process.env.prodBaseUrl;
+    : process.env.frontendUrl;
 };

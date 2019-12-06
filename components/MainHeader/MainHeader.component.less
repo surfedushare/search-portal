@@ -23,6 +23,28 @@
   @p-top: 16px;
   @p-bottom: 15px;
 
+  #notification-bar {
+    overflow: hidden;
+    border-bottom: 1px solid #333;
+    padding: 10px 0;
+
+    .notifications {
+      max-width: 900px;
+      margin: 0 auto;
+
+      .message {
+        width: 90%;
+        float: left;
+        padding-right: 20px;
+      }
+
+      .acknowledge {
+        width: 10%;
+        float: right;
+      }
+    }
+  }
+
   &__wrapper {
     @media @mobile {
       display: none;
@@ -108,7 +130,7 @@
 
   &__actions {
     display: flex;
-    width: 10%;
+    width: 20%;
     justify-content: flex-end;
   }
 

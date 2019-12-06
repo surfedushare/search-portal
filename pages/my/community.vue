@@ -52,7 +52,6 @@
                   id="description"
                   v-model="formData.description"
                   name="description"
-                  required="required"
                   class="communities__form__textarea"
                 />
               </div>
@@ -67,9 +66,9 @@
                   id="website"
                   v-model="formData.website_url"
                   name="website"
-                  type="text"
+                  type="url"
                   class="communities__form__input"
-                  placeholder="Geef hier de URL "
+                  placeholder="http://www..."
                 >
               </div>
             </div>
@@ -143,9 +142,7 @@
 import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import Materials from '~/components/Materials';
 import Collections from '~/components/Collections';
-import Search from '~/components/FilterCategories/Search';
 import AddCollection from '~/components/Popup/AddCollection';
 import InputFile from '~/components/InputFile';
 import Error from '~/components/error';
@@ -156,8 +153,6 @@ export default {
     Error,
     Collections,
     BreadCrumbs,
-    Materials,
-    Search,
     AddCollection,
     InputFile
   },
@@ -182,14 +177,13 @@ export default {
       'community_collections_loading',
       'communities',
       'isAuthenticated',
-      'user_loading',
       'user',
       'getUserCommunities'
     ])
   },
 
   mounted() {
-    if(!this.isAuthenticated && !this.user_loading) {
+    if(!this.isAuthenticated) {
       this.$router.push('/');
       return;
     }
@@ -197,7 +191,6 @@ export default {
       this.setInitialFormData();
     });
     this.$store.dispatch('getCommunityCollections', this.$route.params.community);
-
   },
   methods: {
     setInitialFormData() {
@@ -280,6 +273,9 @@ export default {
             data.append(item, ElValue);
           }
         }
+      }
+      if (this.formData.website_url === ""){
+        data.append("website_url", "");
       }
 
       if (

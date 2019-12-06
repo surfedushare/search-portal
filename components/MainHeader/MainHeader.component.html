@@ -1,22 +1,38 @@
 
 <section class="main-header">
+  <div id="notification-bar" v-if="user_permission_notifications.length">
+    <div class="notifications">
+      <div v-for="notification in user_permission_notifications">
+        <p class="message">
+          {{ notification[$i18n.locale].description }}
+          (<router-link :to="localePath(notification.more_info_route)">{{ $t('more-info') }}</router-link>)
+        </p>
+        <p class="acknowledge"><button class="button" @click="acknowledgeNotification(notification.type)">{{ $t('Ok') }}</button></p>
+      </div>
+    </div>
+  </div>
   <div class="main-header__wrapper">
-    <nuxt-link :to="localePath('index')" class="main-header__logo">
+    <router-link :to="localePath('index')" class="main-header__logo">
       <img
         src="/images/surflogo.png"
         srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
         class="main-header__logo_img"
       >
-    </nuxt-link>
+    </router-link>
     <Menu class="main-header__menu" />
     <div class="main-header__actions">
       <div class="main-header__user" v-if="isAuthenticated">
         <div class="main-header__user_name arrow-link"><span class="link">{{ $t('Menu') }}</span></div>
         <nav class="main-header__user_menu">
           <ul class="main-header__user_menu_items">
-            <li class="main-header__user_menu_item" v-if="user.communities && user.communities.length">
+            <li class="main-header__user_menu_item">
               <router-link class="main-header__user_menu_link" :to="localePath({name: 'my-communities'})">
                 {{ $t('My-communities') }}
+              </router-link>
+            </li>
+            <li class="main-header__user_menu_item">
+              <router-link class="main-header__user_menu_link" :to="localePath({name: 'my-privacy'})">
+                {{ $t('My-privacy') }}
               </router-link>
             </li>
             <li class="main-header__user_menu_item">
@@ -35,7 +51,6 @@
         <a
           :href="getLoginLink()"
           class="button"
-          @click="login"
         >
           {{ $t('login') }}
         </a>
@@ -44,23 +59,23 @@
         class="main-header__lang main-header__lang--nl"
         :to="switchLocalePath('nl')"
         v-if="$i18n.locale === 'en'"
-      >Nederlands</router-link>
+      >NL</router-link>
       <router-link
         class="main-header__lang main-header__lang--en"
         :to="switchLocalePath('en')"
         v-if="$i18n.locale === 'nl'"
-      >English</router-link>
+      >EN</router-link>
     </div>
   </div>
   <div class="main-header__mobile">
     <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
-    <nuxt-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
+    <router-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
       <img
         src="/images/surflogo.png"
         srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
         class="main-header__logo_img"
       >
-    </nuxt-link>
+    </router-link>
     <div class="main-header__mobile_menu" v-if="show_header_menu" onclick="">
       <div class="main-header__user" v-if="isAuthenticated">
         <div class="main-header__user_name arrow-link" onclick=""><span class="link">{{ $t('Menu') }}</span></div>

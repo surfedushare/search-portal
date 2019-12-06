@@ -2,6 +2,9 @@ import axios from 'axios';
 
 
 export default function({ $axios, store }) {
+
+  $axios.defaults.xsrfCookieName = 'csrftoken';
+
   $axios.interceptors.request.use(
     function(config) {
       // Do something before request is sent
@@ -23,10 +26,7 @@ export default function({ $axios, store }) {
   $axios.onError(error => {
     const code = parseInt(error.response && error.response.status);
     if (code === 401) {
-      store.dispatch('logout').then(() => {
-        location.reload();
-      });
-
+      store.dispatch('logout');
     }
   });
 }

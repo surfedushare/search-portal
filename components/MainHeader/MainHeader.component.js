@@ -1,6 +1,7 @@
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import Menu from './Menu';
-import { validateHREF } from '~/components/_helpers';
+
 
 export default {
   name: 'main-header',
@@ -8,35 +9,19 @@ export default {
   components: {
     Menu
   },
-  mounted() {},
-  data() {
-    return {};
-  },
   methods: {
     /**
      * generate login URL
      * @returns {string}
      */
     getLoginLink() {
-      if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
-        return;
-      }
-      return `${
-        this.$axios.defaults.baseURL
-      }/login/?redirect_url=${validateHREF(window.location.href)}`;
-    },
-    login () {
-      if(process.env.VUE_APP_SURFCONEXT_BYPASS) {
-        this.$store.dispatch('login', {token: process.env.VUE_APP_SURFCONEXT_BYPASS});
-      }
+      return this.$store.getters.getLoginLink(this.$route);
     },
     /**
      * logout event
      */
     logout() {
-      this.$store.dispatch('logout').then(() => {
-        window.location = (process.env.VUE_APP_SURFCONEXT_BYPASS) ? '/' : process.env.VUE_APP_LOGOUT_URL;
-      });
+      this.$store.dispatch('logout', {fully: true});
     },
 
     /**
@@ -51,9 +36,16 @@ export default {
      */
     hideMobileMenu() {
       this.$store.commit('SET_HEADER_MENU_STATE', false);
+    },
+    acknowledgeNotification(notificationType) {
+      let notification = _.find(this.user_permission_notifications, (notification) => {
+        return notification.type === notificationType;
+      });
+      notification.is_allowed = true;
+      this.$store.dispatch('postUser');
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user', 'show_header_menu'])
+    ...mapGetters(['isAuthenticated', 'user', 'show_header_menu', 'user_permission_notifications']),
   }
 };

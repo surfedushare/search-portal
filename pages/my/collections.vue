@@ -41,17 +41,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import Materials from '~/components/Materials';
 import Collections from '~/components/Collections';
-import Search from '~/components/FilterCategories/Search';
 import AddCollection from '~/components/Popup/AddCollection';
 
 export default {
   components: {
     Collections,
     BreadCrumbs,
-    Materials,
-    Search,
     AddCollection
   },
   data() {
