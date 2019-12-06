@@ -5,15 +5,9 @@ This module contains API view serializers for materials app.
 from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from surf.apps.core.serializers import (
-    EscapeRepresentationCharField,
-    EscapeOnValidationCharField
-)
-
 from surf.apps.materials.models import (
     Collection,
     Material,
-    ApplaudMaterial,
     SharedResourceCounter,
     RESOURCE_TYPE_COLLECTION,
     PublishStatus,
@@ -95,16 +89,6 @@ class KeywordsRequestSerializer(serializers.Serializer):
     query = serializers.CharField()
 
 
-class MaterialRatingSerializer(serializers.Serializer):
-    """
-    Material rating instance serializer
-    """
-
-    object_id = EscapeOnValidationCharField()
-    rating = serializers.IntegerField(validators=[MinValueValidator(1),
-                                                  MaxValueValidator(5)])
-
-
 class MaterialsRequestSerializer(serializers.Serializer):
     """
     Serializer for materials request
@@ -117,9 +101,10 @@ class MaterialsRequestSerializer(serializers.Serializer):
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
 
-    page_size = serializers.IntegerField(required=False, default=5,
+    page_size = serializers.IntegerField(required=False, default=1,
                                          validators=[MinValueValidator(0),
                                                      MaxValueValidator(10)])
+    count_view = serializers.BooleanField(required=False, default=False)
 
 
 class CollectionMaterialsRequestSerializer(serializers.Serializer):
@@ -148,14 +133,6 @@ class MaterialRatingsRequestSerializer(serializers.Serializer):
     page_size = serializers.IntegerField(required=False, default=10,
                                          validators=[MinValueValidator(0),
                                                      MaxValueValidator(10)])
-
-
-class MaterialRatingResponseSerializer(MaterialRatingSerializer):
-    """
-    Material rating instance serializer with extra fields
-    """
-
-    smo_id = serializers.CharField()
 
 
 class MaterialShortSerializer(serializers.ModelSerializer):
@@ -221,50 +198,10 @@ class CollectionSerializer(CollectionShortSerializer):
     def get_publish_status(obj):
         return str(PublishStatus.get(obj.publish_status))
 
-    def create(self, validated_data):
-        user = _get_and_check_user_from_context(self.context)
-        if user:
-            validated_data["owner_id"] = user.id
-
-        return super().create(validated_data)
-
     class Meta:
         model = Collection
         fields = ('id', 'title', 'materials_count', 'communities_count',
                   'communities', 'sharing_counters', 'publish_status')
-
-
-class ApplaudMaterialSerializer(serializers.ModelSerializer):
-    """
-    Material applaud instance serializer
-    """
-
-    material = MaterialShortSerializer()
-    applaud_count = serializers.IntegerField(read_only=True)
-
-    def create(self, validated_data):
-        external_id = validated_data["material"]["external_id"]
-        material, _ = Material.objects.get_or_create(external_id=external_id)
-        validated_data["material"] = material
-
-        lookup_fields = {"material": material}
-        user = _get_and_check_user_from_context(self.context)
-        if user:
-            lookup_fields["user_id"] = user.id
-        else:
-            lookup_fields["user__isnull"] = True
-
-        instance, _ = ApplaudMaterial.objects.get_or_create(
-            **lookup_fields, defaults=validated_data)
-
-        instance.applaud_count += 1
-        instance.save()
-
-        return instance
-
-    class Meta:
-        model = ApplaudMaterial
-        fields = ('material', 'applaud_count', )
 
 
 def _get_and_check_user_from_context(context):

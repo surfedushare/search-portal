@@ -97,6 +97,12 @@ class CommunityAdmin(admin.ModelAdmin):
 
     actions = [restore_nodes, trash_nodes]
 
+    def get_readonly_fields(self, request, obj=None):
+        fields = super().get_readonly_fields(request, obj)
+        if obj is not None:
+            fields += ("external_id",)
+        return fields
+
     def get_actions(self, request):
         actions = super().get_actions(request)
         try:

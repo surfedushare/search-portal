@@ -15,12 +15,17 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Become aware of the frontend that this backend is build for
+# We whitelist this URL entirely to be able to share (login!) cookies
+FRONTEND_DOMAIN = os.environ.get("DJANGO_FRONTEND_DOMAIN", "zoekportaal.surf.nl")
+PROTOCOL = os.environ.get("DJANGO_PROTOCOL", "https")
+FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', "0")))
 
 ALLOWED_HOSTS = []
 
@@ -28,7 +33,9 @@ USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # list of allowed endpoints to redirect
-ALLOWED_REDIRECT_ENDPOINTS = []
+ALLOWED_REDIRECT_HOSTS = [
+    FRONTEND_DOMAIN
+]
 
 
 # Application definition
@@ -44,11 +51,14 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'mptt',
+    'social_django',
 
     'corsheaders',
     'rest_framework',
-    'rest_framework.authtoken',
+    #'rest_framework.authtoken',
     'django_filters',
+
+    'surf.vendor.surfconext',
 
     'surf',
     'surf.apps.users',
@@ -61,8 +71,7 @@ INSTALLED_APPS = [
     'surf.apps.querylog',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'content-type',
@@ -74,13 +83,16 @@ CORS_ALLOW_HEADERS = (
     'accept-encoding',
     'response-type',
 )
-
 CORS_EXPOSE_HEADERS = (
     'content-disposition',
 )
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    FRONTEND_DOMAIN
+]
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = PROTOCOL == "https"
+CSRF_COOKIE_SECURE = PROTOCOL == "https"
 
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -91,6 +103,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -135,7 +148,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'surf.apps.users.authentication.SessionTokenAuthentication',
     ),
 
     'DEFAULT_FILTER_BACKENDS': (
@@ -143,14 +156,8 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ),
 
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.JSONRenderer',
-    # )
 }
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -214,25 +221,45 @@ LOGGING = {
     },
 }
 
-# OpenID Connect configuration
-OIDC_CONFIG = {
-    "version": "1.0",
-    "verify_ssl": True,
-    "response_type": "code",
-    "redirect_uri": "http://127.0.0.1:8000/complete/surfconext/",
-    "client_id": "",
-    "client_secret": "",
-    "issuer": "https://oidc.test.surfconext.nl/",
-    "authorization_endpoint": "https://oidc.test.surfconext.nl/authorize",
-    "userinfo_endpoint": "https://oidc.test.surfconext.nl/userinfo",
-    "token_endpoint": "https://oidc.test.surfconext.nl/token",
-    "revocation_endpoint": "https://oidc.test.surfconext.nl/revoke",
-    "jwks_uri": "https://oidc.test.surfconext.nl/jwk",
-    "scope": ["openid", "groups"],
-    "acr_values": ["password", "mail_two_factor",]
-}
 
-VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
+# Social Auth
+# https://python-social-auth.readthedocs.io/en/latest/index.html
+
+OIDC_CONFIG = {}  # TODO: remove this from all local settings
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
+SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
+
+AUTHENTICATION_BACKENDS = (
+    'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# https://python-social-auth.readthedocs.io/en/latest/pipeline.html
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'surf.vendor.surfconext.pipeline.require_data_permissions',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'surf.vendor.surfconext.pipeline.store_data_permissions',
+    'social_core.pipeline.social_auth.associate_user',
+    'surf.vendor.surfconext.pipeline.get_groups',
+    'surf.vendor.surfconext.pipeline.assign_communities',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"
+LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
+
+VOOT_API_ENDPOINT = "https://voot.surfconext.nl"
+
 EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
 EDUREP_XML_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
 EDUREP_SOAP_API_ENDPOINT = "http://smb.edurep.kennisnet.nl/smdBroker/ws"

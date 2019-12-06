@@ -15,7 +15,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     User profile instance serializer
     """
 
-    full_name = serializers.CharField(source="surfconext_auth.display_name")
+    full_name = serializers.CharField(source="email")
     is_admin = serializers.SerializerMethodField()
     communities = serializers.SerializerMethodField()
     collections = serializers.SerializerMethodField()
@@ -28,7 +28,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_collections(obj):
-        qs = Collection.objects.filter(communities__team__user=obj)
+        qs = Collection.objects.filter(communities__team__user=obj).order_by("title")
         return CollectionShortSerializer(qs, many=True).data
 
     @staticmethod

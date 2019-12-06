@@ -7,6 +7,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.db import models as django_models
+from django.db.models import F
 from django.utils import timezone
 from django_enumfield import enum
 
@@ -95,6 +96,27 @@ class Material(UUIDModel):
     keywords = django_models.TextField(blank=True, null=True)
     deleted_at = django_models.DateTimeField(null=True)
 
+    star_1 = django_models.PositiveIntegerField(default=0)
+    star_2 = django_models.PositiveIntegerField(default=0)
+    star_3 = django_models.PositiveIntegerField(default=0)
+    star_4 = django_models.PositiveIntegerField(default=0)
+    star_5 = django_models.PositiveIntegerField(default=0)
+    # a user can applaud a material many times more than he can star rate it
+    applaud_count = django_models.BigIntegerField(default=0)
+    view_count = django_models.BigIntegerField(default=0)
+
+    def get_star_count(self):
+        return self.star_1 + self.star_2 + self.star_3 + self.star_4 + self.star_5
+    get_star_count.short_description = 'Star rating count'
+
+    def get_avg_star_rating(self):
+        total_stars = 1 * self.star_1 + 2 * self.star_2 + 3 * self.star_3 + 4 * self.star_4 + 5 * self.star_5
+        star_count = self.get_star_count()
+        if star_count > 0:
+            return round(total_stars / star_count, 1)
+        return 0
+    get_avg_star_rating.short_description = 'Average star rating'
+
     def restore(self):
         self.deleted_at = None
         self.save()
@@ -105,6 +127,25 @@ class Material(UUIDModel):
             self.save()
         else:
             super().delete(using=using, keep_parents=keep_parents)
+
+    def sync_info(self):
+        assert self.external_id, "Can't sync info if instance doesn't have an external id"
+
+        details = get_material_details_by_id(self.external_id)
+        if details:
+            m = details[0]
+            self.material_url = m.get("url")
+            self.title = m.get("title")
+            self.description = m.get("description")
+            keywords = m.get("keywords")
+            if keywords:
+                keywords = json.dumps(keywords)
+                self.keywords = keywords
+
+            # always save info before adding themes & disciplines
+            self.save()
+            add_material_themes(self, m.get("themes", []))
+            add_material_disciplines(self, m.get("disciplines", []))
 
     def __str__(self):
         return self.external_id
@@ -151,65 +192,6 @@ class CollectionMaterial(django_models.Model):
         verbose_name = 'Material'
 
 
-class ApplaudMaterial(UUIDModel):
-    """
-    Implementation of Material applaud model. This model is used to collect
-    data about material applauds by users.
-    """
-
-    user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
-                                    related_name='applauds',
-                                    on_delete=django_models.CASCADE,
-                                    null=True, blank=True)
-
-    material = django_models.ForeignKey(Material,
-                                        related_name="applauds",
-                                        on_delete=django_models.CASCADE)
-
-    applaud_count = django_models.IntegerField(default=0)
-
-    def __str__(self):
-        username = self.user.username if self.user else None
-        return "{} - {}".format(username, self.material.external_id)
-
-
-class ViewMaterial(UUIDModel):
-    """
-    Implementation of Material view model. This model is used to collect
-    data about material unique view by users.
-    """
-
-    viewed_at = django_models.DateTimeField(default=datetime.now)
-
-    user = django_models.ForeignKey(settings.AUTH_USER_MODEL,
-                                    related_name='material_views',
-                                    on_delete=django_models.CASCADE)
-
-    material = django_models.ForeignKey(Material,
-                                        related_name="material_views",
-                                        on_delete=django_models.CASCADE)
-
-    @staticmethod
-    def add_unique_view(user, material_external_id):
-        """
-        Updates unique view data
-        :param user: user instance
-        :param material_external_id: external identifier of material
-        """
-
-        if not user or not user.id:
-            return
-
-        m, _ = Material.objects.get_or_create(external_id=material_external_id)
-
-        ViewMaterial.objects.update_or_create(
-            user_id=user.id, material_id=m.id,
-            defaults=dict(viewed_at=datetime.now()))
-
-    def __str__(self):
-        return "{} - {}".format(self.user.username, self.material.external_id)
-
-
 class SharedResourceCounter(UUIDModel):
     """
     Implementation of model for counter of shared resource.
@@ -235,7 +217,7 @@ class SharedResourceCounter(UUIDModel):
             counter_key=counter_key,
             defaults=dict(extra=extra))
 
-        c.counter_value += 1
+        c.counter_value = F('counter_value') + 1
         c.save()
 
     @staticmethod

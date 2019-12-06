@@ -5,17 +5,7 @@ This module provides Django REST API filters for materials app.
 from django_filters import rest_framework as filters
 from django_filters import CharFilter
 
-from surf.apps.materials.models import ApplaudMaterial, Collection
-
-
-class ApplaudMaterialFilter(filters.FilterSet):
-    """
-    Provides filtering functionality for Material applauds requests
-    """
-
-    class Meta:
-        model = ApplaudMaterial
-        fields = ('material__external_id',)
+from surf.apps.materials.models import Collection
 
 
 class CollectionFilter(filters.FilterSet):
