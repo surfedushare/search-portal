@@ -25,8 +25,6 @@ const _45857c92 = () => import('../pages/themes/_id.vue' /* webpackChunkName: "p
 const _4ed33c85 = () => import('../pages/materials/_id.vue' /* webpackChunkName: "pages/materials/_id" */).then(m => m.default || m);
 const _3729fb6e = () => import('../pages/collections/_id.vue' /* webpackChunkName: "pages/collections/_id" */).then(m => m.default || m);
 const _e164c612 = () => import('../pages/communities/_community/index.vue' /* webpackChunkName: "pages/communities/_community/index" */).then(m => m.default || m);
-const _0624db53 = () => import('../pages/communities/_community/search.vue' /* webpackChunkName: "pages/communities/_community/search" */).then(m => m.default || m);
-const _2cdbb9b6 = () => import('../pages/communities/_community/collections/_id.vue' /* webpackChunkName: "pages/communities/_community/collections/_id" */).then(m => m.default || m);
 const _ebbee700 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m);
 const infoPage = () => import('../pages/info.vue').then(m => m.default || m);
 
@@ -240,26 +238,6 @@ export function createRouter () {
         path: "/communities/:community",
         component: _e164c612,
         name: "communities-community___nl"
-      },
-      {
-        path: "/en/communities/:community/search",
-        component: _0624db53,
-        name: "communities-community-search___en"
-      },
-      {
-        path: "/communities/:community/zoeken",
-        component: _0624db53,
-        name: "communities-community-search___nl"
-      },
-      {
-        path: "/en/communities/:community/collections/:id?",
-        component: _2cdbb9b6,
-        name: "communities-community-collections-id___en"
-      },
-      {
-        path: "/communities/:community/collecties/:id?",
-        component: _2cdbb9b6,
-        name: "communities-community-collections-id___nl"
       },
       {
         path: "/en/privacy",
