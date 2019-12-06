@@ -4,6 +4,7 @@ import axios from 'axios';
 export default function({ $axios, store }) {
 
   $axios.defaults.xsrfCookieName = 'csrftoken';
+  $axios.defaults.xsrfHeaderName = 'x-csrftoken';
 
   $axios.interceptors.request.use(
     function(config) {
