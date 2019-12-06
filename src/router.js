@@ -23,7 +23,7 @@ const myPrivacy = () => import('../pages/my/privacy.vue' /* webpackChunkName: "p
 const _1c7624f6 = () => import('../pages/my/filters/_id.vue' /* webpackChunkName: "pages/my/filters/_id" */).then(m => m.default || m);
 const _45857c92 = () => import('../pages/theme.vue' /* webpackChunkName: "pages/theme" */).then(m => m.default || m);
 const _4ed33c85 = () => import('../pages/material.vue' /* webpackChunkName: "pages/material" */).then(m => m.default || m);
-const _3729fb6e = () => import('../pages/collections.vue' /* webpackChunkName: "pages/collections" */).then(m => m.default || m);
+const _3729fb6e = () => import('../pages/collection.vue' /* webpackChunkName: "pages/collection" */).then(m => m.default || m);
 const _e164c612 = () => import('../pages/community.vue' /* webpackChunkName: "pages/community" */).then(m => m.default || m);
 const _ebbee700 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m);
 const infoPage = () => import('../pages/info.vue').then(m => m.default || m);
