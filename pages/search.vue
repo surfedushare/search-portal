@@ -92,7 +92,7 @@ import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import SaveFilter from '~/components/Popup/SaveFilter';
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from '~/components/_helpers';
-import materials from '../../src/store/modules/materials';
+import materials from '../src/store/modules/materials';
 
 export default {
   components: {
@@ -256,7 +256,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import './../../assets/styles/variables';
+@import './../assets/styles/variables';
 .search {
   position: relative;
 

@@ -12,21 +12,18 @@ import injector from 'vue-inject';
 const $log = injector.get('$log');
 
 
-const _e895237e = () => import('../pages/how-does-it-work/index.vue' /* webpackChunkName: "pages/how-does-it-work/index" */).then(m => m.default || m);
-const _e32cc490 = () => import('../pages/communities/index.vue' /* webpackChunkName: "pages/communities/index" */).then(m => m.default || m);
-const _70c48e2d = () => import('../pages/materials/search.vue' /* webpackChunkName: "pages/materials/search" */).then(m => m.default || m);
+const _e895237e = () => import('../pages/how-does-it-work.vue' /* webpackChunkName: "pages/how-does-it-work" */).then(m => m.default || m);
+const _e32cc490 = () => import('../pages/communities.vue' /* webpackChunkName: "pages/communities" */).then(m => m.default || m);
+const _70c48e2d = () => import('../pages/search.vue' /* webpackChunkName: "pages/search" */).then(m => m.default || m);
 const _77aed046 = () => import('../pages/my/filters/index.vue' /* webpackChunkName: "pages/my/filters/index" */).then(m => m.default || m);
 const _169285f4 = () => import('../pages/my/collections.vue' /* webpackChunkName: "pages/my/collections" */).then(m => m.default || m);
-const _b5953cb4 = () => import('../pages/my/communities.vue' /* webpackChunkName: "pages/my/communities" */).then(m => m.default || m);
 const myCommunity = () => import('../pages/my/community.vue' /* webpackChunkName: "pages/my/community" */).then(m => m.default || m);
 const myPrivacy = () => import('../pages/my/privacy.vue' /* webpackChunkName: "pages/my/privacy" */).then(m => m.default || m);
 const _1c7624f6 = () => import('../pages/my/filters/_id.vue' /* webpackChunkName: "pages/my/filters/_id" */).then(m => m.default || m);
-const _45857c92 = () => import('../pages/themes/_id.vue' /* webpackChunkName: "pages/themes/_id" */).then(m => m.default || m);
-const _4ed33c85 = () => import('../pages/materials/_id.vue' /* webpackChunkName: "pages/materials/_id" */).then(m => m.default || m);
-const _3729fb6e = () => import('../pages/collections/_id.vue' /* webpackChunkName: "pages/collections/_id" */).then(m => m.default || m);
-const _e164c612 = () => import('../pages/communities/_community/index.vue' /* webpackChunkName: "pages/communities/_community/index" */).then(m => m.default || m);
-const _0624db53 = () => import('../pages/communities/_community/search.vue' /* webpackChunkName: "pages/communities/_community/search" */).then(m => m.default || m);
-const _2cdbb9b6 = () => import('../pages/communities/_community/collections/_id.vue' /* webpackChunkName: "pages/communities/_community/collections/_id" */).then(m => m.default || m);
+const _45857c92 = () => import('../pages/theme.vue' /* webpackChunkName: "pages/theme" */).then(m => m.default || m);
+const _4ed33c85 = () => import('../pages/material.vue' /* webpackChunkName: "pages/material" */).then(m => m.default || m);
+const _3729fb6e = () => import('../pages/collection.vue' /* webpackChunkName: "pages/collection" */).then(m => m.default || m);
+const _e164c612 = () => import('../pages/community.vue' /* webpackChunkName: "pages/community" */).then(m => m.default || m);
 const _ebbee700 = () => import('../pages/index.vue' /* webpackChunkName: "pages/index" */).then(m => m.default || m);
 const infoPage = () => import('../pages/info.vue').then(m => m.default || m);
 
@@ -157,12 +154,12 @@ export function createRouter () {
       },
       {
         path: "/en/my/communities",
-        component: _b5953cb4,
+        component: _e32cc490,
         name: "my-communities___en"
       },
       {
         path: "/mijn/communities",
-        component: _b5953cb4,
+        component: _e32cc490,
         name: "my-communities___nl"
       },
       {
@@ -240,26 +237,6 @@ export function createRouter () {
         path: "/communities/:community",
         component: _e164c612,
         name: "communities-community___nl"
-      },
-      {
-        path: "/en/communities/:community/search",
-        component: _0624db53,
-        name: "communities-community-search___en"
-      },
-      {
-        path: "/communities/:community/zoeken",
-        component: _0624db53,
-        name: "communities-community-search___nl"
-      },
-      {
-        path: "/en/communities/:community/collections/:id?",
-        component: _2cdbb9b6,
-        name: "communities-community-collections-id___en"
-      },
-      {
-        path: "/communities/:community/collecties/:id?",
-        component: _2cdbb9b6,
-        name: "communities-community-collections-id___nl"
       },
       {
         path: "/en/privacy",

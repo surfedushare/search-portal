@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style lang="less">
-@import './../../assets/styles/variables';
+@import './../assets/styles/variables';
 .how_work {
   &__center-header {
     @media @mobile {

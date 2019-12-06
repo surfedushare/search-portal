@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import './../../assets/styles/variables';
+@import './../assets/styles/variables';
 .material {
   padding: 32px 0 152px;
   @media @tablet, @mobile {
