@@ -17,7 +17,6 @@ const _e32cc490 = () => import('../pages/communities.vue' /* webpackChunkName: "
 const _70c48e2d = () => import('../pages/search.vue' /* webpackChunkName: "pages/search" */).then(m => m.default || m);
 const _77aed046 = () => import('../pages/my/filters/index.vue' /* webpackChunkName: "pages/my/filters/index" */).then(m => m.default || m);
 const _169285f4 = () => import('../pages/my/collections.vue' /* webpackChunkName: "pages/my/collections" */).then(m => m.default || m);
-const _b5953cb4 = () => import('../pages/my/communities.vue' /* webpackChunkName: "pages/my/communities" */).then(m => m.default || m);
 const myCommunity = () => import('../pages/my/community.vue' /* webpackChunkName: "pages/my/community" */).then(m => m.default || m);
 const myPrivacy = () => import('../pages/my/privacy.vue' /* webpackChunkName: "pages/my/privacy" */).then(m => m.default || m);
 const _1c7624f6 = () => import('../pages/my/filters/_id.vue' /* webpackChunkName: "pages/my/filters/_id" */).then(m => m.default || m);
@@ -155,12 +154,12 @@ export function createRouter () {
       },
       {
         path: "/en/my/communities",
-        component: _b5953cb4,
+        component: _e32cc490,
         name: "my-communities___en"
       },
       {
         path: "/mijn/communities",
-        component: _b5953cb4,
+        component: _e32cc490,
         name: "my-communities___nl"
       },
       {
