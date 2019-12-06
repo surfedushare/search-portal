@@ -26,10 +26,12 @@ export default {
         .then(collection => {
           this.$store.dispatch('getUser');
           this.saved = true;
-          this.submitting = false;
           if (this.$listeners.submitted) {
             this.$emit('submitted', collection);
           }
+        })
+        .finally(() => {
+          this.submitting = false;
         });
     }
   },
