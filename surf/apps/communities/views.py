@@ -15,7 +15,6 @@ from rest_framework.mixins import (
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from surf.apps.communities.filters import CommunityFilter
 from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import (
     CommunitySerializer,
@@ -44,7 +43,6 @@ class CommunityViewSet(ListModelMixin,
 
     queryset = Community.objects.filter(deleted_at=None)
     serializer_class = CommunitySerializer
-    filter_class = CommunityFilter
     permission_classes = []
 
     def get_serializer_class(self):
