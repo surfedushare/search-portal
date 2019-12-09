@@ -8,13 +8,12 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
   }
 
   // Options
-  const lazy = true
-  const vuex = {"moduleName":"i18n","mutations":{"setLocale":"I18N_SET_LOCALE","setMessages":"I18N_SET_MESSAGES"},"preserveState":false}
-  const differentDomains = false
-  const isSpa = true
+  const lazy = true;
+  const vuex = {"moduleName":"i18n","mutations":{"setLocale":"I18N_SET_LOCALE","setMessages":"I18N_SET_MESSAGES"},"preserveState":false};
+  const isSpa = true;
 
   // Helpers
-  const LOCALE_CODE_KEY = 'code'
+  const LOCALE_CODE_KEY = 'code';
   const getLocaleCodes = (locales = []) => {
   if (locales.length) {
     // If first item is a sting, assume locales is a list of codes already
@@ -27,31 +26,31 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
     }
   }
   return []
-}
+};
   const getLocaleFromRoute = (route = {}, routesNameSeparator = '', defaultLocaleRouteNameSuffix = '', locales = []) => {
-  const codes = getLocaleCodes(locales)
-  const localesPattern = `(${codes.join('|')})`
-  const defaultSuffixPattern = `(?:${routesNameSeparator}${defaultLocaleRouteNameSuffix})?`
+  const codes = getLocaleCodes(locales);
+  const localesPattern = `(${codes.join('|')})`;
+  const defaultSuffixPattern = `(?:${routesNameSeparator}${defaultLocaleRouteNameSuffix})?`;
   // Extract from route name
   if (route.name) {
-    const regexp = new RegExp(`${routesNameSeparator}${localesPattern}${defaultSuffixPattern}$`, 'i')
-    const matches = route.name.match(regexp)
+    const regexp = new RegExp(`${routesNameSeparator}${localesPattern}${defaultSuffixPattern}$`, 'i');
+    const matches = route.name.match(regexp);
     if (matches && matches.length > 1) {
       return matches[1]
     }
   } else if (route.path) {
     // Extract from path
-    const regexp = new RegExp(`^/${localesPattern}/`, 'i')
-    const matches = route.path.match(regexp)
+    const regexp = new RegExp(`^/${localesPattern}/`, 'i');
+    const matches = route.path.match(regexp);
     if (matches && matches.length > 1) {
       return matches[1]
     }
   }
   return null
-}
-  const routesNameSeparator = '___'
-  const defaultLocaleRouteNameSuffix = 'default'
-  const locales = getLocaleCodes([{"code":"en","iso":"en-US","file":"en.js"},{"code":"nl","iso":"nl-NL","file":"nl-NL.js"}])
+};
+  const routesNameSeparator = '___';
+  const defaultLocaleRouteNameSuffix = 'default';
+  const locales = getLocaleCodes([{"code":"en","iso":"en-US","file":"en.js"},{"code":"nl","iso":"nl-NL","file":"nl-NL.js"}]);
   const syncVuex = (locale = null, messages = null) => {
   if (vuex && store) {
     if (locale !== null && vuex.mutations.setLocale) {
@@ -61,34 +60,34 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
       store.dispatch(vuex.moduleName + '/setMessages', messages)
     }
   }
-}
+};
 
 
-  let locale = app.i18n.locale || app.i18n.defaultLocale || null
+  let locale = app.i18n.locale || app.i18n.defaultLocale || null;
 
   // Handle root path redirect
-  const rootRedirect = ''
+  const rootRedirect = '';
   if (route.path === '/' && rootRedirect) {
-    redirect('/' + rootRedirect, route.query)
+    redirect('/' + rootRedirect, route.query);
     return
   }
 
   // Handle browser language detection
-  const detectBrowserLanguage = {"useCookie":true,"cookieKey":"i18n_redirected","alwaysRedirect":"","fallbackLocale":null}
-  const routeLocale = getLocaleFromRoute(route, routesNameSeparator, defaultLocaleRouteNameSuffix, locales)
+  const detectBrowserLanguage = {"useCookie":true,"cookieKey":"i18n_redirected","alwaysRedirect":"","fallbackLocale":null};
+  const routeLocale = getLocaleFromRoute(route, routesNameSeparator, defaultLocaleRouteNameSuffix, locales);
 
   const getCookie = () => {
     if (isSpa) {
       return Cookies.get(cookieKey);
     } else if (req && typeof req.headers.cookie !== 'undefined') {
-      const cookies = req.headers && req.headers.cookie ? cookie.parse(req.headers.cookie) : {}
+      const cookies = req.headers && req.headers.cookie ? cookie.parse(req.headers.cookie) : {};
       return cookies[cookieKey]
     }
     return null
-  }
+  };
 
   const setCookie = (locale) => {
-    const date = new Date()
+    const date = new Date();
     if (isSpa) {
       Cookies.set(cookieKey, locale, {
         expires: new Date(date.setDate(date.getDate() + 365)),
@@ -98,12 +97,12 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
       const redirectCookie = cookie.serialize(cookieKey, locale, {
         expires: new Date(date.setDate(date.getDate() + 365)),
         path: '/'
-      })
+      });
       res.setHeader('Set-Cookie', redirectCookie)
     }
-  }
+  };
 
-  const { useCookie, cookieKey, alwaysRedirect, fallbackLocale } = detectBrowserLanguage
+  const { useCookie, cookieKey, alwaysRedirect, fallbackLocale } = detectBrowserLanguage;
 
   const switchLocale = async (newLocale) => {
     // Abort if different domains option enabled
@@ -116,28 +115,28 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
       return
     }
 
-    const oldLocale = app.i18n.locale
-    app.i18n.beforeLanguageSwitch(oldLocale, newLocale)
+    const oldLocale = app.i18n.locale;
+    app.i18n.beforeLanguageSwitch(oldLocale, newLocale);
     if(useCookie) {
       setCookie(newLocale)
     }
     // Lazy-loading enabled
     if (lazy) {
-      const { loadLanguageAsync } = require('./utils')
-      const messages = await loadLanguageAsync(app.i18n, newLocale)
-      app.i18n.locale = newLocale
-      app.i18n.onLanguageSwitched(oldLocale, newLocale)
+      const { loadLanguageAsync } = require('./utils');
+      const messages = await loadLanguageAsync(app.i18n, newLocale);
+      app.i18n.locale = newLocale;
+      app.i18n.onLanguageSwitched(oldLocale, newLocale);
       syncVuex(newLocale, messages)
     } else {
       // Lazy-loading disabled
-      app.i18n.locale = newLocale
-      app.i18n.onLanguageSwitched(oldLocale, newLocale)
+      app.i18n.locale = newLocale;
+      app.i18n.onLanguageSwitched(oldLocale, newLocale);
       syncVuex(newLocale, app.i18n.getLocaleMessage(newLocale))
     }
-  }
+  };
 
   if (detectBrowserLanguage) {
-    let browserLocale
+    let browserLocale;
 
     if (useCookie && (browserLocale = getCookie()) && browserLocale !== 1 && browserLocale !== '1') {
       // Get preferred language from cookie if present and enabled
@@ -152,8 +151,8 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
     if (browserLocale) {
       // Handle cookie option to prevent multiple redirections
       if(!useCookie || alwaysRedirect || !getCookie()) {
-        const routeName = route && route.name ? app.getRouteBaseName(route) : 'index'
-        let redirectToLocale = fallbackLocale
+        const routeName = route && route.name ? app.getRouteBaseName(route) : 'index';
+        let redirectToLocale = fallbackLocale;
 
         // Use browserLocale if we support it, otherwise use fallbackLocale
         if(locales.indexOf(browserLocale) !== -1) {
@@ -163,11 +162,11 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
         if (redirectToLocale && redirectToLocale !== app.i18n.locale && locales.indexOf(redirectToLocale) !== -1) {
 
           // We switch the locale before redirect to prevent loops
-          await switchLocale(redirectToLocale)
+          await switchLocale(redirectToLocale);
 
           redirect(app.localePath(Object.assign({}, route , {
             name: routeName
-          }), redirectToLocale))
+          }), redirectToLocale));
 
           return
         }
@@ -176,4 +175,4 @@ middleware['i18n'] = async ({ app, req, res, route, store, redirect, isHMR }) =>
   }
 
   await switchLocale(routeLocale ? routeLocale : locale)
-}
+};

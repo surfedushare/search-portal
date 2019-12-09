@@ -143,7 +143,7 @@ export default {
       commit('SET_COMMUNITY_COLLECTIONS_NEXT', community_collections);
       commit('SET_COMMUNITY_COLLECTIONS_LOADING', false);
     },
-    async postCommunityCollection({ state, commit }, data) {
+    async postCommunityCollection({ commit }, data) {
       if (validateParams(data)) {
         const collection = await this.$axios.$post(`collections/`, data);
         commit('ADD_COMMUNITY_COLLECTION', collection);

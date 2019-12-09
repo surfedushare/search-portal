@@ -11,12 +11,6 @@ import injector from 'vue-inject';
 const $log = injector.get("$log");
 
 
-
-function validateID() {
-  return true;
-}
-
-
 export default {
   state: {
     materials: null,
@@ -91,12 +85,12 @@ export default {
         $log.error('Validate error: ', { params });
       }
     },
-    async setMaterialRating({ commit }, params) {
+    async setMaterialRating(context, params) {
       return await this.$axios.$post('rate_material/', {
         params
       });
     },
-    async setApplaudMaterial({ commit }, { external_id }) {
+    async setApplaudMaterial(context, { external_id }) {
       if (validateIDString(external_id)) {
         return await this.$axios.$post('applaud_material/', {
           params: {
@@ -107,7 +101,7 @@ export default {
         $log.error('Validate error: ', external_id);
       }
     },
-    async getApplaudMaterial({ commit }, { external_id }) {
+    async getApplaudMaterial(context, { external_id }) {
       if (validateIDString(external_id)) {
         return await this.$axios.$get('applaud_material/', {
           params: {
