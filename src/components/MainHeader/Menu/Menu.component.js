@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+
 
 export default {
   name: 'menu-block',
