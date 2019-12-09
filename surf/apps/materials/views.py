@@ -323,15 +323,6 @@ class CollectionViewSet(ModelViewSet):
         self._check_access(request.user, instance=self.get_object())
         return super().destroy(request, *args, **kwargs)
 
-    @action(methods=['post'], detail=True)
-    def search(self, request, pk=None, **kwargs):
-        """
-        Search materials that are part of the collection
-        """
-
-        instance = self.get_object()
-        return get_materials_search_response(instance.materials, request)
-
     @action(methods=['get', 'post', 'delete'], detail=True)
     def materials(self, request, pk=None, **kwargs):
         instance = self.get_object()
@@ -453,121 +444,6 @@ class CollectionViewSet(ModelViewSet):
             else:
                 raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
                                            f"Error: \"{exc}\"")
-
-
-def get_materials_search_response(qs, request):
-    """
-    Searches materials according to search parameters and returns
-    a paginated Response object
-    :param qs: queryset of materials
-    :param request: Request object
-    :return: Response object
-    """
-
-    # validate request parameters
-    serializer = SearchRequestShortSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    data = serializer.validated_data
-
-    qs = _filter_materials_by_search_query(qs, data)
-    qs = _ordering_materials_queryset(qs, data)
-    materials = _paginate_materials_queryset(qs, request, data)
-    return _get_paginated_materials_response(qs, materials, data)
-
-
-_MATERIAL_SEARCH_FIELDS = ('material_url', 'title', 'description',
-                           'keywords',)
-
-
-def _filter_materials_by_search_query(qs, request_data):
-    """
-    Adds filters to materials queryset according to search parameters
-    :param qs: queryset of materials
-    :param request_data: dictionary of request parameters
-    :return: updated queryset
-    """
-
-    search_text = request_data.get("search_text")
-    if not search_text:
-        return qs
-
-    queries = []
-    for st in search_text:
-        text_qs_list = [Q(**{"{}__icontains".format(f): st})
-                        for f in _MATERIAL_SEARCH_FIELDS]
-
-        text_qs = text_qs_list.pop()
-
-        while text_qs_list:
-            text_qs |= text_qs_list.pop()
-
-        queries.append(text_qs)
-
-    all_qs = queries.pop()
-
-    while queries:
-        all_qs &= queries.pop()
-
-    if all_qs:
-        qs = qs.filter(all_qs)
-
-    return qs
-
-
-def _ordering_materials_queryset(qs, request_data):
-    """
-    Adds ordering to materials queryset according request parameters
-    :param qs: queryset of materials
-    :param request_data: dictionary of request parameters
-    :return: updated queryset
-    """
-
-    qs = qs.order_by("id")
-    return qs
-
-
-def _paginate_materials_queryset(qs, request, request_data):
-    """
-    Prepares the requested page of materials with detailed data
-    according to `page` and `page_size` parameters in request
-    :param qs: queryset of materials
-    :param request: Request object
-    :param request_data: dictionary of request parameters
-    :return: list of materials of requested page
-    """
-
-    page = request_data["page"]
-    page_size = request_data["page_size"]
-    material_cnt = qs.count()
-
-    start_idx = (page - 1) * page_size
-    if start_idx >= material_cnt:
-        return []
-
-    end_idx = start_idx + page_size
-    if end_idx > material_cnt:
-        end_idx = material_cnt
-
-    materials = qs.all()[start_idx:end_idx:]
-    material_ids = ['"{}"'.format(m.external_id) for m in materials]
-
-    ac = XmlEndpointApiClient(
-        api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
-    materials = ac.get_materials_by_id(material_ids, page_size=10)
-    materials = materials.get("records", [])
-    materials = add_extra_parameters_to_materials(request.user, materials)
-    return materials
-
-
-def _get_paginated_materials_response(qs, materials, request_data):
-    return Response(OrderedDict([
-        ('page', request_data["page"]),
-        ('page_size', request_data["page_size"]),
-        ('records_total', qs.count()),
-        ('records', materials),
-        ('filters', [])
-    ]))
 
 
 def add_share_counters_to_materials(materials):

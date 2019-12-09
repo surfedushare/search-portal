@@ -15,7 +15,6 @@ from rest_framework.mixins import (
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from surf.apps.communities.filters import CommunityFilter
 from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import (
     CommunitySerializer,
@@ -28,7 +27,6 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
 )
-from surf.apps.materials.views import get_materials_search_response
 from surf.apps.themes.models import Theme
 from surf.apps.themes.serializers import ThemeSerializer
 
@@ -45,7 +43,6 @@ class CommunityViewSet(ListModelMixin,
 
     queryset = Community.objects.filter(deleted_at=None)
     serializer_class = CommunitySerializer
-    filter_class = CommunityFilter
     permission_classes = []
 
     def get_serializer_class(self):
@@ -62,20 +59,6 @@ class CommunityViewSet(ListModelMixin,
         # only active admins can update community
         self._check_access(request.user, instance=self.get_object())
         return super().update(request, *args, **kwargs)
-
-    @action(methods=['post'], detail=True)
-    def search(self, request, pk=None, **kwargs):
-        """
-        Search materials that are part of the community collections
-        """
-
-        instance = self.get_object()
-
-        material_ids = instance.collections.values_list("materials__id",
-                                                        flat=True)
-
-        qs = Material.objects.filter(id__in=material_ids)
-        return get_materials_search_response(qs, request)
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def collections(self, request, pk=None, **kwargs):
