@@ -43,7 +43,7 @@ import {
   getQueryDiff,
   //globalHandleError
 } from './utils'
-import { parseSearchMaterialsQuery } from '../components/_helpers';
+import { parseSearchMaterialsQuery } from '~/components/_helpers';
 
 
 // Global shared references
