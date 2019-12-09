@@ -28,7 +28,7 @@
         <label for="search_order_select">{{ $t('sort_by') }}:	&nbsp;</label>
         <div  class="search__chooser search__select" >
         <select id="search_order_select" @change="changeOrdering" v-model="sort_order">
-          <option v-for="option in sort_order_options" v-bind:value="option.value">
+          <option v-for="option in sort_order_options" v-bind:value="option.value" :key="option.value">
             &nbsp;&nbsp;{{ $t(option.value) }}
           </option>
         </select>
@@ -85,22 +85,18 @@
 import { mapGetters } from 'vuex';
 import Search from '~/components/FilterCategories/Search';
 import FilterCategories from '~/components/FilterCategories';
-import PopularList from '~/components/Communities/PopularList';
 import Materials from '~/components/Materials';
-import Themes from '~/components/Themes';
 import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import SaveFilter from '~/components/Popup/SaveFilter';
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from '~/components/_helpers';
-import materials from '../src/store/modules/materials';
+
 
 export default {
   components: {
     Search,
     FilterCategories,
-    PopularList,
     Materials,
-    Themes,
     Spinner,
     BreadCrumbs,
     SaveFilter
@@ -136,7 +132,7 @@ export default {
     ])
   },
   watch: {
-    search(search, prev) {
+    search(search) {
       if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search);
       }

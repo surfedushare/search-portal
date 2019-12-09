@@ -187,7 +187,6 @@ export default {
      * Set counters value for share buttons
      */
     setSocialCounters() {
-      let isSetChanges = false;
       const interval = setInterval(() => {
         this.$nextTick().then(() => {
           const { material } = this;
@@ -225,7 +224,6 @@ export default {
                 share.link.counter_value;
             }
             if (linkedIn) {
-              isSetChanges = true;
               clearInterval(interval);
             }
           }

@@ -43,6 +43,7 @@ export default {
         formData.author = this.material.author;
         return this.generateSearchMaterialsQuery(this.formData);
       }
+      return '';
     }
   },
   methods: {

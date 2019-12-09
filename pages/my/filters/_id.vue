@@ -70,11 +70,10 @@
       <masonry
         :cols="{default: 4, 1000: 3, 700: 2, 400: 1}"
         :gutter="{default: '60px', 700: '15px'}"
-        :class="{'filter-categories--loading': materials_loading || !all_filters}"
+        :class="{'filter-categories--loading': materials_loading || !visible_filters}"
       >
         <div
-          v-for="category in all_filters"
-          v-if="!category.hide"
+          v-for="category in visible_filters"
           :key="category.external_id"
           class="filter-categories__item filter-categories__item--full-visible"
         >
@@ -171,7 +170,7 @@ export default {
       'isAuthenticated',
       'user_loading'
     ]),
-    all_filters() {
+    visible_filters() {
       const { filters_count, filter_categories, data } = this;
       if (filters_count && filter_categories) {
         const { results } = filter_categories;
@@ -196,11 +195,13 @@ export default {
                     : false;
                 const checked = ids ? ids.indexOf(item.id) !== -1 : false;
 
-                prev.push({
-                  ...item,
-                  ...current_item,
-                  checked
-                });
+                if(!item.hide) {
+                  prev.push({
+                    ...item,
+                    ...current_item,
+                    checked
+                  });
+                }
               }
 
               return prev;
@@ -427,7 +428,7 @@ export default {
         this.$refs.title.innerText = title;
       }
     },
-    onChangeTitle(text) {
+    onChangeTitle() {
       this.setTitle(this.$refs.title.innerText);
     },
     onChangeTitleLength(event) {

@@ -118,7 +118,6 @@ export async function getRouteData(route) {
 }
 
 export async function setContext(app, context) {
-  const route = (context.to ? context.to : context.route);
   // If context not defined, create it
   if (!app.context) {
     app.context = {
@@ -366,7 +365,7 @@ function parse(str, options) {
  * @return {string}
  */
 function encodeURIComponentPretty(str) {
-  return encodeURI(str).replace(/[\/?#]/g, (c) => {
+  return encodeURI(str).replace(/[/?#]/g, (c) => {
     return '%' + c.charCodeAt(0).toString(16).toUpperCase()
   })
 }
@@ -474,7 +473,7 @@ function tokensToFunction(tokens) {
  * @return {string}
  */
 function escapeString(str) {
-  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
+  return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1')
 }
 
 /**
@@ -484,7 +483,7 @@ function escapeString(str) {
  * @return {string}
  */
 function escapeGroup(group) {
-  return group.replace(/([=!:$\/()])/g, '\\$1')
+  return group.replace(/([=!:$/()])/g, '\\$1')
 }
 
 /**

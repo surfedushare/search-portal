@@ -51,11 +51,7 @@ const extendAxiosInstance = axios => {
 };
 
 
-
-
-
-
-const setupProgress = (axios, ctx) => {
+const setupProgress = (axios) => {
   if (process.server) {
     return
   }

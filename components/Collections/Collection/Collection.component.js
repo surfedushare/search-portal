@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import EditableContent from '~/components/EditableContent';
 import DirectSearch from '~/components/FilterCategories/DirectSearch';

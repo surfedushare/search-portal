@@ -19,7 +19,7 @@
       <div class="center_block">
         <ul class="communities__items" v-if="communities.length">
           <li
-            v-for="community in communities"
+            v-for="community in communities" :key="community.id"
             class="communities__item tile tile--items-in-line-3 materials__item--items-in-line-3"
           >
             <div class="communities__item_wrapper tile__wrapper">
@@ -52,14 +52,12 @@
 
 <script>
   import BreadCrumbs from '~/components/BreadCrumbs';
-  import Search from '~/components/FilterCategories/Search';
   import {mapGetters} from 'vuex';
   import _ from 'lodash';
 
   export default {
     name: 'communities',
     components: {
-      Search,
       BreadCrumbs
     },
     mounted() {

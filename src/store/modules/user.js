@@ -45,7 +45,7 @@ export default {
       }
       return state.api_token;
     },
-    getLoginLink(state) {
+    getLoginLink() {
       return (route) => {
         let currentUrl = route.path + window.location.search;
         if(process.env.VUE_APP_SURFCONEXT_BYPASS) {

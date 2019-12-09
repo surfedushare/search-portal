@@ -62,9 +62,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import BreadCrumbs from '~/components/BreadCrumbs';
   import InfoBlock from '~/components/InfoBlock';
-  import Search from '~/components/FilterCategories/Search';
   import Themes from '~/components/Themes';
   import Disciplines from '~/components/Disciplines';
   import Collections from '~/components/Collections';
@@ -78,8 +76,6 @@
     props: [],
     components: {
       Error,
-      Search,
-      BreadCrumbs,
       Themes,
       Disciplines,
       Collections,

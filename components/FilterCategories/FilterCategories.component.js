@@ -102,7 +102,7 @@ export default {
       this.$store.commit('SET_FILTER_SELECTED', event.target.dataset.categoryId);
       this.executeSearch();
     },
-    onDateChange(dates) {
+    onDateChange() {
       this.executeSearch();
     },
     executeSearch() {

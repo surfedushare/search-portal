@@ -38,14 +38,12 @@
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import MaterialsFilters from '~/components/MaterialsFilters';
-import Search from '~/components/FilterCategories/Search';
 import AddFilter from '~/components/Popup/AddFilter';
 
 export default {
   components: {
     MaterialsFilters,
     BreadCrumbs,
-    Search,
     AddFilter
   },
   data() {
