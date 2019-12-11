@@ -1,0 +1,63 @@
+@import './../../../variables';
+.material {
+  &__list{
+    padding: 48px 50px 0  456px;
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    //margin: 0 auto 25px;
+    margin: auto;
+    width: 100%;
+    max-width: 1300px;
+    display: flex;
+    justify-content: space-between;
+    @media @mobile {
+      padding: 0 20px 20px 20px;
+      text-align: center;
+    }
+    a{
+      text-decoration: none;
+      display: inline-block;
+      vertical-align: top;
+      box-sizing: border-box;
+    }
+    &_prev{
+      width: 80px;
+      padding-left: 19px;
+      position: relative;
+      &_link:before{
+        content: '';
+        transform: rotate(180deg);
+        background: url('/images/arrow-text.svg') 50% 50% / contain no-repeat;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+        position: absolute;
+        top: 3px;
+        left: -3px;
+      }
+    }
+    &_all{
+      //padding-left: 87px;
+    }
+    &_next{
+      width: 95px;
+      padding-right: 19px;
+      position: relative;
+      text-align: right;
+      &_link:after{
+        content: '';
+        background: url('/images/arrow-text.svg') 50% 50% / contain no-repeat;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+        position: absolute;
+        right: -3px;
+        top: 3px;
+      }
+    }
+  }
+}

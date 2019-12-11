@@ -23,8 +23,9 @@ if(process.env.VUE_APP_USE_SENTRY) {
 }
 
 
-import _ from 'lodash';
+import _ from 'lodash'
 import Vue from 'vue'
+import injector from 'vue-inject'
 import middleware from './middleware'
 import { createApp } from './index'
 import {
@@ -42,17 +43,18 @@ import {
   getQueryDiff,
   //globalHandleError
 } from './utils'
-import { parseSearchMaterialsQuery } from '../components/_helpers';
+import { parseSearchMaterialsQuery } from '~/components/_helpers';
 
 
 // Global shared references
 let _lastPaths = [];
 let app;
 let router;
-let store;
 
 // Try to rehydrate SSR data from window
 const NUXT = window.__NUXT__ || {};
+const $log = injector.get('$log');
+
 
 Object.assign(Vue.config, {"silent":true,"performance":false});
 
@@ -61,7 +63,7 @@ Object.assign(Vue.config, {"silent":true,"performance":false});
 createApp()
 .then(mountApp)
 .catch((err) => {
-  console.error('[nuxt] Error while initializing app', err)
+  $log.error('[nuxt] Error while initializing app', err)
 });
 
 function componentOption(component, key, ...args) {
@@ -129,8 +131,8 @@ async function loadAsyncComponents (to, from, next) {
 
     // Call next()
     next()
-  } catch (err) {
-    err = err || {};
+  } catch (error) {
+    let err = error || {};
     const statusCode = (err.statusCode || err.status || (err.response && err.response.status) || 500);
     this.error({ statusCode, message: err.message });
     this.$nuxt.$emit('routeChanged', to, from, err);
@@ -346,7 +348,7 @@ async function render (to, from, next) {
         if (!p || (!(p instanceof Promise) && (typeof p.then !== 'function'))) {
             p = Promise.resolve(p)
         }
-        p.then((fetchResult) => {
+        p.then(() => {
 
           if (this.$loading.increase) {
             this.$loading.increase(loadingIncrease)
@@ -371,7 +373,7 @@ async function render (to, from, next) {
 }
 
 // Fix components format in matched, it's due to code-splitting of vue-router
-function normalizeComponents (to, ___) {
+function normalizeComponents (to) {
   flatMapComponents(to, (Component, _, match, key) => {
     if (typeof Component === 'object' && !Component.options) {
       // Updated via vue-router resolveAsyncComponents()
@@ -383,74 +385,10 @@ function normalizeComponents (to, ___) {
   })
 }
 
-// function showNextPage(to) {
-//
-//   // Set layout
-//   let layout = 'default';
-//
-//   if (typeof layout === 'function') {
-//     layout = layout(app.context)
-//   }
-//   this.setLayout(layout)
-// }
-
-// When navigating on a different route but the same component is used, Vue.js
-// Will not update the instance data, so we have to update $data ourselves
-// function fixPrepatch(to, ___) {
-//   if (this._pathChanged === false && this._queryChanged === false) return;
-//
-//   Vue.nextTick(() => {
-//     const matches = [];
-//     const instances = getMatchedComponentsInstances(to, matches);
-//     const Components = getMatchedComponents(to, matches);
-//
-//     instances.forEach((instance, i) => {
-//       if (!instance) return;
-//       // if (
-//       //   !this._queryChanged &&
-//       //   to.matched[matches[i]].path.indexOf(':') === -1 &&
-//       //   to.matched[matches[i]].path.indexOf('*') === -1
-//       // ) return // If not a dynamic route, skip
-//       if (
-//         instance.constructor._dataRefresh &&
-//         Components[i] === instance.constructor &&
-//         typeof instance.constructor.options.data === 'function'
-//       ) {
-//         const newData = instance.constructor.options.data.call(instance);
-//         for (let key in newData) {
-//           Vue.set(instance.$data, key, newData[key])
-//         }
-//       }
-//     });
-//     showNextPage.call(this, to)
-//
-//   })
-// }
-
-// function nuxtReady (_app) {
-//   window._nuxtReadyCbs.forEach((cb) => {
-//     if (typeof cb === 'function') {
-//       cb(_app)
-//     }
-//   })
-//   // Special JSDOM
-//   if (typeof window._onNuxtLoaded === 'function') {
-//     window._onNuxtLoaded(_app)
-//   }
-//   // Add router hooks
-//   router.afterEach((to, from) => {
-//     // Wait for fixPrepatch + $data updates
-//     Vue.nextTick(() => _app.$nuxt.$emit('routeChanged', to, from))
-//   })
-// }
-
-
-
 async function mountApp(__app) {
   // Set global variables
   app = __app.app;
   router = __app.router;
-  store = __app.store;
 
   // Resolve route components
   const Components = await Promise.all(resolveComponents(router));
@@ -458,18 +396,9 @@ async function mountApp(__app) {
   // Create Vue instance
   const _app = new Vue(app);
 
-
-
   // Mounts Vue app to DOM element
   const mount = () => {
     _app.$mount('#__nuxt')
-
-    // Listen for first Vue update
-    // Vue.nextTick(() => {
-    //   // Call window.onNuxtReady callbacks
-    //   nuxtReady(_app)
-    //
-    // })
   };
 
   // Enable transitions
@@ -486,7 +415,7 @@ async function mountApp(__app) {
   // Add router hooks
   router.beforeEach(loadAsyncComponents.bind(_app));
   router.beforeEach(render.bind(_app));
-  router.afterEach((to, from) => {
+  router.afterEach((to) => {
     // Parse URL and set filters selected when
     let urlSearch = parseSearchMaterialsQuery(to.query);
     let selected = {};
@@ -513,7 +442,6 @@ async function mountApp(__app) {
     // If not redirected
     if (!path) {
       normalizeComponents(router.currentRoute, router.currentRoute);
-      //showNextPage.call(_app, router.currentRoute);
       // Dont call fixPrepatch.call(_app, router.currentRoute, router.currentRoute) since it's first render
       mount();
       return
@@ -522,7 +450,7 @@ async function mountApp(__app) {
     // Push the path and then mount app
     router.push(path, () => mount(), (err) => {
       if (!err) return mount();
-      console.error(err)
+      $log.error(err)
     })
   })
 }
