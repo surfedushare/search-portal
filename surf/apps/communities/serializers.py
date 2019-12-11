@@ -35,7 +35,6 @@ class CommunitySerializer(CommunityUpdateSerializer):
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
-    is_member = serializers.SerializerMethodField()
     title_translations = LocaleSerializer()
     description_translations = LocaleHTMLSerializer()
     publish_status = serializers.SerializerMethodField()
@@ -43,7 +42,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
     @staticmethod
     def get_members_count(obj):
         try:
-            return obj.new_members.count()
+            return obj.members.count()
         except Exception as exc:
             print(exc)
             return 0
@@ -58,12 +57,6 @@ class CommunitySerializer(CommunityUpdateSerializer):
         ids = [i for i in ids if i]
         return len(set(ids))
 
-    def get_is_member(self, obj):
-        request = self.context.get("request")
-        if request and request.user and request.user.is_authenticated:
-            return obj.new_members.filter(id=request.user.id).exists()
-        return False
-
     @staticmethod
     def get_publish_status(obj):
         return str(PublishStatus.get(obj.publish_status))
@@ -73,7 +66,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
         fields = ('id', 'external_id', 'name', 'description', 'website_url',
                   'logo', 'featured_image', 'members_count',
                   'collections_count', 'materials_count',
-                  'is_member', 'title_translations', 'description_translations', 'publish_status',)
+                  'title_translations', 'description_translations', 'publish_status',)
 
 
 class CommunityDisciplineSerializer(MpttFilterItemSerializer):

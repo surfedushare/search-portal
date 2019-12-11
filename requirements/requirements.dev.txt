@@ -6,7 +6,6 @@ django-filter==2.0.0
 psycopg2-binary==2.7.4
 django-jet==1.0.8
 requests==2.20.0
-oic==0.14.0
 Pillow==6.2.1
 django-ckeditor==5.7.1
 uwsgi==2.0.18
