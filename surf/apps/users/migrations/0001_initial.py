@@ -36,9 +36,6 @@ class Migration(migrations.Migration):
                 'ordering': ('username',),
                 'verbose_name': 'User',
                 'verbose_name_plural': 'Users',
-            },
-            managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
-            ],
+            }
         ),
     ]
