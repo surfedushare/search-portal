@@ -12,9 +12,9 @@ class BaseSearchTestCase(TestCase):
         search_result = self.instance.search("")
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
-        # is the total number of searchablen items > 0
-        # if this is 0 there must be something wrong with the search engine (might not be our problem)
-        self.assertTrue(search_result['recordcount'] > 0)
+        # check if record count is an actual number
+        # Edurep returns everything and Elastic nothing with an empty search
+        self.assertIsInstance(search_result['recordcount'], int)
         # does an empty search return records?
         self.assertGreater(len(search_result['records']), 0)
         # are there no drilldowns for an empty search?
