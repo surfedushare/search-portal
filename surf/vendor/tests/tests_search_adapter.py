@@ -68,8 +68,8 @@ class BaseSearchTestCase(TestCase):
     def test_get_materials_by_id(self):
         def test_material(external_id):
             # can't test for theme and copyright without creating and instantiating these values in the database
-            material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language', 'aggregationlevel',
-                             'publisher', 'publish_datetime', 'author', 'format', 'disciplines', 'educationallevels']
+            material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language',
+                             'publish_datetime', 'author', 'format', 'disciplines', 'educationallevels']
 
             result = self.instance.get_materials_by_id(external_ids=[external_id])
 
@@ -79,32 +79,28 @@ class BaseSearchTestCase(TestCase):
 
             material = result['records'][0]
             for key in material_keys:
+                print(key)
                 self.assertIsNotNone(material[key])
             return material
-
-        material_1 = test_material('metaplus:vilentum:oai:www.samhao.nl:VBS:2:144126')
-        material_2 = test_material('edurep_delen:c4443aed-83ac-4182-829f-50f86b0c0124')
+        test_id_1 = 'metaplus:vilentum:oai:www.samhao.nl:VBS:2:144126'
+        test_id_2 = 'edurep_delen:c4443aed-83ac-4182-829f-50f86b0c0124'
+        material_1 = test_material(test_id_1)
+        material_2 = test_material(test_id_2)
 
         self.assertIsNot(material_1, material_2)
 
-        self.assertEqual(material_1['title'], 'Wiskundeformules in een Wikiwijs-arrangement')
-        self.assertEqual(material_1['url'], 'http://maken.wikiwijs.nl/44170/Wiskundeformules_in_een_Wikiwijs_arrangement')
-        self.assertEqual(material_1['object_id'], 'urn:wikiwijsmaken:44170')
-        self.assertEqual(material_1['publisher'], 'Wikiwijs Maken')
-        self.assertEqual(material_1['creator'], 'Wikiwijs Maken')
-        self.assertEqual(material_1['publish_datetime'], '2013-04-19T23:00:41+02:00')
-        self.assertEqual(material_1['author'], 'Marc van Maastricht')
-        self.assertEqual(material_1['number_of_collections'], 0)
-        self.assertEqual(len(material_1['educationallevels']), 49)
-        self.assertEqual(len(material_1['disciplines']), 9)
+        self.assertEqual(material_1['title'], 'Ruwvoer en kaaskwaliteit')
+        self.assertEqual(material_1['url'], 'http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:144126:1')
+        self.assertEqual(material_1['object_id'], test_id_1)
+        self.assertEqual(material_1['publish_datetime'], '2018')
+        self.assertEqual(material_1['author'], ['BEGIN:VCARD\nVERSION: 3.0\nFN:Groot, R.\nN:Groot; R.\nEND:VCARD'])
+        self.assertEqual(len(material_1['educationallevels']), 3)
+        self.assertEqual(len(material_1['disciplines']), 1)
 
-        self.assertEqual(material_2['object_id'], 'urn:wikiwijsmaken:137024')
-        self.assertEqual(material_2['url'], 'https://maken.wikiwijs.nl/137024/Themales_1_Wessel_Poot')
-        self.assertEqual(material_2['title'], 'Themales 1 Wessel Poot')
-        self.assertEqual(material_2['keywords'], ['aardrijkskunde', 'adl'])
+        self.assertEqual(material_2['title'], 'Een kind wil aardige en geen gemene getallen')
+        self.assertEqual(material_2['url'], 'http://thomascool.eu/Papers/AardigeGetallen/Index.html')
+        self.assertEqual(material_2['object_id'], test_id_2)
+        self.assertEqual(material_2['keywords'], ['rekenen', 'uitspraak getallen', 'wiskunde', 'meetkunde', 'breuken', 'verhoudingen', 'lijnen', 'functies', 'parlement'])
         self.assertEqual(material_2['language'], 'nl')
-        self.assertIsNone(material_2['copyright'])
-        self.assertEqual(material_2['publisher'], 'Wikiwijs Maken')
-        self.assertEqual(material_2['author'], 'Wessel Poot')
-        self.assertEqual(material_2['creator'], 'Wikiwijs Maken')
-        self.assertEqual(material_2['format'], 'wikiwijsarrangement')
+        self.assertEqual(material_2['author'], [])
+        self.assertEqual(material_2['format'], 'video')

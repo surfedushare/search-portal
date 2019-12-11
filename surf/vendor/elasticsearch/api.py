@@ -28,16 +28,15 @@ class ElasticSearchApiClient:
         # TODO
         result['records'] = []
         for material in search_result['hits']['hits']:
-            print(material)
+
             new_material = dict()
             new_material['object_id'] = material['_source']['external_id']
             new_material['url'] = material['_source']['url']
             new_material['title'] = material['_source']['title']
-            new_material['description'] = material['_source']['text']
+            new_material['description'] = material['_source']['description']
             new_material['keywords'] = material['_source']['keywords']
             new_material['language'] = material['_source']['language']
             new_material['aggregationlevel'] = 1  # TODO
-            #new_material['publisher'] = None  # TODO
             new_material['publish_datetime'] = material['_source']['publisher_date']
             new_material['author'] = material['_source']['author']
             new_material['format'] = material['_source']['file_type']
@@ -87,12 +86,11 @@ class ElasticSearchApiClient:
             q=search_text,
             body={'from': start_record,
                   'size': page_size,
-                  'query': {
-                        ",".join([str(item) for item in filters])
-                      }
+                  # 'query': {
+                  #       ",".join([str(item) for item in filters])
+                  #     }
                   }
         )
-        print(result)
 
         return self.parse_elastic_result(result)
 
@@ -106,8 +104,8 @@ class ElasticSearchApiClient:
                         "must": [{"terms": {"external_id": external_ids}}]
                     }
                 },
-                "from": start_record,
-                "size": page_size
+                # "from": start_record,
+                # "size": page_size
             },
         )
         materials = self.parse_elastic_result(result)
@@ -116,11 +114,12 @@ class ElasticSearchApiClient:
     @staticmethod
     def parse_filters(filters):
         filter_items = []
-        for filter_item in filters:
-            if filter_item['items']:
-                elastic_type = filters.translate_external_id_to_elastic_type(filter_item['external_id'])
-                term = {"bool": {"must": [{"terms": {elastic_type: filter_item['items']}}]}}
-                filter_items.append(term)
+        if filters:
+            for filter_item in filters:
+                if filter_item['items']:
+                    elastic_type = filters.translate_external_id_to_elastic_type(filter_item['external_id'])
+                    term = {"bool": {"must": [{"terms": {elastic_type: filter_item['items']}}]}}
+                    filter_items.append(term)
         return filter_items
 
     @staticmethod
