@@ -71,19 +71,19 @@ class BaseSearchTestCase(TestCase):
             material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language', 'aggregationlevel',
                              'publisher', 'publish_datetime', 'author', 'format', 'disciplines', 'educationallevels']
 
-            material = self.instance.get_materials_by_id(external_ids=[external_id])
+            result = self.instance.get_materials_by_id(external_ids=[external_id])
 
-            self.assertIsNotNone(material)
+            self.assertIsNotNone(result)
             # we're searching for one id, we should get only one result
-            self.assertEqual(material['recordcount'], 1)
+            self.assertEqual(result['recordcount'], 1)
 
-            material = material['records'][0]
+            material = result['records'][0]
             for key in material_keys:
                 self.assertIsNotNone(material[key])
             return material
 
-        material_1 = test_material('wikiwijsmaken:44170')
-        material_2 = test_material('wikiwijsmaken:137024')
+        material_1 = test_material('metaplus:vilentum:oai:www.samhao.nl:VBS:2:144126')
+        material_2 = test_material('edurep_delen:c4443aed-83ac-4182-829f-50f86b0c0124')
 
         self.assertIsNot(material_1, material_2)
 

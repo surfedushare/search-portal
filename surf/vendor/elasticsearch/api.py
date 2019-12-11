@@ -1,8 +1,8 @@
 from django.conf import settings
 from elasticsearch import Elasticsearch
 
-index_nl = 'gamma-nl-13'
-index_en = 'gamma-en-14'
+index_nl = 'latest-nl'
+index_en = 'latest-en'
 
 
 class ElasticSearchApiClient:
@@ -28,20 +28,21 @@ class ElasticSearchApiClient:
         # TODO
         result['records'] = []
         for material in search_result['hits']['hits']:
+            print(material)
             new_material = dict()
-            new_material['object_id'] = None  # TODO
+            new_material['object_id'] = material['_source']['external_id']
             new_material['url'] = material['_source']['url']
             new_material['title'] = material['_source']['title']
             new_material['description'] = material['_source']['text']
             new_material['keywords'] = material['_source']['keywords']
             new_material['language'] = material['_source']['language']
             new_material['aggregationlevel'] = 1  # TODO
-            new_material['publisher'] = None  # TODO
-            new_material['publish_datetime'] = None  # TODO
-            new_material['author'] = None  # TODO
-            new_material['format'] = material['_source']['mime_type']
-            new_material['disciplines'] = None  # TODO
-            new_material['educationallevels'] = None  # TODO
+            #new_material['publisher'] = None  # TODO
+            new_material['publish_datetime'] = material['_source']['publisher_date']
+            new_material['author'] = material['_source']['author']
+            new_material['format'] = material['_source']['file_type']
+            new_material['disciplines'] = material['_source']['disciplines']
+            new_material['educationallevels'] = material['_source']['educational_levels']
             new_material['themes'] = None  # TODO
             result['records'].append(new_material)
         return result
@@ -76,6 +77,7 @@ class ElasticSearchApiClient:
         return self._search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
 
     def search(self, search_text: str, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
+        filters = self.parse_filters(filters)
         # searching in elastic with an empty string returns no hits
         if search_text == "":
             search_text = None
@@ -84,26 +86,47 @@ class ElasticSearchApiClient:
             index=[index_nl, index_en],
             q=search_text,
             body={'from': start_record,
-                  'size': page_size}
+                  'size': page_size,
+                  'query': {
+                        ",".join([str(item) for item in filters])
+                      }
+                  }
         )
+        print(result)
 
         return self.parse_elastic_result(result)
 
     def get_materials_by_id(self, external_ids, page=1, page_size=5, drilldown_names=None):
         start_record = page_size * (page - 1) + 1
-        materials = []
-        for external_id in external_ids:
-            materials.append(self.elastic.search(
-                index=[index_nl, index_en],
-                body={
-                    "query": {
-                        "bool": {
-                            "must": [{"match": {"external_id": external_id}}]
-                        }
-                    },
-                    "from": start_record,
-                    "size": page_size
-                    },
-                )
-            )
-        return self.parse_elastic_result(materials)
+        result = self.elastic.search(
+            index=[index_nl, index_en],
+            body={
+                "query": {
+                    "bool": {
+                        "must": [{"terms": {"external_id": external_ids}}]
+                    }
+                },
+                "from": start_record,
+                "size": page_size
+            },
+        )
+        materials = self.parse_elastic_result(result)
+        return materials
+
+    @staticmethod
+    def parse_filters(filters):
+        filter_items = []
+        for filter_item in filters:
+            if filter_item['items']:
+                elastic_type = filters.translate_external_id_to_elastic_type(filter_item['external_id'])
+                term = {"bool": {"must": [{"terms": {elastic_type: filter_item['items']}}]}}
+                filter_items.append(term)
+        return filter_items
+
+    @staticmethod
+    def translate_external_id_to_elastic_type(external_id):
+        if external_id == 'lom.technical.format':
+            return 'file_type'
+        return external_id
+
+
