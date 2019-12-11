@@ -38,7 +38,6 @@ class ElasticSearchApiClient:
             new_material['description'] = material['_source']['description']
             new_material['keywords'] = material['_source']['keywords']
             new_material['language'] = material['_source']['language']
-            new_material['aggregationlevel'] = 1  # TODO
             new_material['publish_datetime'] = material['_source']['publisher_date']
             author = material['_source']['author']
             if author and isinstance(author, list):
@@ -49,6 +48,7 @@ class ElasticSearchApiClient:
             new_material['format'] = material['_source']['file_type']
             new_material['disciplines'] = material['_source']['disciplines']
             new_material['educationallevels'] = material['_source']['educational_levels']
+            new_material['copyright'] = material['_source']['copyright']
             new_material['themes'] = None  # TODO
             result['records'].append(new_material)
         return result
