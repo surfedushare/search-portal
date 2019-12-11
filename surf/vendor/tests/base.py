@@ -88,19 +88,19 @@ class BaseSearchTestCase(TestCase):
 
         self.assertEqual(material_1['title'], 'Ruwvoer en kaaskwaliteit')
         self.assertEqual(material_1['url'], 'http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:144126:1')
-        self.assertEqual(material_1['object_id'], test_id_1)
+        self.assertEqual(material_1['external_id'], test_id_1)
         self.assertEqual(material_1['publish_datetime'], '2018')
-        self.assertEqual(material_1['author'], ['BEGIN:VCARD\nVERSION: 3.0\nFN:Groot, R.\nN:Groot; R.\nEND:VCARD'])
+        self.assertEqual(material_1['author'], 'Groot, R.')
         self.assertEqual(len(material_1['educationallevels']), 3)
         self.assertEqual(len(material_1['disciplines']), 1)
 
         self.assertEqual(material_2['title'], 'Een kind wil aardige en geen gemene getallen')
         self.assertEqual(material_2['url'], 'http://thomascool.eu/Papers/AardigeGetallen/Index.html')
-        self.assertEqual(material_2['object_id'], test_id_2)
+        self.assertEqual(material_2['external_id'], test_id_2)
         self.assertEqual(material_2['keywords'], ['rekenen', 'uitspraak getallen', 'wiskunde', 'meetkunde', 'breuken', 'verhoudingen', 'lijnen', 'functies', 'parlement'])
         self.assertEqual(material_2['language'], 'nl')
-        self.assertEqual(material_2['author'], [])
-        self.assertEqual(material_2['format'], 'video')
+        self.assertIsNone(material_2['author'])
+        self.assertEqual(material_2['format'], 'text')
 
 
 def get_base_search_test_class():

@@ -1,8 +1,10 @@
 from django.conf import settings
 from elasticsearch import Elasticsearch
+from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
 index_nl = 'latest-nl'
 index_en = 'latest-en'
+_VCARD_FORMATED_NAME_KEY = "FN"
 
 
 class ElasticSearchApiClient:
@@ -30,7 +32,7 @@ class ElasticSearchApiClient:
         for material in search_result['hits']['hits']:
 
             new_material = dict()
-            new_material['object_id'] = material['_source']['external_id']
+            new_material['external_id'] = material['_source']['external_id']
             new_material['url'] = material['_source']['url']
             new_material['title'] = material['_source']['title']
             new_material['description'] = material['_source']['description']
@@ -38,7 +40,12 @@ class ElasticSearchApiClient:
             new_material['language'] = material['_source']['language']
             new_material['aggregationlevel'] = 1  # TODO
             new_material['publish_datetime'] = material['_source']['publisher_date']
-            new_material['author'] = material['_source']['author']
+            author = material['_source']['author']
+            if author and isinstance(author, list):
+                author = _parse_vcard(author[0]).get(_VCARD_FORMATED_NAME_KEY)
+            if not author:
+                author = None
+            new_material['author'] = author
             new_material['format'] = material['_source']['file_type']
             new_material['disciplines'] = material['_source']['disciplines']
             new_material['educationallevels'] = material['_source']['educational_levels']
