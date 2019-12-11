@@ -12,22 +12,31 @@ class BaseSearchTestCase(TestCase):
         search_result = self.instance.search("")
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
+        self.assertEqual(set(search_result.keys()), {"recordcount", "records", "drilldowns"})
         # check if record count is an actual number
         # Edurep returns everything and Elastic nothing with an empty search
         self.assertIsInstance(search_result['recordcount'], int)
-        # does an empty search return records?
-        self.assertGreater(len(search_result['records']), 0)
+        # does an empty search return a list of records?
+        self.assertIsInstance(search_result['records'], list)
         # are there no drilldowns for an empty search?
+        self.assertIsInstance(search_result['drilldowns'], list)
         self.assertEqual(len(search_result['drilldowns']), 0)
 
         search_biologie = self.instance.search("biologie")
         self.assertIsNotNone(search_biologie)
         self.assertIsNot(search_result, search_biologie)
-        self.assertGreater(search_result['recordcount'], search_biologie['recordcount'])
+        self.assertNotEqual(search_result['recordcount'], search_biologie['recordcount'])
 
         search_biologie_2 = self.instance.search("biologie", page=2)
         self.assertIsNotNone(search_biologie_2)
-        self.assertIsNot(search_biologie_2, search_biologie)
+        self.assertNotEqual(search_biologie_2, search_biologie)
+
+        search_biologie_video = self.instance.search(
+            "biologie",
+            filters=[{"external_id": "lom.technical.format", "items": ["video", "pdf"]}]
+        )
+        # TODO: continue checking types of results
+        # TODO: continue using multiple filters
 
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')
