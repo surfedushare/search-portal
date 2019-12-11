@@ -1,13 +1,15 @@
 from django.conf import settings
 from django.test import TestCase
 from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
+from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
 class BaseSearchTestCase(TestCase):
-    test_class = XmlEndpointApiClient
+    test_class = ElasticSearchApiClient
 
     def setUp(self):
-        self.instance = self.test_class(settings.EDUREP_XML_API_ENDPOINT)
+        # both the elastic and the edurep classes have a default base paramter so don't change it if we don't need to
+        self.instance = self.test_class()
 
     def test_search(self):
         search_result = self.instance.search("")

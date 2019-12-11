@@ -1,17 +1,50 @@
+from django.conf import settings
 from elasticsearch import Elasticsearch
 
-index_nl = 'gamma-nl-12'
-index_en = 'gamma-en-13'
+index_nl = 'gamma-nl-13'
+index_en = 'gamma-en-14'
 
 
 class ElasticSearchApiClient:
-    def __init__(self):
+    def __init__(self, elastic_url=settings.ELASTICSEARCH_URL):
         self.elastic = Elasticsearch(
-            ['elastic.surfpol.nl'],
-            http_auth=('search', 'Kbd5FMH8EF0gEuxgnNeNJmUBBBtc'),
+            [elastic_url],
+            http_auth=(settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD),
             scheme="https",
             port=443,
         )
+
+    @staticmethod
+    def parse_elastic_result(search_result):
+        material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language', 'aggregationlevel',
+                         'publisher', 'publish_datetime', 'author', 'format', 'educationallevels',
+                         'themes', 'disciplines']
+
+        result = dict()
+        result['recordcount'] = search_result['hits']['total']
+        # TODO
+        result['drilldowns'] = []
+
+        # TODO
+        result['records'] = []
+        for material in search_result['hits']['hits']:
+            new_material = dict()
+            new_material['object_id'] = None  # TODO
+            new_material['url'] = material['_source']['url']
+            new_material['title'] = material['_source']['title']
+            new_material['description'] = material['_source']['text']
+            new_material['keywords'] = material['_source']['keywords']
+            new_material['language'] = material['_source']['language']
+            new_material['aggregationlevel'] = 1  # TODO
+            new_material['publisher'] = None  # TODO
+            new_material['publish_datetime'] = None  # TODO
+            new_material['author'] = None  # TODO
+            new_material['format'] = material['_source']['mime_type']
+            new_material['disciplines'] = None  # TODO
+            new_material['educationallevels'] = None  # TODO
+            new_material['themes'] = None  # TODO
+            result['records'].append(new_material)
+        return result
 
     def autocomplete(self, query):
         query_dictionary = {
@@ -26,7 +59,7 @@ class ElasticSearchApiClient:
         }
 
         result = self.elastic.search(
-            index=index,
+            index=[index_nl, index_en],
             doc_type='entity',
             body=query_dictionary,
             _source_include='suggest'
@@ -73,36 +106,4 @@ class ElasticSearchApiClient:
                     },
                 )
             )
-        return materials
-
-    @staticmethod
-    def parse_elastic_result(search_result):
-        material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language', 'aggregationlevel',
-                         'publisher', 'publish_datetime', 'author', 'format', 'educationallevels',
-                         'themes', 'disciplines']
-
-        result = dict()
-        result['recordcount'] = search_result['hits']['total']
-        # TODO
-        result['drilldowns'] = []
-
-        # TODO
-        result['records'] = []
-        for result in search_result['hits']['hits']:
-            new_material = dict()
-            new_material['object_id'] = None  # TODO
-            new_material['url'] = result['_source']['url']
-            new_material['title'] = result['_source']['title']
-            new_material['description'] = result['_source']['text']
-            new_material['keywords'] = result['_source']['keywords']
-            new_material['language'] = result['_source']['language']
-            new_material['aggregationlevel'] = 1  # TODO
-            new_material['publisher'] = None  # TODO
-            new_material['publish_datetime'] = None  # TODO
-            new_material['author'] = None  # TODO
-            new_material['format'] = result['_source']['mime_type']
-            new_material['disciplines'] = None  # TODO
-            new_material['educationallevels'] = None  # TODO
-            new_material['themes'] = None  # TODO
-            result['records'].append(new_material)
-        return result
+        return self.parse_elastic_result(materials)
