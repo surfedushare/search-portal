@@ -35,13 +35,13 @@ class BaseSearchTestCase(TestCase):
 
         # basic search with filters applied
         search_biologie_video = self.instance.search(
-            "biologie",
+            ["biologie"],
             filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
         )
         for record in search_biologie_video["records"]:
             self.assertEqual(record["format"], "video")
         search_biologie_video_and_pdf = self.instance.search(
-            "biologie",
+            ["biologie"],
             filters=[{"external_id": "lom.technical.format", "items": ["video", "pdf"]}]
         )
         for record in search_biologie_video_and_pdf["records"]:
@@ -49,7 +49,7 @@ class BaseSearchTestCase(TestCase):
 
         # basic search with filters applied
         search_biologie_text_and_cc_by = self.instance.search(
-            "biologie",
+            ["biologie"],
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]},
                 {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
