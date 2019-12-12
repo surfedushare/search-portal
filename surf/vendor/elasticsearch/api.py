@@ -150,7 +150,7 @@ class ElasticSearchApiClient:
         elif external_id == 'about.repository':
             return 'arrangement_collection_name'
         elif external_id == 'lom.rights.copyrightandotherrestrictions':
-            return 'copyright'
+            return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
             return 'educational_levels'
         return external_id
