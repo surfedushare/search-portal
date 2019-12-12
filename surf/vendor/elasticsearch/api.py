@@ -84,16 +84,14 @@ class ElasticSearchApiClient:
         return self._search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
 
     def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
-        if not search_text:
-            must = []
-        else:
-            must = [{
+        # build basic query
+        must = [] if not search_text else \
+            [{
                 "query_string": {
                     "fields": ["text", "title"],
                     "query": ' AND '.join(search_text)
-                    }
-                }]
-        # build basic query
+                }
+            }]
         start_record = page_size * (page - 1) + 1
         body = {
             'query': {
