@@ -83,21 +83,22 @@ class ElasticSearchApiClient:
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
         return self._search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
 
-    def search(self, search_text: str, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
-        # searching in elastic with an empty string returns no hits
-        if search_text == "":
-            return self.parse_elastic_result({"total": 0, "hits": []})
+    def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
+        if not search_text:
+            must = []
+        else:
+            must = [{
+                "query_string": {
+                    "fields": ["text", "title"],
+                    "query": ' AND '.join(search_text)
+                    }
+                }]
         # build basic query
         start_record = page_size * (page - 1) + 1
         body = {
             'query': {
                 "bool": {
-                    "must": [{
-                        "query_string": {
-                            "fields": ["text", "title"],
-                            "query": ' AND '.join(search_text)
-                        }
-                    }],
+                    "must": must,
                 }
             },
             'from': start_record,

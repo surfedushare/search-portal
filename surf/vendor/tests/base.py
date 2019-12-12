@@ -10,8 +10,11 @@ class BaseSearchTestCase(TestCase):
 
     def test_search(self):
         search_result = self.instance.search([])
+        search_result_filter = self.instance.search([], filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
+        self.assertIsNotNone(search_result_filter)
+        self.assertGreater(search_result['recordcount'], search_result_filter['recordcount'])
         self.assertEqual(set(search_result.keys()), {"recordcount", "records", "drilldowns"})
         # check if record count is an actual number
         # Edurep returns everything and Elastic nothing with an empty search
