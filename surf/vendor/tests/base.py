@@ -59,6 +59,18 @@ class BaseSearchTestCase(TestCase):
             self.assertEqual(record["format"], "text")
             self.assertEqual(record["copyright"], "cc-by-40")
 
+        search_biologie_and_natuur = self.instance.search(["biologie", "natuur"])
+        search_biologie_and_natuur_with_filters = self.instance.search(
+            ["biologie", "natuur"],
+            filters=[
+                {"external_id": "lom.technical.format", "items": ["text"]},
+                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-30"]}
+            ])
+
+        self.assertIsNotNone(search_biologie_and_natuur)
+        self.assertIsNot(search_biologie_and_natuur, search_biologie_and_natuur_with_filters)
+        self.assertNotEqual(search_biologie_and_natuur['recordcount'], search_biologie_and_natuur_with_filters['recordcount'])
+
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')
         self.assertEqual(len(empty_autocomplete), 0)

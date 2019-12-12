@@ -92,9 +92,12 @@ class ElasticSearchApiClient:
         body = {
             'query': {
                 "bool": {
-                    "must": [
-                        {"match": {"text": {"query": search_text}}}
-                    ],
+                    "must": [{
+                        "query_string": {
+                            "fields": ["text", "title"],
+                            "query": ' AND '.join(search_text)
+                        }
+                    }],
                 }
             },
             'from': start_record,
