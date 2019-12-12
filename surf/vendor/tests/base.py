@@ -9,7 +9,7 @@ class BaseSearchTestCase(TestCase):
         self.instance = self.test_class()
 
     def test_search(self):
-        search_result = self.instance.search("")
+        search_result = self.instance.search([])
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
         self.assertEqual(set(search_result.keys()), {"recordcount", "records", "drilldowns"})
@@ -23,13 +23,13 @@ class BaseSearchTestCase(TestCase):
         self.assertEqual(len(search_result['drilldowns']), 0)
 
         # basic search
-        search_biologie = self.instance.search("biologie")
+        search_biologie = self.instance.search(["biologie"])
         self.assertIsNotNone(search_biologie)
         self.assertIsNot(search_result, search_biologie)
         self.assertNotEqual(search_result['recordcount'], search_biologie['recordcount'])
 
         # basic search second page
-        search_biologie_2 = self.instance.search("biologie", page=2)
+        search_biologie_2 = self.instance.search(["biologie"], page=2)
         self.assertIsNotNone(search_biologie_2)
         self.assertNotEqual(search_biologie_2, search_biologie)
 
