@@ -42,12 +42,22 @@ class BaseSearchTestCase(TestCase):
             self.assertEqual(record["format"], "video")
         search_biologie_video_and_pdf = self.instance.search(
             "biologie",
-            filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
+            filters=[{"external_id": "lom.technical.format", "items": ["video", "pdf"]}]
         )
         for record in search_biologie_video_and_pdf["records"]:
             self.assertIn(record["format"], ["video", "pdf"])
 
-        # TODO: continue using multiple filters
+        # basic search with filters applied
+        search_biologie_text_and_cc_by = self.instance.search(
+            "biologie",
+            filters=[
+                {"external_id": "lom.technical.format", "items": ["text"]},
+                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
+            ]
+        )
+        for record in search_biologie_text_and_cc_by["records"]:
+            self.assertEqual(record["format"], "text")
+            self.assertEqual(record["copyright"], "cc-by-40")
 
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')

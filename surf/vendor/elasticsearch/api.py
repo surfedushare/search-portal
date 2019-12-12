@@ -92,7 +92,9 @@ class ElasticSearchApiClient:
         body = {
             'query': {
                 "bool": {
-                    "must": {"match": {"text": search_text}},
+                    "must": [
+                        {"match": {"text": {"query": search_text}}}
+                    ],
                 }
             },
             'from': start_record,
@@ -101,9 +103,7 @@ class ElasticSearchApiClient:
         # apply filters
         filters = self.parse_filters(filters)
         if len(filters):
-            body["query"]["bool"]["filter"] = {
-                "bool": {"should": filters}
-            }
+            body["query"]["bool"]["must"] += filters
         # make query and parse
         result = self.elastic.search(
             index=[index_nl, index_en],
@@ -129,20 +129,16 @@ class ElasticSearchApiClient:
     def parse_filters(filters):
         filter_items = []
         if not filters:
-            return []
+            return {}
         for filter_item in filters:
             if not filter_item['items']:
                 continue
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(filter_item['external_id'])
-            terms = [
-                {
-                    "term": {
-                        elastic_type: item
-                    }
+            filter_items.append({
+                "terms": {
+                    elastic_type: filter_item["items"]
                 }
-                for item in filter_item["items"]
-            ]
-            filter_items += terms
+            })
         return filter_items
 
     @staticmethod
