@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   postgres:
-    image: postgres
+    image: postgres:9.6
     volumes:
       - postgres_database:/var/lib/postgresql/data
     environment:
