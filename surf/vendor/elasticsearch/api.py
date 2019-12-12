@@ -149,8 +149,12 @@ class ElasticSearchApiClient:
     def translate_external_id_to_elastic_type(external_id):
         if external_id == 'lom.technical.format':
             return 'file_type'
-        if external_id == 'about.repository':
+        elif external_id == 'about.repository':
             return 'arrangement_collection_name'
+        elif external_id == 'lom.rights.copyrightandotherrestrictions':
+            return 'copyright'
+        elif external_id == 'lom.classification.obk.educationallevel.id':
+            return 'educational_levels'
         return external_id
 
 
