@@ -22,20 +22,31 @@ class BaseSearchTestCase(TestCase):
         self.assertIsInstance(search_result['drilldowns'], list)
         self.assertEqual(len(search_result['drilldowns']), 0)
 
+        # basic search
         search_biologie = self.instance.search("biologie")
         self.assertIsNotNone(search_biologie)
         self.assertIsNot(search_result, search_biologie)
         self.assertNotEqual(search_result['recordcount'], search_biologie['recordcount'])
 
+        # basic search second page
         search_biologie_2 = self.instance.search("biologie", page=2)
         self.assertIsNotNone(search_biologie_2)
         self.assertNotEqual(search_biologie_2, search_biologie)
 
+        # basic search with filters applied
         search_biologie_video = self.instance.search(
             "biologie",
-            filters=[{"external_id": "lom.technical.format", "items": ["video", "pdf"]}]
+            filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
         )
-        # TODO: continue checking types of results
+        for record in search_biologie_video["records"]:
+            self.assertEqual(record["format"], "video")
+        search_biologie_video_and_pdf = self.instance.search(
+            "biologie",
+            filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
+        )
+        for record in search_biologie_video_and_pdf["records"]:
+            self.assertIn(record["format"], ["video", "pdf"])
+
         # TODO: continue using multiple filters
 
     def test_autocomplete(self):
