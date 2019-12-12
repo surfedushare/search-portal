@@ -52,7 +52,7 @@ class BaseSearchTestCase(TestCase):
             ["biologie"],
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
+                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by"]}
             ]
         )
         for record in search_biologie_text_and_cc_by["records"]:
@@ -64,12 +64,15 @@ class BaseSearchTestCase(TestCase):
             ["biologie", "natuur"],
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-30"]}
+                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by"]}
             ])
 
         self.assertIsNotNone(search_biologie_and_natuur)
         self.assertIsNot(search_biologie_and_natuur, search_biologie_and_natuur_with_filters)
-        self.assertNotEqual(search_biologie_and_natuur['recordcount'], search_biologie_and_natuur_with_filters['recordcount'])
+        self.assertNotEqual(
+            search_biologie_and_natuur['recordcount'],
+            search_biologie_and_natuur_with_filters['recordcount']
+        )
 
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')
