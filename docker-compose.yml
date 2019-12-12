@@ -12,6 +12,8 @@ services:
     healthcheck:
         test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
     restart: unless-stopped
+    labels:
+      nl.surfcatalog.db: "postgres"
 
   backend:
     build:
