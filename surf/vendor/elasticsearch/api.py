@@ -132,13 +132,27 @@ class ElasticSearchApiClient:
         filter_items = []
         if not filters:
             return {}
+        date_filter = None
         for filter_item in filters:
             if not filter_item['items']:
                 continue
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(filter_item['external_id'])
+            if elastic_type == "publisher_date":
+                date_filter = filter_item
+                continue
             filter_items.append({
                 "terms": {
                     elastic_type: filter_item["items"]
+                }
+            })
+        if date_filter:
+            lower_bound, upper_bound = date_filter["items"]
+            filter_items.append({
+                "range": {
+                    "publisher_date": {
+                        "gte": lower_bound,
+                        "lte": upper_bound
+                    }
                 }
             })
         return filter_items
@@ -153,6 +167,8 @@ class ElasticSearchApiClient:
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
             return 'educational_levels'
+        elif external_id == "lom.lifecycle.contribute.publisherdate":
+            return 'publisher_date'
         return external_id
 
 

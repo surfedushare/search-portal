@@ -1,3 +1,6 @@
+from dateutil.parser import parse
+from datetime import datetime
+
 from django.test import TestCase
 
 
@@ -76,6 +79,26 @@ class BaseSearchTestCase(TestCase):
             search_biologie_and_natuur['recordcount'],
             search_biologie_and_natuur_with_filters['recordcount']
         )
+
+        search_biologie_upper_date = self.instance.search(["biologie"], filters=[
+            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, "2018-12-31"]}
+        ])
+        for record in search_biologie_upper_date["records"]:
+            publish_date = parse(record["publish_datetime"], ignoretz=True)
+            self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
+        search_biologie_lower_date = self.instance.search(["biologie"], filters=[
+            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", None]}
+        ])
+        for record in search_biologie_lower_date["records"]:
+            publish_date = parse(record["publish_datetime"], ignoretz=True)
+            self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
+        search_biologie_between_date = self.instance.search(["biologie"], filters=[
+            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", "2018-12-31"]}
+        ])
+        for record in search_biologie_between_date["records"]:
+            publish_date = parse(record["publish_datetime"], ignoretz=True)
+            self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
+            self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
 
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')
