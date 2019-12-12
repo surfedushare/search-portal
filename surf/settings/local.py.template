@@ -18,6 +18,9 @@ sentry_sdk.init(
 )
 
 SECRET_KEY = '<put your SECRET_KEY here>'
+ELASTICSEARCH_USER = '<put the username for the elasticsearch user here>'
+ELASTICSEARCH_PASSWORD = '<put the password for the elasticsearch user here>'
+ELASTICSEARCH_URL = '<the url of the elasticsearch instance>'
 
 # run debug turned off in production!
 DEBUG = False

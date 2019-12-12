@@ -21,6 +21,7 @@ services:
       - DJANGO_FRONTEND_DOMAIN=localhost:3000
       - DJANGO_PROTOCOL=http
       - DJANGO_DEBUG=1
+      - PYTHONIOENCODING=UTF-8
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
