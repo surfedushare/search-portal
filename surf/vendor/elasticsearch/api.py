@@ -23,12 +23,25 @@ class ElasticSearchApiClient:
     def parse_elastic_result(search_result):
 
         hits = search_result["hits"]
-        aggregations = search_result.get("aggregations", [])
+        aggregations = search_result.get("aggregations", {})
         result = dict()
         result['recordcount'] = hits['total']
 
         # Transform aggregations into drilldowns
-        result['drilldowns'] = []
+        drilldowns = []
+        for aggregation_name, aggregation in aggregations.items():
+            items = [
+                {
+                    "external_id": bucket["key"],
+                    "count": bucket["doc_count"]
+                }
+                for bucket in aggregation["buckets"]
+            ]
+            drilldowns.append({
+                "external_id": aggregation_name,
+                "items": items
+            })
+        result['drilldowns'] = drilldowns
 
         # Transform hits into records
         result['records'] = []
@@ -192,5 +205,3 @@ class ElasticSearchApiClient:
         elif external_id == "lom.lifecycle.contribute.publisherdate":
             return 'publisher_date'
         return external_id
-
-
