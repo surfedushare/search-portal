@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from django.conf import settings
 from elasticsearch import Elasticsearch
+from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
 
@@ -44,31 +45,41 @@ class ElasticSearchApiClient:
         result['drilldowns'] = drilldowns
 
         # Transform hits into records
-        result['records'] = []
-        for material in hits['hits']:
-            new_material = dict()
-            new_material['external_id'] = material['_source']['external_id']
-            new_material['url'] = material['_source']['url']
-            new_material['title'] = material['_source']['title']
-            new_material['description'] = material['_source']['description']
-            new_material['keywords'] = material['_source']['keywords']
-            new_material['language'] = material['_source']['language']
-            new_material['publish_datetime'] = material['_source']['publisher_date']
-            author = material['_source']['author']
-            if author and isinstance(author, list):
-                author = _parse_vcard(author[0]).get(_VCARD_FORMATED_NAME_KEY)
-            if not author:
-                author = None
-            new_material['author'] = author
-            new_material['format'] = material['_source']['file_type']
-            new_material['disciplines'] = material['_source']['disciplines']
-            new_material['educationallevels'] = material['_source']['educational_levels']
-            new_material['copyright'] = material['_source']['copyright']
-            new_material['themes'] = None  # TODO
-            new_material['source'] = material['_source']['arrangement_collection_name']
-            result['records'].append(new_material)
+        result['records'] = [
+            ElasticSearchApiClient.parse_elastic_hit(hit)
+            for hit in hits['hits']
+        ]
 
         return result
+
+
+    @staticmethod
+    def parse_elastic_hit(hit):
+        record = dict()
+        record['external_id'] = hit['_source']['external_id']
+        record['url'] = hit['_source']['url']
+        record['title'] = hit['_source']['title']
+        record['description'] = hit['_source']['description']
+        record['keywords'] = hit['_source']['keywords']
+        record['language'] = hit['_source']['language']
+        record['publish_datetime'] = hit['_source']['publisher_date']
+        author = hit['_source']['author']
+        if author and isinstance(author, list):
+            author = _parse_vcard(author[0]).get(_VCARD_FORMATED_NAME_KEY)
+        if not author:
+            author = None
+        record['author'] = author
+        record['format'] = hit['_source']['file_type']
+        record['disciplines'] = hit['_source']['disciplines']
+        record['educationallevels'] = hit['_source']['educational_levels']
+        record['copyright'] = hit['_source']['copyright']
+        themes = set()
+        for discipline in hit['_source']['disciplines']:
+            if discipline in DISCIPLINE_CUSTOM_THEME:
+                themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
+        record['themes'] = list(themes)
+        record['source'] = hit['_source']['arrangement_collection_name']
+        return record
 
     def autocomplete(self, query):
         query_dictionary = {

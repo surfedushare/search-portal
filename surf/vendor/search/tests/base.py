@@ -210,6 +210,7 @@ class BaseSearchTestCase(TestCase):
         self.assertEqual(material_2['keywords'], ['rekenen', 'uitspraak getallen', 'wiskunde', 'meetkunde', 'breuken', 'verhoudingen', 'lijnen', 'functies', 'parlement'])
         self.assertEqual(material_2['language'], 'nl')
         self.assertIsNone(material_2['author'])
+        self.assertEqual(len(material_2['themes']), 1)
         # TODO a bug in elasticsearch is messing this up:
         #self.assertEqual(material_2['format'], 'text')
 

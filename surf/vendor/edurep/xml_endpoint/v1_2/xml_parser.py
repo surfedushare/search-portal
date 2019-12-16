@@ -106,6 +106,10 @@ def _parse_record(elem):
     classifications = _parse_classifications(elem)
     disciplines = list(classifications.get("discipline", []))
     educationallevels = list(classifications.get("educational level", []))
+    themes = set()
+    for discipline in disciplines:
+        if discipline in DISCIPLINE_CUSTOM_THEME:
+            themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
     # try to update the dynamic copyrights list if it's empty,
     # if the proper copyright item isn't in the database (an exists() call) nothing happens
     if len(DYNAMIC_COPYRIGHTS) == 0:
@@ -127,7 +131,7 @@ def _parse_record(elem):
         author=author,
         creator=creator,
         format=MIME_TYPE_TECH_FORMAT.get(_find_elem_text(elem, _FORMAT_PATH)),
-        themes=[],
+        themes=list(themes),
         disciplines=disciplines,
         educationallevels=educationallevels,
         has_bookmark=False,
