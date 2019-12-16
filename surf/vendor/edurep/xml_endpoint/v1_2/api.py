@@ -21,7 +21,7 @@ from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
     EXTRA_RECORD_SCHEMA,
 )
 
-from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
+from surf.vendor.search.choices import (
     TECH_FORMAT_MIME_TYPES,
     CUSTOM_THEME_DISCIPLINES,
 )

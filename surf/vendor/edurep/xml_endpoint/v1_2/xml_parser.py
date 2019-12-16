@@ -7,7 +7,7 @@ import re
 
 import logging
 
-from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
+from surf.vendor.search.choices import (
     MIME_TYPE_TECH_FORMAT,
     DISCIPLINE_CUSTOM_THEME
 )

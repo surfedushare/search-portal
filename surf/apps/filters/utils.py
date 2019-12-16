@@ -23,7 +23,7 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     EDUCATIONAL_LEVEL_FIELD_ID,
     LANGUAGE_FIELD_ID
 )
-from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
+from surf.vendor.search.choices import (
     CUSTOM_THEME_DISCIPLINES,
     DISCIPLINE_ENTRIES
 )
