@@ -6,7 +6,7 @@ services:
   postgres:
     image: postgres:9.6
     volumes:
-      - /docker/surf-backend/postgresql/data:/var/lib/postgresql/data
+      - /volumes/surf/postgresql/data:/var/lib/postgresql/data
     restart: unless-stopped
 
   backend:
