@@ -1,65 +1,18 @@
 from .base import *
 
-#Enable sentry on acceptance server only.
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
-
-def strip_sensitive_data(event, hint):
-    # modify event here
-    del event['request']['headers']['User-Agent']
-    return event
-
-
-sentry_sdk.init(
-   before_send=strip_sensitive_data,
-   dsn="https://675caa02892e429ca10884f05d65d94f@sentry.io/1725443",
-   integrations=[DjangoIntegration()]
-)
-
-SECRET_KEY = '<put your SECRET_KEY here>'
-ELASTICSEARCH_USER = '<put the username for the elasticsearch user here>'
-ELASTICSEARCH_PASSWORD = '<put the password for the elasticsearch user here>'
-ELASTICSEARCH_URL = '<the url of the elasticsearch instance>'
-
-# run debug turned off in production!
-DEBUG = False
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'surf',
-        'USER': '<put your DB user name here>',
-        'PASSWORD': '<put your DB user password here>',
-        'HOST': 'postgres',
-        'PORT': 5432,
-    }
-}
-
-ALLOWED_HOSTS = []  # specify the list of allowed hosts or '*' to allow all
-ALLOWED_REDIRECT_ENDPOINTS = []  # specify the list of allowed redirection endpoints or '*' to allow all
-
-# Set these to False when there is no HTTPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-CORS_ORIGIN_ALLOW_ALL = False # set to False to enable CORS in production!
-CORS_ORIGIN_WHITELIST = [] # specify the list of allowed origins
-
-EDUREP_SOAP_SUPPLIER_ID = "<put here your SUPPLIER ID to send SOAP messages to EduRep>"
-
-EDUREP_XML_API_ENDPOINT = "http://staging.edurep.kennisnet.nl:8000"
-EDUREP_SOAP_API_ENDPOINT = "http://staging.edurep.kennisnet.nl/smdBroker/ws"
-EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
-VOOT_API_ENDPOINT = "https://voot.test.surfconext.nl"
-
-# You can rewrite Surf OIDC config if you need
-# OIDC_CONFIG["client_id"] = "<put your SURF APP Client ID here>"
-# OIDC_CONFIG["client_secret"] = "<put your SURF APP Client Secret here>"
-# OIDC_CONFIG["redirect_uri"] = "https://surf.stg.mqd.me/complete/surfconext/"
-# OIDC_CONFIG["issuer"] = "https://oidc.test.surfconext.nl/"
-# OIDC_CONFIG["authorization_endpoint"] = "https://oidc.test.surfconext.nl/authorize"
-# OIDC_CONFIG["userinfo_endpoint"] = "https://oidc.test.surfconext.nl/userinfo"
-# OIDC_CONFIG["token_endpoint"] = "https://oidc.test.surfconext.nl/token"
-# OIDC_CONFIG["revocation_endpoint"] = "https://oidc.test.surfconext.nl/revoke"
-# OIDC_CONFIG["jwks_uri"] = "https://oidc.test.surfconext.nl/jwk"
+# Enable sentry on acceptance server only.
+# import sentry_sdk
+# from sentry_sdk.integrations.django import DjangoIntegration
+#
+#
+# def strip_sensitive_data(event, hint):
+#     # modify event here
+#     del event['request']['headers']['User-Agent']
+#     return event
+#
+#
+# sentry_sdk.init(
+#    before_send=strip_sensitive_data,
+#    dsn="https://675caa02892e429ca10884f05d65d94f@sentry.io/1725443",
+#    integrations=[DjangoIntegration()]
+# )

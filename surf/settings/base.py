@@ -15,6 +15,10 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# SECURITY WARNING: keep the secret key used in production secret!
+# In general: all defaults for secrets in this file are for development only, other defaults are production defaults
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '%yd238wldq0la!n7$hyaz3)4zfl#z&jai1@y@e+248&e*bts&_')
+
 # Become aware of the frontend that this backend is build for
 # We whitelist this URL entirely to be able to share (login!) cookies
 FRONTEND_DOMAIN = os.environ.get("DJANGO_FRONTEND_DOMAIN", "zoekportaal.surf.nl")
@@ -27,7 +31,9 @@ FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', "0")))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    os.environ.get('DJANGO_BACKEND_DOMAIN', 'zoekportaalback.surf.nl')
+]
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -142,8 +148,12 @@ WSGI_APPLICATION = 'surf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'surf',
+        'USER': 'surf',
+        'PASSWORD': os.environ.get('DJANGO_POSTGRES_PASSWORD', 'qwerty'),
+        'HOST': 'postgres',
+        'PORT': 5432,
     }
 }
 
@@ -263,13 +273,17 @@ SOCIAL_AUTH_PIPELINE = (
 LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
-VOOT_API_ENDPOINT = "https://voot.surfconext.nl"
+VOOT_API_ENDPOINT = os.environ.get('', 'https://voot.surfconext.nl')
 
-EDUREP_JSON_API_ENDPOINT = "https://proxy.edurep.nl/v3/search"
-EDUREP_XML_API_ENDPOINT = "http://wszoeken.edurep.kennisnet.nl:8000"
-EDUREP_SOAP_API_ENDPOINT = "http://smb.edurep.kennisnet.nl/smdBroker/ws"
+EDUREP_JSON_API_ENDPOINT = os.environ.get('EDUREP_JSON_API_ENDPOINT', 'https://proxy.edurep.nl/v3/search')
+EDUREP_XML_API_ENDPOINT = os.environ.get('EDUREP_XML_API_ENDPOINT', 'http://wszoeken.edurep.kennisnet.nl:8000')
+EDUREP_SOAP_API_ENDPOINT = os.environ.get('EDUREP_SOAP_API_ENDPOINT', 'http://smb.edurep.kennisnet.nl/smdBroker/ws')
 
-EDUREP_SOAP_SUPPLIER_ID = ""
+EDUREP_SOAP_SUPPLIER_ID = os.environ.get('EDUREP_SOAP_SUPPLIER_ID', '')
+
+ELASTICSEARCH_USER = os.environ.get('ELASTIC_SEARCH_USERNAME', 'search_portal_backend_prod')
+ELASTICSEARCH_PASSWORD = os.environ.get('ELASTIC_SEARCH_PASSWORD', '')  # TODO: development default unknown
+ELASTICSEARCH_URL = os.environ.get('ELASTIC_SEARCH_HOST', 'elastic2.search-prod.surfcatalog.nl')
 
 CKEDITOR_CONFIGS = {
     "default": {

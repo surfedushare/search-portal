@@ -12,6 +12,7 @@ _VCARD_FORMATED_NAME_KEY = "FN"
 
 
 class ElasticSearchApiClient:
+
     def __init__(self, elastic_url=settings.ELASTICSEARCH_URL):
         self.elastic = Elasticsearch(
             [elastic_url],
@@ -51,7 +52,6 @@ class ElasticSearchApiClient:
         ]
 
         return result
-
 
     @staticmethod
     def parse_elastic_hit(hit):
