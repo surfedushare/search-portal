@@ -129,6 +129,12 @@ class ElasticSearchApiClient:
         # add aggregations
         if drilldown_names:
             body["aggs"] = self.parse_aggregations(drilldown_names)
+        # add ordering
+        if ordering:
+            body["sort"] = [
+                self.parse_ordering(ordering),
+                "_score"
+            ]
         # make query and parse
         result = self.elastic.search(
             index=[index_nl, index_en],
@@ -191,6 +197,15 @@ class ElasticSearchApiClient:
                 }
             }
         return aggregation_items
+
+    @staticmethod
+    def parse_ordering(ordering):
+        order = "asc"
+        if ordering.startswith("-"):
+            order = "desc"
+            ordering = ordering[1:]
+        elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(ordering)
+        return {elastic_type: {"order": order}}
 
     @staticmethod
     def translate_external_id_to_elastic_type(external_id):

@@ -113,6 +113,24 @@ class BaseSearchTestCase(TestCase):
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
+    def test_ordering_search(self):
+        # make a bunch of queries with different ordering
+        search_biologie = self.instance.search(["biologie"])
+        self.assertIsNotNone(search_biologie)
+        search_biologie_dates = [record["publish_datetime"] for record in search_biologie["records"]]
+        search_biologie_asc = self.instance.search(["biologie"], ordering="lom.lifecycle.contribute.publisherdate")
+        self.assertIsNotNone(search_biologie_asc)
+        search_biologie_asc_dates = [record["publish_datetime"] for record in search_biologie_asc["records"]]
+        search_biologie_desc = self.instance.search(["biologie"], ordering="lom.lifecycle.contribute.publisherdate")
+        self.assertIsNotNone(search_biologie_desc)
+        search_biologie_desc_dates = [record["publish_datetime"] for record in search_biologie_desc["records"]]
+        # make sure that a default ordering is different than a date ordering
+        self.assertNotEqual(search_biologie_dates, search_biologie_asc_dates)
+        self.assertNotEqual(search_biologie_dates, search_biologie_desc_dates)
+        # make sure that the dates of results are indeed in expected order
+        self.assertEqual(search_biologie_asc_dates, sorted(search_biologie_asc_dates))
+        self.assertEqual(search_biologie_desc_dates, sorted(search_biologie_desc_dates, reverse=False))
+
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')
         self.assertEqual(len(empty_autocomplete), 0)
