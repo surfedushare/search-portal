@@ -11,7 +11,7 @@ class BaseSearchTestCase(TestCase):
         # both the elastic and the edurep classes have a default base paramter so don't change it if we don't need to
         self.instance = self.test_class()
 
-    def test_search(self):
+    def test_basic_search(self):
         search_result = self.instance.search([])
         search_result_filter = self.instance.search([], filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
         # did we get _anything_ from search?
@@ -39,7 +39,9 @@ class BaseSearchTestCase(TestCase):
         self.assertIsNotNone(search_biologie_2)
         self.assertNotEqual(search_biologie_2, search_biologie)
 
-        # basic search with filters applied
+    def test_filter_search(self):
+
+        # search with single filter applied
         search_biologie_video = self.instance.search(
             ["biologie"],
             filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
@@ -53,7 +55,7 @@ class BaseSearchTestCase(TestCase):
         for record in search_biologie_video_and_pdf["records"]:
             self.assertIn(record["format"], ["video", "pdf"])
 
-        # basic search with filters applied
+        # search with multiple filters applied
         search_biologie_text_and_cc_by = self.instance.search(
             ["biologie"],
             filters=[
@@ -65,6 +67,7 @@ class BaseSearchTestCase(TestCase):
             self.assertEqual(record["format"], "text")
             self.assertEqual(record["copyright"], "cc-by-40")
 
+        # AND search with multiple filters applied
         search_biologie_and_natuur = self.instance.search(["biologie", "natuur"])
         search_biologie_and_natuur_with_filters = self.instance.search(
             ["biologie", "natuur"],
@@ -80,6 +83,7 @@ class BaseSearchTestCase(TestCase):
             search_biologie_and_natuur_with_filters['recordcount']
         )
 
+        # search with publish date filter applied
         search_biologie_upper_date = self.instance.search(["biologie"], filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, "2018-12-31"]}
         ])
@@ -99,6 +103,15 @@ class BaseSearchTestCase(TestCase):
             publish_date = parse(record["publish_datetime"], ignoretz=True)
             self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
             self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
+
+    def test_drilldown_search(self):
+        search_biologie = self.instance.search(["biologie"], drilldown_names=["lom.technical.format"])
+        self.assertIsNotNone(search_biologie)
+        self.assertTrue(search_biologie['drilldowns'])
+        self.assertTrue(search_biologie['drilldowns'][0]['items'])
+        for item in search_biologie['drilldowns'][0]['items']:
+            self.assertTrue(item['external_id'])
+            self.assertIsNotNone(item['count'])
 
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')
