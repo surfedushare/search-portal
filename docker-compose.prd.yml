@@ -11,6 +11,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: uwsgi --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --processes 4
     volumes:
       - /volumes/surf/media:/src/media
     restart: unless-stopped
