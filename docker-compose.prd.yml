@@ -21,6 +21,3 @@ services:
   adminer:  # kills adminer in production, but the port should also be closed by the firewall
     command: "true"
     entrypoint: "true"
-    deploy:
-      restart_policy:
-        condition: none
