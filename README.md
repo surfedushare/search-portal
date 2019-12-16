@@ -71,8 +71,7 @@ git clone git@github.com:surfedushare/surf-backend.git
 cd surf-backend
 ```
 
-* Create file for settings `local.py` in directory `surf/settings/`
-according to template file `surf/settings/local.py.template`
+* Copy ``.env.example`` to ``.env`` and adjust where needed
 
 * Create virtual environment for application and activate it:
 
@@ -91,13 +90,13 @@ pip install docker docker-compose
 * Run application
 
 ```sh
-sudo docker-compose -f docker-compose-local.yml up -d
+docker-compose up
 ```
 
 * Create the first Django admin of the application
 
 ```sh
-sudo docker-compose -f docker-compose-local.yml exec backend python manage.py createsuperuser
+docker-compose run --rm backend python manage.py createsuperuser
 ```
 
 # References
