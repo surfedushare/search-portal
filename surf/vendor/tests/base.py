@@ -133,6 +133,14 @@ class BaseSearchTestCase(TestCase):
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
+        repo_and_format_drilldowns = self.instance.drilldowns(['about.repository', 'lom.technical.format'])
+        self.assertTrue(repo_and_format_drilldowns['drilldowns'])
+        for drilldown in repo_and_format_drilldowns['drilldowns']:
+            self.assertTrue(drilldown['items'])
+            for item in drilldown['items']:
+                self.assertTrue(item['external_id'])
+                self.assertIsNotNone(item['count'])
+
     def test_get_materials_by_id(self):
         def test_material(external_id):
             # can't test for theme and copyright without creating and instantiating these values in the database
