@@ -119,7 +119,7 @@ class BaseSearchTestCase(TestCase):
         self.assertFalse(empty_drilldowns['records'])
         self.assertFalse(empty_drilldowns['drilldowns'])
 
-        biologie_drilldowns = self.instance.drilldowns([], search_text="biologie")
+        biologie_drilldowns = self.instance.drilldowns([], search_text=["biologie"])
         #{'recordcount': 32, 'records': [], 'drilldowns': []}
         self.assertGreater(biologie_drilldowns['recordcount'], 0)
         self.assertGreater(empty_drilldowns['recordcount'], biologie_drilldowns['recordcount'])

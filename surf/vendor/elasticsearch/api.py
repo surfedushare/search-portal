@@ -1,6 +1,9 @@
+from collections import defaultdict
+
 from django.conf import settings
 from elasticsearch import Elasticsearch
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
+
 
 index_nl = 'latest-nl'
 index_en = 'latest-en'
@@ -18,19 +21,18 @@ class ElasticSearchApiClient:
 
     @staticmethod
     def parse_elastic_result(search_result):
-        material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language', 'aggregationlevel',
-                         'publisher', 'publish_datetime', 'author', 'format', 'educationallevels',
-                         'themes', 'disciplines']
 
+        hits = search_result["hits"]
+        aggregations = search_result.get("aggregations", [])
         result = dict()
-        result['recordcount'] = search_result['total']
-        # TODO
+        result['recordcount'] = hits['total']
+
+        # Transform aggregations into drilldowns
         result['drilldowns'] = []
 
-        # TODO
+        # Transform hits into records
         result['records'] = []
-        for material in search_result['hits']:
-
+        for material in hits['hits']:
             new_material = dict()
             new_material['external_id'] = material['_source']['external_id']
             new_material['url'] = material['_source']['url']
@@ -52,6 +54,7 @@ class ElasticSearchApiClient:
             new_material['themes'] = None  # TODO
             new_material['source'] = material['_source']['arrangement_collection_name']
             result['records'].append(new_material)
+
         return result
 
     def autocomplete(self, query):
@@ -81,37 +84,44 @@ class ElasticSearchApiClient:
         return options_with_prefix
 
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
-        return self._search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
+        search_results = self.search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
+        search_results["records"] = []
+        return search_results
 
     def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
+        search_text = search_text or []
+        assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
         # build basic query
-        must = [] if not search_text else \
-            [{
-                "query_string": {
-                    "fields": ["text", "title"],
-                    "query": ' AND '.join(search_text)
-                }
-            }]
         start_record = page_size * (page - 1) + 1
         body = {
             'query': {
-                "bool": {
-                    "must": must,
-                }
+                "bool": defaultdict(list)
             },
             'from': start_record,
             'size': page_size,
         }
+        # add a search query if any
+        if len(search_text):
+            query_string = {
+                "query_string": {
+                    "fields": ["text", "title"],
+                    "query": ' AND '.join(search_text)
+                }
+            }
+            body["query"]["bool"]["must"] += [query_string]
         # apply filters
         filters = self.parse_filters(filters)
-        if len(filters):
+        if filters:
             body["query"]["bool"]["must"] += filters
+        # add aggregations
+        if drilldown_names:
+            body["aggs"] = self.parse_aggregations(drilldown_names)
         # make query and parse
         result = self.elastic.search(
             index=[index_nl, index_en],
             body=body
         )
-        return self.parse_elastic_result(result["hits"])
+        return self.parse_elastic_result(result)
 
     def get_materials_by_id(self, external_ids):
         result = self.elastic.search(
@@ -124,7 +134,7 @@ class ElasticSearchApiClient:
                 },
             },
         )
-        materials = self.parse_elastic_result(result["hits"])
+        materials = self.parse_elastic_result(result)
         return materials
 
     @staticmethod
@@ -156,6 +166,18 @@ class ElasticSearchApiClient:
                 }
             })
         return filter_items
+
+    @staticmethod
+    def parse_aggregations(aggregation_names):
+        aggregation_items = {}
+        for aggregation_name in aggregation_names:
+            elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(aggregation_name)
+            aggregation_items[aggregation_name] = {
+                "terms": {
+                    "field": elastic_type
+                }
+            }
+        return aggregation_items
 
     @staticmethod
     def translate_external_id_to_elastic_type(external_id):
