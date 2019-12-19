@@ -200,7 +200,8 @@ class XmlEndpointApiClient:
         parameters["x-recordSchema"] = record_schema
 
         if drilldown_names and isinstance(drilldown_names, list):
-            parameters["x-term-drilldown"] = ",".join(drilldown_names)
+            # ":0" is added to indicate to edurep that we don't want to limit the length of the drilldown list
+            parameters["x-term-drilldown"] = ",".join([drilldown_name + ":0" for drilldown_name in drilldown_names])
 
         if ordering:
             if isinstance(ordering, list):
