@@ -153,7 +153,7 @@ class ElasticSearchApiClient:
         )
         return self.parse_elastic_result(result)
 
-    def get_materials_by_id(self, external_ids):
+    def get_materials_by_id(self, external_ids, **kwargs):
         result = self.elastic.search(
             index=[index_nl, index_en],
             body={

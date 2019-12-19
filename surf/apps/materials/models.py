@@ -50,8 +50,7 @@ def get_material_details_by_id(material_id, api_client=None):
         api_client = XmlEndpointApiClient(
             api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
 
-    res = api_client.get_materials_by_id(['"{}"'.format(material_id)],
-                                         drilldown_names=[_DISCIPLINE_FILTER])
+    res = api_client.get_materials_by_id([material_id], drilldown_names=[_DISCIPLINE_FILTER])
 
     # define themes and disciplines for requested material
     themes = []
