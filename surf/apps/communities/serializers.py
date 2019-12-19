@@ -12,7 +12,7 @@ from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.filters.utils import add_default_material_filters
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
-from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
+from surf.vendor.search.searchselector import get_search_client
 
 
 class CommunityUpdateSerializer(serializers.ModelSerializer):
@@ -78,7 +78,7 @@ class CommunityDisciplineSerializer(MpttFilterItemSerializer):
 
     def get_materials_count(self, obj):
         if obj.external_id:
-            ac = XmlEndpointApiClient()
+            ac = get_search_client()
             filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
             tree = self.context["mptt_tree"]
             filters = add_default_material_filters(filters, tree)

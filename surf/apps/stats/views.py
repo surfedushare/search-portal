@@ -6,10 +6,8 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from django.conf import settings
-
 from surf.apps.filters.utils import add_default_material_filters
-from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
+from surf.vendor.search.searchselector import get_search_client
 
 
 class StatsView(ViewSet):
@@ -25,8 +23,7 @@ class StatsView(ViewSet):
         Returns the number of all available materials
         """
 
-        ac = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        ac = get_search_client()
 
         filters = add_default_material_filters()
         res = ac.search([], filters=filters, page_size=0)

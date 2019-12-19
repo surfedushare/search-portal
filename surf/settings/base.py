@@ -285,6 +285,8 @@ ELASTICSEARCH_USER = os.environ.get('ELASTIC_SEARCH_USERNAME', 'search_portal_ba
 ELASTICSEARCH_PASSWORD = os.environ.get('ELASTIC_SEARCH_PASSWORD', '')  # TODO: development default unknown
 ELASTICSEARCH_URL = os.environ.get('ELASTIC_SEARCH_HOST', 'elastic2.search-prod.surfcatalog.nl')
 
+SEARCH_CLIENT = os.environ.get('SEARCH_CLIENT', 'edurep')
+
 CKEDITOR_CONFIGS = {
     "default": {
         "width": "600px",

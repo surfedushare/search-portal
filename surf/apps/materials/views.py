@@ -4,9 +4,7 @@ This module contains implementation of REST API views for materials app.
 
 import json
 import logging
-from collections import OrderedDict
 
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import F
 from django.db.models import Q, Count
@@ -50,9 +48,9 @@ from surf.apps.materials.utils import (
     add_material_disciplines
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    XmlEndpointApiClient,
     AUTHOR_FIELD_ID
 )
+from surf.vendor.search.searchselector import get_search_client
 
 logger = logging.getLogger(__name__)
 
@@ -92,8 +90,7 @@ class MaterialSearchAPIView(APIView):
         if return_filters:
             data["drilldown_names"] = _get_filter_categories()
 
-        ac = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        ac = get_search_client()
 
         res = ac.search(**data)
         records = add_extra_parameters_to_materials(request.user, res["records"])
@@ -129,8 +126,7 @@ class KeywordsAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        ac = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        ac = get_search_client()
 
         res = ac.autocomplete(**data)
         return Response(res)
@@ -169,8 +165,7 @@ class MaterialAPIView(APIView):
 
         else:
             # return overview of newest Materials
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+            ac = get_search_client()
 
             # add default filters to search materials
             filters = add_default_material_filters()
@@ -342,8 +337,7 @@ class CollectionViewSet(ModelViewSet):
                       page_size=data["page_size"])
 
             if ids:
-                ac = XmlEndpointApiClient(
-                    api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+                ac = get_search_client()
 
                 res = ac.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
