@@ -104,6 +104,17 @@ class BaseSearchTestCase(TestCase):
             self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
             self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
 
+    def test_search_disciplines(self):
+        search_result = self.instance.search([])
+        search_result_filter_1 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['2adcec22-095d-4937-aed7-48788080460b']}])
+        search_result_filter_2 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['c001f86a-4f8f-4420-bd78-381c615ecedc']}])
+        self.assertNotEqual(search_result, search_result_filter_1)
+        self.assertNotEqual(search_result, search_result_filter_2)
+        self.assertNotEqual(search_result_filter_1, search_result_filter_2)
+        self.assertGreater(search_result['recordcount'], 0)
+        self.assertGreater(search_result_filter_1['recordcount'], 0)
+        self.assertGreater(search_result_filter_2['recordcount'], 0)
+
     def test_drilldown_search(self):
         search_biologie = self.instance.search(["biologie"], drilldown_names=["lom.technical.format"])
         self.assertIsNotNone(search_biologie)
