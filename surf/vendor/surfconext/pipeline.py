@@ -46,9 +46,10 @@ def get_groups(strategy, details, response, *args, **kwargs):
     # Cancel data processing if permission is not given
     permissions = details["permissions"]
     community_permission = next(
-        permission for permission in permissions if permission["type"] == DataGoalTypes.COMMUNITIES
+        (permission for permission in permissions if permission["type"] == DataGoalTypes.COMMUNITIES),
+        None
     )
-    if not community_permission["is_allowed"]:
+    if community_permission is None or not community_permission["is_allowed"]:
         details["groups"] = []
         return
     # Retrieve team data from Voot service to connect communities later
