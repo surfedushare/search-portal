@@ -131,6 +131,7 @@ class BaseSearchTestCase(TestCase):
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
+
     def test_ordering_search(self):
         # make a bunch of queries with different ordering
         search_biologie = self.instance.search(["biologie"])
@@ -207,30 +208,34 @@ class BaseSearchTestCase(TestCase):
             #     print(key)
             #     self.assertIsNotNone(material[key])
             return material
-        test_id_1 = 'metaplus:vilentum:oai:www.samhao.nl:VBS:2:144126'
-        test_id_2 = 'edurep_delen:c4443aed-83ac-4182-829f-50f86b0c0124'
+        test_id_1 = 'surf:oai:surfsharekit.nl:bef89539-a037-454d-bee3-da09f4c94e0b'
+        test_id_2 = 'edurep_delen:6e4447af-8ac3-4a91-a594-89828b068a2d'
         material_1 = test_material(test_id_1)
         material_2 = test_material(test_id_2)
 
         self.assertIsNot(material_1, material_2)
 
-        self.assertEqual(material_1['title'], 'Ruwvoer en kaaskwaliteit')
-        self.assertEqual(material_1['url'], 'http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:144126:1')
+        self.assertEqual(material_1['title'], 'Decision Trees and Random Decision Forests')
+        self.assertEqual(material_1['url'], 'https://surfsharekit.nl/dl/surf/bef89539-a037-454d-bee3-da09f4c94e0b/53c7bb36-e374-431c-a50c-e208ab53e412')
         self.assertEqual(material_1['external_id'], test_id_1)
-        self.assertEqual(material_1['publish_datetime'], '2018')
-        self.assertEqual(material_1['author'], 'Groot, R.')
-        self.assertEqual(len(material_1['educationallevels']), 3)
-        self.assertEqual(len(material_1['disciplines']), 1)
+        self.assertEqual(material_1['publish_datetime'], None)
+        self.assertEqual(material_1['author'], None)
+        self.assertEqual(material_1['keywords'], ['Powerpoint', 'Orange', 'MOOC'])
+        self.assertEqual(len(material_1['educationallevels']), 2)
+        self.assertEqual(len(material_1['disciplines']), 0)
+        self.assertEqual(material_1['language'], 'en')
+        self.assertEqual(material_1['format'], 'pdf')
 
-        self.assertEqual(material_2['title'], 'Een kind wil aardige en geen gemene getallen')
-        self.assertEqual(material_2['url'], 'http://thomascool.eu/Papers/AardigeGetallen/Index.html')
+        self.assertEqual(material_2['title'], 'Kennisclip herpes zoster')
+        self.assertEqual(material_2['url'], 'https://delen.edurep.nl/download/6e4447af-8ac3-4a91-a594-89828b068a2d')
         self.assertEqual(material_2['external_id'], test_id_2)
-        self.assertEqual(material_2['keywords'], ['rekenen', 'uitspraak getallen', 'wiskunde', 'meetkunde', 'breuken', 'verhoudingen', 'lijnen', 'functies', 'parlement'])
+        self.assertEqual(material_2['keywords'], ['#hbovpk', '#HR'])
+        self.assertEqual(material_2['publish_datetime'], '2017-09-27T11:02:13+02:00')
         self.assertEqual(material_2['language'], 'nl')
-        self.assertIsNone(material_2['author'])
-        self.assertEqual(len(material_2['themes']), 1)
+        self.assertEqual(material_2['author'], 'Drs. E. Kuperi')
+        self.assertEqual(len(material_2['themes']), 0)
         # TODO a bug in elasticsearch is messing this up:
-        #self.assertEqual(material_2['format'], 'text')
+        self.assertEqual(material_2['format'], 'pdf')
 
 
 def get_base_search_test_class():
