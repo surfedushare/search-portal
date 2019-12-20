@@ -205,7 +205,9 @@ class ElasticSearchApiClient:
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(aggregation_name)
             aggregation_items[aggregation_name] = {
                 "terms": {
-                    "field": elastic_type
+                    "field": elastic_type,
+                    # Raise the default limit of 10 items for aggregation
+                    "size": 500,
                 }
             }
         return aggregation_items
