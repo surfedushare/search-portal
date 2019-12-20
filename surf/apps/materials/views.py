@@ -50,8 +50,24 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID
 )
 from surf.vendor.search.searchselector import get_search_client
+from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
+
 
 logger = logging.getLogger(__name__)
+
+
+def parse_theme_drilldowns(discipline_items):
+    fields = dict()
+    for item in discipline_items:
+        item_id = item["external_id"]
+        theme_ids = DISCIPLINE_CUSTOM_THEME.get(item_id)
+        if not theme_ids:
+            theme_ids = ["Unknown"]
+        for f_id in theme_ids:
+            fields[f_id] = fields.get(f_id, 0) + int(item["count"])
+
+    fields = sorted(fields.items(), key=lambda kv: kv[1], reverse=True)
+    return [dict(external_id=k, count=v) for k, v in fields]
 
 
 class MaterialSearchAPIView(APIView):
@@ -93,6 +109,16 @@ class MaterialSearchAPIView(APIView):
 
         res = ac.search(**data)
         records = add_extra_parameters_to_materials(request.user, res["records"])
+
+        if return_filters and "lom.classification.obk.discipline.id" in data["drilldown_names"]:
+            discipline_items = next(
+                drilldown["items"]
+                for drilldown in res["drilldowns"] if drilldown["external_id"] == "lom.classification.obk.discipline.id"
+            )
+            res["drilldowns"].append({
+                "external_id": "custom_theme.id",
+                "items": parse_theme_drilldowns(discipline_items)
+            })
 
         rv = dict(records=records,
                   records_total=res["recordcount"],

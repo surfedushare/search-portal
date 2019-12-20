@@ -246,7 +246,6 @@ def _parse_drilldowns(root):
                 rv[term_id] = _parse_drilldowns_tech_format(dd)
             elif term_id == DISCIPLINE_ID_LOM:
                 rv[term_id] = _parse_drilldowns_term(dd)
-                rv[CUSTOM_THEME_ID] = _parse_drilldowns_custom_theme(dd)
             elif term_id == COPYRIGHT_ID_LOM:
                 rv[term_id] = _parse_drilldowns_copyrights(dd)
             else:

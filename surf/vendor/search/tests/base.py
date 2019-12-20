@@ -139,9 +139,10 @@ class BaseSearchTestCase(TestCase):
         self.assertTrue(search_with_theme_drilldown['drilldowns'])
         self.assertEqual(
             [drilldown["external_id"] for drilldown in search_with_theme_drilldown['drilldowns']],
-            ["lom.classification.obk.discipline.id", "custom_theme.id"]
+            ["lom.classification.obk.discipline.id"]
         )
         for drilldown in search_with_theme_drilldown['drilldowns']:
+            self.assertGreater(len(drilldown["items"]), 0)
             for item in drilldown['items']:
                 self.assertTrue(item['external_id'])
                 self.assertIsNotNone(item['count'])
