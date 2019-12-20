@@ -33,7 +33,6 @@ from surf.apps.materials.models import (
 )
 from surf.apps.materials.serializers import (
     SearchRequestSerializer,
-    SearchRequestShortSerializer,
     KeywordsRequestSerializer,
     MaterialsRequestSerializer,
     CollectionSerializer,
@@ -327,8 +326,7 @@ class CollectionViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
 
-            ids = ['"{}"'.format(m.external_id)
-                   for m in instance.materials.order_by("id").all()]
+            ids = [m.external_id for m in instance.materials.order_by("id").all()]
 
             rv = dict(records=[],
                       records_total=0,
@@ -341,8 +339,7 @@ class CollectionViewSet(ModelViewSet):
 
                 res = ac.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
-                records = add_extra_parameters_to_materials(request.user,
-                                                            records)
+                records = add_extra_parameters_to_materials(request.user, records)
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
 
@@ -363,8 +360,7 @@ class CollectionViewSet(ModelViewSet):
         elif request.method == "DELETE":
             self._delete_materials(instance, data)
 
-        res = MaterialShortSerializer(many=True).to_representation(
-            instance.materials.all())
+        res = MaterialShortSerializer(many=True).to_representation(instance.materials.all())
         return Response(res)
 
     @staticmethod
@@ -447,13 +443,8 @@ def add_share_counters_to_materials(materials):
     """
 
     for m in materials:
-        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,
-                                                       m["external_id"])
-
+        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,m["external_id"])
         qs = SharedResourceCounter.objects.filter(counter_key__contains=key)
-
-        m["sharing_counters"] = SharedResourceCounterSerializer(
-            many=True
-        ).to_representation(qs.all())
+        m["sharing_counters"] = SharedResourceCounterSerializer(many=True).to_representation(qs.all())
 
     return materials
