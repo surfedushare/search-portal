@@ -133,6 +133,7 @@ class ElasticSearchApiClient:
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
+        indices = self.parse_index_language(filters)
         # apply filters
         filters = self.parse_filters(filters)
         if filters:
@@ -148,7 +149,7 @@ class ElasticSearchApiClient:
             ]
         # make query and parse
         result = self.elastic.search(
-            index=[index_nl, index_en],
+            index=indices,
             body=body
         )
         return self.parse_elastic_result(result)
@@ -174,7 +175,7 @@ class ElasticSearchApiClient:
             return {}
         date_filter = None
         for filter_item in filters:
-            if not filter_item['items']:
+            if not filter_item['items'] or 'lom.general.language' in filter_item['external_id']:
                 continue
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(filter_item['external_id'])
             if elastic_type == "publisher_date":
@@ -220,6 +221,13 @@ class ElasticSearchApiClient:
             ordering = ordering[1:]
         elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(ordering)
         return {elastic_type: {"order": order}}
+
+    @staticmethod
+    def parse_index_language(filters):
+        indices = [index_nl, index_en]
+        language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'lom.general.language']
+        language_indices = [f"latest-{language}" for language in language_item[0]['items']]
+        return language_indices if len(language_indices) else indices
 
     @staticmethod
     def translate_external_id_to_elastic_type(external_id):
