@@ -187,14 +187,15 @@ class ElasticSearchApiClient:
             })
         if date_filter:
             lower_bound, upper_bound = date_filter["items"]
-            filter_items.append({
-                "range": {
-                    "publisher_date": {
-                        "gte": lower_bound,
-                        "lte": upper_bound
+            if lower_bound is not None or upper_bound is not None:
+                filter_items.append({
+                    "range": {
+                        "publisher_date": {
+                            "gte": lower_bound,
+                            "lte": upper_bound
+                        }
                     }
-                }
-            })
+                })
         return filter_items
 
     @staticmethod

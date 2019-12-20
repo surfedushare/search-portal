@@ -104,6 +104,13 @@ class BaseSearchTestCase(TestCase):
             self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
             self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
 
+        # search with None, None as date filter. This search should give the same result as not filtering at all.
+        search_biologie_none_date = self.instance.search(["biologie"], filters=[
+            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, None]}
+        ])
+        search_biologie = self.instance.search(["biologie"])
+        self.assertEqual(search_biologie_none_date, search_biologie)
+
     def test_search_disciplines(self):
         search_result = self.instance.search([])
         search_result_filter_1 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['2adcec22-095d-4937-aed7-48788080460b']}])
