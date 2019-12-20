@@ -131,6 +131,20 @@ class BaseSearchTestCase(TestCase):
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
+        search_with_theme_drilldown = self.instance.search(
+            [],
+            drilldown_names=["lom.classification.obk.discipline.id"]
+        )
+        self.assertIsNotNone(search_with_theme_drilldown)
+        self.assertTrue(search_with_theme_drilldown['drilldowns'])
+        self.assertEqual(
+            [drilldown["external_id"] for drilldown in search_with_theme_drilldown['drilldowns']],
+            ["lom.classification.obk.discipline.id", "custom_theme.id"]
+        )
+        for drilldown in search_with_theme_drilldown['drilldowns']:
+            for item in drilldown['items']:
+                self.assertTrue(item['external_id'])
+                self.assertIsNotNone(item['count'])
 
     def test_ordering_search(self):
         # make a bunch of queries with different ordering
