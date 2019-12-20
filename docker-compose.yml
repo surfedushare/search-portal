@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 2
+    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 2 --env LANG=en_US.utf8
     environment:
       - PYTHONIOENCODING=UTF-8
       - PYTHONUNBUFFERED=1
