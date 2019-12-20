@@ -2,6 +2,8 @@ from collections import defaultdict
 
 from django.conf import settings
 from elasticsearch import Elasticsearch
+
+from surf.apps.querylog.models import QueryLog
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
@@ -152,6 +154,11 @@ class ElasticSearchApiClient:
             index=indices,
             body=body
         )
+        parsed_result = self.parse_elastic_result(result)
+        if start_record == 1 and search_text:
+            url = f"es.search(index={indices}, body={body})"
+            QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
+                     result_size=parsed_result['recordcount'], result=parsed_result).save()
         return self.parse_elastic_result(result)
 
     def get_materials_by_id(self, external_ids, **kwargs):
