@@ -31,7 +31,7 @@
           />
         </div>
       </div>
-      <div class="center_block main__thems_and_communities">
+      <div class="center_block main__thems_and_communities" v-show="false">
         <Themes
           :themes="sortedThemes"
           class="main__thems"
