@@ -1,6 +1,7 @@
 
 <section class="menu">
   <nav class="menu__links">
+    <router-link class="menu__link" :to="localePath('how-does-it-work')">{{ $t('How-does-it-work') }}</router-link>
     <router-link class="menu__link" :to="{name: 'privacy' + '___' + $i18n.locale}">{{ $t('Privacy-link') }}</router-link>
     <!--<router-link class="menu__link" :to="{name: 'copyright' + '___' + $i18n.locale}">{{ $t('Copyright') }}</router-link>
     <router-link class="menu__link" :to="{name: 'cookies' + '___' + $i18n.locale}">{{ $t('Cookies') }}</router-link>

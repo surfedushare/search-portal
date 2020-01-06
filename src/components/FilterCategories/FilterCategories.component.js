@@ -259,7 +259,9 @@ export default {
      */
     filtered_categories() {
       // Return categories which builds the filter tree
-      return (this.filter_categories) ? this.$store.getters.filter_categories.results : [];
+      return (this.filter_categories) ?
+        _.filter(this.$store.getters.filter_categories.results, {is_hidden: false}) :
+        [];
     }
   }
 };
