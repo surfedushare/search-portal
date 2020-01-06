@@ -13,10 +13,10 @@ from surf.apps.materials.models import (
 )
 from surf.apps.themes.models import Theme
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    XmlEndpointApiClient,
     DISCIPLINE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID
 )
+from surf.vendor.search.searchselector import get_search_client
 
 
 def update_materials_data(materials):
@@ -102,11 +102,9 @@ def get_material_details_by_id(material_id, api_client=None):
     """
 
     if not api_client:
-        api_client = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        api_client = get_search_client()
 
-    res = api_client.get_materials_by_id(['"{}"'.format(material_id)],
-                                         drilldown_names=[_DISCIPLINE_FILTER])
+    res = api_client.get_materials_by_id([material_id], drilldown_names=[_DISCIPLINE_FILTER])
 
     # define themes and disciplines for requested material
     themes = []

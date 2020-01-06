@@ -1,0 +1,23 @@
+version: '3.1'
+
+
+services:
+
+  postgres:
+    image: postgres:9.6
+    volumes:
+      - /volumes/surf/postgresql/data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uwsgi --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --processes 4
+    volumes:
+      - /volumes/surf/media:/src/media
+    restart: unless-stopped
+
+  adminer:  # kills adminer in production, but the port should also be closed by the firewall
+    command: "true"
+    entrypoint: "true"

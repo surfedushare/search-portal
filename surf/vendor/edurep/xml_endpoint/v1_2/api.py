@@ -19,10 +19,9 @@ from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
     DISCIPLINE_ID_LOM,
     COPYRIGHT_ID_LOM,
     EXTRA_RECORD_SCHEMA,
-    SMO_RECORD_SCHEMA
 )
 
-from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
+from surf.vendor.search.choices import (
     TECH_FORMAT_MIME_TYPES,
     CUSTOM_THEME_DISCIPLINES,
 )
@@ -130,29 +129,6 @@ class XmlEndpointApiClient:
                         drilldown_names=drilldown_names)
         return rv
 
-    def get_user_reviews(self, user_id, material_urn=None,
-                         page=1, page_size=5):
-        """
-        Requests and returns list of reviews have done by user for specified
-        material
-        :param user_id: identifier of user
-        :param material_urn: URN of material
-        :param page: the number of page
-        :param page_size: the number of materials on page
-        :return: dictionary with review data
-        """
-
-        query = "smo.userId={}".format(user_id)
-        if material_urn:
-            query = '{} AND smo.hReview.info="{}"'.format(query, material_urn)
-
-        start_record = _get_start_record_by_page(page, page_size)
-        return self._call(query=query,
-                          start_record=start_record,
-                          maximum_records=page_size,
-                          record_schema=SMO_RECORD_SCHEMA,
-                          api_method=_SMO_SEARCH_METHOD)
-
     def _search(self, search_text=None, filters=None, drilldown_names=None,
                 start_record=1, maximum_records=0, ordering=None):
         """
@@ -224,7 +200,8 @@ class XmlEndpointApiClient:
         parameters["x-recordSchema"] = record_schema
 
         if drilldown_names and isinstance(drilldown_names, list):
-            parameters["x-term-drilldown"] = ",".join(drilldown_names)
+            # ":0" is added to indicate to edurep that we don't want to limit the length of the drilldown list
+            parameters["x-term-drilldown"] = ",".join([drilldown_name + ":0" for drilldown_name in drilldown_names])
 
         if ordering:
             if isinstance(ordering, list):

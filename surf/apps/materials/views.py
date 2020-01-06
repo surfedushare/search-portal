@@ -4,9 +4,7 @@ This module contains implementation of REST API views for materials app.
 
 import json
 import logging
-from collections import OrderedDict
 
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import F
 from django.db.models import Q, Count
@@ -35,7 +33,6 @@ from surf.apps.materials.models import (
 )
 from surf.apps.materials.serializers import (
     SearchRequestSerializer,
-    SearchRequestShortSerializer,
     KeywordsRequestSerializer,
     MaterialsRequestSerializer,
     CollectionSerializer,
@@ -50,11 +47,27 @@ from surf.apps.materials.utils import (
     add_material_disciplines
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    XmlEndpointApiClient,
     AUTHOR_FIELD_ID
 )
+from surf.vendor.search.searchselector import get_search_client
+from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
+
 
 logger = logging.getLogger(__name__)
+
+
+def parse_theme_drilldowns(discipline_items):
+    fields = dict()
+    for item in discipline_items:
+        item_id = item["external_id"]
+        theme_ids = DISCIPLINE_CUSTOM_THEME.get(item_id)
+        if not theme_ids:
+            theme_ids = ["Unknown"]
+        for f_id in theme_ids:
+            fields[f_id] = fields.get(f_id, 0) + int(item["count"])
+
+    fields = sorted(fields.items(), key=lambda kv: kv[1], reverse=True)
+    return [dict(external_id=k, count=v) for k, v in fields]
 
 
 class MaterialSearchAPIView(APIView):
@@ -92,11 +105,20 @@ class MaterialSearchAPIView(APIView):
         if return_filters:
             data["drilldown_names"] = _get_filter_categories()
 
-        ac = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        ac = get_search_client()
 
         res = ac.search(**data)
         records = add_extra_parameters_to_materials(request.user, res["records"])
+
+        if return_filters and "lom.classification.obk.discipline.id" in data["drilldown_names"]:
+            discipline_items = next(
+                drilldown["items"]
+                for drilldown in res["drilldowns"] if drilldown["external_id"] == "lom.classification.obk.discipline.id"
+            )
+            res["drilldowns"].append({
+                "external_id": "custom_theme.id",
+                "items": parse_theme_drilldowns(discipline_items)
+            })
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
@@ -111,8 +133,7 @@ def _get_filter_categories():
     Make list of filter categories in format "edurep_field_id:item_count"
     :return: list of "edurep_field_id:item_count"
     """
-    return ["{}:{}".format(f.external_id, 0)
-            for f in MpttFilterItem.objects.all()
+    return [f.external_id for f in MpttFilterItem.objects.all()
             if f.external_id not in IGNORED_FIELDS
             and f.level == 0]
 
@@ -130,8 +151,7 @@ class KeywordsAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        ac = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        ac = get_search_client()
 
         res = ac.autocomplete(**data)
         return Response(res)
@@ -170,8 +190,7 @@ class MaterialAPIView(APIView):
 
         else:
             # return overview of newest Materials
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+            ac = get_search_client()
 
             # add default filters to search materials
             filters = add_default_material_filters()
@@ -333,8 +352,7 @@ class CollectionViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
 
-            ids = ['"{}"'.format(m.external_id)
-                   for m in instance.materials.order_by("id").all()]
+            ids = [m.external_id for m in instance.materials.order_by("id").all()]
 
             rv = dict(records=[],
                       records_total=0,
@@ -343,13 +361,11 @@ class CollectionViewSet(ModelViewSet):
                       page_size=data["page_size"])
 
             if ids:
-                ac = XmlEndpointApiClient(
-                    api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+                ac = get_search_client()
 
                 res = ac.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
-                records = add_extra_parameters_to_materials(request.user,
-                                                            records)
+                records = add_extra_parameters_to_materials(request.user, records)
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
 
@@ -370,8 +386,7 @@ class CollectionViewSet(ModelViewSet):
         elif request.method == "DELETE":
             self._delete_materials(instance, data)
 
-        res = MaterialShortSerializer(many=True).to_representation(
-            instance.materials.all())
+        res = MaterialShortSerializer(many=True).to_representation(instance.materials.all())
         return Response(res)
 
     @staticmethod
@@ -454,13 +469,8 @@ def add_share_counters_to_materials(materials):
     """
 
     for m in materials:
-        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,
-                                                       m["external_id"])
-
+        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,m["external_id"])
         qs = SharedResourceCounter.objects.filter(counter_key__contains=key)
-
-        m["sharing_counters"] = SharedResourceCounterSerializer(
-            many=True
-        ).to_representation(qs.all())
+        m["sharing_counters"] = SharedResourceCounterSerializer(many=True).to_representation(qs.all())
 
     return materials
