@@ -2,6 +2,8 @@ import { mapGetters } from 'vuex';
 import { debounce, generateSearchMaterialsQuery } from './../../_helpers';
 import DatesRange from './../../DatesRange';
 import _ from 'lodash';
+
+
 export default {
   name: 'search',
   props: {
@@ -94,9 +96,17 @@ export default {
           loading(false);
         });
     }, 350),
-    /**
-     * Submit form
-     */
+    emitSearch(searchTexts) {
+      // Apply filters and search for any input that is not empty input
+      this.formData.search_text = searchTexts;
+      this.formData.filters = this.$store.getters.search_filters;
+      if (this.$listeners.submit) {
+        this.$emit('submit', this.formData);
+      } else {
+        this.$router.push(this.generateSearchMaterialsQuery(this.formData));
+        this.$emit('input', this.formData);
+      }
+    },
     onSubmit(searchTexts, submitted) {
 
       if(submitted && this.$refs.searchSelect.$refs.search.value) {
@@ -107,15 +117,15 @@ export default {
       if(_.isEmpty(searchTexts)) {
         return;
       }
-      // Apply filters and search for any input that is not empty input
-      this.formData.search_text = searchTexts;
-      this.formData.filters = this.$store.getters.search_filters;
-      if (this.$listeners.submit) {
-        this.$emit('submit', this.formData);
+
+      if(this.$store.state.filterCategories.filter_categories_loading) {
+        this.$store.state.filterCategories.filter_categories_loading.then(() => {
+          this.emitSearch(searchTexts)
+        })
       } else {
-        this.$router.push(this.generateSearchMaterialsQuery(this.formData));
-        this.$emit('input', this.formData);
+        this.emitSearch(searchTexts)
       }
+
     },
 
     showMobileFilterOptions() {
