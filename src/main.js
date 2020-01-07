@@ -23,7 +23,6 @@ if(process.env.VUE_APP_USE_SENTRY) {
 }
 
 
-import _ from 'lodash'
 import Vue from 'vue'
 import injector from 'vue-inject'
 import middleware from './middleware'
@@ -43,7 +42,6 @@ import {
   getQueryDiff,
   //globalHandleError
 } from './utils'
-import { parseSearchMaterialsQuery } from '~/components/_helpers';
 
 
 // Global shared references
@@ -417,16 +415,8 @@ async function mountApp(__app) {
   router.beforeEach(render.bind(_app));
   router.afterEach((to) => {
     // Parse URL and set filters selected when
-    let urlSearch = parseSearchMaterialsQuery(to.query);
-    let selected = {};
-    if(!_.isEmpty(urlSearch.search)) {
-      _.forEach(urlSearch.search.filters, (filter) => {
-        _.reduce(filter.items, (obj, item) => {obj[item] = true; return obj}, selected);
-      });
-    }
-    // Update the store with URL values
-    let dateRange = urlSearch.dateRange;
-    _app.$store.commit('SETUP_FILTER_CATEGORIES', {selected, dateRange});
+    let filters = _app.$store.getters.getFiltersFromQuery(to.query);
+    _app.$store.commit('SETUP_FILTER_CATEGORIES', filters);
   });
   router.afterEach(normalizeComponents);
   //router.afterEach(fixPrepatch.bind(_app));
