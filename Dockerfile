@@ -30,4 +30,4 @@ ENTRYPOINT ["/src/entrypoint.sh"]
 
 EXPOSE 8080
 
-CMD ["uwsgi", "--http", ":8080", "--wsgi-file", "surf/wsgi.py", "--processes", "4"]
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
