@@ -68,8 +68,7 @@ export default {
   // },
   data: () => ({
     layout: null,
-    layoutName: '',
-    loginEnabled: false
+    layoutName: ''
   }),
   beforeCreate () {
     Vue.util.defineReactive(this, 'nuxt', this.$options.nuxt);
@@ -86,15 +85,6 @@ export default {
 
   mounted () {
     this.$loading = this.$refs.loading;
-
-    let self = this;
-    function keyUp(event) {
-      if (event.keyCode === 73 && event.ctrlKey) {
-        self.loginEnabled = !self.loginEnabled;
-      }
-    }
-    window.document.onkeyup = keyUp;
-
     this.$store.dispatch('getThemes');
   },
 
