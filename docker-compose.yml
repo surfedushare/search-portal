@@ -5,11 +5,11 @@ services:
     volumes:
       - postgres_database:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=surf
+      - POSTGRES_USER=surf_db_user
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=surf
     healthcheck:
-        test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
+        test: psql -U surf_db_user surf -c "SELECT 'DBD::Pg ping test'"
     labels:
       nl.surfcatalog.db: "postgres"
 
