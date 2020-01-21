@@ -29,8 +29,6 @@ export default {
           this.full_loading = true;
         });
       });
-    this.linkedin_shared = false;
-    this.twitter_shared = false;
     this.setSocialCounters();
     this.href = validateHREF(window.location.href);
   },
@@ -250,6 +248,12 @@ export default {
           return
         }
         this.twitter_shared = true;
+      }
+      if (type === 'link') {
+        if (this.link_shared === true){
+          return
+        }
+        this.link_shared = true;
       }
 
       this.$store
