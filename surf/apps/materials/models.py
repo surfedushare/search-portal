@@ -194,7 +194,7 @@ class SharedResourceCounter(UUIDModel):
     This model is used to store counter values for different shared objects.
     """
 
-    counter_key = django_models.CharField(max_length=255)
+    counter_key = django_models.CharField(max_length=255, unique=True)
     counter_value = django_models.IntegerField(default=0)
     extra = django_models.CharField(max_length=255, null=True, blank=True)
 
