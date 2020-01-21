@@ -29,6 +29,8 @@ export default {
           this.full_loading = true;
         });
       });
+    this.linkedin_shared = false;
+    this.twitter_shared = false;
     this.setSocialCounters();
     this.href = validateHREF(window.location.href);
   },
@@ -236,6 +238,20 @@ export default {
      * @param type - String - social type
      */
     closeSocialSharing(type) {
+      /** This block prevents the user from sharing a material multiple times */
+      if (type === 'linkedin') {
+        if (this.linkedin_shared === true){
+          return
+        }
+        this.linkedin_shared = true;
+      }
+      if (type === 'twitter') {
+        if (this.twitter_shared === true){
+          return
+        }
+        this.twitter_shared = true;
+      }
+
       this.$store
         .dispatch('setMaterialSocial', {
           id: this.$route.params.id,
