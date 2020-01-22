@@ -5,11 +5,11 @@ services:
     volumes:
       - postgres_database:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=surf
+      - POSTGRES_USER=surf_db_user
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=surf
     healthcheck:
-        test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
+        test: psql -U surf_db_user surf -c "SELECT 'DBD::Pg ping test'"
     labels:
       nl.surfcatalog.db: "postgres"
 
@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: uwsgi --honour-stdin --http 0.0.0.0:8080 --wsgi-file surf/wsgi.py --py-autoreload=3 --processes 2 --env LANG=en_US.utf8
+    command: uwsgi --ini uwsgi.ini --py-autoreload=3
     environment:
       - PYTHONIOENCODING=UTF-8
       - PYTHONUNBUFFERED=1

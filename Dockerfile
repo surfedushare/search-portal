@@ -21,6 +21,10 @@ RUN pip3.6 install --no-cache-dir -r /src/requirements/requirements.prod.txt
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3.6 /usr/bin/python
 
+# create a user & group to run the commands. Needs to be done after yum install.
+# RUN groupadd -r surf_user -g 1001 && useradd surf_user -u 1001 -r -g surf_user
+# USER surf_user
+
 # Install source
 COPY . /src
 WORKDIR /src
@@ -30,4 +34,4 @@ ENTRYPOINT ["/src/entrypoint.sh"]
 
 EXPOSE 8080
 
-CMD ["uwsgi", "--http", ":8080", "--wsgi-file", "surf/wsgi.py", "--processes", "4"]
+CMD ["uwsgi", "--ini", "uwsgi.ini"]

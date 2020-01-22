@@ -159,7 +159,7 @@ class ElasticSearchApiClient:
             url = f"es.search(index={indices}, body={body})"
             QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
                      result_size=parsed_result['recordcount'], result=parsed_result).save()
-        return self.parse_elastic_result(result)
+        return parsed_result
 
     def get_materials_by_id(self, external_ids, **kwargs):
         result = self.elastic.search(
@@ -188,11 +188,20 @@ class ElasticSearchApiClient:
             if elastic_type == "publisher_date":
                 date_filter = filter_item
                 continue
-            filter_items.append({
-                "terms": {
-                    elastic_type: filter_item["items"]
-                }
-            })
+            # currently the elastic index doesn't index author separately so this is the best we can do until then.
+            # the downside of match is that it _does_ analyze so it'll do inexact matching
+            if elastic_type == 'author':
+                filter_items.append({
+                    "match": {
+                        elastic_type: " ".join(filter_item["items"])
+                    }
+                })
+            else:
+                filter_items.append({
+                    "terms": {
+                        elastic_type: filter_item["items"]
+                    }
+                })
         if date_filter:
             lower_bound, upper_bound = date_filter["items"]
             if lower_bound is not None or upper_bound is not None:
@@ -251,8 +260,10 @@ class ElasticSearchApiClient:
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
             return 'educational_levels'
-        elif external_id == "lom.lifecycle.contribute.publisherdate":
+        elif external_id == 'lom.lifecycle.contribute.publisherdate':
             return 'publisher_date'
-        elif external_id == "lom.classification.obk.discipline.id":
+        elif external_id == 'lom.classification.obk.discipline.id':
             return 'disciplines'
+        elif external_id == 'lom.lifecycle.contribute.author':
+            return 'author'
         return external_id
