@@ -236,6 +236,26 @@ export default {
      * @param type - String - social type
      */
     closeSocialSharing(type) {
+      /** This block prevents the user from sharing a material multiple times */
+      if (type === 'linkedin') {
+        if (this.linkedin_shared === true){
+          return
+        }
+        this.linkedin_shared = true;
+      }
+      if (type === 'twitter') {
+        if (this.twitter_shared === true){
+          return
+        }
+        this.twitter_shared = true;
+      }
+      if (type === 'link') {
+        if (this.link_shared === true){
+          return
+        }
+        this.link_shared = true;
+      }
+
       this.$store
         .dispatch('setMaterialSocial', {
           id: this.$route.params.id,
