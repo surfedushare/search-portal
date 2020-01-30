@@ -41,6 +41,7 @@
       <a
         href="/save-rating/"
         @click.prevent="showPopupSaveRating"
+        v-show=!rating_given
       >
         {{ $t('Geef-waardering') }}
       </a>
