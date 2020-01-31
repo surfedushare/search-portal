@@ -351,8 +351,10 @@ class CollectionViewSet(ModelViewSet):
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
-
             ids = [m.external_id for m in instance.materials.order_by("id").all()]
+
+            featured = CollectionMaterial.objects.filter(collection=instance, featured=True)
+            featured_ids = [m.material.external_id for m in featured]
 
             rv = dict(records=[],
                       records_total=0,
@@ -366,6 +368,12 @@ class CollectionViewSet(ModelViewSet):
                 res = ac.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
+                for record in records:
+                    if record['external_id'] in featured_ids:
+                        record['featured'] = True
+                    else:
+                        record['featured'] = False
+
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
 
