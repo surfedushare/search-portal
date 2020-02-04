@@ -16,6 +16,15 @@ from surf.apps.locale.models import Locale, LocaleHTML
 from surf.statusenums import PublishStatus
 
 
+class CommunityDetail(django_models.Model):
+    title = django_models.CharField(max_length=255)
+    description = django_models.TextField(max_length=16384, null=True, blank=True)
+    website_url = django_models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Community(UUIDModel):
     """
     Implementation of Community model. Communities are related to
@@ -24,11 +33,6 @@ class Community(UUIDModel):
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
 
     name = django_models.CharField(max_length=255, blank=True)
-    description = django_models.TextField(blank=True)
-    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
-                                                     null=True, blank=True)
-    description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE,
-                                                           null=True, blank=True)
     deleted_at = django_models.DateTimeField(null=True)
 
     members = django_models.ManyToManyField(
@@ -61,6 +65,9 @@ class Community(UUIDModel):
                                           verbose_name="SurfConext group id",
                                           null=True, blank=True)
 
+    language_detail = django_models.ManyToManyField(CommunityDetail, verbose_name="Language specific details",
+                                                    blank=True, through='CommunityLanguageDetail')
+
     class Meta:
         ordering = ['name']
         verbose_name_plural = 'Communities'
@@ -88,6 +95,22 @@ class Community(UUIDModel):
             if not re.match(regex, self.external_id):
                 raise ValidationError("SURFconext group id isn't a valid URN. Check "
                                       "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
+
+
+class CommunityLanguageDetail(django_models.Model):
+    detail = django_models.ForeignKey(CommunityDetail, on_delete=django_models.CASCADE)
+    community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE)
+    language_code = django_models.CharField(max_length=2)
+
+    def clean(self):
+        # force consistency
+        self.language_code = self.language_code.upper()
+
+    class Meta:
+        verbose_name = 'Community Detail Translation'
+        constraints = [
+            django_models.UniqueConstraint(fields=['language_code', 'community'], name='unique materials in collection')
+        ]
 
 
 class Team(django_models.Model):

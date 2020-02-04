@@ -1,7 +1,7 @@
 """
 This module provides django admin functionality for communities app.
 """
-
+from ckeditor.widgets import CKEditorWidget
 from django.contrib import admin
 from django import forms
 from django.core.files.images import get_image_dimensions
@@ -84,6 +84,11 @@ class TeamInline(admin.TabularInline):
     readonly_fields = ('team_id',)
 
 
+class CommunityDetailInline(admin.TabularInline):
+    model = models.CommunityLanguageDetail
+    extra = 0
+
+
 @admin.register(models.Community)
 class CommunityAdmin(admin.ModelAdmin):
     """
@@ -92,7 +97,7 @@ class CommunityAdmin(admin.ModelAdmin):
     list_display = ("name", "publish_status",)
     list_filter = ("publish_status", TrashListFilter,)
     readonly_fields = ("deleted_at",)
-    inlines = [TeamInline]
+    inlines = [TeamInline, CommunityDetailInline]
     form = CommunityForm
 
     actions = [restore_nodes, trash_nodes]
@@ -115,3 +120,17 @@ class CommunityAdmin(admin.ModelAdmin):
             del actions["delete_selected"]
             del actions["restore_nodes"]
         return actions
+
+
+class CommunityDetailForm(forms.ModelForm):
+    class Meta:
+        model = models.CommunityDetail
+        widgets = {
+            'description': CKEditorWidget(),
+        }
+        fields = '__all__'
+
+
+@admin.register(models.CommunityDetail)
+class CommunityDetailsAdmin(admin.ModelAdmin):
+    form = CommunityDetailForm
