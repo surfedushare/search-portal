@@ -329,17 +329,17 @@ class CollectionViewSet(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         # only active and authorized users can create collection
-        self._check_access(request.user)
+        check_access_to_collection(request.user)
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        # only active owners can update collection
-        self._check_access(request.user, instance=self.get_object())
+        # only active and authorized users can update collection
+        check_access_to_collection(request.user, instance=self.get_object())
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
-        # only active owners can delete collection
-        self._check_access(request.user, instance=self.get_object())
+        # only active and authorized users can destroy collection
+        check_access_to_collection(request.user, instance=self.get_object())
         return super().destroy(request, *args, **kwargs)
 
     @action(methods=['get', 'post', 'delete'], detail=True)
@@ -380,7 +380,7 @@ class CollectionViewSet(ModelViewSet):
             return Response(rv)
 
         # only owners can add/delete materials to/from collection
-        self._check_access(request.user, instance=instance)
+        check_access_to_collection(request.user, instance=instance)
         data = []
         for d in request.data:
             # validate request parameters
@@ -441,32 +441,32 @@ class CollectionViewSet(ModelViewSet):
         materials = Material.objects.filter(external_id__in=materials).all()
         instance.materials.remove(*materials)
 
-    @staticmethod
-    def _check_access(user, instance=None):
-        """
-        Check if user is active and owner of collection (if collection
-        is not None)
-        :param user: user
-        :param instance: collection instance
-        :return:
-        """
-        if not user or not user.is_authenticated:
-            raise AuthenticationFailed()
-        try:
-            community = Community.objects.get(collections__in=[instance])
-            Team.objects.get(community=community, user=user)
-        except ObjectDoesNotExist as exc:
-            raise AuthenticationFailed(f"User {user} is not a member of a community that has collection {instance}. "
+
+def check_access_to_collection(user, instance=None):
+    """
+    Check if user is active and owner of collection (if collection
+    is not None)
+    :param user: user
+    :param instance: collection instance
+    :return:
+    """
+    if not user or not user.is_authenticated:
+        raise AuthenticationFailed()
+    try:
+        community = Community.objects.get(collections__in=[instance])
+        Team.objects.get(community=community, user=user)
+    except ObjectDoesNotExist as exc:
+        raise AuthenticationFailed(f"User {user} is not a member of a community that has collection {instance}. "
+                                   f"Error: \"{exc}\"")
+    except MultipleObjectsReturned as exc:
+        logger.warning(f"The collection {instance} is in multiple communities. Error:\"{exc}\"")
+        communities = Community.objects.filter(collections__in=[instance])
+        teams = Team.objects.filter(community__in=communities, user=user)
+        if len(teams) > 0:
+            logger.debug(f"At least one team satisfies the requirement of be able to delete this collection.")
+        else:
+            raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
                                        f"Error: \"{exc}\"")
-        except MultipleObjectsReturned as exc:
-            logger.warning(f"The collection {instance} is in multiple communities. Error:\"{exc}\"")
-            communities = Community.objects.filter(collections__in=[instance])
-            teams = Team.objects.filter(community__in=communities, user=user)
-            if len(teams) > 0:
-                logger.debug(f"At least one team satisfies the requirement of be able to delete this collection.")
-            else:
-                raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
-                                           f"Error: \"{exc}\"")
 
 
 def add_share_counters_to_materials(materials):
