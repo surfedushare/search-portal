@@ -87,6 +87,12 @@ class Community(UUIDModel):
         return self.name
 
     def clean(self):
+        # validate image sizes
+        if self.logo and (self.logo.width != 230 or self.logo.height != 136):
+            raise ValidationError("The proportion of the featured image should be 388x227")
+        if self.featured_image and (self.featured_image.width != 388 or self.featured_image.height != 227):
+            raise ValidationError("The proportion of the featured image should be 388x227")
+
         # Check whether the entered external_id is a valid URN.
         # regex taken from the O'Reilly Regular Expressions Cookbook, 2nd Edition
         # https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s06.html
