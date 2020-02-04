@@ -185,7 +185,9 @@ class CollectionMaterial(django_models.Model):
     featured = django_models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = 'Material'
+        verbose_name = 'Material Collection Link'
+        verbose_name_plural = 'Materials'
+        unique_together = ('collection', 'material')
 
 
 class SharedResourceCounter(UUIDModel):
