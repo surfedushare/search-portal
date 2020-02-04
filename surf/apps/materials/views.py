@@ -297,6 +297,32 @@ class MaterialApplaudAPIView(APIView):
         return Response(material_object.applaud_count)
 
 
+class CollectionMaterialPromotionAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        from django.core import serializers
+        # only active and authorized users can promote materials in the collection
+        collection_instance = Collection.objects.get(id=kwargs['collection_id'])
+        check_access_to_collection(request.user, instance=collection_instance)
+
+        # check whether the material is actually in the collection
+        external_id = kwargs['external_id']
+        collection_materials = CollectionMaterial.objects.filter(
+            collection=collection_instance, material__external_id=external_id)
+        if not collection_materials:
+            raise Http404(f"Collection {collection_instance} does not contain a material with "
+                          f"external id {external_id}, cannot promote or demote")
+
+        # The material should only be in the collection once
+        assert len(collection_materials) == 1, f"Material with id {external_id} is in collection " \
+                                               f"{collection_instance} multiple times."
+        collection_material = collection_materials[0]
+        # promote or demote the material
+        collection_material.featured = not collection_material.featured
+        collection_material.save()
+
+        return Response(serializers.serialize('python', [collection_material]))
+
+
 class CollectionViewSet(ModelViewSet):
     """
     View class that provides CRUD methods for Collection and `get`, `add`
