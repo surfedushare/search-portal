@@ -29,7 +29,7 @@ class CommunitySerializer(serializers.ModelSerializer):
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
-    language_details = serializers.SerializerMethodField()
+    details = serializers.SerializerMethodField()
     publish_status = serializers.SerializerMethodField()
 
     @staticmethod
@@ -55,7 +55,7 @@ class CommunitySerializer(serializers.ModelSerializer):
         return str(PublishStatus.get(obj.publish_status))
 
     @staticmethod
-    def get_language_details(obj):
+    def get_details(obj):
         details = CommunityDetail.objects.filter(community=obj).all()
         return [CommunityDetailSerializer(detail).data for detail in details]
 
@@ -63,7 +63,7 @@ class CommunitySerializer(serializers.ModelSerializer):
         model = Community
         fields = ('id', 'external_id', 'name', 'members_count',
                   'collections_count', 'materials_count', 'publish_status',
-                  'language_details',)
+                  'details',)
 
 
 class CommunityDisciplineSerializer(MpttFilterItemSerializer):
