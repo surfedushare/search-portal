@@ -6,12 +6,11 @@ from collections import OrderedDict
 
 from rest_framework import serializers
 
-from surf.apps.communities.models import Community
+from surf.apps.communities.models import Community, CommunityDetail
 from surf.apps.communities.models import PublishStatus
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.filters.utils import add_default_material_filters
-from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
 from surf.vendor.search.searchselector import get_search_client
 
 
@@ -22,8 +21,13 @@ class CommunityUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Community
-        fields = ('name', 'description', 'website_url',
-                  'logo', 'featured_image',)
+        fields = ('name',)
+
+
+class CommunityDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommunityDetail
+        exclude = ('id', 'community',)
 
 
 class CommunitySerializer(CommunityUpdateSerializer):
@@ -35,8 +39,7 @@ class CommunitySerializer(CommunityUpdateSerializer):
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
-    title_translations = LocaleSerializer()
-    description_translations = LocaleHTMLSerializer()
+    language_details = serializers.SerializerMethodField()
     publish_status = serializers.SerializerMethodField()
 
     @staticmethod
@@ -61,12 +64,16 @@ class CommunitySerializer(CommunityUpdateSerializer):
     def get_publish_status(obj):
         return str(PublishStatus.get(obj.publish_status))
 
+    @staticmethod
+    def get_language_details(obj):
+        details = CommunityDetail.objects.filter(community=obj).all()
+        return [CommunityDetailSerializer(detail).data for detail in details]
+
     class Meta:
         model = Community
-        fields = ('id', 'external_id', 'name', 'description', 'website_url',
-                  'logo', 'featured_image', 'members_count',
-                  'collections_count', 'materials_count',
-                  'title_translations', 'description_translations', 'publish_status',)
+        fields = ('id', 'external_id', 'name', 'members_count',
+                  'collections_count', 'materials_count', 'publish_status',
+                  'language_details',)
 
 
 class CommunityDisciplineSerializer(MpttFilterItemSerializer):
