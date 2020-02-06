@@ -16,15 +16,6 @@ from surf.apps.locale.models import Locale, LocaleHTML
 from surf.statusenums import PublishStatus
 
 
-class CommunityDetail(django_models.Model):
-    title = django_models.CharField(max_length=255)
-    description = django_models.TextField(max_length=16384, null=True, blank=True)
-    website_url = django_models.URLField(blank=True, null=True)
-
-    def __str__(self):
-        return self.title
-
-
 class Community(UUIDModel):
     """
     Implementation of Community model. Communities are related to
@@ -41,32 +32,10 @@ class Community(UUIDModel):
         blank=True,
     )
 
-    logo = django_models.ImageField(
-        upload_to='communities',
-        blank=True,
-        null=True,
-        help_text="The proportion of the image should be 230x136")
-
-    featured_image = django_models.ImageField(
-        upload_to='communities',
-        blank=True,
-        null=True,
-        help_text="The proportion of the image should be 388x227")
-
-    website_url = django_models.URLField(blank=True, null=True)
-
     # list of community collections
-    collections = django_models.ManyToManyField(Collection,
-                                                blank=True,
-                                                related_name="communities")
-
+    collections = django_models.ManyToManyField(Collection, blank=True, related_name="communities")
     # identifier of SURFconext Team
-    external_id = django_models.CharField(max_length=255,
-                                          verbose_name="SurfConext group id",
-                                          null=True, blank=True)
-
-    language_detail = django_models.ManyToManyField(CommunityDetail, verbose_name="Language specific details",
-                                                    blank=True, through='CommunityLanguageDetail')
+    external_id = django_models.CharField(max_length=255, verbose_name="SurfConext group id", null=True, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -87,12 +56,6 @@ class Community(UUIDModel):
         return self.name
 
     def clean(self):
-        # validate image sizes
-        if self.logo and (self.logo.width != 230 or self.logo.height != 136):
-            raise ValidationError("The proportion of the featured image should be 388x227")
-        if self.featured_image and (self.featured_image.width != 388 or self.featured_image.height != 227):
-            raise ValidationError("The proportion of the featured image should be 388x227")
-
         # Check whether the entered external_id is a valid URN.
         # regex taken from the O'Reilly Regular Expressions Cookbook, 2nd Edition
         # https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s06.html
@@ -103,20 +66,37 @@ class Community(UUIDModel):
                                       "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
 
 
-class CommunityLanguageDetail(django_models.Model):
-    detail = django_models.ForeignKey(CommunityDetail, on_delete=django_models.CASCADE)
+class CommunityDetail(django_models.Model):
     community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE)
     language_code = django_models.CharField(max_length=2)
+    title = django_models.CharField(max_length=255)
+    description = django_models.TextField(max_length=16384, null=True, blank=True)
+    website_url = django_models.URLField(blank=True, null=True)
+
+    logo = django_models.ImageField(upload_to='communities', blank=True, null=True,
+                                    help_text="The proportion of the image should be 230x136")
+
+    featured_image = django_models.ImageField(upload_to='communities', blank=True, null=True,
+                                              help_text="The proportion of the image should be 388x227")
+
+    class Meta:
+        # only allow unique language codes for communities
+        constraints = [
+            django_models.UniqueConstraint(fields=['language_code', 'community'], name='unique materials in collection')
+        ]
 
     def clean(self):
         # force consistency
         self.language_code = self.language_code.upper()
 
-    class Meta:
-        verbose_name = 'Community Detail Translation'
-        constraints = [
-            django_models.UniqueConstraint(fields=['language_code', 'community'], name='unique materials in collection')
-        ]
+        # validate image sizes
+        if self.logo and (self.logo.width != 230 or self.logo.height != 136):
+            raise ValidationError("The dimensions of the logo image should be 230x136px")
+        if self.featured_image and (self.featured_image.width != 388 or self.featured_image.height != 227):
+            raise ValidationError("The dimensions of the featured image should be 388x227px")
+
+    def __str__(self):
+        return self.title
 
 
 class Team(django_models.Model):

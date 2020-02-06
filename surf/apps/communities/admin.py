@@ -64,8 +64,8 @@ class TeamInline(admin.TabularInline):
     readonly_fields = ('team_id',)
 
 
-class CommunityDetailInline(admin.TabularInline):
-    model = models.CommunityLanguageDetail
+class CommunityDetailInline(admin.StackedInline):
+    model = models.CommunityDetail
     extra = 0
 
 
@@ -100,17 +100,3 @@ class CommunityAdmin(admin.ModelAdmin):
             del actions["delete_selected"]
             del actions["restore_nodes"]
         return actions
-
-
-class CommunityDetailForm(forms.ModelForm):
-    class Meta:
-        model = models.CommunityDetail
-        widgets = {
-            'description': CKEditorWidget(),
-        }
-        fields = '__all__'
-
-
-@admin.register(models.CommunityDetail)
-class CommunityDetailsAdmin(admin.ModelAdmin):
-    form = CommunityDetailForm
