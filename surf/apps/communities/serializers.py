@@ -14,23 +14,13 @@ from surf.apps.filters.utils import add_default_material_filters
 from surf.vendor.search.searchselector import get_search_client
 
 
-class CommunityUpdateSerializer(serializers.ModelSerializer):
-    """
-    Community instance serializer for update methods
-    """
-
-    class Meta:
-        model = Community
-        fields = ('name',)
-
-
 class CommunityDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommunityDetail
         exclude = ('id', 'community',)
 
 
-class CommunitySerializer(CommunityUpdateSerializer):
+class CommunitySerializer(serializers.ModelSerializer):
     """
     Community instance serializer for get methods
     """

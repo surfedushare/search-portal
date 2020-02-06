@@ -18,7 +18,6 @@ from rest_framework.viewsets import GenericViewSet
 from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import (
     CommunitySerializer,
-    CommunityUpdateSerializer,
     CommunityDisciplineSerializer
 )
 from surf.apps.filters.models import MpttFilterItem
@@ -44,16 +43,6 @@ class CommunityViewSet(ListModelMixin,
     queryset = Community.objects.filter(deleted_at=None)
     serializer_class = CommunitySerializer
     permission_classes = []
-
-    def get_serializer_class(self):
-        """
-        Returns serializer class depending on action method
-        """
-
-        if self.action == 'update':
-            return CommunityUpdateSerializer
-
-        return CommunitySerializer
 
     def update(self, request, *args, **kwargs):
         # only active admins can update community
