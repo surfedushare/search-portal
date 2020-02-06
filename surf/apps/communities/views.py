@@ -3,6 +3,8 @@ This module contains implementation of REST API views for communities app.
 """
 
 import logging
+
+from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count
 from rest_framework.decorators import action
@@ -13,15 +15,16 @@ from rest_framework.mixins import (
     UpdateModelMixin
 )
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from surf.apps.communities.models import Community, Team
+from surf.apps.communities.models import Community, Team, CommunityDetail
 from surf.apps.communities.serializers import (
     CommunitySerializer,
-    CommunityDisciplineSerializer
-)
+    CommunityDisciplineSerializer,
+    CommunityDetailSerializer)
 from surf.apps.filters.models import MpttFilterItem
-from surf.apps.materials.models import Collection, Material
+from surf.apps.materials.models import Collection
 from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
@@ -46,7 +49,7 @@ class CommunityViewSet(ListModelMixin,
 
     def update(self, request, *args, **kwargs):
         # only active admins can update community
-        check_access_to_community(request.user, instance=self.get_object())
+        #check_access_to_community(request.user, instance=self.get_object())
         return super().update(request, *args, **kwargs)
 
     @action(methods=['get', 'post', 'delete'], detail=True)
@@ -64,7 +67,7 @@ class CommunityViewSet(ListModelMixin,
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]
-            self._check_access(request.user, instance=instance, collection_ids=collection_ids)
+            check_access_to_community(request.user, instance=instance)
             if request.method == "POST":
                 self._add_collections(instance, data)
                 qs = qs.filter(id__in=collection_ids)
@@ -149,6 +152,21 @@ class CommunityViewSet(ListModelMixin,
         collections = [c["id"] for c in collections]
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.remove(*collections)
+
+
+class CommunityDetailAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        language_code = kwargs['language_code'].upper()
+        community_id = kwargs['community_id']
+        detail_object = CommunityDetail.objects.get(community__id=community_id, language_code=language_code)
+
+        return Response(CommunityDetailSerializer(detail_object).data)
+
+    def put(self, request, some_variable, *args, **kwargs):
+        return Response("AHA")
+
+    def patch(self, request, some_variable, *args, **kwargs):
+        return Response("AHA")
 
 
 def check_access_to_community(user, instance=None):

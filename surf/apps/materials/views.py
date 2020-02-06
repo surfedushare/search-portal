@@ -5,9 +5,10 @@ This module contains implementation of REST API views for materials app.
 import json
 import logging
 
+from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db.models import Count
 from django.db.models import F
-from django.db.models import Q, Count
 from django.http import Http404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
@@ -49,9 +50,8 @@ from surf.apps.materials.utils import (
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID
 )
-from surf.vendor.search.searchselector import get_search_client
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-
+from surf.vendor.search.searchselector import get_search_client
 
 logger = logging.getLogger(__name__)
 
@@ -299,7 +299,6 @@ class MaterialApplaudAPIView(APIView):
 
 class CollectionMaterialPromotionAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        from django.core import serializers
         # only active and authorized users can promote materials in the collection
         collection_instance = Collection.objects.get(id=kwargs['collection_id'])
         check_access_to_collection(request.user, instance=collection_instance)
