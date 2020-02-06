@@ -24,7 +24,7 @@ class Community(UUIDModel):
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
 
     name = django_models.CharField(max_length=255, blank=True)
-    deleted_at = django_models.DateTimeField(null=True)
+    deleted_at = django_models.DateTimeField(null=True, blank=True)
 
     members = django_models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -64,6 +64,11 @@ class Community(UUIDModel):
             if not re.match(regex, self.external_id):
                 raise ValidationError("SURFconext group id isn't a valid URN. Check "
                                       "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
+
+    # by overriding the save method we can force a clean on the community on an update.
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Community, self).save(*args, **kwargs)
 
 
 class CommunityDetail(django_models.Model):
