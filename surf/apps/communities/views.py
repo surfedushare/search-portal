@@ -46,7 +46,7 @@ class CommunityViewSet(ListModelMixin,
 
     def update(self, request, *args, **kwargs):
         # only active admins can update community
-        self._check_access(request.user, instance=self.get_object())
+        check_access_to_community(request.user, instance=self.get_object())
         return super().update(request, *args, **kwargs)
 
     @action(methods=['get', 'post', 'delete'], detail=True)
@@ -150,21 +150,20 @@ class CommunityViewSet(ListModelMixin,
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.remove(*collections)
 
-    @staticmethod
-    def _check_access(user, instance=None, collection_ids=None):
-        """
-        Check if user is active and admin of community
-        :param user: user
-        :param instance: community instance
-        :param collection_ids: list of identifiers of collections
-        added/deleted to/from community
-        """
-        if not user or not user.is_authenticated:
-            raise AuthenticationFailed()
-        try:
-            Team.objects.get(community=instance, user=user)
-        except ObjectDoesNotExist as exc:
-            raise AuthenticationFailed(f"User {user} is not a member of community {instance}. Error: \"{exc}\"")
-        except MultipleObjectsReturned as exc:
-            # if somehow there are user duplicates on a community, don't crash
-            logger.warning(f"User {user} is in community {instance} multiple times. Error: \"{exc}\"")
+
+def check_access_to_community(user, instance=None):
+    """
+    Check if user is active and admin of community
+    :param user: user
+    :param instance: community instance
+    added/deleted to/from community
+    """
+    if not user or not user.is_authenticated:
+        raise AuthenticationFailed()
+    try:
+        Team.objects.get(community=instance, user=user)
+    except ObjectDoesNotExist as exc:
+        raise AuthenticationFailed(f"User {user} is not a member of community {instance}. Error: \"{exc}\"")
+    except MultipleObjectsReturned as exc:
+        # if somehow there are user duplicates on a community, don't crash
+        logger.warning(f"User {user} is in community {instance} multiple times. Error: \"{exc}\"")
