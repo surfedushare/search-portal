@@ -158,7 +158,11 @@ class CommunityDetailAPIView(APIView):
     def get(self, request, *args, **kwargs):
         language_code = kwargs['language_code'].upper()
         community_id = kwargs['community_id']
-        detail_object = CommunityDetail.objects.get(community__id=community_id, language_code=language_code)
+
+        try:
+            detail_object = CommunityDetail.objects.get(community__id=community_id, language_code=language_code)
+        except ObjectDoesNotExist:
+            return Response(f"Community has no details for this language.")
 
         return Response(CommunityDetailSerializer(detail_object).data)
 
@@ -167,7 +171,12 @@ class CommunityDetailAPIView(APIView):
         community_id = kwargs['community_id']
         community_object = Community.objects.get(id=community_id)
         check_access_to_community(request.user, community_object)
-        detail_object = CommunityDetail.objects.get(community__id=community_id, language_code=language_code)
+        detail_object, created = CommunityDetail.objects.get_or_create(community=community_object,
+                                                                       language_code=language_code)
+        for attr, value in request.data.items():
+            if value is not None:
+                setattr(detail_object, attr, value)
+        detail_object.save()
 
         return Response(CommunityDetailSerializer(detail_object).data)
 
