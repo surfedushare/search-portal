@@ -162,11 +162,14 @@ class CommunityDetailAPIView(APIView):
 
         return Response(CommunityDetailSerializer(detail_object).data)
 
-    def put(self, request, some_variable, *args, **kwargs):
-        return Response("AHA")
+    def post(self, request, *args, **kwargs):
+        language_code = kwargs['language_code'].upper()
+        community_id = kwargs['community_id']
+        community_object = Community.objects.get(id=community_id)
+        check_access_to_community(request.user, community_object)
+        detail_object = CommunityDetail.objects.get(community__id=community_id, language_code=language_code)
 
-    def patch(self, request, some_variable, *args, **kwargs):
-        return Response("AHA")
+        return Response(CommunityDetailSerializer(detail_object).data)
 
 
 def check_access_to_community(user, instance=None):
