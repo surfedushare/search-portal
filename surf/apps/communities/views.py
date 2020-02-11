@@ -67,7 +67,10 @@ class CommunityViewSet(ListModelMixin,
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]
-            check_access_to_community(request.user, instance=instance)
+            try:
+                check_access_to_community(request.user, instance)
+            except AuthenticationFailed as exc:
+                return Response(str(exc), status=401)
             if request.method == "POST":
                 self._add_collections(instance, data)
                 qs = qs.filter(id__in=collection_ids)
@@ -170,13 +173,20 @@ class CommunityDetailAPIView(APIView):
         language_code = kwargs['language_code'].upper()
         community_id = kwargs['community_id']
         community_object = Community.objects.get(id=community_id)
-        check_access_to_community(request.user, community_object)
+        try:
+            check_access_to_community(request.user, community_object)
+        except AuthenticationFailed as exc:
+            return Response(str(exc), status=401)
         detail_object, created = CommunityDetail.objects.get_or_create(community=community_object,
                                                                        language_code=language_code)
-        for attr, value in request.data.items():
-            if value is not None:
-                setattr(detail_object, attr, value)
-        detail_object.save()
+        try:
+            for attr, value in request.data.items():
+                if value is not None:
+                    setattr(detail_object, attr, value)
+            detail_object.clean()
+            detail_object.save()
+        except Exception as exc:
+            return Response(f"Error while updating the requested object: {str(exc)}.", status=400)
 
         return Response(CommunityDetailSerializer(detail_object).data)
 
