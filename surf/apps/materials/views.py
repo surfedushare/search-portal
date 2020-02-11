@@ -301,7 +301,10 @@ class CollectionMaterialPromotionAPIView(APIView):
     def post(self, request, *args, **kwargs):
         # only active and authorized users can promote materials in the collection
         collection_instance = Collection.objects.get(id=kwargs['collection_id'])
-        check_access_to_collection(request.user, instance=collection_instance)
+        try:
+            check_access_to_collection(request.user, instance=collection_instance)
+        except AuthenticationFailed as exc:
+            return Response(str(exc), status=401)
 
         # check whether the material is actually in the collection
         external_id = kwargs['external_id']
@@ -354,17 +357,26 @@ class CollectionViewSet(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         # only active and authorized users can create collection
-        check_access_to_collection(request.user)
+        try:
+            check_access_to_collection(request.user)
+        except AuthenticationFailed as exc:
+            return Response(str(exc), status=401)
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
         # only active and authorized users can update collection
-        check_access_to_collection(request.user, instance=self.get_object())
+        try:
+            check_access_to_collection(request.user, instance=self.get_object())
+        except AuthenticationFailed as exc:
+            return Response(str(exc), status=401)
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         # only active and authorized users can destroy collection
-        check_access_to_collection(request.user, instance=self.get_object())
+        try:
+            check_access_to_collection(request.user, instance=self.get_object())
+        except AuthenticationFailed as exc:
+            return Response(str(exc), status=401)
         return super().destroy(request, *args, **kwargs)
 
     @action(methods=['get', 'post', 'delete'], detail=True)
@@ -405,7 +417,10 @@ class CollectionViewSet(ModelViewSet):
             return Response(rv)
 
         # only owners can add/delete materials to/from collection
-        check_access_to_collection(request.user, instance=instance)
+        try:
+            check_access_to_collection(request.user, instance=instance)
+        except AuthenticationFailed as exc:
+            return Response(str(exc), status=401)
         data = []
         for d in request.data:
             # validate request parameters
