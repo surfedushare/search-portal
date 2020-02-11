@@ -52,7 +52,10 @@ class ElasticSearchApiClient:
             ElasticSearchApiClient.parse_elastic_hit(hit)
             for hit in hits['hits']
         ]
-
+        # sometimes elastic will return a doc_count of 1 even if there are no results at all.
+        # don't trust elasticsearch on record count if there aren't enough records for a single page.
+        if len(result['records']) < 5:
+            result['recordcount'] = len(result['records'])
         return result
 
     @staticmethod
