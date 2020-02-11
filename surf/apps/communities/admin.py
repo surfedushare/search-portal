@@ -1,10 +1,8 @@
 """
 This module provides django admin functionality for communities app.
 """
-from ckeditor.widgets import CKEditorWidget
-from django.contrib import admin
 from django import forms
-from django.core.files.images import get_image_dimensions
+from django.contrib import admin
 
 from surf.apps.communities import models
 from surf.apps.communities.models import PublishStatus

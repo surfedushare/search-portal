@@ -4,7 +4,6 @@ This module contains implementation of REST API views for communities app.
 
 import logging
 
-from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count
 from rest_framework.decorators import action
