@@ -149,7 +149,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'surf',
-        'USER': 'surf',
+        'USER': os.environ.get('DJANGO_POSTGRES_USER', 'django'),
         'PASSWORD': os.environ.get('DJANGO_POSTGRES_PASSWORD', 'qwerty'),
         'HOST': 'postgres',
         'PORT': 5432,

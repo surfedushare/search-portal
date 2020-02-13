@@ -12,3 +12,6 @@ backup-db:
 
 import-db:
 	cat $(backup) | docker exec -i $(shell docker ps -qf label=nl.surfcatalog.db) psql -h localhost -U surf surf
+
+create-django-user:
+	cat postgres/create_django_user.sql | docker exec -i $(shell docker ps -qf label=nl.surfcatalog.db) psql -h localhost -U surf surf
