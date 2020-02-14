@@ -38,6 +38,7 @@ export default {
       is_loading_applaud: true,
       is_applauded: false,
       rating: false,
+      rating_given: false,
       is_copied: false,
       formData: {
         page_size: 10,
@@ -60,6 +61,7 @@ export default {
      */
     closePopupSaveRating() {
       this.isShow = false;
+      this.rating_given = true;
     },
 
     /**
