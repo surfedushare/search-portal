@@ -4,7 +4,6 @@ This module contains API view serializers for communities app.
 
 from collections import OrderedDict
 
-from django.db import IntegrityError
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community, CommunityDetail
@@ -69,7 +68,7 @@ class CommunitySerializer(serializers.ModelSerializer):
 
         community_details = instance.community_details.all()
 
-        new = {data['language_code'] for data in details_data}
+        new = {data['language_code'].upper() for data in details_data}
         existing = {detail.language_code for detail in community_details}
         languages_to_update = new.intersection(existing)
         languages_to_create = new.difference(existing)
@@ -78,23 +77,17 @@ class CommunitySerializer(serializers.ModelSerializer):
         languages_to_create = [details for details in details_data if details['language_code'] in languages_to_create]
 
         for language in languages_to_create:
-            try:
-                detail_object = CommunityDetail.objects.create(community=instance, **language)
-                detail_object.clean()
-                detail_object.save()
-            except IntegrityError as exc:
-                detail_object.delete()
+            detail_object = CommunityDetail.objects.create(community=instance, **language)
+            detail_object.clean()
+            detail_object.save()
 
         for language in languages_to_update:
-            detail_object = instance.community_details.get(language_code=language['language_code'])
+            detail_object = instance.community_details.get(language_code=language['language_code'].upper())
             for attr, value in language.items():
                 if value is not None:
                     setattr(detail_object, attr, value)
-            try:
-                detail_object.clean()
-                detail_object.save()
-            except IntegrityError as exc:
-                detail_object.delete()
+            detail_object.clean()
+            detail_object.save()
         return instance
 
     class Meta:
