@@ -57,8 +57,12 @@ class CommunitySerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         details_data = validated_data.pop('community_details')
         community = Community.objects.create(**validated_data)
+        community.clean()
+        community.save()
         for detail_data in details_data:
-            CommunityDetail.objects.create(community=community, **detail_data)
+            detail_object = CommunityDetail.objects.create(community=community, **detail_data)
+            detail_object.clean()
+            detail_object.save()
         return community
 
     def update(self, instance, validated_data):
