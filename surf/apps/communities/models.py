@@ -72,7 +72,7 @@ class Community(UUIDModel):
 
 
 class CommunityDetail(django_models.Model):
-    community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE)
+    community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE, related_name='community_details')
     language_code = django_models.CharField(max_length=2)
     title = django_models.CharField(max_length=255)
     description = django_models.TextField(max_length=16384, null=True, blank=True)
@@ -87,7 +87,7 @@ class CommunityDetail(django_models.Model):
     class Meta:
         # only allow unique language codes for communities
         constraints = [
-            django_models.UniqueConstraint(fields=['language_code', 'community'], name='unique materials in collection')
+            django_models.UniqueConstraint(fields=['language_code', 'community'], name='unique languages in community')
         ]
 
     def clean(self):

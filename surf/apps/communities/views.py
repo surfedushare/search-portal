@@ -14,14 +14,12 @@ from rest_framework.mixins import (
     UpdateModelMixin
 )
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from surf.apps.communities.models import Community, Team, CommunityDetail
+from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import (
     CommunitySerializer,
-    CommunityDisciplineSerializer,
-    CommunityDetailSerializer)
+    CommunityDisciplineSerializer,)
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.materials.models import Collection
 from surf.apps.materials.serializers import (
@@ -48,7 +46,7 @@ class CommunityViewSet(ListModelMixin,
 
     def update(self, request, *args, **kwargs):
         # only active admins can update community
-        #check_access_to_community(request.user, instance=self.get_object())
+        check_access_to_community(request.user, instance=self.get_object())
         return super().update(request, *args, **kwargs)
 
     @action(methods=['get', 'post', 'delete'], detail=True)
@@ -154,40 +152,6 @@ class CommunityViewSet(ListModelMixin,
         collections = [c["id"] for c in collections]
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.remove(*collections)
-
-
-class CommunityDetailAPIView(APIView):
-    def get(self, request, *args, **kwargs):
-        language_code = kwargs['language_code'].upper()
-        community_id = kwargs['community_id']
-
-        try:
-            detail_object = CommunityDetail.objects.get(community__id=community_id, language_code=language_code)
-        except ObjectDoesNotExist:
-            return Response(f"Community has no details for this language.")
-
-        return Response(CommunityDetailSerializer(detail_object).data)
-
-    def post(self, request, *args, **kwargs):
-        language_code = kwargs['language_code'].upper()
-        community_id = kwargs['community_id']
-        community_object = Community.objects.get(id=community_id)
-        try:
-            check_access_to_community(request.user, community_object)
-        except AuthenticationFailed as exc:
-            return Response(str(exc), status=401)
-        detail_object, created = CommunityDetail.objects.get_or_create(community=community_object,
-                                                                       language_code=language_code)
-        try:
-            for attr, value in request.data.items():
-                if value is not None:
-                    setattr(detail_object, attr, value)
-            detail_object.clean()
-            detail_object.save()
-        except Exception as exc:
-            return Response(f"Error while updating the requested object: {str(exc)}.", status=400)
-
-        return Response(CommunityDetailSerializer(detail_object).data)
 
 
 def check_access_to_community(user, instance=None):

@@ -39,7 +39,7 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
-from surf.apps.communities.views import CommunityViewSet, CommunityDetailAPIView
+from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsView
 from surf.apps.locale.views import get_localisation_strings
@@ -69,7 +69,6 @@ apipatterns = [
     url(r'^filteritems/', MpttFilterItems.as_view()),
     url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
         CollectionMaterialPromotionAPIView.as_view()),
-    url(r'^communities/(?P<community_id>.+)/(?P<language_code>.+)/', CommunityDetailAPIView.as_view()),
 ] + router.urls
 
 urlpatterns = [

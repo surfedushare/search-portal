@@ -4,6 +4,7 @@ This module contains API view serializers for communities app.
 
 from collections import OrderedDict
 
+from django.db import IntegrityError
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community, CommunityDetail
@@ -29,8 +30,8 @@ class CommunitySerializer(serializers.ModelSerializer):
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
-    details = serializers.SerializerMethodField()
     publish_status = serializers.SerializerMethodField()
+    community_details = CommunityDetailSerializer(many=True)
 
     @staticmethod
     def get_members_count(obj):
@@ -54,16 +55,53 @@ class CommunitySerializer(serializers.ModelSerializer):
     def get_publish_status(obj):
         return str(PublishStatus.get(obj.publish_status))
 
-    @staticmethod
-    def get_details(obj):
-        details = CommunityDetail.objects.filter(community=obj).all()
-        return [CommunityDetailSerializer(detail).data for detail in details]
+    def create(self, validated_data):
+        details_data = validated_data.pop('community_details')
+        community = Community.objects.create(**validated_data)
+        for detail_data in details_data:
+            CommunityDetail.objects.create(community=community, **detail_data)
+        return community
+
+    def update(self, instance, validated_data):
+        # we could update the community instance itself, however the only value that can be updated
+        # is the name which is only used internally so it's not required through the API
+        details_data = validated_data.pop('community_details')
+
+        community_details = instance.community_details.all()
+
+        new = {data['language_code'] for data in details_data}
+        existing = {detail.language_code for detail in community_details}
+        languages_to_update = new.intersection(existing)
+        languages_to_create = new.difference(existing)
+
+        languages_to_update = [details for details in details_data if details['language_code'] in languages_to_update]
+        languages_to_create = [details for details in details_data if details['language_code'] in languages_to_create]
+
+        for language in languages_to_create:
+            try:
+                detail_object = CommunityDetail.objects.create(community=instance, **language)
+                detail_object.clean()
+                detail_object.save()
+            except IntegrityError as exc:
+                detail_object.delete()
+
+        for language in languages_to_update:
+            detail_object = instance.community_details.get(language_code=language['language_code'])
+            for attr, value in language.items():
+                if value is not None:
+                    setattr(detail_object, attr, value)
+            try:
+                detail_object.clean()
+                detail_object.save()
+            except IntegrityError as exc:
+                detail_object.delete()
+        return instance
 
     class Meta:
         model = Community
         fields = ('id', 'external_id', 'name', 'members_count',
                   'collections_count', 'materials_count', 'publish_status',
-                  'details',)
+                  'community_details',)
 
 
 class CommunityDisciplineSerializer(MpttFilterItemSerializer):
