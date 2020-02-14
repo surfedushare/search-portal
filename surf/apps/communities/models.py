@@ -65,11 +65,6 @@ class Community(UUIDModel):
                 raise ValidationError("SURFconext group id isn't a valid URN. Check "
                                       "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
 
-    # by overriding the save method we can force a clean on the community on an update.
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        return super(Community, self).save(*args, **kwargs)
-
 
 class CommunityDetail(django_models.Model):
     community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE, related_name='community_details')
