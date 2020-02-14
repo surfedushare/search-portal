@@ -6,6 +6,7 @@ import logging
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.mixins import (
@@ -44,10 +45,12 @@ class CommunityViewSet(ListModelMixin,
     serializer_class = CommunitySerializer
     permission_classes = []
 
-    def update(self, request, *args, **kwargs):
-        # only active admins can update community
-        check_access_to_community(request.user, instance=self.get_object())
-        return super().update(request, *args, **kwargs)
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        if self.request.method != 'GET':
+            check_access_to_community(self.request.user, obj)
+        return obj
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def collections(self, request, pk=None, **kwargs):
@@ -64,10 +67,6 @@ class CommunityViewSet(ListModelMixin,
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]
-            try:
-                check_access_to_community(request.user, instance)
-            except AuthenticationFailed as exc:
-                return Response(str(exc), status=401)
             if request.method == "POST":
                 self._add_collections(instance, data)
                 qs = qs.filter(id__in=collection_ids)

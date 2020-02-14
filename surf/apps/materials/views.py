@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count
 from django.db.models import F
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -301,10 +302,6 @@ class CollectionMaterialPromotionAPIView(APIView):
     def post(self, request, *args, **kwargs):
         # only active and authorized users can promote materials in the collection
         collection_instance = Collection.objects.get(id=kwargs['collection_id'])
-        try:
-            check_access_to_collection(request.user, instance=collection_instance)
-        except AuthenticationFailed as exc:
-            return Response(str(exc), status=401)
 
         # check whether the material is actually in the collection
         external_id = kwargs['external_id']
@@ -355,29 +352,12 @@ class CollectionViewSet(ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        # only active and authorized users can create collection
-        try:
-            check_access_to_collection(request.user)
-        except AuthenticationFailed as exc:
-            return Response(str(exc), status=401)
-        return super().create(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        # only active and authorized users can update collection
-        try:
-            check_access_to_collection(request.user, instance=self.get_object())
-        except AuthenticationFailed as exc:
-            return Response(str(exc), status=401)
-        return super().update(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        # only active and authorized users can destroy collection
-        try:
-            check_access_to_collection(request.user, instance=self.get_object())
-        except AuthenticationFailed as exc:
-            return Response(str(exc), status=401)
-        return super().destroy(request, *args, **kwargs)
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        if self.request.method != 'GET':
+            check_access_to_collection(self.request.user, obj)
+        return obj
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def materials(self, request, pk=None, **kwargs):
@@ -416,11 +396,6 @@ class CollectionViewSet(ModelViewSet):
 
             return Response(rv)
 
-        # only owners can add/delete materials to/from collection
-        try:
-            check_access_to_collection(request.user, instance=instance)
-        except AuthenticationFailed as exc:
-            return Response(str(exc), status=401)
         data = []
         for d in request.data:
             # validate request parameters
