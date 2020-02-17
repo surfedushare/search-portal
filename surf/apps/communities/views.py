@@ -3,8 +3,10 @@ This module contains implementation of REST API views for communities app.
 """
 
 import logging
+
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.mixins import (
@@ -18,11 +20,9 @@ from rest_framework.viewsets import GenericViewSet
 from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import (
     CommunitySerializer,
-    CommunityUpdateSerializer,
-    CommunityDisciplineSerializer
-)
+    CommunityDisciplineSerializer,)
 from surf.apps.filters.models import MpttFilterItem
-from surf.apps.materials.models import Collection, Material
+from surf.apps.materials.models import Collection
 from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
@@ -45,20 +45,12 @@ class CommunityViewSet(ListModelMixin,
     serializer_class = CommunitySerializer
     permission_classes = []
 
-    def get_serializer_class(self):
-        """
-        Returns serializer class depending on action method
-        """
-
-        if self.action == 'update':
-            return CommunityUpdateSerializer
-
-        return CommunitySerializer
-
-    def update(self, request, *args, **kwargs):
-        # only active admins can update community
-        self._check_access(request.user, instance=self.get_object())
-        return super().update(request, *args, **kwargs)
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        if self.request.method != 'GET':
+            check_access_to_community(self.request.user, obj)
+        return obj
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def collections(self, request, pk=None, **kwargs):
@@ -75,7 +67,6 @@ class CommunityViewSet(ListModelMixin,
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]
-            self._check_access(request.user, instance=instance, collection_ids=collection_ids)
             if request.method == "POST":
                 self._add_collections(instance, data)
                 qs = qs.filter(id__in=collection_ids)
@@ -161,21 +152,20 @@ class CommunityViewSet(ListModelMixin,
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.remove(*collections)
 
-    @staticmethod
-    def _check_access(user, instance=None, collection_ids=None):
-        """
-        Check if user is active and admin of community
-        :param user: user
-        :param instance: community instance
-        :param collection_ids: list of identifiers of collections
-        added/deleted to/from community
-        """
-        if not user or not user.is_authenticated:
-            raise AuthenticationFailed()
-        try:
-            Team.objects.get(community=instance, user=user)
-        except ObjectDoesNotExist as exc:
-            raise AuthenticationFailed(f"User {user} is not a member of community {instance}. Error: \"{exc}\"")
-        except MultipleObjectsReturned as exc:
-            # if somehow there are user duplicates on a community, don't crash
-            logger.warning(f"User {user} is in community {instance} multiple times. Error: \"{exc}\"")
+
+def check_access_to_community(user, instance=None):
+    """
+    Check if user is active and admin of community
+    :param user: user
+    :param instance: community instance
+    added/deleted to/from community
+    """
+    if not user or not user.is_authenticated:
+        raise AuthenticationFailed()
+    try:
+        Team.objects.get(community=instance, user=user)
+    except ObjectDoesNotExist as exc:
+        raise AuthenticationFailed(f"User {user} is not a member of community {instance}. Error: \"{exc}\"")
+    except MultipleObjectsReturned as exc:
+        # if somehow there are user duplicates on a community, don't crash
+        logger.warning(f"User {user} is in community {instance} multiple times. Error: \"{exc}\"")

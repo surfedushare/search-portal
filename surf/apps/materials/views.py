@@ -5,10 +5,12 @@ This module contains implementation of REST API views for materials app.
 import json
 import logging
 
+from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db.models import Count
 from django.db.models import F
-from django.db.models import Q, Count
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -49,9 +51,8 @@ from surf.apps.materials.utils import (
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID
 )
-from surf.vendor.search.searchselector import get_search_client
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-
+from surf.vendor.search.searchselector import get_search_client
 
 logger = logging.getLogger(__name__)
 
@@ -299,10 +300,8 @@ class MaterialApplaudAPIView(APIView):
 
 class CollectionMaterialPromotionAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        from django.core import serializers
         # only active and authorized users can promote materials in the collection
         collection_instance = Collection.objects.get(id=kwargs['collection_id'])
-        check_access_to_collection(request.user, instance=collection_instance)
 
         # check whether the material is actually in the collection
         external_id = kwargs['external_id']
@@ -353,20 +352,12 @@ class CollectionViewSet(ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        # only active and authorized users can create collection
-        check_access_to_collection(request.user)
-        return super().create(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        # only active and authorized users can update collection
-        check_access_to_collection(request.user, instance=self.get_object())
-        return super().update(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        # only active and authorized users can destroy collection
-        check_access_to_collection(request.user, instance=self.get_object())
-        return super().destroy(request, *args, **kwargs)
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        if self.request.method != 'GET':
+            check_access_to_collection(self.request.user, obj)
+        return obj
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def materials(self, request, pk=None, **kwargs):
@@ -405,8 +396,6 @@ class CollectionViewSet(ModelViewSet):
 
             return Response(rv)
 
-        # only owners can add/delete materials to/from collection
-        check_access_to_collection(request.user, instance=instance)
         data = []
         for d in request.data:
             # validate request parameters
