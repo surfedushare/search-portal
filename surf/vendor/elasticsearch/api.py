@@ -24,7 +24,7 @@ class ElasticSearchApiClient:
         )
 
     @staticmethod
-    def parse_elastic_result(search_result):
+    def parse_elastic_result(search_result, page_size=5):
 
         hits = search_result["hits"]
         aggregations = search_result.get("aggregations", {})
@@ -52,7 +52,10 @@ class ElasticSearchApiClient:
             ElasticSearchApiClient.parse_elastic_hit(hit)
             for hit in hits['hits']
         ]
-
+        # sometimes elastic will return a doc_count of 1 even if there are no results at all.
+        # don't trust elasticsearch on record count if there aren't enough records for a single page.
+        if len(result['records']) < page_size:
+            result['recordcount'] = len(result['records'])
         return result
 
     @staticmethod
@@ -154,7 +157,7 @@ class ElasticSearchApiClient:
             index=indices,
             body=body
         )
-        parsed_result = self.parse_elastic_result(result)
+        parsed_result = self.parse_elastic_result(result, page_size)
         if start_record == 1 and search_text:
             url = f"es.search(index={indices}, body={body})"
             QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,

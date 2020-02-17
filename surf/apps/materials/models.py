@@ -186,6 +186,9 @@ class CollectionMaterial(django_models.Model):
 
     class Meta:
         verbose_name = 'Material'
+        constraints = [
+            django_models.UniqueConstraint(fields=['collection', 'material'], name='unique materials in collection')
+        ]
 
 
 class SharedResourceCounter(UUIDModel):

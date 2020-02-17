@@ -5,10 +5,12 @@ This module contains implementation of REST API views for materials app.
 import json
 import logging
 
+from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db.models import Count
 from django.db.models import F
-from django.db.models import Q, Count
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -49,9 +51,8 @@ from surf.apps.materials.utils import (
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID
 )
-from surf.vendor.search.searchselector import get_search_client
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-
+from surf.vendor.search.searchselector import get_search_client
 
 logger = logging.getLogger(__name__)
 
@@ -297,6 +298,30 @@ class MaterialApplaudAPIView(APIView):
         return Response(material_object.applaud_count)
 
 
+class CollectionMaterialPromotionAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        # only active and authorized users can promote materials in the collection
+        collection_instance = Collection.objects.get(id=kwargs['collection_id'])
+
+        # check whether the material is actually in the collection
+        external_id = kwargs['external_id']
+        collection_materials = CollectionMaterial.objects.filter(
+            collection=collection_instance, material__external_id=external_id)
+        if not collection_materials:
+            raise Http404(f"Collection {collection_instance} does not contain a material with "
+                          f"external id {external_id}, cannot promote or demote")
+
+        # The material should only be in the collection once
+        assert len(collection_materials) == 1, f"Material with id {external_id} is in collection " \
+                                               f"{collection_instance} multiple times."
+        collection_material = collection_materials[0]
+        # promote or demote the material
+        collection_material.featured = not collection_material.featured
+        collection_material.save()
+
+        return Response(serializers.serialize('json', [collection_material]))
+
+
 class CollectionViewSet(ModelViewSet):
     """
     View class that provides CRUD methods for Collection and `get`, `add`
@@ -327,20 +352,12 @@ class CollectionViewSet(ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        # only active and authorized users can create collection
-        self._check_access(request.user)
-        return super().create(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        # only active owners can update collection
-        self._check_access(request.user, instance=self.get_object())
-        return super().update(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        # only active owners can delete collection
-        self._check_access(request.user, instance=self.get_object())
-        return super().destroy(request, *args, **kwargs)
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        if self.request.method != 'GET':
+            check_access_to_collection(self.request.user, obj)
+        return obj
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def materials(self, request, pk=None, **kwargs):
@@ -351,8 +368,10 @@ class CollectionViewSet(ModelViewSet):
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
-
             ids = [m.external_id for m in instance.materials.order_by("id").all()]
+
+            featured = CollectionMaterial.objects.filter(collection=instance, featured=True)
+            featured_ids = [m.material.external_id for m in featured]
 
             rv = dict(records=[],
                       records_total=0,
@@ -366,13 +385,17 @@ class CollectionViewSet(ModelViewSet):
                 res = ac.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
+                for record in records:
+                    if record['external_id'] in featured_ids:
+                        record['featured'] = True
+                    else:
+                        record['featured'] = False
+
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
 
             return Response(rv)
 
-        # only owners can add/delete materials to/from collection
-        self._check_access(request.user, instance=instance)
         data = []
         for d in request.data:
             # validate request parameters
@@ -433,32 +456,32 @@ class CollectionViewSet(ModelViewSet):
         materials = Material.objects.filter(external_id__in=materials).all()
         instance.materials.remove(*materials)
 
-    @staticmethod
-    def _check_access(user, instance=None):
-        """
-        Check if user is active and owner of collection (if collection
-        is not None)
-        :param user: user
-        :param instance: collection instance
-        :return:
-        """
-        if not user or not user.is_authenticated:
-            raise AuthenticationFailed()
-        try:
-            community = Community.objects.get(collections__in=[instance])
-            Team.objects.get(community=community, user=user)
-        except ObjectDoesNotExist as exc:
-            raise AuthenticationFailed(f"User {user} is not a member of a community that has collection {instance}. "
+
+def check_access_to_collection(user, instance=None):
+    """
+    Check if user is active and owner of collection (if collection
+    is not None)
+    :param user: user
+    :param instance: collection instance
+    :return:
+    """
+    if not user or not user.is_authenticated:
+        raise AuthenticationFailed()
+    try:
+        community = Community.objects.get(collections__in=[instance])
+        Team.objects.get(community=community, user=user)
+    except ObjectDoesNotExist as exc:
+        raise AuthenticationFailed(f"User {user} is not a member of a community that has collection {instance}. "
+                                   f"Error: \"{exc}\"")
+    except MultipleObjectsReturned as exc:
+        logger.warning(f"The collection {instance} is in multiple communities. Error:\"{exc}\"")
+        communities = Community.objects.filter(collections__in=[instance])
+        teams = Team.objects.filter(community__in=communities, user=user)
+        if len(teams) > 0:
+            logger.debug(f"At least one team satisfies the requirement of be able to delete this collection.")
+        else:
+            raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
                                        f"Error: \"{exc}\"")
-        except MultipleObjectsReturned as exc:
-            logger.warning(f"The collection {instance} is in multiple communities. Error:\"{exc}\"")
-            communities = Community.objects.filter(collections__in=[instance])
-            teams = Team.objects.filter(community__in=communities, user=user)
-            if len(teams) > 0:
-                logger.debug(f"At least one team satisfies the requirement of be able to delete this collection.")
-            else:
-                raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
-                                           f"Error: \"{exc}\"")
 
 
 def add_share_counters_to_materials(materials):

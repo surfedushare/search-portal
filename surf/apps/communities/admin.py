@@ -1,10 +1,8 @@
 """
 This module provides django admin functionality for communities app.
 """
-
-from django.contrib import admin
 from django import forms
-from django.core.files.images import get_image_dimensions
+from django.contrib import admin
 
 from surf.apps.communities import models
 from surf.apps.communities.models import PublishStatus
@@ -52,36 +50,21 @@ class CommunityForm(forms.ModelForm):
     """
     publish_status = forms.TypedChoiceField(choices=PublishStatus.choices(), coerce=int)
 
-    def clean_logo(self):
-        picture = self.cleaned_data.get("logo")
-        validate_image_proportion(picture, 230, 136)
-        return picture
-
-    def clean_featured_image(self):
-        picture = self.cleaned_data.get("featured_image")
-        validate_image_proportion(picture, 388, 227)
-        return picture
-
     class Meta:
         model = models.Community
         fields = '__all__'
         exclude = ['members']
 
 
-def validate_image_proportion(image, width, height):
-    if not image:
-        return
-
-    w, h = get_image_dimensions(image)
-    if w * height != h * width:
-        raise forms.ValidationError(
-            "The image proportion should be {}x{}!".format(width, height))
-
-
 class TeamInline(admin.TabularInline):
     model = models.Team
     extra = 0
     readonly_fields = ('team_id',)
+
+
+class CommunityDetailInline(admin.StackedInline):
+    model = models.CommunityDetail
+    extra = 0
 
 
 @admin.register(models.Community)
@@ -92,7 +75,7 @@ class CommunityAdmin(admin.ModelAdmin):
     list_display = ("name", "publish_status",)
     list_filter = ("publish_status", TrashListFilter,)
     readonly_fields = ("deleted_at",)
-    inlines = [TeamInline]
+    inlines = [TeamInline, CommunityDetailInline]
     form = CommunityForm
 
     actions = [restore_nodes, trash_nodes]
