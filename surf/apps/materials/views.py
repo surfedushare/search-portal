@@ -319,7 +319,7 @@ class CollectionMaterialPromotionAPIView(APIView):
         collection_material.featured = not collection_material.featured
         collection_material.save()
 
-        return Response(serializers.serialize('python', [collection_material]))
+        return Response(serializers.serialize('json', [collection_material]))
 
 
 class CollectionViewSet(ModelViewSet):
