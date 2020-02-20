@@ -52,7 +52,7 @@ services:
       - /volumes/surf/media:/src/media
     restart: unless-stopped
     healthcheck:
-      test: curl -sS http://localhost:8000/health || exit 1
+      test: curl -sS http://localhost:8080/health || exit 1
       interval: 5s
       timeout: 10s
       retries: 3
