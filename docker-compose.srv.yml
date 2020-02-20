@@ -1,0 +1,53 @@
+version: '3.1'
+
+
+services:
+
+  postgres:
+    image: postgres:9.6
+    volumes:
+      - /volumes/surf/postgresql/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=surf
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=surf
+    healthcheck:
+      test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
+    labels:
+      nl.surfcatalog.db: "postgres"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uwsgi --ini uwsgi.ini
+    environment:
+      - PYTHONIOENCODING=UTF-8
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=surf.settings.local
+      - DJANGO_POSTGRES_USER=${DJANGO_POSTGRES_USER}
+      - DJANGO_POSTGRES_PASSWORD=${DJANGO_POSTGRES_PASSWORD}
+      - DJANGO_BACKEND_DOMAIN=${DJANGO_BACKEND_DOMAIN}
+      - DJANGO_FRONTEND_DOMAIN=${DJANGO_FRONTEND_DOMAIN}
+      - DJANGO_PROTOCOL=${DJANGO_PROTOCOL}
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - EDUREP_SOAP_SUPPLIER_ID=${EDUREP_SOAP_SUPPLIER_ID}
+      - EDUREP_XML_API_ENDPOINT=${EDUREP_XML_API_ENDPOINT}
+      - EDUREP_SOAP_API_ENDPOINT=${EDUREP_SOAP_API_ENDPOINT}
+      - EDUREP_JSON_API_ENDPOINT=${EDUREP_JSON_API_ENDPOINT}
+      - VOOT_API_ENDPOINT=${VOOT_API_ENDPOINT}
+      - ELASTIC_SEARCH_USERNAME=${ELASTIC_SEARCH_USERNAME}
+      - ELASTIC_SEARCH_PASSWORD=${ELASTIC_SEARCH_PASSWORD}
+      - ELASTIC_SEARCH_URL=${ELASTIC_SEARCH_URL}
+      - ELASTIC_SEARCH_HOST=${ELASTIC_SEARCH_HOST}
+      - SEARCH_CLIENT=${SEARCH_CLIENT}
+    ports:
+      - "127.0.0.1:8080:8080"
+    links:
+      - postgres:database
+    depends_on:
+      - postgres
+    volumes:
+      - /volumes/surf/media:/src/media
+    restart: unless-stopped
