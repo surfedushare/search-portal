@@ -3,12 +3,14 @@ This module contains implementation of REST API views for materials app.
 """
 
 import json
-from collections import OrderedDict
+import logging
 
-from django.conf import settings
+from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db.models import Count
 from django.db.models import F
-from django.db.models import Q, Count
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -17,6 +19,7 @@ from rest_framework.viewsets import (
     ModelViewSet
 )
 
+from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
 from surf.apps.materials.filters import (
@@ -32,7 +35,6 @@ from surf.apps.materials.models import (
 )
 from surf.apps.materials.serializers import (
     SearchRequestSerializer,
-    SearchRequestShortSerializer,
     KeywordsRequestSerializer,
     MaterialsRequestSerializer,
     CollectionSerializer,
@@ -47,9 +49,26 @@ from surf.apps.materials.utils import (
     add_material_disciplines
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    XmlEndpointApiClient,
     AUTHOR_FIELD_ID
 )
+from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
+from surf.vendor.search.searchselector import get_search_client
+
+logger = logging.getLogger(__name__)
+
+
+def parse_theme_drilldowns(discipline_items):
+    fields = dict()
+    for item in discipline_items:
+        item_id = item["external_id"]
+        theme_ids = DISCIPLINE_CUSTOM_THEME.get(item_id)
+        if not theme_ids:
+            theme_ids = ["Unknown"]
+        for f_id in theme_ids:
+            fields[f_id] = fields.get(f_id, 0) + int(item["count"])
+
+    fields = sorted(fields.items(), key=lambda kv: kv[1], reverse=True)
+    return [dict(external_id=k, count=v) for k, v in fields]
 
 
 class MaterialSearchAPIView(APIView):
@@ -87,11 +106,20 @@ class MaterialSearchAPIView(APIView):
         if return_filters:
             data["drilldown_names"] = _get_filter_categories()
 
-        ac = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        ac = get_search_client()
 
         res = ac.search(**data)
         records = add_extra_parameters_to_materials(request.user, res["records"])
+
+        if return_filters and "lom.classification.obk.discipline.id" in data["drilldown_names"]:
+            discipline_items = next(
+                drilldown["items"]
+                for drilldown in res["drilldowns"] if drilldown["external_id"] == "lom.classification.obk.discipline.id"
+            )
+            res["drilldowns"].append({
+                "external_id": "custom_theme.id",
+                "items": parse_theme_drilldowns(discipline_items)
+            })
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
@@ -106,8 +134,7 @@ def _get_filter_categories():
     Make list of filter categories in format "edurep_field_id:item_count"
     :return: list of "edurep_field_id:item_count"
     """
-    return ["{}:{}".format(f.external_id, 0)
-            for f in MpttFilterItem.objects.all()
+    return [f.external_id for f in MpttFilterItem.objects.all()
             if f.external_id not in IGNORED_FIELDS
             and f.level == 0]
 
@@ -125,8 +152,7 @@ class KeywordsAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        ac = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        ac = get_search_client()
 
         res = ac.autocomplete(**data)
         return Response(res)
@@ -165,8 +191,7 @@ class MaterialAPIView(APIView):
 
         else:
             # return overview of newest Materials
-            ac = XmlEndpointApiClient(
-                api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+            ac = get_search_client()
 
             # add default filters to search materials
             filters = add_default_material_filters()
@@ -273,6 +298,30 @@ class MaterialApplaudAPIView(APIView):
         return Response(material_object.applaud_count)
 
 
+class CollectionMaterialPromotionAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        # only active and authorized users can promote materials in the collection
+        collection_instance = Collection.objects.get(id=kwargs['collection_id'])
+
+        # check whether the material is actually in the collection
+        external_id = kwargs['external_id']
+        collection_materials = CollectionMaterial.objects.filter(
+            collection=collection_instance, material__external_id=external_id)
+        if not collection_materials:
+            raise Http404(f"Collection {collection_instance} does not contain a material with "
+                          f"external id {external_id}, cannot promote or demote")
+
+        # The material should only be in the collection once
+        assert len(collection_materials) == 1, f"Material with id {external_id} is in collection " \
+                                               f"{collection_instance} multiple times."
+        collection_material = collection_materials[0]
+        # promote or demote the material
+        collection_material.featured = not collection_material.featured
+        collection_material.save()
+
+        return Response(serializers.serialize('json', [collection_material]))
+
+
 class CollectionViewSet(ModelViewSet):
     """
     View class that provides CRUD methods for Collection and `get`, `add`
@@ -303,29 +352,12 @@ class CollectionViewSet(ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        # only active and authorized users can create collection
-        self._check_access(request.user)
-        return super().create(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        # only active owners can update collection
-        self._check_access(request.user, instance=self.get_object())
-        return super().update(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        # only active owners can delete collection
-        self._check_access(request.user, instance=self.get_object())
-        return super().destroy(request, *args, **kwargs)
-
-    @action(methods=['post'], detail=True)
-    def search(self, request, pk=None, **kwargs):
-        """
-        Search materials that are part of the collection
-        """
-
-        instance = self.get_object()
-        return get_materials_search_response(instance.materials, request)
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        if self.request.method != 'GET':
+            check_access_to_collection(self.request.user, obj)
+        return obj
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def materials(self, request, pk=None, **kwargs):
@@ -336,9 +368,10 @@ class CollectionViewSet(ModelViewSet):
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
+            ids = [m.external_id for m in instance.materials.order_by("id").all()]
 
-            ids = ['"{}"'.format(m.external_id)
-                   for m in instance.materials.order_by("id").all()]
+            featured = CollectionMaterial.objects.filter(collection=instance, featured=True)
+            featured_ids = [m.material.external_id for m in featured]
 
             rv = dict(records=[],
                       records_total=0,
@@ -347,20 +380,22 @@ class CollectionViewSet(ModelViewSet):
                       page_size=data["page_size"])
 
             if ids:
-                ac = XmlEndpointApiClient(
-                    api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+                ac = get_search_client()
 
                 res = ac.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
-                records = add_extra_parameters_to_materials(request.user,
-                                                            records)
+                records = add_extra_parameters_to_materials(request.user, records)
+                for record in records:
+                    if record['external_id'] in featured_ids:
+                        record['featured'] = True
+                    else:
+                        record['featured'] = False
+
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
 
             return Response(rv)
 
-        # only owners can add/delete materials to/from collection
-        self._check_access(request.user, instance=instance)
         data = []
         for d in request.data:
             # validate request parameters
@@ -374,8 +409,7 @@ class CollectionViewSet(ModelViewSet):
         elif request.method == "DELETE":
             self._delete_materials(instance, data)
 
-        res = MaterialShortSerializer(many=True).to_representation(
-            instance.materials.all())
+        res = MaterialShortSerializer(many=True).to_representation(instance.materials.all())
         return Response(res)
 
     @staticmethod
@@ -422,133 +456,32 @@ class CollectionViewSet(ModelViewSet):
         materials = Material.objects.filter(external_id__in=materials).all()
         instance.materials.remove(*materials)
 
-    @staticmethod
-    def _check_access(user, instance=None):
-        """
-        Check if user is active and owner of collection (if collection
-        is not None)
-        :param user: user
-        :param instance: collection instance
-        :return:
-        """
 
-        if not user or not user.is_active:
-            raise AuthenticationFailed()
-
-
-def get_materials_search_response(qs, request):
+def check_access_to_collection(user, instance=None):
     """
-    Searches materials according to search parameters and returns
-    a paginated Response object
-    :param qs: queryset of materials
-    :param request: Request object
-    :return: Response object
+    Check if user is active and owner of collection (if collection
+    is not None)
+    :param user: user
+    :param instance: collection instance
+    :return:
     """
-
-    # validate request parameters
-    serializer = SearchRequestShortSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    data = serializer.validated_data
-
-    qs = _filter_materials_by_search_query(qs, data)
-    qs = _ordering_materials_queryset(qs, data)
-    materials = _paginate_materials_queryset(qs, request, data)
-    return _get_paginated_materials_response(qs, materials, data)
-
-
-_MATERIAL_SEARCH_FIELDS = ('material_url', 'title', 'description',
-                           'keywords',)
-
-
-def _filter_materials_by_search_query(qs, request_data):
-    """
-    Adds filters to materials queryset according to search parameters
-    :param qs: queryset of materials
-    :param request_data: dictionary of request parameters
-    :return: updated queryset
-    """
-
-    search_text = request_data.get("search_text")
-    if not search_text:
-        return qs
-
-    queries = []
-    for st in search_text:
-        text_qs_list = [Q(**{"{}__icontains".format(f): st})
-                        for f in _MATERIAL_SEARCH_FIELDS]
-
-        text_qs = text_qs_list.pop()
-
-        while text_qs_list:
-            text_qs |= text_qs_list.pop()
-
-        queries.append(text_qs)
-
-    all_qs = queries.pop()
-
-    while queries:
-        all_qs &= queries.pop()
-
-    if all_qs:
-        qs = qs.filter(all_qs)
-
-    return qs
-
-
-def _ordering_materials_queryset(qs, request_data):
-    """
-    Adds ordering to materials queryset according request parameters
-    :param qs: queryset of materials
-    :param request_data: dictionary of request parameters
-    :return: updated queryset
-    """
-
-    qs = qs.order_by("id")
-    return qs
-
-
-def _paginate_materials_queryset(qs, request, request_data):
-    """
-    Prepares the requested page of materials with detailed data
-    according to `page` and `page_size` parameters in request
-    :param qs: queryset of materials
-    :param request: Request object
-    :param request_data: dictionary of request parameters
-    :return: list of materials of requested page
-    """
-
-    page = request_data["page"]
-    page_size = request_data["page_size"]
-    material_cnt = qs.count()
-
-    start_idx = (page - 1) * page_size
-    if start_idx >= material_cnt:
-        return []
-
-    end_idx = start_idx + page_size
-    if end_idx > material_cnt:
-        end_idx = material_cnt
-
-    materials = qs.all()[start_idx:end_idx:]
-    material_ids = ['"{}"'.format(m.external_id) for m in materials]
-
-    ac = XmlEndpointApiClient(
-        api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
-
-    materials = ac.get_materials_by_id(material_ids, page_size=10)
-    materials = materials.get("records", [])
-    materials = add_extra_parameters_to_materials(request.user, materials)
-    return materials
-
-
-def _get_paginated_materials_response(qs, materials, request_data):
-    return Response(OrderedDict([
-        ('page', request_data["page"]),
-        ('page_size', request_data["page_size"]),
-        ('records_total', qs.count()),
-        ('records', materials),
-        ('filters', [])
-    ]))
+    if not user or not user.is_authenticated:
+        raise AuthenticationFailed()
+    try:
+        community = Community.objects.get(collections__in=[instance])
+        Team.objects.get(community=community, user=user)
+    except ObjectDoesNotExist as exc:
+        raise AuthenticationFailed(f"User {user} is not a member of a community that has collection {instance}. "
+                                   f"Error: \"{exc}\"")
+    except MultipleObjectsReturned as exc:
+        logger.warning(f"The collection {instance} is in multiple communities. Error:\"{exc}\"")
+        communities = Community.objects.filter(collections__in=[instance])
+        teams = Team.objects.filter(community__in=communities, user=user)
+        if len(teams) > 0:
+            logger.debug(f"At least one team satisfies the requirement of be able to delete this collection.")
+        else:
+            raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
+                                       f"Error: \"{exc}\"")
 
 
 def add_share_counters_to_materials(materials):
@@ -559,13 +492,8 @@ def add_share_counters_to_materials(materials):
     """
 
     for m in materials:
-        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,
-                                                       m["external_id"])
-
+        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,m["external_id"])
         qs = SharedResourceCounter.objects.filter(counter_key__contains=key)
-
-        m["sharing_counters"] = SharedResourceCounterSerializer(
-            many=True
-        ).to_representation(qs.all())
+        m["sharing_counters"] = SharedResourceCounterSerializer(many=True).to_representation(qs.all())
 
     return materials

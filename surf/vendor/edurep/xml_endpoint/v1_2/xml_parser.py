@@ -7,7 +7,7 @@ import re
 
 import logging
 
-from surf.vendor.edurep.xml_endpoint.v1_2.choices import (
+from surf.vendor.search.choices import (
     MIME_TYPE_TECH_FORMAT,
     DISCIPLINE_CUSTOM_THEME
 )
@@ -106,6 +106,10 @@ def _parse_record(elem):
     classifications = _parse_classifications(elem)
     disciplines = list(classifications.get("discipline", []))
     educationallevels = list(classifications.get("educational level", []))
+    themes = set()
+    for discipline in disciplines:
+        if discipline in DISCIPLINE_CUSTOM_THEME:
+            themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
     # try to update the dynamic copyrights list if it's empty,
     # if the proper copyright item isn't in the database (an exists() call) nothing happens
     if len(DYNAMIC_COPYRIGHTS) == 0:
@@ -127,7 +131,7 @@ def _parse_record(elem):
         author=author,
         creator=creator,
         format=MIME_TYPE_TECH_FORMAT.get(_find_elem_text(elem, _FORMAT_PATH)),
-        themes=[],
+        themes=list(themes),
         disciplines=disciplines,
         educationallevels=educationallevels,
         has_bookmark=False,
@@ -242,7 +246,6 @@ def _parse_drilldowns(root):
                 rv[term_id] = _parse_drilldowns_tech_format(dd)
             elif term_id == DISCIPLINE_ID_LOM:
                 rv[term_id] = _parse_drilldowns_term(dd)
-                rv[CUSTOM_THEME_ID] = _parse_drilldowns_custom_theme(dd)
             elif term_id == COPYRIGHT_ID_LOM:
                 rv[term_id] = _parse_drilldowns_copyrights(dd)
             else:

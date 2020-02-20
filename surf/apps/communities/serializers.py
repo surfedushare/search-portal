@@ -6,27 +6,21 @@ from collections import OrderedDict
 
 from rest_framework import serializers
 
-from surf.apps.communities.models import Community
+from surf.apps.communities.models import Community, CommunityDetail
 from surf.apps.communities.models import PublishStatus
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.filters.utils import add_default_material_filters
-from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
-from surf.vendor.edurep.xml_endpoint.v1_2.api import XmlEndpointApiClient
+from surf.vendor.search.searchselector import get_search_client
 
 
-class CommunityUpdateSerializer(serializers.ModelSerializer):
-    """
-    Community instance serializer for update methods
-    """
-
+class CommunityDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Community
-        fields = ('name', 'description', 'website_url',
-                  'logo', 'featured_image',)
+        model = CommunityDetail
+        exclude = ('id', 'community',)
 
 
-class CommunitySerializer(CommunityUpdateSerializer):
+class CommunitySerializer(serializers.ModelSerializer):
     """
     Community instance serializer for get methods
     """
@@ -35,15 +29,13 @@ class CommunitySerializer(CommunityUpdateSerializer):
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
-    is_member = serializers.SerializerMethodField()
-    title_translations = LocaleSerializer()
-    description_translations = LocaleHTMLSerializer()
     publish_status = serializers.SerializerMethodField()
+    community_details = CommunityDetailSerializer(many=True)
 
     @staticmethod
     def get_members_count(obj):
         try:
-            return obj.new_members.count()
+            return obj.members.count()
         except Exception as exc:
             print(exc)
             return 0
@@ -58,22 +50,55 @@ class CommunitySerializer(CommunityUpdateSerializer):
         ids = [i for i in ids if i]
         return len(set(ids))
 
-    def get_is_member(self, obj):
-        request = self.context.get("request")
-        if request and request.user and request.user.is_authenticated:
-            return obj.new_members.filter(id=request.user.id).exists()
-        return False
-
     @staticmethod
     def get_publish_status(obj):
         return str(PublishStatus.get(obj.publish_status))
 
+    def create(self, validated_data):
+        details_data = validated_data.pop('community_details')
+        community = Community.objects.create(**validated_data)
+        community.clean()
+        community.save()
+        for detail_data in details_data:
+            detail_object = CommunityDetail.objects.create(community=community, **detail_data)
+            detail_object.clean()
+            detail_object.save()
+        return community
+
+    def update(self, instance, validated_data):
+        # we could update the community instance itself, however the only value that can be updated
+        # is the name which is only used internally so it's not required through the API
+        details_data = validated_data.pop('community_details')
+
+        community_details = instance.community_details.all()
+
+        new = {data['language_code'].upper() for data in details_data}
+        existing = {detail.language_code for detail in community_details}
+        languages_to_update = new.intersection(existing)
+        languages_to_create = new.difference(existing)
+
+        languages_to_update = [details for details in details_data if details['language_code'] in languages_to_update]
+        languages_to_create = [details for details in details_data if details['language_code'] in languages_to_create]
+
+        for language in languages_to_create:
+            detail_object = CommunityDetail.objects.create(community=instance, **language)
+            detail_object.clean()
+            detail_object.save()
+
+        for language in languages_to_update:
+            detail_object = instance.community_details.get(language_code=language['language_code'].upper())
+            for attr, value in language.items():
+                if value is not None:
+                    setattr(detail_object, attr, value)
+            detail_object.clean()
+            detail_object.save()
+        return instance
+
     class Meta:
         model = Community
-        fields = ('id', 'external_id', 'name', 'description', 'website_url',
-                  'logo', 'featured_image', 'members_count',
-                  'collections_count', 'materials_count',
-                  'is_member', 'title_translations', 'description_translations', 'publish_status',)
+        fields = ('id', 'external_id', 'name', 'members_count',
+                  'collections_count', 'materials_count', 'publish_status',
+                  'community_details',)
 
 
 class CommunityDisciplineSerializer(MpttFilterItemSerializer):
@@ -85,7 +110,7 @@ class CommunityDisciplineSerializer(MpttFilterItemSerializer):
 
     def get_materials_count(self, obj):
         if obj.external_id:
-            ac = XmlEndpointApiClient()
+            ac = get_search_client()
             filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
             tree = self.context["mptt_tree"]
             filters = add_default_material_filters(filters, tree)

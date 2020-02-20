@@ -16,105 +16,26 @@ from surf.apps.locale.models import Locale, LocaleHTML
 from surf.statusenums import PublishStatus
 
 
-class SurfTeam(UUIDModel):
-    """
-    Implementation of SURFconext Team model.
-    """
-
-    # identifier of SURFconext Team
-    external_id = django_models.CharField(max_length=255,
-                                          verbose_name="SURFconext group id")
-
-    name = django_models.CharField(max_length=255)
-    description = django_models.TextField(blank=True)
-
-    # list of community administrators
-    admins = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Administrators",
-        related_name='admin_teams',
-        blank=True)
-
-    # list of community members
-    members = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Members",
-        related_name='teams',
-        blank=True)
-
-    class Meta:
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
-
-
 class Community(UUIDModel):
     """
     Implementation of Community model. Communities are related to
     SURFconext Teams.
     """
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
-    surf_team = django_models.OneToOneField(SurfTeam,
-                                            on_delete=django_models.CASCADE,
-                                            related_name="community",
-                                            null=True)
 
     name = django_models.CharField(max_length=255, blank=True)
-    description = django_models.TextField(blank=True)
-    title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE,
-                                                     null=True, blank=True)
-    description_translations = django_models.OneToOneField(to=LocaleHTML, on_delete=django_models.CASCADE,
-                                                           null=True, blank=True)
-    deleted_at = django_models.DateTimeField(null=True)
+    deleted_at = django_models.DateTimeField(null=True, blank=True)
 
-    admins = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Administrators",
-        related_name='admin_communities',
-        blank=True)
-
-    # list of community members
     members = django_models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        verbose_name="Members",
-        related_name='communities',
-        blank=True)
-
-    new_members = django_models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         through='Team',
         blank=True,
     )
 
-    logo = django_models.ImageField(
-        upload_to='communities',
-        blank=True,
-        null=True,
-        help_text="The proportion of the image should be 230x136")
-
-    featured_image = django_models.ImageField(
-        upload_to='communities',
-        blank=True,
-        null=True,
-        help_text="The proportion of the image should be 388x227")
-
-    website_url = django_models.URLField(blank=True, null=True)
-
-    # is this community available for users
-    is_available = django_models.BooleanField(
-        verbose_name="Is community available in service",
-        default=True)
-
     # list of community collections
-    collections = django_models.ManyToManyField(Collection,
-                                                blank=True,
-                                                related_name="communities")
-
+    collections = django_models.ManyToManyField(Collection, blank=True, related_name="communities")
     # identifier of SURFconext Team
-    external_id = django_models.CharField(max_length=255,
-                                          verbose_name="SurfConext group id",
-                                          null=True, blank=True)
+    external_id = django_models.CharField(max_length=255, verbose_name="SurfConext group id", null=True, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -143,6 +64,39 @@ class Community(UUIDModel):
             if not re.match(regex, self.external_id):
                 raise ValidationError("SURFconext group id isn't a valid URN. Check "
                                       "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
+
+
+class CommunityDetail(django_models.Model):
+    community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE, related_name='community_details')
+    language_code = django_models.CharField(max_length=2)
+    title = django_models.CharField(max_length=255)
+    description = django_models.TextField(max_length=16384, null=True, blank=True)
+    website_url = django_models.URLField(blank=True, null=True)
+
+    logo = django_models.ImageField(upload_to='communities', blank=True, null=True,
+                                    help_text="The proportion of the image should be 230x136")
+
+    featured_image = django_models.ImageField(upload_to='communities', blank=True, null=True,
+                                              help_text="The proportion of the image should be 388x227")
+
+    class Meta:
+        # only allow unique language codes for communities
+        constraints = [
+            django_models.UniqueConstraint(fields=['language_code', 'community'], name='unique languages in community')
+        ]
+
+    def clean(self):
+        # force consistency
+        self.language_code = self.language_code.upper()
+
+        # validate image sizes
+        if self.logo and (self.logo.width != 230 or self.logo.height != 136):
+            raise ValidationError("The dimensions of the logo image should be 230x136px")
+        if self.featured_image and (self.featured_image.width != 388 or self.featured_image.height != 227):
+            raise ValidationError("The dimensions of the featured image should be 388x227px")
+
+    def __str__(self):
+        return self.title
 
 
 class Team(django_models.Model):

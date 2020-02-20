@@ -16,11 +16,10 @@ from surf.apps.filters.models import MpttFilterItem
 from surf.apps.themes.models import Theme
 from surf.statusenums import PublishStatus
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    XmlEndpointApiClient,
     DISCIPLINE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID
 )
-
+from surf.vendor.search.searchselector import get_search_client
 
 RESOURCE_TYPE_MATERIAL = "material"
 RESOURCE_TYPE_COLLECTION = "collection"
@@ -47,11 +46,9 @@ def get_material_details_by_id(material_id, api_client=None):
     """
 
     if not api_client:
-        api_client = XmlEndpointApiClient(
-            api_endpoint=settings.EDUREP_XML_API_ENDPOINT)
+        api_client = get_search_client()
 
-    res = api_client.get_materials_by_id(['"{}"'.format(material_id)],
-                                         drilldown_names=[_DISCIPLINE_FILTER])
+    res = api_client.get_materials_by_id([material_id], drilldown_names=[_DISCIPLINE_FILTER])
 
     # define themes and disciplines for requested material
     themes = []
@@ -67,7 +64,6 @@ def get_material_details_by_id(material_id, api_client=None):
     for material in rv:
         material["themes"] = themes
         material["disciplines"] = disciplines
-
     return rv
 
 
@@ -190,6 +186,9 @@ class CollectionMaterial(django_models.Model):
 
     class Meta:
         verbose_name = 'Material'
+        constraints = [
+            django_models.UniqueConstraint(fields=['collection', 'material'], name='unique materials in collection')
+        ]
 
 
 class SharedResourceCounter(UUIDModel):
@@ -198,7 +197,7 @@ class SharedResourceCounter(UUIDModel):
     This model is used to store counter values for different shared objects.
     """
 
-    counter_key = django_models.CharField(max_length=255)
+    counter_key = django_models.CharField(max_length=255, unique=True)
     counter_value = django_models.IntegerField(default=0)
     extra = django_models.CharField(max_length=255, null=True, blank=True)
 

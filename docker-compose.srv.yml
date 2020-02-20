@@ -1,23 +1,27 @@
 version: '3.1'
+
+
 services:
+
   postgres:
     image: postgres:9.6
     volumes:
-      - postgres_database:/var/lib/postgresql/data
+      - /volumes/surf/postgresql/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=surf
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=surf
     healthcheck:
-        test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
+      test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
     labels:
       nl.surfcatalog.db: "postgres"
+    restart: unless-stopped
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    command: uwsgi --ini uwsgi.ini --py-autoreload=3
+    command: uwsgi --ini uwsgi.ini
     environment:
       - PYTHONIOENCODING=UTF-8
       - PYTHONUNBUFFERED=1
@@ -40,19 +44,10 @@ services:
       - SEARCH_CLIENT=${SEARCH_CLIENT}
     ports:
       - "127.0.0.1:8080:8080"
-    volumes:
-      - .:/src
     links:
       - postgres:database
     depends_on:
       - postgres
-
-  adminer:
-    image: adminer
-    depends_on:
-      - postgres
-    ports:
-      - "127.0.0.1:8081:8080"
-
-volumes:
-  postgres_database:
+    volumes:
+      - /volumes/surf/media:/src/media
+    restart: unless-stopped

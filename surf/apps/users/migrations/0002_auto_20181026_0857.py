@@ -10,11 +10,4 @@ class Migration(migrations.Migration):
         ('users', '0001_initial'),
     ]
 
-    operations = [
-        migrations.AlterModelManagers(
-            name='user',
-            managers=[
-                ('objects', surf.apps.users.models.UserManager()),
-            ],
-        ),
-    ]
+    operations = []

@@ -2,39 +2,35 @@
 This module contains implementation of REST API views for communities app.
 """
 
-from django.db.models import Q, Count
+import logging
 
-from rest_framework.viewsets import GenericViewSet
-
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db.models import Count
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import action
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.mixins import (
     ListModelMixin,
     RetrieveModelMixin,
     UpdateModelMixin
 )
-
-from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
-from surf.apps.communities.models import Community, PublishStatus
-from surf.apps.materials.models import Collection, Material
-from surf.apps.themes.models import Theme
-from surf.apps.filters.models import MpttFilterItem
-from surf.apps.communities.filters import CommunityFilter
-from surf.apps.themes.serializers import ThemeSerializer
-from surf.apps.materials.views import get_materials_search_response
-from surf.apps.filters.utils import get_material_count_by_disciplines
-
+from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import (
     CommunitySerializer,
-    CommunityUpdateSerializer,
-    CommunityDisciplineSerializer
-)
-
+    CommunityDisciplineSerializer,)
+from surf.apps.filters.models import MpttFilterItem
+from surf.apps.materials.models import Collection
 from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
 )
+from surf.apps.themes.models import Theme
+from surf.apps.themes.serializers import ThemeSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class CommunityViewSet(ListModelMixin,
@@ -47,37 +43,14 @@ class CommunityViewSet(ListModelMixin,
 
     queryset = Community.objects.filter(deleted_at=None)
     serializer_class = CommunitySerializer
-    filter_class = CommunityFilter
     permission_classes = []
 
-    def get_serializer_class(self):
-        """
-        Returns serializer class depending on action method
-        """
-
-        if self.action == 'update':
-            return CommunityUpdateSerializer
-
-        return CommunitySerializer
-
-    def update(self, request, *args, **kwargs):
-        # only active admins can update community
-        self._check_access(request.user, instance=self.get_object())
-        return super().update(request, *args, **kwargs)
-
-    @action(methods=['post'], detail=True)
-    def search(self, request, pk=None, **kwargs):
-        """
-        Search materials that are part of the community collections
-        """
-
-        instance = self.get_object()
-
-        material_ids = instance.collections.values_list("materials__id",
-                                                        flat=True)
-
-        qs = Material.objects.filter(id__in=material_ids)
-        return get_materials_search_response(qs, request)
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        if self.request.method != 'GET':
+            check_access_to_community(self.request.user, obj)
+        return obj
 
     @action(methods=['get', 'post', 'delete'], detail=True)
     def collections(self, request, pk=None, **kwargs):
@@ -90,16 +63,10 @@ class CommunityViewSet(ListModelMixin,
         qs = instance.collections
         if request.method in {"POST", "DELETE"}:
             # validate request parameters
-            serializer = CollectionShortSerializer(many=True,
-                                                   data=request.data)
+            serializer = CollectionShortSerializer(many=True, data=request.data)
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]
-
-            self._check_access(request.user,
-                               instance=instance,
-                               collection_ids=collection_ids)
-
             if request.method == "POST":
                 self._add_collections(instance, data)
                 qs = qs.filter(id__in=collection_ids)
@@ -181,19 +148,24 @@ class CommunityViewSet(ListModelMixin,
         :param collections: collections that should be deleted
         :return:
         """
-
         collections = [c["id"] for c in collections]
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.remove(*collections)
 
-    @staticmethod
-    def _check_access(user, instance=None, collection_ids=None):
-        """
-        Check if user is active and admin of community
-        :param user: user
-        :param instance: community instance
-        :param collection_ids: list of identifiers of collections
-        added/deleted to/from community
-        """
-        if not user or not user.is_authenticated:
-            raise AuthenticationFailed()
+
+def check_access_to_community(user, instance=None):
+    """
+    Check if user is active and admin of community
+    :param user: user
+    :param instance: community instance
+    added/deleted to/from community
+    """
+    if not user or not user.is_authenticated:
+        raise AuthenticationFailed()
+    try:
+        Team.objects.get(community=instance, user=user)
+    except ObjectDoesNotExist as exc:
+        raise AuthenticationFailed(f"User {user} is not a member of community {instance}. Error: \"{exc}\"")
+    except MultipleObjectsReturned as exc:
+        # if somehow there are user duplicates on a community, don't crash
+        logger.warning(f"User {user} is in community {instance} multiple times. Error: \"{exc}\"")

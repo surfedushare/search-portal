@@ -28,6 +28,7 @@ from surf.apps.materials.views import (
     MaterialRatingAPIView,
     MaterialApplaudAPIView,
     CollectionViewSet,
+    CollectionMaterialPromotionAPIView,
 )
 from surf.apps.filters.views import (
     FilterCategoryViewSet,
@@ -66,6 +67,8 @@ apipatterns = [
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^localehtml/', MaterialAPIView.as_view()),
     url(r'^filteritems/', MpttFilterItems.as_view()),
+    url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
+        CollectionMaterialPromotionAPIView.as_view()),
 ] + router.urls
 
 urlpatterns = [
