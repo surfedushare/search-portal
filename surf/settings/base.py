@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from sentry_sdk.integrations.logging import ignore_logger
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -235,6 +236,10 @@ LOGGING = {
         },
     },
 }
+if not DEBUG:
+    # We kill all DisallowedHost logging on the servers,
+    # because it happens so frequently that we can't do much about it
+    ignore_logger('django.security.DisallowedHost')
 
 
 # Social Auth
