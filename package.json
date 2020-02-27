@@ -1,6 +1,6 @@
 {
   "name": "surf-frontend",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "scripts": {
     "serve": "vue-cli-service serve",
     "integrate": "vue-cli-service serve --mode=integration",
@@ -40,9 +40,9 @@
     "less": "3.9.0",
     "less-loader": "5.0.0",
     "moxios": "0.4.0",
-    "node-sass": "4.9.4",
+    "node-sass": "4.13.1",
     "npm-check": "5.9.0",
-    "sass-loader": "7.1.0",
+    "sass-loader": "8.0.2",
     "vue-template-compiler": "2.6.10",
     "webpack": "4.28.4",
     "webpack-bundle-analyzer": "3.6.0"
