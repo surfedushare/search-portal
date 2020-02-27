@@ -39,6 +39,7 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
+from surf.apps.core.views import health_check
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsView
@@ -72,6 +73,7 @@ apipatterns = [
 ] + router.urls
 
 urlpatterns = [
+    url(r'^health/?$', health_check, name="health-check"),
     url('', include('social_django.urls', namespace='social')),
     url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
     url(r'^jet/', include('jet.urls', 'jet')),
