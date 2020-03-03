@@ -195,8 +195,8 @@ class ElasticSearchApiClient:
             # the downside of match is that it _does_ analyze so it'll do inexact matching
             if elastic_type == 'author':
                 filter_items.append({
-                    "match": {
-                        elastic_type: " ".join(filter_item["items"])
+                    "regexp": {
+                        elastic_type: ".*(" + " ".join(filter_item["items"]) + ")+.*"
                     }
                 })
             else:
