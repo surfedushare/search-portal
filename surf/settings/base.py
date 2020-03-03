@@ -32,6 +32,7 @@ FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
 DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', "0")))
 
 ALLOWED_HOSTS = [
+    "localhost",
     os.environ.get('DJANGO_BACKEND_DOMAIN', 'zoekportaalback.surf.nl')
 ]
 
