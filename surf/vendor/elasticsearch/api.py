@@ -121,7 +121,7 @@ class ElasticSearchApiClient:
         search_text = search_text or []
         assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
         # build basic query
-        start_record = page_size * (page - 1) + 1
+        start_record = page_size * (page - 1)
         body = {
             'query': {
                 "bool": defaultdict(list)
