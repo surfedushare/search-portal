@@ -16,6 +16,35 @@
             :items="[{title: $t('Home'), url: localePath('index')}]"
           />
           <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
+          <div >
+            <section class="communities__section__blue_box">
+              <form
+                action="/"
+                @submit.prevent="onSubmit"
+              >
+                <div class="communities__form__buttons">
+                  <div
+                    v-if="is_saved"
+                    class="success" >
+                    &#10004; {{ $t('Data-saved') }}
+                  </div>
+                  Openbaar&nbsp;&nbsp;
+                  <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                  </label>
+                  &nbsp;&nbsp; <a href="www.google.com">👁️ Voorbeeld</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <button
+                    :disabled="is_submitting"
+                    type="submit"
+                    class="button communities__form__button"
+                  >
+                    {{ $t('save') }}
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
         </div>
         <div class="communities__form">
           <div><h1>{{$t('general')}}</h1>
@@ -184,19 +213,19 @@
 
         </div>
         <div class="communities__form__buttons">
-              <div
-                v-if="is_saved"
-                class="success" >
-                &#10004; {{ $t('Data-saved') }}
-              </div>
-              <button
-                :disabled="is_submitting"
-                type="submit"
-                class="button communities__form__button"
-              >
-                {{ $t('save') }}
-              </button>
-            </div>
+          <div
+            v-if="is_saved"
+            class="success" >
+            &#10004; {{ $t('Data-saved') }}
+          </div>
+          <button
+            :disabled="is_submitting"
+            type="submit"
+            class="button communities__form__button"
+          >
+            {{ $t('save') }}
+          </button>
+        </div>
 
         <div class="communities__collections">
           <div class="collections__add">
@@ -478,6 +507,28 @@ export default {
       }
     }
   }
+  &__section {
+    &__blue_box{
+      line-height: 75px;
+      border: 1px;
+      background: @dark-blue;
+      width: 40%;
+      height: 75px;
+      border-radius: 20px;
+      margin-top: 25px;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      a:link{
+        color:white;
+        text-decoration: none;
+      }
+      a:visited{
+        color:white;
+        text-decoration: none;
+      }
+    }
+  }
   &__form {
     margin-bottom: 146px;
     &_in {
@@ -542,7 +593,10 @@ export default {
       }
     }
     &__button {
-      padding: 13px 60px;
+      margin-right: 10px;
+      margin-top: 10px;
+      height: 55px;
+      float: right;
     }
   }
   &__collections {
@@ -562,5 +616,66 @@ export default {
     background-repeat: no-repeat;
     background-size: 24px 24px;
   }
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 60%;
+  left: 0;
+  right: 0;
+  bottom: -60%;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>
