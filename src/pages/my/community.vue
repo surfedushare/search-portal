@@ -18,77 +18,172 @@
           <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
         </div>
         <div class="communities__form">
+          <div><h1>{{$t('general')}}</h1>
+            {{$t('manage-community-information')}}
+            <br /><br />
+          </div>
+          <div>
+            <h3>{{$t('dutch')}}</h3>
+            <hr>
+            <br /><br />
+          </div>
           <form
             action="/"
             class="communities__form_in"
             @submit.prevent="onSubmit"
           >
+
             <div class="communities__form__column">
               <div class="communities__form__row">
                 <label
-                  for="name"
+                  for="name_nl"
                   class="communities__form__label"
                 >
                   {{ $t('Name') }}
                 </label>
                 <input
                   required
-                  id="name"
-                  v-model="formData.name"
+                  id="name_nl"
+                  v-model="formData.name_nl"
                   name="name"
                   type="text"
                   class="communities__form__input"
                 >
               </div>
+
               <div class="communities__form__row">
                 <label
-                  for="description"
-                  class="communities__form__label"
-                >
-                  {{ $t('Description') }}
-                </label>
-                <textarea
-                  required
-                  id="description"
-                  v-model="formData.description"
-                  name="description"
-                  class="communities__form__textarea"
-                />
-              </div>
-              <div class="communities__form__row">
-                <label
-                  for="website"
+                  for="website_nl"
                   class="communities__form__label"
                 >
                   {{ $t('Website') }}
                 </label>
                 <input
-                  id="website"
-                  v-model="formData.website_url"
+                  id="website_nl"
+                  v-model="formData.website_url_nl"
                   name="website"
                   type="url"
                   class="communities__form__input"
                   placeholder="http://www..."
                 >
               </div>
-            </div>
-            <div class="communities__form__column">
               <div class="communities__form__row communities__form__file">
                 <InputFile
                   ref="file-logo"
-                  :imagesrc="formData.logo"
+                  :imagesrc="formData.logo_nl"
                   :title="$t('Logo')"
+                />
+              </div>
+            </div>
+            <div class="communities__form__column">
+              <div class="communities__form__row">
+                <label
+                  for="description_nl"
+                  class="communities__form__label"
+                >
+                  {{ $t('Description') }}
+                </label>
+                <textarea
+                  required
+                  id="description_nl"
+                  v-model="formData.description_nl"
+                  name="description"
+                  class="communities__form__textarea"
                 />
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
                   ref="file-img"
-                  :imagesrc="formData.featured_image"
+                  :imagesrc="formData.featured_image_nl"
                   :title="$t('Featured-image')"
                 />
               </div>
             </div>
-            <div class="communities__form__buttons">
+
+          </form>
+          <div>
+            <br/><br/>
+            <h3>{{$t('english')}}</h3>
+            <hr>
+            <br /><br />
+          </div>
+          <form
+            action="/"
+            class="communities__form_in"
+            @submit.prevent="onSubmit"
+          >
+
+            <div class="communities__form__column">
+              <div class="communities__form__row">
+                <label
+                  for="name_en"
+                  class="communities__form__label"
+                >
+                  {{ $t('Name') }}
+                </label>
+                <input
+                  required
+                  id="name_en"
+                  v-model="formData.name_en"
+                  name="name"
+                  type="text"
+                  class="communities__form__input"
+                >
+              </div>
+
+              <div class="communities__form__row">
+                <label
+                  for="website_en"
+                  class="communities__form__label"
+                >
+                  {{ $t('Website') }}
+                </label>
+                <input
+                  id="website_en"
+                  v-model="formData.website_url_en"
+                  name="website"
+                  type="url"
+                  class="communities__form__input"
+                  placeholder="http://www..."
+                >
+              </div>
+              <div class="communities__form__row communities__form__file">
+                <InputFile
+                  ref="file-logo"
+                  :imagesrc="formData.logo_en"
+                  :title="$t('Logo')"
+                />
+              </div>
+            </div>
+            <div class="communities__form__column">
+              <div class="communities__form__row">
+                <label
+                  for="description_en"
+                  class="communities__form__label"
+                >
+                  {{ $t('Description') }}
+                </label>
+                <textarea
+                  required
+                  id="description_en"
+                  v-model="formData.description_en"
+                  name="description"
+                  class="communities__form__textarea"
+                />
+              </div>
+              <div class="communities__form__row communities__form__file">
+                <InputFile
+                  ref="file-img"
+                  :imagesrc="formData.featured_image_en"
+                  :title="$t('Featured-image')"
+                />
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+        <div class="communities__form__buttons">
               <div
                 v-if="is_saved"
                 class="success" >
@@ -102,8 +197,7 @@
                 {{ $t('save') }}
               </button>
             </div>
-          </form>
-        </div>
+
         <div class="communities__collections">
           <div class="collections__add">
             <button
@@ -163,11 +257,16 @@ export default {
       isShow: false,
       image_logo: '',
       formData: {
-        name: '',
-        description: '',
-        website_url: '',
-        logo: false,
-        featured_image: false
+        name_nl: '',
+        name_en: '',
+        description_nl: '',
+        description_en: '',
+        website_url_nl: '',
+        website_url_en: '',
+        logo_nl: false,
+        logo_en: false,
+        featured_image_nl: false,
+        featured_image_en: false,
       }
     };
   },
@@ -209,14 +308,28 @@ export default {
         this.formData = null;
         return;
       }
+      if(!_.isNil(community.community_details)){
+        for (let item in community.community_details){
+          const detail = community.community_details[item];
+          if (detail.language_code === 'NL'){
+            this.formData.name_nl = detail.title;
+            this.formData.description_nl = detail.description;
+            this.formData.website_url_nl = detail.website_url;
+            this.formData.logo_nl = detail.logo;
+            this.formData.featured_image_nl = detail.featured_image;
+          }
+          else if (detail.language_code === 'EN'){
+            this.formData.name_en = detail.title;
+            this.formData.description_en = detail.description;
+            this.formData.website_url_en = detail.website_url;
+            this.formData.logo_en = detail.logo;
+            this.formData.featured_image_en = detail.featured_image;
+          }
+        }
+      }
 
       this.formData.id = community.id;
       this.formData.name = community.name;
-      this.formData.description = community.description;
-      this.formData.website_url = community.website_url;
-      this.formData.logo = community.logo;
-      this.formData.featured_image = community.featured_image;
-
     },
     /**
      * Show the popup 'Add collection'
@@ -373,10 +486,10 @@ export default {
       flex-wrap: wrap;
     }
     &__column {
-      width: 45%;
+      width: 50%;
       padding-left: 53px;
       &:first-child {
-        width: 55%;
+        width: 50%;
         padding-right: 32px;
         padding-left: 0;
       }
@@ -409,7 +522,7 @@ export default {
       border-radius: 7px;
       padding: 12px 24px;
       width: 100%;
-      height: 110px;
+      height: 143px;
       font-size: 16px;
       line-height: 1.44;
       resize: none;
