@@ -46,7 +46,13 @@
             </section>
           </div>
         </div>
-        <div class="communities__form">
+
+        <div class="tab">
+          <button class="tablinks" @click="openTab(event, 'General')">General</button>
+          <button class="tablinks" @click="openTab(event, 'Collections')">Collections</button>
+        </div>
+
+        <div class="communities__form tabcontent" id="General">
           <div><h1>{{$t('general')}}</h1>
             {{$t('manage-community-information')}}
             <br /><br />
@@ -212,22 +218,8 @@
           </form>
 
         </div>
-        <div class="communities__form__buttons">
-          <div
-            v-if="is_saved"
-            class="success" >
-            &#10004; {{ $t('Data-saved') }}
-          </div>
-          <button
-            :disabled="is_submitting"
-            type="submit"
-            class="button communities__form__button"
-          >
-            {{ $t('save') }}
-          </button>
-        </div>
-
-        <div class="communities__collections">
+        <div class="communities__collections tabcontent" id="Collections">
+          <br/><br/>
           <div class="collections__add">
             <button
               class="collections__add__link button"
@@ -397,6 +389,26 @@ export default {
           this.error = err;
           this.is_submitting = false;
         });
+    },
+    openTab(evt, tabName) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
+
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
     },
     /**
      * Generate the FormData
@@ -677,5 +689,38 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
 }
 </style>
