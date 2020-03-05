@@ -28,12 +28,12 @@
                     class="success" >
                     &#10004; {{ $t('Data-saved') }}
                   </div>
-                  Openbaar&nbsp;&nbsp;
+                  {{$t('public')}}&nbsp;&nbsp;
                   <label class="switch">
                     <input type="checkbox">
                     <span class="slider round"></span>
                   </label>
-                  &nbsp;&nbsp; <a href="www.google.com">👁️ Voorbeeld</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp; <a href="www.google.com">👁️ {{$t('example')}}</a> &nbsp;&nbsp;&nbsp;&nbsp;
                   <button
                     :disabled="is_submitting"
                     type="submit"
