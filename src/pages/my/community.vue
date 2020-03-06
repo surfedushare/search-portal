@@ -311,6 +311,8 @@ export default {
       this.setInitialFormData();
     });
     this.$store.dispatch('getCommunityCollections', this.$route.params.community);
+    // Open the 'general' tab by default
+    this.openTab(event, "General");
   },
   methods: {
     setInitialFormData() {
@@ -700,21 +702,22 @@ input:checked + .slider:before {
 .tab button {
   background-color: inherit;
   float: left;
-  border: none;
+  border: 1px solid #ccc;
   outline: none;
   cursor: pointer;
-  padding: 14px 16px;
+  padding: 14px 50px;
+  margin: 0 25px;
   transition: 0.3s;
 }
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-  background-color: #ddd;
+  background-color: lightblue;
 }
 
 /* Create an active/current tablink class */
 .tab button.active {
-  background-color: #ccc;
+  background-color: lightblue;
 }
 
 /* Style the tab content */
