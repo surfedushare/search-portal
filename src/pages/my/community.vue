@@ -71,15 +71,15 @@
             <div class="communities__form__column">
               <div class="communities__form__row">
                 <label
-                  for="name_nl"
+                  for="title_nl"
                   class="communities__form__label"
                 >
                   {{ $t('Name') }}
                 </label>
                 <input
                   required
-                  id="name_nl"
-                  v-model="formData.name_nl"
+                  id="title_nl"
+                  v-model="formData.title_nl"
                   name="name"
                   type="text"
                   class="communities__form__input"
@@ -104,9 +104,11 @@
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
-                  ref="file-logo"
+                  ref="file-logo_nl"
                   :imagesrc="formData.logo_nl"
                   :title="$t('Logo')"
+                  @remove_image="onRemoveImage('logo_nl', $event)"
+                  @add_image="onAddImage('logo_nl', $event)"
                 />
               </div>
             </div>
@@ -128,9 +130,11 @@
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
-                  ref="file-img"
+                  ref="file-img_nl"
                   :imagesrc="formData.featured_image_nl"
                   :title="$t('Featured-image')"
+                  @remove_image="onRemoveImage('featured_nl', $event)"
+                  @add_image="onAddImage('featured_nl', $event)"
                 />
               </div>
             </div>
@@ -151,15 +155,15 @@
             <div class="communities__form__column">
               <div class="communities__form__row">
                 <label
-                  for="name_en"
+                  for="title_en"
                   class="communities__form__label"
                 >
                   {{ $t('Name') }}
                 </label>
                 <input
                   required
-                  id="name_en"
-                  v-model="formData.name_en"
+                  id="title_en"
+                  v-model="formData.title_en"
                   name="name"
                   type="text"
                   class="communities__form__input"
@@ -184,9 +188,11 @@
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
-                  ref="file-logo"
+                  ref="file-logo_en"
                   :imagesrc="formData.logo_en"
                   :title="$t('Logo')"
+                  @remove_image="onRemoveImage('logo_en', $event)"
+                  @add_image="onAddImage('logo_en', $event)"
                 />
               </div>
             </div>
@@ -208,9 +214,11 @@
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
-                  ref="file-img"
+                  ref="file-img_en"
                   :imagesrc="formData.featured_image_en"
                   :title="$t('Featured-image')"
+                  @remove_image="onRemoveImage('featured_en', $event)"
+                  @add_image="onAddImage('featured_en', $event)"
                 />
               </div>
             </div>
@@ -278,8 +286,8 @@ export default {
       isShow: false,
       image_logo: '',
       formData: {
-        name_nl: '',
-        name_en: '',
+        title_nl: '',
+        title_en: '',
         description_nl: '',
         description_en: '',
         website_url_nl: '',
@@ -303,6 +311,14 @@ export default {
   },
 
   mounted() {
+    this.logo_nl_deleted = false;
+    this.featured_nl_deleted = false;
+    this.logo_en_deleted = false;
+    this.featured_en_deleted = false;
+    this.logo_nl_added = false;
+    this.featured_nl_added = false;
+    this.logo_en_added = false;
+    this.featured_en_added = false;
     if(!this.isAuthenticated) {
       this.$router.push('/');
       return;
@@ -315,6 +331,46 @@ export default {
     this.openTab(event, "General");
   },
   methods: {
+    onRemoveImage(context){
+      console.log('Deleted image:');
+      console.log(context);
+      if (context === 'logo_nl'){
+        this.logo_nl_deleted = true;
+        this.logo_nl_added = false;
+      }
+      if (context === 'featured_nl'){
+        this.featured_nl_deleted = true;
+        this.featured_nl_added = false;
+      }
+      if (context === 'logo_en'){
+        this.logo_en_deleted = true;
+        this.logo_en_added = false;
+      }
+      if (context === 'featured_en'){
+        this.featured_en_deleted = true;
+        this.featured_en_added = false;
+      }
+    },
+    onAddImage(context){
+      console.log('Added image:');
+      console.log(context);
+      if (context === 'logo_nl'){
+        this.logo_nl_deleted = false;
+        this.logo_nl_added = true;
+      }
+      if (context === 'featured_nl'){
+        this.featured_nl_deleted = false;
+        this.featured_nl_added = true;
+      }
+      if (context === 'logo_en'){
+        this.logo_en_deleted = false;
+        this.logo_en_added = true;
+      }
+      if (context === 'featured_en'){
+        this.featured_en_deleted = false;
+        this.featured_en_added = true;
+      }
+    },
     setInitialFormData() {
 
       if(!this.user) {
@@ -335,14 +391,14 @@ export default {
         for (let item in community.community_details){
           const detail = community.community_details[item];
           if (detail.language_code === 'NL'){
-            this.formData.name_nl = detail.title;
+            this.formData.title_nl = detail.title;
             this.formData.description_nl = detail.description;
             this.formData.website_url_nl = detail.website_url;
             this.formData.logo_nl = detail.logo;
             this.formData.featured_image_nl = detail.featured_image;
           }
           else if (detail.language_code === 'EN'){
-            this.formData.name_en = detail.title;
+            this.formData.title_en = detail.title;
             this.formData.description_en = detail.description;
             this.formData.website_url_en = detail.website_url;
             this.formData.logo_en = detail.logo;
@@ -351,8 +407,7 @@ export default {
         }
       }
 
-      this.formData.id = community.id;
-      this.formData.name = community.name;
+      this.formData.external_id = community.id;
     },
     /**
      * Show the popup 'Add collection'
@@ -377,7 +432,7 @@ export default {
       const data = this.normalizeFormData();
       this.$store
         .dispatch('putCommunities', {
-          id: this.formData.id,
+          id: this.formData.external_id,
           data: data
         })
         .then(() => {
@@ -418,44 +473,83 @@ export default {
      */
     normalizeFormData() {
       let data = new FormData();
+      let data_nl = {language_code: 'NL'};
+      let data_en = {language_code: 'EN'};
 
+      // TODO lodash foreach
       for (let item in this.formData) {
         const el = this.formData[item];
         if (el) {
+          let value = null;
           if (Array.isArray(el)) {
-            data.append(item, JSON.stringify(el));
+            value = JSON.stringify(el);
           } else {
             let ElValue = el ? el : null;
-            data.append(item, ElValue);
+            value = ElValue;
           }
+          if (!item.startsWith('logo') && (!item.startsWith('featured'))){
+            if (item.endsWith('_nl')) {
+              data_nl[item.slice(0, -3)] = value;
+            } else if (item.endsWith('_en')) {
+              data_en[item.slice(0, -3)] = value;
+            }
+          }
+          data.append(item, value);
         }
       }
-      if (this.formData.website_url === ""){
-        data.append("website_url", "");
+      if (this.formData.website_url_nl === ""){
+        data_nl.website_url = "";
+      }
+      if (this.formData.website_url_en === ""){
+        data_en.website_url = "";
+      }
+      console.log('added_logo_nl', this.logo_nl_added);
+      let deleted_logos = [];
+      data.set('logo_nl', '');
+      if (this.logo_nl_added) {
+        let logo = this.$refs['file-logo_nl'].$el.querySelector('input[type="file"]').files[0];
+        console.log('logo  = ', logo);
+        data.set('logo_nl', logo);
+      }
+      else if (this.logo_nl_deleted) {
+        deleted_logos.push('logo_nl');
+      } else {
+        data.delete('logo_nl');
+      }
+      console.log('data.logo_nl', data.logo_nl);
+
+      data.set('logo_en', '');
+      if (this.logo_en_added) {
+        data.set('logo_en', this.$refs['file-logo_en'].$el.querySelector('input[type="file"]').files[0]);
+      }
+      else if (this.logo_en_deleted) {
+        deleted_logos.push('logo_en');
+      } else {
+        data.delete('logo_en');
       }
 
-      if (
-        this.$refs['file-logo'].$el.querySelector('input[type="file"]').files[0]
-      ) {
-        data.set(
-          'logo',
-          this.$refs['file-logo'].$el.querySelector('input[type="file"]')
-            .files[0]
-        );
-      } else {
-        data.set('logo', '');
+      data.set('featured_image_nl', '');
+      if (this.featured_nl_added) {
+        data.set('featured_image_nl', this.$refs['file-img_nl'].$el.querySelector('input[type="file"]').files[0]);
       }
-      if (
-        this.$refs['file-img'].$el.querySelector('input[type="file"]').files[0]
-      ) {
-        data.set(
-          'featured_image',
-          this.$refs['file-img'].$el.querySelector('input[type="file"]')
-            .files[0]
-        );
+      else if (this.featured_nl_deleted) {
+        deleted_logos.push('featured_image_nl');
       } else {
-        data.set('featured_image', '');
+        data.delete('featured_image_nl');
       }
+
+      data.set('featured_image_en', '');
+      if (this.featured_en_added) {
+        data.set('featured_image_en', this.$refs['file-img_en'].$el.querySelector('input[type="file"]').files[0]);
+      }
+      else if (this.featured_en_deleted) {
+        deleted_logos.push('featured_image_en');
+      } else {
+        data.delete('featured_image_en');
+      }
+
+      data.append('community_details_update', JSON.stringify([data_nl, data_en]));
+      data.append('deleted_logos', JSON.stringify(deleted_logos));
       return data;
     },
     saveCollection(collection) {
@@ -717,7 +811,7 @@ input:checked + .slider:before {
 
 /* Create an active/current tablink class */
 .tab button.active {
-  background-color: lightblue;
+  background-color: blue;
 }
 
 /* Style the tab content */
