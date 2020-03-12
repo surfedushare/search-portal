@@ -23,7 +23,7 @@ class Community(UUIDModel):
     """
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
 
-    name = django_models.CharField(max_length=255, blank=True)
+    name = django_models.CharField(max_length=255, blank=False)
     deleted_at = django_models.DateTimeField(null=True, blank=True)
 
     members = django_models.ManyToManyField(
@@ -88,7 +88,6 @@ class CommunityDetail(django_models.Model):
     def clean(self):
         # force consistency
         self.language_code = self.language_code.upper()
-
         # validate image sizes
         if self.logo and (self.logo.width != 230 or self.logo.height != 136):
             raise ValidationError("The dimensions of the logo image should be 230x136px")
