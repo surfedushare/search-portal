@@ -332,8 +332,6 @@ export default {
   },
   methods: {
     onRemoveImage(context){
-      console.log('Deleted image:');
-      console.log(context);
       if (context === 'logo_nl'){
         this.logo_nl_deleted = true;
         this.logo_nl_added = false;
@@ -352,8 +350,6 @@ export default {
       }
     },
     onAddImage(context){
-      console.log('Added image:');
-      console.log(context);
       if (context === 'logo_nl'){
         this.logo_nl_deleted = false;
         this.logo_nl_added = true;
@@ -503,12 +499,10 @@ export default {
       if (this.formData.website_url_en === ""){
         data_en.website_url = "";
       }
-      console.log('added_logo_nl', this.logo_nl_added);
       let deleted_logos = [];
       data.set('logo_nl', '');
       if (this.logo_nl_added) {
         let logo = this.$refs['file-logo_nl'].$el.querySelector('input[type="file"]').files[0];
-        console.log('logo  = ', logo);
         data.set('logo_nl', logo);
       }
       else if (this.logo_nl_deleted) {
@@ -516,7 +510,6 @@ export default {
       } else {
         data.delete('logo_nl');
       }
-      console.log('data.logo_nl', data.logo_nl);
 
       data.set('logo_en', '');
       if (this.logo_en_added) {
