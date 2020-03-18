@@ -492,12 +492,14 @@ export default {
           }
           data.append(item, value);
         }
-      }
-      if (this.formData.website_url_nl === ""){
-        data_nl.website_url = "";
-      }
-      if (this.formData.website_url_en === ""){
-        data_en.website_url = "";
+        // if the value is empty, send it to the backend (so the backend can reject the post)
+        else {
+          if (item.endsWith('_nl')) {
+              data_nl[item.slice(0, -3)] = "";
+          } else if (item.endsWith('_en')) {
+              data_en[item.slice(0, -3)] = "";
+          }
+        }
       }
       let deleted_logos = [];
       data.set('logo_nl', '');
