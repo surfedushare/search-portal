@@ -4,6 +4,7 @@
  */
 
 import Axios from 'axios'
+import isNil from 'lodash.isnil'
 
 
 // Axios.prototype cannot be modified
@@ -22,7 +23,11 @@ const axiosExtra = {
     this.setHeader('Authorization', value, scopes)
   },
   setLanguage(language) {
-    console.log('Language set = ', language)
+    if(!isNil(language)) {
+        this.defaults.headers.common['Accept-Language'] = language;
+    } else {
+        delete this.defaults.headers.common['Accept-Language']
+    }
   },
   onRequest(fn) {
     this.interceptors.request.use(config => fn(config) || config)
