@@ -11,6 +11,8 @@ from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.filters.utils import add_default_material_filters
 from surf.vendor.search.searchselector import get_search_client
+from django.core.exceptions import ValidationError
+from rest_framework.exceptions import APIException
 
 
 class CommunityDetailSerializer(serializers.ModelSerializer):
@@ -81,8 +83,12 @@ class CommunitySerializer(serializers.ModelSerializer):
             setattr(detail_object, 'logo', logo)
         if featured_image is not None:
             setattr(detail_object, 'featured_image', featured_image)
-        detail_object.clean()
-        detail_object.save()
+        try:
+            detail_object.clean_fields()
+            detail_object.clean()
+            detail_object.save()
+        except ValidationError as exc:
+            return exc
 
     def update(self, instance, validated_data):
         # we could update the community instance itself, however the only value that can be updated
@@ -111,14 +117,25 @@ class CommunitySerializer(serializers.ModelSerializer):
                     featured_image_nl = ''
                 if key == 'featured_image_en':
                     featured_image_en = ''
+        result_nl = result_en = None
         for community_detail in details_data:
             if community_detail['language_code'] == 'NL':
-                self.update_community_details(community_instance=instance, community_details=community_detail,
-                                              logo=logo_nl, featured_image=featured_image_nl)
+                result_nl = self.update_community_details(community_instance=instance,
+                                                          community_details=community_detail,
+                                                          logo=logo_nl, featured_image=featured_image_nl)
             if community_detail['language_code'] == 'EN':
-                self.update_community_details(community_instance=instance, community_details=community_detail,
-                                              logo=logo_en, featured_image=featured_image_en)
-        return instance
+                result_en = self.update_community_details(community_instance=instance,
+                                                          community_details=community_detail,
+                                                          logo=logo_en, featured_image=featured_image_en)
+
+        if not result_nl and not result_en:
+            return instance
+        feedback = {}
+        if result_nl:
+            feedback['NL'] = result_nl
+        if result_en:
+            feedback['EN'] = result_en
+        raise APIException(detail=feedback, code=400)
 
     class Meta:
         model = Community

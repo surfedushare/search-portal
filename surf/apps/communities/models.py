@@ -5,6 +5,8 @@ import re
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator, URLValidator, validate_image_file_extension
+from django.core.files.images import get_image_dimensions
 from django.db import models as django_models
 from django.utils import timezone
 from django_enumfield import enum
@@ -66,18 +68,30 @@ class Community(UUIDModel):
                                       "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
 
 
+def validate_logo_size(image):
+    width, height = get_image_dimensions(image)
+    if width != 230 or height != 136:
+        raise ValidationError("The proportion of the logo image should be 230x136")
+
+
+def validate_featured_size(image):
+    width, height = get_image_dimensions(image)
+    if width != 388 or height != 227:
+        raise ValidationError("The proportion of the featured image should be 388x227")
+
+
 class CommunityDetail(django_models.Model):
     community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE, related_name='community_details')
     language_code = django_models.CharField(max_length=2)
-    title = django_models.CharField(max_length=255)
+    title = django_models.CharField(max_length=255, validators=[MinLengthValidator(1)])
     description = django_models.TextField(max_length=16384, null=True, blank=True)
-    website_url = django_models.URLField(blank=True, null=True)
+    website_url = django_models.URLField(blank=True, null=True, validators=[URLValidator])
 
     logo = django_models.ImageField(upload_to='communities', blank=True, null=True,
-                                    help_text="The proportion of the image should be 230x136")
+                                    validators=[validate_image_file_extension, validate_logo_size])
 
     featured_image = django_models.ImageField(upload_to='communities', blank=True, null=True,
-                                              help_text="The proportion of the image should be 388x227")
+                                              validators=[validate_image_file_extension, validate_featured_size])
 
     class Meta:
         # only allow unique language codes for communities
@@ -88,11 +102,6 @@ class CommunityDetail(django_models.Model):
     def clean(self):
         # force consistency
         self.language_code = self.language_code.upper()
-        # validate image sizes
-        if self.logo and (self.logo.width != 230 or self.logo.height != 136):
-            raise ValidationError("The dimensions of the logo image should be 230x136px")
-        if self.featured_image and (self.featured_image.width != 388 or self.featured_image.height != 227):
-            raise ValidationError("The dimensions of the featured image should be 388x227px")
 
     def __str__(self):
         return self.title
