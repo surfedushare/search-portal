@@ -21,6 +21,9 @@ const axiosExtra = {
     const value = !token ? null : (type ? type + ' ' : '') + token;
     this.setHeader('Authorization', value, scopes)
   },
+  setLanguage(language) {
+    console.log('Language set = ', language)
+  },
   onRequest(fn) {
     this.interceptors.request.use(config => fn(config) || config)
   },
