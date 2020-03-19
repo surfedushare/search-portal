@@ -385,29 +385,26 @@ export default {
       return this.getFieldErrors(fieldName).length > 0
     },
     anyFieldError(){
-      for (let field in this.errors) {
-        if (this.errors[field].length > 0) {
-          return true;
-        }
-      }
-      return false;
+      return _.some(this.errors, item => item.length > 0);
     },
     onRemoveImage(context){
-      if (context === 'logo_nl'){
-        this.logo_nl_deleted = true;
-        this.logo_nl_added = false;
-      }
-      if (context === 'featured_nl'){
-        this.featured_nl_deleted = true;
-        this.featured_nl_added = false;
-      }
-      if (context === 'logo_en'){
-        this.logo_en_deleted = true;
-        this.logo_en_added = false;
-      }
-      if (context === 'featured_en'){
-        this.featured_en_deleted = true;
-        this.featured_en_added = false;
+      switch(context) {
+        case 'logo_nl':
+          this.logo_nl_deleted = true;
+          this.logo_nl_added = false;
+          break;
+        case 'logo_en':
+          this.logo_en_deleted = true;
+          this.logo_en_added = false;
+          break;
+        case 'featured_nl':
+          this.featured_nl_deleted = true;
+          this.featured_nl_added = false;
+          break;
+        case 'featured_en':
+          this.featured_en_deleted = true;
+          this.featured_en_added = false;
+          break;
       }
     },
     onAddImage(context){
@@ -445,8 +442,7 @@ export default {
         return;
       }
       if(!_.isNil(community.community_details)){
-        for (let item in community.community_details){
-          const detail = community.community_details[item];
+        _.forEach(community.community_details, detail => {
           if (detail.language_code === 'NL'){
             this.formData.title_nl = detail.title;
             this.formData.description_nl = detail.description;
@@ -461,9 +457,8 @@ export default {
             this.formData.logo_en = detail.logo;
             this.formData.featured_image_en = detail.featured_image;
           }
-        }
+        });
       }
-
       this.formData.external_id = community.id;
     },
     /**
@@ -487,9 +482,9 @@ export default {
       this.is_submitting = true;
 
       const data = this.normalizeFormData();
-      for (let key in this.errors) {
-        this.errors[key] = '';
-      }
+      _.forEach(this.errors, (value, key) => {
+          this.errors[key] = '';
+      });
       this.$store
         .dispatch('putCommunities', {
           id: this.formData.external_id,
@@ -505,14 +500,14 @@ export default {
         .catch(err => {
           this.error = err;
           this.is_submitting = false;
-          for (let language in err.response.data) {
-            const response = JSON.parse(err.response.data[language].replace(/'/g, "\""));
-            for (let item in response) {
-              const feedback = response[item];
-              let key = item + '_' + language.toLowerCase();
-              this.errors[key] = feedback;
-            }
-          }
+          _.forEach(err.response.data, (feedback, language) => {
+            const response = JSON.parse(feedback.replace(/'/g, "\""));
+            _.forEach(response, (item, key) => {
+              const error_msg = item;
+              let location = key + '_' + language.toLowerCase();
+              this.errors[location] = error_msg;
+            });
+          });
         });
     },
     openTab(evt, tabName) {
