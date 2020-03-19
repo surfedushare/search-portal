@@ -470,6 +470,9 @@ export default {
       this.is_submitting = true;
 
       const data = this.normalizeFormData();
+      for (let key in this.errors) {
+        this.errors[key] = '';
+      }
       this.$store
         .dispatch('putCommunities', {
           id: this.formData.external_id,
