@@ -84,6 +84,10 @@
                   type="text"
                   class="communities__form__input"
                 >
+                <label class="communities__form__feedback"
+                       id="title_nl_feedback"
+                       v-show=false
+                />
               </div>
 
               <div class="communities__form__row">
@@ -101,6 +105,10 @@
                   class="communities__form__input"
                   placeholder="http://www..."
                 >
+                <label class="communities__form__feedback"
+                       id="website_nl_feedback"
+                       v-show=false
+                />
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
@@ -109,6 +117,10 @@
                   :title="$t('Logo')"
                   @remove_image="onRemoveImage('logo_nl', $event)"
                   @add_image="onAddImage('logo_nl', $event)"
+                />
+                <label class="communities__form__feedback"
+                       id="logo_nl_feedback"
+                       v-show=false
                 />
               </div>
             </div>
@@ -127,6 +139,10 @@
                   name="description"
                   class="communities__form__textarea"
                 />
+                <label class="communities__form__feedback"
+                       id="description_nl_feedback"
+                       v-show=false
+                />
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
@@ -135,6 +151,10 @@
                   :title="$t('Featured-image')"
                   @remove_image="onRemoveImage('featured_nl', $event)"
                   @add_image="onAddImage('featured_nl', $event)"
+                />
+                <label class="communities__form__feedback"
+                       id="featured_nl_feedback"
+                       v-show=false
                 />
               </div>
             </div>
@@ -168,6 +188,10 @@
                   type="text"
                   class="communities__form__input"
                 >
+                <label class="communities__form__feedback"
+                       id="title_en_feedback"
+                       v-show=false
+                />
               </div>
 
               <div class="communities__form__row">
@@ -185,6 +209,10 @@
                   class="communities__form__input"
                   placeholder="http://www..."
                 >
+                <label class="communities__form__feedback"
+                       id="website_en_feedback"
+                       v-show=false
+                />
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
@@ -193,6 +221,10 @@
                   :title="$t('Logo')"
                   @remove_image="onRemoveImage('logo_en', $event)"
                   @add_image="onAddImage('logo_en', $event)"
+                />
+                <label class="communities__form__feedback"
+                       id="logo_en_feedback"
+                       v-show=false
                 />
               </div>
             </div>
@@ -211,6 +243,10 @@
                   name="description"
                   class="communities__form__textarea"
                 />
+                <label class="communities__form__feedback"
+                       id="description_en_feedback"
+                       v-show=false
+                />
               </div>
               <div class="communities__form__row communities__form__file">
                 <InputFile
@@ -219,6 +255,10 @@
                   :title="$t('Featured-image')"
                   @remove_image="onRemoveImage('featured_en', $event)"
                   @add_image="onAddImage('featured_en', $event)"
+                />
+                <label class="communities__form__feedback"
+                       id="featured_en_feedback"
+                       v-show=true
                 />
               </div>
             </div>
@@ -658,6 +698,11 @@ export default {
       font-family: @second-font;
       display: block;
       margin-bottom: 8px;
+    }
+    &__feedback {
+      color: red;
+      font-size: 14px;
+      padding-left: 10px;
     }
     &__input {
       border: 1px solid #bcbfc2;
