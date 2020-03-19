@@ -69,7 +69,7 @@
           >
 
             <div class="communities__form__column">
-              <div class="communities__form__row">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('title_nl')}">
                 <label
                   for="title_nl"
                   class="communities__form__label"
@@ -84,13 +84,12 @@
                   type="text"
                   class="communities__form__input"
                 >
-                <label class="communities__form__feedback"
-                       id="title_nl_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('title_nl')" :key="error">{{ error }}</li>
+                </ul>
               </div>
 
-              <div class="communities__form__row">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('website_url_nl')}">
                 <label
                   for="website_nl"
                   class="communities__form__label"
@@ -105,12 +104,12 @@
                   class="communities__form__input"
                   placeholder="http://www..."
                 >
-                <label class="communities__form__feedback"
-                       id="website_nl_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('website_url_nl')" :key="error">{{ error }}</li>
+                </ul>
               </div>
-              <div class="communities__form__row communities__form__file">
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('logo_nl')}">
                 <InputFile
                   ref="file-logo_nl"
                   :imagesrc="formData.logo_nl"
@@ -118,14 +117,13 @@
                   @remove_image="onRemoveImage('logo_nl', $event)"
                   @add_image="onAddImage('logo_nl', $event)"
                 />
-                <label class="communities__form__feedback"
-                       id="logo_nl_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('logo_nl')" :key="error">{{ error }}</li>
+                </ul>
               </div>
             </div>
             <div class="communities__form__column">
-              <div class="communities__form__row">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('description_nl')}">
                 <label
                   for="description_nl"
                   class="communities__form__label"
@@ -139,12 +137,12 @@
                   name="description"
                   class="communities__form__textarea"
                 />
-                <label class="communities__form__feedback"
-                       id="description_nl_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('description_nl')" :key="error">{{ error }}</li>
+                </ul>
               </div>
-              <div class="communities__form__row communities__form__file">
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('featured_image_nl')}">
                 <InputFile
                   ref="file-img_nl"
                   :imagesrc="formData.featured_image_nl"
@@ -152,10 +150,9 @@
                   @remove_image="onRemoveImage('featured_nl', $event)"
                   @add_image="onAddImage('featured_nl', $event)"
                 />
-                <label class="communities__form__feedback"
-                       id="featured_nl_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('featured_image_nl')" :key="error">{{ error }}</li>
+                </ul>
               </div>
             </div>
 
@@ -173,7 +170,7 @@
           >
 
             <div class="communities__form__column">
-              <div class="communities__form__row">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('title_en')}">
                 <label
                   for="title_en"
                   class="communities__form__label"
@@ -188,13 +185,12 @@
                   type="text"
                   class="communities__form__input"
                 >
-                <label class="communities__form__feedback"
-                       id="title_en_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('title_en')" :key="error">{{ error }}</li>
+                </ul>
               </div>
 
-              <div class="communities__form__row">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('website_url_en')}">
                 <label
                   for="website_en"
                   class="communities__form__label"
@@ -209,12 +205,12 @@
                   class="communities__form__input"
                   placeholder="http://www..."
                 >
-                <label class="communities__form__feedback"
-                       id="website_en_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('website_url_en')" :key="error">{{ error }}</li>
+                </ul>
               </div>
-              <div class="communities__form__row communities__form__file">
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('logo_en')}">
                 <InputFile
                   ref="file-logo_en"
                   :imagesrc="formData.logo_en"
@@ -222,14 +218,13 @@
                   @remove_image="onRemoveImage('logo_en', $event)"
                   @add_image="onAddImage('logo_en', $event)"
                 />
-                <label class="communities__form__feedback"
-                       id="logo_en_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('logo_en')" :key="error">{{ error }}</li>
+                </ul>
               </div>
             </div>
             <div class="communities__form__column">
-              <div class="communities__form__row">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('description_en')}">
                 <label
                   for="description_en"
                   class="communities__form__label"
@@ -243,12 +238,12 @@
                   name="description"
                   class="communities__form__textarea"
                 />
-                <label class="communities__form__feedback"
-                       id="description_en_feedback"
-                       v-show=false
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('description_en')" :key="error">{{ error }}</li>
+                </ul>
               </div>
-              <div class="communities__form__row communities__form__file">
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('featured_image_en')}">
                 <InputFile
                   ref="file-img_en"
                   :imagesrc="formData.featured_image_en"
@@ -256,10 +251,9 @@
                   @remove_image="onRemoveImage('featured_en', $event)"
                   @add_image="onAddImage('featured_en', $event)"
                 />
-                <label class="communities__form__feedback"
-                       id="featured_en_feedback"
-                       v-show=true
-                />
+                <ul class="errors">
+                  <li v-for="error in getFieldErrors('featured_image_en')" :key="error">{{ error }}</li>
+                </ul>
               </div>
             </div>
 
@@ -325,6 +319,18 @@ export default {
       is_submitting: false,
       isShow: false,
       image_logo: '',
+      errors: {
+        title_nl: '',
+        title_en: '',
+        description_nl: '',
+        description_en: '',
+        website_url_nl: '',
+        website_url_en: '',
+        logo_nl: false,
+        logo_en: false,
+        featured_image_nl: false,
+        featured_image_en: false,
+      },
       formData: {
         title_nl: '',
         title_en: '',
@@ -351,14 +357,6 @@ export default {
   },
 
   mounted() {
-    this.logo_nl_deleted = false;
-    this.featured_nl_deleted = false;
-    this.logo_en_deleted = false;
-    this.featured_en_deleted = false;
-    this.logo_nl_added = false;
-    this.featured_nl_added = false;
-    this.logo_en_added = false;
-    this.featured_en_added = false;
     if(!this.isAuthenticated) {
       this.$router.push('/');
       return;
@@ -371,6 +369,12 @@ export default {
     this.openTab(event, "General");
   },
   methods: {
+    getFieldErrors(fieldName){
+      return this.errors[fieldName];
+    },
+    isFieldValid(fieldName){
+      return this.getFieldErrors(fieldName).length > 0
+    },
     onRemoveImage(context){
       if (context === 'logo_nl'){
         this.logo_nl_deleted = true;
@@ -481,6 +485,14 @@ export default {
         .catch(err => {
           this.error = err;
           this.is_submitting = false;
+          for (let language in err.response.data) {
+            const response = JSON.parse(err.response.data[language].replace(/'/g, "\""));
+            for (let item in response) {
+              const feedback = response[item];
+              let key = item + '_' + language.toLowerCase();
+              this.errors[key] = feedback;
+            }
+          }
         });
     },
     openTab(evt, tabName) {
@@ -859,5 +871,17 @@ input:checked + .slider:before {
   display: none;
   padding: 6px 12px;
   border-top: none;
+}
+
+.errors {
+  color: red;
+  font-size: 14px;
+  display:none;
+  list-style-type: none;
+  padding-top: 5px;
+  margin-left: -20px;
+}
+.field.invalid .errors{
+  display: block;
 }
 </style>
