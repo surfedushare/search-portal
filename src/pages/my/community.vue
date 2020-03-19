@@ -83,6 +83,7 @@
                   name="name"
                   type="text"
                   class="communities__form__input"
+                  :placeholder="$t('community-title-placeholder')"
                 >
                 <ul class="errors">
                   <li v-for="error in getFieldErrors('title_nl')" :key="error">{{ error }}</li>
@@ -102,7 +103,7 @@
                   name="website"
                   type="url"
                   class="communities__form__input"
-                  placeholder="http://www..."
+                  :placeholder="$t('community-url-placeholder')"
                 >
                 <ul class="errors">
                   <li v-for="error in getFieldErrors('website_url_nl')" :key="error">{{ error }}</li>
@@ -136,6 +137,7 @@
                   v-model="formData.description_nl"
                   name="description"
                   class="communities__form__textarea"
+                  :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
                   <li v-for="error in getFieldErrors('description_nl')" :key="error">{{ error }}</li>
@@ -184,6 +186,7 @@
                   name="name"
                   type="text"
                   class="communities__form__input"
+                  :placeholder="$t('community-title-placeholder')"
                 >
                 <ul class="errors">
                   <li v-for="error in getFieldErrors('title_en')" :key="error">{{ error }}</li>
@@ -203,7 +206,7 @@
                   name="website"
                   type="url"
                   class="communities__form__input"
-                  placeholder="http://www..."
+                  :placeholder="$t('community-url-placeholder')"
                 >
                 <ul class="errors">
                   <li v-for="error in getFieldErrors('website_url_en')" :key="error">{{ error }}</li>
@@ -237,6 +240,7 @@
                   v-model="formData.description_en"
                   name="description"
                   class="communities__form__textarea"
+                  :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
                   <li v-for="error in getFieldErrors('description_en')" :key="error">{{ error }}</li>
