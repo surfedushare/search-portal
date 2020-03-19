@@ -76,7 +76,7 @@ class ElasticSearchApiClient:
         record['author'] = author
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
-        record['educationallevels'] = hit['_source']['educational_levels']
+        record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['copyright'] = hit['_source']['copyright']
         themes = set()
         for discipline in hit['_source']['disciplines']:
