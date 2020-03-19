@@ -16,6 +16,16 @@
             :items="[{title: $t('Home'), url: localePath('index')}]"
           />
           <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
+          <div
+            v-if="is_saved"
+            class="success" >
+            &#10004; {{ $t('Data-saved') }}
+          </div>
+          <div
+            v-show="anyFieldError()"
+            >Fix your errors!
+          </div>
+
           <div >
             <section class="communities__section__blue_box">
               <form
@@ -23,17 +33,12 @@
                 @submit.prevent="onSubmit"
               >
                 <div class="communities__form__buttons">
-                  <div
-                    v-if="is_saved"
-                    class="success" >
-                    &#10004; {{ $t('Data-saved') }}
-                  </div>
                   {{$t('public')}}&nbsp;&nbsp;
                   <label class="switch">
                     <input type="checkbox">
                     <span class="slider round"></span>
                   </label>
-                  &nbsp;&nbsp; <a href="www.google.com">👁️ {{$t('example')}}</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp; <a :href=this.formData.external_id>👁️ {{$t('example')}}</a> &nbsp;&nbsp;&nbsp;&nbsp;
                   <button
                     :disabled="is_submitting"
                     type="submit"
@@ -378,6 +383,14 @@ export default {
     },
     isFieldValid(fieldName){
       return this.getFieldErrors(fieldName).length > 0
+    },
+    anyFieldError(){
+      for (let field in this.errors) {
+        if (this.errors[field].length > 0) {
+          return true;
+        }
+      }
+      return false;
     },
     onRemoveImage(context){
       if (context === 'logo_nl'){
@@ -753,11 +766,6 @@ export default {
       text-align: right;
       width: 100%;
       margin: 10px 0 0;
-      .success {
-        display: inline-block;
-        margin: 0 20px 0 0;
-        color: #008800;
-      }
     }
     &__button {
       margin-right: 10px;
@@ -878,6 +886,11 @@ input:checked + .slider:before {
   display: none;
   padding: 6px 12px;
   border-top: none;
+}
+
+.success {
+  display: inline-block;
+  color: #008800;
 }
 
 .errors {
