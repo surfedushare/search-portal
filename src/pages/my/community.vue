@@ -861,6 +861,7 @@ input:checked + .slider:before {
 
 /* Style the buttons that are used to open the tab content */
 .tab button {
+  border-radius: 5px;
   background-color: inherit;
   float: left;
   border: 1px solid #ccc;
