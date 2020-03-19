@@ -91,7 +91,7 @@
                   :placeholder="$t('community-title-placeholder')"
                 >
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('title_nl')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('title_nl')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
 
@@ -111,7 +111,7 @@
                   :placeholder="$t('community-url-placeholder')"
                 >
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('website_url_nl')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('website_url_nl')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
               <div class="communities__form__row communities__form__file"
@@ -124,7 +124,7 @@
                   @add_image="onAddImage('logo_nl', $event)"
                 />
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('logo_nl')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('logo_nl')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
             </div>
@@ -145,7 +145,7 @@
                   :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('description_nl')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('description_nl')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
               <div class="communities__form__row communities__form__file"
@@ -158,7 +158,7 @@
                   @add_image="onAddImage('featured_nl', $event)"
                 />
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('featured_image_nl')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('featured_image_nl')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
             </div>
@@ -194,7 +194,7 @@
                   :placeholder="$t('community-title-placeholder')"
                 >
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('title_en')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('title_en')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
 
@@ -214,7 +214,7 @@
                   :placeholder="$t('community-url-placeholder')"
                 >
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('website_url_en')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('website_url_en')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
               <div class="communities__form__row communities__form__file"
@@ -227,7 +227,7 @@
                   @add_image="onAddImage('logo_en', $event)"
                 />
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('logo_en')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('logo_en')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
             </div>
@@ -248,7 +248,7 @@
                   :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('description_en')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('description_en')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
               <div class="communities__form__row communities__form__file"
@@ -261,7 +261,7 @@
                   @add_image="onAddImage('featured_en', $event)"
                 />
                 <ul class="errors">
-                  <li v-for="error in getFieldErrors('featured_image_en')" :key="error">{{ error }}</li>
+                  <li v-for="(error, ix) in getFieldErrors('featured_image_en')" :key="ix">{{ error }}</li>
                 </ul>
               </div>
             </div>
