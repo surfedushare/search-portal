@@ -263,6 +263,8 @@ class ElasticSearchApiClient:
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
             return 'educational_levels'
+        elif external_id == 'lom.educational.context':
+            return 'lom_educational_levels'
         elif external_id == 'lom.lifecycle.contribute.publisherdate':
             return 'publisher_date'
         elif external_id == 'lom.classification.obk.discipline.id':
