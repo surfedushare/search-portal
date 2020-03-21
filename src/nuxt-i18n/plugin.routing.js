@@ -56,6 +56,7 @@ function switchLocalePathFactory (i18nPath) {
   const LOCALE_CODE_KEY = 'code';
 
   return function switchLocalePath (locale) {
+    this.$axios.setLanguage(locale);
     const name = this.getRouteBaseName();
     if (!name) {
       return ''
