@@ -38,7 +38,7 @@
                     <input type="checkbox">
                     <span class="slider round"></span>
                   </label>
-                  &nbsp;&nbsp; <a :href=this.formData.external_id>👁️ {{$t('example')}}</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp; <router-link :to="getPreviewPath()"><i class="fas fa-eye"></i> {{$t('example')}}</router-link> &nbsp;&nbsp;&nbsp;&nbsp;
                   <button
                     :disabled="is_submitting"
                     type="submit"
@@ -624,6 +624,14 @@ export default {
           }
         ]
       });
+    },
+    getPreviewPath() {
+      return this.localePath({
+        name: 'communities-community',
+        params: {
+          community: this.formData.external_id
+        }
+      })
     }
   }
 };

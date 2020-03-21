@@ -42,6 +42,7 @@ import {
   getQueryDiff,
   //globalHandleError
 } from './utils'
+import { icons } from '@fortawesome/fontawesome-free/css/all.css'
 
 
 // Global shared references
