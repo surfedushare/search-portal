@@ -15,6 +15,10 @@ from django.core.exceptions import ValidationError
 from rest_framework.exceptions import APIException
 
 
+class CommunityDetailValidationError(APIException):
+    status_code = 400
+
+
 class CommunityDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommunityDetail
@@ -135,7 +139,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             feedback['NL'] = result_nl
         if result_en:
             feedback['EN'] = result_en
-        raise APIException(detail=feedback, code=400)
+        raise CommunityDetailValidationError(detail=feedback)
 
     class Meta:
         model = Community
