@@ -87,7 +87,11 @@ export default {
     this.$loading = this.$refs.loading;
     this.$store.dispatch('getThemes');
   },
-
+  watch: {
+    '$i18n.locale'(newLocale) {
+      this.$axios.setLanguage(newLocale);
+    }
+  },
   methods: {
 
     setLayout() {  // previously received a layout

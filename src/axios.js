@@ -4,7 +4,7 @@
  */
 
 import Axios from 'axios'
-import isNil from 'lodash.isnil'
+import { isNil } from 'lodash'
 
 
 // Axios.prototype cannot be modified
