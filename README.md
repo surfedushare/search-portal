@@ -73,6 +73,8 @@ cd surf-backend
 
 * Copy ``.env.example`` to ``.env`` and adjust where needed
 
+* Copy ``surf/settings/local.py.template`` to ``surf/settings/local.py`` and adjust where needed
+
 * Create virtual environment for application and activate it:
 
 ```sh
