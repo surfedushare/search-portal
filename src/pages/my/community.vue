@@ -23,7 +23,7 @@
           </div>
           <div
             v-show="anyFieldError()"
-            >Fix your errors!
+            >{{ $t('any-field-error') }}
           </div>
 
           <div >
