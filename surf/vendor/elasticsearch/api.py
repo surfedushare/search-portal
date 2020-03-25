@@ -76,7 +76,7 @@ class ElasticSearchApiClient:
         record['author'] = author
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
-        record['educationallevels'] = hit['_source']['educational_levels']
+        record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['copyright'] = hit['_source']['copyright']
         themes = set()
         for discipline in hit['_source']['disciplines']:
@@ -121,7 +121,7 @@ class ElasticSearchApiClient:
         search_text = search_text or []
         assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
         # build basic query
-        start_record = page_size * (page - 1) + 1
+        start_record = page_size * (page - 1)
         body = {
             'query': {
                 "bool": defaultdict(list)
@@ -195,8 +195,8 @@ class ElasticSearchApiClient:
             # the downside of match is that it _does_ analyze so it'll do inexact matching
             if elastic_type == 'author':
                 filter_items.append({
-                    "match": {
-                        elastic_type: " ".join(filter_item["items"])
+                    "regexp": {
+                        elastic_type: ".*(" + " ".join(filter_item["items"]) + ")+.*"
                     }
                 })
             else:
@@ -263,6 +263,8 @@ class ElasticSearchApiClient:
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
             return 'educational_levels'
+        elif external_id == 'lom.educational.context':
+            return 'lom_educational_levels'
         elif external_id == 'lom.lifecycle.contribute.publisherdate':
             return 'publisher_date'
         elif external_id == 'lom.classification.obk.discipline.id':
