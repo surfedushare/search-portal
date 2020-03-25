@@ -70,7 +70,7 @@ function switchLocalePathFactory (i18nPath) {
 
     // Handle different domains
     if (this[i18nPath].differentDomains) {
-      const lang = this[i18nPath].locales.find(l => l[LOCALE_CODE_KEY] === locale)
+      const lang = this[i18nPath].locales.find(l => l[LOCALE_CODE_KEY] === locale);
       if (lang && lang[LOCALE_DOMAIN_KEY]) {
         let protocol;
         if (!process.browser) {

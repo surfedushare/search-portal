@@ -16,95 +16,261 @@
             :items="[{title: $t('Home'), url: localePath('index')}]"
           />
           <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
+          <div
+            v-if="is_saved"
+            class="success" >
+            &#10004; {{ $t('Data-saved') }}
+          </div>
+          <div
+            v-show="anyFieldError()"
+            >Fix your errors!
+          </div>
+
+          <div >
+            <section class="communities__section__blue_box">
+              <form
+                action="/"
+                @submit.prevent="onSubmit"
+              >
+                <div class="communities__form__buttons">
+                  {{$t('public')}}&nbsp;&nbsp;
+                  <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                  </label>
+                  &nbsp;&nbsp; <router-link :to="getPreviewPath()"><i class="fas fa-eye"></i> {{$t('example')}}</router-link> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <button
+                    :disabled="is_submitting"
+                    type="submit"
+                    class="button communities__form__button"
+                  >
+                    {{ $t('save') }}
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
         </div>
-        <div class="communities__form">
+
+        <div class="tab">
+          <button class="tablinks" @click="openTab(event, 'General')">General</button>
+          <button class="tablinks" @click="openTab(event, 'Collections')">Collections</button>
+        </div>
+
+        <div class="communities__form tabcontent" id="General">
+          <div><h1>{{$t('general')}}</h1>
+            {{$t('manage-community-information')}}
+            <br /><br />
+          </div>
+          <div>
+            <h3>{{$t('dutch')}}</h3>
+            <hr>
+            <br /><br />
+          </div>
           <form
             action="/"
             class="communities__form_in"
             @submit.prevent="onSubmit"
           >
+
             <div class="communities__form__column">
-              <div class="communities__form__row">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('title_nl')}">
                 <label
-                  for="name"
+                  for="title_nl"
                   class="communities__form__label"
                 >
                   {{ $t('Name') }}
                 </label>
                 <input
                   required
-                  id="name"
-                  v-model="formData.name"
+                  id="title_nl"
+                  v-model="formData.title_nl"
                   name="name"
                   type="text"
                   class="communities__form__input"
+                  :placeholder="$t('community-title-placeholder')"
                 >
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('title_nl')" :key="ix">{{ error }}</li>
+                </ul>
               </div>
-              <div class="communities__form__row">
+
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('website_url_nl')}">
                 <label
-                  for="description"
+                  for="website_nl"
+                  class="communities__form__label"
+                >
+                  {{ $t('Website') }}
+                </label>
+                <input
+                  id="website_nl"
+                  v-model="formData.website_url_nl"
+                  name="website"
+                  type="url"
+                  class="communities__form__input"
+                  :placeholder="$t('community-url-placeholder')"
+                >
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('website_url_nl')" :key="ix">{{ error }}</li>
+                </ul>
+              </div>
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('logo_nl')}">
+                <InputFile
+                  ref="file-logo_nl"
+                  :imagesrc="formData.logo_nl"
+                  :title="$t('Logo')"
+                  @remove_image="onRemoveImage('logo_nl', $event)"
+                  @add_image="onAddImage('logo_nl', $event)"
+                />
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('logo_nl')" :key="ix">{{ error }}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="communities__form__column">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('description_nl')}">
+                <label
+                  for="description_nl"
                   class="communities__form__label"
                 >
                   {{ $t('Description') }}
                 </label>
                 <textarea
                   required
-                  id="description"
-                  v-model="formData.description"
+                  id="description_nl"
+                  v-model="formData.description_nl"
                   name="description"
                   class="communities__form__textarea"
+                  :placeholder="$t('community-description-placeholder')"
                 />
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('description_nl')" :key="ix">{{ error }}</li>
+                </ul>
               </div>
-              <div class="communities__form__row">
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('featured_image_nl')}">
+                <InputFile
+                  ref="file-img_nl"
+                  :imagesrc="formData.featured_image_nl"
+                  :title="$t('Featured-image')"
+                  @remove_image="onRemoveImage('featured_nl', $event)"
+                  @add_image="onAddImage('featured_nl', $event)"
+                />
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('featured_image_nl')" :key="ix">{{ error }}</li>
+                </ul>
+              </div>
+            </div>
+
+          </form>
+          <div>
+            <br/><br/>
+            <h3>{{$t('english')}}</h3>
+            <hr>
+            <br /><br />
+          </div>
+          <form
+            action="/"
+            class="communities__form_in"
+            @submit.prevent="onSubmit"
+          >
+
+            <div class="communities__form__column">
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('title_en')}">
                 <label
-                  for="website"
+                  for="title_en"
+                  class="communities__form__label"
+                >
+                  {{ $t('Name') }}
+                </label>
+                <input
+                  required
+                  id="title_en"
+                  v-model="formData.title_en"
+                  name="name"
+                  type="text"
+                  class="communities__form__input"
+                  :placeholder="$t('community-title-placeholder')"
+                >
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('title_en')" :key="ix">{{ error }}</li>
+                </ul>
+              </div>
+
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('website_url_en')}">
+                <label
+                  for="website_en"
                   class="communities__form__label"
                 >
                   {{ $t('Website') }}
                 </label>
                 <input
-                  id="website"
-                  v-model="formData.website_url"
+                  id="website_en"
+                  v-model="formData.website_url_en"
                   name="website"
                   type="url"
                   class="communities__form__input"
-                  placeholder="http://www..."
+                  :placeholder="$t('community-url-placeholder')"
                 >
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('website_url_en')" :key="ix">{{ error }}</li>
+                </ul>
+              </div>
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('logo_en')}">
+                <InputFile
+                  ref="file-logo_en"
+                  :imagesrc="formData.logo_en"
+                  :title="$t('Logo')"
+                  @remove_image="onRemoveImage('logo_en', $event)"
+                  @add_image="onAddImage('logo_en', $event)"
+                />
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('logo_en')" :key="ix">{{ error }}</li>
+                </ul>
               </div>
             </div>
             <div class="communities__form__column">
-              <div class="communities__form__row communities__form__file">
-                <InputFile
-                  ref="file-logo"
-                  :imagesrc="formData.logo"
-                  :title="$t('Logo')"
+              <div class="communities__form__row" :class="{field: true, invalid: isFieldValid('description_en')}">
+                <label
+                  for="description_en"
+                  class="communities__form__label"
+                >
+                  {{ $t('Description') }}
+                </label>
+                <textarea
+                  required
+                  id="description_en"
+                  v-model="formData.description_en"
+                  name="description"
+                  class="communities__form__textarea"
+                  :placeholder="$t('community-description-placeholder')"
                 />
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('description_en')" :key="ix">{{ error }}</li>
+                </ul>
               </div>
-              <div class="communities__form__row communities__form__file">
+              <div class="communities__form__row communities__form__file"
+                   :class="{field: true, invalid: isFieldValid('featured_image_en')}">
                 <InputFile
-                  ref="file-img"
-                  :imagesrc="formData.featured_image"
+                  ref="file-img_en"
+                  :imagesrc="formData.featured_image_en"
                   :title="$t('Featured-image')"
+                  @remove_image="onRemoveImage('featured_en', $event)"
+                  @add_image="onAddImage('featured_en', $event)"
                 />
+                <ul class="errors">
+                  <li v-for="(error, ix) in getFieldErrors('featured_image_en')" :key="ix">{{ error }}</li>
+                </ul>
               </div>
             </div>
-            <div class="communities__form__buttons">
-              <div
-                v-if="is_saved"
-                class="success" >
-                &#10004; {{ $t('Data-saved') }}
-              </div>
-              <button
-                :disabled="is_submitting"
-                type="submit"
-                class="button communities__form__button"
-              >
-                {{ $t('save') }}
-              </button>
-            </div>
+
           </form>
+
         </div>
-        <div class="communities__collections">
+        <div class="communities__collections tabcontent" id="Collections">
+          <br/><br/>
           <div class="collections__add">
             <button
               class="collections__add__link button"
@@ -162,12 +328,29 @@ export default {
       is_submitting: false,
       isShow: false,
       image_logo: '',
+      errors: {
+        title_nl: '',
+        title_en: '',
+        description_nl: '',
+        description_en: '',
+        website_url_nl: '',
+        website_url_en: '',
+        logo_nl: false,
+        logo_en: false,
+        featured_image_nl: false,
+        featured_image_en: false,
+      },
       formData: {
-        name: '',
-        description: '',
-        website_url: '',
-        logo: false,
-        featured_image: false
+        title_nl: '',
+        title_en: '',
+        description_nl: '',
+        description_en: '',
+        website_url_nl: '',
+        website_url_en: '',
+        logo_nl: false,
+        logo_en: false,
+        featured_image_nl: false,
+        featured_image_en: false,
       }
     };
   },
@@ -191,8 +374,57 @@ export default {
       this.setInitialFormData();
     });
     this.$store.dispatch('getCommunityCollections', this.$route.params.community);
+    // Open the 'general' tab by default
+    this.openTab(event, "General");
   },
   methods: {
+    getFieldErrors(fieldName){
+      return this.errors[fieldName];
+    },
+    isFieldValid(fieldName){
+      return this.getFieldErrors(fieldName).length > 0
+    },
+    anyFieldError(){
+      return _.some(this.errors, item => item.length > 0);
+    },
+    onRemoveImage(context){
+      switch(context) {
+        case 'logo_nl':
+          this.logo_nl_deleted = true;
+          this.logo_nl_added = false;
+          break;
+        case 'logo_en':
+          this.logo_en_deleted = true;
+          this.logo_en_added = false;
+          break;
+        case 'featured_nl':
+          this.featured_nl_deleted = true;
+          this.featured_nl_added = false;
+          break;
+        case 'featured_en':
+          this.featured_en_deleted = true;
+          this.featured_en_added = false;
+          break;
+      }
+    },
+    onAddImage(context){
+      if (context === 'logo_nl'){
+        this.logo_nl_deleted = false;
+        this.logo_nl_added = true;
+      }
+      if (context === 'featured_nl'){
+        this.featured_nl_deleted = false;
+        this.featured_nl_added = true;
+      }
+      if (context === 'logo_en'){
+        this.logo_en_deleted = false;
+        this.logo_en_added = true;
+      }
+      if (context === 'featured_en'){
+        this.featured_en_deleted = false;
+        this.featured_en_added = true;
+      }
+    },
     setInitialFormData() {
 
       if(!this.user) {
@@ -209,14 +441,25 @@ export default {
         this.formData = null;
         return;
       }
-
-      this.formData.id = community.id;
-      this.formData.name = community.name;
-      this.formData.description = community.description;
-      this.formData.website_url = community.website_url;
-      this.formData.logo = community.logo;
-      this.formData.featured_image = community.featured_image;
-
+      if(!_.isNil(community.community_details)){
+        _.forEach(community.community_details, detail => {
+          if (detail.language_code === 'NL'){
+            this.formData.title_nl = detail.title;
+            this.formData.description_nl = detail.description;
+            this.formData.website_url_nl = detail.website_url;
+            this.formData.logo_nl = detail.logo;
+            this.formData.featured_image_nl = detail.featured_image;
+          }
+          else if (detail.language_code === 'EN'){
+            this.formData.title_en = detail.title;
+            this.formData.description_en = detail.description;
+            this.formData.website_url_en = detail.website_url;
+            this.formData.logo_en = detail.logo;
+            this.formData.featured_image_en = detail.featured_image;
+          }
+        });
+      }
+      this.formData.external_id = community.id;
     },
     /**
      * Show the popup 'Add collection'
@@ -239,9 +482,12 @@ export default {
       this.is_submitting = true;
 
       const data = this.normalizeFormData();
+      _.forEach(this.errors, (value, key) => {
+          this.errors[key] = '';
+      });
       this.$store
         .dispatch('putCommunities', {
-          id: this.formData.id,
+          id: this.formData.external_id,
           data: data
         })
         .then(() => {
@@ -254,7 +500,35 @@ export default {
         .catch(err => {
           this.error = err;
           this.is_submitting = false;
+          _.forEach(err.response.data, (feedback, language) => {
+            const response = JSON.parse(feedback.replace(/'/g, "\""));
+            _.forEach(response, (item, key) => {
+              const error_msg = item;
+              let location = key + '_' + language.toLowerCase();
+              this.errors[location] = error_msg;
+            });
+          });
         });
+    },
+    openTab(evt, tabName) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
+
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
     },
     /**
      * Generate the FormData
@@ -262,44 +536,82 @@ export default {
      */
     normalizeFormData() {
       let data = new FormData();
+      let data_nl = {language_code: 'NL'};
+      let data_en = {language_code: 'EN'};
 
+      // TODO lodash foreach
       for (let item in this.formData) {
         const el = this.formData[item];
         if (el) {
+          let value = null;
           if (Array.isArray(el)) {
-            data.append(item, JSON.stringify(el));
+            value = JSON.stringify(el);
           } else {
             let ElValue = el ? el : null;
-            data.append(item, ElValue);
+            value = ElValue;
+          }
+          if (!item.startsWith('logo') && (!item.startsWith('featured'))){
+            if (item.endsWith('_nl')) {
+              data_nl[item.slice(0, -3)] = value;
+            } else if (item.endsWith('_en')) {
+              data_en[item.slice(0, -3)] = value;
+            }
+          }
+          data.append(item, value);
+        }
+        // if the value is empty, send it to the backend (so the backend can reject the post)
+        else {
+          if (item.endsWith('_nl')) {
+              data_nl[item.slice(0, -3)] = "";
+          } else if (item.endsWith('_en')) {
+              data_en[item.slice(0, -3)] = "";
           }
         }
       }
-      if (this.formData.website_url === ""){
-        data.append("website_url", "");
+      let deleted_logos = [];
+      data.set('logo_nl', '');
+      if (this.logo_nl_added) {
+        let logo = this.$refs['file-logo_nl'].$el.querySelector('input[type="file"]').files[0];
+        data.set('logo_nl', logo);
+      }
+      else if (this.logo_nl_deleted) {
+        deleted_logos.push('logo_nl');
+      } else {
+        data.delete('logo_nl');
       }
 
-      if (
-        this.$refs['file-logo'].$el.querySelector('input[type="file"]').files[0]
-      ) {
-        data.set(
-          'logo',
-          this.$refs['file-logo'].$el.querySelector('input[type="file"]')
-            .files[0]
-        );
-      } else {
-        data.set('logo', '');
+      data.set('logo_en', '');
+      if (this.logo_en_added) {
+        data.set('logo_en', this.$refs['file-logo_en'].$el.querySelector('input[type="file"]').files[0]);
       }
-      if (
-        this.$refs['file-img'].$el.querySelector('input[type="file"]').files[0]
-      ) {
-        data.set(
-          'featured_image',
-          this.$refs['file-img'].$el.querySelector('input[type="file"]')
-            .files[0]
-        );
+      else if (this.logo_en_deleted) {
+        deleted_logos.push('logo_en');
       } else {
-        data.set('featured_image', '');
+        data.delete('logo_en');
       }
+
+      data.set('featured_image_nl', '');
+      if (this.featured_nl_added) {
+        data.set('featured_image_nl', this.$refs['file-img_nl'].$el.querySelector('input[type="file"]').files[0]);
+      }
+      else if (this.featured_nl_deleted) {
+        deleted_logos.push('featured_image_nl');
+      } else {
+        data.delete('featured_image_nl');
+      }
+
+      data.set('featured_image_en', '');
+      if (this.featured_en_added) {
+        data.set('featured_image_en', this.$refs['file-img_en'].$el.querySelector('input[type="file"]').files[0]);
+      }
+      else if (this.featured_en_deleted) {
+        deleted_logos.push('featured_image_en');
+      } else {
+        data.delete('featured_image_en');
+      }
+
+      data.append('community_details_update', JSON.stringify([data_nl, data_en]));
+      data.append('deleted_logos', JSON.stringify(deleted_logos));
       return data;
     },
     saveCollection(collection) {
@@ -312,6 +624,14 @@ export default {
           }
         ]
       });
+    },
+    getPreviewPath() {
+      return this.localePath({
+        name: 'communities-community',
+        params: {
+          community: this.formData.external_id
+        }
+      })
     }
   }
 };
@@ -365,6 +685,28 @@ export default {
       }
     }
   }
+  &__section {
+    &__blue_box{
+      line-height: 75px;
+      border: 1px;
+      background: @dark-blue;
+      width: 40%;
+      height: 75px;
+      border-radius: 20px;
+      margin-top: 25px;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      a:link{
+        color:white;
+        text-decoration: none;
+      }
+      a:visited{
+        color:white;
+        text-decoration: none;
+      }
+    }
+  }
   &__form {
     margin-bottom: 146px;
     &_in {
@@ -373,10 +715,10 @@ export default {
       flex-wrap: wrap;
     }
     &__column {
-      width: 45%;
+      width: 50%;
       padding-left: 53px;
       &:first-child {
-        width: 55%;
+        width: 50%;
         padding-right: 32px;
         padding-left: 0;
       }
@@ -391,6 +733,11 @@ export default {
       font-family: @second-font;
       display: block;
       margin-bottom: 8px;
+    }
+    &__feedback {
+      color: red;
+      font-size: 14px;
+      padding-left: 10px;
     }
     &__input {
       border: 1px solid #bcbfc2;
@@ -409,7 +756,7 @@ export default {
       border-radius: 7px;
       padding: 12px 24px;
       width: 100%;
-      height: 110px;
+      height: 143px;
       font-size: 16px;
       line-height: 1.44;
       resize: none;
@@ -422,14 +769,12 @@ export default {
       text-align: right;
       width: 100%;
       margin: 10px 0 0;
-      .success {
-        display: inline-block;
-        margin: 0 20px 0 0;
-        color: #008800;
-      }
     }
     &__button {
-      padding: 13px 60px;
+      margin-right: 10px;
+      margin-top: 10px;
+      height: 55px;
+      float: right;
     }
   }
   &__collections {
@@ -449,5 +794,118 @@ export default {
     background-repeat: no-repeat;
     background-size: 24px 24px;
   }
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 60%;
+  left: 0;
+  right: 0;
+  bottom: -60%;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  border-radius: 5px;
+  background-color: inherit;
+  float: left;
+  border: 1px solid #ccc;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 50px;
+  margin: 0 25px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: lightblue;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: blue;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+
+.success {
+  display: inline-block;
+  color: #008800;
+}
+
+.errors {
+  color: red;
+  font-size: 14px;
+  display:none;
+  list-style-type: none;
+  padding-top: 5px;
+  margin-left: -20px;
+}
+.field.invalid .errors{
+  display: block;
 }
 </style>
