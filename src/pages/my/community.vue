@@ -854,13 +854,17 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+@active-tab-indicator-size: 15px;
+
 /* Style the tab */
 .tab {
   overflow: hidden;
+  padding-bottom: @active-tab-indicator-size;
 }
 
 /* Style the buttons that are used to open the tab content */
 .tab button {
+  position:relative;
   border-radius: 5px;
   background-color: inherit;
   float: left;
@@ -884,6 +888,19 @@ input:checked + .slider:before {
   background-color: @dark-blue;
   color: white;
 }
+.tab button.active:after {
+  content:'';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -1 * @active-tab-indicator-size;
+  width: 0;
+  height: 0;
+  border-top: solid @active-tab-indicator-size @dark-blue;
+  border-left: solid @active-tab-indicator-size transparent;
+  border-right: solid @active-tab-indicator-size transparent;
+}
+
 
 /* Style the tab content */
 .tabcontent {
