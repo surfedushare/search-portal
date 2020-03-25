@@ -547,10 +547,10 @@ export default {
           } else {
             value = element ? element : null;
           }
-          if (!key.startsWith('logo') && (!key.startsWith('featured'))){
-            if (key.endsWith('_nl')) {
+          if (!_.startsWith(key, 'logo') && !_.startsWith(key, 'featured')){
+            if (_.endsWith(key, '_nl')) {
               data_nl[key.slice(0, -3)] = value;
-            } else if (key.endsWith('_en')) {
+            } else if (_.endsWith(key, '_en')) {
               data_en[key.slice(0, -3)] = value;
             }
           }
@@ -558,9 +558,9 @@ export default {
         }
         // if the value is empty, send it to the backend (so the backend can reject the post)
         else {
-          if (key.endsWith('_nl')) {
+          if (_.endsWith(key, '_nl')) {
               data_nl[key.slice(0, -3)] = "";
-          } else if (key.endsWith('_en')) {
+          } else if (_.endsWith(key, '_en')) {
               data_en[key.slice(0, -3)] = "";
           }
         }
