@@ -539,35 +539,32 @@ export default {
       let data_nl = {language_code: 'NL'};
       let data_en = {language_code: 'EN'};
 
-      // TODO lodash foreach
-      for (let item in this.formData) {
-        const el = this.formData[item];
-        if (el) {
+      _.forEach(this.formData, (element, key) => {
+        if (element) {
           let value = null;
-          if (Array.isArray(el)) {
-            value = JSON.stringify(el);
+          if (Array.isArray(element)) {
+            value = JSON.stringify(element);
           } else {
-            let ElValue = el ? el : null;
-            value = ElValue;
+            value = element ? element : null;
           }
-          if (!item.startsWith('logo') && (!item.startsWith('featured'))){
-            if (item.endsWith('_nl')) {
-              data_nl[item.slice(0, -3)] = value;
-            } else if (item.endsWith('_en')) {
-              data_en[item.slice(0, -3)] = value;
+          if (!key.startsWith('logo') && (!key.startsWith('featured'))){
+            if (key.endsWith('_nl')) {
+              data_nl[key.slice(0, -3)] = value;
+            } else if (key.endsWith('_en')) {
+              data_en[key.slice(0, -3)] = value;
             }
           }
-          data.append(item, value);
+          data.append(key, value);
         }
         // if the value is empty, send it to the backend (so the backend can reject the post)
         else {
-          if (item.endsWith('_nl')) {
-              data_nl[item.slice(0, -3)] = "";
-          } else if (item.endsWith('_en')) {
-              data_en[item.slice(0, -3)] = "";
+          if (key.endsWith('_nl')) {
+              data_nl[key.slice(0, -3)] = "";
+          } else if (key.endsWith('_en')) {
+              data_en[key.slice(0, -3)] = "";
           }
         }
-      }
+      });
       let deleted_logos = [];
       data.set('logo_nl', '');
       if (this.logo_nl_added) {
