@@ -113,8 +113,8 @@ class BaseSearchTestCase(TestCase):
 
     def test_search_disciplines(self):
         search_result = self.instance.search([])
-        search_result_filter_1 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['2adcec22-095d-4937-aed7-48788080460b']}])
-        search_result_filter_2 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['c001f86a-4f8f-4420-bd78-381c615ecedc']}])
+        search_result_filter_1 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['596e13b2-5626-4312-8440-50e9bd7b4271']}])
+        search_result_filter_2 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']}])
         self.assertNotEqual(search_result, search_result_filter_1)
         self.assertNotEqual(search_result, search_result_filter_2)
         self.assertNotEqual(search_result_filter_1, search_result_filter_2)
