@@ -1,0 +1,88 @@
+<div class="material__info">
+  <h1 class="material__info_ttl">{{ material.title }}</h1>
+  <div class="material__info_author">
+    <nuxt-link
+      :to="authorUrl"
+      v-if="material.author"
+    >
+      {{ material.author }}
+    </nuxt-link>
+    {{ material.publisher }}
+  </div>
+  <h3 class="material__info_subttl">{{ $t('Quality') }}</h3>
+  <div class="material__info_quality">
+    <a
+      :href="`/applaud-materials/?material__external_id=${material.external_id}`"
+      class="quality__applauds quality__applauds--link"
+      @click.prevent="setApplaudMaterial(material)"
+      :class="{'quality__applauds--saving': is_loading_applaud}"
+    >
+      {{ material.applaud_count}}
+    </a>
+    <div class="quality__collections">
+      <span class="quality__collections_count">
+        {{material.number_of_collections}}
+      </span>
+      <span class="quality__collections_txt">{{ $t('Collections-2') }}</span>
+    </div>
+    <div class="quality__views">
+      <div class="quality__views_count">
+        {{ contedNumber }}
+      </div>
+      <div class="quality__views_txt">{{ $t('Viewed') }}</div>
+    </div>
+    <div class="quality__star">
+      <StarRating
+        v-model="material.avg_star_rating"
+        :counter="material.count_star_rating"
+        type="big"
+        :disabled="true"
+      />
+      <a
+        href="/save-rating/"
+        @click.prevent="showPopupSaveRating"
+        v-show=!rating_given
+      >
+        {{ $t('Geef-waardering') }}
+      </a>
+    </div>
+  </div>
+  <template v-if="material.description">
+    <h3 class="material__info_subttl">{{ $t('Resume') }}</h3>
+    <div
+      class="material__info_description"
+    v-html="material.description"
+    v-if="material.description">
+      {{ $t('No-description') }}
+   </div>
+    <div
+      class="material__info_description"
+      v-else
+    >
+      {{ $t('No-description') }}
+    </div>
+  </template>
+
+  <div class="material__info_thems_and_communities">
+    <Themes class="material__info_thems" :themes="material_themes"/>
+    <Keywords class="material__info_keywords" :material="material" />
+  </div>
+
+  <PopularList
+    class="material__info_communities"
+    :type="'material'"
+    :communities="material.communities"
+    v-if="material.communities && material.communities.length"
+  >
+    <template slot="header-info">
+      <h3>{{ $t('In-the-collection-of') }}</h3>
+    </template>
+  </PopularList>
+  <SaveRating
+    v-if="isShow"
+    :close="closePopupSaveRating"
+    v-model="formData"
+    :is-show="isShow"
+    :material="material"
+  ></SaveRating>
+</div>

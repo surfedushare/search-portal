@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import injector from 'vue-inject';
+import { parseSearchMaterialsQuery } from '~/components/_helpers'
 
 
 const $log = injector.get('$log');
@@ -24,6 +25,18 @@ function getFiltersForSearch(items) {
     }
     return results;
   }, []);
+}
+
+
+function getFiltersFromQuery(query) {
+  let querySearch = parseSearchMaterialsQuery(query);
+  let selected = {};
+  if(!_.isEmpty(querySearch.search)) {
+    _.forEach(querySearch.search.filters, (filter) => {
+      _.reduce(filter.items, (obj, item) => {obj[item] = true; return obj}, selected);
+    });
+  }
+  return { selected, dateRange: querySearch.dateRange }
 }
 
 
@@ -113,17 +126,20 @@ export default {
         }
       });
 
+    },
+    getFiltersFromQuery() {
+      return getFiltersFromQuery
     }
   },
   actions: {
     async getFilterCategories({ state, commit }) {
-
       if (_.isNil(state.filter_categories_loading) && _.isEmpty(state.filter_categories)) {
         let promise = this.$axios.get('filter-categories/').then((response) => {
 
           // Preprocess the filters
           response.data.defaults = _.cloneDeep(response.data.results);
-          loadCategoryFilters(response.data.results);
+          let filters = getFiltersFromQuery(window.app.router.currentRoute.query);
+          loadCategoryFilters(response.data.results, filters.selected, filters.dateRange);
 
           commit('SET_FILTER_CATEGORIES', response.data);
           commit('SET_FILTER_CATEGORIES_LOADING', null);

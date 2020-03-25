@@ -12,7 +12,7 @@
 <style lang="less">
   @import 'styles/normalize.css';
 
-  @import '../assets/styles/variables.less';
+  @import 'variables.less';
 
   @import 'styles/common.less';
 
@@ -23,9 +23,9 @@
 
 import Vue from 'vue'
 
-import MainHeader from './../components/MainHeader';
-import MainFooter from './../components/MainFooter';
-import NuxtLoading from './components/nuxt-loading.vue'
+import MainHeader from '~/components/MainHeader';
+import MainFooter from '~/components/MainFooter';
+import NuxtLoading from '~/components/nuxt-loading.vue'
 
 //import _6f6c098b from '../layouts/default.vue'
 //const layouts = { "_default": _6f6c098b };
@@ -68,8 +68,7 @@ export default {
   // },
   data: () => ({
     layout: null,
-    layoutName: '',
-    loginEnabled: false
+    layoutName: ''
   }),
   beforeCreate () {
     Vue.util.defineReactive(this, 'nuxt', this.$options.nuxt);
@@ -86,15 +85,6 @@ export default {
 
   mounted () {
     this.$loading = this.$refs.loading;
-
-    let self = this;
-    function keyUp(event) {
-      if (event.keyCode === 73 && event.ctrlKey) {
-        self.loginEnabled = !self.loginEnabled;
-      }
-    }
-    window.document.onkeyup = keyUp;
-
     this.$store.dispatch('getThemes');
   },
 

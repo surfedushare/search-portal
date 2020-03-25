@@ -1,0 +1,52 @@
+@import url('./../../variables');
+.disciplines {
+  h2{
+    margin: 0 0 -5px;
+  }
+
+  &__description {
+    font-size: 20px;
+    line-height: 1.15;
+    margin: 3px 0 36px;
+    .community__disciplines &{
+      margin: 3px 0 40px;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  &__item {
+    width: 50%;
+    padding: 0 30px 29px 0;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    word-wrap: break-word;
+  }
+
+  &.material__info_thems{
+    width: 50%;
+    h2{
+      font-size: 22px;
+      padding: 0 0 7px;
+      margin: 0 0 32px;
+      border-bottom: 1px solid #f4f4f4;
+    }
+    .themes__description{
+      display: none;
+    }
+    .themes__item:nth-child(2) ~ .themes__item{
+      display: none;
+    }
+  }
+}

@@ -1,6 +1,5 @@
 import injector from 'vue-inject';
 import {
-  formatDate,
   validateID,
   validateIDString,
   validateParams,
@@ -29,7 +28,7 @@ export default {
     }
   },
   actions: {
-    async getCollection({ state, commit }, id) {
+    async getCollection({ commit }, id) {
       if (validateID(id)) {
         const collection = await this.$axios.$get(`collections/${id}/`);
         commit('SET_COLLECTION', collection);
@@ -49,7 +48,7 @@ export default {
         $log.error('Validate error: ', { id, params });
       }
     },
-    async putMyCollection({ state, commit }, data) {
+    async putMyCollection({ commit }, data) {
       if (validateID(data.id) && validateParams(data)) {
         const collection = await this.$axios.$put(
           `collections/${data.id}/`,
@@ -61,7 +60,7 @@ export default {
         $log.error('Validate error: ', data);
       }
     },
-    async checkMaterialInCollection({ state, commit }, id) {
+    async checkMaterialInCollection(context, id) {
       if (validateIDString(id)) {
         return await this.$axios.$get('collections/', {
           params: {
@@ -72,34 +71,28 @@ export default {
         $log.error('Validate error: ', id);
       }
     },
-    async deleteMyCollection({ state, commit }, id) {
+    async deleteMyCollection(context, id) {
       if (validateID(id)) {
         return await this.$axios.$delete(`collections/${id}/`);
       } else {
         $log.error('Validate error: ', id);
       }
     },
-    async postMyCollection({ state, commit }, data) {
+    async postMyCollection(context, data) {
       if (validateParams(data)) {
         return await this.$axios.$post(`collections/`, data);
       } else {
         $log.error('Validate error: ', data);
       }
     },
-    async setMaterialInMyCollection(
-      { state, commit },
-      { collection_id, data }
-    ) {
+    async setMaterialInMyCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
         await this.$axios.$post(`collections/${collection_id}/materials/`, data);
       } else {
         $log.error('Validate error: ', { collection_id, data });
       }
     },
-    async removeMaterialFromMyCollection(
-      { state, commit },
-      { collection_id, data }
-    ) {
+    async removeMaterialFromMyCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
         return this.$axios.$delete(`collections/${collection_id}/materials/`, {
           data
@@ -108,7 +101,7 @@ export default {
         $log.error('Validate error: ', { collection_id, data });
       }
     },
-    async getMaterialInMyCollection({ state, commit }, { id, params }) {
+    async getMaterialInMyCollection({ commit }, { id, params }) {
       if (validateIDString(id) && validateParams(params)) {
         commit('SET_MATERIAL_TO_COLLECTION_LOADING', true);
         const materialsInfo = await this.$axios.$get(

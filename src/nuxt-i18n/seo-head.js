@@ -1,5 +1,11 @@
+import injector from 'vue-inject'
+
+
+const $log = injector.get('$log');
+
+
 export const nuxtI18nSeo = function () {
-  const COMPONENT_OPTIONS_KEY = 'nuxtI18n'
+  const COMPONENT_OPTIONS_KEY = 'nuxtI18n';
   if (
     !this._hasMetaInfo ||
     !this.$i18n ||
@@ -10,14 +16,14 @@ export const nuxtI18nSeo = function () {
   ) {
     return {};
   }
-  const LOCALE_CODE_KEY = 'code'
-  const LOCALE_ISO_KEY = 'iso'
-  const BASE_URL = ''
-  const STRATEGY = 'prefix_except_default'
+  const LOCALE_CODE_KEY = 'code';
+  const LOCALE_ISO_KEY = 'iso';
+  const BASE_URL = '';
+  const STRATEGY = 'prefix_except_default';
 
   // Prepare html lang attribute
-  const currentLocaleData = this.$i18n.locales.find(l => l[LOCALE_CODE_KEY] === this.$i18n.locale)
-  const htmlAttrs = {}
+  const currentLocaleData = this.$i18n.locales.find(l => l[LOCALE_CODE_KEY] === this.$i18n.locale);
+  const htmlAttrs = {};
   if (currentLocaleData && currentLocaleData[LOCALE_ISO_KEY]) {
     htmlAttrs.lang = currentLocaleData[LOCALE_ISO_KEY]
   }
@@ -33,15 +39,15 @@ export const nuxtI18nSeo = function () {
           hreflang: locale[LOCALE_ISO_KEY]
         }
       } else {
-        console.warn('[nuxt-i18n] Locale ISO code is required to generate alternate link')
+        $log.warn('[nuxt-i18n] Locale ISO code is required to generate alternate link');
         return null
       }
     })
-    .filter(item => !!item)
+    .filter(item => !!item);
 
   // canonical links
   if (STRATEGY === 'prefix_and_default') {
-    const canonicalPath = this.switchLocalePath(currentLocaleData[LOCALE_CODE_KEY])
+    const canonicalPath = this.switchLocalePath(currentLocaleData[LOCALE_CODE_KEY]);
     if (canonicalPath && canonicalPath !== this.$route.path) {
       // Current page is not the canonical one -- add a canonical link
       link.push({
@@ -53,7 +59,7 @@ export const nuxtI18nSeo = function () {
   }
 
   // og:locale meta
-  const meta = []
+  const meta = [];
   // og:locale - current
   if (currentLocaleData && currentLocaleData[LOCALE_ISO_KEY]) {
     meta.push({
@@ -79,4 +85,4 @@ export const nuxtI18nSeo = function () {
     link,
     meta
   }
-}
+};

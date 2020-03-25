@@ -1,4 +1,9 @@
+import injector from 'vue-inject'
 import { validateID, validateParams } from './_helpers';
+
+
+const $log = injector.get('$log');
+
 
 export default {
   state: {
@@ -36,7 +41,7 @@ export default {
           commit('SET_FILTER', { id });
         }
       } else {
-        console.error('Validate error: ', { id });
+        $log.error('Validate error: ', { id });
       }
     },
     async postMyFilter({ commit }, data) {
@@ -44,7 +49,7 @@ export default {
         const filter = await this.$axios.$post(`filters/`, data);
         commit('ADD_MY_FILTER', filter);
       } else {
-        console.error('Validate error: ', data);
+        $log.error('Validate error: ', data);
       }
     },
     async saveMyFilter({ commit }, data) {
@@ -54,7 +59,7 @@ export default {
         this.dispatch('setActiveFilter', filter);
         return filter;
       } else {
-        console.error('Validate error: ', data);
+        $log.error('Validate error: ', data);
       }
     },
     async deleteMyFilter({ commit }, id) {
@@ -63,10 +68,10 @@ export default {
         commit('DELETE_MY_FILTER', id);
         this.dispatch('setActiveFilter', null);
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
-    async getDetailFilter({ commit }, { id }) {
+    async getDetailFilter(context, { id }) {
       if (validateID(id)) {
         if (id && id.length) {
           const filter = await this.$axios.$get(`filters/${id}/`);
@@ -74,7 +79,7 @@ export default {
           return filter;
         }
       } else {
-        console.error('Validate error: ', id);
+        $log.error('Validate error: ', id);
       }
     },
     async postFilter({ commit }, { title, items, materials_count }) {
@@ -118,7 +123,7 @@ export default {
         this.dispatch('setActiveFilter', filter);
         commit('EXTEND_FILTERS', filter);
       } else {
-        console.error('Validate error: ', { title, items, materials_count });
+        $log.error('Validate error: ', { title, items, materials_count });
       }
     },
     setActiveFilter({ commit }, filter) {

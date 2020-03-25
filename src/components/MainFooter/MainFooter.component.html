@@ -1,0 +1,33 @@
+
+<section class="main-footer">
+  <div class="center_block main-footer__top_block">
+    <div class="main-footer__quotes">
+      <div class="bg"></div>
+      {{ $t('Footer-quote') }}
+    </div>
+    <div class="main-footer__info">
+      <h3>{{ $t('Footer-info-title') }}</h3>
+      <div class="main-footer__info_text html-content" v-html="$t('html-Footer-info-text')"></div>
+      <a
+        href="https://www.surf.nl/expertises/digitale-leermaterialen"
+        target="_blank"
+        class="main-footer__info_link arrow-link"
+      >
+        SURF.nl
+      </a>
+    </div>
+  </div>
+  <div class="main-footer__bottom_block">
+    <div class="main-footer__logo">
+      <router-link :to="localePath('index')">
+        <img
+          src="/images/surflogo.png"
+          srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
+          class="main-footer__logo_img"
+        >
+      </router-link>
+    </div>
+    <Menu />
+  </div>
+</section>
+
