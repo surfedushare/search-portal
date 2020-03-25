@@ -158,7 +158,7 @@ class ElasticSearchApiClient:
             body=body
         )
         parsed_result = self.parse_elastic_result(result, page_size)
-        if start_record == 1 and search_text:
+        if start_record == 0 and search_text:
             url = f"es.search(index={indices}, body={body})"
             QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
                      result_size=parsed_result['recordcount'], result=parsed_result).save()
