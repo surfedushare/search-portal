@@ -53,11 +53,11 @@
         </div>
 
         <div class="tab">
-          <button class="tablinks" @click="openTab(event, 'General')">General</button>
-          <button class="tablinks" @click="openTab(event, 'Collections')">Collections</button>
+          <button class="tablinks" ref="general-button" @click="openTab('General')">{{$t('general')}}</button>
+          <button class="tablinks" ref="collections-button" @click="openTab('Collections')">{{$t('collections')}}</button>
         </div>
 
-        <div class="communities__form tabcontent" id="General">
+        <div class="communities__form tabcontent" id="General" ref="general-tab">
           <div><h1>{{$t('general')}}</h1>
             {{$t('manage-community-information')}}
             <br /><br />
@@ -269,7 +269,7 @@
           </form>
 
         </div>
-        <div class="communities__collections tabcontent" id="Collections">
+        <div class="communities__collections tabcontent" id="Collections" ref="collections-tab">
           <br/><br/>
           <div class="collections__add">
             <button
@@ -375,7 +375,7 @@ export default {
     });
     this.$store.dispatch('getCommunityCollections', this.$route.params.community);
     // Open the 'general' tab by default
-    this.openTab(event, "General");
+    this.openTab("General");
   },
   methods: {
     getFieldErrors(fieldName){
@@ -510,25 +510,25 @@ export default {
           });
         });
     },
-    openTab(evt, tabName) {
-      // Declare all variables
-      var i, tabcontent, tablinks;
-
-      // Get all elements with class="tabcontent" and hide them
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+    openTab(tabName) {
+      let generaltab = this.$refs["general-tab"];
+      let generalbutton = this.$refs["general-button"];
+      let collectionstab = this.$refs["collections-tab"];
+      let collectionsbutton = this.$refs["collections-button"];
+      switch (tabName) {
+        case "General":
+          generaltab.style.display = "block";
+          generalbutton.className += " active";
+          collectionstab.style.display = "none";
+          collectionsbutton.className -= " active";
+          break;
+        case "Collections":
+          collectionstab.style.display = "block";
+          collectionsbutton.className += " active";
+          generaltab.style.display = "none";
+          generalbutton.className -= " active";
+          break;
       }
-
-      // Get all elements with class="tablinks" and remove the class "active"
-      tablinks = document.getElementsByClassName("tablinks");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-      }
-
-      // Show the current tab, and add an "active" class to the button that opened the tab
-      document.getElementById(tabName).style.display = "block";
-      evt.currentTarget.className += " active";
     },
     /**
      * Generate the FormData
@@ -870,16 +870,19 @@ input:checked + .slider:before {
   padding: 14px 50px;
   margin: 0 25px;
   transition: 0.3s;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-  background-color: lightblue;
+  background-color: cornflowerblue;
 }
 
 /* Create an active/current tablink class */
 .tab button.active {
-  background-color: blue;
+  background-color: @dark-blue;
+  color: white;
 }
 
 /* Style the tab content */
