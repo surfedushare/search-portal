@@ -51,6 +51,12 @@ export default {
         }
       }
     },
+    getCommunityDetails(state, getters) {
+      return (user, language) => {
+        let communityInfo = getters.getCommunityInfo(user);
+        return _.find(communityInfo.community_details, {language_code: language.toUpperCase()});
+      }
+    },
     community_themes(state) {
       return state.community_themes;
     },

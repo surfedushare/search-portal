@@ -23,11 +23,11 @@
             class="communities__item tile tile--items-in-line-3 materials__item--items-in-line-3"
           >
             <div class="communities__item_wrapper tile__wrapper">
-              <div class="communities__item_logo" v-if="community.logo"><img :src="`${community.logo}`" alt=""></div>
-              <h3 class="communities__item_name">{{ getTitleTranslation(community, $i18n.locale) }}</h3>
+              <div class="communities__item_logo" v-if="getCommunityDetail(community, $i18n.locale, 'logo')"><img :src="`${getCommunityDetail(community, $i18n.locale, 'logo')}`" alt=""></div>
+              <h3 class="communities__item_name">{{ getCommunityDetail(community, $i18n.locale, 'title') }}</h3>
               <div class="communities__item_count">{{ $tc('learning-materials', community.materials_count) }}</div>
               <div class="communities__item_description html-content"
-                   v-html="getDescriptionTranslation(community, $i18n.locale)" v-show=false></div>
+                   v-html="getCommunityDetail(community, $i18n.locale, 'description')" v-show=false></div>
               <div
                 class="arrow-link communities__item_link"
               >
@@ -76,18 +76,10 @@
       setCommunity(community) {
         this.$store.commit('SET_COMMUNITY', community);
       },
-      getTitleTranslation(community, language) {
-        if (!_.isNil(community.title_translations) && !_.isEmpty(community.title_translations)) {
-          return community.title_translations[language];
-        }
-        return community.name
-      },
-      getDescriptionTranslation(community, language) {
-        if (!_.isNil(community.description_translations) && !_.isEmpty(community.description_translations)) {
-          return community.description_translations[language];
-        }
-        return community.description
-      },
+      getCommunityDetail(community, language, detail) {
+        let communityDetails = _.find(community.community_details, {language_code: language.toUpperCase()});
+        return communityDetails[detail] || null
+      }
     },
     computed: {
       communities() {
