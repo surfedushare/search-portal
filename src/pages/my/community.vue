@@ -428,7 +428,7 @@ export default {
     setInitialFormData() {
 
       if(!this.user) {
-        this.formData = null;
+        this.formData = {};
         return;
       }
 
@@ -438,7 +438,7 @@ export default {
       });
 
       if(_.isNil(community)) {
-        this.formData = null;
+        this.formData = {};
         return;
       }
       if(!_.isNil(community.community_details)){
