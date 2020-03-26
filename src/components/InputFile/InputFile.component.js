@@ -56,7 +56,6 @@ export default {
       this.imageText = '';
       this.imageLink = '';
       this.$refs.file.value = null;
-      this.errors.clear();
     }
   },
   computed: {
