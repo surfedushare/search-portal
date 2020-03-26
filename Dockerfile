@@ -31,6 +31,8 @@ WORKDIR /src
 # Here we gather static files that get served through uWSGI if they don't exist
 RUN python manage.py collectstatic --noinput
 
+RUN python manage.py compilemessages
+
 # create a user & group to run the commands. Needs to be done after yum install.
 RUN groupadd -r surf_user -g 1001 && useradd surf_user -u 1001 -r -g surf_user
 USER surf_user
