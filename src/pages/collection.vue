@@ -50,6 +50,8 @@ import Collection from '~/components/Collections/Collection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
 import DeleteMaterial from '~/components/Popup/DeleteMaterial';
 import Error from '~/components/error'
+import { PublishStatus } from '~/utils'
+
 
 export default {
   components: {
@@ -91,7 +93,7 @@ export default {
     collectionInfo() {
       if (_.isEmpty(this.collection)) {
         return this.collection;
-      } else if (this.collection.publish_status === 'PUBLISHED') {
+      } else if (this.collection.publish_status === PublishStatus.PUBLISHED) {
         return this.collection;
       } else if(this.user && _.find(this.user.collections, {id: this.collection.id})) {
         return this.collection;

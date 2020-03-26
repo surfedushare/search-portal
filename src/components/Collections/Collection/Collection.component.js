@@ -5,6 +5,7 @@ import DirectSearch from '~/components/FilterCategories/DirectSearch';
 import ShareCollection from '~/components/Popup/ShareCollection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
 import { validateHREF } from '~/components/_helpers';
+import { PublishStatus} from "~/utils";
 
 
 export default {
@@ -52,7 +53,7 @@ export default {
       isShowDeleteCollection: false,
       isShowShareCollection: false,
       is_copied: false,
-      isPublished: this.collection.publish_status === 'PUBLISHED'
+      isPublished: this.collection.publish_status === PublishStatus.PUBLISHED
     };
   },
   methods: {
