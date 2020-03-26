@@ -95,6 +95,12 @@ pip install docker docker-compose
 docker-compose up
 ```
 
+* Apply the migrations to the database
+
+```
+docker-compose run --rm backend python manage.py migrate
+```
+
 * Create the first Django admin of the application
 
 ```sh

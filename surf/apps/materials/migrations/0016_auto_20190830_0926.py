@@ -6,15 +6,16 @@ from django.db import migrations
 def clone_disciplines_to_mptt(apps, schema_editor):
     Material = apps.get_model('materials', 'Material')
     MpttFilterItem = apps.get_model('filters', 'MpttFilterItem')
-    vakgebied_root_node = MpttFilterItem.objects.get(external_id="lom.classification.obk.discipline.id")
-    for material in Material.objects.all():
-        disciplines = material.disciplines
-        for discipline in disciplines.all():
-            mpttfilteritem, created = MpttFilterItem.objects.get_or_create(name=discipline.title,
-                                                                           parent=vakgebied_root_node)
-            material.mptt_disciplines.add(mpttfilteritem)
+    if MpttFilterItem.objects.filter(external_id="lom.classification.obk.discipline.id").exists():
+        vakgebied_root_node = MpttFilterItem.objects.get(external_id="lom.classification.obk.discipline.id")
+        for material in Material.objects.all():
+            disciplines = material.disciplines
+            for discipline in disciplines.all():
+                mpttfilteritem, created = MpttFilterItem.objects.get_or_create(name=discipline.title,
+                                                                               parent=vakgebied_root_node)
+                material.mptt_disciplines.add(mpttfilteritem)
 
-        material.save()
+            material.save()
 
 
 def remove_mptt_disciplines(apps, schema_editor):
