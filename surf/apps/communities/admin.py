@@ -3,9 +3,10 @@ This module provides django admin functionality for communities app.
 """
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 
 from surf.apps.communities import models
-from surf.apps.communities.models import PublishStatus
+from surf.apps.communities.models import PublishStatus, REQUIRED_LANGUAGES
 
 
 def trash_nodes(modeladmin, request, queryset):
@@ -62,8 +63,26 @@ class TeamInline(admin.TabularInline):
     readonly_fields = ('team_id',)
 
 
+class CommunityDetailInlineFormset(forms.models.BaseInlineFormSet):
+    def clean(self):
+        languages = REQUIRED_LANGUAGES
+        print("CLEANING HERE")
+        for form in self.forms:
+            print(f"FORMN {form}")
+            print(f"CLEANING THIS FORM {form.cleaned_data}")
+            try:
+                language_code = form.cleaned_data['language_code'].upper()
+                if language_code in languages:
+                    languages.remove(language_code)
+            except KeyError as exc:
+                continue
+        if len(languages) != 0:
+            raise ValidationError(f"Required language code(s) {str(languages)} not in community details.")
+
+
 class CommunityDetailInline(admin.StackedInline):
     model = models.CommunityDetail
+    formset = CommunityDetailInlineFormset
     extra = 0
 
 

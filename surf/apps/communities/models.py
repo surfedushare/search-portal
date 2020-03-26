@@ -17,6 +17,8 @@ from surf.apps.materials.models import Collection
 from surf.apps.locale.models import Locale, LocaleHTML
 from surf.statusenums import PublishStatus
 
+REQUIRED_LANGUAGES = ['NL', 'EN']
+
 
 class Community(UUIDModel):
     """
