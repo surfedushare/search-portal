@@ -759,6 +759,7 @@ export default {
       line-height: 1.44;
       resize: none;
       color: #686d75;
+      font-family: inherit;
       &:focus {
         outline: none;
       }
