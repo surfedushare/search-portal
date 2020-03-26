@@ -121,8 +121,14 @@
         return (this.isLoading || !_.isEmpty(communityInfo)) ? communityInfo : null;
       },
       community_details() {
+        // Retrieve the details and exit when invalid or loading
         let communityDetails = this.$store.getters.getCommunityDetails(this.user, this.$i18n.locale);
-        return (this.isLoading || !_.isEmpty(communityDetails)) ? communityDetails : null;
+        if (_.isEmpty(communityDetails)) {
+          return (this.isLoading) ? communityDetails || {} : null;
+        }
+        // Fill some defaults for the details
+        communityDetails.featured_image = communityDetails.featured_image || '/images/pictures/community-default.jpg';
+        return communityDetails;
       }
     }
   };
