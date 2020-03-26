@@ -10,8 +10,8 @@ class ElasticSearchTestCase(get_base_search_test_class()):
         expected_record_count = 2
         self.check_author_search(author, expected_record_count)
 
-        author2 = "Daniëlle Wolzak"
-        expected_record_count2 = 41
+        author2 = "Ruud Kok"
+        expected_record_count2 = 3
         self.check_author_search(author2, expected_record_count2)
 
     def check_author_search(self, author, expected_record_count):

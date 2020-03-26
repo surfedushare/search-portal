@@ -224,7 +224,7 @@ class BaseSearchTestCase(TestCase):
             #     self.assertIsNotNone(material[key])
             return material
         test_id_1 = 'surf:oai:surfsharekit.nl:bef89539-a037-454d-bee3-da09f4c94e0b'
-        test_id_2 = 'edurep_delen:6e4447af-8ac3-4a91-a594-89828b068a2d'
+        test_id_2 = 'surf:oai:surfsharekit.nl:651a50f7-8942-4615-af67-a6841e00b78b'
         material_1 = test_material(test_id_1)
         material_2 = test_material(test_id_2)
 
@@ -236,20 +236,18 @@ class BaseSearchTestCase(TestCase):
         self.assertEqual(material_1['publish_datetime'], None)
         self.assertEqual(material_1['author'], None)
         self.assertEqual(material_1['keywords'], ['Powerpoint', 'Orange', 'MOOC'])
-        self.assertEqual(len(material_1['educationallevels']), 2)
         self.assertEqual(len(material_1['disciplines']), 0)
         self.assertEqual(material_1['language'], 'en')
         self.assertEqual(material_1['format'], 'pdf')
 
-        self.assertEqual(material_2['title'], 'Kennisclip herpes zoster')
-        self.assertEqual(material_2['url'], 'https://delen.edurep.nl/download/6e4447af-8ac3-4a91-a594-89828b068a2d')
+        self.assertEqual(material_2['title'], 'COOC (Community of Open Online Course)')
+        self.assertEqual(material_2['url'], 'https://surfsharekit.nl/dl/surf/651a50f7-8942-4615-af67-a6841e00b78b/bf30be37-dc7c-4106-8ef4-9773b48b547b')
         self.assertEqual(material_2['external_id'], test_id_2)
-        self.assertEqual(material_2['keywords'], ['#hbovpk', '#HR'])
-        self.assertEqual(material_2['publish_datetime'], '2017-09-27T11:02:13+02:00')
-        self.assertEqual(material_2['language'], 'nl')
-        self.assertEqual(material_2['author'], 'Drs. E. Kuperi')
+        self.assertEqual(material_2['keywords'], ['economics', 'macro economics', 'micro economics', 'economic structure', 'inflationary gap', 'deflationary gap', 'full-employment equilibrium'])
+        self.assertEqual(material_2['publish_datetime'], '2019-04-01')
+        self.assertEqual(material_2['language'], 'en')
+        self.assertEqual(material_2['author'], 'Dr. Ning Ding')
         self.assertEqual(len(material_2['themes']), 0)
-        # TODO a bug in elasticsearch is messing this up:
         self.assertEqual(material_2['format'], 'pdf')
 
 
