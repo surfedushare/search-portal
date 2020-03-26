@@ -13,18 +13,12 @@ from surf.apps.filters.models import (
     MpttFilterItem
 )
 from surf.apps.locale.models import Locale
-from surf.apps.themes.models import Theme
 from surf.vendor.edurep.widget_endpoint.v3.api import WidgetEndpointApiClient
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     PUBLISHER_DATE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID,
-    DISCIPLINE_FIELD_ID,
     EDUCATIONAL_LEVEL_FIELD_ID,
     LANGUAGE_FIELD_ID
-)
-from surf.vendor.search.choices import (
-    CUSTOM_THEME_DISCIPLINES,
-    DISCIPLINE_ENTRIES
 )
 
 IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
@@ -35,16 +29,15 @@ IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
 _MBO_HBO_WO_REGEX = re.compile(r"^(MBO|HBO|WO)(.*)$", re.IGNORECASE)
 _HBO_WO_REGEX = re.compile(r"^(HBO|WO)(.*)$", re.IGNORECASE)
 
-_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
-
-_MAX_DISCIPLINES_IN_FILTER = 20
-
 
 def add_default_material_filters(filters=None, tree=None):
     """
-    Adds the default enabled filters to the supplied list of filters
+    Adds the default enabled filters to the supplied list of filters.
+    In the filter admin there is a check to enable a filter by default, these get used here.
+    Much like a google search will default to your language unless you specifically tell it otherwise,
+    this allows us to enable certain filter items like education level and copyright by default.
     :param filters: list of filters to be extended, or None to get the full list of default filters,
-    :param tree: mptt filter category item tree to use instead of querying the database
+    :param tree: mptt filter category item tree to use instead of querying the database (to speed up the method).
     :return: the extended list of filters (or the same list if none are enabled by default)
     """
     if not filters:
@@ -55,7 +48,8 @@ def add_default_material_filters(filters=None, tree=None):
     filters_external_id_list = [filter_item['external_id'] for filter_item in filters]
     for root in tree:
         # if the root.external_id (e.g. educational_level) is in the user-selected filters,
-        # then don't add the default filters for that root
+        # then don't add the default filters for that root. So if a user selects 'HBO', don't also default to 'WO'.
+        # And if a node that is enabled by default has children, they're enabled by default as well.
         if root.external_id not in filters_external_id_list:
             enabled_children = root.get_children()
             if not root.enabled_by_default:
@@ -72,7 +66,7 @@ def add_default_material_filters(filters=None, tree=None):
 
 def check_and_update_mptt_filters():
     """
-    Updates filter categories and their items in database
+    Updates all filter categories and their items in database according to information from Edurep.
     """
 
     ac = None
@@ -92,57 +86,11 @@ def check_and_update_mptt_filters():
     print("Finished Update")
 
 
-def _update_themes(theme_category):
-    """
-    Updates all themes and their disciplines in database
-    :param theme_category: DB instance of Theme filter category
-    """
-
-    for theme_id, disciplines in CUSTOM_THEME_DISCIPLINES.items():
-        # get or create Theme category item
-
-        ci, _ = MpttFilterItem.objects.get_or_create(
-            category_id=theme_category.id,
-            external_id=theme_id,
-            defaults=dict(title=theme_id))
-
-        # get or create theme
-        t, _ = Theme.objects.get_or_create(external_id=theme_id)
-
-        # relate theme with category item
-        t.filter_category_item = ci
-        t.save()
-
-        # set theme disciplines
-        ds = []
-        for d in disciplines:
-            d = MpttFilterItem.objects.filter(
-                category__edurep_field_id=DISCIPLINE_FIELD_ID,
-                external_id=d).first()
-            if d:
-                ds.append(d)
-        t.disciplines.set(ds)
-
-
-def _update_themes_disciplines(discipline_category):
-    """
-    Updates all disciplines related to themes in database
-    :param discipline_category: DB instance of Discipline filter category
-    """
-
-    for d in DISCIPLINE_ENTRIES:
-        # get or create Discipline category item
-        MpttFilterItem.objects.get_or_create(
-            category_id=discipline_category.id,
-            external_id=d["id"],
-            defaults=dict(title=d["name"]))
-
-
 def _update_mptt_filter_category(filter_category, api_client):
     """
     Updates filter category according to data received from EduRep
-    :param filter_category: filter category DB instance
-    :param api_client: api client to EduRep
+    :param filter_category: filter category DB instance to be updated
+    :param api_client: api client instance to connect EduRep
     """
 
     category_id = filter_category.external_id
@@ -164,6 +112,11 @@ def _update_mptt_filter_category(filter_category, api_client):
 
 
 def _update_nested_mptt_items(filter_category, items):
+    """
+    Recursively go through the filter category's children and update/create them if need be.
+    :param filter_category: The parent category to check.
+    :param items: the children to be added
+    """
     for item in tqdm(items):
         _update_mptt_category_item(filter_category,
                                    item["identifier"],
@@ -174,6 +127,12 @@ def _update_nested_mptt_items(filter_category, items):
 
 
 def _update_mptt_category_item(filter_category, item_id, item_title):
+    """
+    Sort of 'get_or_create', however since we want to keep the tree structure intact when it's edited we check manually.
+    :param filter_category: the parent of the item to be created.
+    :param item_id: the external id of the filter category item
+    :param item_title: the name of the filter category item
+    """
     if not _is_valid_mptt_category_item(filter_category, item_id, item_title):
         return
     # normally we'd do this with a get_or_create, however since we want to leave the manually adjusted tree intact
@@ -187,14 +146,10 @@ def _update_mptt_category_item(filter_category, item_id, item_title):
 
 
 def _is_valid_mptt_category_item(filter_category, item_id, item_title):
+    """
+    Filter some 'unwanted' items from edurep.
+    """
     if filter_category.external_id != EDUCATIONAL_LEVEL_FIELD_ID and item_id != 'no':
-        return True
-
-    return _MBO_HBO_WO_REGEX.match(item_title) is not None
-
-
-def _is_valid_category_item(filter_category, _item_id, item_title):
-    if filter_category.edurep_field_id != EDUCATIONAL_LEVEL_FIELD_ID:
         return True
 
     return _MBO_HBO_WO_REGEX.match(item_title) is not None
