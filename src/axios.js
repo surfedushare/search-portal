@@ -166,7 +166,7 @@ export default (ctx, inject) => {
 
 
   setupProgress(axios, ctx);
-
+  axios.setLanguage(ctx.app.i18n.locale);
 
   // Inject axios to the context as $axios
   ctx.$axios = axios;
