@@ -35,7 +35,7 @@
                 <div class="communities__form__buttons">
                   {{$t('public')}}&nbsp;&nbsp;
                   <label class="switch">
-                    <input type="checkbox">
+                    <input type="checkbox" v-model="isPublished">
                     <span class="slider round"></span>
                   </label>
                   &nbsp;&nbsp; <router-link :to="getPreviewPath()"><i class="fas fa-eye"></i> {{$t('example')}}</router-link> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -312,6 +312,7 @@ import Collections from '~/components/Collections';
 import AddCollection from '~/components/Popup/AddCollection';
 import InputFile from '~/components/InputFile';
 import Error from '~/components/error';
+import { PublishStatus } from "~/utils";
 
 
 export default {
@@ -351,6 +352,7 @@ export default {
         logo_en: false,
         featured_image_nl: false,
         featured_image_en: false,
+        publish_status: PublishStatus.DRAFT
       }
     };
   },
@@ -362,7 +364,15 @@ export default {
       'isAuthenticated',
       'user',
       'getUserCommunities'
-    ])
+    ]),
+    isPublished: {
+        get() {
+          return this.formData.publish_status === PublishStatus.PUBLISHED;
+        },
+        set(value) {
+          this.formData.publish_status = (value) ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
+        }
+    }
   },
 
   mounted() {
@@ -460,6 +470,7 @@ export default {
         });
       }
       this.formData.external_id = community.id;
+      this.formData.publish_status = community.publish_status;
     },
     /**
      * Show the popup 'Add collection'
@@ -540,12 +551,10 @@ export default {
       let data_en = {language_code: 'EN'};
 
       _.forEach(this.formData, (element, key) => {
-        if (element) {
-          let value = null;
+        if (!_.isNil(element)) {
+          let value = element;
           if (Array.isArray(element)) {
             value = JSON.stringify(element);
-          } else {
-            value = element ? element : null;
           }
           if (!_.startsWith(key, 'logo') && !_.startsWith(key, 'featured')){
             if (_.endsWith(key, '_nl')) {
