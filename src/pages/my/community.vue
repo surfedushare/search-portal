@@ -366,12 +366,12 @@ export default {
       'getUserCommunities'
     ]),
     isPublished: {
-        get() {
-          return this.formData.publish_status === PublishStatus.PUBLISHED;
-        },
-        set(value) {
-          this.formData.publish_status = (value) ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
-        }
+      get() {
+        return this.formData.publish_status === PublishStatus.PUBLISHED;
+      },
+      set(value) {
+        this.formData.publish_status = (value) ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
+      }
     }
   },
 
