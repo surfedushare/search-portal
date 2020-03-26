@@ -613,7 +613,7 @@ export default {
     },
     saveCollection(collection) {
       this.$store.dispatch('setCommunityCollection', {
-        id: this.formData.id,
+        id: this.$route.params.community,
         data: [
           {
             id: collection.id,
