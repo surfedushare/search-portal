@@ -90,8 +90,14 @@ class CommunitySerializer(serializers.ModelSerializer):
             return exc
 
     def update(self, instance, validated_data):
-        # we could update the community instance itself, however the only value that can be updated
-        # is the name which is only used internally so it's not required through the API
+
+        # First we update everything on the community itself
+        publish_status = validated_data.get("publish_status", None)
+        if publish_status is not None:
+            instance.publish_status = publish_status
+            instance.save()
+
+        # Then we update the language specific data
         details_data = validated_data.pop('community_details_update')
         logo_nl = None
         if 'logo_nl' in validated_data.keys():
