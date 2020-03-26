@@ -3,6 +3,7 @@ This module contains API view serializers for communities app.
 """
 from collections import OrderedDict
 
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community, CommunityDetail
@@ -85,6 +86,9 @@ class CommunitySerializer(serializers.ModelSerializer):
         try:
             detail_object.clean_fields()
             detail_object.clean()
+            # We check description separately, because it shouldn't be required in the admin
+            if not detail_object.description.strip():
+                raise ValidationError({"description": _("This field cannot be blank.")})
             detail_object.save()
         except ValidationError as exc:
             return exc
