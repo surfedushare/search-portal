@@ -66,10 +66,8 @@ class TeamInline(admin.TabularInline):
 class CommunityDetailInlineFormset(forms.models.BaseInlineFormSet):
     def clean(self):
         languages = REQUIRED_LANGUAGES
-        print("CLEANING HERE")
+        # loop through the submitted forms to find out if we miss any required language
         for form in self.forms:
-            print(f"FORMN {form}")
-            print(f"CLEANING THIS FORM {form.cleaned_data}")
             try:
                 language_code = form.cleaned_data['language_code'].upper()
                 if language_code in languages:
