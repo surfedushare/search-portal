@@ -207,6 +207,7 @@ class BaseSearchTestCase(TestCase):
                 self.assertIsNotNone(item['count'])
 
     def test_get_materials_by_id(self):
+
         def test_material(external_id):
             # can't test for theme and copyright without creating and instantiating these values in the database
             material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language',
@@ -218,11 +219,8 @@ class BaseSearchTestCase(TestCase):
             # we're searching for one id, we should get only one result
             self.assertEqual(result['recordcount'], 1)
 
-            material = result['records'][0]
-            # for key in material_keys:
-            #     print(key)
-            #     self.assertIsNotNone(material[key])
-            return material
+            return result['records'][0]
+
         test_id_1 = 'surf:oai:surfsharekit.nl:bef89539-a037-454d-bee3-da09f4c94e0b'
         test_id_2 = 'surf:oai:surfsharekit.nl:651a50f7-8942-4615-af67-a6841e00b78b'
         material_1 = test_material(test_id_1)
