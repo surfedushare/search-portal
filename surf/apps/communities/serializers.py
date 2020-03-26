@@ -34,7 +34,6 @@ class CommunitySerializer(serializers.ModelSerializer):
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
-    publish_status = serializers.SerializerMethodField()
     community_details = CommunityDetailSerializer(many=True, required=False)
     community_details_update = serializers.JSONField(write_only=True)
     logo_nl = serializers.ImageField(write_only=True, allow_null=True, required=False)
@@ -60,10 +59,6 @@ class CommunitySerializer(serializers.ModelSerializer):
         ids = obj.collections.values_list("materials__id", flat=True)
         ids = [i for i in ids if i]
         return len(set(ids))
-
-    @staticmethod
-    def get_publish_status(obj):
-        return str(PublishStatus.get(obj.publish_status))
 
     def create(self, validated_data):
         details_data = validated_data.pop('community_details')
