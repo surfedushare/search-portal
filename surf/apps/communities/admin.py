@@ -65,7 +65,7 @@ class TeamInline(admin.TabularInline):
 
 class CommunityDetailInlineFormset(forms.models.BaseInlineFormSet):
     def clean(self):
-        languages = REQUIRED_LANGUAGES
+        languages = REQUIRED_LANGUAGES.copy()
         # loop through the submitted forms to find out if we miss any required language
         for form in self.forms:
             try:
@@ -75,7 +75,7 @@ class CommunityDetailInlineFormset(forms.models.BaseInlineFormSet):
             except KeyError as exc:
                 continue
         if len(languages) != 0:
-            raise ValidationError(f"Required language code(s) {str(languages)} not in community details.")
+            raise ValidationError(f"Required language code(s) '{', '.join(languages)}' not in community details.")
 
 
 class CommunityDetailInline(admin.StackedInline):
