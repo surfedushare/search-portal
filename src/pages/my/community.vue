@@ -688,6 +688,7 @@ export default {
       border: 1px;
       background: @dark-blue;
       width: 40%;
+      min-width: 380px;  // or break tablets
       height: 75px;
       border-radius: 20px;
       margin-top: 25px;
