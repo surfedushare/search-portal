@@ -113,14 +113,39 @@ class BaseSearchTestCase(TestCase):
 
     def test_search_disciplines(self):
         search_result = self.instance.search([])
-        search_result_filter_1 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['596e13b2-5626-4312-8440-50e9bd7b4271']}])
-        search_result_filter_2 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']}])
+        search_result_filter_1 = self.instance.search(
+            [],
+            filters=[{
+                "external_id": "lom.classification.obk.discipline.id",
+                "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2']
+            }]
+        )
+        search_result_filter_2 = self.instance.search(
+            [],
+            filters=[{
+                "external_id": "lom.classification.obk.discipline.id",
+                "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']
+            }]
+        )
+        search_result_filter_3 = self.instance.search(
+            [],
+            filters=[{
+                "external_id": "lom.classification.obk.discipline.id",
+                "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2', '2b363227-8633-4652-ad57-c61f1efc02c8']
+            }]
+        )
         self.assertNotEqual(search_result, search_result_filter_1)
         self.assertNotEqual(search_result, search_result_filter_2)
         self.assertNotEqual(search_result_filter_1, search_result_filter_2)
         self.assertGreater(search_result['recordcount'], 0)
         self.assertGreater(search_result_filter_1['recordcount'], 0)
         self.assertGreater(search_result_filter_2['recordcount'], 0)
+        self.assertGreater(
+            search_result_filter_1['recordcount'] + search_result_filter_2['recordcount'],
+            search_result_filter_3['recordcount'],
+            "Expected at least 1 material to appear in both search_result_filter_1 and search_result_filter_2, "
+            "which would make the sum of those results larger than filtering on both disciplines together"
+        )
 
     def test_drilldown_search(self):
         search_biologie = self.instance.search(["biologie"], drilldown_names=["lom.technical.format"])
