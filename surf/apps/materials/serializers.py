@@ -165,7 +165,6 @@ class CollectionSerializer(CollectionShortSerializer):
     communities_count = serializers.SerializerMethodField()
     communities = serializers.SerializerMethodField()
     sharing_counters = serializers.SerializerMethodField()
-    publish_status = serializers.SerializerMethodField()
 
     @staticmethod
     def get_sharing_counters(obj):
@@ -193,10 +192,6 @@ class CollectionSerializer(CollectionShortSerializer):
             return [dict(id=c.id, name=c.name) for c in obj.communities.all()]
         else:
             return []
-
-    @staticmethod
-    def get_publish_status(obj):
-        return str(PublishStatus.get(obj.publish_status))
 
     class Meta:
         model = Collection
