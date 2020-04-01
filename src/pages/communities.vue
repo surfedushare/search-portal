@@ -44,7 +44,8 @@
             </router-link>
           </li>
         </ul>
-        <h3 class="text-center" v-else v-html="$t('html-No-communities-available')"></h3>
+        <h3 class="text-center" v-else-if="userCommunities" v-html="$t('html-No-communities-available-logged-in')"></h3>
+        <h3 class="text-center" v-else>{{ $t('No-communities-available') }}</h3>
       </div>
     </section>
   </section>
