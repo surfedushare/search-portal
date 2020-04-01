@@ -204,7 +204,12 @@ export default {
             ...this.collection,
             ...data
           })
-          .then(() => {
+          .catch(() => {
+            if(this.collection.publish_status === PublishStatus.PUBLISHED && !this.collection.materials_count) {
+              this.collection.publish_status = PublishStatus.DRAFT;
+            }
+          })
+          .finally(() => {
             if (!materials_for_deleting || !materials_for_deleting.length) {
               this.submitting = false;
               this.setEditable(false);
