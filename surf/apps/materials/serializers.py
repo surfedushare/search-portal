@@ -4,6 +4,8 @@ This module contains API view serializers for materials app.
 
 from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+
 
 from surf.apps.materials.models import (
     Collection,
@@ -177,6 +179,11 @@ class CollectionSerializer(CollectionShortSerializer):
 
         return SharedResourceCounterSerializer(many=True).to_representation(
             qs.all())
+
+    def validate(self, attrs):
+        if not self.get_materials_count(self.instance) and attrs.get("publish_status", None) == PublishStatus.PUBLISHED:
+           raise ValidationError("Can't publish a collection if it doesn't have materials")
+        return attrs
 
     @staticmethod
     def get_materials_count(obj):
