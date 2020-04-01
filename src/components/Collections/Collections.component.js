@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Spinner from './../Spinner';
 
 export default {
@@ -19,5 +20,11 @@ export default {
       default: false
     }
   },
-  components: { Spinner }
+  components: { Spinner },
+  methods: {
+    getCommunityDetail(community, language, detail) {
+      let communityDetails = _.find(community.community_details, {language_code: language.toUpperCase()});
+      return communityDetails[detail] || null
+    }
+  }
 };

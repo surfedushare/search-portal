@@ -18,7 +18,7 @@
           class="collections__item_link"
           v-for="community in collection.communities"
           :key="`${community.id}`"
-          >{{community.name}}
+          >{{ getCommunityDetail(community, $i18n.locale, 'title') }}
         </router-link>
         <p class="collections__item_count">{{ $tc('items', collection.materials_count) }}</p>
       </div>
