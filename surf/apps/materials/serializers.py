@@ -165,7 +165,7 @@ class CollectionSerializer(CollectionShortSerializer):
     title = serializers.CharField()
     materials_count = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
-    communities = CommunitySerializer(many=True)
+    communities = CommunitySerializer(many=True, required=False)
     sharing_counters = serializers.SerializerMethodField()
 
     @staticmethod
@@ -187,6 +187,8 @@ class CollectionSerializer(CollectionShortSerializer):
 
     @staticmethod
     def get_materials_count(obj):
+        if not obj:
+            return 0
         return obj.materials.count()
 
     @staticmethod
