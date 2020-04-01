@@ -1,3 +1,6 @@
+now = $(shell date +"%Y-%m-%d")
+
+
 media-to-local:
 	rsync -zrthv --progress $(remote):/volumes/surf/media .
 
