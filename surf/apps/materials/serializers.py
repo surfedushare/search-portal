@@ -6,7 +6,7 @@ from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
-
+from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.models import (
     Collection,
     Material,
@@ -165,7 +165,7 @@ class CollectionSerializer(CollectionShortSerializer):
     title = serializers.CharField()
     materials_count = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
-    communities = serializers.SerializerMethodField()
+    communities = CommunitySerializer(many=True)
     sharing_counters = serializers.SerializerMethodField()
 
     @staticmethod
@@ -192,13 +192,6 @@ class CollectionSerializer(CollectionShortSerializer):
     @staticmethod
     def get_communities_count(obj):
         return getattr(obj, "community_cnt", 0)
-
-    @staticmethod
-    def get_communities(obj):
-        if obj.communities:
-            return [dict(id=c.id, name=c.name) for c in obj.communities.all()]
-        else:
-            return []
 
     class Meta:
         model = Collection
