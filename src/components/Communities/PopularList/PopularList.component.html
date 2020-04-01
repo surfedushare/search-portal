@@ -22,6 +22,8 @@
       </router-link>
     </div>
   </template>
-  <div v-else v-html="$t('html-No-communities-available')" />
+  <div v-else>
+    {{ $t('No-communities') }}
+  </div>
 </section>
 
