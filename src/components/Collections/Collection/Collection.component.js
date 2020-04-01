@@ -5,6 +5,7 @@ import DirectSearch from '~/components/FilterCategories/DirectSearch';
 import ShareCollection from '~/components/Popup/ShareCollection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
 import { validateHREF } from '~/components/_helpers';
+import SwitchInput from '~/components/switch-input'
 import { PublishStatus} from "~/utils";
 
 
@@ -35,7 +36,8 @@ export default {
     EditableContent,
     DirectSearch,
     ShareCollection,
-    DeleteCollection
+    DeleteCollection,
+    SwitchInput
   },
   mounted() {
     const { collection } = this;
@@ -52,9 +54,18 @@ export default {
       search: {},
       isShowDeleteCollection: false,
       isShowShareCollection: false,
-      is_copied: false,
-      isPublished: this.collection.publish_status === PublishStatus.PUBLISHED
+      is_copied: false
     };
+  },
+  computed: {
+    isPublished: {
+      get() {
+        return this.collection.publish_status === PublishStatus.PUBLISHED;
+      },
+      set(value) {
+        this.collection.publish_status = (value) ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
+      }
+    }
   },
   methods: {
     /**
