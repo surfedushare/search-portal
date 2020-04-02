@@ -165,7 +165,7 @@ class CollectionSerializer(CollectionShortSerializer):
     title = serializers.CharField()
     materials_count = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
-    communities = CommunitySerializer(many=True, required=False)
+    communities = CommunitySerializer(many=True, read_only=True)
     sharing_counters = serializers.SerializerMethodField()
 
     @staticmethod
