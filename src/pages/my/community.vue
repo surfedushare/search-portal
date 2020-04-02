@@ -302,7 +302,7 @@
 </template>
 
 <script>
-import { some, isNil, isEmpty, find, forEach, startsWith, endsWith, map } from 'lodash';
+import { some, isNil, isEmpty, find, forEach, startsWith, endsWith } from 'lodash';
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import Collections from '~/components/Collections';

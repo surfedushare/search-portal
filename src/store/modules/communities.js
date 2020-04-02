@@ -159,7 +159,7 @@ export default {
         $log.error('Validate error: ', data);
       }
     },
-    async deleteCommunityCollections({ commit }, {id, data }) {
+    async deleteCommunityCollections(context, {id, data }) {
       if (validateParams(data)) {
         await this.$axios.$delete(`communities/${id}/collections/`, {data});
       } else {
