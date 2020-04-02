@@ -187,6 +187,8 @@ class CollectionSerializer(CollectionShortSerializer):
 
     @staticmethod
     def get_materials_count(obj):
+        if not obj:
+            return 0
         return obj.materials.count()
 
     @staticmethod
