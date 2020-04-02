@@ -13,6 +13,29 @@
     display: flex;
     //justify-content: space-between;
     flex-wrap: wrap;
+
+    .select-icon {
+      background: @light-grey url('/images/close-grey.svg') 50% 50% no-repeat;
+      background-size: 20px 20px;
+      position: absolute;
+      left: 50%;
+      top: -20px;
+      width: 40px;
+      height: 40px;
+      color: transparent;
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+      z-index: 1;
+      border-radius: 50%;
+      transform: translate(-50%, 0);
+      border: 0;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
     @media @mobile {
       display: block;
     }
@@ -34,6 +57,11 @@
     &_wrapper{
       padding: 31px 18px 44px;
     }
+    &_wrapper.selected {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     &_header{
       padding: 0 10px 0 31px;
       position: relative;
