@@ -281,6 +281,7 @@
               :collections="community_collections.results"
               :editable-content="true"
               :loading="community_collections_loading"
+              @input="setCollectionSelection"
             >
               <template slot="header-info">
                 <h2>{{ $t('Collections-2') }}</h2>
@@ -301,7 +302,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import { some, isNil, isEmpty, find, forEach, startsWith, endsWith, map } from 'lodash';
 import { mapGetters } from 'vuex';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import Collections from '~/components/Collections';
@@ -392,7 +393,7 @@ export default {
       return this.getFieldErrors(fieldName).length > 0
     },
     anyFieldError(){
-      return _.some(this.errors, item => item.length > 0);
+      return some(this.errors, item => item.length > 0);
     },
     onRemoveImage(context){
       switch(context) {
@@ -440,16 +441,16 @@ export default {
       }
 
       let communities = this.getUserCommunities(this.user);
-      let community = _.find(communities, (community) => {
+      let community = find(communities, (community) => {
         return community.id === this.$route.params.community;
       });
 
-      if(_.isNil(community)) {
+      if(isNil(community)) {
         this.formData = {};
         return;
       }
-      if(!_.isNil(community.community_details)){
-        _.forEach(community.community_details, detail => {
+      if(!isNil(community.community_details)){
+        forEach(community.community_details, detail => {
           if (detail.language_code === 'NL'){
             this.formData.title_nl = detail.title;
             this.formData.description_nl = detail.description;
@@ -490,7 +491,7 @@ export default {
       this.is_submitting = true;
 
       const data = this.normalizeFormData();
-      _.forEach(this.errors, (value, key) => {
+      forEach(this.errors, (value, key) => {
           this.errors[key] = '';
       });
       this.$store
@@ -508,15 +509,24 @@ export default {
         .catch(err => {
           this.error = err;
           this.is_submitting = false;
-          _.forEach(err.response.data, (feedback, language) => {
+          forEach(err.response.data, (feedback, language) => {
             const response = JSON.parse(feedback.replace(/'/g, "\""));
-            _.forEach(response, (item, key) => {
+            forEach(response, (item, key) => {
               const error_msg = item;
               let location = key + '_' + language.toLowerCase();
               this.errors[location] = error_msg;
             });
           });
         });
+      if(!isEmpty(this.selection)) {
+        let deletePayload = {
+          id: this.$route.params.community,
+          data: this.selection
+        };
+        this.$store.dispatch('deleteCommunityCollections', deletePayload).then(() => {
+          this.$store.dispatch('getCommunityCollections', this.$route.params.community)
+        })
+      }
     },
     openTab(tabName) {
       let generaltab = this.$refs["general-tab"];
@@ -547,16 +557,16 @@ export default {
       let data_nl = {language_code: 'NL'};
       let data_en = {language_code: 'EN'};
 
-      _.forEach(this.formData, (element, key) => {
-        if (!_.isNil(element)) {
+      forEach(this.formData, (element, key) => {
+        if (!isNil(element)) {
           let value = element;
           if (Array.isArray(element)) {
             value = JSON.stringify(element);
           }
-          if (!_.startsWith(key, 'logo') && !_.startsWith(key, 'featured')){
-            if (_.endsWith(key, '_nl')) {
+          if (!startsWith(key, 'logo') && !startsWith(key, 'featured')){
+            if (endsWith(key, '_nl')) {
               data_nl[key.slice(0, -3)] = value;
-            } else if (_.endsWith(key, '_en')) {
+            } else if (endsWith(key, '_en')) {
               data_en[key.slice(0, -3)] = value;
             }
           }
@@ -564,9 +574,9 @@ export default {
         }
         // if the value is empty, send it to the backend (so the backend can reject the post)
         else {
-          if (_.endsWith(key, '_nl')) {
+          if (endsWith(key, '_nl')) {
               data_nl[key.slice(0, -3)] = "";
-          } else if (_.endsWith(key, '_en')) {
+          } else if (endsWith(key, '_en')) {
               data_en[key.slice(0, -3)] = "";
           }
         }
@@ -635,6 +645,9 @@ export default {
           community: this.formData.external_id
         }
       })
+    },
+    setCollectionSelection(selection) {
+      this.selection = selection;
     }
   }
 };

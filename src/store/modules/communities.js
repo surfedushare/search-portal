@@ -159,6 +159,13 @@ export default {
         $log.error('Validate error: ', data);
       }
     },
+    async deleteCommunityCollections({ commit }, {id, data }) {
+      if (validateParams(data)) {
+        await this.$axios.$delete(`communities/${id}/collections/`, {data});
+      } else {
+        $log.error('Validate error: ', data);
+      }
+    },
     async setCommunityCollection({ commit }, { id, data }) {
       if (validateID(id) && validateParams(data)) {
         const community_collections = await this.$axios.$post(
