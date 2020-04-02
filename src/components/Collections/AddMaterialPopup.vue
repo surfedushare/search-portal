@@ -7,7 +7,12 @@
       class="add-material"
     >
       <div>
-        <h2 class="popup__title">{{ $t('Add-materials-to-collection') }}</h2>
+        <div class="flex-container">
+          <h2 class="popup__title">{{ $t('Add-materials-to-collection') }}</h2>
+          <button class="button secondary" @click.prevent="onSaveMaterials">
+            {{ $t('Add-selected-materials', {count: selection.length}) }}
+          </button>
+        </div>
         <Search
           :hide-categories="true"
           :hide-filter="true"
@@ -24,7 +29,8 @@
           class="search__wrapper center_block"
         >
           <div class="search__materials">
-            <Materials :materials="materials" :items-in-line="2"/>
+            <Materials :materials="materials" :items-in-line="2" selectFor="add"
+                       contenteditable="true" v-model="selection"/>
           </div>
         </div>
       </div>
@@ -34,6 +40,7 @@
 
 <script>
 
+  import { isEmpty, map } from 'lodash';
   import { mapGetters } from 'vuex';
   import Popup from '~/components/Popup';
   import Search from '~/components/FilterCategories/Search';
@@ -42,7 +49,7 @@
 
   export default {
     name: 'add-collection',
-    props: ['is-show', 'close', 'submit-method'],
+    props: ['is-show', 'close', 'submit-method', 'collection-id'],
     components: {
       Popup,
       Search,
@@ -52,6 +59,7 @@
     data() {
       return {
         search: {},
+        selection: [],
         saved: false,
         submitting: false,
         formData: {
@@ -64,6 +72,11 @@
         if (search && !this.materials_loading) {
           this.$store.dispatch('searchMaterials', search);
         }
+      },
+      isShow(shouldShow) {
+        if(!shouldShow) {
+          this.reset()
+        }
       }
     },
     methods: {
@@ -73,7 +86,7 @@
       },
       loadMore() {
         const { search, materials } = this;
-        if (materials && search) {
+        if (materials && !isEmpty(search)) {
           const { page_size, page, records_total } = materials;
 
           if (records_total > page_size * page) {
@@ -84,10 +97,18 @@
           }
         }
       },
-      onSaveCollection() {
+      reset() {
+        this.search = {};
+        this.selection = []
+      },
+      onSaveMaterials() {
         this.submitting = true;
+        let submitData = {
+          collection_id: this.collectionId,
+          data: map(this.selection, (external_id) => {return { external_id }})
+        };
         this.$store
-          .dispatch(this.submitMethod || 'postMyCollection', this.formData)
+          .dispatch(this.submitMethod || 'setMaterialInMyCollection', submitData)
           .then(collection => {
             this.$store.dispatch('getUser');
             this.saved = true;
@@ -119,6 +140,9 @@
       max-height: calc(100vh - 200px);
       overflow-y: scroll
     }
+  }
+  .add_materials__info_search {
+    margin: 40px auto;
   }
 
 </style>

@@ -24,6 +24,10 @@ export default {
       type: Boolean,
       default: false
     },
+    selectFor: {
+      type: String,
+      default: 'delete'
+    },
     value: {
       // type: Array,
       // default: []
@@ -81,6 +85,9 @@ export default {
       'disciplines',
       'materials_loading'
     ]),
+    selectMaterialClass() {
+      return (this.selectFor === 'delete') ? 'select-delete' : 'select-neutral'
+    },
     current_loading() {
       return this.materials_loading || this.loading;
     },

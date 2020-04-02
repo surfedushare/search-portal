@@ -17,8 +17,8 @@
       />
 
       <div class="add-materials">
-        <button class="materials__add__link button" @click.prevent="showAddMaterial">
-          {{ $t('Add-material') }}
+        <button class="materials__add__link button secondary" @click.prevent="showAddMaterial">
+          {{ $t('Add-materials') }}
         </button>
       </div>
 
@@ -48,6 +48,7 @@
       v-if="isShowAddMaterial"
       :close="closeAddMaterial"
       :is-show="isShowAddMaterial"
+      :collection-id="collection.id"
       submit-method="setMaterialInMyCollection"
       @submitted="saveMaterials"
     />
@@ -126,9 +127,8 @@ export default {
         page: 1
       }
     });
-    this.$store.dispatch('getCollection', id).finally(() => {
-      this.isLoading = false;
-    });
+    this.$store.dispatch('getCollection', id)
+      .finally(() => { this.isLoading = false; });
   },
   methods: {
     showAddMaterial() {
@@ -136,18 +136,13 @@ export default {
     },
     closeAddMaterial() {
       this.isShowAddMaterial = false;
+      this.materialsUpdateKey += 1;
     },
-    saveMaterials(materials) {
-      console.log('saved materials', materials)
-      // this.$store.dispatch('setCommunityCollection', {
-      //   id: this.$route.params.community,
-      //   data: [
-      //     {
-      //       id: collection.id,
-      //       title: collection.title
-      //     }
-      //   ]
-      // });
+    saveMaterials() {
+      const { id } = this.$route.params;
+      this.isLoading = true;
+      this.$store.dispatch('getMaterialInMyCollection', { id, params: {} })
+        .finally(() => { this.isLoading = false; });
     },
     /**
      * Set editable to the collection
@@ -267,13 +262,6 @@ export default {
   .add-materials {
     display: flex;
     justify-content: flex-end;
-    .button {
-      background: @dark-blue;
-      color: white;
-    }
-    .button:hover:not([disabled]) {
-      background: @dark-blue-hover;
-    }
   }
 
   .materials {
