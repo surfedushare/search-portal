@@ -16,6 +16,12 @@
         @onSubmit="onSubmit"
       />
 
+      <div class="add-materials">
+        <button class="materials__add__link button" @click.prevent="showAddMaterial">
+          {{ $t('Add-material') }}
+        </button>
+      </div>
+
       <div>
         <Materials
           v-model="formData.materials_for_deleting"
@@ -38,6 +44,13 @@
       :is-show="isShowDeleteMaterials"
       :deletefunction="deleteMaterials"
     />
+    <AddMaterialPopup
+      v-if="isShowAddMaterial"
+      :close="closeAddMaterial"
+      :is-show="isShowAddMaterial"
+      submit-method="setMaterialInMyCollection"
+      @submitted="saveMaterials"
+    />
   </section>
 </template>
 
@@ -47,6 +60,7 @@ import { mapGetters } from 'vuex';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
 import Collection from '~/components/Collections/Collection';
+import AddMaterialPopup from '~/components/Collections/AddMaterialPopup';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
 import DeleteMaterial from '~/components/Popup/DeleteMaterial';
 import Error from '~/components/error'
@@ -60,7 +74,8 @@ export default {
     Spinner,
     DeleteCollection,
     DeleteMaterial,
-    Error
+    Error,
+    AddMaterialPopup
   },
   data() {
     return {
@@ -79,7 +94,8 @@ export default {
         filters: [],
         search_text: []
       },
-      isLoading: true
+      isLoading: true,
+      isShowAddMaterial: false
     };
   },
   computed: {
@@ -115,6 +131,24 @@ export default {
     });
   },
   methods: {
+    showAddMaterial() {
+      this.isShowAddMaterial = true;
+    },
+    closeAddMaterial() {
+      this.isShowAddMaterial = false;
+    },
+    saveMaterials(materials) {
+      console.log('saved materials', materials)
+      // this.$store.dispatch('setCommunityCollection', {
+      //   id: this.$route.params.community,
+      //   data: [
+      //     {
+      //       id: collection.id,
+      //       title: collection.title
+      //     }
+      //   ]
+      // });
+    },
     /**
      * Set editable to the collection
      * @param isEditable - Boolean
@@ -222,8 +256,36 @@ export default {
 </script>
 
 <style lang="less">
+
+  @import "../variables";
+
   .collection {
     width: 100%;
     padding: 95px 0 215px;
   }
+
+  .add-materials {
+    display: flex;
+    justify-content: flex-end;
+    .button {
+      background: @dark-blue;
+      color: white;
+    }
+    .button:hover:not([disabled]) {
+      background: @dark-blue-hover;
+    }
+  }
+
+  .materials {
+    margin-top: 20px;
+  }
+
+  .materials__add__link {
+    padding: 13px 43px 13px 51px;
+    background-image: url('/images/plus-black.svg');
+    background-position: 10px 50%;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+  }
+
 </style>
