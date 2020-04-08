@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { isNil, forEach } from 'lodash';
+import { isNil } from 'lodash';
 import { mapGetters } from 'vuex';
 
 import BreadCrumbs from '~/components/BreadCrumbs';

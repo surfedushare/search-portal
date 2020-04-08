@@ -1,7 +1,7 @@
-import { isString, map, isEmpty, some, keys, isNil } from 'lodash'
+import { isString, map, isEmpty, keys, isNil } from 'lodash'
 import injector from 'vue-inject'
 
-const $log = injector.get('$log');
+
 const $timeout = injector.get('$timeout');
 
 const DEFAULT_MESSAGES = {
@@ -30,7 +30,7 @@ export default {
         return map(state.messages[level], (msg) => { return app.i18n.t(msg) }).join(" ")
       }
     },
-    getLevelIcon(state) {
+    getLevelIcon() {
       return (level) => {
         assertMessageLevel(level);
         return (level === 'error') ? 'fa-exclamation-triangle' : 'fa-info-circle'
