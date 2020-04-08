@@ -235,6 +235,7 @@ export default {
           })
           .catch(() => {
             if(this.collection.publish_status === PublishStatus.PUBLISHED && !this.collection.materials_count) {
+              this.$store.commit('ADD_MESSAGE', {level: 'error', message: 'can-not-publish-empty-collection'});
               this.collection.publish_status = PublishStatus.DRAFT;
             }
           })
