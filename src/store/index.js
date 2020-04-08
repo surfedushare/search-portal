@@ -11,6 +11,7 @@ import collections from './modules/collections';
 import statistic from './modules/statistic';
 import headerMenu from './modules/header-menu';
 import headerSubMenu from './modules/header-sub-menu';
+import messages from './modules/messages';
 
 Vue.use(Vuex);
 
@@ -26,7 +27,8 @@ const store = () => {
             collections,
             statistic,
             headerMenu,
-            headerSubMenu
+            headerSubMenu,
+            messages
         }
     });
 };

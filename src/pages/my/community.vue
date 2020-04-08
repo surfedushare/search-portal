@@ -19,7 +19,7 @@
           <div
             v-if="is_saved"
             class="success" >
-            &#10004; {{ $t('Data-saved') }}
+            &#10004; {{ $store.getters.getMessagesContent('info') }}
           </div>
           <div
             v-show="anyFieldError()"
@@ -502,8 +502,10 @@ export default {
         .then(() => {
           this.is_submitting = false;
           this.is_saved = true;
+          this.$store.commit('ADD_MESSAGE', {level: 'info', message: 'Data-saved'});
           setTimeout(() => {
             this.is_saved = false;
+            this.$store.commit('CLEAR_MESSAGES', 'info')
           }, 1000);
         })
         .catch(err => {
