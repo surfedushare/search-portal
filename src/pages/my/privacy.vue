@@ -196,31 +196,6 @@ export default {
       display: block;
       margin-bottom: 8px;
     }
-    &__radio {
-      display: none;
-    }
-    &__radio + label {
-      display: inline-block;
-      background-repeat: no-repeat;
-      background-size: cover;
-      width: 40px;
-      height: 40px;
-
-      &.allow {
-        background-image: url("/images/plus-black.svg");
-      }
-      &.deny {
-        background-image: url("/images/min-black.svg");
-      }
-    }
-    &__radio:checked + label {
-      &.allow {
-        background-image: url("/images/plus-copy.svg");
-      }
-      &.deny {
-        background-image: url("/images/min.svg");
-      }
-    }
 
     &__buttons {
       text-align: right;
