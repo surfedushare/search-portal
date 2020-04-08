@@ -2,7 +2,7 @@
 <template>
 
   <div class="switch-input">
-    {{ label }}&nbsp;&nbsp;
+    <span v-if="label">{{ label }}&nbsp;&nbsp;</span>
     <label class="switch">
       <input type="checkbox" v-model="value">
       <span class="slider round"></span>
