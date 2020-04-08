@@ -27,9 +27,6 @@ import MainHeader from '~/components/MainHeader';
 import MainFooter from '~/components/MainFooter';
 import NuxtLoading from '~/components/nuxt-loading.vue'
 
-//import _6f6c098b from '../layouts/default.vue'
-//const layouts = { "_default": _6f6c098b };
-
 
 export default {
   components: {
@@ -37,35 +34,6 @@ export default {
     MainFooter,
     NuxtLoading
   },
-  // mounted() {
-  //
-  // },
-  // render(h, props) {
-  //   const loadingEl = h('nuxt-loading', { ref: 'loading' });
-  //   const layoutEl = h(this.layout || 'nuxt');
-  //   const templateEl = h('div', {
-  //     domProps: {
-  //       id: '__layout'
-  //     },
-  //     key: this.layoutName
-  //   }, [ layoutEl ]);
-  //
-  //   const transitionEl = h('transition', {
-  //     props: {
-  //       name: 'layout',
-  //       mode: 'out-in'
-  //     }
-  //   }, [ templateEl ]);
-  //
-  //   return h('div',{
-  //     domProps: {
-  //       id: '__nuxt'
-  //     }
-  //   }, [
-  //     loadingEl,
-  //     transitionEl
-  //   ])
-  // },
   data: () => ({
     layout: null,
     layoutName: ''
@@ -93,23 +61,9 @@ export default {
     }
   },
   methods: {
-
     setLayout() {  // previously received a layout
       return 'default';
-      // if (!layout || !layouts['_' + layout]) {
-      //   layout = 'default'
-      // }
-      // this.layoutName = layout;
-      // this.layout = layouts['_' + layout];
-      // return this.layout
     }
-    // loadLayout(layout) {
-    //   if (!layout || !layouts['_' + layout]) {
-    //     layout = 'default'
-    //   }
-    //   return Promise.resolve(layouts['_' + layout])
-    // }
-
   }
 }
 </script>

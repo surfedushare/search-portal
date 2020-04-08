@@ -326,17 +326,19 @@ export function createRouter () {
         path: "/login/permissions",
         beforeEnter(to, from, next) {
           let authFlowToken = to.query.partial_token || null;
-          window.app.store.commit("AUTH_FLOW_TOKEN", authFlowToken);
-          next(window.app.localePath('my-privacy'))
+          const app = injector.get('App');
+          app.store.commit("AUTH_FLOW_TOKEN", authFlowToken);
+          next(app.localePath('my-privacy'))
         }
       },
       {
         path: "/login/success",
         beforeEnter(to, from, next) {
-          window.app.$axios.$get('users/obtain-token/', {withCredentials: true})
+          const app = injector.get('App');
+          app.$axios.$get('users/obtain-token/', {withCredentials: true})
             .then((response) => {
               let token = response.token || response.data.token;
-              window.app.store.dispatch('authenticate', { token: token })
+              app.store.dispatch('authenticate', { token: token })
                 .then(() => {
                   next(to.query.continue || '/');
                 })

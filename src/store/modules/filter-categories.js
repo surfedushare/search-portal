@@ -134,11 +134,12 @@ export default {
   actions: {
     async getFilterCategories({ state, commit }) {
       if (_.isNil(state.filter_categories_loading) && _.isEmpty(state.filter_categories)) {
+        const app = injector.get('App');
         let promise = this.$axios.get('filter-categories/').then((response) => {
 
           // Preprocess the filters
           response.data.defaults = _.cloneDeep(response.data.results);
-          let filters = getFiltersFromQuery(window.app.router.currentRoute.query);
+          let filters = getFiltersFromQuery(app.router.currentRoute.query);
           loadCategoryFilters(response.data.results, filters.selected, filters.dateRange);
 
           commit('SET_FILTER_CATEGORIES', response.data);
