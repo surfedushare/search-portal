@@ -16,7 +16,7 @@
         @onSubmit="onSubmit"
       />
 
-      <div class="add-materials">
+      <div class="add-materials" v-if="contenteditable">
         <button class="materials__add__link button secondary" @click.prevent="showAddMaterial">
           {{ $t('Add-materials') }}
         </button>
@@ -262,6 +262,7 @@ export default {
   .add-materials {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 50px;
   }
 
   .materials {

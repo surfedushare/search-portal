@@ -66,7 +66,7 @@
   </form>
   <section class="action-bar">
     <div class="action-bar__wrapper">
-      <switch-input :label="$t('public')" v-model="isPublished"/>
+      <switch-input :label="$t('public')" v-model="isPublished" v-if="contenteditable"/>
       <div
         class="collection__info_search__social action-bar__social quality__social _white_color"
         ref="social_counters"
