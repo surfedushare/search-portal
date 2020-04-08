@@ -1,47 +1,80 @@
-import { isString, map } from 'lodash'
+import { isString, map, isEmpty, some, keys, isNil } from 'lodash'
 import injector from 'vue-inject'
 
-
 const $log = injector.get('$log');
+const $timeout = injector.get('$timeout');
+
+const DEFAULT_MESSAGES = {
+  info: [],
+  error: []
+};
+
+function assertMessageLevel(level) {
+  if(!DEFAULT_MESSAGES.hasOwnProperty(level)) {
+    throw Error('Assert: unknown message level ' + level)
+  }
+}
 
 
 export default {
   state: {
-    messages: {
-      info: [],
-      error: []
-    },
+    messages: DEFAULT_MESSAGES,
+    timeout: null
   },
   getters: {
     getMessagesContent(state) {
       // We load the Nuxt app, because we'll need the i18n object to translate messages
       const app = injector.get('App');
       return (level) => {
-        if (!state.messages[level]) {
-          $log.warn('Unkown message level for getMessagesContent: ' + level);
-          return ''
-        }
+        assertMessageLevel(level);
         return map(state.messages[level], (msg) => { return app.i18n.t(msg) }).join(" ")
+      }
+    },
+    getLevelIcon(state) {
+      return (level) => {
+        assertMessageLevel(level);
+        return (level === 'error') ? 'fa-exclamation-triangle' : 'fa-info-circle'
+      }
+    },
+    getMessageLevels(state) {
+      return keys(state.messages)
+    },
+    hasMessages(state) {
+      return (level) => {
+        assertMessageLevel(level);
+        return !isEmpty(state.messages[level])
       }
     }
   },
   mutations: {
-    ADD_MESSAGE(state, {level, message}) {
-      if(!state.messages[level]) {
-        $log.warn('Unkown message level for ADD_MESSAGE: ' + level);
-        return
-      }
+    ADD_MESSAGE(state, {level, message, sticky}) {
+
+      // Check input
+      assertMessageLevel(level);
       if(!isString(message)) {
-        $log.warn('Message should be a string not ' + typeof message);
-        return
+        throw Error('Message should be a string not ' + typeof message);
       }
-      state.messages[level].push(message)
+      sticky = isNil(sticky) ? level === 'error' : sticky;
+
+      // Invalidate and create timeout for message removal
+      if(!isNil(state.timeout)) {
+        clearTimeout(state.timeout);
+        state.timeout = null
+      }
+      if(!sticky) {
+        state.timeout = $timeout(() => {
+          this.commit('CLEAR_MESSAGES', level);
+          state.timeout = null
+        }, 2000)
+      }
+
+      // Add a message if it's not already there
+      if(state.messages[level].indexOf(message) < 0) {
+        state.messages[level].push(message)
+      }
     },
     CLEAR_MESSAGES(state, level) {
-      if(!state.messages[level]) {
-        $log.warn('Unkown message level for CLEAR_MESSAGES: ' + level);
-        return
-      }
+      assertMessageLevel(level);
       state.messages[level] = []
     }
   }

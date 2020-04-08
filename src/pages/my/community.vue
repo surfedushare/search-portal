@@ -16,16 +16,6 @@
             :items="[{title: $t('Home'), url: localePath('index')}]"
           />
           <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
-          <div
-            v-if="is_saved"
-            class="success" >
-            &#10004; {{ $store.getters.getMessagesContent('info') }}
-          </div>
-          <div
-            v-show="anyFieldError()"
-            >{{ $t('any-field-error') }}
-          </div>
-
           <div >
             <section class="communities__section__blue_box">
               <form
@@ -324,7 +314,6 @@ export default {
   },
   data() {
     return {
-      is_saved: false,
       is_submitting: false,
       isShow: false,
       image_logo: '',
@@ -335,10 +324,10 @@ export default {
         description_en: '',
         website_url_nl: '',
         website_url_en: '',
-        logo_nl: false,
-        logo_en: false,
-        featured_image_nl: false,
-        featured_image_en: false,
+        logo_nl: '',
+        logo_en: '',
+        featured_image_nl: '',
+        featured_image_en: '',
       },
       formData: {
         title_nl: '',
@@ -487,7 +476,6 @@ export default {
      * Save community data
      */
     onSubmit() {
-      this.error = null;
       this.is_submitting = true;
 
       const data = this.normalizeFormData();
@@ -501,16 +489,13 @@ export default {
         })
         .then(() => {
           this.is_submitting = false;
-          this.is_saved = true;
           this.$store.commit('ADD_MESSAGE', {level: 'info', message: 'Data-saved'});
-          setTimeout(() => {
-            this.is_saved = false;
-            this.$store.commit('CLEAR_MESSAGES', 'info')
-          }, 1000);
         })
         .catch(err => {
-          this.error = err;
           this.is_submitting = false;
+          if(err.response.data) {
+            this.$store.commit('ADD_MESSAGE', {level: 'error', message: 'any-field-error'});
+          }
           forEach(err.response.data, (feedback, language) => {
             const response = JSON.parse(feedback.replace(/'/g, "\""));
             forEach(response, (item, key) => {
@@ -877,14 +862,20 @@ export default {
 }
 
 .errors {
-  color: red;
+  color: @red;
   font-size: 14px;
   display:none;
   list-style-type: none;
   padding-top: 5px;
   margin-left: -20px;
 }
-.field.invalid .errors{
-  display: block;
+
+.field.invalid {
+  .errors {
+    display: block;
+  }
+  input, textarea, .form__file {
+    border: 1px @red solid;
+  }
 }
 </style>

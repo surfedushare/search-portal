@@ -45,6 +45,43 @@
     }
   }
 
+  #messages-bar-container {
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    top: 0;
+    width: 600px;
+    margin-left: -300px;
+
+    .messages-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        width: 100%
+      }
+
+      .fas {
+        padding: 10px;
+      }
+      .error {
+        color: @red;
+      }
+      .info {
+        color: @dark-blue;
+      }
+
+      min-height: 60px;
+      margin-top: 10px;
+
+      padding: 5px;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 5px 5px 10px;
+    }
+  }
+
   &__wrapper {
     @media @mobile {
       display: none;

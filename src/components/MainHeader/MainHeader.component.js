@@ -46,6 +46,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user', 'show_header_menu', 'user_permission_notifications']),
+    ...mapGetters([
+      'isAuthenticated', 'user', 'show_header_menu', 'user_permission_notifications',
+      'hasMessages', 'getMessageLevels', 'getLevelIcon', 'getMessagesContent'
+    ])
   }
 };
