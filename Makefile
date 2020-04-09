@@ -1,3 +1,6 @@
+now = $(shell date +"%Y-%m-%d")
+
+
 media-to-local:
 	rsync -zrthv --progress $(remote):/volumes/surf/media .
 
@@ -5,7 +8,7 @@ media-to-remote:
 	rsync -zrthv --progress media $(remote):/volumes/surf/
 
 tests:
-	docker-compose run --rm backend python manage.py test --settings=surf.settings.tests --nomigrations $(filter)
+	docker-compose run --rm -e DJANGO_POSTGRES_USER=surf -e DJANGO_POSTGRES_PASSWORD=qwerty backend python manage.py test --settings=surf.settings.tests --nomigrations $(filter)
 
 backup-db:
 	docker exec -i $(shell docker ps -qf label=nl.surfcatalog.db) pg_dump -h localhost -U surf -c surf > edushare.${now}.postgres.sql

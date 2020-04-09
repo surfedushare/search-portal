@@ -4,7 +4,9 @@ This module contains API view serializers for materials app.
 
 from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
+from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.models import (
     Collection,
     Material,
@@ -163,9 +165,8 @@ class CollectionSerializer(CollectionShortSerializer):
     title = serializers.CharField()
     materials_count = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
-    communities = serializers.SerializerMethodField()
+    communities = CommunitySerializer(many=True, read_only=True)
     sharing_counters = serializers.SerializerMethodField()
-    publish_status = serializers.SerializerMethodField()
 
     @staticmethod
     def get_sharing_counters(obj):
@@ -179,24 +180,20 @@ class CollectionSerializer(CollectionShortSerializer):
         return SharedResourceCounterSerializer(many=True).to_representation(
             qs.all())
 
+    def validate(self, attrs):
+        if not self.get_materials_count(self.instance) and attrs.get("publish_status", None) == PublishStatus.PUBLISHED:
+           raise ValidationError("Can't publish a collection if it doesn't have materials")
+        return attrs
+
     @staticmethod
     def get_materials_count(obj):
+        if not obj:
+            return 0
         return obj.materials.count()
 
     @staticmethod
     def get_communities_count(obj):
         return getattr(obj, "community_cnt", 0)
-
-    @staticmethod
-    def get_communities(obj):
-        if obj.communities:
-            return [dict(id=c.id, name=c.name) for c in obj.communities.all()]
-        else:
-            return []
-
-    @staticmethod
-    def get_publish_status(obj):
-        return str(PublishStatus.get(obj.publish_status))
 
     class Meta:
         model = Collection

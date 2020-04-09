@@ -73,6 +73,8 @@ cd surf-backend
 
 * Copy ``.env.example`` to ``.env`` and adjust where needed
 
+* Copy ``surf/settings/local.py.template`` to ``surf/settings/local.py`` and adjust where needed
+
 * Create virtual environment for application and activate it:
 
 ```sh
@@ -91,6 +93,12 @@ pip install docker docker-compose
 
 ```sh
 docker-compose up
+```
+
+* Apply the migrations to the database
+
+```
+docker-compose run --rm backend python manage.py migrate
 ```
 
 * Create the first Django admin of the application

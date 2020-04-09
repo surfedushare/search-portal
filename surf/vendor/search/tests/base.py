@@ -113,14 +113,39 @@ class BaseSearchTestCase(TestCase):
 
     def test_search_disciplines(self):
         search_result = self.instance.search([])
-        search_result_filter_1 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['2adcec22-095d-4937-aed7-48788080460b']}])
-        search_result_filter_2 = self.instance.search([], filters=[{"external_id": "lom.classification.obk.discipline.id", "items": ['c001f86a-4f8f-4420-bd78-381c615ecedc']}])
+        search_result_filter_1 = self.instance.search(
+            [],
+            filters=[{
+                "external_id": "lom.classification.obk.discipline.id",
+                "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2']
+            }]
+        )
+        search_result_filter_2 = self.instance.search(
+            [],
+            filters=[{
+                "external_id": "lom.classification.obk.discipline.id",
+                "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']
+            }]
+        )
+        search_result_filter_3 = self.instance.search(
+            [],
+            filters=[{
+                "external_id": "lom.classification.obk.discipline.id",
+                "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2', '2b363227-8633-4652-ad57-c61f1efc02c8']
+            }]
+        )
         self.assertNotEqual(search_result, search_result_filter_1)
         self.assertNotEqual(search_result, search_result_filter_2)
         self.assertNotEqual(search_result_filter_1, search_result_filter_2)
         self.assertGreater(search_result['recordcount'], 0)
         self.assertGreater(search_result_filter_1['recordcount'], 0)
         self.assertGreater(search_result_filter_2['recordcount'], 0)
+        self.assertGreater(
+            search_result_filter_1['recordcount'] + search_result_filter_2['recordcount'],
+            search_result_filter_3['recordcount'],
+            "Expected at least 1 material to appear in both search_result_filter_1 and search_result_filter_2, "
+            "which would make the sum of those results larger than filtering on both disciplines together"
+        )
 
     def test_drilldown_search(self):
         search_biologie = self.instance.search(["biologie"], drilldown_names=["lom.technical.format"])
@@ -207,6 +232,7 @@ class BaseSearchTestCase(TestCase):
                 self.assertIsNotNone(item['count'])
 
     def test_get_materials_by_id(self):
+
         def test_material(external_id):
             # can't test for theme and copyright without creating and instantiating these values in the database
             material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language',
@@ -218,13 +244,10 @@ class BaseSearchTestCase(TestCase):
             # we're searching for one id, we should get only one result
             self.assertEqual(result['recordcount'], 1)
 
-            material = result['records'][0]
-            # for key in material_keys:
-            #     print(key)
-            #     self.assertIsNotNone(material[key])
-            return material
+            return result['records'][0]
+
         test_id_1 = 'surf:oai:surfsharekit.nl:bef89539-a037-454d-bee3-da09f4c94e0b'
-        test_id_2 = 'edurep_delen:6e4447af-8ac3-4a91-a594-89828b068a2d'
+        test_id_2 = 'surf:oai:surfsharekit.nl:651a50f7-8942-4615-af67-a6841e00b78b'
         material_1 = test_material(test_id_1)
         material_2 = test_material(test_id_2)
 
@@ -236,20 +259,18 @@ class BaseSearchTestCase(TestCase):
         self.assertEqual(material_1['publish_datetime'], None)
         self.assertEqual(material_1['author'], None)
         self.assertEqual(material_1['keywords'], ['Powerpoint', 'Orange', 'MOOC'])
-        self.assertEqual(len(material_1['educationallevels']), 2)
         self.assertEqual(len(material_1['disciplines']), 0)
         self.assertEqual(material_1['language'], 'en')
         self.assertEqual(material_1['format'], 'pdf')
 
-        self.assertEqual(material_2['title'], 'Kennisclip herpes zoster')
-        self.assertEqual(material_2['url'], 'https://delen.edurep.nl/download/6e4447af-8ac3-4a91-a594-89828b068a2d')
+        self.assertEqual(material_2['title'], 'COOC (Community of Open Online Course)')
+        self.assertEqual(material_2['url'], 'https://surfsharekit.nl/dl/surf/651a50f7-8942-4615-af67-a6841e00b78b/bf30be37-dc7c-4106-8ef4-9773b48b547b')
         self.assertEqual(material_2['external_id'], test_id_2)
-        self.assertEqual(material_2['keywords'], ['#hbovpk', '#HR'])
-        self.assertEqual(material_2['publish_datetime'], '2017-09-27T11:02:13+02:00')
-        self.assertEqual(material_2['language'], 'nl')
-        self.assertEqual(material_2['author'], 'Drs. E. Kuperi')
+        self.assertEqual(material_2['keywords'], ['economics', 'macro economics', 'micro economics', 'economic structure', 'inflationary gap', 'deflationary gap', 'full-employment equilibrium'])
+        self.assertEqual(material_2['publish_datetime'], '2019-04-01')
+        self.assertEqual(material_2['language'], 'en')
+        self.assertEqual(material_2['author'], 'Dr. Ning Ding')
         self.assertEqual(len(material_2['themes']), 0)
-        # TODO a bug in elasticsearch is messing this up:
         self.assertEqual(material_2['format'], 'pdf')
 
 

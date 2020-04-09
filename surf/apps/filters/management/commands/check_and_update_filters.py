@@ -3,6 +3,11 @@ from surf.apps.filters.utils import check_and_update_mptt_filters
 
 
 class Command(BaseCommand):
+    """
+    Command to check and update the mptt filters.
+    When there are no filter items in the database this will not do anything.
+    When there are only root nodes this will add the appropriate children to those filter items.
+    """
     help = 'Updates the filter items through Edurep'
 
     def handle(self, *args, **options):

@@ -11,21 +11,23 @@ def clone_filter_items_to_mptt(apps, schema_editor):
     # #Theme = apps.get_model('themes', 'Theme')
     # FilterCategoryItem = apps.get_model('filters', 'FilterCategoryItem')
     # MpttFilterItem = apps.get_model('filters', 'MpttFilterItem')
-    theme_root_node = MpttFilterItem.objects.get(external_id="custom_theme.id")
-    vakgebied_root_node = MpttFilterItem.objects.get(external_id="lom.classification.obk.discipline.id")
-    for theme in Theme.objects.all():
-        filter_category_item = theme.filter_category_item
-        mpttfilteritem, created = MpttFilterItem.objects.get_or_create(name=filter_category_item.title,
-                                                                       parent=theme_root_node)
-        theme.mptt_filter_category_item = mpttfilteritem
+    if MpttFilterItem.objects.filter(external_id="custom_theme.id").exists() \
+            and MpttFilterItem.objects.filter(external_id="lom.classification.obk.discipline.id").exists():
+        theme_root_node = MpttFilterItem.objects.get(external_id="custom_theme.id")
+        vakgebied_root_node = MpttFilterItem.objects.get(external_id="lom.classification.obk.discipline.id")
+        for theme in Theme.objects.all():
+            filter_category_item = theme.filter_category_item
+            mpttfilteritem, created = MpttFilterItem.objects.get_or_create(name=filter_category_item.title,
+                                                                           parent=theme_root_node)
+            theme.mptt_filter_category_item = mpttfilteritem
 
-        disciplines = theme.disciplines
-        for discipline in disciplines.all():
-            mpttfilteritem, created = MpttFilterItem.objects.get_or_create(name=discipline.title,
-                                                                           parent=vakgebied_root_node)
-            theme.mptt_disciplines.add(mpttfilteritem)
+            disciplines = theme.disciplines
+            for discipline in disciplines.all():
+                mpttfilteritem, created = MpttFilterItem.objects.get_or_create(name=discipline.title,
+                                                                               parent=vakgebied_root_node)
+                theme.mptt_disciplines.add(mpttfilteritem)
 
-        theme.save()
+            theme.save()
 
 
 def reverse(apps, schema_editor):

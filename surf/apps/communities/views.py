@@ -63,7 +63,8 @@ class CommunityViewSet(ListModelMixin,
         qs = instance.collections
         if request.method in {"POST", "DELETE"}:
             # validate request parameters
-            serializer = CollectionShortSerializer(many=True, data=request.data)
+            serializer = CollectionSerializer(many=True, data=request.data) if request.method == "POST" else \
+                CollectionShortSerializer(many=True, data=request.data)
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]

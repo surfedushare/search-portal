@@ -25,7 +25,13 @@ class ElasticSearchApiClient:
 
     @staticmethod
     def parse_elastic_result(search_result, page_size=5):
-
+        """
+        Parses the elasticsearch search result into the format that is also used by the edurep endpoint.
+        This allows quick switching between elastic and edurep without changing code.
+        :param search_result: result from elasticsearch
+        :param page_size: results per page, used to double-check elasticsearch
+        :return result: list of results in edurep format
+        """
         hits = search_result["hits"]
         aggregations = search_result.get("aggregations", {})
         result = dict()
@@ -60,6 +66,12 @@ class ElasticSearchApiClient:
 
     @staticmethod
     def parse_elastic_hit(hit):
+        """
+        Parses the elasticsearch search hit into the format that is also used by the edurep endpoint.
+        It's mostly just mapping the variables we need into the places that we expect them to be.
+        :param hit: result from elasticsearch
+        :return record: parsed record in elasticsearch format
+        """
         record = dict()
         record['external_id'] = hit['_source']['external_id']
         record['url'] = hit['_source']['url']
@@ -76,7 +88,7 @@ class ElasticSearchApiClient:
         record['author'] = author
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
-        record['educationallevels'] = hit['_source']['educational_levels']
+        record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['copyright'] = hit['_source']['copyright']
         themes = set()
         for discipline in hit['_source']['disciplines']:
@@ -87,6 +99,12 @@ class ElasticSearchApiClient:
         return record
 
     def autocomplete(self, query):
+        """
+        Use the elasticsearch suggest query to get typing hints during searching.
+        :param query: the input from the user so far
+        :return: a list of options matching the input query, sorted by length
+        """
+        # build the query for elasticsearch.
         query_dictionary = {
             'suggest': {
                 "autocomplete": {
@@ -105,6 +123,9 @@ class ElasticSearchApiClient:
             _source_include='suggest'
         )
 
+        # extract the options from the elasticsearch result, remove duplicates,
+        # remove non-matching prefixes (elastic will suggest things that don't match _exactly_)
+        # and sort by length
         autocomplete = result['suggest']['autocomplete']
         options = autocomplete[0]['options']
         flat_options = list(set([item for option in options for item in option['_source']['suggest']]))
@@ -113,15 +134,30 @@ class ElasticSearchApiClient:
         return options_with_prefix
 
     def drilldowns(self, drilldown_names, search_text=None, filters=None):
+        """
+        This function is named drilldowns is because it's also named drilldowns in the original edurep search code.
+        It passes on information to search, and returns the search without the records.
+        This allows calculation of 'item counts' (i.e. how many results there are in through a certain filter)
+        """
         search_results = self.search(search_text=search_text, filters=filters, drilldown_names=drilldown_names)
         search_results["records"] = []
         return search_results
 
     def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
+        """
+        Build and send a query to elasticsearch and parse it before returning.
+        :param search_text: A list of strings to search for.
+        :param drilldown_names: A list of the 'drilldowns' (filters) that are to be counted by elasticsearch.
+        :param filters: The filters that are applied for this search.
+        :param ordering: Sort the results by this ordering (or use default elastic ordering otherwise)
+        :param page: The page index of the results
+        :param page_size: How many items are loaded per page.
+        :return:
+        """
         search_text = search_text or []
         assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
         # build basic query
-        start_record = page_size * (page - 1) + 1
+        start_record = page_size * (page - 1)
         body = {
             'query': {
                 "bool": defaultdict(list)
@@ -158,13 +194,20 @@ class ElasticSearchApiClient:
             body=body
         )
         parsed_result = self.parse_elastic_result(result, page_size)
-        if start_record == 1 and search_text:
+        # store the searches in the database to be able to analyse them later on.
+        # however, dont store results when scrolling as not to overload the database
+        if start_record == 0 and search_text:
             url = f"es.search(index={indices}, body={body})"
             QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
                      result_size=parsed_result['recordcount'], result=parsed_result).save()
         return parsed_result
 
     def get_materials_by_id(self, external_ids, **kwargs):
+        """
+        Retrieve specific materials from elastic through their external id.
+        :param external_ids: the id's of the materials to retrieve
+        :return: a list of search results (like a regular search).
+        """
         result = self.elastic.search(
             index=[index_nl, index_en],
             body={
@@ -180,46 +223,56 @@ class ElasticSearchApiClient:
 
     @staticmethod
     def parse_filters(filters):
-        filter_items = []
+        """
+        Parse filters from the edurep format into the elastic query format.
+        Not every filter is handled by elastic in the same way so it's a lot of manual parsing.
+        :param filters: the list of filters to be parsed
+        :return: the filters in the format for an elasticsearch query.
+        """
         if not filters:
             return {}
-        date_filter = None
+        filter_items = []
         for filter_item in filters:
+            # skip filter_items that are empty
+            # and the language filter item (it's handled by telling elastic in what index to search).
             if not filter_item['items'] or 'lom.general.language' in filter_item['external_id']:
                 continue
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(filter_item['external_id'])
+            # date range query
             if elastic_type == "publisher_date":
-                date_filter = filter_item
-                continue
-            # currently the elastic index doesn't index author separately so this is the best we can do until then.
-            # the downside of match is that it _does_ analyze so it'll do inexact matching
-            if elastic_type == 'author':
+                lower_bound, upper_bound = filter_item["items"]
+                if lower_bound is not None or upper_bound is not None:
+                    filter_items.append({
+                        "range": {
+                            "publisher_date": {
+                                "gte": lower_bound,
+                                "lte": upper_bound
+                            }
+                        }
+                    })
+            # we want _exact_ matches on author. Otherwise elastic will give a lot of false positives.
+            elif elastic_type == 'author':
                 filter_items.append({
-                    "match": {
-                        elastic_type: " ".join(filter_item["items"])
+                    "regexp": {
+                        elastic_type: ".*(" + " ".join(filter_item["items"]) + ")+.*"
                     }
                 })
+            # all other filter types are handled by just using elastic terms with the 'translated' filter items
             else:
                 filter_items.append({
                     "terms": {
                         elastic_type: filter_item["items"]
                     }
                 })
-        if date_filter:
-            lower_bound, upper_bound = date_filter["items"]
-            if lower_bound is not None or upper_bound is not None:
-                filter_items.append({
-                    "range": {
-                        "publisher_date": {
-                            "gte": lower_bound,
-                            "lte": upper_bound
-                        }
-                    }
-                })
         return filter_items
 
     @staticmethod
     def parse_aggregations(aggregation_names):
+        """
+        Parse the aggregations so elastic can count the items properly.
+        :param aggregation_names: the names of the aggregations to
+        :return:
+        """
         aggregation_items = {}
         for aggregation_name in aggregation_names:
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(aggregation_name)
@@ -234,6 +287,9 @@ class ElasticSearchApiClient:
 
     @staticmethod
     def parse_ordering(ordering):
+        """
+        Parse the ordering format ('asc', 'desc' or None) into the type that elasticsearch expects.
+        """
         order = "asc"
         if ordering.startswith("-"):
             order = "desc"
@@ -243,6 +299,10 @@ class ElasticSearchApiClient:
 
     @staticmethod
     def parse_index_language(filters):
+        """
+        Select the index to search on based on language.
+        """
+        # if no language is selected, search on both.
         indices = [index_nl, index_en]
         if not filters:
             return indices
@@ -263,6 +323,8 @@ class ElasticSearchApiClient:
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
             return 'educational_levels'
+        elif external_id == 'lom.educational.context':
+            return 'lom_educational_levels'
         elif external_id == 'lom.lifecycle.contribute.publisherdate':
             return 'publisher_date'
         elif external_id == 'lom.classification.obk.discipline.id':
