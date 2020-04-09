@@ -33,6 +33,9 @@ var/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Unit test / coverage reports
 htmlcov/
@@ -77,6 +80,7 @@ celerybeat-schedule
 
 # dotenv
 .env
+.env.local
 
 # virtualenv
 venv/
@@ -94,11 +98,15 @@ ENV/
 # Visual Studio Code
 .vscode/
 
+# Dependency directories
+node_modules/
 .venv/
 
 .idea/
 .DS_Store
+*.iml
 
 static/
 media/
 database/
+logs/
