@@ -1,0 +1,18 @@
+<transition name="fade">
+  <section
+    class="popup"
+    v-if="show"
+    :class="{[`popup--${width_auto}`]: width_auto}"
+  >
+    <div class="popup__blackout" @click.prevent="onClose"></div>
+    <div class="popup__center">
+      <button
+        class="popup__close"
+        @click.prevent="onClose"
+      >
+        Close
+      </button>
+      <slot></slot>
+    </div>
+  </section>
+</transition>

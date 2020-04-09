@@ -1,0 +1,44 @@
+
+<section class="collections">
+  <slot name="header-info">
+  </slot>
+  <ul class="collections__items" v-if="collections && collections.length">
+    <li
+      :class="[`tile--items-in-line-${itemsInLine}`, `materials__item--items-in-line-${itemsInLine}`]"
+      v-for="collection in collections"
+      class="collections__item tile"
+    >
+      <button
+        :class="{'select-icon': true, 'selected': collection.selected}"
+        v-if="editableContent"
+        @click="selectCollection(collection)"
+      >
+        Delete
+      </button>
+      <div :class="{'selected': collection.selected}" class="collections__item_wrapper tile__wrapper">
+        <div class="collections__item_header">{{ $t('Collection') }}</div>
+        <h3 class="collections__item_ttl">
+          {{ collection.title }}
+        </h3>
+        <router-link
+          :to="localePath({name: 'communities-community', params: {community: community.id}})"
+          class="collections__item_link"
+          v-for="community in collection.communities"
+          :key="`${community.id}`"
+          >{{ getCommunityDetail(community, $i18n.locale, 'title') }}
+        </router-link>
+        <p class="collections__item_count">{{ $tc('items', collection.materials_count) }}</p>
+      </div>
+
+      <router-link
+        :to="localePath({name: (editableContent) ? 'my-collection' : 'collections-id', params: {id: collection.id}})"
+        class="collections__item_ttl_link"
+        :key="`${collection.id}`"
+      >
+        {{ collection.title }}
+      </router-link>
+    </li>
+  </ul>
+  <div v-if="loading"><Spinner /></div>
+  <div class="collections__info" v-else-if="collections && !collections.length">{{ $t('No-collections') }}</div>
+</section>

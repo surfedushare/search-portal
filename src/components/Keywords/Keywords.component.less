@@ -1,0 +1,45 @@
+@import url('./../../variables');
+.keywords {
+  h2{
+    font-size: 22px;
+    padding: 0 0 7px;
+    margin: 0 0 29px;
+    border-bottom: 1px solid #f4f4f4;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0 0 0 -5px;
+    list-style: none;
+    font-family: @second-font;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  &__info{
+    margin: 0 0 22px;
+  }
+
+  &__item {
+    margin: 0 5px 22px;
+    text-align: center;
+    &-link{
+      font-family: @second-font;
+      font-size: 12px;
+      padding: 4px 31px;
+      display: inline-block;
+      background: #0077c8;
+      border-radius: 12.5px;
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+  &.material__info_keywords{
+    @media @desktop {
+      width: 50%;
+      padding-left: 13px;
+    }
+  }
+}

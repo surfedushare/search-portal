@@ -1,0 +1,132 @@
+
+<div class="collection__info">
+  <form action="">
+    <div class="collection__info_wrapper">
+      <div class="collection__info_title">
+        <BreadCrumbs
+          :items="[
+            {title: $t('Home'), url: localePath('index')}
+          ]"
+        />
+
+        <h2
+          class="collection__info_ttl"
+          v-if="collection_title"
+        >
+          <EditableContent
+            ref="title"
+            :contenteditable="contenteditable"
+            :set-text="setTitle"
+            :maxlength="255"
+            :text="collection_title"
+          />
+        </h2>
+        <p class="collection__info_subttl">{{ $tc('learning-materials', collection.materials_count) }}</p>
+      </div>
+      <div class="collection__info_filter" v-if="contenteditable">
+        <div class="collection__info_filter__edit">
+          <a
+            href="#"
+            class="collection__info_filter__link"
+            @click.prevent="setEditable(false)"
+            v-if="contenteditable"
+          >
+            {{$t('cancel')}}
+          </a>
+          <a
+            href="#"
+            class="collection__info_filter__link"
+            @click.prevent="setEditable(true)"
+            v-else
+          >
+            {{$t('edit')}}
+          </a>
+        </div>
+        <div class="collection__info_filter__delete">
+          <a
+            href="#"
+            class="collection__info_filter__link"
+            @click.prevent="deleteCollectionPopup"
+          >
+            {{$t('remove')}}
+          </a>
+        </div>
+        <div class="collection__info_filter__button">
+          <button
+            class="button"
+            type="submit"
+            @click.prevent="onSubmit"
+            :disabled="submitting"
+          >
+            {{$t('save')}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <section class="action-bar">
+    <div class="action-bar__wrapper">
+      <switch-input :label="$t('public')" v-model="isPublished" v-if="contenteditable"/>
+      <div
+        class="collection__info_search__social action-bar__social quality__social _white_color"
+        ref="social_counters"
+      >
+        <template>
+          <social-sharing
+            :url="href"
+            :title="collection_title"
+            :class="{'disable_share_check': !isPublished}"
+            inline-template
+            v-cloak
+            @close="closeSocialSharing"
+          >
+            <div class="quality__social_links">
+              <network network="linkedin" class="quality__social_link">
+                <i class="quality__social--linkedin quality__social_ico"></i><span class="quality__social_counter" id="linkedin_counter"></span>
+              </network>
+              <network network="twitter" class="quality__social_link">
+                <i class="quality__social--twitter quality__social_ico"></i> <span class="quality__social_counter" id="twitter_counter"></span>
+              </network>
+            </div>
+          </social-sharing>
+          <div class="quality__social_links">
+            <a href="#share_link"
+               class="quality__social_link"
+               @click.prevent="showShareCollection"
+               :class="{'disable_share_check': !isPublished}"
+            >
+              <i class="quality__social--share quality__social_ico"></i>
+              <span class="quality__social_counter"  id="url_counter"></span>
+            </a>
+          </div>
+        </template>
+      </div>
+
+
+      <div class="action-bar__tools action-bar__filter">
+        <button
+          class="action-bar__tools_type_button"
+          :class="{
+            'action-bar__tools_type_button--list': itemsInLine === 4,
+            'action-bar__tools_type_button--cards': itemsInLine === 1
+          }"
+          @click.prevent="changeViewType"
+        >
+          {{ itemsInLine === 1 ? $t('Card-view') : $t('List-view') }}
+        </button>
+      </div>
+    </div>
+  </section>
+  <ShareCollection
+    v-if="isShowShareCollection"
+    :close="closeShareCollection"
+    :is-show="isShowShareCollection"
+    :collection="collection"
+    v-model="is_copied"
+  ></ShareCollection>
+  <DeleteCollection
+    :close="closeDeleteCollection"
+    :is-show="isShowDeleteCollection"
+    :deletefunction="deleteCollection"
+  ></DeleteCollection>
+</div>

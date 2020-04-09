@@ -1,0 +1,19 @@
+
+<section class="keywords">
+  <h2>{{ $t('Keywords') }}</h2>
+  <ul class="keywords__list" v-if="material.keywords.length">
+    <li
+      class="keywords__item"
+      v-for="keyword in material.keywords"
+    >
+      <nuxt-link
+        :to="url(keyword)"
+        class="keywords__item-link"
+      >
+        {{keyword}}
+      </nuxt-link>
+    </li>
+  </ul>
+  <div class="keywords__info" v-else>{{ $t('No-keywords') }}</div>
+</section>
+

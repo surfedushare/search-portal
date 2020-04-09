@@ -1,0 +1,266 @@
+@import '../variables';
+
+.button {
+  display: inline-block;
+  max-height: 67px;
+  border: 0;
+  text-decoration: none;
+  font-family: @second-font;
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #353535;
+  background-color: @yellow;
+  border-radius: 10px;
+  padding: 13px 23px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: @orange-hover;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &--width-auto {
+    width: auto;
+  }
+
+  &--full-width {
+    width: 100%;
+  }
+}
+
+.button.secondary {
+  background: @dark-blue;
+  color: white;
+}
+.button.secondary:hover:not([disabled]) {
+  background: @dark-blue-hover;
+}
+
+.select {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  border: solid 1px rgba(0, 0, 0, 0.12);
+  border-radius: 7px;
+  background: transparent;
+  box-sizing: border-box;
+  height: 50px;
+  font-family: @second-font;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+
+  &--no-border {
+    border-color: transparent;
+  }
+
+  &--auto-height {
+    height: auto;
+    min-height: 50px;
+  }
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translate(0, -50%) rotate(90deg);
+    width: 13px;
+    height: 16px;
+    background: url('/images/arrow-text-grey.svg') 50% 50%
+      no-repeat;
+    background-size: contain;
+  }
+
+  &--auto-height:before {
+    height: 50px;
+    transform: translate(0, 0) rotate(90deg);
+    top: 0;
+    pointer-events: none;
+  }
+
+  &--open {
+    overflow: inherit;
+    height: auto;
+    &:before {
+      transform: translate(0, -50%) rotate(-90deg);
+      top: 25px;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &--focused {
+    border-bottom-color: @dark-blue;
+  }
+
+  &__item,
+  select {
+    width: 100%;
+    height: 48px;
+    min-height: 100%;
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 48px;
+    background-color: transparent;
+    background-image: none;
+    -moz-appearance: none;
+    box-shadow: none;
+    display: block;
+    color: @dark-grey;
+    border-radius: 0;
+    border: 0;
+    margin: 0;
+    padding: 0 0 0 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    -ms-appearance: none;
+    appearance: none;
+
+    &::-ms-expand {
+      display: none;
+    }
+    &::-ms-value {
+      background: transparent;
+      color: @dark-grey;
+    }
+
+    &--focused &,
+    &:active,
+    &:focus {
+      outline: none;
+    }
+
+    &--disabled {
+      pointer-events: none;
+    }
+  }
+
+  &--not-choose select {
+    color: rgba(0, 0, 0, 0.38);
+  }
+
+  &__subitems {
+    position: relative;
+    width: 100%;
+    padding: 0 12px 8px;
+    max-height: 200px;
+    overflow: auto;
+  }
+
+  &__subitem {
+    display: flex;
+    align-items: center;
+
+    input {
+      margin: 0 8px 0 0;
+    }
+
+    label {
+      display: block;
+      cursor: pointer;
+    }
+
+    &:not(:last-child) {
+      padding-bottom: 8px;
+    }
+  }
+}
+
+.input {
+  height: 66px;
+  font-family: @second-font;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.44;
+  letter-spacing: normal;
+  color: @dark-grey;
+  width: 100%;
+  padding: 0 30px;
+}
+
+.form {
+  &__item {
+    margin: 0 0 30px;
+  }
+}
+
+.vdp-datepicker {
+  &__label {
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    color: @dark-grey;
+    display: block;
+  }
+  input {
+    border-radius: 2px;
+    border: 0;
+    height: 50px;
+    background: rgba(204, 204, 204, 0.2)
+      url('/images/calendar.svg') 7px 50% no-repeat;
+    background-size: 15px 16px;
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.44;
+    padding: 0 30px;
+    color: @black;
+    width: 100%;
+
+    &::placeholder {
+      color: @dark-grey;
+    }
+  }
+
+  .vdp-datepicker__clear-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: transparent;
+    height: 100%;
+    width: 30px;
+    background: url('/images/close-grey.svg') 50% 50% no-repeat;
+    background-size: 20px 20px;
+  }
+}
+
+.is-danger {
+  border-color: red!important;
+}

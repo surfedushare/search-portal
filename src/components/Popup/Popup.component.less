@@ -1,0 +1,109 @@
+@import './../../variables';
+.popup {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    font-size: 34px;
+    margin: 0 20px 10px 0;
+  }
+
+  &__subtext {
+    margin: 0 0 50px;
+    font-size: 20px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.15;
+    letter-spacing: normal;
+    color: @dark-grey;
+  }
+
+  h3 {
+    margin: 0 0 33px;
+  }
+
+  &__blackout {
+    background-color: rgba(5, 14, 29, 0.2);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  &--disableClose &__blackout {
+    cursor: inherit;
+  }
+
+  &__center {
+    padding: 56px 54px;
+    max-height: ~'calc(100vh - 100px)';
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 20px;
+    @media @mobile {
+      padding: 35px;
+      max-height: 95%
+    }
+
+    .form__item {
+      @media @mobile {
+        display: inline-flex;
+      }
+    }
+  }
+
+  &--fixed &__center {
+    max-width: 818px;
+    width: 100%;
+  }
+
+  &--large&--fixed &__center {
+    max-width: 1184px;
+  }
+
+  &--min&--fixed .popup__center {
+    max-width: 407px;
+  }
+
+  &__close {
+    background: url('/images/close-black.svg') 50% 50% no-repeat;
+    background-size: 30px 30px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    color: transparent;
+    overflow: hidden;
+    padding: 0;
+    cursor: pointer;
+    z-index: 10;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__text {
+    overflow: auto;
+    background-color: #fff;
+    padding: 20px 42px 0;
+    flex: 1 1 auto;
+    color: #0d0d0d;
+  }
+}

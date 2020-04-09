@@ -1,0 +1,108 @@
+
+<section class="filter-categories">
+
+  <h3 class="filter-categories__title">{{ $t('Filter') }}</h3>
+
+  <div class="filter-categories__links">
+    <a
+      href="#"
+      v-if="isAuthenticated"
+      v-show="false"
+      class="filter-categories__save"
+      @click.prevent="showPopupSaveFilter()"
+    >
+      {{ $t('Save-selection') }}
+    </a>
+    <a
+      href="/materials/search/"
+      @click.prevent="resetFilter"
+      class="filter-categories__reset"
+    >{{ $t('Reset-filters') }}</a>
+  </div>
+
+  <div class="select filter-categories__select" v-if="isAuthenticated && filters && filters.length">
+    <select
+      name="my_filters"
+      @change="onFilterSelected"
+      :value="active_filter_id"
+    >
+      <option value="" disabled>{{ $t('My-filter-selections') }}</option>
+      <option
+        :value="filter.id"
+        v-for="filter in filters"
+      >
+        {{ filter.title }}
+      </option>
+    </select>
+  </div>
+
+  <div class="filter-categories__items">
+    <ul v-if="filtered_categories.length" class="filter-categories__items_wrapper">
+      <li v-for="(category, index) in filtered_categories" class="filter-categories__item">
+        <h4 @click="onToggleCategory(category)" class="filter-categories__item_title" :class="{'filter-categories__item_title--hide': category.isOpen}">
+            {{ getTitleTranslation(category, $i18n.locale) }}
+        </h4>
+        <div v-if="category.external_id === publisherdate" class="filter-categories__subitems" v-show="category.isOpen">
+          <DatesRange
+            :inline="true"
+            :hide-select="true"
+            v-model="category.dates"
+            @input="onDateChange"
+            theme="min"
+            :disable-future-days="true"
+          />
+        </div>
+        <ul  v-else-if="hasVisibleChildren(category)" v-show="category.isOpen" class="filter-categories__subitems">
+          <li v-for="(item, indexItem) in category.children" class="filter-categories__subitem"
+              v-if="!item.is_hidden && (category.showAll || indexItem < visible_items)"
+              :class="{'filter-categories__subitem--empty': item.is_empty}">
+            <div>
+              <input
+                  type="checkbox"
+                  :id="item.external_id"
+                  :value="item.external_id"
+                  :data-category-id="item.external_id"
+                  v-model="filtered_categories[index].children[indexItem].selected"
+                  @change="onChange"
+                >
+                <label :for="item.external_id">
+                    {{ getTitleTranslation(item, $i18n.locale) }}
+                </label>
+            </div>
+              <ul v-if="hasVisibleChildren(item)" class="category-children">
+                  <li v-for="(child, childIndex) in item.children" :key="child.external_id" class="filter-categories__subitem" v-show="!item.is_hidden">
+                      <input
+                              type="checkbox"
+                              :id="child.external_id"
+                              :value="child.external_id"
+                              :data-category-id="child.external_id"
+                              v-model="filtered_categories[index].children[indexItem].children[childIndex].selected"
+                              @change="onChange($event, item)"
+                      >
+                      <label>{{ getTitleTranslation(child, $i18n.locale) }}</label>
+                  </li>
+              </ul>
+          </li>
+
+          <li v-if="category.children && category.children.length > visible_items" class="filter-categories__subitem--show-more">
+            <a
+              href="/show-more/"
+              @click.prevent="onToggleShowAll(category)"
+              v-if="category.showAll"
+            >
+              {{ $t('Hide') }}
+            </a>
+            <a
+              href="/show-more/"
+              @click.prevent="onToggleShowAll(category)"
+              v-else
+            >
+              {{ $t('View-more') }} ({{ category.children.length - visible_items }})
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</section>
+

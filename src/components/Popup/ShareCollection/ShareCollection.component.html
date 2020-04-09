@@ -1,0 +1,29 @@
+
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    class="share-collection"
+  >
+    <slot>
+      <h2 class="popup__title">{{ $t('Share-collection') }}</h2>
+      <div class="popup__subtext">{{ $t('Share-this-inspiration-with-your-colleagues-or-stu') }}</div>
+      <div v-if="link">
+        <h4>{{$t('Share-via-URL')}}</h4>
+        <div class="share-collection__actions">
+          <div class="share-collection__actions_link link">{{link}}</div>
+          <button
+            class="button"
+            v-clipboard:copy="link"
+            v-clipboard:success="onCopy"
+          >
+            {{saved ? $t('Link-copied') : $t('Copy-link')}}
+          </button>
+        </div>
+      </div>
+    </slot>
+  </Popup>
+</transition>
+
+

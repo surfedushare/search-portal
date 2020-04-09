@@ -1,0 +1,55 @@
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    class="save-rating"
+  >
+    <slot>
+      <template v-if="saved">
+        <h2 class="popup__title">{{ $t('Thank-you-for-your-appreciation') }}</h2>
+        <div class="popup__subtext">
+          {{ $t('We-hope-you-can-get-started-with-this-learning-mat') }}
+        </div>
+        <div>
+          <button
+            class="button button--width-auto"
+            @click.prevent="close"
+          >
+            {{ $t('Close-window') }}
+          </button>
+        </div>
+      </template>
+      <template v-else>
+        <h2 class="popup__title">{{ $t('Thanks-for-watching') }}</h2>
+        <div class="popup__subtext">
+          {{ $t('We-hope-that-you-can-get-started-with-this-learnin') }}
+        </div>
+        <h3>{{ $t('How-many-stars-do-you-give-this-learning-material') }}</h3>
+        <form
+          action=""
+          @submit.prevent="onSaveRating"
+        >
+          <div class="save-rating__items">
+            <div >
+              <StarRating
+                v-model="rating"
+                :counter="0"
+                type="giant"
+                :hide-counter="true"
+              />
+            </div>
+            <button
+              class="button"
+              type="submit"
+              :disabled="submitting"
+            >
+              {{ $t('Save-review') }}
+            </button>
+          </div>
+        </form>
+      </template>
+    </slot>
+  </Popup>
+</transition>
+

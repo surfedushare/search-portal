@@ -1,0 +1,19 @@
+
+<section class="themes">
+  <h2>{{ $t('Themes') }}</h2>
+  <div class="themes__description">{{ $t('Search-and-find-open-learning-materials-by-theme') }}</div>
+  <ul class="themes__list" v-if="currentThemes">
+    <li
+      class="themes__item"
+      v-for="theme in currentThemes"
+    >
+      <router-link
+        :to="localePath({name: 'themes-id', params: {id: theme.id}})"
+      >
+        {{ getTitleTranslation(theme, $i18n.locale) }}&nbsp;>
+      </router-link>
+    </li>
+  </ul>
+  <div class="themes__info" v-else>{{ $t('No-themes') }}</div>
+</section>
+

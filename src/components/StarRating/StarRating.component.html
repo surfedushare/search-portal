@@ -1,0 +1,29 @@
+<div class="star-rating" :class="{['star-rating--' + type]: type}">
+  <label
+    class="star-rating__star"
+    v-for="rating in ratings"
+     :class="{
+       'is-selected': ((avg_rating >= rating) && value != null),
+       'is-disabled': disabled,
+       'star-rating__star--dark-stars': darkStars
+     }"
+     @click="setValue(rating)"
+     @mouseover="star_over(rating)"
+     @mouseout="star_out"
+  >
+    <input
+      class="star-rating star-rating__checkbox"
+      type="radio"
+      :value="rating"
+      name="name"
+      v-model="avg_rating"
+      :disabled="disabled">
+  </label>
+  <span class="star-rating__counter" v-if="type === 'default'">({{counter}})</span>
+  <span class="star-rating__counter_text" v-else-if="type === 'giant'" >{{types[avg_rating]}}</span>
+  <span class="star-rating__counter" v-else >{{avg_rating}} / 5</span>
+  <span class="star-rating__counter_big" v-if="type === 'big' && !hideCounter" >
+    {{counter}} {{ $t('ratings') }}
+  </span>
+
+</div>

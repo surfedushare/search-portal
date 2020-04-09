@@ -1,0 +1,36 @@
+
+<div class="form__file">
+  <label
+    class="form__file_label">
+    {{ title }}
+  </label>
+  <img
+    :src="imagePath"
+    class="form__file_img"
+  >
+  <input
+    type="file"
+    :ref="refinput"
+    :accept="accept"
+    @change="onFileChange"
+    class="form__file_input"
+    name="file"
+  >
+  <span class="form__file_text">
+    {{ imagePathTxt ? imagePathTxt : $t('File-upload') }}
+  </span>
+  <div class="form__file_buttons">
+    <a
+      href="#"
+      @click.prevent="removeImage"
+      class="form__file_button _delete"
+      :class="{'_disabled': !imagePath}"
+    />
+    <a
+      href="#"
+      class="form__file_button _upload"
+    >
+      {{$t('upload')}}
+    </a>
+  </div>
+</div>
