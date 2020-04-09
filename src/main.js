@@ -8,7 +8,7 @@ import * as Integrations from '@sentry/integrations';
 
 if(process.env.VUE_APP_USE_SENTRY) {
   Sentry.init({
-    dsn: 'https://675caa02892e429ca10884f05d65d94f@sentry.io/1725443',
+    dsn: 'https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956',
     integrations: [new Integrations.CaptureConsole()],
     beforeSend(event) {
       if (event.user) {
@@ -42,6 +42,7 @@ import {
   getQueryDiff,
   //globalHandleError
 } from './utils'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 
 // Global shared references

@@ -8,7 +8,14 @@
       v-for="collection in collections"
       class="collections__item tile"
     >
-      <div class="collections__item_wrapper tile__wrapper">
+      <button
+        :class="{'select-icon': true, 'selected': collection.selected}"
+        v-if="editableContent"
+        @click="selectCollection(collection)"
+      >
+        Delete
+      </button>
+      <div :class="{'selected': collection.selected}" class="collections__item_wrapper tile__wrapper">
         <div class="collections__item_header">{{ $t('Collection') }}</div>
         <h3 class="collections__item_ttl">
           {{ collection.title }}
@@ -18,7 +25,7 @@
           class="collections__item_link"
           v-for="community in collection.communities"
           :key="`${community.id}`"
-          >{{community.name}}
+          >{{ getCommunityDetail(community, $i18n.locale, 'title') }}
         </router-link>
         <p class="collections__item_count">{{ $tc('items', collection.materials_count) }}</p>
       </div>

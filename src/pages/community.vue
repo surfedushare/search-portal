@@ -1,19 +1,19 @@
 <template>
   <section class="container main">
     <section class="community">
-      <div v-if="!community_info">
+      <div v-if="!community_details">
         <error status-code="404" message-key="community-not-found"></error>
       </div>
       <div v-else>
         <div class="center_block">
-          <InfoBlock :title="getTitleTranslation(community_info, $i18n.locale)"
-                     :content="getDescriptionTranslation(community_info, $i18n.locale)"
-                     :website_url="community_info.website_url"
+          <InfoBlock :title="community_details.title"
+                     :content="community_details.description"
+                     :website_url="community_details.website_url"
                      :breadcrumb_items="[
                {title: $t('Home'), url: localePath('index')},
                {title: $t('Communities'), url: localePath('communities')},
                ]"
-                     :logo_src="community_info.featured_image"
+                     :logo_src="community_details.featured_image"
           >
           </InfoBlock>
 
@@ -40,7 +40,7 @@
           </Materials>
 
           <template>
-            <div class="community__row">
+            <div class="community__row" v-show="false">
               <Themes
                 :themes="community_themes"
                 class="community__themas"
@@ -103,25 +103,10 @@
         search: false
       };
     },
-    methods: {
-      getTitleTranslation( community, language ) {
-        if (!_.isNil(community.title_translations) && !_.isEmpty(community.title_translations)){
-          return community.title_translations[language];
-        }
-        return community.name
-      },
-      getDescriptionTranslation( community, language ) {
-        if (!_.isNil(community.description_translations) && !_.isEmpty(community.description_translations)){
-          return community.description_translations[language];
-        }
-        return community.description
-      },
-    },
     computed: {
       ...mapGetters([
         'community_disciplines',
         'community_themes',
-
         'community_collections_loading',
         'materials',
         'materials_loading',
@@ -134,6 +119,16 @@
       community_info() {
         let communityInfo = this.$store.getters.getCommunityInfo(this.user);
         return (this.isLoading || !_.isEmpty(communityInfo)) ? communityInfo : null;
+      },
+      community_details() {
+        // Retrieve the details and exit when invalid or loading
+        let communityDetails = this.$store.getters.getCommunityDetails(this.user, this.$i18n.locale);
+        if (_.isEmpty(communityDetails)) {
+          return (this.isLoading) ? communityDetails || {} : null;
+        }
+        // Fill some defaults for the details
+        communityDetails.featured_image = communityDetails.featured_image || '/images/pictures/community-default.jpg';
+        return communityDetails;
       }
     }
   };

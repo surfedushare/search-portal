@@ -20,34 +20,16 @@
               <p class="privacy__form__label">
                 {{ permission[$i18n.locale].title }}
               </p>
-              <p>
-                <span class="choices" v-if="!permission.is_notification_only">
-                  <input
-                    required
-                    :id="permission.type + '-allow'"
-                    :name="permission.type"
-                    v-model="permission.is_allowed_input"
-                    value="yes"
-                    type="radio"
-                    class="privacy__form__radio"
-                  >
-                  <label :for="permission.type + '-allow'" class="allow"></label>
-                  <input
-                    required
-                    :id="permission.type + '-deny'"
-                    :name="permission.type"
-                    v-model="permission.is_allowed_input"
-                    value="no"
-                    type="radio"
-                    class="privacy__form__radio deny"
-                  >
-                  <label :for="permission.type + '-deny'" class="deny"></label>
-                </span>
-                <span class="description" :class="{'notification-only': permission.is_notification_only}">
-                  {{ permission[$i18n.locale].description }}
+              <div class="permission-container">
+                <div class="switch-container">
+                  <switch-input v-model="permission.is_allowed" v-if="!permission.is_notification_only"></switch-input>
+                </div>
+                <div class="description" :class="{'notification-only': permission.is_notification_only}">
+                  <p>{{ permission[$i18n.locale].description }}
                   (<router-link :to="localePath(permission.more_info_route)">{{ $t('more-info') }}</router-link>)
-                </span>
-              </p>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           <div class="privacy__form__buttons">
@@ -71,14 +53,17 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import { isNil } from 'lodash';
 import { mapGetters } from 'vuex';
+
 import BreadCrumbs from '~/components/BreadCrumbs';
+import SwitchInput from '~/components/switch-input';
 
 
 export default {
   components: {
-    BreadCrumbs
+    BreadCrumbs,
+    SwitchInput
   },
   data() {
     return {
@@ -93,33 +78,15 @@ export default {
       'isAuthenticated'
     ]),
     permissions() {
-
-      if(_.isNil(this.user) || _.isNil(this.user.permissions)) {
+      if(isNil(this.user) || isNil(this.user.permissions)) {
         return []
       }
-
-      // Sets is_allowed_input and title_translation_key field on permission objects of the user
-      _.forEach(this.user.permissions, (permission) => {
-        if(!_.isNil(permission.is_allowed) ) {
-          permission.is_allowed_input = (permission.is_allowed) ? "yes" : "no"
-        }
-      });
-
       return this.user.permissions;
-
     }
   },
   methods: {
 
     onSubmit() {
-
-      this.user.permissions.forEach((permission) => {
-        if(_.isNil(permission.is_allowed_input)) {
-          return;
-        }
-        permission.is_allowed = permission.is_allowed_input === "yes";
-      });
-
       this.is_submitting = true;
       this.$store
         .dispatch('postUser')
@@ -128,7 +95,7 @@ export default {
           setTimeout(() => {
             this.is_saved = false;
             let authFlowToken = this.$store.getters.auth_flow_token;
-            if(!_.isNil(authFlowToken)) {
+            if(!isNil(authFlowToken)) {
               let backendUrl = process.env.VUE_APP_BACKEND_URL;
               this.$store.commit('AUTH_FLOW_TOKEN', null);
               window.location = backendUrl +
@@ -183,34 +150,23 @@ export default {
         z-index: -1;
       }
     }
-    /*&_all {*/
-      /*text-decoration: none;*/
-      /*font-weight: bold;*/
-      /*margin-bottom: 11px;*/
-      /*display: inline-block;*/
-    /*}*/
-    /*&_search {*/
-      /*margin: 0 65px;*/
-      /*.search__fields {*/
-        /*margin-bottom: 33px;*/
-      /*}*/
-    /*}*/
   }
   &__form {
     margin-bottom: 146px;
 
-    .choices {
-      display: block;
-      width: 20%;
-      float: left;
+    .permission-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .switch-container {
+      line-height: 75px;
     }
     .description {
-      display: block;
-      float: right;
-      width: 80%;
+      padding-left: 20px;
     }
     .description.notification-only {
-      width: 100%;
+      padding: 0
     }
 
     &_in {
@@ -239,31 +195,6 @@ export default {
       font-family: @second-font;
       display: block;
       margin-bottom: 8px;
-    }
-    &__radio {
-      display: none;
-    }
-    &__radio + label {
-      display: inline-block;
-      background-repeat: no-repeat;
-      background-size: cover;
-      width: 40px;
-      height: 40px;
-
-      &.allow {
-        background-image: url("/images/plus-black.svg");
-      }
-      &.deny {
-        background-image: url("/images/min-black.svg");
-      }
-    }
-    &__radio:checked + label {
-      &.allow {
-        background-image: url("/images/plus-copy.svg");
-      }
-      &.deny {
-        background-image: url("/images/min.svg");
-      }
     }
 
     &__buttons {

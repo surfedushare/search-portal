@@ -4,12 +4,13 @@
   <ul
     class="materials__items"
     v-if="extended_materials && extended_materials.length"
-    :class="{loading: current_loading}"
+    :class="{loading: current_loading, deleting: selectFor === 'delete', adding: selectFor !== 'delete'}"
   >
     <li
       :class="[
         `tile--items-in-line-${itemsInLine}`,
-        `materials__item--items-in-line-${itemsInLine}`
+        `materials__item--items-in-line-${itemsInLine}`,
+        selectMaterialClass
       ]"
       v-for="(material, index) in extended_materials"
       class="materials__item tile"
@@ -17,14 +18,14 @@
     >
       <div class="materials__bookmark" v-if="material.has_bookmark">Bookmark</div>
       <button
-        class="materials__item_delete"
+        :class="{'select-icon': true, 'selected': material.selected}"
         v-if="contenteditable"
         @click="selectMaterial(material)"
       >
         Delete
       </button>
       <div
-        :class="{'materials__item_wrapper--selected': material.selected}"
+        :class="{'selected': material.selected}"
         class="materials__item_wrapper tile__wrapper"
       >
           <div class="materials__item_main_info">
@@ -124,12 +125,12 @@
             </footer>
           </div>
       </div>
-      <nuxt-link
+      <router-link v-if="selectFor !== 'add'"
         class="materials__item_link"
         :to="localePath({name: 'materials-id', params: {id: material.external_id}})"
         @click.native="setMaterial(material)"
       >
-      </nuxt-link>
+      </router-link>
     </li>
   </ul>
   <div class="not_found" v-else-if="!current_loading">{{ $t('Not-found') }}</div>

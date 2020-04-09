@@ -87,13 +87,15 @@
     background: fade(@light-grey, 90%);
     border-radius: 20px;
     margin: 100px 0 168px;
-    padding-top: 80px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 55px 20px 55px 250px;
+    overflow: hidden;
 
     @media @desktop {
-      padding: 56px 110px 55px 410px;
       margin: 0 0 113px;
+    }
+
+    @media @tablet {
+      padding: 55px;
     }
     &__ttl {
       margin-bottom: 21px;
@@ -115,20 +117,27 @@
       top: -2px;
     }
 
-    img {
-      border-radius: 21px;
-
-      @media @tablet, @mobile {
-        width: 100%;
-        padding-right: 80px;
-        padding-left: 20px;
+    @media @tablet {
+      img {
+        display: none;
       }
+      &:before {
+        display: none;
+      }
+      &:after {
+        display: none;
+      }
+    }
+
+    img {
+      width: 75%;
+      border-radius: 21px;
     }
     &:before {
       content: '';
       position: absolute;
       background: url('/images/combined-shape.svg') no-repeat 0 0;
-      right: -100px;
+      right: -5px;
       top: 0;
       height: 109px;
       width: 119px;
@@ -141,7 +150,7 @@
       content: '';
       position: absolute;
       background: url('/images/message.svg') no-repeat 0 0;
-      right: -82px;
+      right: 14px;
       top: 22px;
       height: 33px;
       width: 35px;

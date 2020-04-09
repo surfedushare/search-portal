@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import injector from 'vue-inject';
 import { validateID, validateParams } from './_helpers';
+import { PublishStatus} from "~/utils";
 
 
 const $log = injector.get('$log');
@@ -25,8 +26,8 @@ export default {
           return [];
         }
         return _.filter(state.communities.results, (community) => {
-          return community.publish_status === 'PUBLISHED' ||
-            user && user.communities.indexOf(community.id) >= 0 && community.publish_status !== 'DRAFT'
+          return community.publish_status === PublishStatus.PUBLISHED ||
+            user && user.communities.indexOf(community.id) >= 0 && community.publish_status !== PublishStatus.DRAFT
         })
       }
     },
@@ -44,11 +45,17 @@ export default {
       return (user) => {
         if (_.isEmpty(state.community_info)) {
           return state.community_info;
-        } else if (state.community_info.publish_status === 'PUBLISHED') {
+        } else if (state.community_info.publish_status === PublishStatus.PUBLISHED) {
           return state.community_info;
         } else if(user && user.communities.indexOf(state.community_info.id) >= 0) {
           return state.community_info;
         }
+      }
+    },
+    getCommunityDetails(state, getters) {
+      return (user, language) => {
+        let communityInfo = getters.getCommunityInfo(user);
+        return _.find(communityInfo.community_details, {language_code: language.toUpperCase()});
       }
     },
     community_themes(state) {
@@ -69,8 +76,8 @@ export default {
           return [];
         }
         return _.filter(state.community_collections.results, (collection) => {
-          return collection.publish_status === 'PUBLISHED' || user && _.find(user.collections, {id: collection.id})
-            && collection.publish_status !== 'DRAFT'
+          return collection.publish_status === PublishStatus.PUBLISHED || user && _.find(user.collections, {id: collection.id})
+            && collection.publish_status !== PublishStatus.DRAFT
         })
       }
     }
@@ -148,6 +155,13 @@ export default {
         const collection = await this.$axios.$post(`collections/`, data);
         commit('ADD_COMMUNITY_COLLECTION', collection);
         return collection;
+      } else {
+        $log.error('Validate error: ', data);
+      }
+    },
+    async deleteCommunityCollections(context, {id, data }) {
+      if (validateParams(data)) {
+        await this.$axios.$delete(`communities/${id}/collections/`, {data});
       } else {
         $log.error('Validate error: ', data);
       }

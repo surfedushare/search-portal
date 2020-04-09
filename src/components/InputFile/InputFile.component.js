@@ -27,6 +27,7 @@ export default {
      * @param e - Event
      */
     onFileChange(e) {
+      this.$emit('add_image');
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.createImage(files[0]);
@@ -50,11 +51,11 @@ export default {
      * @param e - event
      */
     removeImage: function() {
+      this.$emit('remove_image');
       this.image = '';
       this.imageText = '';
       this.imageLink = '';
       this.$refs.file.value = null;
-      this.errors.clear();
     }
   },
   computed: {

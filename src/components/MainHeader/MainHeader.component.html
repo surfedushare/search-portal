@@ -1,5 +1,6 @@
 
 <section class="main-header">
+
   <div id="notification-bar" v-if="user_permission_notifications.length">
     <div class="notifications">
       <div v-for="notification in user_permission_notifications">
@@ -11,6 +12,18 @@
       </div>
     </div>
   </div>
+
+  <div id="messages-bar-container">
+      <div class="messages-bar" v-for="level in getMessageLevels" :key="level" v-if="hasMessages(level)">
+        <i class="fas" :class="[getLevelIcon(level), level]"></i>
+        <p class="message">
+          {{ getMessagesContent(level) }}
+        </p>
+        <i @click="$store.commit('CLEAR_MESSAGES', level)" class="fas fa-times"></i>
+      </div>
+    </div>
+  </div>
+
   <div class="main-header__wrapper">
     <router-link :to="localePath('index')" class="main-header__logo">
       <img
@@ -103,6 +116,7 @@
       </div>
       <Menu class="main-header__menu" />
     </div>
+
   </div>
 </section>
 
