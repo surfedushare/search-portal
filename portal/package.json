@@ -3,7 +3,6 @@
   "version": "1.4.2",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "integrate": "vue-cli-service serve --mode=integration",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },

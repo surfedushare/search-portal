@@ -38,7 +38,7 @@ RUN groupadd -r surf_user -g 1001 && useradd surf_user -u 1001 -r -g surf_user
 USER surf_user
 
 # Entrypoint sets our environment correctly
-ENTRYPOINT ["/src/entrypoint.sh"]
+# ENTRYPOINT ["/src/entrypoint.sh"]
 
 EXPOSE 8080
 

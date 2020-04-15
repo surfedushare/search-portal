@@ -1,21 +1,26 @@
 version: '3.1'
+
+
 services:
   postgres:
     image: postgres:9.6
     volumes:
       - postgres_database:/var/lib/postgresql/data
+      - ./postgres/conf/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_USER=surf
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=surf
+      - DJANGO_POSTGRES_PASSWORD=${DJANGO_POSTGRES_PASSWORD}
     healthcheck:
         test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
     labels:
       nl.surfcatalog.db: "postgres"
 
-  backend:
+  service:
     build:
-      context: .
+      context: service
       dockerfile: Dockerfile
     command: uwsgi --ini uwsgi.ini --py-autoreload=3
     environment:
@@ -41,7 +46,7 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
-      - .:/src
+      - ./service:/src
     links:
       - postgres:database
     depends_on:
