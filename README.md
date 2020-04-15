@@ -38,14 +38,14 @@ Then copy the ``.env.example`` file to ``.env`` and update the variable values t
 When you're running the project locally in containers you'll only need to provide your Elastic Search credentials.
 
 If you want to run the project outside of a container please add ``DJANGO_POSTGRES_HOST=127.0.0.1``
-or add ``127.0.0.1 postgres`` to your hosts file in order for the service to pickup the database.
+to the ``.enc`` file or add ``127.0.0.1 postgres`` to your hosts file in order for the service to pickup the database.
 
 After this you can setup your database with the following commands:
 
 ```bash
 docker-compose -f docker-compose.yml up --build
 source activate.sh  # perhaps redundant, already activated above
-export DJANGO_POSTGRES_USER=postgres  # root user will own all tables
+export DJANGO_POSTGRES_USER=surf  # surf is the root user who will own all tables
 cd service
 python manage.py migrate
 python manage.py createsuperuser
@@ -76,12 +76,14 @@ npm install
 #### Resetting your database
 
 Sometimes you want to start fresh.
-If your database container is not running it's quite easy to throw it away and create it again.
+If your database container is not running it's quite easy to throw all data away and create the database from scratch.
 To irreversibly destroy your local database with all data run:
 
 ```bash
 docker volume rm search-portal_postgres_database
 ```
+
+And then follow the steps above to recreate the database and populate it.
 
 
 Getting started
@@ -95,16 +97,17 @@ Similar to how the Django developer server prints to the terminal.
 
 
 > When any containers run you can halt them with ``CTRL+C``.
-> To completely stop containers and release resources you'll need to run stop or down commands
+> To completely stop containers and release resources you'll need to run "stop" or "down" commands.
+> As explained below.
 
 With any setup it's always required to use the activate.sh script to **load your environment**.
-This takes care of import things like local CORS.
+This takes care of important things like local CORS and database credentials.
 
 ```bash
 source activate.sh
 ```
 
-After this you can choose to only start/stop the database.
+When you've loaded your environment you can choose to only start/stop the database using:
 
 ```bash
 make start-db
@@ -112,6 +115,7 @@ make stop-db
 ```
 
 After that you can start your local Django development server in the ``service`` directory.
+
 Or you can choose to run the entire project in containers with:
 
 ```bash
@@ -148,5 +152,6 @@ It's a bit of a hassle to make that work locally.
 So we've opted for a way to work around SURFConext when logging in during development.
 
 Simply login to the Django admin.
-Once logged in clicking the frontend login button will fetch an API token on Vue servers in development mode
-and "log you in"
+Once logged in clicking the frontend login button.
+This will fetch an API token on Vue servers in development mode and "log you in".
+From there on out there is no difference between the remote and local login.
