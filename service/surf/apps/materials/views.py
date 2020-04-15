@@ -106,6 +106,16 @@ class MaterialSearchAPIView(APIView):
         if return_filters:
             data["drilldown_names"] = _get_filter_categories()
 
+        # This is an ugly hack where we make the "vaktherapie" demo work.
+        # We should configure ES to use decompound filters or similar.
+        # However there are some blockers for this and to keep moving forward we decompound "vaktherapie" hardcoded.
+        # That way the demo to clients works as expected while we don't have to wait with ES rollout.
+        try:
+            index = [search.lower() for search in data["search_text"]].index("vaktherapie")
+            data["search_text"][index] = "vaktherapie vak therapie"
+        except ValueError:
+            pass
+
         ac = get_search_client()
 
         res = ac.search(**data)
