@@ -27,7 +27,8 @@ export default {
         }
         return _.filter(state.communities.results, (community) => {
           return community.publish_status === PublishStatus.PUBLISHED ||
-            user && user.communities.indexOf(community.id) >= 0 && community.publish_status !== PublishStatus.DRAFT
+            user && user.communities &&
+            user.communities.indexOf(community.id) >= 0 && community.publish_status !== PublishStatus.DRAFT
         })
       }
     },
