@@ -9,3 +9,9 @@ backup-db:
 
 import-db:
 	cat $(backup) | docker exec -i $(shell docker ps -qf label=nl.surfcatalog.db) psql -h localhost -U surf surf
+
+start-db:
+	docker-compose -f docker-compose.yml up
+
+stop-db:
+	docker-compose -f docker-compose.yml down

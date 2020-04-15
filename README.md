@@ -10,7 +10,7 @@ The backend is named ``service``, which is mostly a REST API, but also serves th
 Prerequisites
 -------------
 
-This project uses ``Python3``, ``npm``, ``Docker`` and ``docker-compose``.
+This project uses ``Python 3.6``, ``npm``, ``Docker`` and ``docker-compose``.
 Make sure they are installed on your system before installing the project.
 
 
@@ -43,8 +43,9 @@ or add ``127.0.0.1 postgres`` to your hosts file in order for the service to pic
 After this you can setup your database with the following commands:
 
 ```bash
-docker-compose up --build
+docker-compose -f docker-compose.yml up --build
 source activate.sh  # perhaps redundant, already activated above
+export DJANGO_POSTGRES_USER=postgres  # root user will own all tables
 cd service
 python manage.py migrate
 python manage.py createsuperuser
@@ -70,3 +71,82 @@ Installation of the frontend is a lot more straightforward than the backend:
 cd portal
 npm install
 ```
+
+
+#### Resetting your database
+
+Sometimes you want to start fresh.
+If your database container is not running it's quite easy to throw it away and create it again.
+To irreversibly destroy your local database with all data run:
+
+```bash
+docker volume rm search-portal_postgres_database
+```
+
+
+Getting started
+---------------
+
+The local setup is made in such a way that you can run the project inside and outside of containers.
+External services like the database always run in containers.
+Make sure that you're using a terminal that you won't be using for anything else, 
+as any containers will print their output to the terminal.
+Similar to how the Django developer server prints to the terminal.
+
+
+> When any containers run you can halt them with ``CTRL+C``.
+> To completely stop containers and release resources you'll need to run stop or down commands
+
+With any setup it's always required to use the activate.sh script to **load your environment**.
+This takes care of import things like local CORS.
+
+```bash
+source activate.sh
+```
+
+After this you can choose to only start/stop the database.
+
+```bash
+make start-db
+make stop-db
+```
+
+After that you can start your local Django development server in the ``service`` directory.
+Or you can choose to run the entire project in containers with:
+
+```bash
+docker-compose up
+docker-compose down
+```
+
+Either way the Django admin, API and a database admin tool become available under:
+
+```bash
+http://localhost:8000/admin/
+http://localhost:8000/api/v1/
+http://localhost:8081/  # for database administration
+```
+
+Last but not least you'll have to start the Vue frontend with:
+
+```bash
+cd portal
+npm run serve
+```
+
+Which makes the frontend available through:
+
+```bash
+http://localhost:8080/
+```
+
+
+#### Logging in locally
+
+On the servers the login works through SURFConext.
+It's a bit of a hassle to make that work locally.
+So we've opted for a way to work around SURFConext when logging in during development.
+
+Simply login to the Django admin.
+Once logged in clicking the frontend login button will fetch an API token on Vue servers in development mode
+and "log you in"
