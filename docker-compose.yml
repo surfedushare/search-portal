@@ -3,7 +3,7 @@ version: '3.1'
 
 services:
   postgres:
-    image: postgres:9.6
+    image: postgres:11
     volumes:
       - postgres_database:/var/lib/postgresql/data
       - ./postgres/conf/postgresql.conf:/etc/postgresql/postgresql.conf
@@ -17,6 +17,8 @@ services:
         test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
     labels:
       nl.surfcatalog.db: "postgres"
+    ports:
+      - "127.0.0.1:5432:5432"
 
   service:
     build:
@@ -26,7 +28,7 @@ services:
     environment:
       - PYTHONIOENCODING=UTF-8
       - PYTHONUNBUFFERED=1
-      - DJANGO_SETTINGS_MODULE=surf.settings.local
+      - DJANGO_SETTINGS_MODULE=surf.settings.service
       - DJANGO_POSTGRES_USER=${DJANGO_POSTGRES_USER}
       - DJANGO_POSTGRES_PASSWORD=${DJANGO_POSTGRES_PASSWORD}
       - DJANGO_BACKEND_DOMAIN=${DJANGO_BACKEND_DOMAIN}
@@ -44,7 +46,7 @@ services:
       - ELASTIC_SEARCH_HOST=${ELASTIC_SEARCH_HOST}
       - SEARCH_CLIENT=${SEARCH_CLIENT}
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8000:8080"
     volumes:
       - ./service:/src
     links:

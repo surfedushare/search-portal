@@ -108,5 +108,5 @@ node_modules/
 
 static/
 media/
-database/
+postgres/dumps/*.sql
 logs/

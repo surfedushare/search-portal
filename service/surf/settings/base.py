@@ -154,7 +154,7 @@ DATABASES = {
         'NAME': 'surf',
         'USER': os.environ.get('DJANGO_POSTGRES_USER', 'django'),
         'PASSWORD': os.environ.get('DJANGO_POSTGRES_PASSWORD', 'qwerty'),
-        'HOST': 'postgres',
+        'HOST': os.environ.get('DJANGO_POSTGRES_HOST', 'postgres'),
         'PORT': 5432,
     }
 }
