@@ -35,6 +35,7 @@ RUN apt-get update && apt-get install -y less vim build-essential gettext
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/static
 RUN mkdir -p /usr/src/media
+RUN mkdir -p /usr/etc/pol
 WORKDIR /usr/src/app
 
 # Adding an app user to prevent container access as root
@@ -48,6 +49,7 @@ ENV PATH="/home/app/.local/bin:${PATH}"
 RUN chown app:app /usr/src/app
 RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
+RUN chown app:app /usr/etc/pol
 # Become app user to prevent attacks during install (possibly from hijacked PyPi packages)
 USER app:app
 
@@ -60,18 +62,17 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 COPY service /usr/src/app
 COPY --from=builder /usr/src/portal/dist /usr/src/app/surf/apps/materials/static/portal
 COPY --from=builder /usr/src/portal/dist/index.html /usr/src/app/surf/apps/materials/templates/portal/
+# Copy environment configurations
+COPY environments /usr/etc/pol
 
 # We're serving static files through Whitenoise
 # See: http://whitenoise.evans.io/en/stable/index.html#
 # If you doubt this decision then read the "infrequently asked question" section for details
 # Here we gather static files that get served through uWSGI if they don't exist
-RUN python manage.py collectstatic --noinput
+RUN export POL_DJANGO_SECRET_KEY=tmp && python manage.py collectstatic --noinput
 
 # There are some translations of Django packages that we want to use
-RUN python manage.py compilemessages
-
-# Entrypoint sets our environment correctly
-#ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+RUN export POL_DJANGO_SECRET_KEY=tmp && python manage.py compilemessages
 
 # The default command is to start a uWSGI server
 CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
