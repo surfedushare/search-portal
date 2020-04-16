@@ -155,3 +155,19 @@ Simply login to the Django admin.
 Once logged in clicking the frontend login button.
 This will fetch an API token on Vue servers in development mode and "log you in".
 From there on out there is no difference between the remote and local login.
+
+
+#### Migrate locally
+
+Database tables are owned by the root database user.
+That's "surf" at the time of writing, which is a different user than the application database user.
+This causes problems when you try to migrate, because the application user is not allowed to alter or create anything.
+
+To apply migrations locally you'll need to switch the connection to the root user.
+You can do so by setting an environment variable before running the migration:
+
+```bash
+export DJANGO_POSTGRES_USER=surf
+cd service
+python manage.py migrate
+```
