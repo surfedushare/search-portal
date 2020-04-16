@@ -126,10 +126,21 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'surf.urls'
 
+
 TEMPLATES = [
     {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "surf.settings.jinja2.environment",
+            "extensions": [
+                "webpack_loader.contrib.jinja2ext.WebpackExtension",
+            ],
+        }
+    },
+    {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,6 +152,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'surf.wsgi.application'
 
@@ -278,6 +290,21 @@ EDUREP_SOAP_SUPPLIER_ID = os.environ.get('EDUREP_SOAP_SUPPLIER_ID', '')
 ELASTICSEARCH_USER = os.environ.get('ELASTIC_SEARCH_USERNAME', 'search_portal_backend_prod')
 ELASTICSEARCH_PASSWORD = os.environ.get('ELASTIC_SEARCH_PASSWORD', '')  # TODO: development default unknown
 ELASTICSEARCH_URL = os.environ.get('ELASTIC_SEARCH_HOST', 'elastic2.search-prod.surfcatalog.nl')
+
+
+# Django Webpack loader
+# https://github.com/owais/django-webpack-loader
+
+PORTAL_BASE_DIR = os.path.join(BASE_DIR, "apps", "materials", "static", "portal")
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': PORTAL_BASE_DIR + os.sep,  # must end with slash
+        'STATS_FILE': os.path.join(PORTAL_BASE_DIR, 'portal.webpack-stats.json'),
+    }
+}
+
 
 SEARCH_CLIENT = os.environ.get('SEARCH_CLIENT', 'edurep')
 

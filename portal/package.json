@@ -1,6 +1,9 @@
 {
-  "name": "surf-portal-frontend",
+  "name": "portal",
   "version": "1.6.0",
+  "config": {
+    "mode": "django"
+  },
   "description": "https://github.com/surfedushare/search-portal",
   "repository": "A frontend for searching open access higher education learning materials",
   "license": "MIT",
@@ -46,7 +49,8 @@
     "npm-check": "5.9.0",
     "vue-template-compiler": "2.6.10",
     "webpack": "4.41.6",
-    "webpack-bundle-analyzer": "3.6.0"
+    "webpack-bundle-analyzer": "3.6.0",
+    "webpack-bundle-tracker": "0.4.3"
   },
   "eslintConfig": {
     "root": true,

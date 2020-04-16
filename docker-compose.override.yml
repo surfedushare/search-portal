@@ -4,9 +4,7 @@ version: '3.1'
 services:
 
   service:
-    build:
-      context: service
-      dockerfile: Dockerfile
+    build: .
     command: uwsgi --ini uwsgi.ini --py-autoreload=3
     environment:
       - PYTHONIOENCODING=UTF-8
