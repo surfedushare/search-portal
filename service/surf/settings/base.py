@@ -225,7 +225,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/usr/src/static'
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
@@ -295,7 +295,7 @@ ELASTICSEARCH_URL = os.environ.get('ELASTIC_SEARCH_HOST', 'elastic2.search-prod.
 # Django Webpack loader
 # https://github.com/owais/django-webpack-loader
 
-PORTAL_BASE_DIR = os.path.join(BASE_DIR, "apps", "materials", "static", "portal")
+PORTAL_BASE_DIR = os.path.join(STATIC_ROOT, "portal")
 
 WEBPACK_LOADER = {
     'DEFAULT': {
