@@ -1,6 +1,9 @@
 {
-  "name": "surf-frontend",
-  "version": "1.4.2",
+  "name": "surf-portal-frontend",
+  "version": "1.6.0",
+  "description": "https://github.com/surfedushare/search-portal",
+  "repository": "A frontend for searching open access higher education learning materials",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -40,9 +43,7 @@
     "less": "3.11.1",
     "less-loader": "5.0.0",
     "moxios": "0.4.0",
-    "node-sass": "4.13.1",
     "npm-check": "5.9.0",
-    "sass-loader": "8.0.2",
     "vue-template-compiler": "2.6.10",
     "webpack": "4.41.6",
     "webpack-bundle-analyzer": "3.6.0"

@@ -31,7 +31,7 @@ services:
     ports:
       - "127.0.0.1:8000:8080"
     volumes:
-      - ./service:/src
+      - ./service:/usr/src/app
     links:
       - postgres:database
     depends_on:

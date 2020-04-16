@@ -213,7 +213,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+STATIC_ROOT = '/usr/src/static'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
@@ -222,21 +222,11 @@ MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'users.User'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'ERROR',
-        },
-    },
-}
+
+# Logging
+# https://docs.djangoproject.com/en/2.2/topics/logging/
+# https://docs.sentry.io/
+
 if not DEBUG:
     # We kill all DisallowedHost logging on the servers,
     # because it happens so frequently that we can't do much about it
@@ -245,8 +235,6 @@ if not DEBUG:
 
 # Social Auth
 # https://python-social-auth.readthedocs.io/en/latest/index.html
-
-OIDC_CONFIG = {}  # TODO: remove this from all local settings
 
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
