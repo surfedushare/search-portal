@@ -165,7 +165,7 @@ WSGI_APPLICATION = 'surf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'surf',
+        'NAME': 'edushare',
         'USER': environment.django.postgres_user,
         'PASSWORD': environment.django.postgres_password,
         'HOST': environment.django.postgres_host,

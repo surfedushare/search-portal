@@ -45,7 +45,7 @@ After this you can setup your database with the following commands:
 ```bash
 docker-compose -f docker-compose.yml up --build
 source activate.sh  # perhaps redundant, already activated above
-export DJANGO_POSTGRES_USER=surf  # surf is the root user who will own all tables
+export DJANGO_POSTGRES_USER=postgres  # the root user who will own all tables
 cd service
 python manage.py migrate
 python manage.py createsuperuser
