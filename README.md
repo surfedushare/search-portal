@@ -167,7 +167,7 @@ To apply migrations locally you'll need to switch the connection to the root use
 You can do so by setting an environment variable before running the migration:
 
 ```bash
-export DJANGO_POSTGRES_USER=surf
+export DJANGO_POSTGRES_USER=postgres
 cd service
 python manage.py migrate
 ```

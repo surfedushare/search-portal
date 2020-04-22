@@ -237,7 +237,7 @@ STATICFILES_DIRS = []
 # Inside containers we sneak the STATIC_ROOT into STATICFILES_DIRS.
 # When running collectstatic inside containers the root will always be empty.
 # During development having root as staticfile directory provides a work around to get to the frontend build.
-if MODE == "container":
+if MODE == "container" and DEBUG:
     STATICFILES_DIRS += [
         os.path.join('/usr/src/static')
     ]
