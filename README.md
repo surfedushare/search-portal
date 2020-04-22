@@ -45,7 +45,7 @@ After this you can setup your database with the following commands:
 ```bash
 docker-compose -f docker-compose.yml up --build
 source activate.sh  # perhaps redundant, already activated above
-export DJANGO_POSTGRES_USER=surf  # surf is the root user who will own all tables
+export DJANGO_POSTGRES_USER=postgres  # the root user who will own all tables
 cd service
 python manage.py migrate
 python manage.py createsuperuser
@@ -167,7 +167,7 @@ To apply migrations locally you'll need to switch the connection to the root use
 You can do so by setting an environment variable before running the migration:
 
 ```bash
-export DJANGO_POSTGRES_USER=surf
+export DJANGO_POSTGRES_USER=postgres
 cd service
 python manage.py migrate
 ```

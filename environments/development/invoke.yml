@@ -1,0 +1,32 @@
+postgres:
+  credentials: null
+
+django:
+  debug: true
+  secret_key: "%yd238wldq0la!n7$hyaz3)4zfl#z&jai1@y@e+248&e*bts&_"
+  postgres_user: "django"
+  postgres_password: "qwerty"
+  postgres_host: "postgres"
+  protocol: "http"
+  backend_domain: "localhost"
+  frontend_domain: "localhost:8080"
+
+surfconext:
+  voot_api_endpoint: "https://voot.test.surfconext.nl"
+  client_id: "https@//front-test.surfcatalog.nl/"
+  secret_key: null
+
+search:
+  client: "elastic"
+
+elastic_search:
+  username: "search_portal_backend_prod"
+  password: null
+  url: "https://elastic2.search-prod.surfcatalog.nl"
+  host: "elastic2.search-prod.surfcatalog.nl"
+
+edurep:
+  soap_supplier_id: null
+  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
+  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
+  json_api_endpoint: "https://proxy.edurep.nl/v3/search"

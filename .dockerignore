@@ -1,0 +1,9 @@
+# Frontend generic
+**/node_modules
+
+# Project directories
+/postgres
+/static
+/media
+/data
+/venv

@@ -13,28 +13,30 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 from sentry_sdk.integrations.logging import ignore_logger
 
+from surf.settings.configuration import environment, MODE
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # In general: all defaults for secrets in this file are for development only, other defaults are production defaults
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '%yd238wldq0la!n7$hyaz3)4zfl#z&jai1@y@e+248&e*bts&_')
+SECRET_KEY = environment.django.secret_key
 
 # Become aware of the frontend that this backend is build for
 # We whitelist this URL entirely to be able to share (login!) cookies
-FRONTEND_DOMAIN = os.environ.get("DJANGO_FRONTEND_DOMAIN", "zoekportaal.surf.nl")
-PROTOCOL = os.environ.get("DJANGO_PROTOCOL", "https")
+FRONTEND_DOMAIN = environment.django.frontend_domain
+PROTOCOL = environment.django.protocol
 FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', "0")))
+DEBUG = environment.django.debug
 
 ALLOWED_HOSTS = [
     "localhost",
-    os.environ.get('DJANGO_BACKEND_DOMAIN', 'zoekportaalback.surf.nl')
+    environment.django.backend_domain
 ]
 
 USE_X_FORWARDED_HOST = True
@@ -126,10 +128,21 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'surf.urls'
 
+
 TEMPLATES = [
     {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "surf.settings.jinja2.environment",
+            "extensions": [
+                "webpack_loader.contrib.jinja2ext.WebpackExtension",
+            ],
+        }
+    },
+    {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,6 +155,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'surf.wsgi.application'
 
 
@@ -151,14 +165,17 @@ WSGI_APPLICATION = 'surf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'surf',
-        'USER': os.environ.get('DJANGO_POSTGRES_USER', 'django'),
-        'PASSWORD': os.environ.get('DJANGO_POSTGRES_PASSWORD', 'qwerty'),
-        'HOST': os.environ.get('DJANGO_POSTGRES_HOST', 'postgres'),
+        'NAME': 'edushare',
+        'USER': environment.django.postgres_user,
+        'PASSWORD': environment.django.postgres_password,
+        'HOST': environment.django.postgres_host,
         'PORT': 5432,
     }
 }
 
+
+# Django Rest Framework
+# https://www.django-rest-framework.org/
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'surf.apps.core.pagination.SurfPageNumberPagination',
@@ -213,14 +230,34 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/usr/src/static'
+STATIC_ROOT = os.path.join(BASE_DIR, '..', '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
+STATICFILES_DIRS = []
+# Inside containers we sneak the STATIC_ROOT into STATICFILES_DIRS.
+# When running collectstatic inside containers the root will always be empty.
+# During development having root as staticfile directory provides a work around to get to the frontend build.
+if MODE == "container" and DEBUG:
+    STATICFILES_DIRS += [
+        os.path.join('/usr/src/static')
+    ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
 
-AUTH_USER_MODEL = 'users.User'
+
+# Django Webpack loader
+# https://github.com/owais/django-webpack-loader
+
+PORTAL_BASE_DIR = os.path.join(STATIC_ROOT, "portal")
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': PORTAL_BASE_DIR + os.sep,  # must end with slash
+        'STATS_FILE': os.path.join(PORTAL_BASE_DIR, 'portal.webpack-stats.json'),
+    }
+}
 
 
 # Logging
@@ -236,11 +273,15 @@ if not DEBUG:
 # Social Auth
 # https://python-social-auth.readthedocs.io/en/latest/index.html
 
+AUTH_USER_MODEL = 'users.User'
+
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
 SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
+SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
+SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.surfconext.secret_key
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
@@ -267,19 +308,26 @@ SOCIAL_AUTH_PIPELINE = (
 LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
-VOOT_API_ENDPOINT = os.environ.get('', 'https://voot.surfconext.nl')
+VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
 
-EDUREP_JSON_API_ENDPOINT = os.environ.get('EDUREP_JSON_API_ENDPOINT', 'https://proxy.edurep.nl/v3/search')
-EDUREP_XML_API_ENDPOINT = os.environ.get('EDUREP_XML_API_ENDPOINT', 'http://wszoeken.edurep.kennisnet.nl:8000')
-EDUREP_SOAP_API_ENDPOINT = os.environ.get('EDUREP_SOAP_API_ENDPOINT', 'http://smb.edurep.kennisnet.nl/smdBroker/ws')
 
-EDUREP_SOAP_SUPPLIER_ID = os.environ.get('EDUREP_SOAP_SUPPLIER_ID', '')
+# Search
+# https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
 
-ELASTICSEARCH_USER = os.environ.get('ELASTIC_SEARCH_USERNAME', 'search_portal_backend_prod')
-ELASTICSEARCH_PASSWORD = os.environ.get('ELASTIC_SEARCH_PASSWORD', '')  # TODO: development default unknown
-ELASTICSEARCH_URL = os.environ.get('ELASTIC_SEARCH_HOST', 'elastic2.search-prod.surfcatalog.nl')
+SEARCH_CLIENT = environment.search.client
 
-SEARCH_CLIENT = os.environ.get('SEARCH_CLIENT', 'edurep')
+EDUREP_JSON_API_ENDPOINT = environment.edurep.json_api_endpoint
+EDUREP_XML_API_ENDPOINT = environment.edurep.xml_api_endpoint
+EDUREP_SOAP_API_ENDPOINT = environment.edurep.soap_api_endpoint
+EDUREP_SOAP_SUPPLIER_ID = environment.edurep.soap_supplier_id
+
+ELASTICSEARCH_USER = environment.elastic_search.username
+ELASTICSEARCH_PASSWORD = environment.elastic_search.password
+ELASTICSEARCH_URL = environment.elastic_search.host
+
+
+# CKEditor
+# https://github.com/django-ckeditor/django-ckeditor
 
 CKEDITOR_CONFIGS = {
     "default": {
@@ -304,6 +352,10 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'SurfToolbar',  # put selected toolbar config here
     }
 }
+
+
+# Debug Toolbar
+# https://django-debug-toolbar.readthedocs.io/en/latest/
 
 if DEBUG:
     # Activation

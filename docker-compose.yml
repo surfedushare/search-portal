@@ -9,12 +9,12 @@ services:
       - ./postgres/conf/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
-      - POSTGRES_USER=surf
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=surf
-      - DJANGO_POSTGRES_PASSWORD=${DJANGO_POSTGRES_PASSWORD}
+      - POSTGRES_DB=edushare
+      - DJANGO_POSTGRES_PASSWORD=${POL_DJANGO_POSTGRES_PASSWORD}
     healthcheck:
-        test: psql -U surf surf -c "SELECT 'DBD::Pg ping test'"
+        test: psql -U postgres edushare -c "SELECT 'DBD::Pg ping test'"
     labels:
       nl.surfcatalog.db: "postgres"
     ports:
