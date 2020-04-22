@@ -280,6 +280,8 @@ SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
 SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
+SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
+SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.surfconext.secret_key
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',

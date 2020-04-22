@@ -13,6 +13,8 @@ django:
 
 surfconext:
   voot_api_endpoint: "https://voot.surfconext.nl"
+  client_id: "https@//zoekportaal.surf.nl/"
+  secret_key: null
 
 search:
   client: "elastic"
