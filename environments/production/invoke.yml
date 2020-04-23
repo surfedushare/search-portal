@@ -5,7 +5,6 @@ django:
   debug: false
   secret_key: null
   postgres_user: "django"
-  postgres_password: null
   postgres_host: null
   protocol: "https"
   backend_domain: "zoekportaalback.surf.nl"
@@ -30,3 +29,7 @@ edurep:
   xml_api_endpoint: "http://wszoeken.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://smb.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+secrets:
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:postgres-root-dev-D8X8u9"

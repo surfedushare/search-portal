@@ -63,16 +63,18 @@ COPY service /usr/src/app
 COPY --from=builder /usr/src/portal/dist /usr/src/app/surf/apps/materials/static/portal
 COPY --from=builder /usr/src/portal/dist/index.html /usr/src/app/surf/apps/materials/templates/portal/
 # Copy environment configurations
+# The default environment mode is production, but during image build we use the development mode
+# This allows to run setup commands without loading secrets
 COPY environments /usr/etc/pol
 
 # We're serving static files through Whitenoise
 # See: http://whitenoise.evans.io/en/stable/index.html#
 # If you doubt this decision then read the "infrequently asked question" section for details
 # Here we gather static files that get served through uWSGI if they don't exist
-RUN export POL_DJANGO_SECRET_KEY=tmp && python manage.py collectstatic --noinput
+RUN export APPLICATION_MODE=development && python manage.py collectstatic --noinput
 
 # There are some translations of Django packages that we want to use
-RUN export POL_DJANGO_SECRET_KEY=tmp && python manage.py compilemessages
+RUN export APPLICATION_MODE=development && python manage.py compilemessages
 
 # The default command is to start a uWSGI server
 CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]

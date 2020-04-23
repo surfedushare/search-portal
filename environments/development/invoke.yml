@@ -5,7 +5,6 @@ django:
   debug: true
   secret_key: "%yd238wldq0la!n7$hyaz3)4zfl#z&jai1@y@e+248&e*bts&_"
   postgres_user: "django"
-  postgres_password: "qwerty"
   postgres_host: "postgres"
   protocol: "http"
   backend_domain: "localhost"
@@ -30,3 +29,7 @@ edurep:
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+secrets:
+  postgres:
+    password: "qwerty"

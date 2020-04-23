@@ -35,10 +35,10 @@ pip install -r service/requirements.txt
 ```
 
 Then copy the ``.env.example`` file to ``.env`` and update the variable values to fit your system.
-When you're running the project locally in containers you'll only need to provide your Elastic Search credentials.
+You'll at least need to provide your Elastic Search credentials and AWS credentials.
 
-If you want to run the project outside of a container please add ``DJANGO_POSTGRES_HOST=127.0.0.1``
-to the ``.enc`` file or add ``127.0.0.1 postgres`` to your hosts file in order for the service to pickup the database.
+If you want to run the project outside of a container you'll also need to add ``DJANGO_POSTGRES_HOST=127.0.0.1``
+to the ``.env`` file or add ``127.0.0.1 postgres`` to your hosts file, in order for the service to pickup the database.
 
 After this you can setup your database with the following commands:
 

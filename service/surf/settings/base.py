@@ -167,7 +167,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'edushare',
         'USER': environment.django.postgres_user,
-        'PASSWORD': environment.django.postgres_password,
+        'PASSWORD': environment.secrets.postgres.password,
         'HOST': environment.django.postgres_host,
         'PORT': 5432,
     }
