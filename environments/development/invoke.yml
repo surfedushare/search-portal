@@ -1,32 +1,44 @@
-postgres:
-  credentials: null
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses AWS Secret Manager to lookup any secrets at application bootstrap
+
 
 django:
   debug: true
-  secret_key: "%yd238wldq0la!n7$hyaz3)4zfl#z&jai1@y@e+248&e*bts&_"
-  postgres_user: "django"
-  postgres_password: "qwerty"
-  postgres_host: "postgres"
+  postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
+  postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   protocol: "http"
-  backend_domain: "localhost"
-  frontend_domain: "localhost:8080"
+  backend_domain: "surfpol-loadbalancer-dev-1467666946.eu-central-1.elb.amazonaws.com"
+  frontend_domain: "surfpol-loadbalancer-dev-1467666946.eu-central-1.elb.amazonaws.com"
 
 surfconext:
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "https@//front-test.surfcatalog.nl/"
-  secret_key: null
 
 search:
   client: "elastic"
 
 elastic_search:
-  username: "search_portal_backend_prod"
-  password: null
-  url: "https://elastic2.search-prod.surfcatalog.nl"
-  host: "elastic2.search-prod.surfcatalog.nl"
+  username: "search_portal_backend_test"
+  url: "https://elastic.search-test.surfcatalog.nl"
+  host: "elastic.search-test.surfcatalog.nl"
 
 edurep:
   soap_supplier_id: null
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+secrets:
+  django:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/django-TPQRKj"
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/postgres-iLOlbr"
+  surfconext:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/surfconext-YAf8dw"
+  elastic_search:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/elastic-ByS7CH"
+
+# The legacy mechanism to be able to override postgres credentials during migrations
+# Keeping this around for now until we move to AWS Secrets Manager fully
+postgres:
+  credentials: null

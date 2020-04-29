@@ -12,7 +12,9 @@ The system invoke files are the environment configuration files.
 For the rest the project and shell environment variables get loaded as normal and may override environments.
 """
 import os
+import json
 from invoke.config import Config
+import boto3
 
 
 MODE = os.environ.get("APPLICATION_MODE", "production")
@@ -44,3 +46,19 @@ if database_credentials:
             "postgres_password": password
         }
     })
+
+# Load secrets (we resolve secrets during runtime so that AWS can manage them)
+# This skips over any non-AWS secrets
+secrets = environment.secrets or {}
+aws_secrets = []
+for group_name, group_secrets in secrets.items():
+    for secret_name, secret_id in group_secrets.items():
+        if secret_id is not None and secret_id.startswith("arn:aws:secretsmanager"):
+            aws_secrets.append((group_name, secret_name, secret_id,))
+# Here we found AWS secrets which we load using boto3
+if aws_secrets:
+    secrets_manager = boto3.client('secretsmanager')
+    for group_name, secret_name, secret_id in aws_secrets:
+        secret_value = secrets_manager.get_secret_value(SecretId=secret_id)
+        secret_payload = json.loads(secret_value["SecretString"])
+        secrets[group_name][secret_name] = secret_payload[secret_name]

@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # In general: all defaults for secrets in this file are for development only, other defaults are production defaults
-SECRET_KEY = environment.django.secret_key
+SECRET_KEY = environment.secrets.django.secret_key
 
 # Become aware of the frontend that this backend is build for
 # We whitelist this URL entirely to be able to share (login!) cookies
@@ -167,7 +167,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'edushare',
         'USER': environment.django.postgres_user,
-        'PASSWORD': environment.django.postgres_password,
+        'PASSWORD': environment.secrets.postgres.password,
         'HOST': environment.django.postgres_host,
         'PORT': 5432,
     }
@@ -281,7 +281,7 @@ SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
 SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
 SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
-SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.surfconext.secret_key
+SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
@@ -322,7 +322,7 @@ EDUREP_SOAP_API_ENDPOINT = environment.edurep.soap_api_endpoint
 EDUREP_SOAP_SUPPLIER_ID = environment.edurep.soap_supplier_id
 
 ELASTICSEARCH_USER = environment.elastic_search.username
-ELASTICSEARCH_PASSWORD = environment.elastic_search.password
+ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_URL = environment.elastic_search.host
 
 

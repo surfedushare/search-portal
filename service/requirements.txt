@@ -24,5 +24,6 @@ Jinja2==2.10.1
 django-webpack-loader==0.7.0
 invoke==1.4.1
 awscli==1.18.43
+boto3==1.12.44
 
 git+https://github.com/mpdavis/python-jose
