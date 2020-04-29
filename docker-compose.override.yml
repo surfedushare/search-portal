@@ -14,7 +14,7 @@ services:
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
       - POL_DJANGO_POSTGRES_USER=${POL_DJANGO_POSTGRES_USER}
       - POL_DJANGO_POSTGRES_PASSWORD=${POL_DJANGO_POSTGRES_PASSWORD}
-      - POL_ELASTIC_SEARCH_PASSWORD=${POL_ELASTIC_SEARCH_PASSWORD}
+      - POL_SECRETS_ELASTIC_SEARCH_PASSWORD=${POL_SECRETS_ELASTIC_SEARCH_PASSWORD}
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -22,6 +22,7 @@ services:
       - "127.0.0.1:8000:8080"
     volumes:
       - ./service:/usr/src/app
+      - ./environments/localhost/invoke.yml:/usr/etc/pol/localhost/invoke.yml
     links:
       - postgres:database
     depends_on:

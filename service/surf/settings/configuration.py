@@ -53,7 +53,7 @@ secrets = environment.secrets or {}
 aws_secrets = []
 for group_name, group_secrets in secrets.items():
     for secret_name, secret_id in group_secrets.items():
-        if secret_id.startswith("arn:aws:secretsmanager"):
+        if secret_id is not None and secret_id.startswith("arn:aws:secretsmanager"):
             aws_secrets.append((group_name, secret_name, secret_id,))
 # Here we found AWS secrets which we load using boto3
 if aws_secrets:

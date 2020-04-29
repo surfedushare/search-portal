@@ -1,11 +1,11 @@
-postgres:
-  credentials: null
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses AWS Secret Manager to lookup any secrets at application bootstrap
+
 
 django:
   debug: false
-  secret_key: null
   postgres_user: "django"
-  postgres_host: null
+  postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   protocol: "https"
   backend_domain: "zoekportaalback.surf.nl"
   frontend_domain: "zoekportaal.surf.nl"
@@ -13,14 +13,12 @@ django:
 surfconext:
   voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "https@//zoekportaal.surf.nl/"
-  secret_key: null
 
 search:
   client: "elastic"
 
 elastic_search:
   username: "search_portal_backend_prod"
-  password: null
   url: "https://elastic2.search-prod.surfcatalog.nl"
   host: "elastic2.search-prod.surfcatalog.nl"
 
@@ -31,5 +29,16 @@ edurep:
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
 
 secrets:
+  django:
+    secret_key: "arn:aws:secretsmanager"
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:postgres-root-dev-D8X8u9"
+    password: "arn:aws:secretsmanager"
+  surfconext:
+    secret_key: "arn:aws:secretsmanager"
+  elastic_search:
+    password: "arn:aws:secretsmanager"
+
+# The legacy mechanism to be able to override postgres credentials during migrations
+# Keeping this around for now until we move to AWS Secrets Manager fully
+postgres:
+  credentials: null
