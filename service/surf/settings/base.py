@@ -34,10 +34,10 @@ FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environment.django.debug
 
-ALLOWED_HOSTS = [
-    "localhost",
-    environment.django.backend_domain
-]
+# We're disabling the ALLOWED_HOSTS check, because containers will run in a VPC environment
+# This environment is expected to be unreachable with disallowed hosts.
+# It hurts to have this setting enabled on AWS, because health checks don't pass the domain check.
+ALLOWED_HOSTS = ["*"]
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
