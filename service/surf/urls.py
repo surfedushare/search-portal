@@ -75,7 +75,6 @@ apipatterns = [
 ] + router.urls
 
 urlpatterns = [
-    url(r'^$', portal_single_page_application, name="portal-spa"),
     url(r'^health/?$', health_check, name="health-check"),
     url('', include('social_django.urls', namespace='social')),
     url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
@@ -83,6 +82,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
+    url(r'^$', portal_single_page_application, name="portal-spa"),
+    url(r'^.*/$', portal_single_page_application),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # ignored in production
