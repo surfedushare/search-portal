@@ -14,6 +14,7 @@ module.exports = {
     djangoPublicPath : '/',
   outputDir: distDirectory,
   lintOnSave: false,
+  transpileDependencies: ['@sentry'],  // this makes sure we polyfill certain dependencies
 
   configureWebpack: {
     resolve: {

@@ -23,6 +23,12 @@ if(process.env.VUE_APP_USE_SENTRY) {
 }
 
 
+// Polyfill for Edge Legacy
+// We're planning to drop support for this unmaintained browser version
+// Until that time we need FormData patches
+require('formdata-polyfill');
+
+
 import Vue from 'vue'
 import injector from 'vue-inject'
 import middleware from './middleware'

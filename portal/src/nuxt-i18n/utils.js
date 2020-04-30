@@ -17,7 +17,7 @@ export async function loadLanguageAsync (i18n, locale) {
   if (!i18n.loadedLanguages) {
     i18n.loadedLanguages = []
   }
-  if (!i18n.loadedLanguages.includes(locale)) {
+  if (i18n.loadedLanguages.indexOf(locale) < 0)
     const langOptions = i18n.locales.find(l => l[LOCALE_CODE_KEY] === locale);
     if (langOptions) {
       try {

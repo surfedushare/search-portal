@@ -14,11 +14,12 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.12.1",
-    "@sentry/browser": "5.6.3",
-    "@sentry/integrations": "5.6.1",
+    "@sentry/browser": "5.15.5",
+    "@sentry/integrations": "5.15.5",
     "axios": "0.19.0",
     "cookie": "0.4.0",
     "core-js": "3.6.5",
+    "formdata-polyfill": "3.0.19",
     "js-cookie": "2.2.1",
     "numeral": "2.0.6",
     "uuid-validate": "0.0.3",
@@ -76,6 +77,6 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
+    "not ie <= 10"
   ]
 }
