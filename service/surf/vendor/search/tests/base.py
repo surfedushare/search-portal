@@ -263,7 +263,7 @@ class BaseSearchTestCase(TestCase):
         self.assertEqual(material_1['language'], 'en')
         self.assertEqual(material_1['format'], 'pdf')
 
-        self.assertEqual(material_2['title'], 'COOC (Community of Open Online Course)')
+        self.assertEqual(material_2['title'], '07 AS_AD model')
         self.assertEqual(material_2['url'], 'https://surfsharekit.nl/dl/surf/651a50f7-8942-4615-af67-a6841e00b78b/bf30be37-dc7c-4106-8ef4-9773b48b547b')
         self.assertEqual(material_2['external_id'], test_id_2)
         self.assertEqual(material_2['keywords'], ['economics', 'macro economics', 'micro economics', 'economic structure', 'inflationary gap', 'deflationary gap', 'full-employment equilibrium'])
