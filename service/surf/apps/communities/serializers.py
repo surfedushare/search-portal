@@ -94,6 +94,8 @@ class CommunitySerializer(serializers.ModelSerializer):
             return exc
 
     def update(self, instance, validated_data):
+        # TODO: can we refactor this to use DRF serializer validation instead of
+        # attr getters and setters with freaky exception returning?
 
         # First we update everything on the community itself
         publish_status = validated_data.get("publish_status", None)
@@ -126,8 +128,22 @@ class CommunitySerializer(serializers.ModelSerializer):
                     featured_image_nl = ''
                 if key == 'featured_image_en':
                     featured_image_en = ''
+        # Prepare prefill website urls
+        website_urls = {
+            community_detail['language_code']: community_detail.get('website_url', None)
+            for community_detail in details_data
+        }
+        for language, website_url in website_urls.items():
+            if website_url and not website_url.startswith("http"):
+                website_urls[language] = "https://" + website_url
+            elif not website_url and language == "NL" and website_urls["EN"]:
+                website_urls[language] = website_urls["EN"]
+            elif not website_url and language == "EN" and website_urls["NL"]:
+                website_urls[language] = website_urls["NL"]
+        # Actual update of community details
         result_nl = result_en = None
         for community_detail in details_data:
+            community_detail["website_url"] = website_urls[community_detail["language_code"]]
             if community_detail['language_code'] == 'NL':
                 result_nl = self.update_community_details(community_instance=instance,
                                                           community_details=community_detail,
