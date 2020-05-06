@@ -172,3 +172,22 @@ export DJANGO_POSTGRES_USER=postgres
 cd service
 python manage.py migrate
 ```
+
+
+Tests
+-----
+
+The test suite is rather limited at the moment. There's not real tests at all for the portal.
+However there are some tests for the integration with
+the Edurep search engine and our own Elastic Search powered engine.
+These engines are what makes the portal tick in the end
+and currently you can switch between the two engines with a deploy.
+The adapter that connects to these search engines is fully tested.
+These tests also assert that the two engines return more or less the same content.
+This is to keep the ability to switch engines when needed.
+
+Run these integration tests with the following command:
+
+```bash
+make integration-tests
+```
