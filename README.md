@@ -48,7 +48,7 @@ source activate.sh  # perhaps redundant, already activated above
 export DJANGO_POSTGRES_USER=postgres  # the root user who will own all tables
 cd service
 python manage.py migrate
-python manage.py createsuperuser
+cd ..
 ```
 
 This should have setup your database for the most part.
@@ -61,6 +61,8 @@ After you've done this you can run:
 ```bash
 make import-db backup=postgres/dumps/<dump-file-name>.sql
 ```
+
+And now you can create a superuser for yourself using the ``createsuperuser`` command
 
 
 #### Frontend
