@@ -15,12 +15,12 @@ _VCARD_FORMATED_NAME_KEY = "FN"
 
 class ElasticSearchApiClient:
 
-    def __init__(self, elastic_url=settings.ELASTICSEARCH_URL):
+    def __init__(self, elastic_url=settings.ELASTICSEARCH_HOST, protocol=settings.ELASTICSEARCH_PROTOCOL):
+        protocol_config = {} if protocol == "http" else {"scheme": "https", "port": 443}
         self.elastic = Elasticsearch(
             [elastic_url],
             http_auth=(settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD),
-            scheme="https",
-            port=443,
+            **protocol_config
         )
 
     @staticmethod

@@ -110,3 +110,4 @@ static/
 media/
 postgres/dumps/*.sql
 logs/
+elastic/repositories

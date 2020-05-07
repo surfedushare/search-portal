@@ -10,8 +10,8 @@ backup-db:
 import-db:
 	cat $(backup) | docker exec -i $(shell docker ps -qf label=nl.surfcatalog.db) psql -h localhost -U postgres edushare
 
-start-db:
+start-services:
 	docker-compose -f docker-compose.yml up
 
-stop-db:
+stop-services:
 	docker-compose -f docker-compose.yml down

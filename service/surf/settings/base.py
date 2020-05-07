@@ -9,17 +9,20 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+import sys
 import os
 from sentry_sdk.integrations.logging import ignore_logger
-
-from surf.settings.configuration import environment, MODE
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# We're adding the environments directory outside of the project directory to the path
+# That way we can load the environments and re-use them in different contexts
+# Like maintenance tasks and harvesting tasks
+sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
+from configuration import environment, MODE
+
 # SECURITY WARNING: keep the secret key used in production secret!
-# In general: all defaults for secrets in this file are for development only, other defaults are production defaults
 SECRET_KEY = environment.secrets.django.secret_key
 
 # Become aware of the frontend that this backend is build for
@@ -323,7 +326,8 @@ EDUREP_SOAP_SUPPLIER_ID = environment.edurep.soap_supplier_id
 
 ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
-ELASTICSEARCH_URL = environment.elastic_search.host
+ELASTICSEARCH_HOST = environment.elastic_search.host
+ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 
 
 # CKEditor

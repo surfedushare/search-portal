@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y less vim build-essential gettext
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/static
 RUN mkdir -p /usr/src/media
-RUN mkdir -p /usr/etc/pol
+RUN mkdir -p /usr/src/environments
 WORKDIR /usr/src/app
 
 # Adding an app user to prevent container access as root
@@ -49,13 +49,13 @@ ENV PATH="/home/app/.local/bin:${PATH}"
 RUN chown app:app /usr/src/app
 RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
-RUN chown app:app /usr/etc/pol
+RUN chown app:app /usr/src/environments
 # Become app user to prevent attacks during install (possibly from hijacked PyPi packages)
 USER app:app
 
 # Python dependencies
 COPY service/requirements.txt /usr/src/app/
-RUN pip install -U --no-cache-dir --user pip && pip install --no-cache-dir --user uwsgi==2.0.18
+RUN pip install -U --no-cache-dir --user --quiet pip && pip install --no-cache-dir --user uwsgi==2.0.18
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Copy application and frontend build
@@ -65,7 +65,7 @@ COPY --from=builder /usr/src/portal/dist/index.html /usr/src/app/surf/apps/mater
 # Copy environment configurations
 # The default environment mode is production, but during image build we use the localhost mode
 # This allows to run setup commands locally without loading secrets
-COPY environments /usr/etc/pol
+COPY environments /usr/src/environments
 
 # We're serving static files through Whitenoise
 # See: http://whitenoise.evans.io/en/stable/index.html#

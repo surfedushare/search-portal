@@ -22,8 +22,8 @@ It can be convenient to run some code for inspection outside of containers.
 To stay close to the production environment it works well to run the project in containers.
 External services like the database run in containers so it's always necessary to use Docker.
 
-#### Backend
 
+#### Backend
 
 To install the backend you'll need to first setup a local environment on a host machine with:
 
@@ -39,8 +39,13 @@ You'll at least need to provide your Elastic Search credentials and AWS credenti
 
 If you want to run the project outside of a container you'll also need to add ``POL_DJANGO_POSTGRES_HOST=127.0.0.1``
 to the ``.env`` file or add ``127.0.0.1 postgres`` to your hosts file, in order for the service to pickup the database.
+Similarly for the Elastic cluster you need to add ``POL_ELASTIC_SEARCH_HOST=127.0.0.1`` to the ``.env`` file
+or add ``127.0.0.1 elasticsearch`` to your hosts file.
 
-After this you can setup your database with the following commands:
+
+##### Django setup
+
+After the initial Python/machine setup you can further setup your Django database with the following commands:
 
 ```bash
 docker-compose -f docker-compose.yml up --build
@@ -54,15 +59,39 @@ cd ..
 This should have setup your database for the most part.
 Unfortunately due to historic reasons there is a lot of configuration going on in the database.
 So it's wise to get a production dump and import it to your system.
-Please ask somebody to provide it to you and place it inside ``postgres/dumps``
-
-After you've done this you can run:
+Please ask somebody access to the S3 database dumps bucket. Place the latest dump inside ``postgres/dumps``
+and then run:
 
 ```bash
 make import-db backup=postgres/dumps/<dump-file-name>.sql
 ```
 
-And now you can create a superuser for yourself using the ``createsuperuser`` command
+To finish the Django setup you can create a superuser for yourself using the ``createsuperuser`` command.
+
+
+##### Elastic Search setup
+
+Similarly to how you can load data into your Postgres database
+it's possible to load data into the Elastic Search cluster.
+In order to do that you first need to setup with:
+
+```bash
+invoke es.setup
+```
+
+Backups are stored in a so called repository. You'll need to download the latest ES repository file to load the data.
+Ask somebody for the file and name of the latest backup repository and run:
+
+```bash
+invoke es.load-repository <repository-file>
+invoke es.restore-snapshot <repository-name>
+```
+
+This should have loaded the indices you need to make searches locally.
+Alternatively you can set the
+``POL_ELASTIC_SEARCH_HOST``, ``POL_ELASTIC_SEARCH_PROTOCOL``, ``POL_ELASTIC_SEARCH_USERNAME`` and
+``POL_SECRETS_ELASTIC_SEARCH_PASSWORD`` variables inside your ``.env`` file.
+This allows to connect your local setup to a remote development or testing cluster.
 
 
 #### Frontend
@@ -97,7 +126,6 @@ Make sure that you're using a terminal that you won't be using for anything else
 as any containers will print their output to the terminal.
 Similar to how the Django developer server prints to the terminal.
 
-
 > When any containers run you can halt them with ``CTRL+C``.
 > To completely stop containers and release resources you'll need to run "stop" or "down" commands.
 > As explained below.
@@ -109,11 +137,11 @@ This takes care of important things like local CORS and database credentials.
 source activate.sh
 ```
 
-When you've loaded your environment you can choose to only start/stop the database using:
+When you've loaded your environment you can choose to only start/stop the database and ES node by using:
 
 ```bash
-make start-db
-make stop-db
+make start-services
+make stop-services
 ```
 
 After that you can start your local Django development server in the ``service`` directory.

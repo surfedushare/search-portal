@@ -19,8 +19,8 @@ search:
 
 elastic_search:
   username: "search_portal_backend_test"
-  url: "https://elastic.search-test.surfcatalog.nl"
   host: "elastic.search-test.surfcatalog.nl"
+  protocol: "https"
 
 edurep:
   soap_supplier_id: null

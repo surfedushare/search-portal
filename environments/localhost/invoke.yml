@@ -25,9 +25,8 @@ search:
 
 elastic_search:
   username: "search_portal_backend_prod"
-  password: null
-  url: "https://elastic2.search-prod.surfcatalog.nl"
-  host: "elastic2.search-prod.surfcatalog.nl"
+  host: "elasticsearch:9200"
+  protocol: "http"
 
 edurep:
   soap_supplier_id: null
@@ -43,4 +42,4 @@ secrets:
   surfconext:
     secret_key: "development-secret-key--ignored"
   elastic_search:
-    password: null  # should get set through POL_SECRETS_ELASTIC_SEARCH_PASSWORD env variable
+    password: "qwerty"
