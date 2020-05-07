@@ -97,7 +97,6 @@ Make sure that you're using a terminal that you won't be using for anything else
 as any containers will print their output to the terminal.
 Similar to how the Django developer server prints to the terminal.
 
-
 > When any containers run you can halt them with ``CTRL+C``.
 > To completely stop containers and release resources you'll need to run "stop" or "down" commands.
 > As explained below.
@@ -109,11 +108,11 @@ This takes care of important things like local CORS and database credentials.
 source activate.sh
 ```
 
-When you've loaded your environment you can choose to only start/stop the database using:
+When you've loaded your environment you can choose to only start/stop the database and ES node by using:
 
 ```bash
-make start-db
-make stop-db
+make start-services
+make stop-services
 ```
 
 After that you can start your local Django development server in the ``service`` directory.

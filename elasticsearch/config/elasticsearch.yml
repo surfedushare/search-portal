@@ -1,0 +1,16 @@
+# Settings related to network and clusters
+network:
+  host: 0.0.0.0
+cluster:
+  name: "elastic"
+discovery:
+  type: "single-node"
+
+
+# Settings related to individual nodes
+node:
+  name: "elastic"
+bootstrap:
+  memory_lock: true
+path:
+  repo: ["/usr/share/elasticsearch/repositories"]
