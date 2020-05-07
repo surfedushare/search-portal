@@ -1,3 +1,4 @@
+import os
 from elasticsearch import Elasticsearch
 try:
     from invoke import ctask as task
@@ -26,4 +27,31 @@ def get_es_client(ctx, silent=False):
 @task()
 def setup(ctx):
     client = get_es_client(ctx)
-    import ipdb; ipdb.set_trace()
+    client.snapshot.create_repository("backups", verify=True, body={
+        "type": "fs",
+        "settings": {
+            "location": "backups"
+        }
+    })
+
+
+@task
+def create_snapshot(ctx, name):
+    client = get_es_client(ctx)
+    client.snapshot.create(repository="backups", snapshot=name, wait_for_completion=True)
+
+
+@task
+def load_repository(ctx, file_name):
+    repositories_directory = os.path.join("elastic", "repositories")
+    local_repository_file = os.path.join(repositories_directory, file_name)
+    if not os.path.exists(local_repository_file):
+        ctx.run(f"aws s3 cp s3://edushare-data/elastic/{file_name} {local_repository_file}", echo=True)
+    ctx.run(f"unzip {local_repository_file} -d {repositories_directory}", echo=True)
+
+
+@task
+def restore_snapshot(ctx, name):
+    client = get_es_client(ctx)
+    client.indices.delete("_all", allow_no_indices=True, ignore_unavailable=True)
+    client.snapshot.restore(repository="backups", snapshot=name, wait_for_completion=True)
