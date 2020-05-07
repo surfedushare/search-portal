@@ -323,7 +323,8 @@ EDUREP_SOAP_SUPPLIER_ID = environment.edurep.soap_supplier_id
 
 ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
-ELASTICSEARCH_URL = environment.elastic_search.host
+ELASTICSEARCH_HOST = environment.elastic_search.host
+ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 
 
 # CKEditor
