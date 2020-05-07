@@ -20,8 +20,8 @@ import boto3
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 
-BASE_ENVIRONMENT = "/usr/etc/pol" if CONTEXT == "container" else "../environments"
-MODE_ENVIRONMENT = os.path.join(BASE_ENVIRONMENT, MODE)
+ENVIRONMENTS = os.path.dirname(os.path.abspath(__file__))
+MODE_ENVIRONMENT = os.path.join(ENVIRONMENTS, MODE)
 
 
 class POLConfig(Config):

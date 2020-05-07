@@ -34,8 +34,8 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - elastic-data:/usr/share/elasticsearch/data
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - ./elasticsearch/repositories:/usr/share/elasticsearch/repositories
+      - ./elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elastic/repositories:/usr/share/elasticsearch/repositories
     ulimits:
       memlock:
         soft: -1

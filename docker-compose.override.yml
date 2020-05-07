@@ -22,7 +22,7 @@ services:
       - "127.0.0.1:8000:8080"
     volumes:
       - ./service:/usr/src/app
-      - ./environments/localhost/invoke.yml:/usr/etc/pol/localhost/invoke.yml
+      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     links:
       - postgres:database
     depends_on:
