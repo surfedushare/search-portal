@@ -54,4 +54,4 @@ def load_repository(ctx, file_name):
 def restore_snapshot(ctx, name):
     client = get_es_client(ctx)
     client.indices.delete("_all", allow_no_indices=True, ignore_unavailable=True)
-    client.snapshot.restore(repository="backups", snapshot=name, wait_for_completion=True)
+    client.snapshot.restore(repository="backups", snapshot=name, wait_for_completion=True, request_timeout=300)
