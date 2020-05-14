@@ -31,7 +31,7 @@ To install the backend you'll need to first setup a local environment on a host 
 python3 -m venv venv
 source activate.sh
 pip install --upgrade pip
-pip install -r service/requirements.txt
+pip install -r requirements.txt
 ```
 
 Then copy the ``.env.example`` file to ``.env`` and update the variable values to fit your system.

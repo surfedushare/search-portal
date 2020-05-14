@@ -108,3 +108,4 @@ media/
 postgres/dumps/*.sql
 logs/
 elastic/repositories
+environments/info.json
