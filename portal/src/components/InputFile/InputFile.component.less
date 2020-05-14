@@ -9,6 +9,7 @@
   line-height: 1;
   color: #686d75;
   position: relative;
+  display: flex;
   &_label {
     margin: 10px 0 15px;
     display: block;
@@ -19,22 +20,14 @@
   &_input {
     position: absolute;
     opacity: 0;
-    height: 30px;
-    width: 70px;
-    bottom: 7px;
-    right: 21px;
+    height: 100%;
+    width: 100%;
     z-index: 1;
     cursor: pointer;
-    &:focus {
-      outline: none;
-    }
   }
   &_img {
-    position: absolute;
     max-width: 100px;
-    top: 12px;
     max-height: 50px;
-    right: 24px;
     opacity: 0.5;
   }
   &_text {
@@ -50,6 +43,7 @@
     align-items: center;
     margin: 0 -4px 0 0;
     position: relative;
+    padding-top: 10px;
   }
   &_button {
     display: inline-block;
@@ -68,8 +62,11 @@
       margin-left: 12px;
     }
   }
-
+  &_column {
+    width: 50%;
+  }
   .is-danger {
     color: red;
   }
+
 }
