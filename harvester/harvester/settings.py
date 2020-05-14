@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +154,16 @@ if not DEBUG:
     # We kill all DisallowedHost logging on the servers,
     # because it happens so frequently that we can't do much about it
     ignore_logger('django.security.DisallowedHost')
+
+
+# Elastic Search
+# https://www.elastic.co/guide/index.html
+
+ELASTICSEARCH_USER = environment.elastic_search.username
+ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
+ELASTICSEARCH_HOST = environment.elastic_search.host
+ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_ANALYSERS = {
+    'en': 'english',
+    'nl': 'dutch'
+}
