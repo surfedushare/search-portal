@@ -114,6 +114,7 @@ CSRF_TRUSTED_ORIGINS = [
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+ADMIN_IP_WHITELIST = environment.admin.allowed_ip_ranges
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,6 +128,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'surf.apps.core.RestrictAdminAccess'
 ]
 
 ROOT_URLCONF = 'surf.urls'
