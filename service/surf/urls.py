@@ -85,8 +85,6 @@ urlpatterns = [
     url(r'^.*/$', portal_single_page_application),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # ignored in production
-
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
