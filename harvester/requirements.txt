@@ -1,0 +1,42 @@
+whitenoise==4.0
+psycopg2-binary==2.8.3
+
+django==2.2.10
+djangorestframework==3.9.1
+django-cors-headers==2.4.0
+django-basicauth==0.5.2
+requests==2.20.0
+jsonschema==2.6.0
+pytz==2018.5
+urlobject==2.4.3
+pandas==0.23.4
+git+https://github.com/fako/django-json-field.git
+lxml==4.2.4
+beautifulsoup4==4.6.3
+Pillow==6.2.2
+git+https://github.com/saffsd/langid.py.git
+gitpython==3.1.0
+elasticsearch==6.3.1
+scikit-learn==0.21.3
+mwparserfromhell==0.5.4
+datagrowth==0.16.0
+python-dateutil==2.8.0
+
+# Celery and its plugins
+celery==4.3.0
+django-celery-results==1.0.1
+anyjson==0.3.3
+redis==3.2.1
+
+# Tooling
+invoke==1.4.1
+awscli==1.18.43
+boto3==1.12.44
+
+# Reporting and debugging
+sentry-sdk==0.11.2
+ipdb==0.11
+tqdm==4.26.0
+
+# These we try to keep up-to-date constantly
+youtube-dl
