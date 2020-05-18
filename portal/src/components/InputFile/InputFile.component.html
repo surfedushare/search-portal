@@ -14,7 +14,6 @@
 
     <div class="form__file_buttons">
       <a
-        href="#"
         @click.prevent="removeImage"
         class="form__file_button _delete"
         :class="{'_disabled': !imagePath}"
@@ -22,14 +21,14 @@
       <a
         class="form__file_button _upload"
       >
-            <input
-      type="file"
-      :ref="refinput"
-      :accept="accept"
-      @change="onFileChange"
-      class="form__file_input"
-      name="file"
-    >
+        <input
+          type="file"
+          :ref="refinput"
+          :accept="accept"
+          @change="onFileChange"
+          class="form__file_input"
+          name="file"
+        >
         {{$t('select-file')}}
       </a>
     </div>
