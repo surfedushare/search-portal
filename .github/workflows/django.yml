@@ -26,6 +26,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r service/requirements.txt
     - name: Run Tests
+      env:
+        AWS_DEFAULT_REGION: eu-central-1
       run: |
         cd service
         python manage.py test surf/apps/core
