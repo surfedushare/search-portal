@@ -38,7 +38,9 @@ RUN mkdir -p /usr/src/media
 RUN mkdir -p /usr/src/environments
 RUN mkdir -p /usr/local/aws-cli
 RUN mkdir -p /usr/local/bin/aws
+RUN mkdir -p /usr/local/bin/aws/aws
 RUN mkdir -p /usr/local/bin/aws_completer
+RUN mkdir -p /usr/local/bin/aws_completer/aws_completer
 WORKDIR /usr/src/app
 
 # Adding an app user to prevent container access as root
