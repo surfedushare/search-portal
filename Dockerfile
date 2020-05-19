@@ -56,6 +56,8 @@ RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
 RUN chown app:app /usr/src/environments
 RUN chown app:app /usr/local/aws-cli
+RUN chown app:app /usr/local/bin/aws
+RUN chown app:app /usr/local/bin/aws_completer
 # Become app user to prevent attacks during install (possibly from hijacked PyPi packages)
 USER app:app
 
