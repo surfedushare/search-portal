@@ -16,6 +16,9 @@ django:
   backend_domain: "localhost"
   frontend_domain: "localhost:8080"
 
+admin:
+  allowed_ip_ranges: ["0.0.0.0/0"]
+
 surfconext:
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "https@//front-test.surfcatalog.nl/"
