@@ -27,4 +27,4 @@ jobs:
         pip install -r service/requirements.txt
     - name: Run Tests
       run: |
-        make integration-tests
+        python manage.py test

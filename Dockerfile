@@ -36,11 +36,6 @@ RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/static
 RUN mkdir -p /usr/src/media
 RUN mkdir -p /usr/src/environments
-RUN mkdir -p /usr/local/aws-cli
-RUN mkdir -p /usr/local/bin/aws
-RUN mkdir -p /usr/local/bin/aws/aws
-RUN mkdir -p /usr/local/bin/aws_completer
-RUN mkdir -p /usr/local/bin/aws_completer/aws_completer
 WORKDIR /usr/src/app
 
 # Adding an app user to prevent container access as root
@@ -55,17 +50,8 @@ RUN chown app:app /usr/src/app
 RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
 RUN chown app:app /usr/src/environments
-RUN chown app:app /usr/local/aws-cli
-RUN chown app:app /usr/local/bin/aws
-RUN chown app:app /usr/local/bin/aws_completer
 # Become app user to prevent attacks during install (possibly from hijacked PyPi packages)
 USER app:app
-
-# install AWS CLI version 2
-RUN curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
-&& unzip awscliv2.zip \
-&& aws/install \
-&& rm awscliv2.zip
 
 # Python dependencies
 COPY service/requirements.txt /usr/src/app/
