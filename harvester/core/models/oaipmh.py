@@ -5,10 +5,20 @@ from core.constants import HarvestStages, HARVEST_STAGE_CHOICES
 from core.models.datatypes.dataset import Dataset
 
 
+class OAIPMHRepositories:
+    EDUREP = "edurep.EdurepOAIPMH"
+
+
+OAIPMH_REPOSITORY_CHOICES = [
+    (attr.lower().capitalize(), value) for attr, value in sorted(OAIPMHRepositories.__dict__.items()) if not attr.startswith("_")
+]
+
+
 class OAIPMHSet(models.Model):
 
     name = models.CharField(max_length=50, help_text="Human readable name")
     datasets = models.ManyToManyField(Dataset, through="OAIPMHHarvest")
+    repository = models.CharField(max_length=50, choices=OAIPMH_REPOSITORY_CHOICES)
     spec = models.CharField(
         max_length=255,
         help_text="The setSpec value for an OAI-PMH set"
