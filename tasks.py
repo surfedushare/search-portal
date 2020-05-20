@@ -36,6 +36,7 @@ def build_service(ctx):
     version = package_info["versions"]["service"]
     ctx.run(f"docker build -t search-portal:{version} -t search-portal:{commit} .", pty=True, echo=True)
 
+
 namespace = Collection(
     Collection("es", setup, create_snapshot, load_repository, restore_snapshot),
     prepare_builds,

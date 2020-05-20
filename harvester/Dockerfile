@@ -33,6 +33,7 @@ USER app:app
 
 # Python dependencies
 COPY harvester/requirements.txt /usr/src/app/
+COPY harvester/dependencies.txt /usr/src/app/
 RUN pip install -U --no-cache-dir --user pip
 RUN pip install --no-cache-dir --user uwsgi==2.0.18
 RUN pip install --no-cache-dir --user -r requirements.txt
