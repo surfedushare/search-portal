@@ -23,6 +23,7 @@ services:
       - "127.0.0.1:8000:8080"
     volumes:
       - ./service:/usr/src/app
+      - ./media:/usr/src/media
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     links:
       - postgres:database
