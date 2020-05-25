@@ -245,9 +245,15 @@ if MODE == "container" and DEBUG:
         os.path.join('/usr/src/static')
     ]
 
+# Media uploads
+
+if MODE != 'localhost':
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
-
+AWS_STORAGE_BUCKET_NAME = 'search-portal-media-uploads'
+AWS_S3_REGION_NAME = 'eu-central-1'
 
 # Django Webpack loader
 # https://github.com/owais/django-webpack-loader
