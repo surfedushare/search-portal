@@ -13,12 +13,12 @@
   <div class="form__file_column">
 
     <div class="form__file_buttons">
-      <a
+      <label
         @click.prevent="removeImage"
         class="form__file_button _delete"
         :class="{'_disabled': !imagePath}"
       />
-      <a
+      <label
         class="form__file_button _upload"
       >
         <input
@@ -30,7 +30,7 @@
           name="file"
         >
         {{$t('select-file')}}
-      </a>
+      </label>
     </div>
   </div>
 </div>

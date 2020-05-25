@@ -10,20 +10,17 @@
   color: #686d75;
   position: relative;
   display: flex;
+  &_input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
   &_label {
     margin: 10px 0 15px;
     display: block;
     font-family: @second-font;
     font-weight: bold;
     color: #353535;
-  }
-  &_input {
-    position: absolute;
-    opacity: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 1;
-    cursor: pointer;
   }
   &_img {
     max-width: 100px;
@@ -52,6 +49,8 @@
     min-width: 20px;
     background-size: 20px 20px;
     font-weight: bold;
+    color: #0077c8;
+    cursor: pointer;
     &._delete {
       background: url('/images/trash.svg') no-repeat 0 50%;
       &._disabled{
@@ -69,5 +68,4 @@
   .is-danger {
     color: red;
   }
-
 }
