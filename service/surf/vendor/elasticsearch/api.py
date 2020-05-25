@@ -318,7 +318,7 @@ class ElasticSearchApiClient:
         if external_id == 'lom.technical.format':
             return 'file_type'
         elif external_id == 'about.repository':
-            return 'arrangement_collection_name'
+            return 'arrangement_collection_name'  # TODO: should become oaipmh_set
         elif external_id == 'lom.rights.copyrightandotherrestrictions':
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
