@@ -7,7 +7,7 @@ psycopg2-binary==2.8.3
 requests==2.20.0
 Pillow==6.2.2
 elasticsearch==6.3.1
-python-dateutil==2.8.1
+python-dateutil==2.8.0
 
 # Tools
 ipython==7.7.0

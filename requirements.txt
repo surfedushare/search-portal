@@ -1,3 +1,6 @@
+# Development
+gitpython==3.1.0
+
 # Common
 django==2.2.10
 djangorestframework==3.10.3
@@ -18,4 +21,5 @@ boto3==1.12.44
 ipdb==0.13.2
 sentry-sdk==0.11.2
 
--r dependencies.txt
+-r service/dependencies.txt
+-r harvester/dependencies.txt

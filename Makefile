@@ -20,3 +20,6 @@ run-service-container:
 	# Starts the main service container outside of docker-compose orchestration
 	# This is useful for allowing debuggers to work while running UWSGI
 	docker-compose run --service-ports service
+
+run-django:
+	while true; do python service/manage.py runserver; sleep 2; done
