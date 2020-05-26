@@ -8,4 +8,4 @@ from rest_framework.permissions import AllowAny
 @permission_classes([AllowAny])
 @schema(None)
 def health_check(request):
-    return Response({"healthy" : True}, status.HTTP_200_OK)
+    return Response({"healthy": True}, status.HTTP_200_OK)
