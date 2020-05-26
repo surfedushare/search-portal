@@ -9,6 +9,13 @@
   line-height: 1;
   color: #686d75;
   position: relative;
+  display: flex;
+  &_input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+    width: 20px;
+  }
   &_label {
     margin: 10px 0 15px;
     display: block;
@@ -16,25 +23,10 @@
     font-weight: bold;
     color: #353535;
   }
-  &_input {
-    position: absolute;
-    opacity: 0;
-    height: 30px;
-    width: 70px;
-    bottom: 7px;
-    right: 21px;
-    z-index: 1;
-    cursor: pointer;
-    &:focus {
-      outline: none;
-    }
-  }
   &_img {
-    position: absolute;
     max-width: 100px;
-    top: 12px;
+    min-height: 50px;
     max-height: 50px;
-    right: 24px;
     opacity: 0.5;
   }
   &_text {
@@ -50,6 +42,7 @@
     align-items: center;
     margin: 0 -4px 0 0;
     position: relative;
+    padding-top: 10px;
   }
   &_button {
     display: inline-block;
@@ -57,6 +50,8 @@
     min-width: 20px;
     background-size: 20px 20px;
     font-weight: bold;
+    color: #0077c8;
+    cursor: pointer;
     &._delete {
       background: url('/images/trash.svg') no-repeat 0 50%;
       &._disabled{
@@ -68,7 +63,9 @@
       margin-left: 12px;
     }
   }
-
+  &_column {
+    width: 50%;
+  }
   .is-danger {
     color: red;
   }

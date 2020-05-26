@@ -55,7 +55,9 @@ USER app:app
 
 # Python dependencies
 COPY service/requirements.txt /usr/src/app/
-RUN pip install -U --no-cache-dir --user --quiet pip && pip install --no-cache-dir --user uwsgi==2.0.18
+COPY service/dependencies.txt /usr/src/app/
+RUN pip install -U --no-cache-dir --user pip
+RUN pip install --no-cache-dir --user uwsgi==2.0.18
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Copy application and frontend build

@@ -6,10 +6,11 @@ from invoke.tasks import task
 from git import Repo
 
 from environments.configuration import environment
-from environments.package import get_package_info
+from environments.packaging import get_package_info
 from elastic.tasks import setup, create_snapshot, load_repository, restore_snapshot
 
 from service.package import VERSION as SERVICE_VERSION
+from harvester.package import VERSION as HARVESTER_VERSION
 
 
 @task()
@@ -22,6 +23,7 @@ def prepare_builds(ctx):
         "commit": commit,
         "versions": {
             "service": SERVICE_VERSION,
+            "harvester": HARVESTER_VERSION,
             "portal": portal_package["version"]
         }
     }
@@ -35,6 +37,7 @@ def build_service(ctx):
     commit = package_info["commit"]
     version = package_info["versions"]["service"]
     ctx.run(f"docker build -t search-portal:{version} -t search-portal:{commit} .", pty=True, echo=True)
+
 
 namespace = Collection(
     Collection("es", setup, create_snapshot, load_repository, restore_snapshot),
