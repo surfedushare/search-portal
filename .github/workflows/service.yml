@@ -45,7 +45,7 @@ jobs:
     - name: Run Tests
       env:
         APPLICATION_MODE: localhost
-        POSTGRES_HOST: postgres
+        POSTGRES_HOST: localhost
         POSTGRES_PORT: 5432
       run: |
         cd service
