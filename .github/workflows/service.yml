@@ -19,7 +19,11 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_USER: django
           POSTGRES_PASSWORD: qwerty
+          POSTGRES_DB: github_actions
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -39,6 +43,8 @@ jobs:
     - name: Run Tests
       env:
         APPLICATION_MODE: localhost
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: 5432
       run: |
         cd service
         python manage.py test surf/apps/core
