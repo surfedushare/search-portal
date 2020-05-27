@@ -17,7 +17,6 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import url, include
 from django.urls import path
-from django.views.decorators.gzip import gzip_page
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
@@ -65,7 +64,7 @@ apipatterns = [
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^rate_material/', MaterialRatingAPIView.as_view()),
     url(r'^applaud_material/', MaterialApplaudAPIView.as_view()),
-    url(r'^materials/search/', gzip_page(MaterialSearchAPIView.as_view())),
+    url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^localehtml/', MaterialAPIView.as_view()),
@@ -86,7 +85,8 @@ urlpatterns = [
     url(r'^.*/$', portal_single_page_application),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # ignored in production
+if settings.MODE == 'localhost':
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # ignored in production
 
 if settings.DEBUG:
     import debug_toolbar

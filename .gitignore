@@ -72,9 +72,6 @@ target/
 # IPython Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
-
 # celery beat schedule file
 celerybeat-schedule
 
@@ -111,3 +108,4 @@ media/
 postgres/dumps/*.sql
 logs/
 elastic/repositories
+environments/info.json

@@ -95,6 +95,7 @@
                   type="url"
                   class="communities__form__input"
                   :placeholder="$t('community-url-placeholder')"
+                  @blur="onWebsiteURLBlur('nl')"
                 >
                 <ul class="errors">
                   <li v-for="(error, ix) in getFieldErrors('website_url_nl')" :key="ix">{{ error }}</li>
@@ -198,6 +199,7 @@
                   type="url"
                   class="communities__form__input"
                   :placeholder="$t('community-url-placeholder')"
+                  @blur="onWebsiteURLBlur('en')"
                 >
                 <ul class="errors">
                   <li v-for="(error, ix) in getFieldErrors('website_url_en')" :key="ix">{{ error }}</li>
@@ -635,6 +637,18 @@ export default {
     },
     setCollectionSelection(selection) {
       this.selection = selection;
+    },
+    onWebsiteURLBlur(language) {
+      let hasValue = !isEmpty(this.formData['website_url_' + language]);
+      let hasValidProtocol = startsWith(this.formData['website_url_' + language], 'http');
+      if(hasValue && !hasValidProtocol) {
+        this.formData['website_url_' + language] = 'https://' + this.formData['website_url_' + language]
+      }
+      let oppositeLanguage = (language === 'en') ? 'nl' : 'en';
+      let hasOppositeValue = !isEmpty(this.formData['website_url_' + oppositeLanguage]);
+      if(hasValue && !hasOppositeValue) {
+        this.formData['website_url_' + oppositeLanguage] = this.formData['website_url_' + language]
+      }
     }
   }
 };

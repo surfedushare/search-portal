@@ -4,8 +4,12 @@ version: '3.1'
 services:
 
   service:
-    build: .
-    command: uwsgi --ini uwsgi.ini --py-autoreload=3
+    build:
+      dockerfile: "service/Dockerfile"
+      context: .
+    command: uwsgi --ini uwsgi.ini --py-autoreload=3 --honour-stdin
+    stdin_open: true
+    tty: true
     environment:
       - PYTHONIOENCODING=UTF-8
       - PYTHONUNBUFFERED=1
@@ -21,6 +25,35 @@ services:
       - "127.0.0.1:8000:8080"
     volumes:
       - ./service:/usr/src/app
+      - ./media:/usr/src/media
+      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+    links:
+      - postgres:database
+    depends_on:
+      - postgres
+
+  harvester:
+    build:
+      dockerfile: "harvester/Dockerfile"
+      context: .
+    command: uwsgi --ini uwsgi.ini --py-autoreload=3 --honour-stdin
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONIOENCODING=UTF-8
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=harvester.settings
+      - APPLICATION_MODE=${APPLICATION_MODE}
+      - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
+      - POL_DJANGO_POSTGRES_USER=${POL_DJANGO_POSTGRES_USER}
+      - POL_DJANGO_POSTGRES_PASSWORD=${POL_DJANGO_POSTGRES_PASSWORD}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "127.0.0.1:8888:8080"
+    volumes:
+      - ./harvester:/usr/src/app
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     links:
       - postgres:database

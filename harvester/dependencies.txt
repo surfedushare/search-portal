@@ -1,0 +1,26 @@
+# Harvester Django
+django-basicauth==0.5.2
+
+# Harvester Celery
+celery==4.3.0
+django-celery-results==1.0.1
+anyjson==0.3.3
+redis==3.2.1
+
+# Harvester other
+git+https://github.com/saffsd/langid.py.git
+scikit-learn==0.21.3
+mwparserfromhell==0.5.4
+
+# Datagrowth
+jsonschema==2.6.0
+pytz==2018.5
+urlobject==2.4.3
+pandas==0.23.4
+git+https://github.com/fako/django-json-field.git
+lxml==4.2.4
+beautifulsoup4==4.6.3
+datagrowth==0.16.0
+
+# Always latest version required
+youtube-dl

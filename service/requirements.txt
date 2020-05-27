@@ -1,30 +1,21 @@
-Django==2.2.10
+# Common
+django==2.2.10
 djangorestframework==3.10.3
 django-cors-headers==2.4.0
-django-cors-middleware==1.3.1
-django-filter==2.0.0
-psycopg2-binary==2.7.4
-django-jet==1.0.8
+whitenoise==4.0
+psycopg2-binary==2.8.3
 requests==2.20.0
 Pillow==6.2.2
-django-ckeditor==5.7.1
-whitenoise==4.0
-ipython==7.7.0
-django-mptt==0.10.0
-tqdm==4.35.0
-sentry-sdk==0.11.2
-django-debug-toolbar==2.0
-django-enumfield==1.5
-social-auth-app-django==3.1.0
-django-test-without-migrations==0.6
-django-nose==1.4.6
-elasticsearch==6.3.0
+elasticsearch==6.3.1
 python-dateutil==2.8.1
-Jinja2==2.10.1
-django-webpack-loader==0.7.0
+
+# Tools
+ipython==7.7.0
+tqdm==4.35.0
 invoke==1.4.1
 awscli==1.18.43
 boto3==1.12.44
 ipdb==0.13.2
+sentry-sdk==0.11.2
 
-git+https://github.com/mpdavis/python-jose
+-r dependencies.txt
