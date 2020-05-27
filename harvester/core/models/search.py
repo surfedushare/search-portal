@@ -1,4 +1,3 @@
-from elasticsearch import Elasticsearch
 from elasticsearch.helpers import streaming_bulk
 
 from django.conf import settings
@@ -7,6 +6,7 @@ from django.utils.text import slugify
 from django.contrib.postgres.fields import JSONField
 
 from core.models import Dataset
+from core.utils.elastic import get_es_client
 
 
 class ElasticIndex(models.Model):
@@ -22,14 +22,7 @@ class ElasticIndex(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        elastic_url = settings.ELASTICSEARCH_HOST
-        protocol = settings.ELASTICSEARCH_PROTOCOL
-        protocol_config = {} if protocol == "http" else {"scheme": "https", "port": 443}
-        self.client = Elasticsearch(
-            [elastic_url],
-            http_auth=(settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD),
-            **protocol_config
-        )
+        self.client = get_es_client()
 
     @property
     def remote_name(self):
