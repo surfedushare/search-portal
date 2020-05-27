@@ -57,13 +57,16 @@ class ElasticIndex(models.Model):
             self.error_count = 0
 
         # Actual push of docs to ES
+        errors = []
         for is_ok, result in streaming_bulk(self.client, elastic_documents, index=remote_name, doc_type="_doc",
                                             chunk_size=100, yield_ok=False, raise_on_error=False,
                                             request_timeout=request_timeout):
             if not is_ok:
                 self.error_count += 1
-                print(f'Error in sending bulk:{result}')
+                errors.append(result)
+
         self.save()
+        return errors
 
     def promote_to_latest(self):
         latest_alias = "latest-" + self.language
