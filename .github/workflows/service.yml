@@ -47,5 +47,6 @@ jobs:
         APPLICATION_MODE: localhost
         POL_SECRETS_POSTGRES_PASSWORD: qwerty
       run: |
+        invoke prepare-builds
         cd service
-        python manage.py test surf/apps/core
+        python manage.py test surf/apps
