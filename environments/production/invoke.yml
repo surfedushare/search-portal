@@ -11,6 +11,7 @@ django:
   frontend_domain: "zoekportaal.surf.nl"
 
 surfconext:
+  oidc_endpoint: "https://oidc.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "https@//zoekportaal.surf.nl/"
 
