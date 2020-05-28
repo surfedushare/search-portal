@@ -11,6 +11,7 @@ django:
   frontend_domain: "surfpol-loadbalancer-dev-1467666946.eu-central-1.elb.amazonaws.com"
 
 surfconext:
+  oidc_endpoint: "https://oidc.surfconext.nl"
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "https@//front-dev.surfcatalog.nl/"
 
