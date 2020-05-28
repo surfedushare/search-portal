@@ -7,7 +7,7 @@ logger = logging.getLogger(__file__)
 
 
 def get_package_info():
-    info_file_path = os.path.join(os.path.dirname(__file__), "info.json")
+    info_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "info.json")
     if not os.path.exists(info_file_path):
         logger.warning("Can't find info.json in environment directory. Perhaps 'invoke prepare-build' will help?")
         return {"versions": {}}

@@ -20,7 +20,7 @@ import boto3
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 
-ENVIRONMENTS = os.path.dirname(os.path.abspath(__file__))
+ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODE_ENVIRONMENT = os.path.join(ENVIRONMENTS, MODE)
 
 
