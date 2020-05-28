@@ -1,11 +1,18 @@
 <template>
   <div id="app">
+
     <div class="main_block ">
+
       <MainHeader />
-      <nuxt/>
+
+      <router-view/>
+
       <MainFooter />
+
     </div>
-    <nuxt-loading ref="loading"></nuxt-loading>
+
+    <nuxt-loading ref="loading"/>
+
   </div>
 </template>
 
@@ -38,15 +45,15 @@ export default {
     layout: null,
     layoutName: ''
   }),
-  beforeCreate () {
-    Vue.util.defineReactive(this, 'nuxt', this.$options.nuxt);
-  },
+  // beforeCreate () {
+  //   Vue.util.defineReactive(this, 'nuxt', this.$options.nuxt);
+  // },
   created () {
-    // Add this.$nuxt in child instances
-    Vue.prototype.$nuxt = this;
-    // add to window so we can listen when ready
+    // // Add this.$nuxt in child instances
+    // Vue.prototype.$nuxt = this;
+    // // add to window so we can listen when ready
     if (typeof window !== 'undefined') {
-      window.$nuxt = this
+      window.app = this
     }
     this.$store.dispatch('getFilterCategories');
   },

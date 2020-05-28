@@ -17,6 +17,8 @@ import InfoPage from '~/pages/info'
 
 
 const $log = injector.get('$log');
+const $window = injector.get('$window');
+const $promise = injector.get('$promise');
 
 
 Vue.use(Router);
@@ -25,10 +27,7 @@ Vue.use(Router);
 // The code below is an addition by NuxtJS that seems to be beneficial.
 // It disables default scrolling behaviour and leverages the Vue router to scroll on the page.
 // Vue default is to always scroll to top on navigation, so this is nice.
-// TODO: get rid of the $nuxt.$once('triggerScroll') and replace with something non-nuxt
-// TODO: use injected window and document not the actual objects
-// TODO: inject promise API
-window.history.scrollRestoration = 'manual';
+$window.history.scrollRestoration = 'manual';
 const scrollBehavior = function (to, from, savedPosition) {
   // if the returned position is falsy or an empty object,
   // will retain current scroll position.
@@ -48,19 +47,19 @@ const scrollBehavior = function (to, from, savedPosition) {
     position = savedPosition
   }
 
-  return new Promise((resolve) => {
+  return new $promise((resolve) => {
     // wait for the out transition to complete (if necessary)
-    window.$nuxt.$once('triggerScroll', () => {
+    $window.app.$once('triggerScroll', () => {
       // coords will be used if no selector is provided,
       // or if the selector didn't match any element.
       if (to.hash) {
         let hash = to.hash;
         // CSS.escape() is not supported with IE and Edge.
-        if (typeof window.CSS !== 'undefined' && typeof window.CSS.escape !== 'undefined') {
-          hash = '#' + window.CSS.escape(hash.substr(1))
+        if (typeof $window.CSS !== 'undefined' && typeof $window.CSS.escape !== 'undefined') {
+          hash = '#' + $window.CSS.escape(hash.substr(1))
         }
         try {
-          if (document.querySelector(hash)) {
+          if ($window.document.querySelector(hash)) {
             // scroll to anchor by returning the selector
             position = { selector: hash }
           }

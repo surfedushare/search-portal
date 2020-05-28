@@ -3,9 +3,8 @@ import injector from 'vue-inject';
 Vue.use(injector);
 
 import { createRouter } from './router.js'
-import NuxtChild from './components/nuxt-child.js'
+
 import NuxtLink from './components/nuxt-link.js'
-import Nuxt from './components/nuxt.js'
 import App from './App.vue'
 import { setContext, getLocation } from './utils'
 import { createStore } from './store.js'
@@ -23,15 +22,8 @@ import nuxt_plugin_SocialSharing_3ab090d9 from './plugins/SocialSharing'
 import nuxt_plugin_VueMasonry_21187416 from './plugins/VueMasonry'
 import nuxt_plugin_VueClipboard_7da67946 from './plugins/VueClipboard'
 
-
-// Component: <nuxt-child>
-Vue.component(NuxtChild.name, NuxtChild);
-
 // Component: <nuxt-link>
 Vue.component(NuxtLink.name, NuxtLink);
-
-// Component: <nuxt>`
-Vue.component(Nuxt.name, Nuxt);
 
 const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"};
 

@@ -140,7 +140,7 @@ async function loadAsyncComponents (to, from, next) {
     let err = error || {};
     const statusCode = (err.statusCode || err.status || (err.response && err.response.status) || 500);
     this.error({ statusCode, message: err.message });
-    this.$nuxt.$emit('routeChanged', to, from, err);
+    //this.$nuxt.$emit('routeChanged', to, from, err);
     next(false)
   }
 }
