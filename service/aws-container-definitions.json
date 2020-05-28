@@ -1,0 +1,26 @@
+[
+    {
+        "name": "search-portal-container-dev",
+        "image": "${REPOSITORY}/${NAME}:${version}",
+        "cpu": 0,
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 8080,
+                "protocol": "tcp",
+                "containerPort": 8080
+            }
+        ],
+        "environment": [
+            { "name" : "APPLICATION_MODE", "value" : "${mode}" }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/search-portal-dev",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}"
+            }
+        }
+    }
+]
