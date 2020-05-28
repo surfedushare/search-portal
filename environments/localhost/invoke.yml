@@ -17,6 +17,7 @@ django:
   frontend_domain: "localhost:8080"
 
 surfconext:
+  oidc_endpoint: none
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "https@//front-test.surfcatalog.nl/"
 
