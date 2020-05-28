@@ -20,8 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from configuration import environment, MODE
-from packaging import get_package_info
+from surfpol import environment, MODE, get_package_info
 PACKAGE_INFO = get_package_info()
 
 
@@ -290,7 +289,7 @@ AUTH_USER_MODEL = 'users.User'
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
-SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = "https://oidc.surfconext.nl"
+SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = environment.surfconext.oidc_endpoint
 SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
 SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
 SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key

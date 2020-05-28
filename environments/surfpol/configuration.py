@@ -19,8 +19,9 @@ import boto3
 # First we'll load the relevant non-invoke environment variables
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
+
 PREFIX = "POL"
-ENVIRONMENTS = os.path.dirname(os.path.abspath(__file__))
+ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODE_ENVIRONMENT = os.path.join(ENVIRONMENTS, MODE)
 
 
