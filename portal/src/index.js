@@ -4,7 +4,6 @@ Vue.use(injector);
 
 import { createRouter } from './router.js'
 
-import NuxtLink from './components/nuxt-link.js'
 import App from './App.vue'
 import { setContext, getLocation } from './utils'
 import { createStore } from './store.js'
@@ -22,10 +21,9 @@ import nuxt_plugin_SocialSharing_3ab090d9 from './plugins/SocialSharing'
 import nuxt_plugin_VueMasonry_21187416 from './plugins/VueMasonry'
 import nuxt_plugin_VueClipboard_7da67946 from './plugins/VueClipboard'
 
-// Component: <nuxt-link>
-Vue.component(NuxtLink.name, NuxtLink);
 
 const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"};
+
 
 async function createApp (ssrContext) {
   const router = await createRouter(ssrContext);

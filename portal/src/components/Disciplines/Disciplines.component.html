@@ -7,12 +7,12 @@
       class="disciplines__item"
       v-for="discipline in disciplines"
     >
-      <nuxt-link
+      <router-link
         :to="generateLink(discipline)"
       >
         {{ getTitleTranslation(discipline, $i18n.locale) }}
         <span>({{discipline.materials_count || '0'}})</span>
-      </nuxt-link>
+      </router-link>
     </li>
   </ul>
   <div class="disciplines__info" v-else>{{ $t('No-disciplines') }}</div>
