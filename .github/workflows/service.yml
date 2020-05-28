@@ -49,4 +49,4 @@ jobs:
       run: |
         invoke prepare-builds
         cd service
-        python manage.py test surf/apps/filters
+        python manage.py test surf/apps/core
