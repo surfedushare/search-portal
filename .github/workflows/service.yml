@@ -19,9 +19,9 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: github_actions
+          POSTGRES_USER: django
+          POSTGRES_PASSWORD: qwerty
+          POSTGRES_DB: edushare
         ports:
           - 5432:5432
         options: >-
@@ -45,7 +45,7 @@ jobs:
     - name: Run Tests
       env:
         APPLICATION_MODE: localhost
-        POL_SECRETS_POSTGRES_PASSWORD: qwerty
+        POL_DJANGO_POSTGRES_HOST: 127.0.0.1
       run: |
         invoke prepare-builds
         cd service
