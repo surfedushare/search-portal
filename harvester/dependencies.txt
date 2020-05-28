@@ -9,7 +9,7 @@ redis==3.2.1
 
 # Harvester other
 git+https://github.com/saffsd/langid.py.git
-scikit-learn==0.21.3
+scikit-learn==0.23.1
 mwparserfromhell==0.5.4
 
 # Datagrowth
