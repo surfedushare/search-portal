@@ -31,9 +31,7 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 0
+    - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -49,6 +47,6 @@ jobs:
         APPLICATION_MODE: localhost
         POL_SECRETS_POSTGRES_PASSWORD: qwerty
       run: |
-        cd service
         invoke prepare-builds
+        cd service
         python manage.py test surf/apps/filters
