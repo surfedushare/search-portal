@@ -14,8 +14,6 @@ import Material from '~/pages/material'
 import Collection from '~/pages/collection'
 import Community from '~/pages/community'
 import InfoPage from '~/pages/info'
-import MyFilters from '~/pages/my/filters/index'
-import MyFiltersDetail from '~/pages/my/filters/_id'
 
 
 const $log = injector.get('$log');
@@ -115,16 +113,6 @@ export function createRouter () {
         name: "materials-search___nl"
       },
       {
-        path: "/en/my/filters",
-        component: MyFilters,
-        name: "my-filters___en"
-      },
-      {
-        path: "/mijn/filters",
-        component: MyFilters,
-        name: "my-filters___nl"
-      },
-      {
         path: "/en/my/collections",
         component: MyCollections,
         name: "my-collections___en"
@@ -169,16 +157,6 @@ export function createRouter () {
         path: "/mijn/community/:community",
         component: MyCommunity,
         name: "my-community___nl"
-      },
-      {
-        path: "/en/my/filters/:id",
-        component: MyFiltersDetail,
-        name: "my-filters-id___en"
-      },
-      {
-        path: "/mijn/filters/:id",
-        component: MyFiltersDetail,
-        name: "my-filters-id___nl"
       },
       {
         path: "/en/my/privacy",

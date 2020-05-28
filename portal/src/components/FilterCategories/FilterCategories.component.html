@@ -5,35 +5,10 @@
 
   <div class="filter-categories__links">
     <a
-      href="#"
-      v-if="isAuthenticated"
-      v-show="false"
-      class="filter-categories__save"
-      @click.prevent="showPopupSaveFilter()"
-    >
-      {{ $t('Save-selection') }}
-    </a>
-    <a
       href="/materials/search/"
       @click.prevent="resetFilter"
       class="filter-categories__reset"
     >{{ $t('Reset-filters') }}</a>
-  </div>
-
-  <div class="select filter-categories__select" v-if="isAuthenticated && filters && filters.length">
-    <select
-      name="my_filters"
-      @change="onFilterSelected"
-      :value="active_filter_id"
-    >
-      <option value="" disabled>{{ $t('My-filter-selections') }}</option>
-      <option
-        :value="filter.id"
-        v-for="filter in filters"
-      >
-        {{ filter.title }}
-      </option>
-    </select>
   </div>
 
   <div class="filter-categories__items">
