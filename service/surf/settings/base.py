@@ -20,8 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from configuration import environment, MODE
-from packaging import get_package_info
+from surfpol import environment, MODE, get_package_info
 PACKAGE_INFO = get_package_info()
 
 
