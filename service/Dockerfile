@@ -63,7 +63,6 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 # Copy application and frontend build
 COPY service /usr/src/app
 COPY --from=builder /usr/src/portal/dist /usr/src/app/surf/apps/materials/static/portal
-COPY --from=builder /usr/src/portal/dist/index.html /usr/src/app/surf/apps/materials/templates/portal/
 # Copy environment configurations
 # The default environment mode is production, but during image build we use the localhost mode
 # This allows to run setup commands locally without loading secrets
