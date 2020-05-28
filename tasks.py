@@ -6,7 +6,7 @@ from invoke.tasks import task
 from git import Repo
 
 from environments.configuration import environment
-from environments.packaging import get_package_info
+from environments.surfpol import get_package_info
 from elastic.tasks import setup, create_snapshot, load_repository, restore_snapshot
 
 from service.package import (
