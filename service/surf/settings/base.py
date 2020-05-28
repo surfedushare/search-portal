@@ -21,6 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from configuration import environment, MODE
+from packaging import get_package_info
+PACKAGE_INFO = get_package_info()
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environment.secrets.django.secret_key

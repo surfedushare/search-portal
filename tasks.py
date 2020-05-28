@@ -9,7 +9,11 @@ from environments.configuration import environment
 from environments.packaging import get_package_info
 from elastic.tasks import setup, create_snapshot, load_repository, restore_snapshot
 
-from service.package import VERSION as SERVICE_VERSION
+from service.package import (
+    VERSION as SERVICE_VERSION,
+    REPOSITORY as SERVICE_REPOSITORY,
+    NAME as SERVICE_NAME
+)
 from harvester.package import VERSION as HARVESTER_VERSION
 
 
@@ -36,7 +40,11 @@ def build_service(ctx):
     package_info = get_package_info()
     commit = package_info["commit"]
     version = package_info["versions"]["service"]
-    ctx.run(f"docker build -t search-portal:{version} -t search-portal:{commit} .", pty=True, echo=True)
+    ctx.run(
+        f"docker build -f service/Dockerfile -t {SERVICE_NAME}:{version} -t {SERVICE_NAME}:{commit} .",
+        pty=True,
+        echo=True
+    )
 
 
 namespace = Collection(

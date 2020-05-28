@@ -12,7 +12,7 @@ django:
 
 surfconext:
   voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "https@//front-test.surfcatalog.nl/"
+  client_id: "https@//front-dev.surfcatalog.nl/"
 
 search:
   client: "elastic"
