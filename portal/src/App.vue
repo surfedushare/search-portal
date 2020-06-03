@@ -28,8 +28,6 @@
 
 <script>
 
-import Vue from 'vue'
-
 import MainHeader from '~/components/MainHeader';
 import MainFooter from '~/components/MainFooter';
 import NuxtLoading from '~/components/nuxt-loading.vue'
@@ -41,17 +39,7 @@ export default {
     MainFooter,
     NuxtLoading
   },
-  data: () => ({
-    layout: null,
-    layoutName: ''
-  }),
-  // beforeCreate () {
-  //   Vue.util.defineReactive(this, 'nuxt', this.$options.nuxt);
-  // },
   created () {
-    // // Add this.$nuxt in child instances
-    // Vue.prototype.$nuxt = this;
-    // // add to window so we can listen when ready
     if (typeof window !== 'undefined') {
       window.app = this
     }
@@ -65,11 +53,6 @@ export default {
   watch: {
     '$i18n.locale'(newLocale) {
       this.$axios.setLanguage(newLocale);
-    }
-  },
-  methods: {
-    setLayout() {  // previously received a layout
-      return 'default';
     }
   }
 }
