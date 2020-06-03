@@ -58,9 +58,8 @@ from surf.vendor.search.searchselector import get_search_client
 logger = logging.getLogger(__name__)
 
 
-def portal_single_page_application(request):
+def portal_single_page_application(request, *args):
     return render(request, "portal/index.html")
-
 
 
 class MaterialSearchAPIView(APIView):
