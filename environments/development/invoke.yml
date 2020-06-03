@@ -5,7 +5,7 @@
 django:
   debug: true
   postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
-  postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
+  postgres_host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   protocol: "http"
   backend_domain: "surfpol-loadbalancer-dev-1467666946.eu-central-1.elb.amazonaws.com"
   frontend_domain: "surfpol-loadbalancer-dev-1467666946.eu-central-1.elb.amazonaws.com"
@@ -36,7 +36,7 @@ secrets:
   django:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/django-TPQRKj"
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/postgres-iLOlbr"
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-lc0XXX"
   surfconext:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/surfconext-YAf8dw"
   elastic_search:
