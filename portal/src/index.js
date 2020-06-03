@@ -7,11 +7,10 @@ import { createRouter } from './router.js'
 import App from './App.vue'
 import { setContext, getLocation } from './utils'
 import { createStore } from './store.js'
+import { createI18N } from './i18n'
 
 /* Plugins */
-import nuxt_plugin_pluginseo_26e4ed71 from './nuxt-i18n/plugin.seo.js'
-import nuxt_plugin_pluginrouting_3c9d9e30 from './nuxt-i18n/plugin.routing.js'
-import nuxt_plugin_pluginmain_7147a387 from './nuxt-i18n/plugin.main.js'
+import nuxt_plugin_pluginrouting_3c9d9e30 from './i18n/plugin.routing.js'
 import nuxt_plugin_axios_494a31c4 from './axios.js'
 import nuxt_plugin_auth_6a7e4e1e from './plugins/auth'
 import nuxt_plugin_vSelect_475ab648 from './plugins/vSelect'
@@ -22,18 +21,18 @@ import nuxt_plugin_VueMasonry_21187416 from './plugins/VueMasonry'
 import nuxt_plugin_VueClipboard_7da67946 from './plugins/VueClipboard'
 
 
-const defaultTransition = {"name":"page","mode":"out-in","appear":true,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"};
+const $log = injector.get('$log');
 
 
 async function createApp (ssrContext) {
-  const router = await createRouter(ssrContext);
 
+  const router = await createRouter(ssrContext);
 
   const store = createStore(ssrContext);
   // Add this.$router into store actions/mutations
   store.$router = router;
 
-
+  const i18n = await createI18N();
 
   // Create Root instance
   // here we inject the router and store to all child components,
@@ -41,40 +40,7 @@ async function createApp (ssrContext) {
   const app = {
     router,
     store,
-    nuxt: {
-      defaultTransition,
-      transitions: [ defaultTransition ],
-      setTransitions (transitions) {
-        if (!Array.isArray(transitions)) {
-          transitions = [ transitions ]
-        }
-        transitions = transitions.map((transition) => {
-          if (!transition) {
-            transition = defaultTransition
-          } else if (typeof transition === 'string') {
-            transition = Object.assign({}, defaultTransition, { name: transition })
-          } else {
-            transition = Object.assign({}, defaultTransition, transition)
-          }
-          return transition
-        });
-        this.$options.nuxt.transitions = transitions;
-        return transitions
-      },
-      err: null,
-      dateErr: null,
-      error (err) {
-        err = err || null;
-        app.context._errored = !!err;
-        if (typeof err === 'string') err = { statusCode: 500, message: err };
-        const nuxt = this.nuxt || this.$options.nuxt;
-        nuxt.dateErr = Date.now();
-        nuxt.err = err;
-        // Used in lib/server.js
-        if (ssrContext) ssrContext.nuxt.error = err;
-        return err
-      }
-    },
+    i18n,
     ...App
   };
 
@@ -83,21 +49,18 @@ async function createApp (ssrContext) {
   // Make app available from anywhere through injector
   injector.constant('App', app);
 
-  const next = ssrContext ? ssrContext.next : location => app.router.push(location);
+  const next = location => app.router.push(location);
+
   // Resolve route
   let route;
-  if (ssrContext) {
-    route = router.resolve(ssrContext.url).route
-  } else {
-    const path = getLocation(router.options.base);
-    route = router.resolve(path).route
-  }
+  const path = getLocation(router.options.base);
+  route = router.resolve(path).route;
 
   // Set context to app.context
   await setContext(app, {
     route,
     next,
-    error: app.nuxt.error.bind(app),
+    error: null,
     store,
     payload: ssrContext ? ssrContext.payload : undefined,
     req: ssrContext ? ssrContext.req : undefined,
@@ -131,20 +94,9 @@ async function createApp (ssrContext) {
     })
   };
 
-
-  if (process.client) {
-    // Replace store state before plugins execution
-    if (window.__NUXT__ && window.__NUXT__.state) {
-      store.replaceState(window.__NUXT__.state)
-    }
-  }
-
-
   // Plugin execution
 
-  if (typeof nuxt_plugin_pluginseo_26e4ed71 === 'function') await nuxt_plugin_pluginseo_26e4ed71(app.context, inject);
   if (typeof nuxt_plugin_pluginrouting_3c9d9e30 === 'function') await nuxt_plugin_pluginrouting_3c9d9e30(app.context, inject);
-  if (typeof nuxt_plugin_pluginmain_7147a387 === 'function') await nuxt_plugin_pluginmain_7147a387(app.context, inject);
   if (typeof nuxt_plugin_axios_494a31c4 === 'function') await nuxt_plugin_axios_494a31c4(app.context, inject);
   if (typeof nuxt_plugin_auth_6a7e4e1e === 'function') await nuxt_plugin_auth_6a7e4e1e(app.context, inject);
   if (typeof nuxt_plugin_vSelect_475ab648 === 'function') await nuxt_plugin_vSelect_475ab648(app.context, inject);
