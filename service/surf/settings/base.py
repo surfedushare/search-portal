@@ -251,11 +251,11 @@ if MODE == "container" and DEBUG:
 
 if MODE != 'localhost':
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_STORAGE_BUCKET_NAME = environment.aws.image_upload_bucket
+    AWS_S3_REGION_NAME = 'eu-central-1'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
-AWS_STORAGE_BUCKET_NAME = 'search-portal-media-uploads'
-AWS_S3_REGION_NAME = 'eu-central-1'
 
 # Django Webpack loader
 # https://github.com/owais/django-webpack-loader
@@ -310,10 +310,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.create_user',
     'surf.vendor.surfconext.pipeline.store_data_permissions',
     'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.user.user_details',
     'surf.vendor.surfconext.pipeline.get_groups',
     'surf.vendor.surfconext.pipeline.assign_communities',
     'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
+
 )
 
 LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"

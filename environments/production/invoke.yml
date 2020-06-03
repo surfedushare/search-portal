@@ -11,9 +11,9 @@ django:
   frontend_domain: "zoekportaal.surf.nl"
 
 surfconext:
-  oidc_endpoint: "https://oidc.surfconext.nl"
+  oidc_endpoint: "https://connect.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
-  client_id: "https@//zoekportaal.surf.nl/"
+  client_id: "zoekportaal.surf.nl"
 
 search:
   client: "elastic"
@@ -24,7 +24,7 @@ elastic_search:
   protocol: "https"
 
 edurep:
-  soap_supplier_id: null
+  soap_supplier_id: "surfzoekportal"
   xml_api_endpoint: "http://wszoeken.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://smb.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
