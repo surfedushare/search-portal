@@ -108,7 +108,7 @@ def deploy(ctx, target, mode, version=None):
 
     # Read the service AWS container definition and replace some variables with actual values
     print(f"Reading container definitions for: {target_info['name']}")
-    with open(os.path.join("service", "aws-container-definitions.json")) as container_definitions_file:  # TODO: strip all "dev" from container definition
+    with open(os.path.join("service", "aws-container-definitions.json")) as container_definitions_file:
         container_definitions_json = container_definitions_file.read()
         container_variables = {
             "REPOSITORY": target_info["repository"],
@@ -128,7 +128,7 @@ def deploy(ctx, target, mode, version=None):
     print("Setting up task definition")
     task_role_arn = ctx.config.aws.task_role_arn
     response = client.register_task_definition(
-        family=f"{target_info['name']}-dev",  # TODO: strip the dev postfix
+        family=f"{target_info['name']}",
         taskRoleArn=task_role_arn,
         executionRoleArn=task_role_arn,
         networkMode="awsvpc",
@@ -142,7 +142,7 @@ def deploy(ctx, target, mode, version=None):
     task_definition_arn = task_definition["taskDefinitionArn"]
     client.update_service(
         cluster=ctx.config.aws.cluster_arn,
-        service=f"{target_info['name']}-dev",  # TODO: strip postfix
+        service=f"{target_info['name']}",
         taskDefinition=task_definition_arn
     )
 
