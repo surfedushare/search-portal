@@ -1,12 +1,12 @@
 <div class="material__info">
   <h1 class="material__info_ttl">{{ material.title }}</h1>
   <div class="material__info_author">
-    <nuxt-link
+    <router-link
       :to="authorUrl"
       v-if="material.author"
     >
       {{ material.author }}
-    </nuxt-link>
+    </router-link>
     {{ material.publisher }}
   </div>
   <h3 class="material__info_subttl">{{ $t('Quality') }}</h3>

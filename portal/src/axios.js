@@ -72,7 +72,7 @@ const setupProgress = (axios) => {
     set: () => { }
   };
 
-  const $loading = () => (window.$nuxt && window.$nuxt.$loading && window.$nuxt.$loading.set) ? window.$nuxt.$loading : noopLoading
+  const $loading = () => (window.app && window.app.$loading && window.app.$loading.set) ? window.app.$loading : noopLoading;
 
   let currentRequests = 0;
 

@@ -3,12 +3,12 @@
   <template
     v-for="(item, index) in items"
   >
-    <nuxt-link
+    <router-link
       v-if="item.url"
       :to="item.url"
       class="bread-crumbs__link"
       :key="index"
-    >{{ item.title }}</nuxt-link>
+    >{{ item.title }}</router-link>
     <span
       v-else
       class="bread-crumbs__link"

@@ -6,12 +6,12 @@
     <div
       v-if="material"
       class="material__info_mobile_author">
-      <nuxt-link
+      <router-link
         v-if="material.author"
         :to="authorUrl"
       >
         {{ material.author }}
-      </nuxt-link>
+      </router-link>
       <div>{{ material.publisher }}</div>
     </div>
   </div>

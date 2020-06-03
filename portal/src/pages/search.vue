@@ -53,10 +53,7 @@
       >
         <div class="search__filter">
           <div class="search__filter_sticky">
-            <FilterCategories
-              v-model="search"
-              :show-popup-save-filter="showPopupSaveFilter"
-            />
+            <FilterCategories v-model="search"/>
           </div>
         </div>
 
@@ -72,12 +69,6 @@
       </div>
     </div>
 
-    <SaveFilter
-      :close="close"
-      :on-save-filter="onSaveFilter"
-      v-model="formData"
-      :is-show="isShow"
-    />
   </section>
 </template>
 
@@ -88,7 +79,6 @@ import FilterCategories from '~/components/FilterCategories';
 import Materials from '~/components/Materials';
 import Spinner from '~/components/Spinner';
 import BreadCrumbs from '~/components/BreadCrumbs';
-import SaveFilter from '~/components/Popup/SaveFilter';
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from '~/components/_helpers';
 
 
@@ -98,8 +88,7 @@ export default {
     FilterCategories,
     Materials,
     Spinner,
-    BreadCrumbs,
-    SaveFilter
+    BreadCrumbs
   },
   data() {
     return {
@@ -127,26 +116,13 @@ export default {
     ...mapGetters([
       'materials',
       'materials_loading',
-      'materials_in_line',
-      'active_filter'
+      'materials_in_line'
     ])
   },
   watch: {
     search(search) {
       if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search);
-      }
-    },
-    /**
-     * Watcher on the 'active_filter' field
-     * @param active_filter - Object
-     **/
-    active_filter(active_filter) {
-      if (active_filter) {
-        this.dates_range = {
-          start_date: active_filter.start_date,
-          end_date: active_filter.end_date
-        };
       }
     },
     /**
@@ -204,32 +180,6 @@ export default {
       } else {
         this.$store.dispatch('searchMaterialsInLine', 1);
       }
-    },
-    /**
-     * Show the popup 'Save filter'
-     */
-    showPopupSaveFilter() {
-      this.isShow = true;
-    },
-    /**
-     * Close the popup 'Save filter'
-     */
-    close() {
-      this.isShow = false;
-    },
-    /**
-     * Save filter
-     */
-    onSaveFilter() {
-      this.$store
-        .dispatch('postFilter', {
-          title: this.formData.name,
-          items: this.search,
-          materials_count: this.materials.records_total
-        })
-        .then(() => {
-          this.close();
-        });
     },
     /**
      * Event the ordering items
