@@ -310,10 +310,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.create_user',
     'surf.vendor.surfconext.pipeline.store_data_permissions',
     'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.user.user_details',
     'surf.vendor.surfconext.pipeline.get_groups',
     'surf.vendor.surfconext.pipeline.assign_communities',
     'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
+
 )
 
 LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"
