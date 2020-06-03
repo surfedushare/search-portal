@@ -257,6 +257,7 @@ if MODE != 'localhost':
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
 
+
 # Django Webpack loader
 # https://github.com/owais/django-webpack-loader
 
@@ -331,7 +332,6 @@ SEARCH_CLIENT = environment.search.client
 EDUREP_JSON_API_ENDPOINT = environment.edurep.json_api_endpoint
 EDUREP_XML_API_ENDPOINT = environment.edurep.xml_api_endpoint
 EDUREP_SOAP_API_ENDPOINT = environment.edurep.soap_api_endpoint
-EDUREP_SOAP_SUPPLIER_ID = environment.edurep.soap_supplier_id
 
 ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
