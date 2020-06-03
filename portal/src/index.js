@@ -3,7 +3,6 @@ import injector from 'vue-inject';
 Vue.use(injector);
 
 import { createRouter } from './router.js'
-
 import App from './App.vue'
 import { setContext, getLocation } from './utils'
 import { createStore } from './store.js'
