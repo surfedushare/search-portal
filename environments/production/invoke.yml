@@ -24,7 +24,7 @@ elastic_search:
   protocol: "https"
 
 edurep:
-  soap_supplier_id: null
+  soap_supplier_id: "surfzoekportal"
   xml_api_endpoint: "http://wszoeken.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://smb.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
