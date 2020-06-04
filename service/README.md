@@ -67,6 +67,28 @@ http://localhost:8000/api/v1/
 ```
 
 
+#### Production parity on localhost
+
+If you want to test the app with highest possible parity with production,
+then you need to run the following
+
+```bash
+cd ..
+APPLICATION_MODE=development docker-compose up
+```
+
+Then you can visit the frontend through
+
+```bash
+http://localhost:8000/
+```
+
+This will serve the frontend and backend through (a multi process) UWSGI server.
+It will also try to access AWS services in the ``surfpol-dev`` account.
+This is very similar to how it works on AWS and in production.
+A major difference is the load balancer in front of UWSGI, which is missing in the local setup.
+
+
 #### Migrate locally
 
 Database tables are owned by the root database user called "postgres".
