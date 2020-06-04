@@ -20,6 +20,8 @@ awscli==1.18.43
 boto3==1.12.44
 ipdb==0.13.2
 sentry-sdk==0.11.2
+selenium==3.141.0
+chromedriver-py==83.0.4103.39
 
 -r service/dependencies.txt
 -r harvester/dependencies.txt

@@ -16,8 +16,13 @@ def prepare_tests(ctx):
         ctx.run("npm run build -- --dest=../service/surf/apps/materials/static/portal/")
 
 
-@task(prepare_tests, iterable=["target"])
+@task(prepare_tests, iterable=["target"], help={
+    "target": f"specify one or more targets to test: {', '.join(TEST_TARGETS)}"
+})
 def test(ctx, target):
+    """
+    Run the test suites of specified targets. Specify no targets to run all suites.
+    """
     targets = target or TEST_TARGETS
     for target in targets:
         if target not in TEST_TARGETS:

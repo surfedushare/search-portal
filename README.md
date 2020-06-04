@@ -133,3 +133,27 @@ Either way the database admin tool become available under:
 ```bash
 http://localhost:8081/
 ```
+
+
+Tests
+-----
+
+You can run all tests for the entire project by running:
+
+```bash
+invoke test
+```
+
+Often you'll only want to test part of the project like ``service`` or ``harvester``.
+You can specify a target to the test command to run parts of the test suite.
+To only run the Selenium integration tests for example you can run:
+
+```bash
+invoke test --target service~surf.apps
+```
+
+For the complete list of possible targets run:
+
+```bash
+invoke -h test
+```
