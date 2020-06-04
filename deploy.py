@@ -1,15 +1,12 @@
 import os
 import json
 
-from invoke import Collection
 from invoke.tasks import task
 from invoke.exceptions import Exit
 from git import Repo
 import boto3
 
-from environments.surfpol import environment, MODE, get_package_info
-from elastic.tasks import setup, create_snapshot, load_repository, restore_snapshot
-
+from environments.surfpol import MODE, get_package_info
 from service.package import (
     VERSION as SERVICE_VERSION,
     REPOSITORY as SERVICE_REPOSITORY,
@@ -145,13 +142,3 @@ def deploy(ctx, target, mode, version=None):
         service=f"{target_info['name']}",
         taskDefinition=task_definition_arn
     )
-
-
-namespace = Collection(
-    Collection("es", setup, create_snapshot, load_repository, restore_snapshot),
-    prepare_builds,
-    build,
-    push,
-    deploy
-)
-namespace.configure(environment)
