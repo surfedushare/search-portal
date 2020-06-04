@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from surfpol import environment, MODE, get_package_info
+from surfpol import environment, MODE, CONTEXT, get_package_info
 PACKAGE_INFO = get_package_info()
 
 
@@ -242,13 +242,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 STATICFILES_DIRS = []
-# Inside containers we sneak the STATIC_ROOT into STATICFILES_DIRS.
-# When running collectstatic inside containers the root will always be empty.
-# During development having root as staticfile directory provides a work around to get to the frontend build.
-if MODE == "container" and DEBUG:
-    STATICFILES_DIRS += [
-        os.path.join('/usr/src/static')
-    ]
+
 
 # Media uploads
 
@@ -264,13 +258,17 @@ MEDIA_URL = '/media/'
 # Django Webpack loader
 # https://github.com/owais/django-webpack-loader
 
-PORTAL_BASE_DIR = os.path.join(STATIC_ROOT, "portal")
+PORTAL_BASE_DIR = os.path.join(STATIC_ROOT, "portal") if CONTEXT == 'container' else \
+    os.path.join(BASE_DIR, "apps", "materials", "static", "portal")
+
+if not os.path.exists(PORTAL_BASE_DIR):
+    os.makedirs(PORTAL_BASE_DIR)
 
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': PORTAL_BASE_DIR + os.sep,  # must end with slash
-        'STATS_FILE': os.path.join(PORTAL_BASE_DIR, 'portal.webpack-stats.json'),
+        'STATS_FILE': os.path.join(PORTAL_BASE_DIR, 'webpack-stats.json'),
     }
 }
 
