@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 import sys
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -277,6 +280,19 @@ WEBPACK_LOADER = {
 # https://docs.sentry.io/
 
 if not DEBUG:
+
+    def strip_sensitive_data(event, hint):
+        # modify event here
+        del event['request']['headers']['User-Agent']
+        return event
+
+    # Initiates sentry without sending personal data
+    sentry_sdk.init(
+        before_send=strip_sensitive_data,
+        dsn="https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956",
+        integrations=[DjangoIntegration()]
+    )
+
     # We kill all DisallowedHost logging on the servers,
     # because it happens so frequently that we can't do much about it
     ignore_logger('django.security.DisallowedHost')
