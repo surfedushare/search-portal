@@ -1,5 +1,5 @@
 # Common
-django==2.2.10
+django==2.2.13
 djangorestframework==3.10.3
 django-cors-headers==2.4.0
 psycopg2-binary==2.8.5

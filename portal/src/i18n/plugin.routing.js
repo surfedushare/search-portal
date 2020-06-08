@@ -1,12 +1,10 @@
-import './middleware';
 import Vue from 'vue'
 import injector from 'vue-inject';
 
 
 const $log = injector.get('$log');
-
-
 const routesNameSeparator = '___';
+
 
 function localePathFactory (i18nPath, routerPath) {
   const STRATEGIES = {"PREFIX":"prefix","PREFIX_EXCEPT_DEFAULT":"prefix_except_default","PREFIX_AND_DEFAULT":"prefix_and_default"}

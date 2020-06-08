@@ -6,13 +6,7 @@ import _ from 'lodash';
 
 export default {
   name: 'filter-categories',
-  props: ['showPopupSaveFilter', 'full-filter'],
   components: { DatesRange },
-  mounted() {
-    if (this.isAuthenticated && !this.fullFilter) {
-      this.$store.dispatch('getFilters');
-    }
-  },
   data() {
     const publisherdate = 'lom.lifecycle.contribute.publisherdate';
     return {
@@ -48,26 +42,9 @@ export default {
      * @returns {*} - filters
      */
     setFilter() {
-      const { categories, filter, publisherdate } = this;
-      if (filter && categories) {
-        let filters = filter.reduce((prev, next) => {
-          const hasItems = next.items.find(item => item);
-          if (hasItems) {
-            prev.push({
-              external_id: next.external_id,
-              items: next.items.reduce((prevChild, nextChild, index) => {
-                if (nextChild) {
-                  const category = categories.results.find(
-                    category => category.external_id === next.external_id
-                  );
-                  prevChild.push(category.items[index].external_id);
-                }
-                return prevChild;
-              }, [])
-            });
-          }
-          return prev;
-        }, []);
+      const { categories, publisherdate } = this;
+      if (categories) {
+        let filters = [];
 
         const publisherdate_item = this.value.filters.find(
           item => item.external_id === publisherdate
@@ -121,13 +98,6 @@ export default {
 
     },
     /**
-     * Get the full filter info
-     * @param e - event
-     */
-    onFilterSelected(e) {
-      this.$store.dispatch('getFilter', { id: e.target.value });
-    },
-    /**
      * Event the reset filter
      */
     resetFilter() {
@@ -152,107 +122,12 @@ export default {
       return category.name
     }
   },
-  watch: {
-    /**
-     * Watcher on change user authentication
-     * @param isAuthenticated
-     */
-    isAuthenticated(isAuthenticated) {
-      if (isAuthenticated && !this.fullFilter) {
-        this.$store.dispatch('getFilters');
-      }
-    },
-    /**
-     * Generating search query on change the active filter
-     * @param active_filter
-     */
-    active_filter(active_filter) {
-      const { filter_categories, publisherdate, value } = this;
-      if (active_filter && active_filter.items && filter_categories) {
-        const publisherdate_item = filter_categories.results.find(
-          item => item.external_id === publisherdate
-        );
-        const normailze_filter = active_filter.items.reduce((prev, next) => {
-          prev[next.category_id] = prev[next.category_id] || [];
-          prev[next.category_id].push(next.category_item_id);
-          return prev;
-        }, {});
-        const filters = filter_categories.results.reduce(
-          (search, category) => {
-            const category_items = normailze_filter[category.id];
-            if (category_items) {
-              search.filters.push({
-                external_id: category.external_id,
-                items: category.items
-                  .filter(item => category_items.indexOf(item.id) !== -1)
-                  .map(item => item.external_id)
-              });
-            }
-            return search;
-          },
-          {
-            page: 1,
-            page_size: value.page_size,
-            filters: [
-              {
-                external_id: publisherdate_item.external_id,
-                items: [active_filter.start_date, active_filter.end_date]
-              }
-            ],
-            search_text: active_filter.search_text || value.search_text || []
-          }
-        );
-
-        this.$router.push(this.generateSearchMaterialsQuery(filters));
-
-        this.$emit('input', filters);
-      }
-    }
-  },
   computed: {
     ...mapGetters([
       'filter_categories',
       'isAuthenticated',
-      'filters',
-      'active_filter',
       'materials'
     ]),
-    active_filter_id() {
-      const { active_filter } = this;
-      if (active_filter) {
-        return active_filter.id || '';
-      }
-
-      return '';
-    },
-    /**
-     * generate filter items
-     * @returns {*}
-     */
-    filter() {
-      const { value, filtered_categories } = this;
-      if (value && value.filters && filtered_categories) {
-        const filter = value.filters.reduce((prev, next) => {
-          prev[next.external_id] = next;
-
-          return prev;
-        }, {});
-
-        return filtered_categories.map(item => {
-          const current_item = filter[item.external_id];
-
-          return current_item && current_item.items
-            ? Object.assign({}, current_item, {
-                items: item.children.map(
-                  el => current_item.items.indexOf(el.external_id) !== -1
-                )
-              })
-            : Object.assign({}, item, { items: [] });
-        });
-      }
-
-      return false;
-    },
     /**
      * generate filtered categories
      * @returns {*}

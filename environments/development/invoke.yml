@@ -1,7 +1,6 @@
 # NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
 # It uses AWS Secret Manager to lookup any secrets at application bootstrap
 
-
 django:
   debug: true
   postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
@@ -24,7 +23,6 @@ elastic_search:
   protocol: "https"
 
 edurep:
-  soap_supplier_id: "surfzoekportal"
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"

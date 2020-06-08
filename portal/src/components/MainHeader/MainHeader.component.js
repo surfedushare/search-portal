@@ -43,6 +43,9 @@ export default {
       });
       notification.is_allowed = true;
       this.$store.dispatch('postUser');
+    },
+    switchLanguage(language) {
+      this.$i18n.locale = language
     }
   },
   computed: {
