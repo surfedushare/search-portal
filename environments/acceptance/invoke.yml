@@ -2,7 +2,7 @@
 # It uses AWS Secret Manager to lookup any secrets at application bootstrap
 
 django:
-  debug: true
+  debug: false
   postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
   postgres_host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
   protocol: "https"
