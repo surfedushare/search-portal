@@ -38,49 +38,18 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: psycopg2 prerequisites
       run: sudo apt-get install python-dev libpq-dev
-#    - name: Install Dependencies
-#      run: |
-#        python -m pip install --upgrade pip
-#        pip install -r requirements.txt
-#        pip install chromedriver-py==$(google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1).*
-#        cd portal
-#        npm install
-#    - uses: nanasess/setup-chromedriver@master
-#    - name: Run Tests
-#      env:
-#        APPLICATION_MODE: localhost
-#        POL_DJANGO_DEBUG: 1
-#        POL_DJANGO_POSTGRES_HOST: 127.0.0.1
-#      run:
-#        invoke test --target service~surf.apps
-
-  tests:
-    needs: [build]
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        browser:
-          - chrome
-          - firefox
-    env:
-      BROWSER: "${{ matrix.browser }}"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: "3.8"
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip setuptools wheel
-          pip install webdrivermanager
-          mkdir -p ~/.local/bin
-          export PATH="$(readlink -f ~/.local/bin):$PATH"
-          webdrivermanager --linkpath ~/.local/bin "$BROWSER"
-          pip install -r requirements.txt
-      - name: Test
-        env:
-          APPLICATION_MODE: localhost
-          POL_DJANGO_DEBUG: 1
-          POL_DJANGO_POSTGRES_HOST: 127.0.0.1
-        run: invoke test --target service~surf.apps
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install chromedriver-py==$(google-chrome --version | cut -f 3 -d ' ' | cut -d '.' -f 1).*
+        cd portal
+        npm install
+    - uses: nanasess/setup-chromedriver@master
+    - name: Run Tests
+      env:
+        APPLICATION_MODE: localhost
+        POL_DJANGO_DEBUG: 1
+        POL_DJANGO_POSTGRES_HOST: 127.0.0.1
+      run:
+        invoke test --target service~surf.apps

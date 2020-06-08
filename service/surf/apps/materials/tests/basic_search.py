@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.chrome.options import Options
 from chromedriver_py import binary_path
+from django.test import override_settings
 
 
 class TestBasicSearch(StaticLiveServerTestCase):
@@ -19,8 +20,10 @@ class TestBasicSearch(StaticLiveServerTestCase):
         cls.selenium.quit()
         super().tearDownClass()
 
+    @override_settings(DEBUG=True)
     def test_home_page(self):
         self.selenium.get(self.live_server_url)
+
         print(self.selenium.page_source)
         print(self.live_server_url)
         self.selenium.find_element_by_id("__nuxt")
