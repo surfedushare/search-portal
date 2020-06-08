@@ -5,24 +5,23 @@ django:
   debug: true
   postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
   postgres_host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
-  protocol: "http"
+  protocol: "https"
   frontend_domain: "acc.surfedushare.nl"
 
 surfconext:
   oidc_endpoint: "https://connect.test.surfconext.nl"
   voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "front-dev.surfcatalog.nl"
+  client_id: "front-test.surfcatalog.nl"
 
 search:
   client: "elastic"
 
 elastic_search:
-  username: "search_portal_backend_test"
-  host: "elastic.search-test.surfcatalog.nl"
+  username: "search_portal_backend_prod"
+  host: "elastic2.search-prod.surfcatalog.nl"
   protocol: "https"
 
 edurep:
-  soap_supplier_id: "surfzoekportal"
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
