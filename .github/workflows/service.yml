@@ -45,7 +45,7 @@ jobs:
         cd portal
         npm install
 
-    - uses: nanasess/setup-chromedriver@v2
+    - uses: nanasess/setup-chromedriver@master
       with:
         chromedriver-version: '83.0.4103.39'
     - name: Run Tests
