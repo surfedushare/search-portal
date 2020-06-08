@@ -21,7 +21,7 @@ boto3==1.12.44
 ipdb==0.13.2
 sentry-sdk==0.11.2
 selenium==3.141.0
-chromedriver-py
+chromedriver-py==81.0.4044.69
 
 -r service/dependencies.txt
 -r harvester/dependencies.txt
