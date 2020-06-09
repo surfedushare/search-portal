@@ -37,10 +37,7 @@ secrets:
     password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/elastic-1xprrT"
 
 aws:
-  cluster_arn: "arn:aws:ecs:eu-central-1:000428825067:cluster/surfpol"
   image_upload_bucket: "search-portal-media-uploads-acc"
-  profile_name: "pol-acc"
-  task_role_arn: "arn:aws:iam::000428825067:role/ecsTaskExecutionRole"
 
   # The legacy mechanism to be able to override postgres credentials during migrations
   # Keeping this around for now until we move to AWS Secrets Manager fully

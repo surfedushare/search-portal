@@ -72,8 +72,7 @@ for group_name, group_secrets in secrets.items():
             aws_secrets.append((group_name, secret_name, secret_id,))
 # Here we found AWS secrets which we load using boto3
 if aws_secrets:
-    session = boto3.Session(profile_name=environment.aws.profile_name)
-    secrets_manager = session.client('secretsmanager')
+    secrets_manager = boto3.client('secretsmanager')
     for group_name, secret_name, secret_id in aws_secrets:
         secret_value = secrets_manager.get_secret_value(SecretId=secret_id)
         secret_payload = json.loads(secret_value["SecretString"])

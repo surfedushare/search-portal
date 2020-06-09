@@ -14,6 +14,19 @@ from service.package import (
 )
 from harvester.package import VERSION as HARVESTER_VERSION
 
+AWS_ENVIRONMENTS = {
+    "development": {
+        "profile_name": "pol-dev",
+        "cluster_arn": "arn:aws:ecs:eu-central-1:322480324822:cluster/surfpol",
+        "task_role_arn": "arn:aws:iam::322480324822:role/ecsTaskExecutionRole"
+    },
+    "acceptance": {
+        "profile_name": "pol-acc",
+        "cluster_arn": "arn:aws:ecs:eu-central-1:000428825067:cluster/surfpol",
+        "task_role_arn": "arn:aws:iam::000428825067:role/ecsTaskExecutionRole"
+    }
+}
+
 
 TARGETS = {
     "service": {  # TODO: perhaps simply input a PACKAGE from <target>/package.py which is a dict like below and work with that directly
@@ -93,15 +106,16 @@ def push(ctx, target, version=None):
 
 @task()
 def deploy(ctx, target, mode, version=None):
-
     # Check the input for validity
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
-    if mode != MODE:
-        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
+    if mode not in AWS_ENVIRONMENTS:
+        raise Exit(f"Expected mode to be defined in AWS_ENVIRONMENTS, but found: {mode}", code=1)
+
     # Load info
     target_info = TARGETS[target]
     version = version or target_info["version"]
+    aws_config = AWS_ENVIRONMENTS[mode]
 
     # Read the service AWS container definition and replace some variables with actual values
     print(f"Reading container definitions for: {target_info['name']}")
@@ -119,11 +133,12 @@ def deploy(ctx, target, mode, version=None):
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
+    session = boto3.Session(profile_name=aws_config["profile_name"])
     client = session.client('ecs', region_name='eu-central-1')
+
     # Now we push the task definition to AWS
     print("Setting up task definition")
-    task_role_arn = ctx.config.aws.task_role_arn
+    task_role_arn = aws_config["task_role_arn"]
     response = client.register_task_definition(
         family=f"{target_info['name']}",
         taskRoleArn=task_role_arn,
@@ -138,7 +153,7 @@ def deploy(ctx, target, mode, version=None):
     task_definition = response["taskDefinition"]
     task_definition_arn = task_definition["taskDefinitionArn"]
     client.update_service(
-        cluster=ctx.config.aws.cluster_arn,
+        cluster=aws_config["cluster_arn"],
         service=f"{target_info['name']}",
         taskDefinition=task_definition_arn
     )
