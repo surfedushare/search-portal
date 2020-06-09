@@ -13,9 +13,6 @@ surfconext:
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "front-test.surfcatalog.nl"
 
-search:
-  client: "elastic"
-
 elastic_search:
   username: "search_portal_backend_prod"
   host: "elastic2.search-prod.surfcatalog.nl"

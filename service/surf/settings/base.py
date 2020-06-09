@@ -341,8 +341,6 @@ VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
 # Search
 # https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
 
-SEARCH_CLIENT = environment.search.client
-
 EDUREP_JSON_API_ENDPOINT = environment.edurep.json_api_endpoint
 EDUREP_XML_API_ENDPOINT = environment.edurep.xml_api_endpoint
 EDUREP_SOAP_API_ENDPOINT = environment.edurep.soap_api_endpoint

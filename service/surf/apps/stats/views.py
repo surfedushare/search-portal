@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from surf.apps.filters.utils import add_default_material_filters
-from surf.vendor.search.searchselector import get_search_client
+from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
 class StatsView(ViewSet):
@@ -23,8 +23,8 @@ class StatsView(ViewSet):
         Returns the number of all available materials
         """
 
-        ac = get_search_client()
+        elastic = ElasticSearchApiClient()
 
         filters = add_default_material_filters()
-        res = ac.search([], filters=filters, page_size=0)
+        res = elastic.search([], filters=filters, page_size=0)
         return Response(dict(value=res.get("recordcount", 0)))
