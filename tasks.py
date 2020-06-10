@@ -6,7 +6,7 @@ from deploy import prepare_builds, build, push, deploy
 from test import e2e_tests, harvester_tests, service_tests, vendor_tests, test
 
 
-environment, session = create_configuration_and_session(use_aws_default_profile=True)
+environment, session = create_configuration_and_session(use_aws_default_profile=False)
 
 
 namespace = Collection(
