@@ -30,11 +30,9 @@ environment, session = create_configuration_and_session()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environment.secrets.django.secret_key
 
-# Become aware of the frontend that this backend is build for
-# We whitelist this URL entirely to be able to share (login!) cookies
-FRONTEND_DOMAIN = environment.django.frontend_domain
+DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
-FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
+BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -52,9 +50,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # list of allowed endpoints to redirect
 ALLOWED_REDIRECT_HOSTS = [
-    FRONTEND_DOMAIN
+    BASE_URL
 ]
-
 
 # Application definition
 
@@ -71,7 +68,6 @@ INSTALLED_APPS = [
     'mptt',
     'social_django',
 
-    'corsheaders',
     'rest_framework',
     'django_filters',
 
@@ -88,33 +84,8 @@ INSTALLED_APPS = [
     'surf.apps.querylog',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOW_HEADERS = (
-    'x-requested-with',
-    'content-type',
-    'accept',
-    'origin',
-    'authorization',
-    'x-csrftoken',
-    'user-agent',
-    'accept-encoding',
-    'response-type',
-)
-CORS_EXPOSE_HEADERS = (
-    'content-disposition',
-)
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [
-    FRONTEND_DOMAIN
-]
-
 SESSION_COOKIE_SECURE = PROTOCOL == "https"
 CSRF_COOKIE_SECURE = PROTOCOL == "https"
-SESSION_COOKIE_SAMESITE = None
-CSRF_COOKIE_SAMESITE = None
-CSRF_TRUSTED_ORIGINS = [
-    FRONTEND_DOMAIN
-]
 
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -123,7 +94,6 @@ SECURE_HSTS_PRELOAD = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
@@ -305,7 +275,7 @@ SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = environment.surfconext.oidc_endpoint
-SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
+SOCIAL_AUTH_LOGIN_ERROR_URL = BASE_URL
 SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
 SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
 
@@ -332,7 +302,7 @@ SOCIAL_AUTH_PIPELINE = (
 
 )
 
-LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"
+LOGIN_REDIRECT_URL = BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint

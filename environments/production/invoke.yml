@@ -7,8 +7,7 @@ django:
   postgres_user: "django"
   postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   protocol: "https"
-  backend_domain: "zoekportaalback.surf.nl"
-  frontend_domain: "zoekportaal.surf.nl"
+  domain: "zoekportaal.surf.nl"
 
 surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"

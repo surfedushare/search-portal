@@ -6,7 +6,7 @@ django:
   postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
   postgres_host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
   protocol: "https"
-  frontend_domain: "acc.surfedushare.nl"
+  domain: "acc.surfedushare.nl"
 
 surfconext:
   oidc_endpoint: "https://connect.test.surfconext.nl"

@@ -308,7 +308,7 @@ export function createRouter () {
         path: "/login/success",
         beforeEnter(to, from, next) {
           const app = injector.get('App');
-          app.$axios.$get('users/obtain-token/', {withCredentials: true})
+          app.$axios.$get('users/obtain-token/')
             .then((response) => {
               let token = response.token || response.data.token;
               app.store.dispatch('authenticate', { token: token })

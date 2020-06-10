@@ -31,7 +31,7 @@ def require_data_permissions(strategy, details, user=None, is_new=False, *args, 
     if is_undecided:
         current_partial = kwargs.get('current_partial')
         return strategy.redirect(
-            "{}/login/permissions?partial_token={}".format(settings.FRONTEND_BASE_URL, current_partial.token)
+            "{}/login/permissions?partial_token={}".format(settings.BASE_URL, current_partial.token)
         )
 
 
