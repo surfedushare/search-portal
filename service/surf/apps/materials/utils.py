@@ -16,7 +16,7 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     DISCIPLINE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID
 )
-from surf.vendor.search.searchselector import get_search_client
+from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
 def update_materials_data(materials):
@@ -102,7 +102,7 @@ def get_material_details_by_id(material_id, api_client=None):
     """
 
     if not api_client:
-        api_client = get_search_client()
+        api_client = ElasticSearchApiClient()
 
     res = api_client.get_materials_by_id([material_id], drilldown_names=[_DISCIPLINE_FILTER])
 
