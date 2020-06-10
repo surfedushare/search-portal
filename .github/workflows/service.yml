@@ -47,4 +47,4 @@ jobs:
         APPLICATION_MODE: localhost
         POL_DJANGO_POSTGRES_HOST: 127.0.0.1
       run:
-        invoke test --target service~surf.apps
+        invoke test
