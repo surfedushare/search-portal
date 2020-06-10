@@ -71,7 +71,6 @@ INSTALLED_APPS = [
     'mptt',
     'social_django',
 
-    'corsheaders',
     'rest_framework',
     'django_filters',
 
@@ -123,7 +122,6 @@ SECURE_HSTS_PRELOAD = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
