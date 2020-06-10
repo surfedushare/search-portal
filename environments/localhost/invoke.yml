@@ -13,8 +13,7 @@ django:
   postgres_user: "django"
   postgres_host: "postgres"
   protocol: "http"
-  backend_domain: "localhost"
-  frontend_domain: "localhost:8080"
+  domain: "localhost"
 
 surfconext:
   oidc_endpoint: none
