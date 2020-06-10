@@ -138,22 +138,47 @@ http://localhost:8081/
 Tests
 -----
 
-You can run all tests for the entire project by running:
+You can run all tests for the entire project (except vendor) by running:
 
 ```bash
 invoke test
 ```
 
-Often you'll only want to test part of the project like ``service`` or ``harvester``.
-You can specify a target to the test command to run parts of the test suite.
-To only run the Selenium integration tests for example you can run:
+To only test the harvester run:
 
 ```bash
-invoke test --target service~surf.apps
+invoke harvester-tests
 ```
 
-For the complete list of possible targets run:
+or
 
 ```bash
-invoke -h test
+  cd harvester
+  python manage.py test
+```
+
+To only test the service run:
+
+```bash
+invoke service-tests
+```
+
+or
+
+```bash
+cd service
+python manage.py test surf.apps
+```
+
+You can run vendor tests by running:
+
+```bash
+invoke vendor-test
+```
+
+or
+
+```bash
+cd service
+python manage.py test surf.vendor
 ```

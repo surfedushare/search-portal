@@ -4,36 +4,35 @@ from invoke.tasks import task
 from deploy import prepare_builds
 
 
-TEST_TARGETS = ["service~surf.apps", "service~surf.vendor", "harvester"]
-
-
 log = logging.getLogger(__file__)
 
 
 @task(prepare_builds)
-def prepare_tests(ctx):
+def prepare_e2e_tests(ctx):
     with ctx.cd("portal"):
         ctx.run("npm run build -- --dest=../service/surf/apps/materials/static/portal/")
 
 
-@task(prepare_tests, iterable=["target"], help={
-    "target": f"specify one or more targets to test: {', '.join(TEST_TARGETS)}"
-})
-def test(ctx, target):
-    """
-    Run the test suites of specified targets. Specify no targets to run all suites.
-    """
-    targets = target or TEST_TARGETS
-    for target in targets:
-        if target not in TEST_TARGETS:
-            log.warning(f"Found invalid test target: {target}")
-            continue
-        log.info(f"Testing: {target}")
-        target_info = target.split("~")
-        if len(target_info) > 1:
-            main, sub = target_info
-        else:
-            main = target_info[0]
-            sub = ""
-        with ctx.cd(main):
-            ctx.run(f"python manage.py test {sub}", echo=True, pty=True)
+@task(prepare_e2e_tests)
+def e2e_tests(ctx):
+    with ctx.cd("service"):
+        ctx.run(f"python manage.py test e2e_tests", echo=True, pty=True)
+
+@task
+def service_tests(ctx):
+    with ctx.cd("service"):
+        ctx.run(f"python manage.py test surf.apps", echo=True, pty=True)
+
+@task
+def vendor_tests(ctx):
+    with ctx.cd("service"):
+        ctx.run(f"python manage.py test surf.vendor", echo=True, pty=True)
+
+@task
+def harvester_tests(ctx):
+    with ctx.cd("harvester"):
+        ctx.run(f"python manage.py test", echo=True, pty=True)
+
+@task(service_tests, harvester_tests, e2e_tests)
+def test(ctx):
+    pass
