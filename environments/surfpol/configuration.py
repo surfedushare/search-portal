@@ -19,6 +19,7 @@ import os
 import json
 from invoke.config import Config
 import boto3
+from botocore.exceptions import ClientError
 
 
 # First we'll load the relevant non-invoke environment variables
@@ -79,8 +80,11 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
     if aws_secrets:
         secrets_manager = session.client('secretsmanager')
         for group_name, secret_name, secret_id in aws_secrets:
-            secret_value = secrets_manager.get_secret_value(SecretId=secret_id)
-            secret_payload = json.loads(secret_value["SecretString"])
-            secrets[group_name][secret_name] = secret_payload[secret_name]
+            try:
+                secret_value = secrets_manager.get_secret_value(SecretId=secret_id)
+                secret_payload = json.loads(secret_value["SecretString"])
+                secrets[group_name][secret_name] = secret_payload[secret_name]
+            except ClientError:
+                secrets[group_name][secret_name] = None
 
     return environment, session
