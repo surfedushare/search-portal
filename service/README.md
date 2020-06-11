@@ -22,11 +22,10 @@ python manage.py migrate
 This should have setup your database for the most part.
 Unfortunately due to historic reasons there is a lot of configuration going on in the database.
 So it's wise to get a production dump and import it to your system.
-Please ask somebody access to the S3 database dumps bucket.
-Place the latest dump inside ``postgres/dumps`` and then run:
+You can do this with:
 
 ```bash
-make import-db backup=postgres/dumps/<dump-file-name>.sql
+invoke db.import-snapshot
 ```
 
 To finish the setup you can create a superuser for yourself using the ``createsuperuser`` command
