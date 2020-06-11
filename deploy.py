@@ -81,7 +81,7 @@ def push(ctx, target, version=None):
 
     # Login with Docker to AWS
     ctx.run(
-        "aws ecr get-login-password --region eu-central-1 | "
+        "AWS_DEFAULT_PROFILE=pol-dev aws ecr get-login-password --region eu-central-1 | "
         f"docker login --username AWS --password-stdin {target_info['repository']}",
         echo=True
     )
