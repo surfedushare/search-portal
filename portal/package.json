@@ -2,15 +2,16 @@
   "name": "portal",
   "version": "1.7.0",
   "config": {
-    "mode": "django"
+    "server": "django"
   },
   "description": "https://github.com/surfedushare/search-portal",
   "repository": "A frontend for searching open access higher education learning materials",
   "license": "MIT",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "npm_config_server=vue vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "watch": "vue-cli-service build --watch --dest ../service/surf/apps/materials/static/portal/"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.12.1",

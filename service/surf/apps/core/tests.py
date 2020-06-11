@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import SimpleTestCase
 from django.test import Client
 
 
-class TestCore(TestCase):
+class TestCore(SimpleTestCase):
 
     def test_health(self):
         client = Client()

@@ -13,7 +13,7 @@ but there is also an admin available for that part.
 Prerequisites
 -------------
 
-This project uses ``Python 3.6``, ``npm``, ``Docker`` and ``docker-compose``.
+This project uses ``Python 3.6``, ``npm``, ``Docker``, ``docker-compose`` and ``chromedriver``.
 Make sure they are installed on your system before installing the project.
 
 
@@ -132,4 +132,53 @@ Either way the database admin tool become available under:
 
 ```bash
 http://localhost:8081/
+```
+
+
+Tests
+-----
+
+You can run all tests for the entire project (except vendor) by running:
+
+```bash
+invoke test
+```
+
+To only test the harvester run:
+
+```bash
+invoke harvester-tests
+```
+
+or
+
+```bash
+  cd harvester
+  python manage.py test
+```
+
+To only test the service run:
+
+```bash
+invoke service-tests
+```
+
+or
+
+```bash
+cd service
+python manage.py test surf.apps
+```
+
+You can run vendor tests by running:
+
+```bash
+invoke vendor-test
+```
+
+or
+
+```bash
+cd service
+python manage.py test surf.vendor
 ```

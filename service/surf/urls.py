@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
+
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import url, include
@@ -67,7 +69,7 @@ apipatterns = [
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
-    url(r'^localehtml/', MaterialAPIView.as_view()),
+    # url(r'^localehtml/', MaterialAPIView.as_view()),
     url(r'^filteritems/', MpttFilterItems.as_view()),
     url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
         CollectionMaterialPromotionAPIView.as_view()),
@@ -97,7 +99,9 @@ urlpatterns = [
 ]
 
 if settings.MODE == 'localhost':
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # ignored in production
+    # These patterns are ignored in production, but are needed for localhost media and some static files
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static("/images/", document_root=os.path.join(settings.PORTAL_BASE_DIR, "images"))
 
 if settings.DEBUG:
     import debug_toolbar

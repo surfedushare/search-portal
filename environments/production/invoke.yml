@@ -7,16 +7,12 @@ django:
   postgres_user: "django"
   postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   protocol: "https"
-  backend_domain: "zoekportaalback.surf.nl"
-  frontend_domain: "zoekportaal.surf.nl"
+  domain: "zoekportaal.surf.nl"
 
 surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "zoekportaal.surf.nl"
-
-search:
-  client: "elastic"
 
 elastic_search:
   username: "search_portal_backend_prod"

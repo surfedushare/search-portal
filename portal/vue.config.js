@@ -4,18 +4,17 @@ const packageJSON = require('./package.json');
 
 const appDirectory = packageJSON.name + '/';
 const djangoPublicPath = '/static/' + appDirectory;
-const distDirectory = './dist/';
-const webpackStatsFile = distDirectory + packageJSON.name + '.webpack-stats.json';
+const server = process.env.npm_config_server || process.env.npm_package_config_server;
 
 
 module.exports = {
 
-  publicPath: (process.env.NODE_ENV === 'production' && process.env.npm_package_config_mode === 'django') ?
-    djangoPublicPath : '/',
-  outputDir: distDirectory,
+  publicPath: (server === 'django') ? djangoPublicPath : '/',
   lintOnSave: false,
   transpileDependencies: ['@sentry'],  // this makes sure we polyfill certain dependencies
-
+  devServer: {
+    proxy: 'http://localhost:8000'
+  },
   configureWebpack: {
     resolve: {
       alias: {
@@ -27,7 +26,7 @@ module.exports = {
 
     config
       .plugin('BundleTracker')
-      .use(BundleTracker, [{filename: webpackStatsFile}]);
+      .use(BundleTracker, [{path: config.output.get('path')}]);
 
   }
 
