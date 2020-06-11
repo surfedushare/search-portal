@@ -12,7 +12,9 @@ module.exports = {
   publicPath: (server === 'django') ? djangoPublicPath : '/',
   lintOnSave: false,
   transpileDependencies: ['@sentry'],  // this makes sure we polyfill certain dependencies
-
+  devServer: {
+    proxy: 'http://localhost:8000'
+  },
   configureWebpack: {
     resolve: {
       alias: {
