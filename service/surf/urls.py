@@ -69,7 +69,7 @@ apipatterns = [
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
-    url(r'^localehtml/', MaterialAPIView.as_view()),
+    # url(r'^localehtml/', MaterialAPIView.as_view()),
     url(r'^filteritems/', MpttFilterItems.as_view()),
     url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
         CollectionMaterialPromotionAPIView.as_view()),
