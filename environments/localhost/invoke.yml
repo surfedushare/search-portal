@@ -13,16 +13,12 @@ django:
   postgres_user: "django"
   postgres_host: "postgres"
   protocol: "http"
-  backend_domain: "localhost"
-  frontend_domain: "localhost:8080"
+  domain: "localhost"
 
 surfconext:
   oidc_endpoint: none
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "https@//front-test.surfcatalog.nl/"
-
-search:
-  client: "elastic"
 
 elastic_search:
   username: "search_portal_backend_prod"
@@ -30,7 +26,6 @@ elastic_search:
   protocol: "http"
 
 edurep:
-  soap_supplier_id: null
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
@@ -44,3 +39,9 @@ secrets:
     secret_key: "development-secret-key--ignored"
   elastic_search:
     password: "qwerty"
+
+aws:
+  cluster_arn: null
+  image_upload_bucket: null
+  profile_name: null
+  task_role_arn: null

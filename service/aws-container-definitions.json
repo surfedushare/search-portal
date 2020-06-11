@@ -1,6 +1,6 @@
 [
     {
-        "name": "search-portal-container-dev",
+        "name": "search-portal-container",
         "image": "${REPOSITORY}/${NAME}:${version}",
         "cpu": 0,
         "essential": true,
@@ -17,7 +17,7 @@
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
-                "awslogs-group": "/ecs/search-portal-dev",
+                "awslogs-group": "/ecs/search-portal",
                 "awslogs-region": "eu-central-1",
                 "awslogs-stream-prefix": "${version}"
             }

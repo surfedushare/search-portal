@@ -1,0 +1,45 @@
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses AWS Secret Manager to lookup any secrets at application bootstrap
+
+django:
+  debug: false
+  postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
+  postgres_host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
+  protocol: "https"
+  domain: "acc.surfedushare.nl"
+
+surfconext:
+  oidc_endpoint: "https://connect.test.surfconext.nl"
+  voot_api_endpoint: "https://voot.test.surfconext.nl"
+  client_id: "front-test.surfcatalog.nl"
+
+elastic_search:
+  username: "search_portal_backend_prod"
+  host: "elastic2.search-prod.surfcatalog.nl"
+  protocol: "https"
+
+edurep:
+  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
+  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
+  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+secrets:
+  django:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/django-di27dQ"
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-vuxDkK"
+  surfconext:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/surfconext-BTKTUw"
+  elastic_search:
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/elastic-1xprrT"
+
+aws:
+  cluster_arn: "arn:aws:ecs:eu-central-1:000428825067:cluster/surfpol"
+  image_upload_bucket: "search-portal-media-uploads-acc"
+  profile_name: "pol-acc"
+  task_role_arn: "arn:aws:iam::000428825067:role/ecsTaskExecutionRole"
+
+  # The legacy mechanism to be able to override postgres credentials during migrations
+  # Keeping this around for now until we move to AWS Secrets Manager fully
+postgres:
+  credentials: null

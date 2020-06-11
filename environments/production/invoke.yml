@@ -7,16 +7,12 @@ django:
   postgres_user: "django"
   postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   protocol: "https"
-  backend_domain: "zoekportaalback.surf.nl"
-  frontend_domain: "zoekportaal.surf.nl"
+  domain: "zoekportaal.surf.nl"
 
 surfconext:
-  oidc_endpoint: "https://oidc.surfconext.nl"
+  oidc_endpoint: "https://connect.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
-  client_id: "https@//zoekportaal.surf.nl/"
-
-search:
-  client: "elastic"
+  client_id: "zoekportaal.surf.nl"
 
 elastic_search:
   username: "search_portal_backend_prod"
@@ -24,7 +20,6 @@ elastic_search:
   protocol: "https"
 
 edurep:
-  soap_supplier_id: null
   xml_api_endpoint: "http://wszoeken.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://smb.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"

@@ -1,22 +1,17 @@
 # NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
 # It uses AWS Secret Manager to lookup any secrets at application bootstrap
 
-
 django:
   debug: true
   postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
-  postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
+  postgres_host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   protocol: "http"
-  backend_domain: "surfpol-loadbalancer-dev-1467666946.eu-central-1.elb.amazonaws.com"
-  frontend_domain: "surfpol-loadbalancer-dev-1467666946.eu-central-1.elb.amazonaws.com"
+  domain: "dev.surfedushare.nl"
 
 surfconext:
-  oidc_endpoint: "https://oidc.test.surfconext.nl"
+  oidc_endpoint: "https://connect.test.surfconext.nl"
   voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "https@//front-dev.surfcatalog.nl/"
-
-search:
-  client: "elastic"
+  client_id: "front-dev.surfcatalog.nl"
 
 elastic_search:
   username: "search_portal_backend_test"
@@ -24,7 +19,6 @@ elastic_search:
   protocol: "https"
 
 edurep:
-  soap_supplier_id: null
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
   soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
@@ -36,15 +30,16 @@ secrets:
   django:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/django-TPQRKj"
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/postgres-iLOlbr"
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-lc0XXX"
   surfconext:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/surfconext-YAf8dw"
   elastic_search:
     password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/elastic-ByS7CH"
 
 aws:
+  cluster_arn: "arn:aws:ecs:eu-central-1:322480324822:cluster/surfpol"
+  image_upload_bucket: "search-portal-media-uploads-dev"
   profile_name: "pol-dev"
-  cluster_arn: "arn:aws:ecs:eu-central-1:322480324822:cluster/surfpol-dev"  # TODO: strip dev postfix?
   task_role_arn: "arn:aws:iam::322480324822:role/ecsTaskExecutionRole"
 
 # The legacy mechanism to be able to override postgres credentials during migrations

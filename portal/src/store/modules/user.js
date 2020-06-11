@@ -61,13 +61,13 @@ export default {
   actions: {
     async getUser({ commit }) {
       commit('USER_LOADING', true);
-      const user = await this.$axios.$get('users/me/', {withCredentials: true});
+      const user = await this.$axios.$get('users/me/');
       commit('SET_USER', user);
       commit('USER_LOADING', false);
     },
     async postUser({ commit, state }) {
       commit('USER_LOADING', true);
-      await this.$axios.$post('users/me/', state.user, {withCredentials: true});
+      await this.$axios.$post('users/me/', state.user);
       commit('SET_USER', state.user);
       commit('USER_LOADING', false);
     },

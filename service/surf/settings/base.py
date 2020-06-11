@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 import sys
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,18 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from surfpol import environment, MODE, get_package_info
+from surfpol import create_configuration_and_session, MODE, CONTEXT, get_package_info
 PACKAGE_INFO = get_package_info()
-
+environment, session = create_configuration_and_session()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environment.secrets.django.secret_key
 
-# Become aware of the frontend that this backend is build for
-# We whitelist this URL entirely to be able to share (login!) cookies
-FRONTEND_DOMAIN = environment.django.frontend_domain
+DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
-FRONTEND_BASE_URL = "{}://{}".format(PROTOCOL, FRONTEND_DOMAIN)
+BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -49,9 +50,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # list of allowed endpoints to redirect
 ALLOWED_REDIRECT_HOSTS = [
-    FRONTEND_DOMAIN
+    BASE_URL
 ]
-
 
 # Application definition
 
@@ -68,7 +68,6 @@ INSTALLED_APPS = [
     'mptt',
     'social_django',
 
-    'corsheaders',
     'rest_framework',
     'django_filters',
 
@@ -85,33 +84,8 @@ INSTALLED_APPS = [
     'surf.apps.querylog',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOW_HEADERS = (
-    'x-requested-with',
-    'content-type',
-    'accept',
-    'origin',
-    'authorization',
-    'x-csrftoken',
-    'user-agent',
-    'accept-encoding',
-    'response-type',
-)
-CORS_EXPOSE_HEADERS = (
-    'content-disposition',
-)
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [
-    FRONTEND_DOMAIN
-]
-
 SESSION_COOKIE_SECURE = PROTOCOL == "https"
 CSRF_COOKIE_SECURE = PROTOCOL == "https"
-SESSION_COOKIE_SAMESITE = None
-CSRF_COOKIE_SAMESITE = None
-CSRF_TRUSTED_ORIGINS = [
-    FRONTEND_DOMAIN
-]
 
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -120,7 +94,6 @@ SECURE_HSTS_PRELOAD = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
@@ -239,34 +212,33 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 STATICFILES_DIRS = []
-# Inside containers we sneak the STATIC_ROOT into STATICFILES_DIRS.
-# When running collectstatic inside containers the root will always be empty.
-# During development having root as staticfile directory provides a work around to get to the frontend build.
-if MODE == "container" and DEBUG:
-    STATICFILES_DIRS += [
-        os.path.join('/usr/src/static')
-    ]
+
 
 # Media uploads
 
 if MODE != 'localhost':
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_STORAGE_BUCKET_NAME = environment.aws.image_upload_bucket
+    AWS_S3_REGION_NAME = 'eu-central-1'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
-AWS_STORAGE_BUCKET_NAME = 'search-portal-media-uploads'
-AWS_S3_REGION_NAME = 'eu-central-1'
+
 
 # Django Webpack loader
 # https://github.com/owais/django-webpack-loader
 
-PORTAL_BASE_DIR = os.path.join(STATIC_ROOT, "portal")
+PORTAL_BASE_DIR = os.path.join(STATIC_ROOT, "portal") if CONTEXT == 'container' else \
+    os.path.join(BASE_DIR, "apps", "materials", "static", "portal")
+
+if not os.path.exists(PORTAL_BASE_DIR):
+    os.makedirs(PORTAL_BASE_DIR)
 
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': PORTAL_BASE_DIR + os.sep,  # must end with slash
-        'STATS_FILE': os.path.join(PORTAL_BASE_DIR, 'portal.webpack-stats.json'),
+        'STATS_FILE': os.path.join(PORTAL_BASE_DIR, 'webpack-stats.json'),
     }
 }
 
@@ -276,6 +248,19 @@ WEBPACK_LOADER = {
 # https://docs.sentry.io/
 
 if not DEBUG:
+
+    def strip_sensitive_data(event, hint):
+        # modify event here
+        del event['request']['headers']['User-Agent']
+        return event
+
+    # Initiates sentry without sending personal data
+    sentry_sdk.init(
+        before_send=strip_sensitive_data,
+        dsn="https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956",
+        integrations=[DjangoIntegration()]
+    )
+
     # We kill all DisallowedHost logging on the servers,
     # because it happens so frequently that we can't do much about it
     ignore_logger('django.security.DisallowedHost')
@@ -290,7 +275,7 @@ SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = environment.surfconext.oidc_endpoint
-SOCIAL_AUTH_LOGIN_ERROR_URL = FRONTEND_BASE_URL
+SOCIAL_AUTH_LOGIN_ERROR_URL = BASE_URL
 SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
 SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
 
@@ -310,13 +295,14 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.create_user',
     'surf.vendor.surfconext.pipeline.store_data_permissions',
     'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.user.user_details',
     'surf.vendor.surfconext.pipeline.get_groups',
     'surf.vendor.surfconext.pipeline.assign_communities',
     'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
+
 )
 
-LOGIN_REDIRECT_URL = FRONTEND_BASE_URL + "/login/success"
+LOGIN_REDIRECT_URL = BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
@@ -325,12 +311,9 @@ VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
 # Search
 # https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
 
-SEARCH_CLIENT = environment.search.client
-
 EDUREP_JSON_API_ENDPOINT = environment.edurep.json_api_endpoint
 EDUREP_XML_API_ENDPOINT = environment.edurep.xml_api_endpoint
 EDUREP_SOAP_API_ENDPOINT = environment.edurep.soap_api_endpoint
-EDUREP_SOAP_SUPPLIER_ID = environment.edurep.soap_supplier_id
 
 ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password

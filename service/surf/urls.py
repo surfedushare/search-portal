@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
+
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import url, include
@@ -74,19 +76,32 @@ apipatterns = [
 ] + router.urls
 
 urlpatterns = [
+    # System
     url(r'^health/?$', health_check, name="health-check"),
+
+    # Authentication
+    # Catching frontend login endpoints before social auth handles "login" prefix
+    url(r'^login/(permissions|success)/?', portal_single_page_application),
     url('', include('social_django.urls', namespace='social')),
     url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
+
+    # Admin interface
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^admin/', admin.site.urls),
+
+    # API and other data
     url(r'^api/(?P<version>(v1))/', include(apipatterns)),
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
+
+    # Frontend
     url(r'^$', portal_single_page_application, name="portal-spa"),
     url(r'^.*/$', portal_single_page_application),
 ]
 
 if settings.MODE == 'localhost':
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # ignored in production
+    # These patterns are ignored in production, but are needed for localhost media and some static files
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static("/images/", document_root=os.path.join(settings.PORTAL_BASE_DIR, "images"))
 
 if settings.DEBUG:
     import debug_toolbar

@@ -52,15 +52,14 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID
 )
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-from surf.vendor.search.searchselector import get_search_client
+from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
 logger = logging.getLogger(__name__)
 
 
-def portal_single_page_application(request):
+def portal_single_page_application(request, *args):
     return render(request, "portal/index.html")
-
 
 
 class MaterialSearchAPIView(APIView):
@@ -122,9 +121,9 @@ class MaterialSearchAPIView(APIView):
         except ValueError:
             pass
 
-        ac = get_search_client()
+        elastic = ElasticSearchApiClient()
 
-        res = ac.search(**data)
+        res = elastic.search(**data)
         records = add_extra_parameters_to_materials(request.user, res["records"])
 
         if return_filters and "lom.classification.obk.discipline.id" in data["drilldown_names"]:
@@ -168,9 +167,9 @@ class KeywordsAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        ac = get_search_client()
+        elastic = ElasticSearchApiClient()
 
-        res = ac.autocomplete(**data)
+        res = elastic.autocomplete(**data)
         return Response(res)
 
 
@@ -207,12 +206,12 @@ class MaterialAPIView(APIView):
 
         else:
             # return overview of newest Materials
-            ac = get_search_client()
+            elastic = ElasticSearchApiClient()
 
             # add default filters to search materials
             filters = add_default_material_filters()
 
-            res = ac.search([],
+            res = elastic.search([],
                             # sort by newest items first
                             ordering="-lom.lifecycle.contribute.publisherdate",
                             filters=filters,
@@ -396,9 +395,9 @@ class CollectionViewSet(ModelViewSet):
                       page_size=data["page_size"])
 
             if ids:
-                ac = get_search_client()
+                elastic = ElasticSearchApiClient()
 
-                res = ac.get_materials_by_id(ids, **data)
+                res = elastic.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
                 for record in records:
