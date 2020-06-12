@@ -55,7 +55,6 @@
       Search,
       Materials
     },
-    mounted() {},
     data() {
       return {
         search: {},

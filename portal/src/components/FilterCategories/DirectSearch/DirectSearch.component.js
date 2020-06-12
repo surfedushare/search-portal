@@ -1,8 +1,9 @@
-import { mapGetters } from 'vuex';
-import { debounce, generateSearchMaterialsQuery } from './../../_helpers';
-import DatesRange from './../../DatesRange';
+import { mapGetters } from "vuex";
+import { generateSearchMaterialsQuery } from "./../../_helpers";
+import { debounce } from "lodash";
+import DatesRange from "./../../DatesRange";
 export default {
-  name: 'direct-search',
+  name: "direct-search",
   props: {
     value: {
       type: Object,
@@ -15,7 +16,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getFilterCategories');
+    this.$store.dispatch("getFilterCategories");
   },
   components: {
     DatesRange
@@ -49,7 +50,7 @@ export default {
      */
     search: debounce((loading, search, vm) => {
       vm.$store
-        .dispatch('searchMaterialsKeywords', {
+        .dispatch("searchMaterialsKeywords", {
           params: {
             query: search
           }
@@ -66,13 +67,13 @@ export default {
      */
     onSubmit() {
       this.$router.push(this.generateSearchMaterialsQuery(this.formData));
-      this.$emit('input', this.formData);
+      this.$emit("input", this.formData);
     },
     /**
      * Event on changing the keywords
      */
     setKeywords() {
-      this.$emit('input', this.formData);
+      this.$emit("input", this.formData);
     },
     /**
      * Event on changing the category
@@ -133,7 +134,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['filter_categories', 'materials_keywords']),
+    ...mapGetters(["filter_categories", "materials_keywords"]),
 
     /**
      * Get keywords

@@ -2,6 +2,10 @@
 .search {
   position: relative;
   z-index: 10;
+  background: white;
+  border-radius: 20px;
+  margin-top: -20px;
+
   &__fields {
     padding: 15px;
     text-align: center;
@@ -200,25 +204,18 @@
     z-index: 4;
   }
 
-  .v-select {
-    display: flex;
-    align-items: center;
+  input {
 
-    .dropdown-toggle {
-      height: 100%;
-    }
+    font-size: 20px;
+  }
 
-    .dropdown-menu .active > a {
-      color: #fff;
-      background: url('/images/search-white.svg') 21px 50% no-repeat;
-    }
-
-    @media @mobile {
-      border: 1px solid #bcbfc2;
-      border-radius: 7px;
-
-    }
-
+  .search-container {
+    font-family: nunito;
+    font-size: 16px;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+    background-color: #ffffff;
+    background: url('/images/search-grey.svg') 21px 50% no-repeat;
   }
 
   &__autocomplete {

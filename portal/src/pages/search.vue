@@ -92,7 +92,6 @@ export default {
   },
   data() {
     return {
-      search_text: [],
       search: {},
       isShow: false,
       publisherdate: 'lom.lifecycle.contribute.publisherdate',
@@ -112,6 +111,12 @@ export default {
     ],
     };
   },
+  mounted() {
+    let urlInfo = parseSearchMaterialsQuery(this.$route.query);
+    this.dates_range = urlInfo.dateRange;
+    this.search = urlInfo.search;
+    this.$store.dispatch('searchMaterials', urlInfo.search);
+  },
   computed: {
     ...mapGetters([
       'materials',
@@ -125,10 +130,6 @@ export default {
         this.$store.dispatch('searchMaterials', search);
       }
     },
-    /**
-     * Watcher on the dates_range field
-     * @param dates - Object
-     */
     dates_range(dates) {
       const { filters } = this.search;
       let new_filters = filters ? filters.slice(0) : [];
@@ -147,17 +148,8 @@ export default {
       this.search = Object.assign({}, this.search, { filters: new_filters });
     }
   },
-  mounted() {
-    let urlInfo = parseSearchMaterialsQuery(this.$route.query);
-    this.dates_range = urlInfo.dateRange;
-    this.search = urlInfo.search;
-    this.$store.dispatch('searchMaterials', urlInfo.search);
-  },
   methods: {
     generateSearchMaterialsQuery,
-    /**
-     * Load next materials
-     */
     loadMore() {
       const { search, materials } = this;
       if (materials && search) {
@@ -166,7 +158,7 @@ export default {
         if (records_total > page_size * page) {
           this.$store.dispatch(
             'searchNextPageMaterials',
-            Object.assign({}, search, { page: page + 1 })
+            {...search, page: page + 1 }
           );
         }
       }
@@ -260,6 +252,7 @@ export default {
 
     &_search {
       margin: auto;
+      margin-top: 15px;
 
       @media @mobile {
         width: 100%;
