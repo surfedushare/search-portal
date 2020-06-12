@@ -18,7 +18,7 @@
             </ul>
           </div>
           <Search
-            show-selected-category="lom.classification.obk.educationallevel.id"
+            show-selected-category="lom.educational.context"
             class="main__info_search"
             active-category-external-id="lom.technical.format"
           />
