@@ -14,7 +14,6 @@
           </button>
         </div>
         <Search
-          :hide-categories="true"
           :hide-filter="true"
           v-model="search"
           @submit="onSearch"

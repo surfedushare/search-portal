@@ -21,33 +21,6 @@
     }
   }
 
-  label {
-    cursor: pointer;
-  }
-
-  &__input {
-    flex: 1 1 auto;
-    border: 0;
-    border-radius: 0;
-    height: 67px;
-    font-family: @second-font;
-    font-size: 16px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.44;
-    letter-spacing: normal;
-    color: @dark-grey;
-
-    @media @mobile {
-      display: none;
-    }
-    &:focus,
-    &:active {
-      outline: none;
-    }
-  }
-
   &__themes {
     display: flex;
     width: 100%;
@@ -216,22 +189,5 @@
     box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
     background-color: #ffffff;
     background: url('/images/search-grey.svg') 21px 50% no-repeat;
-  }
-
-  &__autocomplete {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-    background-color: #ffffff;
-    min-height: 100%;
-    z-index: 3;
-    @media @mobile {
-      //padding: 15px;
-      position: inherit;
-      box-shadow: none;
-    }
   }
 }

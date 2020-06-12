@@ -5,11 +5,10 @@ import _, { debounce } from "lodash";
 
 export default {
   name: "search",
+  components: {
+    VueAutosuggest
+  },
   props: {
-    "hide-categories": {
-      type: Boolean,
-      default: false
-    },
     "hide-filter": {
       type: Boolean,
       default: false
@@ -59,9 +58,6 @@ export default {
       }
     };
   },
-  components: {
-    VueAutosuggest
-  },
   methods: {
     onInputChange(query) {
       this.searchSuggestions(query, this);
@@ -105,15 +101,11 @@ export default {
       this.$emit("input", this.formData);
     },
 
-    // TODO: needed?
-    getTitleTranslation(filter_category, language) {
-      if (
-        !_.isNil(filter_category.title_translations) &&
-        !_.isEmpty(filter_category.title_translations)
-      ) {
-        return filter_category.title_translations[language];
+    titleTranslation(filterCategory) {
+      if (filterCategory.title_translations) {
+        return filterCategory.title_translations[this.$i18n.locale];
       }
-      return filter_category.name;
+      return filterCategory.name;
     },
     generateSearchMaterialsQuery,
     showMobileFilterOptions() {
@@ -132,7 +124,7 @@ export default {
 
     changeFilterCategory($event) {
       this.setOnlyChildSelected(
-        this.filter_category.children,
+        this.filterCategory.children,
         $event.target.value
       );
       // const { external_id } = this.filter_category;
@@ -205,25 +197,23 @@ export default {
         "with-dropdown": this.suggestions.length > 0
       };
     },
-    filter_category() {
+    displayCategorySelect() {
       const { filterCategories, showSelectedCategory } = this;
-
-      if (
-        filterCategories &&
-        filterCategories.results &&
-        showSelectedCategory
-      ) {
-        return filterCategories.results.find(
-          category => category.external_id === showSelectedCategory
-        );
+      return (
+        filterCategories && filterCategories.results && showSelectedCategory
+      );
+    },
+    filterCategory() {
+      if (!this.displayCategorySelect) {
+        return false;
       }
 
-      return false;
+      const { filterCategories, showSelectedCategory } = this;
+
+      return filterCategories.results.find(
+        category => category.external_id === showSelectedCategory
+      );
     },
-    /**
-     * Get the active category
-     * @returns {*} - false or active category
-     */
     active_category() {
       const { filterCategories, hideFilter, activeCategoryExternalId } = this;
 

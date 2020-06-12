@@ -16,7 +16,6 @@
           </div>
           <Search
             v-if="search"
-            :hide-categories="true"
             :hide-filter="true"
             v-model="search"
             class="search__info_search"
@@ -112,7 +111,7 @@ export default {
     };
   },
   mounted() {
-    let urlInfo = parseSearchMaterialsQuery(this.$route.query);
+    const urlInfo = parseSearchMaterialsQuery(this.$route.query);
     this.dates_range = urlInfo.dateRange;
     this.search = urlInfo.search;
     this.$store.dispatch('searchMaterials', urlInfo.search);
