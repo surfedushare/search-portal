@@ -125,18 +125,22 @@
           }
 
         }
+        #unsupported,
         .mobile {
           display: none;
         }
-
-        .mobile-content {
+        #unsupported,
+        .mobile-content
+         {
             margin: 40px auto;
             max-width: 300px;
             text-align: center;
         }
+        #unsupported img,
         .mobile-content img {
             width: 150px;
         }
+        #unsupported p,
         .mobile-content p {
             margin-top: 40px;
         }
@@ -146,37 +150,45 @@
 </head>
 <body>
     <noscript>
-     <strong>Het zoekportaal heeft JavaScript nodig om te functioneren. Zet JavaScript aan in de browser.</strong>
+        <strong>Het zoekportaal heeft JavaScript nodig om te functioneren. Zet JavaScript aan in de browser.</strong>
     </noscript>
 
-    <script type="text/javascript">
-        const isIE = /*@cc_on!@*/false || !!document.documentMode;
-        const isEdge = !isIE && !!window.StyleMedia;
+    <div id="unsupported">
+        <img src="/images/surflogo@3x.png">
+        <p>Internet Explorer en Legacy Edge worden niet ondersteund door het zoekportaal. Gebruik een meer recente browser.</p>
+        <p>Internet Explorer and Legacy Edge are not supported by the search portal. Please use a more recent browser.</p>
+    </div>
 
-        if (isEdge || isIE) {
-          document.write("" +
-            "<div class='mobile-content'>" +
-              "<img src=\"/images/surflogo@3x.png\">" +
-              "<p>Internet Explorer en Legacy Edge worden niet ondersteund door het zoekportaal. Gebruik een meer recente browser." +
-              "</p>" +
-            "</div>");
-        }
-        else {
-          document.write("" +
-            "<div id='__nuxt'>" +
-              "<div id='nuxt-loading' aria-live='polite' role='status'>" +
-                "<div>Loading...</div>" +
-              "</div>" +
-            "</div>" +
-            "<div class=\"mobile\">\n" +
-        "        <div class=\"mobile-content\">\n" +
-        "          <img src=\"/images/surflogo@3x.png\">\n" +
-        "          <p>Het zoekportaal is gedurende de pilot niet te gebruiken op kleine schermen. Probeer je device te draaien of gebruik een computer.</p>\n" +
-        "          <p>During the pilot the search portal can't be used on small screens. Try to rotate your device or use a desktop computer.</p>\n" +
-        "        </div>\n" +
-        "    </div>"
-          );
-        }
+    <div class="mobile">
+        <div class="mobile-content">
+            <img src="/images/surflogo@3x.png">
+            <p>Het zoekportaal is gedurende de pilot niet te gebruiken op kleine schermen. Probeer je device te draaien of gebruik een computer.</p>
+            <p>During the pilot the search portal can't be used on small screens. Try to rotate your device or use a desktop computer.</p>
+        </div>
+    </div>
+
+    <script>
+      var isIE = typeof document.documentMode == "number" || new Function("return/*@cc_on!@*/!1")( );
+      var isEdge = !isIE && !!window.StyleMedia;
+      var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+      if (isIE || isEdge ) {
+          document.getElementById("unsupported").style.display = "block";
+      }
+      else {
+          var app = document.createElement("div");
+          app.setAttribute("id", "__nuxt");
+          document.body.appendChild(app);
+          var loadNuxt = document.createElement("div");
+          loadNuxt.setAttribute("id", "nuxt-loading");
+          loadNuxt.setAttribute("aria-live", "polite");
+          loadNuxt.setAttribute("role", "status");
+          app.appendChild(loadNuxt);
+          var loading = document.createElement("div");
+          var text = document.createTextNode("loading");
+          loading.appendChild(text);
+          loadNuxt.appendChild(loading);
+      }
     </script>
 </body>
 </html>
