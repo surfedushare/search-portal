@@ -170,7 +170,6 @@
     <script>
       var isIE = typeof document.documentMode == "number" || new Function("return/*@cc_on!@*/!1")( );
       var isEdge = !isIE && !!window.StyleMedia;
-      var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 
       if (isIE || isEdge ) {
           document.getElementById("unsupported").style.display = "block";
