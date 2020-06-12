@@ -20,7 +20,6 @@
     "axios": "0.19.0",
     "cookie": "0.4.0",
     "core-js": "3.6.5",
-    "formdata-polyfill": "3.0.19",
     "js-cookie": "2.2.1",
     "numeral": "2.0.6",
     "uuid-validate": "0.0.3",
