@@ -159,7 +159,7 @@
         <p>Internet Explorer and Legacy Edge are not supported by the search portal. Please use a more recent browser.</p>
     </div>
 
-    <div class="mobile">
+    <div id="mobile" class="mobile">
         <div class="mobile-content">
             <img src="/images/surflogo@3x.png">
             <p>Het zoekportaal is gedurende de pilot niet te gebruiken op kleine schermen. Probeer je device te draaien of gebruik een computer.</p>
@@ -167,27 +167,23 @@
         </div>
     </div>
 
-    <script>
-      var isIE = typeof document.documentMode == "number" || new Function("return/*@cc_on!@*/!1")( );
-      var isEdge = !isIE && !!window.StyleMedia;
+    <div id="__nuxt">
+        <div id="nuxt-loading" aria-live="polite" role="status">
+            <div>Loading...</div>
+        </div>
+    </div>
 
-      if (isIE || isEdge ) {
-          document.getElementById("unsupported").style.display = "block";
-      }
-      else {
-          var app = document.createElement("div");
-          app.setAttribute("id", "__nuxt");
-          document.body.appendChild(app);
-          var loadNuxt = document.createElement("div");
-          loadNuxt.setAttribute("id", "nuxt-loading");
-          loadNuxt.setAttribute("aria-live", "polite");
-          loadNuxt.setAttribute("role", "status");
-          app.appendChild(loadNuxt);
-          var loading = document.createElement("div");
-          var text = document.createTextNode("loading");
-          loading.appendChild(text);
-          loadNuxt.appendChild(loading);
-      }
+    <script>
+        var isIE = typeof document.documentMode == "number" || new Function("return/*@cc_on!@*/!1")( );
+        var isEdge = !isIE && !!window.StyleMedia;
+        var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+        if (isIE || isEdge) {
+            document.body.removeChild(document.getElementById("__nuxt"));
+            document.getElementById("unsupported").style.display = "block";
+            document.body.removeChild(document.getElementById("mobile"));
+        }
+
     </script>
 </body>
 </html>
