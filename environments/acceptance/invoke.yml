@@ -28,8 +28,6 @@ secrets:
     secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/django-di27dQ"
   postgres:
     password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-vuxDkK"
-  postgres_owner:
-    password: null
   surfconext:
     secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/surfconext-BTKTUw"
   elastic_search:
