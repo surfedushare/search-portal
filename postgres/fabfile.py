@@ -19,13 +19,17 @@ def setup(ctx):
                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
         ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP DATABASE harvester"',
                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
+        ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP OWNED BY postgres"',
+                  echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
+        ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP USER django"',
+                  echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
         # Create default database
         ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "CREATE DATABASE edushare"',
                   echo=True, watchers=[postgres_password_responder], pty=True)
         # Create application role if it doesn't exist yet
         ctx.local(
             f'psql -h localhost -p 1111 -U {postgres_user} -W '
-            f'-c "CREATE USER django WITH ENCRYPTED PASSWORD \'{ctx.config.secrets.postgres.password}\'"',
+            f'-c "CREATE USER django WITH ENCRYPTED PASSWORD \'{ctx.config.secrets.postgres_application.password}\'"',
             echo=True, warn=True, watchers=[postgres_password_responder], pty=True
         )
         # Initialise permissions and other databases
