@@ -1,6 +1,6 @@
 import os
 import boto3
-from invoke import task
+from invoke import task, Responder
 
 
 def download_snapshot(snapshot_name):
@@ -36,10 +36,16 @@ def import_snapshot(ctx, snapshot_name=None, migrate=True):
 
     snapshot_file_path = download_snapshot(snapshot_name)
 
+    # Setup auto-responser.
+    # Administrative postgres user on localhost will always be postgres (depends on POSTGRES_USER environment variable)
+    postgres_password = ctx.config.secrets.postgres.password
+    postgres_password_responder = Responder(pattern="Password", response=postgres_password + "\n")
+
     # Make minor adjustments to dumps for legacy dumps to work on AWS
     if migrate:
         print("Migrating dump file")
         ctx.run(f"sed -i 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
 
     print("Importing snapshot")
-    ctx.run(f"psql -h localhost -U postgres -d edushare -f {snapshot_file_path}")
+    ctx.run(f"psql -h localhost -U postgres -d edushare -f {snapshot_file_path}",
+            pty=True, watchers=[postgres_password_responder])
