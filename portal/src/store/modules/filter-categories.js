@@ -1,10 +1,10 @@
-import _ from "lodash";
-import injector from "vue-inject";
-import { parseSearchMaterialsQuery } from "~/components/_helpers";
+import _ from 'lodash';
+import injector from 'vue-inject';
+import { parseSearchMaterialsQuery } from '~/components/_helpers';
 
-const $log = injector.get("$log");
+const $log = injector.get('$log');
 
-const PUBLISHER_DATE_ID = "lom.lifecycle.contribute.publisherdate";
+const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate';
 
 function getFiltersForSearch(items) {
   return _.reduce(
@@ -120,7 +120,7 @@ export default {
       }
 
       let selected = getFiltersForSearch(state.filter_categories.results);
-      let selectedGroups = _.groupBy(selected, "searchId");
+      let selectedGroups = _.groupBy(selected, 'searchId');
       return _.map(selectedGroups, (items, group) => {
         if (group === PUBLISHER_DATE_ID) {
           let dates = items[0].dates;
@@ -131,7 +131,7 @@ export default {
         }
         return {
           external_id: group,
-          items: _.reject(_.map(items, "external_id"), _.isEmpty)
+          items: _.reject(_.map(items, 'external_id'), _.isEmpty)
         };
       });
     },
@@ -145,8 +145,8 @@ export default {
         _.isNil(state.filter_categories_loading) &&
         _.isEmpty(state.filter_categories)
       ) {
-        const app = injector.get("App");
-        let promise = this.$axios.get("filter-categories/").then(response => {
+        const app = injector.get('App');
+        let promise = this.$axios.get('filter-categories/').then(response => {
           // Preprocess the filters
           response.data.defaults = _.cloneDeep(response.data.results);
           let filters = getFiltersFromQuery(app.router.currentRoute.query);
@@ -156,11 +156,11 @@ export default {
             filters.dateRange
           );
 
-          commit("SET_FILTER_CATEGORIES", response.data);
-          commit("SET_FILTER_CATEGORIES_LOADING", null);
+          commit('SET_FILTER_CATEGORIES', response.data);
+          commit('SET_FILTER_CATEGORIES_LOADING', null);
           return response.data;
         });
-        commit("SET_FILTER_CATEGORIES_LOADING", promise);
+        commit('SET_FILTER_CATEGORIES_LOADING', promise);
       }
 
       return _.isNil(state.filter_categories_loading)
@@ -173,7 +173,7 @@ export default {
       state.filter_categories = payload;
 
       const disciplines = payload.results.find(
-        child => child.external_id.search("discipline.id") !== -1
+        child => child.external_id.search('discipline.id') !== -1
       );
       state.disciplines = _.reduce(
         disciplines.children,
@@ -199,7 +199,7 @@ export default {
     SETUP_FILTER_CATEGORIES(state, data) {
       if (_.isNil(state.filter_categories)) {
         $log.info(
-          "Unable to setup filter categories due to missing categories"
+          'Unable to setup filter categories due to missing categories'
         );
         return;
       }
@@ -225,7 +225,7 @@ export default {
         openFilterIds,
         showAllFilterIds
       );
-      this.commit("SET_FILTER_CATEGORIES", state.filter_categories);
+      this.commit('SET_FILTER_CATEGORIES', state.filter_categories);
     },
     SET_FILTER_SELECTED(state, categoryId) {
       let category = state.byCategoryId[categoryId];
@@ -233,7 +233,7 @@ export default {
         setChildrenSelected(category.children, category.selected);
       }
       state.filter_categories = _.cloneDeep(state.filter_categories);
-      this.commit("SET_FILTER_CATEGORIES", state.filter_categories);
+      this.commit('SET_FILTER_CATEGORIES', state.filter_categories);
     }
   }
 };

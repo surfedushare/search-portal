@@ -1,24 +1,24 @@
-import { mapGetters } from "vuex";
-import { VueAutosuggest } from "vue-autosuggest";
-import { generateSearchMaterialsQuery } from "./../../_helpers";
-import { debounce } from "lodash";
+import { mapGetters } from 'vuex';
+import { VueAutosuggest } from 'vue-autosuggest';
+import { generateSearchMaterialsQuery } from './../../_helpers';
+import { debounce } from 'lodash';
 
 export default {
-  name: "search",
+  name: 'search',
   components: {
     VueAutosuggest
   },
   props: {
-    "educational-level-category-id": {
+    'educational-level-category-id': {
       type: String
     },
-    "material-type-external-id": {
+    'material-type-external-id': {
       type: String
     },
     placeholder: {
       type: String,
       default: function() {
-        return this.$t("Search-by-keywords");
+        return this.$t('Search-by-keywords');
       }
     },
     value: {
@@ -32,7 +32,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("getFilterCategories");
+    this.$store.dispatch('getFilterCategories');
   },
   data() {
     return {
@@ -57,7 +57,7 @@ export default {
         return;
       }
 
-      const keywords = await this.$axios.$get("keywords/", {
+      const keywords = await this.$axios.$get('keywords/', {
         params: { query: search }
       });
 
@@ -85,7 +85,7 @@ export default {
       this.formData.search_text = searchText;
       this.formData.filters = this.$store.getters.search_filters;
       this.$router.push(this.generateSearchMaterialsQuery(this.formData));
-      this.$emit("input", this.formData);
+      this.$emit('input', this.formData);
     },
 
     titleTranslation(filterCategory) {
@@ -111,22 +111,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filterCategories: "filter_categories",
-      keywords: "materials_keywords"
+      filterCategories: 'filter_categories',
+      keywords: 'materials_keywords'
     }),
     autosuggestInputProps: function() {
       return {
         placeholder: this.placeholder,
-        id: "autosuggest__input",
-        type: "search",
+        id: 'autosuggest__input',
+        type: 'search',
         class: {
-          "with-dropdown": this.suggestions.length > 0
+          'with-dropdown': this.suggestions.length > 0
         }
       };
     },
     autosuggestClasses: function() {
       return {
-        "with-dropdown": this.suggestions.length > 0
+        'with-dropdown': this.suggestions.length > 0
       };
     },
     displayEducationalLevelSelect() {

@@ -1,14 +1,14 @@
-import _ from "lodash";
-import BreadCrumbs from "~/components/BreadCrumbs";
-import EditableContent from "~/components/EditableContent";
-import ShareCollection from "~/components/Popup/ShareCollection";
-import DeleteCollection from "~/components/Popup/DeleteCollection";
-import { validateHREF } from "~/components/_helpers";
-import SwitchInput from "~/components/switch-input";
-import { PublishStatus } from "~/utils";
+import _ from 'lodash';
+import BreadCrumbs from '~/components/BreadCrumbs';
+import EditableContent from '~/components/EditableContent';
+import ShareCollection from '~/components/Popup/ShareCollection';
+import DeleteCollection from '~/components/Popup/DeleteCollection';
+import { validateHREF } from '~/components/_helpers';
+import SwitchInput from '~/components/switch-input';
+import { PublishStatus } from '~/utils';
 
 export default {
-  name: "collection",
+  name: 'collection',
   props: {
     collection: {
       default: {}
@@ -25,7 +25,7 @@ export default {
     changeViewType: {
       default: false
     },
-    "items-in-line": {
+    'items-in-line': {
       default: 4
     }
   },
@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      href: "",
+      href: '',
       collection_title: null,
       search: {},
       isShowDeleteCollection: false,
@@ -104,12 +104,12 @@ export default {
      */
     deleteCollection() {
       this.$store
-        .dispatch("deleteMyCollection", this.collection.id)
+        .dispatch('deleteMyCollection', this.collection.id)
         .then(() => {
           if (window.history.length > 1) {
             this.$router.go(-1);
           } else {
-            this.$router.push(this.localePath({ name: "my-communities" }));
+            this.$router.push(this.localePath({ name: 'my-communities' }));
           }
         });
     },
@@ -120,7 +120,7 @@ export default {
      * Saving the collection
      */
     onSubmit() {
-      this.$emit("onSubmit", { title: this.collection_title });
+      this.$emit('onSubmit', { title: this.collection_title });
     },
     /**
      * Set counters value for share buttons
@@ -130,7 +130,7 @@ export default {
         this.$nextTick().then(() => {
           const { collection } = this;
           const { social_counters } = this.$refs;
-          const linkedIn = social_counters.querySelector("#linkedin_counter");
+          const linkedIn = social_counters.querySelector('#linkedin_counter');
 
           if (
             collection &&
@@ -157,15 +157,15 @@ export default {
             );
 
             if (share.linkedin) {
-              social_counters.querySelector("#linkedin_counter").innerText =
+              social_counters.querySelector('#linkedin_counter').innerText =
                 share.linkedin.counter_value;
             }
             if (share.twitter) {
-              social_counters.querySelector("#twitter_counter").innerText =
+              social_counters.querySelector('#twitter_counter').innerText =
                 share.twitter.counter_value;
             }
             if (share.link) {
-              social_counters.querySelector("#url_counter").innerText =
+              social_counters.querySelector('#url_counter').innerText =
                 share.link.counter_value;
             }
             if (linkedIn) {
@@ -181,7 +181,7 @@ export default {
      */
     closeSocialSharing(type) {
       this.$store
-        .dispatch("setCollectionSocial", {
+        .dispatch('setCollectionSocial', {
           id: this.$route.params.id,
           params: {
             shared: type
@@ -203,7 +203,7 @@ export default {
     closeShareCollection() {
       this.isShowShareCollection = false;
       if (this.is_copied) {
-        this.closeSocialSharing("link");
+        this.closeSocialSharing('link');
       }
     }
   },
@@ -213,7 +213,7 @@ export default {
      * @param search - String
      */
     search(search) {
-      this.$emit("input", search);
+      this.$emit('input', search);
     },
     /**
      * Watcher on the contenteditable field
