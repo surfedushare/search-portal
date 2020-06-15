@@ -22,7 +22,7 @@ export default {
     onSaveRating() {
       this.submitting = true;
 
-      let ratings = JSON.parse(sessionStorage.getItem('ratedMaterials')) || []
+      const ratings = JSON.parse(sessionStorage.getItem('ratedMaterials')) || []
       ratings.push(this.material.external_id)
       sessionStorage.setItem('ratedMaterials', JSON.stringify(ratings))
 
