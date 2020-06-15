@@ -1,7 +1,7 @@
 import { mapGetters } from "vuex";
 import { VueAutosuggest } from "vue-autosuggest";
 import { generateSearchMaterialsQuery } from "./../../_helpers";
-import _, { debounce } from "lodash";
+import { debounce } from "lodash";
 
 export default {
   name: "search",
@@ -9,11 +9,10 @@ export default {
     VueAutosuggest
   },
   props: {
-    "show-selected-category": {
-      type: [Boolean, String],
-      default: false
+    "educational-level-category-id": {
+      type: String
     },
-    "active-category-external-id": {
+    "material-type-external-id": {
       type: String
     },
     placeholder: {
@@ -39,12 +38,6 @@ export default {
     return {
       searchText: this.value.search_text,
       suggestions: [],
-
-      // TODO: remove?
-      showMobileFilter: false,
-      filter: {},
-      previous_category_id: null,
-
       formData: {
         ...this.value,
         page_size: 10,
@@ -71,11 +64,9 @@ export default {
       this.suggestions = [{ data: keywords }];
     }, 350),
     onSelectSuggestion(result) {
-      const searchQuery = result || this.searchText;
-
-      if (searchQuery) {
-        this.emitSearch(searchQuery);
-      }
+      if (result) {
+        this.emitSearch(result.item);
+      } else if (this.searchText) this.emitSearch(this.searchText);
     },
     onSubmit() {
       if (!this.searchText) {
@@ -103,14 +94,13 @@ export default {
       }
       return filterCategory.name;
     },
-    showMobileFilterOptions() {
-      this.showMobileFilter = !this.showMobileFilter;
-    },
     changeFilterCategory($event) {
-      this.filterCategory.children = this.filterCategory.children.map(item => {
-        item.selected = item.external_id === $event.target.value;
-        return item;
-      });
+      this.educationalLevelCategory.children = this.educationalLevelCategory.children.map(
+        item => {
+          item.selected = item.external_id === $event.target.value;
+          return item;
+        }
+      );
     }
   },
   watch: {
@@ -128,6 +118,7 @@ export default {
       return {
         placeholder: this.placeholder,
         id: "autosuggest__input",
+        type: "search",
         class: {
           "with-dropdown": this.suggestions.length > 0
         }
@@ -138,44 +129,44 @@ export default {
         "with-dropdown": this.suggestions.length > 0
       };
     },
-    displayCategorySelect() {
-      const { filterCategories, showSelectedCategory } = this;
+    displayEducationalLevelSelect() {
+      const { filterCategories, educationalLevelCategoryId } = this;
 
       return (
-        filterCategories && filterCategories.results && showSelectedCategory
+        filterCategories &&
+        filterCategories.results &&
+        educationalLevelCategoryId
       );
     },
-    filterCategory() {
-      if (!this.displayCategorySelect) {
+    educationalLevelCategory() {
+      if (!this.displayEducationalLevelSelect) {
         return false;
       }
 
-      const { filterCategories, showSelectedCategory } = this;
+      const { filterCategories, educationalLevelCategoryId } = this;
 
       return filterCategories.results.find(
-        category => category.external_id === showSelectedCategory
+        category => category.external_id === educationalLevelCategoryId
       );
     },
 
-    displayCategoryFilter() {
+    displayMaterialTypeFilter() {
       return (
-        this.activeCategoryExternalId &&
+        this.materialTypeExternalId &&
         this.filterCategories &&
         this.filterCategories.results.length > 0
       );
     },
-    activeCategory() {
-      const { filterCategories, activeCategoryExternalId } = this;
+    materialTypeCategory() {
+      const { filterCategories, materialTypeExternalId } = this;
 
-      if (!this.displayCategoryFilter) {
+      if (!this.displayMaterialTypeFilter) {
         return false;
       }
 
-      const result = filterCategories.results.find(
-        item => item.external_id === activeCategoryExternalId
+      return filterCategories.results.find(
+        item => item.external_id === materialTypeExternalId
       );
-
-      return result || filterCategories.results[0];
     }
   }
 };

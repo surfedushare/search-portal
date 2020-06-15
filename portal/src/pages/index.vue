@@ -18,9 +18,9 @@
             </ul>
           </div>
           <Search
-            show-selected-category="lom.educational.context"
+            educational-level-category-id="lom.educational.context"
+            material-type-external-id="lom.technical.format"
             class="main__info_search"
-            active-category-external-id="lom.technical.format"
           />
         </div>
       </div>
