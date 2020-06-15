@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex';
+import _ from 'lodash';
 import StarRating from '~/components/StarRating';
 import PopularList from '~/components/Communities/PopularList';
 import numeral from 'numeral';
@@ -38,7 +39,7 @@ export default {
       is_loading_applaud: true,
       is_applauded: false,
       rating: false,
-      rating_given: false,
+      rating_given: this.isMaterialRated(this.material.external_id),
       is_copied: false,
       formData: {
         page_size: 10,
@@ -61,9 +62,16 @@ export default {
      */
     closePopupSaveRating() {
       this.isShow = false;
-      this.rating_given = true;
     },
-
+    /**
+     * Check in sessionStorage if material has been rated by the current user"
+     * @param external_id of material - String
+     */
+    isMaterialRated(materialId) {
+      const ratings = sessionStorage.getItem('ratedMaterials')
+      const parsedRatings = ratings !== null ? JSON.parse(ratings) : []
+      return parsedRatings.includes(materialId)
+    },
     /**
      * Saving the applaud for material
      * @param material - Object
@@ -123,5 +131,15 @@ export default {
       return false;
     }
   },
-  watch: {}
+  watch: {
+    /**
+     * If the material changes, it is checked if the material has been rated
+     */
+    material: function () {
+      const { material } = this;
+      if (!_.isNil(material)) {
+        this.rating_given = this.isMaterialRated(material.external_id)
+      }
+    }
+  }
 };
