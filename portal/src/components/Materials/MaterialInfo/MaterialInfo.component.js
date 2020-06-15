@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex';
+import _ from 'lodash';
 import StarRating from '~/components/StarRating';
 import PopularList from '~/components/Communities/PopularList';
 import numeral from 'numeral';
@@ -67,8 +68,9 @@ export default {
      * @param external_id of material - String
      */
     isMaterialRated(materialId) {
-      const ratings = JSON.parse(sessionStorage.getItem('ratedMaterials')) || []
-      return ratings.includes(materialId)
+      const ratings = sessionStorage.getItem('ratedMaterials')
+      const parsedRatings = ratings !== null ? JSON.parse(ratings) : []
+      return parsedRatings.includes(materialId)
     },
     /**
      * Saving the applaud for material
@@ -135,7 +137,7 @@ export default {
      */
     material: function () {
       const { material } = this;
-      if (material) {
+      if (!_.isNil(material)) {
         this.rating_given = this.isMaterialRated(material.external_id)
       }
     }
