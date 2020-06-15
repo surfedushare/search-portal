@@ -1,6 +1,3 @@
-import _ from 'lodash';
-
-
 export default {
   name: 'popular-list',
   props: ['type', 'communities'],
@@ -9,18 +6,12 @@ export default {
     return {};
   },
   methods: {
-    getTitleTranslation( community, language ) {
-      if (!_.isNil(community.title_translations) && !_.isEmpty(community.title_translations)){
-        return community.title_translations[language];
-      }
-      return community.name
-    },
-    getDescriptionTranslation( community, language ) {
-      if (!_.isNil(community.description_translations) && !_.isEmpty(community.description_translations)){
-        return community.description_translations[language];
-      }
-      return community.description
-    },
+    getCommunityDetail(community, language, detail) {
+      const communityDetails = community.community_details.find(
+        details => details.language_code === language.toUpperCase()
+      );
+      return communityDetails[detail] || null
+    }
   },
   computed: {
     /**
