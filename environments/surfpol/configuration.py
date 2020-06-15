@@ -66,6 +66,7 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
     environment.load_user()
     environment.load_project()
     environment.load_shell_env()
+    environment.load_runtime()
 
     # Creating a AWS session based on configuration and context
     session = boto3.Session() if use_aws_default_profile else boto3.Session(profile_name=environment.aws.profile_name)
