@@ -32,7 +32,7 @@ secrets:
   postgres:
     password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application-gWxUc6"
   postgres_owner:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-lc0XXX"
+    password: null
   surfconext:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:dev/search-portal/surfconext-YAf8dw"
   elastic_search:

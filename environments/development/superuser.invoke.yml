@@ -1,0 +1,3 @@
+secrets:
+  postgres_owner:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-lc0XXX"

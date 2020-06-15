@@ -13,7 +13,8 @@ We're using invoke Config as base for our configuration:
 http://docs.pyinvoke.org/en/stable/concepts/configuration.html#config-hierarchy.
 Since the config is created outside of invoke it works slightly different than normal.
 The system invoke files are the environment configuration files.
-For the rest the project and shell environment variables get loaded as normal and may override environments.
+Runtime configurations are used to load superuser configurations and are set only in a host context.
+Shell environment variables override all other configuration.
 """
 import os
 import json
@@ -58,7 +59,8 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
 
     # Now we use the customize invoke load as described above
     environment = config_class(
-        system_prefix=MODE_ENVIRONMENT + os.path.sep
+        system_prefix=MODE_ENVIRONMENT + os.path.sep,
+        user_prefix=os.path.join(MODE_ENVIRONMENT, "superuser.") if CONTEXT == "host" else None
     )
     environment.load_system()
     environment.load_user()
@@ -80,11 +82,8 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
     if aws_secrets:
         secrets_manager = session.client('secretsmanager')
         for group_name, secret_name, secret_id in aws_secrets:
-            try:
-                secret_value = secrets_manager.get_secret_value(SecretId=secret_id)
-                secret_payload = json.loads(secret_value["SecretString"])
-                secrets[group_name][secret_name] = secret_payload[secret_name]
-            except ClientError:
-                secrets[group_name][secret_name] = None
+            secret_value = secrets_manager.get_secret_value(SecretId=secret_id)
+            secret_payload = json.loads(secret_value["SecretString"])
+            secrets[group_name][secret_name] = secret_payload[secret_name]
 
     return environment, session
