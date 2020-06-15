@@ -9,10 +9,6 @@ export default {
     VueAutosuggest
   },
   props: {
-    "hide-filter": {
-      type: Boolean,
-      default: false
-    },
     "show-selected-category": {
       type: [Boolean, String],
       default: false
@@ -48,7 +44,6 @@ export default {
       showMobileFilter: false,
       filter: {},
       previous_category_id: null,
-      active_category_id: null,
 
       formData: {
         ...this.value,
@@ -59,6 +54,7 @@ export default {
     };
   },
   methods: {
+    generateSearchMaterialsQuery,
     onInputChange(query) {
       this.searchSuggestions(query, this);
     },
@@ -75,10 +71,10 @@ export default {
       this.suggestions = [{ data: keywords }];
     }, 350),
     onSelectSuggestion(result) {
-      if (result) {
-        this.emitSearch(result.item);
-      } else if (this.searchText) {
-        this.emitSearch(this.searchText);
+      const searchQuery = result || this.searchText;
+
+      if (searchQuery) {
+        this.emitSearch(searchQuery);
       }
     },
     onSubmit() {
@@ -107,74 +103,19 @@ export default {
       }
       return filterCategory.name;
     },
-    generateSearchMaterialsQuery,
     showMobileFilterOptions() {
       this.showMobileFilter = !this.showMobileFilter;
     },
-
-    setOnlyChildSelected(children, childId) {
-      // TODO: make this function part of a service and recursively set selected on children
-      _.forEach(children, child => {
-        child.selected = child.external_id === childId;
-        _.forEach(child.children, grantChild => {
-          grantChild.selected = child.selected;
-        });
-      });
-    },
-
     changeFilterCategory($event) {
-      this.setOnlyChildSelected(
-        this.filterCategory.children,
-        $event.target.value
-      );
-      // const { external_id } = this.filter_category;
-      // const current_filter = this.formData.filters.find(
-      //   filter => filter.external_id === external_id
-      // );
-      // if (current_filter) {
-      //   this.formData.filters = this.formData.filters.map(filter => {
-      //     if (filter.external_id === external_id) {
-      //       return {
-      //         external_id: this.filter_category.external_id,
-      //         items: [$event.target.value]
-      //       };
-      //     }
-      //
-      //     return filter;
-      //   });
-      // } else {
-      //   this.formData.filters = [
-      //     ...this.formData.filters,
-      //     {
-      //       external_id: this.filter_category.external_id,
-      //       items: [$event.target.value]
-      //     }
-      //   ];
-      // }
+      this.filterCategory.children = this.filterCategory.children.map(item => {
+        item.selected = item.external_id === $event.target.value;
+        return item;
+      });
     }
   },
   watch: {
-    active_category(category) {
-      if (category && this.previous_category_id !== category.external_id) {
-        this.previous_category_id = category.external_id;
-        // Clearing filters when category changed
-        this.formData.filters[0].items = [];
-      }
-    },
-    filter: {
-      handler(filter) {
-        if (filter) {
-          this.formData.filters[0].items = Object.keys(filter).filter(
-            item => filter[item]
-          );
-        }
-      },
-      deep: true
-    },
     value(value) {
-      this.formData = {
-        ...value
-      };
+      this.formData = { ...value };
       this.searchText = value.search_text;
     }
   },
@@ -199,6 +140,7 @@ export default {
     },
     displayCategorySelect() {
       const { filterCategories, showSelectedCategory } = this;
+
       return (
         filterCategories && filterCategories.results && showSelectedCategory
       );
@@ -214,23 +156,26 @@ export default {
         category => category.external_id === showSelectedCategory
       );
     },
-    active_category() {
-      const { filterCategories, hideFilter, activeCategoryExternalId } = this;
 
-      if (
-        !filterCategories ||
-        _.isEmpty(filterCategories.results) ||
-        hideFilter
-      ) {
+    displayCategoryFilter() {
+      return (
+        this.activeCategoryExternalId &&
+        this.filterCategories &&
+        this.filterCategories.results.length > 0
+      );
+    },
+    activeCategory() {
+      const { filterCategories, activeCategoryExternalId } = this;
+
+      if (!this.displayCategoryFilter) {
         return false;
       }
-      if (activeCategoryExternalId) {
-        let ix = filterCategories.results.findIndex(
-          item => item.external_id === activeCategoryExternalId
-        );
-        return filterCategories.results[ix];
-      }
-      return filterCategories.results[0];
+
+      const result = filterCategories.results.find(
+        item => item.external_id === activeCategoryExternalId
+      );
+
+      return result || filterCategories.results[0];
     }
   }
 };

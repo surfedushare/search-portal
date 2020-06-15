@@ -14,7 +14,6 @@
           </button>
         </div>
         <Search
-          :hide-filter="true"
           v-model="search"
           @submit="onSearch"
           class="add_materials__info_search"

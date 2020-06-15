@@ -16,7 +16,6 @@
           </div>
           <Search
             v-if="search"
-            :hide-filter="true"
             v-model="search"
             class="search__info_search"
           />

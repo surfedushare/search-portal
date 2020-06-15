@@ -37,10 +37,10 @@
         </button>
       </div>
     </div>
-    <div class="search__themes" v-if="!hideFilter">
+    <div class="search__themes" v-if="displayCategoryFilter">
       <h4 class="search__themes_title">{{ $t('Filter-search-results') }}</h4>
-      <ul if="active_category" class="search__themes_items">
-        <li v-for="item in active_category.children" v-if="!item.is_hidden" class="search__themes_item">
+      <ul if="activeCategory" class="search__themes_items">
+        <li v-for="item in activeCategory.children" v-if="!item.is_hidden" class="search__themes_item">
           <input
             type="checkbox"
             :id="item.external_id"
@@ -52,7 +52,7 @@
         </li>
       </ul>
     </div>
-    <div class="search__themes_mobile" v-if="!hideFilter">
+    <div class="search__themes_mobile" v-if="displayCategoryFilter">
       <button class="search__themes_mobile_button" @click.prevent="showMobileFilterOptions"
               :class="{
             'search__themes_mobile_button--plus': showMobileFilter === false,
@@ -62,7 +62,7 @@
         {{ $t('Filter-options') }}
       </button>
       <ul v-if="showMobileFilter" class="search__themes_items">
-        <li v-for="item in active_category.children" class="search__themes_item">
+        <li v-for="item in activeCategory.children" class="search__themes_item">
           <input
             type="checkbox"
             :id="item.external_id"
