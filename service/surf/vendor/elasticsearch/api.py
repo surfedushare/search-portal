@@ -8,8 +8,8 @@ from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
 
-index_nl = 'latest-nl'
-index_en = 'latest-en'
+index_nl = settings.ELASTICSEARCH_NL_INDEX
+index_en = settings.ELASTICSEARCH_EN_INDEX
 _VCARD_FORMATED_NAME_KEY = "FN"
 
 
