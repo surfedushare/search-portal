@@ -15,14 +15,20 @@ Since the config is created outside of invoke it works slightly different than n
 The system invoke files are the environment configuration files.
 For the rest the project and shell environment variables get loaded as normal and may override environments.
 """
+import sys
 import os
 import json
 from invoke.config import Config
 import boto3
 
 
-# First we'll load the relevant non-invoke environment variables
-MODE = os.environ.get("APPLICATION_MODE", "production")
+TESTING = sys.argv[1:2] == ['test']
+
+if (TESTING):
+    MODE = 'test'
+else:
+    MODE = os.environ.get("APPLICATION_MODE", "production")
+
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 
 PREFIX = "POL"
