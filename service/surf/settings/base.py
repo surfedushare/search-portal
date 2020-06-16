@@ -319,6 +319,8 @@ ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_HOST = environment.elastic_search.host
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_NL_INDEX = environment.elastic_search.nl_index
+ELASTICSEARCH_EN_INDEX = environment.elastic_search.en_index
 
 
 # CKEditor
