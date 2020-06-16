@@ -1,0 +1,49 @@
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses low security passwords and secrets for a local setup
+# Make sure your local setup is shielded from the internet
+
+# NB: When making changes restart your container or development server to load the update
+
+
+postgres:
+  credentials: null
+
+django:
+  debug: true
+  postgres_user: "django"
+  postgres_host: "postgres"
+  protocol: "http"
+  domain: "localhost"
+
+surfconext:
+  oidc_endpoint: none
+  voot_api_endpoint: "https://voot.test.surfconext.nl"
+  client_id: "https@//front-test.surfcatalog.nl/"
+
+elastic_search:
+  username: "search_portal_backend_prod"
+  host: "elasticsearch:9200"
+  protocol: "http"
+  nl_index: "test-nl"
+  en_index: "test-en"
+
+edurep:
+  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
+  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
+  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+secrets:
+  django:
+    secret_key: "development-secret-key--do-not-use"
+  postgres:
+    password: "qwerty"
+  surfconext:
+    secret_key: "development-secret-key--ignored"
+  elastic_search:
+    password: "qwerty"
+
+aws:
+  cluster_arn: null
+  image_upload_bucket: null
+  profile_name: null
+  task_role_arn: null
