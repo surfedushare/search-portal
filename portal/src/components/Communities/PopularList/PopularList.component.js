@@ -6,11 +6,11 @@ export default {
     return {};
   },
   methods: {
-    getCommunityDetail(community, language, detail) {
+    getCommunityTitle(community) {
       const communityDetails = community.community_details.find(
-        details => details.language_code === language.toUpperCase()
+        details => details.language_code === this.$i18n.locale.toUpperCase()
       );
-      return communityDetails[detail] || null
+      return communityDetails['title']
     }
   },
   computed: {

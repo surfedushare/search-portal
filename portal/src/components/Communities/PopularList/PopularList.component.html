@@ -8,7 +8,7 @@
           class="popular-list__link"
           :to="localePath({name: 'communities-community', params: {community: community.id}})"
         >
-          <h3 class="popular-list__title">{{ getCommunityDetail(community, $i18n.locale, 'title') }}</h3>
+          <h3 class="popular-list__title">{{ getCommunityTitle(community) }}</h3>
           {{ $tc('learning-materials', community.materials_count) }}
         </router-link>
       </li>
