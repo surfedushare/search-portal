@@ -24,12 +24,11 @@ class ElasticSearchApiClient:
         )
 
     @staticmethod
-    def parse_elastic_result(search_result, page_size=5):
+    def parse_elastic_result(search_result):
         """
         Parses the elasticsearch search result into the format that is also used by the edurep endpoint.
         This allows quick switching between elastic and edurep without changing code.
         :param search_result: result from elasticsearch
-        :param page_size: results per page, used to double-check elasticsearch
         :return result: list of results in edurep format
         """
         hits = search_result["hits"]
@@ -58,10 +57,6 @@ class ElasticSearchApiClient:
             ElasticSearchApiClient.parse_elastic_hit(hit)
             for hit in hits['hits']
         ]
-        # sometimes elastic will return a doc_count of 1 even if there are no results at all.
-        # don't trust elasticsearch on record count if there aren't enough records for a single page.
-        if len(result['records']) < page_size:
-            result['recordcount'] = len(result['records'])
         return result
 
     @staticmethod
@@ -193,7 +188,7 @@ class ElasticSearchApiClient:
             index=indices,
             body=body
         )
-        parsed_result = self.parse_elastic_result(result, page_size)
+        parsed_result = self.parse_elastic_result(result)
         # store the searches in the database to be able to analyse them later on.
         # however, dont store results when scrolling as not to overload the database
         if start_record == 0 and search_text:
