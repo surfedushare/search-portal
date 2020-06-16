@@ -130,8 +130,10 @@ class TestSearchEs(StaticLiveServerTestCase):
         }
 
         '''
-        cls.elastic.indices.create('test-nl', ignore=400, body=mapping)
-        cls.elastic.indices.create('test-en', ignore=400, body=mapping)
+        nl_create = cls.elastic.indices.create('test-nl', ignore=400, body=mapping)
+        print(f"nl create {nl_create}")
+        en_create = cls.elastic.indices.create('test-en', ignore=400, body=mapping)
+        print(f"en create {en_create}")
         material = '''
         {
             "title": "Didactiek van wiskundig denken",
