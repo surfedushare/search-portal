@@ -2,6 +2,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.chrome.options import Options
 from django.db import connection
+from django.test import override_settings
+
 
 from elasticsearch import Elasticsearch
 from django.conf import settings
@@ -129,6 +131,7 @@ class TestSearchEs(StaticLiveServerTestCase):
 
         '''
         cls.elastic.indices.create('test-nl', ignore=400, body=mapping)
+        cls.elastic.indices.create('test-en', ignore=400, body=mapping)
         material = '''
         {
             "title": "Didactiek van wiskundig denken",
@@ -165,6 +168,7 @@ class TestSearchEs(StaticLiveServerTestCase):
         with connection.cursor() as c:
             c.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'test_edushare' AND pid <> pg_backend_pid();")
 
+    @override_settings(DEBUG=True)
     def test_home_page(self):
         self.selenium.get(self.live_server_url)
 
@@ -174,4 +178,10 @@ class TestSearchEs(StaticLiveServerTestCase):
         search.send_keys("Wiskunde")
         button.click()
 
-        self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
+        try:
+            self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
+        finally:
+            for entry in self.selenium.get_log('browser'):
+                print(entry)
+            self.selenium.save_screenshot("screenshot.png")
+
