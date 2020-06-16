@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import injector from 'vue-inject';
 
-
 const $log = injector.get('$log');
-
 
 export default {
   state: {
