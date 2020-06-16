@@ -40,11 +40,6 @@
       </div>
 
       <div class="center_block main__thems_and_communities">
-        <Themes
-          :themes="sortedThemes"
-          class="main__thems"
-          v-show="false"
-        />
         <PopularList
           :communities="communities"
           class="main__communities"
