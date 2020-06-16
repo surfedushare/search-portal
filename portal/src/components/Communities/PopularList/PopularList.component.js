@@ -10,7 +10,7 @@ export default {
       const communityDetails = community.community_details.find(
         details => details.language_code === this.$i18n.locale.toUpperCase()
       );
-      return communityDetails['title']
+      return communityDetails.title
     }
   },
   computed: {
