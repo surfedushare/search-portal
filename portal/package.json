@@ -23,7 +23,8 @@
     "js-cookie": "2.2.1",
     "numeral": "2.0.6",
     "uuid-validate": "0.0.3",
-    "vue": "2.6.10",
+    "vue": "^2.6.11",
+    "vue-autosuggest": "^2.1.2",
     "vue-click-outside": "1.0.7",
     "vue-clipboard2": "0.2.1",
     "vue-i18n": "8.14.0",
@@ -31,7 +32,6 @@
     "vue-inject": "2.1.1",
     "vue-masonry-css": "1.0.3",
     "vue-router": "3.0.6",
-    "vue-select": "2.5.1",
     "vue-social-sharing": "2.4.7",
     "vuejs-datepicker": "1.5.4",
     "vuex": "3.0.1"
@@ -50,7 +50,7 @@
     "less-loader": "5.0.0",
     "moxios": "0.4.0",
     "npm-check": "5.9.2",
-    "vue-template-compiler": "2.6.10",
+    "vue-template-compiler": "^2.6.11",
     "webpack": "4.42.1",
     "webpack-bundle-analyzer": "3.6.0",
     "webpack-bundle-tracker": "0.4.3"

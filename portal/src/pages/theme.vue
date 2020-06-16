@@ -16,7 +16,6 @@
           <h2 class="theme__info_ttl">{{ getTitleTranslation(theme, $i18n.locale) }}</h2>
           <Search
             class="theme__info_search"
-            :hide-categories="true"
             :placeholder="$t('Search-in-theme')"
             v-model="search"
             active-category-external-id="lom.technical.format"

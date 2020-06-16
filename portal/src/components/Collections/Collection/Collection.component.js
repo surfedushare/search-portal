@@ -1,13 +1,11 @@
 import _ from 'lodash';
 import BreadCrumbs from '~/components/BreadCrumbs';
 import EditableContent from '~/components/EditableContent';
-import DirectSearch from '~/components/FilterCategories/DirectSearch';
 import ShareCollection from '~/components/Popup/ShareCollection';
 import DeleteCollection from '~/components/Popup/DeleteCollection';
 import { validateHREF } from '~/components/_helpers';
-import SwitchInput from '~/components/switch-input'
-import { PublishStatus} from "~/utils";
-
+import SwitchInput from '~/components/switch-input';
+import { PublishStatus } from '~/utils';
 
 export default {
   name: 'collection',
@@ -34,14 +32,13 @@ export default {
   components: {
     BreadCrumbs,
     EditableContent,
-    DirectSearch,
     ShareCollection,
     DeleteCollection,
     SwitchInput
   },
   mounted() {
     const { collection } = this;
-    if(!_.isEmpty(collection)) {
+    if (!_.isEmpty(collection)) {
       this.setTitle(collection.title);
       this.setSocialCounters();
     }
@@ -63,7 +60,9 @@ export default {
         return this.collection.publish_status === PublishStatus.PUBLISHED;
       },
       set(value) {
-        this.collection.publish_status = (value) ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
+        this.collection.publish_status = value
+          ? PublishStatus.PUBLISHED
+          : PublishStatus.DRAFT;
       }
     }
   },
@@ -104,13 +103,15 @@ export default {
      * Deleting collection by id
      */
     deleteCollection() {
-      this.$store.dispatch('deleteMyCollection', this.collection.id).then(() => {
-        if(window.history.length > 1) {
-          this.$router.go(-1);
-        } else {
-          this.$router.push(this.localePath({ name: 'my-communities' }));
-        }
-      });
+      this.$store
+        .dispatch('deleteMyCollection', this.collection.id)
+        .then(() => {
+          if (window.history.length > 1) {
+            this.$router.go(-1);
+          } else {
+            this.$router.push(this.localePath({ name: 'my-communities' }));
+          }
+        });
     },
     closeDeleteCollection() {
       this.isShowDeleteCollection = false;
@@ -232,7 +233,7 @@ export default {
      * @param collection - Object
      */
     collection(collection) {
-      if(!_.isEmpty(collection)) {
+      if (!_.isEmpty(collection)) {
         this.setTitle(collection.title);
         this.setSocialCounters();
       }
