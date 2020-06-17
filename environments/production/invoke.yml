@@ -33,3 +33,6 @@ secrets:
     secret_key: "arn:aws:secretsmanager"
   elastic_search:
     password: "arn:aws:secretsmanager"
+
+aws:
+  image_upload_bucket: null
