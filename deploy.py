@@ -43,8 +43,14 @@ def prepare_builds(ctx):
         json.dump(info, info_file)
 
 
-@task(prepare_builds)
+@task(prepare_builds, help={
+    "target": "Name of the project you want to build: service or harvester",
+    "version": "Version of the project you want to build. Must match value in package.py"
+})
 def build(ctx, target, version):
+    """
+    Uses Docker to build an image for a Django project
+    """
 
     # Check the input for validity
     if target not in TARGETS:
@@ -58,10 +64,9 @@ def build(ctx, target, version):
         )
 
     # Gather necessary info and call Docker to build
-    commit = package_info["commit"]  # TODO: Do we need the commit as a tag? Versions are more human readable
     target_info = TARGETS[target]
     ctx.run(
-        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{version} -t {target_info['name']}:{commit} .",
+        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{version} .",
         pty=True,
         echo=True
     )

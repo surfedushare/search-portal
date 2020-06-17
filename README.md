@@ -138,47 +138,28 @@ http://localhost:8081/
 Tests
 -----
 
-You can run all tests for the entire project (except vendor) by running:
+You can run all tests for the entire repo (except external Elastic Search integration) by running:
 
 ```bash
 invoke test
 ```
 
-To only test the harvester run:
+It's also possible to run tests for specific Django projects.
+For more details see: [testing service project](service/README.md#tests) and
+[testing harvester project](harvester/README.md#tests)
+
+To see whether the code integrates correctly with the external Elastic Search service run:
 
 ```bash
-invoke harvester-tests
+invoke elastic_search_tests
 ```
 
-or
+
+Deploy
+------
+
+Once your tests pass you can make a new build for the project you want to deploy:
 
 ```bash
-  cd harvester
-  python manage.py test
-```
-
-To only test the service run:
-
-```bash
-invoke service-tests
-```
-
-or
-
-```bash
-cd service
-python manage.py test surf.apps
-```
-
-You can run vendor tests by running:
-
-```bash
-invoke vendor-test
-```
-
-or
-
-```bash
-cd service
-python manage.py test surf.vendor
+invoke build <target-project-name>
 ```
