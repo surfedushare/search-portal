@@ -54,6 +54,7 @@ jobs:
     - name: Run Tests
       env:
         APPLICATION_CONTEXT: host
+        APPLICATION_MODE: localhost
         POL_DJANGO_POSTGRES_HOST: 127.0.0.1
         POL_ELASTIC_SEARCH_HOST: "localhost:9200"
         POL_ELASTIC_SEARCH_USERNAME: ""

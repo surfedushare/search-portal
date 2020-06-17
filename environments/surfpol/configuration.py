@@ -15,7 +15,6 @@ Since the config is created outside of invoke it works slightly different than n
 The system invoke files are the environment configuration files.
 For the rest the project and shell environment variables get loaded as normal and may override environments.
 """
-import sys
 import os
 import json
 from invoke.config import Config
