@@ -45,7 +45,7 @@ def import_snapshot(ctx, snapshot_name=None, migrate=True):
     # Make minor adjustments to dumps for legacy dumps to work on AWS
     if migrate:
         print("Migrating dump file")
-        ctx.run(f"sed -i '' 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
+        ctx.run(f"sed -i.bak 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
 
     print("Importing snapshot")
     ctx.run(f"psql -h localhost -U postgres -d edushare -f {snapshot_file_path}",
