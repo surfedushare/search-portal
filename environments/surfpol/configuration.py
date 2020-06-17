@@ -23,7 +23,6 @@ import boto3
 from botocore.exceptions import ClientError
 
 
-# First we'll load the relevant non-invoke environment variables
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 

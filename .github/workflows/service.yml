@@ -35,6 +35,16 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: psycopg2 prerequisites
       run: sudo apt-get install python-dev libpq-dev
+    - name: Configure sysctl limits
+      run: |
+        sudo swapoff -a
+        sudo sysctl -w vm.swappiness=1
+        sudo sysctl -w fs.file-max=262144
+        sudo sysctl -w vm.max_map_count=262144
+    - name: Runs Elasticsearch
+      uses: elastic/elastic-github-actions/elasticsearch@master
+      with:
+        stack-version: 6.8.6
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -46,5 +56,7 @@ jobs:
         APPLICATION_CONTEXT: host
         APPLICATION_MODE: localhost
         POL_DJANGO_POSTGRES_HOST: 127.0.0.1
+        POL_ELASTIC_SEARCH_HOST: "localhost:9200"
+        POL_ELASTIC_SEARCH_USERNAME: ""
       run:
         invoke test
