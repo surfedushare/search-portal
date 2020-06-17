@@ -38,7 +38,5 @@ secrets:
     password: "qwerty"
 
 aws:
-  cluster_arn: null
-  image_upload_bucket: null
   profile_name: null
-  task_role_arn: null
+  image_upload_bucket: null
