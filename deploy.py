@@ -91,15 +91,15 @@ def push(ctx, target, version=None):
     ctx.run(f"docker push {repository}/{name}:{version}", echo=True, pty=True)
 
 
-@task()
-def deploy(ctx, target, mode, version=None):
+def register_task_definition(ecs_client, task_role_arn, target, mode, version):
 
-    # Check the input for validity
+    # Validating input
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
     if mode != MODE:
         raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
-    # Load info
+
+    # Load data
     target_info = TARGETS[target]
     version = version or target_info["version"]
 
@@ -117,14 +117,9 @@ def deploy(ctx, target, mode, version=None):
             container_definitions_json = container_definitions_json.replace(f"${{{name}}}", value)
         container_definitions = json.loads(container_definitions_json)
 
-    # Setup the AWS SDK
-    print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
-    client = session.client('ecs', region_name='eu-central-1')
     # Now we push the task definition to AWS
     print("Setting up task definition")
-    task_role_arn = ctx.config.aws.task_role_arn
-    response = client.register_task_definition(
+    response = ecs_client.register_task_definition(
         family=f"{target_info['name']}",
         taskRoleArn=task_role_arn,
         executionRoleArn=task_role_arn,
@@ -134,11 +129,80 @@ def deploy(ctx, target, mode, version=None):
         containerDefinitions=container_definitions
     )
     # And we update the service with new task definition
-    print("Updating service")
     task_definition = response["taskDefinition"]
-    task_definition_arn = task_definition["taskDefinitionArn"]
-    client.update_service(
+    return target_info['name'], task_definition["taskDefinitionArn"]
+
+
+@task()
+def deploy(ctx, target, mode, version=None):
+
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
+    ecs_client = session.client('ecs', region_name='eu-central-1')
+
+    target_name, task_definition_arn = register_task_definition(
+        ecs_client,
+        ctx.config.aws.task_role_arn,
+        target,
+        mode,
+        version
+    )
+
+    print("Updating service")
+    ecs_client.update_service(
         cluster=ctx.config.aws.cluster_arn,
-        service=f"{target_info['name']}",
+        service=f"{target_name}",
         taskDefinition=task_definition_arn
+    )
+
+
+@task()
+def migrate(ctx, target, mode, version=None):
+
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
+    ecs_client = session.client('ecs', region_name='eu-central-1')
+
+    target_name, task_definition_arn = register_task_definition(
+        ecs_client,
+        ctx.config.aws.superuser_task_role_arn,
+        target,
+        mode,
+        version
+    )
+
+    print("Migrating")
+    ecs_client.run_task(
+        cluster=ctx.config.aws.cluster_arn,
+        taskDefinition=task_definition_arn,
+        launchType="FARGATE",
+        overrides={
+            "containerOverrides": [{
+                "name": "search-portal-container",
+                "command": ["python", "manage.py", "migrate"],
+                "environment": [
+                    {
+                        "name": "POL_DJANGO_POSTGRES_USER",
+                        "value": f"{ctx.config.django.postgres_user}"
+                    },
+                    {
+                        "name": "POL_SECRETS_POSTGRES_PASSWORD",
+                        "value": f"{ctx.config.aws.postgres_password_arn}"
+                    },
+                ]
+            }]
+        },
+        networkConfiguration={
+            "awsvpcConfiguration": {
+                "subnets": ["subnet-0fd79c37e9d35c9be"],
+                "securityGroups": [
+                    ctx.config.aws.rds_security_group_id,
+                    ctx.config.aws.default_security_group_id
+
+                ],
+                "assignPublicIp": "ENABLED"
+            }
+        },
     )

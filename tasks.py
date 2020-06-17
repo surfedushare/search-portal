@@ -17,6 +17,7 @@ namespace = Collection(
     build,
     push,
     deploy,
+    migrate,
     e2e_tests,
     service_tests,
     harvester_tests,
