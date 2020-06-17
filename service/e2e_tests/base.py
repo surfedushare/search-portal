@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.chrome.options import Options
 from django.db import connection
 from django.conf import settings
+from django.test import override_settings
 
 from elasticsearch import Elasticsearch
 
@@ -27,6 +28,7 @@ class BaseTestCase(StaticLiveServerTestCase):
         with connection.cursor() as c:
             c.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'test_edushare' AND pid <> pg_backend_pid();")
 
+@override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
 class ElasticSearchTestCase(BaseTestCase):
     @classmethod
     def index_body(cls, language):

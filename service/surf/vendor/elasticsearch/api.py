@@ -8,8 +8,6 @@ from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
 
-index_nl = settings.ELASTICSEARCH_NL_INDEX
-index_en = settings.ELASTICSEARCH_EN_INDEX
 _VCARD_FORMATED_NAME_KEY = "FN"
 
 
@@ -22,6 +20,8 @@ class ElasticSearchApiClient:
             http_auth=(settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD),
             **protocol_config
         )
+        self.index_nl = settings.ELASTICSEARCH_NL_INDEX
+        self.index_en = settings.ELASTICSEARCH_EN_INDEX
 
     @staticmethod
     def parse_elastic_result(search_result, page_size=5):
@@ -117,7 +117,7 @@ class ElasticSearchApiClient:
         }
 
         result = self.elastic.search(
-            index=[index_nl, index_en],
+            index=[self.index_nl, self.index_en],
             doc_type='entity',
             body=query_dictionary,
             _source_include='suggest'
@@ -174,7 +174,7 @@ class ElasticSearchApiClient:
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
-        indices = self.parse_index_language(filters)
+        indices = self.parse_index_language(self, filters)
         # apply filters
         filters = self.parse_filters(filters)
         if filters:
@@ -209,7 +209,7 @@ class ElasticSearchApiClient:
         :return: a list of search results (like a regular search).
         """
         result = self.elastic.search(
-            index=[index_nl, index_en],
+            index=[self.index_nl, self.index_en],
             body={
                 "query": {
                     "bool": {
@@ -298,12 +298,12 @@ class ElasticSearchApiClient:
         return {elastic_type: {"order": order}}
 
     @staticmethod
-    def parse_index_language(filters):
+    def parse_index_language(self, filters):
         """
         Select the index to search on based on language.
         """
         # if no language is selected, search on both.
-        indices = [index_nl, index_en]
+        indices = [self.index_nl, self.index_en]
         if not filters:
             return indices
         language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'lom.general.language']

@@ -22,13 +22,7 @@ from invoke.config import Config
 import boto3
 
 
-TESTING = sys.argv[1:2] == ['test']
-
-if (TESTING):
-    MODE = 'test'
-else:
-    MODE = os.environ.get("APPLICATION_MODE", "production")
-
+MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 
 PREFIX = "POL"
