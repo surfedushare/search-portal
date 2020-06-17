@@ -13,7 +13,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=edushare
-      - DJANGO_POSTGRES_PASSWORD=${POL_DJANGO_POSTGRES_PASSWORD}
     healthcheck:
         test: psql -U postgres edushare -c "SELECT 'DBD::Pg ping test'"
     labels:
