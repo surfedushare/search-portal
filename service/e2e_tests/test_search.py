@@ -1,7 +1,7 @@
 from django.conf import settings
 
 from e2e_tests.base import ElasticSearchTestCase
-from e2e_tests.fixtures.elasticsearch import NL_MATERIAL
+from e2e_tests.elasticsearch_fixtures.elasticsearch import NL_MATERIAL
 
 
 class TestSearch(ElasticSearchTestCase):
