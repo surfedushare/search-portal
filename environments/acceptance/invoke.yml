@@ -17,8 +17,6 @@ elastic_search:
   username: "search_portal_backend_prod"
   host: "elastic2.search-prod.surfcatalog.nl"
   protocol: "https"
-  nl_index: "latest-nl"
-  en_index: "latest-en"
 
 edurep:
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
