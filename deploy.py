@@ -26,6 +26,9 @@ TARGETS = {
 
 @task()
 def prepare_builds(ctx):
+    """
+    Makes sure that repo information will be present inside Docker images
+    """
     repo = Repo(".")
     commit = str(repo.head.commit)
     # TODO: we can make assertions about the git state like: no uncommited changes and no untracked files
@@ -72,8 +75,14 @@ def build(ctx, target, version):
     )
 
 
-@task()
+@task(help={
+    "target": "Name of the project you want to push to AWS registry: service or harvester",
+    "version": "Version of the project you want to push. Defaults to latest version"
+})
 def push(ctx, target, version=None):
+    """
+    Pushes a previously made Docker image to the AWS container registry, that's shared between environments
+    """
 
     # Check the input for validity
     if target not in TARGETS:
@@ -138,8 +147,15 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version):
     return target_info['name'], task_definition["taskDefinitionArn"]
 
 
-@task()
+@task(help={
+    "target": "Name of the project you want to deploy on AWS: service or harvester",
+    "mode": "Mode you want to deploy to: development, acceptance or production. Must match APPLICATION_MODE",
+    "version": "Version of the project you want to deploy. Defaults to latest version"
+})
 def deploy(ctx, target, mode, version=None):
+    """
+    Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
+    """
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")
@@ -162,8 +178,15 @@ def deploy(ctx, target, mode, version=None):
     )
 
 
-@task()
+@task(help={
+    "target": "Name of the project you want migrate on AWS: service or harvester",
+    "mode": "Mode you want to migrate: development, acceptance or production. Must match APPLICATION_MODE",
+    "version": "Version of the project you want to migrate. Defaults to latest version"
+})
 def migrate(ctx, target, mode, version=None):
+    """
+    Executes migration command on container cluser for development, acceptance or production environment on AWS
+    """
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")

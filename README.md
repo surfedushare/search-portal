@@ -158,8 +158,65 @@ invoke elastic_search_tests
 Deploy
 ------
 
+This section outlines the most common options for deployment.
+Use ``invoke -h <command>`` to learn more about any invoke command.
+
 Once your tests pass you can make a new build for the project you want to deploy:
 
 ```bash
 invoke build <target-project-name>
+```
+
+After you have created the image you can push it to AWS.
+This command will push to a registry that's available to all environments on AWS:
+
+```bash
+invoke push <target-project-name>
+```
+
+When an image is pushed to the registry you can deploy it with:
+
+```bash
+APPLICATION_MODE=<environment> invoke deploy <target-project-name> <environment>
+```
+
+
+#### Rollback
+
+In order to rollback you can specify an existing Docker image to deploy command.
+
+```bash
+APPLICATION_MODE=<environment> invoke deploy <target-project-name> <environment> -v <rollback-version>
+```
+
+
+#### Migrate
+
+To migrate the database you can run the migration command:
+
+```bash
+APPLICATION_MODE=<environment> invoke migrate <target-project-name> <environment>
+```
+
+
+Provisioning
+------------
+
+There are a few commands that can help to provision things like the database on AWS.
+We're using Fabric for provisioning.
+You can run ``fab -h <command>`` to learn more about a particular Fabric command
+
+
+#### Database
+
+To setup the database on an AWS environment run:
+
+```bash
+APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.setup
+```
+
+To load snapshot data into the database on an AWS environment run:
+
+```bash
+APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.restore-snapshot
 ```
