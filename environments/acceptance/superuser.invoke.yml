@@ -1,0 +1,6 @@
+secrets:
+  postgres:
+    password: null
+
+django:
+  postgres_user: "postgres"
