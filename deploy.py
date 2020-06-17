@@ -196,13 +196,12 @@ def migrate(ctx, target, mode, version=None):
         },
         networkConfiguration={
             "awsvpcConfiguration": {
-                "subnets": ["subnet-0fd79c37e9d35c9be"],
+                "subnets": [ctx.config.aws.private_subnet_id],
                 "securityGroups": [
                     ctx.config.aws.rds_security_group_id,
                     ctx.config.aws.default_security_group_id
 
-                ],
-                "assignPublicIp": "ENABLED"
+                ]
             }
         },
     )
