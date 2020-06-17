@@ -2,6 +2,10 @@
 .search {
   position: relative;
   z-index: 10;
+  background: white;
+  border-radius: 20px;
+  margin-top: -20px;
+
   &__fields {
     padding: 15px;
     text-align: center;
@@ -14,33 +18,6 @@
       .theme__info_search & {
         margin: 0 0 33px;
       }
-    }
-  }
-
-  label {
-    cursor: pointer;
-  }
-
-  &__input {
-    flex: 1 1 auto;
-    border: 0;
-    border-radius: 0;
-    height: 67px;
-    font-family: @second-font;
-    font-size: 16px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.44;
-    letter-spacing: normal;
-    color: @dark-grey;
-
-    @media @mobile {
-      display: none;
-    }
-    &:focus,
-    &:active {
-      outline: none;
     }
   }
 
@@ -68,38 +45,6 @@
       list-style: none;
       display: inline-block;
     }
-
-    @media @mobile {
-      display: none;
-    }
-  }
-
-  &__themes_mobile {
-    padding-bottom: 17px;
-    text-align: center;
-
-    @media @desktop {
-      display: none;
-    }
-
-    &_button {
-      border: none;
-      color: #0077c8;
-      font-family: nunito;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 0 0 1px 25px;
-      &--plus {
-        background: transparent url('/images/plus-copy.svg') 0 50% no-repeat;
-        background-size: 18px 18px;
-      }
-
-      &--minus {
-        background: transparent url('/images/min.svg') 0 50% no-repeat;
-        background-size: 18px 18px;
-      }
-    }
   }
 
   &__select {
@@ -115,13 +60,6 @@
     cursor: pointer;
     z-index: 4;
 
-    @media @mobile {
-      border: 1px solid #bcbfc2;
-      padding: 0 0 0 17px;
-      border-radius: 7px;
-      margin-top: 10px;
-      width: 100%;
-    }
     &--wrap {
       overflow: inherit;
     }
@@ -200,41 +138,16 @@
     z-index: 4;
   }
 
-  .v-select {
-    display: flex;
-    align-items: center;
-
-    .dropdown-toggle {
-      height: 100%;
-    }
-
-    .dropdown-menu .active > a {
-      color: #fff;
-      background: url('/images/search-white.svg') 21px 50% no-repeat;
-    }
-
-    @media @mobile {
-      border: 1px solid #bcbfc2;
-      border-radius: 7px;
-
-    }
-
+  input {
+    font-size: 20px;
   }
 
-  &__autocomplete {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
+  .search-container {
+    font-family: nunito;
+    font-size: 16px;
     border-radius: 20px;
     box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
     background-color: #ffffff;
-    min-height: 100%;
-    z-index: 3;
-    @media @mobile {
-      //padding: 15px;
-      position: inherit;
-      box-shadow: none;
-    }
+    background: url('/images/search-grey.svg') 21px 50% no-repeat;
   }
 }

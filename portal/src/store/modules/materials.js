@@ -7,9 +7,7 @@ import {
 } from './_helpers';
 import injector from 'vue-inject';
 
-
-const $log = injector.get("$log");
-
+const $log = injector.get('$log');
 
 export default {
   state: {
@@ -45,7 +43,7 @@ export default {
     }
   },
   actions: {
-    async getMaterial({ commit }, {id, params}) {
+    async getMaterial({ commit }, { id, params }) {
       commit('SET_MATERIAL_LOADING', true);
       const material = await this.$axios.$get(`materials/${id}/`, { params });
       decodeAuthor(material);
@@ -115,7 +113,11 @@ export default {
     async searchMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true);
-        const materials = await this.$axios.$post('materials/search/', search);
+        const materials = await this.$axios.$post('materials/search/', {
+          ...search,
+          search_text:
+            (search.search_text && search.search_text.split(/\s+/)) || ''
+        });
         materials.search_text = search.search_text;
         materials.active_filters = search.filters;
         materials.ordering = search.ordering;
@@ -129,7 +131,10 @@ export default {
     async searchNextPageMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true);
-        const materials = await this.$axios.$post('materials/search/', search);
+        const materials = await this.$axios.$post('materials/search/', {
+          ...search,
+          search_text: search.search_text.split(/\s+/)
+        });
         commit('SET_NEXT_PAGE_MATERIALS', materials);
         commit('SET_MATERIALS_LOADING', false);
       } else {
@@ -151,9 +156,9 @@ export default {
   mutations: {
     SET_MATERIALS(state, payload) {
       const records = payload.records || payload;
-      records.forEach((record) => {
+      records.forEach(record => {
         record.date = formatDate(record.publish_datetime);
-        decodeAuthor(record)
+        decodeAuthor(record);
       });
       state.materials = Object.assign({}, payload, {
         records: records.map(record => {
