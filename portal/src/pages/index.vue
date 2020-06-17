@@ -24,11 +24,15 @@
           />
         </div>
       </div>
-      <div class="center_block main__thems_and_communities" v-show="false">
-        <Themes
-          :themes="sortedThemes"
-          class="main__thems"
-        />
+
+      <div class="main__materials">
+        <div class="center_block">
+          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
+          <Materials :materials="materials" />
+        </div>
+      </div>
+
+      <div class="center_block main__thems_and_communities">
         <PopularList
           :communities="communities"
           class="main__communities"
@@ -39,12 +43,7 @@
           </template>
         </PopularList>
       </div>
-      <div class="main__materials">
-        <div class="center_block">
-          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
-          <Materials :materials="materials" />
-        </div>
-      </div>
+
       <div class="center_block">
         <section class="preview">
           <div class="preview__bg_block">
@@ -221,9 +220,6 @@ export default {
     }
     align-items: start;
     justify-content: space-between;
-    .popular-list {
-      display: none;
-    }
   }
 
   &__thems {
