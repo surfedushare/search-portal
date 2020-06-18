@@ -9,8 +9,8 @@ django:
   domain: "acc.surfedushare.nl"
 
 surfconext:
-  oidc_endpoint: "https://connect.test.surfconext.nl"
-  voot_api_endpoint: "https://voot.test.surfconext.nl"
+  oidc_endpoint: "https://connect.surfconext.nl"
+  voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "acc.surfedushare.nl"
 
 elastic_search:
