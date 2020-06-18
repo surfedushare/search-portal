@@ -52,3 +52,4 @@ def import_snapshot(ctx, snapshot_name=None, migrate=True):
     print("Importing snapshot")
     ctx.run(f"psql -h localhost -U postgres -d edushare -f {snapshot_file_path}",
             pty=True, watchers=[postgres_password_responder])
+    ctx.run(f"rm {snapshot_file_path}.bak", warn=True)
