@@ -8,6 +8,10 @@ from .tasks import download_snapshot
 
 @task(name="setup")
 def setup(ctx):
+    """
+    Sets up databases and roles with correct permissions inside AWS through a bastion host
+    """
+
     # Setup auto-responder
     postgres_user = ctx.config.django.postgres_user
     postgres_password = ctx.config.secrets.postgres.password
@@ -39,8 +43,15 @@ def setup(ctx):
         )
 
 
-@task()
+@task(help={
+    "snapshot_name": "The file name of the snapshot you want to restore. Defaults to last updated snapshot",
+    "recreate": "Whether to completely destroy the database prior to loading the data",
+    "migrate": "Whether to apply some changes to the snapshot file to migrate from a pre-AWS format"
+})
 def restore_snapshot(ctx, snapshot_name=None, recreate=True, migrate=True):
+    """
+    Loads a particular snapshot into the database on AWS through a bastion host
+    """
 
     snapshot_file_path = download_snapshot(snapshot_name)
 

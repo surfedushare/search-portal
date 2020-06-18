@@ -34,8 +34,4 @@ secrets:
     password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/elastic"
 
 aws:
-  cluster_arn: "arn:aws:ecs:eu-central-1:322480324822:cluster/surfpol"
   image_upload_bucket: "search-portal-media-uploads-dev"
-  profile_name: "pol-dev"
-  task_role_arn: "arn:aws:iam::322480324822:role/ecsTaskExecutionRole"
-  bastion: "bastion.dev.surfedushare.nl"

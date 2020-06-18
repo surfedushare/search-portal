@@ -31,7 +31,10 @@ def download_snapshot(snapshot_name):
     return snapshot_file_path
 
 
-@task(name="import_snapshot")
+@task(name="import_snapshot", help={
+    "snapshot_name": "The file name of the snapshot you want to restore. Defaults to last updated snapshot",
+    "migrate": "Whether to apply some changes to the snapshot file to migrate from a pre-AWS format"
+})
 def import_snapshot(ctx, snapshot_name=None, migrate=True):
 
     snapshot_file_path = download_snapshot(snapshot_name)

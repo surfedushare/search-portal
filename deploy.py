@@ -26,6 +26,9 @@ TARGETS = {
 
 @task()
 def prepare_builds(ctx):
+    """
+    Makes sure that repo information will be present inside Docker images
+    """
     repo = Repo(".")
     commit = str(repo.head.commit)
     # TODO: we can make assertions about the git state like: no uncommited changes and no untracked files
@@ -43,8 +46,14 @@ def prepare_builds(ctx):
         json.dump(info, info_file)
 
 
-@task(prepare_builds)
+@task(prepare_builds, help={
+    "target": "Name of the project you want to build: service or harvester",
+    "version": "Version of the project you want to build. Must match value in package.py"
+})
 def build(ctx, target, version):
+    """
+    Uses Docker to build an image for a Django project
+    """
 
     # Check the input for validity
     if target not in TARGETS:
@@ -58,17 +67,22 @@ def build(ctx, target, version):
         )
 
     # Gather necessary info and call Docker to build
-    commit = package_info["commit"]  # TODO: Do we need the commit as a tag? Versions are more human readable
     target_info = TARGETS[target]
     ctx.run(
-        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{version} -t {target_info['name']}:{commit} .",
+        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{version} .",
         pty=True,
         echo=True
     )
 
 
-@task()
+@task(help={
+    "target": "Name of the project you want to push to AWS registry: service or harvester",
+    "version": "Version of the project you want to push. Defaults to latest version"
+})
 def push(ctx, target, version=None):
+    """
+    Pushes a previously made Docker image to the AWS container registry, that's shared between environments
+    """
 
     # Check the input for validity
     if target not in TARGETS:
@@ -91,15 +105,15 @@ def push(ctx, target, version=None):
     ctx.run(f"docker push {repository}/{name}:{version}", echo=True, pty=True)
 
 
-@task()
-def deploy(ctx, target, mode, version=None):
+def register_task_definition(ecs_client, task_role_arn, target, mode, version):
 
-    # Check the input for validity
+    # Validating input
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
     if mode != MODE:
         raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
-    # Load info
+
+    # Load data
     target_info = TARGETS[target]
     version = version or target_info["version"]
 
@@ -117,14 +131,9 @@ def deploy(ctx, target, mode, version=None):
             container_definitions_json = container_definitions_json.replace(f"${{{name}}}", value)
         container_definitions = json.loads(container_definitions_json)
 
-    # Setup the AWS SDK
-    print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
-    client = session.client('ecs', region_name='eu-central-1')
     # Now we push the task definition to AWS
     print("Setting up task definition")
-    task_role_arn = ctx.config.aws.task_role_arn
-    response = client.register_task_definition(
+    response = ecs_client.register_task_definition(
         family=f"{target_info['name']}",
         taskRoleArn=task_role_arn,
         executionRoleArn=task_role_arn,
@@ -134,11 +143,93 @@ def deploy(ctx, target, mode, version=None):
         containerDefinitions=container_definitions
     )
     # And we update the service with new task definition
-    print("Updating service")
     task_definition = response["taskDefinition"]
-    task_definition_arn = task_definition["taskDefinitionArn"]
-    client.update_service(
+    return target_info['name'], task_definition["taskDefinitionArn"]
+
+
+@task(help={
+    "target": "Name of the project you want to deploy on AWS: service or harvester",
+    "mode": "Mode you want to deploy to: development, acceptance or production. Must match APPLICATION_MODE",
+    "version": "Version of the project you want to deploy. Defaults to latest version"
+})
+def deploy(ctx, target, mode, version=None):
+    """
+    Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
+    """
+
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
+    ecs_client = session.client('ecs', region_name='eu-central-1')
+
+    target_name, task_definition_arn = register_task_definition(
+        ecs_client,
+        ctx.config.aws.task_role_arn,
+        target,
+        mode,
+        version
+    )
+
+    print("Updating service")
+    ecs_client.update_service(
         cluster=ctx.config.aws.cluster_arn,
-        service=f"{target_info['name']}",
+        service=f"{target_name}",
         taskDefinition=task_definition_arn
+    )
+
+
+@task(help={
+    "target": "Name of the project you want migrate on AWS: service or harvester",
+    "mode": "Mode you want to migrate: development, acceptance or production. Must match APPLICATION_MODE",
+    "version": "Version of the project you want to migrate. Defaults to latest version"
+})
+def migrate(ctx, target, mode, version=None):
+    """
+    Executes migration command on container cluser for development, acceptance or production environment on AWS
+    """
+
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
+    ecs_client = session.client('ecs', region_name='eu-central-1')
+
+    target_name, task_definition_arn = register_task_definition(
+        ecs_client,
+        ctx.config.aws.superuser_task_role_arn,
+        target,
+        mode,
+        version
+    )
+
+    print("Migrating")
+    ecs_client.run_task(
+        cluster=ctx.config.aws.cluster_arn,
+        taskDefinition=task_definition_arn,
+        launchType="FARGATE",
+        overrides={
+            "containerOverrides": [{
+                "name": "search-portal-container",
+                "command": ["python", "manage.py", "migrate"],
+                "environment": [
+                    {
+                        "name": "POL_DJANGO_POSTGRES_USER",
+                        "value": f"{ctx.config.django.postgres_user}"
+                    },
+                    {
+                        "name": "POL_SECRETS_POSTGRES_PASSWORD",
+                        "value": f"{ctx.config.aws.postgres_password_arn}"
+                    },
+                ]
+            }]
+        },
+        networkConfiguration={
+            "awsvpcConfiguration": {
+                "subnets": [ctx.config.aws.private_subnet_id],
+                "securityGroups": [
+                    ctx.config.aws.rds_security_group_id,
+                    ctx.config.aws.default_security_group_id
+
+                ]
+            }
+        },
     )

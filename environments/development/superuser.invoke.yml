@@ -6,3 +6,14 @@ secrets:
 
 django:
   postgres_user: "postgres"
+
+aws:
+  bastion: "bastion.dev.surfedushare.nl"
+  profile_name: "pol-dev"
+  private_subnet_id: "subnet-0f67d761db43fe80f"
+  default_security_group_id: "sg-00380d0e5b22a1195"
+  rds_security_group_id: "sg-0d1035d5b1136e509"
+  cluster_arn: "arn:aws:ecs:eu-central-1:322480324822:cluster/surfpol"
+  task_role_arn: "arn:aws:iam::322480324822:role/ecsTaskExecutionRole"
+  superuser_task_role_arn: "arn:aws:iam::322480324822:role/ecsSuperuserTaskExecutionRole"
+  postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres"

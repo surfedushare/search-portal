@@ -1,6 +1,19 @@
 secrets:
   postgres:
     password: null
+  postgres_application:
+    password: null
 
 django:
   postgres_user: "postgres"
+
+aws:
+  bastion: null
+  profile_name: "pol-prod"
+  private_subnet_id: null
+  default_security_group_id: null
+  rds_security_group_id: null
+  cluster_arn: null
+  task_role_arn: null
+  superuser_task_role_arn: null
+  postgres_password_arn: null

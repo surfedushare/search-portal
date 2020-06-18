@@ -4,7 +4,7 @@ version: '3.1'
 services:
 
   postgres:
-    image: postgres:11
+    image: postgres:12
     volumes:
       - postgres_database:/var/lib/postgresql/data
       - ./postgres/conf/postgresql.conf:/etc/postgresql/postgresql.conf
@@ -13,7 +13,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=edushare
-      - DJANGO_POSTGRES_PASSWORD=${POL_DJANGO_POSTGRES_PASSWORD}
     healthcheck:
         test: psql -U postgres edushare -c "SELECT 'DBD::Pg ping test'"
     labels:

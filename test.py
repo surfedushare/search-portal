@@ -18,20 +18,24 @@ def e2e_tests(ctx):
     with ctx.cd("service"):
         ctx.run(f"python manage.py test e2e_tests", echo=True, pty=True)
 
+
 @task
 def service_tests(ctx):
     with ctx.cd("service"):
         ctx.run(f"python manage.py test surf.apps", echo=True, pty=True)
 
+
 @task
-def vendor_tests(ctx):
+def elastic_search_tests(ctx):
     with ctx.cd("service"):
         ctx.run(f"python manage.py test surf.vendor", echo=True, pty=True)
+
 
 @task
 def harvester_tests(ctx):
     with ctx.cd("harvester"):
         ctx.run(f"python manage.py test", echo=True, pty=True)
+
 
 @task(service_tests, harvester_tests, e2e_tests)
 def test(ctx):

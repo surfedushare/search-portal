@@ -107,18 +107,20 @@ python manage.py migrate
 Tests
 -----
 
-The test suite is rather limited at the moment. There's not real tests at all for the portal.
-However there are some tests for the integration with
-the Edurep search engine and our own Elastic Search powered engine.
-These engines are what makes the portal tick in the end
-and currently you can switch between the two engines with a deploy.
-The adapter that connects to these search engines is fully tested.
-These tests also assert that the two engines return more or less the same content.
-This is to keep the ability to switch engines when needed.
+In order to test your work in combination with harvester code as well as frontend code.
+It's recommended to [run your tests from the repo root](../README.md#tests).
 
-Run these integration tests with the following command:
+To only test the service you can run standard Django tests and specify submodules.
+For example:
 
 ```bash
-make integration-tests
+python manage.py test surf.apps
+```
+
+To do e2e testing for this project and the portal frontend you can run:
+
+```bash
+cd ..
+invoke e2e_tests
 ```
 
