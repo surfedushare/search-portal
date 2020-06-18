@@ -3,6 +3,9 @@ import boto3
 from invoke import task, Responder
 
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 def download_snapshot(snapshot_name):
 
     print("Preparing download")
@@ -21,7 +24,6 @@ def download_snapshot(snapshot_name):
         bucket_path, snapshot_name = os.path.split(snapshot_key)
 
     # Downloading snapshot file if it doesn't exist
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     snapshot_file_path = os.path.join(BASE_DIR, "postgres", "dumps", snapshot_name)
     if not os.path.exists(snapshot_file_path):
         print("Downloading:", snapshot_key)
