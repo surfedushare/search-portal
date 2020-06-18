@@ -1,46 +1,36 @@
-import _ from 'lodash';
-
-
-export const debounce = function(func, wait, immediate) {
-  var timeout;
-  return function() {
-    var context = this,
-      args = arguments;
-    var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-};
-
-export const generateSearchMaterialsQuery = function(data = { filters: [], search_text: [] }, name = 'materials-search') {
-
-  const filters = data.filters ? data.filters.filter(item => Object.keys(item).length) : [];
+export const generateSearchMaterialsQuery = function(
+  data = { filters: [], search_text: '' },
+  name = 'materials-search'
+) {
+  const filters = data.filters
+    ? data.filters.filter(item => Object.keys(item).length)
+    : [];
   name += '___' + this.$i18n.locale;
 
   return {
     name: name,
-    query: Object.assign({}, data, {
+    query: {
+      ...data,
       filters: JSON.stringify(filters),
       search_text: JSON.stringify(data.search_text)
-    })
+    }
   };
 };
 
 export const parseSearchMaterialsQuery = function(query) {
-  let search = { search_text: [], filters: [] };
-  if(!_.isEmpty(query)) {
-    search = Object.assign({}, query, {
+  let search = { search_text: '', filters: [] };
+
+  if (query) {
+    search = {
+      ...query,
       filters: query.filters ? JSON.parse(query.filters) : [],
-      search_text: query.search_text ? JSON.parse(query.search_text) : []
-    });
+      search_text: query.search_text ? JSON.parse(query.search_text) : ''
+    };
   }
 
-  const publisherDate = search.filters.find(item => item.external_id === 'lom.lifecycle.contribute.publisherdate');
+  const publisherDate = search.filters.find(
+    item => item.external_id === 'lom.lifecycle.contribute.publisherdate'
+  );
   let dateRange = {};
   if (publisherDate && publisherDate.items) {
     dateRange = {
@@ -48,7 +38,7 @@ export const parseSearchMaterialsQuery = function(query) {
       end_date: publisherDate.items[1] || null
     };
   }
-  return {search, dateRange}
+  return { search, dateRange };
 };
 
 export const validateHREF = function(href) {

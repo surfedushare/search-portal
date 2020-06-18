@@ -13,15 +13,16 @@ We're using invoke Config as base for our configuration:
 http://docs.pyinvoke.org/en/stable/concepts/configuration.html#config-hierarchy.
 Since the config is created outside of invoke it works slightly different than normal.
 The system invoke files are the environment configuration files.
-For the rest the project and shell environment variables get loaded as normal and may override environments.
+Runtime configurations are used to load superuser configurations and are set only in a host context.
+Shell environment variables override all other configuration.
 """
 import os
 import json
 from invoke.config import Config
 import boto3
+from botocore.exceptions import ClientError
 
 
-# First we'll load the relevant non-invoke environment variables
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 
@@ -57,12 +58,14 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
 
     # Now we use the customize invoke load as described above
     environment = config_class(
-        system_prefix=MODE_ENVIRONMENT + os.path.sep
+        system_prefix=MODE_ENVIRONMENT + os.path.sep,
+        user_prefix=os.path.join(MODE_ENVIRONMENT, "superuser.") if CONTEXT == "host" else None
     )
     environment.load_system()
     environment.load_user()
     environment.load_project()
     environment.load_shell_env()
+    environment.load_runtime()
 
     # Creating a AWS session based on configuration and context
     session = boto3.Session() if use_aws_default_profile else boto3.Session(profile_name=environment.aws.profile_name)

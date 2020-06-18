@@ -1,0 +1,19 @@
+secrets:
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres"
+  postgres_application:
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-application"
+
+django:
+  postgres_user: "postgres"
+
+aws:
+  bastion: "bastion.acc.surfedushare.nl"
+  profile_name: "pol-acc"
+  private_subnet_id: "subnet-034cbd55a2b8ba9c7"
+  default_security_group_id: "sg-08968db1c37ba8082"
+  rds_security_group_id: "sg-0a58482b8d9db66ee"
+  cluster_arn: "arn:aws:ecs:eu-central-1:000428825067:cluster/surfpol"
+  task_role_arn: "arn:aws:iam::000428825067:role/ecsTaskExecutionRole"
+  superuser_task_role_arn: "arn:aws:iam::000428825067:role/ecsSuperuserTaskExecutionRole"
+  postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres"

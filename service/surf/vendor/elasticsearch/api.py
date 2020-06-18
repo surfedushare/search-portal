@@ -8,8 +8,6 @@ from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
 
-index_nl = 'latest-nl'
-index_en = 'latest-en'
 _VCARD_FORMATED_NAME_KEY = "FN"
 
 
@@ -22,14 +20,15 @@ class ElasticSearchApiClient:
             http_auth=(settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD),
             **protocol_config
         )
+        self.index_nl = settings.ELASTICSEARCH_NL_INDEX
+        self.index_en = settings.ELASTICSEARCH_EN_INDEX
 
     @staticmethod
-    def parse_elastic_result(search_result, page_size=5):
+    def parse_elastic_result(search_result):
         """
         Parses the elasticsearch search result into the format that is also used by the edurep endpoint.
         This allows quick switching between elastic and edurep without changing code.
         :param search_result: result from elasticsearch
-        :param page_size: results per page, used to double-check elasticsearch
         :return result: list of results in edurep format
         """
         hits = search_result["hits"]
@@ -58,10 +57,6 @@ class ElasticSearchApiClient:
             ElasticSearchApiClient.parse_elastic_hit(hit)
             for hit in hits['hits']
         ]
-        # sometimes elastic will return a doc_count of 1 even if there are no results at all.
-        # don't trust elasticsearch on record count if there aren't enough records for a single page.
-        if len(result['records']) < page_size:
-            result['recordcount'] = len(result['records'])
         return result
 
     @staticmethod
@@ -117,7 +112,7 @@ class ElasticSearchApiClient:
         }
 
         result = self.elastic.search(
-            index=[index_nl, index_en],
+            index=[self.index_nl, self.index_en],
             doc_type='entity',
             body=query_dictionary,
             _source_include='suggest'
@@ -174,7 +169,7 @@ class ElasticSearchApiClient:
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
-        indices = self.parse_index_language(filters)
+        indices = self.parse_index_language(self, filters)
         # apply filters
         filters = self.parse_filters(filters)
         if filters:
@@ -193,7 +188,7 @@ class ElasticSearchApiClient:
             index=indices,
             body=body
         )
-        parsed_result = self.parse_elastic_result(result, page_size)
+        parsed_result = self.parse_elastic_result(result)
         # store the searches in the database to be able to analyse them later on.
         # however, dont store results when scrolling as not to overload the database
         if start_record == 0 and search_text:
@@ -209,7 +204,7 @@ class ElasticSearchApiClient:
         :return: a list of search results (like a regular search).
         """
         result = self.elastic.search(
-            index=[index_nl, index_en],
+            index=[self.index_nl, self.index_en],
             body={
                 "query": {
                     "bool": {
@@ -298,12 +293,12 @@ class ElasticSearchApiClient:
         return {elastic_type: {"order": order}}
 
     @staticmethod
-    def parse_index_language(filters):
+    def parse_index_language(self, filters):
         """
         Select the index to search on based on language.
         """
         # if no language is selected, search on both.
-        indices = [index_nl, index_en]
+        indices = [self.index_nl, self.index_en]
         if not filters:
             return indices
         language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'lom.general.language']

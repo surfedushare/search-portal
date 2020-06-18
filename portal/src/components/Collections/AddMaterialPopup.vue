@@ -14,8 +14,6 @@
           </button>
         </div>
         <Search
-          :hide-categories="true"
-          :hide-filter="true"
           v-model="search"
           @submit="onSearch"
           class="add_materials__info_search"
@@ -55,7 +53,6 @@
       Search,
       Materials
     },
-    mounted() {},
     data() {
       return {
         search: {},

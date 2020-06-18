@@ -34,7 +34,5 @@ secrets:
   elastic_search:
     password: "arn:aws:secretsmanager"
 
-# The legacy mechanism to be able to override postgres credentials during migrations
-# Keeping this around for now until we move to AWS Secrets Manager fully
-postgres:
-  credentials: null
+aws:
+  image_upload_bucket: null

@@ -8,13 +8,6 @@
             src="/images/pictures/header-image.jpg"
             alt="header-image"
           >
-          <img
-            class="main__info_bg-mobile"
-            src="/images/pictures/lab-21-windesheim-voor-surf-018@2x.jpg"
-            alt="header-image"
-          >
-          <h2 class="main__info_main-title">{{ $t('Open-learning-materials') }}</h2>
-
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>{{ $t('open-learning-materials-from-higher-education') }}</h2>
@@ -25,17 +18,21 @@
             </ul>
           </div>
           <Search
-            show-selected-category="lom.classification.obk.educationallevel.id"
+            educational-level-category-id="lom.educational.context"
+            material-type-external-id="lom.technical.format"
             class="main__info_search"
-            active-category-external-id="lom.technical.format"
           />
         </div>
       </div>
-      <div class="center_block main__thems_and_communities" v-show="false">
-        <Themes
-          :themes="sortedThemes"
-          class="main__thems"
-        />
+
+      <div class="main__materials">
+        <div class="center_block">
+          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
+          <Materials :materials="materials" />
+        </div>
+      </div>
+
+      <div class="center_block main__thems_and_communities">
         <PopularList
           :communities="communities"
           class="main__communities"
@@ -46,12 +43,7 @@
           </template>
         </PopularList>
       </div>
-      <div class="main__materials">
-        <div class="center_block">
-          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
-          <Materials :materials="materials" />
-        </div>
-      </div>
+
       <div class="center_block">
         <section class="preview">
           <div class="preview__bg_block">
@@ -115,54 +107,17 @@ export default {
   z-index: 1;
   &__info {
     @media @desktop {
-      padding: 104px 0 0;
+      padding: 120px 0 0;
       margin-bottom: 120px;
     }
     position: relative;
 
-    &:before {
-      @media @desktop {
-        content: '';
-        right: 0;
-        left: 50%;
-        height: 353px;
-        top: 303px;
-        border-radius: 65px 0 0 65px;
-        margin: 0 0 0 420px;
-        pointer-events: none;
-        border-left: 1px solid #686d75;
-        border-top: 1px solid #686d75;
-        border-bottom: 1px solid #686d75;
-        position: absolute;
-        z-index: -1;
-      }
-    }
     .center-header {
       position: relative;
     }
 
     &_bg {
-      position: absolute;
-      top: 80px;
-      left: 50px;
-      width: calc(100% - 100px);
-      z-index: -1;
-      @media @mobile {
-        display: none;
-      }
-    }
-
-    &_bg-mobile {
-      @media @desktop {
-        display: none;
-      }
-      position: absolute;
-      left: 0;
-      z-index: -1;
-      top: 70px;
-      border-radius: 10px;
       width: 100%;
-      padding: 0 30px;
     }
 
     &_title {
@@ -199,22 +154,16 @@ export default {
       }
     }
     &_block {
-      /*background: fade(@dark-blue, 90%); */
+      position: absolute;
+      top: -50px;
+      right: 100px;
       color: #fff;
       width: 572px;
-      margin: -39px 0 99px 541px;
       font-family: @second-font;
       padding: 31px 48px 40px;
       font-size: 16px;
       font-weight: bold;
-      position: relative;
-
-      @media @mobile {
-        margin: 50px 0 0 0;
-        padding: 10px 20px;
-        width: 100%;
-        max-width: 350px;
-      }
+      z-index: 1;
 
       & .bg {
         background: @dark-blue;
@@ -271,9 +220,6 @@ export default {
     }
     align-items: start;
     justify-content: space-between;
-    .popular-list {
-      display: none;
-    }
   }
 
   &__thems {

@@ -11,7 +11,7 @@ export default {
     url(keyword) {
       if (keyword) {
         return this.generateSearchMaterialsQuery({
-          search_text: [keyword],
+          search_text: keyword,
           filters: [],
           page: 1,
           page_size: 10

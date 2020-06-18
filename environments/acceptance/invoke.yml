@@ -3,7 +3,7 @@
 
 django:
   debug: false
-  postgres_user: "postgres"  # TODO: change to "django" or other application user with low privileges
+  postgres_user: "django"
   postgres_host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
   protocol: "https"
   domain: "acc.surfedushare.nl"
@@ -11,7 +11,7 @@ django:
 surfconext:
   oidc_endpoint: "https://connect.test.surfconext.nl"
   voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "front-test.surfcatalog.nl"
+  client_id: "acc.surfedushare.nl"
 
 elastic_search:
   username: "search_portal_backend_prod"
@@ -25,21 +25,13 @@ edurep:
 
 secrets:
   django:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/django-di27dQ"
+    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/django"
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-vuxDkK"
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-application"
   surfconext:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/surfconext-BTKTUw"
+    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/surfconext"
   elastic_search:
-    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/elastic-1xprrT"
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/elastic"
 
 aws:
-  cluster_arn: "arn:aws:ecs:eu-central-1:000428825067:cluster/surfpol"
   image_upload_bucket: "search-portal-media-uploads-acc"
-  profile_name: "pol-acc"
-  task_role_arn: "arn:aws:iam::000428825067:role/ecsTaskExecutionRole"
-
-  # The legacy mechanism to be able to override postgres credentials during migrations
-  # Keeping this around for now until we move to AWS Secrets Manager fully
-postgres:
-  credentials: null
