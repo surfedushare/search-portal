@@ -3,6 +3,9 @@ import boto3
 from invoke import task, Responder
 
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 def download_snapshot(snapshot_name):
 
     print("Preparing download")
@@ -21,7 +24,7 @@ def download_snapshot(snapshot_name):
         bucket_path, snapshot_name = os.path.split(snapshot_key)
 
     # Downloading snapshot file if it doesn't exist
-    snapshot_file_path = os.path.join("postgres", "dumps", snapshot_name)
+    snapshot_file_path = os.path.join(BASE_DIR, "postgres", "dumps", snapshot_name)
     if not os.path.exists(snapshot_file_path):
         print("Downloading:", snapshot_key)
         s3.download_file(Bucket=bucket_name, Key=snapshot_key, Filename=snapshot_file_path)
@@ -47,8 +50,9 @@ def import_snapshot(ctx, snapshot_name=None, migrate=True):
     # Make minor adjustments to dumps for legacy dumps to work on AWS
     if migrate:
         print("Migrating dump file")
-        ctx.run(f"sed -i 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
+        ctx.run(f"sed -i.bak 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
 
     print("Importing snapshot")
     ctx.run(f"psql -h localhost -U postgres -d edushare -f {snapshot_file_path}",
             pty=True, watchers=[postgres_password_responder])
+    ctx.run(f"rm {snapshot_file_path}.bak", warn=True)
