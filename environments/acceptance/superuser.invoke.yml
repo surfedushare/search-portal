@@ -1,8 +1,8 @@
 secrets:
   postgres:
-    password: null
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres"
   postgres_application:
-    password: null
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-application"
 
 django:
   postgres_user: "postgres"
@@ -15,5 +15,5 @@ aws:
   rds_security_group_id: "sg-0a58482b8d9db66ee"
   cluster_arn: "arn:aws:ecs:eu-central-1:000428825067:cluster/surfpol"
   task_role_arn: "arn:aws:iam::000428825067:role/ecsTaskExecutionRole"
-  superuser_task_role_arn: null
-  postgres_password_arn: null
+  superuser_task_role_arn: "arn:aws:iam::000428825067:role/ecsSuperuserTaskExecutionRole"
+  postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres"
