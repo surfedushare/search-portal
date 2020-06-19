@@ -10,7 +10,7 @@
   "scripts": {
     "serve": "npm_config_server=vue vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "lint": "eslint --ext .vue,.js src",
     "watch": "vue-cli-service build --watch --dest ../service/surf/apps/materials/static/portal/"
   },
   "dependencies": {
