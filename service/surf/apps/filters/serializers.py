@@ -21,17 +21,30 @@ class FilterShortSerializer(serializers.ModelSerializer):
 class MpttFilterItemSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
     title_translations = LocaleSerializer()
+    count = serializers.SerializerMethodField()
 
     def get_children(self, obj):
         if obj.is_leaf_node():
             return []
         else:
-            return MpttFilterItemSerializer(obj.get_children(), many=True).data
+            counts = self.context.get('search_counts', [])
+            if counts:
+                return MpttFilterItemSerializer(obj.get_children(), many=True, context={'search_counts': counts}).data
+            else:
+                return MpttFilterItemSerializer(obj.get_children(), many=True).data
+
+    def get_count(self, obj):
+        search_counts = self.context.get('search_counts', [])
+        if search_counts:
+            item = search_counts.get(obj.external_id, None)
+            if item:
+                return item.get('count', None)
+        return
 
     class Meta:
         model = models.MpttFilterItem
         fields = ('id', 'name', 'parent', 'title_translations', 'external_id', 'enabled_by_default', 'is_hidden',
-                  'item_count', 'children')
+                  'item_count', 'children', 'count')
 
 
 class FilterSerializer(FilterShortSerializer):

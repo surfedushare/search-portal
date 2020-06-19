@@ -21,6 +21,7 @@ from rest_framework.viewsets import (
 
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
+from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
 from surf.apps.materials.filters import (
     CollectionFilter
@@ -136,9 +137,26 @@ class MaterialSearchAPIView(APIView):
                 "items": self.parse_theme_drilldowns(discipline_items)
             })
 
+        drill_down_dict = {item['external_id']: item for item in res["drilldowns"]}
+        drill_down_flat = {}
+        for k, v in drill_down_dict.items():
+            if v.get('count', None):
+                drill_down_flat.update({k: v})
+            if v['items']:
+                for el in v['items']:
+                    drill_down_flat.update({el['external_id']: el})
+
+        filter_category_tree = MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
+        filter_categories = MpttFilterItemSerializer(
+            filter_category_tree,
+            many=True,
+            context={'search_counts': drill_down_flat}
+        )
+
         rv = dict(records=records,
                   records_total=res["recordcount"],
                   filters=res["drilldowns"],
+                  filter_categories=filter_categories.data,
                   page=data["page"],
                   page_size=data["page_size"])
         return Response(rv)
