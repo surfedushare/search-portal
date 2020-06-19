@@ -5,17 +5,14 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
 
     steps:
     - uses: actions/checkout@v2
     - name: Read .nvmrc
       run: echo "##[set-output name=NVMRC;]$(cat portal/.nvmrc)"
       id: nvm
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ steps.nvm.outputs.NVMRC}}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ steps.nvm.outputs.NVMRC }}
