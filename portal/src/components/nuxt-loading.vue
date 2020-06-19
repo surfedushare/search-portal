@@ -7,14 +7,14 @@
       'background-color': canSuccess ? color : failedColor,
       opacity: show ? 1 : 0
     }"
-  ></div>
+  />
 </template>
 
 <script>
 import Vue from 'vue'
 
 export default {
-  name: 'nuxt-loading',
+  name: 'NuxtLoading',
   data() {
     return {
       percent: 0,

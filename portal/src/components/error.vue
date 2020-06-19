@@ -14,8 +14,17 @@
 
 <script>
 export default {
-  name: 'error',
-  props: ['status-code', 'message-key']
+  name: 'Error',
+  props: {
+    statusCode: {
+      type: String,
+      default: ''
+    },
+    messageKey: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 

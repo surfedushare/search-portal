@@ -1,21 +1,21 @@
 <template>
   <section class="container main collection">
     <div v-if="!collectionInfo && !isLoading">
-      <error status-code="404" message-key="collection-not-found"></error>
+      <error status-code="404" message-key="collection-not-found" />
     </div>
-    <div class="center_block" v-else>
+    <div v-else class="center_block">
       <Collection
+        v-model="search"
         :collection="collectionInfo"
         :contenteditable="contenteditable"
         :submitting="submitting"
         :set-editable="setEditable"
         :change-view-type="changeViewType"
         :items-in-line="materials_in_line"
-        v-model="search"
         @onSubmit="onSubmit"
       />
 
-      <div class="add-materials" v-if="contenteditable">
+      <div v-if="contenteditable" class="add-materials">
         <button
           class="materials__add__link button secondary"
           @click.prevent="showAddMaterial"

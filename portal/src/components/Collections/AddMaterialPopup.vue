@@ -3,15 +3,17 @@
     <Popup v-if="isShow" :close="close" :is-show="isShow" class="add-material">
       <div>
         <div class="flex-container">
-          <h2 class="popup__title">{{ $t('Add-materials-to-collection') }}</h2>
+          <h2 class="popup__title">
+            {{ $t('Add-materials-to-collection') }}
+          </h2>
           <button class="button secondary" @click.prevent="onSaveMaterials">
             {{ $t('Add-selected-materials', { count: selection.length }) }}
           </button>
         </div>
         <Search
           v-model="search"
-          @submit="onSearch"
           class="add_materials__info_search"
+          @submit="onSearch"
         />
 
         <div
@@ -22,11 +24,11 @@
         >
           <div class="search__materials">
             <Materials
+              v-model="selection"
               :materials="materials"
               :items-in-line="2"
-              selectFor="add"
+              select-for="add"
               contenteditable="true"
-              v-model="selection"
             />
           </div>
         </div>
@@ -43,12 +45,17 @@ import Search from '~/components/FilterCategories/Search'
 import Materials from '~/components/Materials'
 
 export default {
-  name: 'add-collection',
-  props: ['is-show', 'close', 'submit-method', 'collection-id'],
+  name: 'AddCollection',
   components: {
     Popup,
     Search,
     Materials
+  },
+  props: {
+    isShow: { type: Boolean },
+    close: { type: Function, default: () => {} },
+    submitMethod: { type: Function, default: () => {} },
+    collectionId: { type: String, default: '' }
   },
   data() {
     return {
@@ -60,6 +67,9 @@ export default {
         title: null
       }
     }
+  },
+  computed: {
+    ...mapGetters(['materials', 'materials_loading'])
   },
   watch: {
     search(search) {
@@ -116,9 +126,6 @@ export default {
           this.submitting = false
         })
     }
-  },
-  computed: {
-    ...mapGetters(['materials', 'materials_loading'])
   }
 }
 </script>

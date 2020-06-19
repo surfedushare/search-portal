@@ -6,7 +6,7 @@
       <Sidebar :material="material" />
       <MaterialInfo :material="material" />
     </div>
-    <div class="main__materials" v-show="false">
+    <div v-show="false" class="main__materials">
       <div class="center_block">
         <h2 class="main__materials_title">
           {{ $t('Also-interesting-for-you') }}

@@ -13,7 +13,9 @@
         <BreadCrumbs
           :items="[{ title: $t('Home'), url: localePath('index') }]"
         />
-        <h2 class="collections__info_ttl">{{ $t('My-collections') }}</h2>
+        <h2 class="collections__info_ttl">
+          {{ $t('My-collections') }}
+        </h2>
       </div>
     </div>
     <div class="center_block">

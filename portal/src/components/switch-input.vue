@@ -2,17 +2,20 @@
   <div class="switch-input">
     <span v-if="label">{{ label }}&nbsp;&nbsp;</span>
     <label class="switch">
-      <input type="checkbox" v-model="value" />
-      <span class="slider round"></span>
+      <input v-model="value" type="checkbox" />
+      <span class="slider round" />
     </label>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'switch-input',
+  name: 'SwitchInput',
   props: {
-    label: String,
+    label: {
+      type: String,
+      default: ''
+    },
     value: Boolean
   },
   watch: {

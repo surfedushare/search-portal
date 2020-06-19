@@ -13,20 +13,22 @@
         <BreadCrumbs
           :items="[{ title: $t('Home'), url: localePath('index') }]"
         />
-        <h2 class="privacy__info_ttl">{{ $t('My-privacy') }}</h2>
+        <h2 class="privacy__info_ttl">
+          {{ $t('My-privacy') }}
+        </h2>
       </div>
-      <div class="privacy__form" v-if="permissions.length">
+      <div v-if="permissions.length" class="privacy__form">
         <form
           action="/"
           class="privacy__form_in"
-          @submit.prevent="onSubmit"
           novalidate
+          @submit.prevent="onSubmit"
         >
           <div class="privacy__form__column">
             <div
-              class="privacy__form__row"
               v-for="permission in permissions"
               :key="permission.type"
+              class="privacy__form__row"
             >
               <p class="privacy__form__label">
                 {{ permission[$i18n.locale].title }}
@@ -34,9 +36,9 @@
               <div class="permission-container">
                 <div class="switch-container">
                   <switch-input
-                    v-model="permission.is_allowed"
                     v-if="!permission.is_notification_only"
-                  ></switch-input>
+                    v-model="permission.is_allowed"
+                  />
                 </div>
                 <div
                   class="description"
@@ -47,7 +49,8 @@
                   <p>
                     {{ permission[$i18n.locale].description }} (<router-link
                       :to="localePath(permission.more_info_route)"
-                      >{{ $t('more-info') }}</router-link
+                    >
+                      {{ $t('more-info') }} </router-link
                     >)
                   </p>
                 </div>

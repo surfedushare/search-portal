@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="center_block">
-        <ul class="communities__items" v-if="communities.length">
+        <ul v-if="communities.length" class="communities__items">
           <li
             v-for="community in communities"
             :key="community.id"
@@ -28,8 +28,8 @@
           >
             <div class="communities__item_wrapper tile__wrapper">
               <div
-                class="communities__item_logo"
                 v-if="getCommunityDetail(community, $i18n.locale, 'logo')"
+                class="communities__item_logo"
               >
                 <img
                   :src="
@@ -44,18 +44,21 @@
               <div class="communities__item_count">
                 {{ $tc('learning-materials', community.materials_count) }}
               </div>
+              <!-- eslint-disable vue/no-v-html -->
               <div
+                v-show="false"
                 class="communities__item_description html-content"
                 v-html="
                   getCommunityDetail(community, $i18n.locale, 'description')
                 "
-                v-show="false"
-              ></div>
+              />
+              <!-- eslint-enable vue/no-v-html -->
               <div class="arrow-link communities__item_link">
                 {{ $t('See') }}
               </div>
             </div>
             <router-link
+              :key="`${community.id}`"
               :to="
                 localePath({
                   name: userCommunities
@@ -65,19 +68,22 @@
                 })
               "
               class="communities__item_link_wrapper"
-              :key="`${community.id}`"
               @click.native="setCommunity(community)"
             >
               {{ $t('See') }}
             </router-link>
           </li>
         </ul>
+        <!-- eslint-disable vue/no-v-html -->
         <h3
-          class="text-center"
           v-else-if="userCommunities"
+          class="text-center"
           v-html="$t('html-No-communities-available-logged-in')"
-        ></h3>
-        <h3 class="text-center" v-else>{{ $t('No-communities-available') }}</h3>
+        />
+        <!-- eslint-enable vue/no-v-html -->
+        <h3 v-else class="text-center">
+          {{ $t('No-communities-available') }}
+        </h3>
       </div>
     </section>
   </section>
@@ -89,17 +95,27 @@ import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
 export default {
-  name: 'communities',
+  name: 'Communities',
   components: {
     BreadCrumbs
-  },
-  mounted() {
-    this.$store.dispatch('getCommunities')
   },
   data() {
     return {
       userCommunities: this.$route.name.startsWith('my')
     }
+  },
+  computed: {
+    communities() {
+      if (this.userCommunities) {
+        return this.$store.getters.getUserCommunities(this.user)
+      } else {
+        return this.$store.getters.getPublicCommunities(this.user)
+      }
+    },
+    ...mapGetters(['user'])
+  },
+  mounted() {
+    this.$store.dispatch('getCommunities')
   },
   methods: {
     /**
@@ -115,16 +131,6 @@ export default {
       })
       return communityDetails[detail] || null
     }
-  },
-  computed: {
-    communities() {
-      if (this.userCommunities) {
-        return this.$store.getters.getUserCommunities(this.user)
-      } else {
-        return this.$store.getters.getPublicCommunities(this.user)
-      }
-    },
-    ...mapGetters(['user'])
   }
 }
 </script>

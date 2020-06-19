@@ -1,6 +1,8 @@
 <template>
   <div v-if="material" class="material__info_mobile">
-    <h1 class="material__info_mobile_ttl">{{ material.title }}</h1>
+    <h1 class="material__info_mobile_ttl">
+      {{ material.title }}
+    </h1>
     <div v-if="material" class="material__info_mobile_author">
       <router-link v-if="material.author" :to="authorUrl">
         {{ material.author }}

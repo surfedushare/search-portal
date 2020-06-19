@@ -15,8 +15,12 @@
               >{{ $t('open-learning-materials-from-higher-education') }}
             </h2>
             <ul class="main__info_items">
-              <li class="main__info_item">{{ $t('Free-to-use') }}</li>
-              <li class="main__info_item">{{ $t('Judged-by-quality') }}</li>
+              <li class="main__info_item">
+                {{ $t('Free-to-use') }}
+              </li>
+              <li class="main__info_item">
+                {{ $t('Judged-by-quality') }}
+              </li>
               <li class="main__info_item">
                 {{ $t('Inspiration-in-your-field') }}
               </li>
@@ -63,11 +67,15 @@
             />
           </div>
           <div class="preview__text_block">
-            <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
+            <h2 class="preview__title">
+              {{ $t('How-does-it-work-title') }}
+            </h2>
+            <!-- eslint-disable vue/no-v-html -->
             <div
               class="preview__text html-content"
               v-html="$t('html-How-does-it-work-text')"
-            ></div>
+            />
+            <!-- eslint-enable vue/no-v-html -->
             <router-link :to="localePath('how-does-it-work')" class="button">
               {{ $t('How-does-it-work') }}
             </router-link>

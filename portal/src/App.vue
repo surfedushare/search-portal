@@ -33,6 +33,11 @@ export default {
     MainFooter,
     NuxtLoading
   },
+  watch: {
+    '$i18n.locale'(newLocale) {
+      this.$axios.setLanguage(newLocale)
+    }
+  },
   created() {
     if (typeof window !== 'undefined') {
       window.app = this
@@ -43,11 +48,6 @@ export default {
   mounted() {
     this.$loading = this.$refs.loading
     this.$store.dispatch('getThemes')
-  },
-  watch: {
-    '$i18n.locale'(newLocale) {
-      this.$axios.setLanguage(newLocale)
-    }
   }
 }
 </script>

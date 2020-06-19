@@ -26,13 +26,13 @@
         <div class="search__chooser search__select">
           <select
             id="search_order_select"
-            @change="changeOrdering"
             v-model="sort_order"
+            @change="changeOrdering"
           >
             <option
               v-for="option in sort_order_options"
-              v-bind:value="option.value"
               :key="option.value"
+              :value="option.value"
             >
               &nbsp;&nbsp;{{ $t(option.value) }}
             </option>
@@ -115,12 +115,6 @@ export default {
       ]
     }
   },
-  mounted() {
-    const urlInfo = parseSearchMaterialsQuery(this.$route.query)
-    this.dates_range = urlInfo.dateRange
-    this.search = urlInfo.search
-    this.$store.dispatch('searchMaterials', urlInfo.search)
-  },
   computed: {
     ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
   },
@@ -147,6 +141,12 @@ export default {
 
       this.search = Object.assign({}, this.search, { filters: new_filters })
     }
+  },
+  mounted() {
+    const urlInfo = parseSearchMaterialsQuery(this.$route.query)
+    this.dates_range = urlInfo.dateRange
+    this.search = urlInfo.search
+    this.$store.dispatch('searchMaterials', urlInfo.search)
   },
   methods: {
     generateSearchMaterialsQuery,

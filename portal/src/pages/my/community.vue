@@ -1,7 +1,7 @@
 <template>
   <section class="container main communities">
     <div v-if="!formData">
-      <error status-code="404" message-key="community-not-found"></error>
+      <error status-code="404" message-key="community-not-found" />
     </div>
     <div v-else>
       <div class="center_block">
@@ -17,16 +17,18 @@
           <BreadCrumbs
             :items="[{ title: $t('Home'), url: localePath('index') }]"
           />
-          <h2 class="communities__info_ttl">{{ $t('My-community') }}</h2>
+          <h2 class="communities__info_ttl">
+            {{ $t('My-community') }}
+          </h2>
           <div>
             <section class="communities__section__blue_box">
               <form action="/" @submit.prevent="onSubmit">
                 <div class="communities__form__buttons">
-                  <switch-input :label="$t('public')" v-model="isPublished" />
+                  <switch-input v-model="isPublished" :label="$t('public')" />
                   &nbsp;&nbsp;
-                  <router-link :to="getPreviewPath()"
-                    ><i class="fas fa-eye"></i> {{ $t('example') }}</router-link
-                  >
+                  <router-link :to="getPreviewPath()">
+                    <i class="fas fa-eye" /> {{ $t('example') }}
+                  </router-link>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <button
                     :disabled="is_submitting"
@@ -43,15 +45,15 @@
 
         <div class="tab">
           <button
-            class="tablinks"
             ref="general-button"
+            class="tablinks"
             @click="openTab('General')"
           >
             {{ $t('general') }}
           </button>
           <button
-            class="tablinks"
             ref="collections-button"
+            class="tablinks"
             @click="openTab('Collections')"
           >
             {{ $t('collections') }}
@@ -59,9 +61,9 @@
         </div>
 
         <div
-          class="communities__form tabcontent"
           id="General"
           ref="general-tab"
+          class="communities__form tabcontent"
         >
           <div>
             <h1>{{ $t('general') }}</h1>
@@ -87,9 +89,9 @@
                   {{ $t('Name') }}
                 </label>
                 <input
-                  required
                   id="title_nl"
                   v-model="formData.title_nl"
+                  required
                   name="name"
                   type="text"
                   class="communities__form__input"
@@ -166,9 +168,9 @@
                   {{ $t('Description') }}
                 </label>
                 <textarea
-                  required
                   id="description_nl"
                   v-model="formData.description_nl"
+                  required
                   name="description"
                   class="communities__form__textarea"
                   :placeholder="$t('community-description-placeholder')"
@@ -227,9 +229,9 @@
                   {{ $t('Name') }}
                 </label>
                 <input
-                  required
                   id="title_en"
                   v-model="formData.title_en"
+                  required
                   name="name"
                   type="text"
                   class="communities__form__input"
@@ -306,9 +308,9 @@
                   {{ $t('Description') }}
                 </label>
                 <textarea
-                  required
                   id="description_en"
                   v-model="formData.description_en"
+                  required
                   name="description"
                   class="communities__form__textarea"
                   :placeholder="$t('community-description-placeholder')"
@@ -349,9 +351,9 @@
           </form>
         </div>
         <div
-          class="communities__collections tabcontent"
           id="Collections"
           ref="collections-tab"
+          class="communities__collections tabcontent"
         >
           <br /><br />
           <div class="collections__add">

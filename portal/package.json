@@ -64,11 +64,21 @@
       "browser": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/recommended",
+      "eslint:recommended",
       "plugin:prettier/recommended",
-      "eslint:recommended"
+      "prettier/vue"
+
     ],
-    "rules": {},
+    "rules": {
+      "vue/max-attributes-per-line": [2, {
+        "singleline": 20,
+        "multiline": {
+          "max": 1,
+          "allowFirstLine": false
+        }
+      }]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

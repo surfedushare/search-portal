@@ -3,7 +3,8 @@
     <div class="center_block info__center-header">
       <div class="info__info">
         <h2>{{ $t(titleKey) }}</h2>
-        <div class="html-content" v-html="$t(htmlKey)"></div>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="html-content" v-html="$t(htmlKey)" />
       </div>
     </div>
   </section>

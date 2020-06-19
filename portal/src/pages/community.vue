@@ -2,7 +2,7 @@
   <section class="container main">
     <section class="community">
       <div v-if="!community_details">
-        <error status-code="404" message-key="community-not-found"></error>
+        <error status-code="404" message-key="community-not-found" />
       </div>
       <div v-else>
         <div class="center_block">
@@ -15,8 +15,7 @@
               { title: $t('Communities'), url: localePath('communities') }
             ]"
             :logo_src="community_details.featured_image"
-          >
-          </InfoBlock>
+          />
 
           <div>
             <Collections
@@ -41,7 +40,7 @@
           </Materials>
 
           <template>
-            <div class="community__row" v-show="false">
+            <div v-show="false" class="community__row">
               <Themes :themes="community_themes" class="community__themas" />
               <div class="community__themas_and_disciplines">
                 <Disciplines
@@ -69,8 +68,7 @@ import Error from '~/components/error'
 import _ from 'lodash'
 
 export default {
-  name: 'community',
-  props: [],
+  name: 'Community',
   components: {
     Error,
     Themes,
@@ -80,19 +78,7 @@ export default {
     Spinner,
     InfoBlock
   },
-  mounted() {
-    const { community } = this.$route.params
-    this.$store.dispatch('getCommunity', community).finally(() => {
-      this.isLoading = false
-    })
-    this.$store.dispatch('getCommunityThemes', community)
-    this.$store.dispatch('getCommunityDisciplines', community)
-    this.$store.dispatch('getCommunityCollections', community)
-    this.$store.dispatch('searchMaterials', {
-      page_size: 4,
-      search_text: []
-    })
-  },
+  props: [],
   data() {
     return {
       isLoading: true,
@@ -136,6 +122,19 @@ export default {
         '/images/pictures/community-default.jpg'
       return communityDetails
     }
+  },
+  mounted() {
+    const { community } = this.$route.params
+    this.$store.dispatch('getCommunity', community).finally(() => {
+      this.isLoading = false
+    })
+    this.$store.dispatch('getCommunityThemes', community)
+    this.$store.dispatch('getCommunityDisciplines', community)
+    this.$store.dispatch('getCommunityCollections', community)
+    this.$store.dispatch('searchMaterials', {
+      page_size: 4,
+      search_text: []
+    })
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <section class="container main themes">
     <div v-if="!theme && !isLoading">
-      <error status-code="404" message-key="theme-not-found"></error>
+      <error status-code="404" message-key="theme-not-found" />
     </div>
     <div v-else-if="theme && !isLoading" class="theme">
       <div class="center_block center-header">
@@ -21,9 +21,9 @@
             {{ getTitleTranslation(theme, $i18n.locale) }}
           </h2>
           <Search
+            v-model="search"
             class="theme__info_search"
             :placeholder="$t('Search-in-theme')"
-            v-model="search"
             active-category-external-id="lom.technical.format"
           />
         </div>
@@ -36,11 +36,12 @@
             }}
           </h2>
           <p>
+            <!-- eslint-disable vue/no-v-html -->
             <span
               class="html-content"
               v-html="getDescriptionTranslation(theme, $i18n.locale)"
-            >
-            </span>
+            />
+            <!-- eslint-enable vue/no-v-html -->
           </p>
         </div>
         <Disciplines
@@ -101,8 +102,7 @@ import BreadCrumbs from '~/components/BreadCrumbs'
 import Error from '~/components/error'
 
 export default {
-  name: 'theme',
-  props: [],
+  name: 'Theme',
   components: {
     Search,
     PopularList,
@@ -111,6 +111,30 @@ export default {
     Collections,
     BreadCrumbs,
     Error
+  },
+  props: [],
+  data() {
+    return {
+      isLoading: true,
+      search: {
+        filters: [
+          {
+            external_id: 'lom.technical.format',
+            items: []
+          }
+        ]
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'theme',
+      'themeDisciplines',
+      'themeCommunities',
+      'themeCollections',
+      'materials',
+      'filter'
+    ])
   },
   mounted() {
     let themeId = this.$route.params.id
@@ -148,19 +172,6 @@ export default {
     })
     this.$store.dispatch('getThemeCollections', themeId)
   },
-  data() {
-    return {
-      isLoading: true,
-      search: {
-        filters: [
-          {
-            external_id: 'lom.technical.format',
-            items: []
-          }
-        ]
-      }
-    }
-  },
   methods: {
     getTitleTranslation(theme, language) {
       if (
@@ -180,16 +191,6 @@ export default {
       }
       return theme.description
     }
-  },
-  computed: {
-    ...mapGetters([
-      'theme',
-      'themeDisciplines',
-      'themeCommunities',
-      'themeCollections',
-      'materials',
-      'filter'
-    ])
   }
 }
 </script>
