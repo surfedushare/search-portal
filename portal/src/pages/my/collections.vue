@@ -1,15 +1,17 @@
-
 <template>
   <section class="container main collections">
     <div class="center_block center-header collections__center-header">
       <div class="collections__info ">
         <img
           src="/images/pictures/rawpixel-760027-unsplash.jpg"
-          srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-         /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
-          class="collections__info_bg">
+          srcset="
+            /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+            /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
+          "
+          class="collections__info_bg"
+        />
         <BreadCrumbs
-          :items="[{title: $t('Home'), url: localePath('index')}]"
+          :items="[{ title: $t('Home'), url: localePath('index') }]"
         />
         <h2 class="collections__info_ttl">{{ $t('My-collections') }}</h2>
       </div>
@@ -29,20 +31,16 @@
           :loading="my_collections_loading"
         />
       </div>
-      <AddCollection
-        v-if="isShow"
-        :close="close"
-        :is-show="isShow"
-      />
+      <AddCollection v-if="isShow" :close="close" :is-show="isShow" />
     </div>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import BreadCrumbs from '~/components/BreadCrumbs';
-import Collections from '~/components/Collections';
-import AddCollection from '~/components/Popup/AddCollection';
+import { mapGetters } from 'vuex'
+import BreadCrumbs from '~/components/BreadCrumbs'
+import Collections from '~/components/Collections'
+import AddCollection from '~/components/Popup/AddCollection'
 
 export default {
   components: {
@@ -53,7 +51,7 @@ export default {
   data() {
     return {
       isShow: false
-    };
+    }
   },
   computed: {
     ...mapGetters([
@@ -66,18 +64,18 @@ export default {
   },
   mounted() {
     if (!this.user_loading) {
-      this.$router.push('/');
+      this.$router.push('/')
     }
   },
   methods: {
     showAddCollection() {
-      this.isShow = true;
+      this.isShow = true
     },
     close() {
-      this.isShow = false;
+      this.isShow = false
     }
   }
-};
+}
 </script>
 <style lang="less">
 @import './../../variables';

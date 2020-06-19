@@ -1,5 +1,5 @@
-import Popup from '~/components/Popup';
-import StarRating from '~/components/StarRating';
+import Popup from '~/components/Popup'
+import StarRating from '~/components/StarRating'
 export default {
   name: 'save-rating',
   props: ['value', 'is-show', 'close', 'material'],
@@ -13,14 +13,14 @@ export default {
       saved: false,
       submitting: false,
       rating: 0
-    };
+    }
   },
   methods: {
     /**
      * Save rating
      */
     onSaveRating() {
-      this.submitting = true;
+      this.submitting = true
 
       const ratings = JSON.parse(sessionStorage.getItem('ratedMaterials')) || []
       ratings.push(this.material.external_id)
@@ -29,18 +29,18 @@ export default {
       this.$store
         .dispatch('setMaterialRating', {
           external_id: this.material.external_id,
-          star_rating: this.rating,
+          star_rating: this.rating
         })
         .then(() => {
           this.$store
-            .dispatch('getMaterial', {id: this.$route.params.id})
+            .dispatch('getMaterial', { id: this.$route.params.id })
             .then(() => {
-              this.submitting = false;
-              this.saved = true;
-              this.rating = 0;
-            });
-        });
+              this.submitting = false
+              this.saved = true
+              this.rating = 0
+            })
+        })
     }
   },
   computed: {}
-};
+}

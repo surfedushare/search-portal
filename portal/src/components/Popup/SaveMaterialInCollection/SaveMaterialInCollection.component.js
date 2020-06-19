@@ -1,5 +1,5 @@
-import { mapGetters } from 'vuex';
-import Popup from './../../Popup';
+import { mapGetters } from 'vuex'
+import Popup from './../../Popup'
 export default {
   name: 'save-material-in-collection',
   props: ['isShow', 'close', 'material'],
@@ -10,14 +10,14 @@ export default {
     return {
       collection: null,
       submitting: false
-    };
+    }
   },
   methods: {
     /**
      * Save material
      */
     onSaveMaterial() {
-      this.submitting = true;
+      this.submitting = true
       this.$store
         .dispatch('setMaterialInMyCollection', {
           collection_id: this.collection,
@@ -29,15 +29,15 @@ export default {
         })
         .then(() => {
           this.$store
-            .dispatch('getMaterial', {id: this.$route.params.id})
+            .dispatch('getMaterial', { id: this.$route.params.id })
             .then(() => {
-              this.submitting = false;
-              this.close();
-            });
-        });
+              this.submitting = false
+              this.close()
+            })
+        })
     }
   },
   computed: {
     ...mapGetters(['my_collections'])
   }
-};
+}

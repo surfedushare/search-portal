@@ -7,14 +7,19 @@
             class="main__info_bg"
             src="/images/pictures/header-image.jpg"
             alt="header-image"
-          >
+          />
           <div class="main__info_block">
             <div class="bg" />
-            <h2 class="main__info_title" ><span v-if="statistic">{{ contedNumber }} </span>{{ $t('open-learning-materials-from-higher-education') }}</h2>
+            <h2 class="main__info_title">
+              <span v-if="statistic">{{ contedNumber }} </span
+              >{{ $t('open-learning-materials-from-higher-education') }}
+            </h2>
             <ul class="main__info_items">
               <li class="main__info_item">{{ $t('Free-to-use') }}</li>
               <li class="main__info_item">{{ $t('Judged-by-quality') }}</li>
-              <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
+              <li class="main__info_item">
+                {{ $t('Inspiration-in-your-field') }}
+              </li>
             </ul>
           </div>
           <Search
@@ -27,19 +32,20 @@
 
       <div class="main__materials">
         <div class="center_block">
-          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
+          <h2 class="main__materials_title">
+            {{ $t('Newest-open-learning-material') }}
+          </h2>
           <Materials :materials="materials" />
         </div>
       </div>
 
       <div class="center_block main__thems_and_communities">
-        <PopularList
-          :communities="communities"
-          class="main__communities"
-        >
+        <PopularList :communities="communities" class="main__communities">
           <template slot="header-info">
             <h2>{{ $t('Communities') }}</h2>
-            <div class="popular-list__description">{{ $t('Open-learning-materials-from-professional-communit') }}</div>
+            <div class="popular-list__description">
+              {{ $t('Open-learning-materials-from-professional-communit') }}
+            </div>
           </template>
         </PopularList>
       </div>
@@ -47,14 +53,21 @@
       <div class="center_block">
         <section class="preview">
           <div class="preview__bg_block">
-            <img src="/images/pictures/image_home.jpg"
-                 srcset="/images/pictures/image_home@2x.jpg 2x,
-             /images/pictures/image_home@3x.jpg 3x"
-                 class="preview__bg_block-img">
+            <img
+              src="/images/pictures/image_home.jpg"
+              srcset="
+                /images/pictures/image_home@2x.jpg 2x,
+                /images/pictures/image_home@3x.jpg 3x
+              "
+              class="preview__bg_block-img"
+            />
           </div>
           <div class="preview__text_block">
             <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
-            <div class="preview__text html-content" v-html="$t('html-How-does-it-work-text')"></div>
+            <div
+              class="preview__text html-content"
+              v-html="$t('html-How-does-it-work-text')"
+            ></div>
             <router-link :to="localePath('how-does-it-work')" class="button">
               {{ $t('How-does-it-work') }}
             </router-link>
@@ -66,19 +79,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Search from '~/components/FilterCategories/Search';
-import numeral from 'numeral';
-import Materials from '~/components/Materials';
-import PopularList from '~/components/Communities/PopularList';
-import Themes from '~/components/Themes';
+import { mapGetters } from 'vuex'
+import Search from '~/components/FilterCategories/Search'
+import numeral from 'numeral'
+import Materials from '~/components/Materials'
+import PopularList from '~/components/Communities/PopularList'
 
 export default {
   components: {
     Search,
     PopularList,
-    Materials,
-    Themes,
+    Materials
   },
   computed: {
     ...mapGetters(['materials', 'communities', 'sortedThemes', 'statistic']),
@@ -89,15 +100,15 @@ export default {
     contedNumber() {
       return numeral(this.statistic.value)
         .format('0,0')
-        .replace(',', '.');
+        .replace(',', '.')
     }
   },
   mounted() {
-    this.$store.dispatch('getMaterials', { page_size: 4 });
-    this.$store.dispatch('getCommunities', { params: { page_size: 3 } });
-    this.$store.dispatch('getStatistic');
+    this.$store.dispatch('getMaterials', { page_size: 4 })
+    this.$store.dispatch('getCommunities', { params: { page_size: 3 } })
+    this.$store.dispatch('getStatistic')
   }
-};
+}
 </script>
 
 <style lang="less">
@@ -182,8 +193,7 @@ export default {
         }
         &:before {
           content: '';
-          background: url('/images/buble-background-blue.svg') 0 0
-            no-repeat;
+          background: url('/images/buble-background-blue.svg') 0 0 no-repeat;
           position: absolute;
           top: -36px;
           left: -46px;
@@ -287,13 +297,12 @@ export default {
           width: 100%;
           padding-right: 80px;
           padding-left: 20px;
-
         }
       }
-      &:before{
+      &:before {
         content: '';
         position: absolute;
-        background: url("/images/combined-shape.svg") no-repeat 0 0;
+        background: url('/images/combined-shape.svg') no-repeat 0 0;
         right: -100px;
         top: 0;
         height: 109px;
@@ -303,10 +312,10 @@ export default {
           right: 0;
         }
       }
-      &:after{
+      &:after {
         content: '';
         position: absolute;
-        background: url("/images/message.svg") no-repeat 0 0;
+        background: url('/images/message.svg') no-repeat 0 0;
         right: -82px;
         top: 22px;
         height: 33px;

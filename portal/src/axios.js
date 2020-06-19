@@ -3,54 +3,54 @@
  * We should see which configurations we want to keep here and remove the rest.
  */
 
-import Axios from 'axios';
-import { isNil } from 'lodash';
+import Axios from 'axios'
+import { isNil } from 'lodash'
 
 // Axios.prototype cannot be modified
 const axiosExtra = {
   setHeader(name, value, scopes = 'common') {
     for (let scope of Array.isArray(scopes) ? scopes : [scopes]) {
       if (!value) {
-        delete this.defaults.headers[scope][name];
-        return;
+        delete this.defaults.headers[scope][name]
+        return
       }
-      this.defaults.headers[scope][name] = value;
+      this.defaults.headers[scope][name] = value
     }
   },
   setToken(token, type, scopes = 'common') {
-    const value = !token ? null : (type ? type + ' ' : '') + token;
-    this.setHeader('Authorization', value, scopes);
+    const value = !token ? null : (type ? type + ' ' : '') + token
+    this.setHeader('Authorization', value, scopes)
   },
   setLanguage(language) {
     if (!isNil(language)) {
-      this.defaults.headers.common['Accept-Language'] = language;
+      this.defaults.headers.common['Accept-Language'] = language
     } else {
-      delete this.defaults.headers.common['Accept-Language'];
+      delete this.defaults.headers.common['Accept-Language']
     }
   },
   onRequest(fn) {
-    this.interceptors.request.use(config => fn(config) || config);
+    this.interceptors.request.use(config => fn(config) || config)
   },
   onResponse(fn) {
-    this.interceptors.response.use(response => fn(response) || response);
+    this.interceptors.response.use(response => fn(response) || response)
   },
   onRequestError(fn) {
     this.interceptors.request.use(
       undefined,
       error => fn(error) || Promise.reject(error)
-    );
+    )
   },
   onResponseError(fn) {
     this.interceptors.response.use(
       undefined,
       error => fn(error) || Promise.reject(error)
-    );
+    )
   },
   onError(fn) {
-    this.onRequestError(fn);
-    this.onResponseError(fn);
+    this.onRequestError(fn)
+    this.onResponseError(fn)
   }
-};
+}
 
 // Request helpers ($get, $post, ...)
 for (let method of [
@@ -64,19 +64,19 @@ for (let method of [
   'patch'
 ]) {
   axiosExtra['$' + method] = function() {
-    return this[method].apply(this, arguments).then(res => res && res.data);
-  };
+    return this[method].apply(this, arguments).then(res => res && res.data)
+  }
 }
 
 const extendAxiosInstance = axios => {
   for (let key in axiosExtra) {
-    axios[key] = axiosExtra[key].bind(axios);
+    axios[key] = axiosExtra[key].bind(axios)
   }
-};
+}
 
 const setupProgress = axios => {
   if (process.server) {
-    return;
+    return
   }
 
   // A noop loading inteterface for when $nuxt is not yet ready
@@ -85,62 +85,62 @@ const setupProgress = axios => {
     start: () => {},
     fail: () => {},
     set: () => {}
-  };
+  }
 
   const $loading = () =>
     window.app && window.app.$loading && window.app.$loading.set
       ? window.app.$loading
-      : noopLoading;
+      : noopLoading
 
-  let currentRequests = 0;
+  let currentRequests = 0
 
   axios.onRequest(config => {
     if (config && config.progress === false) {
-      return;
+      return
     }
 
-    currentRequests++;
-  });
+    currentRequests++
+  })
 
   axios.onResponse(response => {
     if (response && response.config && response.config.progress === false) {
-      return;
+      return
     }
 
-    currentRequests--;
+    currentRequests--
     if (currentRequests <= 0) {
-      currentRequests = 0;
-      $loading().finish();
+      currentRequests = 0
+      $loading().finish()
     }
-  });
+  })
 
   axios.onError(error => {
     if (error && error.config && error.config.progress === false) {
-      return;
+      return
     }
 
-    currentRequests--;
-    $loading().fail();
-    $loading().finish();
-  });
+    currentRequests--
+    $loading().fail()
+    $loading().finish()
+  })
 
   const onProgress = e => {
     if (!currentRequests) {
-      return;
+      return
     }
-    const progress = (e.loaded * 100) / (e.total * currentRequests);
-    $loading().set(Math.min(100, progress));
-  };
+    const progress = (e.loaded * 100) / (e.total * currentRequests)
+    $loading().set(Math.min(100, progress))
+  }
 
-  axios.defaults.onUploadProgress = onProgress;
-  axios.defaults.onDownloadProgress = onProgress;
-  axios.defaults.xsrfCookieName = 'csrftoken';
-  axios.defaults.xsrfHeaderName = 'x-csrftoken';
-};
+  axios.defaults.onUploadProgress = onProgress
+  axios.defaults.onDownloadProgress = onProgress
+  axios.defaults.xsrfCookieName = 'csrftoken'
+  axios.defaults.xsrfHeaderName = 'x-csrftoken'
+}
 
 export default ctx => {
   // baseURL
-  const baseURL = process.env.VUE_APP_BACKEND_URL + 'api/v1';
+  const baseURL = process.env.VUE_APP_BACKEND_URL + 'api/v1'
   // Create fresh objects for all default header scopes
   // Axios creates only one which is shared across SSR requests!
   // https://github.com/mzabriskie/axios/blob/master/lib/defaults.js
@@ -154,37 +154,37 @@ export default ctx => {
     post: {},
     put: {},
     patch: {}
-  };
+  }
 
   const axiosOptions = {
     baseURL,
     headers
-  };
+  }
 
   // Proxy SSR request headers headers
   axiosOptions.headers.common =
-    ctx.req && ctx.req.headers ? Object.assign({}, ctx.req.headers) : {};
-  delete axiosOptions.headers.common['accept'];
-  delete axiosOptions.headers.common['host'];
-  delete axiosOptions.headers.common['cf-ray'];
-  delete axiosOptions.headers.common['cf-connecting-ip'];
-  delete axiosOptions.headers.common['content-length'];
+    ctx.req && ctx.req.headers ? Object.assign({}, ctx.req.headers) : {}
+  delete axiosOptions.headers.common['accept']
+  delete axiosOptions.headers.common['host']
+  delete axiosOptions.headers.common['cf-ray']
+  delete axiosOptions.headers.common['cf-connecting-ip']
+  delete axiosOptions.headers.common['content-length']
 
   if (process.server) {
     // Don't accept brotli encoding because Node can't parse it
-    axiosOptions.headers.common['accept-encoding'] = 'gzip, deflate';
+    axiosOptions.headers.common['accept-encoding'] = 'gzip, deflate'
   }
 
   // Create new axios instance
-  const axios = Axios.create(axiosOptions);
+  const axios = Axios.create(axiosOptions)
 
   // Extend axios proto
-  extendAxiosInstance(axios);
+  extendAxiosInstance(axios)
 
   // Setup interceptors
 
-  setupProgress(axios, ctx);
-  axios.setLanguage(ctx.app.i18n.locale);
+  setupProgress(axios, ctx)
+  axios.setLanguage(ctx.app.i18n.locale)
 
-  return axios;
-};
+  return axios
+}

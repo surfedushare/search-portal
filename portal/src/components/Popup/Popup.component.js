@@ -2,13 +2,13 @@ export default {
   name: 'popup',
   props: ['isShow', 'close', 'auto_width'],
   mounted() {
-    document.body.addEventListener('keyup', this.closeOnEsc);
+    document.body.addEventListener('keyup', this.closeOnEsc)
   },
   data() {
     return {
       show: this.isShow,
       width_auto: this.auto_width ? 'auto' : 'fixed'
-    };
+    }
   },
   methods: {
     /**
@@ -17,7 +17,7 @@ export default {
      */
     closeOnEsc(e) {
       if (e.keyCode === 27) {
-        this.onClose();
+        this.onClose()
       }
     },
     /**
@@ -26,11 +26,11 @@ export default {
     onClose() {
       if (!this.disableClose) {
         if (this.close) {
-          this.close();
+          this.close()
         } else {
-          this.show = !this.show;
+          this.show = !this.show
         }
-        document.body.removeEventListener('keyup', this.closeOnEsc);
+        document.body.removeEventListener('keyup', this.closeOnEsc)
       }
     }
   },
@@ -41,14 +41,14 @@ export default {
      * @param isShow - Boolean
      */
     isShow(isShow) {
-      this.show = isShow;
+      this.show = isShow
     },
     /**
      * Watcher on change the "auto_width" field
      * @param auto_width - String
      */
     auto_width(auto_width) {
-      this.width_auto = auto_width ? 'auto' : 'fixed';
+      this.width_auto = auto_width ? 'auto' : 'fixed'
     }
   }
-};
+}

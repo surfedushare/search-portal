@@ -38,13 +38,15 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.3.1",
-    "@vue/cli-plugin-eslint": "4.3.1",
+    "@vue/cli-plugin-eslint": "^4.4.4",
     "@vue/cli-service": "4.3.1",
-    "babel-eslint": "10.0.2",
+    "babel-eslint": "^10.1.0",
     "browserslist": "4.11.1",
     "css-loader": "3.4.2",
-    "eslint": "5.16.0",
-    "eslint-plugin-vue": "5.2.3",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-vue": "^6.2.2",
     "file-loader": "5.1.0",
     "less": "3.11.1",
     "less-loader": "5.0.0",
@@ -58,10 +60,12 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "browser": true
     },
     "extends": [
       "plugin:vue/essential",
+      "plugin:prettier/recommended",
       "eslint:recommended"
     ],
     "rules": {},

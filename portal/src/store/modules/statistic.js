@@ -4,18 +4,18 @@ export default {
   },
   getters: {
     statistic(state) {
-      return state.statistic;
+      return state.statistic
     }
   },
   actions: {
     async getStatistic({ commit }) {
-      const statistic = await this.$axios.$get('stats/all-materials/');
-      commit('GET_STATISTIC', statistic);
+      const statistic = await this.$axios.$get('stats/all-materials/')
+      commit('GET_STATISTIC', statistic)
     }
   },
   mutations: {
     GET_STATISTIC(state, payload) {
-      state.statistic = payload;
+      state.statistic = payload
     }
   }
-};
+}

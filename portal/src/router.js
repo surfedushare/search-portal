@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import injector from 'vue-inject';
+import Vue from 'vue'
+import Router from 'vue-router'
+import injector from 'vue-inject'
 
 import Home from '~/pages/index'
 import Search from '~/pages/search'
@@ -15,29 +15,26 @@ import Collection from '~/pages/collection'
 import Community from '~/pages/community'
 import InfoPage from '~/pages/info'
 
+const $log = injector.get('$log')
+const $window = injector.get('$window')
+const $promise = injector.get('$promise')
 
-const $log = injector.get('$log');
-const $window = injector.get('$window');
-const $promise = injector.get('$promise');
-
-
-Vue.use(Router);
-
+Vue.use(Router)
 
 // The code below is an addition by NuxtJS that seems to be beneficial.
 // It disables default scrolling behaviour and leverages the Vue router to scroll on the page.
 // Vue default is to always scroll to top on navigation, so this is nice.
-$window.history.scrollRestoration = 'manual';
-const scrollBehavior = function (to, from, savedPosition) {
+$window.history.scrollRestoration = 'manual'
+const scrollBehavior = function(to, from, savedPosition) {
   // if the returned position is falsy or an empty object,
   // will retain current scroll position.
-  let position = false;
+  let position = false
 
   // if no children detected
   if (to.matched.length < 2) {
     // scroll to the top of the page
     position = { x: 0, y: 0 }
-  } else if (to.matched.some((r) => r.components.default.options.scrollToTop)) {
+  } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
     // if one of the children has scrollToTop option set to true
     position = { x: 0, y: 0 }
   }
@@ -47,15 +44,18 @@ const scrollBehavior = function (to, from, savedPosition) {
     position = savedPosition
   }
 
-  return new $promise((resolve) => {
+  return new $promise(resolve => {
     // wait for the out transition to complete (if necessary)
     $window.app.$once('triggerScroll', () => {
       // coords will be used if no selector is provided,
       // or if the selector didn't match any element.
       if (to.hash) {
-        let hash = to.hash;
+        let hash = to.hash
         // CSS.escape() is not supported with IE and Edge.
-        if (typeof $window.CSS !== 'undefined' && typeof $window.CSS.escape !== 'undefined') {
+        if (
+          typeof $window.CSS !== 'undefined' &&
+          typeof $window.CSS.escape !== 'undefined'
+        ) {
           hash = '#' + $window.CSS.escape(hash.substr(1))
         }
         try {
@@ -64,16 +64,17 @@ const scrollBehavior = function (to, from, savedPosition) {
             position = { selector: hash }
           }
         } catch (e) {
-          $log.warn('Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).')
+          $log.warn(
+            'Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).'
+          )
         }
       }
       resolve(position)
     })
   })
-};
+}
 
-
-export function createRouter () {
+export function createRouter() {
   return new Router({
     mode: 'history',
     base: '/',
@@ -82,250 +83,253 @@ export function createRouter () {
     scrollBehavior,
     routes: [
       {
-        path: "/en/how-does-it-work",
+        path: '/en/how-does-it-work',
         component: HowDoesItWork,
-        name: "how-does-it-work___en"
+        name: 'how-does-it-work___en'
       },
       {
-        path: "/hoe-werkt-het",
+        path: '/hoe-werkt-het',
         component: HowDoesItWork,
-        name: "how-does-it-work___nl"
+        name: 'how-does-it-work___nl'
       },
       {
-        path: "/en/communities",
+        path: '/en/communities',
         component: Communities,
-        name: "communities___en"
+        name: 'communities___en'
       },
       {
-        path: "/communities",
+        path: '/communities',
         component: Communities,
-        name: "communities___nl"
+        name: 'communities___nl'
       },
       {
-        path: "/en/materials/search",
+        path: '/en/materials/search',
         component: Search,
-        name: "materials-search___en"
+        name: 'materials-search___en'
       },
       {
-        path: "/materialen/zoeken",
+        path: '/materialen/zoeken',
         component: Search,
-        name: "materials-search___nl"
+        name: 'materials-search___nl'
       },
       {
-        path: "/en/my/collections",
+        path: '/en/my/collections',
         component: MyCollections,
-        name: "my-collections___en"
+        name: 'my-collections___en'
       },
       {
-        path: "/mijn/collecties",
+        path: '/mijn/collecties',
         component: MyCollections,
-        name: "my-collections___nl"
+        name: 'my-collections___nl'
       },
       {
-        path: "/en/my/collection/:id",
+        path: '/en/my/collection/:id',
         component: Collection,
-        name: "my-collection___en",
+        name: 'my-collection___en',
         meta: {
           editable: true
         }
       },
       {
-        path: "/mijn/collectie/:id",
+        path: '/mijn/collectie/:id',
         component: Collection,
-        name: "my-collection___nl",
+        name: 'my-collection___nl',
         meta: {
           editable: true
         }
       },
       {
-        path: "/en/my/communities",
+        path: '/en/my/communities',
         component: Communities,
-        name: "my-communities___en"
+        name: 'my-communities___en'
       },
       {
-        path: "/mijn/communities",
+        path: '/mijn/communities',
         component: Communities,
-        name: "my-communities___nl"
+        name: 'my-communities___nl'
       },
       {
-        path: "/en/my/community/:community",
+        path: '/en/my/community/:community',
         component: MyCommunity,
-        name: "my-community___en"
+        name: 'my-community___en'
       },
       {
-        path: "/mijn/community/:community",
+        path: '/mijn/community/:community',
         component: MyCommunity,
-        name: "my-community___nl"
+        name: 'my-community___nl'
       },
       {
-        path: "/en/my/privacy",
+        path: '/en/my/privacy',
         component: MyPrivacy,
-        name: "my-privacy___en"
+        name: 'my-privacy___en'
       },
       {
-        path: "/mijn/privacy",
+        path: '/mijn/privacy',
         component: MyPrivacy,
-        name: "my-privacy___nl"
+        name: 'my-privacy___nl'
       },
       {
-        path: "/en/themes/:id",
+        path: '/en/themes/:id',
         component: Theme,
-        name: "themes-id___en"
+        name: 'themes-id___en'
       },
       {
-        path: "/themas/:id",
+        path: '/themas/:id',
         component: Theme,
-        name: "themes-id___nl"
+        name: 'themes-id___nl'
       },
       {
-        path: "/en/materials/:id",
+        path: '/en/materials/:id',
         component: Material,
-        name: "materials-id___en"
+        name: 'materials-id___en'
       },
       {
-        path: "/materialen/:id",
+        path: '/materialen/:id',
         component: Material,
-        name: "materials-id___nl"
+        name: 'materials-id___nl'
       },
       {
-        path: "/en/collections/:id?",
+        path: '/en/collections/:id?',
         component: Collection,
-        name: "collections-id___en",
+        name: 'collections-id___en',
         meta: {
           editable: false
         }
       },
       {
-        path: "/collecties/:id?",
+        path: '/collecties/:id?',
         component: Collection,
-        name: "collections-id___nl",
+        name: 'collections-id___nl',
         meta: {
           editable: false
         }
       },
       {
-        path: "/en/communities/:community",
+        path: '/en/communities/:community',
         component: Community,
-        name: "communities-community___en"
+        name: 'communities-community___en'
       },
       {
-        path: "/communities/:community",
+        path: '/communities/:community',
         component: Community,
-        name: "communities-community___nl"
+        name: 'communities-community___nl'
       },
       {
-        path: "/en/privacy",
+        path: '/en/privacy',
         component: InfoPage,
-        name: "privacy___en",
+        name: 'privacy___en',
         meta: {
           title_translation_key: 'title-privacy-info',
           html_translation_key: 'html-privacy-info'
         }
       },
       {
-        path: "/privacy",
+        path: '/privacy',
         component: InfoPage,
-        name: "privacy___nl",
+        name: 'privacy___nl',
         meta: {
           title_translation_key: 'title-privacy-info',
           html_translation_key: 'html-privacy-info'
         }
       },
       {
-        path: "/en/copyright",
+        path: '/en/copyright',
         component: InfoPage,
-        name: "copyright___en",
+        name: 'copyright___en',
         meta: {
           title_translation_key: 'title-copyright-info',
           html_translation_key: 'html-copyright-info'
         }
       },
       {
-        path: "/copyright",
+        path: '/copyright',
         component: InfoPage,
-        name: "copyright___nl",
+        name: 'copyright___nl',
         meta: {
           title_translation_key: 'title-copyright-info',
           html_translation_key: 'html-copyright-info'
         }
       },
       {
-        path: "/en/cookies",
+        path: '/en/cookies',
         component: InfoPage,
-        name: "cookies___en",
+        name: 'cookies___en',
         meta: {
           title_translation_key: 'title-cookies-info',
           html_translation_key: 'html-cookies-info'
         }
       },
       {
-        path: "/cookies",
+        path: '/cookies',
         component: InfoPage,
-        name: "cookies___nl",
+        name: 'cookies___nl',
         meta: {
           title_translation_key: 'title-cookies-info',
           html_translation_key: 'html-cookies-info'
         }
       },
       {
-        path: "/en/disclaimer",
+        path: '/en/disclaimer',
         component: InfoPage,
-        name: "disclaimer___en",
+        name: 'disclaimer___en',
         meta: {
           title_translation_key: 'title-disclaimer-info',
           html_translation_key: 'html-disclaimer-info'
         }
       },
       {
-        path: "/disclaimer",
+        path: '/disclaimer',
         component: InfoPage,
-        name: "disclaimer___nl",
+        name: 'disclaimer___nl',
         meta: {
           title_translation_key: 'title-disclaimer-info',
           html_translation_key: 'html-disclaimer-info'
         }
       },
       {
-        path: "/en/",
+        path: '/en/',
         component: Home,
-        name: "index___en"
+        name: 'index___en'
       },
       {
-        path: "/",
+        path: '/',
         component: Home,
-        name: "index___nl"
+        name: 'index___nl'
       },
       {
-        path: "/login/permissions",
+        path: '/login/permissions',
         beforeEnter(to, from, next) {
-          let authFlowToken = to.query.partial_token || null;
-          const app = injector.get('App');
-          app.store.commit("AUTH_FLOW_TOKEN", authFlowToken);
+          let authFlowToken = to.query.partial_token || null
+          const app = injector.get('App')
+          app.store.commit('AUTH_FLOW_TOKEN', authFlowToken)
           next(app.localePath('my-privacy'))
         }
       },
       {
-        path: "/login/success",
+        path: '/login/success',
         beforeEnter(to, from, next) {
-          const app = injector.get('App');
-          app.$axios.$get('users/obtain-token/')
-            .then((response) => {
-              let token = response.token || response.data.token;
-              app.store.dispatch('authenticate', { token: token })
+          const app = injector.get('App')
+          app.$axios
+            .$get('users/obtain-token/')
+            .then(response => {
+              let token = response.token || response.data.token
+              app.store
+                .dispatch('authenticate', { token: token })
                 .then(() => {
-                  next(to.query.continue || '/');
+                  next(to.query.continue || '/')
                 })
-                .catch((error) => {
-                  $log.warn('Unable to login due to error during store "login" dispatch');
-                  $log.error(error);
-                  next('/');
+                .catch(error => {
+                  $log.warn(
+                    'Unable to login due to error during store "login" dispatch'
+                  )
+                  $log.error(error)
+                  next('/')
                 })
-
             })
-            .catch((error) => {
-              $log.warn('Unable to login due to error during obtaining a token');
-              $log.error(error);
-              next('/');
+            .catch(error => {
+              $log.warn('Unable to login due to error during obtaining a token')
+              $log.error(error)
+              next('/')
             })
         }
       }

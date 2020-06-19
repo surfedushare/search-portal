@@ -1,39 +1,29 @@
 <template>
   <section class="container main material">
-    <Navigation
-      :materials="materials"
-      :material="material"
-    />
+    <Navigation :materials="materials" :material="material" />
     <MaterialTitleMobile :material="material" />
-    <div
-      v-if="material"
-      class="center_block material__wrapper"
-    >
+    <div v-if="material" class="center_block material__wrapper">
       <Sidebar :material="material" />
       <MaterialInfo :material="material" />
     </div>
-    <div class="main__materials" v-show=false>
+    <div class="main__materials" v-show="false">
       <div class="center_block">
         <h2 class="main__materials_title">
           {{ $t('Also-interesting-for-you') }}
         </h2>
-        <Materials
-          v-if="materials"
-          :materials="materials"
-          :items-length="4"
-        />
+        <Materials v-if="materials" :materials="materials" :items-length="4" />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Materials from '~/components/Materials';
-import Sidebar from '~/components/Materials/Sidebar';
-import MaterialInfo from '~/components/Materials/MaterialInfo';
-import MaterialTitleMobile from '~/components/Materials/MaterialTitleMobile';
-import Navigation from '~/components/Materials/Navigation';
+import { mapGetters } from 'vuex'
+import Materials from '~/components/Materials'
+import Sidebar from '~/components/Materials/Sidebar'
+import MaterialInfo from '~/components/Materials/MaterialInfo'
+import MaterialTitleMobile from '~/components/Materials/MaterialTitleMobile'
+import Navigation from '~/components/Materials/Navigation'
 
 export default {
   components: {
@@ -56,10 +46,10 @@ export default {
     // }
     this.$store.dispatch('getMaterial', {
       id: this.$route.params.id,
-      params: {count_view: true},
-    });
+      params: { count_view: true }
+    })
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

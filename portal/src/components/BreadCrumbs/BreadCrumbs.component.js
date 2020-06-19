@@ -8,8 +8,8 @@ export default {
   },
   mounted() {},
   data() {
-    return {};
+    return {}
   },
   methods: {},
   computed: {}
-};
+}

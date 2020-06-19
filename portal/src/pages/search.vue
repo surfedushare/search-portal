@@ -1,35 +1,42 @@
 <template>
   <section class="container search">
     <div>
-      <div
-        class="search__info"
-      >
+      <div class="search__info">
         <div class="center_block center-header">
           <div class="search__info_top">
             <BreadCrumbs :items="items" />
-            <h2 v-if="materials && !materials_loading">{{ $t('Search-results') }} {{ `(${materials.records_total})` }}</h2>
+            <h2 v-if="materials && !materials_loading">
+              {{ $t('Search-results') }} {{ `(${materials.records_total})` }}
+            </h2>
             <img
               src="/images/pictures/rawpixel-760027-unsplash.jpg"
-              srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+              srcset="
+                /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+                /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
+              "
               class="search__info_bg"
-            >
+            />
           </div>
-          <Search
-            v-if="search"
-            v-model="search"
-            class="search__info_search"
-          />
+          <Search v-if="search" v-model="search" class="search__info_search" />
         </div>
       </div>
 
       <div class="search__tools center_block">
-        <label for="search_order_select">{{ $t('sort_by') }}:	&nbsp;</label>
-        <div  class="search__chooser search__select" >
-        <select id="search_order_select" @change="changeOrdering" v-model="sort_order">
-          <option v-for="option in sort_order_options" v-bind:value="option.value" :key="option.value">
-            &nbsp;&nbsp;{{ $t(option.value) }}
-          </option>
-        </select>
+        <label for="search_order_select">{{ $t('sort_by') }}: &nbsp;</label>
+        <div class="search__chooser search__select">
+          <select
+            id="search_order_select"
+            @change="changeOrdering"
+            v-model="sort_order"
+          >
+            <option
+              v-for="option in sort_order_options"
+              v-bind:value="option.value"
+              :key="option.value"
+            >
+              &nbsp;&nbsp;{{ $t(option.value) }}
+            </option>
+          </select>
         </div>
         <button
           :class="{
@@ -51,13 +58,11 @@
       >
         <div class="search__filter">
           <div class="search__filter_sticky">
-            <FilterCategories v-model="search"/>
+            <FilterCategories v-model="search" />
           </div>
         </div>
 
-        <div
-          class="search__materials"
-        >
+        <div class="search__materials">
           <Materials
             :materials="materials"
             :items-in-line="materials_in_line"
@@ -66,19 +71,20 @@
         </div>
       </div>
     </div>
-
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Search from '~/components/FilterCategories/Search';
-import FilterCategories from '~/components/FilterCategories';
-import Materials from '~/components/Materials';
-import Spinner from '~/components/Spinner';
-import BreadCrumbs from '~/components/BreadCrumbs';
-import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from '~/components/_helpers';
-
+import { mapGetters } from 'vuex'
+import Search from '~/components/FilterCategories/Search'
+import FilterCategories from '~/components/FilterCategories'
+import Materials from '~/components/Materials'
+import Spinner from '~/components/Spinner'
+import BreadCrumbs from '~/components/BreadCrumbs'
+import {
+  generateSearchMaterialsQuery,
+  parseSearchMaterialsQuery
+} from '~/components/_helpers'
 
 export default {
   components: {
@@ -106,58 +112,54 @@ export default {
         { value: 'relevance' },
         { value: 'date_descending' },
         { value: 'date_ascending' }
-    ],
-    };
+      ]
+    }
   },
   mounted() {
-    const urlInfo = parseSearchMaterialsQuery(this.$route.query);
-    this.dates_range = urlInfo.dateRange;
-    this.search = urlInfo.search;
-    this.$store.dispatch('searchMaterials', urlInfo.search);
+    const urlInfo = parseSearchMaterialsQuery(this.$route.query)
+    this.dates_range = urlInfo.dateRange
+    this.search = urlInfo.search
+    this.$store.dispatch('searchMaterials', urlInfo.search)
   },
   computed: {
-    ...mapGetters([
-      'materials',
-      'materials_loading',
-      'materials_in_line'
-    ])
+    ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
   },
   watch: {
     search(search) {
       if (search && !this.materials_loading) {
-        this.$store.dispatch('searchMaterials', search);
+        this.$store.dispatch('searchMaterials', search)
       }
     },
     dates_range(dates) {
-      const { filters } = this.search;
-      let new_filters = filters ? filters.slice(0) : [];
+      const { filters } = this.search
+      let new_filters = filters ? filters.slice(0) : []
       const current_dates = new_filters.find(
         item => item.external_id === this.publisherdate
-      );
+      )
       const index = current_dates
         ? new_filters.indexOf(current_dates)
-        : new_filters.length;
+        : new_filters.length
 
       new_filters[index] = {
         external_id: this.publisherdate,
         items: [dates.start_date || null, dates.end_date || null]
-      };
+      }
 
-      this.search = Object.assign({}, this.search, { filters: new_filters });
+      this.search = Object.assign({}, this.search, { filters: new_filters })
     }
   },
   methods: {
     generateSearchMaterialsQuery,
     loadMore() {
-      const { search, materials } = this;
+      const { search, materials } = this
       if (materials && search) {
-        const { page_size, page, records_total } = materials;
+        const { page_size, page, records_total } = materials
 
         if (records_total > page_size * page) {
-          this.$store.dispatch(
-            'searchNextPageMaterials',
-            {...search, page: page + 1 }
-          );
+          this.$store.dispatch('searchNextPageMaterials', {
+            ...search,
+            page: page + 1
+          })
         }
       }
     },
@@ -166,29 +168,29 @@ export default {
      */
     changeViewType() {
       if (this.materials_in_line === 1) {
-        this.$store.dispatch('searchMaterialsInLine', 3);
+        this.$store.dispatch('searchMaterialsInLine', 3)
       } else {
-        this.$store.dispatch('searchMaterialsInLine', 1);
+        this.$store.dispatch('searchMaterialsInLine', 1)
       }
     },
     /**
      * Event the ordering items
      */
     changeOrdering() {
-      const { sort_order } = this;
-      if (sort_order === 'date_descending'){
-        this.search.ordering = '-lom.lifecycle.contribute.publisherdate';
-      } else if (sort_order === 'date_ascending'){
-        this.search.ordering = 'lom.lifecycle.contribute.publisherdate';
+      const { sort_order } = this
+      if (sort_order === 'date_descending') {
+        this.search.ordering = '-lom.lifecycle.contribute.publisherdate'
+      } else if (sort_order === 'date_ascending') {
+        this.search.ordering = 'lom.lifecycle.contribute.publisherdate'
       } else {
-        this.search.ordering = '';
+        this.search.ordering = ''
       }
-      this.search.page = 1;
-      this.$store.dispatch('searchMaterials', Object.assign({}, this.search));
-      this.$router.push(this.generateSearchMaterialsQuery(this.search));
+      this.search.page = 1
+      this.$store.dispatch('searchMaterials', Object.assign({}, this.search))
+      this.$router.push(this.generateSearchMaterialsQuery(this.search))
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -316,11 +318,13 @@ export default {
       cursor: pointer;
 
       &--cards {
-        background: transparent url('/images/card-view-copy.svg') 0 50% no-repeat;
+        background: transparent url('/images/card-view-copy.svg') 0 50%
+          no-repeat;
       }
 
       &--list {
-        background: transparent url('/images/list-view-copy.svg') 0 50% no-repeat;
+        background: transparent url('/images/list-view-copy.svg') 0 50%
+          no-repeat;
       }
 
       &:focus,

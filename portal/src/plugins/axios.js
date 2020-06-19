@@ -1,10 +1,8 @@
-import axios from 'axios';
-
+import axios from 'axios'
 
 export default function({ $axios, store }) {
-
-  $axios.defaults.xsrfCookieName = 'csrftoken';
-  $axios.defaults.xsrfHeaderName = 'x-csrftoken';
+  $axios.defaults.xsrfCookieName = 'csrftoken'
+  $axios.defaults.xsrfHeaderName = 'x-csrftoken'
 
   $axios.interceptors.request.use(
     function(config) {
@@ -14,20 +12,20 @@ export default function({ $axios, store }) {
         config.params &&
         typeof config.params !== 'object'
       ) {
-        throw new axios.Cancel('Operation canceled.');
+        throw new axios.Cancel('Operation canceled.')
       } else {
-        return config;
+        return config
       }
     },
     function(error) {
       // Do something with request error
-      return Promise.reject(error);
+      return Promise.reject(error)
     }
-  );
+  )
   $axios.onError(error => {
-    const code = parseInt(error.response && error.response.status);
+    const code = parseInt(error.response && error.response.status)
     if (code === 401) {
-      store.dispatch('logout');
+      store.dispatch('logout')
     }
-  });
+  })
 }

@@ -1,15 +1,8 @@
 <template>
-  <div
-    v-if="material"
-    class="material__info_mobile">
+  <div v-if="material" class="material__info_mobile">
     <h1 class="material__info_mobile_ttl">{{ material.title }}</h1>
-    <div
-      v-if="material"
-      class="material__info_mobile_author">
-      <router-link
-        v-if="material.author"
-        :to="authorUrl"
-      >
+    <div v-if="material" class="material__info_mobile_author">
+      <router-link v-if="material.author" :to="authorUrl">
         {{ material.author }}
       </router-link>
       <div>{{ material.publisher }}</div>
@@ -18,7 +11,7 @@
 </template>
 
 <script>
-import { generateSearchMaterialsQuery } from './../../_helpers';
+import { generateSearchMaterialsQuery } from './../../_helpers'
 export default {
   name: 'MaterialTitleMobile',
   props: {
@@ -38,18 +31,18 @@ export default {
         page: 1,
         filters: [],
         search_text: []
-      };
-      if (this.material) {
-        formData.author = this.material.author;
-        return this.generateSearchMaterialsQuery(this.formData);
       }
-      return '';
+      if (this.material) {
+        formData.author = this.material.author
+        return this.generateSearchMaterialsQuery(this.formData)
+      }
+      return ''
     }
   },
   methods: {
     generateSearchMaterialsQuery
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

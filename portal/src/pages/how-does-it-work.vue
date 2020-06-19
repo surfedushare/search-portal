@@ -4,12 +4,14 @@
       <div class="how_work__info">
         <img
           src="/images/pictures/rawpixel-760027-unsplash.jpg"
-          srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-             /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+          srcset="
+            /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+            /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
+          "
           class="how_work__info_bg"
-        >
+        />
         <BreadCrumbs
-          :items="[{title: $t('Home'), url: localePath('index')}]"
+          :items="[{ title: $t('Home'), url: localePath('index') }]"
         />
         <h2 class="how_work__info_ttl">{{ $t('How-does-it-work') }}</h2>
       </div>
@@ -18,42 +20,41 @@
       <InfoBlock
         :title="$t('About-the-portal')"
         :content="$t('html-About-the-portal-text')"
-        />
-      <h2 class="how_work__materials_title">{{$t('Newest-open-learning-material')}}</h2>
-      <Materials
-        v-if="materials"
-        :materials="materials"
       />
+      <h2 class="how_work__materials_title">
+        {{ $t('Newest-open-learning-material') }}
+      </h2>
+      <Materials v-if="materials" :materials="materials" />
     </div>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import BreadCrumbs from '~/components/BreadCrumbs';
-import Materials from '~/components/Materials';
-import InfoBlock from '~/components/InfoBlock';
+import { mapGetters } from 'vuex'
+import BreadCrumbs from '~/components/BreadCrumbs'
+import Materials from '~/components/Materials'
+import InfoBlock from '~/components/InfoBlock'
 
 export default {
   components: {
     BreadCrumbs,
     Materials,
-    InfoBlock,
+    InfoBlock
   },
   data() {
     return {
       search: {
         search_text: []
       }
-    };
+    }
   },
   computed: {
     ...mapGetters(['materials'])
   },
   mounted() {
-    this.$store.dispatch('getMaterials', { page_size: 4 });
+    this.$store.dispatch('getMaterials', { page_size: 4 })
   }
-};
+}
 </script>
 
 <style lang="less">
