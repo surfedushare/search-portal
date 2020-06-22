@@ -65,7 +65,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
       item.dates = dates
       item.selected = dates.start_date || dates.end_date
     }
-    // Load children and retrospecively set some parent properties
+    // Load children and retrospectively set some parent properties
     let hasSelectedChildren = loadCategoryFilters(
       item.children,
       selected,

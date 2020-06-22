@@ -47,7 +47,7 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
             for child in input_node['children']:
                 self.remove_zero_counts(child)
             input_node['children'] = [child for child in input_node['children']
-                                      if child['item_count'] > 0
+                                      if child['count'] > 0
                                       or len(child['children']) > 0]
 
     def list(self, *args, **kwargs):

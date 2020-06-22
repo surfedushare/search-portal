@@ -121,8 +121,11 @@ export default {
         materials.search_text = search.search_text
         materials.active_filters = search.filters
         materials.ordering = search.ordering
+        const filter_categories = {}
+        filter_categories.results = materials.filter_categories
         commit('SET_MATERIALS', materials)
         commit('SET_MATERIALS_LOADING', false)
+        commit('SETUP_FILTER_CATEGORIES', filter_categories)
         return materials
       } else {
         $log.error('Validate error: ', search)
