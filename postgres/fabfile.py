@@ -1,5 +1,3 @@
-import os
-import boto3
 from invoke import Responder
 from fabric import task
 
@@ -39,6 +37,16 @@ def setup(ctx):
         # Initialise permissions and other databases
         ctx.local(
             f"psql -h localhost -p 1111 -U {postgres_user} -W -f postgres/docker-entrypoint-initdb.d/initdb.sql",
+            echo=True, watchers=[postgres_password_responder], pty=True
+        )
+        ctx.local(
+            f"psql -h localhost -p 1111 -U {postgres_user} -d edushare -W -f "
+            f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
+            echo=True, watchers=[postgres_password_responder], pty=True
+        )
+        ctx.local(
+            f"psql -h localhost -p 1111 -U {postgres_user} -d harvester -W -f "
+            f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
             echo=True, watchers=[postgres_password_responder], pty=True
         )
 
