@@ -1,7 +1,7 @@
 from invoke import Responder
 from fabric import task
 
-from .tasks import download_snapshot
+from .tasks_local import download_snapshot
 
 
 @task(name="setup")
