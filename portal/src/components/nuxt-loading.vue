@@ -1,18 +1,21 @@
 <template>
-  <div class="nuxt-progress" :style="{
-    'width': percent + '%',
-    'height': height,
-    'background-color': canSuccess ? color : failedColor,
-    'opacity': show ? 1 : 0
-  }"></div>
+  <div
+    class="nuxt-progress"
+    :style="{
+      width: percent + '%',
+      height: height,
+      'background-color': canSuccess ? color : failedColor,
+      opacity: show ? 1 : 0
+    }"
+  />
 </template>
 
 <script>
 import Vue from 'vue'
 
 export default {
-  name: 'nuxt-loading',
-  data () {
+  name: 'NuxtLoading',
+  data() {
     return {
       percent: 0,
       show: false,
@@ -21,11 +24,11 @@ export default {
       duration: 5000,
       height: '2px',
       color: '#0077c8',
-      failedColor: 'red',
+      failedColor: 'red'
     }
   },
   methods: {
-    start () {
+    start() {
       this.canSuccess = true
       if (this._throttle) {
         clearTimeout(this._throttle)
@@ -47,33 +50,33 @@ export default {
       }, this.throttle)
       return this
     },
-    set (num) {
+    set(num) {
       this.show = true
       this.canSuccess = true
       this.percent = Math.floor(num)
       return this
     },
-    get () {
+    get() {
       return Math.floor(this.percent)
     },
-    increase (num) {
+    increase(num) {
       this.percent = this.percent + Math.floor(num)
       return this
     },
-    decrease (num) {
+    decrease(num) {
       this.percent = this.percent - Math.floor(num)
       return this
     },
-    finish () {
+    finish() {
       this.percent = 100
       this.hide()
       return this
     },
-    pause () {
+    pause() {
       clearInterval(this._timer)
       return this
     },
-    hide () {
+    hide() {
       clearInterval(this._timer)
       this._timer = null
       clearTimeout(this._throttle)
@@ -88,7 +91,7 @@ export default {
       }, 500)
       return this
     },
-    fail () {
+    fail() {
       this.canSuccess = false
       return this
     }

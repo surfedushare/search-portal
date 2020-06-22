@@ -1,0 +1,23 @@
+name: Portal eslint
+
+on:
+  [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Read .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat portal/.nvmrc)"
+      id: nvm
+    - name: Use Node.js ${{ steps.nvm.outputs.NVMRC}}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ steps.nvm.outputs.NVMRC }}
+    - name: Install dependencies and lint
+      run: |
+        cd portal
+        npm install
+        npm run lint

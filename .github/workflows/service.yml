@@ -33,6 +33,13 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Read .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat portal/.nvmrc)"
+      id: nvm
+    - name: Use Node.js ${{ steps.nvm.outputs.NVMRC }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ steps.nvm.outputs.NVMRC }}
     - name: psycopg2 prerequisites
       run: sudo apt-get install python-dev libpq-dev
     - name: Configure sysctl limits

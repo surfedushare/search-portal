@@ -3,14 +3,14 @@
     <div class="center_block info__center-header">
       <div class="info__info">
         <h2>{{ $t(titleKey) }}</h2>
-        <div class="html-content" v-html="$t(htmlKey)"></div>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="html-content" v-html="$t(htmlKey)" />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-
 export default {
   components: {},
   data() {
@@ -19,39 +19,35 @@ export default {
       htmlKey: this.$route.meta.html_translation_key
     }
   }
-};
-
+}
 </script>
 
 <style lang="less" scoped>
+@import './../variables';
 
-  @import './../variables';
-
-  .info {
-
-    &__center-header {
-      @media @mobile {
-        padding-left: 30px;
-        padding-right: 30px;
-      }
-      @media @tablet {
-        padding-left: 38px;
-        padding-right: 38px;
-      }
-    }
-    padding: 96px 0 115px;
+.info {
+  &__center-header {
     @media @mobile {
-      overflow: hidden;
+      padding-left: 30px;
+      padding-right: 30px;
     }
-
-    &__info {
-      margin: 0 0 223px;
-      border-radius: 20px;
-      position: relative;
-      @media @tablet {
-        padding: 70px 48px 0;
-      }
+    @media @tablet {
+      padding-left: 38px;
+      padding-right: 38px;
     }
   }
+  padding: 96px 0 115px;
+  @media @mobile {
+    overflow: hidden;
+  }
 
+  &__info {
+    margin: 0 0 223px;
+    border-radius: 20px;
+    position: relative;
+    @media @tablet {
+      padding: 70px 48px 0;
+    }
+  }
+}
 </style>

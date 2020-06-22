@@ -1,5 +1,5 @@
-import { find, without } from 'lodash';
-import Spinner from './../Spinner';
+import { find, without } from 'lodash'
+import Spinner from './../Spinner'
 
 export default {
   name: 'collections',
@@ -28,18 +28,20 @@ export default {
   components: { Spinner },
   methods: {
     getCommunityDetail(community, language, detail) {
-      let communityDetails = find(community.community_details, {language_code: language.toUpperCase()});
+      let communityDetails = find(community.community_details, {
+        language_code: language.toUpperCase()
+      })
       return communityDetails[detail] || null
     },
     selectCollection(collection) {
-      collection.selected = !collection.selected;
+      collection.selected = !collection.selected
       if (this.selection.indexOf(collection.id) === -1) {
-        this.selection.push(collection);
+        this.selection.push(collection)
       } else {
-        this.selection = without(this.selection, {id: collection.id});
+        this.selection = without(this.selection, { id: collection.id })
       }
-      this.$emit('input', this.selection);
-      this.$forceUpdate();
+      this.$emit('input', this.selection)
+      this.$forceUpdate()
     }
   }
-};
+}

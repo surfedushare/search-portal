@@ -1,10 +1,10 @@
-import { generateSearchMaterialsQuery } from './../_helpers';
+import { generateSearchMaterialsQuery } from './../_helpers'
 export default {
   name: 'keywords',
   props: ['material'],
   mounted() {},
   data() {
-    return {};
+    return {}
   },
   methods: {
     generateSearchMaterialsQuery,
@@ -15,11 +15,11 @@ export default {
           filters: [],
           page: 1,
           page_size: 10
-        });
+        })
       }
 
-      return '/';
+      return '/'
     }
   },
   computed: {}
-};
+}
