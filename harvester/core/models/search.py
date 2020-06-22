@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.postgres.fields import JSONField
+from rest_framework import serializers
 
 from core.models import Dataset
 from core.utils.elastic import get_es_client
@@ -156,3 +157,10 @@ class ElasticIndex(models.Model):
                 }
             }
         }
+
+
+class ElasticIndexSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ElasticIndex
+        fields = ("id", "name", "language", "remote_name",)
