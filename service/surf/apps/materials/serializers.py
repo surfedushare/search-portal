@@ -182,7 +182,7 @@ class CollectionSerializer(CollectionShortSerializer):
 
     def validate(self, attrs):
         if not self.get_materials_count(self.instance) and attrs.get("publish_status", None) == PublishStatus.PUBLISHED:
-           raise ValidationError("Can't publish a collection if it doesn't have materials")
+            raise ValidationError("Can't publish a collection if it doesn't have materials")
         return attrs
 
     @staticmethod

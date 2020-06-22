@@ -14,9 +14,9 @@ from service.package import (
 )
 from harvester.package import VERSION as HARVESTER_VERSION
 
-
+# TODO: perhaps simply input a PACKAGE from <target>/package.py which is a dict like below and work with that directly
 TARGETS = {
-    "service": {  # TODO: perhaps simply input a PACKAGE from <target>/package.py which is a dict like below and work with that directly
+    "service": {
         "name": SERVICE_NAME,
         "repository": SERVICE_REPOSITORY,
         "version": SERVICE_VERSION

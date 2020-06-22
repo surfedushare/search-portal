@@ -164,8 +164,7 @@ def _get_filter_categories():
     :return: list of "edurep_field_id:item_count"
     """
     return [f.external_id for f in MpttFilterItem.objects.all()
-            if f.external_id not in IGNORED_FIELDS
-            and f.level == 0]
+            if f.external_id not in IGNORED_FIELDS and f.level == 0]
 
 
 class KeywordsAPIView(APIView):
@@ -226,10 +225,10 @@ class MaterialAPIView(APIView):
             filters = add_default_material_filters()
 
             res = elastic.search([],
-                            # sort by newest items first
-                            ordering="-lom.lifecycle.contribute.publisherdate",
-                            filters=filters,
-                            page_size=_MATERIALS_COUNT_IN_OVERVIEW)
+                                 # sort by newest items first
+                                 ordering="-lom.lifecycle.contribute.publisherdate",
+                                 filters=filters,
+                                 page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
             res = add_extra_parameters_to_materials(request.user,
                                                     res["records"])
@@ -457,7 +456,7 @@ class CollectionViewSet(ModelViewSet):
             if not details:
                 continue
 
-            keywords =details[0].get("keywords")
+            keywords = details[0].get("keywords")
             if keywords:
                 keywords = json.dumps(keywords)
 
@@ -507,7 +506,7 @@ def check_access_to_collection(user, instance=None):
         communities = Community.objects.filter(collections__in=[instance])
         teams = Team.objects.filter(community__in=communities, user=user)
         if len(teams) > 0:
-            logger.debug(f"At least one team satisfies the requirement of be able to delete this collection.")
+            logger.debug("At least one team satisfies the requirement of be able to delete this collection.")
         else:
             raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
                                        f"Error: \"{exc}\"")
@@ -521,7 +520,7 @@ def add_share_counters_to_materials(materials):
     """
 
     for m in materials:
-        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL,m["external_id"])
+        key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL, m["external_id"])
         qs = SharedResourceCounter.objects.filter(counter_key__contains=key)
         m["sharing_counters"] = SharedResourceCounterSerializer(many=True).to_representation(qs.all())
 

@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community, CommunityDetail
-from surf.apps.communities.models import PublishStatus
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.filters.utils import add_default_material_filters

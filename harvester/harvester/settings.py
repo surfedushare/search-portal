@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
-from surfpol import create_configuration_and_session, MODE, get_package_info
+from surfpol import create_configuration_and_session, get_package_info
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
@@ -193,10 +193,10 @@ MIME_TYPE_TO_FILE_TYPE = {  # TODO: this is Edurep based, how do we want this fo
     'application/vnd.ms-word': 'text',
     'application/vnd.ms-word.document.macroEnabled.12': 'text',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.template': 'text',
-    'text/rtf':	'text',
+    'text/rtf': 'text',
     'application/xhtml+xml': 'text',
     'application/postscript': 'text',
-    'application/vnd.ms-publisher':	'text',
+    'application/vnd.ms-publisher': 'text',
     'text/xml': 'text',
     'application/vnd.oasis.opendocument.spreadsheet': 'spreadsheet',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'spreadsheet',
@@ -228,18 +228,18 @@ MIME_TYPE_TO_FILE_TYPE = {  # TODO: this is Edurep based, how do we want this fo
     'application/x-Wikiwijs-Arrangement': 'archive',
     'audio/mpeg': 'audio',
     'application/x-koan': 'audio',
-    'application/vnd.koan':	'audio',
+    'application/vnd.koan': 'audio',
     'audio/midi': 'audio',
     'audio/x-wav': 'audio',
     'application/octet-stream': 'other',
-    'application/x-yossymemo':	'digiboard',
+    'application/x-yossymemo': 'digiboard',
     'application/Inspire': 'digiboard',
     'application/x-AS3PE': 'digiboard',
     'application/x-Inspire': 'digiboard',
     'application/x-smarttech-notebook': 'digiboard',
     'application/x-zip-compressed': 'digiboard',
     'application/x-ACTIVprimary3': 'digiboard',
-    'application/x-ibooks+zip':	'ebook',
+    'application/x-ibooks+zip': 'ebook',
     'message/rfc822': 'message',
     'application/vnd.google-earth.kmz': 'googleearth',
     'application/x-java': 'app',

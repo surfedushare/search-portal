@@ -4,8 +4,6 @@ This module contains some common functions for materials app.
 
 import json
 
-from django.conf import settings
-
 from surf.apps.communities.models import Community
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.materials.models import (

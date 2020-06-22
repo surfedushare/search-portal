@@ -24,7 +24,8 @@ class TestFilters(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(number_of_categories, 9)
-        self.assertEqual(names, ['Bron', 'Bruikbaar als', 'Gebruiksrechten', 'Onderwijsniveau', 'Publicatiedatum', 'Soort materiaal', 'Taal', 'Thema', 'Vakgebied'])
+        self.assertEqual(names, ['Bron', 'Bruikbaar als', 'Gebruiksrechten', 'Onderwijsniveau',
+                                 'Publicatiedatum', 'Soort materiaal', 'Taal', 'Thema', 'Vakgebied'])
 
         self.assertTrue(parent_in_filter_category, msg=None)
         self.assertTrue(external_id_in_filter_category, msg=None)

@@ -13,7 +13,7 @@ def setup(ctx):
     # Setup auto-responder
     postgres_user = ctx.config.django.postgres_user
     postgres_password = ctx.config.secrets.postgres.password
-    postgres_password_responder = Responder(pattern="Password", response= postgres_password + "\n")
+    postgres_password_responder = Responder(pattern="Password", response=postgres_password + "\n")
     # Run Postgres commands with port forwarding
     with ctx.forward_local(local_port=1111, remote_host=ctx.config.django.postgres_host, remote_port=5432):
         # Clear all databases and application role

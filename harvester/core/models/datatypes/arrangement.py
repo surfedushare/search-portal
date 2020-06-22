@@ -42,7 +42,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             # if multiple objects with an identifier of "by" exist.
             updated = set()
             hashed = {update[by_reference]: update for update in updates}
-            sources = {source[by_reference]: source for source in collection.documents.filter(reference__in=hashed.keys())}
+            sources = {source[by_reference]: source for source in collection.documents.filter(
+                reference__in=hashed.keys())}
             for source in sources.values():
                 source.update(hashed[source.reference], validate=validate)
                 count += 1

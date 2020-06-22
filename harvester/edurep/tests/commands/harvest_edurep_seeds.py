@@ -74,7 +74,7 @@ class TestSeedHarvest(TestCase):
 
     def test_edurep_down(self):
         out = StringIO()
-        with patch("edurep.management.commands.harvest_edurep_seeds.send", return_value=([], [100],)) as send_mock:
+        with patch("edurep.management.commands.harvest_edurep_seeds.send", return_value=([], [100],)):
             try:
                 call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", stdout=out)
                 self.fail("harvest_edurep_seeds did not fail when EdurepOAIPMH was returning errors")

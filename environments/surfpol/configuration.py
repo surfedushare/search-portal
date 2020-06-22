@@ -20,7 +20,6 @@ import os
 import json
 from invoke.config import Config
 import boto3
-from botocore.exceptions import ClientError
 
 
 MODE = os.environ.get("APPLICATION_MODE", "production")

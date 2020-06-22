@@ -14,7 +14,6 @@ from django_enumfield import enum
 from surf.apps.core.models import UUIDModel
 
 from surf.apps.materials.models import Collection
-from surf.apps.locale.models import Locale, LocaleHTML
 from surf.statusenums import PublishStatus
 
 REQUIRED_LANGUAGES = ['NL', 'EN']
