@@ -104,7 +104,7 @@ make stop-services
 ```
 
 After that you can follow the guides to [start the service](service/README.md),
-[work with the frontend](portal/README.md) or start the harvester.
+[work with the frontend](portal/README.md) or [start the harvester](harvester/README.md).
 Alternatively you can choose to run all components of the project in containers with:
 
 ```bash
