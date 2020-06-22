@@ -18,7 +18,7 @@ export default {
       imageText: null,
       imageLink: null,
       accept: 'image/jpeg,image/gif,image/png'
-    };
+    }
   },
   watch: {},
   methods: {
@@ -27,35 +27,35 @@ export default {
      * @param e - Event
      */
     onFileChange(e) {
-      this.$emit('add_image');
-      let files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.createImage(files[0]);
-      this.imageText = files[0].name;
+      this.$emit('add_image')
+      let files = e.target.files || e.dataTransfer.files
+      if (!files.length) return
+      this.createImage(files[0])
+      this.imageText = files[0].name
     },
     /**
      * Create image
      * @param file
      */
     createImage(file) {
-      let reader = new FileReader();
-      let that = this;
+      let reader = new FileReader()
+      let that = this
 
       reader.onload = e => {
-        that.image = e.target.result;
-      };
-      reader.readAsDataURL(file);
+        that.image = e.target.result
+      }
+      reader.readAsDataURL(file)
     },
     /**
      * Remove image
      * @param e - event
      */
     removeImage: function() {
-      this.$emit('remove_image');
-      this.image = '';
-      this.imageText = '';
-      this.imageLink = '';
-      this.$refs.file.value = null;
+      this.$emit('remove_image')
+      this.image = ''
+      this.imageText = ''
+      this.imageLink = ''
+      this.$refs.file.value = null
     }
   },
   computed: {
@@ -64,15 +64,15 @@ export default {
      * @returns String
      */
     imagePath() {
-      this.imageLink = this.image;
-      return this.imageLink !== null ? this.imageLink : this.imagesrc;
+      this.imageLink = this.image
+      return this.imageLink !== null ? this.imageLink : this.imagesrc
     },
     /**
      * Get image name
      * @returns String
      */
     imagePathTxt() {
-      return this.imageText !== null ? this.imageText : this.imagesrc;
+      return this.imageText !== null ? this.imageText : this.imagesrc
     }
   }
-};
+}

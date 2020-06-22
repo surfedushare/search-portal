@@ -1,11 +1,11 @@
-import _ from 'lodash';
-import BreadCrumbs from '~/components/BreadCrumbs';
-import EditableContent from '~/components/EditableContent';
-import ShareCollection from '~/components/Popup/ShareCollection';
-import DeleteCollection from '~/components/Popup/DeleteCollection';
-import { validateHREF } from '~/components/_helpers';
-import SwitchInput from '~/components/switch-input';
-import { PublishStatus } from '~/utils';
+import _ from 'lodash'
+import BreadCrumbs from '~/components/BreadCrumbs'
+import EditableContent from '~/components/EditableContent'
+import ShareCollection from '~/components/Popup/ShareCollection'
+import DeleteCollection from '~/components/Popup/DeleteCollection'
+import { validateHREF } from '~/components/_helpers'
+import SwitchInput from '~/components/switch-input'
+import { PublishStatus } from '~/utils'
 
 export default {
   name: 'collection',
@@ -37,12 +37,12 @@ export default {
     SwitchInput
   },
   mounted() {
-    const { collection } = this;
+    const { collection } = this
     if (!_.isEmpty(collection)) {
-      this.setTitle(collection.title);
-      this.setSocialCounters();
+      this.setTitle(collection.title)
+      this.setSocialCounters()
     }
-    this.href = validateHREF(window.location.href);
+    this.href = validateHREF(window.location.href)
   },
   data() {
     return {
@@ -52,17 +52,17 @@ export default {
       isShowDeleteCollection: false,
       isShowShareCollection: false,
       is_copied: false
-    };
+    }
   },
   computed: {
     isPublished: {
       get() {
-        return this.collection.publish_status === PublishStatus.PUBLISHED;
+        return this.collection.publish_status === PublishStatus.PUBLISHED
       },
       set(value) {
         this.collection.publish_status = value
           ? PublishStatus.PUBLISHED
-          : PublishStatus.DRAFT;
+          : PublishStatus.DRAFT
       }
     }
   },
@@ -73,7 +73,7 @@ export default {
      */
     setTitle(title) {
       if (title) {
-        this.collection_title = title;
+        this.collection_title = title
         // if (this.$refs.title) {
         //   this.$refs.title.innerText = title;
         // }
@@ -84,20 +84,20 @@ export default {
      */
     onChangeTitle() {
       if (this.$refs.title) {
-        this.setTitle(this.$refs.title.innerText);
+        this.setTitle(this.$refs.title.innerText)
       }
     },
     /**
      * Reset changed data
      */
     resetData() {
-      this.setTitle(this.collection.title);
+      this.setTitle(this.collection.title)
     },
     /**
      * Deleting collection by id
      */
     deleteCollectionPopup() {
-      this.isShowDeleteCollection = true;
+      this.isShowDeleteCollection = true
     },
     /**
      * Deleting collection by id
@@ -107,20 +107,20 @@ export default {
         .dispatch('deleteMyCollection', this.collection.id)
         .then(() => {
           if (window.history.length > 1) {
-            this.$router.go(-1);
+            this.$router.go(-1)
           } else {
-            this.$router.push(this.localePath({ name: 'my-communities' }));
+            this.$router.push(this.localePath({ name: 'my-communities' }))
           }
-        });
+        })
     },
     closeDeleteCollection() {
-      this.isShowDeleteCollection = false;
+      this.isShowDeleteCollection = false
     },
     /**
      * Saving the collection
      */
     onSubmit() {
-      this.$emit('onSubmit', { title: this.collection_title });
+      this.$emit('onSubmit', { title: this.collection_title })
     },
     /**
      * Set counters value for share buttons
@@ -128,9 +128,9 @@ export default {
     setSocialCounters() {
       const interval = setInterval(() => {
         this.$nextTick().then(() => {
-          const { collection } = this;
-          const { social_counters } = this.$refs;
-          const linkedIn = social_counters.querySelector('#linkedin_counter');
+          const { collection } = this
+          const { social_counters } = this.$refs
+          const linkedIn = social_counters.querySelector('#linkedin_counter')
 
           if (
             collection &&
@@ -140,8 +140,8 @@ export default {
           ) {
             const share = collection.sharing_counters.reduce(
               (prev, next) => {
-                prev[next.sharing_type] = next;
-                return prev;
+                prev[next.sharing_type] = next
+                return prev
               },
               {
                 linkedin: {
@@ -154,26 +154,26 @@ export default {
                   counter_value: 0
                 }
               }
-            );
+            )
 
             if (share.linkedin) {
               social_counters.querySelector('#linkedin_counter').innerText =
-                share.linkedin.counter_value;
+                share.linkedin.counter_value
             }
             if (share.twitter) {
               social_counters.querySelector('#twitter_counter').innerText =
-                share.twitter.counter_value;
+                share.twitter.counter_value
             }
             if (share.link) {
               social_counters.querySelector('#url_counter').innerText =
-                share.link.counter_value;
+                share.link.counter_value
             }
             if (linkedIn) {
-              clearInterval(interval);
+              clearInterval(interval)
             }
           }
-        });
-      }, 200);
+        })
+      }, 200)
     },
     /**
      * Event close social popups
@@ -188,22 +188,22 @@ export default {
           }
         })
         .then(() => {
-          this.setSocialCounters();
-        });
+          this.setSocialCounters()
+        })
     },
     /**
      * Show the popup "Share collection"
      */
     showShareCollection() {
-      this.isShowShareCollection = true;
+      this.isShowShareCollection = true
     },
     /**
      * Close the popup "Share collection"
      */
     closeShareCollection() {
-      this.isShowShareCollection = false;
+      this.isShowShareCollection = false
       if (this.is_copied) {
-        this.closeSocialSharing('link');
+        this.closeSocialSharing('link')
       }
     }
   },
@@ -213,7 +213,7 @@ export default {
      * @param search - String
      */
     search(search) {
-      this.$emit('input', search);
+      this.$emit('input', search)
     },
     /**
      * Watcher on the contenteditable field
@@ -225,7 +225,7 @@ export default {
       //   title.focus();
       // });
       if (!isEditable) {
-        this.resetData();
+        this.resetData()
       }
     },
     /**
@@ -234,9 +234,9 @@ export default {
      */
     collection(collection) {
       if (!_.isEmpty(collection)) {
-        this.setTitle(collection.title);
-        this.setSocialCounters();
+        this.setTitle(collection.title)
+        this.setSocialCounters()
       }
     }
   }
-};
+}

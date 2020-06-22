@@ -30,39 +30,39 @@ export default {
       upArrow: 38,
       rightArrow: 39,
       downArrow: 40
-    };
+    }
 
     const utils = {
       special: {},
       navigational: {},
       isSpecial(e) {
-        return typeof this.special[e.keyCode] !== 'undefined';
+        return typeof this.special[e.keyCode] !== 'undefined'
       },
       isNavigational(e) {
-        return typeof this.navigational[e.keyCode] !== 'undefined';
+        return typeof this.navigational[e.keyCode] !== 'undefined'
       }
-    };
+    }
 
-    utils.special[keys['backspace']] = true;
-    utils.special[keys['shift']] = true;
-    utils.special[keys['ctrl']] = true;
-    utils.special[keys['alt']] = true;
-    utils.special[keys['delete']] = true;
-    utils.special[keys['cmd']] = true;
+    utils.special[keys['backspace']] = true
+    utils.special[keys['shift']] = true
+    utils.special[keys['ctrl']] = true
+    utils.special[keys['alt']] = true
+    utils.special[keys['delete']] = true
+    utils.special[keys['cmd']] = true
 
-    utils.navigational[keys['upArrow']] = true;
-    utils.navigational[keys['downArrow']] = true;
-    utils.navigational[keys['leftArrow']] = true;
-    utils.navigational[keys['rightArrow']] = true;
+    utils.navigational[keys['upArrow']] = true
+    utils.navigational[keys['downArrow']] = true
+    utils.navigational[keys['leftArrow']] = true
+    utils.navigational[keys['rightArrow']] = true
 
     return {
       keys,
       utils
-    };
+    }
   },
   computed: {
     computed_text() {
-      return this.text.slice(0, this.maxlength);
+      return this.text.slice(0, this.maxlength)
     }
   },
   mounted() {},
@@ -70,37 +70,37 @@ export default {
     contenteditable(isEditable) {
       if (isEditable) {
         this.$nextTick().then(() => {
-          this.$refs.text.focus();
-        });
+          this.$refs.text.focus()
+        })
       }
     }
   },
   methods: {
     onChange() {
       if (this.setText) {
-        this.setText(this.$refs.text.innerText);
+        this.setText(this.$refs.text.innerText)
       }
     },
     onChangeLength(event) {
-      const { utils, maxlength } = this;
-      let len = event.target.innerText.trim().length;
-      let hasSelection = false;
-      let selection = window.getSelection();
-      let isSpecial = utils.isSpecial(event);
-      let isNavigational = utils.isNavigational(event);
+      const { utils, maxlength } = this
+      let len = event.target.innerText.trim().length
+      let hasSelection = false
+      let selection = window.getSelection()
+      let isSpecial = utils.isSpecial(event)
+      let isNavigational = utils.isNavigational(event)
 
       if (selection) {
-        hasSelection = !!selection.toString();
+        hasSelection = !!selection.toString()
       }
 
       if (isSpecial || isNavigational) {
-        return true;
+        return true
       }
 
       if (len >= maxlength && !hasSelection) {
-        event.preventDefault();
-        return false;
+        event.preventDefault()
+        return false
       }
     }
   }
-};
+}

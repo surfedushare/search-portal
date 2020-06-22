@@ -1,4 +1,4 @@
-import Popup from '~/components/Popup';
+import Popup from '~/components/Popup'
 export default {
   name: 'add-collection',
   props: ['is-show', 'close', 'submit-method'],
@@ -13,27 +13,27 @@ export default {
       formData: {
         title: null
       }
-    };
+    }
   },
   methods: {
     /**
      * The save collection event
      */
     onSaveCollection() {
-      this.submitting = true;
+      this.submitting = true
       this.$store
         .dispatch(this.submitMethod || 'postMyCollection', this.formData)
         .then(collection => {
-          this.$store.dispatch('getUser');
-          this.saved = true;
+          this.$store.dispatch('getUser')
+          this.saved = true
           if (this.$listeners.submitted) {
-            this.$emit('submitted', collection);
+            this.$emit('submitted', collection)
           }
         })
         .finally(() => {
-          this.submitting = false;
-        });
+          this.submitting = false
+        })
     }
   },
   computed: {}
-};
+}

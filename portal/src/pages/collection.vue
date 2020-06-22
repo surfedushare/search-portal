@@ -1,23 +1,25 @@
-
 <template>
   <section class="container main collection">
     <div v-if="!collectionInfo && !isLoading">
-      <error status-code="404" message-key="collection-not-found"></error>
+      <error status-code="404" message-key="collection-not-found" />
     </div>
-    <div class="center_block" v-else>
+    <div v-else class="center_block">
       <Collection
+        v-model="search"
         :collection="collectionInfo"
         :contenteditable="contenteditable"
         :submitting="submitting"
         :set-editable="setEditable"
         :change-view-type="changeViewType"
         :items-in-line="materials_in_line"
-        v-model="search"
         @onSubmit="onSubmit"
       />
 
-      <div class="add-materials" v-if="contenteditable">
-        <button class="materials__add__link button secondary" @click.prevent="showAddMaterial">
+      <div v-if="contenteditable" class="add-materials">
+        <button
+          class="materials__add__link button secondary"
+          @click.prevent="showAddMaterial"
+        >
           {{ $t('Add-materials') }}
         </button>
       </div>
@@ -56,17 +58,16 @@
 </template>
 
 <script>
-import _ from 'lodash';
-import { mapGetters } from 'vuex';
-import Materials from '~/components/Materials';
-import Spinner from '~/components/Spinner';
-import Collection from '~/components/Collections/Collection';
-import AddMaterialPopup from '~/components/Collections/AddMaterialPopup';
-import DeleteCollection from '~/components/Popup/DeleteCollection';
-import DeleteMaterial from '~/components/Popup/DeleteMaterial';
+import _ from 'lodash'
+import { mapGetters } from 'vuex'
+import Materials from '~/components/Materials'
+import Spinner from '~/components/Spinner'
+import Collection from '~/components/Collections/Collection'
+import AddMaterialPopup from '~/components/Collections/AddMaterialPopup'
+import DeleteCollection from '~/components/Popup/DeleteCollection'
+import DeleteMaterial from '~/components/Popup/DeleteMaterial'
 import Error from '~/components/error'
 import { PublishStatus } from '~/utils'
-
 
 export default {
   components: {
@@ -97,7 +98,7 @@ export default {
       },
       isLoading: true,
       isShowAddMaterial: false
-    };
+    }
   },
   computed: {
     ...mapGetters([
@@ -109,40 +110,47 @@ export default {
     ]),
     collectionInfo() {
       if (_.isEmpty(this.collection)) {
-        return this.collection;
+        return this.collection
       } else if (this.collection.publish_status === PublishStatus.PUBLISHED) {
-        return this.collection;
-      } else if(this.user && _.find(this.user.collections, {id: this.collection.id})) {
-        return this.collection;
+        return this.collection
+      } else if (
+        this.user &&
+        _.find(this.user.collections, { id: this.collection.id })
+      ) {
+        return this.collection
       }
       return {}
-    },
+    }
   },
   mounted() {
-    const { id } = this.$route.params;
+    const { id } = this.$route.params
     this.$store.dispatch('getMaterialInMyCollection', {
       id,
       params: {
         page_size: this.search.page_size,
         page: 1
       }
-    });
-    this.$store.dispatch('getCollection', id)
-      .finally(() => { this.isLoading = false; });
+    })
+    this.$store.dispatch('getCollection', id).finally(() => {
+      this.isLoading = false
+    })
   },
   methods: {
     showAddMaterial() {
-      this.isShowAddMaterial = true;
+      this.isShowAddMaterial = true
     },
     closeAddMaterial() {
-      this.isShowAddMaterial = false;
-      this.materialsUpdateKey += 1;
+      this.isShowAddMaterial = false
+      this.materialsUpdateKey += 1
     },
     saveMaterials() {
-      const { id } = this.$route.params;
-      this.isLoading = true;
-      this.$store.dispatch('getMaterialInMyCollection', { id, params: {} })
-        .finally(() => { this.isLoading = false; });
+      const { id } = this.$route.params
+      this.isLoading = true
+      this.$store
+        .dispatch('getMaterialInMyCollection', { id, params: {} })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
     /**
      * Set editable to the collection
@@ -150,7 +158,7 @@ export default {
      */
     setEditable(isEditable) {
       if (!isEditable) {
-        this.formData.materials_for_deleting = [];
+        this.formData.materials_for_deleting = []
       }
     },
     /**
@@ -158,31 +166,31 @@ export default {
      * @param id - String
      */
     deleteMaterialsPopup() {
-      this.isShowDeleteMaterials = true;
+      this.isShowDeleteMaterials = true
     },
     closeDeleteMaterials() {
-      this.isShowDeleteMaterials = false;
-      this.submitting = false;
-      this.setEditable(false);
+      this.isShowDeleteMaterials = false
+      this.submitting = false
+      this.setEditable(false)
     },
     deleteCollectionPopup() {
-      this.isShowDeleteCollection = true;
+      this.isShowDeleteCollection = true
     },
     closeDeleteCollection() {
-      this.isShowDeleteCollection = false;
-      this.submitting = false;
-      this.setEditable(false);
+      this.isShowDeleteCollection = false
+      this.submitting = false
+      this.setEditable(false)
     },
     deleteMaterials() {
-      const { collection } = this;
-      const { materials_for_deleting } = this.formData;
+      const { collection } = this
+      const { materials_for_deleting } = this.formData
       this.$store
         .dispatch('removeMaterialFromMyCollection', {
           collection_id: collection.id,
           data: materials_for_deleting.map(material => {
             return {
               external_id: material
-            };
+            }
           })
         })
         .then(() => {
@@ -190,7 +198,7 @@ export default {
             this.$store.dispatch('putMyCollection', {
               ...this.collection,
               ...this.submitData
-            });
+            })
             this.$store
               .dispatch('getMaterialInMyCollection', {
                 id: collection.id,
@@ -200,21 +208,21 @@ export default {
                 }
               })
               .then(() => {
-                this.closeDeleteMaterials();
-                this.submitting = false;
-                this.setEditable(false);
-              });
-          });
-        });
+                this.closeDeleteMaterials()
+                this.submitting = false
+                this.setEditable(false)
+              })
+          })
+        })
     },
     /**
      * Change 1 item in line to 4 and back.
      */
     changeViewType() {
       if (this.materials_in_line === 1) {
-        this.materials_in_line = 4;
+        this.materials_in_line = 4
       } else {
-        this.materials_in_line = 1;
+        this.materials_in_line = 1
       }
     },
     /**
@@ -222,11 +230,11 @@ export default {
      * @param data - Object
      */
     onSubmit(data) {
-      const { materials_for_deleting } = this.formData;
-      this.submitting = true;
-      this.submitData = data;
+      const { materials_for_deleting } = this.formData
+      this.submitting = true
+      this.submitData = data
       if (materials_for_deleting && materials_for_deleting.length) {
-        this.deleteMaterialsPopup();
+        this.deleteMaterialsPopup()
       } else {
         this.$store
           .dispatch('putMyCollection', {
@@ -234,48 +242,52 @@ export default {
             ...data
           })
           .catch(() => {
-            if(this.collection.publish_status === PublishStatus.PUBLISHED && !this.collection.materials_count) {
-              this.$store.commit('ADD_MESSAGE', {level: 'error', message: 'can-not-publish-empty-collection'});
-              this.collection.publish_status = PublishStatus.DRAFT;
+            if (
+              this.collection.publish_status === PublishStatus.PUBLISHED &&
+              !this.collection.materials_count
+            ) {
+              this.$store.commit('ADD_MESSAGE', {
+                level: 'error',
+                message: 'can-not-publish-empty-collection'
+              })
+              this.collection.publish_status = PublishStatus.DRAFT
             }
           })
           .finally(() => {
             if (!materials_for_deleting || !materials_for_deleting.length) {
-              this.submitting = false;
-              this.setEditable(false);
+              this.submitting = false
+              this.setEditable(false)
             }
-          });
+          })
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less">
+@import '../variables';
 
-  @import "../variables";
+.collection {
+  width: 100%;
+  padding: 95px 0 215px;
+}
 
-  .collection {
-    width: 100%;
-    padding: 95px 0 215px;
-  }
+.add-materials {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+}
 
-  .add-materials {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 50px;
-  }
+.materials {
+  margin-top: 20px;
+}
 
-  .materials {
-    margin-top: 20px;
-  }
-
-  .materials__add__link {
-    padding: 13px 43px 13px 51px;
-    background-image: url('/images/plus-black.svg');
-    background-position: 10px 50%;
-    background-repeat: no-repeat;
-    background-size: 24px 24px;
-  }
-
+.materials__add__link {
+  padding: 13px 43px 13px 51px;
+  background-image: url('/images/plus-black.svg');
+  background-position: 10px 50%;
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+}
 </style>

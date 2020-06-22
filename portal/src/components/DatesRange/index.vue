@@ -1,8 +1,6 @@
 <template src="./DatesRange.component.html" />
-<script src="./DatesRange.component.js">
-</script>
-<style src="./DatesRange.component.less" scoped lang="less">
-</style>
+<script src="./DatesRange.component.js"></script>
+<style src="./DatesRange.component.less" scoped lang="less"></style>
 <style>
 .dates-range--min .vdp-datepicker__calendar {
   width: 100%;

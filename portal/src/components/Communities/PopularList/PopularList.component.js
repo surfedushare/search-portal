@@ -3,13 +3,13 @@ export default {
   props: ['type', 'communities'],
   mounted() {},
   data() {
-    return {};
+    return {}
   },
   methods: {
     getCommunityTitle(community) {
       const communityDetails = community.community_details.find(
         details => details.language_code === this.$i18n.locale.toUpperCase()
-      );
+      )
       return communityDetails.title
     }
   },
@@ -19,16 +19,16 @@ export default {
      * @returns Boolean or Array of communities
      */
     computed_communities() {
-      const { communities } = this;
+      const { communities } = this
       if (communities) {
         if (communities.results) {
-          return communities.results;
+          return communities.results
         }
 
-        return communities;
+        return communities
       }
 
-      return false;
+      return false
     }
   }
-};
+}
