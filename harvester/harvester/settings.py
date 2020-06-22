@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'datagrowth',
 
     'core',
     'edurep',
@@ -260,3 +261,9 @@ EXTENSION_TO_FILE_TYPE = {  # TODO: we should map from extension to mime and the
     '.jpg': 'image',
     '.zip': 'zip',
 }
+
+
+# Datagrowth
+# https://data-scope.com/datagrowth/index.html
+
+DATAGROWTH_DATA_DIR = os.path.join(BASE_DIR, "..", "data", "harvester")

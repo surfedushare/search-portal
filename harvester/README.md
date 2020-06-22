@@ -6,6 +6,18 @@ It will connect over OAI-PMH to different repositories and index learning materi
 in an Elastic Search instance.
 
 
+Installation
+------------
+
+After the [initial Python/machine installation](../README.md#installation)
+and following the [getting started with the services guide](../README.md#getting-started)
+you can further setup your Django database for the harvester with the following commands.
+
+```bash
+invoke hrv.setup
+```
+
+
 Tests
 -----
 

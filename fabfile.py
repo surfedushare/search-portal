@@ -3,7 +3,7 @@ from invoke.config import Config
 from fabric import task
 
 from environments.surfpol import create_configuration_and_session
-from postgres.fabfile import restore_snapshot, setup as postgres_setup
+from postgres.tasks_remote import restore_snapshot, setup as postgres_setup
 
 
 environment, session = create_configuration_and_session(use_aws_default_profile=False, config_class=Config)

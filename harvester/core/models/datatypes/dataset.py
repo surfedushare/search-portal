@@ -26,6 +26,10 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
     def __str__(self):
         return "{} (id={})".format(self.name, self.id)
 
+    @classmethod
+    def get_name(cls):  # adheres to Datagrowth protocol for easy data loads
+        return "dataset"
+
     def reset(self):
         self.collection_set.all().delete()
         for harvest in self.oaipmhharvest_set.all():
