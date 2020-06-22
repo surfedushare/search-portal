@@ -17,10 +17,12 @@ class TestPushToIndex(TestCase):
     elastic_client = get_elastic_client_mock()
 
     def assert_document_structure(self, document):
-        expected_keys = {"title", "text", "transcription", "url", "external_id", "disciplines",
-                             "educational_levels", "author", "description", "publisher_date", "copyright", "language",
-                             "title_plain", "text_plain", "transcription_plain", "keywords", "file_type", "mime_type",
-                             "suggest", "_id", "oaipmh_set", "arrangement_collection_name"}
+        expected_keys = {
+            "title", "text", "transcription", "url", "external_id", "disciplines", "lom_educational_levels",
+            "educational_levels", "author", "description", "publisher_date", "copyright", "language", "title_plain",
+            "text_plain", "transcription_plain", "keywords", "file_type", "mime_type", "suggest", "_id", "oaipmh_set",
+            "arrangement_collection_name"
+        }
         self.assertEqual(set(document.keys()), expected_keys)
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
@@ -54,7 +56,7 @@ class TestPushToIndex(TestCase):
            client, docs = args
            for doc in docs:
                self.assert_document_structure(doc)
-           self.assertIn(kwargs["index"], ["delta-nl-1", "delta-en-2"])
+           self.assertIn(kwargs["index"], ["test-nl-2", "test-en-1"])
         # print(self.elastic_client.indices.put_alias.call_count)
 
     def test_invalid_dataset(self):
