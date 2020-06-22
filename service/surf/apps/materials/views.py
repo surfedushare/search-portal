@@ -58,8 +58,22 @@ from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 logger = logging.getLogger(__name__)
 
 
+def portal_material(request, *args, **kwargs):
+    material = _get_material_by_external_id(request, kwargs["external_id"])
+    if material:
+        return render(request, "portal/index.html", {
+            'meta_og_title': material[0]["title"],
+            'meta_og_description': material[0]["description"]
+        })
+
+    return portal_single_page_application(request, args)
+
+
 def portal_single_page_application(request, *args):
-    return render(request, "portal/index.html")
+    return render(request, "portal/index.html", {
+        'meta_og_title': "SURF | Open Leermaterialen",
+        'meta_og_description': "Open Leermaterialen"
+    })
 
 
 class MaterialSearchAPIView(APIView):
