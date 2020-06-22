@@ -221,3 +221,12 @@ To load snapshot data into the database on an AWS environment run:
 ```bash
 APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.restore-snapshot
 ```
+
+Linting
+-------
+
+The python code uses flake8 as a linter. You can run it with the following command:
+
+```bash
+flake8 .
+```
