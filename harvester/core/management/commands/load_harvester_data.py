@@ -32,6 +32,8 @@ class Command(base.LabelCommand):
         # Delete old datasets
         dataset = Dataset.objects.filter(name=dataset_label).last()
         if dataset is not None:
+            dataset.oaipmhset_set.all().delete()
+            dataset.oaipmhharvest_set.all().delete()
             dataset.delete()
 
         # Look for data dump file
