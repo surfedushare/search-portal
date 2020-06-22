@@ -38,9 +38,9 @@ pip install -r requirements.txt
 ```
 
 Then copy the ``.env.example`` file to ``.env`` and update the variable values to fit your system.
-You'll at least need to provide your Elastic Search credentials and AWS credentials.
+For a start the default values will do.
 
-If you want to run the project outside of a container you'll also need to add ``POL_DJANGO_POSTGRES_HOST=127.0.0.1``
+If you want to run the project outside of a container you'll need to add ``POL_DJANGO_POSTGRES_HOST=127.0.0.1``
 to the ``.env`` file or add ``127.0.0.1 postgres`` to your hosts file, in order for the service to pickup the database.
 Similarly for the Elastic cluster you need to add ``POL_ELASTIC_SEARCH_HOST=127.0.0.1`` to the ``.env`` file
 or add ``127.0.0.1 elasticsearch`` to your hosts file.
@@ -74,19 +74,6 @@ Alternatively you can set the
 ``POL_ELASTIC_SEARCH_HOST``, ``POL_ELASTIC_SEARCH_PROTOCOL``, ``POL_ELASTIC_SEARCH_USERNAME`` and
 ``POL_SECRETS_ELASTIC_SEARCH_PASSWORD`` variables inside your ``.env`` file.
 This allows to connect your local setup to a remote development or testing cluster.
-
-
-#### Resetting your database
-
-Sometimes you want to start fresh.
-If your database container is not running it's quite easy to throw all data away and create the database from scratch.
-To irreversibly destroy your local database with all data run:
-
-```bash
-docker volume rm search-portal_postgres_database
-```
-
-And then follow the steps above to recreate the database and populate it.
 
 
 Getting started
@@ -133,6 +120,20 @@ Either way the database admin tool become available under:
 ```bash
 http://localhost:8081/
 ```
+
+
+#### Resetting your database
+
+Sometimes you want to start fresh.
+If your database container is not running it's quite easy to throw all data away and create the database from scratch.
+To irreversibly destroy your local database with all data run:
+
+```bash
+docker volume rm search-portal_postgres_database
+```
+
+And then follow the steps to [install the service](service/README.md#installation)
+to recreate the database and populate it.
 
 
 Tests
