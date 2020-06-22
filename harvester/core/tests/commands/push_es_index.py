@@ -32,7 +32,7 @@ class TestPushToIndex(TestCase):
         # After checking basic command flow we're checking,
         # whether the Elastic Search library was called correctly to update the indices.
         out = StringIO()
-        call_command("push_es_index", "--dataset=delta", "--no-progress", "--promote", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", stdout=out)
         # Asserting output
         stdout = out.getvalue().split("\n")
         results = [rsl for rsl in stdout if rsl]
