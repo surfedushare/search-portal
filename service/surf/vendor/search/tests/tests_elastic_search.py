@@ -12,7 +12,8 @@ class TestsElasticSearch(TestCase):
 
     def test_basic_search(self):
         search_result = self.instance.search([])
-        search_result_filter = self.instance.search([], filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
+        search_result_filter = self.instance.search(
+            [], filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
         self.assertIsNotNone(search_result_filter)
@@ -203,13 +204,13 @@ class TestsElasticSearch(TestCase):
 
     def test_drilldowns(self):
         empty_drilldowns = self.instance.drilldowns(drilldown_names=[])
-        #{'recordcount': 1298193, 'records': [], 'drilldowns': []}
+        # {'recordcount': 1298193, 'records': [], 'drilldowns': []}
         self.assertGreater(empty_drilldowns['recordcount'], 0)
         self.assertFalse(empty_drilldowns['records'])
         self.assertFalse(empty_drilldowns['drilldowns'])
 
         biologie_drilldowns = self.instance.drilldowns([], search_text=["biologie"])
-        #{'recordcount': 32, 'records': [], 'drilldowns': []}
+        # {'recordcount': 32, 'records': [], 'drilldowns': []}
         self.assertGreater(biologie_drilldowns['recordcount'], 0)
         self.assertGreater(empty_drilldowns['recordcount'], biologie_drilldowns['recordcount'])
         self.assertFalse(biologie_drilldowns['records'])
@@ -233,10 +234,6 @@ class TestsElasticSearch(TestCase):
     def test_get_materials_by_id(self):
 
         def test_material(external_id):
-            # can't test for theme and copyright without creating and instantiating these values in the database
-            material_keys = ['object_id', 'url', 'title', 'description', 'keywords', 'language',
-                             'publish_datetime', 'author', 'format', 'disciplines', 'educationallevels']
-
             result = self.instance.get_materials_by_id(external_ids=[external_id])
 
             self.assertIsNotNone(result)
@@ -253,7 +250,10 @@ class TestsElasticSearch(TestCase):
         self.assertIsNot(material_1, material_2)
 
         self.assertEqual(material_1['title'], 'Decision Trees and Random Decision Forests')
-        self.assertEqual(material_1['url'], 'https://surfsharekit.nl/dl/surf/bef89539-a037-454d-bee3-da09f4c94e0b/53c7bb36-e374-431c-a50c-e208ab53e412')
+        self.assertEqual(
+            material_1['url'],
+            'https://surfsharekit.nl/dl/surf/bef89539-a037-454d-bee3-da09f4c94e0b/53c7bb36-e374-431c-a50c-e208ab53e412'
+        )
         self.assertEqual(material_1['external_id'], test_id_1)
         self.assertEqual(material_1['publish_datetime'], None)
         self.assertEqual(material_1['author'], None)
@@ -263,9 +263,16 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(material_1['format'], 'pdf')
 
         self.assertEqual(material_2['title'], '07 AS_AD model')
-        self.assertEqual(material_2['url'], 'https://surfsharekit.nl/dl/surf/651a50f7-8942-4615-af67-a6841e00b78b/bf30be37-dc7c-4106-8ef4-9773b48b547b')
+        self.assertEqual(
+            material_2['url'],
+            'https://surfsharekit.nl/dl/surf/651a50f7-8942-4615-af67-a6841e00b78b/bf30be37-dc7c-4106-8ef4-9773b48b547b'
+        )
         self.assertEqual(material_2['external_id'], test_id_2)
-        self.assertEqual(material_2['keywords'], ['economics', 'macro economics', 'micro economics', 'economic structure', 'inflationary gap', 'deflationary gap', 'full-employment equilibrium'])
+        self.assertEqual(
+            material_2['keywords'],
+            ['economics', 'macro economics', 'micro economics',
+             'economic structure', 'inflationary gap', 'deflationary gap', 'full-employment equilibrium']
+        )
         self.assertEqual(material_2['publish_datetime'], '2019-04-01')
         self.assertEqual(material_2['language'], 'en')
         self.assertEqual(material_2['author'], 'Dr. Ning Ding')

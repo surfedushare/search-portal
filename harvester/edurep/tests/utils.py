@@ -18,13 +18,13 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         deleted = next(
             (seed for seed in seeds if seed["state"] == "deleted"), None
         )
-        imscp = next(
-            (seed for seed in seeds if seed["url"] and "maken.wikiwijs.nl" in seed["url"]), None
-        )
+        # imscp = next(
+        #     (seed for seed in seeds if seed["url"] and "maken.wikiwijs.nl" in seed["url"]), None
+        # )
         return {
             "normal": normal,
             "deleted": deleted,
-            #"imscp": imscp
+            # "imscp": imscp
         }
 
     def check_seed_integrity(self, seeds, include_deleted=True):
@@ -62,6 +62,7 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set_without_deletes(self):
-        seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=2020, month=2, day=10, hour=22, minute=22)), include_deleted=False)
+        seeds = get_edurep_oaipmh_seeds("surf", make_aware(
+            datetime(year=2020, month=2, day=10, hour=22, minute=22)), include_deleted=False)
         self.assertEqual(len(seeds), 4)
         self.check_seed_integrity(seeds, include_deleted=False)

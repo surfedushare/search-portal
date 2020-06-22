@@ -72,7 +72,7 @@ class CommunityDetailInlineFormset(forms.models.BaseInlineFormSet):
                 language_code = form.cleaned_data['language_code'].upper()
                 if language_code in languages:
                     languages.remove(language_code)
-            except KeyError as exc:
+            except KeyError:
                 continue
         if len(languages) != 0:
             raise ValidationError(f"Required language code(s) '{', '.join(languages)}' not in community details.")

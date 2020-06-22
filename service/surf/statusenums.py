@@ -11,5 +11,3 @@ class PublishStatus(enum.Enum):  # NB: this enum has a hard copy in the webapp
         REVIEW: "Review",
         PUBLISHED: "Published",
     }
-
-

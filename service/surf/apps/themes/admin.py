@@ -18,6 +18,7 @@ class ThemeForm(forms.ModelForm):
     """
     Implementation of Theme Form class.
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

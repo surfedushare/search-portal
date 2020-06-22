@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
+
 import sys
 import os
 import sentry_sdk
@@ -18,12 +19,12 @@ from sentry_sdk.integrations.logging import ignore_logger
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
+from surfpol import create_configuration_and_session, MODE, CONTEXT, get_package_info
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
-sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from surfpol import create_configuration_and_session, MODE, CONTEXT, get_package_info
 PACKAGE_INFO = get_package_info()
 environment, session = create_configuration_and_session()
 
