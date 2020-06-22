@@ -103,6 +103,7 @@ node_modules/
 .DS_Store
 *.iml
 
+/data
 static/
 media/
 postgres/dumps/*.sql
