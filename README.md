@@ -132,8 +132,8 @@ To irreversibly destroy your local database with all data run:
 docker volume rm search-portal_postgres_database
 ```
 
-And then follow the steps to [install the service](service/README.md#installation)
-to recreate the database and populate it.
+And then follow the steps to [install the service](service/README.md#installation) and
+[install the harvester](harvester/README.md#installation) to recreate the databases and populate them.
 
 
 Tests
