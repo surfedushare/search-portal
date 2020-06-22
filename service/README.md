@@ -15,7 +15,7 @@ and following the [getting started with the services guide](../README.md#getting
 you can further setup your Django database for the API with the following commands.
 
 ```bash
-export DJANGO_POSTGRES_USER=postgres  # the root user who will own all tables
+export POL_DJANGO_POSTGRES_USER=postgres  # the root user who will own all tables
 python manage.py migrate
 ```
 
@@ -99,7 +99,7 @@ To apply migrations locally you'll need to switch the connection to the root use
 You can do so by setting an environment variable before running the migration:
 
 ```bash
-export DJANGO_POSTGRES_USER=postgres
+export POL_DJANGO_POSTGRES_USER=postgres
 python manage.py migrate
 ```
 
