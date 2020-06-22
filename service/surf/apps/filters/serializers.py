@@ -38,7 +38,7 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
         if search_counts:
             item = search_counts.get(obj.external_id, None)
             if item:
-                return item.get('count', None)
+                return item.get('count', 0)
         return
 
     class Meta:

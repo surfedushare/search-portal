@@ -11,7 +11,7 @@
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
-              <span v-if="statistic">{{ contedNumber }} </span
+              <span v-if="statistic">{{ counted }} </span
               >{{ $t('open-learning-materials-from-higher-education') }}
             </h2>
             <ul class="main__info_items">
@@ -105,7 +105,7 @@ export default {
      * Get formatted 'number_of_views'
      * @returns String
      */
-    contedNumber() {
+    counted() {
       return numeral(this.statistic.value)
         .format('0,0')
         .replace(',', '.')
