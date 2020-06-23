@@ -14,20 +14,19 @@ import messages from './modules/messages'
 
 Vue.use(Vuex)
 
-const store = () => {
-  return new Vuex.Store({
-    modules: {
-      user,
-      filterCategories,
-      communities,
-      materials,
-      themes,
-      collections,
-      statistic,
-      headerMenu,
-      headerSubMenu,
-      messages
-    }
-  })
-}
+const store = new Vuex.Store({
+  modules: {
+    user,
+    filterCategories,
+    communities,
+    materials,
+    themes,
+    collections,
+    statistic,
+    headerMenu,
+    headerSubMenu,
+    messages
+  }
+})
+
 export default store
