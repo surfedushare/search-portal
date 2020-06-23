@@ -12,9 +12,9 @@ NL_MATERIAL = {
     "publisher_date": "2017-04-16T22:35:09+02:00",
     "keywords": [],
     "author": [
-        "BEGIN:VCARD\\nVERSION:3.0\\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\\nFN:Michel van Ast\\nN:van Ast;Michel;;;\\nUID:urn:wikiwijs:userid:2714696\\nEND:VCARD",
-        "BEGIN:VCARD\\nVERSION:3.0\\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\\nFN:Theo van den Bogaart\\nEND:VCARD",
-        "BEGIN:VCARD\\nVERSION:3.0\\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\\nFN:Marc de Graaf\\nEND:VCARD"
+        "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Michel van Ast\nN:van Ast;Michel;;;\nUID:urn:wikiwijs:userid:2714696\nEND:VCARD",
+        "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Theo van den Bogaart\nEND:VCARD",
+        "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Marc de Graaf\nEND:VCARD"
     ],
     "file_type": "archive",
     "disciplines": [],
