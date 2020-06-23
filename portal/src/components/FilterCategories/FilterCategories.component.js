@@ -92,7 +92,7 @@ export default {
     filtered_categories() {
       // Return categories that build the filter tree
       return this.filterCategories
-        ? this.filterCategories.filter((item) => item.is_hidden === false) : []
+        ? this.filterCategories.filter(item => item.is_hidden === false) : []
     }
   }
 }
