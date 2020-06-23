@@ -5,7 +5,7 @@ import { createRouter } from './router.js'
 import App from './App.vue'
 import { setContext, getLocation } from './utils'
 import { createStore } from './store.js'
-import { createI18N } from './i18n'
+import i18n, { loadLanguages } from './i18n'
 
 import SocialSharing from 'vue-social-sharing'
 import VueClipboard from 'vue-clipboard2'
@@ -27,7 +27,7 @@ async function createApp(ssrContext) {
   // Add this.$router into store actions/mutations
   store.$router = router
 
-  const i18n = await createI18N()
+  await loadLanguages()
 
   // Create Root instance
   // here we inject the router and store to all child components,
