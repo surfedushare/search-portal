@@ -14,6 +14,7 @@ import Material from '~/pages/material'
 import Collection from '~/pages/collection'
 import Community from '~/pages/community'
 import InfoPage from '~/pages/info'
+import axios from '~/axios'
 
 const $log = injector.get('$log')
 const $window = injector.get('$window')
@@ -309,7 +310,7 @@ export function createRouter() {
         path: '/login/success',
         beforeEnter(to, from, next) {
           const app = injector.get('App')
-          app.$axios
+          axios
             .$get('users/obtain-token/')
             .then(response => {
               let token = response.token || response.data.token

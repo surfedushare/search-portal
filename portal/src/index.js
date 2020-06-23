@@ -12,7 +12,6 @@ import VueClipboard from 'vue-clipboard2'
 import VueMasonry from 'vue-masonry-css'
 import InfiniteScroll from 'vue-infinite-scroll'
 import pluginRouting from './i18n/plugin.routing.js'
-import axios from './axios.js'
 
 Vue.use(injector)
 Vue.use(SocialSharing)
@@ -62,11 +61,6 @@ async function createApp(ssrContext) {
   })
 
   pluginRouting(app.context)
-
-  // TODO: This should be replaced by modules (import)
-  store.$axios = axios
-  app.$axios = axios
-  Vue.prototype.$axios = axios
 
   if (store.getters.api_token) {
     store.dispatch('authenticate', { token: store.getters.api_token })

@@ -1,3 +1,5 @@
+import axios from '~/axios'
+
 export default {
   state: {
     statistic: null
@@ -9,7 +11,7 @@ export default {
   },
   actions: {
     async getStatistic({ commit }) {
-      const statistic = await this.$axios.$get('stats/all-materials/')
+      const statistic = await axios.$get('stats/all-materials/')
       commit('GET_STATISTIC', statistic)
     }
   },

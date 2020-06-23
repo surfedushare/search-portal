@@ -5,6 +5,7 @@ import {
   validateParams,
   decodeAuthor
 } from './_helpers'
+import axios from '~/axios'
 
 const $log = injector.get('$log')
 
@@ -28,7 +29,7 @@ export default {
   actions: {
     async getCollection({ commit }, id) {
       if (validateID(id)) {
-        const collection = await this.$axios.$get(`collections/${id}/`)
+        const collection = await axios.$get(`collections/${id}/`)
         commit('SET_COLLECTION', collection)
         return collection
       } else {
@@ -37,7 +38,7 @@ export default {
     },
     async setCollectionSocial({ commit }, { id, params }) {
       if (validateID(id) && validateParams(params)) {
-        const collection = await this.$axios.$get(`collections/${id}/`, {
+        const collection = await axios.$get(`collections/${id}/`, {
           params
         })
         commit('SET_COLLECTION', collection)
@@ -48,10 +49,7 @@ export default {
     },
     async putMyCollection({ commit }, data) {
       if (validateID(data.id) && validateParams(data)) {
-        const collection = await this.$axios.$put(
-          `collections/${data.id}/`,
-          data
-        )
+        const collection = await axios.$put(`collections/${data.id}/`, data)
         commit('SET_COLLECTION', collection)
         return collection
       } else {
@@ -60,7 +58,7 @@ export default {
     },
     async checkMaterialInCollection(context, id) {
       if (validateIDString(id)) {
-        return await this.$axios.$get('collections/', {
+        return await axios.$get('collections/', {
           params: {
             material_id: id
           }
@@ -71,28 +69,28 @@ export default {
     },
     async deleteMyCollection(context, id) {
       if (validateID(id)) {
-        return await this.$axios.$delete(`collections/${id}/`)
+        return await axios.$delete(`collections/${id}/`)
       } else {
         $log.error('Validate error: ', id)
       }
     },
     async postMyCollection(context, data) {
       if (validateParams(data)) {
-        return await this.$axios.$post(`collections/`, data)
+        return await axios.$post(`collections/`, data)
       } else {
         $log.error('Validate error: ', data)
       }
     },
     async setMaterialInMyCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
-        await this.$axios.$post(`collections/${collection_id}/materials/`, data)
+        await axios.$post(`collections/${collection_id}/materials/`, data)
       } else {
         $log.error('Validate error: ', { collection_id, data })
       }
     },
     async removeMaterialFromMyCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
-        return this.$axios.$delete(`collections/${collection_id}/materials/`, {
+        return axios.$delete(`collections/${collection_id}/materials/`, {
           data
         })
       } else {
@@ -102,15 +100,12 @@ export default {
     async getMaterialInMyCollection({ commit }, { id, params }) {
       if (validateIDString(id) && validateParams(params)) {
         commit('SET_MATERIAL_TO_COLLECTION_LOADING', true)
-        const materialsInfo = await this.$axios.$get(
-          `collections/${id}/materials/`,
-          {
-            params: {
-              ...params,
-              timestamp: Date.now()
-            }
+        const materialsInfo = await axios.$get(`collections/${id}/materials/`, {
+          params: {
+            ...params,
+            timestamp: Date.now()
           }
-        )
+        })
         commit('SET_MATERIAL_TO_COLLECTION', materialsInfo)
         commit('SET_MATERIAL_TO_COLLECTION_LOADING', false)
         return materialsInfo

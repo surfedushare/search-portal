@@ -3,6 +3,8 @@ import { VueAutosuggest } from 'vue-autosuggest'
 import { generateSearchMaterialsQuery } from './../../_helpers'
 import { debounce } from 'lodash'
 
+import axios from '~/axios'
+
 export default {
   name: 'search',
   components: {
@@ -57,7 +59,7 @@ export default {
         return
       }
 
-      const keywords = await this.$axios.$get('keywords/', {
+      const keywords = await axios.$get('keywords/', {
         params: { query: search }
       })
 

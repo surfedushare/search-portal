@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import injector from 'vue-inject'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
+import axios from '~/axios'
 
 const $log = injector.get('$log')
 
@@ -146,7 +147,7 @@ export default {
         _.isEmpty(state.filter_categories)
       ) {
         const app = injector.get('App')
-        let promise = this.$axios.get('filter-categories/').then(response => {
+        const promise = axios.get('filter-categories/').then(response => {
           // Preprocess the filters
           response.data.defaults = _.cloneDeep(response.data.results)
           let filters = getFiltersFromQuery(app.router.currentRoute.query)
