@@ -311,7 +311,7 @@ export function createRouter() {
         beforeEnter(to, from, next) {
           const app = injector.get('App')
           axios
-            .$get('users/obtain-token/')
+            .get('users/obtain-token/')
             .then(response => {
               let token = response.token || response.data.token
               app.store

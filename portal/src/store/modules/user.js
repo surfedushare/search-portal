@@ -64,13 +64,13 @@ export default {
   actions: {
     async getUser({ commit }) {
       commit('USER_LOADING', true)
-      const user = await axios.$get('users/me/')
+      const user = await axios.get('users/me/')
       commit('SET_USER', user)
       commit('USER_LOADING', false)
     },
     async postUser({ commit, state }) {
       commit('USER_LOADING', true)
-      await axios.$post('users/me/', state.user)
+      await axios.post('users/me/', state.user)
       commit('SET_USER', state.user)
       commit('USER_LOADING', false)
     },
@@ -79,7 +79,7 @@ export default {
         return
       }
       commit('API_TOKEN', token)
-      axios.setHeader('Authorization', `Token ${token}`)
+      axios.defaults.headers.common['Authorization'] = `Token ${token}`
       commit('AUTHENTICATE', true)
       commit('USER_LOADING', true)
       await this.dispatch('getUser')
@@ -87,6 +87,7 @@ export default {
     },
     async logout({ commit }, payload) {
       commit('API_TOKEN', null)
+      delete axios.defaults.headers.common['Authorization']
       axios.setHeader('Authorization', false)
       commit('SET_USER', null)
       commit('AUTHENTICATE', false)

@@ -46,7 +46,7 @@ export default {
   actions: {
     async getMaterial({ commit }, { id, params }) {
       commit('SET_MATERIAL_LOADING', true)
-      const material = await axios.$get(`materials/${id}/`, { params })
+      const material = await axios.get(`materials/${id}/`, { params })
       decodeAuthor(material)
       commit('SET_MATERIAL', material)
       commit('SET_MATERIAL_LOADING', false)
@@ -55,7 +55,7 @@ export default {
       if (validateParams(params)) {
         // commit('SET_MATERIAL', null);
         commit('SET_MATERIAL_LOADING', true)
-        const material = await axios.$get(`materials/${id}/`, { params })
+        const material = await axios.get(`materials/${id}/`, { params })
         commit('SET_MATERIAL', material)
         commit('SET_MATERIAL_LOADING', false)
         return material
@@ -66,32 +66,32 @@ export default {
     async getMaterialShare({ commit }, params) {
       if (validateParams(params)) {
         // commit('SET_MATERIAL', null);
-        const material = await axios.$get(`materials/`, { params })
+        const material = await axios.get(`materials/`, { params })
         commit('SET_MATERIAL', material)
       } else {
         $log.error('Validate error: ', params)
       }
     },
     async getMaterials({ commit }) {
-      const materials = await axios.$get('materials/')
+      const materials = await axios.get('materials/')
       commit('SET_MATERIALS', materials)
     },
     async getMaterialCommunities({ commit }, { params }) {
       if (validateParams(params)) {
-        const communities = await axios.$get('communities/', { params })
+        const communities = await axios.get('communities/', { params })
         commit('SET_MATERIAL_COMMUNITIES', communities)
       } else {
         $log.error('Validate error: ', { params })
       }
     },
     async setMaterialRating(context, params) {
-      return await axios.$post('rate_material/', {
+      return await axios.post('rate_material/', {
         params
       })
     },
     async setApplaudMaterial(context, { external_id }) {
       if (validateIDString(external_id)) {
-        return await axios.$post('applaud_material/', {
+        return await axios.post('applaud_material/', {
           params: {
             external_id: external_id
           }
@@ -102,7 +102,7 @@ export default {
     },
     async getApplaudMaterial(context, { external_id }) {
       if (validateIDString(external_id)) {
-        return await axios.$get('applaud_material/', {
+        return await axios.get('applaud_material/', {
           params: {
             external_id: external_id
           }
@@ -114,7 +114,7 @@ export default {
     async searchMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true)
-        const materials = await axios.$post('materials/search/', {
+        const materials = await axios.post('materials/search/', {
           ...search,
           search_text:
             (search.search_text && search.search_text.split(/\s+/)) || []
@@ -132,7 +132,7 @@ export default {
     async searchNextPageMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true)
-        const materials = await axios.$post('materials/search/', {
+        const materials = await axios.post('materials/search/', {
           ...search,
           search_text: search.search_text.split(/\s+/)
         })
@@ -143,7 +143,7 @@ export default {
       }
     },
     async searchMaterialsKeywords({ commit }, { params }) {
-      const keywords = await axios.$get('keywords/', { params })
+      const keywords = await axios.get('keywords/', { params })
       commit('SET_MATERIALS_KEYWORDS', keywords)
 
       return keywords

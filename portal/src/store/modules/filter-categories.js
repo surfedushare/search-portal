@@ -149,17 +149,17 @@ export default {
         const app = injector.get('App')
         const promise = axios.get('filter-categories/').then(response => {
           // Preprocess the filters
-          response.data.defaults = _.cloneDeep(response.data.results)
+          response.defaults = _.cloneDeep(response.results)
           let filters = getFiltersFromQuery(app.router.currentRoute.query)
           loadCategoryFilters(
-            response.data.results,
+            response.results,
             filters.selected,
             filters.dateRange
           )
 
-          commit('SET_FILTER_CATEGORIES', response.data)
+          commit('SET_FILTER_CATEGORIES', response)
           commit('SET_FILTER_CATEGORIES_LOADING', null)
-          return response.data
+          return response
         })
         commit('SET_FILTER_CATEGORIES_LOADING', promise)
       }

@@ -59,7 +59,7 @@ export default {
         return
       }
 
-      const keywords = await axios.$get('keywords/', {
+      const keywords = await axios.get('keywords/', {
         params: { query: search }
       })
 
