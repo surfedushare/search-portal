@@ -167,11 +167,7 @@
         </div>
     </div>
 
-    <div id="__nuxt">
-        <div id="nuxt-loading" aria-live="polite" role="status">
-            <div>Loading...</div>
-        </div>
-    </div>
+    <div id="app"></div>
 
     <script>
         var isIE = typeof document.documentMode == "number" || new Function("return/*@cc_on!@*/!1")( );
@@ -179,7 +175,7 @@
         var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 
         if (isIE || isEdge) {
-            document.body.removeChild(document.getElementById("__nuxt"));
+            document.body.removeChild(document.getElementById("app"));
             document.getElementById("unsupported").style.display = "block";
             document.body.removeChild(document.getElementById("mobile"));
         }

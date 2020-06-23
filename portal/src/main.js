@@ -23,96 +23,40 @@ if (process.env.VUE_APP_USE_SENTRY) {
 
 import Vue from 'vue'
 import injector from 'vue-inject'
-import { createApp } from './index'
-import { getMatchedComponents, setContext } from './utils'
+import i18n, { loadLanguages } from './i18n'
 import '@fortawesome/fontawesome-free/css/all.css'
 import router from '~/router'
+import store from '~/store/index'
+import App from './App.vue'
+import SocialSharing from 'vue-social-sharing'
+import VueClipboard from 'vue-clipboard2'
+import VueMasonry from 'vue-masonry-css'
+import InfiniteScroll from 'vue-infinite-scroll'
+import './i18n/plugin.routing.js'
 
-// Global shared references
-let app
+Vue.use(injector)
+Vue.use(SocialSharing)
+Vue.use(VueClipboard)
+Vue.use(VueMasonry)
+Vue.use(InfiniteScroll)
+
 const $log = injector.get('$log')
 
-Object.assign(Vue.config, { silent: true, performance: false })
+async function mountApp() {
+  await loadLanguages()
 
-// Create and mount App
-createApp()
-  .then(mountApp)
-  .catch(err => {
-    $log.error('[nuxt] Error while initializing app', err)
-  })
-
-async function render(to, from, next) {
-  // nextCalled is true when redirected
-  let nextCalled = false
-  const _next = path => {
-    if (from.path === path.path && this.$loading.finish) {
-      this.$loading.finish()
-    }
-
-    if (from.path !== path.path && this.$loading.pause) {
-      this.$loading.pause()
-    }
-
-    if (nextCalled) return
-    nextCalled = true
-    next(path)
+  if (store.getters.api_token) {
+    store.dispatch('authenticate', { token: store.getters.api_token })
+  } else {
+    store.dispatch('getUser')
   }
 
-  // Update context
-  await setContext(app, {
-    route: to,
-    from,
-    next: _next.bind(this)
-  })
-
-  // Get route's matched components
-  const matches = []
-  const Components = getMatchedComponents(to, matches)
-
-  // Update ._data and other properties if hot reloaded
-  Components.forEach(Component => {
-    if (Component._Ctor && Component._Ctor.options) {
-      Component.options.asyncData = Component._Ctor.options.asyncData
-      Component.options.fetch = Component._Ctor.options.fetch
-    }
-  })
-
-  // If not redirected
-  if (!nextCalled) {
-    if (this.$loading.finish && !this.$loading.manual) {
-      this.$loading.finish()
-    }
-
-    next()
-  }
-}
-
-async function mountApp(__app) {
-  // Set global variables
-  app = __app.app
-
-  // Create Vue instance
-  const _app = new Vue({
-    ...app,
+  new Vue({
     router,
-    app
-  })
-
-  // Mounts Vue app to DOM element
-  const mount = () => {
-    _app.$mount('#__nuxt')
-  }
-
-  // Initialize error handler
-  _app.$loading = {} // To avoid error while _app.$nuxt does not exist
-
-  // Add router hooks
-  router.beforeEach(render.bind(_app))
-  router.afterEach(to => {
-    // Parse URL and set filters selected when
-    let filters = _app.$store.getters.getFiltersFromQuery(to.query)
-    _app.$store.commit('SETUP_FILTER_CATEGORIES', filters)
-  })
-
-  mount()
+    store,
+    i18n,
+    ...App
+  }).$mount('#app')
 }
+
+mountApp().catch(err => $log.error('Error while initializing app', err))
