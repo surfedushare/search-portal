@@ -255,7 +255,7 @@ export default {
 
   &__materials {
     position: relative;
-    margin: 0 0 200px;
+    margin: 0 0 70px;
 
     &_title {
       margin: 0 0 32px;
@@ -264,22 +264,6 @@ export default {
         font-size: 22px;
         margin: 0 0 20px;
       }
-    }
-
-    &:before {
-      content: '';
-      left: 0;
-      right: 50%;
-      height: 353px;
-      bottom: -137px;
-      border-radius: 0 65px 65px 0;
-      margin: 0 410px 0 0;
-      pointer-events: none;
-      border-right: 1px solid #686d75;
-      border-top: 1px solid #686d75;
-      border-bottom: 1px solid #686d75;
-      position: absolute;
-      z-index: -1;
     }
   }
 

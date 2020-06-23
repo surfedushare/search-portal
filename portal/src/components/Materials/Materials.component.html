@@ -24,10 +24,15 @@
       >
         Delete
       </button>
-      <div
-        :class="{'selected': material.selected}"
-        class="materials__item_wrapper tile__wrapper"
+      <router-link v-if="selectFor !== 'add'"
+        class="materials__item_link"
+        :to="localePath({name: 'materials-id', params: {id: material.external_id}})"
+        @click.native="setMaterial(material)"
       >
+        <div
+          :class="{'selected': material.selected}"
+          class="materials__item_wrapper tile__wrapper"
+        >
           <div class="materials__item_main_info">
             <h3 class="materials__item_title">
               {{material.title}}
@@ -124,12 +129,7 @@
               </div>
             </footer>
           </div>
-      </div>
-      <router-link v-if="selectFor !== 'add'"
-        class="materials__item_link"
-        :to="localePath({name: 'materials-id', params: {id: material.external_id}})"
-        @click.native="setMaterial(material)"
-      >
+        </div>
       </router-link>
     </li>
   </ul>
