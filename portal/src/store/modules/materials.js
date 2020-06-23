@@ -116,7 +116,7 @@ export default {
         const materials = await this.$axios.$post('materials/search/', {
           ...search,
           search_text:
-            (search.search_text && search.search_text.split(/\s+/)) || ''
+            (search.search_text && search.search_text.split(/\s+/)) || []
         })
         materials.search_text = search.search_text
         materials.active_filters = search.filters

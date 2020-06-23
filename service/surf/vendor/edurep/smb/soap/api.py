@@ -51,6 +51,7 @@ class SmbSoapApiClient:
     """
     Class provides integration with SMB SOAP-service
     """
+
     def __init__(self, api_endpoint=_DEFAULT_API_ENDPOINT):
         self.api_endpoint = api_endpoint
 

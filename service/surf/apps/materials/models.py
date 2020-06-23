@@ -3,9 +3,7 @@ This module contains implementation of models for materials app.
 """
 
 import json
-from datetime import datetime
 
-from django.conf import settings
 from django.db import models as django_models
 from django.db.models import F
 from django.utils import timezone

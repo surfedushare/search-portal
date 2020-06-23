@@ -24,6 +24,7 @@ from django.contrib.auth import views as auth_views
 
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
+    portal_material,
     portal_single_page_application,
     MaterialSearchAPIView,
     KeywordsAPIView,
@@ -94,6 +95,8 @@ urlpatterns = [
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 
     # Frontend
+    url(r'^materialen/(?P<external_id>.+)/', portal_material),
+    url(r'^en/materials/(?P<external_id>.+)/', portal_material),
     url(r'^$', portal_single_page_application, name="portal-spa"),
     url(r'^.*/$', portal_single_page_application),
 ]

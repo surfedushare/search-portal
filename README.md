@@ -104,7 +104,7 @@ make stop-services
 ```
 
 After that you can follow the guides to [start the service](service/README.md),
-[work with the frontend](portal/README.md) or start the harvester.
+[work with the frontend](portal/README.md) or [start the harvester](harvester/README.md).
 Alternatively you can choose to run all components of the project in containers with:
 
 ```bash
@@ -132,8 +132,8 @@ To irreversibly destroy your local database with all data run:
 docker volume rm search-portal_postgres_database
 ```
 
-And then follow the steps to [install the service](service/README.md#installation)
-to recreate the database and populate it.
+And then follow the steps to [install the service](service/README.md#installation) and
+[install the harvester](harvester/README.md#installation) to recreate the databases and populate them.
 
 
 Tests
@@ -220,4 +220,13 @@ To load snapshot data into the database on an AWS environment run:
 
 ```bash
 APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.restore-snapshot
+```
+
+Linting
+-------
+
+The python code uses flake8 as a linter. You can run it with the following command:
+
+```bash
+flake8 .
 ```

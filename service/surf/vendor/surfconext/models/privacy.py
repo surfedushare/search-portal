@@ -174,5 +174,6 @@ class DataGoalPermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DataGoalPermission
         list_serializer_class = DataGoalPermissionListSerializer
-        fields = ("id", "type", "en", "nl", "more_info_route", "priority", "is_notification_only", "is_after_login", "is_allowed")
+        fields = ("id", "type", "en", "nl", "more_info_route", "priority",
+                  "is_notification_only", "is_after_login", "is_allowed")
         read_only_fields = ("en", "nl", "more_info_route", "priority", "is_notification_only", "is_after_login")

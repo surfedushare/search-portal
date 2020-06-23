@@ -1,9 +1,7 @@
-import os
-import boto3
 from invoke import Responder
 from fabric import task
 
-from .tasks import download_snapshot
+from .tasks_local import download_snapshot
 
 
 @task(name="setup")
@@ -15,7 +13,7 @@ def setup(ctx):
     # Setup auto-responder
     postgres_user = ctx.config.django.postgres_user
     postgres_password = ctx.config.secrets.postgres.password
-    postgres_password_responder = Responder(pattern="Password", response= postgres_password + "\n")
+    postgres_password_responder = Responder(pattern="Password", response=postgres_password + "\n")
     # Run Postgres commands with port forwarding
     with ctx.forward_local(local_port=1111, remote_host=ctx.config.django.postgres_host, remote_port=5432):
         # Clear all databases and application role
@@ -39,6 +37,16 @@ def setup(ctx):
         # Initialise permissions and other databases
         ctx.local(
             f"psql -h localhost -p 1111 -U {postgres_user} -W -f postgres/docker-entrypoint-initdb.d/initdb.sql",
+            echo=True, watchers=[postgres_password_responder], pty=True
+        )
+        ctx.local(
+            f"psql -h localhost -p 1111 -U {postgres_user} -d edushare -W -f "
+            f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
+            echo=True, watchers=[postgres_password_responder], pty=True
+        )
+        ctx.local(
+            f"psql -h localhost -p 1111 -U {postgres_user} -d harvester -W -f "
+            f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
             echo=True, watchers=[postgres_password_responder], pty=True
         )
 
