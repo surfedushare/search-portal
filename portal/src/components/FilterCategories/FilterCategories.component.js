@@ -39,13 +39,13 @@ export default {
     },
     onChange() {
       const { categoryId, itemId } = event.target.dataset
-      const filter = {external_id: categoryId, items: [itemId]}
+      const filter = { external_id: categoryId, items: [itemId] }
       this.executeSearch(filter)
     },
     onDateChange() {
       this.executeSearch()
     },
-    executeSearch(filter={}) {
+    executeSearch(filter = {}) {
       let searchText = this.$store.getters.materials.search_text
       let ordering = this.$store.getters.materials.ordering
 
@@ -91,8 +91,8 @@ export default {
   computed: {
     filtered_categories() {
       // Return categories that build the filter tree
-      return this.filterCategories ?
-        this.filterCategories.filter((item) => item.is_hidden === false) : []
+      return this.filterCategories
+        ? this.filterCategories.filter((item) => item.is_hidden === false) : []
     }
   }
 }
