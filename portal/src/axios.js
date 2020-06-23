@@ -5,6 +5,7 @@
 
 import Axios from 'axios'
 import { isNil } from 'lodash'
+import i18n from './i18n'
 
 // Axios.prototype cannot be modified
 const axiosExtra = {
@@ -16,10 +17,6 @@ const axiosExtra = {
       }
       this.defaults.headers[scope][name] = value
     }
-  },
-  setToken(token, type, scopes = 'common') {
-    const value = !token ? null : (type ? type + ' ' : '') + token
-    this.setHeader('Authorization', value, scopes)
   },
   setLanguage(language) {
     if (!isNil(language)) {
@@ -75,10 +72,6 @@ const extendAxiosInstance = axios => {
 }
 
 const setupProgress = axios => {
-  if (process.server) {
-    return
-  }
-
   // A noop loading inteterface for when $nuxt is not yet ready
   const noopLoading = {
     finish: () => {},
@@ -138,53 +131,13 @@ const setupProgress = axios => {
   axios.defaults.xsrfHeaderName = 'x-csrftoken'
 }
 
-export default ctx => {
-  // baseURL
-  const baseURL = process.env.VUE_APP_BACKEND_URL + 'api/v1'
-  // Create fresh objects for all default header scopes
-  // Axios creates only one which is shared across SSR requests!
-  // https://github.com/mzabriskie/axios/blob/master/lib/defaults.js
-  const headers = {
-    common: {
-      Accept: 'application/json, text/plain, */*'
-    },
-    delete: {},
-    get: {},
-    head: {},
-    post: {},
-    put: {},
-    patch: {}
-  }
+const baseURL = process.env.VUE_APP_BACKEND_URL + 'api/v1'
+const axiosOptions = { baseURL }
+const axios = Axios.create(axiosOptions)
 
-  const axiosOptions = {
-    baseURL,
-    headers
-  }
+extendAxiosInstance(axios)
+// Setup interceptors
+setupProgress(axios)
+axios.setLanguage(i18n.locale)
 
-  // Proxy SSR request headers headers
-  axiosOptions.headers.common =
-    ctx.req && ctx.req.headers ? Object.assign({}, ctx.req.headers) : {}
-  delete axiosOptions.headers.common['accept']
-  delete axiosOptions.headers.common['host']
-  delete axiosOptions.headers.common['cf-ray']
-  delete axiosOptions.headers.common['cf-connecting-ip']
-  delete axiosOptions.headers.common['content-length']
-
-  if (process.server) {
-    // Don't accept brotli encoding because Node can't parse it
-    axiosOptions.headers.common['accept-encoding'] = 'gzip, deflate'
-  }
-
-  // Create new axios instance
-  const axios = Axios.create(axiosOptions)
-
-  // Extend axios proto
-  extendAxiosInstance(axios)
-
-  // Setup interceptors
-
-  setupProgress(axios, ctx)
-  axios.setLanguage(ctx.app.i18n.locale)
-
-  return axios
-}
+export default axios

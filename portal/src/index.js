@@ -63,12 +63,10 @@ async function createApp(ssrContext) {
 
   pluginRouting(app.context)
 
-  const axiosInstance = axios(app.context)
-
   // TODO: This should be replaced by modules (import)
-  store.$axios = axiosInstance
-  app.$axios = axiosInstance
-  Vue.prototype.$axios = axiosInstance
+  store.$axios = axios
+  app.$axios = axios
+  Vue.prototype.$axios = axios
 
   if (store.getters.api_token) {
     store.dispatch('authenticate', { token: store.getters.api_token })
