@@ -76,7 +76,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Search from '~/components/FilterCategories/Search'
+import Search from '~/components/Search'
 import FilterCategories from '~/components/FilterCategories'
 import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'

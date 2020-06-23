@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
 import { VueAutosuggest } from 'vue-autosuggest'
-import { generateSearchMaterialsQuery } from './../../_helpers'
+import { generateSearchMaterialsQuery } from '../_helpers'
 import { debounce } from 'lodash'
 
 import axios from '~/axios'
