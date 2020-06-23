@@ -1,4 +1,3 @@
-import { mapGetters } from 'vuex'
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
 import _ from 'lodash'
@@ -7,16 +6,16 @@ export default {
   name: 'filter-categories',
   components: { DatesRange },
   data() {
-    const publisherdate = 'lom.lifecycle.contribute.publisherdate'
+    const publisherDate = 'lom.lifecycle.contribute.publisherdate'
     return {
-      publisherdate,
-      visible_items: 20,
+      publisherDate,
       data: {
         start_date: null,
         end_date: null
       }
     }
   },
+  props: ['filterCategories'],
   methods: {
     generateSearchMaterialsQuery,
     hasVisibleChildren(category) {
@@ -24,7 +23,9 @@ export default {
         return false
       }
       return _.some(category.children, child => {
-        return !child.is_hidden
+        if (child.count > 0) {
+          return !child.is_hidden
+        }
       })
     },
     onToggleCategory(category, update = true) {
@@ -36,62 +37,24 @@ export default {
         this.$forceUpdate()
       }
     },
-    onToggleShowAll(category) {
-      category.showAll = !category.showAll
-      this.$forceUpdate()
-    },
-    /**
-     * Set filter for v-model
-     * @returns {*} - filters
-     */
-    setFilter() {
-      const { categories, publisherdate } = this
-      if (categories) {
-        let filters = []
-
-        const publisherdate_item = this.value.filters.find(
-          item => item.external_id === publisherdate
-        )
-
-        if (publisherdate_item) {
-          filters.push({
-            external_id: publisherdate,
-            items: [...publisherdate_item.items]
-          })
-          this.data = {
-            start_date: publisherdate_item.items[0],
-            end_date: publisherdate_item.items[1]
-          }
-        }
-
-        filters = Object.assign({}, this.value, {
-          filters
-        })
-
-        this.$router.push(this.generateSearchMaterialsQuery(filters))
-
-        this.$emit('input', filters)
-
-        return filters
-      }
-    },
-    onChange(event, parent) {
-      if (!_.isNil(parent)) {
-        parent.selected = !parent.selected
-      }
-      this.$store.commit('SET_FILTER_SELECTED', event.target.dataset.categoryId)
-      this.executeSearch()
+    onChange() {
+      const { categoryId, itemId } = event.target.dataset
+      const filter = {external_id: categoryId, items: [itemId]}
+      this.executeSearch(filter)
     },
     onDateChange() {
       this.executeSearch()
     },
-    executeSearch() {
+    executeSearch(filter={}) {
       let searchText = this.$store.getters.materials.search_text
       let ordering = this.$store.getters.materials.ordering
+
+      let filters = this.$store.getters.search_filters
+      filters.push(filter)
       let searchRequest = {
         search_text: searchText,
         ordering: ordering,
-        filters: this.$store.getters.search_filters
+        filters: filters
       }
 
       // Execute search
@@ -115,11 +78,6 @@ export default {
         }
       )
     },
-    isShowCategoryItem({ category, item, indexItem }) {
-      return (
-        !item.is_empty && (category.showAll || indexItem < this.visible_items)
-      )
-    },
     getTitleTranslation(category, language) {
       if (
         !_.isNil(category.title_translations) &&
@@ -131,18 +89,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['filter_categories', 'isAuthenticated', 'materials']),
-    /**
-     * generate filtered categories
-     * @returns {*}
-     */
     filtered_categories() {
-      // Return categories which builds the filter tree
-      return this.filter_categories
-        ? _.filter(this.$store.getters.filter_categories.results, {
-            is_hidden: false
-          })
-        : []
+      // Return categories that build the filter tree
+      return this.filterCategories ?
+        this.filterCategories.filter((item) => item.is_hidden === false) : []
     }
   }
 }

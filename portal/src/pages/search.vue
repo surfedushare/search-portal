@@ -58,7 +58,10 @@
       >
         <div class="search__filter">
           <div class="search__filter_sticky">
-            <FilterCategories v-model="search" />
+            <FilterCategories
+              v-model="search"
+              :filter-categories="getFilterCategories()"
+            />
           </div>
         </div>
 
@@ -188,6 +191,9 @@ export default {
       this.search.page = 1
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search))
       this.$router.push(this.generateSearchMaterialsQuery(this.search))
+    },
+    getFilterCategories() {
+      return this.materials ? this.materials.filter_categories : []
     }
   }
 }
