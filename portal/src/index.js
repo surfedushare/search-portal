@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import injector from 'vue-inject'
 
-import { createRouter } from './router.js'
+import router from './router.js'
 import App from './App.vue'
 import { setContext, getLocation } from './utils'
 import { createStore } from './store.js'
 import i18n, { loadLanguages } from './i18n'
+import pluginRouting from './i18n/plugin.routing.js'
 
 import SocialSharing from 'vue-social-sharing'
 import VueClipboard from 'vue-clipboard2'
 import VueMasonry from 'vue-masonry-css'
 import InfiniteScroll from 'vue-infinite-scroll'
-import pluginRouting from './i18n/plugin.routing.js'
 
 Vue.use(injector)
 Vue.use(SocialSharing)
@@ -20,19 +20,14 @@ Vue.use(VueMasonry)
 Vue.use(InfiniteScroll)
 
 async function createApp(ssrContext) {
-  const router = await createRouter(ssrContext)
-
-  const store = createStore(ssrContext)
-  // Add this.$router into store actions/mutations
-  store.$router = router
+  const store = createStore()
 
   await loadLanguages()
 
   // Create Root instance
-  // here we inject the router and store to all child components,
-  // making them available everywhere as `this.$router` and `this.$store`.
+  // here we inject the store to all child components,
+  // making it available everywhere as `this.$store`.
   const app = {
-    router,
     store,
     i18n,
     ...App
@@ -42,7 +37,7 @@ async function createApp(ssrContext) {
   // Make app available from anywhere through injector
   injector.constant('App', app)
 
-  const next = location => app.router.push(location)
+  const next = location => router.push(location)
 
   // Resolve route
   const path = getLocation(router.options.base)
@@ -70,7 +65,6 @@ async function createApp(ssrContext) {
 
   return {
     app,
-    router,
     store
   }
 }

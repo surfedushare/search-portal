@@ -85,6 +85,7 @@ import {
   generateSearchMaterialsQuery,
   parseSearchMaterialsQuery
 } from '~/components/_helpers'
+import router from '~/router'
 
 export default {
   components: {
@@ -187,7 +188,7 @@ export default {
       }
       this.search.page = 1
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search))
-      this.$router.push(this.generateSearchMaterialsQuery(this.search))
+      router.push(this.generateSearchMaterialsQuery(this.search))
     }
   }
 }

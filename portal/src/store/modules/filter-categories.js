@@ -2,6 +2,7 @@ import _ from 'lodash'
 import injector from 'vue-inject'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
+import router from '~/router'
 
 const $log = injector.get('$log')
 
@@ -146,11 +147,10 @@ export default {
         _.isNil(state.filter_categories_loading) &&
         _.isEmpty(state.filter_categories)
       ) {
-        const app = injector.get('App')
         const promise = axios.get('filter-categories/').then(({ data }) => {
           // Preprocess the filters
           data.defaults = _.cloneDeep(data.results)
-          let filters = getFiltersFromQuery(app.router.currentRoute.query)
+          let filters = getFiltersFromQuery(router.currentRoute.query)
           loadCategoryFilters(data.results, filters.selected, filters.dateRange)
 
           commit('SET_FILTER_CATEGORIES', data)

@@ -408,6 +408,7 @@ import InputFile from '~/components/InputFile'
 import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
 import { PublishStatus } from '~/utils'
+import router from '~/router'
 
 export default {
   components: {
@@ -472,7 +473,7 @@ export default {
   },
   mounted() {
     if (!this.isAuthenticated) {
-      this.$router.push('/')
+      router.push('/')
       return
     }
     this.$store.dispatch('getCommunities').then(() => {

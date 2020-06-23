@@ -2,6 +2,7 @@ import { mapGetters } from 'vuex'
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
 import _ from 'lodash'
+import router from '~/router'
 
 export default {
   name: 'filter-categories',
@@ -68,7 +69,7 @@ export default {
           filters
         })
 
-        this.$router.push(this.generateSearchMaterialsQuery(filters))
+        router.push(this.generateSearchMaterialsQuery(filters))
 
         this.$emit('input', filters)
 
@@ -95,14 +96,14 @@ export default {
       }
 
       // Execute search
-      this.$router.push(this.generateSearchMaterialsQuery(searchRequest))
+      router.push(this.generateSearchMaterialsQuery(searchRequest))
       this.$emit('input', searchRequest) // actual search is done by the parent page
     },
     /**
      * Event the reset filter
      */
     resetFilter() {
-      this.$router.push(
+      router.push(
         this.generateSearchMaterialsQuery({
           filters: [],
           search_text: this.$store.getters.materials.search_text

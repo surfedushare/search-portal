@@ -43,6 +43,7 @@ import { mapGetters } from 'vuex'
 import BreadCrumbs from '~/components/BreadCrumbs'
 import Collections from '~/components/Collections'
 import AddCollection from '~/components/Popup/AddCollection'
+import router from '~/router'
 
 export default {
   components: {
@@ -66,7 +67,7 @@ export default {
   },
   mounted() {
     if (!this.user_loading) {
-      this.$router.push('/')
+      router.push('/')
     }
   },
   methods: {
