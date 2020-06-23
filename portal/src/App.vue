@@ -26,7 +26,7 @@
 import MainHeader from '~/components/MainHeader'
 import MainFooter from '~/components/MainFooter'
 import NuxtLoading from '~/components/nuxt-loading.vue'
-import axios from '~/axios'
+import { setLanguage } from '~/axios'
 
 export default {
   components: {
@@ -36,7 +36,7 @@ export default {
   },
   watch: {
     '$i18n.locale'(newLocale) {
-      axios.setLanguage(newLocale)
+      setLanguage(newLocale)
     }
   },
   created() {
