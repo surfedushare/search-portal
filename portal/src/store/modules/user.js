@@ -64,7 +64,7 @@ export default {
   actions: {
     async getUser({ commit }) {
       commit('USER_LOADING', true)
-      const user = await axios.get('users/me/')
+      const { data: user } = await axios.get('users/me/')
       commit('SET_USER', user)
       commit('USER_LOADING', false)
     },

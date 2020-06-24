@@ -45,35 +45,40 @@ export default {
   },
   actions: {
     async getThemes({ commit }) {
-      const themes = await axios.get('themes/', {
+      const { data: themes } = await axios.get('themes/', {
         params: { page_size: 100 }
       })
       commit('SET_THEMES', themes)
     },
     async getTheme({ commit }, id) {
       if (validateID(id)) {
-        const theme = await axios.get(`themes/${id}/`)
+        const { data: theme } = await axios.get(`themes/${id}/`)
         commit('SET_THEME', theme)
         return theme
       }
     },
     async getThemeDisciplines({ commit }, id) {
       if (validateID(id)) {
-        const themeDisciplines = await axios.get(`themes/${id}/disciplines`)
+        const { data: themeDisciplines } = await axios.get(
+          `themes/${id}/disciplines`
+        )
         commit('SET_DISCIPLINES', themeDisciplines)
       }
     },
     async getThemeCommunities({ commit }, { params, id }) {
       if (validateID(id)) {
-        const themeCommunities = await axios.get(`themes/${id}/communities`, {
-          params
-        })
+        const { data: themeCommunities } = await axios.get(
+          `themes/${id}/communities`,
+          {
+            params
+          }
+        )
         commit('SET_COMMUNITIES', themeCommunities)
       }
     },
     async getThemeCollections({ commit }, id) {
       if (validateID(id)) {
-        const themeCollections = await axios.get(
+        const { data: themeCollections } = await axios.get(
           `themes/${id}/community-collections`
         )
         commit('SET_COLLECTIONS', themeCollections)
