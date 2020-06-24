@@ -59,7 +59,7 @@ class ElasticIndex(models.Model):
 
         # Actual push of docs to ES
         errors = []
-        for is_ok, result in streaming_bulk(self.client, elastic_documents, index=remote_name, doc_type="_doc",
+        for is_ok, result in streaming_bulk(self.client, elastic_documents, index=remote_name,
                                             chunk_size=100, yield_ok=False, raise_on_error=False,
                                             request_timeout=request_timeout):
             if not is_ok:
