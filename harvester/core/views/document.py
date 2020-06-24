@@ -1,4 +1,3 @@
-from django.shortcuts import render, Http404
 from rest_framework import generics
 
 from datagrowth.datatypes.views import ContentView, ContentSerializer, DocumentBaseSerializer

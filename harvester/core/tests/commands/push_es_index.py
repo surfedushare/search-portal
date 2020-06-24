@@ -107,7 +107,6 @@ class TestPushToIndex(ElasticSearchClientTestCase):
             self.assertIn(index_name, "test")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
 
-
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
     def test_edurep_surf_without_promote(self, streaming_bulk, get_es_client):
@@ -159,7 +158,6 @@ class TestPushToIndex(ElasticSearchClientTestCase):
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 0,
                          "Expected Elastic Search to ignore aliases")
-
 
     def test_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
