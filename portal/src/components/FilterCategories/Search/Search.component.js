@@ -4,7 +4,6 @@ import { generateSearchMaterialsQuery } from './../../_helpers'
 import { debounce } from 'lodash'
 
 import axios from '~/axios'
-import router from '~/router'
 
 export default {
   name: 'search',
@@ -87,7 +86,7 @@ export default {
     emitSearch(searchText) {
       this.formData.search_text = searchText
       this.formData.filters = this.$store.getters.search_filters
-      router.push(this.generateSearchMaterialsQuery(this.formData))
+      this.$router.push(this.generateSearchMaterialsQuery(this.formData))
       this.$emit('input', this.formData)
     },
 

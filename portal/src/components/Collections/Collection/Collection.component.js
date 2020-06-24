@@ -6,7 +6,6 @@ import DeleteCollection from '~/components/Popup/DeleteCollection'
 import { validateHREF } from '~/components/_helpers'
 import SwitchInput from '~/components/switch-input'
 import { PublishStatus } from '~/utils'
-import router from '~/router'
 
 export default {
   name: 'collection',
@@ -108,9 +107,9 @@ export default {
         .dispatch('deleteMyCollection', this.collection.id)
         .then(() => {
           if (window.history.length > 1) {
-            router.go(-1)
+            this.$router.go(-1)
           } else {
-            router.push(this.localePath({ name: 'my-communities' }))
+            this.$router.push(this.localePath({ name: 'my-communities' }))
           }
         })
     },
