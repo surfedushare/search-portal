@@ -14,65 +14,24 @@ import Material from '~/pages/material'
 import Collection from '~/pages/collection'
 import Community from '~/pages/community'
 import InfoPage from '~/pages/info'
+import { isEqual } from 'lodash'
 import axios from '~/axios'
 
 const $log = injector.get('$log')
-const $window = injector.get('$window')
-const $promise = injector.get('$promise')
 
 Vue.use(Router)
 
-// The code below is an addition by NuxtJS that seems to be beneficial.
-// It disables default scrolling behaviour and leverages the Vue router to scroll on the page.
-// Vue default is to always scroll to top on navigation, so this is nice.
-$window.history.scrollRestoration = 'manual'
 const scrollBehavior = function(to, from, savedPosition) {
-  // if the returned position is falsy or an empty object,
-  // will retain current scroll position.
-  let position = false
-
-  // if no children detected
-  if (to.matched.length < 2) {
-    // scroll to the top of the page
-    position = { x: 0, y: 0 }
-  } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
-    // if one of the children has scrollToTop option set to true
-    position = { x: 0, y: 0 }
-  }
-
-  // savedPosition is only available for popstate navigations (back button)
   if (savedPosition) {
-    position = savedPosition
+    return savedPosition
   }
 
-  return new $promise(resolve => {
-    // wait for the out transition to complete (if necessary)
-    $window.app.$once('triggerScroll', () => {
-      // coords will be used if no selector is provided,
-      // or if the selector didn't match any element.
-      if (to.hash) {
-        let hash = to.hash
-        // CSS.escape() is not supported with IE and Edge.
-        if (
-          typeof $window.CSS !== 'undefined' &&
-          typeof $window.CSS.escape !== 'undefined'
-        ) {
-          hash = '#' + $window.CSS.escape(hash.substr(1))
-        }
-        try {
-          if ($window.document.querySelector(hash)) {
-            // scroll to anchor by returning the selector
-            position = { selector: hash }
-          }
-        } catch (e) {
-          $log.warn(
-            'Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).'
-          )
-        }
-      }
-      resolve(position)
-    })
-  })
+  // Do not scroll to the top when only GET parameters change
+  if (from && to.name === from.name && isEqual(to.params, from.params)) {
+    return
+  }
+
+  return { x: 0, y: 0 }
 }
 
 export function createRouter() {
