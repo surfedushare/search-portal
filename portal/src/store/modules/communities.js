@@ -2,6 +2,7 @@ import _ from 'lodash'
 import injector from 'vue-inject'
 import { validateID, validateParams } from './_helpers'
 import { PublishStatus } from '~/utils'
+import axios from '~/axios'
 
 const $log = injector.get('$log')
 
@@ -99,7 +100,7 @@ export default {
   actions: {
     async getCommunities({ commit }, { params = {} } = {}) {
       if (validateParams(params)) {
-        const communities = await this.$axios.$get('communities/', { params })
+        const communities = await axios.get('communities/', { params })
         commit('SET_COMMUNITIES', communities)
         return communities
       } else {
@@ -108,7 +109,7 @@ export default {
     },
     async putCommunities({ commit }, { id, data = {} } = {}) {
       if (validateID(id) && validateParams(data)) {
-        const communities = await this.$axios.$put(`communities/${id}/`, data)
+        const communities = await axios.put(`communities/${id}/`, data)
         commit('SET_COMMUNITIES', communities)
         return communities
       } else {
@@ -117,7 +118,7 @@ export default {
     },
     async getCommunity({ commit }, id) {
       if (validateID(id)) {
-        const community_info = await this.$axios.$get(`communities/${id}/`)
+        const community_info = await axios.get(`communities/${id}/`)
         commit('SET_COMMUNITY', community_info)
       } else {
         $log.error('Validate error: ', id)
@@ -125,9 +126,7 @@ export default {
     },
     async getCommunityThemes({ commit }, id) {
       if (validateID(id)) {
-        const community_themes = await this.$axios.$get(
-          `communities/${id}/themes/`
-        )
+        const community_themes = await axios.get(`communities/${id}/themes/`)
         commit('SET_COMMUNITY_THEMES', community_themes)
       } else {
         $log.error('Validate error: ', id)
@@ -135,7 +134,7 @@ export default {
     },
     async getCommunityDisciplines({ commit }, id) {
       if (validateID(id)) {
-        const community_disciplines = await this.$axios.$get(
+        const community_disciplines = await axios.get(
           `communities/${id}/disciplines/`
         )
         commit('SET_COMMUNITY_DISCIPLINES', community_disciplines)
@@ -146,7 +145,7 @@ export default {
     async getCommunityCollections({ commit }, id) {
       if (validateID(id)) {
         commit('SET_COMMUNITY_COLLECTIONS_LOADING', true)
-        const community_collections = await this.$axios.$get(
+        const community_collections = await axios.get(
           `communities/${id}/collections/`
         )
         commit('SET_COMMUNITY_COLLECTIONS', community_collections)
@@ -157,7 +156,7 @@ export default {
     },
     async getCommunityCollectionsNextPage({ commit, state }) {
       commit('SET_COMMUNITY_COLLECTIONS_LOADING', true)
-      const community_collections = await this.$axios.$get(
+      const community_collections = await axios.get(
         state.community_collections.next
       )
 
@@ -166,7 +165,7 @@ export default {
     },
     async postCommunityCollection({ commit }, data) {
       if (validateParams(data)) {
-        const collection = await this.$axios.$post(`collections/`, data)
+        const collection = await axios.post(`collections/`, data)
         commit('ADD_COMMUNITY_COLLECTION', collection)
         return collection
       } else {
@@ -175,14 +174,14 @@ export default {
     },
     async deleteCommunityCollections(context, { id, data }) {
       if (validateParams(data)) {
-        await this.$axios.$delete(`communities/${id}/collections/`, { data })
+        await axios.delete(`communities/${id}/collections/`, { data })
       } else {
         $log.error('Validate error: ', data)
       }
     },
     async setCommunityCollection({ commit }, { id, data }) {
       if (validateID(id) && validateParams(data)) {
-        const community_collections = await this.$axios.$post(
+        const community_collections = await axios.post(
           `communities/${id}/collections/`,
           data
         )
