@@ -15,6 +15,7 @@ module.exports = {
     proxy: 'http://localhost:8000'
   },
   configureWebpack: {
+    devtool: 'source-map',
     resolve: {
       alias: {
         '~': path.resolve(__dirname + '/src')
