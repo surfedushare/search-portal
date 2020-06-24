@@ -1,1 +1,1 @@
-from .commands.push_es_index import TestPushToIndex
+from .commands.push_es_index import TestPushToIndex, TestPushToIndexWithHistory

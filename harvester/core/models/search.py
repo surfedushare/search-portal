@@ -46,13 +46,12 @@ class ElasticIndex(models.Model):
 
         # Some preparation based on remote state as well as command line options
         if remote_exists and recreate:
-            self.client.indices.delete(remote_name)
+            self.client.indices.delete(index=remote_name)
         if remote_exists and recreate or not remote_exists:
             self.configuration = self.get_index_config(self.language)
             self.client.indices.create(
                 index=remote_name,
-                body=self.configuration,
-                request_timeout=request_timeout
+                body=self.configuration
             )
         if recreate:
             self.error_count = 0
