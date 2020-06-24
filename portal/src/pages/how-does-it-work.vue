@@ -43,13 +43,6 @@ export default {
     Materials,
     InfoBlock
   },
-  data() {
-    return {
-      search: {
-        search_text: []
-      }
-    }
-  },
   computed: {
     ...mapGetters(['materials'])
   },

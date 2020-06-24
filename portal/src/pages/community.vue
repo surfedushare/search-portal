@@ -133,7 +133,7 @@ export default {
     this.$store.dispatch('getCommunityCollections', community)
     this.$store.dispatch('searchMaterials', {
       page_size: 4,
-      search_text: []
+      search_text: ''
     })
   }
 }

@@ -32,7 +32,7 @@ export default {
         page_size: 10,
         page: 1,
         filters: [],
-        search_text: []
+        search_text: ''
       }
       if (this.material) {
         formData.author = this.material.author

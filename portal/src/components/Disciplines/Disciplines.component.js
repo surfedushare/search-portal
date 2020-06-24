@@ -31,7 +31,7 @@ export default {
         page: 1,
         page_size: 10,
         filters: filters,
-        search_text: [],
+        search_text: '',
         return_filters: false
       })
     }

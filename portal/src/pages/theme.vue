@@ -151,7 +151,7 @@ export default {
           this.theme = theme
           this.$store.dispatch('searchMaterials', {
             page_size: 4,
-            search_text: [],
+            search_text: '',
             ordering: '-lom.lifecycle.contribute.publisherdate',
             filters: this.$store.getters.search_filters,
             return_filters: false

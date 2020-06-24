@@ -17,20 +17,13 @@ export default {
     BreadCrumbs,
     Materials
   },
-  data() {
-    return {
-      search: {
-        search_text: []
-      }
-    }
-  },
   computed: {
     ...mapGetters(['materials'])
   },
   mounted() {
     this.$store.dispatch('searchMaterials', {
       page_size: 4,
-      search_text: [],
+      search_text: '',
       return_filters: false
     })
   }
