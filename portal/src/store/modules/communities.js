@@ -100,7 +100,9 @@ export default {
   actions: {
     async getCommunities({ commit }, { params = {} } = {}) {
       if (validateParams(params)) {
-        const communities = await axios.get('communities/', { params })
+        const { data: communities } = await axios.get('communities/', {
+          params
+        })
         commit('SET_COMMUNITIES', communities)
         return communities
       } else {
@@ -109,7 +111,10 @@ export default {
     },
     async putCommunities({ commit }, { id, data = {} } = {}) {
       if (validateID(id) && validateParams(data)) {
-        const communities = await axios.put(`communities/${id}/`, data)
+        const { data: communities } = await axios.put(
+          `communities/${id}/`,
+          data
+        )
         commit('SET_COMMUNITIES', communities)
         return communities
       } else {
@@ -118,26 +123,28 @@ export default {
     },
     async getCommunity({ commit }, id) {
       if (validateID(id)) {
-        const community_info = await axios.get(`communities/${id}/`)
-        commit('SET_COMMUNITY', community_info)
+        const { data: communityInfo } = await axios.get(`communities/${id}/`)
+        commit('SET_COMMUNITY', communityInfo)
       } else {
         $log.error('Validate error: ', id)
       }
     },
     async getCommunityThemes({ commit }, id) {
       if (validateID(id)) {
-        const community_themes = await axios.get(`communities/${id}/themes/`)
-        commit('SET_COMMUNITY_THEMES', community_themes)
+        const { data: communityThemes } = await axios.get(
+          `communities/${id}/themes/`
+        )
+        commit('SET_COMMUNITY_THEMES', communityThemes)
       } else {
         $log.error('Validate error: ', id)
       }
     },
     async getCommunityDisciplines({ commit }, id) {
       if (validateID(id)) {
-        const community_disciplines = await axios.get(
+        const { data: communityDisciplines } = await axios.get(
           `communities/${id}/disciplines/`
         )
-        commit('SET_COMMUNITY_DISCIPLINES', community_disciplines)
+        commit('SET_COMMUNITY_DISCIPLINES', communityDisciplines)
       } else {
         $log.error('Validate error: ', id)
       }
@@ -145,10 +152,10 @@ export default {
     async getCommunityCollections({ commit }, id) {
       if (validateID(id)) {
         commit('SET_COMMUNITY_COLLECTIONS_LOADING', true)
-        const community_collections = await axios.get(
+        const { data: communityCollections } = await axios.get(
           `communities/${id}/collections/`
         )
-        commit('SET_COMMUNITY_COLLECTIONS', community_collections)
+        commit('SET_COMMUNITY_COLLECTIONS', communityCollections)
         commit('SET_COMMUNITY_COLLECTIONS_LOADING', false)
       } else {
         $log.error('Validate error: ', id)
@@ -156,16 +163,16 @@ export default {
     },
     async getCommunityCollectionsNextPage({ commit, state }) {
       commit('SET_COMMUNITY_COLLECTIONS_LOADING', true)
-      const community_collections = await axios.get(
+      const { data: communityCollections } = await axios.get(
         state.community_collections.next
       )
 
-      commit('SET_COMMUNITY_COLLECTIONS_NEXT', community_collections)
+      commit('SET_COMMUNITY_COLLECTIONS_NEXT', communityCollections)
       commit('SET_COMMUNITY_COLLECTIONS_LOADING', false)
     },
     async postCommunityCollection({ commit }, data) {
       if (validateParams(data)) {
-        const collection = await axios.post(`collections/`, data)
+        const { data: collection } = await axios.post(`collections/`, data)
         commit('ADD_COMMUNITY_COLLECTION', collection)
         return collection
       } else {
@@ -181,13 +188,13 @@ export default {
     },
     async setCommunityCollection({ commit }, { id, data }) {
       if (validateID(id) && validateParams(data)) {
-        const community_collections = await axios.post(
+        const { data: communityCollections } = await axios.post(
           `communities/${id}/collections/`,
           data
         )
 
-        commit('EXTEND_COMMUNITY_COLLECTION', community_collections)
-        return community_collections
+        commit('EXTEND_COMMUNITY_COLLECTION', communityCollections)
+        return communityCollections
       } else {
         $log.error('Validate error: ', { id, data })
       }

@@ -59,11 +59,11 @@ export default {
         return
       }
 
-      const keywords = await axios.get('keywords/', {
+      const { data } = await axios.get('keywords/', {
         params: { query: search }
       })
 
-      this.suggestions = [{ data: keywords }]
+      this.suggestions = [{ data }]
     }, 350),
     onSelectSuggestion(result) {
       if (result) {

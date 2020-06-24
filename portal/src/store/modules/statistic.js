@@ -11,7 +11,7 @@ export default {
   },
   actions: {
     async getStatistic({ commit }) {
-      const statistic = await axios.get('stats/all-materials/')
+      const { data: statistic } = await axios.get('stats/all-materials/')
       commit('GET_STATISTIC', statistic)
     }
   },
