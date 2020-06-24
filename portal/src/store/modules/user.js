@@ -88,7 +88,6 @@ export default {
     async logout({ commit }, payload) {
       commit('API_TOKEN', null)
       delete axios.defaults.headers.common['Authorization']
-      axios.setHeader('Authorization', false)
       commit('SET_USER', null)
       commit('AUTHENTICATE', false)
       if (payload && payload.fully) {
