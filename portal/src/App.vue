@@ -7,8 +7,6 @@
 
       <MainFooter />
     </div>
-
-    <nuxt-loading ref="loading" />
   </div>
 </template>
 
