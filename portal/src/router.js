@@ -15,6 +15,7 @@ import Collection from '~/pages/collection'
 import Community from '~/pages/community'
 import InfoPage from '~/pages/info'
 import { isEqual } from 'lodash'
+import axios from '~/axios'
 
 const $log = injector.get('$log')
 
@@ -268,8 +269,8 @@ export function createRouter() {
         path: '/login/success',
         beforeEnter(to, from, next) {
           const app = injector.get('App')
-          app.$axios
-            .$get('users/obtain-token/')
+          axios
+            .get('users/obtain-token/')
             .then(response => {
               let token = response.token || response.data.token
               app.store
