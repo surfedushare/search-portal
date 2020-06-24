@@ -20,7 +20,11 @@ const $log = injector.get('$log')
 
 Vue.use(Router)
 
-const scrollBehavior = function(to, from) {
+const scrollBehavior = function(to, from, savedPosition) {
+  if (savedPosition) {
+    return savedPosition
+  }
+
   // Do not scroll to the top when only GET parameters change
   if (from && to.name === from.name && isEqual(to.params, from.params)) {
     return
