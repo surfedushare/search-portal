@@ -152,6 +152,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
 
+# Rest framework
+# https://www.django-rest-framework.org/
+
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+}
+
+
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/

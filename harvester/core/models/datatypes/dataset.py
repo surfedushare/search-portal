@@ -47,7 +47,7 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         for arrangement in self.arrangement_set.prefetch_related("document_set").filter(modified_at__gte=since):
             languages = {doc.get_language() for doc in arrangement.documents.all()}
             if len(languages) != 1:
-                print(f"Impossible to determine language for arrangement: {arrangement.id}")
+                by_language["unk"].append(arrangement.to_search())
                 continue
             language = languages.pop()
             by_language[language].append(arrangement.to_search())
