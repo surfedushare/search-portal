@@ -15,7 +15,7 @@ export default {
       }
     }
   },
-  props: ['filterCategories', 'selectedFilters'],
+  props: ['filterCategories', 'materials', 'selectedFilters'],
   methods: {
     generateSearchMaterialsQuery,
     hasVisibleChildren(category) {
@@ -44,9 +44,8 @@ export default {
 
       if (e.target.checked) {
         filters.push(filter)
-      }
-      else {
-        filters.splice(filters.indexOf(filter), 1);
+      } else {
+        filters.splice(filters.indexOf(filter), 1)
       }
       this.executeSearch(filters)
     },
@@ -54,10 +53,9 @@ export default {
       this.executeSearch()
     },
     executeSearch(filters = []) {
-      let searchText = this.$store.getters.materials.search_text
-      let ordering = this.$store.getters.materials.ordering
+      const {ordering, search_text} = this.materials
       let searchRequest = {
-        search_text: searchText,
+        search_text: search_text,
         ordering: ordering,
         filters: filters
       }
@@ -73,7 +71,7 @@ export default {
       this.$router.push(
         this.generateSearchMaterialsQuery({
           filters: [],
-          search_text: this.$store.getters.materials.search_text
+          search_text: this.materials.search_text
         }),
         () => {
           location.reload()

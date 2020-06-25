@@ -62,6 +62,7 @@
               v-model="search"
               :filter-categories="getFilterCategories()"
               :selected-filters="getSelectedFilters()"
+              :materials="materials"
             />
           </div>
         </div>
