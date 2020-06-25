@@ -39,13 +39,14 @@
                 :hide-counter="true"
               />
             </div>
-            <button
-              class="button"
-              type="submit"
-              :disabled="submitting"
-            >
-              {{ $t('Save-review') }}
-            </button>
+              <button
+                v-if="rating > 0"
+                class="button"
+                type="submit"
+                :disabled="submitting"
+                >
+                {{ $t('Save-review') }}
+              </button>
           </div>
         </form>
       </template>

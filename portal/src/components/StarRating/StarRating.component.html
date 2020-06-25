@@ -4,8 +4,7 @@
     v-for="rating in ratings"
      :class="{
        'is-selected': ((avg_rating >= rating) && value != null),
-       'is-disabled': disabled,
-       'star-rating__star--dark-stars': darkStars
+       'is-disabled': disabled
      }"
      @click="setValue(rating)"
      @mouseover="star_over(rating)"
