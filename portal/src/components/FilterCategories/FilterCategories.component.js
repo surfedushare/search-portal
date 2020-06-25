@@ -37,20 +37,25 @@ export default {
         this.$forceUpdate()
       }
     },
-    onChange() {
-      const { categoryId, itemId } = event.target.dataset
+    onChange(e) {
+      const { categoryId, itemId } = e.target.dataset
       const filter = { external_id: categoryId, items: [itemId] }
-      this.executeSearch(filter)
+      let filters = this.selectedFilters
+
+      if (e.target.checked) {
+        filters.push(filter)
+      }
+      else {
+        filters.splice(filters.indexOf(filter), 1);
+      }
+      this.executeSearch(filters)
     },
     onDateChange() {
       this.executeSearch()
     },
-    executeSearch(filter = {}) {
+    executeSearch(filters = []) {
       let searchText = this.$store.getters.materials.search_text
       let ordering = this.$store.getters.materials.ordering
-
-      let filters = this.$store.getters.search_filters
-      filters.push(filter)
       let searchRequest = {
         search_text: searchText,
         ordering: ordering,
