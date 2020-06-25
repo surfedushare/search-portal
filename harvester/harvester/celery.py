@@ -1,6 +1,7 @@
 import os
 
 from django.apps import apps
+from django.core.wsgi import get_wsgi_application
 from celery import Celery
 
 
@@ -16,4 +17,5 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'harvester.settings')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
+application = get_wsgi_application()  # load the apps
 app.autodiscover_tasks(lambda: [cfg.name for cfg in apps.get_app_configs()], related_name="background")
