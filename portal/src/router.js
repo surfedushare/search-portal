@@ -16,6 +16,7 @@ import Community from '~/pages/community'
 import InfoPage from '~/pages/info'
 import { isEqual } from 'lodash'
 import axios from '~/axios'
+import store from '~/store'
 
 const $log = injector.get('$log')
 
@@ -267,12 +268,11 @@ export default new Router({
     {
       path: '/login/success',
       beforeEnter(to, from, next) {
-        const app = injector.get('App')
         axios
           .get('users/obtain-token/')
           .then(response => {
             let token = response.token || response.data.token
-            app.store
+            store
               .dispatch('authenticate', { token: token })
               .then(() => {
                 next(to.query.continue || '/')
