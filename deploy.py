@@ -155,10 +155,12 @@ def deploy(ctx, target, mode, version=None):
     print(f"Starting AWS session for: {mode}")
     session = boto3.Session(profile_name=ctx.config.aws.profile_name)
     ecs_client = session.client('ecs', region_name='eu-central-1')
+    task_role_arn = ctx.config.aws.task_role_arn if not target == "harvester" else \
+        ctx.config.aws.superuser_task_role_arn
 
     target_name, task_definition_arn = register_task_definition(
         ecs_client,
-        ctx.config.aws.task_role_arn,
+        task_role_arn,
         target,
         mode,
         version
@@ -187,6 +189,7 @@ def migrate(ctx, target, mode, version=None):
     session = boto3.Session(profile_name=ctx.config.aws.profile_name)
     ecs_client = session.client('ecs', region_name='eu-central-1')
 
+    target_info = TARGETS[target]
     target_name, task_definition_arn = register_task_definition(
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
@@ -202,7 +205,7 @@ def migrate(ctx, target, mode, version=None):
         launchType="FARGATE",
         overrides={
             "containerOverrides": [{
-                "name": "search-portal-container",
+                "name": f"{target_info['name']}-container",
                 "command": ["python", "manage.py", "migrate"],
                 "environment": [
                     {
