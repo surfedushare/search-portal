@@ -1,12 +1,7 @@
-import logging
-
 from django.conf import settings
 
 from core.models import Dataset, ElasticIndex
 from core.management.base import HarvesterCommand
-
-
-log = logging.getLogger("freeze")
 
 
 class Command(HarvesterCommand):

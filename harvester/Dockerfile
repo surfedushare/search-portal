@@ -55,7 +55,7 @@ RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinpu
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
 # The default command is to start a uWSGI server
-CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
+CMD ["supervisord", "-c", "/usr/src/app/harvester/supervisord/main.conf"]
 
 # EXPOSE port 8000 to allow communication to/from server
 EXPOSE 8000

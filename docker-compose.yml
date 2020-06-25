@@ -42,6 +42,12 @@ services:
     ports:
       - 127.0.0.1:9200:9200
 
+  redis:
+    image: redis
+    command: redis-server
+    ports:
+      - "6379:6379"
+
 volumes:
   postgres_database:
   elastic-data:
