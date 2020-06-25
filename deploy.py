@@ -147,6 +147,48 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version):
     return target_info['name'], task_definition["taskDefinitionArn"]
 
 
+def register_clearlogins_task(session, aws_config, task_definition_arn):
+    events_client = session.client('events')
+    iam = session.resource('iam')
+    role = iam.Role('ecsEventsRole')
+
+    events_client.put_targets(
+        Rule='clearlogins',
+        Targets=[
+            {
+                'Id': '1',
+                'Arn': aws_config.cluster_arn,
+                'RoleArn': role.arn,
+                'Input': """
+                    {
+                        "containerOverrides": [
+                            {
+                                "name": "search-portal-container",
+                                "command": ["python", "manage.py", "clearlogins"]
+                            }
+                        ]
+                    }
+                """,
+                'EcsParameters': {
+                    'TaskDefinitionArn': task_definition_arn,
+                    'TaskCount': 1,
+                    'LaunchType': 'FARGATE',
+                    'NetworkConfiguration': {
+                        "awsvpcConfiguration": {
+                            "Subnets": [aws_config.private_subnet_id],
+                            "SecurityGroups": [
+                                aws_config.rds_security_group_id,
+                                aws_config.default_security_group_id
+
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    )
+
+
 @task(help={
     "target": "Name of the project you want to deploy on AWS: service or harvester",
     "mode": "Mode you want to deploy to: development, acceptance or production. Must match APPLICATION_MODE",
@@ -159,8 +201,8 @@ def deploy(ctx, target, mode, version=None):
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
-    ecs_client = session.client('ecs', region_name='eu-central-1')
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name='eu-central-1')
+    ecs_client = session.client('ecs')
 
     target_name, task_definition_arn = register_task_definition(
         ecs_client,
@@ -176,6 +218,11 @@ def deploy(ctx, target, mode, version=None):
         service=f"{target_name}",
         taskDefinition=task_definition_arn
     )
+
+    print("Registering clearlogins scheduled task")
+    register_clearlogins_task(session, ctx.config.aws, task_definition_arn)
+
+    print("Done deploying")
 
 
 @task(help={
