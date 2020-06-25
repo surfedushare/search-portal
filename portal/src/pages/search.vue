@@ -61,6 +61,7 @@
             <FilterCategories
               v-model="search"
               :filter-categories="getFilterCategories()"
+              :selected-filters="getSelectedFilters()"
             />
           </div>
         </div>
@@ -194,6 +195,9 @@ export default {
     },
     getFilterCategories() {
       return this.materials ? this.materials.filter_categories : []
+    },
+    getSelectedFilters() {
+      return this.search ? this.search.filters : []
     }
   }
 }

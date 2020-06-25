@@ -15,7 +15,7 @@ export default {
       }
     }
   },
-  props: ['filterCategories'],
+  props: ['filterCategories', 'selectedFilters'],
   methods: {
     generateSearchMaterialsQuery,
     hasVisibleChildren(category) {
@@ -91,9 +91,26 @@ export default {
   computed: {
     filtered_categories() {
       // Return categories that build the filter tree
-      return this.filterCategories
+      let filteredCategories = this.filterCategories
         ? this.filterCategories.filter(item => item.is_hidden === false)
         : []
+
+      if (this.selectedFilters) {
+        let selectedItems = []
+        this.selectedFilters.forEach(filter => {
+          selectedItems = selectedItems.concat(filter.items)
+        })
+        selectedItems = selectedItems.filter(item => item !== null)
+
+        filteredCategories.map(cat => {
+          return cat.children.map(child => {
+            child.selected = selectedItems.includes(child.external_id)
+            return child
+          })
+        })
+      }
+
+      return filteredCategories
     }
   }
 }
