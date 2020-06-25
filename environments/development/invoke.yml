@@ -25,13 +25,13 @@ edurep:
 
 secrets:
   django:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/django"
+    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/django-4LPckq"
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application-gWxUc6"
   surfconext:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/surfconext"
+    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/surfconext-IWU3sx"
   elastic_search:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/elastic"
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/elastic-mzssWl"
 
 aws:
   image_upload_bucket: "search-portal-media-uploads-dev"
