@@ -54,7 +54,7 @@ RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinpu
 # Entrypoint sets our environment correctly
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
-# The default command is to start a uWSGI server
+# The default command is to start a supervisord that runs: Celery, Celery Beat and a small UWSGI
 CMD ["supervisord", "-c", "/usr/src/app/harvester/supervisord/main.conf"]
 
 # EXPOSE port 8000 to allow communication to/from server
