@@ -34,7 +34,11 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getFilterCategories')
+    // TODO: this should be somewhere else..
+    this.$store.dispatch('getFilterCategories').then(() => {
+      const filters = this.$store.getters.getFiltersFromQuery(this.$route.query)
+      this.$store.commit('SETUP_FILTER_CATEGORIES', filters)
+    })
   },
   data() {
     return {
