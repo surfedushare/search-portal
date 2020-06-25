@@ -17,6 +17,7 @@ import InfoPage from '~/pages/info'
 import { isEqual } from 'lodash'
 import axios from '~/axios'
 import store from '~/store'
+import { localePath } from '~/i18n/plugin.routing'
 
 const $log = injector.get('$log')
 
@@ -260,9 +261,8 @@ export default new Router({
       path: '/login/permissions',
       beforeEnter(to, from, next) {
         let authFlowToken = to.query.partial_token || null
-        const app = injector.get('App')
-        app.store.commit('AUTH_FLOW_TOKEN', authFlowToken)
-        next(app.localePath('my-privacy'))
+        store.commit('AUTH_FLOW_TOKEN', authFlowToken)
+        next(localePath('my-privacy'))
       }
     },
     {

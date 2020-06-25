@@ -1,10 +1,10 @@
 import Vue from 'vue'
-import injector from 'vue-inject'
+import i18n from '~/i18n/index'
+import router from '~/router'
 
-const $log = injector.get('$log')
 const routesNameSeparator = '___'
 
-function localePathFactory(i18nPath, routerPath) {
+function localePathFactory() {
   const STRATEGIES = {
     PREFIX: 'prefix',
     PREFIX_EXCEPT_DEFAULT: 'prefix_except_default',
@@ -17,7 +17,7 @@ function localePathFactory(i18nPath, routerPath) {
   return function localePath(route, locale) {
     // Abort if no route or no locale
     if (!route) return
-    locale = locale || this[i18nPath].locale
+    locale = locale || i18n.locale
     if (!locale) return
 
     // If route parameters is a string, use it as the route's name
@@ -39,7 +39,6 @@ function localePathFactory(i18nPath, routerPath) {
     const localizedRoute = Object.assign({}, route, { name })
 
     // Resolve localized route
-    const router = this[routerPath]
     const resolved = router.resolve(localizedRoute)
     let { href } = resolved
 
@@ -53,10 +52,7 @@ function localePathFactory(i18nPath, routerPath) {
   }
 }
 
-function switchLocalePathFactory(i18nPath) {
-  const LOCALE_DOMAIN_KEY = 'domain'
-  const LOCALE_CODE_KEY = 'code'
-
+function switchLocalePathFactory() {
   return function switchLocalePath(locale) {
     const name = this.getRouteBaseName()
     if (!name) {
@@ -68,27 +64,7 @@ function switchLocalePathFactory(i18nPath) {
       name,
       params: { ...params, '0': params.pathMatch }
     })
-    let path = this.localePath(baseRoute, locale)
-
-    // Handle different domains
-    if (this[i18nPath].differentDomains) {
-      const lang = this[i18nPath].locales.find(
-        l => l[LOCALE_CODE_KEY] === locale
-      )
-      if (lang && lang[LOCALE_DOMAIN_KEY]) {
-        let protocol
-        if (!process.browser) {
-          const { req } = this.$options._parentVnode.ssrContext
-          protocol = req.secure ? 'https' : 'http'
-        } else {
-          protocol = window.location.href.split(':')[0]
-        }
-        path = protocol + '://' + lang[LOCALE_DOMAIN_KEY] + path
-      } else {
-        $log.warn('[nuxt-i18n] Could not find domain name for locale ' + locale)
-      }
-    }
-    return path
+    return this.localePath(baseRoute, locale)
   }
 }
 
@@ -110,14 +86,10 @@ function getRouteBaseNameFactory(contextRoute) {
 
 Vue.mixin({
   methods: {
-    localePath: localePathFactory('$i18n', '$router'),
-    switchLocalePath: switchLocalePathFactory('$i18n'),
+    localePath: localePathFactory(),
+    switchLocalePath: switchLocalePathFactory(),
     getRouteBaseName: getRouteBaseNameFactory()
   }
 })
 
-export default ({ app, route }) => {
-  app.localePath = localePathFactory('i18n', 'router')
-  app.switchLocalePath = switchLocalePathFactory('i18n')
-  app.getRouteBaseName = getRouteBaseNameFactory(route)
-}
+export const localePath = localePathFactory()

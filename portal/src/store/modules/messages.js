@@ -1,5 +1,6 @@
 import { isString, map, isEmpty, keys, isNil } from 'lodash'
 import injector from 'vue-inject'
+import i18n from '~/i18n/index'
 
 const $timeout = injector.get('$timeout')
 
@@ -22,11 +23,10 @@ export default {
   getters: {
     getMessagesContent(state) {
       // We load the Nuxt app, because we'll need the i18n object to translate messages
-      const app = injector.get('App')
       return level => {
         assertMessageLevel(level)
         return map(state.messages[level], msg => {
-          return app.i18n.t(msg)
+          return i18n.t(msg)
         }).join(' ')
       }
     },
