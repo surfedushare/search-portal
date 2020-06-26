@@ -49,11 +49,15 @@ export default {
       }
       this.executeSearch(filters)
     },
-    onDateChange() {
-      this.executeSearch()
+    onDateChange(dates) {
+      const { start_date, end_date } = dates
+      const filter = { external_id: this.publisherDate, items: [start_date, end_date] }
+      let filters = this.selectedFilters.filter(el => el.external_id !== this.publisherDate)
+      filters.push(filter)
+      this.executeSearch(filters)
     },
     executeSearch(filters = []) {
-      const {ordering, search_text} = this.materials
+      const { ordering, search_text } = this.materials
       let searchRequest = {
         search_text: search_text,
         ordering: ordering,
@@ -64,9 +68,6 @@ export default {
       this.$router.push(this.generateSearchMaterialsQuery(searchRequest))
       this.$emit('input', searchRequest) // actual search is done by the parent page
     },
-    /**
-     * Event the reset filter
-     */
     resetFilter() {
       this.$router.push(
         this.generateSearchMaterialsQuery({
@@ -98,6 +99,7 @@ export default {
         ? this.filterCategories.filter(item => item.is_hidden === false)
         : []
 
+      // set selected filters
       if (this.selectedFilters) {
         let selectedItems = []
         this.selectedFilters.forEach(filter => {
@@ -114,6 +116,20 @@ export default {
       }
 
       return filteredCategories
+    },
+    dates_range_filter() {
+      if (this.selectedFilters) {
+        const datesFilter = this.selectedFilters.find(
+          item => item.external_id === this.publisherDate
+        )
+        if (datesFilter && datesFilter.items) {
+          return {
+            start_date: datesFilter.items[0] || null,
+            end_date: datesFilter.items[1] || null
+          }
+        }
+      }
+      else return {}
     }
   }
 }
