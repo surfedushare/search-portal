@@ -51,8 +51,13 @@ export default {
     },
     onDateChange(dates) {
       const { start_date, end_date } = dates
-      const filter = { external_id: this.publisherDate, items: [start_date, end_date] }
-      let filters = this.selectedFilters.filter(el => el.external_id !== this.publisherDate)
+      const filter = {
+        external_id: this.publisherDate,
+        items: [start_date, end_date]
+      }
+      let filters = this.selectedFilters.filter(
+        el => el.external_id !== this.publisherDate
+      )
       filters.push(filter)
       this.executeSearch(filters)
     },
@@ -102,8 +107,7 @@ export default {
             end_date: datesFilter.items[1] || null
           }
         }
-      }
-      else return {}
+      } else return {}
     }
   },
   computed: {
