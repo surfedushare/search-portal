@@ -16,9 +16,6 @@ export default {
     }
   },
   methods: {
-    /**
-     * Save rating
-     */
     onSaveRating() {
       this.submitting = true
 
