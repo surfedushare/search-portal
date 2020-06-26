@@ -14,9 +14,6 @@
             "
             class="theme__info_bg"
           />
-          <BreadCrumbs
-            :items="[{ title: $t('Home'), url: localePath('index') }]"
-          />
           <h2 class="theme__info_ttl">
             {{ getTitleTranslation(theme, $i18n.locale) }}
           </h2>
@@ -98,7 +95,6 @@ import PopularList from '~/components/Communities/PopularList'
 import Materials from '~/components/Materials'
 import Disciplines from '~/components/Disciplines'
 import Collections from '~/components/Collections'
-import BreadCrumbs from '~/components/BreadCrumbs'
 import Error from '~/components/error'
 
 export default {
@@ -109,7 +105,6 @@ export default {
     Materials,
     Disciplines,
     Collections,
-    BreadCrumbs,
     Error
   },
   props: [],

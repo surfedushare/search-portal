@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import BreadCrumbs from '~/components/BreadCrumbs'
 import EditableContent from '~/components/EditableContent'
 import ShareCollection from '~/components/Popup/ShareCollection'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
@@ -30,7 +29,6 @@ export default {
     }
   },
   components: {
-    BreadCrumbs,
     EditableContent,
     ShareCollection,
     DeleteCollection,

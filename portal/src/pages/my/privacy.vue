@@ -10,9 +10,6 @@
           "
           class="privacy__info_bg"
         />
-        <BreadCrumbs
-          :items="[{ title: $t('Home'), url: localePath('index') }]"
-        />
         <h2 class="privacy__info_ttl">
           {{ $t('My-privacy') }}
         </h2>
@@ -78,13 +75,10 @@
 <script>
 import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
-
-import BreadCrumbs from '~/components/BreadCrumbs'
 import SwitchInput from '~/components/switch-input'
 
 export default {
   components: {
-    BreadCrumbs,
     SwitchInput
   },
   data() {

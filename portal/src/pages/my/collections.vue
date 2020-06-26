@@ -10,9 +10,6 @@
           "
           class="collections__info_bg"
         />
-        <BreadCrumbs
-          :items="[{ title: $t('Home'), url: localePath('index') }]"
-        />
         <h2 class="collections__info_ttl">
           {{ $t('My-collections') }}
         </h2>
@@ -40,14 +37,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import BreadCrumbs from '~/components/BreadCrumbs'
 import Collections from '~/components/Collections'
 import AddCollection from '~/components/Popup/AddCollection'
 
 export default {
   components: {
     Collections,
-    BreadCrumbs,
     AddCollection
   },
   data() {
