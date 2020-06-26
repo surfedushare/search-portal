@@ -124,12 +124,15 @@ export default {
 .main {
   position: relative;
   z-index: 1;
+
   &__info {
-    @media @desktop {
-      padding: 120px 0 0;
-      margin-bottom: 120px;
-    }
+    padding: 120px 0 0;
+    margin-bottom: 100px;
     position: relative;
+
+    @media @mobile {
+      margin-bottom: 20px;
+    }
 
     .center-header {
       position: relative;
@@ -177,12 +180,20 @@ export default {
       top: -50px;
       right: 100px;
       color: #fff;
-      width: 572px;
+      width: auto;
+      max-width: 550px;
       font-family: @second-font;
       padding: 31px 48px 40px;
       font-size: 16px;
       font-weight: bold;
       z-index: 1;
+
+      @media @mobile {
+        top: -90px;
+        right: 20px;
+        padding: 5px 32px;
+        max-width: 300px;
+      }
 
       & .bg {
         background: @dark-blue;
@@ -219,14 +230,6 @@ export default {
 
     &_search {
       margin: auto;
-
-      @media @mobile {
-        width: 100%;
-        margin-top: 25px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-      }
     }
   }
 
@@ -255,7 +258,7 @@ export default {
 
   &__materials {
     position: relative;
-    margin: 0 0 70px;
+    margin: 0 0 50px;
 
     &_title {
       margin: 0 0 32px;
