@@ -21,9 +21,9 @@
           <DatesRange
             :inline="true"
             :hide-select="true"
-            v-model="category.dates || {}"
             @input="onDateChange"
             theme="min"
+            :dates-filter="datesRangeFilter()"
             :disable-future-days="true"
           />
         </div>

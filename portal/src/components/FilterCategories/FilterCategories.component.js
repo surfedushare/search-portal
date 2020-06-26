@@ -90,6 +90,20 @@ export default {
         return category.title_translations[language]
       }
       return category.name
+    },
+    datesRangeFilter() {
+      if (this.selectedFilters) {
+        const datesFilter = this.selectedFilters.find(
+          item => item.external_id === this.publisherDate
+        )
+        if (datesFilter && datesFilter.items) {
+          return {
+            start_date: datesFilter.items[0] || null,
+            end_date: datesFilter.items[1] || null
+          }
+        }
+      }
+      else return {}
     }
   },
   computed: {
@@ -116,20 +130,6 @@ export default {
       }
 
       return filteredCategories
-    },
-    dates_range_filter() {
-      if (this.selectedFilters) {
-        const datesFilter = this.selectedFilters.find(
-          item => item.external_id === this.publisherDate
-        )
-        if (datesFilter && datesFilter.items) {
-          return {
-            start_date: datesFilter.items[0] || null,
-            end_date: datesFilter.items[1] || null
-          }
-        }
-      }
-      else return {}
     }
   }
 }

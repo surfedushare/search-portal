@@ -3,7 +3,7 @@ import ClickOutside from 'vue-click-outside'
 import { formatDate } from '~/store/modules/_helpers'
 export default {
   name: 'dates-range',
-  props: ['value', 'hide-select', 'inline', 'theme', 'disable-future-days'],
+  props: ['value', 'hideSelect', 'inline', 'theme', 'disableFutureDays', 'datesFilter'],
   components: {
     Datepicker
   },
@@ -12,28 +12,20 @@ export default {
     this.popupItem = this.$el
   },
   data() {
-    const { value } = this
+    const { datesFilter } = this
     return {
       opened: false,
       disabledDates: {},
       disabled: {},
       format: 'yyyy-MM-dd',
       formData: {
-        start_date: value.start_date ? new Date(value.start_date) : null,
-        end_date: value.end_date ? new Date(value.end_date) : null
+        start_date: datesFilter.start_date ? new Date(datesFilter.start_date) : null,
+        end_date: datesFilter.end_date ? new Date(datesFilter.end_date) : null
       }
     }
   },
   directives: {
     ClickOutside
-  },
-  watch: {
-    value(value) {
-      this.formData = {
-        start_date: value.start_date ? new Date(value.start_date) : null,
-        end_date: value.end_date ? new Date(value.end_date) : null
-      }
-    }
   },
   methods: {
     /**
@@ -48,26 +40,20 @@ export default {
     hide() {
       this.opened = false
     },
-    /**
-     * Emit start date to parent v-model
-     * @param date
-     */
     onSelectedStartDate(date) {
-      this.value.start_date = date
-      this.$emit('input', {
-        start_date: formatDate(date, 'YYYY-MM-DD'),
-        end_date: formatDate(this.value.end_date, 'YYYY-MM-DD')
-      })
+      this.formData.start_date = date
+      this.emitDates()
     },
-    /**
-     * Emit end date to parent v-model
-     * @param date
-     */
     onSelectedEndDate(date) {
-      this.value.end_date = date
+      this.formData.end_date = date
+      this.emitDates()
+    },
+    emitDates() {
+      const startDate = this.formData.start_date ? formatDate(this.formData.start_date, 'YYYY-MM-DD') : null
+      const endDate = this.formData.end_date ? formatDate(this.formData.end_date, 'YYYY-MM-DD') : null
       this.$emit('input', {
-        start_date: formatDate(this.value.start_date, 'YYYY-MM-DD'),
-        end_date: formatDate(date, 'YYYY-MM-DD')
+        start_date: startDate,
+        end_date: endDate
       })
     }
   },
