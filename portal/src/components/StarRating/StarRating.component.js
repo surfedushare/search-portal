@@ -7,6 +7,10 @@ export default {
         return 'default'
       }
     },
+    darkStars: {
+      type: Boolean,
+      default: false
+    },
     hideCounter: {
       type: Boolean,
       default: false
