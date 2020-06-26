@@ -29,9 +29,7 @@ export default {
         start_date: datesFilter.start_date
           ? new Date(datesFilter.start_date)
           : null,
-        end_date: datesFilter.end_date
-          ? new Date(datesFilter.end_date)
-          : null
+        end_date: datesFilter.end_date ? new Date(datesFilter.end_date) : null
       }
     }
   },
