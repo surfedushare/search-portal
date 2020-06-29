@@ -36,15 +36,16 @@ export default {
     },
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
-      const filter = { external_id: categoryId, items: [itemId] }
+      const filter = { external_id: categoryId, items: [] }
+      const categoryFilter = this.selectedFilters.find(f => f.external_id === categoryId) || filter
+      const selectedFilters = this.selectedFilters.filter(f => f.external_id !== categoryId)
 
       if (e.target.checked) {
-        return this.executeSearch([...this.selectedFilters, filter])
+        categoryFilter.items = [...categoryFilter.items, itemId]
       } else {
-        return this.executeSearch(
-          this.selectedFilters.filter(f => f.external_id !== categoryId)
-        )
+        categoryFilter.items = categoryFilter.items.filter(f => f !== itemId)
       }
+      return this.executeSearch([...selectedFilters, categoryFilter])
     },
     onDateChange(dates) {
       const { start_date, end_date } = dates
