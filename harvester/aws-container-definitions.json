@@ -1,6 +1,6 @@
 [
     {
-        "name": "search-portal-container",
+        "name": "harvester-container",
         "image": "${REPOSITORY}/search-portal:${version}",
         "cpu": 0,
         "essential": true,
