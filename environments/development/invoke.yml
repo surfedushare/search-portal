@@ -5,6 +5,7 @@ django:
   debug: true
   postgres_user: "django"
   postgres_host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
+  redis_host: "redis.2w7uxm.ng.0001.euc1.cache.amazonaws.com:6379"
   protocol: "http"
   domain: "dev.surfedushare.nl"
 

@@ -23,7 +23,7 @@ WORKDIR /usr/src/app
 RUN groupadd -r app -g 1001 && useradd app -u 1001 -r -m -g app
 ENV PATH="/home/app/.local/bin:${PATH}"
 # Give access to app user
-RUN chown app:app /usr/src/app
+RUN chown -R app:app /usr/src/app
 RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
 RUN chown app:app /usr/src/environments
