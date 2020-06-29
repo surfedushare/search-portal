@@ -41,7 +41,7 @@
               v-if="material.author"
               class="materials__item_author"
             >
-              {{material.author}}<span>&nbsp;</span>
+              {{material.author}}
             </div>
             <div
               v-if="material.publisher"
@@ -56,7 +56,7 @@
               v-if="itemsInLine === 1 && material.description"
               class="materials__item_description"
               v-html="material.description"
-            ></div><br>
+            ></div>
           </div>
           <div class="materials__item_subinfo">
             <div
@@ -111,24 +111,24 @@
               {{getTitleTranslation(community, $i18n.locale) }}
             </router-link>
             <div class="materials__item_copyrights" :class="material.copyright"></div>
-            <footer class="materials__item_footer">
-              <StarRating
-                v-model="material.avg_star_rating"
-                :counter="material.count_star_rating"
-                :disabled="true"
-                :dark-stars="itemsInLine !== 1"
-              />
-              <div class="materials__item_actions">
-                <div class="materials__item_applauds">{{material.applaud_count}}</div>
-                <a
-                  v-if="material.url"
-                  class="materials__item_external_link"
-                  target="_blank"
-                  :href="material.url"
-                ></a>
-              </div>
-            </footer>
           </div>
+          <footer class="materials__item_footer">
+            <StarRating
+            v-model="material.avg_star_rating"
+            :counter="material.count_star_rating"
+            :disabled="true"
+            :dark-stars="itemsInLine !== 1"
+            />
+            <div class="materials__item_actions">
+              <div class="materials__item_applauds"><span>{{material.applaud_count}}</span></div>
+              <a
+                v-if="material.url"
+                class="materials__item_external_link"
+                target="_blank"
+                :href="material.url"
+                ></a>
+            </div>
+          </footer>
         </div>
       </router-link>
     </li>

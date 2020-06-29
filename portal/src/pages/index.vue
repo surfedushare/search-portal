@@ -127,12 +127,8 @@ export default {
 
   &__info {
     padding: 120px 0 0;
-    margin-bottom: 100px;
+    margin-bottom: 60px;
     position: relative;
-
-    @media @mobile {
-      margin-bottom: 20px;
-    }
 
     .center-header {
       position: relative;
@@ -258,7 +254,7 @@ export default {
 
   &__materials {
     position: relative;
-    margin: 0 0 50px;
+    margin: 0 0 40px;
 
     &_title {
       margin: 0 0 32px;
@@ -285,15 +281,15 @@ export default {
         top: -2px;
       }
 
-      img {
-        border-radius: 21px;
-
-        @media @tablet, @mobile {
-          width: 100%;
-          padding-right: 80px;
-          padding-left: 20px;
-        }
+      @media @mobile {
+        display: none;
       }
+
+      img {
+        width: 275px;
+        border-radius: 21px;
+      }
+
       &:before {
         content: '';
         position: absolute;
@@ -302,10 +298,6 @@ export default {
         top: 0;
         height: 109px;
         width: 119px;
-
-        @media @mobile {
-          right: 0;
-        }
       }
       &:after {
         content: '';
@@ -315,22 +307,17 @@ export default {
         top: 22px;
         height: 33px;
         width: 35px;
-        @media @mobile {
-          right: 18px;
-        }
       }
     }
 
     &__text_block {
       background: fade(@light-grey, 90%);
       border-radius: 20px;
-      margin: 100px 0 168px;
-      padding-top: 80px;
-      padding-left: 15px;
-      padding-right: 15px;
+      margin: 0 0 80px;
+      padding: 20px;
+
       @media @desktop {
-        padding: 56px 50px 43px 410px;
-        margin: 0 0 168px;
+        padding: 30px 30px 30px 270px;
       }
     }
 
@@ -338,15 +325,6 @@ export default {
       margin: 0 0 20px;
       @media @mobile {
         font-size: 22px;
-      }
-    }
-
-    &__text {
-      margin: 0 0 44px;
-    }
-    .button {
-      @media @mobile {
-        margin-bottom: 24px;
       }
     }
   }

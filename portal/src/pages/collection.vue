@@ -281,7 +281,7 @@ export default {
 
 .materials {
   margin-top: 20px;
-  margin-right: -34px;
+  margin-right: -20px;
 }
 
 .materials__add__link {

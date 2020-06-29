@@ -377,6 +377,7 @@ export default {
 
   label {
     line-height: 50px;
+    margin-right: 10px;
   }
   &__select {
     position: relative;
@@ -426,8 +427,7 @@ export default {
       color: @dark-grey;
       border-radius: 5px;
       border: solid 1px rgba(0, 0, 0, 0.12);
-      margin: 0;
-      padding: 0 40px 0 0;
+      padding: 0 40px 0 10px;
       cursor: pointer;
       box-sizing: border-box;
 
