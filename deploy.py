@@ -159,7 +159,7 @@ def register_clearlogins_task(session, aws_config, task_definition_arn):
                 'Id': '1',
                 'Arn': aws_config.cluster_arn,
                 'RoleArn': role.arn,
-                'Input': """
+                'Input': json.dumps(
                     {
                         "containerOverrides": [
                             {
@@ -168,7 +168,7 @@ def register_clearlogins_task(session, aws_config, task_definition_arn):
                             }
                         ]
                     }
-                """,
+                ),
                 'EcsParameters': {
                     'TaskDefinitionArn': task_definition_arn,
                     'TaskCount': 1,
