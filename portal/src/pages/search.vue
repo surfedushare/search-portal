@@ -116,6 +116,9 @@ export default {
     ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
   },
   watch: {
+    materials_in_line(val) {
+      console.log(val)
+    },
     search(search) {
       if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search)
@@ -164,6 +167,7 @@ export default {
      * Change 1 item in line to 3 and back.
      */
     changeViewType() {
+      console.log('change view type')
       if (this.materials_in_line === 1) {
         this.$store.dispatch('searchMaterialsInLine', 3)
       } else {
@@ -197,7 +201,7 @@ export default {
 
   &__info {
     padding: 97px 0 0;
-    margin-bottom: 82px;
+    margin-bottom: 60px;
     position: relative;
     min-height: 300px;
 
@@ -214,7 +218,7 @@ export default {
 
       @media @mobile {
         padding: initial;
-        margin: -20px -20px -100px -20px;
+        margin: -20px -20px -165px -20px;
         padding-top: 20px;
         padding-left: 20px;
 
@@ -235,16 +239,20 @@ export default {
     &_bg {
       position: absolute;
       right: 26px;
-      top: -45px;
+      top: -62px;
       width: 50%;
       border-radius: 21px;
+
       @media @mobile {
-        z-index: -1;
-        right: -20px;
+        display: none;
       }
-      @media @mobile {
-        right: -50px;
-      }
+      /* @media @mobile { */
+      /*   z-index: -1; */
+      /*   right: -20px; */
+      /* } */
+      /* @media @mobile { */
+      /*   right: -50px; */
+      /* } */
     }
 
     &_search {
@@ -286,6 +294,9 @@ export default {
   &__wrapper {
     @media @desktop {
       display: flex;
+    }
+    @media @mobile {
+      margin-bottom: 60px;
     }
     position: relative;
   }
@@ -360,6 +371,11 @@ export default {
       width: 100%;
       padding-top: 80px;
       padding-bottom: 102px;
+
+      @media @mobile {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
     }
   }
 
