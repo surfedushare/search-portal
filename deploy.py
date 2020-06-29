@@ -213,8 +213,8 @@ def deploy(ctx, target, mode, version=None):
         taskDefinition=task_definition_arn
     )
 
-    print("Registering clearlogins scheduled task")
     if target == "service":
+        print("Registering clearlogins scheduled task")
         register_clearlogins_task(session, ctx.config.aws, task_definition_arn)
 
     print("Done deploying")
