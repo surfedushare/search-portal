@@ -6,9 +6,16 @@
   &__items {
     padding: 0;
     list-style: none;
-    align-items: stretch;
-    flex-wrap: wrap;
-    display: flex;
+    // align-items: stretch;
+    // flex-wrap: wrap;
+    // display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+    grid-gap: 1rem;
+    // align-items: stretch;
+    // max-width: 1200px;
+    // grid-auto-flow: column;
+
 
     .select-icon {
       background-size: 20px 20px;
@@ -50,9 +57,9 @@
       }
     }
 
-    @media @desktop {
-      display: flex;
-    }
+    // @media @desktop {
+    //   display: flex;
+    // }
   }
   &__description {
     font-size: 20px;
@@ -62,14 +69,14 @@
 
   &__item {
     list-style: none;
-    background-2olor: #fff;
-    position: relative;
+    background-color: #fff;
+    // position: relative;
     font-size: 16px;
     line-height: 1.44;
-    margin-bottom: 20px;
-    flex: 1 0 275px;
-    max-width: 300px;
-    margin-right: 20px;
+    // margin-bottom: 20px;
+    // flex: 1 0 275px;
+    // max-width: 300px;
+    // margin-right: 20px;
 
     // @media @mobile {
     //   width: 100%;

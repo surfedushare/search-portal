@@ -358,16 +358,15 @@ export default {
       top: 0;
       left: 0;
       width: 100%;
-      padding-top: 102px;
+      padding-top: 80px;
       padding-bottom: 102px;
     }
   }
 
   &__materials {
     position: relative;
-    margin: 0 0 132px;
     flex: 1 1 auto;
-    padding: 98px 0 0;
+    padding: 60px 0 0;
     width: 100%;
 
     @media @mobile {
