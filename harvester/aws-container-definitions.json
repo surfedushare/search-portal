@@ -1,7 +1,7 @@
 [
     {
         "name": "harvester-container",
-        "image": "${REPOSITORY}/search-portal:${version}",
+        "image": "${REPOSITORY}/harvester:${version}",
         "cpu": 0,
         "essential": true,
         "portMappings": [
