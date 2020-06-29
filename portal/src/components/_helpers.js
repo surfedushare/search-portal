@@ -28,14 +28,14 @@ export const parseSearchMaterialsQuery = function(query) {
     }
   }
 
-  const publisherDate = search.filters.find(
+  const publisherDateFilter = search.filters.find(
     item => item.external_id === 'lom.lifecycle.contribute.publisherdate'
   )
   let dateRange = {}
-  if (publisherDate && publisherDate.items) {
+  if (publisherDateFilter && publisherDateFilter.items) {
     dateRange = {
-      start_date: publisherDate.items[0] || null,
-      end_date: publisherDate.items[1] || null
+      start_date: publisherDateFilter.items[0] || null,
+      end_date: publisherDateFilter.items[1] || null
     }
   }
   return { search, dateRange }

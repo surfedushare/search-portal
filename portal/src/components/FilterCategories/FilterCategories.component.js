@@ -1,14 +1,13 @@
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
-import _ from 'lodash'
 
 export default {
   name: 'filter-categories',
   components: { DatesRange },
   data() {
-    const publisherDate = 'lom.lifecycle.contribute.publisherdate'
+    const publisherDateExternalId = 'lom.lifecycle.contribute.publisherdate'
     return {
-      publisherDate,
+      publisherDateExternalId,
       data: {
         start_date: null,
         end_date: null
@@ -22,15 +21,13 @@ export default {
       if (!category.children.length) {
         return false
       }
-      return _.some(category.children, child => {
-        if (child.count > 0) {
-          return !child.is_hidden
-        }
+      return category.children.some(child => {
+        return !child.is_hidden
       })
     },
     onToggleCategory(category, update = true) {
       category.isOpen = !category.isOpen
-      _.forEach(category.children, child => {
+      category.children.forEach(child => {
         this.onToggleCategory(child, false)
       })
       if (update) {
@@ -40,33 +37,32 @@ export default {
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
       const filter = { external_id: categoryId, items: [itemId] }
-      let filters = this.selectedFilters
 
       if (e.target.checked) {
-        filters.push(filter)
+        return this.executeSearch([...this.selectedFilters, filter])
       } else {
-        filters.splice(filters.indexOf(filter), 1)
+        return this.executeSearch(
+          this.selectedFilters.filter(f => f.external_id !== categoryId)
+        )
       }
-      this.executeSearch(filters)
     },
     onDateChange(dates) {
       const { start_date, end_date } = dates
       const filter = {
-        external_id: this.publisherDate,
+        external_id: this.publisherDateExternalId,
         items: [start_date, end_date]
       }
-      let filters = this.selectedFilters.filter(
-        el => el.external_id !== this.publisherDate
+      const filters = this.selectedFilters.filter(
+        el => el.external_id !== this.publisherDateExternalId
       )
-      filters.push(filter)
-      this.executeSearch(filters)
+      this.executeSearch([...filters, filter])
     },
     executeSearch(filters = []) {
       const { ordering, search_text } = this.materials
       let searchRequest = {
-        search_text: search_text,
-        ordering: ordering,
-        filters: filters
+        search_text,
+        ordering,
+        filters
       }
 
       // Execute search
@@ -88,10 +84,7 @@ export default {
       )
     },
     getTitleTranslation(category, language) {
-      if (
-        !_.isNil(category.title_translations) &&
-        !_.isEmpty(category.title_translations)
-      ) {
+      if (category && category.title_translations) {
         return category.title_translations[language]
       }
       return category.name
@@ -99,7 +92,7 @@ export default {
     datesRangeFilter() {
       if (this.selectedFilters) {
         const datesFilter = this.selectedFilters.find(
-          item => item.external_id === this.publisherDate
+          item => item.external_id === this.publisherDateExternalId
         )
         if (datesFilter && datesFilter.items) {
           return {
@@ -113,25 +106,25 @@ export default {
   computed: {
     filtered_categories() {
       // Return categories that build the filter tree
-      let filteredCategories = this.filterCategories
-        ? this.filterCategories.filter(item => item.is_hidden === false)
-        : []
+      const filteredCategories = this.filterCategories.filter(
+        item => item.is_hidden === false
+      )
 
-      // set selected filters
-      if (this.selectedFilters) {
-        let selectedItems = []
-        this.selectedFilters.forEach(filter => {
-          selectedItems = selectedItems.concat(filter.items)
-        })
-        selectedItems = selectedItems.filter(item => item !== null)
+      const selectedItems = this.selectedFilters.flatMap(
+        filter => filter.items
+      ).filter(item => item !== null)
 
-        filteredCategories.map(cat => {
-          return cat.children.map(child => {
+      filteredCategories.map(cat => {
+        if (cat.children) {
+          cat.children.map(child => {
             child.selected = selectedItems.includes(child.external_id)
             return child
           })
-        })
-      }
+          if (cat.children.filter(child => child.selected === true).length > 0) {
+            cat.isOpen = true
+          }
+        }
+      })
 
       return filteredCategories
     }

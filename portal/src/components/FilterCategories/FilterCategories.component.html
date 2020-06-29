@@ -17,7 +17,7 @@
         <h4 @click="onToggleCategory(category)" class="filter-categories__item_title" :class="{'filter-categories__item_title--hide': category.isOpen}">
             {{ getTitleTranslation(category, $i18n.locale) }}
         </h4>
-        <div v-if="category.external_id === publisherDate" class="filter-categories__subitems" v-show="category.isOpen">
+        <div v-if="category.external_id === publisherDateExternalId" class="filter-categories__subitems" v-show="category.isOpen">
           <DatesRange
             :inline="true"
             :hide-select="true"
@@ -34,7 +34,7 @@
           <li
             v-for="(item, indexItem) in category.children"
             class="filter-categories__subitem"
-            v-if="!item.is_hidden && item.count > 0"
+            v-if="!item.is_hidden"
           >
             <div class="filter-checkbox">
               <input

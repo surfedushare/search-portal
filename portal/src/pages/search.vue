@@ -60,8 +60,8 @@
           <div class="search__filter_sticky">
             <FilterCategories
               v-model="search"
-              :filter-categories="getFilterCategories()"
-              :selected-filters="getSelectedFilters()"
+              :filter-categories="getFilterCategories() || []"
+              :selected-filters="getSelectedFilters() || []"
               :materials="materials"
             />
           </div>
@@ -103,7 +103,7 @@ export default {
     return {
       search: {},
       isShow: false,
-      publisherdate: 'lom.lifecycle.contribute.publisherdate',
+      publisherDateExternalId: 'lom.lifecycle.contribute.publisherdate',
       dates_range: {
         start_date: null,
         end_date: null
@@ -133,14 +133,14 @@ export default {
       const { filters } = this.search
       let new_filters = filters ? filters.slice(0) : []
       const current_dates = new_filters.find(
-        item => item.external_id === this.publisherdate
+        item => item.external_id === this.publisherDateExternalId
       )
       const index = current_dates
         ? new_filters.indexOf(current_dates)
         : new_filters.length
 
       new_filters[index] = {
-        external_id: this.publisherdate,
+        external_id: this.publisherDateExternalId,
         items: [dates.start_date || null, dates.end_date || null]
       }
 
