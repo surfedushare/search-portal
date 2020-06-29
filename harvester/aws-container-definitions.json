@@ -1,7 +1,7 @@
 [
     {
-        "name": "${NAME}-container",
-        "image": "${REPOSITORY}/${NAME}:${version}",
+        "name": "search-portal-container",
+        "image": "${REPOSITORY}/search-portal:${version}",
         "cpu": 0,
         "essential": true,
         "portMappings": [

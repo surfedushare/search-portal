@@ -116,7 +116,6 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version):
         container_definitions_json = container_definitions_file.read()
         container_variables = {
             "REPOSITORY": REPOSITORY,
-            "NAME": target_info["name"],
             "mode": mode,
             "version": version
         }
