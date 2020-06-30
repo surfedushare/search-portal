@@ -110,7 +110,10 @@ export default {
             end_date: datesFilter.items[1] || null
           }
         }
-      } else return {}
+      } else return {
+        start_date: null,
+        end_date: null
+      }
     },
     hasSelectedChildren(cat) {
       return cat.children.filter(child => child.selected === true).length > 0
@@ -155,11 +158,14 @@ export default {
             child.selected = selectedItems.includes(child.external_id)
             return child
           })
-          if (
-            this.hasSelectedChildren(cat) ||
-            this.hasDatesRangeFilter(cat, this.selectedFilters)
-          ) {
+          if (this.hasSelectedChildren(cat)) {
             cat.isOpen = true
+          }
+          if (this.hasDatesRangeFilter(cat, this.selectedFilters)) {
+            cat.isOpen = true
+            cat.dates = this.datesRangeFilter()
+          } else {
+            cat.dates = { start_date: null, end_date: null }
           }
           cat.showAll = false
           cat.children = this.sortFilterItems(filteredChildren)

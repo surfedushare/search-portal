@@ -8,8 +8,7 @@ export default {
     'hideSelect',
     'inline',
     'theme',
-    'disableFutureDays',
-    'datesFilter'
+    'disableFutureDays'
   ],
   components: {
     Datepicker
@@ -19,22 +18,28 @@ export default {
     this.popupItem = this.$el
   },
   data() {
-    const { datesFilter } = this
+    const { value } = this
     return {
       opened: false,
       disabledDates: {},
       disabled: {},
       format: 'yyyy-MM-dd',
       formData: {
-        start_date: datesFilter.start_date
-          ? new Date(datesFilter.start_date)
-          : null,
-        end_date: datesFilter.end_date ? new Date(datesFilter.end_date) : null
+        start_date: value.start_date ? new Date(value.start_date) : null,
+        end_date: value.end_date ? new Date(value.end_date) : null
       }
     }
   },
   directives: {
     ClickOutside
+  },
+    watch: {
+    value(value) {
+      this.formData = {
+        start_date: value.start_date ? new Date(value.start_date) : null,
+        end_date: value.end_date ? new Date(value.end_date) : null
+      }
+    }
   },
   methods: {
     /**
@@ -50,19 +55,19 @@ export default {
       this.opened = false
     },
     onSelectedStartDate(date) {
-      this.formData.start_date = date
+      this.value.start_date = date
       this.emitDates()
     },
     onSelectedEndDate(date) {
-      this.formData.end_date = date
+      this.value.end_date = date
       this.emitDates()
     },
     emitDates() {
-      const startDate = this.formData.start_date
-        ? formatDate(this.formData.start_date, 'YYYY-MM-DD')
+      const startDate = this.value.start_date
+        ? formatDate(this.value.start_date, 'YYYY-MM-DD')
         : null
-      const endDate = this.formData.end_date
-        ? formatDate(this.formData.end_date, 'YYYY-MM-DD')
+      const endDate = this.value.end_date
+        ? formatDate(this.value.end_date, 'YYYY-MM-DD')
         : null
       this.$emit('input', {
         start_date: startDate,

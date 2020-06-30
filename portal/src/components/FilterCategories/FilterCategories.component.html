@@ -21,11 +21,11 @@
           class="filter-categories__subitems"
           v-show="category.isOpen">
           <DatesRange
+            v-model="category.dates"
             :inline="true"
             :hide-select="true"
             @input="onDateChange"
             theme="min"
-            :dates-filter="datesRangeFilter()"
             :disable-future-days="true"
           />
         </div>
