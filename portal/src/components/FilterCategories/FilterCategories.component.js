@@ -135,7 +135,10 @@ export default {
             child.selected = selectedItems.includes(child.external_id)
             return child
           })
-          if (this.hasSelectedChildren(cat) || this.hasDatesRangeFilter(this.selectedFilters)) {
+          if (
+            this.hasSelectedChildren(cat) ||
+            this.hasDatesRangeFilter(this.selectedFilters)
+          ) {
             cat.isOpen = true
           }
         }
