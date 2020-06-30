@@ -6,8 +6,10 @@ export default {
   components: { DatesRange },
   data() {
     const publisherDateExternalId = 'lom.lifecycle.contribute.publisherdate'
+    const visibleItems = 3
     return {
       publisherDateExternalId,
+      visibleItems,
       data: {
         start_date: null,
         end_date: null
@@ -33,6 +35,10 @@ export default {
       if (update) {
         this.$forceUpdate()
       }
+    },
+    onToggleShowAll(category) {
+      category.showAll = !category.showAll
+      this.$forceUpdate()
     },
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
@@ -120,7 +126,8 @@ export default {
     },
     sortFilterItems(items) {
       const nullCounts = items.filter(item => item.count === null)
-      const sorted = items.filter(item => item.count !== null)
+      const sorted = items
+        .filter(item => item.count !== null)
         .sort((a, b) => b.count - a.count)
       return [...sorted, ...nullCounts]
     }
@@ -129,16 +136,19 @@ export default {
     filtered_categories() {
       // Return categories that build the filter tree
       const filteredCategories = this.filterCategories.filter(
-        item => item.is_hidden === false
+        cat => cat.is_hidden === false
       )
 
       const selectedItems = this.selectedFilters
         .flatMap(filter => filter.items)
-        .filter(item => item !== null)
+        .filter(filter => filter !== null)
 
       filteredCategories.map(cat => {
         if (cat.children) {
-          cat.children.map(child => {
+          const filteredChildren = cat.children.filter(
+            child => !child.is_hidden && child.count > 0
+          )
+          filteredChildren.map(child => {
             child.selected = selectedItems.includes(child.external_id)
             return child
           })
@@ -148,7 +158,8 @@ export default {
           ) {
             cat.isOpen = true
           }
-          cat.children = this.sortFilterItems(cat.children)
+          cat.showAll = false
+          cat.children = this.sortFilterItems(filteredChildren)
         }
       })
 
