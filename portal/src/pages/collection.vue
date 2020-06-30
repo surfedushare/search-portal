@@ -270,7 +270,7 @@ export default {
 
 .collection {
   width: 100%;
-  padding: 95px 0 215px;
+  padding: 80px 0 0;
 }
 
 .add-materials {

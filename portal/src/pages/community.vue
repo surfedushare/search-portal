@@ -138,22 +138,9 @@ export default {
 <style lang="less" scoped>
 @import url('../variables');
 .community {
-  padding: 96px 0 131px;
-  &:before {
-    content: '';
-    left: 0;
-    right: 50%;
-    height: 353px;
-    top: 278px;
-    border-radius: 0 65px 65px 0;
-    margin: 0 428px 0 0;
-    pointer-events: none;
-    border-right: 1px solid #686d75;
-    border-top: 1px solid #686d75;
-    border-bottom: 1px solid #686d75;
-    position: absolute;
-    z-index: -1;
-  }
+  padding-bottom: 80px;
+  margin-top: 60px;
+
   &__info {
     padding: 0 36px 0;
     border-radius: 20px;
@@ -318,7 +305,7 @@ export default {
     }
   }
   &__collections {
-    margin-bottom: 37px;
+    margin-bottom: 20px;
   }
 }
 </style>
