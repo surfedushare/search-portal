@@ -116,9 +116,6 @@ export default {
     ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
   },
   watch: {
-    materials_in_line(val) {
-      console.log(val)
-    },
     search(search) {
       if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search)
@@ -167,7 +164,6 @@ export default {
      * Change 1 item in line to 3 and back.
      */
     changeViewType() {
-      console.log('change view type')
       if (this.materials_in_line === 1) {
         this.$store.dispatch('searchMaterialsInLine', 3)
       } else {
@@ -246,13 +242,6 @@ export default {
       @media @mobile {
         display: none;
       }
-      /* @media @mobile { */
-      /*   z-index: -1; */
-      /*   right: -20px; */
-      /* } */
-      /* @media @mobile { */
-      /*   right: -50px; */
-      /* } */
     }
 
     &_search {

@@ -6,9 +6,6 @@
   &__items {
     padding: 0;
     list-style: none;
-    // align-items: stretch;
-    // flex-wrap: wrap;
-    // display: flex;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
     grid-gap: 1rem;
@@ -78,10 +75,6 @@
         background: @dark-blue url('/images/plus-white.svg') 50% 50% no-repeat;
       }
     }
-
-    // @media @desktop {
-    //   display: flex;
-    // }
   }
   &__description {
     font-size: 20px;
@@ -92,18 +85,8 @@
   &__item {
     list-style: none;
     background-color: #fff;
-    // position: relative;
     font-size: 16px;
     line-height: 1.44;
-    // margin-bottom: 20px;
-    // flex: 1 0 275px;
-    // max-width: 300px;
-    // margin-right: 20px;
-
-    // @media @mobile {
-    //   width: 100%;
-    //   margin-left: 0;
-    // }
 
     &_wrapper {
       display: flex;
@@ -135,45 +118,9 @@
       background: @light-grey;
     }
 
-
-    // &--items-in-line-1 &_wrapper {
-    //   padding: 45px 17px 15px 17px;
-    //   @media @desktop {
-    //     display: flex;
-    //     padding: 32px 23px 32px 35px;
-    //   }
-    // }
-
-    // &--items-in-line-1 &_main_info {
-    //   flex: 1 1 auto;
-    // }
-    //
-    // &--items-in-line-1 &_subinfo {
-    //   flex-shrink: 0;
-    //   min-width: 230px;
-    //   @media @desktop {
-    //     width: 230px;
-    //     margin: 0 0 0 40px;
-    //   }
-    // }
-
-    // &--items-in-line-2 &_wrapper,
-    // &--items-in-line-3 &_wrapper,
-    // &--items-in-line-4 &_wrapper {
-    //   padding: 44px 17px 96px;
-    // }
-
     &_title {
       line-height: 1.2;
     }
-
-    // &--items-in-line-1 &_title {
-    //   margin: 0 0 10px;
-    // }
-    //
-    // &--items-in-line-1 &_date {
-    //   padding: 3px 0 0;
-    // }
 
     &_link {
       color: @dark-grey;
@@ -211,10 +158,6 @@
       }
     }
 
-    &_format {
-      //text-transform: uppercase;
-    }
-
     &_applauds {
       background: @green url('/images/clap_white.svg') 2px 50%
         no-repeat;
@@ -229,8 +172,6 @@
       font-style: normal;
       font-stretch: normal;
       line-height: 22px;
-      // padding: 0 6px 0 23px;
-      // letter-spacing: -0.7px;
       min-width: 58px;
       padding-left: 23px;
     }
@@ -310,25 +251,7 @@
       width: 100%;
       display: block;
       background-size: contain;
-      //
-      // @media @tablet, @mobile {
-      //   margin-bottom: 25px;
-      // }
     }
-
-    // &--items-in-line-2 &_footer,
-    // &--items-in-line-3 &_footer,
-    // &--items-in-line-4 &_footer {
-    //   position: absolute;
-    //   left: 0;
-    //   right: 0;
-    //   bottom: 0;
-    //   background: @light-grey;
-    //   padding: 15px;
-    //   @media @tablet, @mobile {
-    //     margin: 0;
-    //   }
-    // }
 
     &_actions {
       display: flex;

@@ -18,37 +18,18 @@
     <link href=/favicon-32x32.png rel=icon type=image/png sizes=32x32>
 
     <style>
-        /**
-         * Here we forcefully show a mobile only page on small screens.
-         * This is to prevent load problems on mobiles.
-         * A number of tickets have been made to solve these issues.
-         * Until these are fixed we notify people to use the desktop version.
-         */
-        /* @media only screen and (max-width: 934px) { */
-        /*     #app { */
-        /*         display: none; */
-        /*     } */
-        /*  */
-        /*     .mobile { */
-        /*         display: block !important; */
-        /*     } */
-        /* } */
-        #unsupported,
-        .mobile {
+        #unsupported {
             display: none;
         }
-        #unsupported,
-        .mobile-content {
+        #unsupported {
             margin: 40px auto;
             max-width: 300px;
             text-align: center;
         }
-        #unsupported img,
-        .mobile-content img {
+        #unsupported img {
             width: 150px;
         }
-        #unsupported p,
-        .mobile-content p {
+        #unsupported p {
             margin-top: 40px;
         }
     </style>
@@ -68,15 +49,6 @@
         <p>Internet Explorer and Legacy Edge are not supported by the search portal. Please use a more recent browser.</p>
     </div>
 
-    <div id="mobile" class="mobile">
-        <div class="mobile-content">
-            <img src="/images/surflogo@3x.png">
-            <p>Het zoekportaal is gedurende de pilot niet te gebruiken op kleine schermen. Probeer je device te draaien of
-                gebruik een computer.</p>
-            <p>During the pilot the search portal can't be used on small screens. Try to rotate your device or use a desktop
-                computer.</p>
-        </div>
-    </div>
     <div id="app"></div>
 
     <script>
@@ -89,7 +61,6 @@
             document.getElementById("unsupported").style.display = "block";
             document.body.removeChild(document.getElementById("mobile"));
         }
-
     </script>
 
     {{ render_bundle('chunk-vendors', 'js') }}
