@@ -126,8 +126,10 @@ export default {
         item => item.is_hidden === false
       )
 
-      const selectedItems = this.selectedFilters.flatMap(filter => filter.items)
-        .filter(item => item !== null)
+      const selectedItems =
+        this.selectedFilters
+          .flatMap(filter => filter.items)
+          .filter(item => item !== null)
 
       filteredCategories.map(cat => {
         if (cat.children) {
