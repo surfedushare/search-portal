@@ -116,7 +116,8 @@ export default {
       const datesFilter = selectedFilters.find(
         item => item.external_id === this.publisherDateExternalId
       )
-      return (datesFilter &&
+      return (
+        datesFilter &&
         datesFilter.items &&
         datesFilter.items.some(item => item !== null)
       )
