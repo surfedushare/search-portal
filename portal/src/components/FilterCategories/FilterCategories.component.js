@@ -102,6 +102,18 @@ export default {
           }
         }
       } else return {}
+    },
+    hasSelectedChildren(cat) {
+      return cat.children.filter(child => child.selected === true).length > 0
+    },
+    hasDatesRangeFilter(selectedFilters) {
+      const datesFilter = selectedFilters.find(
+        item => item.external_id === this.publisherDateExternalId
+      )
+      if (datesFilter && datesFilter.items) {
+        const items = datesFilter.items.filter(item => item !== null)
+        return items.length > 0
+      } else return false
     }
   },
   computed: {
@@ -121,7 +133,7 @@ export default {
             child.selected = selectedItems.includes(child.external_id)
             return child
           })
-          if (cat.children.filter(child => child.selected === true).length > 0) {
+          if (this.hasSelectedChildren(cat) || this.hasDatesRangeFilter(this.selectedFilters)) {
             cat.isOpen = true
           }
         }
