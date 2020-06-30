@@ -110,9 +110,11 @@ export default {
             end_date: datesFilter.items[1] || null
           }
         }
-      } else return {
-        start_date: null,
-        end_date: null
+      } else {
+        return {
+          start_date: null,
+          end_date: null
+        }
       }
     },
     hasSelectedChildren(cat) {

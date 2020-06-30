@@ -3,13 +3,7 @@ import ClickOutside from 'vue-click-outside'
 import { formatDate } from '~/store/modules/_helpers'
 export default {
   name: 'dates-range',
-  props: [
-    'value',
-    'hideSelect',
-    'inline',
-    'theme',
-    'disableFutureDays'
-  ],
+  props: ['value', 'hideSelect', 'inline', 'theme', 'disableFutureDays'],
   components: {
     Datepicker
   },
@@ -33,7 +27,7 @@ export default {
   directives: {
     ClickOutside
   },
-    watch: {
+  watch: {
     value(value) {
       this.formData = {
         start_date: value.start_date ? new Date(value.start_date) : null,
