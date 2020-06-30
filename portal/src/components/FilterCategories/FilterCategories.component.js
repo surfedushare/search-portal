@@ -116,8 +116,10 @@ export default {
       const datesFilter = selectedFilters.find(
         item => item.external_id === this.publisherDateExternalId
       )
-      return datesFilter && datesFilter.items
-        && datesFilter.items.some(item => item !== null)
+      return (datesFilter &&
+        datesFilter.items &&
+        datesFilter.items.some(item => item !== null)
+      )
     },
     sortFilterItems(items) {
       const nullCounts = items.filter(item => item.count === null)
