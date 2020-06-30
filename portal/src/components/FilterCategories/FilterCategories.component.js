@@ -37,8 +37,11 @@ export default {
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
       const filter = { external_id: categoryId, items: [] }
-      const categoryFilter = this.selectedFilters.find(f => f.external_id === categoryId) || filter
-      const selectedFilters = this.selectedFilters.filter(f => f.external_id !== categoryId)
+      const categoryFilter =
+        this.selectedFilters.find(f => f.external_id === categoryId) || filter
+      const selectedFilters = this.selectedFilters.filter(
+        f => f.external_id !== categoryId
+      )
 
       if (e.target.checked) {
         categoryFilter.items = [...categoryFilter.items, itemId]
@@ -123,9 +126,8 @@ export default {
         item => item.is_hidden === false
       )
 
-      const selectedItems = this.selectedFilters.flatMap(
-        filter => filter.items
-      ).filter(item => item !== null)
+      const selectedItems = this.selectedFilters.flatMap(filter => filter.items)
+        .filter(item => item !== null)
 
       filteredCategories.map(cat => {
         if (cat.children) {
