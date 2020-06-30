@@ -4,7 +4,6 @@
       <div class="search__info">
         <div class="center_block center-header">
           <div class="search__info_top">
-            <BreadCrumbs :items="items" />
             <h2 v-if="materials && !materials_loading">
               {{ $t('Search-results') }} {{ `(${materials.records_total})` }}
             </h2>
@@ -85,7 +84,6 @@ import Search from '~/components/Search'
 import FilterCategories from '~/components/FilterCategories'
 import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
-import BreadCrumbs from '~/components/BreadCrumbs'
 import {
   generateSearchMaterialsQuery,
   parseSearchMaterialsQuery
@@ -96,8 +94,7 @@ export default {
     Search,
     FilterCategories,
     Materials,
-    Spinner,
-    BreadCrumbs
+    Spinner
   },
   data() {
     return {

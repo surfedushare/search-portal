@@ -32,7 +32,6 @@ services:
     build:
       dockerfile: "harvester/Dockerfile"
       context: .
-    command: uwsgi --ini uwsgi.ini --py-autoreload=3 --honour-stdin
     stdin_open: true
     tty: true
     environment:

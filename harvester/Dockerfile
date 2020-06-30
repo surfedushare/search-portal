@@ -23,7 +23,7 @@ WORKDIR /usr/src/app
 RUN groupadd -r app -g 1001 && useradd app -u 1001 -r -m -g app
 ENV PATH="/home/app/.local/bin:${PATH}"
 # Give access to app user
-RUN chown app:app /usr/src/app
+RUN chown -R app:app /usr/src/app
 RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
 RUN chown app:app /usr/src/environments
@@ -54,8 +54,8 @@ RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinpu
 # Entrypoint sets our environment correctly
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
-# The default command is to start a uWSGI server
-CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
+# The default command is to start a supervisord that runs: Celery, Celery Beat and a small UWSGI
+CMD ["supervisord", "-c", "/usr/src/app/harvester/supervisord/main.conf"]
 
 # EXPOSE port 8000 to allow communication to/from server
 EXPOSE 8000

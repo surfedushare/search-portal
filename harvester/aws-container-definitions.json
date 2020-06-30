@@ -1,7 +1,7 @@
 [
     {
-        "name": "search-portal-container",
-        "image": "${REPOSITORY}/search-portal:${version}",
+        "name": "harvester-container",
+        "image": "${REPOSITORY}/harvester:${version}",
         "cpu": 0,
         "essential": true,
         "portMappings": [
@@ -17,7 +17,7 @@
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
-                "awslogs-group": "/ecs/search-portal",
+                "awslogs-group": "/ecs/harvester",
                 "awslogs-region": "eu-central-1",
                 "awslogs-stream-prefix": "${version}"
             }

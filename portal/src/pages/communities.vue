@@ -11,9 +11,6 @@
               /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
             "
           />
-          <BreadCrumbs
-            :items="[{ title: $t('Home'), url: localePath('index') }]"
-          />
           <h2 class="communities__info_ttl">
             {{ !userCommunities ? $t('Communities') : $t('My-communities') }}
           </h2>
@@ -90,15 +87,11 @@
 </template>
 
 <script>
-import BreadCrumbs from '~/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
 export default {
   name: 'Communities',
-  components: {
-    BreadCrumbs
-  },
   data() {
     return {
       userCommunities: this.$route.name.startsWith('my')
