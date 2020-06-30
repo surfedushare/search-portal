@@ -100,25 +100,15 @@ export default {
       return category.name
     },
     datesRangeFilter() {
-      if (this.selectedFilters) {
-        const datesFilter = this.selectedFilters.find(
-          item => item.external_id === this.publisherDateExternalId
-        )
-        if (datesFilter && datesFilter.items) {
-          return {
-            start_date: datesFilter.items[0] || null,
-            end_date: datesFilter.items[1] || null
-          }
-        }
-      } else {
+      const datesFilter = this.selectedFilters.find(
+        item => item.external_id === this.publisherDateExternalId
+      )
+      if (datesFilter && datesFilter.items) {
         return {
-          start_date: null,
-          end_date: null
+          start_date: datesFilter.items[0] || null,
+          end_date: datesFilter.items[1] || null
         }
       }
-    },
-    hasSelectedChildren(cat) {
-      return cat.children.filter(child => child.selected === true).length > 0
     },
     hasDatesRangeFilter(cat, selectedFilters) {
       if (cat.external_id !== this.publisherDateExternalId) return false
@@ -126,11 +116,8 @@ export default {
       const datesFilter = selectedFilters.find(
         item => item.external_id === this.publisherDateExternalId
       )
-
-      if (datesFilter && datesFilter.items) {
-        const items = datesFilter.items.filter(item => item !== null)
-        return items.length > 0
-      } else return false
+      return datesFilter && datesFilter.items
+        && datesFilter.items.some(item => item !== null)
     },
     sortFilterItems(items) {
       const nullCounts = items.filter(item => item.count === null)
@@ -138,39 +125,53 @@ export default {
         .filter(item => item.count !== null)
         .sort((a, b) => b.count - a.count)
       return [...sorted, ...nullCounts]
+    },
+    cleanupFilterItems(filterItems) {
+      // selected filter-items
+      const selectedItems = this.selectedFilters
+        .flatMap(filter => filter.items)
+        .filter(filter => filter !== null)
+
+      // filter-items that should be shown
+      const filteredItems = filterItems.filter(
+        item => !item.is_hidden && item.count > 0
+      )
+
+      filteredItems.map(item => {
+        item.selected = selectedItems.includes(item.external_id)
+        return item
+      })
+
+      return this.sortFilterItems(filteredItems)
     }
   },
   computed: {
     filtered_categories() {
       // Return categories that build the filter tree
       const filteredCategories = this.filterCategories.filter(
-        cat => cat.is_hidden === false
+        category => !category.is_hidden
       )
 
-      const selectedItems = this.selectedFilters
-        .flatMap(filter => filter.items)
-        .filter(filter => filter !== null)
+      filteredCategories.map(category => {
+        if (category.children) {
+          category.children = this.cleanupFilterItems(category.children)
 
-      filteredCategories.map(cat => {
-        if (cat.children) {
-          const filteredChildren = cat.children.filter(
-            child => !child.is_hidden && child.count > 0
-          )
-          filteredChildren.map(child => {
-            child.selected = selectedItems.includes(child.external_id)
-            return child
-          })
-          if (this.hasSelectedChildren(cat)) {
-            cat.isOpen = true
+          // if a filter-item is selected, open the filter-category
+          if (category.children.some(child => child.selected)) {
+            category.isOpen = true
           }
-          if (this.hasDatesRangeFilter(cat, this.selectedFilters)) {
-            cat.isOpen = true
-            cat.dates = this.datesRangeFilter()
+
+          // if a dates-range is selected, open the dates-range component and
+          // fill in the dates
+          if (this.hasDatesRangeFilter(category, this.selectedFilters)) {
+            category.isOpen = true
+            category.dates = this.datesRangeFilter()
           } else {
-            cat.dates = { start_date: null, end_date: null }
+            category.dates = { start_date: null, end_date: null }
           }
-          cat.showAll = false
-          cat.children = this.sortFilterItems(filteredChildren)
+
+          // don't show all filter-items of a category if more than 3 (default)
+          category.showAll = false
         }
       })
 
