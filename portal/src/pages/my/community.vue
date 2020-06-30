@@ -14,9 +14,6 @@
             "
             class="communities__info_bg"
           />
-          <BreadCrumbs
-            :items="[{ title: $t('Home'), url: localePath('index') }]"
-          />
           <h2 class="communities__info_ttl">
             {{ $t('My-community') }}
           </h2>
@@ -401,7 +398,6 @@ import {
   endsWith
 } from 'lodash'
 import { mapGetters } from 'vuex'
-import BreadCrumbs from '~/components/BreadCrumbs'
 import Collections from '~/components/Collections'
 import AddCollection from '~/components/Popup/AddCollection'
 import InputFile from '~/components/InputFile'
@@ -413,7 +409,6 @@ export default {
   components: {
     Error,
     Collections,
-    BreadCrumbs,
     AddCollection,
     InputFile,
     SwitchInput

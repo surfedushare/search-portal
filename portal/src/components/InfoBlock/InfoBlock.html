@@ -1,17 +1,14 @@
 <section class="info-block">
   <template>
-
     <div class="center_block">
       <div class="how_work__desc">
         <div class="how_work__bg_block">
-
           <img
             :src="logo_src"
             class="preview__bg_block-img"
           >
         </div>
         <div class="how_work__txt_block">
-          <BreadCrumbs :items="breadcrumb_items"></BreadCrumbs>
           <h2 class="how_work__txt_block__ttl">{{ title }}</h2>
           <div class="html-content" v-html="content"></div>
           <a

@@ -10,10 +10,6 @@
             :title="community_details.title"
             :content="community_details.description"
             :website_url="community_details.website_url"
-            :breadcrumb_items="[
-              { title: $t('Home'), url: localePath('index') },
-              { title: $t('Communities'), url: localePath('communities') }
-            ]"
             :logo_src="community_details.featured_image"
           />
 
@@ -171,9 +167,6 @@ export default {
       justify-content: flex-start;
       padding-top: 40px;
       position: relative;
-      .bread-crumbs {
-        margin-bottom: 5px;
-      }
       &:before {
         content: '';
         min-width: 100%;
