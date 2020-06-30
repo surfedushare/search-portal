@@ -115,10 +115,13 @@ export default {
     hasSelectedChildren(cat) {
       return cat.children.filter(child => child.selected === true).length > 0
     },
-    hasDatesRangeFilter(selectedFilters) {
+    hasDatesRangeFilter(cat, selectedFilters) {
+      if (cat.external_id !== this.publisherDateExternalId) return false
+
       const datesFilter = selectedFilters.find(
         item => item.external_id === this.publisherDateExternalId
       )
+
       if (datesFilter && datesFilter.items) {
         const items = datesFilter.items.filter(item => item !== null)
         return items.length > 0
@@ -154,7 +157,7 @@ export default {
           })
           if (
             this.hasSelectedChildren(cat) ||
-            this.hasDatesRangeFilter(this.selectedFilters)
+            this.hasDatesRangeFilter(cat, this.selectedFilters)
           ) {
             cat.isOpen = true
           }
