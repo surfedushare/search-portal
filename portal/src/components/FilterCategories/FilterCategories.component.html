@@ -37,7 +37,7 @@
           <li
             v-for="(item, indexItem) in category.children"
             class="filter-categories__subitem"
-            v-if="!item.is_hidden"
+            v-if="!item.is_hidden && item.count > 0"
           >
             <div class="filter-checkbox">
               <input

@@ -117,6 +117,12 @@ export default {
         const items = datesFilter.items.filter(item => item !== null)
         return items.length > 0
       } else return false
+    },
+    sortFilterItems(items) {
+      const nullCounts = items.filter(item => item.count === null)
+      const sorted = items.filter(item => item.count !== null)
+        .sort((a, b) => b.count - a.count)
+      return [...sorted, ...nullCounts]
     }
   },
   computed: {
@@ -142,6 +148,7 @@ export default {
           ) {
             cat.isOpen = true
           }
+          cat.children = this.sortFilterItems(cat.children)
         }
       })
 
