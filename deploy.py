@@ -10,7 +10,7 @@ from environments.surfpol import MODE, get_package_info
 from service.package import PACKAGE as SERVICE_PACKAGE
 from harvester.package import PACKAGE as HARVESTER_PACKAGE
 
-# TODO: perhaps simply input a PACKAGE from <target>/package.py which is a dict like below and work with that directly
+
 TARGETS = {
     "service": SERVICE_PACKAGE,
     "harvester": HARVESTER_PACKAGE
