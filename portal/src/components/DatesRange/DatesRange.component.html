@@ -1,50 +1,49 @@
 
-<section class="dates-range" :class="{[`dates-range--${theme}`]: theme}">
-  <div class="dates-range__opener" :class="{'dates-range__opener--opened': opened}" v-if="!hideSelect">
-    <div
-      class="select select--no-border"
-      v-click-outside="hide"
-      @click="toggle"
-    >
-      <div
-        class="select__item"
-      >{{ $t('Sort-by') }}</div>
-    </div>
-  </div>
-  <div
-    class="dates-range__popup"
-    v-show="opened || inline"
-    :class="{'dates-range__popup--inline': inline}"
+<li class="filter-categories__item">
+  <h4 @click="toggle()"
+    class="filter-categories__item_title"
+    :class="{'filter-categories__item_title--hide': opened}"
   >
-    <div class="dates-range__form-group">
-      <label class="vdp-datepicker__label">{{ $t('From') }}</label>
-      <Datepicker
-        :format="format"
-        :value="formData.start_date"
-        :disabledDates="{
-          from: formData.end_date || (disableFutureDays ? new Date() : null)
-        }"
-        :monday-first="true"
-        :placeholder="$t('Select-date')"
-        @selected="onSelectedStartDate"
-        :clear-button="true"
-      ></Datepicker>
-    </div>
-    <div class="dates-range__form-group">
-      <label class="vdp-datepicker__label">{{ $t('To') }}</label>
-      <Datepicker
-        :format="format"
-        :value="formData.end_date"
-        :disabledDates="{
-          to: formData.start_date,
-          from: disableFutureDays ? new Date() : null
-        }"
-        :monday-first="true"
-        :placeholder="$t('Select-date')"
-        @selected="onSelectedEndDate"
-        :clear-button="true"
-      ></Datepicker>
-    </div>
+    {{ titleTranslation(category) }}
+  </h4>
+  <div class="filter-categories__subitems" v-if="opened">
+    <section class="dates-range" :class="{[`dates-range--${theme}`]: theme}">
+      <div
+        class="dates-range__popup"
+        v-show="opened || inline"
+        :class="{'dates-range__popup--inline': inline}"
+      >
+        <div class="dates-range__form-group">
+          <label class="vdp-datepicker__label">{{ $t('From') }}</label>
+          <Datepicker
+            :format="format"
+            :value="formData.start_date"
+            :disabledDates="{
+              from: formData.end_date || (disableFutureDays ? new Date() : null)
+            }"
+            :monday-first="true"
+            :placeholder="$t('Select-date')"
+            @selected="onSelectedStartDate"
+            :clear-button="true"
+          ></Datepicker>
+        </div>
+        <div class="dates-range__form-group">
+          <label class="vdp-datepicker__label">{{ $t('To') }}</label>
+          <Datepicker
+            :format="format"
+            :value="formData.end_date"
+            :disabledDates="{
+              to: formData.start_date,
+              from: disableFutureDays ? new Date() : null
+            }"
+            :monday-first="true"
+            :placeholder="$t('Select-date')"
+            @selected="onSelectedEndDate"
+            :clear-button="true"
+          ></Datepicker>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
+</li>
 

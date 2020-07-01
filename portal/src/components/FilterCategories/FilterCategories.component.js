@@ -1,9 +1,10 @@
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
+import FilterCategory from './FilterCategory/FilterCategory'
 
 export default {
   name: 'filter-categories',
-  components: { DatesRange },
+  components: { DatesRange, FilterCategory },
   data() {
     const publisherDateExternalId = 'lom.lifecycle.contribute.publisherdate'
     const visibleItems = 3
@@ -40,26 +41,20 @@ export default {
       category.showAll = !category.showAll
       this.$forceUpdate()
     },
-    onChange(e) {
-      const { categoryId, itemId } = e.target.dataset
+    onCheck(categoryId, itemId) {
       const existingItems = this.selectedFilters[categoryId] || []
-
-      if (e.target.checked) {
-        this.selectedFilters[categoryId] = [...existingItems, itemId]
-      } else {
-        this.selectedFilters[categoryId] = existingItems.filter(
-          item => item !== itemId
-        )
-      }
-
+      this.selectedFilters[categoryId] = [...existingItems, itemId]
+      return this.executeSearch(this.selectedFilters)
+    },
+    onUncheck(categoryId, itemId) {
+      const existingItems = this.selectedFilters[categoryId] || []
+      this.selectedFilters[categoryId] = existingItems.filter(
+        item => item !== itemId
+      )
       return this.executeSearch(this.selectedFilters)
     },
     onDateChange(dates) {
-      const { start_date, end_date } = dates
-      this.selectedFilters[this.publisherDateExternalId] = [
-        start_date,
-        end_date
-      ]
+      this.selectedFilters[this.publisherDateExternalId] = dates
       this.executeSearch(this.selectedFilters)
     },
     executeSearch(filters = {}) {
@@ -87,20 +82,10 @@ export default {
         }
       )
     },
-    getTitleTranslation(category, language) {
-      if (category && category.title_translations) {
-        return category.title_translations[language]
-      }
-      return category.name
-    },
     datesRangeFilter() {
-      return this.selectedFilters[this.publisherDateExternalId]
+      return this.selectedFilters[this.publisherDateExternalId] || [null, null]
     },
     hasDatesRangeFilter() {
-      if (!this.datesRangeFilter()) {
-        return false
-      }
-
       return this.datesRangeFilter().some(item => item !== null)
     },
     sortFilterItems(items) {
@@ -130,36 +115,19 @@ export default {
     }
   },
   computed: {
-    filtered_categories() {
+    filterableCategories() {
       // Return categories that build the filter tree
-      const filteredCategories = this.filterCategories.filter(
+      const visibleCategories = this.filterCategories.filter(
         category => !category.is_hidden
       )
 
-      filteredCategories.map(category => {
+      visibleCategories.map(category => {
         if (category.children) {
           category.children = this.cleanupFilterItems(category.children)
-
-          // if a filter-item is selected, open the filter-category
-          if (category.children.some(child => child.selected)) {
-            category.isOpen = true
-          }
-
-          // if a dates-range is selected, open the dates-range component and
-          // fill in the dates
-          if (this.hasDatesRangeFilter()) {
-            category.isOpen = true
-            category.dates = this.datesRangeFilter()
-          } else {
-            category.dates = { start_date: null, end_date: null }
-          }
-
-          // don't show all filter-items of a category if more than 3 (default)
-          category.showAll = false
         }
       })
 
-      return filteredCategories
+      return visibleCategories
     }
   }
 }

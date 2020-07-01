@@ -10,72 +10,25 @@
   </div>
 
   <div class="filter-categories__items">
-    <ul v-if="filtered_categories.length" class="filter-categories__items_wrapper">
-      <li v-for="(category, index) in filtered_categories" class="filter-categories__item">
-        <h4 @click="onToggleCategory(category)" class="filter-categories__item_title" :class="{'filter-categories__item_title--hide': category.isOpen}">
-            {{ getTitleTranslation(category, $i18n.locale) }}
-        </h4>
-
-        <div
+    <ul v-if="filterableCategories.length" class="filter-categories__items_wrapper">
+      <template v-for="(category, index) in filterableCategories">
+        <DatesRange
           v-if="category.external_id === publisherDateExternalId"
-          class="filter-categories__subitems"
-          v-show="category.isOpen">
-          <DatesRange
-            v-model="category.dates"
-            :inline="true"
-            :hide-select="true"
-            @input="onDateChange"
-            theme="min"
-            :disable-future-days="true"
-          />
-        </div>
+          :category="category"
+          :dates="datesRangeFilter()"
+          :inline="true"
+          @input="onDateChange"
+          theme="min"
+          :disable-future-days="true"
+        />
 
-        <ul
+        <FilterCategory
           v-else-if="hasVisibleChildren(category)"
-          v-show="category.isOpen"
-          class="filter-categories__subitems">
-          <li
-            v-for="(item, indexItem) in category.children"
-            class="filter-categories__subitem"
-            v-if="indexItem < visibleItems || category.showAll"
-          >
-            <div class="filter-checkbox">
-              <input
-                type="checkbox"
-                :id="item.external_id"
-                :value="item.external_id"
-                :data-category-id="category.external_id"
-                :data-item-id="item.external_id"
-                v-model="filtered_categories[index].children[indexItem].selected"
-                @change="onChange"
-              >
-
-              <label :for="item.external_id">
-                {{ getTitleTranslation(item, $i18n.locale) }}
-                ({{ item.count }})
-              </label>
-            </div>
-          </li>
-
-          <li v-if="category.children.length > visibleItems" class="filter-categories__subitem--show-more">
-            <a
-              href="/show-more/"
-              @click.prevent="onToggleShowAll(category)"
-              v-if="category.showAll"
-            >
-              {{ $t('Hide') }}
-            </a>
-
-            <a
-              href="/show-more/"
-              @click.prevent="onToggleShowAll(category)"
-              v-else
-            >
-              {{ $t('View-more') }}
-            </a>
-          </li>
-        </ul>
-      </li>
+          :category="category"
+          @check="onCheck"
+          @uncheck="onUncheck"
+        />
+      </template>
     </ul>
   </div>
 </section>
