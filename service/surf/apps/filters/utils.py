@@ -22,8 +22,7 @@ from surf.vendor.edurep.xml_endpoint.v1_2.api import (
 )
 
 IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
-                  CUSTOM_THEME_FIELD_ID,
-                  LANGUAGE_FIELD_ID
+                  CUSTOM_THEME_FIELD_ID
                   }
 
 _MBO_HBO_WO_REGEX = re.compile(r"^(MBO|HBO|WO)(.*)$", re.IGNORECASE)
