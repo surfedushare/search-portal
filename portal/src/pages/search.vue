@@ -252,7 +252,7 @@ export default {
         width: 100%;
         margin-bottom: 20px;
         background-color: #ffffff;
-        border-radius: 10px;
+        border-radius: 20px;
         box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
       }
     }
@@ -297,6 +297,10 @@ export default {
     margin-bottom: -30px;
     position: relative;
     z-index: 1;
+
+    @media @mobile {
+      justify-content: flex-start;
+    }
 
     &_dates {
       width: 251px;
@@ -350,6 +354,7 @@ export default {
 
     @media @mobile {
       width: 100%;
+      max-width: 400px;
       margin: 0;
     }
 

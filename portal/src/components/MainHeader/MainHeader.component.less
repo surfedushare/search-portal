@@ -24,23 +24,24 @@
   @p-bottom: 15px;
 
   #notification-bar {
-    overflow: hidden;
     border-bottom: 1px solid #333;
-    padding: 10px 0;
+    padding: 10px;
 
     .notifications {
       max-width: 900px;
       margin: 0 auto;
 
-      .message {
-        width: 90%;
-        float: left;
-        padding-right: 20px;
-      }
+      > div {
+        display: flex;
 
-      .acknowledge {
-        width: 10%;
-        float: right;
+        .message {
+          flex: 1;
+          padding-right: 20px;
+        }
+
+        .acknowledge {
+          width: 70px;
+        }
       }
     }
   }
