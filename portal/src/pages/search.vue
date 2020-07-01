@@ -60,7 +60,7 @@
             <FilterCategories
               v-model="search"
               :filter-categories="getFilterCategories() || []"
-              :selected-filters="getSelectedFilters()"
+              :selected-filters="search.filters"
               :materials="materials"
             />
           </div>
@@ -98,7 +98,9 @@ export default {
   },
   data() {
     return {
-      search: {},
+      search: {
+        filters: {}
+      },
       isShow: false,
       publisherDateExternalId: 'lom.lifecycle.contribute.publisherdate',
       dates_range: {
@@ -184,9 +186,6 @@ export default {
     },
     getFilterCategories() {
       return this.materials ? this.materials.filter_categories : []
-    },
-    getSelectedFilters() {
-      return this.search ? this.search.filters : {}
     }
   }
 }
