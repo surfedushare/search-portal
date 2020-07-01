@@ -15,9 +15,11 @@ function generateSearchParams(search) {
     return [...memo, { external_id: key, items: search.filters[key] }]
   }, [])
 
+  const searchText = search.search_text.split(/\s+/).filter(x => x !== '')
+
   return {
     ...search,
-    search_text: search.search_text.split(/\s+/),
+    search_text: searchText,
     filters
   }
 }
