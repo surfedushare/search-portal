@@ -60,7 +60,7 @@
             <FilterCategories
               v-model="search"
               :filter-categories="getFilterCategories() || []"
-              :selected-filters="getSelectedFilters() || []"
+              :selected-filters="getSelectedFilters()"
               :materials="materials"
             />
           </div>
@@ -128,20 +128,11 @@ export default {
     },
     dates_range(dates) {
       const { filters } = this.search
-      let new_filters = filters ? filters.slice(0) : []
-      const current_dates = new_filters.find(
-        item => item.external_id === this.publisherDateExternalId
-      )
-      const index = current_dates
-        ? new_filters.indexOf(current_dates)
-        : new_filters.length
-
-      new_filters[index] = {
-        external_id: this.publisherDateExternalId,
-        items: [dates.start_date || null, dates.end_date || null]
-      }
-
-      this.search = Object.assign({}, this.search, { filters: new_filters })
+      filters[this.publisherDateExternalId] = [
+        dates.start_date || null,
+        dates.end_date || null
+      ]
+      this.search = { ...this.search, filters }
     }
   },
   mounted() {
@@ -195,7 +186,7 @@ export default {
       return this.materials ? this.materials.filter_categories : []
     },
     getSelectedFilters() {
-      return this.search ? this.search.filters : []
+      return this.search ? this.search.filters : {}
     }
   }
 }

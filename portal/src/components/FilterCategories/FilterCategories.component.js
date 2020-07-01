@@ -42,39 +42,33 @@ export default {
     },
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
-      const filter = { external_id: categoryId, items: [] }
-      const categoryFilter =
-        this.selectedFilters.find(f => f.external_id === categoryId) || filter
-      const selectedFilters = this.selectedFilters.filter(
-        f => f.external_id !== categoryId
-      )
+      const existingItems = this.selectedFilters[categoryId] || []
 
       if (e.target.checked) {
-        categoryFilter.items = [...categoryFilter.items, itemId]
+        this.selectedFilters[categoryId] = [...existingItems, itemId]
       } else {
-        categoryFilter.items = categoryFilter.items.filter(f => f !== itemId)
+        this.selectedFilters[categoryId] = existingItems.filter(
+          item => item !== itemId
+        )
       }
-      return this.executeSearch([...selectedFilters, categoryFilter])
+
+      return this.executeSearch(this.selectedFilters)
     },
     onDateChange(dates) {
       const { start_date, end_date } = dates
-      const filter = {
-        external_id: this.publisherDateExternalId,
-        items: [start_date, end_date]
-      }
-      const filters = this.selectedFilters.filter(
-        el => el.external_id !== this.publisherDateExternalId
-      )
-      this.executeSearch([...filters, filter])
+      this.selectedFilters[this.publisherDateExternalId] = [
+        start_date,
+        end_date
+      ]
+      this.executeSearch(this.selectedFilters)
     },
-    executeSearch(filters = []) {
+    executeSearch(filters = {}) {
       const { ordering, search_text } = this.materials
-      let searchRequest = {
+      const searchRequest = {
         search_text,
         ordering,
-        filters
+        filters: { ...filters }
       }
-
       // Execute search
       this.$router.push(this.generateSearchMaterialsQuery(searchRequest))
       this.$emit('input', searchRequest) // actual search is done by the parent page
@@ -100,27 +94,14 @@ export default {
       return category.name
     },
     datesRangeFilter() {
-      const datesFilter = this.selectedFilters.find(
-        item => item.external_id === this.publisherDateExternalId
-      )
-      if (datesFilter && datesFilter.items) {
-        return {
-          start_date: datesFilter.items[0] || null,
-          end_date: datesFilter.items[1] || null
-        }
-      }
+      return this.selectedFilters[this.publisherDateExternalId]
     },
-    hasDatesRangeFilter(cat, selectedFilters) {
-      if (cat.external_id !== this.publisherDateExternalId) return false
+    hasDatesRangeFilter() {
+      if (!this.datesRangeFilter()) {
+        return false
+      }
 
-      const datesFilter = selectedFilters.find(
-        item => item.external_id === this.publisherDateExternalId
-      )
-      return (
-        datesFilter &&
-        datesFilter.items &&
-        datesFilter.items.some(item => item !== null)
-      )
+      return this.datesRangeFilter().some(item => item !== null)
     },
     sortFilterItems(items) {
       const nullCounts = items.filter(item => item.count === null)
@@ -131,8 +112,8 @@ export default {
     },
     cleanupFilterItems(filterItems) {
       // selected filter-items
-      const selectedItems = this.selectedFilters
-        .flatMap(filter => filter.items)
+      const selectedItems = Object.values(this.selectedFilters)
+        .flat()
         .filter(filter => filter !== null)
 
       // filter-items that should be shown
@@ -166,7 +147,7 @@ export default {
 
           // if a dates-range is selected, open the dates-range component and
           // fill in the dates
-          if (this.hasDatesRangeFilter(category, this.selectedFilters)) {
+          if (this.hasDatesRangeFilter()) {
             category.isOpen = true
             category.dates = this.datesRangeFilter()
           } else {

@@ -1,43 +1,37 @@
 export const generateSearchMaterialsQuery = function(
-  data = { filters: [], search_text: '' },
+  data = { filters: {}, search_text: '' },
   name = 'materials-search'
 ) {
-  const filters = data.filters
-    ? data.filters.filter(item => Object.keys(item).length)
-    : []
   name += '___' + this.$i18n.locale
 
   return {
     name: name,
     query: {
       ...data,
-      filters: JSON.stringify(filters),
+      filters: JSON.stringify(data.filters),
       search_text: JSON.stringify(data.search_text)
     }
   }
 }
 
 export const parseSearchMaterialsQuery = function(query) {
-  let search = { search_text: '', filters: [] }
+  let search = { search_text: '', filters: {} }
 
   if (query) {
     search = {
       ...query,
-      filters: query.filters ? JSON.parse(query.filters) : [],
+      filters: query.filters ? JSON.parse(query.filters) : {},
       search_text: query.search_text ? JSON.parse(query.search_text) : ''
     }
   }
 
-  const publisherDateFilter = search.filters.find(
-    item => item.external_id === 'lom.lifecycle.contribute.publisherdate'
-  )
-  let dateRange = {}
-  if (publisherDateFilter && publisherDateFilter.items) {
-    dateRange = {
-      start_date: publisherDateFilter.items[0] || null,
-      end_date: publisherDateFilter.items[1] || null
-    }
+  const dateRangeItems =
+    search.filters['lom.lifecycle.contribute.publisherdate'] || []
+  const dateRange = {
+    start_date: dateRangeItems[0],
+    end_date: dateRangeItems[1]
   }
+
   return { search, dateRange }
 }
 
