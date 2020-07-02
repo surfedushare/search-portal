@@ -17,8 +17,7 @@ from surf.vendor.edurep.widget_endpoint.v3.api import WidgetEndpointApiClient
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     PUBLISHER_DATE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID,
-    EDUCATIONAL_LEVEL_FIELD_ID,
-    LANGUAGE_FIELD_ID
+    EDUCATIONAL_LEVEL_FIELD_ID
 )
 
 IGNORED_FIELDS = {PUBLISHER_DATE_FIELD_ID,
