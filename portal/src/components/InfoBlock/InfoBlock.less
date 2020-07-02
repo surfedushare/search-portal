@@ -1,107 +1,29 @@
 @import './../../variables';
 .how_work {
-  &__center-header {
-    @media @mobile {
-      padding-left: 30px;
-      padding-right: 30px;
-    }
-    @media @tablet {
-      padding-left: 38px;
-      padding-right: 38px;
-    }
-  }
-  padding: 96px 0 115px;
-  @media @mobile {
-    overflow: hidden;
-  }
-  &__info {
-    padding: 70px 37px 0;
-    margin: 0 0 223px;
-    border-radius: 20px;
-    position: relative;
-    @media @tablet {
-      padding: 70px 48px 0;
-    }
-    &_bg {
-      position: absolute;
-      right: 26px;
-      top: -51px;
-      width: 50%;
-      border-radius: 21px;
-
-      @media @mobile {
-        padding: 0;
-        z-index: -1;
-        right: -20px;
-      }
-      @media @mobile {
-        right: -50px;
-      }
-    }
-    &_ttl {
-      padding: 0 0 49px;
-      position: relative;
-      @media @mobile {
-        margin: 0;
-        font-size: 28px;
-      }
-      &:before {
-        content: '';
-        min-width: 100%;
-        position: absolute;
-        background-color: rgba(244, 244, 244, 0.9);
-        right: -48px;
-        left: -48px;
-        top: -98px;
-        bottom: -70px;
-        border-radius: 20px;
-        z-index: -1;
-      }
-    }
-    &_search {
-      margin: 0 66px;
-      @media @mobile {
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-        margin-bottom: 180px;
-        margin-left: -20px;
-        margin-right: -20px;
-      }
-      @media @tablet {
-        margin-left: -48px;
-        margin-right: -48px;
-      }
-      .search__fields {
-        margin-bottom: 33px;
-      }
-    }
-  }
   &__desc {
     position: relative;
     @media @desktop {
-      padding: 50px 0 0 100px;
+      padding-left: 100px;
+      margin-top: 140px;
     }
   }
   &__txt_block {
     background: fade(@light-grey, 90%);
     border-radius: 20px;
-    margin: 100px 0 168px;
-    padding: 55px 20px 55px 250px;
+    padding: 30px 20px 30px 250px;
     overflow: hidden;
-
-    @media @desktop {
-      margin: 0 0 113px;
-    }
+    margin-bottom: 60px;
 
     @media @tablet {
-      padding: 55px;
+      padding-left: 20px;
     }
+
+    @media @mobile {
+      padding-left: 20px;
+    }
+
     &__ttl {
-      margin-bottom: 21px;
-    }
-    p {
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
   }
   &_link{
@@ -110,53 +32,36 @@
   }
   &__bg_block {
     position: absolute;
-    top: -80px;
+    top: -30px;
     left: 0;
 
-    @media @desktop {
-      top: -2px;
-    }
-
     @media @tablet {
-      img {
-        display: none;
-      }
-      &:before {
-        display: none;
-      }
-      &:after {
-        display: none;
-      }
+      display: none;
     }
-
+    @media @mobile {
+      display: none;
+    }
     img {
-      width: 75%;
+      width: 275px;
       border-radius: 21px;
     }
     &:before {
       content: '';
       position: absolute;
       background: url('/images/combined-shape.svg') no-repeat 0 0;
-      right: -5px;
-      top: 0;
+      right: -94px;
+      top: -60px;
       height: 109px;
       width: 119px;
-
-      @media @mobile {
-        right: 0;
-      }
     }
     &:after {
       content: '';
       position: absolute;
       background: url('/images/message.svg') no-repeat 0 0;
-      right: 14px;
-      top: 22px;
+      right: -77px;
+      top: -40px;
       height: 33px;
       width: 35px;
-      @media @mobile {
-        right: 18px;
-      }
     }
   }
   &__materials_title {

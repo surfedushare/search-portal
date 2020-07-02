@@ -24,23 +24,24 @@
   @p-bottom: 15px;
 
   #notification-bar {
-    overflow: hidden;
     border-bottom: 1px solid #333;
-    padding: 10px 0;
+    padding: 10px;
 
     .notifications {
       max-width: 900px;
       margin: 0 auto;
 
-      .message {
-        width: 90%;
-        float: left;
-        padding-right: 20px;
-      }
+      > div {
+        display: flex;
 
-      .acknowledge {
-        width: 10%;
-        float: right;
+        .message {
+          flex: 1;
+          padding-right: 20px;
+        }
+
+        .acknowledge {
+          width: 70px;
+        }
       }
     }
   }
@@ -89,7 +90,6 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    padding: 0 35px 0;
     min-height: 80px;
     position: relative;
   }
@@ -118,14 +118,9 @@
       width: auto;
       max-width: 320px;
       margin-right: 56px;
-      padding: 45px;
       background-color: #ffffff;
       box-shadow: 10px 20px 30px 0 rgba(0, 0, 0, 0.1);
       overflow-y: scroll;
-      height: 100%;
-      //height: -moz-available;          /* WebKit-based browsers will ignore this. */
-      //height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
-      height: stretch;
     }
 
     &_logo {
@@ -235,7 +230,7 @@
       position: absolute;
       right: 0;
       top: 100%;
-      width: 356px;
+      width: 200px;
       box-shadow: 5px 5px 10px 5px rgba(204, 204, 204, 0.4);
       background-color: #ffffff;
       @media @mobile {
@@ -244,7 +239,7 @@
       }
       &_items {
         margin: 0;
-        padding: 35px 18px 35px;
+        padding: 0;
         list-style: none;
         //box-shadow: inset -2px 28px 28px -21px rgba(0, 0, 0, 0.1);
       }
@@ -259,7 +254,7 @@
         line-height: 1.44;
         display: block;
         text-decoration: none;
-        padding: 11px 20px 9px;
+        padding: 15px 35px;
         transition: color 0.2s;
 
         &:hover {

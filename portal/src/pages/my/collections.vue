@@ -78,7 +78,6 @@ export default {
 @import './../../variables';
 .collections {
   width: 100%;
-  padding: 0 0 47px;
   &__center-header {
     padding-top: 101px;
     overflow: hidden;

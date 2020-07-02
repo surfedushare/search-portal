@@ -11,7 +11,7 @@
     }
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 138px;
+    margin-bottom: 80px;
   }
 
   &__quotes {
@@ -101,7 +101,6 @@
       height: 139px;
     }
     margin: auto;
-    justify-content: space-between;
     align-items: center;
     z-index: 1;
     padding: 0 0 15px;
@@ -125,28 +124,6 @@
       position: absolute;
       z-index: -1;
       background: @light-grey;
-    }
-
-    &:after {
-      content: '';
-      right: 0;
-      bottom: 0;
-      border-radius: 40px 0 0 0;
-      pointer-events: none;
-      border-left: 1px solid #686d75;
-      border-top: 1px solid #686d75;
-      position: absolute;
-      z-index: -1;
-      //width: 100%;
-      //margin-right: -20px;
-
-      height: 230px;
-      width: calc(100% - 20px);
-      @media @desktop {
-        left: 50%;
-        margin: 0 0 0 -600px;
-        height: 186px;
-      }
     }
   }
 
