@@ -28,28 +28,33 @@ export default {
         return !child.is_hidden
       })
     },
-    onToggleCategory(category, update = true) {
-      category.isOpen = !category.isOpen
-      category.children.forEach(child => {
-        this.onToggleCategory(child, false)
-      })
-      if (update) {
-        this.$forceUpdate()
+    childExternalIds(categoryId, itemId) {
+      const category = this.filterCategories.find(
+        category => category.external_id === categoryId
+      )
+      const item = category.children.find(item => item.external_id === itemId)
+      const iterator = (memo, item) => {
+        if (item.children.length > 0) {
+          item.children.forEach(child => iterator(memo, child))
+        }
+        return [...memo, item.external_id]
       }
-    },
-    onToggleShowAll(category) {
-      category.showAll = !category.showAll
-      this.$forceUpdate()
+
+      return item.children.reduce(iterator, [item.external_id])
     },
     onCheck(categoryId, itemId) {
       const existingItems = this.selectedFilters[categoryId] || []
-      this.selectedFilters[categoryId] = [...existingItems, itemId]
+
+      const filters = this.childExternalIds(categoryId, itemId)
+      this.selectedFilters[categoryId] = [...existingItems, ...filters]
+
       return this.executeSearch(this.selectedFilters)
     },
     onUncheck(categoryId, itemId) {
       const existingItems = this.selectedFilters[categoryId] || []
+      const filters = this.childExternalIds(categoryId, itemId)
       this.selectedFilters[categoryId] = existingItems.filter(
-        item => item !== itemId
+        item => !filters.includes(item)
       )
       return this.executeSearch(this.selectedFilters)
     },
@@ -94,40 +99,43 @@ export default {
         .filter(item => item.count !== null)
         .sort((a, b) => b.count - a.count)
       return [...sorted, ...nullCounts]
-    },
-    cleanupFilterItems(filterItems) {
-      // selected filter-items
-      const selectedItems = Object.values(this.selectedFilters)
-        .flat()
-        .filter(filter => filter !== null)
-
-      // filter-items that should be shown
-      const filteredItems = filterItems.filter(
-        item => !item.is_hidden && item.count > 0
-      )
-
-      filteredItems.map(item => {
-        item.selected = selectedItems.includes(item.external_id)
-        return item
-      })
-
-      return this.sortFilterItems(filteredItems)
     }
   },
   computed: {
     filterableCategories() {
-      // Return categories that build the filter tree
       const visibleCategories = this.filterCategories.filter(
         category => !category.is_hidden
       )
 
-      visibleCategories.map(category => {
+      // aggregate counts to the highest level
+      return visibleCategories.map(category => {
         if (category.children) {
-          category.children = this.cleanupFilterItems(category.children)
-        }
-      })
+          category.children = category.children.map(child => {
+            if (child.children.length > 0) {
+              child.count = child.children.reduce(
+                (memo, c) => memo + c.count,
+                0
+              )
+            }
 
-      return visibleCategories
+            return child
+          })
+        }
+
+        category.children = category.children.filter(
+          child => !child.is_hidden && child.count > 0
+        )
+
+        category.children = category.children.map(child => {
+          const selected = this.selectedFilters[category.external_id] || []
+          child.selected = selected.includes(child.external_id)
+          return child
+        })
+
+        category.children = this.sortFilterItems(category.children)
+
+        return category
+      })
     }
   }
 }
