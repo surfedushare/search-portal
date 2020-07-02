@@ -300,11 +300,11 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60,
         'args': tuple()
     },
-    # 'import-dataset': {
-    #     'task': 'import_dataset',
-    #     'schedule': crontab(minute=30, hour=15),
-    #     'args': ("epsilon",)
-    # },
+    'import-dataset': {
+        'task': 'import_dataset',
+        'schedule': crontab(minute=45, hour=10),
+        'args': ("epsilon",)
+    },
 }
 
 
