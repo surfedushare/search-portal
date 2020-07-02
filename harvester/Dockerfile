@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y less vim ffmpeg \
 
 # Create the app environment
 RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/data
 RUN mkdir -p /usr/src/static
 RUN mkdir -p /usr/src/media
 RUN mkdir -p /usr/src/environments
@@ -22,8 +23,10 @@ WORKDIR /usr/src/app
 # We also add default Python user path to PATH so installed binaries get found
 RUN groupadd -r app -g 1001 && useradd app -u 1001 -r -m -g app
 ENV PATH="/home/app/.local/bin:${PATH}"
+ENV PYTHONPATH="/usr/src/app"
 # Give access to app user
 RUN chown -R app:app /usr/src/app
+RUN chown app:app /usr/src/data
 RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
 RUN chown app:app /usr/src/environments
