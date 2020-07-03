@@ -107,6 +107,11 @@ export default {
     },
     ...mapGetters(['user'])
   },
+  watch: {
+    $route() {
+      this.userCommunities = this.$route.name.startsWith('my')
+    }
+  },
   mounted() {
     this.$store.dispatch('getCommunities')
   },
@@ -123,11 +128,6 @@ export default {
         language_code: language.toUpperCase()
       })
       return communityDetails[detail] || null
-    }
-  },
-  watch: {
-    $route() {
-      this.userCommunities = this.$route.name.startsWith('my')
     }
   }
 }
