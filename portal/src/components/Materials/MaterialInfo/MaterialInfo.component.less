@@ -4,7 +4,7 @@
     flex: 1 1 auto;
     overflow: hidden;
     &_ttl {
-      margin: 28px 0 28px;
+      margin: 28px 0 10px;
       @media @mobile {
         display: none;
       }
@@ -15,7 +15,7 @@
       }
       font-family: @second-font;
       font-size: 16px;
-      margin: -10px 0 64px;
+      margin-bottom: 20px;
       a {
         text-decoration: none;
         margin-right: 13px;
@@ -23,15 +23,15 @@
       }
     }
     &_subttl {
-      margin: 0 0 32px;
+      margin: 0 0 20px;
       border-bottom: 1px solid #f4f4f4;
       padding-bottom: 7px;
       @media @mobile {
-        padding-top: 30px;
+        margin-top: 20px;
       }
     }
     &_quality {
-      margin: 34px 0 24px;
+      margin-bottom: 20px;
       justify-content: flex-start;
       align-items: flex-start;
       display: flex;
@@ -49,7 +49,7 @@
       white-space: pre-wrap;
 
       @media @desktop {
-        margin-bottom: 53px;
+        margin-bottom: 30px;
       }
       p {
         margin-bottom: 23px;
@@ -128,6 +128,7 @@
     font-size: 16px;
     margin: 0 17px 0 0;
     color: #000;
+
     @media @mobile {
       vertical-align: top;
       margin: 0;
@@ -145,6 +146,7 @@
     &_txt {
       display: block;
       font-family: @second-font;
+      color: @dark-grey;
       font-size: 16px;
       margin: -5px 0 0 2px;
       letter-spacing: -0.2px;

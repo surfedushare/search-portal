@@ -2,7 +2,7 @@
 .collections {
   width: 100%;
   &.community__collections h2{
-    margin-bottom: 37px;
+    margin-bottom: 20px;
   }
   h2{
     margin-bottom: 81px;
@@ -10,9 +10,9 @@
   &__items {
     padding: 0;
     list-style: none;
-    display: flex;
-    //justify-content: space-between;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+    grid-gap: 1rem;
 
     .select-icon {
       background: @light-grey url('/images/close-grey.svg') 50% 50% no-repeat;
@@ -35,10 +35,6 @@
         outline: none;
       }
     }
-
-    @media @mobile {
-      display: block;
-    }
   }
   &__description{
     font-size: 20px;
@@ -55,7 +51,7 @@
     line-height: 1.44;
 
     &_wrapper{
-      padding: 31px 18px 44px;
+      padding: 20px;
     }
     &_wrapper.selected {
       opacity: 0.5;

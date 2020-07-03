@@ -198,7 +198,7 @@ export default {
 
   &__info {
     padding: 97px 0 0;
-    margin-bottom: 82px;
+    margin-bottom: 60px;
     position: relative;
     min-height: 300px;
 
@@ -215,7 +215,7 @@ export default {
 
       @media @mobile {
         padding: initial;
-        margin: -20px -20px -100px -20px;
+        margin: -20px -20px -165px -20px;
         padding-top: 20px;
         padding-left: 20px;
 
@@ -236,15 +236,12 @@ export default {
     &_bg {
       position: absolute;
       right: 26px;
-      top: -45px;
+      top: -62px;
       width: 50%;
       border-radius: 21px;
+
       @media @mobile {
-        z-index: -1;
-        right: -20px;
-      }
-      @media @mobile {
-        right: -50px;
+        display: none;
       }
     }
 
@@ -256,7 +253,7 @@ export default {
         width: 100%;
         margin-bottom: 20px;
         background-color: #ffffff;
-        border-radius: 10px;
+        border-radius: 20px;
         box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
       }
     }
@@ -288,6 +285,9 @@ export default {
     @media @desktop {
       display: flex;
     }
+    @media @mobile {
+      margin-bottom: 60px;
+    }
     position: relative;
   }
 
@@ -298,6 +298,10 @@ export default {
     margin-bottom: -30px;
     position: relative;
     z-index: 1;
+
+    @media @mobile {
+      justify-content: flex-start;
+    }
 
     &_dates {
       width: 251px;
@@ -351,6 +355,7 @@ export default {
 
     @media @mobile {
       width: 100%;
+      max-width: 400px;
       margin: 0;
     }
 
@@ -359,16 +364,20 @@ export default {
       top: 0;
       left: 0;
       width: 100%;
-      padding-top: 102px;
+      padding-top: 80px;
       padding-bottom: 102px;
+
+      @media @mobile {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
     }
   }
 
   &__materials {
     position: relative;
-    margin: 0 0 132px;
     flex: 1 1 auto;
-    padding: 98px 0 0;
+    padding: 60px 0 0;
     width: 100%;
 
     @media @mobile {
@@ -378,6 +387,7 @@ export default {
 
   label {
     line-height: 50px;
+    margin-right: 10px;
   }
   &__select {
     position: relative;
@@ -427,8 +437,7 @@ export default {
       color: @dark-grey;
       border-radius: 5px;
       border: solid 1px rgba(0, 0, 0, 0.12);
-      margin: 0;
-      padding: 0 40px 0 0;
+      padding: 0 40px 0 10px;
       cursor: pointer;
       box-sizing: border-box;
 
