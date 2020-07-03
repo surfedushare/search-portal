@@ -89,7 +89,7 @@ export default {
     },
     emitSearch(searchText) {
       this.formData.search_text = searchText
-      this.formData.filters = this.collectFilters()
+      this.formData.filters = this.$store.getters.search_filters
       this.$router.push(this.generateSearchMaterialsQuery(this.formData))
       this.$emit('input', this.formData)
     },
