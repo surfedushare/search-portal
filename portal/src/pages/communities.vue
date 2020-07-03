@@ -124,6 +124,11 @@ export default {
       })
       return communityDetails[detail] || null
     }
+  },
+  watch: {
+    $route() {
+      this.userCommunities = this.$route.name.startsWith('my')
+    }
   }
 }
 </script>
