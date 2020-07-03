@@ -89,11 +89,10 @@ export default {
     },
     emitSearch(searchText) {
       this.formData.search_text = searchText
-      this.formData.filters = this.$store.getters.search_filters
+      this.formData.filters = this.collectFilters()
       this.$router.push(this.generateSearchMaterialsQuery(this.formData))
       this.$emit('input', this.formData)
     },
-
     titleTranslation(filterCategory) {
       if (filterCategory.title_translations) {
         return filterCategory.title_translations[this.$i18n.locale]
@@ -107,6 +106,13 @@ export default {
           return item
         }
       )
+    },
+    collectFilters() {
+      let filterMap = {}
+      this.$store.getters.search_filters.map(item => {
+        filterMap = {...filterMap, [item.external_id]: item.items }
+      })
+      return filterMap
     }
   },
   watch: {
