@@ -110,7 +110,7 @@ export default {
     collectFilters() {
       let filterMap = {}
       this.$store.getters.search_filters.map(item => {
-        filterMap = {...filterMap, [item.external_id]: item.items }
+        filterMap = { ...filterMap, [item.external_id]: item.items }
       })
       return filterMap
     }
