@@ -22,7 +22,7 @@ from rest_framework.viewsets import (
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
-from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
+from surf.apps.filters.utils import IGNORED_FIELDS
 from surf.apps.materials.filters import (
     CollectionFilter
 )
@@ -113,9 +113,6 @@ class MaterialSearchAPIView(APIView):
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
 
         data["filters"] = filters
-
-        # add default filters to search materials
-        data["default_filters"] = add_default_material_filters([])
 
         return_records = data.pop("return_records", None)
         return_filters = data.pop("return_filters", None)
@@ -239,13 +236,9 @@ class MaterialAPIView(APIView):
             # return overview of newest Materials
             elastic = ElasticSearchApiClient()
 
-            # add default filters to search materials
-            filters = add_default_material_filters()
-
             res = elastic.search([],
                                  # sort by newest items first
                                  ordering="-lom.lifecycle.contribute.publisherdate",
-                                 filters=filters,
                                  page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
             res = add_extra_parameters_to_materials(request.user,

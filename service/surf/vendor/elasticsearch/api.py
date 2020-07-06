@@ -145,7 +145,6 @@ class ElasticSearchApiClient:
     def search(
             self,
             search_text: list,
-            default_filters=None,
             drilldown_names=None,
             filters=None,
             ordering=None,
@@ -156,7 +155,6 @@ class ElasticSearchApiClient:
         Build and send a query to elasticsearch and parse it before returning.
         :param search_text: A list of strings to search for.
         :param drilldown_names: A list of the 'drilldowns' (filters) that are to be counted by elasticsearch.
-        :param default_filters: The filters that are applied by default for this search.
         :param filters: The filters that are applied for this search.
         :param ordering: Sort the results by this ordering (or use default elastic ordering otherwise)
         :param page: The page index of the results
@@ -188,10 +186,6 @@ class ElasticSearchApiClient:
             body["query"]["bool"]["must"] += [query_string]
 
         indices = self.parse_index_language(self, filters)
-
-        default_filters = self.parse_filters(default_filters)
-        if default_filters:
-            body["query"]["bool"]["must"] += [default_filters]
 
         if drilldown_names:
             body["aggs"] = self.parse_aggregations(drilldown_names, filters)
