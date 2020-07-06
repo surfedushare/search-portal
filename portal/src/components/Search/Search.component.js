@@ -108,11 +108,10 @@ export default {
       )
     },
     collectFilters() {
-      let filterMap = {}
-      this.$store.getters.search_filters.map(item => {
-        filterMap = { ...filterMap, [item.external_id]: item.items }
-      })
-      return filterMap
+      return this.$store.getters.search_filters.reduce((memo, item) => {
+        memo[item.external_id] = item.items
+        return memo
+      }, {})
     }
   },
   watch: {

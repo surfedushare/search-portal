@@ -153,11 +153,11 @@ class MaterialSearchAPIView(APIView):
 
         drill_down_dict = {item['external_id']: item for item in res["drilldowns"]}
         drill_down_flat = {}
-        for k, v in drill_down_dict.items():
-            if v.get('count', None):
-                drill_down_flat.update({k: v})
-            if v['items']:
-                for el in v['items']:
+        for external_id, drilldown in drill_down_dict.items():
+            if drilldown.get('count', None):
+                drill_down_flat.update({external_id: drilldown})
+            if drilldown['items']:
+                for el in drilldown['items']:
                     drill_down_flat.update({el['external_id']: el})
 
         filter_category_tree = MpttFilterItem.objects.select_related("title_translations").get_cached_trees()

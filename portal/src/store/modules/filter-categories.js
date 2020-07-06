@@ -123,12 +123,12 @@ export default {
       let selected = getFiltersForSearch(state.filter_categories.results)
       let selectedGroups = _.groupBy(selected, 'searchId')
 
-      let filterMap = {}
+      const filterMap = {}
       for (const group in selectedGroups) {
         const items = selectedGroups[group].map(item => {
           return item.external_id
         })
-        filterMap = { ...filterMap, [group]: items }
+        filterMap[group] = items
       }
       return filterMap
     },

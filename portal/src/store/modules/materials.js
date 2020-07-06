@@ -11,9 +11,9 @@ import axios from '~/axios'
 const $log = injector.get('$log')
 
 function generateSearchParams(search) {
-  const filters = Object.keys(search.filters).reduce((memo, key) => {
-    return [...memo, { external_id: key, items: search.filters[key] }]
-  }, [])
+  const filters = Object.keys(search.filters).map(key => {
+    return { external_id: key, items: search.filters[key] }
+  })
 
   const searchText = search.search_text.split(/\s+/).filter(x => x !== '')
 

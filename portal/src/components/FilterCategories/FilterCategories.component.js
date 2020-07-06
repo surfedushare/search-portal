@@ -37,7 +37,8 @@ export default {
         if (item.children.length > 0) {
           item.children.forEach(child => iterator(memo, child))
         }
-        return [...memo, item.external_id]
+        memo.push(item.external_id)
+        return memo
       }
 
       return item.children.reduce(iterator, [item.external_id])
