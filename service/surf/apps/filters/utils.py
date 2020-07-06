@@ -4,7 +4,6 @@ This module contains some common functions for filters app.
 
 import datetime
 import re
-from collections import OrderedDict
 
 from django.conf import settings
 from tqdm import tqdm
