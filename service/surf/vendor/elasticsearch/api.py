@@ -79,6 +79,8 @@ class ElasticSearchApiClient:
         record['keywords'] = hit['_source']['keywords']
         record['language'] = hit['_source']['language']
         record['publish_datetime'] = hit['_source']['publisher_date']
+        record['publishers'] = hit['_source']['publishers']
+        record['authors'] = hit['_source']['authors']
         author = hit['_source']['author']
         if author and isinstance(author, list):
             author = _parse_vcard(author[0]).get(_VCARD_FORMATED_NAME_KEY)
