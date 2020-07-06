@@ -284,7 +284,7 @@ CELERYD_TASK_TIME_LIMIT = 300  # 5 minutes for a single task
 CELERY_BEAT_SCHEDULE = {
     'health-check': {
         'task': 'health_check',
-        'schedule': 5.0,
+        'schedule': 60,
         'args': tuple()
     },
 }
