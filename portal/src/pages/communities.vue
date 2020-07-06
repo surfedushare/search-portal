@@ -107,6 +107,11 @@ export default {
     },
     ...mapGetters(['user'])
   },
+  watch: {
+    $route() {
+      this.userCommunities = this.$route.name.startsWith('my')
+    }
+  },
   mounted() {
     this.$store.dispatch('getCommunities')
   },
