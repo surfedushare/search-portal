@@ -1,7 +1,6 @@
 export default {
   name: 'star-rating',
   props: {
-    name: String,
     type: {
       type: String,
       default: function() {
@@ -17,7 +16,6 @@ export default {
       default: false
     },
     value: null,
-    id: String,
     counter: [String, Number],
     disabled: Boolean,
     required: Boolean
@@ -67,7 +65,6 @@ export default {
       }
     }
   },
-  computed: {},
   watch: {
     value(value) {
       this.avg_rating = value

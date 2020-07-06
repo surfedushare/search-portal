@@ -14,9 +14,6 @@
             "
             class="communities__info_bg"
           />
-          <BreadCrumbs
-            :items="[{ title: $t('Home'), url: localePath('index') }]"
-          />
           <h2 class="communities__info_ttl">
             {{ $t('My-community') }}
           </h2>
@@ -401,7 +398,6 @@ import {
   endsWith
 } from 'lodash'
 import { mapGetters } from 'vuex'
-import BreadCrumbs from '~/components/BreadCrumbs'
 import Collections from '~/components/Collections'
 import AddCollection from '~/components/Popup/AddCollection'
 import InputFile from '~/components/InputFile'
@@ -413,7 +409,6 @@ export default {
   components: {
     Error,
     Collections,
-    BreadCrumbs,
     AddCollection,
     InputFile,
     SwitchInput
@@ -799,12 +794,6 @@ export default {
   padding: 119px 0 47px;
 
   &__info {
-    padding: 64px 38px 0;
-    margin: 0 0 93px;
-    border-radius: 20px;
-    position: relative;
-    min-height: 271px;
-
     &_bg {
       position: absolute;
       right: 26px;
@@ -813,20 +802,7 @@ export default {
       border-radius: 21px;
     }
     &_ttl {
-      padding: 0 0 49px;
       position: relative;
-      &:before {
-        content: '';
-        min-width: 100%;
-        position: absolute;
-        background-color: rgba(244, 244, 244, 0.9);
-        right: -48px;
-        left: -48px;
-        top: -98px;
-        bottom: -70px;
-        border-radius: 20px;
-        z-index: -1;
-      }
     }
     &_all {
       text-decoration: none;

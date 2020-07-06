@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
     'datagrowth',
 
     'core',
@@ -150,6 +151,14 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
+
+
+# Rest framework
+# https://www.django-rest-framework.org/
+
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+}
 
 
 # Logging
@@ -260,6 +269,24 @@ EXTENSION_TO_FILE_TYPE = {  # TODO: we should map from extension to mime and the
     '.jpeg': 'image',
     '.jpg': 'image',
     '.zip': 'zip',
+}
+
+
+# Celery
+# https://docs.celeryproject.org/en/v4.1.0/
+
+CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'  # 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERYD_TASK_TIME_LIMIT = 300  # 5 minutes for a single task
+CELERY_BEAT_SCHEDULE = {
+    'health-check': {
+        'task': 'health_check',
+        'schedule': 60,
+        'args': tuple()
+    },
 }
 
 

@@ -11,9 +11,6 @@
               /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
             "
           />
-          <BreadCrumbs
-            :items="[{ title: $t('Home'), url: localePath('index') }]"
-          />
           <h2 class="communities__info_ttl">
             {{ !userCommunities ? $t('Communities') : $t('My-communities') }}
           </h2>
@@ -90,15 +87,11 @@
 </template>
 
 <script>
-import BreadCrumbs from '~/components/BreadCrumbs'
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
 export default {
   name: 'Communities',
-  components: {
-    BreadCrumbs
-  },
   data() {
     return {
       userCommunities: this.$route.name.startsWith('my')
@@ -113,6 +106,11 @@ export default {
       }
     },
     ...mapGetters(['user'])
+  },
+  watch: {
+    $route() {
+      this.userCommunities = this.$route.name.startsWith('my')
+    }
   },
   mounted() {
     this.$store.dispatch('getCommunities')
@@ -139,40 +137,21 @@ export default {
 @import url('../variables');
 
 .communities {
-  padding: 96px 0 199px;
-
-  @media @mobile {
-    overflow: hidden;
-    padding-bottom: 100px;
-  }
-  &:before {
-    content: '';
-    left: 0;
-    right: 50%;
-    height: 353px;
-    top: 354px;
-    border-radius: 0 65px 65px 0;
-    margin: 0 432px 0 0;
-    pointer-events: none;
-    border-right: 1px solid #686d75;
-    border-top: 1px solid #686d75;
-    border-bottom: 1px solid #686d75;
-    position: absolute;
-    z-index: -1;
-  }
+  padding: 60px 0;
 
   &__center-header {
-    padding-bottom: 32px;
+    padding-bottom: 120px;
     @media @mobile {
+      padding-bottom: 30px;
       padding-left: 30px;
       padding-right: 30px;
     }
   }
   &__info {
-    padding: 70px 36px 0;
-    margin: 0 0 80px;
     border-radius: 20px;
     position: relative;
+    background: @light-grey;
+    padding: 50px 30px;
 
     @media @tablet {
       padding: 70px 48px 0;
@@ -187,32 +166,15 @@ export default {
       position: absolute;
       right: 26px;
       top: -51px;
-      width: 50%;
+      width: 40%;
       border-radius: 21px;
 
       @media @mobile {
-        right: -20px;
-        z-index: -1;
-      }
-      @media @mobile {
-        right: -50px;
+        display: none;
       }
     }
     &_ttl {
-      padding: 0 0 49px;
       position: relative;
-      &:before {
-        content: '';
-        min-width: 100%;
-        position: absolute;
-        background-color: rgba(244, 244, 244, 0.9);
-        right: -48px;
-        left: -48px;
-        top: -98px;
-        bottom: -70px;
-        border-radius: 20px;
-        z-index: -1;
-      }
     }
     &_all {
       text-decoration: none;
@@ -242,16 +204,12 @@ export default {
   }
   &__items {
     width: 100%;
-    display: flex;
-    justify-content: left;
-    flex-wrap: wrap;
     padding: 0;
     list-style: none;
     z-index: 1;
-
-    @media @mobile {
-      display: block;
-    }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(275px, 300px));
+    grid-gap: 1rem;
   }
   &__item {
     background: #fff;

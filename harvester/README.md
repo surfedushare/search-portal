@@ -17,6 +17,14 @@ you can further setup your Django database for the harvester with the following 
 invoke hrv.setup
 ```
 
+#### Installing a dataset
+
+You can install a local dataset with the following command:
+
+```bash
+invoke hrv.import-dataset
+```
+
 
 Tests
 -----

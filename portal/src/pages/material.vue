@@ -37,13 +37,6 @@ export default {
     ...mapGetters(['material', 'material_communities', 'materials'])
   },
   mounted() {
-    // const { materials } = this;
-    // if (!materials) {
-    //   this.$store.dispatch('searchMaterials', {
-    //     page_size: 4,
-    //     search_text: []
-    //   });
-    // }
     this.$store.dispatch('getMaterial', {
       id: this.$route.params.id,
       params: { count_view: true }
@@ -55,38 +48,15 @@ export default {
 <style lang="less" scoped>
 @import './../variables';
 .material {
-  padding: 32px 0 152px;
+  padding: 32px 0 60px;
   @media @tablet, @mobile {
     padding-bottom: 100px;
   }
-  &:before {
-    content: '';
-    left: 0;
-    right: 50%;
-    height: 353px;
-    top: 114px;
-    border-radius: 0 65px 65px 0;
-    pointer-events: none;
-    border-right: 1px solid #686d75;
-    border-top: 1px solid #686d75;
-    border-bottom: 1px solid #686d75;
-    position: absolute;
-    z-index: -1;
-    margin: 0 40px 0 0;
-    @media @desktop {
-      margin: 0 432px 0 0;
-    }
-
-    @media @tablet {
-      margin: 0 270px 0 0;
-    }
-  }
 
   &__wrapper {
-    margin: 0 auto 50px;
+    /* margin: 0 auto 50px; */
     @media @desktop {
       display: flex;
-      margin: 0 auto 124px;
     }
   }
 }

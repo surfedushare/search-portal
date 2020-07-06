@@ -7,8 +7,6 @@
 
       <MainFooter />
     </div>
-
-    <nuxt-loading ref="loading" />
   </div>
 </template>
 
@@ -25,17 +23,16 @@
 <script>
 import MainHeader from '~/components/MainHeader'
 import MainFooter from '~/components/MainFooter'
-import NuxtLoading from '~/components/nuxt-loading.vue'
+import { setLanguage } from '~/axios'
 
 export default {
   components: {
     MainHeader,
-    MainFooter,
-    NuxtLoading
+    MainFooter
   },
   watch: {
     '$i18n.locale'(newLocale) {
-      this.$axios.setLanguage(newLocale)
+      setLanguage(newLocale)
     }
   },
   created() {
@@ -46,7 +43,6 @@ export default {
   },
 
   mounted() {
-    this.$loading = this.$refs.loading
     this.$store.dispatch('getThemes')
   }
 }

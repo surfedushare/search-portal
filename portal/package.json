@@ -37,24 +37,21 @@
     "vuex": "3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "4.3.1",
-    "@vue/cli-plugin-eslint": "^4.4.4",
-    "@vue/cli-service": "4.3.1",
+    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-service": "^4.4.6",
     "babel-eslint": "^10.1.0",
     "browserslist": "4.11.1",
-    "css-loader": "3.4.2",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
-    "file-loader": "5.1.0",
-    "less": "3.11.1",
-    "less-loader": "5.0.0",
-    "moxios": "0.4.0",
+    "less": "^3.11.3",
+    "less-loader": "^6.1.2",
     "npm-check": "5.9.2",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "4.42.1",
-    "webpack-bundle-analyzer": "3.6.0",
+    "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^3.8.0",
     "webpack-bundle-tracker": "0.4.3"
   },
   "eslintConfig": {
@@ -68,16 +65,18 @@
       "eslint:recommended",
       "plugin:prettier/recommended",
       "prettier/vue"
-
     ],
     "rules": {
-      "vue/max-attributes-per-line": [2, {
-        "singleline": 20,
-        "multiline": {
-          "max": 1,
-          "allowFirstLine": false
+      "vue/max-attributes-per-line": [
+        2,
+        {
+          "singleline": 20,
+          "multiline": {
+            "max": 1,
+            "allowFirstLine": false
+          }
         }
-      }]
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"

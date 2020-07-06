@@ -10,9 +10,6 @@
           "
           class="privacy__info_bg"
         />
-        <BreadCrumbs
-          :items="[{ title: $t('Home'), url: localePath('index') }]"
-        />
         <h2 class="privacy__info_ttl">
           {{ $t('My-privacy') }}
         </h2>
@@ -58,9 +55,6 @@
             </div>
           </div>
           <div class="privacy__form__buttons">
-            <div v-if="is_saved" class="success">
-              &#10004; {{ $t('Data-saved') }}
-            </div>
             <button
               :disabled="is_submitting"
               type="submit"
@@ -68,6 +62,9 @@
             >
               {{ $t('save') }}
             </button>
+            <div v-if="is_saved" class="success">
+              &#10004; {{ $t('Data-saved') }}
+            </div>
           </div>
         </form>
       </div>
@@ -78,13 +75,10 @@
 <script>
 import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
-
-import BreadCrumbs from '~/components/BreadCrumbs'
 import SwitchInput from '~/components/switch-input'
 
 export default {
   components: {
-    BreadCrumbs,
     SwitchInput
   },
   data() {
@@ -135,37 +129,33 @@ export default {
 
 .privacy {
   width: 100%;
-  padding: 119px 0 47px;
+  padding: 80px 0 60px;
+
+  @media @mobile {
+    padding-top: 60px;
+  }
 
   &__info {
-    padding: 64px 38px 0;
-    margin: 0 0 93px;
+    padding: 50px 30px;
+    margin: 0 0 80px;
     border-radius: 20px;
+    background-color: rgba(244, 244, 244, 0.9);
     position: relative;
-    min-height: 271px;
+    border-radius: 20px;
 
     &_bg {
       position: absolute;
       right: 26px;
-      top: -57px;
-      width: 50%;
+      top: -51px;
+      width: 40%;
       border-radius: 21px;
+
+      @media @mobile {
+        display: none;
+      }
     }
     &_ttl {
-      padding: 0 0 49px;
       position: relative;
-      &:before {
-        content: '';
-        min-width: 100%;
-        position: absolute;
-        background-color: rgba(244, 244, 244, 0.9);
-        right: -48px;
-        left: -48px;
-        top: -98px;
-        bottom: -70px;
-        border-radius: 20px;
-        z-index: -1;
-      }
     }
   }
   &__form {
@@ -192,13 +182,8 @@ export default {
       flex-wrap: wrap;
     }
     &__column {
-      width: 45%;
-      padding-left: 53px;
-      &:first-child {
-        width: 55%;
-        padding-right: 32px;
-        padding-left: 0;
-      }
+      width: 100%%;
+      padding-right: 30px;
     }
     &__row {
       clear: both;
@@ -215,12 +200,12 @@ export default {
     }
 
     &__buttons {
-      text-align: right;
       width: 100%;
       margin: 10px 0 0;
+
       .success {
         display: inline-block;
-        margin: 0 20px 0 0;
+        margin-left: 20px;
         color: #008800;
       }
     }

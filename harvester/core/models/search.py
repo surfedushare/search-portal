@@ -1,12 +1,13 @@
-from elasticsearch import Elasticsearch
 from elasticsearch.helpers import streaming_bulk
 
 from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.postgres.fields import JSONField
+from rest_framework import serializers
 
 from core.models import Dataset
+from core.utils.elastic import get_es_client
 
 
 class ElasticIndex(models.Model):
@@ -22,14 +23,7 @@ class ElasticIndex(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        elastic_url = settings.ELASTICSEARCH_HOST
-        protocol = settings.ELASTICSEARCH_PROTOCOL
-        protocol_config = {} if protocol == "http" else {"scheme": "https", "port": 443}
-        self.client = Elasticsearch(
-            [elastic_url],
-            http_auth=(settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD),
-            **protocol_config
-        )
+        self.client = get_es_client()
 
     @property
     def remote_name(self):
@@ -52,25 +46,28 @@ class ElasticIndex(models.Model):
 
         # Some preparation based on remote state as well as command line options
         if remote_exists and recreate:
-            self.client.indices.delete(remote_name)
+            self.client.indices.delete(index=remote_name)
         if remote_exists and recreate or not remote_exists:
-            self.configuration = self.get_index_config(self.language)
+            if self.configuration is None:
+                self.configuration = self.get_index_config(self.language)
             self.client.indices.create(
                 index=remote_name,
-                body=self.configuration,
-                request_timeout=request_timeout
+                body=self.configuration
             )
         if recreate:
             self.error_count = 0
 
         # Actual push of docs to ES
-        for is_ok, result in streaming_bulk(self.client, elastic_documents, index=remote_name, doc_type="_doc",
+        errors = []
+        for is_ok, result in streaming_bulk(self.client, elastic_documents, index=remote_name,
                                             chunk_size=100, yield_ok=False, raise_on_error=False,
                                             request_timeout=request_timeout):
             if not is_ok:
                 self.error_count += 1
-                print(f'Error in sending bulk:{result}')
+                errors.append(result)
+
         self.save()
+        return errors
 
     def promote_to_latest(self):
         latest_alias = "latest-" + self.language
@@ -160,3 +157,10 @@ class ElasticIndex(models.Model):
                 }
             }
         }
+
+
+class ElasticIndexSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ElasticIndex
+        fields = ("id", "name", "language", "remote_name",)

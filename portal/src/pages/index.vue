@@ -124,11 +124,10 @@ export default {
 .main {
   position: relative;
   z-index: 1;
+
   &__info {
-    @media @desktop {
-      padding: 120px 0 0;
-      margin-bottom: 120px;
-    }
+    padding: 120px 0 0;
+    margin-bottom: 60px;
     position: relative;
 
     .center-header {
@@ -177,12 +176,20 @@ export default {
       top: -50px;
       right: 100px;
       color: #fff;
-      width: 572px;
+      width: auto;
+      max-width: 550px;
       font-family: @second-font;
       padding: 31px 48px 40px;
       font-size: 16px;
       font-weight: bold;
       z-index: 1;
+
+      @media @mobile {
+        top: -90px;
+        right: 20px;
+        padding: 5px 32px;
+        max-width: 300px;
+      }
 
       & .bg {
         background: @dark-blue;
@@ -219,14 +226,6 @@ export default {
 
     &_search {
       margin: auto;
-
-      @media @mobile {
-        width: 100%;
-        margin-top: 25px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-      }
     }
   }
 
@@ -255,7 +254,7 @@ export default {
 
   &__materials {
     position: relative;
-    margin: 0 0 70px;
+    margin: 0 0 40px;
 
     &_title {
       margin: 0 0 32px;
@@ -282,15 +281,15 @@ export default {
         top: -2px;
       }
 
-      img {
-        border-radius: 21px;
-
-        @media @tablet, @mobile {
-          width: 100%;
-          padding-right: 80px;
-          padding-left: 20px;
-        }
+      @media @mobile {
+        display: none;
       }
+
+      img {
+        width: 275px;
+        border-radius: 21px;
+      }
+
       &:before {
         content: '';
         position: absolute;
@@ -299,10 +298,6 @@ export default {
         top: 0;
         height: 109px;
         width: 119px;
-
-        @media @mobile {
-          right: 0;
-        }
       }
       &:after {
         content: '';
@@ -312,22 +307,17 @@ export default {
         top: 22px;
         height: 33px;
         width: 35px;
-        @media @mobile {
-          right: 18px;
-        }
       }
     }
 
     &__text_block {
       background: fade(@light-grey, 90%);
       border-radius: 20px;
-      margin: 100px 0 168px;
-      padding-top: 80px;
-      padding-left: 15px;
-      padding-right: 15px;
+      margin: 0 0 80px;
+      padding: 20px;
+
       @media @desktop {
-        padding: 56px 50px 43px 410px;
-        margin: 0 0 168px;
+        padding: 30px 30px 30px 270px;
       }
     }
 
@@ -335,15 +325,6 @@ export default {
       margin: 0 0 20px;
       @media @mobile {
         font-size: 22px;
-      }
-    }
-
-    &__text {
-      margin: 0 0 44px;
-    }
-    .button {
-      @media @mobile {
-        margin-bottom: 24px;
       }
     }
   }

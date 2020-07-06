@@ -34,7 +34,7 @@ class HarvesterCommand(BaseCommand):
 
     def info(self, message, object=None, log=False):
         if object is not None:
-            message += json.dumps(object, indent=4)
+            message += " " + json.dumps(object, indent=4)
         if not log:
             self.stdout.write(message)
         else:

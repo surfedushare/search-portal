@@ -1,5 +1,5 @@
-# Harvester Django
-django-basicauth==0.5.2
+# Process management
+supervisor==4.2.0
 
 # Harvester Celery
 celery==4.3.0

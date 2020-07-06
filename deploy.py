@@ -7,21 +7,15 @@ from git import Repo
 import boto3
 
 from environments.surfpol import MODE, get_package_info
-from service.package import (
-    VERSION as SERVICE_VERSION,
-    REPOSITORY as SERVICE_REPOSITORY,
-    NAME as SERVICE_NAME
-)
-from harvester.package import VERSION as HARVESTER_VERSION
+from service.package import PACKAGE as SERVICE_PACKAGE
+from harvester.package import PACKAGE as HARVESTER_PACKAGE
 
 # TODO: perhaps simply input a PACKAGE from <target>/package.py which is a dict like below and work with that directly
 TARGETS = {
-    "service": {
-        "name": SERVICE_NAME,
-        "repository": SERVICE_REPOSITORY,
-        "version": SERVICE_VERSION
-    }
+    "service": SERVICE_PACKAGE,
+    "harvester": HARVESTER_PACKAGE
 }
+REPOSITORY = "322480324822.dkr.ecr.eu-central-1.amazonaws.com"
 
 
 @task()
@@ -37,8 +31,8 @@ def prepare_builds(ctx):
     info = {
         "commit": commit,
         "versions": {
-            "service": SERVICE_VERSION,
-            "harvester": HARVESTER_VERSION,
+            "service": SERVICE_PACKAGE["version"],
+            "harvester": HARVESTER_PACKAGE["version"],
             "portal": portal_package["version"]
         }
     }
@@ -91,18 +85,17 @@ def push(ctx, target, version=None):
     target_info = TARGETS[target]
     version = version or target_info["version"]
     name = target_info["name"]
-    repository = target_info["repository"]
 
     # Login with Docker to AWS
     ctx.run(
         "AWS_DEFAULT_PROFILE=pol-dev aws ecr get-login-password --region eu-central-1 | "
-        f"docker login --username AWS --password-stdin {target_info['repository']}",
+        f"docker login --username AWS --password-stdin {REPOSITORY}",
         echo=True
     )
     # Tag the image we want to push for AWS
-    ctx.run(f"docker tag {name}:{version} {repository}/{name}:{version}", echo=True)
+    ctx.run(f"docker tag {name}:{version} {REPOSITORY}/{name}:{version}", echo=True)
     # Push to AWS ECR
-    ctx.run(f"docker push {repository}/{name}:{version}", echo=True, pty=True)
+    ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
 
 
 def register_task_definition(ecs_client, task_role_arn, target, mode, version):
@@ -119,11 +112,10 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version):
 
     # Read the service AWS container definition and replace some variables with actual values
     print(f"Reading container definitions for: {target_info['name']}")
-    with open(os.path.join("service", "aws-container-definitions.json")) as container_definitions_file:
+    with open(os.path.join(target, "aws-container-definitions.json")) as container_definitions_file:
         container_definitions_json = container_definitions_file.read()
         container_variables = {
-            "REPOSITORY": target_info["repository"],
-            "NAME": target_info["name"],
+            "REPOSITORY": REPOSITORY,
             "mode": mode,
             "version": version
         }
@@ -147,6 +139,48 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version):
     return target_info['name'], task_definition["taskDefinitionArn"]
 
 
+def register_clearlogins_task(session, aws_config, task_definition_arn):
+    events_client = session.client('events')
+    iam = session.resource('iam')
+    role = iam.Role('ecsEventsRole')
+
+    events_client.put_targets(
+        Rule='clearlogins',
+        Targets=[
+            {
+                'Id': '1',
+                'Arn': aws_config.cluster_arn,
+                'RoleArn': role.arn,
+                'Input': json.dumps(
+                    {
+                        "containerOverrides": [
+                            {
+                                "name": "search-portal-container",
+                                "command": ["python", "manage.py", "clearlogins"]
+                            }
+                        ]
+                    }
+                ),
+                'EcsParameters': {
+                    'TaskDefinitionArn': task_definition_arn,
+                    'TaskCount': 1,
+                    'LaunchType': 'FARGATE',
+                    'NetworkConfiguration': {
+                        "awsvpcConfiguration": {
+                            "Subnets": [aws_config.private_subnet_id],
+                            "SecurityGroups": [
+                                aws_config.rds_security_group_id,
+                                aws_config.default_security_group_id
+
+                            ]
+                        }
+                    }
+                }
+            }
+        ]
+    )
+
+
 @task(help={
     "target": "Name of the project you want to deploy on AWS: service or harvester",
     "mode": "Mode you want to deploy to: development, acceptance or production. Must match APPLICATION_MODE",
@@ -159,12 +193,14 @@ def deploy(ctx, target, mode, version=None):
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
-    ecs_client = session.client('ecs', region_name='eu-central-1')
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name='eu-central-1')
+    ecs_client = session.client('ecs', )
+    task_role_arn = ctx.config.aws.superuser_task_role_arn if target == "harvester" else \
+        ctx.config.aws.task_role_arn
 
     target_name, task_definition_arn = register_task_definition(
         ecs_client,
-        ctx.config.aws.task_role_arn,
+        task_role_arn,
         target,
         mode,
         version
@@ -176,6 +212,12 @@ def deploy(ctx, target, mode, version=None):
         service=f"{target_name}",
         taskDefinition=task_definition_arn
     )
+
+    if target == "service":
+        print("Registering clearlogins scheduled task")
+        register_clearlogins_task(session, ctx.config.aws, task_definition_arn)
+
+    print("Done deploying")
 
 
 @task(help={
@@ -193,6 +235,7 @@ def migrate(ctx, target, mode, version=None):
     session = boto3.Session(profile_name=ctx.config.aws.profile_name)
     ecs_client = session.client('ecs', region_name='eu-central-1')
 
+    target_info = TARGETS[target]
     target_name, task_definition_arn = register_task_definition(
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
@@ -208,7 +251,7 @@ def migrate(ctx, target, mode, version=None):
         launchType="FARGATE",
         overrides={
             "containerOverrides": [{
-                "name": "search-portal-container",
+                "name": f"{target_info['name']}-container",
                 "command": ["python", "manage.py", "migrate"],
                 "environment": [
                     {

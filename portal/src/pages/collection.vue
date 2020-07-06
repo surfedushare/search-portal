@@ -94,7 +94,7 @@ export default {
         page_size: 10,
         page: 1,
         filters: [],
-        search_text: []
+        search_text: ''
       },
       isLoading: true,
       isShowAddMaterial: false
@@ -270,7 +270,7 @@ export default {
 
 .collection {
   width: 100%;
-  padding: 95px 0 215px;
+  padding: 80px 0 0;
 }
 
 .add-materials {
@@ -281,7 +281,6 @@ export default {
 
 .materials {
   margin-top: 20px;
-  margin-right: -34px;
 }
 
 .materials__add__link {

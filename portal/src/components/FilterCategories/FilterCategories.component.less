@@ -74,8 +74,6 @@
     padding: 0 15px 0 0;
     margin: 0 -15px 0 0;
     list-style: none;
-    max-height: ~'calc(100vh - 300px)';
-    overflow-y: auto;
     overflow-x: hidden;
 
     &--no-scroll {
@@ -113,13 +111,13 @@
   }
 
   &__subitems {
-    padding: 17px 0 30px;
+    padding: 10px 0 20px;
     margin: 0;
     list-style: none;
   }
 
   &__subitem {
-    padding: 6px 0;
+    padding: 3px 0;
     margin: 0;
     list-style: none;
     display: block;
@@ -173,15 +171,18 @@
       }
     }
 
-    input {
-      margin: 5px 0 0;
-    }
+    > div {
+      display: flex;
 
-    label {
-      display: block;
-      margin-top: -20px;
-      margin-left: 20px;
-      cursor: pointer;
+      input {
+        margin: 5px 0 0;
+      }
+
+      label {
+        display: block;
+        margin-left: 20px;
+        cursor: pointer;
+      }
     }
 
     &--show-more {

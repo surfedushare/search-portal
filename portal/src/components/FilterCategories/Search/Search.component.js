@@ -3,6 +3,8 @@ import { VueAutosuggest } from 'vue-autosuggest'
 import { generateSearchMaterialsQuery } from './../../_helpers'
 import { debounce } from 'lodash'
 
+import axios from '~/axios'
+
 export default {
   name: 'search',
   components: {
@@ -32,7 +34,11 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getFilterCategories')
+    // TODO: this should be somewhere else..
+    this.$store.dispatch('getFilterCategories').then(() => {
+      const filters = this.$store.getters.getFiltersFromQuery(this.$route.query)
+      this.$store.commit('SETUP_FILTER_CATEGORIES', filters)
+    })
   },
   data() {
     return {
@@ -57,11 +63,11 @@ export default {
         return
       }
 
-      const keywords = await this.$axios.$get('keywords/', {
+      const { data } = await axios.get('keywords/', {
         params: { query: search }
       })
 
-      this.suggestions = [{ data: keywords }]
+      this.suggestions = [{ data }]
     }, 350),
     onSelectSuggestion(result) {
       if (result) {
