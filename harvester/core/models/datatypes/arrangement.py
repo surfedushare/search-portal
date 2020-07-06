@@ -104,7 +104,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'suggest': base_document['title'].split(" ") if base_document['title'] else [],
             '_id': self.meta['reference_id'],
             'oaipmh_set': self.collection.name,
-            'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses set_name
+            'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
         }
         if self.deleted_at:
             elastic_search_action["_op_type"] = "delete"
