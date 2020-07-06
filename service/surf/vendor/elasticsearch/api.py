@@ -293,9 +293,12 @@ class ElasticSearchApiClient:
 
         aggregation_items = {}
         for aggregation_name in aggregation_names:
+            other_filters = []
 
-            other_filters = list(filter(lambda x: x['external_id'] != aggregation_name, filters))
-            other_filters = self.parse_filters(other_filters)
+            if filters:
+                other_filters = list(filter(lambda x: x['external_id'] != aggregation_name, filters))
+                other_filters = self.parse_filters(other_filters)
+
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(aggregation_name)
 
             if len(other_filters) > 0:
