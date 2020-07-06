@@ -57,7 +57,12 @@
       >
         <div class="search__filter">
           <div class="search__filter_sticky">
-            <FilterCategories v-model="search" />
+            <FilterCategories
+              v-model="search"
+              :filter-categories="getFilterCategories() || []"
+              :selected-filters="search.filters"
+              :materials="materials"
+            />
           </div>
         </div>
 
@@ -75,7 +80,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Search from '~/components/FilterCategories/Search'
+import Search from '~/components/Search'
 import FilterCategories from '~/components/FilterCategories'
 import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
@@ -93,9 +98,11 @@ export default {
   },
   data() {
     return {
-      search: {},
+      search: {
+        filters: {}
+      },
       isShow: false,
-      publisherdate: 'lom.lifecycle.contribute.publisherdate',
+      publisherDateExternalId: 'lom.lifecycle.contribute.publisherdate',
       dates_range: {
         start_date: null,
         end_date: null
@@ -123,20 +130,11 @@ export default {
     },
     dates_range(dates) {
       const { filters } = this.search
-      let new_filters = filters ? filters.slice(0) : []
-      const current_dates = new_filters.find(
-        item => item.external_id === this.publisherdate
-      )
-      const index = current_dates
-        ? new_filters.indexOf(current_dates)
-        : new_filters.length
-
-      new_filters[index] = {
-        external_id: this.publisherdate,
-        items: [dates.start_date || null, dates.end_date || null]
-      }
-
-      this.search = Object.assign({}, this.search, { filters: new_filters })
+      filters[this.publisherDateExternalId] = [
+        dates.start_date || null,
+        dates.end_date || null
+      ]
+      this.search = { ...this.search, filters }
     }
   },
   mounted() {
@@ -185,6 +183,9 @@ export default {
       this.search.page = 1
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search))
       this.$router.push(this.generateSearchMaterialsQuery(this.search))
+    },
+    getFilterCategories() {
+      return this.materials ? this.materials.filter_categories : []
     }
   }
 }

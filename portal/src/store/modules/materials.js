@@ -10,6 +10,20 @@ import axios from '~/axios'
 
 const $log = injector.get('$log')
 
+function generateSearchParams(search) {
+  const filters = Object.keys(search.filters).map(key => {
+    return { external_id: key, items: search.filters[key] }
+  })
+
+  const searchText = search.search_text.split(/\s+/).filter(x => x !== '')
+
+  return {
+    ...search,
+    search_text: searchText,
+    filters
+  }
+}
+
 export default {
   state: {
     materials: null,
@@ -120,11 +134,10 @@ export default {
     async searchMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true)
-        const { data: materials } = await axios.post('materials/search/', {
-          ...search,
-          search_text:
-            (search.search_text && search.search_text.split(/\s+/)) || []
-        })
+        const { data: materials } = await axios.post(
+          'materials/search/',
+          generateSearchParams(search)
+        )
         materials.search_text = search.search_text
         materials.active_filters = search.filters
         materials.ordering = search.ordering
@@ -138,10 +151,10 @@ export default {
     async searchNextPageMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true)
-        const { data: materials } = await axios.post('materials/search/', {
-          ...search,
-          search_text: search.search_text.split(/\s+/)
-        })
+        const { data: materials } = await axios.post(
+          'materials/search/',
+          generateSearchParams(search)
+        )
         commit('SET_NEXT_PAGE_MATERIALS', materials)
         commit('SET_MATERIALS_LOADING', false)
       } else {

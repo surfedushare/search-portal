@@ -326,4 +326,6 @@ class ElasticSearchApiClient:
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
             return 'author'
+        elif external_id == 'lom.general.language':
+            return 'language.keyword'
         return external_id

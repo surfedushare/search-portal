@@ -41,7 +41,7 @@
 import { isEmpty, map } from 'lodash'
 import { mapGetters } from 'vuex'
 import Popup from '~/components/Popup'
-import Search from '~/components/FilterCategories/Search'
+import Search from '~/components/Search'
 import Materials from '~/components/Materials'
 
 export default {

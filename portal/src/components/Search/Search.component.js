@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
 import { VueAutosuggest } from 'vue-autosuggest'
-import { generateSearchMaterialsQuery } from './../../_helpers'
+import { generateSearchMaterialsQuery } from '../_helpers'
 import { debounce } from 'lodash'
 
 import axios from '~/axios'
@@ -93,7 +93,6 @@ export default {
       this.$router.push(this.generateSearchMaterialsQuery(this.formData))
       this.$emit('input', this.formData)
     },
-
     titleTranslation(filterCategory) {
       if (filterCategory.title_translations) {
         return filterCategory.title_translations[this.$i18n.locale]
@@ -107,6 +106,12 @@ export default {
           return item
         }
       )
+    },
+    collectFilters() {
+      return this.$store.getters.search_filters.reduce((memo, item) => {
+        memo[item.external_id] = item.items
+        return memo
+      }, {})
     }
   },
   watch: {
