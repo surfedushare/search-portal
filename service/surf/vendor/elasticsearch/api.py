@@ -39,26 +39,21 @@ class ElasticSearchApiClient:
         # Transform aggregations into drilldowns
         drilldowns = []
         for aggregation_name, aggregation in aggregations.items():
-            if "counts" in aggregation:
-                items = [
-                    {
-                        "external_id": bucket["key"],
-                        "count": bucket["doc_count"]
-                    }
-                    for bucket in aggregation["counts"]["buckets"]
-                ]
-            else:
-                items = [
-                    {
-                        "external_id": bucket["key"],
-                        "count": bucket["doc_count"]
-                    }
-                    for bucket in aggregation["buckets"]
-                ]
+            buckets = aggregation["filtered"]["buckets"] if "filtered" in aggregation else aggregation["buckets"]
+
+            items = [
+                {
+                    "external_id": bucket["key"],
+                    "count": bucket["doc_count"]
+                }
+                for bucket in buckets
+            ]
+
             drilldowns.append({
                 "external_id": aggregation_name,
                 "items": items
             })
+
         result['drilldowns'] = drilldowns
 
         # Transform hits into records
@@ -147,11 +142,21 @@ class ElasticSearchApiClient:
         search_results["records"] = []
         return search_results
 
-    def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5, default_filters=None):
+    def search(
+            self,
+            search_text: list,
+            default_filters=None,
+            drilldown_names=None,
+            filters=None,
+            ordering=None,
+            page=1,
+            page_size=5
+            ):
         """
         Build and send a query to elasticsearch and parse it before returning.
         :param search_text: A list of strings to search for.
         :param drilldown_names: A list of the 'drilldowns' (filters) that are to be counted by elasticsearch.
+        :param default_filters: The filters that are applied by default for this search.
         :param filters: The filters that are applied for this search.
         :param ordering: Sort the results by this ordering (or use default elastic ordering otherwise)
         :param page: The page index of the results
@@ -160,7 +165,7 @@ class ElasticSearchApiClient:
         """
         search_text = search_text or []
         assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
-        # build basic query
+
         start_record = page_size * (page - 1)
         body = {
             'query': {
@@ -172,7 +177,7 @@ class ElasticSearchApiClient:
                 "bool": defaultdict(list)
             }
         }
-        # add a search query if any
+
         if len(search_text):
             query_string = {
                 "query_string": {
@@ -181,19 +186,20 @@ class ElasticSearchApiClient:
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
+
         indices = self.parse_index_language(self, filters)
-        # apply filters
+
         default_filters = self.parse_filters(default_filters)
         if default_filters:
             body["query"]["bool"]["must"] += [default_filters]
-        # add aggregations
+
         if drilldown_names:
             body["aggs"] = self.parse_aggregations(drilldown_names, filters)
 
         filters = self.parse_filters(filters)
         if filters:
             body["post_filter"]["bool"]["must"] += [filters]
-        # add ordering
+
         if ordering:
             body["sort"] = [
                 self.parse_ordering(ordering),
@@ -281,6 +287,7 @@ class ElasticSearchApiClient:
         """
         Parse the aggregations so elastic can count the items properly.
         :param aggregation_names: the names of the aggregations to
+        :param filters: the filters for the query
         :return:
         """
 
@@ -289,9 +296,10 @@ class ElasticSearchApiClient:
 
             other_filters = list(filter(lambda x: x['external_id'] != aggregation_name, filters))
             other_filters = self.parse_filters(other_filters)
-
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(aggregation_name)
+
             if len(other_filters) > 0:
+                # Filter the aggregation by the filters applied to other categories
                 aggregation_items[aggregation_name] = {
                     "filter": {
                         "bool": {
@@ -299,10 +307,9 @@ class ElasticSearchApiClient:
                         }
                     },
                     "aggs": {
-                        "counts": {
+                        "filtered": {
                             "terms": {
                                 "field": elastic_type,
-                                # Raise the default limit of 10 items for aggregation
                                 "size": 500,
                             }
                         }
@@ -312,7 +319,6 @@ class ElasticSearchApiClient:
                 aggregation_items[aggregation_name] = {
                     "terms": {
                         "field": elastic_type,
-                        # Raise the default limit of 10 items for aggregation
                         "size": 500,
                     }
                 }
