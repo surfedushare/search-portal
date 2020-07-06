@@ -112,10 +112,10 @@ class MaterialSearchAPIView(APIView):
         if author:
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
 
-        # add default filters to search materials
-        filters = add_default_material_filters(filters)
-
         data["filters"] = filters
+
+        # add default filters to search materials
+        data["default_filters"] = add_default_material_filters([])
 
         return_records = data.pop("return_records", None)
         return_filters = data.pop("return_filters", None)
