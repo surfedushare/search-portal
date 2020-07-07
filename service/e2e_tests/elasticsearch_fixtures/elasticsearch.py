@@ -16,7 +16,18 @@ NL_MATERIAL = {
         "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Theo van den Bogaart\nEND:VCARD",
         "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Marc de Graaf\nEND:VCARD"
     ],
-    "file_type": "archive",
+    "file_type": "text",
     "disciplines": [],
     "arrangement_collection_name": "wikiwijsmaken"
 }
+
+
+def generate_nl_material(educational_levels=None, file_type=None, source=None):
+    copy = NL_MATERIAL.copy()
+    if educational_levels:
+        copy["lom_educational_levels"] = educational_levels
+    if file_type:
+        copy["file_type"] = file_type
+    if source:
+        copy["arrangement_collection_name"] = source
+    return copy
