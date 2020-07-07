@@ -49,6 +49,12 @@ export default {
     }
   },
   methods: {
+    publisherUrl(publisher) {
+      if (this.material) {
+        this.formData.publisher = publisher
+        return this.generateSearchMaterialsQuery(this.formData)
+      }
+    },
     generateSearchMaterialsQuery,
     /**
      * Show the popup "Save rating"

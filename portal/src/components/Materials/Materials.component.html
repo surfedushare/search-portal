@@ -51,10 +51,10 @@
                 {{material.author}}
               </div>
               <div
-                v-if="material.publisher"
+                v-if="material.publishers.length > 0"
                 class="materials__item_publisher"
               >
-                {{material.publisher}}
+                {{material.publishers.join(', ')}}
               </div>
               <div class="materials__item_date">
                 {{material.date || null}}

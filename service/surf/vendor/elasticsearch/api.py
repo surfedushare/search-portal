@@ -365,4 +365,6 @@ class ElasticSearchApiClient:
             return 'language.keyword'
         elif external_id == 'lom.general.aggregationlevel':
             return 'aggregation_level'
+        elif external_id == 'lom.lifecycle.contribute.publisher':
+            return 'publishers'
         return external_id
