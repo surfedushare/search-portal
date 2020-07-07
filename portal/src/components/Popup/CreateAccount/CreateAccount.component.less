@@ -1,0 +1,109 @@
+@import './../../../variables';
+
+.create-account {
+  .container {
+    width: 80vw;
+  }
+  .header {
+    position: relative;
+    display: block;
+    padding: 24px 0;
+    @media @wide {
+      padding: 40px 0;
+    }
+
+    &__info {
+      padding: 40px 20px;
+      border-radius: 20px;
+      background-color: rgba(244, 244, 244, 0.9);
+      position: relative;
+      @media @wide {
+        padding: 50px 30px;
+      }
+
+      &_ttl {
+        position: relative;
+        font-size: 24px;
+        @media @wide {
+          font-size: 28px;
+        }
+      }
+
+      &__img {
+        position: absolute;
+        right: 26px;
+        top: 0;
+        height: 162px;
+        border-radius: 21px;
+        @media @wide {
+          height: 210px;
+        }
+        @media @mobile {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .content {
+    width: calc(100% - 278px);
+    padding: 0 40px;
+    @media @wide {
+      width: calc(100% - 386px);
+    }
+    @media @mobile {
+      width: 100%;
+    }
+
+    .welcome {
+      margin-bottom: 20px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #353535;
+      font-family: @second-font;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .description {
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      margin: 10px 0 20px;
+
+      @media @small-mobile {
+        flex-direction: column;
+      }
+
+      .button {
+        padding: 13px 60px;
+
+        @media @small-mobile {
+          display: block !important;
+        }
+
+        &.cancel {
+          color: @dark-blue !important;
+          background-color: white !important;
+          border: 2px solid @light-grey !important;
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+          padding: 17px 23px;
+          margin-left: 20px;
+          @media @small-mobile {
+            margin-left: 0;
+            margin-top: 20px;
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}

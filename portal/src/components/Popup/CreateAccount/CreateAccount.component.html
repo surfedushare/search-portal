@@ -1,0 +1,56 @@
+<transition name="fade">
+  <Popup
+    v-if="isShow"
+    :close="close"
+    :is-show="isShow"
+    :auto_width="true"
+    class="create-account"
+  >
+    <slot>
+      <template>
+        <div class="container">
+          <div class="header">
+            <div class="header__info">
+              <h2 class="header__info_ttl">
+                {{ $t('welcome-title') }}
+              </h2>
+            </div>
+            <img
+              class="header__info__img"
+              src="/images/pictures/rawpixel-760027-unsplash.jpg"
+              srcset="
+                /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+                /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
+              "
+            />
+          </div>
+
+          <div class="content">
+            <div class="welcome">{{ $t('welcome-description') }}</div>
+            <div v-if="communityPermission && communityPermission[$i18n.locale]">
+              <p class="label">
+                {{ communityPermission[$i18n.locale].title }}
+              </p>
+              <div class="description">
+                <p>
+                  {{ communityPermission[$i18n.locale].description }}
+                  <router-link :to="localePath(communityPermission.more_info_route)">
+                    {{ $t('more-info') }}
+                  </router-link>
+                </p>
+              </div>
+            </div>
+            <div class="buttons">
+              <button class="button">
+                {{ $t('create-account') }}
+              </button>
+              <button class="button cancel">
+                {{ $t('cancel-create-account') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </slot>
+  </Popup>
+</transition>

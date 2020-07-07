@@ -83,7 +83,14 @@
         </section>
       </div>
     </div>
+
+    <CreateAccount
+      v-if="isShow"
+      :is-show="isShow"
+      :close="closePopupCreateAccount"
+    />
   </section>
+
 </template>
 
 <script>
@@ -92,12 +99,27 @@ import Search from '~/components/Search'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
 import PopularList from '~/components/Communities/PopularList'
+import CreateAccount from '~/components/Popup/CreateAccount'
 
 export default {
   components: {
+    CreateAccount,
     Search,
     PopularList,
     Materials
+  },
+  data() {
+    return {
+      isShow: true
+    }
+  },
+  methods: {
+    showPopupCreateAccount() {
+      this.isShow = true
+    },
+    closePopupCreateAccount() {
+      this.isShow = false
+    }
   },
   computed: {
     ...mapGetters(['materials', 'communities', 'sortedThemes', 'statistic']),

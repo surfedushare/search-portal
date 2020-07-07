@@ -41,11 +41,10 @@
                     }"
                   >
                     <p>
-                      {{ permission[$i18n.locale].description }} (<router-link
-                        :to="localePath(permission.more_info_route)"
-                      >
-                        {{ $t('more-info') }} </router-link
-                      >)
+                      {{ permission[$i18n.locale].description }}
+                      <router-link :to="localePath(permission.more_info_route)">
+                        {{ $t('more-info') }}
+                      </router-link>
                     </p>
                   </div>
                 </div>
@@ -61,10 +60,7 @@
               >
                 {{ $t('save-privacy-settings') }}
               </button>
-              <button
-                :disabled="is_submitting"
-                class="button privacy__form__button cancel"
-              >
+              <button class="button privacy__form__button cancel">
                 {{ $t('cancel-privacy-settings') }}
               </button>
             </div>
@@ -256,7 +252,6 @@ export default {
     border-radius: 20px;
     background-color: rgba(244, 244, 244, 0.9);
     position: relative;
-    border-radius: 20px;
     z-index: -1;
 
     &_ttl {
