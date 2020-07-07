@@ -5,7 +5,6 @@ from elasticsearch import Elasticsearch
 
 from surf.apps.querylog.models import QueryLog
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
 
 _VCARD_FORMATED_NAME_KEY = "FN"
