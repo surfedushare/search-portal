@@ -13,7 +13,9 @@ class TestSearch(ElasticSearchTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.elastic.index(index=settings.ELASTICSEARCH_NL_INDEX, doc_type="_doc", body=generate_nl_material())
+        cls.material = cls.elastic.index(
+            index=settings.ELASTICSEARCH_NL_INDEX, doc_type="_doc", body=generate_nl_material()
+        )
 
     def test_search(self):
         self.selenium.get(self.live_server_url)
@@ -27,10 +29,20 @@ class TestSearch(ElasticSearchTestCase):
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
 
     def test_search_by_author(self):
-        material_path = f"/materialen/{generate_nl_material().get('external_id')}"
+        material_path = f"/materialen/{self.material.get('external_id')}"
         self.selenium.get(f"{self.live_server_url}{material_path}")
 
         author_link = self.selenium.find_element_by_css_selector(".material__info_author a")
+        author_link.click()
+
+        search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
+        self.assertEqual(len(search_results), 1)
+
+    def test_search_by_publisher(self):
+        material_path = f"/materialen/{self.material.get('external_id')}"
+        self.selenium.get(f"{self.live_server_url}{material_path}")
+
+        author_link = self.selenium.find_element_by_css_selector(".material__info_publishers a")
         author_link.click()
 
         search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")

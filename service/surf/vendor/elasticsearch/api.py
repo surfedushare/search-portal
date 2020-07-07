@@ -81,12 +81,6 @@ class ElasticSearchApiClient:
         record['publish_datetime'] = hit['_source']['publisher_date']
         record['publishers'] = hit['_source']['publishers']
         record['authors'] = hit['_source']['authors']
-        author = hit['_source']['author']
-        if author and isinstance(author, list):
-            author = _parse_vcard(author[0]).get(_VCARD_FORMATED_NAME_KEY)
-        if not author:
-            author = None
-        record['author'] = author
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
         record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
@@ -173,7 +167,7 @@ class ElasticSearchApiClient:
         if len(search_text):
             query_string = {
                 "query_string": {
-                    "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "author"],
+                    "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors"],
                     "query": ' AND '.join(search_text)
                 }
             }
