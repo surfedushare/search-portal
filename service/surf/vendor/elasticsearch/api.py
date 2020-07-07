@@ -142,15 +142,7 @@ class ElasticSearchApiClient:
         search_results["records"] = []
         return search_results
 
-    def search(
-            self,
-            search_text: list,
-            drilldown_names=None,
-            filters=None,
-            ordering=None,
-            page=1,
-            page_size=5
-            ):
+    def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
         """
         Build and send a query to elasticsearch and parse it before returning.
         :param search_text: A list of strings to search for.
