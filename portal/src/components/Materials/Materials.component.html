@@ -45,10 +45,10 @@
                 {{material.title}}
               </h3>
               <div
-                v-if="material.author"
+                v-if="material.authors.length > 0"
                 class="materials__item_author"
               >
-                {{material.author}}
+                {{material.authors.join(', ')}}
               </div>
               <div
                 v-if="material.publishers.length > 0"

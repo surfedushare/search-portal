@@ -255,13 +255,6 @@ class ElasticSearchApiClient:
                             }
                         }
                     })
-            # we want _exact_ matches on author. Otherwise elastic will give a lot of false positives.
-            elif elastic_type == 'author':
-                filter_items.append({
-                    "regexp": {
-                        elastic_type: ".*(" + " ".join(filter_item["items"]) + ")+.*"
-                    }
-                })
             # all other filter types are handled by just using elastic terms with the 'translated' filter items
             else:
                 filter_items.append({
@@ -360,7 +353,7 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.classification.obk.discipline.id':
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
-            return 'author'
+            return 'authors'
         elif external_id == 'lom.general.language':
             return 'language.keyword'
         elif external_id == 'lom.general.aggregationlevel':

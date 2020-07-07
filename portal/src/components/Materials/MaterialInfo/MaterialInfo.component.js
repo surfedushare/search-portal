@@ -49,10 +49,20 @@ export default {
     }
   },
   methods: {
+    authorUrl(author) {
+      if (this.material) {
+        return this.generateSearchMaterialsQuery({
+          ...this.formData,
+          author: author
+        })
+      }
+    },
     publisherUrl(publisher) {
       if (this.material) {
-        this.formData.publisher = publisher
-        return this.generateSearchMaterialsQuery(this.formData)
+        return this.generateSearchMaterialsQuery({
+          ...this.formData,
+          publisher: publisher
+        })
       }
     },
     generateSearchMaterialsQuery,
@@ -99,16 +109,6 @@ export default {
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'themes']),
-    /**
-     * generate author URL
-     * @returns {{path, query}}
-     */
-    authorUrl() {
-      if (this.material) {
-        this.formData.author = this.material.author
-        return this.generateSearchMaterialsQuery(this.formData)
-      }
-    },
     /**
      * Get formatted 'number_of_views'
      * @returns String
