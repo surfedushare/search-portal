@@ -12,14 +12,17 @@
             }
         ],
         "environment": [
-            { "name" : "APPLICATION_MODE", "value" : "${mode}" }
+            { "name" : "PYTHONUNBUFFERED", "value" : "1" },
+            { "name" : "APPLICATION_MODE", "value" : "${mode}" },
+            { "name" : "POL_DJANGO_DEBUG", "value" : "0" }
         ],
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
                 "awslogs-group": "/ecs/harvester",
                 "awslogs-region": "eu-central-1",
-                "awslogs-stream-prefix": "${version}"
+                "awslogs-stream-prefix": "${version}",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
             }
         }
     }
