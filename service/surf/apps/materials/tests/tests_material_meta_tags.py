@@ -47,7 +47,6 @@ class TestMaterialMetaTags(SimpleTestCase):
         response = self.client.get(
             "/materialen/edurep_delen:7a8446c7-1dab-46be-8980-bf1009bc1cfa/")
         self.assertEqual(response.status_code, 200)
-        print(response)
         self.assertContains(
             response, '<meta content="SURF | Open Leermaterialen" property=og:title>')
         self.assertContains(
@@ -58,6 +57,5 @@ class TestMaterialMetaTags(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(
             response, '<meta content="SURF | Open Leermaterialen" property=og:title>')
-        print(response)
         self.assertContains(
             response, '<meta content="Open Leermaterialen" property=og:description>')
