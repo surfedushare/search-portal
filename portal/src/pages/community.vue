@@ -25,15 +25,6 @@
             </Collections>
             <Spinner v-if="community_collections_loading" />
           </div>
-          <Materials
-            v-show="false"
-            :materials="materials"
-            class="community__materials"
-          >
-            <template slot="header-info">
-              <h2>{{ $t('Newest-open-learning-material') }}</h2>
-            </template>
-          </Materials>
 
           <template>
             <div v-show="false" class="community__row">
@@ -58,7 +49,6 @@ import InfoBlock from '~/components/InfoBlock'
 import Themes from '~/components/Themes'
 import Disciplines from '~/components/Disciplines'
 import Collections from '~/components/Collections'
-import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
 import Error from '~/components/error'
 import _ from 'lodash'
@@ -70,7 +60,6 @@ export default {
     Themes,
     Disciplines,
     Collections,
-    Materials,
     Spinner,
     InfoBlock
   },
@@ -87,8 +76,6 @@ export default {
       'community_disciplines',
       'community_themes',
       'community_collections_loading',
-      'materials',
-      'materials_loading',
       'user'
     ]),
     community_collections() {
@@ -127,10 +114,6 @@ export default {
     this.$store.dispatch('getCommunityThemes', community)
     this.$store.dispatch('getCommunityDisciplines', community)
     this.$store.dispatch('getCommunityCollections', community)
-    this.$store.dispatch('searchMaterials', {
-      page_size: 4,
-      search_text: ''
-    })
   }
 }
 </script>
