@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-08 14:54+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: surf/vendor/surfconext/models/privacy.py:30
+msgid "name"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:31
+#: surf/vendor/surfconext/models/privacy.py:112
+msgid "is active"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:33
+msgid "english"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:34
+msgid "dutch"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:36
+#: surf/vendor/surfconext/models/privacy.py:120
+msgid "created at"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:37
+#: surf/vendor/surfconext/models/privacy.py:121
+msgid "modified at"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:98
+msgid "recorded at"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:99
+msgid "is allowed"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:100
+msgid "is retained"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:106
+msgid "english title"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:107
+msgid "dutch title"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:108
+msgid "english description"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:109
+msgid "dutch description"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:110
+msgid "more info route"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:113
+msgid "type"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:114
+msgid "priority"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:115
+msgid "is notification only"
+msgstr ""
+
+#: surf/vendor/surfconext/models/privacy.py:116
+msgid "is after login"
+msgstr ""

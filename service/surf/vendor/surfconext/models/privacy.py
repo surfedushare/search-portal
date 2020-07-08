@@ -115,7 +115,7 @@ class DataGoal(models.Model):
     is_notification_only = models.BooleanField(_("is notification only"), default=False)
     is_after_login = models.BooleanField(_("is after login"), default=False)
 
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, through=DataGoalPermission, verbose_name=_(""))
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, through=DataGoalPermission, verbose_name="")
 
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     modified_at = models.DateTimeField(_("modified at"), auto_now=True)

@@ -11,6 +11,8 @@ from django.db.models import Count
 from django.db.models import F
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
+from django.utils.translation import gettext as _
+from django.utils import translation
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -62,19 +64,29 @@ logger = logging.getLogger(__name__)
 def portal_material(request, *args, **kwargs):
     material = _get_material_by_external_id(request, kwargs["external_id"])
     if material:
+        with translation.override(kwargs["language"]):
+            title = _("SURF Open Learning Materials")
+            description = _("Open Learning Materials")
+            return render(request, "portal/index.html", {
+                'title': title,
+                'description': description,
+                'meta_og_title': material[0]["title"],
+                'meta_og_description': material[0]["description"]
+            })
+
+    return portal_single_page_application(request, args, language=kwargs["language"])
+
+
+def portal_single_page_application(request, *args, language):
+    with translation.override(language):
+        title = _("SURF Open Learning Materials")
+        description = _("Open Learning Materials")
         return render(request, "portal/index.html", {
-            'meta_og_title': material[0]["title"],
-            'meta_og_description': material[0]["description"]
+            'title': title,
+            'description': description,
+            'meta_og_title': title,
+            'meta_og_description': description
         })
-
-    return portal_single_page_application(request, args)
-
-
-def portal_single_page_application(request, *args):
-    return render(request, "portal/index.html", {
-        'meta_og_title': "SURF | Open Leermaterialen",
-        'meta_og_description': "Open Leermaterialen"
-    })
 
 
 class MaterialSearchAPIView(APIView):

@@ -18,7 +18,7 @@ import os
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import url, include
-from django.urls import path
+from django.urls import path, re_path
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
@@ -95,10 +95,12 @@ urlpatterns = [
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 
     # Frontend
-    url(r'^materialen/(?P<external_id>.+)/', portal_material),
-    url(r'^en/materials/(?P<external_id>.+)/', portal_material),
-    url(r'^$', portal_single_page_application, name="portal-spa"),
-    url(r'^.*/$', portal_single_page_application),
+    re_path(r'^materialen/(?P<external_id>.+)/', portal_material, {'language': 'nl'}),
+    re_path(r'^en/materials/(?P<external_id>.+)/', portal_material, {'language': 'en'}),
+    path('', portal_single_page_application, {'language': 'nl'}),
+    path('en/', portal_single_page_application, {'language': 'en'}),
+    re_path(r'^en/.*/$', portal_single_page_application, {'language': 'en'}),
+    re_path(r'^.*/$', portal_single_page_application, {'language': 'nl'}),
 ]
 
 if settings.MODE == 'localhost':
