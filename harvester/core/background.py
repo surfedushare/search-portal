@@ -1,7 +1,7 @@
 import logging
-from invoke import Context
 
-from tasks_local import import_dataset
+from django.core.management import call_command
+
 from harvester.settings import environment
 from harvester.celery import app
 
@@ -16,5 +16,4 @@ def health_check():
 
 @app.task(name="import_dataset")
 def celery_import_dataset(dataset):
-    ctx = Context(environment)
-    import_dataset(ctx, dataset, use_aws_profile=False)
+    call_command("load_harvester_data", dataset, default_aws_credentials=True)
