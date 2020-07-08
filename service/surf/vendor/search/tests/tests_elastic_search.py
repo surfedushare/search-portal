@@ -316,5 +316,5 @@ class TestsElasticSearch(TestCase):
             filters=[{"external_id": "lom.lifecycle.contribute.author", "items": [author]}]
         )
         for record in search_author['records']:
-            self.assertTrue(author in record['authors'])
+            self.assertIn(author, record['authors'])
         self.assertEqual(search_author['recordcount'], expected_record_count)
