@@ -5,7 +5,6 @@ from elasticsearch import Elasticsearch
 
 from surf.apps.querylog.models import QueryLog
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import _parse_vcard
 
 
 _VCARD_FORMATED_NAME_KEY = "FN"
@@ -79,12 +78,8 @@ class ElasticSearchApiClient:
         record['keywords'] = hit['_source']['keywords']
         record['language'] = hit['_source']['language']
         record['publish_datetime'] = hit['_source']['publisher_date']
-        author = hit['_source']['author']
-        if author and isinstance(author, list):
-            author = _parse_vcard(author[0]).get(_VCARD_FORMATED_NAME_KEY)
-        if not author:
-            author = None
-        record['author'] = author
+        record['publishers'] = hit['_source']['publishers']
+        record['authors'] = hit['_source']['authors']
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
         record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
@@ -171,7 +166,8 @@ class ElasticSearchApiClient:
         if len(search_text):
             query_string = {
                 "query_string": {
-                    "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "author"],
+                    "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors",
+                               "publishers"],
                     "query": ' AND '.join(search_text)
                 }
             }
@@ -253,13 +249,6 @@ class ElasticSearchApiClient:
                             }
                         }
                     })
-            # we want _exact_ matches on author. Otherwise elastic will give a lot of false positives.
-            elif elastic_type == 'author':
-                filter_items.append({
-                    "regexp": {
-                        elastic_type: ".*(" + " ".join(filter_item["items"]) + ")+.*"
-                    }
-                })
             # all other filter types are handled by just using elastic terms with the 'translated' filter items
             else:
                 filter_items.append({
@@ -358,7 +347,11 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.classification.obk.discipline.id':
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
-            return 'author'
+            return 'authors'
         elif external_id == 'lom.general.language':
             return 'language.keyword'
+        elif external_id == 'lom.general.aggregationlevel':
+            return 'aggregation_level'
+        elif external_id == 'lom.lifecycle.contribute.publisher':
+            return 'publishers'
         return external_id
