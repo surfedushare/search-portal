@@ -39,17 +39,21 @@ class ElasticSearchApiClient:
         # Transform aggregations into drilldowns
         drilldowns = []
         for aggregation_name, aggregation in aggregations.items():
+            buckets = aggregation["filtered"]["buckets"] if "filtered" in aggregation else aggregation["buckets"]
+
             items = [
                 {
                     "external_id": bucket["key"],
                     "count": bucket["doc_count"]
                 }
-                for bucket in aggregation["buckets"]
+                for bucket in buckets
             ]
+
             drilldowns.append({
                 "external_id": aggregation_name,
                 "items": items
             })
+
         result['drilldowns'] = drilldowns
 
         # Transform hits into records
@@ -151,7 +155,7 @@ class ElasticSearchApiClient:
         """
         search_text = search_text or []
         assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
-        # build basic query
+
         start_record = page_size * (page - 1)
         body = {
             'query': {
@@ -159,8 +163,11 @@ class ElasticSearchApiClient:
             },
             'from': start_record,
             'size': page_size,
+            'post_filter': {
+                "bool": defaultdict(list)
+            }
         }
-        # add a search query if any
+
         if len(search_text):
             query_string = {
                 "query_string": {
@@ -169,15 +176,16 @@ class ElasticSearchApiClient:
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
+
         indices = self.parse_index_language(self, filters)
-        # apply filters
+
+        if drilldown_names:
+            body["aggs"] = self.parse_aggregations(drilldown_names, filters)
+
         filters = self.parse_filters(filters)
         if filters:
-            body["query"]["bool"]["must"] += filters
-        # add aggregations
-        if drilldown_names:
-            body["aggs"] = self.parse_aggregations(drilldown_names)
-        # add ordering
+            body["post_filter"]["bool"]["must"] += [filters]
+
         if ordering:
             body["sort"] = [
                 self.parse_ordering(ordering),
@@ -261,23 +269,48 @@ class ElasticSearchApiClient:
                 })
         return filter_items
 
-    @staticmethod
-    def parse_aggregations(aggregation_names):
+    def parse_aggregations(self, aggregation_names, filters):
         """
         Parse the aggregations so elastic can count the items properly.
         :param aggregation_names: the names of the aggregations to
+        :param filters: the filters for the query
         :return:
         """
+
         aggregation_items = {}
         for aggregation_name in aggregation_names:
+            other_filters = []
+
+            if filters:
+                other_filters = list(filter(lambda x: x['external_id'] != aggregation_name, filters))
+                other_filters = self.parse_filters(other_filters)
+
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(aggregation_name)
-            aggregation_items[aggregation_name] = {
-                "terms": {
-                    "field": elastic_type,
-                    # Raise the default limit of 10 items for aggregation
-                    "size": 500,
+
+            if len(other_filters) > 0:
+                # Filter the aggregation by the filters applied to other categories
+                aggregation_items[aggregation_name] = {
+                    "filter": {
+                        "bool": {
+                            "must": other_filters
+                        }
+                    },
+                    "aggs": {
+                        "filtered": {
+                            "terms": {
+                                "field": elastic_type,
+                                "size": 500,
+                            }
+                        }
+                    },
                 }
-            }
+            else:
+                aggregation_items[aggregation_name] = {
+                    "terms": {
+                        "field": elastic_type,
+                        "size": 500,
+                    }
+                }
         return aggregation_items
 
     @staticmethod

@@ -172,6 +172,26 @@ class TestsElasticSearch(TestCase):
                 self.assertTrue(item['external_id'])
                 self.assertIsNotNone(item['count'])
 
+    def test_drilldown_with_filters(self):
+        search = self.instance.search(
+            ["biologie"],
+            filters=[
+                {"external_id": "lom.technical.format", "items": ["text"]}
+            ],
+            drilldown_names=['about.repository', 'lom.educational.context', 'lom.technical.format']
+        )
+
+        drilldowns = search['drilldowns']
+        drilldowns_for_format = next((d for d in drilldowns if d['external_id'] == 'lom.technical.format'), None)
+        drilldowns_for_repo = next((d for d in drilldowns if d['external_id'] == 'about.repository'), None)
+
+        total_for_format = sum(item['count'] for item in drilldowns_for_format['items'])
+        total_for_repo = sum(item['count'] for item in drilldowns_for_repo['items'])
+
+        # The counts for format do not include the filter (as it is applied to format)
+        # The counts for repo DO include the format filter, so it returns less results
+        self.assertGreater(total_for_format, total_for_repo)
+
     def test_ordering_search(self):
         # make a bunch of queries with different ordering
         search_biologie = self.instance.search(["biologie"])

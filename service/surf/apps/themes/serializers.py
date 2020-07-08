@@ -5,7 +5,6 @@ from collections import OrderedDict
 
 from rest_framework import serializers
 
-from surf.apps.filters.utils import add_default_material_filters
 from surf.apps.themes.models import Theme
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.serializers import LocaleSerializer, LocaleHTMLSerializer
@@ -39,8 +38,6 @@ class ThemeDisciplineSerializer(MpttFilterItemSerializer):
         if obj.external_id:
             elastic = ElasticSearchApiClient()
             filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
-            tree = self.context["mptt_tree"]
-            filters = add_default_material_filters(filters, tree)
             res = elastic.search([], filters=filters, page_size=0)
             return res['recordcount']
 
