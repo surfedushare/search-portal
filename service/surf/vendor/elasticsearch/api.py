@@ -166,7 +166,8 @@ class ElasticSearchApiClient:
         if len(search_text):
             query_string = {
                 "query_string": {
-                    "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors"],
+                    "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors",
+                               "publishers"],
                     "query": ' AND '.join(search_text)
                 }
             }
