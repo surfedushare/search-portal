@@ -50,7 +50,8 @@ from surf.apps.materials.utils import (
     add_material_disciplines
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    AUTHOR_FIELD_ID
+    AUTHOR_FIELD_ID,
+    PUBLISHER_FIELD_ID
 )
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
@@ -111,6 +112,10 @@ class MaterialSearchAPIView(APIView):
         author = data.pop("author", None)
         if author:
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
+
+        publisher = data.pop("publisher", None)
+        if publisher:
+            filters.append(dict(external_id=PUBLISHER_FIELD_ID, items=[publisher]))
 
         data["filters"] = filters
 

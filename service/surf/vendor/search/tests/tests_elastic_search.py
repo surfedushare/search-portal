@@ -277,7 +277,6 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(material_1['external_id'], test_id_1)
         self.assertEqual(material_1['publishers'], [])
         self.assertEqual(material_1['publish_datetime'], None)
-        self.assertEqual(material_1['author'], None)
         self.assertEqual(material_1['authors'], [])
         self.assertEqual(material_1['keywords'], ['Powerpoint', 'Orange', 'MOOC'])
         self.assertEqual(len(material_1['disciplines']), 0)
@@ -298,7 +297,6 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(material_2['publishers'], ['Hanze Hogeschool'])
         self.assertEqual(material_2['publish_datetime'], '2019-04-01')
         self.assertEqual(material_2['language'], 'en')
-        self.assertEqual(material_2['author'], 'Dr. Ning Ding')
         self.assertEqual(material_2['authors'], ['Dr. Ning Ding'])
         self.assertEqual(len(material_2['themes']), 0)
         self.assertEqual(material_2['format'], 'pdf')
@@ -318,5 +316,5 @@ class TestsElasticSearch(TestCase):
             filters=[{"external_id": "lom.lifecycle.contribute.author", "items": [author]}]
         )
         for record in search_author['records']:
-            self.assertEqual(record['author'], author)
+            self.assertTrue(author in record['authors'])
         self.assertEqual(search_author['recordcount'], expected_record_count)
