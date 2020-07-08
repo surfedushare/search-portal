@@ -13,8 +13,9 @@ class TestSearch(ElasticSearchTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.material = cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX, doc_type="_doc", body=generate_nl_material()
+        cls.material = generate_nl_material()
+        cls.elastic.index(
+            index=settings.ELASTICSEARCH_NL_INDEX, doc_type="_doc", body=cls.material
         )
 
     def test_search(self):
