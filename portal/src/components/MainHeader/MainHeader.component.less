@@ -96,10 +96,10 @@
 
   &__mobile {
     position: relative;
-    padding: 14px 0;
+    padding: 14px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     @media @desktop {
       display: none;
     }
@@ -132,8 +132,6 @@
   }
 
   &__menu_button {
-    left: 18px;
-    position: absolute;
     border-radius: 0;
     border: 0;
     color: @dark-blue;
@@ -170,28 +168,6 @@
     display: flex;
     align-items: center;
     padding: @p-top 0 @p-bottom;
-  }
-
-  &__lang{
-    border: none;
-    height: 20px;
-    margin: 0 0 0 46px;
-    padding: 0;
-    //width: 17px;
-    //text-indent: -9999px;
-    align-self: center;
-    flex-shrink: 0;
-    font-family: @second-font;
-    font-size: 16px;
-    font-weight: bold;
-
-    //&--nl {
-    //  background: url("/images/netherlands.svg") no-repeat 0 0;
-    //}
-    //
-    //&--en {
-    //  background: url("/images/language.svg") no-repeat 0 0;
-    //}
   }
 
   &__user {
