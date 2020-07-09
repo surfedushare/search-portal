@@ -22,6 +22,7 @@ elastic_search:
   username: "search_portal_backend_prod"
   host: "elasticsearch:9200"
   protocol: "http"
+  is_aws: false
 
 edurep:
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"

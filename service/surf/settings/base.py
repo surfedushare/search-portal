@@ -316,6 +316,7 @@ EDUREP_JSON_API_ENDPOINT = environment.edurep.json_api_endpoint
 EDUREP_XML_API_ENDPOINT = environment.edurep.xml_api_endpoint
 EDUREP_SOAP_API_ENDPOINT = environment.edurep.soap_api_endpoint
 
+ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
 ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_HOST = environment.elastic_search.host

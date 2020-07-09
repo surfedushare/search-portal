@@ -16,8 +16,9 @@ surfconext:
 
 elastic_search:
   username: "search_portal_backend_test"
-  host: "elastic.search-test.surfcatalog.nl"
+  host: "vpc-surfpol-main-7uhb7niqpopd6z6ioyzohcah3i.eu-central-1.es.amazonaws.com"
   protocol: "https"
+  is_aws: true
 
 edurep:
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
