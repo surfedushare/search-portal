@@ -11,7 +11,8 @@ export default {
       saved: false,
       submitting: false,
       formData: {
-        title: null
+        title_nl: null,
+        title_en: null
       }
     }
   },

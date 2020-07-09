@@ -27,8 +27,21 @@
           @submit.prevent="onSaveCollection"
         >
           <div class="form__item">
+            <span class="language-icon">NL</span>
             <input
-              v-model="formData.title"
+              v-model="formData.title_nl"
+              type="text"
+              :placeholder="$t('naam-van-collectie')"
+              class="input"
+              required="required"
+              name="title"
+              maxlength="255"
+            >
+          </div>
+          <div class="form__item">
+            <span class="language-icon">EN</span>
+            <input
+              v-model="formData.title_en"
               type="text"
               :placeholder="$t('Name-for-collection')"
               class="input"
