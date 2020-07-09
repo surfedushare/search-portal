@@ -88,7 +88,7 @@
                   v-if="index < 2"
                   class="materials__item_educationallevel"
                 >
-                  {{ educationallevel }}
+                  {{ educationallevel[$i18n.locale] }}
                   <span v-if="material.educationallevels.length > 1 && index < material.educationallevels.length - 1">,</span>
                 </span>
                 {{ material.educationallevels.length < 3 ? '' : '...' }}

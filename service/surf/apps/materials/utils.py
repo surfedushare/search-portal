@@ -64,20 +64,28 @@ def add_extra_parameters_to_materials(user, materials):
     :param materials: array of materials
     :return: updated array of materials
     """
-    # perhaps this could be optimized by querying the database once for a list of materials
-    # however, we still want to add the 0 values for items we don't have in the database yet so this is easy for now
+
+    material_objects = list(Material.objects.filter(
+        external_id__in=(m["external_id"] for m in materials)
+    ))
+
+    educational_level_filters = MpttFilterItem.objects.filter(
+        name__in=(level for material in materials for level in material["educationallevels"])
+    ).distinct().select_related("title_translations").get_cached_trees()
+
     for m in materials:
+        material_object = next((x for x in material_objects if x.external_id == m["external_id"]), None)
 
-        material_object = Material.objects.filter(external_id=m["external_id"])
         if material_object:
-            material_object = material_object[0]
-
             m["view_count"] = material_object.view_count
             m["applaud_count"] = material_object.applaud_count
             m["avg_star_rating"] = material_object.get_avg_star_rating()
             m["count_star_rating"] = material_object.get_star_count()
         else:
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
+
+        level_records = list(filter(lambda x: x.name in m["educationallevels"], educational_level_filters))
+        m["educationallevels"] = ({"en": x.title_translations.en, "nl": x.title_translations.nl} for x in level_records)
 
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])
