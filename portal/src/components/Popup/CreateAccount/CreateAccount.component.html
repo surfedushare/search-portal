@@ -41,10 +41,14 @@
               </div>
             </div>
             <div class="buttons">
-              <button class="button">
+              <button
+                :disabled="is_submitting"
+                class="button"
+                @click.prevent="onCreateAccount()"
+              >
                 {{ $t('create-account') }}
               </button>
-              <button class="button cancel">
+              <button class="button cancel" @click.prevent="close()">
                 {{ $t('cancel-create-account') }}
               </button>
             </div>

@@ -11,66 +11,66 @@
 
       <div class="content">
         <div class="left-column">
-        <div v-if="permissions.length" class="privacy__form">
-          <form
-            action="/"
-            class="privacy__form_in"
-            novalidate
-            @submit.prevent="onSubmit"
-          >
-            <div class="privacy__form__column">
-              <div
-                v-for="permission in permissions"
-                :key="permission.type"
-                class="privacy__form__row"
-              >
-                <p class="privacy__form__label">
-                  {{ permission[$i18n.locale].title }}
-                </p>
-                <div class="permission-container">
-                  <div class="switch-container">
-                    <switch-input
-                      v-if="!permission.is_notification_only"
-                      v-model="permission.is_allowed"
-                    />
-                  </div>
-                  <div
-                    class="description"
-                    :class="{
-                      'notification-only': permission.is_notification_only
-                    }"
-                  >
-                    <p>
-                      {{ permission[$i18n.locale].description }}
-                      <router-link :to="localePath(permission.more_info_route)">
-                        {{ $t('more-info') }}
-                      </router-link>
-                    </p>
+          <div v-if="permissions.length" class="privacy__form">
+            <form
+              action="/"
+              class="privacy__form_in"
+              novalidate
+              @submit.prevent="onSubmit"
+            >
+              <div class="privacy__form__column">
+                <div
+                  v-for="permission in permissions"
+                  :key="permission.type"
+                  class="privacy__form__row"
+                >
+                  <p class="privacy__form__label">
+                    {{ permission[$i18n.locale].title }}
+                  </p>
+                  <div class="permission-container">
+                    <div class="switch-container">
+                      <switch-input
+                        v-if="!permission.is_notification_only"
+                        v-model="permission.is_allowed"
+                      />
+                    </div>
+                    <div
+                      class="description"
+                      :class="{
+                        'notification-only': permission.is_notification_only
+                      }"
+                    >
+                      <p>
+                        {{ permission[$i18n.locale].description }}
+                        <router-link :to="localePath(permission.more_info_route)">
+                          {{ $t('more-info') }}
+                        </router-link>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div v-if="is_saved" class="success">&#10004; {{ $t('Data-saved') }}</div>
-            <div class="privacy__form__buttons">
-              <button
-                :disabled="is_submitting"
-                type="submit"
-                class="button privacy__form__button"
-              >
-                {{ $t('save-privacy-settings') }}
-              </button>
-              <button class="button privacy__form__button cancel">
-                {{ $t('cancel-privacy-settings') }}
-              </button>
-            </div>
-            <div class="warning">
-              <span class="nota-bene">i</span>
-              <p>{{ $t('remove-account-warning') }}</p>
-            </div>
-          </form>
+              <div v-if="is_saved" class="success">&#10004; {{ $t('Data-saved') }}</div>
+              <div class="privacy__form__buttons">
+                <button
+                  :disabled="is_submitting"
+                  type="submit"
+                  class="button privacy__form__button"
+                >
+                  {{ $t('save-privacy-settings') }}
+                </button>
+                <button class="button privacy__form__button cancel">
+                  {{ $t('cancel-privacy-settings') }}
+                </button>
+              </div>
+              <div class="warning">
+                <span class="nota-bene">i</span>
+                <p>{{ $t('remove-account-warning') }}</p>
+              </div>
+            </form>
+          </div>
         </div>
-
       </div>
 
       <div class="right-column">
@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-      </div>
+
     </div>
   </section>
 </template>

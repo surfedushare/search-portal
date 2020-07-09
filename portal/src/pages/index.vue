@@ -11,7 +11,7 @@
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
-              <span v-if="statistic">{{ contedNumber }} </span
+              <span v-if="statistic">{{ materialCount }} </span
               >{{ $t('open-learning-materials-from-higher-education') }}
             </h2>
             <ul class="main__info_items">
@@ -83,14 +83,7 @@
         </section>
       </div>
     </div>
-
-    <CreateAccount
-      v-if="isShow"
-      :is-show="isShow"
-      :close="closePopupCreateAccount"
-    />
   </section>
-
 </template>
 
 <script>
@@ -99,27 +92,12 @@ import Search from '~/components/Search'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
 import PopularList from '~/components/Communities/PopularList'
-import CreateAccount from '~/components/Popup/CreateAccount'
 
 export default {
   components: {
-    CreateAccount,
     Search,
     PopularList,
     Materials
-  },
-  data() {
-    return {
-      isShow: true
-    }
-  },
-  methods: {
-    showPopupCreateAccount() {
-      this.isShow = true
-    },
-    closePopupCreateAccount() {
-      this.isShow = false
-    }
   },
   computed: {
     ...mapGetters(['materials', 'communities', 'sortedThemes', 'statistic']),
@@ -127,7 +105,7 @@ export default {
      * Get formatted 'number_of_views'
      * @returns String
      */
-    contedNumber() {
+    materialCount() {
       return numeral(this.statistic.value)
         .format('0,0')
         .replace(',', '.')
