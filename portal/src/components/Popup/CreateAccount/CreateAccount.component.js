@@ -12,11 +12,26 @@ export default {
   },
   methods: {
     onCreateAccount() {
-      // 1. set community permission
-      // 2. login
-      // this.$router.push(this.$store.getters.getLoginLink(this.$route))
-      // 3. close popup
-      this.close()
+      this.is_submitting = true
+      this.$store
+        .dispatch('postUser')
+        .then(() => {
+          setTimeout(() => {
+            let authFlowToken = this.$store.getters.auth_flow_token
+            if (!isNil(authFlowToken)) {
+              let backendUrl = process.env.VUE_APP_BACKEND_URL
+              this.$store.commit('AUTH_FLOW_TOKEN', null)
+              window.location =
+                backendUrl +
+                'complete/surf-conext/?partial_token=' +
+                authFlowToken
+            }
+          }, 1000)
+        })
+        .finally(() => {
+          this.is_submitting = false
+          this.$router.push('/')
+        })
     },
     continueWithoutAccount() {
       this.$router.push('/')
