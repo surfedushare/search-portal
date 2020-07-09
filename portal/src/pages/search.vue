@@ -18,9 +18,9 @@
           </div>
           <Search
             v-if="search"
-            @onSearch="searchMaterials"
             v-model="search.search_text"
             class="search__info_search"
+            @onSearch="searchMaterials"
           />
         </div>
       </div>

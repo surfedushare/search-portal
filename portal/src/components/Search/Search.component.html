@@ -15,21 +15,18 @@
           >
         </vue-autosuggest>
         <div class="search__chooser search__select" v-if="selectOptions && selectOptions.options.length > 0">
-          <select
-            name="categories"
-            @change="changeSelectedOption"
-            >
+          <select name="categories" @change="changeSelectedOption">
             <option value="" hidden>{{ selectOptions.name }}</option>
             <option
               v-for="category in selectOptions.options"
               :value="category.external_id"
-              >{{titleTranslation(category) }}</option>
+            >{{titleTranslation(category) }}</option>
           </select>
         </div>
         <button
           class="button"
           type="submit"
-          >
+        >
           {{ $t('Search') }}
         </button>
       </div>
