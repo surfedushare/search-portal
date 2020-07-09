@@ -173,7 +173,9 @@ export default {
       this.$router.push(
         generateSearchMaterialsQuery({
           search_text: this.searchText,
-          filters: this.filters
+          filters: this.filters,
+          page_size: 10,
+          page: 1
         })
       )
     }

@@ -16,7 +16,12 @@
               class="search__info_bg"
             />
           </div>
-          <Search v-if="search" v-model="search" class="search__info_search" />
+          <Search
+            v-if="search"
+            @onSearch="searchMaterials"
+            v-model="search.search_text"
+            class="search__info_search"
+          />
         </div>
       </div>
 
@@ -128,7 +133,16 @@ export default {
     this.$store.dispatch('searchMaterials', urlInfo.search)
   },
   methods: {
-    generateSearchMaterialsQuery,
+    searchMaterials() {
+      this.search = {
+        search_text: this.search.search_text,
+        filters: {},
+        page_size: 10,
+        page: 1
+      }
+      this.$store.dispatch('searchMaterials', this.search)
+      this.$router.push(generateSearchMaterialsQuery(this.search))
+    },
     loadMore() {
       const { search, materials } = this
       if (materials && search) {
@@ -166,7 +180,7 @@ export default {
       }
       this.search.page = 1
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search))
-      this.$router.push(this.generateSearchMaterialsQuery(this.search))
+      this.$router.push(generateSearchMaterialsQuery(this.search))
     },
     getFilterCategories() {
       return this.materials ? this.materials.filter_categories : []

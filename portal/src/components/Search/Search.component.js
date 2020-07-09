@@ -62,7 +62,8 @@ export default {
       this.suggestions = [{ data }]
     }, 350),
     onSelectSuggestion(result) {
-      this.$emit('input', result.item)
+      const text = result ? result.item : this.searchText
+      this.$emit('input', text)
       this.$emit('onSearch')
     },
     onSubmit() {
