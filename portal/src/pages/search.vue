@@ -101,16 +101,9 @@ export default {
       search: {
         filters: {}
       },
-      isShow: false,
-      publisherDateExternalId: 'lom.lifecycle.contribute.publisherdate',
-      dates_range: {
-        start_date: null,
-        end_date: null
-      },
       formData: {
         name: null
       },
-      items: [{ title: this.$t('Home'), url: this.localePath('index') }],
       sort_order: 'relevance',
       sort_order_options: [
         { value: 'relevance' },
@@ -127,19 +120,10 @@ export default {
       if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search)
       }
-    },
-    dates_range(dates) {
-      const { filters } = this.search
-      filters[this.publisherDateExternalId] = [
-        dates.start_date || null,
-        dates.end_date || null
-      ]
-      this.search = { ...this.search, filters }
     }
   },
   mounted() {
     const urlInfo = parseSearchMaterialsQuery(this.$route.query)
-    this.dates_range = urlInfo.dateRange
     this.search = urlInfo.search
     this.$store.dispatch('searchMaterials', urlInfo.search)
   },
