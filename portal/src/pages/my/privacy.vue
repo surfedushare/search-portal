@@ -138,9 +138,7 @@ export default {
         return this.user.permissions.find(
           permission => permission.type === 'Cookies'
         )
-      } else {
-        return {}
-      }
+      } else return
     }
   },
   methods: {
