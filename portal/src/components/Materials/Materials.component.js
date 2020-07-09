@@ -36,9 +36,6 @@ export default {
   components: {
     StarRating
   },
-  mounted() {
-    this.$store.dispatch('getFilterCategories')
-  },
   data() {
     return {
       selected_materials: this.value || []
@@ -91,54 +88,22 @@ export default {
     current_loading() {
       return this.materials_loading || this.loading
     },
-    /**
-     * Extend to the material fields "disciplines" & "educationallevels"
-     * @returns {*}
-     */
     extended_materials() {
-      const { materials, disciplines, selected_materials } = this
-      let arrMaterials
-      if (materials && disciplines) {
-        if (materials.records) {
-          arrMaterials = materials.records
-        } else {
-          arrMaterials = materials
-        }
-        let self = this
+      const { materials, selected_materials } = this
+      if (materials) {
+        const arrMaterials = materials.records ? materials.records : materials
+
         return arrMaterials.map(material => {
-          return Object.assign(
-            {
-              selected: selected_materials.indexOf(material.external_id) !== -1
-            },
-            material,
-            {
-              disciplines: material.disciplines.reduce((prev, id) => {
-                const item = disciplines[id]
+          const description =
+            material.description && material.description.length > 200
+              ? material.description.slice(0, 200) + '...'
+              : material.description
 
-                if (item) {
-                  prev.push(item)
-                }
-
-                return prev
-              }, []),
-              description:
-                material.description && material.description.length > 200
-                  ? material.description.slice(0, 200) + '...'
-                  : material.description,
-              educationallevels: material.educationallevels.reduce(
-                (prev, id) => {
-                  const item = self.$store.getters.getCategoryById(id)
-
-                  if (item) {
-                    prev.push(item)
-                  }
-
-                  return prev
-                },
-                []
-              )
-            }
-          )
+          return {
+            ...material,
+            selected: selected_materials.indexOf(material.external_id) !== -1,
+            description
+          }
         })
       }
 
