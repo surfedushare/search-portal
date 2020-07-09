@@ -33,7 +33,7 @@ class ElasticSearchApiClient:
         hits = search_result["hits"]
         aggregations = search_result.get("aggregations", {})
         result = dict()
-        result['recordcount'] = hits['total']
+        result['recordcount'] = hits['total']['value']
 
         # Transform aggregations into drilldowns
         drilldowns = []
@@ -113,8 +113,7 @@ class ElasticSearchApiClient:
         result = self.elastic.search(
             index=[self.index_nl, self.index_en],
             doc_type='entity',
-            body=query_dictionary,
-            _source_include='suggest'
+            body=query_dictionary
         )
 
         # extract the options from the elasticsearch result, remove duplicates,

@@ -9,7 +9,7 @@ from django.apps import apps
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from harvester.settings import environment
 from core.management.base import HarvesterCommand
-from core.models import Dataset
+from core.models import Dataset, ElasticIndex
 
 
 class Command(base.LabelCommand, HarvesterCommand):
@@ -75,3 +75,6 @@ class Command(base.LabelCommand, HarvesterCommand):
 
         # Load resources
         self.load_resources()
+
+        # Migrate indices to 7.0
+        ElasticIndex.objects.all().update(configuration="")
