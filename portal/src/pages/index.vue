@@ -115,6 +115,7 @@ export default {
     this.$store.dispatch('getMaterials', { page_size: 4 })
     this.$store.dispatch('getCommunities', { params: { page_size: 3 } })
     this.$store.dispatch('getStatistic')
+    this.$store.dispatch('getFilterCategories')
   }
 }
 </script>

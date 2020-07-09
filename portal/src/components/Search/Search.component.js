@@ -33,10 +33,6 @@ export default {
       })
     }
   },
-  mounted() {
-    // TODO: this should be somewhere else..
-    this.$store.dispatch('getFilterCategories')
-  },
   data() {
     return {
       searchText: this.value.search_text,
