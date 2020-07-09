@@ -5,6 +5,11 @@ export default {
   components: {
     Popup
   },
+  data() {
+    return {
+      is_submitting: false
+    }
+  },
   methods: {
     onCreateAccount() {
       // 1. set community permission
