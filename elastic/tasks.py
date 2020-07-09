@@ -15,7 +15,7 @@ def get_es_client(ctx, silent=False):
     elastic_url = ctx.elastic_search.host
     protocol = ctx.elastic_search.protocol
     protocol_config = {}
-    if protocol == "http":
+    if protocol == "https":
         protocol_config = {
             "scheme": "https",
             "port": 443,

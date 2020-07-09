@@ -10,7 +10,7 @@ def get_es_client():
     elastic_url = settings.ELASTICSEARCH_HOST
     protocol = settings.ELASTICSEARCH_PROTOCOL
     protocol_config = {}
-    if protocol == "http":
+    if protocol == "https":
         protocol_config = {
             "scheme": "https",
             "port": 443,
