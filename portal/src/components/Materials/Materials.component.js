@@ -81,7 +81,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['disciplines', 'materials_loading']),
+    ...mapGetters(['materials_loading']),
     selectMaterialClass() {
       return this.selectFor === 'delete' ? 'select-delete' : 'select-neutral'
     },
