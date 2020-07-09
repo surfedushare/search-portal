@@ -302,7 +302,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'import-dataset': {
         'task': 'import_dataset',
-        'schedule': crontab(minute=45, hour=10),
+        'schedule': crontab(hour=4, minute=0, ),  # uses UTC
         'args': ("epsilon",)
     },
 }
