@@ -84,8 +84,9 @@ def add_extra_parameters_to_materials(user, materials):
         else:
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
 
-        level_records = list(filter(lambda x: x.name in m["educationallevels"], educational_level_filters))
-        m["educationallevels"] = ({"en": x.title_translations.en, "nl": x.title_translations.nl} for x in level_records)
+        level_items = list(filter(lambda item: item.name in m["educationallevels"], educational_level_filters))
+        m["educationallevels"] = ({"en": level.title_translations.en, "nl": level.title_translations.nl}
+                                  for level in level_items)
 
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])
