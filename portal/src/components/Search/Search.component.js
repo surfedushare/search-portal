@@ -1,6 +1,5 @@
 import { mapGetters } from 'vuex'
 import { VueAutosuggest } from 'vue-autosuggest'
-import { generateSearchMaterialsQuery } from '../_helpers'
 import { debounce } from 'lodash'
 
 import axios from '~/axios'
@@ -11,11 +10,23 @@ export default {
     VueAutosuggest
   },
   props: {
-    'educational-level-category-id': {
-      type: String
+    selectOptions: {
+      type: Object,
+      default: function() {
+        return {
+          name: '',
+          options: []
+        }
+      }
     },
-    'material-type-external-id': {
-      type: String
+    checkboxOptions: {
+      type: Object,
+      default: function() {
+        return {
+          name: '',
+          options: []
+        }
+      }
     },
     placeholder: {
       type: String,
@@ -24,31 +35,19 @@ export default {
       }
     },
     value: {
-      type: Object,
-      default: () => ({
-        page_size: 10,
-        page: 1,
-        filters: [{}],
-        search_text: null
-      })
+      type: String
     }
   },
   data() {
     return {
-      searchText: this.value.search_text,
-      suggestions: [],
-      formData: {
-        ...this.value,
-        page_size: 10,
-        page: 1,
-        ordering: null
-      }
+      searchText: this.value,
+      suggestions: []
     }
   },
   methods: {
-    generateSearchMaterialsQuery,
     onInputChange(query) {
       this.searchSuggestions(query, this)
+      this.$emit('input', query)
     },
     searchSuggestions: debounce(async function(search) {
       if (!search) {
@@ -63,59 +62,33 @@ export default {
       this.suggestions = [{ data }]
     }, 350),
     onSelectSuggestion(result) {
-      if (result) {
-        this.emitSearch(result.item)
-      } else if (this.searchText) this.emitSearch(this.searchText)
+      this.$emit('input', result.item)
+      this.$emit('onSearch')
     },
     onSubmit() {
       if (!this.searchText) {
         return
       }
 
-      const { filter_categories_loading } = this.$store.state.filterCategories
-
-      if (filter_categories_loading) {
-        filter_categories_loading.then(() => this.emitSearch(this.searchText))
-      } else {
-        this.emitSearch(this.searchText)
-      }
+      this.$emit('onSearch')
     },
-    emitSearch(searchText) {
-      this.formData.search_text = searchText
-      this.formData.filters = this.$store.getters.search_filters
-      this.$router.push(this.generateSearchMaterialsQuery(this.formData))
-      this.$emit('input', this.formData)
+    changeSelectedOption($event) {
+      this.$emit('selectDropdownOption', $event.target.value)
     },
-    titleTranslation(filterCategory) {
-      if (filterCategory.title_translations) {
-        return filterCategory.title_translations[this.$i18n.locale]
-      }
-      return filterCategory.name
-    },
-    changeFilterCategory($event) {
-      this.educationalLevelCategory.children = this.educationalLevelCategory.children.map(
-        item => {
-          item.selected = item.external_id === $event.target.value
-          return item
-        }
-      )
-    },
-    collectFilters() {
-      return this.$store.getters.search_filters.reduce((memo, item) => {
-        memo[item.external_id] = item.items
-        return memo
-      }, {})
+    changeCheckboxOption($event) {
+      this.$emit('selectCheckboxOption', {
+        value: $event.target.value,
+        checked: $event.target.checked
+      })
     }
   },
   watch: {
     value(value) {
-      this.formData = { ...value }
-      this.searchText = value.search_text
+      this.searchText = value
     }
   },
   computed: {
     ...mapGetters({
-      filterCategories: 'filter_categories',
       keywords: 'materials_keywords'
     }),
     autosuggestInputProps: function() {
@@ -132,45 +105,6 @@ export default {
       return {
         'with-dropdown': this.suggestions.length > 0
       }
-    },
-    displayEducationalLevelSelect() {
-      const { filterCategories, educationalLevelCategoryId } = this
-
-      return (
-        filterCategories &&
-        filterCategories.results &&
-        educationalLevelCategoryId
-      )
-    },
-    educationalLevelCategory() {
-      if (!this.displayEducationalLevelSelect) {
-        return false
-      }
-
-      const { filterCategories, educationalLevelCategoryId } = this
-
-      return filterCategories.results.find(
-        category => category.external_id === educationalLevelCategoryId
-      )
-    },
-
-    displayMaterialTypeFilter() {
-      return (
-        this.materialTypeExternalId &&
-        this.filterCategories &&
-        this.filterCategories.results.length > 0
-      )
-    },
-    materialTypeCategory() {
-      const { filterCategories, materialTypeExternalId } = this
-
-      if (!this.displayMaterialTypeFilter) {
-        return false
-      }
-
-      return filterCategories.results.find(
-        item => item.external_id === materialTypeExternalId
-      )
     }
   }
 }

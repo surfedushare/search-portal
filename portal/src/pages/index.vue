@@ -11,7 +11,7 @@
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
-              <span v-if="statistic">{{ countedNumber }} </span
+              <span v-if="statistic">{{ numberOfMaterials }} </span
               >{{ $t('open-learning-materials-from-higher-education') }}
             </h2>
             <ul class="main__info_items">
@@ -27,9 +27,13 @@
             </ul>
           </div>
           <Search
-            educational-level-category-id="lom.educational.context"
-            material-type-external-id="lom.technical.format"
+            v-model="searchText"
+            :select-options="educationalLevelOptions"
+            :checkbox-options="materialTypeOptions"
             class="main__info_search"
+            @onSearch="searchMaterials"
+            @selectDropdownOption="setEducationalLevelFilter"
+            @selectCheckboxOption="setMaterialTypeFilter"
           />
         </div>
       </div>
@@ -92,6 +96,10 @@ import Search from '~/components/Search'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
 import PopularList from '~/components/Communities/PopularList'
+import { generateSearchMaterialsQuery } from '../components/_helpers'
+
+const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom.educational.context'
+const MATERIAL_FORMAT_ID = 'lom.technical.format'
 
 export default {
   components: {
@@ -99,16 +107,30 @@ export default {
     PopularList,
     Materials
   },
+  data() {
+    return {
+      searchText: '',
+      filters: {}
+    }
+  },
   computed: {
-    ...mapGetters(['materials', 'communities', 'sortedThemes', 'statistic']),
-    /**
-     * Get formatted 'number_of_views'
-     * @returns String
-     */
-    countedNumber() {
+    ...mapGetters({
+      filterCategories: 'filter_categories',
+      materials: 'materials',
+      communities: 'communities',
+      sortedThemes: 'sortedThemes',
+      statistic: 'statistic'
+    }),
+    numberOfMaterials() {
       return numeral(this.statistic.value)
         .format('0,0')
         .replace(',', '.')
+    },
+    educationalLevelOptions() {
+      return this.getFilterOptions(EDUCATIONAL_LEVEL_CATEGORY_ID)
+    },
+    materialTypeOptions() {
+      return this.getFilterOptions(MATERIAL_FORMAT_ID)
     }
   },
   mounted() {
@@ -116,6 +138,45 @@ export default {
     this.$store.dispatch('getCommunities', { params: { page_size: 3 } })
     this.$store.dispatch('getStatistic')
     this.$store.dispatch('getFilterCategories')
+  },
+  methods: {
+    getFilterOptions(external_id) {
+      if (this.filterCategories) {
+        const filterCategory = this.filterCategories.results.find(
+          category => category.external_id === external_id
+        )
+
+        if (filterCategory) {
+          return {
+            name: filterCategory.name,
+            options: filterCategory.children
+          }
+        }
+      }
+
+      return null
+    },
+    setEducationalLevelFilter(value) {
+      this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = value
+    },
+    setMaterialTypeFilter({ value, checked }) {
+      const currentChecked = this.filters[MATERIAL_FORMAT_ID] || []
+      if (checked) {
+        this.filters[MATERIAL_FORMAT_ID] = [...currentChecked, value]
+      } else {
+        this.filters[MATERIAL_FORMAT_ID] = currentChecked.filter(
+          x => x !== value
+        )
+      }
+    },
+    searchMaterials() {
+      this.$router.push(
+        generateSearchMaterialsQuery({
+          search_text: this.searchText,
+          filters: this.filters
+        })
+      )
+    }
   }
 }
 </script>
