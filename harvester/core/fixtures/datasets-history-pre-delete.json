@@ -41,6 +41,7 @@
             "author": [
                 "BEGIN:VCARD\r\n                                    VERSION:3.0\r\n                                    FN:Dr. Ning Ding\r\n                                    N:Dr. Ning Ding;;;;\r\n                                    END:VCARD"
             ],
+            "authors": ["Dr. Ning Ding"],
             "suggest": "Gone, removed, deleted",
             "language": {
                 "metadata": "en",
@@ -71,8 +72,10 @@
             "mime_type": "application/pdf",
             "description": "You know. GONE!",
             "disciplines": [],
+            "publishers": ["Hanze Hogeschool"],
             "external_id": "surf:oai:surfsharekit.nl:c500d389-2fda-4696-ae51-9cd0603a48a0",
             "publisher_date": "2019-04-01",
+            "aggregation_level": "3",
             "educational_levels": [
                 "be140797-803f-4b9e-81cc-5572c711e09c",
                 "f33b30ee-3c82-4ead-bc20-4255be9ece2d"
