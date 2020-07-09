@@ -35,13 +35,6 @@ export default {
       setLanguage(newLocale)
     }
   },
-  created() {
-    if (typeof window !== 'undefined') {
-      window.app = this
-    }
-    this.$store.dispatch('getFilterCategories')
-  },
-
   mounted() {
     this.$store.dispatch('getThemes')
   }
