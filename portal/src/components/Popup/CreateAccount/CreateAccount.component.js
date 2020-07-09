@@ -1,4 +1,5 @@
 import Popup from '~/components/Popup'
+import { isNil } from 'lodash'
 export default {
   name: 'create-account',
   props: ['is-show', 'close', 'user'],
