@@ -1,4 +1,3 @@
-
 <section class="main-header">
     <div id="notification-bar" v-if="user_permission_notifications.length">
       <div class="notifications">
@@ -146,11 +145,4 @@
         </div>
       </div>
     </div>
-
-    <CreateAccount
-      v-if="isShow"
-      :user="user"
-      :is-show="isShow"
-      :close="closePopupCreateAccount"
-    />
 </section>

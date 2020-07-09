@@ -1,18 +1,11 @@
 import { mapGetters } from 'vuex'
 import Menu from './Menu'
-import CreateAccount from '~/components/Popup/CreateAccount'
 
 export default {
   name: 'main-header',
   props: [],
   components: {
-    Menu,
-    CreateAccount
-  },
-  data() {
-    return {
-      isShow: false
-    }
+    Menu
   },
   methods: {
     getLoginLink() {
@@ -28,7 +21,8 @@ export default {
       this.$store.commit('SET_HEADER_MENU_STATE', false)
     },
     acknowledgeNotification(notificationType) {
-      let notification = this.user_permission_notifications.find(notification => {
+      let notification = this.user_permission_notifications.find(
+        notification => {
           return notification.type === notificationType
         }
       )
@@ -37,12 +31,6 @@ export default {
     },
     switchLanguage(language) {
       this.$i18n.locale = language
-    },
-    showPopupCreateAccount() {
-      this.isShow = true
-    },
-    closePopupCreateAccount() {
-      this.isShow = false
     }
   },
   computed: {

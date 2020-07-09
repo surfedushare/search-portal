@@ -42,7 +42,9 @@
                     >
                       <p>
                         {{ permission[$i18n.locale].description }}
-                        <router-link :to="localePath(permission.more_info_route)">
+                        <router-link
+                          :to="localePath(permission.more_info_route)"
+                        >
                           {{ $t('more-info') }}
                         </router-link>
                       </p>
@@ -51,7 +53,9 @@
                 </div>
               </div>
 
-              <div v-if="is_saved" class="success">&#10004; {{ $t('Data-saved') }}</div>
+              <div v-if="is_saved" class="success">
+                &#10004; {{ $t('Data-saved') }}
+              </div>
               <div class="privacy__form__buttons">
                 <button
                   :disabled="is_submitting"
@@ -71,43 +75,52 @@
             </form>
           </div>
         </div>
-      </div>
-
-      <div class="right-column">
-        <div v-if="cookies">
-          <p class="privacy__form__label">
-            {{ cookies[$i18n.locale].title }}
-          </p>
-          <div class="description">
-            <p>
-              {{ cookies[$i18n.locale].description }} (<router-link
-                :to="localePath(cookies.more_info_route)"
-              >
-                {{ $t('more-info') }} </router-link
-              >)
+        <div class="right-column">
+          <div v-if="cookies">
+            <p class="privacy__form__label">
+              {{ cookies[$i18n.locale].title }}
             </p>
+            <div class="description">
+              <p>
+                {{ cookies[$i18n.locale].description }} (<router-link
+                  :to="localePath(cookies.more_info_route)"
+                >
+                  {{ $t('more-info') }} </router-link
+                >)
+              </p>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
+    <CreateAccount
+      v-if="isShow"
+      :user="user"
+      :is-show="isShow"
+      :close="closePopupCreateAccount"
+    />
   </section>
 </template>
-
 <script>
+
 import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
 import SwitchInput from '~/components/switch-input'
+import CreateAccount from '~/components/Popup/CreateAccount'
 
 export default {
+  props: ['popup'],
   components: {
-    SwitchInput
+    SwitchInput,
+    CreateAccount
   },
   data() {
+    const isShow = this.$route.query.popup === '1'
     return {
       is_saved: false,
       is_submitting: false,
-      permissionsKey: 0
+      permissionsKey: 0,
+      isShow
     }
   },
   computed: {
@@ -118,7 +131,7 @@ export default {
       }
       return this.user.permissions.filter(
         permission => permission.type !== 'Cookies'
-      )
+      ) || []
     },
     cookies() {
       if (this.user && this.user.permissions) {
@@ -151,6 +164,12 @@ export default {
         .finally(() => {
           this.is_submitting = false
         })
+    },
+    showPopupCreateAccount() {
+      this.isShow = true
+    },
+    closePopupCreateAccount() {
+      this.isShow = false
     }
   }
 }
@@ -177,7 +196,7 @@ export default {
     position: relative;
     display: block;
 
-    background-image: url("/images/pictures/rawpixel-760027-unsplash.jpg");
+    background-image: url('/images/pictures/rawpixel-760027-unsplash.jpg');
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position-x: calc(100% - 30px);
@@ -195,7 +214,7 @@ export default {
 
     @media @small-mobile {
       background-size: 0;
-    };
+    }
   }
 
   .left-column {
@@ -244,7 +263,7 @@ export default {
   }
 
   input:checked + .slider {
-      background-color: #FFC300;
+      background-color: #ffc300;
   }
 
   &__info {
