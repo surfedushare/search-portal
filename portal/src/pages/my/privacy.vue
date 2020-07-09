@@ -102,14 +102,12 @@
   </section>
 </template>
 <script>
-
 import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
 import SwitchInput from '~/components/switch-input'
 import CreateAccount from '~/components/Popup/CreateAccount'
 
 export default {
-  props: ['popup'],
   components: {
     SwitchInput,
     CreateAccount
@@ -129,15 +127,19 @@ export default {
       if (isNil(this.user) || isNil(this.user.permissions)) {
         return []
       }
-      return this.user.permissions.filter(
-        permission => permission.type !== 'Cookies'
-      ) || []
+      return (
+        this.user.permissions.filter(
+          permission => permission.type !== 'Cookies'
+        ) || []
+      )
     },
     cookies() {
       if (this.user && this.user.permissions) {
         return this.user.permissions.find(
           permission => permission.type === 'Cookies'
         )
+      } else {
+        return {}
       }
     }
   },
@@ -263,7 +265,7 @@ export default {
   }
 
   input:checked + .slider {
-      background-color: #ffc300;
+    background-color: #ffc300;
   }
 
   &__info {
