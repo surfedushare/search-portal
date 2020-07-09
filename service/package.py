@@ -1,4 +1,4 @@
 PACKAGE = {
-    "version": "1.9.2",
+    "version": "1.9.3",
     "name": "search-portal"
 }

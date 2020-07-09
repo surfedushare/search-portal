@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import sys
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -166,6 +168,17 @@ REST_FRAMEWORK = {
 # https://docs.sentry.io/
 
 if not DEBUG:
+
+    def strip_sensitive_data(event, hint):
+        del event['request']['headers']['User-Agent']
+        return event
+
+    sentry_sdk.init(
+        before_send=strip_sensitive_data,
+        dsn="https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021",
+        integrations=[DjangoIntegration()],
+        send_default_pii=False  # GDPR requirement
+    )
     # We kill all DisallowedHost logging on the servers,
     # because it happens so frequently that we can't do much about it
     ignore_logger('django.security.DisallowedHost')
