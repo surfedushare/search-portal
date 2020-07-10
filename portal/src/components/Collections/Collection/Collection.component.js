@@ -12,7 +12,7 @@ export default {
     collection: {
       default: {}
     },
-    contentEditable: {
+    contenteditable: {
       default: false
     },
     setEditable: {
@@ -116,7 +116,11 @@ export default {
      * Saving the collection
      */
     onSubmit() {
-      this.$emit('onSubmit', { title: this.collectionTitle })
+      if (this.$i18n.locale === 'nl') {
+        this.$emit('onSubmit', { title_nl: this.collectionTitle })
+      } else {
+        this.$emit('onSubmit', { title_en: this.collectionTitle })
+      }
     },
     /**
      * Set counters value for share buttons
@@ -215,7 +219,7 @@ export default {
      * Watcher on the contentEditable field
      * @param isEditable - Boolean
      */
-    contentEditable(isEditable) {
+    contenteditable(isEditable) {
       if (!isEditable) {
         this.resetData()
       }

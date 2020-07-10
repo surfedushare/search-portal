@@ -9,21 +9,23 @@
         >
           <EditableContent
             ref="title"
-            :contenteditable="contentEditable"
+            :contenteditable="contenteditable"
             :set-text="setCollectionTitle"
             :maxlength="255"
             :text="collectionTitle"
           />
         </h2>
-        <p class="collection__info_subttl">{{ $tc('learning-materials', collection.materials_count) }}</p>
+        <p class="collection__info_subttl">
+          {{ $tc('learning-materials', collection.materials_count) }}
+        </p>
       </div>
-      <div class="collection__info_filter" v-if="contentEditable">
+      <div class="collection__info_filter" v-if="contenteditable">
         <div class="collection__info_filter__edit">
           <a
             href="#"
             class="collection__info_filter__link"
             @click.prevent="setEditable(false)"
-            v-if="contentEditable"
+            v-if="contenteditable"
           >
             {{$t('cancel')}}
           </a>
@@ -60,7 +62,7 @@
   </form>
   <section class="action-bar">
     <div class="action-bar__wrapper">
-      <switch-input :label="$t('public')" v-model="isPublished" v-if="contentEditable"/>
+      <switch-input :label="$t('public')" v-model="isPublished" v-if="contenteditable"/>
       <div
         class="collection__info_search__social action-bar__social quality__social _white_color"
         ref="social_counters"
