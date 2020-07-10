@@ -53,18 +53,21 @@
                 </div>
               </div>
 
-              <div v-if="is_saved" class="success">
+              <div v-if="isSaved" class="success">
                 &#10004; {{ $t('Data-saved') }}
               </div>
               <div class="privacy__form__buttons">
                 <button
-                  :disabled="is_submitting"
+                  :disabled="isSubmitting"
                   type="submit"
                   class="button privacy__form__button"
                 >
                   {{ $t('save-privacy-settings') }}
                 </button>
-                <button class="button privacy__form__button cancel">
+                <button
+                  class="button privacy__form__button cancel"
+                  @click.prevent="$router.push('/')"
+                >
                   {{ $t('cancel-privacy-settings') }}
                 </button>
               </div>
@@ -94,9 +97,9 @@
       </div>
     </div>
     <CreateAccount
-      v-if="isShow"
+      v-if="showPopup"
       :user="user"
-      :is-show="isShow"
+      :is-show="showPopup"
       :close="closePopupCreateAccount"
     />
   </section>
@@ -113,12 +116,12 @@ export default {
     CreateAccount
   },
   data() {
-    const isShow = this.$route.query.popup === '1'
+    const showPopup = this.$route.query.popup === '1'
     return {
-      is_saved: false,
-      is_submitting: false,
+      isSaved: false,
+      isSubmitting: false,
       permissionsKey: 0,
-      isShow
+      showPopup
     }
   },
   computed: {
@@ -143,16 +146,16 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.is_submitting = true
+      this.isSubmitting = true
       this.$store
         .dispatch('postUser')
         .then(() => {
-          this.is_saved = true
+          this.isSaved = true
           setTimeout(() => {
-            this.is_saved = false
-            let authFlowToken = this.$store.getters.auth_flow_token
-            if (!isNil(authFlowToken)) {
-              let backendUrl = process.env.VUE_APP_BACKEND_URL
+            this.isSaved = false
+            const authFlowToken = this.$store.getters.auth_flow_token
+            if (authFlowToken) {
+              const backendUrl = process.env.VUE_APP_BACKEND_URL
               this.$store.commit('AUTH_FLOW_TOKEN', null)
               window.location =
                 backendUrl +
@@ -162,14 +165,14 @@ export default {
           }, 1000)
         })
         .finally(() => {
-          this.is_submitting = false
+          this.isSubmitting = false
         })
     },
     showPopupCreateAccount() {
-      this.isShow = true
+      this.showPopup = true
     },
     closePopupCreateAccount() {
-      this.isShow = false
+      this.showPopup = false
     }
   }
 }

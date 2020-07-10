@@ -1,5 +1,4 @@
 import Popup from '~/components/Popup'
-import { isNil } from 'lodash'
 export default {
   name: 'create-account',
   props: ['is-show', 'close', 'user'],
@@ -8,29 +7,27 @@ export default {
   },
   data() {
     return {
-      is_submitting: false
+      isSubmitting: false
     }
   },
   methods: {
     onCreateAccount() {
-      this.is_submitting = true
+      this.isSubmitting = true
       this.$store
         .dispatch('postUser')
         .then(() => {
-          setTimeout(() => {
-            let authFlowToken = this.$store.getters.auth_flow_token
-            if (!isNil(authFlowToken)) {
-              let backendUrl = process.env.VUE_APP_BACKEND_URL
-              this.$store.commit('AUTH_FLOW_TOKEN', null)
-              window.location =
-                backendUrl +
-                'complete/surf-conext/?partial_token=' +
-                authFlowToken
-            }
-          }, 1000)
+          const authFlowToken = this.$store.getters.auth_flow_token
+          if (authFlowToken) {
+            const backendUrl = process.env.VUE_APP_BACKEND_URL
+            this.$store.commit('AUTH_FLOW_TOKEN', null)
+            window.location =
+              backendUrl +
+              'complete/surf-conext/?partial_token=' +
+              authFlowToken
+          }
         })
         .finally(() => {
-          this.is_submitting = false
+          this.isSubmitting = false
           this.$router.push('/')
         })
     },
@@ -45,7 +42,7 @@ export default {
           permission => permission.type === 'Communities'
         )
       } else {
-        return {}
+        return null
       }
     }
   }
