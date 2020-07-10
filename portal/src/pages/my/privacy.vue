@@ -99,7 +99,7 @@
     <CreateAccount
       v-if="showPopup"
       :user="user"
-      :is-show="showPopup"
+      :show-popup="showPopup"
       :close="closePopupCreateAccount"
     />
   </section>

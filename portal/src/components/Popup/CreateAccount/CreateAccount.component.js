@@ -1,7 +1,7 @@
 import Popup from '~/components/Popup'
 export default {
   name: 'create-account',
-  props: ['is-show', 'close', 'user'],
+  props: ['showPopup', 'close', 'user'],
   components: {
     Popup
   },
