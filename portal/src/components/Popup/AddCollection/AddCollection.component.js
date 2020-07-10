@@ -1,7 +1,7 @@
 import Popup from '~/components/Popup'
 export default {
   name: 'add-collection',
-  props: ['is-show', 'close', 'submit-method'],
+  props: ['showPopup', 'close', 'submitMethod'],
   components: {
     Popup
   },
@@ -11,15 +11,12 @@ export default {
       saved: false,
       submitting: false,
       formData: {
-        title_nl: null,
+        title: null,
         title_en: null
       }
     }
   },
   methods: {
-    /**
-     * The save collection event
-     */
     onSaveCollection() {
       this.submitting = true
       this.$store

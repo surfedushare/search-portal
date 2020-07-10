@@ -1,9 +1,8 @@
-
 <transition name="fade">
   <Popup
-    v-if="isShow"
+    v-if="showPopup"
     :close="close"
-    :is-show="isShow"
+    :is-show="showPopup"
     class="add-collection"
   >
     <slot>
@@ -29,7 +28,7 @@
           <div class="form__item">
             <span class="language-icon">NL</span>
             <input
-              v-model="formData.title_nl"
+              v-model="formData.title"
               type="text"
               :placeholder="$t('naam-van-collectie')"
               class="input"
@@ -46,17 +45,19 @@
               :placeholder="$t('Name-for-collection')"
               class="input"
               required="required"
-              name="title"
+              name="title_en"
               maxlength="255"
             >
           </div>
-          <button
-            class="button"
-            type="submit"
-            :disabled="submitting"
-          >
-            {{ $t('Make-a-collection') }}
-          </button>
+          <div class="form__button">
+            <button
+              class="button"
+              type="submit"
+              :disabled="submitting"
+            >
+              {{ $t('Make-a-collection') }}
+            </button>
+          </div>
         </form>
       </template>
     </slot>

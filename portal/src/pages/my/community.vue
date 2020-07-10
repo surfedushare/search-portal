@@ -375,9 +375,9 @@
             </Collections>
           </div>
           <AddCollection
-            v-if="isShow"
+            v-if="showPopup"
             :close="close"
-            :is-show="isShow"
+            :show-popup="showPopup"
             submit-method="postCommunityCollection"
             @submitted="saveCollection"
           />
@@ -416,7 +416,7 @@ export default {
   data() {
     return {
       is_submitting: false,
-      isShow: false,
+      showPopup: false,
       image_logo: '',
       errors: {
         title_nl: '',
@@ -563,17 +563,11 @@ export default {
       this.formData.external_id = community.id
       this.formData.publish_status = community.publish_status
     },
-    /**
-     * Show the popup 'Add collection'
-     */
     showAddCollection() {
-      this.isShow = true
+      this.showPopup = true
     },
-    /**
-     * Close the popup 'Add collection'
-     */
     close() {
-      this.isShow = false
+      this.showPopup = false
     },
     addCollection() {},
     /**
@@ -748,7 +742,8 @@ export default {
         data: [
           {
             id: collection.id,
-            title: collection.title
+            title: collection.title,
+            title_en: collection.title_en
           }
         ]
       })

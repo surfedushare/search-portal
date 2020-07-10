@@ -151,6 +151,7 @@ class Collection(UUIDModel):
     """
 
     title = django_models.CharField(max_length=255)
+    title_en = django_models.CharField(max_length=255, blank=True, null=True)
 
     # the list of collection materials
     materials = django_models.ManyToManyField(Material,

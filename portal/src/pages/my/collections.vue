@@ -30,7 +30,7 @@
           :loading="my_collections_loading"
         />
       </div>
-      <AddCollection v-if="isShow" :close="close" :is-show="isShow" />
+      <AddCollection v-if="showPopup" :close="close" :show-popup="showPopup" />
     </div>
   </section>
 </template>
@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      isShow: false
+      showPopup: false
     }
   },
   computed: {
@@ -66,10 +66,10 @@ export default {
   },
   methods: {
     showAddCollection() {
-      this.isShow = true
+      this.showPopup = true
     },
     close() {
-      this.isShow = false
+      this.showPopup = false
     }
   }
 }

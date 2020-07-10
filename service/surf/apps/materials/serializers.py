@@ -157,7 +157,7 @@ class CollectionShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Collection
-        fields = ('id', 'title')
+        fields = ('id', 'title', 'title_en')
 
 
 class CollectionSerializer(CollectionShortSerializer):
@@ -166,6 +166,7 @@ class CollectionSerializer(CollectionShortSerializer):
     """
 
     title = serializers.CharField()
+    title_en = serializers.CharField()
     materials_count = serializers.SerializerMethodField()
     communities_count = serializers.SerializerMethodField()
     communities = CommunitySerializer(many=True, read_only=True)
@@ -200,7 +201,7 @@ class CollectionSerializer(CollectionShortSerializer):
 
     class Meta:
         model = Collection
-        fields = ('id', 'title', 'materials_count', 'communities_count',
+        fields = ('id', 'title', 'title_en', 'materials_count', 'communities_count',
                   'communities', 'sharing_counters', 'publish_status')
 
 
