@@ -7,7 +7,7 @@
       <Collection
         v-model="search"
         :collection="collectionInfo"
-        :contenteditable="contenteditable"
+        :contentEditable="contentEditable"
         :submitting="submitting"
         :set-editable="setEditable"
         :change-view-type="changeViewType"
@@ -15,7 +15,7 @@
         @onSubmit="onSubmit"
       />
 
-      <div v-if="contenteditable" class="add-materials">
+      <div v-if="contentEditable" class="add-materials">
         <button
           class="materials__add__link button secondary"
           @click.prevent="showAddMaterial"
@@ -30,7 +30,7 @@
           :materials="collection_materials"
           :items-in-line="materials_in_line"
           :loading="collection_materials_loading"
-          :contenteditable="contenteditable"
+          :contenteditable="contentEditable"
           class="collection__materials"
         />
         <Spinner v-if="collection_materials_loading" />
@@ -81,7 +81,7 @@ export default {
   },
   data() {
     return {
-      contenteditable: this.$route.meta.editable,
+      contentEditable: this.$route.meta.editable,
       isShowDeleteCollection: false,
       isShowDeleteMaterials: false,
       submitting: false,

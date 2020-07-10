@@ -22,7 +22,7 @@
                 :value="collection.id"
                 v-for="collection in my_collections"
               >
-                {{collection.title}}
+                {{ $i18n.locale === 'nl' ? collection.title_nl : collection.title_en}}
               </option>
             </select>
           </div>

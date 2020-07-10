@@ -12,7 +12,7 @@ export default {
     collection: {
       default: {}
     },
-    contenteditable: {
+    contentEditable: {
       default: false
     },
     setEditable: {
@@ -37,7 +37,8 @@ export default {
   mounted() {
     const { collection } = this
     if (!_.isEmpty(collection)) {
-      this.setTitle(collection.title)
+      const title = this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+      this.setCollectionTitle(title)
       this.setSocialCounters()
     }
     this.href = validateHREF(window.location.href)
@@ -45,11 +46,11 @@ export default {
   data() {
     return {
       href: '',
-      collection_title: null,
+      collectionTitle: null,
       search: {},
       isShowDeleteCollection: false,
       isShowShareCollection: false,
-      is_copied: false
+      isCopied: false
     }
   },
   computed: {
@@ -65,16 +66,9 @@ export default {
     }
   },
   methods: {
-    /**
-     * Set collection title
-     * @param title - String
-     */
-    setTitle(title) {
+    setCollectionTitle(title) {
       if (title) {
-        this.collection_title = title
-        // if (this.$refs.title) {
-        //   this.$refs.title.innerText = title;
-        // }
+        this.collectionTitle = title
       }
     },
     /**
@@ -82,14 +76,15 @@ export default {
      */
     onChangeTitle() {
       if (this.$refs.title) {
-        this.setTitle(this.$refs.title.innerText)
+        this.setCollectionTitle(this.$refs.title.innerText)
       }
     },
     /**
      * Reset changed data
      */
     resetData() {
-      this.setTitle(this.collection.title)
+      const title = this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+      this.setCollectionTitle(title)
     },
     /**
      * Deleting collection by id
@@ -118,7 +113,7 @@ export default {
      * Saving the collection
      */
     onSubmit() {
-      this.$emit('onSubmit', { title: this.collection_title })
+      this.$emit('onSubmit', { title: this.collectionTitle })
     },
     /**
      * Set counters value for share buttons
@@ -200,7 +195,7 @@ export default {
      */
     closeShareCollection() {
       this.isShowShareCollection = false
-      if (this.is_copied) {
+      if (this.isCopied) {
         this.closeSocialSharing('link')
       }
     }
@@ -214,14 +209,10 @@ export default {
       this.$emit('input', search)
     },
     /**
-     * Watcher on the contenteditable field
+     * Watcher on the contentEditable field
      * @param isEditable - Boolean
      */
-    contenteditable(isEditable) {
-      // const { title } = this.$refs;
-      // this.$nextTick().then(() => {
-      //   title.focus();
-      // });
+    contentEditable(isEditable) {
       if (!isEditable) {
         this.resetData()
       }
@@ -232,7 +223,8 @@ export default {
      */
     collection(collection) {
       if (!_.isEmpty(collection)) {
-        this.setTitle(collection.title)
+        const title = this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+        this.setCollectionTitle(title)
         this.setSocialCounters()
       }
     }

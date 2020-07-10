@@ -742,7 +742,7 @@ export default {
         data: [
           {
             id: collection.id,
-            title: collection.title,
+            title_nl: collection.title_nl,
             title_en: collection.title_en
           }
         ]

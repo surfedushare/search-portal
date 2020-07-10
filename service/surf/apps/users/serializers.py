@@ -28,7 +28,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_collections(obj):
-        qs = Collection.objects.filter(communities__team__user=obj).order_by("title")
+        qs = Collection.objects.filter(communities__team__user=obj).order_by("title_nl")
         return CollectionShortSerializer(qs, many=True).data
 
     @staticmethod

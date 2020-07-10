@@ -5,25 +5,25 @@
       <div class="collection__info_title">
         <h2
           class="collection__info_ttl"
-          v-if="collection_title"
+          v-if="collectionTitle"
         >
           <EditableContent
             ref="title"
-            :contenteditable="contenteditable"
-            :set-text="setTitle"
+            :contenteditable="contentEditable"
+            :set-text="setCollectionTitle"
             :maxlength="255"
-            :text="collection_title"
+            :text="collectionTitle"
           />
         </h2>
         <p class="collection__info_subttl">{{ $tc('learning-materials', collection.materials_count) }}</p>
       </div>
-      <div class="collection__info_filter" v-if="contenteditable">
+      <div class="collection__info_filter" v-if="contentEditable">
         <div class="collection__info_filter__edit">
           <a
             href="#"
             class="collection__info_filter__link"
             @click.prevent="setEditable(false)"
-            v-if="contenteditable"
+            v-if="contentEditable"
           >
             {{$t('cancel')}}
           </a>
@@ -60,7 +60,7 @@
   </form>
   <section class="action-bar">
     <div class="action-bar__wrapper">
-      <switch-input :label="$t('public')" v-model="isPublished" v-if="contenteditable"/>
+      <switch-input :label="$t('public')" v-model="isPublished" v-if="contentEditable"/>
       <div
         class="collection__info_search__social action-bar__social quality__social _white_color"
         ref="social_counters"
@@ -68,7 +68,7 @@
         <template>
           <social-sharing
             :url="href"
-            :title="collection_title"
+            :title="collectionTitle"
             :class="{'disable_share_check': !isPublished}"
             inline-template
             v-cloak
@@ -116,7 +116,7 @@
     :close="closeShareCollection"
     :is-show="isShowShareCollection"
     :collection="collection"
-    v-model="is_copied"
+    v-model="isCopied"
   ></ShareCollection>
   <DeleteCollection
     :close="closeDeleteCollection"
