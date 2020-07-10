@@ -7,7 +7,7 @@
       <Collection
         v-model="search"
         :collection="collectionInfo"
-        :contentEditable="contentEditable"
+        :content-editable="contentEditable"
         :submitting="submitting"
         :set-editable="setEditable"
         :change-view-type="changeViewType"

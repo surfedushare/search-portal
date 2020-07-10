@@ -37,7 +37,8 @@ export default {
   mounted() {
     const { collection } = this
     if (!_.isEmpty(collection)) {
-      const title = this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+      const title =
+        this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
       this.setCollectionTitle(title)
       this.setSocialCounters()
     }
@@ -83,7 +84,9 @@ export default {
      * Reset changed data
      */
     resetData() {
-      const title = this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+      const { collection } = this
+      const title =
+        this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
       this.setCollectionTitle(title)
     },
     /**
@@ -223,7 +226,8 @@ export default {
      */
     collection(collection) {
       if (!_.isEmpty(collection)) {
-        const title = this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+        const title =
+          this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
         this.setCollectionTitle(title)
         this.setSocialCounters()
       }
