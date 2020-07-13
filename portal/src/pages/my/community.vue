@@ -280,6 +280,10 @@
               </div>
             </div>
             <div class="communities__form__column">
+              <RichTextInput
+                :title="$t('Description')"
+                :value="formData.description_en"
+              />
               <div
                 class="communities__form__row"
                 :class="{
@@ -390,6 +394,7 @@ import AddCollection from '~/components/Popup/AddCollection'
 import InputFile from '~/components/InputFile'
 import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
+import RichTextInput from '~/components/RichTextInput'
 import { PublishStatus } from '~/utils'
 
 export default {
@@ -399,7 +404,8 @@ export default {
     Collections,
     AddCollection,
     InputFile,
-    SwitchInput
+    SwitchInput,
+    RichTextInput
   },
   data() {
     return {
