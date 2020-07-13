@@ -132,7 +132,6 @@ class ElasticSearchApiClient:
 
         result = self.elastic.search(
             index=[self.index_nl, self.index_en],
-            doc_type='entity',
             body=query_dictionary
         )
 

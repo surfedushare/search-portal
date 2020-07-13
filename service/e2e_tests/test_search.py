@@ -15,7 +15,7 @@ class TestSearch(ElasticSearchTestCase):
         super().setUpClass()
         cls.material = generate_nl_material()
         cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX, doc_type="_doc", body=cls.material
+            index=settings.ELASTICSEARCH_NL_INDEX, body=cls.material
         )
 
     def test_search(self):
@@ -58,27 +58,22 @@ class TestSearchFiltering(ElasticSearchTestCase):
         super().setUpClass()
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            doc_type="_doc",
             body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="wikiwijsmaken")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            doc_type="_doc",
             body=generate_nl_material(educational_levels=["WO"], file_type="text", source="wikiwijsmaken")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            doc_type="_doc",
             body=generate_nl_material(educational_levels=["WO"], file_type="text", source="surf")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            doc_type="_doc",
             body=generate_nl_material(educational_levels=["WO"], file_type="video", source="surf")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            doc_type="_doc",
             body=generate_nl_material(educational_levels=["HBO"], file_type="video", source="surf")
         )
 
