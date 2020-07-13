@@ -175,7 +175,7 @@ class Collection(UUIDModel):
             super().delete(using=using, keep_parents=keep_parents)
 
     def __str__(self):
-        return self.title
+        return self.title_nl
 
 
 class CollectionMaterial(django_models.Model):
