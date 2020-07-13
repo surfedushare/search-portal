@@ -246,7 +246,9 @@ def migrate(ctx, target, mode, version=None):
         ctx.config.aws.superuser_task_role_arn,
         target,
         mode,
-        version
+        version,
+        target_info["cpu"],
+        target_info["memory"]
     )
 
     print("Migrating")
