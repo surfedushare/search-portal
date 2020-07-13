@@ -88,7 +88,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Search from '~/components/FilterCategories/Search'
+import Search from '~/components/Search'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
 import PopularList from '~/components/Communities/PopularList'

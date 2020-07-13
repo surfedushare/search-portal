@@ -1,13 +1,28 @@
 <div class="material__info">
   <h1 class="material__info_ttl">{{ material.title }}</h1>
-  <div class="material__info_author">
-    <router-link
-      :to="authorUrl"
-      v-if="material.author"
-    >
-      {{ material.author }}
-    </router-link>
-    {{ material.publisher }}
+  <div class="material__info_author_publishers">
+    <div class="material__info_author" v-if="material.authors.length > 0">
+      <h3 class="material__info_subttl">{{ $tc('Authors', material.authors.length) }}</h3>
+      <span v-for="(author, index) in material.authors">
+        <router-link
+          :to="authorUrl(author)"
+          >
+          <span>{{ author }}</span>
+        </router-link>
+        <span v-if="index + 1 < material.authors.length">, </span>
+      </span>
+    </div>
+    <div class="material__info_publishers" v-if="material.publishers.length > 0">
+      <h3 class="material__info_subttl">{{ $tc('Publishers', material.publishers.length) }}</h3>
+      <span v-for="(publisher, index) in material.publishers">
+        <router-link
+          :to="publisherUrl(publisher)"
+          >
+          <span>{{ publisher }}</span>
+        </router-link>
+        <span v-if="index + 1 < material.publishers.length">, </span>
+      </span>
+    </div>
   </div>
   <h3 class="material__info_subttl">{{ $t('Quality') }}</h3>
   <div class="material__info_quality">

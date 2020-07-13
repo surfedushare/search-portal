@@ -84,11 +84,20 @@ function getRouteBaseNameFactory(contextRoute) {
   }
 }
 
+function titleTranslation(item) {
+  if (item.title_translations) {
+    return item.title_translations[i18n.locale]
+  }
+
+  return item.name
+}
+
 Vue.mixin({
   methods: {
     localePath: localePathFactory(),
     switchLocalePath: switchLocalePathFactory(),
-    getRouteBaseName: getRouteBaseNameFactory()
+    getRouteBaseName: getRouteBaseNameFactory(),
+    titleTranslation: titleTranslation
   }
 })
 

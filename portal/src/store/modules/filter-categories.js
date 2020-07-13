@@ -120,22 +120,17 @@ export default {
       if (_.isNil(state.filter_categories)) {
         return []
       }
-
       let selected = getFiltersForSearch(state.filter_categories.results)
       let selectedGroups = _.groupBy(selected, 'searchId')
-      return _.map(selectedGroups, (items, group) => {
-        if (group === PUBLISHER_DATE_ID) {
-          let dates = items[0].dates
-          return {
-            external_id: group,
-            items: [dates.start_date || null, dates.end_date || null]
-          }
-        }
-        return {
-          external_id: group,
-          items: _.reject(_.map(items, 'external_id'), _.isEmpty)
-        }
-      })
+
+      const filterMap = {}
+      for (const group in selectedGroups) {
+        const items = selectedGroups[group].map(item => {
+          return item.external_id
+        })
+        filterMap[group] = items
+      }
+      return filterMap
     },
     getFiltersFromQuery() {
       return getFiltersFromQuery

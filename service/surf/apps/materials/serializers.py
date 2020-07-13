@@ -62,6 +62,9 @@ class SearchRequestSerializer(serializers.Serializer):
     author = serializers.CharField(required=False, allow_blank=True,
                                    allow_null=True)
 
+    publisher = serializers.CharField(required=False, allow_blank=True,
+                                      allow_null=True)
+
     filters = serializers.ListField(child=SearchFilterSerializer(),
                                     default=[])
 

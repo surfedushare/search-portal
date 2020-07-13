@@ -1,111 +1,84 @@
-import { mapGetters } from 'vuex'
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
-import _ from 'lodash'
+import FilterCategory from './FilterCategory/FilterCategory'
 
 export default {
   name: 'filter-categories',
-  components: { DatesRange },
+  components: { DatesRange, FilterCategory },
   data() {
-    const publisherdate = 'lom.lifecycle.contribute.publisherdate'
+    const publisherDateExternalId = 'lom.lifecycle.contribute.publisherdate'
+    const visibleItems = 3
     return {
-      publisherdate,
-      visible_items: 20,
+      publisherDateExternalId,
+      visibleItems,
       data: {
         start_date: null,
         end_date: null
       }
     }
   },
+  props: ['filterCategories', 'materials', 'selectedFilters'],
   methods: {
     generateSearchMaterialsQuery,
     hasVisibleChildren(category) {
       if (!category.children.length) {
         return false
       }
-      return _.some(category.children, child => {
+      return category.children.some(child => {
         return !child.is_hidden
       })
     },
-    onToggleCategory(category, update = true) {
-      category.isOpen = !category.isOpen
-      _.forEach(category.children, child => {
-        this.onToggleCategory(child, false)
-      })
-      if (update) {
-        this.$forceUpdate()
-      }
-    },
-    onToggleShowAll(category) {
-      category.showAll = !category.showAll
-      this.$forceUpdate()
-    },
-    /**
-     * Set filter for v-model
-     * @returns {*} - filters
-     */
-    setFilter() {
-      const { categories, publisherdate } = this
-      if (categories) {
-        let filters = []
-
-        const publisherdate_item = this.value.filters.find(
-          item => item.external_id === publisherdate
-        )
-
-        if (publisherdate_item) {
-          filters.push({
-            external_id: publisherdate,
-            items: [...publisherdate_item.items]
-          })
-          this.data = {
-            start_date: publisherdate_item.items[0],
-            end_date: publisherdate_item.items[1]
-          }
+    childExternalIds(categoryId, itemId) {
+      const category = this.filterCategories.find(
+        category => category.external_id === categoryId
+      )
+      const item = category.children.find(item => item.external_id === itemId)
+      const iterator = (memo, item) => {
+        if (item.children.length > 0) {
+          item.children.forEach(child => iterator(memo, child))
         }
-
-        filters = Object.assign({}, this.value, {
-          filters
-        })
-
-        this.$router.push(this.generateSearchMaterialsQuery(filters))
-
-        this.$emit('input', filters)
-
-        return filters
-      }
-    },
-    onChange(event, parent) {
-      if (!_.isNil(parent)) {
-        parent.selected = !parent.selected
-      }
-      this.$store.commit('SET_FILTER_SELECTED', event.target.dataset.categoryId)
-      this.executeSearch()
-    },
-    onDateChange() {
-      this.executeSearch()
-    },
-    executeSearch() {
-      let searchText = this.$store.getters.materials.search_text
-      let ordering = this.$store.getters.materials.ordering
-      let searchRequest = {
-        search_text: searchText,
-        ordering: ordering,
-        filters: this.$store.getters.search_filters
+        memo.push(item.external_id)
+        return memo
       }
 
+      return item.children.reduce(iterator, [item.external_id])
+    },
+    onCheck(categoryId, itemId) {
+      const existingItems = this.selectedFilters[categoryId] || []
+
+      const filters = this.childExternalIds(categoryId, itemId)
+      this.selectedFilters[categoryId] = [...existingItems, ...filters]
+
+      return this.executeSearch(this.selectedFilters)
+    },
+    onUncheck(categoryId, itemId) {
+      const existingItems = this.selectedFilters[categoryId] || []
+      const filters = this.childExternalIds(categoryId, itemId)
+      this.selectedFilters[categoryId] = existingItems.filter(
+        item => !filters.includes(item)
+      )
+      return this.executeSearch(this.selectedFilters)
+    },
+    onDateChange(dates) {
+      this.selectedFilters[this.publisherDateExternalId] = dates
+      this.executeSearch(this.selectedFilters)
+    },
+    executeSearch(filters = {}) {
+      const { ordering, search_text } = this.materials
+      const searchRequest = {
+        search_text,
+        ordering,
+        filters: { ...filters }
+      }
       // Execute search
       this.$router.push(this.generateSearchMaterialsQuery(searchRequest))
       this.$emit('input', searchRequest) // actual search is done by the parent page
     },
-    /**
-     * Event the reset filter
-     */
     resetFilter() {
       this.$router.push(
         this.generateSearchMaterialsQuery({
           filters: [],
-          search_text: this.$store.getters.materials.search_text
+          search_text: this.materials.search_text
         }),
         () => {
           location.reload()
@@ -115,34 +88,46 @@ export default {
         }
       )
     },
-    isShowCategoryItem({ category, item, indexItem }) {
-      return (
-        !item.is_empty && (category.showAll || indexItem < this.visible_items)
-      )
+    datesRangeFilter() {
+      return this.selectedFilters[this.publisherDateExternalId] || [null, null]
     },
-    getTitleTranslation(category, language) {
-      if (
-        !_.isNil(category.title_translations) &&
-        !_.isEmpty(category.title_translations)
-      ) {
-        return category.title_translations[language]
-      }
-      return category.name
+    hasDatesRangeFilter() {
+      return this.datesRangeFilter().some(item => item !== null)
     }
   },
   computed: {
-    ...mapGetters(['filter_categories', 'isAuthenticated', 'materials']),
-    /**
-     * generate filtered categories
-     * @returns {*}
-     */
-    filtered_categories() {
-      // Return categories which builds the filter tree
-      return this.filter_categories
-        ? _.filter(this.$store.getters.filter_categories.results, {
-            is_hidden: false
+    filterableCategories() {
+      const visibleCategories = this.filterCategories.filter(
+        category => !category.is_hidden
+      )
+
+      // aggregate counts to the highest level
+      return visibleCategories.map(category => {
+        if (category.children) {
+          category.children = category.children.map(child => {
+            if (child.children.length > 0) {
+              child.count = child.children.reduce(
+                (memo, c) => memo + c.count,
+                0
+              )
+            }
+
+            return child
           })
-        : []
+        }
+
+        category.children = category.children.filter(
+          child => !child.is_hidden && child.count > 0
+        )
+
+        category.children = category.children.map(child => {
+          const selected = this.selectedFilters[category.external_id] || []
+          child.selected = selected.includes(child.external_id)
+          return child
+        })
+
+        return category
+      })
     }
   }
 }

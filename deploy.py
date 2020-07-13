@@ -10,7 +10,7 @@ from environments.surfpol import MODE, get_package_info
 from service.package import PACKAGE as SERVICE_PACKAGE
 from harvester.package import PACKAGE as HARVESTER_PACKAGE
 
-# TODO: perhaps simply input a PACKAGE from <target>/package.py which is a dict like below and work with that directly
+
 TARGETS = {
     "service": SERVICE_PACKAGE,
     "harvester": HARVESTER_PACKAGE
@@ -98,7 +98,7 @@ def push(ctx, target, version=None):
     ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
 
 
-def register_task_definition(ecs_client, task_role_arn, target, mode, version):
+def register_task_definition(ecs_client, task_role_arn, target, mode, version, cpu, memory):
 
     # Validating input
     if target not in TARGETS:
@@ -130,8 +130,8 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version):
         taskRoleArn=task_role_arn,
         executionRoleArn=task_role_arn,
         networkMode="awsvpc",
-        cpu="512",
-        memory="1024",
+        cpu=cpu,
+        memory=memory,
         containerDefinitions=container_definitions
     )
     # And we update the service with new task definition
@@ -190,6 +190,9 @@ def deploy(ctx, target, mode, version=None):
     """
     Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
     """
+    if target not in TARGETS:
+        raise Exit(f"Unknown target: {target}", code=1)
+    target_info = TARGETS[target]
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")
@@ -203,7 +206,9 @@ def deploy(ctx, target, mode, version=None):
         task_role_arn,
         target,
         mode,
-        version
+        version,
+        target_info["cpu"],
+        target_info["memory"]
     )
 
     print("Updating service")

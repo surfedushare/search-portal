@@ -68,18 +68,7 @@
               {{ $t('login') }}
             </a>
           </div>
-          <router-link
-            @click.native="switchLanguage('nl')"
-            class="main-header__lang main-header__lang--nl"
-            :to="switchLocalePath('nl')"
-            v-if="$i18n.locale === 'en'"
-          >NL</router-link>
-          <router-link
-            @click.native="switchLanguage('en')"
-            class="main-header__lang main-header__lang--en"
-            :to="switchLocalePath('en')"
-            v-if="$i18n.locale === 'nl'"
-          >EN</router-link>
+          <LanguageSwitch />
         </div>
       </div>
     </div>
@@ -151,5 +140,6 @@
           </ul>
         </div>
       </div>
+      <LanguageSwitch />
     </div>
 </section>

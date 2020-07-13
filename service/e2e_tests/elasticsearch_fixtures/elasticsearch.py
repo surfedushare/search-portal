@@ -11,12 +11,20 @@ NL_MATERIAL = {
     "lom_educational_levels": ["HBO"],
     "publisher_date": "2017-04-16T22:35:09+02:00",
     "keywords": [],
-    "author": [
-        "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Michel van Ast\nN:van Ast;Michel;;;\nUID:urn:wikiwijs:userid:2714696\nEND:VCARD",
-        "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Theo van den Bogaart\nEND:VCARD",
-        "BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 3.3.5//EN\nFN:Marc de Graaf\nEND:VCARD"
-    ],
-    "file_type": "archive",
+    "authors": ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"],
+    "publishers": ["Wikiwijs Maken"],
+    "file_type": "text",
     "disciplines": [],
     "arrangement_collection_name": "wikiwijsmaken"
 }
+
+
+def generate_nl_material(educational_levels=None, file_type=None, source=None):
+    copy = NL_MATERIAL.copy()
+    if educational_levels:
+        copy["lom_educational_levels"] = educational_levels
+    if file_type:
+        copy["file_type"] = file_type
+    if source:
+        copy["arrangement_collection_name"] = source
+    return copy

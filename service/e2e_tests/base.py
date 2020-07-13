@@ -65,7 +65,10 @@ class ElasticSearchTestCase(BaseTestCase):
                         'text_plain': {'type': 'text'},
                         'transcription_plain': {'type': 'text'},
                         'description_plain': {'type': 'text'},
-                        'author': {
+                        'authors': {
+                            'type': 'keyword'
+                        },
+                        'publishers': {
                             'type': 'keyword'
                         },
                         'keywords': {

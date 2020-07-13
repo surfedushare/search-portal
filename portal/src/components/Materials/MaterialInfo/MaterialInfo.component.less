@@ -9,16 +9,20 @@
         display: none;
       }
     }
-    &_author {
-      @media @mobile {
-        display: none;
-      }
+    &_author_publishers {
+      display: flex;
+      flex-wrap: wrap;
+      white-space: nowrap;
+      margin-right: -20px;
+    }
+    &_author, &_publishers {
+      flex: 1;
       font-family: @second-font;
       font-size: 16px;
       margin-bottom: 20px;
-      a {
+      margin-right: 20px;
+      a, span {
         text-decoration: none;
-        margin-right: 13px;
         font-weight: bold;
       }
     }

@@ -21,7 +21,8 @@ from rest_framework.viewsets import (
 
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
-from surf.apps.filters.utils import IGNORED_FIELDS, add_default_material_filters
+from surf.apps.filters.serializers import MpttFilterItemSerializer
+from surf.apps.filters.utils import IGNORED_FIELDS
 from surf.apps.materials.filters import (
     CollectionFilter
 )
@@ -49,7 +50,8 @@ from surf.apps.materials.utils import (
     add_material_disciplines
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    AUTHOR_FIELD_ID
+    AUTHOR_FIELD_ID,
+    PUBLISHER_FIELD_ID
 )
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
@@ -111,8 +113,9 @@ class MaterialSearchAPIView(APIView):
         if author:
             filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
 
-        # add default filters to search materials
-        filters = add_default_material_filters(filters)
+        publisher = data.pop("publisher", None)
+        if publisher:
+            filters.append(dict(external_id=PUBLISHER_FIELD_ID, items=[publisher]))
 
         data["filters"] = filters
 
@@ -150,9 +153,26 @@ class MaterialSearchAPIView(APIView):
                 "items": self.parse_theme_drilldowns(discipline_items)
             })
 
+        drill_down_dict = {item['external_id']: item for item in res["drilldowns"]}
+        drill_down_flat = {}
+        for external_id, drilldown in drill_down_dict.items():
+            if drilldown.get('count', None):
+                drill_down_flat.update({external_id: drilldown})
+            if drilldown['items']:
+                for el in drilldown['items']:
+                    drill_down_flat.update({el['external_id']: el})
+
+        filter_category_tree = MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
+        filter_categories = MpttFilterItemSerializer(
+            filter_category_tree,
+            many=True,
+            context={'search_counts': drill_down_flat}
+        )
+
         rv = dict(records=records,
                   records_total=res["recordcount"],
                   filters=res["drilldowns"],
+                  filter_categories=filter_categories.data,
                   page=data["page"],
                   page_size=data["page_size"])
         return Response(rv)
@@ -221,13 +241,9 @@ class MaterialAPIView(APIView):
             # return overview of newest Materials
             elastic = ElasticSearchApiClient()
 
-            # add default filters to search materials
-            filters = add_default_material_filters()
-
             res = elastic.search([],
                                  # sort by newest items first
                                  ordering="-lom.lifecycle.contribute.publisherdate",
-                                 filters=filters,
                                  page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
             res = add_extra_parameters_to_materials(request.user,
