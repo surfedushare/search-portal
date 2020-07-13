@@ -4,41 +4,27 @@
       <error status-code="404" message-key="community-not-found" />
     </div>
     <div v-else>
+      <HeaderBlock :title="$t('My-community')" />
       <div class="center_block">
-        <div class="communities__info">
-          <img
-            src="/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="
-              /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-              /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
-            "
-            class="communities__info_bg"
-          />
-          <h2 class="communities__info_ttl">
-            {{ $t('My-community') }}
-          </h2>
-          <div>
-            <section class="communities__section__blue_box">
-              <form action="/" @submit.prevent="onSubmit">
-                <div class="communities__form__buttons">
-                  <switch-input v-model="isPublished" :label="$t('public')" />
-                  &nbsp;&nbsp;
-                  <router-link :to="getPreviewPath()">
-                    <i class="fas fa-eye" /> {{ $t('example') }}
-                  </router-link>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <button
-                    :disabled="is_submitting"
-                    type="submit"
-                    class="button communities__form__button"
-                  >
-                    {{ $t('save') }}
-                  </button>
-                </div>
-              </form>
-            </section>
-          </div>
-        </div>
+        <section class="communities__section__blue_box">
+          <form action="/" @submit.prevent="onSubmit">
+            <div class="communities__form__buttons">
+              <switch-input v-model="isPublished" :label="$t('public')" />
+              &nbsp;&nbsp;
+              <router-link :to="getPreviewPath()">
+                <i class="fas fa-eye" /> {{ $t('example') }}
+              </router-link>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                :disabled="is_submitting"
+                type="submit"
+                class="button communities__form__button"
+              >
+                {{ $t('save') }}
+              </button>
+            </div>
+          </form>
+        </section>
 
         <div class="tab">
           <button
@@ -399,6 +385,7 @@ import {
 } from 'lodash'
 import { mapGetters } from 'vuex'
 import Collections from '~/components/Collections'
+import HeaderBlock from '~/components/HeaderBlock'
 import AddCollection from '~/components/Popup/AddCollection'
 import InputFile from '~/components/InputFile'
 import Error from '~/components/error'
@@ -407,6 +394,7 @@ import { PublishStatus } from '~/utils'
 
 export default {
   components: {
+    HeaderBlock,
     Error,
     Collections,
     AddCollection,
@@ -625,10 +613,10 @@ export default {
       }
     },
     openTab(tabName) {
-      let generaltab = this.$refs['general-tab']
-      let generalbutton = this.$refs['general-button']
-      let collectionstab = this.$refs['collections-tab']
-      let collectionsbutton = this.$refs['collections-button']
+      const generaltab = this.$refs['general-tab']
+      const generalbutton = this.$refs['general-button']
+      const collectionstab = this.$refs['collections-tab']
+      const collectionsbutton = this.$refs['collections-button']
       switch (tabName) {
         case 'General':
           generaltab.style.display = 'block'
@@ -786,32 +774,7 @@ export default {
 @import './../../variables';
 .communities {
   width: 100%;
-  padding: 119px 0 47px;
 
-  &__info {
-    &_bg {
-      position: absolute;
-      right: 26px;
-      top: -57px;
-      width: 50%;
-      border-radius: 21px;
-    }
-    &_ttl {
-      position: relative;
-    }
-    &_all {
-      text-decoration: none;
-      font-weight: bold;
-      margin-bottom: 11px;
-      display: inline-block;
-    }
-    &_search {
-      margin: 0 65px;
-      .search__fields {
-        margin-bottom: 33px;
-      }
-    }
-  }
   &__section {
     &__blue_box {
       line-height: 75px;
@@ -819,12 +782,15 @@ export default {
       background: @dark-blue;
       width: 40%;
       min-width: 440px; // or break tablets
-      height: 75px;
       border-radius: 20px;
-      margin-top: 25px;
+      margin-top: -80px;
+      margin-bottom: 30px;
       color: white;
       font-size: 18px;
       font-weight: 600;
+      @media @mobile {
+        margin-top: 0;
+      }
       a:link {
         color: white;
         text-decoration: none;
@@ -895,9 +861,10 @@ export default {
       }
     }
     &__buttons {
-      text-align: right;
       width: 100%;
-      margin: 10px 0 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
     }
     &__button {
       margin-right: 10px;
@@ -915,6 +882,10 @@ export default {
   justify-content: flex-end;
   margin-bottom: -55px;
   position: relative;
+
+  button {
+    padding-left: 40px;
+  }
 
   &__link {
     padding: 13px 43px 13px 51px;
@@ -936,14 +907,14 @@ export default {
 /* Style the buttons that are used to open the tab content */
 .tab button {
   position: relative;
+  display: inline-block;
   border-radius: 5px;
   background-color: inherit;
-  float: left;
   border: 1px solid #ccc;
   outline: none;
   cursor: pointer;
   padding: 14px 50px;
-  margin: 0 25px;
+  margin-right: 25px;
   transition: 0.3s;
   font-size: 16px;
   font-weight: bold;
