@@ -1,10 +1,7 @@
 import _ from 'lodash'
-import injector from 'vue-inject'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
-
-const $log = injector.get('$log')
 
 const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate'
 
@@ -83,13 +80,6 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
   })
   return _.some(items, item => {
     return item.selected
-  })
-}
-
-function setChildrenSelected(children, value) {
-  _.forEach(children, child => {
-    child.selected = value
-    setChildrenSelected(child.children, value)
   })
 }
 
@@ -187,43 +177,6 @@ export default {
     },
     SET_FILTER_CATEGORIES_LOADING(state, payload) {
       state.filter_categories_loading = payload
-    },
-    SETUP_FILTER_CATEGORIES(state, data) {
-      if (_.isNil(state.filter_categories)) {
-        $log.info('Unable to setup filter categories due to missing categories')
-        return
-      }
-      let openFilters = _.filter(state.filter_categories.results, item => {
-        return item.isOpen
-      })
-      let openFilterIds = _.map(openFilters, item => {
-        return item.id
-      })
-      let showAllFilters = _.filter(state.filter_categories.results, item => {
-        return item.showAll
-      })
-      let showAllFilterIds = _.map(showAllFilters, item => {
-        return item.id
-      })
-      state.filter_categories.results = _.cloneDeep(
-        state.filter_categories.defaults
-      )
-      loadCategoryFilters(
-        state.filter_categories.results,
-        data.selected,
-        data.dateRange,
-        openFilterIds,
-        showAllFilterIds
-      )
-      this.commit('SET_FILTER_CATEGORIES', state.filter_categories)
-    },
-    SET_FILTER_SELECTED(state, categoryId) {
-      let category = state.byCategoryId[categoryId]
-      if (!_.isNil(category)) {
-        setChildrenSelected(category.children, category.selected)
-      }
-      state.filter_categories = _.cloneDeep(state.filter_categories)
-      this.commit('SET_FILTER_CATEGORIES', state.filter_categories)
     }
   }
 }

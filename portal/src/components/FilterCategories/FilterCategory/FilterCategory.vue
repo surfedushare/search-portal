@@ -33,7 +33,7 @@
         </li>
 
         <li
-          v-if="category.children.length > visibleItems"
+          v-if="category.children.length > numberOfVisibleItems"
           class="filter-categories__subitem--show-more"
         >
           <a
@@ -81,12 +81,24 @@ export default {
     visible() {
       return this.category.children.some(child => !child.is_hidden)
     },
+    sortedChildren() {
+      return [...this.category.children].sort((a, b) => {
+        return b.selected - a.selected || b.count - a.count
+      })
+    },
+    numberOfVisibleItems() {
+      // Display all selected items or max visibleItems
+      return Math.max(
+        this.category.children.filter(c => c.selected).length,
+        this.visibleItems
+      )
+    },
     visibleChildren() {
       if (this.showAll) {
-        return this.category.children
+        return this.sortedChildren
       }
 
-      return this.category.children.slice(0, this.visibleItems)
+      return this.sortedChildren.slice(0, this.numberOfVisibleItems)
     }
   },
   methods: {

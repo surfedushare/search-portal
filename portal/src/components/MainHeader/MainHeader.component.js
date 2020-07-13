@@ -1,10 +1,12 @@
 import { mapGetters } from 'vuex'
 import Menu from './Menu'
+import LanguageSwitch from './LanguageSwitch'
 
 export default {
   name: 'main-header',
   props: [],
   components: {
+    LanguageSwitch,
     Menu
   },
   methods: {
@@ -28,9 +30,6 @@ export default {
       )
       notification.is_allowed = true
       this.$store.dispatch('postUser')
-    },
-    switchLanguage(language) {
-      this.$i18n.locale = language
     }
   },
   computed: {

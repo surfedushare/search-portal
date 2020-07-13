@@ -45,16 +45,16 @@
                 {{material.title}}
               </h3>
               <div
-                v-if="material.author"
+                v-if="material.authors.length > 0"
                 class="materials__item_author"
               >
-                {{material.author}}
+                {{material.authors.join(', ')}}
               </div>
               <div
-                v-if="material.publisher"
+                v-if="material.publishers.length > 0"
                 class="materials__item_publisher"
               >
-                {{material.publisher}}
+                {{material.publishers.join(', ')}}
               </div>
               <div class="materials__item_date">
                 {{material.date || null}}
@@ -88,7 +88,8 @@
                   v-if="index < 2"
                   class="materials__item_educationallevel"
                 >
-                  {{getTitleTranslation(educationallevel, $i18n.locale) }}<span v-if="material.educationallevels.length > 1 && index < material.educationallevels.length - 1">,</span>
+                  {{ educationallevel[$i18n.locale] }}
+                  <span v-if="material.educationallevels.length > 1 && index < material.educationallevels.length - 1">,</span>
                 </span>
                 {{ material.educationallevels.length < 3 ? '' : '...' }}
               </div>

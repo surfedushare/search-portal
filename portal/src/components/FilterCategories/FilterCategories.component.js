@@ -93,13 +93,6 @@ export default {
     },
     hasDatesRangeFilter() {
       return this.datesRangeFilter().some(item => item !== null)
-    },
-    sortFilterItems(items) {
-      const nullCounts = items.filter(item => item.count === null)
-      const sorted = items
-        .filter(item => item.count !== null)
-        .sort((a, b) => b.count - a.count)
-      return [...sorted, ...nullCounts]
     }
   },
   computed: {
@@ -132,8 +125,6 @@ export default {
           child.selected = selected.includes(child.external_id)
           return child
         })
-
-        category.children = this.sortFilterItems(category.children)
 
         return category
       })

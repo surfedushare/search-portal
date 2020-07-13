@@ -6,7 +6,6 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from surf.apps.filters.utils import add_default_material_filters
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
@@ -25,6 +24,5 @@ class StatsView(ViewSet):
 
         elastic = ElasticSearchApiClient()
 
-        filters = add_default_material_filters()
-        res = elastic.search([], filters=filters, page_size=0)
+        res = elastic.search([], page_size=0)
         return Response(dict(value=res.get("recordcount", 0)))

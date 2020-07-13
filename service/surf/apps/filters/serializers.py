@@ -28,10 +28,7 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
             return []
         else:
             counts = self.context.get('search_counts', [])
-            if counts:
-                return MpttFilterItemSerializer(obj.get_children(), many=True, context={'search_counts': counts}).data
-            else:
-                return MpttFilterItemSerializer(obj.get_children(), many=True).data
+            return MpttFilterItemSerializer(obj.get_children(), many=True, context={'search_counts': counts}).data
 
     def get_count(self, obj):
         search_counts = self.context.get('search_counts', [])
@@ -39,7 +36,7 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
             item = search_counts.get(obj.external_id, None)
             if item:
                 return item.get('count', 0)
-        return
+        return 0
 
     class Meta:
         model = models.MpttFilterItem
