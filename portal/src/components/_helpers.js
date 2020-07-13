@@ -1,8 +1,10 @@
+import i18n from '~/i18n'
+
 export const generateSearchMaterialsQuery = function(
   data = { filters: {}, search_text: '' },
   name = 'materials-search'
 ) {
-  name += '___' + this.$i18n.locale
+  name += '___' + i18n.locale
 
   return {
     name: name,

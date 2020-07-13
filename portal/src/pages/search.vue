@@ -16,7 +16,12 @@
               class="search__info_bg"
             />
           </div>
-          <Search v-if="search" v-model="search" class="search__info_search" />
+          <Search
+            v-if="search"
+            v-model="search.search_text"
+            class="search__info_search"
+            @onSearch="searchMaterials"
+          />
         </div>
       </div>
 
@@ -101,16 +106,9 @@ export default {
       search: {
         filters: {}
       },
-      isShow: false,
-      publisherDateExternalId: 'lom.lifecycle.contribute.publisherdate',
-      dates_range: {
-        start_date: null,
-        end_date: null
-      },
       formData: {
         name: null
       },
-      items: [{ title: this.$t('Home'), url: this.localePath('index') }],
       sort_order: 'relevance',
       sort_order_options: [
         { value: 'relevance' },
@@ -127,24 +125,24 @@ export default {
       if (search && !this.materials_loading) {
         this.$store.dispatch('searchMaterials', search)
       }
-    },
-    dates_range(dates) {
-      const { filters } = this.search
-      filters[this.publisherDateExternalId] = [
-        dates.start_date || null,
-        dates.end_date || null
-      ]
-      this.search = { ...this.search, filters }
     }
   },
   mounted() {
     const urlInfo = parseSearchMaterialsQuery(this.$route.query)
-    this.dates_range = urlInfo.dateRange
     this.search = urlInfo.search
     this.$store.dispatch('searchMaterials', urlInfo.search)
   },
   methods: {
-    generateSearchMaterialsQuery,
+    searchMaterials() {
+      this.search = {
+        search_text: this.search.search_text,
+        filters: {},
+        page_size: 10,
+        page: 1
+      }
+      this.$store.dispatch('searchMaterials', this.search)
+      this.$router.push(generateSearchMaterialsQuery(this.search))
+    },
     loadMore() {
       const { search, materials } = this
       if (materials && search) {
@@ -182,7 +180,7 @@ export default {
       }
       this.search.page = 1
       this.$store.dispatch('searchMaterials', Object.assign({}, this.search))
-      this.$router.push(this.generateSearchMaterialsQuery(this.search))
+      this.$router.push(generateSearchMaterialsQuery(this.search))
     },
     getFilterCategories() {
       return this.materials ? this.materials.filter_categories : []

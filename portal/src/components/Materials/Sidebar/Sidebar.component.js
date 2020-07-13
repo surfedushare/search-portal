@@ -285,7 +285,7 @@ export default {
       'disciplines'
     ]),
     /**
-     * Extend to the material fields "disciplines" & "educationallevels"
+     * Extend to the material fields "disciplines"
      * @returns {*}
      */
     extended_material() {
@@ -306,25 +306,6 @@ export default {
           return this.getTitleTranslation(disciplineObj, self.$i18n.locale)
         })
         material.disciplineTitles = disciplineTitles.join(', ')
-      }
-
-      if (material.educationallevels.length) {
-        let educationallevelsTitles = _.map(
-          material.educationallevels,
-          level => {
-            let levelObj = _.isObject(level)
-              ? level
-              : self.$store.getters.getCategoryById(level)
-            if (_.isNil(levelObj)) {
-              return
-            }
-            return this.getTitleTranslation(levelObj, self.$i18n.locale)
-          }
-        )
-        material.educationallevelsTitles = _.without(
-          educationallevelsTitles,
-          undefined
-        ).join('<br/>')
       }
 
       return material

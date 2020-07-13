@@ -1,4 +1,4 @@
-<section class="search" :class="{'search--hide-categories': !displayEducationalLevelSelect}">
+<section class="search" :class="{'search--hide-categories': !selectOptions || selectOptions.options.length === 0}">
   <form
     action="/materials/search/"
     @submit.prevent="onSubmit"
@@ -14,15 +14,11 @@
           @selected="onSelectSuggestion"
           >
         </vue-autosuggest>
-        <div class="search__chooser search__select" v-if="displayEducationalLevelSelect">
-          <select
-            name="categories"
-            @change="changeFilterCategory"
-            v-if="educationalLevelCategory"
-          >
-            <option value="" hidden>{{ educationalLevelCategory.name }}</option>
+        <div class="search__chooser search__select" v-if="selectOptions && selectOptions.options.length > 0">
+          <select name="categories" @change="changeSelectedOption">
+            <option value="" hidden>{{ selectOptions.name }}</option>
             <option
-              v-for="category in educationalLevelCategory.children"
+              v-for="category in selectOptions.options"
               :value="category.external_id"
             >{{titleTranslation(category) }}</option>
           </select>
@@ -35,15 +31,15 @@
         </button>
       </div>
     </div>
-    <div class="search__themes" v-if="displayMaterialTypeFilter">
+    <div class="search__themes" v-if="checkboxOptions && checkboxOptions.options.length > 0">
       <h4 class="search__themes_title">{{ $t('Filter-search-results') }}</h4>
-      <ul if="materialTypeCategory" class="search__themes_items">
-        <li v-for="item in materialTypeCategory.children" v-if="!item.is_hidden" class="search__themes_item">
+      <ul class="search__themes_items">
+        <li v-for="item in checkboxOptions.options" v-if="!item.is_hidden" class="search__themes_item">
           <input
             type="checkbox"
             :id="item.external_id"
             :value="item.external_id"
-            v-model="item.selected"
+            @change="changeCheckboxOption"
             name="search_category"
           >
           <label :for="item.external_id"> {{titleTranslation(item) }}</label>
