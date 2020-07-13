@@ -42,61 +42,65 @@ class ElasticSearchTestCase(BaseTestCase):
         analyzer = 'dutch' if language == 'nl' else 'english'
         return {
             "mappings": {
-                "_doc": {
-                    "properties": {
-                        'title': {
-                            'type': 'text',
-                            'analyzer': analyzer
-                        },
-                        'text': {
-                            'type': 'text',
-                            'analyzer': analyzer
-                        },
-                        'transcription': {
-                            'type': 'text',
-                            'analyzer': analyzer
-                        },
-                        'description': {
-                            'type': 'text',
-                            'analyzer': analyzer
-                        },
-                        'url': {'type': 'text'},
-                        'title_plain': {'type': 'text'},
-                        'text_plain': {'type': 'text'},
-                        'transcription_plain': {'type': 'text'},
-                        'description_plain': {'type': 'text'},
-                        'authors': {
-                            'type': 'keyword'
-                        },
-                        'publishers': {
-                            'type': 'keyword'
-                        },
-                        'keywords': {
-                            'type': 'keyword'
-                        },
-                        'file_type': {
-                            'type': 'keyword'
-                        },
-                        'id': {'type': 'text'},
-                        'external_id': {
-                            'type': 'keyword'
-                        },
-                        'arrangement_collection_name': {
-                            'type': 'keyword'
-                        },
-                        'educational_levels': {
-                            'type': 'keyword'
-                        },
-                        'lom_educational_levels': {
-                            'type': 'keyword'
-                        },
-                        'disciplines': {
-                            'type': 'keyword'
-                        },
-                        "suggest": {
-                            "type": "completion"
-                        },
-                    }
+                "properties": {
+                    'title': {
+                        'type': 'text',
+                        'analyzer': analyzer
+                    },
+                    'text': {
+                        'type': 'text',
+                        'analyzer': analyzer
+                    },
+                    'transcription': {
+                        'type': 'text',
+                        'analyzer': analyzer
+                    },
+                    'description': {
+                        'type': 'text',
+                        'analyzer': analyzer
+                    },
+                    'url': {'type': 'text'},
+                    'title_plain': {'type': 'text'},
+                    'text_plain': {'type': 'text'},
+                    'transcription_plain': {'type': 'text'},
+                    'description_plain': {'type': 'text'},
+                    'author': {
+                        'type': 'keyword'
+                    },
+                    'authors': {
+                        'type': 'keyword'
+                    },
+                    'publishers': {
+                        'type': 'keyword'
+                    },
+                    'aggregation_level': {
+                        'type': 'keyword'
+                    },
+                    'keywords': {
+                        'type': 'keyword'
+                    },
+                    'file_type': {
+                        'type': 'keyword'
+                    },
+                    'id': {'type': 'text'},
+                    'external_id': {
+                        'type': 'keyword'
+                    },
+                    'arrangement_collection_name': {
+                        'type': 'keyword'
+                    },
+                    'educational_levels': {
+                        'type': 'keyword'
+                    },
+                    'lom_educational_levels': {
+                        'type': 'keyword'
+                    },
+                    'disciplines': {
+                        'type': 'keyword'
+                    },
+                    "suggest": {
+                        "type": "completion"
+                    },
                 }
             }
         }
