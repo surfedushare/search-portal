@@ -1,21 +1,9 @@
 <template>
   <section class="container main">
     <section class="communities">
-      <div class="center_block center-header communities__center-header">
-        <div class="communities__info ">
-          <img
-            class="communities__info_bg"
-            src="/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="
-              /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-              /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
-            "
-          />
-          <h2 class="communities__info_ttl">
-            {{ !userCommunities ? $t('Communities') : $t('My-communities') }}
-          </h2>
-        </div>
-      </div>
+      <HeaderBlock
+        :title="!userCommunities ? $t('Communities') : $t('My-communities')"
+      />
       <div class="center_block">
         <ul v-if="communities.length" class="communities__items">
           <li
@@ -89,9 +77,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import _ from 'lodash'
+import HeaderBlock from '~/components/HeaderBlock'
 
 export default {
   name: 'Communities',
+  components: {
+    HeaderBlock
+  },
   data() {
     return {
       userCommunities: this.$route.name.startsWith('my')
@@ -137,8 +129,6 @@ export default {
 @import url('../variables');
 
 .communities {
-  padding: 60px 0;
-
   &__center-header {
     padding-bottom: 120px;
     @media @mobile {

@@ -1,19 +1,7 @@
 <template>
   <section class="container main privacy">
+    <HeaderBlock :title="$t('My-privacy')" />
     <div class="center_block">
-      <div class="privacy__info">
-        <img
-          src="/images/pictures/rawpixel-760027-unsplash.jpg"
-          srcset="
-            /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-            /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
-          "
-          class="privacy__info_bg"
-        />
-        <h2 class="privacy__info_ttl">
-          {{ $t('My-privacy') }}
-        </h2>
-      </div>
       <div v-if="permissions.length" class="privacy__form">
         <form
           action="/"
@@ -76,9 +64,11 @@
 import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
 import SwitchInput from '~/components/switch-input'
+import HeaderBlock from '~/components/HeaderBlock'
 
 export default {
   components: {
+    HeaderBlock,
     SwitchInput
   },
   data() {
@@ -129,35 +119,12 @@ export default {
 
 .privacy {
   width: 100%;
-  padding: 80px 0 60px;
+  padding: 0 0 60px;
 
   @media @mobile {
     padding-top: 60px;
   }
 
-  &__info {
-    padding: 50px 30px;
-    margin: 0 0 80px;
-    border-radius: 20px;
-    background-color: rgba(244, 244, 244, 0.9);
-    position: relative;
-    border-radius: 20px;
-
-    &_bg {
-      position: absolute;
-      right: 26px;
-      top: -51px;
-      width: 40%;
-      border-radius: 21px;
-
-      @media @mobile {
-        display: none;
-      }
-    }
-    &_ttl {
-      position: relative;
-    }
-  }
   &__form {
     margin-bottom: 146px;
 
