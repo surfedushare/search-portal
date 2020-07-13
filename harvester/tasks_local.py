@@ -1,5 +1,4 @@
 import os
-from glob import glob
 from invoke import task
 
 
@@ -29,11 +28,5 @@ def import_dataset(ctx, dataset="epsilon"):
     """
     Sets up the database with some basic data for the harvester
     """
-    dumps_path = os.path.join(DATA_DIR, "core", "dumps", "dataset")
-    dump_files = glob(os.path.join(dumps_path, f"{dataset}*"))
-    if not len(dump_files):
-        print(f"Downloading dump file for: {dataset}")
-        ctx.run(f"AWS_DEFAULT_PROFILE=pol-dev aws s3 sync s3://edushare-data/datasets/harvester {DATA_DIR}")
-    print(f"Importing dataset: {dataset}")
     with ctx.cd(HARVESTER_DIR):
         ctx.run(f"python manage.py load_harvester_data {dataset}")

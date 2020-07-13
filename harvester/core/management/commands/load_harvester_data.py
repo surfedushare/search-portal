@@ -1,13 +1,18 @@
 import os
+from glob import glob
+from invoke import Context
 
+from django.conf import settings
 from django.core.management import base, call_command, CommandError
 from django.apps import apps
 
 from datagrowth.utils import get_dumps_path, objects_from_disk
+from harvester.settings import environment
+from core.management.base import HarvesterCommand
 from core.models import Dataset
 
 
-class Command(base.LabelCommand):
+class Command(base.LabelCommand, HarvesterCommand):
     """
     A temporary command to load data from S3 bucket as long as harvester can't generate all production data
     """
@@ -15,6 +20,11 @@ class Command(base.LabelCommand):
     resources = [
         "edurep.EdurepOAIPMH"
     ]
+
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
+        parser.add_argument('-s', '--skip-download', action="store_true")
+        parser.add_argument('-d', '--default-aws-credentials', action="store_true")
 
     def load_resources(self):
         for resource_model in self.resources:
@@ -29,6 +39,9 @@ class Command(base.LabelCommand):
 
     def handle_label(self, dataset_label, **options):
 
+        default_aws_credentials = options["default_aws_credentials"]
+        skip_download = options["skip_download"]
+
         # Delete old datasets
         dataset = Dataset.objects.filter(name=dataset_label).last()
         if dataset is not None:
@@ -36,7 +49,18 @@ class Command(base.LabelCommand):
             dataset.oaipmhharvest_set.all().delete()
             dataset.delete()
 
-        # Look for data dump file
+        # Look for data dump file or download from AWS
+        # Use AWS CLI here because it handles a lot of cases that we don't want to manage ourselves
+        # especially in this throw away command
+        dumps_path = os.path.join(settings.DATAGROWTH_DATA_DIR, "core", "dumps", "dataset")
+        dump_files = glob(os.path.join(dumps_path, f"{dataset_label}*"))
+        if not len(dump_files) and not skip_download:
+            self.info(f"Downloading dump file for: {dataset_label}")
+            ctx = Context(environment)
+            profile_declaration = "" if default_aws_credentials else "AWS_DEFAULT_PROFILE=pol-dev"
+            harvester_data_bucket = "s3://edushare-data/datasets/harvester"
+            ctx.run(f"{profile_declaration} aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
+        self.info(f"Importing dataset: {dataset_label}")
         for entry in os.scandir(get_dumps_path(Dataset)):
             if entry.is_file() and entry.name.startswith(dataset_label):
                 dataset_file = entry.path

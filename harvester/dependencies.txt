@@ -2,10 +2,10 @@
 supervisor==4.2.0
 
 # Harvester Celery
-celery==4.3.0
+celery==4.4.6
 django-celery-results==1.0.1
 anyjson==0.3.3
-redis==3.2.1
+redis==3.5.3
 
 # Harvester other
 git+https://github.com/saffsd/langid.py.git
