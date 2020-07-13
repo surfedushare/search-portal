@@ -65,16 +65,20 @@ def add_extra_parameters_to_materials(user, materials):
     :return: updated array of materials
     """
 
-    material_objects = list(Material.objects.filter(
-        external_id__in=(m["external_id"] for m in materials)
-    ))
+    material_objects = {
+        material.external_id: material
+        for material in Material.objects.filter(external_id__in=(m["external_id"] for m in materials))
+    }
 
-    educational_level_filters = MpttFilterItem.objects.filter(
-        name__in=(level for material in materials for level in material["educationallevels"])
-    ).distinct().select_related("title_translations").get_cached_trees()
+    educational_level_filters = {
+        filter.external_id: filter
+        for filter in MpttFilterItem.objects.filter(
+            name__in=(level for material in materials for level in material["educationallevels"])
+        ).distinct().select_related("title_translations")
+    }
 
     for m in materials:
-        material_object = next((x for x in material_objects if x.external_id == m["external_id"]), None)
+        material_object = material_objects[m["external_id"]]
 
         if material_object:
             m["view_count"] = material_object.view_count
@@ -84,9 +88,13 @@ def add_extra_parameters_to_materials(user, materials):
         else:
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
 
-        level_items = list(filter(lambda item: item.name in m["educationallevels"], educational_level_filters))
-        m["educationallevels"] = ({"en": level.title_translations.en, "nl": level.title_translations.nl}
-                                  for level in level_items)
+        m["educationallevels"] = [
+            {
+                "en": educational_level_filters[external_id].title_translations.en,
+                "nl": educational_level_filters[external_id].title_translations.nl
+            }
+            for external_id in m["educationallevels"]
+        ]
 
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])
