@@ -29,8 +29,8 @@
           </div>
           <div
             class="menubar-button heading"
-            :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-            @click="commands.heading({ level: 1 })"
+            :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+            @click="commands.heading({ level: 3 })"
           >
             <span>H</span>
           </div>
@@ -44,19 +44,24 @@
         </div>
       </editor-menu-bar>
     </div>
-    <editor-content class="editor__content" :editor="editor" />
+    <editor-content
+      class="editor__content"
+      :editor="editor"
+      @onUpdate="onUpdate"
+    />
   </div>
 </template>
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
-  Heading,
+  Bold,
   BulletList,
   HardBreak,
-  Bold,
+  Heading,
+  History,
   Italic,
-  Underline,
-  ListItem
+  ListItem,
+  Underline
 } from 'tiptap-extensions'
 
 export default {
@@ -73,27 +78,42 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    update: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
     return {
       editor: new Editor({
         content: this.value,
+        onUpdate: this.onUpdate,
         extensions: [
           new Bold(),
           new Italic(),
           new Underline(),
-          new Heading({ levels: [1] }),
+          new Heading({ levels: [3] }),
           new HardBreak(),
           new BulletList(),
-          new ListItem()
+          new ListItem(),
+          new History()
         ]
       })
     }
   },
   watch: {
-    value(x) {
-      this.editor.setContent(x)
+    value(value) {
+      // Editor loses focus when setContent is called, skip it when content is the same
+      if (value === this.editor.getHTML()) {
+        return
+      }
+      this.editor.setContent(value)
+    }
+  },
+  methods: {
+    onUpdate(value) {
+      this.$emit('input', value.getHTML())
     }
   }
 }
