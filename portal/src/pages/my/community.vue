@@ -1,12 +1,12 @@
 <template>
   <section class="container main communities">
-    <div v-if="!formData">
+    <div v-if="notFound">
       <error status-code="404" message-key="community-not-found" />
     </div>
     <div v-else>
       <HeaderBlock :title="$t('My-community')" />
       <div class="center_block">
-        <section class="communities__section__blue_box">
+        <section v-if="formData" class="communities__section__blue_box">
           <form action="/" @submit.prevent="onSubmit">
             <div class="communities__form__buttons">
               <switch-input v-model="isPublished" :label="$t('public')" />
@@ -59,6 +59,7 @@
             <br /><br />
           </div>
           <form
+            v-if="formData"
             action="/"
             class="communities__form_in"
             @submit.prevent="onSubmit"
@@ -199,6 +200,7 @@
             <br /><br />
           </div>
           <form
+            v-if="formData"
             action="/"
             class="communities__form_in"
             @submit.prevent="onSubmit"
@@ -280,10 +282,6 @@
               </div>
             </div>
             <div class="communities__form__column">
-              <RichTextInput
-                :title="$t('Description')"
-                :value="formData.description_en"
-              />
               <div
                 class="communities__form__row"
                 :class="{
@@ -291,16 +289,9 @@
                   invalid: isFieldValid('description_en')
                 }"
               >
-                <label for="description_en" class="communities__form__label">
-                  {{ $t('Description') }}
-                </label>
-                <textarea
-                  id="description_en"
+                <RichTextInput
                   v-model="formData.description_en"
-                  required
-                  name="description"
-                  class="communities__form__textarea"
-                  :placeholder="$t('community-description-placeholder')"
+                  :title="$t('Description')"
                 />
                 <ul class="errors">
                   <li
@@ -397,6 +388,20 @@ import SwitchInput from '~/components/switch-input'
 import RichTextInput from '~/components/RichTextInput'
 import { PublishStatus } from '~/utils'
 
+const defaultFormData = {
+  title_nl: '',
+  title_en: '',
+  description_nl: '',
+  description_en: '',
+  website_url_nl: '',
+  website_url_en: '',
+  logo_nl: false,
+  logo_en: false,
+  featured_image_nl: false,
+  featured_image_en: false,
+  publish_status: PublishStatus.DRAFT
+}
+
 export default {
   components: {
     HeaderBlock,
@@ -424,19 +429,8 @@ export default {
         featured_image_nl: '',
         featured_image_en: ''
       },
-      formData: {
-        title_nl: '',
-        title_en: '',
-        description_nl: '',
-        description_en: '',
-        website_url_nl: '',
-        website_url_en: '',
-        logo_nl: false,
-        logo_en: false,
-        featured_image_nl: false,
-        featured_image_en: false,
-        publish_status: PublishStatus.DRAFT
-      }
+      formData: null,
+      notFound: false
     }
   },
   computed: {
@@ -524,38 +518,43 @@ export default {
     },
     setInitialFormData() {
       if (!this.user) {
-        this.formData = {}
+        this.notFound = true
         return
       }
 
-      let communities = this.getUserCommunities(this.user)
-      let community = find(communities, community => {
+      const communities = this.getUserCommunities(this.user)
+      const community = find(communities, community => {
         return community.id === this.$route.params.community
       })
 
-      if (isNil(community)) {
-        this.formData = {}
+      if (!community) {
+        this.notFound = true
         return
       }
-      if (!isNil(community.community_details)) {
-        forEach(community.community_details, detail => {
+      if (community.community_details) {
+        const formData = {
+          external_id: community.id,
+          publish_status: community.publish_status
+        }
+        community.community_details.forEach(detail => {
           if (detail.language_code === 'NL') {
-            this.formData.title_nl = detail.title
-            this.formData.description_nl = detail.description
-            this.formData.website_url_nl = detail.website_url
-            this.formData.logo_nl = detail.logo
-            this.formData.featured_image_nl = detail.featured_image
+            formData.title_nl = detail.title
+            formData.description_nl = detail.description
+            formData.website_url_nl = detail.website_url
+            formData.logo_nl = detail.logo
+            formData.featured_image_nl = detail.featured_image
           } else if (detail.language_code === 'EN') {
-            this.formData.title_en = detail.title
-            this.formData.description_en = detail.description
-            this.formData.website_url_en = detail.website_url
-            this.formData.logo_en = detail.logo
-            this.formData.featured_image_en = detail.featured_image
+            formData.title_en = detail.title
+            formData.description_en = detail.description
+            formData.website_url_en = detail.website_url
+            formData.logo_en = detail.logo
+            formData.featured_image_en = detail.featured_image
           }
         })
+        this.formData = formData
+      } else {
+        this.formData = defaultFormData
       }
-      this.formData.external_id = community.id
-      this.formData.publish_status = community.publish_status
     },
     showAddCollection() {
       this.showPopup = true
