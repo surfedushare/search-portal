@@ -6,15 +6,11 @@
   padding: 12px 24px;
   margin: 24px 0 0;
   font-size: 16px;
-  line-height: 1;
-  color: #686d75;
+  color: @dark-grey;
   position: relative;
   display: flex;
   &_input {
-    position: absolute;
-    opacity: 0;
-    z-index: -1;
-    width: 20px;
+    display: none;
   }
   &_label {
     margin: 10px 0 15px;
@@ -64,7 +60,7 @@
     }
   }
   &_column {
-    width: 50%;
+    flex: 1;
   }
   .is-danger {
     color: red;

@@ -53,10 +53,9 @@
             {{ $t('manage-community-information') }}
             <br /><br />
           </div>
-          <div>
+          <div class="language">
             <h3>{{ $t('dutch') }}</h3>
             <hr />
-            <br /><br />
           </div>
           <form
             v-if="formData"
@@ -187,11 +186,9 @@
               </div>
             </div>
           </form>
-          <div>
-            <br /><br />
+          <div class="language">
             <h3>{{ $t('english') }}</h3>
             <hr />
-            <br /><br />
           </div>
           <form
             v-if="formData"
@@ -802,7 +799,7 @@ export default {
     }
   }
   &__form {
-    margin-bottom: 146px;
+    margin-bottom: 60px;
     &_in {
       display: flex;
       justify-content: space-between;
@@ -835,28 +832,13 @@ export default {
     }
     &__input {
       font-family: @main-font;
-      border: 1px solid #bcbfc2;
+      border: 1px solid #e5e5e5;
       width: 100%;
       border-radius: 7px;
       padding: 10px;
       font-size: 16px;
       line-height: 1.44;
       color: #686d75;
-      &:focus {
-        outline: none;
-      }
-    }
-    &__textarea {
-      border: 1px solid #bcbfc2;
-      border-radius: 7px;
-      padding: 12px 24px;
-      width: 100%;
-      height: 143px;
-      font-size: 16px;
-      line-height: 1.44;
-      resize: none;
-      color: #686d75;
-      font-family: inherit;
       &:focus {
         outline: none;
       }
@@ -973,6 +955,14 @@ export default {
   textarea,
   .form__file {
     border: 1px @red solid;
+  }
+}
+
+.language {
+  margin-bottom: 20px;
+
+  hr {
+    border-top: 1px solid @dark-grey;
   }
 }
 </style>
