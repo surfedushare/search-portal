@@ -25,30 +25,28 @@
           action=""
           @submit.prevent="onSaveCollection"
         >
-          <div class="form__item">
-            <span class="language-icon">NL</span>
-            <input
-              v-model="formData.title_nl"
-              type="text"
-              :placeholder="$t('naam-van-collectie')"
-              class="input"
-              required="required"
-              name="title_nl"
-              maxlength="255"
-            >
-          </div>
-          <div class="form__item">
-            <span class="language-icon">EN</span>
-            <input
-              v-model="formData.title_en"
-              type="text"
-              :placeholder="$t('Name-for-collection')"
-              class="input"
-              required="required"
-              name="title_en"
-              maxlength="255"
-            >
-          </div>
+          <InputWithCounter
+            id="title_nl"
+            v-model="formData.title_nl"
+            type="text"
+            :placeholder="$t('Name-for-collection')"
+            required
+            language='NL'
+            name="title_nl"
+            maxlength="80"
+            class="title-input"
+          />
+          <InputWithCounter
+            id="title_en"
+            v-model="formData.title_en"
+            type="text"
+            :placeholder="$t('Name-for-collection')"
+            required
+            language='EN'
+            name="title_en"
+            maxlength="80"
+            class="title-input"
+          />
           <div class="form__button">
             <button
               class="button"

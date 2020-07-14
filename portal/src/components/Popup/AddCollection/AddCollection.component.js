@@ -1,8 +1,10 @@
 import Popup from '~/components/Popup'
+import InputWithCounter from '~/components/InputWithCounter'
 export default {
   name: 'add-collection',
   props: ['showPopup', 'close', 'submitMethod'],
   components: {
+    InputWithCounter,
     Popup
   },
   mounted() {},
