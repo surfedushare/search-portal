@@ -105,8 +105,8 @@ class DataGoal(models.Model):
     statement = models.ForeignKey(PrivacyStatement, on_delete=models.CASCADE)
     en_title = models.CharField(_("english title"), max_length=256)
     nl_title = models.CharField(_("dutch title"), max_length=256)
-    en_description = models.CharField(_("english description"), max_length=256)
-    nl_description = models.CharField(_("dutch description"), max_length=256)
+    en_description = models.TextField(_("english description"))
+    nl_description = models.TextField(_("dutch description"))
     more_info_route = models.CharField(_("more info route"), max_length=50)
 
     is_active = models.BooleanField(_("is active"), default=False)
