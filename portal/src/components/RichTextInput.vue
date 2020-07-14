@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <label>
+      <label @click="setFocus">
         {{ title }}
       </label>
       <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
@@ -61,6 +61,7 @@ import {
   History,
   Italic,
   ListItem,
+  Placeholder,
   Underline
 } from 'tiptap-extensions'
 
@@ -79,6 +80,14 @@ export default {
       type: String,
       default: ''
     },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    id: {
+      type: String,
+      default: null
+    },
     update: {
       type: Function,
       default: () => {}
@@ -90,6 +99,13 @@ export default {
         content: this.value,
         onUpdate: this.onUpdate,
         extensions: [
+          new Placeholder({
+            emptyEditorClass: 'is-editor-empty',
+            emptyNodeClass: 'is-empty',
+            emptyNodeText: this.placeholder,
+            showOnlyWhenEditable: true,
+            showOnlyCurrent: true
+          }),
           new Bold(),
           new Italic(),
           new Underline(),
@@ -111,7 +127,13 @@ export default {
       this.editor.setContent(value)
     }
   },
+  beforeDestroy() {
+    this.editor.destroy()
+  },
   methods: {
+    setFocus() {
+      this.editor.focus()
+    },
     onUpdate(value) {
       this.$emit('input', value.getHTML())
     }
@@ -121,6 +143,15 @@ export default {
 <style>
 .ProseMirror:focus {
   outline: none;
+}
+
+.editor__content p.is-editor-empty:first-child::before {
+  content: attr(data-empty-text);
+  float: left;
+  color: #aaa;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
 }
 </style>
 <style scoped lang="less">
