@@ -16,6 +16,8 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
+from celery.schedules import crontab
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -288,17 +290,20 @@ EXTENSION_TO_FILE_TYPE = {  # TODO: we should map from extension to mime and the
 # Celery
 # https://docs.celeryproject.org/en/v4.1.0/
 
-CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'  # 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
-CELERYD_TASK_TIME_LIMIT = 300  # 5 minutes for a single task
 CELERY_BEAT_SCHEDULE = {
     'health-check': {
         'task': 'health_check',
         'schedule': 60,
         'args': tuple()
+    },
+    'import-dataset': {
+        'task': 'import_dataset',
+        'schedule': crontab(hour=4, minute=0, ),  # uses UTC
+        'args': ("epsilon",)
     },
 }
 

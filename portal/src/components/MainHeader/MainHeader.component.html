@@ -1,4 +1,3 @@
-
 <section class="main-header">
     <div id="notification-bar" v-if="user_permission_notifications.length">
       <div class="notifications">
@@ -13,13 +12,12 @@
     </div>
 
     <div id="messages-bar-container">
-        <div class="messages-bar" v-for="level in getMessageLevels" :key="level" v-if="hasMessages(level)">
-          <i class="fas" :class="[getLevelIcon(level), level]"></i>
-          <p class="message">
-            {{ getMessagesContent(level) }}
-          </p>
-          <i @click="$store.commit('CLEAR_MESSAGES', level)" class="fas fa-times"></i>
-        </div>
+      <div class="messages-bar" v-for="level in getMessageLevels" :key="level" v-if="hasMessages(level)">
+        <i class="fas" :class="[getLevelIcon(level), level]"></i>
+        <p class="message">
+          {{ getMessagesContent(level) }}
+        </p>
+        <i @click="$store.commit('CLEAR_MESSAGES', level)" class="fas fa-times"></i>
       </div>
     </div>
 
@@ -61,10 +59,7 @@
             </nav>
           </div>
           <div class="main-header__login" v-else>
-            <a
-              :href="getLoginLink()"
-              class="button"
-            >
+            <a :href="getLoginLink()" class="button">
               {{ $t('login') }}
             </a>
           </div>
@@ -72,6 +67,7 @@
         </div>
       </div>
     </div>
+
     <div class="main-header__mobile">
       <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
       <router-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
@@ -128,14 +124,11 @@
                 >
                 {{ $t('logout') }}
               </a>
-              <li class="main-header__user_menu_item" v-if="!isAuthenticated">
-                <a
-                  class="main-header__user_menu_link"
-                  :href="getLoginLink()"
-                  >
+            </li>
+            <li class="main-header__user_menu_item" v-if="!isAuthenticated">
+                <a class="main-header__user_menu_link" :href="getLoginLink()">
                   {{ $t('login') }}
                 </a>
-              </li>
             </li>
           </ul>
         </div>
