@@ -1,9 +1,9 @@
 import _ from 'lodash'
-import EditableContent from '~/components/EditableContent'
 import ShareCollection from '~/components/Popup/ShareCollection'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
 import { validateHREF } from '~/components/_helpers'
 import SwitchInput from '~/components/switch-input'
+import InputWithCounter from '~/components/InputWithCounter'
 import { PublishStatus } from '~/utils'
 
 export default {
@@ -29,17 +29,14 @@ export default {
     }
   },
   components: {
-    EditableContent,
     ShareCollection,
     DeleteCollection,
-    SwitchInput
+    SwitchInput,
+    InputWithCounter
   },
   mounted() {
-    const { collection } = this
-    if (!_.isEmpty(collection)) {
-      const title =
-        this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
-      this.setCollectionTitle(title)
+    if (this.collection) {
+      this.resetData()
       this.setSocialCounters()
     }
     this.href = validateHREF(window.location.href)
@@ -67,37 +64,14 @@ export default {
     }
   },
   methods: {
-    setCollectionTitle(title) {
-      if (title) {
-        this.collectionTitle = title
-      }
-    },
-    /**
-     * Trigger on the change collection title
-     */
-    onChangeTitle() {
-      if (this.$refs.title) {
-        this.setCollectionTitle(this.$refs.title.innerText)
-      }
-    },
-    /**
-     * Reset changed data
-     */
     resetData() {
       const { collection } = this
-      const title =
+      this.collectionTitle =
         this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
-      this.setCollectionTitle(title)
     },
-    /**
-     * Deleting collection by id
-     */
     deleteCollectionPopup() {
       this.isShowDeleteCollection = true
     },
-    /**
-     * Deleting collection by id
-     */
     deleteCollection() {
       this.$store
         .dispatch('deleteMyCollection', this.collection.id)
@@ -112,9 +86,6 @@ export default {
     closeDeleteCollection() {
       this.isShowDeleteCollection = false
     },
-    /**
-     * Saving the collection
-     */
     onSubmit() {
       if (this.$i18n.locale === 'nl') {
         this.$emit('onSubmit', { title_nl: this.collectionTitle })
@@ -122,9 +93,6 @@ export default {
         this.$emit('onSubmit', { title_en: this.collectionTitle })
       }
     },
-    /**
-     * Set counters value for share buttons
-     */
     setSocialCounters() {
       const interval = setInterval(() => {
         this.$nextTick().then(() => {
@@ -175,10 +143,6 @@ export default {
         })
       }, 200)
     },
-    /**
-     * Event close social popups
-     * @param type - String - social type
-     */
     closeSocialSharing(type) {
       this.$store
         .dispatch('setCollectionSocial', {
@@ -191,15 +155,9 @@ export default {
           this.setSocialCounters()
         })
     },
-    /**
-     * Show the popup "Share collection"
-     */
     showShareCollection() {
       this.isShowShareCollection = true
     },
-    /**
-     * Close the popup "Share collection"
-     */
     closeShareCollection() {
       this.isShowShareCollection = false
       if (this.isCopied) {
@@ -208,33 +166,22 @@ export default {
     }
   },
   watch: {
-    /**
-     * Watcher on the search field
-     * @param search - String
-     */
     search(search) {
       this.$emit('input', search)
     },
-    /**
-     * Watcher on the contentEditable field
-     * @param isEditable - Boolean
-     */
     contenteditable(isEditable) {
       if (!isEditable) {
         this.resetData()
       }
     },
-    /**
-     * Watcher on the collection object
-     * @param collection - Object
-     */
     collection(collection) {
-      if (!_.isEmpty(collection)) {
-        const title =
-          this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
-        this.setCollectionTitle(title)
+      if (collection) {
+        this.resetData()
         this.setSocialCounters()
       }
+    },
+    '$i18n.locale': function() {
+      this.resetData()
     }
   }
 }
