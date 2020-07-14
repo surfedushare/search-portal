@@ -5,8 +5,10 @@
       v-bind="$attrs"
       :class="{ 'with-language': language !== null }"
       @input="onChange"
+      @focus="showCounter = true"
+      @blur="showCounter = false"
     />
-    <div class="counter">
+    <div v-if="showCounter" class="counter">
       {{ charactersRemaining }}
     </div>
   </div>
@@ -19,6 +21,11 @@ export default {
     language: {
       type: String,
       default: null
+    }
+  },
+  data() {
+    return {
+      showCounter: false
     }
   },
   computed: {
