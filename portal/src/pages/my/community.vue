@@ -148,15 +148,9 @@
                   invalid: isFieldValid('description_nl')
                 }"
               >
-                <label for="description_nl" class="communities__form__label">
-                  {{ $t('Description') }}
-                </label>
-                <textarea
-                  id="description_nl"
+                <RichTextInput
                   v-model="formData.description_nl"
-                  required
-                  name="description"
-                  class="communities__form__textarea"
+                  :title="$t('Description')"
                   :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
@@ -292,6 +286,7 @@
                 <RichTextInput
                   v-model="formData.description_en"
                   :title="$t('Description')"
+                  :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
                   <li
@@ -839,10 +834,11 @@ export default {
       padding-left: 10px;
     }
     &__input {
+      font-family: @main-font;
       border: 1px solid #bcbfc2;
       width: 100%;
       border-radius: 7px;
-      padding: 12px 24px;
+      padding: 10px;
       font-size: 16px;
       line-height: 1.44;
       color: #686d75;
