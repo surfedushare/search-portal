@@ -71,13 +71,13 @@
                 <label for="title_nl" class="communities__form__label">
                   {{ $t('Name') }}
                 </label>
-                <input
+                <InputWithCounter
                   id="title_nl"
                   v-model="formData.title_nl"
                   required
                   name="name"
                   type="text"
-                  class="communities__form__input"
+                  maxlength="80"
                   :placeholder="$t('community-title-placeholder')"
                 />
                 <ul class="errors">
@@ -204,14 +204,14 @@
                 <label for="title_en" class="communities__form__label">
                   {{ $t('Name') }}
                 </label>
-                <input
+                <InputWithCounter
                   id="title_en"
                   v-model="formData.title_en"
                   required
                   name="name"
                   type="text"
-                  class="communities__form__input"
                   :placeholder="$t('community-title-placeholder')"
+                  maxlength="80"
                 />
                 <ul class="errors">
                   <li
@@ -378,6 +378,7 @@ import InputFile from '~/components/InputFile'
 import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
 import RichTextInput from '~/components/RichTextInput'
+import InputWithCounter from '~/components/InputWithCounter'
 import { PublishStatus } from '~/utils'
 
 const defaultFormData = {
@@ -402,7 +403,8 @@ export default {
     AddCollection,
     InputFile,
     SwitchInput,
-    RichTextInput
+    RichTextInput,
+    InputWithCounter
   },
   data() {
     return {
