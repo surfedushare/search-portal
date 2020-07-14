@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import ShareCollection from '~/components/Popup/ShareCollection'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
 import { validateHREF } from '~/components/_helpers'
