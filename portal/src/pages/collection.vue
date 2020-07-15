@@ -5,6 +5,7 @@
     </div>
     <div v-else class="center_block">
       <Collection
+        v-if="collectionInfo"
         v-model="search"
         :collection="collectionInfo"
         :contenteditable="contenteditable"
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
 import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
@@ -109,17 +110,18 @@ export default {
       'user'
     ]),
     collectionInfo() {
-      if (_.isEmpty(this.collection)) {
-        return this.collection
+      if (isEmpty(this.collection)) {
+        return null
       } else if (this.collection.publish_status === PublishStatus.PUBLISHED) {
         return this.collection
       } else if (
         this.user &&
-        _.find(this.user.collections, { id: this.collection.id })
+        this.user.collections.find({ id: this.collection.id })
       ) {
         return this.collection
       }
-      return {}
+
+      return null
     }
   },
   mounted() {
