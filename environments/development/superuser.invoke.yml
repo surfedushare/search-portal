@@ -15,5 +15,6 @@ aws:
   rds_security_group_id: "sg-0d1035d5b1136e509"
   cluster_arn: "arn:aws:ecs:eu-central-1:322480324822:cluster/surfpol"
   task_role_arn: "arn:aws:iam::322480324822:role/ecsTaskExecutionRole"
+  harvester_task_role_arn: "arn:aws:iam::322480324822:role/ecsHarvesterTaskExecutionRole"
   superuser_task_role_arn: "arn:aws:iam::322480324822:role/ecsSuperuserTaskExecutionRole"
   postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres"
