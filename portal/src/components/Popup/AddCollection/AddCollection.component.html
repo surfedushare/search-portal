@@ -25,28 +25,30 @@
           action=""
           @submit.prevent="onSaveCollection"
         >
-          <InputWithCounter
-            id="title_nl"
-            v-model="formData.title_nl"
-            type="text"
-            :placeholder="$t('Name-for-collection')"
-            required
-            language='NL'
-            name="title_nl"
-            maxlength="80"
-            class="title-input"
-          />
-          <InputWithCounter
-            id="title_en"
-            v-model="formData.title_en"
-            type="text"
-            :placeholder="$t('Name-for-collection')"
-            required
-            language='EN'
-            name="title_en"
-            maxlength="80"
-            class="title-input"
-          />
+          <InputLanguageWrapper language='NL'>
+            <InputWithCounter
+              id="title_nl"
+              v-model="formData.title_nl"
+              type="text"
+              :placeholder="$t('Name-for-collection')"
+              required
+              name="title_nl"
+              maxlength="80"
+              class="title-input"
+            />
+          </InputLanguageWrapper>
+          <InputLanguageWrapper language='EN'>
+            <InputWithCounter
+              id="title_en"
+              v-model="formData.title_en"
+              type="text"
+              :placeholder="$t('Name-for-collection')"
+              required
+              name="title_en"
+              maxlength="80"
+              class="title-input"
+            />
+          </InputLanguageWrapper>
           <div class="form__button">
             <button
               class="button"
@@ -61,5 +63,3 @@
     </slot>
   </Popup>
 </transition>
-
-

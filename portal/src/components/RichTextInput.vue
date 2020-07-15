@@ -44,11 +44,14 @@
         </div>
       </editor-menu-bar>
     </div>
-    <editor-content
-      class="editor__content"
-      :editor="editor"
-      @onUpdate="onUpdate"
-    />
+    <InputLanguageWrapper :language="language">
+      <editor-content
+        class="editor__content"
+        :class="{ 'with-language': language !== null }"
+        :editor="editor"
+        @onUpdate="onUpdate"
+      />
+    </InputLanguageWrapper>
   </div>
 </template>
 <script>
@@ -64,15 +67,21 @@ import {
   Placeholder,
   Underline
 } from 'tiptap-extensions'
+import InputLanguageWrapper from '~/components/InputLanguageWrapper'
 
 export default {
   name: 'RichTextInput',
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    InputLanguageWrapper
   },
   props: {
     title: {
+      type: String,
+      default: null
+    },
+    language: {
       type: String,
       default: null
     },
@@ -226,5 +235,11 @@ export default {
   border: 1px solid #e5e5e5;
   border-radius: 7px;
   padding: 10px;
+  max-height: 300px;
+  overflow-y: scroll;
+
+  &.with-language {
+    padding-left: 60px;
+  }
 }
 </style>

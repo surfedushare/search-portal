@@ -16,6 +16,8 @@ axios.interceptors.response.use(
     if (code === 401) {
       store.dispatch('logout')
     }
+
+    return Promise.reject(error)
   }
 )
 

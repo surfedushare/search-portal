@@ -53,10 +53,6 @@
             {{ $t('manage-community-information') }}
             <br /><br />
           </div>
-          <div class="language">
-            <h3>{{ $t('dutch') }}</h3>
-            <hr />
-          </div>
           <form
             v-if="formData"
             action="/"
@@ -64,258 +60,146 @@
             @submit.prevent="onSubmit"
           >
             <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{ field: true, invalid: isFieldValid('title_nl') }"
-              >
-                <label for="title_nl" class="communities__form__label">
+              <div class="communities__form__row">
+                <label class="communities__form__label">
                   {{ $t('Name') }}
                 </label>
-                <InputWithCounter
-                  id="title_nl"
-                  v-model="formData.title_nl"
-                  required
-                  name="name"
-                  type="text"
-                  maxlength="80"
-                  :placeholder="$t('community-title-placeholder')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('title_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+                <ErrorWrapper :errors="getFieldErrors('title_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <InputWithCounter
+                      id="title_nl"
+                      v-model="formData.title_nl"
+                      required
+                      name="name"
+                      type="text"
+                      maxlength="80"
+                      :placeholder="$t('community-title-placeholder')"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('website_url_nl')
-                }"
-              >
-                <label for="website_nl" class="communities__form__label">
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('title_en')">
+                  <InputLanguageWrapper language="EN">
+                    <InputWithCounter
+                      id="title_en"
+                      v-model="formData.title_en"
+                      required
+                      name="name"
+                      type="text"
+                      :placeholder="$t('community-title-placeholder')"
+                      maxlength="80"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
+              </div>
+              <div class="communities__form__row">
+                <label class="communities__form__label">
                   {{ $t('Website') }}
                 </label>
-                <input
-                  id="website_nl"
-                  v-model="formData.website_url_nl"
-                  name="website"
-                  type="url"
-                  class="communities__form__input"
-                  :placeholder="$t('community-url-placeholder')"
-                  @blur="onWebsiteURLBlur('nl')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('website_url_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+                <ErrorWrapper :errors="getFieldErrors('website_url_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <input
+                      id="website_nl"
+                      v-model="formData.website_url_nl"
+                      name="website"
+                      type="url"
+                      class="communities__form__input"
+                      :placeholder="$t('community-url-placeholder')"
+                      @blur="onWebsiteURLBlur('nl')"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{ field: true, invalid: isFieldValid('logo_nl') }"
-              >
-                <InputFile
-                  ref="file-logo_nl"
-                  :imagesrc="formData.logo_nl"
-                  :title="$t('Logo')"
-                  @remove_image="onRemoveImage('logo_nl', $event)"
-                  @add_image="onAddImage('logo_nl', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('logo_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('website_url_en')">
+                  <InputLanguageWrapper language="EN">
+                    <input
+                      id="website_en"
+                      v-model="formData.website_url_en"
+                      name="website"
+                      type="url"
+                      class="communities__form__input"
+                      :placeholder="$t('community-url-placeholder')"
+                      @blur="onWebsiteURLBlur('en')"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-            </div>
-            <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('description_nl')
-                }"
-              >
-                <RichTextInput
-                  v-model="formData.description_nl"
-                  :title="$t('Description')"
-                  :placeholder="$t('community-description-placeholder')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('description_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('featured_image_nl')
-                }"
-              >
-                <InputFile
-                  ref="file-img_nl"
-                  :imagesrc="formData.featured_image_nl"
-                  :title="$t('Featured-image')"
-                  @remove_image="onRemoveImage('featured_nl', $event)"
-                  @add_image="onAddImage('featured_nl', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('featured_image_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </form>
-          <div class="language">
-            <h3>{{ $t('english') }}</h3>
-            <hr />
-          </div>
-          <form
-            v-if="formData"
-            action="/"
-            class="communities__form_in"
-            @submit.prevent="onSubmit"
-          >
-            <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{ field: true, invalid: isFieldValid('title_en') }"
-              >
-                <label for="title_en" class="communities__form__label">
-                  {{ $t('Name') }}
+              <div class="communities__form__row communities__form__file">
+                <label class="communities__form__label">
+                  {{ $t('Logo') }}
                 </label>
-                <InputWithCounter
-                  id="title_en"
-                  v-model="formData.title_en"
-                  required
-                  name="name"
-                  type="text"
-                  :placeholder="$t('community-title-placeholder')"
-                  maxlength="80"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('title_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+                <ErrorWrapper :errors="getFieldErrors('logo_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <InputFile
+                      ref="file-logo_nl"
+                      :imagesrc="formData.logo_nl"
+                      @remove_image="onRemoveImage('logo_nl', $event)"
+                      @add_image="onAddImage('logo_nl', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('website_url_en')
-                }"
-              >
-                <label for="website_en" class="communities__form__label">
-                  {{ $t('Website') }}
-                </label>
-                <input
-                  id="website_en"
-                  v-model="formData.website_url_en"
-                  name="website"
-                  type="url"
-                  class="communities__form__input"
-                  :placeholder="$t('community-url-placeholder')"
-                  @blur="onWebsiteURLBlur('en')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('website_url_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{ field: true, invalid: isFieldValid('logo_en') }"
-              >
-                <InputFile
-                  ref="file-logo_en"
-                  :imagesrc="formData.logo_en"
-                  :title="$t('Logo')"
-                  @remove_image="onRemoveImage('logo_en', $event)"
-                  @add_image="onAddImage('logo_en', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('logo_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row communities__form__file">
+                <ErrorWrapper :errors="getFieldErrors('logo_en')">
+                  <InputLanguageWrapper language="EN">
+                    <InputFile
+                      ref="file-logo_en"
+                      :imagesrc="formData.logo_en"
+                      @remove_image="onRemoveImage('logo_en', $event)"
+                      @add_image="onAddImage('logo_en', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
             </div>
             <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('description_en')
-                }"
-              >
-                <RichTextInput
-                  v-model="formData.description_en"
-                  :title="$t('Description')"
-                  :placeholder="$t('community-description-placeholder')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('description_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('description_nl')">
+                  <RichTextInput
+                    v-model="formData.description_nl"
+                    :title="$t('Description')"
+                    language="NL"
+                    :placeholder="$t('community-description-placeholder')"
+                  />
+                </ErrorWrapper>
               </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('featured_image_en')
-                }"
-              >
-                <InputFile
-                  ref="file-img_en"
-                  :imagesrc="formData.featured_image_en"
-                  :title="$t('Featured-image')"
-                  @remove_image="onRemoveImage('featured_en', $event)"
-                  @add_image="onAddImage('featured_en', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('featured_image_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('description_en')">
+                  <RichTextInput
+                    v-model="formData.description_en"
+                    language="EN"
+                    :placeholder="$t('community-description-placeholder')"
+                  />
+                </ErrorWrapper>
+              </div>
+              <div class="communities__form__row communities__form__file">
+                <label class="communities__form__label">
+                  {{ $t('Featured-image') }}
+                </label>
+                <ErrorWrapper :errors="getFieldErrors('featured_image_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <InputFile
+                      ref="file-img_nl"
+                      :imagesrc="formData.featured_image_nl"
+                      @remove_image="onRemoveImage('featured_nl', $event)"
+                      @add_image="onAddImage('featured_nl', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
+              </div>
+              <div class="communities__form__row communities__form__file">
+                <ErrorWrapper :errors="getFieldErrors('featured_image_en')">
+                  <InputLanguageWrapper language="EN">
+                    <InputFile
+                      ref="file-img_en"
+                      :imagesrc="formData.featured_image_en"
+                      @remove_image="onRemoveImage('featured_en', $event)"
+                      @add_image="onAddImage('featured_en', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
             </div>
           </form>
@@ -379,6 +263,8 @@ import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
 import RichTextInput from '~/components/RichTextInput'
 import InputWithCounter from '~/components/InputWithCounter'
+import ErrorWrapper from '~/components/ErrorWrapper'
+import InputLanguageWrapper from '~/components/InputLanguageWrapper'
 import { PublishStatus } from '~/utils'
 
 const defaultFormData = {
@@ -404,25 +290,16 @@ export default {
     InputFile,
     SwitchInput,
     RichTextInput,
-    InputWithCounter
+    InputWithCounter,
+    ErrorWrapper,
+    InputLanguageWrapper
   },
   data() {
     return {
       is_submitting: false,
       showPopup: false,
       image_logo: '',
-      errors: {
-        title_nl: '',
-        title_en: '',
-        description_nl: '',
-        description_en: '',
-        website_url_nl: '',
-        website_url_en: '',
-        logo_nl: '',
-        logo_en: '',
-        featured_image_nl: '',
-        featured_image_en: ''
-      },
+      errors: {},
       formData: null,
       notFound: false
     }
@@ -467,7 +344,7 @@ export default {
       return this.errors[fieldName]
     },
     isFieldValid(fieldName) {
-      return this.getFieldErrors(fieldName).length > 0
+      return this.getFieldErrors(fieldName) != null
     },
     anyFieldError() {
       return some(this.errors, item => item.length > 0)
@@ -564,9 +441,7 @@ export default {
       this.is_submitting = true
 
       const data = this.normalizeFormData()
-      forEach(this.errors, (value, key) => {
-        this.errors[key] = ''
-      })
+      this.errors = {}
       this.$store
         .dispatch('putCommunities', {
           id: this.formData.external_id,
@@ -587,14 +462,15 @@ export default {
               message: 'any-field-error'
             })
           }
+          const errors = {}
           forEach(err.response.data, (feedback, language) => {
             const response = JSON.parse(feedback.replace(/'/g, '"'))
-            forEach(response, (item, key) => {
-              const error_msg = item
+            forEach(response, (errorMsg, key) => {
               let location = key + '_' + language.toLowerCase()
-              this.errors[location] = error_msg
+              errors[location] = errorMsg
             })
           })
+          this.errors = errors
         })
       if (!isEmpty(this.selection)) {
         let deletePayload = {
@@ -721,6 +597,9 @@ export default {
         JSON.stringify([data_nl, data_en])
       )
       data.append('deleted_logos', JSON.stringify(deleted_logos))
+      for (var pair of data.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
       return data
     },
     saveCollection(collection) {
@@ -747,8 +626,8 @@ export default {
       this.selection = selection
     },
     onWebsiteURLBlur(language) {
-      let hasValue = !isEmpty(this.formData['website_url_' + language])
-      let hasValidProtocol = startsWith(
+      const hasValue = !isEmpty(this.formData['website_url_' + language])
+      const hasValidProtocol = startsWith(
         this.formData['website_url_' + language],
         'http'
       )
@@ -756,8 +635,8 @@ export default {
         this.formData['website_url_' + language] =
           'https://' + this.formData['website_url_' + language]
       }
-      let oppositeLanguage = language === 'en' ? 'nl' : 'en'
-      let hasOppositeValue = !isEmpty(
+      const oppositeLanguage = language === 'en' ? 'nl' : 'en'
+      const hasOppositeValue = !isEmpty(
         this.formData['website_url_' + oppositeLanguage]
       )
       if (hasValue && !hasOppositeValue) {
