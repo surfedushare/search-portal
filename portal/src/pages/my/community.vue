@@ -1,44 +1,30 @@
 <template>
   <section class="container main communities">
-    <div v-if="!formData">
+    <div v-if="notFound">
       <error status-code="404" message-key="community-not-found" />
     </div>
     <div v-else>
+      <HeaderBlock :title="$t('My-community')" />
       <div class="center_block">
-        <div class="communities__info">
-          <img
-            src="/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="
-              /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-              /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
-            "
-            class="communities__info_bg"
-          />
-          <h2 class="communities__info_ttl">
-            {{ $t('My-community') }}
-          </h2>
-          <div>
-            <section class="communities__section__blue_box">
-              <form action="/" @submit.prevent="onSubmit">
-                <div class="communities__form__buttons">
-                  <switch-input v-model="isPublished" :label="$t('public')" />
-                  &nbsp;&nbsp;
-                  <router-link :to="getPreviewPath()">
-                    <i class="fas fa-eye" /> {{ $t('example') }}
-                  </router-link>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <button
-                    :disabled="is_submitting"
-                    type="submit"
-                    class="button communities__form__button"
-                  >
-                    {{ $t('save') }}
-                  </button>
-                </div>
-              </form>
-            </section>
-          </div>
-        </div>
+        <section v-if="formData" class="communities__section__blue_box">
+          <form action="/" @submit.prevent="onSubmit">
+            <div class="communities__form__buttons">
+              <switch-input v-model="isPublished" :label="$t('public')" />
+              &nbsp;&nbsp;
+              <router-link :to="getPreviewPath()">
+                <i class="fas fa-eye" /> {{ $t('example') }}
+              </router-link>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                :disabled="is_submitting"
+                type="submit"
+                class="button communities__form__button"
+              >
+                {{ $t('save') }}
+              </button>
+            </div>
+          </form>
+        </section>
 
         <div class="tab">
           <button
@@ -67,12 +53,12 @@
             {{ $t('manage-community-information') }}
             <br /><br />
           </div>
-          <div>
+          <div class="language">
             <h3>{{ $t('dutch') }}</h3>
             <hr />
-            <br /><br />
           </div>
           <form
+            v-if="formData"
             action="/"
             class="communities__form_in"
             @submit.prevent="onSubmit"
@@ -161,15 +147,9 @@
                   invalid: isFieldValid('description_nl')
                 }"
               >
-                <label for="description_nl" class="communities__form__label">
-                  {{ $t('Description') }}
-                </label>
-                <textarea
-                  id="description_nl"
+                <RichTextInput
                   v-model="formData.description_nl"
-                  required
-                  name="description"
-                  class="communities__form__textarea"
+                  :title="$t('Description')"
                   :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
@@ -206,13 +186,12 @@
               </div>
             </div>
           </form>
-          <div>
-            <br /><br />
+          <div class="language">
             <h3>{{ $t('english') }}</h3>
             <hr />
-            <br /><br />
           </div>
           <form
+            v-if="formData"
             action="/"
             class="communities__form_in"
             @submit.prevent="onSubmit"
@@ -301,15 +280,9 @@
                   invalid: isFieldValid('description_en')
                 }"
               >
-                <label for="description_en" class="communities__form__label">
-                  {{ $t('Description') }}
-                </label>
-                <textarea
-                  id="description_en"
+                <RichTextInput
                   v-model="formData.description_en"
-                  required
-                  name="description"
-                  class="communities__form__textarea"
+                  :title="$t('Description')"
                   :placeholder="$t('community-description-placeholder')"
                 />
                 <ul class="errors">
@@ -399,19 +372,37 @@ import {
 } from 'lodash'
 import { mapGetters } from 'vuex'
 import Collections from '~/components/Collections'
+import HeaderBlock from '~/components/HeaderBlock'
 import AddCollection from '~/components/Popup/AddCollection'
 import InputFile from '~/components/InputFile'
 import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
+import RichTextInput from '~/components/RichTextInput'
 import { PublishStatus } from '~/utils'
+
+const defaultFormData = {
+  title_nl: '',
+  title_en: '',
+  description_nl: '',
+  description_en: '',
+  website_url_nl: '',
+  website_url_en: '',
+  logo_nl: false,
+  logo_en: false,
+  featured_image_nl: false,
+  featured_image_en: false,
+  publish_status: PublishStatus.DRAFT
+}
 
 export default {
   components: {
+    HeaderBlock,
     Error,
     Collections,
     AddCollection,
     InputFile,
-    SwitchInput
+    SwitchInput,
+    RichTextInput
   },
   data() {
     return {
@@ -430,19 +421,8 @@ export default {
         featured_image_nl: '',
         featured_image_en: ''
       },
-      formData: {
-        title_nl: '',
-        title_en: '',
-        description_nl: '',
-        description_en: '',
-        website_url_nl: '',
-        website_url_en: '',
-        logo_nl: false,
-        logo_en: false,
-        featured_image_nl: false,
-        featured_image_en: false,
-        publish_status: PublishStatus.DRAFT
-      }
+      formData: null,
+      notFound: false
     }
   },
   computed: {
@@ -530,38 +510,43 @@ export default {
     },
     setInitialFormData() {
       if (!this.user) {
-        this.formData = {}
+        this.notFound = true
         return
       }
 
-      let communities = this.getUserCommunities(this.user)
-      let community = find(communities, community => {
+      const communities = this.getUserCommunities(this.user)
+      const community = find(communities, community => {
         return community.id === this.$route.params.community
       })
 
-      if (isNil(community)) {
-        this.formData = {}
+      if (!community) {
+        this.notFound = true
         return
       }
-      if (!isNil(community.community_details)) {
-        forEach(community.community_details, detail => {
+      if (community.community_details) {
+        const formData = {
+          external_id: community.id,
+          publish_status: community.publish_status
+        }
+        community.community_details.forEach(detail => {
           if (detail.language_code === 'NL') {
-            this.formData.title_nl = detail.title
-            this.formData.description_nl = detail.description
-            this.formData.website_url_nl = detail.website_url
-            this.formData.logo_nl = detail.logo
-            this.formData.featured_image_nl = detail.featured_image
+            formData.title_nl = detail.title
+            formData.description_nl = detail.description
+            formData.website_url_nl = detail.website_url
+            formData.logo_nl = detail.logo
+            formData.featured_image_nl = detail.featured_image
           } else if (detail.language_code === 'EN') {
-            this.formData.title_en = detail.title
-            this.formData.description_en = detail.description
-            this.formData.website_url_en = detail.website_url
-            this.formData.logo_en = detail.logo
-            this.formData.featured_image_en = detail.featured_image
+            formData.title_en = detail.title
+            formData.description_en = detail.description
+            formData.website_url_en = detail.website_url
+            formData.logo_en = detail.logo
+            formData.featured_image_en = detail.featured_image
           }
         })
+        this.formData = formData
+      } else {
+        this.formData = defaultFormData
       }
-      this.formData.external_id = community.id
-      this.formData.publish_status = community.publish_status
     },
     showAddCollection() {
       this.showPopup = true
@@ -625,10 +610,10 @@ export default {
       }
     },
     openTab(tabName) {
-      let generaltab = this.$refs['general-tab']
-      let generalbutton = this.$refs['general-button']
-      let collectionstab = this.$refs['collections-tab']
-      let collectionsbutton = this.$refs['collections-button']
+      const generaltab = this.$refs['general-tab']
+      const generalbutton = this.$refs['general-button']
+      const collectionstab = this.$refs['collections-tab']
+      const collectionsbutton = this.$refs['collections-button']
       switch (tabName) {
         case 'General':
           generaltab.style.display = 'block'
@@ -786,32 +771,7 @@ export default {
 @import './../../variables';
 .communities {
   width: 100%;
-  padding: 119px 0 47px;
 
-  &__info {
-    &_bg {
-      position: absolute;
-      right: 26px;
-      top: -57px;
-      width: 50%;
-      border-radius: 21px;
-    }
-    &_ttl {
-      position: relative;
-    }
-    &_all {
-      text-decoration: none;
-      font-weight: bold;
-      margin-bottom: 11px;
-      display: inline-block;
-    }
-    &_search {
-      margin: 0 65px;
-      .search__fields {
-        margin-bottom: 33px;
-      }
-    }
-  }
   &__section {
     &__blue_box {
       line-height: 75px;
@@ -819,12 +779,15 @@ export default {
       background: @dark-blue;
       width: 40%;
       min-width: 440px; // or break tablets
-      height: 75px;
       border-radius: 20px;
-      margin-top: 25px;
+      margin-top: -80px;
+      margin-bottom: 30px;
       color: white;
       font-size: 18px;
       font-weight: 600;
+      @media @mobile {
+        margin-top: 0;
+      }
       a:link {
         color: white;
         text-decoration: none;
@@ -836,7 +799,7 @@ export default {
     }
   }
   &__form {
-    margin-bottom: 146px;
+    margin-bottom: 60px;
     &_in {
       display: flex;
       justify-content: space-between;
@@ -868,36 +831,23 @@ export default {
       padding-left: 10px;
     }
     &__input {
-      border: 1px solid #bcbfc2;
+      font-family: @main-font;
+      border: 1px solid #e5e5e5;
       width: 100%;
       border-radius: 7px;
-      padding: 12px 24px;
+      padding: 10px;
       font-size: 16px;
       line-height: 1.44;
       color: #686d75;
-      &:focus {
-        outline: none;
-      }
-    }
-    &__textarea {
-      border: 1px solid #bcbfc2;
-      border-radius: 7px;
-      padding: 12px 24px;
-      width: 100%;
-      height: 143px;
-      font-size: 16px;
-      line-height: 1.44;
-      resize: none;
-      color: #686d75;
-      font-family: inherit;
       &:focus {
         outline: none;
       }
     }
     &__buttons {
-      text-align: right;
       width: 100%;
-      margin: 10px 0 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
     }
     &__button {
       margin-right: 10px;
@@ -915,6 +865,10 @@ export default {
   justify-content: flex-end;
   margin-bottom: -55px;
   position: relative;
+
+  button {
+    padding-left: 40px;
+  }
 
   &__link {
     padding: 13px 43px 13px 51px;
@@ -936,14 +890,14 @@ export default {
 /* Style the buttons that are used to open the tab content */
 .tab button {
   position: relative;
+  display: inline-block;
   border-radius: 5px;
   background-color: inherit;
-  float: left;
   border: 1px solid #ccc;
   outline: none;
   cursor: pointer;
   padding: 14px 50px;
-  margin: 0 25px;
+  margin-right: 25px;
   transition: 0.3s;
   font-size: 16px;
   font-weight: bold;
@@ -1001,6 +955,14 @@ export default {
   textarea,
   .form__file {
     border: 1px @red solid;
+  }
+}
+
+.language {
+  margin-bottom: 20px;
+
+  hr {
+    border-top: 1px solid @dark-grey;
   }
 }
 </style>

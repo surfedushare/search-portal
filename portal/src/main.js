@@ -42,14 +42,18 @@ Vue.use(InfiniteScroll)
 
 const $log = injector.get('$log')
 
+async function authenticate() {
+  if (store.getters.api_token) {
+    return store.dispatch('authenticate', { token: store.getters.api_token })
+  }
+
+  return store.dispatch('getUser')
+}
+
 async function mountApp() {
   await loadLanguages()
 
-  if (store.getters.api_token) {
-    store.dispatch('authenticate', { token: store.getters.api_token })
-  } else {
-    store.dispatch('getUser')
-  }
+  await authenticate()
 
   new Vue({
     router,
