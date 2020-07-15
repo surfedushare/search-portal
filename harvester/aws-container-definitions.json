@@ -14,7 +14,9 @@
         "environment": [
             { "name" : "PYTHONUNBUFFERED", "value" : "1" },
             { "name" : "APPLICATION_MODE", "value" : "${mode}" },
-            { "name" : "POL_DJANGO_DEBUG", "value" : "0" }
+            { "name" : "POL_DJANGO_DEBUG", "value" : "0" },
+            { "name" : "POL_SECRETS_SURFCONEXT_SECRET_KEY", "value" : "not-used" },
+            { "name" : "POL_SECRETS_ELASTIC_SEARCH_PASSWORD", "value" : "not-used" }
         ],
         "logConfiguration": {
             "logDriver": "awslogs",
