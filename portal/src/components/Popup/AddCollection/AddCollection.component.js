@@ -1,8 +1,10 @@
 import Popup from '~/components/Popup'
+import InputWithCounter from '~/components/InputWithCounter'
 export default {
   name: 'add-collection',
-  props: ['is-show', 'close', 'submit-method'],
+  props: ['showPopup', 'close', 'submitMethod'],
   components: {
+    InputWithCounter,
     Popup
   },
   mounted() {},
@@ -11,14 +13,12 @@ export default {
       saved: false,
       submitting: false,
       formData: {
-        title: null
+        title_nl: null,
+        title_en: null
       }
     }
   },
   methods: {
-    /**
-     * The save collection event
-     */
     onSaveCollection() {
       this.submitting = true
       this.$store

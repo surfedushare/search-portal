@@ -1,6 +1,5 @@
 import { mapGetters } from 'vuex'
 import StarRating from './../StarRating'
-import _ from 'lodash'
 
 export default {
   name: 'materials',
@@ -42,21 +41,17 @@ export default {
     }
   },
   methods: {
-    getTitleTranslation(community, language) {
-      if (
-        !_.isNil(community.title_translations) &&
-        !_.isEmpty(community.title_translations)
-      ) {
-        return community.title_translations[language]
+    handleMaterialClick(material) {
+      if (this.selectFor === 'add') {
+        this.$store.commit('SET_MATERIAL', material)
+      } else {
+        this.$router.push(
+          this.localePath({
+            name: 'materials-id',
+            params: { id: material.external_id }
+          })
+        )
       }
-      return community.name
-    },
-    /**
-     * Set material on click
-     * @param material - {Object}
-     */
-    setMaterial(material) {
-      this.$store.commit('SET_MATERIAL', material)
     },
     /**
      * Select material

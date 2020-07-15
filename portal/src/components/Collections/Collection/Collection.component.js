@@ -1,16 +1,17 @@
-import _ from 'lodash'
-import EditableContent from '~/components/EditableContent'
 import ShareCollection from '~/components/Popup/ShareCollection'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
 import { validateHREF } from '~/components/_helpers'
 import SwitchInput from '~/components/switch-input'
+import InputWithCounter from '~/components/InputWithCounter'
 import { PublishStatus } from '~/utils'
 
 export default {
   name: 'collection',
   props: {
     collection: {
-      default: {}
+      type: Object,
+      default: null,
+      required: true
     },
     contenteditable: {
       default: false
@@ -29,27 +30,24 @@ export default {
     }
   },
   components: {
-    EditableContent,
     ShareCollection,
     DeleteCollection,
-    SwitchInput
+    SwitchInput,
+    InputWithCounter
   },
   mounted() {
-    const { collection } = this
-    if (!_.isEmpty(collection)) {
-      this.setTitle(collection.title)
-      this.setSocialCounters()
-    }
+    this.resetData()
+    this.setSocialCounters()
     this.href = validateHREF(window.location.href)
   },
   data() {
     return {
       href: '',
-      collection_title: null,
+      collectionTitle: null,
       search: {},
       isShowDeleteCollection: false,
       isShowShareCollection: false,
-      is_copied: false
+      isCopied: false
     }
   },
   computed: {
@@ -65,41 +63,14 @@ export default {
     }
   },
   methods: {
-    /**
-     * Set collection title
-     * @param title - String
-     */
-    setTitle(title) {
-      if (title) {
-        this.collection_title = title
-        // if (this.$refs.title) {
-        //   this.$refs.title.innerText = title;
-        // }
-      }
-    },
-    /**
-     * Trigger on the change collection title
-     */
-    onChangeTitle() {
-      if (this.$refs.title) {
-        this.setTitle(this.$refs.title.innerText)
-      }
-    },
-    /**
-     * Reset changed data
-     */
     resetData() {
-      this.setTitle(this.collection.title)
+      const { collection } = this
+      this.collectionTitle =
+        this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
     },
-    /**
-     * Deleting collection by id
-     */
     deleteCollectionPopup() {
       this.isShowDeleteCollection = true
     },
-    /**
-     * Deleting collection by id
-     */
     deleteCollection() {
       this.$store
         .dispatch('deleteMyCollection', this.collection.id)
@@ -114,15 +85,13 @@ export default {
     closeDeleteCollection() {
       this.isShowDeleteCollection = false
     },
-    /**
-     * Saving the collection
-     */
     onSubmit() {
-      this.$emit('onSubmit', { title: this.collection_title })
+      if (this.$i18n.locale === 'nl') {
+        this.$emit('onSubmit', { title_nl: this.collectionTitle })
+      } else {
+        this.$emit('onSubmit', { title_en: this.collectionTitle })
+      }
     },
-    /**
-     * Set counters value for share buttons
-     */
     setSocialCounters() {
       const interval = setInterval(() => {
         this.$nextTick().then(() => {
@@ -173,10 +142,6 @@ export default {
         })
       }, 200)
     },
-    /**
-     * Event close social popups
-     * @param type - String - social type
-     */
     closeSocialSharing(type) {
       this.$store
         .dispatch('setCollectionSocial', {
@@ -189,52 +154,31 @@ export default {
           this.setSocialCounters()
         })
     },
-    /**
-     * Show the popup "Share collection"
-     */
     showShareCollection() {
       this.isShowShareCollection = true
     },
-    /**
-     * Close the popup "Share collection"
-     */
     closeShareCollection() {
       this.isShowShareCollection = false
-      if (this.is_copied) {
+      if (this.isCopied) {
         this.closeSocialSharing('link')
       }
     }
   },
   watch: {
-    /**
-     * Watcher on the search field
-     * @param search - String
-     */
     search(search) {
       this.$emit('input', search)
     },
-    /**
-     * Watcher on the contenteditable field
-     * @param isEditable - Boolean
-     */
     contenteditable(isEditable) {
-      // const { title } = this.$refs;
-      // this.$nextTick().then(() => {
-      //   title.focus();
-      // });
       if (!isEditable) {
         this.resetData()
       }
     },
-    /**
-     * Watcher on the collection object
-     * @param collection - Object
-     */
-    collection(collection) {
-      if (!_.isEmpty(collection)) {
-        this.setTitle(collection.title)
-        this.setSocialCounters()
-      }
+    collection() {
+      this.resetData()
+      this.setSocialCounters()
+    },
+    '$i18n.locale': function() {
+      this.resetData()
     }
   }
 }

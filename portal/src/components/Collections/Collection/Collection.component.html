@@ -5,17 +5,19 @@
       <div class="collection__info_title">
         <h2
           class="collection__info_ttl"
-          v-if="collection_title"
         >
-          <EditableContent
-            ref="title"
-            :contenteditable="contenteditable"
-            :set-text="setTitle"
-            :maxlength="255"
-            :text="collection_title"
+          <span v-if="!contenteditable">{{ collectionTitle }}</span>
+          <InputWithCounter
+            v-else-if="contenteditable"
+            maxlength="80"
+            type="text"
+            class="editable-header"
+            v-model="collectionTitle"
           />
         </h2>
-        <p class="collection__info_subttl">{{ $tc('learning-materials', collection.materials_count) }}</p>
+        <p class="collection__info_subttl">
+          {{ $tc('learning-materials', collection.materials_count) }}
+        </p>
       </div>
       <div class="collection__info_filter" v-if="contenteditable">
         <div class="collection__info_filter__edit">
@@ -68,7 +70,7 @@
         <template>
           <social-sharing
             :url="href"
-            :title="collection_title"
+            :title="collectionTitle"
             :class="{'disable_share_check': !isPublished}"
             inline-template
             v-cloak
@@ -116,7 +118,7 @@
     :close="closeShareCollection"
     :is-show="isShowShareCollection"
     :collection="collection"
-    v-model="is_copied"
+    v-model="isCopied"
   ></ShareCollection>
   <DeleteCollection
     :close="closeDeleteCollection"

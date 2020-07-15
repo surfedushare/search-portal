@@ -5,13 +5,13 @@
       {{ title }}
     </label>
     <img
+      v-if="imagePath"
       :src="imagePath"
       class="form__file_img"
     >
   </div>
 
   <div class="form__file_column">
-
     <div class="form__file_buttons">
       <label
         @click.prevent="removeImage"

@@ -1,14 +1,7 @@
 <template>
   <section class="container main privacy">
+    <HeaderBlock :title="$t('My-privacy')" />
     <div class="center_block">
-      <div class="privacy-header">
-        <div class="privacy__info">
-          <h2 class="privacy__info_ttl">
-            {{ $t('My-privacy') }}
-          </h2>
-        </div>
-      </div>
-
       <div class="content">
         <div class="left-column">
           <div v-if="permissions.length" class="privacy__form">
@@ -109,9 +102,11 @@ import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
 import SwitchInput from '~/components/switch-input'
 import CreateAccount from '~/components/Popup/CreateAccount'
+import HeaderBlock from '~/components/HeaderBlock'
 
 export default {
   components: {
+    HeaderBlock,
     SwitchInput,
     CreateAccount
   },
@@ -182,17 +177,11 @@ export default {
 
 .privacy {
   width: 100%;
-  padding: 80px 0 60px;
-  display: flex;
-
-  @media @mobile {
-    padding-top: 60px;
-  }
+  padding: 0 0 60px;
 
   .center_block {
     display: flex;
     flex-direction: column;
-    border-bottom: 2px @light-grey solid;
   }
 
   .privacy-header {
@@ -269,17 +258,6 @@ export default {
     background-color: #ffc300;
   }
 
-  &__info {
-    padding: 50px 30px;
-    border-radius: 20px;
-    background-color: rgba(244, 244, 244, 0.9);
-    position: relative;
-    z-index: -1;
-
-    &_ttl {
-      position: relative;
-    }
-  }
   &__form {
     margin-bottom: 80px;
 
