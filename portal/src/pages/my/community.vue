@@ -16,7 +16,7 @@
               </router-link>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <button
-                :disabled="is_submitting"
+                :disabled="isSubmitting"
                 type="submit"
                 class="button communities__form__button"
               >
@@ -28,24 +28,24 @@
 
         <div class="tab">
           <button
-            ref="general-button"
             class="tablinks"
-            @click="openTab('General')"
+            :class="{ active: currentTab === 'general' }"
+            @click="currentTab = 'general'"
           >
             {{ $t('general') }}
           </button>
           <button
-            ref="collections-button"
             class="tablinks"
-            @click="openTab('Collections')"
+            :class="{ active: currentTab === 'collections' }"
+            @click="currentTab = 'collections'"
           >
             {{ $t('collections') }}
           </button>
         </div>
 
         <div
+          v-show="currentTab === 'general'"
           id="General"
-          ref="general-tab"
           class="communities__form tabcontent"
         >
           <div>
@@ -133,9 +133,8 @@
                 <ErrorWrapper :errors="getFieldErrors('logo_nl')">
                   <InputLanguageWrapper language="NL">
                     <InputFile
-                      ref="file-logo_nl"
                       :imagesrc="formData.logo_nl"
-                      @remove_image="onRemoveImage('logo_nl', $event)"
+                      @remove_image="onRemoveImage('logo_nl')"
                       @add_image="onAddImage('logo_nl', $event)"
                     />
                   </InputLanguageWrapper>
@@ -145,9 +144,8 @@
                 <ErrorWrapper :errors="getFieldErrors('logo_en')">
                   <InputLanguageWrapper language="EN">
                     <InputFile
-                      ref="file-logo_en"
                       :imagesrc="formData.logo_en"
-                      @remove_image="onRemoveImage('logo_en', $event)"
+                      @remove_image="onRemoveImage('logo_en')"
                       @add_image="onAddImage('logo_en', $event)"
                     />
                   </InputLanguageWrapper>
@@ -181,9 +179,8 @@
                 <ErrorWrapper :errors="getFieldErrors('featured_image_nl')">
                   <InputLanguageWrapper language="NL">
                     <InputFile
-                      ref="file-img_nl"
                       :imagesrc="formData.featured_image_nl"
-                      @remove_image="onRemoveImage('featured_nl', $event)"
+                      @remove_image="onRemoveImage('featured_nl')"
                       @add_image="onAddImage('featured_nl', $event)"
                     />
                   </InputLanguageWrapper>
@@ -193,9 +190,8 @@
                 <ErrorWrapper :errors="getFieldErrors('featured_image_en')">
                   <InputLanguageWrapper language="EN">
                     <InputFile
-                      ref="file-img_en"
                       :imagesrc="formData.featured_image_en"
-                      @remove_image="onRemoveImage('featured_en', $event)"
+                      @remove_image="onRemoveImage('featured_en')"
                       @add_image="onAddImage('featured_en', $event)"
                     />
                   </InputLanguageWrapper>
@@ -206,7 +202,7 @@
         </div>
         <div
           id="Collections"
-          ref="collections-tab"
+          v-show="currentTab === 'collections'"
           class="communities__collections tabcontent"
         >
           <br /><br />
@@ -245,15 +241,7 @@
 </template>
 
 <script>
-import {
-  some,
-  isNil,
-  isEmpty,
-  find,
-  forEach,
-  startsWith,
-  endsWith
-} from 'lodash'
+import { isEmpty, find, forEach, startsWith } from 'lodash'
 import { mapGetters } from 'vuex'
 import Collections from '~/components/Collections'
 import HeaderBlock from '~/components/HeaderBlock'
@@ -274,10 +262,10 @@ const defaultFormData = {
   description_en: '',
   website_url_nl: '',
   website_url_en: '',
-  logo_nl: false,
-  logo_en: false,
-  featured_image_nl: false,
-  featured_image_en: false,
+  logo_nl: null,
+  logo_en: null,
+  featured_image_nl: null,
+  featured_image_en: null,
   publish_status: PublishStatus.DRAFT
 }
 
@@ -296,12 +284,12 @@ export default {
   },
   data() {
     return {
-      is_submitting: false,
+      isSubmitting: false,
       showPopup: false,
-      image_logo: '',
       errors: {},
       formData: null,
-      notFound: false
+      notFound: false,
+      currentTab: 'general'
     }
   },
   computed: {
@@ -336,56 +324,16 @@ export default {
       'getCommunityCollections',
       this.$route.params.community
     )
-    // Open the 'general' tab by default
-    this.openTab('General')
   },
   methods: {
     getFieldErrors(fieldName) {
       return this.errors[fieldName]
     },
-    isFieldValid(fieldName) {
-      return this.getFieldErrors(fieldName) != null
+    onRemoveImage(field) {
+      this.formData[field] = null
     },
-    anyFieldError() {
-      return some(this.errors, item => item.length > 0)
-    },
-    onRemoveImage(context) {
-      switch (context) {
-        case 'logo_nl':
-          this.logo_nl_deleted = true
-          this.logo_nl_added = false
-          break
-        case 'logo_en':
-          this.logo_en_deleted = true
-          this.logo_en_added = false
-          break
-        case 'featured_nl':
-          this.featured_nl_deleted = true
-          this.featured_nl_added = false
-          break
-        case 'featured_en':
-          this.featured_en_deleted = true
-          this.featured_en_added = false
-          break
-      }
-    },
-    onAddImage(context) {
-      if (context === 'logo_nl') {
-        this.logo_nl_deleted = false
-        this.logo_nl_added = true
-      }
-      if (context === 'featured_nl') {
-        this.featured_nl_deleted = false
-        this.featured_nl_added = true
-      }
-      if (context === 'logo_en') {
-        this.logo_en_deleted = false
-        this.logo_en_added = true
-      }
-      if (context === 'featured_en') {
-        this.featured_en_deleted = false
-        this.featured_en_added = true
-      }
+    onAddImage(field, file) {
+      this.formData[field] = file
     },
     setInitialFormData() {
       if (!this.user) {
@@ -433,12 +381,11 @@ export default {
     close() {
       this.showPopup = false
     },
-    addCollection() {},
     /**
      * Save community data
      */
     onSubmit() {
-      this.is_submitting = true
+      this.isSubmitting = true
 
       const data = this.normalizeFormData()
       this.errors = {}
@@ -448,14 +395,12 @@ export default {
           data: data
         })
         .then(() => {
-          this.is_submitting = false
           this.$store.commit('ADD_MESSAGE', {
             level: 'info',
             message: 'Data-saved'
           })
         })
         .catch(err => {
-          this.is_submitting = false
           if (err.response.data) {
             this.$store.commit('ADD_MESSAGE', {
               level: 'error',
@@ -466,14 +411,17 @@ export default {
           forEach(err.response.data, (feedback, language) => {
             const response = JSON.parse(feedback.replace(/'/g, '"'))
             forEach(response, (errorMsg, key) => {
-              let location = key + '_' + language.toLowerCase()
-              errors[location] = errorMsg
+              const errorKey = key + '_' + language.toLowerCase()
+              errors[errorKey] = errorMsg
             })
           })
           this.errors = errors
         })
+        .finally(() => {
+          this.isSubmitting = false
+        })
       if (!isEmpty(this.selection)) {
-        let deletePayload = {
+        const deletePayload = {
           id: this.$route.params.community,
           data: this.selection
         }
@@ -487,119 +435,57 @@ export default {
           })
       }
     },
-    openTab(tabName) {
-      const generaltab = this.$refs['general-tab']
-      const generalbutton = this.$refs['general-button']
-      const collectionstab = this.$refs['collections-tab']
-      const collectionsbutton = this.$refs['collections-button']
-      switch (tabName) {
-        case 'General':
-          generaltab.style.display = 'block'
-          generalbutton.className += ' active'
-          collectionstab.style.display = 'none'
-          collectionsbutton.className -= ' active'
-          break
-        case 'Collections':
-          collectionstab.style.display = 'block'
-          collectionsbutton.className += ' active'
-          generaltab.style.display = 'none'
-          generalbutton.className -= ' active'
-          break
-      }
-    },
-    /**
-     * Generate the FormData
-     * @returns {FormData}
-     */
     normalizeFormData() {
-      let data = new FormData()
-      let data_nl = { language_code: 'NL' }
-      let data_en = { language_code: 'EN' }
+      const data = new FormData()
 
-      forEach(this.formData, (element, key) => {
-        if (!isNil(element)) {
-          let value = element
-          if (Array.isArray(element)) {
-            value = JSON.stringify(element)
-          }
-          if (!startsWith(key, 'logo') && !startsWith(key, 'featured')) {
-            if (endsWith(key, '_nl')) {
-              data_nl[key.slice(0, -3)] = value
-            } else if (endsWith(key, '_en')) {
-              data_en[key.slice(0, -3)] = value
-            }
-          }
-          data.append(key, value)
-        }
-        // if the value is empty, send it to the backend (so the backend can reject the post)
-        else {
-          if (endsWith(key, '_nl')) {
-            data_nl[key.slice(0, -3)] = ''
-          } else if (endsWith(key, '_en')) {
-            data_en[key.slice(0, -3)] = ''
-          }
+      data.append('external_id', this.formData.external_id)
+      data.append('publish_status', this.formData.publish_status)
+      data.append('title_nl', this.formData.title_nl)
+      data.append('title_en', this.formData.title_en)
+      data.append('description_nl', this.formData.description_nl)
+      data.append('description_en', this.formData.description_en)
+      data.append('website_url_nl', this.formData.website_url_nl)
+      data.append('website_url_en', this.formData.website_url_en)
+
+      const data_nl = {
+        language_code: 'NL',
+        title: this.formData.title_nl,
+        website_url: this.formData.website_url_nl,
+        description: this.formData.description_nl
+      }
+
+      const data_en = {
+        language_code: 'EN',
+        title: this.formData.title_en,
+        website_url: this.formData.website_url_en,
+        description: this.formData.description_en
+      }
+
+      const fileFields = [
+        'logo_nl',
+        'logo_en',
+        'featured_image_nl',
+        'featured_image_en'
+      ]
+
+      const deleted_logos = []
+
+      fileFields.forEach(field => {
+        const fieldData = this.formData[field]
+
+        if (fieldData instanceof File) {
+          data.set(field, fieldData)
+        } else if (!fieldData) {
+          deleted_logos.push(field)
         }
       })
-      let deleted_logos = []
-      data.set('logo_nl', '')
-      if (this.logo_nl_added) {
-        let logo = this.$refs['file-logo_nl'].$el.querySelector(
-          'input[type="file"]'
-        ).files[0]
-        data.set('logo_nl', logo)
-      } else if (this.logo_nl_deleted) {
-        deleted_logos.push('logo_nl')
-      } else {
-        data.delete('logo_nl')
-      }
-
-      data.set('logo_en', '')
-      if (this.logo_en_added) {
-        data.set(
-          'logo_en',
-          this.$refs['file-logo_en'].$el.querySelector('input[type="file"]')
-            .files[0]
-        )
-      } else if (this.logo_en_deleted) {
-        deleted_logos.push('logo_en')
-      } else {
-        data.delete('logo_en')
-      }
-
-      data.set('featured_image_nl', '')
-      if (this.featured_nl_added) {
-        data.set(
-          'featured_image_nl',
-          this.$refs['file-img_nl'].$el.querySelector('input[type="file"]')
-            .files[0]
-        )
-      } else if (this.featured_nl_deleted) {
-        deleted_logos.push('featured_image_nl')
-      } else {
-        data.delete('featured_image_nl')
-      }
-
-      data.set('featured_image_en', '')
-      if (this.featured_en_added) {
-        data.set(
-          'featured_image_en',
-          this.$refs['file-img_en'].$el.querySelector('input[type="file"]')
-            .files[0]
-        )
-      } else if (this.featured_en_deleted) {
-        deleted_logos.push('featured_image_en')
-      } else {
-        data.delete('featured_image_en')
-      }
 
       data.append(
         'community_details_update',
         JSON.stringify([data_nl, data_en])
       )
       data.append('deleted_logos', JSON.stringify(deleted_logos))
-      for (var pair of data.entries()) {
-        console.log(pair[0] + ', ' + pair[1])
-      }
+
       return data
     },
     saveCollection(collection) {
@@ -809,7 +695,6 @@ export default {
 
 /* Style the tab content */
 .tabcontent {
-  display: none;
   padding: 6px 12px;
   border-top: none;
 }
