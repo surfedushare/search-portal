@@ -9,7 +9,11 @@
         <section v-if="formData" class="communities__section__blue_box">
           <form action="/" @submit.prevent="onSubmit">
             <div class="communities__form__buttons">
-              <switch-input v-model="isPublished" :label="$t('public')" />
+              <switch-input
+                v-model="isPublished"
+                class="public-switch"
+                :label="$t('public')"
+              />
               &nbsp;&nbsp;
               <router-link :to="getPreviewPath()">
                 <i class="fas fa-eye" /> {{ $t('example') }}
@@ -201,8 +205,8 @@
           </form>
         </div>
         <div
-          id="Collections"
           v-show="currentTab === 'collections'"
+          id="Collections"
           class="communities__collections tabcontent"
         >
           <br /><br />
@@ -541,7 +545,6 @@ export default {
 
   &__section {
     &__blue_box {
-      line-height: 75px;
       border: 1px;
       background: @dark-blue;
       width: 40%;
@@ -550,10 +553,17 @@ export default {
       margin-top: -80px;
       margin-bottom: 30px;
       color: white;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       @media @mobile {
         margin-top: 0;
+      }
+      a {
+        border: 1px solid white;
+        border-radius: 10px;
+        line-height: 1em;
+        padding: 16px 23px;
+        margin-right: 10px;
       }
       a:link {
         color: white;
@@ -571,15 +581,12 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
+      margin-right: -50px;
     }
     &__column {
-      width: 50%;
-      padding-left: 53px;
-      &:first-child {
-        width: 50%;
-        padding-right: 32px;
-        padding-left: 0;
-      }
+      flex: 1;
+      min-width: 400px;
+      margin-right: 50px;
     }
     &__row {
       width: 100%;
@@ -614,17 +621,23 @@ export default {
       width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 10px;
-    }
-    &__button {
-      margin-right: 10px;
-      margin-top: 10px;
-      height: 55px;
-      float: right;
     }
   }
   &__collections {
     margin: 0 0 175px;
+  }
+}
+.public-switch {
+  flex: 1;
+  justify-content: center;
+
+  input + .slider {
+    background-color: #2196f3;
+  }
+  input:checked + .slider {
+    background-color: #ffc300;
   }
 }
 .collections__add {
