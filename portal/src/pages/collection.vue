@@ -51,7 +51,6 @@
       :close="closeAddMaterial"
       :is-show="isShowAddMaterial"
       :collection-id="collection.id"
-      submit-method="setMaterialInMyCollection"
       @submitted="saveMaterials"
     />
   </section>

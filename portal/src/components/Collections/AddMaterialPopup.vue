@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <Popup v-if="isShow" :close="close" :is-show="isShow" class="add-material">
-      <div>
+      <div class="content-container center_block">
         <div class="flex-container">
           <h2 class="popup__title">
             {{ $t('Add-materials-to-collection') }}
@@ -13,14 +13,14 @@
         <Search
           v-model="search"
           class="add_materials__info_search"
-          @submit="onSearch"
+          @onSearch="onSearch"
         />
 
         <div
           v-infinite-scroll="loadMore"
           infinite-scroll-disabled="materials_loading"
           infinite-scroll-distance="10"
-          class="search__wrapper center_block"
+          class="search__wrapper"
         >
           <div class="search__materials">
             <Materials
@@ -28,7 +28,7 @@
               :materials="materials"
               :items-in-line="2"
               select-for="add"
-              contenteditable="true"
+              :contenteditable="true"
             />
           </div>
         </div>
@@ -45,7 +45,7 @@ import Search from '~/components/Search'
 import Materials from '~/components/Materials'
 
 export default {
-  name: 'AddCollection',
+  name: 'AddMaterialPopup',
   components: {
     Popup,
     Search,
@@ -54,29 +54,20 @@ export default {
   props: {
     isShow: { type: Boolean },
     close: { type: Function, default: () => {} },
-    submitMethod: { type: Function, default: () => {} },
     collectionId: { type: String, default: '' }
   },
   data() {
     return {
-      search: {},
+      search: '',
       selection: [],
       saved: false,
-      submitting: false,
-      formData: {
-        title: null
-      }
+      submitting: false
     }
   },
   computed: {
     ...mapGetters(['materials', 'materials_loading'])
   },
   watch: {
-    search(search) {
-      if (search && !this.materials_loading) {
-        this.$store.dispatch('searchMaterials', search)
-      }
-    },
     isShow(shouldShow) {
       if (!shouldShow) {
         this.reset()
@@ -84,9 +75,12 @@ export default {
     }
   },
   methods: {
-    onSearch(searchData) {
-      this.search = searchData
-      this.$store.dispatch('searchMaterials', searchData)
+    onSearch() {
+      this.$store.dispatch('searchMaterials', {
+        search_text: this.search,
+        page_size: 10,
+        page: 1
+      })
     },
     loadMore() {
       const { search, materials } = this
@@ -94,27 +88,26 @@ export default {
         const { page_size, page, records_total } = materials
 
         if (records_total > page_size * page) {
-          this.$store.dispatch(
-            'searchNextPageMaterials',
-            Object.assign({}, search, { page: page + 1 })
-          )
+          this.$store.dispatch('searchNextPageMaterials', {
+            search_text: this.search,
+            page_size: page_size,
+            page: page + 1
+          })
         }
       }
     },
     reset() {
-      this.search = {}
+      this.search = ''
       this.selection = []
     },
     onSaveMaterials() {
       this.submitting = true
-      let submitData = {
+      const submitData = {
         collection_id: this.collectionId,
-        data: map(this.selection, external_id => {
-          return { external_id }
-        })
+        data: map(this.selection, external_id => ({ external_id }))
       }
       this.$store
-        .dispatch(this.submitMethod || 'setMaterialInMyCollection', submitData)
+        .dispatch('setMaterialInMyCollection', submitData)
         .then(collection => {
           this.$store.dispatch('getUser')
           this.saved = true
@@ -131,15 +124,38 @@ export default {
 </script>
 
 <style lang="less">
+.popup.add-material .popup__center {
+  max-width: calc(100% - 200px);
+  width: 1050px;
+}
+</style>
+<style lang="less" scoped>
 @import '../../variables';
+
+.content-container {
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-container {
+  justify-content: space-between;
+}
 
 .add-material {
   .popup__center {
     max-height: calc(100vh - 200px);
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
   }
 }
 .add_materials__info_search {
-  margin: 40px auto;
+  margin-top: 20px;
+}
+
+.search__wrapper {
+  overflow: visible;
+  overflow-y: scroll;
+  padding: 0 20px;
+  margin: 0 -20px;
 }
 </style>
