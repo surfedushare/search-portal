@@ -1,6 +1,6 @@
 {
   "name": "portal",
-  "version": "1.9.3",
+  "version": "1.10.6",
   "config": {
     "server": "django"
   },
