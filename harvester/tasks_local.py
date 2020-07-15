@@ -30,3 +30,4 @@ def import_dataset(ctx, dataset="epsilon"):
     """
     with ctx.cd(HARVESTER_DIR):
         ctx.run(f"python manage.py load_harvester_data {dataset}")
+        ctx.run(f"python manage.py push_es_index --dataset={dataset} --recreate")

@@ -17,3 +17,4 @@ def health_check():
 @app.task(name="import_dataset")
 def celery_import_dataset(dataset):
     call_command("load_harvester_data", dataset, default_aws_credentials=True)
+    call_command("push_es_index", dataset=dataset, recreate=True)

@@ -1,3 +1,4 @@
+import re
 from html import unescape
 
 from core.constants import HIGHER_EDUCATION_LEVELS
@@ -5,24 +6,22 @@ from core.constants import HIGHER_EDUCATION_LEVELS
 
 class EdurepDataExtraction(object):
 
-    #############################
-    # API ONLY
-    #############################
+    vcard_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
 
     @classmethod
-    def get_api_records(cls, soup):
-        return soup.find_all('srw:record')
-
-    @classmethod
-    def get_api_external_id(cls, soup, el):
-        return el.find('srw:recordidentifier').text.strip()
-
-    @classmethod
-    def get_api_record_state(cls, soup, el):
-        return "active"
+    def parse_vcard(cls, vcard, key=None):
+        # "BEGIN:VCARD FN:Edurep Delen N:;Edurep Delen VERSION:3.0 END:VCARD"
+        results = dict()
+        if vcard:
+            lines = vcard.split("\n")
+            for line in lines:
+                match = cls.vcard_regex.match(line)
+                if match:
+                    results[match.groups()[0]] = match.groups()[1]
+        return results if key is None else results.get(key, vcard)
 
     #############################
-    # OAI-PMH only
+    # OAI-PMH
     #############################
 
     @classmethod
@@ -99,6 +98,13 @@ class EdurepDataExtraction(object):
         return node.find('czp:value').find('czp:langstring').text.strip() if node else None
 
     @classmethod
+    def get_aggregation_level(clscls, soup, el):
+        node = el.find('czp:aggregationlevel', None)
+        if node is None:
+            return None
+        return node.find('czp:value').find('czp:langstring').text.strip() if node else None
+
+    @classmethod
     def get_author(cls, soup, el):
         author = el.find(string='author')
         if not author:
@@ -109,6 +115,24 @@ class EdurepDataExtraction(object):
         nodes = contribution.find_all('czp:vcard')
         return [
             unescape(node.text.strip())
+            for node in nodes
+        ]
+
+    @classmethod
+    def get_authors(cls, soup, el):
+        return [cls.parse_vcard(author, "FN") for author in cls.get_author(soup, el)]
+
+    @classmethod
+    def get_publishers(cls, soup, el):
+        publisher = el.find(string='publisher')
+        if not publisher:
+            return []
+        contribution = publisher.find_parent('czp:contribute')
+        if not contribution:
+            return []
+        nodes = contribution.find_all('czp:vcard')
+        return [
+            cls.parse_vcard(unescape(node.text.strip()), "FN")
             for node in nodes
         ]
 
