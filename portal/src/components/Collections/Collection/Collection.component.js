@@ -9,7 +9,9 @@ export default {
   name: 'collection',
   props: {
     collection: {
-      default: {}
+      type: Object,
+      default: null,
+      required: true
     },
     contenteditable: {
       default: false
@@ -34,10 +36,8 @@ export default {
     InputWithCounter
   },
   mounted() {
-    if (this.collection) {
-      this.resetData()
-      this.setSocialCounters()
-    }
+    this.resetData()
+    this.setSocialCounters()
     this.href = validateHREF(window.location.href)
   },
   data() {
@@ -173,11 +173,9 @@ export default {
         this.resetData()
       }
     },
-    collection(collection) {
-      if (collection) {
-        this.resetData()
-        this.setSocialCounters()
-      }
+    collection() {
+      this.resetData()
+      this.setSocialCounters()
     },
     '$i18n.locale': function() {
       this.resetData()
