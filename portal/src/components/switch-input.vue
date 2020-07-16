@@ -2,7 +2,7 @@
   <div class="switch-input">
     <span v-if="label">{{ label }}&nbsp;&nbsp;</span>
     <label class="switch">
-      <input v-model="value" type="checkbox" />
+      <input v-model="internalValue" type="checkbox" />
       <span class="slider round" />
     </label>
   </div>
@@ -18,8 +18,13 @@ export default {
     },
     value: Boolean
   },
+  data() {
+    return {
+      internalValue: this.value
+    }
+  },
   watch: {
-    value(input) {
+    internalValue(input) {
       this.$emit('input', input)
     }
   }
