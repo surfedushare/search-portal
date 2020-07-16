@@ -13,6 +13,12 @@ django:
   protocol: "http"
   domain: "localhost"
 
+harvester:
+  import_dataset:
+    hour: 5  # uses UTC
+    minute: 0
+    role: "primary"
+
 surfconext:
   oidc_endpoint: none
   voot_api_endpoint: "https://voot.test.surfconext.nl"

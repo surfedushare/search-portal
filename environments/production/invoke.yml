@@ -6,6 +6,7 @@ django:
   debug: false
   postgres_user: "django"
   postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
+  redis_host: null
   protocol: "https"
   domain: "zoekportaal.surf.nl"
 

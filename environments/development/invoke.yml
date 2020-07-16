@@ -5,9 +5,15 @@ django:
   debug: true
   postgres_user: "django"
   postgres_host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
-  redis_host: "redis.2w7uxm.ng.0001.euc1.cache.amazonaws.com:6379"
+  redis_host: "harvester.2w7uxm.0001.euc1.cache.amazonaws.com:6379"
   protocol: "http"
   domain: "dev.surfedushare.nl"
+
+harvester:
+  import_dataset:
+    hour: 5  # uses UTC
+    minute: 0
+    role: "replica"
 
 surfconext:
   oidc_endpoint: "https://connect.test.surfconext.nl"

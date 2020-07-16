@@ -303,8 +303,11 @@ CELERY_BEAT_SCHEDULE = {
     },
     'import-dataset': {
         'task': 'import_dataset',
-        'schedule': crontab(hour=4, minute=0, ),  # uses UTC
-        'args': ("epsilon",)
+        'schedule': crontab(
+            hour=environment.harvester.import_dataset.hour,
+            minute=environment.harvester.import_dataset.minute,
+        ),
+        'args': ("epsilon", environment.harvester.import_dataset.role)
     },
 }
 
