@@ -10,7 +10,7 @@ import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
 
 export default {
   name: 'material-info',
-  props: ['material'],
+  props: ['material', 'communities'],
   components: {
     StarRating,
     Themes,

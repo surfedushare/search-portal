@@ -2,7 +2,7 @@ import ClickOutside from 'vue-click-outside'
 
 export default {
   name: 'MultiSelect',
-  props: ['value', 'placeholder', 'items', 'disabled'],
+  props: ['value', 'placeholder', 'items', 'disabled', 'select', 'deselect'],
   data() {
     return {
       opened: false
@@ -29,12 +29,9 @@ export default {
 
     onChange($event, item) {
       if ($event.target.checked) {
-        this.$emit('input', [...this.value, item.id])
+        this.$emit('select', item.id)
       } else {
-        this.$emit(
-          'input',
-          this.value.filter(el => el !== item.id)
-        )
+        this.$emit('deselect', item.id)
       }
     }
   }
