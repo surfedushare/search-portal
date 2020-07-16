@@ -25,11 +25,12 @@ def create_super_user(ctx):
 
     # Run Postgres command with port forwarding
     with ctx.forward_local(local_port=1111, remote_host=ctx.config.django.postgres_host, remote_port=5432):
-        # Clear all databases and application role
+        # Adds raw password to not send passwords through AWS ECS task configurations
+        escaped_password = password.replace("$", "\$")
         ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -d harvester -W -c "'
                   f'INSERT INTO auth_user '
                   f'(password, is_superuser, is_staff, is_active, username, first_name, last_name, email, date_joined) '
-                  f'VALUES (\'{password}\', true, true, true, \'{username}\', \'\', \'\', \'\', NOW())"',
+                  f'VALUES (\'{escaped_password}\', true, true, true, \'{username}\', \'\', \'\', \'\', NOW())"',
                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
 
 
