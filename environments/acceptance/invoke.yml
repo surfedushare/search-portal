@@ -5,6 +5,7 @@ django:
   debug: false
   postgres_user: "django"
   postgres_host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
+  redis_host: "harvester.2rmfel.0001.euc1.cache.amazonaws.com:6379"
   protocol: "https"
   domain: "acc.surfedushare.nl"
 
@@ -15,9 +16,9 @@ surfconext:
 
 elastic_search:
   username: "search_portal_backend_prod"
-  host: "elastic2.search-prod.surfcatalog.nl"
+  host: "vpc-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com"
   protocol: "https"
-  is_aws: false
+  is_aws: true
 
 edurep:
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
