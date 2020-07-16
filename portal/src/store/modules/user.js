@@ -87,7 +87,7 @@ export default {
       commit('SET_USER', null)
       commit('AUTHENTICATE', false)
       if (payload && payload.fully) {
-        window.location = process.env.VUE_APP_BACKEND_URL + 'logout'
+        window.location = '/logout'
       }
     }
   },
