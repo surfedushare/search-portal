@@ -284,6 +284,12 @@ export default {
       'material_communities',
       'disciplines'
     ]),
+    collectionItems() {
+      return this.my_collections.map(collection => ({
+        id: collection.id,
+        title: collection[`title_${this.$i18n.locale}`]
+      }))
+    },
     /**
      * Extend to the material fields "disciplines"
      * @returns {*}

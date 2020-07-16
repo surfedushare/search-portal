@@ -86,7 +86,7 @@
         <Multiselect
           v-if="full_loading && my_collections"
           v-model="checked_collections"
-          :items="my_collections"
+          :items="collectionItems"
           :placeholder="$t('Select-collection')"
           class="material__left_select"
           :disabled="submitting"
