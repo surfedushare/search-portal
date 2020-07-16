@@ -9,6 +9,12 @@ django:
   protocol: "http"
   domain: "dev.surfedushare.nl"
 
+harvester:
+  import_dataset:
+    hour: 5  # uses UTC
+    minute: 0
+    role: "replica"
+
 surfconext:
   oidc_endpoint: "https://connect.test.surfconext.nl"
   voot_api_endpoint: "https://voot.test.surfconext.nl"
