@@ -111,7 +111,7 @@ export default {
     CreateAccount
   },
   data() {
-    const showPopup = this.$route.query.popup === '1'
+    const showPopup = !!this.$route.query.popup
     return {
       isSaved: false,
       isSubmitting: false,
@@ -149,13 +149,10 @@ export default {
           setTimeout(() => {
             this.isSaved = false
             const authFlowToken = this.$store.getters.auth_flow_token
-            if (authFlowToken) {
-              const backendUrl = process.env.VUE_APP_BACKEND_URL
+            if (!isNil(authFlowToken)) {
               this.$store.commit('AUTH_FLOW_TOKEN', null)
               window.location =
-                backendUrl +
-                'complete/surf-conext/?partial_token=' +
-                authFlowToken
+                '/complete/surf-conext/?partial_token=' + authFlowToken
             }
           }, 1000)
         })

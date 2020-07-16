@@ -50,14 +50,10 @@ export default {
         if (process.env.VUE_APP_SURFCONEXT_BYPASS) {
           return '/' + 'login/success?continue=' + currentUrl
         }
-        let backendUrl = process.env.VUE_APP_BACKEND_URL
-        let frontendUrl = process.env.VUE_APP_FRONTEND_URL
         let nextUrl = encodeURIComponent(
-          frontendUrl +
-            'login/success?continue=' +
-            encodeURIComponent(currentUrl)
+          '/login/success?continue=' + encodeURIComponent(currentUrl)
         )
-        return backendUrl + 'login/surf-conext/?next=' + nextUrl
+        return '/login/surf-conext/?next=' + nextUrl
       }
     }
   },
