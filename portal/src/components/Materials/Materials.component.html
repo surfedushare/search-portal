@@ -108,6 +108,7 @@
             </div>
             <router-link
               :to="localePath({name: 'communities-community', params: {community: community.id}})"
+              @click.native="$event.stopImmediatePropagation()"
               class="materials__item_community_link"
               v-for="community in material.communities"
               :key="`${community.id}`"
