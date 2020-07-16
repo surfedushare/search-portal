@@ -184,8 +184,8 @@
                   <InputLanguageWrapper language="NL">
                     <InputFile
                       :imagesrc="formData.featured_image_nl"
-                      @remove_image="onRemoveImage('featured_nl')"
-                      @add_image="onAddImage('featured_nl', $event)"
+                      @remove_image="onRemoveImage('featured_image_nl')"
+                      @add_image="onAddImage('featured_image_nl', $event)"
                     />
                   </InputLanguageWrapper>
                 </ErrorWrapper>
@@ -195,8 +195,8 @@
                   <InputLanguageWrapper language="EN">
                     <InputFile
                       :imagesrc="formData.featured_image_en"
-                      @remove_image="onRemoveImage('featured_en')"
-                      @add_image="onAddImage('featured_en', $event)"
+                      @remove_image="onRemoveImage('featured_image_en')"
+                      @add_image="onAddImage('featured_image_en', $event)"
                     />
                   </InputLanguageWrapper>
                 </ErrorWrapper>
