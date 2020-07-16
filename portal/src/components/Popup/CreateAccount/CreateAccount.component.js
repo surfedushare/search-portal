@@ -31,7 +31,6 @@ export default {
         })
         .finally(() => {
           this.isSubmitting = false
-          this.$router.push('/')
         })
     },
     continueWithoutAccount() {
