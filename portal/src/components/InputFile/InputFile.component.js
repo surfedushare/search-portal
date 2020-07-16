@@ -15,64 +15,35 @@ export default {
   data() {
     return {
       image: null,
-      imageText: null,
-      imageLink: null,
       accept: 'image/jpeg,image/gif,image/png'
     }
   },
   watch: {},
   methods: {
-    /**
-     * Watcher on changing the file
-     * @param e - Event
-     */
     onFileChange(e) {
-      this.$emit('add_image')
-      let files = e.target.files || e.dataTransfer.files
+      const files = e.target.files || e.dataTransfer.files
       if (!files.length) return
+      this.$emit('add_image', files[0])
       this.createImage(files[0])
-      this.imageText = files[0].name
     },
-    /**
-     * Create image
-     * @param file
-     */
     createImage(file) {
-      let reader = new FileReader()
-      let that = this
+      const reader = new FileReader()
+      const that = this
 
       reader.onload = e => {
         that.image = e.target.result
       }
       reader.readAsDataURL(file)
     },
-    /**
-     * Remove image
-     * @param e - event
-     */
     removeImage: function() {
       this.$emit('remove_image')
-      this.image = ''
-      this.imageText = ''
-      this.imageLink = ''
+      this.image = null
       this.$refs.file.value = null
     }
   },
   computed: {
-    /**
-     * Get image path
-     * @returns String
-     */
     imagePath() {
-      this.imageLink = this.image
-      return this.imageLink !== null ? this.imageLink : this.imagesrc
-    },
-    /**
-     * Get image name
-     * @returns String
-     */
-    imagePathTxt() {
-      return this.imageText !== null ? this.imageText : this.imagesrc
+      return this.image !== null ? this.image : this.imagesrc
     }
   }
 }

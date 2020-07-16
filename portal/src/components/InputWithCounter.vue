@@ -1,9 +1,7 @@
 <template>
   <div class="container">
-    <div v-if="language" class="language">{{ language }}</div>
     <input
       v-bind="$attrs"
-      :class="{ 'with-language': language !== null }"
       @input="onChange"
       @focus="showCounter = true"
       @blur="showCounter = false"
@@ -17,12 +15,6 @@
 export default {
   name: 'InputWithCounter',
   inheritAttrs: false,
-  props: {
-    language: {
-      type: String,
-      default: null
-    }
-  },
   data() {
     return {
       showCounter: false
@@ -51,19 +43,6 @@ export default {
   position: relative;
 }
 
-.language {
-  background-color: #ccc;
-  color: white;
-  border-radius: 50%;
-  padding: 7px;
-  font-size: 16px;
-  line-height: 16px;
-  font-weight: 600;
-  position: absolute;
-  top: 8px;
-  left: 15px;
-}
-
 .counter {
   position: absolute;
   right: 10px;
@@ -85,10 +64,6 @@ input {
   color: #686d75;
   &:focus {
     outline: none;
-  }
-
-  &.with-language {
-    padding-left: 60px;
   }
 }
 </style>

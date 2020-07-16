@@ -9,14 +9,18 @@
         <section v-if="formData" class="communities__section__blue_box">
           <form action="/" @submit.prevent="onSubmit">
             <div class="communities__form__buttons">
-              <switch-input v-model="isPublished" :label="$t('public')" />
+              <switch-input
+                v-model="isPublished"
+                class="public-switch"
+                :label="$t('public')"
+              />
               &nbsp;&nbsp;
               <router-link :to="getPreviewPath()">
                 <i class="fas fa-eye" /> {{ $t('example') }}
               </router-link>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <button
-                :disabled="is_submitting"
+                :disabled="isSubmitting"
                 type="submit"
                 class="button communities__form__button"
               >
@@ -28,24 +32,24 @@
 
         <div class="tab">
           <button
-            ref="general-button"
             class="tablinks"
-            @click="openTab('General')"
+            :class="{ active: currentTab === 'general' }"
+            @click="currentTab = 'general'"
           >
             {{ $t('general') }}
           </button>
           <button
-            ref="collections-button"
             class="tablinks"
-            @click="openTab('Collections')"
+            :class="{ active: currentTab === 'collections' }"
+            @click="currentTab = 'collections'"
           >
             {{ $t('collections') }}
           </button>
         </div>
 
         <div
+          v-show="currentTab === 'general'"
           id="General"
-          ref="general-tab"
           class="communities__form tabcontent"
         >
           <div>
@@ -53,10 +57,6 @@
             {{ $t('manage-community-information') }}
             <br /><br />
           </div>
-          <div class="language">
-            <h3>{{ $t('dutch') }}</h3>
-            <hr />
-          </div>
           <form
             v-if="formData"
             action="/"
@@ -64,265 +64,149 @@
             @submit.prevent="onSubmit"
           >
             <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{ field: true, invalid: isFieldValid('title_nl') }"
-              >
-                <label for="title_nl" class="communities__form__label">
+              <div class="communities__form__row">
+                <label class="communities__form__label">
                   {{ $t('Name') }}
                 </label>
-                <InputWithCounter
-                  id="title_nl"
-                  v-model="formData.title_nl"
-                  required
-                  name="name"
-                  type="text"
-                  maxlength="80"
-                  :placeholder="$t('community-title-placeholder')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('title_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+                <ErrorWrapper :errors="getFieldErrors('title_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <InputWithCounter
+                      id="title_nl"
+                      v-model="formData.title_nl"
+                      required
+                      name="name"
+                      type="text"
+                      maxlength="80"
+                      :placeholder="$t('community-title-placeholder')"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('website_url_nl')
-                }"
-              >
-                <label for="website_nl" class="communities__form__label">
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('title_en')">
+                  <InputLanguageWrapper language="EN">
+                    <InputWithCounter
+                      id="title_en"
+                      v-model="formData.title_en"
+                      required
+                      name="name"
+                      type="text"
+                      :placeholder="$t('community-title-placeholder')"
+                      maxlength="80"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
+              </div>
+              <div class="communities__form__row">
+                <label class="communities__form__label">
                   {{ $t('Website') }}
                 </label>
-                <input
-                  id="website_nl"
-                  v-model="formData.website_url_nl"
-                  name="website"
-                  type="url"
-                  class="communities__form__input"
-                  :placeholder="$t('community-url-placeholder')"
-                  @blur="onWebsiteURLBlur('nl')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('website_url_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+                <ErrorWrapper :errors="getFieldErrors('website_url_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <input
+                      id="website_nl"
+                      v-model="formData.website_url_nl"
+                      name="website"
+                      type="url"
+                      class="communities__form__input"
+                      :placeholder="$t('community-url-placeholder')"
+                      @blur="onWebsiteURLBlur('nl')"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{ field: true, invalid: isFieldValid('logo_nl') }"
-              >
-                <InputFile
-                  ref="file-logo_nl"
-                  :imagesrc="formData.logo_nl"
-                  :title="$t('Logo')"
-                  @remove_image="onRemoveImage('logo_nl', $event)"
-                  @add_image="onAddImage('logo_nl', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('logo_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('website_url_en')">
+                  <InputLanguageWrapper language="EN">
+                    <input
+                      id="website_en"
+                      v-model="formData.website_url_en"
+                      name="website"
+                      type="url"
+                      class="communities__form__input"
+                      :placeholder="$t('community-url-placeholder')"
+                      @blur="onWebsiteURLBlur('en')"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-            </div>
-            <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('description_nl')
-                }"
-              >
-                <RichTextInput
-                  v-model="formData.description_nl"
-                  :title="$t('Description')"
-                  :placeholder="$t('community-description-placeholder')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('description_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('featured_image_nl')
-                }"
-              >
-                <InputFile
-                  ref="file-img_nl"
-                  :imagesrc="formData.featured_image_nl"
-                  :title="$t('Featured-image')"
-                  @remove_image="onRemoveImage('featured_nl', $event)"
-                  @add_image="onAddImage('featured_nl', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('featured_image_nl')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </form>
-          <div class="language">
-            <h3>{{ $t('english') }}</h3>
-            <hr />
-          </div>
-          <form
-            v-if="formData"
-            action="/"
-            class="communities__form_in"
-            @submit.prevent="onSubmit"
-          >
-            <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{ field: true, invalid: isFieldValid('title_en') }"
-              >
-                <label for="title_en" class="communities__form__label">
-                  {{ $t('Name') }}
+              <div class="communities__form__row communities__form__file">
+                <label class="communities__form__label">
+                  {{ $t('Logo') }}
                 </label>
-                <InputWithCounter
-                  id="title_en"
-                  v-model="formData.title_en"
-                  required
-                  name="name"
-                  type="text"
-                  :placeholder="$t('community-title-placeholder')"
-                  maxlength="80"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('title_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+                <ErrorWrapper :errors="getFieldErrors('logo_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <InputFile
+                      :imagesrc="formData.logo_nl"
+                      @remove_image="onRemoveImage('logo_nl')"
+                      @add_image="onAddImage('logo_nl', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
-
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('website_url_en')
-                }"
-              >
-                <label for="website_en" class="communities__form__label">
-                  {{ $t('Website') }}
-                </label>
-                <input
-                  id="website_en"
-                  v-model="formData.website_url_en"
-                  name="website"
-                  type="url"
-                  class="communities__form__input"
-                  :placeholder="$t('community-url-placeholder')"
-                  @blur="onWebsiteURLBlur('en')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('website_url_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{ field: true, invalid: isFieldValid('logo_en') }"
-              >
-                <InputFile
-                  ref="file-logo_en"
-                  :imagesrc="formData.logo_en"
-                  :title="$t('Logo')"
-                  @remove_image="onRemoveImage('logo_en', $event)"
-                  @add_image="onAddImage('logo_en', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('logo_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row communities__form__file">
+                <ErrorWrapper :errors="getFieldErrors('logo_en')">
+                  <InputLanguageWrapper language="EN">
+                    <InputFile
+                      :imagesrc="formData.logo_en"
+                      @remove_image="onRemoveImage('logo_en')"
+                      @add_image="onAddImage('logo_en', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
             </div>
             <div class="communities__form__column">
-              <div
-                class="communities__form__row"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('description_en')
-                }"
-              >
-                <RichTextInput
-                  v-model="formData.description_en"
-                  :title="$t('Description')"
-                  :placeholder="$t('community-description-placeholder')"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('description_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('description_nl')">
+                  <RichTextInput
+                    v-model="formData.description_nl"
+                    :title="$t('Description')"
+                    language="NL"
+                    :placeholder="$t('community-description-placeholder')"
+                  />
+                </ErrorWrapper>
               </div>
-              <div
-                class="communities__form__row communities__form__file"
-                :class="{
-                  field: true,
-                  invalid: isFieldValid('featured_image_en')
-                }"
-              >
-                <InputFile
-                  ref="file-img_en"
-                  :imagesrc="formData.featured_image_en"
-                  :title="$t('Featured-image')"
-                  @remove_image="onRemoveImage('featured_en', $event)"
-                  @add_image="onAddImage('featured_en', $event)"
-                />
-                <ul class="errors">
-                  <li
-                    v-for="(error, ix) in getFieldErrors('featured_image_en')"
-                    :key="ix"
-                  >
-                    {{ error }}
-                  </li>
-                </ul>
+              <div class="communities__form__row">
+                <ErrorWrapper :errors="getFieldErrors('description_en')">
+                  <RichTextInput
+                    v-model="formData.description_en"
+                    language="EN"
+                    :placeholder="$t('community-description-placeholder')"
+                  />
+                </ErrorWrapper>
+              </div>
+              <div class="communities__form__row communities__form__file">
+                <label class="communities__form__label">
+                  {{ $t('Featured-image') }}
+                </label>
+                <ErrorWrapper :errors="getFieldErrors('featured_image_nl')">
+                  <InputLanguageWrapper language="NL">
+                    <InputFile
+                      :imagesrc="formData.featured_image_nl"
+                      @remove_image="onRemoveImage('featured_image_nl')"
+                      @add_image="onAddImage('featured_image_nl', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
+              </div>
+              <div class="communities__form__row communities__form__file">
+                <ErrorWrapper :errors="getFieldErrors('featured_image_en')">
+                  <InputLanguageWrapper language="EN">
+                    <InputFile
+                      :imagesrc="formData.featured_image_en"
+                      @remove_image="onRemoveImage('featured_image_en')"
+                      @add_image="onAddImage('featured_image_en', $event)"
+                    />
+                  </InputLanguageWrapper>
+                </ErrorWrapper>
               </div>
             </div>
           </form>
         </div>
         <div
+          v-show="currentTab === 'collections'"
           id="Collections"
-          ref="collections-tab"
           class="communities__collections tabcontent"
         >
           <br /><br />
@@ -361,15 +245,7 @@
 </template>
 
 <script>
-import {
-  some,
-  isNil,
-  isEmpty,
-  find,
-  forEach,
-  startsWith,
-  endsWith
-} from 'lodash'
+import { isEmpty, find, forEach, startsWith } from 'lodash'
 import { mapGetters } from 'vuex'
 import Collections from '~/components/Collections'
 import HeaderBlock from '~/components/HeaderBlock'
@@ -379,6 +255,8 @@ import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
 import RichTextInput from '~/components/RichTextInput'
 import InputWithCounter from '~/components/InputWithCounter'
+import ErrorWrapper from '~/components/ErrorWrapper'
+import InputLanguageWrapper from '~/components/InputLanguageWrapper'
 import { PublishStatus } from '~/utils'
 
 const defaultFormData = {
@@ -388,10 +266,10 @@ const defaultFormData = {
   description_en: '',
   website_url_nl: '',
   website_url_en: '',
-  logo_nl: false,
-  logo_en: false,
-  featured_image_nl: false,
-  featured_image_en: false,
+  logo_nl: null,
+  logo_en: null,
+  featured_image_nl: null,
+  featured_image_en: null,
   publish_status: PublishStatus.DRAFT
 }
 
@@ -404,27 +282,18 @@ export default {
     InputFile,
     SwitchInput,
     RichTextInput,
-    InputWithCounter
+    InputWithCounter,
+    ErrorWrapper,
+    InputLanguageWrapper
   },
   data() {
     return {
-      is_submitting: false,
+      isSubmitting: false,
       showPopup: false,
-      image_logo: '',
-      errors: {
-        title_nl: '',
-        title_en: '',
-        description_nl: '',
-        description_en: '',
-        website_url_nl: '',
-        website_url_en: '',
-        logo_nl: '',
-        logo_en: '',
-        featured_image_nl: '',
-        featured_image_en: ''
-      },
+      errors: {},
       formData: null,
-      notFound: false
+      notFound: false,
+      currentTab: 'general'
     }
   },
   computed: {
@@ -459,56 +328,16 @@ export default {
       'getCommunityCollections',
       this.$route.params.community
     )
-    // Open the 'general' tab by default
-    this.openTab('General')
   },
   methods: {
     getFieldErrors(fieldName) {
       return this.errors[fieldName]
     },
-    isFieldValid(fieldName) {
-      return this.getFieldErrors(fieldName).length > 0
+    onRemoveImage(field) {
+      this.formData[field] = null
     },
-    anyFieldError() {
-      return some(this.errors, item => item.length > 0)
-    },
-    onRemoveImage(context) {
-      switch (context) {
-        case 'logo_nl':
-          this.logo_nl_deleted = true
-          this.logo_nl_added = false
-          break
-        case 'logo_en':
-          this.logo_en_deleted = true
-          this.logo_en_added = false
-          break
-        case 'featured_nl':
-          this.featured_nl_deleted = true
-          this.featured_nl_added = false
-          break
-        case 'featured_en':
-          this.featured_en_deleted = true
-          this.featured_en_added = false
-          break
-      }
-    },
-    onAddImage(context) {
-      if (context === 'logo_nl') {
-        this.logo_nl_deleted = false
-        this.logo_nl_added = true
-      }
-      if (context === 'featured_nl') {
-        this.featured_nl_deleted = false
-        this.featured_nl_added = true
-      }
-      if (context === 'logo_en') {
-        this.logo_en_deleted = false
-        this.logo_en_added = true
-      }
-      if (context === 'featured_en') {
-        this.featured_en_deleted = false
-        this.featured_en_added = true
-      }
+    onAddImage(field, file) {
+      this.formData[field] = file
     },
     setInitialFormData() {
       if (!this.user) {
@@ -556,48 +385,47 @@ export default {
     close() {
       this.showPopup = false
     },
-    addCollection() {},
     /**
      * Save community data
      */
     onSubmit() {
-      this.is_submitting = true
+      this.isSubmitting = true
 
       const data = this.normalizeFormData()
-      forEach(this.errors, (value, key) => {
-        this.errors[key] = ''
-      })
+      this.errors = {}
       this.$store
         .dispatch('putCommunities', {
           id: this.formData.external_id,
           data: data
         })
         .then(() => {
-          this.is_submitting = false
           this.$store.commit('ADD_MESSAGE', {
             level: 'info',
             message: 'Data-saved'
           })
         })
         .catch(err => {
-          this.is_submitting = false
           if (err.response.data) {
             this.$store.commit('ADD_MESSAGE', {
               level: 'error',
               message: 'any-field-error'
             })
           }
+          const errors = {}
           forEach(err.response.data, (feedback, language) => {
             const response = JSON.parse(feedback.replace(/'/g, '"'))
-            forEach(response, (item, key) => {
-              const error_msg = item
-              let location = key + '_' + language.toLowerCase()
-              this.errors[location] = error_msg
+            forEach(response, (errorMsg, key) => {
+              const errorKey = key + '_' + language.toLowerCase()
+              errors[errorKey] = errorMsg
             })
           })
+          this.errors = errors
+        })
+        .finally(() => {
+          this.isSubmitting = false
         })
       if (!isEmpty(this.selection)) {
-        let deletePayload = {
+        const deletePayload = {
           id: this.$route.params.community,
           data: this.selection
         }
@@ -611,116 +439,57 @@ export default {
           })
       }
     },
-    openTab(tabName) {
-      const generaltab = this.$refs['general-tab']
-      const generalbutton = this.$refs['general-button']
-      const collectionstab = this.$refs['collections-tab']
-      const collectionsbutton = this.$refs['collections-button']
-      switch (tabName) {
-        case 'General':
-          generaltab.style.display = 'block'
-          generalbutton.className += ' active'
-          collectionstab.style.display = 'none'
-          collectionsbutton.className -= ' active'
-          break
-        case 'Collections':
-          collectionstab.style.display = 'block'
-          collectionsbutton.className += ' active'
-          generaltab.style.display = 'none'
-          generalbutton.className -= ' active'
-          break
-      }
-    },
-    /**
-     * Generate the FormData
-     * @returns {FormData}
-     */
     normalizeFormData() {
-      let data = new FormData()
-      let data_nl = { language_code: 'NL' }
-      let data_en = { language_code: 'EN' }
+      const data = new FormData()
 
-      forEach(this.formData, (element, key) => {
-        if (!isNil(element)) {
-          let value = element
-          if (Array.isArray(element)) {
-            value = JSON.stringify(element)
-          }
-          if (!startsWith(key, 'logo') && !startsWith(key, 'featured')) {
-            if (endsWith(key, '_nl')) {
-              data_nl[key.slice(0, -3)] = value
-            } else if (endsWith(key, '_en')) {
-              data_en[key.slice(0, -3)] = value
-            }
-          }
-          data.append(key, value)
-        }
-        // if the value is empty, send it to the backend (so the backend can reject the post)
-        else {
-          if (endsWith(key, '_nl')) {
-            data_nl[key.slice(0, -3)] = ''
-          } else if (endsWith(key, '_en')) {
-            data_en[key.slice(0, -3)] = ''
-          }
+      data.append('external_id', this.formData.external_id)
+      data.append('publish_status', this.formData.publish_status)
+      data.append('title_nl', this.formData.title_nl)
+      data.append('title_en', this.formData.title_en)
+      data.append('description_nl', this.formData.description_nl)
+      data.append('description_en', this.formData.description_en)
+      data.append('website_url_nl', this.formData.website_url_nl)
+      data.append('website_url_en', this.formData.website_url_en)
+
+      const data_nl = {
+        language_code: 'NL',
+        title: this.formData.title_nl,
+        website_url: this.formData.website_url_nl,
+        description: this.formData.description_nl
+      }
+
+      const data_en = {
+        language_code: 'EN',
+        title: this.formData.title_en,
+        website_url: this.formData.website_url_en,
+        description: this.formData.description_en
+      }
+
+      const fileFields = [
+        'logo_nl',
+        'logo_en',
+        'featured_image_nl',
+        'featured_image_en'
+      ]
+
+      const deleted_logos = []
+
+      fileFields.forEach(field => {
+        const fieldData = this.formData[field]
+
+        if (fieldData instanceof File) {
+          data.set(field, fieldData)
+        } else if (!fieldData) {
+          deleted_logos.push(field)
         }
       })
-      let deleted_logos = []
-      data.set('logo_nl', '')
-      if (this.logo_nl_added) {
-        let logo = this.$refs['file-logo_nl'].$el.querySelector(
-          'input[type="file"]'
-        ).files[0]
-        data.set('logo_nl', logo)
-      } else if (this.logo_nl_deleted) {
-        deleted_logos.push('logo_nl')
-      } else {
-        data.delete('logo_nl')
-      }
-
-      data.set('logo_en', '')
-      if (this.logo_en_added) {
-        data.set(
-          'logo_en',
-          this.$refs['file-logo_en'].$el.querySelector('input[type="file"]')
-            .files[0]
-        )
-      } else if (this.logo_en_deleted) {
-        deleted_logos.push('logo_en')
-      } else {
-        data.delete('logo_en')
-      }
-
-      data.set('featured_image_nl', '')
-      if (this.featured_nl_added) {
-        data.set(
-          'featured_image_nl',
-          this.$refs['file-img_nl'].$el.querySelector('input[type="file"]')
-            .files[0]
-        )
-      } else if (this.featured_nl_deleted) {
-        deleted_logos.push('featured_image_nl')
-      } else {
-        data.delete('featured_image_nl')
-      }
-
-      data.set('featured_image_en', '')
-      if (this.featured_en_added) {
-        data.set(
-          'featured_image_en',
-          this.$refs['file-img_en'].$el.querySelector('input[type="file"]')
-            .files[0]
-        )
-      } else if (this.featured_en_deleted) {
-        deleted_logos.push('featured_image_en')
-      } else {
-        data.delete('featured_image_en')
-      }
 
       data.append(
         'community_details_update',
         JSON.stringify([data_nl, data_en])
       )
       data.append('deleted_logos', JSON.stringify(deleted_logos))
+
       return data
     },
     saveCollection(collection) {
@@ -747,8 +516,8 @@ export default {
       this.selection = selection
     },
     onWebsiteURLBlur(language) {
-      let hasValue = !isEmpty(this.formData['website_url_' + language])
-      let hasValidProtocol = startsWith(
+      const hasValue = !isEmpty(this.formData['website_url_' + language])
+      const hasValidProtocol = startsWith(
         this.formData['website_url_' + language],
         'http'
       )
@@ -756,8 +525,8 @@ export default {
         this.formData['website_url_' + language] =
           'https://' + this.formData['website_url_' + language]
       }
-      let oppositeLanguage = language === 'en' ? 'nl' : 'en'
-      let hasOppositeValue = !isEmpty(
+      const oppositeLanguage = language === 'en' ? 'nl' : 'en'
+      const hasOppositeValue = !isEmpty(
         this.formData['website_url_' + oppositeLanguage]
       )
       if (hasValue && !hasOppositeValue) {
@@ -776,7 +545,6 @@ export default {
 
   &__section {
     &__blue_box {
-      line-height: 75px;
       border: 1px;
       background: @dark-blue;
       width: 40%;
@@ -785,10 +553,17 @@ export default {
       margin-top: -80px;
       margin-bottom: 30px;
       color: white;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       @media @mobile {
         margin-top: 0;
+      }
+      a {
+        border: 1px solid white;
+        border-radius: 10px;
+        line-height: 1em;
+        padding: 16px 23px;
+        margin-right: 10px;
       }
       a:link {
         color: white;
@@ -806,15 +581,12 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
+      margin-right: -50px;
     }
     &__column {
-      width: 50%;
-      padding-left: 53px;
-      &:first-child {
-        width: 50%;
-        padding-right: 32px;
-        padding-left: 0;
-      }
+      flex: 1;
+      min-width: 400px;
+      margin-right: 50px;
     }
     &__row {
       width: 100%;
@@ -849,17 +621,23 @@ export default {
       width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 10px;
-    }
-    &__button {
-      margin-right: 10px;
-      margin-top: 10px;
-      height: 55px;
-      float: right;
     }
   }
   &__collections {
     margin: 0 0 175px;
+  }
+}
+.public-switch {
+  flex: 1;
+  justify-content: center;
+
+  input + .slider {
+    background-color: #2196f3;
+  }
+  input:checked + .slider {
+    background-color: #ffc300;
   }
 }
 .collections__add {
@@ -930,7 +708,6 @@ export default {
 
 /* Style the tab content */
 .tabcontent {
-  display: none;
   padding: 6px 12px;
   border-top: none;
 }

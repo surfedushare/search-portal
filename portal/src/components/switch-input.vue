@@ -1,6 +1,6 @@
 <template>
   <div class="switch-input">
-    <span v-if="label">{{ label }}&nbsp;&nbsp;</span>
+    <span class="label" v-if="label">{{ label }}&nbsp;&nbsp;</span>
     <label class="switch">
       <input v-model="value" type="checkbox" />
       <span class="slider round" />
@@ -27,8 +27,13 @@ export default {
 </script>
 <style lang="less">
 .switch-input {
-  display: inline-block;
+  display: flex;
   color: white;
+  align-items: center;
+}
+
+span.label {
+  margin-right: 10px;
 }
 
 .switch {
@@ -49,10 +54,10 @@ export default {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 60%;
+  top: 0;
   left: 0;
   right: 0;
-  bottom: -60%;
+  bottom: 0;
   background-color: #ccc;
   -webkit-transition: 0.4s;
   transition: 0.4s;
