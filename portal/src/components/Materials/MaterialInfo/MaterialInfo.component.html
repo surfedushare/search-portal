@@ -86,8 +86,8 @@
   <PopularList
     class="material__info_communities"
     :type="'material'"
-    :communities="material.communities"
-    v-if="material.communities && material.communities.length"
+    :communities="communities"
+    v-if="communities && communities.length > 0"
   >
     <template slot="header-info">
       <h3>{{ $t('In-the-collection-of') }}</h3>

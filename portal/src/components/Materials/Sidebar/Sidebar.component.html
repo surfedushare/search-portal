@@ -84,12 +84,14 @@
       <template v-else>
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <Multiselect
-          v-if="full_loading && my_collections"
-          v-model="checked_collections"
+          v-if="my_collections"
+          v-model="currentCollectionIds"
           :items="collectionItems"
           :placeholder="$t('Select-collection')"
           class="material__left_select"
           :disabled="submitting"
+          @select="addToCollection"
+          @deselect="removeFromCollection"
         ></Multiselect>
       </template>
     </div>

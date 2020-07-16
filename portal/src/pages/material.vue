@@ -3,8 +3,8 @@
     <Navigation :materials="materials" :material="material" />
     <MaterialTitleMobile :material="material" />
     <div v-if="material" class="center_block material__wrapper">
-      <Sidebar :material="material" />
-      <MaterialInfo :material="material" />
+      <Sidebar :material="material" :collections="collections" />
+      <MaterialInfo :material="material" :communities="communities" />
     </div>
     <div v-show="false" class="main__materials">
       <div class="center_block">
@@ -19,6 +19,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { uniqBy } from 'lodash'
 import Materials from '~/components/Materials'
 import Sidebar from '~/components/Materials/Sidebar'
 import MaterialInfo from '~/components/Materials/MaterialInfo'
@@ -33,14 +34,33 @@ export default {
     Navigation,
     MaterialTitleMobile
   },
+  data() {
+    return {
+      collections: []
+    }
+  },
   computed: {
-    ...mapGetters(['material', 'material_communities', 'materials'])
+    ...mapGetters(['material', 'materials']),
+    communities() {
+      // Get communities from collections
+      const communities = this.collections
+        .map(collection => collection.communities)
+        .flat()
+
+      // Remove duplicate communities
+      return uniqBy(communities, 'id')
+    }
   },
   mounted() {
     this.$store.dispatch('getMaterial', {
       id: this.$route.params.id,
       params: { count_view: true }
     })
+    this.$store
+      .dispatch('checkMaterialInCollection', this.$route.params.id)
+      .then(collections => {
+        this.collections = collections.results
+      })
   }
 }
 </script>
