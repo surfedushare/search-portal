@@ -11,9 +11,9 @@ django:
 
 harvester:
   import_dataset:
-    hour: 4  # uses UTC
+    hour: 5  # uses UTC
     minute: 0
-    role: "primary"
+    role: "replica"
 
 surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"

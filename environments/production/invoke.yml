@@ -10,6 +10,12 @@ django:
   protocol: "https"
   domain: "zoekportaal.surf.nl"
 
+harvester:
+  import_dataset:
+    hour: 4  # uses UTC
+    minute: 0
+    role: "primary"
+
 surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
