@@ -15,7 +15,7 @@ TARGETS = {
     "service": SERVICE_PACKAGE,
     "harvester": HARVESTER_PACKAGE
 }
-REPOSITORY = "322480324822.dkr.ecr.eu-central-1.amazonaws.com"
+REPOSITORY = "017973353230.dkr.ecr.eu-central-1.amazonaws.com"
 
 
 @task()
@@ -88,7 +88,7 @@ def push(ctx, target, version=None):
 
     # Login with Docker to AWS
     ctx.run(
-        "AWS_DEFAULT_PROFILE=pol-dev aws ecr get-login-password --region eu-central-1 | "
+        "AWS_PROFILE=pol-prod aws ecr get-login-password --region eu-central-1 | "
         f"docker login --username AWS --password-stdin {REPOSITORY}",
         echo=True
     )
