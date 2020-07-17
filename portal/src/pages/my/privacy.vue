@@ -3,8 +3,8 @@
     <HeaderBlock :title="$t('My-privacy')" />
     <div class="center_block">
       <div class="content">
-        <div class="left-column">
-          <div v-if="permissions.length" class="privacy__form">
+        <div v-if="permissions.length" class="left-column">
+          <div class="privacy__form">
             <form
               action="/"
               class="privacy__form_in"
@@ -55,11 +55,11 @@
                   type="submit"
                   class="button privacy__form__button"
                 >
-                  {{ $t('save-privacy-settings') }}
+                  {{ submitButtonLabel }}
                 </button>
                 <button
                   class="button privacy__form__button cancel"
-                  @click.prevent="$router.push('/')"
+                  @click.prevent="$router.go(-1)"
                 >
                   {{ $t('cancel-privacy-settings') }}
                 </button>
@@ -113,6 +113,7 @@ export default {
   data() {
     const showPopup = !!this.$route.query.popup
     return {
+      hasInitialCommunityPermission: null,
       isSaved: false,
       isSubmitting: false,
       permissionsKey: 0,
@@ -125,11 +126,16 @@ export default {
       if (isNil(this.user) || isNil(this.user.permissions)) {
         return []
       }
-      return (
+      let permissions =
         this.user.permissions.filter(
-          permission => permission.type !== 'Cookies'
+          permission => !permission.is_notification_only
         ) || []
-      )
+      if (!this.isAuthenticated) {
+        permissions = permissions.filter(
+          permission => !permission.is_after_login
+        )
+      }
+      return permissions
     },
     cookies() {
       if (this.user && this.user.permissions) {
@@ -137,7 +143,24 @@ export default {
           permission => permission.type === 'Cookies'
         )
       } else return false
+    },
+    submitButtonLabel() {
+      if (
+        this.$store.getters.hasGivenCommunityPermission &&
+        !this.hasInitialCommunityPermission
+      ) {
+        return this.$t('save-privacy-settings-and-logout')
+      } else if (
+        !this.$store.getters.hasGivenCommunityPermission &&
+        this.hasInitialCommunityPermission
+      ) {
+        return this.$t('save-privacy-settings-and-logout')
+      }
+      return this.$t('save-privacy-settings')
     }
+  },
+  mounted() {
+    this.hasInitialCommunityPermission = this.$store.getters.hasGivenCommunityPermission
   },
   methods: {
     onSubmit() {
@@ -148,20 +171,23 @@ export default {
           this.isSaved = true
           setTimeout(() => {
             this.isSaved = false
-            const authFlowToken = this.$store.getters.auth_flow_token
-            if (!isNil(authFlowToken)) {
-              this.$store.commit('AUTH_FLOW_TOKEN', null)
-              window.location =
-                '/complete/surf-conext/?partial_token=' + authFlowToken
+            if (
+              this.$store.getters.hasGivenCommunityPermission &&
+              !this.hasInitialCommunityPermission
+            ) {
+              this.$store.dispatch('logout', { fully: true })
+            } else if (
+              !this.$store.getters.hasGivenCommunityPermission &&
+              this.hasInitialCommunityPermission
+            ) {
+              // Permission revoked. Logging out
+              this.$store.dispatch('logout', { fully: true })
             }
           }, 1000)
         })
         .finally(() => {
           this.isSubmitting = false
         })
-    },
-    showPopupCreateAccount() {
-      this.showPopup = true
     },
     closePopupCreateAccount() {
       this.showPopup = false

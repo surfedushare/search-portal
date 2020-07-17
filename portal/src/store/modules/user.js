@@ -63,7 +63,7 @@ export default {
       return state.user.permissions.some(
         permission => permission.type === 'Communities' && permission.is_allowed
       )
-    },
+    }
   },
   actions: {
     async getUser({ commit }) {
