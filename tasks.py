@@ -6,7 +6,7 @@ from deploy import prepare_builds, build, push, deploy, migrate
 from test import e2e_tests, harvester_tests, service_tests, elastic_search_tests, test
 from postgres.tasks_local import import_snapshot as postgres_import_snapshot
 from harvester.tasks_local import setup_harvester, import_dataset
-from legacy import upload_database
+from legacy import upload_database, download_media, upload_media
 
 
 environment, session = create_configuration_and_session(use_aws_default_profile=False)
@@ -16,7 +16,7 @@ namespace = Collection(
     Collection("es", setup, create_snapshot, load_repository, restore_snapshot),
     Collection("db", postgres_import_snapshot),
     Collection("hrv", setup_harvester, import_dataset),
-    Collection("legacy", upload_database),
+    Collection("legacy", upload_database, download_media, upload_media),
     prepare_builds,
     build,
     push,
