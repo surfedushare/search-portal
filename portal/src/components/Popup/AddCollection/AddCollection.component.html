@@ -1,9 +1,8 @@
-
 <transition name="fade">
   <Popup
-    v-if="isShow"
+    v-if="showPopup"
     :close="close"
-    :is-show="isShow"
+    :is-show="showPopup"
     class="add-collection"
   >
     <slot>
@@ -26,28 +25,41 @@
           action=""
           @submit.prevent="onSaveCollection"
         >
-          <div class="form__item">
-            <input
-              v-model="formData.title"
+          <InputLanguageWrapper language='NL'>
+            <InputWithCounter
+              id="title_nl"
+              v-model="formData.title_nl"
               type="text"
               :placeholder="$t('Name-for-collection')"
-              class="input"
-              required="required"
-              name="title"
-              maxlength="255"
+              required
+              name="title_nl"
+              maxlength="80"
+              class="title-input"
+            />
+          </InputLanguageWrapper>
+          <InputLanguageWrapper language='EN'>
+            <InputWithCounter
+              id="title_en"
+              v-model="formData.title_en"
+              type="text"
+              :placeholder="$t('Name-for-collection')"
+              required
+              name="title_en"
+              maxlength="80"
+              class="title-input"
+            />
+          </InputLanguageWrapper>
+          <div class="form__button">
+            <button
+              class="button"
+              type="submit"
+              :disabled="submitting"
             >
+              {{ $t('Make-a-collection') }}
+            </button>
           </div>
-          <button
-            class="button"
-            type="submit"
-            :disabled="submitting"
-          >
-            {{ $t('Make-a-collection') }}
-          </button>
         </form>
       </template>
     </slot>
   </Popup>
 </transition>
-
-

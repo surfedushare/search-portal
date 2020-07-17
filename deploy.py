@@ -198,7 +198,7 @@ def deploy(ctx, target, mode, version=None):
     print(f"Starting AWS session for: {mode}")
     session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name='eu-central-1')
     ecs_client = session.client('ecs', )
-    task_role_arn = ctx.config.aws.superuser_task_role_arn if target == "harvester" else \
+    task_role_arn = ctx.config.aws.harvester_task_role_arn if target == "harvester" else \
         ctx.config.aws.task_role_arn
 
     target_name, task_definition_arn = register_task_definition(

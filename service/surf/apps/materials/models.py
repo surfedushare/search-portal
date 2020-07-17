@@ -150,7 +150,8 @@ class Collection(UUIDModel):
     Implementation of Collection model.
     """
 
-    title = django_models.CharField(max_length=255)
+    title_nl = django_models.CharField(max_length=255)
+    title_en = django_models.CharField(max_length=255, blank=True, null=True)
 
     # the list of collection materials
     materials = django_models.ManyToManyField(Material,
@@ -174,7 +175,7 @@ class Collection(UUIDModel):
             super().delete(using=using, keep_parents=keep_parents)
 
     def __str__(self):
-        return self.title
+        return self.title_nl
 
 
 class CollectionMaterial(django_models.Model):

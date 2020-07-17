@@ -9,7 +9,14 @@ import { validateHREF } from '~/components/_helpers'
 export default {
   name: 'sidebar',
   props: {
-    material: {}
+    material: {
+      type: Object,
+      default: null
+    },
+    collections: {
+      type: Array,
+      default: []
+    }
   },
   components: {
     SaveMaterialInCollection,
@@ -18,26 +25,13 @@ export default {
     Multiselect
   },
   mounted() {
-    this.$store
-      .dispatch('checkMaterialInCollection', this.material.external_id)
-      .then(collections => {
-        const checked_collections = collections.results.map(item => item.id)
-        this.my_checked_collections = checked_collections
-        this.checked_collections = checked_collections.slice(0)
-
-        this.$nextTick().then(() => {
-          this.full_loading = true
-        })
-      })
     this.setSocialCounters()
     this.href = validateHREF(window.location.href)
   },
   data() {
     return {
       href: '',
-      full_loading: false,
-      collection: '',
-      checked_collections: [],
+      currentCollectionIds: this.collections.map(c => c.id),
       submitting: false,
       isShowSaveMaterial: false,
       isShowShareMaterial: false,
@@ -65,12 +59,6 @@ export default {
       this.isShowAddCollection = false
     },
     /**
-     * Show SaveMaterial popup
-     */
-    addToCollection() {
-      this.isShowSaveMaterial = true
-    },
-    /**
      * Close SaveMaterial popup
      */
     closeSaveMaterial() {
@@ -79,32 +67,36 @@ export default {
     /**
      * Triggering event the save material
      */
-    onSaveMaterial(collection) {
+    addToCollection(collectionId) {
       this.submitting = true
 
-      return this.$store.dispatch('setMaterialInMyCollection', {
-        collection_id: collection.id || collection,
-        data: [
-          {
-            external_id: this.material.external_id
-          }
-        ]
-      })
+      return this.$store
+        .dispatch('setMaterialInMyCollection', {
+          collection_id: collectionId,
+          data: [
+            {
+              external_id: this.material.external_id
+            }
+          ]
+        })
+        .then(() => (this.submitting = false))
     },
     /**
      * Triggering event the remove material
      */
-    onRemoveMaterial(collection) {
+    removeFromCollection(collectionId) {
       this.submitting = true
 
-      return this.$store.dispatch('removeMaterialFromMyCollection', {
-        collection_id: collection.id || collection,
-        data: [
-          {
-            external_id: this.material.external_id
-          }
-        ]
-      })
+      return this.$store
+        .dispatch('removeMaterialFromMyCollection', {
+          collection_id: collectionId,
+          data: [
+            {
+              external_id: this.material.external_id
+            }
+          ]
+        })
+        .then(() => (this.submitting = false))
     },
     /**
      * generate copyright external link
@@ -284,8 +276,14 @@ export default {
       'material_communities',
       'disciplines'
     ]),
+    collectionItems() {
+      return this.my_collections.map(collection => ({
+        id: collection.id,
+        title: collection[`title_${this.$i18n.locale}`]
+      }))
+    },
     /**
-     * Extend to the material fields "disciplines" & "educationallevels"
+     * Extend to the material fields "disciplines"
      * @returns {*}
      */
     extended_material() {
@@ -308,89 +306,12 @@ export default {
         material.disciplineTitles = disciplineTitles.join(', ')
       }
 
-      if (material.educationallevels.length) {
-        let educationallevelsTitles = _.map(
-          material.educationallevels,
-          level => {
-            let levelObj = _.isObject(level)
-              ? level
-              : self.$store.getters.getCategoryById(level)
-            if (_.isNil(levelObj)) {
-              return
-            }
-            return this.getTitleTranslation(levelObj, self.$i18n.locale)
-          }
-        )
-        material.educationallevelsTitles = _.without(
-          educationallevelsTitles,
-          undefined
-        ).join('<br/>')
-      }
-
       return material
     }
   },
   watch: {
-    /**
-     * Get checked collection
-     * @param collections - Array
-     */
-    checked_collections(collections) {
-      if (this.full_loading) {
-        let collections_for_material = {}
-        if (collections.length) {
-          collections_for_material = collections.reduce(
-            (prev, next) => {
-              if (this.my_checked_collections.indexOf(next) === -1) {
-                prev.add.push(next)
-              }
-              if (prev.delete.length) {
-                prev.delete = prev.delete.filter(item => item !== next)
-              }
-              return prev
-            },
-            {
-              add: [],
-              delete: this.my_checked_collections.slice(0)
-            }
-          )
-        } else {
-          collections_for_material = {
-            add: [],
-            delete: this.my_checked_collections.slice(0)
-          }
-        }
-
-        const requests = []
-
-        if (
-          collections_for_material.add &&
-          collections_for_material.add.length
-        ) {
-          collections_for_material.add.forEach(collection => {
-            requests.push(this.onSaveMaterial(collection))
-          })
-        }
-
-        if (
-          collections_for_material.delete &&
-          collections_for_material.delete.length
-        ) {
-          collections_for_material.delete.forEach(collection => {
-            requests.push(this.onRemoveMaterial(collection))
-          })
-        }
-
-        Promise.all(requests).then(() => {
-          this.$store
-            .dispatch('getMaterial', { id: this.$route.params.id })
-            .then(() => {
-              this.submitting = false
-            })
-        })
-
-        this.my_checked_collections = collections.slice(0)
-      }
+    collections() {
+      this.currentCollectionIds = this.collections.map(c => c.id)
     }
   }
 }

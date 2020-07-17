@@ -189,6 +189,7 @@ if not DEBUG:
 # Elastic Search
 # https://www.elastic.co/guide/index.html
 
+ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
 ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_HOST = environment.elastic_search.host
@@ -302,8 +303,11 @@ CELERY_BEAT_SCHEDULE = {
     },
     'import-dataset': {
         'task': 'import_dataset',
-        'schedule': crontab(hour=4, minute=0, ),  # uses UTC
-        'args': ("epsilon",)
+        'schedule': crontab(
+            hour=environment.harvester.import_dataset.hour,
+            minute=environment.harvester.import_dataset.minute,
+        ),
+        'args': ("epsilon", environment.harvester.import_dataset.role)
     },
 }
 

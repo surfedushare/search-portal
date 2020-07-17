@@ -5,9 +5,11 @@
         <h4>{{ $t('Discipline') }}</h4>
         <div>{{ extended_material.disciplineTitles }}</div>
       </template>
-      <template v-if="material.educationallevelsTitles" class="materials__item_educationallevels">
+      <template v-if="material.educationallevels" class="materials__item_educationallevels">
         <h4>{{ $t('Learning-levels') }}</h4>
-        <div v-html="extended_material.educationallevelsTitles"></div>
+        <div v-for="educational_level in material.educationallevels">
+          {{ educational_level[$i18n.locale] }}
+        </div>
       </template>
       <!--<h4>Soort materiaal</h4>-->
       <!--Video-->
@@ -82,12 +84,14 @@
       <template v-else>
         <h3 class="h3">{{ $t('Add-material-to-collection') }}</h3>
         <Multiselect
-          v-if="full_loading && my_collections"
-          v-model="checked_collections"
-          :items="my_collections"
+          v-if="my_collections"
+          v-model="currentCollectionIds"
+          :items="collectionItems"
           :placeholder="$t('Select-collection')"
           class="material__left_select"
           :disabled="submitting"
+          @select="addToCollection"
+          @deselect="removeFromCollection"
         ></Multiselect>
       </template>
     </div>

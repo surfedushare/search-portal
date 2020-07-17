@@ -64,20 +64,41 @@ def add_extra_parameters_to_materials(user, materials):
     :param materials: array of materials
     :return: updated array of materials
     """
-    # perhaps this could be optimized by querying the database once for a list of materials
-    # however, we still want to add the 0 values for items we don't have in the database yet so this is easy for now
+
+    material_objects = {
+        material.external_id: material
+        for material in Material.objects.filter(external_id__in=(m["external_id"] for m in materials))
+    }
+
+    educational_level_filters = {
+        filter_item.external_id: filter_item
+        for filter_item in MpttFilterItem.objects.filter(
+            name__in=(level for material in materials for level in material["educationallevels"])
+        ).distinct().select_related("title_translations")
+    }
+
     for m in materials:
+        material_object = material_objects.get(m["external_id"], None)
 
-        material_object = Material.objects.filter(external_id=m["external_id"])
         if material_object:
-            material_object = material_object[0]
-
             m["view_count"] = material_object.view_count
             m["applaud_count"] = material_object.applaud_count
             m["avg_star_rating"] = material_object.get_avg_star_rating()
             m["count_star_rating"] = material_object.get_star_count()
         else:
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
+
+        educational_levels = filter(
+            None,
+            [educational_level_filters.get(external_id, None) for external_id in m["educationallevels"]]
+        )
+        m["educationallevels"] = [
+            {
+                "en": educational_level.title_translations.en,
+                "nl": educational_level.title_translations.nl
+            }
+            for educational_level in educational_levels
+        ]
 
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])

@@ -1,6 +1,5 @@
 import { mapGetters } from 'vuex'
 import StarRating from './../StarRating'
-import _ from 'lodash'
 
 export default {
   name: 'materials',
@@ -36,30 +35,23 @@ export default {
   components: {
     StarRating
   },
-  mounted() {
-    this.$store.dispatch('getFilterCategories')
-  },
   data() {
     return {
       selected_materials: this.value || []
     }
   },
   methods: {
-    getTitleTranslation(community, language) {
-      if (
-        !_.isNil(community.title_translations) &&
-        !_.isEmpty(community.title_translations)
-      ) {
-        return community.title_translations[language]
+    handleMaterialClick(material) {
+      if (this.selectFor === 'add') {
+        this.$store.commit('SET_MATERIAL', material)
+      } else {
+        this.$router.push(
+          this.localePath({
+            name: 'materials-id',
+            params: { id: material.external_id }
+          })
+        )
       }
-      return community.name
-    },
-    /**
-     * Set material on click
-     * @param material - {Object}
-     */
-    setMaterial(material) {
-      this.$store.commit('SET_MATERIAL', material)
     },
     /**
      * Select material
@@ -84,61 +76,29 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['disciplines', 'materials_loading']),
+    ...mapGetters(['materials_loading']),
     selectMaterialClass() {
       return this.selectFor === 'delete' ? 'select-delete' : 'select-neutral'
     },
     current_loading() {
       return this.materials_loading || this.loading
     },
-    /**
-     * Extend to the material fields "disciplines" & "educationallevels"
-     * @returns {*}
-     */
     extended_materials() {
-      const { materials, disciplines, selected_materials } = this
-      let arrMaterials
-      if (materials && disciplines) {
-        if (materials.records) {
-          arrMaterials = materials.records
-        } else {
-          arrMaterials = materials
-        }
-        let self = this
+      const { materials, selected_materials } = this
+      if (materials) {
+        const arrMaterials = materials.records ? materials.records : materials
+
         return arrMaterials.map(material => {
-          return Object.assign(
-            {
-              selected: selected_materials.indexOf(material.external_id) !== -1
-            },
-            material,
-            {
-              disciplines: material.disciplines.reduce((prev, id) => {
-                const item = disciplines[id]
+          const description =
+            material.description && material.description.length > 200
+              ? material.description.slice(0, 200) + '...'
+              : material.description
 
-                if (item) {
-                  prev.push(item)
-                }
-
-                return prev
-              }, []),
-              description:
-                material.description && material.description.length > 200
-                  ? material.description.slice(0, 200) + '...'
-                  : material.description,
-              educationallevels: material.educationallevels.reduce(
-                (prev, id) => {
-                  const item = self.$store.getters.getCategoryById(id)
-
-                  if (item) {
-                    prev.push(item)
-                  }
-
-                  return prev
-                },
-                []
-              )
-            }
-          )
+          return {
+            ...material,
+            selected: selected_materials.indexOf(material.external_id) !== -1,
+            description
+          }
         })
       }
 

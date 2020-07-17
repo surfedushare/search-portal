@@ -1,22 +1,22 @@
 <div class="form__file">
   <div class="form__file_column">
-    <label
+    <label v-if="title"
       class="form__file_label">
       {{ title }}
     </label>
     <img
+      v-if="imagePath"
       :src="imagePath"
       class="form__file_img"
     >
   </div>
 
-  <div class="form__file_column">
-
+  <div class="form__file_actions">
     <div class="form__file_buttons">
       <label
+        v-if="imagePath"
         @click.prevent="removeImage"
         class="form__file_button _delete"
-        :class="{'_disabled': !imagePath}"
       />
       <label
         class="form__file_button _upload"

@@ -95,10 +95,10 @@ class CollectionAdmin(admin.ModelAdmin):
     Provides admin options and functionality for Collection model.
     """
 
-    list_display = ("title", "publish_status",)
+    list_display = ("title_nl", "publish_status",)
     list_filter = (TrashListFilter, "publish_status",)
-    readonly_fields = ('title', "deleted_at",)
-    ordering = ("title",)
+    readonly_fields = ('title_nl', "deleted_at",)
+    ordering = ("title_nl",)
     exclude = ["is_shared"]
     inlines = [CollectionMaterialInline]
     actions = [restore_nodes, trash_nodes]

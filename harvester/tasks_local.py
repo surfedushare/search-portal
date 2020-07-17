@@ -24,9 +24,11 @@ def setup_harvester(ctx, skip_superuser=False):
 @task(help={
     "dataset": "The name of the greek letter that represents the dataset you want to import"
 })
-def import_dataset(ctx, dataset="epsilon"):
+def import_dataset(ctx, dataset="epsilon", role="primary"):
     """
     Sets up the database with some basic data for the harvester
     """
     with ctx.cd(HARVESTER_DIR):
-        ctx.run(f"python manage.py load_harvester_data {dataset}")
+        download_flag = "" if role == "primary" else "--skip-download"  # only download as primary not as replica
+        ctx.run(f"python manage.py load_harvester_data {dataset} {download_flag}")
+        ctx.run(f"python manage.py push_es_index --dataset={dataset} --recreate")

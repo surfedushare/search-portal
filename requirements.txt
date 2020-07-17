@@ -10,15 +10,18 @@ whitenoise==4.0
 psycopg2-binary==2.8.3
 requests==2.20.0
 Pillow==6.2.2
-elasticsearch==6.3.1
+elasticsearch==7.8.0
 python-dateutil==2.8.1
+
+# AWS
+awscli==1.18.43
+boto3==1.12.44
+requests-aws4auth==1.0
 
 # Tools
 ipython==7.7.0
 tqdm==4.35.0
 invoke==1.4.1
-awscli==1.18.43
-boto3==1.12.44
 ipdb==0.13.2
 sentry-sdk==0.16.0
 selenium==3.141.0

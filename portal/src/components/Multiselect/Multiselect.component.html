@@ -20,11 +20,11 @@
   >
     <div
       class="select__subitem"
-      v-for="(item, index) in items"
+      v-for="item in orderedItems"
     >
       <input
         type="checkbox"
-        v-model="elements[index]"
+        :checked="isSelected(item)"
         :value="item.id"
         :id="item.id"
         @change="onChange($event, item)"

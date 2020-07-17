@@ -13,6 +13,12 @@ django:
   protocol: "http"
   domain: "localhost"
 
+harvester:
+  import_dataset:
+    hour: 5  # uses UTC
+    minute: 0
+    role: "primary"
+
 surfconext:
   oidc_endpoint: none
   voot_api_endpoint: "https://voot.test.surfconext.nl"
@@ -22,6 +28,7 @@ elastic_search:
   username: "search_portal_backend_prod"
   host: "elasticsearch:9200"
   protocol: "http"
+  is_aws: false
 
 edurep:
   xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"

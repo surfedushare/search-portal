@@ -102,58 +102,65 @@ class ElasticIndex(models.Model):
                 }
             },
             'mappings': {
-                '_doc': {
-                    'properties': {
-                        'title': {
-                            'type': 'text',
-                            'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
-                        },
-                        'text': {
-                            'type': 'text',
-                            'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
-                        },
-                        'transcription': {
-                            'type': 'text',
-                            'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
-                        },
-                        'description': {
-                            'type': 'text',
-                            'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
-                        },
-                        'url': {'type': 'text'},
-                        'title_plain': {'type': 'text'},
-                        'text_plain': {'type': 'text'},
-                        'transcription_plain': {'type': 'text'},
-                        'description_plain': {'type': 'text'},
-                        'author': {
-                            'type': 'keyword'
-                        },
-                        'keywords': {
-                            'type': 'keyword'
-                        },
-                        'file_type': {
-                            'type': 'keyword'
-                        },
-                        'id': {'type': 'text'},
-                        'external_id': {
-                            'type': 'keyword'
-                        },
-                        'arrangement_collection_name': {
-                            'type': 'keyword'
-                        },
-                        'educational_levels': {
-                            'type': 'keyword'
-                        },
-                        'lom_educational_levels': {
-                            'type': 'keyword'
-                        },
-                        'disciplines': {
-                            'type': 'keyword'
-                        },
-                        "suggest": {
-                            "type": "completion"
-                        },
-                    }
+                'properties': {
+                    'title': {
+                        'type': 'text',
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                    },
+                    'text': {
+                        'type': 'text',
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                    },
+                    'transcription': {
+                        'type': 'text',
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                    },
+                    'description': {
+                        'type': 'text',
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                    },
+                    'url': {'type': 'text'},
+                    'title_plain': {'type': 'text'},
+                    'text_plain': {'type': 'text'},
+                    'transcription_plain': {'type': 'text'},
+                    'description_plain': {'type': 'text'},
+                    'author': {
+                        'type': 'keyword'
+                    },
+                    'authors': {
+                        'type': 'keyword'
+                    },
+                    'publishers': {
+                        'type': 'keyword'
+                    },
+                    'aggregation_level': {
+                        'type': 'keyword'
+                    },
+                    'keywords': {
+                        'type': 'keyword'
+                    },
+                    'file_type': {
+                        'type': 'keyword'
+                    },
+                    'id': {'type': 'text'},
+                    'external_id': {
+                        'type': 'keyword'
+                    },
+                    'arrangement_collection_name': {
+                        'type': 'keyword'
+                    },
+                    'educational_levels': {
+                        'type': 'keyword'
+                    },
+                    'lom_educational_levels': {
+                        'type': 'keyword'
+                    },
+                    'disciplines': {
+                        'type': 'keyword'
+                    },
+                    "suggest": {
+                        "type": "completion"
+                    },
                 }
             }
         }

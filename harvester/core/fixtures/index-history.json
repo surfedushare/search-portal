@@ -1,34 +1,56 @@
 [
-{
-    "model": "core.elasticindex",
-    "pk": 5,
-    "fields": {
-        "name": "test",
-        "language": "nl",
-        "dataset": 19,
-        "configuration": {
-            "mappings": {
-                "_doc": {
+    {
+        "model": "core.elasticindex",
+        "pk": 5,
+        "fields": {
+            "name": "test",
+            "language": "nl",
+            "dataset": 19,
+            "configuration": {
+                "mappings": {
                     "properties": {
-                        "id": {
-                            "type": "text"
-                        },
-                        "url": {
-                            "type": "text"
+                        "title": {
+                            "type": "text",
+                            "analyzer": "dutch"
                         },
                         "text": {
                             "type": "text",
                             "analyzer": "dutch"
                         },
-                        "title": {
+                        "transcription": {
                             "type": "text",
                             "analyzer": "dutch"
+                        },
+                        "description": {
+                            "type": "text",
+                            "analyzer": "dutch"
+                        },
+                        "url": {
+                            "type": "text"
+                        },
+                        "title_plain": {
+                            "type": "text"
+                        },
+                        "text_plain": {
+                            "type": "text"
+                        },
+                        "transcription_plain": {
+                            "type": "text"
+                        },
+                        "description_plain": {
+                            "type": "text"
                         },
                         "author": {
                             "type": "keyword"
                         },
-                        "suggest": {
-                            "type": "completion"
+                        "authors": {
+                            "type": "keyword"
+                        },
+                        "publishers": {
+                            "type": "keyword"
+                        },
+                        "aggregation_level": {
+                            "type": "keyword"
                         },
                         "keywords": {
                             "type": "keyword"
@@ -36,86 +58,93 @@
                         "file_type": {
                             "type": "keyword"
                         },
-                        "text_plain": {
+                        "id": {
                             "type": "text"
-                        },
-                        "description": {
-                            "type": "text",
-                            "analyzer": "dutch"
-                        },
-                        "disciplines": {
-                            "type": "keyword"
                         },
                         "external_id": {
                             "type": "keyword"
                         },
-                        "title_plain": {
-                            "type": "text"
-                        },
-                        "transcription": {
-                            "type": "text",
-                            "analyzer": "dutch"
-                        },
-                        "description_plain": {
-                            "type": "text"
+                        "arrangement_collection_name": {
+                            "type": "keyword"
                         },
                         "educational_levels": {
                             "type": "keyword"
                         },
-                        "transcription_plain": {
-                            "type": "text"
-                        },
                         "lom_educational_levels": {
                             "type": "keyword"
                         },
-                        "arrangement_collection_name": {
+                        "disciplines": {
                             "type": "keyword"
+                        },
+                        "suggest": {
+                            "type": "completion"
                         }
+                    }
+                },
+                "settings": {
+                    "index": {
+                        "number_of_shards": 5,
+                        "number_of_replicas": 0
                     }
                 }
             },
-            "settings": {
-                "index": {
-                    "number_of_shards": 5,
-                    "number_of_replicas": 0
-                }
-            }
-        },
-        "error_count": 0,
-        "created_at": "2020-06-22T15:36:42.204Z",
-        "modified_at": "2020-06-22T15:36:42.204Z"
-    }
-},
-{
-    "model": "core.elasticindex",
-    "pk": 6,
-    "fields": {
-        "name": "test",
-        "language": "en",
-        "dataset": 19,
-        "configuration": {
-            "mappings": {
-                "_doc": {
+            "error_count": 0,
+            "created_at": "2020-06-22T15:36:42.204Z",
+            "modified_at": "2020-06-22T15:36:42.204Z"
+        }
+    },
+    {
+        "model": "core.elasticindex",
+        "pk": 6,
+        "fields": {
+            "name": "test",
+            "language": "en",
+            "dataset": 19,
+            "configuration": {
+                "mappings": {
                     "properties": {
-                        "id": {
-                            "type": "text"
-                        },
-                        "url": {
-                            "type": "text"
+                        "title": {
+                            "type": "text",
+                            "analyzer": "english"
                         },
                         "text": {
                             "type": "text",
                             "analyzer": "english"
                         },
-                        "title": {
+                        "transcription": {
                             "type": "text",
                             "analyzer": "english"
+                        },
+                        "description": {
+                            "type": "text",
+                            "analyzer": "english"
+                        },
+                        "url": {
+                            "type": "text"
+                        },
+                        "title_plain": {
+                            "type": "text"
+                        },
+                        "text_plain": {
+                            "type": "text"
+                        },
+                        "transcription_plain": {
+                            "type": "text"
+                        },
+                        "description_plain": {
+                            "type": "text"
                         },
                         "author": {
                             "type": "keyword"
                         },
-                        "suggest": {
-                            "type": "completion"
+                        "authors": {
+                            "type": "keyword"
+                        },
+                        "publishers": {
+                            "type": "keyword"
+                        },
+                        "aggregation_level": {
+                            "type": "keyword"
                         },
                         "keywords": {
                             "type": "keyword"
@@ -123,54 +152,39 @@
                         "file_type": {
                             "type": "keyword"
                         },
-                        "text_plain": {
+                        "id": {
                             "type": "text"
-                        },
-                        "description": {
-                            "type": "text",
-                            "analyzer": "english"
-                        },
-                        "disciplines": {
-                            "type": "keyword"
                         },
                         "external_id": {
                             "type": "keyword"
                         },
-                        "title_plain": {
-                            "type": "text"
-                        },
-                        "transcription": {
-                            "type": "text",
-                            "analyzer": "english"
-                        },
-                        "description_plain": {
-                            "type": "text"
+                        "arrangement_collection_name": {
+                            "type": "keyword"
                         },
                         "educational_levels": {
                             "type": "keyword"
                         },
-                        "transcription_plain": {
-                            "type": "text"
-                        },
                         "lom_educational_levels": {
                             "type": "keyword"
                         },
-                        "arrangement_collection_name": {
+                        "disciplines": {
                             "type": "keyword"
+                        },
+                        "suggest": {
+                            "type": "completion"
                         }
+                    }
+                },
+                "settings": {
+                    "index": {
+                        "number_of_shards": 5,
+                        "number_of_replicas": 0
                     }
                 }
             },
-            "settings": {
-                "index": {
-                    "number_of_shards": 5,
-                    "number_of_replicas": 0
-                }
-            }
-        },
-        "error_count": 0,
-        "created_at": "2020-06-22T15:36:42.204Z",
-        "modified_at": "2020-06-22T15:36:42.204Z"
+            "error_count": 0,
+            "created_at": "2020-06-22T15:36:42.204Z",
+            "modified_at": "2020-06-22T15:36:42.204Z"
+        }
     }
-}
 ]
