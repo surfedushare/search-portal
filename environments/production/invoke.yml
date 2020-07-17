@@ -5,8 +5,8 @@
 django:
   debug: false
   postgres_user: "django"
-  postgres_host: "surfpol-dev-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
-  redis_host: null
+  postgres_host: "surfpol-edushare.cef190hciiol.eu-central-1.rds.amazonaws.com"
+  redis_host: "harvester.o1edd0.0001.euc1.cache.amazonaws.com:6379"
   protocol: "https"
   domain: "zoekportaal.surf.nl"
 
@@ -17,9 +17,9 @@ surfconext:
 
 elastic_search:
   username: "search_portal_backend_prod"
-  host: "elastic2.search-prod.surfcatalog.nl"
+  host: "vpc-surfpol-main-u7aqh4lrt6glkmkrpjg3a64jhq.eu-central-1.es.amazonaws.com"
   protocol: "https"
-  is_aws: false
+  is_aws: true
 
 edurep:
   xml_api_endpoint: "http://wszoeken.edurep.kennisnet.nl:8000"
@@ -28,13 +28,13 @@ edurep:
 
 secrets:
   django:
-    secret_key: "arn:aws:secretsmanager"
+    secret_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/django"
   postgres:
-    password: "arn:aws:secretsmanager"
+    password: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/postgres-application"
   surfconext:
-    secret_key: "arn:aws:secretsmanager"
+    secret_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/surfconext"
   elastic_search:
-    password: "arn:aws:secretsmanager"
+    password: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/elastic"
 
 aws:
-  image_upload_bucket: null
+  image_upload_bucket: "search-portal-media-uploads-prod"
