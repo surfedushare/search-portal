@@ -5,46 +5,46 @@ from .tasks_local import download_snapshot
 
 
 @task(name="setup")
-def setup(ctx):
+def setup(conn):
     """
     Sets up databases and roles with correct permissions inside AWS through a bastion host
     """
 
     # Setup auto-responder
-    postgres_user = ctx.config.django.postgres_user
-    postgres_password = ctx.config.secrets.postgres.password
+    postgres_user = conn.config.django.postgres_user
+    postgres_password = conn.config.secrets.postgres.password
     postgres_password_responder = Responder(pattern="Password", response=postgres_password + "\n")
     # Run Postgres commands with port forwarding
-    with ctx.forward_local(local_port=1111, remote_host=ctx.config.django.postgres_host, remote_port=5432):
+    with conn.forward_local(local_port=1111, remote_host=conn.config.django.postgres_host, remote_port=5432):
         # Clear all databases and application role
-        ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP DATABASE edushare"',
+        conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP DATABASE edushare"',
                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
-        ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP DATABASE harvester"',
+        conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP DATABASE harvester"',
                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
-        ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP OWNED BY postgres"',
+        conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP OWNED BY postgres"',
                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
-        ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP USER django"',
+        conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP USER django"',
                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
         # Create default database
-        ctx.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "CREATE DATABASE edushare"',
+        conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "CREATE DATABASE edushare"',
                   echo=True, watchers=[postgres_password_responder], pty=True)
         # Create application role if it doesn't exist yet
-        ctx.local(
+        conn.local(
             f'psql -h localhost -p 1111 -U {postgres_user} -W '
             f'-c "CREATE USER django WITH ENCRYPTED PASSWORD \'{ctx.config.secrets.postgres_application.password}\'"',
             echo=True, warn=True, watchers=[postgres_password_responder], pty=True
         )
         # Initialise permissions and other databases
-        ctx.local(
+        conn.local(
             f"psql -h localhost -p 1111 -U {postgres_user} -W -f postgres/docker-entrypoint-initdb.d/initdb.sql",
             echo=True, watchers=[postgres_password_responder], pty=True
         )
-        ctx.local(
+        conn.local(
             f"psql -h localhost -p 1111 -U {postgres_user} -d edushare -W -f "
             f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
             echo=True, watchers=[postgres_password_responder], pty=True
         )
-        ctx.local(
+        conn.local(
             f"psql -h localhost -p 1111 -U {postgres_user} -d harvester -W -f "
             f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
             echo=True, watchers=[postgres_password_responder], pty=True
@@ -56,7 +56,7 @@ def setup(ctx):
     "recreate": "Whether to completely destroy the database prior to loading the data",
     "migrate": "Whether to apply some changes to the snapshot file to migrate from a pre-AWS format"
 })
-def restore_snapshot(ctx, snapshot_name=None, recreate=True, migrate=True):
+def restore_snapshot(conn, snapshot_name=None, recreate=True, migrate=True):
     """
     Loads a particular snapshot into the database on AWS through a bastion host
     """
@@ -66,21 +66,21 @@ def restore_snapshot(ctx, snapshot_name=None, recreate=True, migrate=True):
     # Make minor adjustments to dumps for legacy dumps to work on AWS
     if migrate:
         print("Migrating dump file")
-        ctx.local(f"sed -i 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
+        conn.local(f"sed -i 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
 
     # Recreating database with all correct privileges
     if recreate:
         print("Recreating databases")
-        setup(ctx)
+        setup(conn)
 
     print("Restoring snapshot")
     # Setup auto-responder
-    postgres_user = ctx.config.django.postgres_user
-    postgres_password = ctx.config.secrets.postgres.password
+    postgres_user = conn.config.django.postgres_user
+    postgres_password = conn.config.secrets.postgres.password
     postgres_password_responder = Responder(pattern=r"Password: ", response=postgres_password + "\n")
     # Run Postgres command with port forwarding
-    with ctx.forward_local(local_port=1111, remote_host=ctx.config.django.postgres_host, remote_port=5432):
-        ctx.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {snapshot_file_path}",
+    with conn.forward_local(local_port=1111, remote_host=ctx.config.django.postgres_host, remote_port=5432):
+        conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {snapshot_file_path}",
                   echo=True, watchers=[postgres_password_responder], pty=True)
 
     print("Done")
