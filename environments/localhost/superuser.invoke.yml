@@ -1,0 +1,20 @@
+secrets:
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres"
+  postgres_application:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
+
+django:
+  postgres_user: "postgres"
+
+aws:
+  bastion: null
+  profile_name: "pol-dev"
+  private_subnet_id: null
+  default_security_group_id: null
+  rds_security_group_id: null
+  cluster_arn: null
+  task_role_arn: null
+  harvester_task_role_arn: null
+  superuser_task_role_arn: null
+  postgres_password_arn: null
