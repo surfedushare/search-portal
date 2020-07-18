@@ -9,7 +9,7 @@ django:
 
 aws:
   bastion: null
-  profile_name: "pol-dev"
+  profile_name: null
   private_subnet_id: null
   default_security_group_id: null
   rds_security_group_id: null
