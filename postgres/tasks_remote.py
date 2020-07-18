@@ -23,16 +23,16 @@ def setup_postgres(conn):
     with conn.forward_local(local_port=1111, remote_host=conn.config.django.postgres_host, remote_port=5432):
         # Clear all databases and application role
         conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP DATABASE edushare"',
-                  echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
+                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
         conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP DATABASE harvester"',
-                  echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
+                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
         conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP OWNED BY postgres"',
-                  echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
+                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
         conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "DROP USER django"',
-                  echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
+                   echo=True, warn=True, watchers=[postgres_password_responder], pty=True)
         # Create default database
         conn.local(f'psql -h localhost -p 1111 -U {postgres_user} -W -c "CREATE DATABASE edushare"',
-                  echo=True, watchers=[postgres_password_responder], pty=True)
+                   echo=True, watchers=[postgres_password_responder], pty=True)
         # Create application role if it doesn't exist yet
         conn.local(
             f'psql -h localhost -p 1111 -U {postgres_user} -W '
@@ -90,7 +90,7 @@ def restore_snapshot(conn, snapshot_name=None, add_superuser=True, migrate=True)
     # Run Postgres command with port forwarding
     with conn.forward_local(local_port=1111, remote_host=conn.config.django.postgres_host, remote_port=5432):
         conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {snapshot_file_path}",
-                  echo=True, watchers=[postgres_password_responder], pty=True)
+                   echo=True, watchers=[postgres_password_responder], pty=True)
 
     if add_superuser:
         print("Adding superuser")
