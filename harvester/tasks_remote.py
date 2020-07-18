@@ -3,9 +3,7 @@ from fabric import task
 from getpass import getpass
 import signal
 
-from django.conf import settings
-
-from commands.sql import insert_django_user_statement
+from commands.postgres.sql import insert_django_user_statement
 
 
 @task(name="create_super_user")
@@ -22,7 +20,6 @@ def create_super_user(conn):
     postgres_password_responder = Responder(pattern="Password", response=postgres_password + "\n")
 
     # Gather input from user
-    settings.configure()
     username = input("Username:")
     password = getpass()
 
