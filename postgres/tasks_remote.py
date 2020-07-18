@@ -9,6 +9,8 @@ def setup(conn):
     """
     Sets up databases and roles with correct permissions inside AWS through a bastion host
     """
+    if conn.host != conn.config.aws.bastion:
+        raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
 
     # Setup auto-responder
     postgres_user = conn.config.django.postgres_user
@@ -60,6 +62,8 @@ def restore_snapshot(conn, snapshot_name=None, recreate=True, migrate=True):
     """
     Loads a particular snapshot into the database on AWS through a bastion host
     """
+    if conn.host != conn.config.aws.bastion:
+        raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
 
     snapshot_file_path = download_snapshot(snapshot_name)
 
