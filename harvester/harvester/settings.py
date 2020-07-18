@@ -316,6 +316,7 @@ EXTENSION_TO_FILE_TYPE = {  # TODO: we should map from extension to mime and the
 # https://docs.celeryproject.org/en/v4.1.0/
 
 CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'
+CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
