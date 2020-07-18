@@ -16,7 +16,6 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: django
           POSTGRES_PASSWORD: qwerty
           POSTGRES_DB: edushare
         ports:

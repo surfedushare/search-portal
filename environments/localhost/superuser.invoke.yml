@@ -1,8 +1,6 @@
 secrets:
-  postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres"
   postgres_application:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
+    password: "qwerty"
 
 django:
   postgres_user: "postgres"
