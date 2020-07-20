@@ -1,6 +1,6 @@
 <template>
   <div class="switch-input">
-    <span class="label" v-if="label">{{ label }}&nbsp;&nbsp;</span>
+    <span v-if="label" class="label">{{ label }}&nbsp;&nbsp;</span>
     <label class="switch">
       <input v-model="value" type="checkbox" />
       <span class="slider round" />
