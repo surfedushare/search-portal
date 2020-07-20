@@ -5,6 +5,7 @@ from fabric import task
 from environments.surfpol import create_configuration_and_session
 from postgres.tasks_remote import restore_snapshot, setup as postgres_setup
 from harvester.tasks_remote import create_super_user, connect_uwsgi
+from legacy import download_database
 
 
 environment, session = create_configuration_and_session(use_aws_default_profile=False, config_class=Config)
@@ -19,5 +20,6 @@ namespace = Collection(
     Collection("bastion", setup_bastion),
     Collection("db", postgres_setup, restore_snapshot),
     Collection("hrv", create_super_user, connect_uwsgi),
+    Collection("legacy", download_database),
 )
 namespace.configure(environment)
