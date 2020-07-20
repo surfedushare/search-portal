@@ -46,5 +46,4 @@ secrets:
     password: "qwerty"
 
 aws:
-  profile_name: null
   image_upload_bucket: null
