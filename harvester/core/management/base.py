@@ -4,6 +4,7 @@ import json
 from urllib.parse import urlparse
 from copy import copy
 from tqdm import tqdm
+import logging
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -12,33 +13,43 @@ from django.utils import timezone
 from core.utils.language import get_language_from_snippet
 
 
+logger = logging.getLogger("harvester")
+
+
 class HarvesterCommand(BaseCommand):
     """
     This class adds some syntax sugar to make output of all commands similar
     """
 
     show_progress = True
+    use_logger = True
 
     def add_arguments(self, parser):
         parser.add_argument('-n', '--no-progress', action="store_true")
+        parser.add_argument('-L', '--no-logger', action="store_false")
 
     def execute(self, *args, **options):
         self.show_progress = not options.get("no_progress", False)
+        self.use_logger = options.get("no_logger", True)
         super().execute(*args, **options)
 
     def error(self, message):
+        if self.use_logger:
+            logger.error(message)
         self.stderr.write(self.style.ERROR(message))
 
     def warning(self, message):
+        if self.use_logger:
+            logger.warning(message)
         self.stderr.write(self.style.WARNING(message))
 
     def info(self, message, object=None, log=False):
+        if self.use_logger:
+            extra = {"extra": object} if object is not None else {}
+            logger.info(message, extra=extra)
         if object is not None:
             message += " " + json.dumps(object, indent=4)
-        if not log:
-            self.stdout.write(message)
-        else:
-            self.stderr.write(message)
+        self.stdout.write(message)
 
     def success(self, message):
         self.stdout.write(self.style.SUCCESS(message))

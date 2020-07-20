@@ -6,7 +6,7 @@ from harvester.settings import environment
 from harvester.celery import app
 
 
-log = logging.getLogger(__file__)
+log = logging.getLogger("harvester")
 
 
 @app.task(name="health_check")
