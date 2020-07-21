@@ -3,7 +3,7 @@ from e2e_tests.base import BaseTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from e2e_tests.factory import UserFactory, CommunityFactory, TeamFactory
+from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory
 from e2e_tests.helpers import login, replace_content
 
 
