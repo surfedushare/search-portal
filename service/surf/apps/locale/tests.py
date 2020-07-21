@@ -4,7 +4,7 @@ from django.test import Client
 
 class TestLocales(TestCase):
 
-    fixtures = ['complete_locales', 'privacy_statements']
+    fixtures = ['locales', 'privacy_statements']
 
     def test_locales_en(self):
         client = Client()

@@ -8,7 +8,7 @@ from e2e_tests.helpers import login, replace_content
 
 
 class TestCommunities(BaseTestCase):
-    fixtures = ['filter-categories', 'complete_locales']
+    fixtures = ['locales']
 
     def setUp(cls):
         cls.user = UserFactory.create()
