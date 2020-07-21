@@ -21,5 +21,6 @@ def get_localisation_strings(request, locale):
     # Here we inject the privacy statement as a translation
     # in order for the frontend to simply switch between translations
     privacy_statement = PrivacyStatement.objects.get_latest_active()
-    data["html-privacy-info"] = getattr(privacy_statement, locale)
+    if privacy_statement:
+        data["html-privacy-info"] = getattr(privacy_statement, locale)
     return Response(data)
