@@ -19,5 +19,6 @@ tqdm==4.35.0
 invoke==1.4.1
 ipdb==0.13.2
 sentry-sdk==0.16.0
+factory_boy==2.9.0
 
 -r dependencies.txt
