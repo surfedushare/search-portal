@@ -10,10 +10,6 @@ from e2e_tests.helpers import login, replace_content
 class TestCommunities(BaseTestCase):
     fixtures = ['filter-categories', 'complete_locales']
 
-    @classmethod
-    def setupClass(cls):
-        super.setUpClass()
-
     def setUp(cls):
         cls.user = UserFactory.create()
         cls.community = CommunityFactory.create()

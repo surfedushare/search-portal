@@ -2,6 +2,7 @@ import factory
 from surf.apps.users.models import User
 from surf.apps.communities.models import Community, CommunityDetail, Team
 from surf.statusenums import PublishStatus
+from surf.apps.materials.models import Collection
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -61,3 +62,21 @@ class TeamFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     community = factory.SubFactory(CommunityFactory)
     team_id = factory.SelfAttribute('community.external_id')
+
+
+class CollectionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Collection
+
+    title_nl = "Handige leermaterialen"
+    title_en = "Useful materials"
+    publish_status = PublishStatus.PUBLISHED
+
+    @factory.post_generation
+    def communities(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for community in extracted:
+                self.communities.add(community)

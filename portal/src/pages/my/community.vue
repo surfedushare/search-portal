@@ -32,14 +32,14 @@
 
         <div class="tab">
           <button
-            class="tablinks"
+            class="tablinks general-tab"
             :class="{ active: currentTab === 'general' }"
             @click="currentTab = 'general'"
           >
             {{ $t('general') }}
           </button>
           <button
-            class="tablinks"
+            class="tablinks collections-tab"
             :class="{ active: currentTab === 'collections' }"
             @click="currentTab = 'collections'"
           >
