@@ -7,13 +7,13 @@ from e2e_tests.helpers import login, replace_content
 
 
 class TestCollections(BaseTestCase):
-    fixtures = ['filter-categories', 'complete_locales']
+    fixtures = ['complete_locales']
 
-    def setUp(cls):
-        cls.user = UserFactory.create()
-        cls.community = CommunityFactory.create()
-        TeamFactory.create(user=cls.user, community=cls.community)
-        login(cls, cls.user)
+    def setUp(self):
+        self.user = UserFactory.create()
+        self.community = CommunityFactory.create()
+        TeamFactory.create(user=self.user, community=self.community)
+        login(self, self.user)
 
     def test_add_collection(self):
         self.selenium.get(f"{self.live_server_url}/mijn/community/{self.community.id}")

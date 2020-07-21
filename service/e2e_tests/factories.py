@@ -2,7 +2,7 @@ import factory
 from surf.apps.users.models import User
 from surf.apps.communities.models import Community, CommunityDetail, Team
 from surf.statusenums import PublishStatus
-from surf.apps.materials.models import Collection
+from surf.apps.materials.models import Collection, Material
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -80,3 +80,25 @@ class CollectionFactory(factory.django.DjangoModelFactory):
         if extracted:
             for community in extracted:
                 self.communities.add(community)
+
+
+class MaterialFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Material
+
+    external_id = "external:id"
+    title = "De kunst van materiaal"
+    description = "Alles over het maken van kwalitatieve materialen"
+    material_url = "https://www.surf.nl/"
+    applaud_count = 2
+    star_4 = 1
+    view_count = 104
+
+    @factory.post_generation
+    def collections(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for collection in extracted:
+                self.collections.add(collection)
