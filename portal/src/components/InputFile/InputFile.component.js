@@ -32,6 +32,7 @@ export default {
 
       reader.onload = e => {
         that.image = e.target.result
+        that.$emit('preview_url', e.target.result)
       }
       reader.readAsDataURL(file)
     },
