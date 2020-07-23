@@ -10,8 +10,6 @@ from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
 class TestCollectionMaterials(ElasticSearchTestCase):
-    fixtures = ['locales']
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

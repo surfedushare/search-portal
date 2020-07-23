@@ -8,7 +8,7 @@ from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
 class TestSearch(ElasticSearchTestCase):
-    fixtures = ['filter-categories', 'locales']
+    fixtures = ElasticSearchTestCase.fixtures + ['filter-categories']
 
     @classmethod
     def setUpClass(cls):
