@@ -24,7 +24,7 @@ export default {
         if (!state.communities) {
           return []
         }
-        return _.filter(state.communities.results, community => {
+        return state.communities.results.filter(community => {
           return (
             community.publish_status === PublishStatus.PUBLISHED ||
             (user &&
@@ -37,10 +37,10 @@ export default {
     },
     getUserCommunities(state) {
       return user => {
-        if (!state.communities || _.isNil(user)) {
+        if (!state.communities || !user) {
           return []
         }
-        return _.filter(state.communities.results, community => {
+        return state.communities.results.filter(community => {
           return user.communities.indexOf(community.id) >= 0
         })
       }

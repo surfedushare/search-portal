@@ -55,8 +55,9 @@ export default {
   .bg {
     position: absolute;
     right: 26px;
-    top: -51px;
-    width: 40%;
+    top: -35px;
+    max-width: 370px;
+    max-height: 220px;
     border-radius: 21px;
 
     @media @mobile {
