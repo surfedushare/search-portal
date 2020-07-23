@@ -10,6 +10,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    identifier: {
+      type: String,
+      default: ''
     }
   },
   data() {

@@ -1,10 +1,12 @@
 import os
+import factory
 from e2e_tests.base import BaseTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory
+from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, CommunityDetailFactory
 from e2e_tests.helpers import login, replace_content
+from surf.statusenums import PublishStatus
 
 
 class TestCommunities(BaseTestCase):
@@ -14,11 +16,87 @@ class TestCommunities(BaseTestCase):
         TeamFactory.create(user=cls.user, community=cls.community)
         login(cls, cls.user)
 
-    def test_community_overview_language_switch(self):
-        self.selenium.get(f"{self.live_server_url}/mijn/communities")
+    def test_community_overview(self):
+        CommunityFactory.create(
+            name="public",
+            dutch_details=factory.RelatedFactory(
+                CommunityDetailFactory,
+                factory_related_name="community",
+                dutch=True,
+                title="Publieke community"
+            )
+        )
+        CommunityFactory.create(
+            name="draft",
+            publish_status=PublishStatus.DRAFT,
+            dutch_details=factory.RelatedFactory(
+                CommunityDetailFactory,
+                factory_related_name="community",
+                dutch=True,
+                title="Niet-gepubliceerde community"
+            )
+        )
+        my_draft_community = CommunityFactory.create(
+            name="my-draft",
+            publish_status=PublishStatus.DRAFT,
+            dutch_details=factory.RelatedFactory(
+                CommunityDetailFactory,
+                factory_related_name="community",
+                dutch=True,
+                title="Mijn draft community"
+            )
+        )
+        TeamFactory.create(user=self.user, community=my_draft_community)
+        my_published_community = CommunityFactory.create(
+            name="my-published",
+            dutch_details=factory.RelatedFactory(
+                CommunityDetailFactory,
+                factory_related_name="community",
+                dutch=True,
+                title="Mijn community"
+            )
+        )
+        TeamFactory.create(user=self.user, community=my_published_community)
+
+        self.selenium.get(f"{self.live_server_url}/communities")
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".communities__item_wrapper"),
+                (By.CSS_SELECTOR, ".communities__items"), "Publieke community"
+            )
+        )
+        communities = self.selenium.find_element_by_css_selector(".communities__items")
+        self.assertTrue("Niet-gepubliceerde community" not in communities.text)
+
+        self.selenium.find_element_by_css_selector(".my-communities-tab").click()
+
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".communities__items.my-communities"), "Mijn community"
+            )
+        )
+
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".communities__items.my-communities"), "Mijn draft community"
+            )
+        )
+
+        self.selenium.find_element_by_css_selector(".draft-switch label").click()
+
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".communities__items.my-communities"), "Mijn community"
+            )
+        )
+
+        my_communities = self.selenium.find_element_by_css_selector(".communities__items.my-communities")
+        self.assertTrue("Mijn draft community" not in my_communities.text)
+
+    def test_community_overview_language_switch(self):
+        self.selenium.get(f"{self.live_server_url}/communities")
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".communities__item"),
                 "Ethiek"
             )
         )
@@ -28,7 +106,7 @@ class TestCommunities(BaseTestCase):
 
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".communities__item_wrapper"),
+                (By.CSS_SELECTOR, ".communities__item"),
                 "Ethics"
             )
         )

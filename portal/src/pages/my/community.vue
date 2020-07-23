@@ -52,7 +52,7 @@
         </div>
         <div v-show="!previewMode">
           <Tabs>
-            <Tab :title="$t('general')">
+            <Tab :title="$t('general')" identifier="general">
               <div id="General" class="communities__form">
                 <h1>{{ $t('general') }}</h1>
                 {{ $t('manage-community-information') }}
@@ -60,7 +60,7 @@
                 <CommunityForm v-model="formData" :errors="errors" />
               </div>
             </Tab>
-            <Tab :title="$t('collections')">
+            <Tab :title="$t('collections')" identifier="collections-tab">
               <div id="Collections" class="communities__collections">
                 <div class="collections__add">
                   <button

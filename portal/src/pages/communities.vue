@@ -25,8 +25,11 @@
               {{ $t('No-communities-available') }}
             </h3>
           </Tab>
-          <Tab :title="$t('My-communities')">
-            <ul v-if="myCommunities.length" class="communities__items">
+          <Tab :title="$t('My-communities')" identifier="my-communities-tab">
+            <ul
+              v-if="myCommunities.length"
+              class="communities__items my-communities"
+            >
               <li
                 v-for="community in myCommunities"
                 :key="community.id"

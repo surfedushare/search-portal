@@ -3,7 +3,7 @@
     <button
       v-for="(tab, index) in tabs"
       :key="tab.title"
-      :class="{ active: selectedIndex === index }"
+      :class="{ active: selectedIndex === index, [tab.identifier]: true }"
       @click="selectTab(index)"
     >
       {{ tab.title }}
