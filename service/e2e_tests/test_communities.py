@@ -72,32 +72,32 @@ class TestCommunities(BaseTestCase):
         )
 
         # Dutch preview
-        self.selenium.find_element_by_css_selector(".communities__form__buttons a").click()
+        self.selenium.find_element_by_css_selector(".communities__form__buttons button.preview").click()
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "section.community"), "Nieuwe titel")
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe titel")
         )
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "section.community"), "Nieuwe beschrijving")
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe beschrijving")
         )
 
         website = self.selenium.find_element_by_css_selector(".how_work_link").get_attribute("href")
         self.assertEqual(website, "https://www.surf.nl/")
 
         featured_image = self.selenium.find_element_by_css_selector(".preview__bg_block-img").get_attribute("src")
-        self.assertIn("community_featured_image", featured_image)
+        self.assertIn("data:image/png", featured_image)
 
         # English preview
         self.selenium.find_element_by_css_selector("a.lang").click()
 
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "section.community"), "New title")
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New title")
         )
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "section.community"), "New description")
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New description")
         )
 
         website = self.selenium.find_element_by_css_selector(".how_work_link").get_attribute("href")
         self.assertEqual(website, "https://www.surf.com/")
 
         featured_image = self.selenium.find_element_by_css_selector(".preview__bg_block-img").get_attribute("src")
-        self.assertIn("community_featured_image", featured_image)
+        self.assertIn("data:image/png", featured_image)
