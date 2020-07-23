@@ -9,6 +9,8 @@ from elasticsearch import Elasticsearch
 
 
 class BaseTestCase(StaticLiveServerTestCase):
+    fixtures = ['locales', 'privacy_statements']
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

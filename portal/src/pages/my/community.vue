@@ -32,14 +32,14 @@
 
         <div class="tab">
           <button
-            class="tablinks"
+            class="tablinks general-tab"
             :class="{ active: currentTab === 'general' }"
             @click="currentTab = 'general'"
           >
             {{ $t('general') }}
           </button>
           <button
-            class="tablinks"
+            class="tablinks collections-tab"
             :class="{ active: currentTab === 'collections' }"
             @click="currentTab = 'collections'"
           >
@@ -137,6 +137,7 @@
                 <ErrorWrapper :errors="getFieldErrors('logo_nl')">
                   <InputLanguageWrapper language="NL">
                     <InputFile
+                      id="logo_nl"
                       :imagesrc="formData.logo_nl"
                       @remove_image="onRemoveImage('logo_nl')"
                       @add_image="onAddImage('logo_nl', $event)"
@@ -148,6 +149,7 @@
                 <ErrorWrapper :errors="getFieldErrors('logo_en')">
                   <InputLanguageWrapper language="EN">
                     <InputFile
+                      id="logo_en"
                       :imagesrc="formData.logo_en"
                       @remove_image="onRemoveImage('logo_en')"
                       @add_image="onAddImage('logo_en', $event)"
@@ -157,7 +159,7 @@
               </div>
             </div>
             <div class="communities__form__column">
-              <div class="communities__form__row">
+              <div id="description_nl" class="communities__form__row">
                 <ErrorWrapper :errors="getFieldErrors('description_nl')">
                   <RichTextInput
                     v-model="formData.description_nl"
@@ -167,7 +169,7 @@
                   />
                 </ErrorWrapper>
               </div>
-              <div class="communities__form__row">
+              <div id="description_en" class="communities__form__row">
                 <ErrorWrapper :errors="getFieldErrors('description_en')">
                   <RichTextInput
                     v-model="formData.description_en"
@@ -183,6 +185,7 @@
                 <ErrorWrapper :errors="getFieldErrors('featured_image_nl')">
                   <InputLanguageWrapper language="NL">
                     <InputFile
+                      id="featured_image_nl"
                       :imagesrc="formData.featured_image_nl"
                       @remove_image="onRemoveImage('featured_image_nl')"
                       @add_image="onAddImage('featured_image_nl', $event)"
@@ -194,6 +197,7 @@
                 <ErrorWrapper :errors="getFieldErrors('featured_image_en')">
                   <InputLanguageWrapper language="EN">
                     <InputFile
+                      id="featured_image_en"
                       :imagesrc="formData.featured_image_en"
                       @remove_image="onRemoveImage('featured_image_en')"
                       @add_image="onAddImage('featured_image_en', $event)"

@@ -7,7 +7,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('locale', '0003_fill_localizations'),
+        ('locale', '0002_auto_20190329_1026'),
     ]
 
     operations = [
