@@ -54,17 +54,14 @@
           <Tabs>
             <Tab :title="$t('general')">
               <div id="General" class="communities__form">
-                <div>
-                  <h1>{{ $t('general') }}</h1>
-                  {{ $t('manage-community-information') }}
-                  <br /><br />
-                  <CommunityForm v-model="formData" :errors="errors" />
-                </div>
+                <h1>{{ $t('general') }}</h1>
+                {{ $t('manage-community-information') }}
+                <br /><br />
+                <CommunityForm v-model="formData" :errors="errors" />
               </div>
             </Tab>
             <Tab :title="$t('collections')">
               <div id="Collections" class="communities__collections">
-                <br /><br />
                 <div class="collections__add">
                   <button
                     class="collections__add__link button"
@@ -386,7 +383,7 @@ export default {
       width: 40%;
       min-width: 440px; // or break tablets
       border-radius: 20px;
-      margin-top: -80px;
+      margin-top: -20px;
       margin-bottom: 30px;
       color: white;
       font-size: 16px;

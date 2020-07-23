@@ -3,7 +3,47 @@
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
-        <ul v-if="communities.length" class="communities__items">
+        <Tabs v-if="myCommunities.length">
+          <template v-slot:after-tabs>
+            <SwitchInput
+              v-model="showDrafts"
+              class="draft-switch"
+              :label="$t('Show-drafts')"
+            />
+          </template>
+          <Tab :title="$t('All-communities')">
+            <ul v-if="communities.length" class="communities__items">
+              <li
+                v-for="community in communities"
+                :key="community.id"
+                class="communities__item"
+              >
+                <CommunityItem :community="community" />
+              </li>
+            </ul>
+            <h3 v-else class="text-center">
+              {{ $t('No-communities-available') }}
+            </h3>
+          </Tab>
+          <Tab :title="$t('My-communities')">
+            <ul v-if="myCommunities.length" class="communities__items">
+              <li
+                v-for="community in myCommunities"
+                :key="community.id"
+                class="communities__item"
+              >
+                <CommunityItem
+                  :community="community"
+                  :editable="editable(community)"
+                />
+              </li>
+            </ul>
+            <h3 v-else class="text-center">
+              {{ $t('No-communities-available') }}
+            </h3>
+          </Tab>
+        </Tabs>
+        <ul v-else-if="communities.length" class="communities__items">
           <li
             v-for="community in communities"
             :key="community.id"
@@ -22,14 +62,26 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import HeaderBlock from '~/components/HeaderBlock'
 import CommunityItem from '~/components/CommunityItem'
+import HeaderBlock from '~/components/HeaderBlock'
+import SwitchInput from '~/components/switch-input'
+import Tabs from '~/components/Tabs'
+import Tab from '~/components/Tab'
+import { PublishStatus } from '~/utils'
 
 export default {
   name: 'Communities',
   components: {
     CommunityItem,
-    HeaderBlock
+    HeaderBlock,
+    SwitchInput,
+    Tab,
+    Tabs
+  },
+  data() {
+    return {
+      showDrafts: true
+    }
   },
   computed: {
     ...mapGetters(['user']),
@@ -37,11 +89,22 @@ export default {
       return this.$store.getters.getPublicCommunities(this.user)
     },
     myCommunities() {
-      return this.$store.getters.getUserCommunities(this.user)
+      if (this.showDrafts) {
+        return this.$store.getters.getUserCommunities(this.user)
+      }
+
+      return this.$store.getters
+        .getUserCommunities(this.user)
+        .filter(c => c.publish_status === PublishStatus.PUBLISHED)
     }
   },
   mounted() {
     this.$store.dispatch('getCommunities')
+  },
+  methods: {
+    editable(community) {
+      return this.user.communities.some(id => id === community.id)
+    }
   }
 }
 </script>
@@ -131,5 +194,12 @@ export default {
       margin-left: 0;
     }
   }
+}
+
+.draft-switch {
+  color: black;
+  font-weight: bold;
+  display: inline-flex;
+  margin-left: 20px;
 }
 </style>

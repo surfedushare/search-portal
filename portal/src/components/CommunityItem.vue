@@ -1,5 +1,9 @@
 <template>
-  <div class="wrapper tile__wrapper">
+  <div
+    :class="draft ? 'draft' : 'published'"
+    class="wrapper tile__wrapper"
+    @click="navigateToCommunity"
+  >
     <div v-if="communityDetails.logo" class="logo">
       <img :src="communityDetails.logo" alt="" />
     </div>
@@ -9,24 +13,31 @@
     <div class="count">
       {{ $tc('learning-materials', community.materials_count) }}
     </div>
-    <div class="link">
+    <div class="actions">
+      <span>
+        {{ $t('See') }}
+        <i class="fa fa-chevron-right"></i>
+      </span>
       <router-link
         :key="community.id"
         :to="
           localePath({
-            name: 'communities-community',
+            name: 'my-community',
             params: { community: community.id }
           })
         "
-        class="communities__item_link_wrapper"
+        @click.native="$event.stopImmediatePropagation()"
       >
-        {{ $t('See') }}
-        <i class="fa fa-chevron-right"></i>
+        <div v-if="editable" class="edit">
+          <i class="fa fa-pencil-alt"></i>
+        </div>
       </router-link>
     </div>
   </div>
 </template>
 <script>
+import { PublishStatus } from '~/utils'
+
 export default {
   name: 'CommunityItem',
   props: {
@@ -36,12 +47,29 @@ export default {
         nl: {},
         en: {}
       })
+    },
+    editable: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     communityDetails() {
       return this.community.community_details.find(
         detail => detail.language_code === this.$i18n.locale.toUpperCase()
+      )
+    },
+    draft() {
+      return this.community.publish_status == PublishStatus.DRAFT
+    }
+  },
+  methods: {
+    navigateToCommunity() {
+      this.$router.push(
+        this.localePath({
+          name: 'communities-community',
+          params: { community: this.community.id }
+        })
       )
     }
   }
@@ -55,16 +83,24 @@ export default {
   border-radius: 20px;
   position: relative;
   word-break: break-all;
+  cursor: pointer;
 
   &:before {
     content: '';
     position: absolute;
     width: 5px;
     height: 92px;
-    background: #0077c8;
     border-radius: 5px;
     top: 25px;
     left: 0;
+  }
+
+  &.draft:before {
+    background: lighten(@dark-grey, 20%);
+  }
+
+  &.published:before {
+    background: #0077c8;
   }
 }
 .logo {
@@ -84,10 +120,12 @@ export default {
 .count {
   margin-bottom: 10px;
 }
-.link {
+.actions {
   text-decoration: none;
   font-weight: bold;
   color: @dark-blue;
+  display: flex;
+  justify-content: space-between;
 
   i {
     margin-left: 10px;

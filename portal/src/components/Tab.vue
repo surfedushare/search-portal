@@ -21,7 +21,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .tabcontent {
-  padding: 6px 12px;
-  border-top: none;
+  margin-top: 50px;
 }
 </style>

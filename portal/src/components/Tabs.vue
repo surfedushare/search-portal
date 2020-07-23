@@ -8,6 +8,7 @@
     >
       {{ tab.title }}
     </button>
+    <slot name="after-tabs"></slot>
     <slot></slot>
   </div>
 </template>
@@ -20,10 +21,10 @@ export default {
       tabs: []
     }
   },
-  created() {
-    this.tabs = this.$children
-  },
   mounted() {
+    this.tabs = this.$children.filter(c => {
+      return c.$slots.default
+    })
     this.selectTab(0)
   },
   methods: {
@@ -42,7 +43,7 @@ export default {
 /* Style the tab */
 .tabs {
   overflow: hidden;
-  padding-bottom: @active-tab-indicator-size;
+  padding: @active-tab-indicator-size;
 }
 
 .tabs button {

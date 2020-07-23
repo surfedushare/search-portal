@@ -30,8 +30,7 @@ export default {
 <style scoped lang="less">
 @import url('../variables');
 .center-header {
-  padding-top: 80px;
-  padding-bottom: 120px;
+  padding: 80px 0;
 
   @media @mobile {
     padding: 30px;
