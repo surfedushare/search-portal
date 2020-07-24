@@ -12,8 +12,6 @@ from surf.statusenums import PublishStatus
 class TestCommunities(BaseTestCase):
     def setUp(cls):
         cls.user = UserFactory.create()
-        cls.community = CommunityFactory.create()
-        TeamFactory.create(user=cls.user, community=cls.community)
         login(cls, cls.user)
 
     def test_community_overview(self):
@@ -92,7 +90,19 @@ class TestCommunities(BaseTestCase):
         my_communities = self.selenium.find_element_by_css_selector(".communities__items.my-communities")
         self.assertTrue("Mijn draft community" not in my_communities.text)
 
+    def test_community_overview_without_own_communities(self):
+        CommunityFactory.create()
+        self.selenium.get(f"{self.live_server_url}/communities")
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".communities__items"), "Ethiek"
+            )
+        )
+        self.assertTrue(len(self.selenium.find_elements_by_css_selector(".my-communities-tab")) == 0)
+
     def test_community_overview_language_switch(self):
+        community = CommunityFactory.create()
+        TeamFactory.create(user=self.user, community=community)
         self.selenium.get(f"{self.live_server_url}/communities")
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
@@ -112,7 +122,9 @@ class TestCommunities(BaseTestCase):
         )
 
     def test_community_editing(self):
-        self.selenium.get(f"{self.live_server_url}/mijn/community/{self.community.id}")
+        community = CommunityFactory.create()
+        TeamFactory.create(user=self.user, community=community)
+        self.selenium.get(f"{self.live_server_url}/mijn/community/{community.id}")
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, "body"),
@@ -179,3 +191,15 @@ class TestCommunities(BaseTestCase):
 
         featured_image = self.selenium.find_element_by_css_selector(".preview__bg_block-img").get_attribute("src")
         self.assertIn("data:image/png", featured_image)
+
+
+class TestCommunityTabVisibility(BaseTestCase):
+    def test_community_not_authenticated(self):
+        self.community = CommunityFactory.create()
+        self.selenium.get(f"{self.live_server_url}/communities")
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".communities__items"), "Ethiek"
+            )
+        )
+        self.assertTrue(len(self.selenium.find_elements_by_css_selector(".my-communities-tab")) == 0)

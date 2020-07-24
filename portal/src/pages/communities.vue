@@ -3,7 +3,7 @@
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
-        <Tabs v-if="myCommunities.length">
+        <Tabs v-if="user.id && myCommunities.length">
           <template v-slot:after-tabs>
             <SwitchInput
               v-model="showDrafts"
