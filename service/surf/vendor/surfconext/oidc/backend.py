@@ -11,4 +11,3 @@ class SurfConextOpenIDConnectBackend(OpenIdConnectAuth):
 
     def get_jwks_keys(self):
         return self.get_remote_jwks_keys()
-    
