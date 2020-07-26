@@ -146,12 +146,7 @@ export default {
     },
     submitButtonLabel() {
       if (
-        this.$store.getters.hasGivenCommunityPermission &&
-        !this.hasInitialCommunityPermission
-      ) {
-        return this.$t('save-privacy-settings-and-logout')
-      } else if (
-        !this.$store.getters.hasGivenCommunityPermission &&
+        this.$store.getters.hasGivenCommunityPermission !==
         this.hasInitialCommunityPermission
       ) {
         return this.$t('save-privacy-settings-and-logout')
@@ -172,15 +167,9 @@ export default {
           setTimeout(() => {
             this.isSaved = false
             if (
-              this.$store.getters.hasGivenCommunityPermission &&
-              !this.hasInitialCommunityPermission
-            ) {
-              this.$store.dispatch('logout', { fully: true })
-            } else if (
-              !this.$store.getters.hasGivenCommunityPermission &&
+              this.$store.getters.hasGivenCommunityPermission !==
               this.hasInitialCommunityPermission
             ) {
-              // Permission revoked. Logging out
               this.$store.dispatch('logout', { fully: true })
             }
           }, 1000)
