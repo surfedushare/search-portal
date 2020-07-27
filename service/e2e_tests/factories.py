@@ -9,6 +9,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
+    username = factory.Sequence(lambda n: 'john{}'.format(n))
     first_name = 'John'
     last_name = 'Doe'
     email = factory.Sequence(lambda n: 'test{}@surf.com'.format(n))
