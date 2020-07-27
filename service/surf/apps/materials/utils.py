@@ -77,6 +77,14 @@ def add_extra_parameters_to_materials(user, materials):
         ).distinct().select_related("title_translations")
     }
 
+    discipline_filters = {
+        filter_item.external_id: filter_item
+        for filter_item in MpttFilterItem.objects.filter(
+            external_id__in=(discipline for material in materials for discipline in material["disciplines"])
+        ).distinct().select_related("title_translations")
+
+    }
+
     for m in materials:
         material_object = material_objects.get(m["external_id"], None)
 
@@ -103,8 +111,17 @@ def add_extra_parameters_to_materials(user, materials):
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])
 
-        m["communities"] = [dict(id=c.id, name=c.name) for c in
-                            communities.distinct().all()]
+        m["communities"] = [dict(id=c.id, name=c.name) for c in communities.distinct().all()]
+
+        disciplines = filter(
+            None,
+            [discipline_filters.get(external_id, None) for external_id in m["disciplines"]]
+        )
+
+        m["disciplines"] = [dict(
+            id=d.id,
+            title_translations={"nl": d.title_translations.nl, "en": d.title_translations.en}
+        ) for d in disciplines]
 
     return materials
 
