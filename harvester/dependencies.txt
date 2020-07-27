@@ -11,6 +11,8 @@ redis==3.5.3
 git+https://github.com/saffsd/langid.py.git
 scikit-learn==0.23.1
 mwparserfromhell==0.5.4
+django-log-formatter-json==0.2.0
+ujson==3.0.0  # implicit dependency of django-log-formatter-json
 
 # Datagrowth
 jsonschema==2.6.0

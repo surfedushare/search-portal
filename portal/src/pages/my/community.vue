@@ -15,9 +15,20 @@
                 :label="$t('public')"
               />
               &nbsp;&nbsp;
-              <router-link :to="getPreviewPath()">
-                <i class="fas fa-eye" /> {{ $t('example') }}
-              </router-link>
+              <button
+                type="button"
+                class="button preview"
+                @click="previewMode = !previewMode"
+              >
+                <i
+                  class="fas fa-eye"
+                  :class="{
+                    'fa-eye': !previewMode,
+                    'fa-eye-slash': previewMode
+                  }"
+                />
+                {{ $t('example') }}
+              </button>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <button
                 :disabled="isSubmitting"
@@ -30,214 +41,80 @@
           </form>
         </section>
 
-        <div class="tab">
-          <button
-            class="tablinks"
-            :class="{ active: currentTab === 'general' }"
-            @click="currentTab = 'general'"
-          >
-            {{ $t('general') }}
-          </button>
-          <button
-            class="tablinks"
-            :class="{ active: currentTab === 'collections' }"
-            @click="currentTab = 'collections'"
-          >
-            {{ $t('collections') }}
-          </button>
+        <div v-if="previewMode">
+          <InfoBlock
+            class="preview-block"
+            :title="formData[`title_${$i18n.locale}`]"
+            :content="formData[`description_${$i18n.locale}`]"
+            :website_url="formData[`website_url_${$i18n.locale}`]"
+            :logo_src="previewImage()"
+          />
         </div>
-
-        <div
-          v-show="currentTab === 'general'"
-          id="General"
-          class="communities__form tabcontent"
-        >
-          <div>
-            <h1>{{ $t('general') }}</h1>
-            {{ $t('manage-community-information') }}
-            <br /><br />
-          </div>
-          <form
-            v-if="formData"
-            action="/"
-            class="communities__form_in"
-            @submit.prevent="onSubmit"
-          >
-            <div class="communities__form__column">
-              <div class="communities__form__row">
-                <label class="communities__form__label">
-                  {{ $t('Name') }}
-                </label>
-                <ErrorWrapper :errors="getFieldErrors('title_nl')">
-                  <InputLanguageWrapper language="NL">
-                    <InputWithCounter
-                      id="title_nl"
-                      v-model="formData.title_nl"
-                      required
-                      name="name"
-                      type="text"
-                      maxlength="80"
-                      :placeholder="$t('community-title-placeholder')"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row">
-                <ErrorWrapper :errors="getFieldErrors('title_en')">
-                  <InputLanguageWrapper language="EN">
-                    <InputWithCounter
-                      id="title_en"
-                      v-model="formData.title_en"
-                      required
-                      name="name"
-                      type="text"
-                      :placeholder="$t('community-title-placeholder')"
-                      maxlength="80"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row">
-                <label class="communities__form__label">
-                  {{ $t('Website') }}
-                </label>
-                <ErrorWrapper :errors="getFieldErrors('website_url_nl')">
-                  <InputLanguageWrapper language="NL">
-                    <input
-                      id="website_nl"
-                      v-model="formData.website_url_nl"
-                      name="website"
-                      type="url"
-                      class="communities__form__input"
-                      :placeholder="$t('community-url-placeholder')"
-                      @blur="onWebsiteURLBlur('nl')"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row">
-                <ErrorWrapper :errors="getFieldErrors('website_url_en')">
-                  <InputLanguageWrapper language="EN">
-                    <input
-                      id="website_en"
-                      v-model="formData.website_url_en"
-                      name="website"
-                      type="url"
-                      class="communities__form__input"
-                      :placeholder="$t('community-url-placeholder')"
-                      @blur="onWebsiteURLBlur('en')"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row communities__form__file">
-                <label class="communities__form__label">
-                  {{ $t('Logo') }}
-                </label>
-                <ErrorWrapper :errors="getFieldErrors('logo_nl')">
-                  <InputLanguageWrapper language="NL">
-                    <InputFile
-                      :imagesrc="formData.logo_nl"
-                      @remove_image="onRemoveImage('logo_nl')"
-                      @add_image="onAddImage('logo_nl', $event)"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row communities__form__file">
-                <ErrorWrapper :errors="getFieldErrors('logo_en')">
-                  <InputLanguageWrapper language="EN">
-                    <InputFile
-                      :imagesrc="formData.logo_en"
-                      @remove_image="onRemoveImage('logo_en')"
-                      @add_image="onAddImage('logo_en', $event)"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-            </div>
-            <div class="communities__form__column">
-              <div class="communities__form__row">
-                <ErrorWrapper :errors="getFieldErrors('description_nl')">
-                  <RichTextInput
-                    v-model="formData.description_nl"
-                    :title="$t('Description')"
-                    language="NL"
-                    :placeholder="$t('community-description-placeholder')"
-                  />
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row">
-                <ErrorWrapper :errors="getFieldErrors('description_en')">
-                  <RichTextInput
-                    v-model="formData.description_en"
-                    language="EN"
-                    :placeholder="$t('community-description-placeholder')"
-                  />
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row communities__form__file">
-                <label class="communities__form__label">
-                  {{ $t('Featured-image') }}
-                </label>
-                <ErrorWrapper :errors="getFieldErrors('featured_image_nl')">
-                  <InputLanguageWrapper language="NL">
-                    <InputFile
-                      :imagesrc="formData.featured_image_nl"
-                      @remove_image="onRemoveImage('featured_image_nl')"
-                      @add_image="onAddImage('featured_image_nl', $event)"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-              <div class="communities__form__row communities__form__file">
-                <ErrorWrapper :errors="getFieldErrors('featured_image_en')">
-                  <InputLanguageWrapper language="EN">
-                    <InputFile
-                      :imagesrc="formData.featured_image_en"
-                      @remove_image="onRemoveImage('featured_image_en')"
-                      @add_image="onAddImage('featured_image_en', $event)"
-                    />
-                  </InputLanguageWrapper>
-                </ErrorWrapper>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div
-          v-show="currentTab === 'collections'"
-          id="Collections"
-          class="communities__collections tabcontent"
-        >
-          <br /><br />
-          <div class="collections__add">
+        <div v-show="!previewMode">
+          <div class="tab">
             <button
-              class="collections__add__link button"
-              @click.prevent="showAddCollection"
+              class="tablinks general-tab"
+              :class="{ active: currentTab === 'general' }"
+              @click="currentTab = 'general'"
             >
-              {{ $t('New-collection') }}
+              {{ $t('general') }}
+            </button>
+            <button
+              class="tablinks collections-tab"
+              :class="{ active: currentTab === 'collections' }"
+              @click="currentTab = 'collections'"
+            >
+              {{ $t('collections') }}
             </button>
           </div>
-          <div>
-            <Collections
-              v-if="community_collections"
-              :collections="community_collections.results"
-              :editable-content="true"
-              :loading="community_collections_loading"
-              @input="setCollectionSelection"
-            >
-              <template slot="header-info">
-                <h2>{{ $t('Collections-2') }}</h2>
-              </template>
-            </Collections>
+
+          <div
+            v-show="currentTab === 'general'"
+            id="General"
+            class="communities__form tabcontent"
+          >
+            <div>
+              <h1>{{ $t('general') }}</h1>
+              {{ $t('manage-community-information') }}
+              <br /><br />
+              <CommunityForm v-model="formData" :errors="errors" />
+            </div>
           </div>
-          <AddCollection
-            v-if="showPopup"
-            :close="close"
-            :show-popup="showPopup"
-            submit-method="postCommunityCollection"
-            @submitted="saveCollection"
-          />
+          <div
+            v-show="currentTab === 'collections'"
+            id="Collections"
+            class="communities__collections tabcontent"
+          >
+            <br /><br />
+            <div class="collections__add">
+              <button
+                class="collections__add__link button"
+                @click.prevent="showAddCollection"
+              >
+                {{ $t('New-collection') }}
+              </button>
+            </div>
+            <div>
+              <Collections
+                v-if="community_collections"
+                :collections="community_collections.results"
+                :editable-content="true"
+                :loading="community_collections_loading"
+                @input="setCollectionSelection"
+              >
+                <template slot="header-info">
+                  <h2>{{ $t('Collections-2') }}</h2>
+                </template>
+              </Collections>
+            </div>
+            <AddCollection
+              v-if="showPopup"
+              :close="close"
+              :show-popup="showPopup"
+              submit-method="postCommunityCollection"
+              @submitted="saveCollection"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -245,18 +122,15 @@
 </template>
 
 <script>
-import { isEmpty, find, forEach, startsWith } from 'lodash'
+import { isEmpty, find, forEach } from 'lodash'
 import { mapGetters } from 'vuex'
 import Collections from '~/components/Collections'
 import HeaderBlock from '~/components/HeaderBlock'
 import AddCollection from '~/components/Popup/AddCollection'
-import InputFile from '~/components/InputFile'
 import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
-import RichTextInput from '~/components/RichTextInput'
-import InputWithCounter from '~/components/InputWithCounter'
-import ErrorWrapper from '~/components/ErrorWrapper'
-import InputLanguageWrapper from '~/components/InputLanguageWrapper'
+import CommunityForm from '~/components/CommunityForm'
+import InfoBlock from '~/components/InfoBlock'
 import { PublishStatus } from '~/utils'
 
 const defaultFormData = {
@@ -279,12 +153,9 @@ export default {
     Error,
     Collections,
     AddCollection,
-    InputFile,
     SwitchInput,
-    RichTextInput,
-    InputWithCounter,
-    ErrorWrapper,
-    InputLanguageWrapper
+    CommunityForm,
+    InfoBlock
   },
   data() {
     return {
@@ -293,7 +164,8 @@ export default {
       errors: {},
       formData: null,
       notFound: false,
-      currentTab: 'general'
+      currentTab: 'general',
+      previewMode: false
     }
   },
   computed: {
@@ -330,14 +202,13 @@ export default {
     )
   },
   methods: {
-    getFieldErrors(fieldName) {
-      return this.errors[fieldName]
-    },
-    onRemoveImage(field) {
-      this.formData[field] = null
-    },
-    onAddImage(field, file) {
-      this.formData[field] = file
+    previewImage() {
+      const image = this.formData[`featured_image_${this.$i18n.locale}`]
+      if (image instanceof File) {
+        return this.formData[`featured_image_${this.$i18n.locale}_preview`]
+      }
+
+      return image
     },
     setInitialFormData() {
       if (!this.user) {
@@ -514,26 +385,6 @@ export default {
     },
     setCollectionSelection(selection) {
       this.selection = selection
-    },
-    onWebsiteURLBlur(language) {
-      const hasValue = !isEmpty(this.formData['website_url_' + language])
-      const hasValidProtocol = startsWith(
-        this.formData['website_url_' + language],
-        'http'
-      )
-      if (hasValue && !hasValidProtocol) {
-        this.formData['website_url_' + language] =
-          'https://' + this.formData['website_url_' + language]
-      }
-      const oppositeLanguage = language === 'en' ? 'nl' : 'en'
-      const hasOppositeValue = !isEmpty(
-        this.formData['website_url_' + oppositeLanguage]
-      )
-      if (hasValue && !hasOppositeValue) {
-        this.formData['website_url_' + oppositeLanguage] = this.formData[
-          'website_url_' + language
-        ]
-      }
     }
   }
 }
@@ -558,12 +409,22 @@ export default {
       @media @mobile {
         margin-top: 0;
       }
-      a {
+      button.preview {
+        background: @dark-blue;
+        color: white;
         border: 1px solid white;
         border-radius: 10px;
         line-height: 1em;
         padding: 16px 23px;
         margin-right: 10px;
+
+        i {
+          margin-right: 10px;
+        }
+
+        &:hover:not([disabled]) {
+          background: darken(@dark-blue, 5%);
+        }
       }
       a:link {
         color: white;

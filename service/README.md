@@ -15,8 +15,7 @@ and following the [getting started with the services guide](../README.md#getting
 you can further setup your Django database for the API with the following commands.
 
 ```bash
-export POL_DJANGO_POSTGRES_USER=postgres  # the root user who will own all tables
-python manage.py migrate
+invoke srv.setup
 ```
 
 This should have setup your database for the most part.
@@ -26,13 +25,6 @@ You can do this with:
 
 ```bash
 invoke db.import-snapshot
-```
-
-To finish the setup you can create a superuser for yourself using the ``createsuperuser`` command
-from the ``service`` directory.
-
-```bash
-python manage.py createsuperuser
 ```
 
 

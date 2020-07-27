@@ -264,7 +264,7 @@ export default new Router({
         store.commit('AUTH_FLOW_TOKEN', authFlowToken)
         next({
           path: localePath('my-privacy'),
-          params: { popup: 1 }
+          query: { popup: 1 }
         })
       }
     },

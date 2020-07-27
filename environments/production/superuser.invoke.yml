@@ -1,20 +1,20 @@
 secrets:
   postgres:
-    password: null
+    password: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/postgres"
   postgres_application:
-    password: null
+    password: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/postgres-application"
 
 django:
   postgres_user: "postgres"
 
 aws:
-  bastion: null
+  bastion: "ec2-18-158-161-34.eu-central-1.compute.amazonaws.com"
   profile_name: "pol-prod"
-  private_subnet_id: null
-  default_security_group_id: null
-  rds_security_group_id: null
-  cluster_arn: null
-  task_role_arn: null
-  harvester_task_role_arn: null
-  superuser_task_role_arn: null
-  postgres_password_arn: null
+  private_subnet_id: "subnet-09d3c96d0807e6974"
+  default_security_group_id: "sg-01bca68a95ed1b08f"
+  rds_security_group_id: "sg-0a07785f16949a500"
+  cluster_arn: "arn:aws:ecs:eu-central-1:017973353230:cluster/surfpol"
+  task_role_arn: "arn:aws:iam::017973353230:role/ecsTaskExecutionRole"
+  harvester_task_role_arn: "arn:aws:iam::017973353230:role/ecsHarvesterTaskExecutionRole"
+  superuser_task_role_arn: "arn:aws:iam::017973353230:role/ecsSuperuserTaskExecutionRole"
+  postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/postgres"

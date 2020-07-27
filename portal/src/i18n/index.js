@@ -13,7 +13,7 @@ export async function loadLanguages() {
     if (!i18n.loadedLanguages.includes(locale)) {
       try {
         const messages = await axios
-          .get(process.env.VUE_APP_LOCALES_URL + locale)
+          .get('/locales/' + locale)
           .then(response => response.data)
 
         i18n.setLocaleMessage(locale, messages)

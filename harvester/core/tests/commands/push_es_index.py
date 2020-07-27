@@ -66,7 +66,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
 
         # Calling command and catching output for some checks
         out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", "--no-logger", stdout=out)
 
         # Asserting output of command
         stdout = out.getvalue().split("\n")
@@ -123,7 +123,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
 
         # Calling command and catching output for some checks
         out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
 
         # Asserting output of command
         stdout = out.getvalue().split("\n")
@@ -162,7 +162,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
     def test_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
         try:
-            call_command("push_es_index", "--dataset=invalid")
+            call_command("push_es_index", "--dataset=invalid", "--no-logger")
             self.fail("push_es_index did not raise for an invalid dataset")
         except Dataset.DoesNotExist:
             pass
@@ -192,7 +192,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
         # Calling command and catching output for some checks
         out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
 
         # Asserting output of command
         stdout = out.getvalue().split("\n")
@@ -241,7 +241,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
         # Calling command and catching output for some checks similar to TestPushToIndex.test_edurep_surf_with_promote
         out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
         # Asserting output
         stdout = out.getvalue().split("\n")
         results = [rsl for rsl in stdout if rsl]
@@ -289,7 +289,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
         # Calling command and catching output for some checks
         out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress", "--no-logger", stdout=out)
 
         # Asserting output of command
         stdout = out.getvalue().split("\n")
