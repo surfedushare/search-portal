@@ -13,7 +13,17 @@ export default {
   },
   computed: {
     orderedItems() {
-      return [...this.items].sort((a, b) => a.title.localeCompare(b.title))
+      return [...this.items].sort((a, b) => {
+        if (!a.title) {
+          return 1
+        }
+
+        if (!b.title) {
+          return -1
+        }
+
+        return a.title.localeCompare(b.title)
+      })
     }
   },
   methods: {
