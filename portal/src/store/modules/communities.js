@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isNil, isEmpty, find, filter } from 'lodash'
 import injector from 'vue-inject'
 import { validateID, validateParams } from './_helpers'
 import { PublishStatus } from '~/utils'
@@ -37,7 +37,7 @@ export default {
     },
     getUserCommunities(state) {
       return user => {
-        if (!state.communities || !user) {
+        if (!state.communities || isNil(user)) {
           return []
         }
         return state.communities.results.filter(community => {
@@ -47,7 +47,7 @@ export default {
     },
     getCommunityInfo(state) {
       return user => {
-        if (_.isEmpty(state.community_info)) {
+        if (isEmpty(state.community_info)) {
           return state.community_info
         } else if (
           state.community_info.publish_status === PublishStatus.PUBLISHED
@@ -64,7 +64,7 @@ export default {
     getCommunityDetails(state, getters) {
       return (user, language) => {
         let communityInfo = getters.getCommunityInfo(user)
-        return _.find(communityInfo.community_details, {
+        return find(communityInfo.community_details, {
           language_code: language.toUpperCase()
         })
       }
@@ -86,11 +86,11 @@ export default {
         if (!state.community_collections) {
           return []
         }
-        return _.filter(state.community_collections.results, collection => {
+        return filter(state.community_collections.results, collection => {
           return (
             collection.publish_status === PublishStatus.PUBLISHED ||
             (user &&
-              _.find(user.collections, { id: collection.id }) &&
+              find(user.collections, { id: collection.id }) &&
               collection.publish_status !== PublishStatus.DRAFT)
           )
         })
