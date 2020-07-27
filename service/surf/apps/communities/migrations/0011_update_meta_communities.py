@@ -24,12 +24,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='communitydetail',
             name='featured_image',
-            field=models.ImageField(blank=True, null=True, upload_to='communities', validators=[django.core.validators.validate_image_file_extension, surf.apps.communities.models.validate_featured_size]),
+            field=models.ImageField(blank=True, null=True, upload_to='communities', validators=[django.core.validators.validate_image_file_extension]),
         ),
         migrations.AlterField(
             model_name='communitydetail',
             name='logo',
-            field=models.ImageField(blank=True, null=True, upload_to='communities', validators=[django.core.validators.validate_image_file_extension, surf.apps.communities.models.validate_logo_size]),
+            field=models.ImageField(blank=True, null=True, upload_to='communities', validators=[django.core.validators.validate_image_file_extension]),
         ),
         migrations.AlterField(
             model_name='communitydetail',
