@@ -2,7 +2,7 @@ import Axios from 'axios'
 import i18n from './i18n'
 import store from '~/store'
 
-const baseURL = process.env.VUE_APP_BACKEND_URL + 'api/v1'
+const baseURL = '/api/v1'
 const axios = Axios.create({ baseURL })
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'x-csrftoken'

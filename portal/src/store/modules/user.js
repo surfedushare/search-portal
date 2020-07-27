@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isNil } from 'lodash'
 import injector from 'vue-inject'
 import axios from '~/axios'
 
@@ -26,11 +26,11 @@ export default {
       return state.user.collections || []
     },
     user_permission_notifications(state) {
-      if (_.isNil(state.user)) {
+      if (isNil(state.user)) {
         return []
       }
-      return _.filter(state.user.permissions, permission => {
-        return permission.is_notification_only && _.isNil(permission.is_allowed)
+      return state.user.permissions.filter(permission => {
+        return permission.is_notification_only && isNil(permission.is_allowed)
       })
     },
     auth_flow_token(state) {
@@ -50,15 +50,19 @@ export default {
         if (process.env.VUE_APP_SURFCONEXT_BYPASS) {
           return '/' + 'login/success?continue=' + currentUrl
         }
-        let backendUrl = process.env.VUE_APP_BACKEND_URL
-        let frontendUrl = process.env.VUE_APP_FRONTEND_URL
         let nextUrl = encodeURIComponent(
-          frontendUrl +
-            'login/success?continue=' +
-            encodeURIComponent(currentUrl)
+          '/login/success?continue=' + encodeURIComponent(currentUrl)
         )
-        return backendUrl + 'login/surf-conext/?next=' + nextUrl
+        return '/login/surf-conext/?next=' + nextUrl
       }
+    },
+    hasGivenCommunityPermission(state) {
+      if (isNil(state.user) || isNil(state.user.permissions)) {
+        return false
+      }
+      return state.user.permissions.some(
+        permission => permission.type === 'Communities' && permission.is_allowed
+      )
     }
   },
   actions: {
@@ -91,7 +95,7 @@ export default {
       commit('SET_USER', null)
       commit('AUTHENTICATE', false)
       if (payload && payload.fully) {
-        window.location = process.env.VUE_APP_BACKEND_URL + 'logout'
+        window.location = '/logout'
       }
     }
   },
