@@ -87,18 +87,8 @@ export default {
       const { materials, selected_materials } = this
       if (materials) {
         const arrMaterials = materials.records ? materials.records : materials
-        const disciplinesCategory = materials.filter_categories.find(
-          filter_category =>
-            filter_category.external_id ===
-            'lom.classification.obk.discipline.id'
-        )
 
         return arrMaterials.map(material => {
-          const disciplines = material.disciplines.map(discipline => {
-            return disciplinesCategory.children.find(
-              child => child.external_id === discipline
-            )
-          })
           const description =
             material.description && material.description.length > 200
               ? material.description.slice(0, 200) + '...'
@@ -107,7 +97,6 @@ export default {
           return {
             ...material,
             selected: selected_materials.indexOf(material.external_id) !== -1,
-            disciplines,
             description
           }
         })
