@@ -51,70 +51,48 @@
           />
         </div>
         <div v-show="!previewMode">
-          <div class="tab">
-            <button
-              class="tablinks general-tab"
-              :class="{ active: currentTab === 'general' }"
-              @click="currentTab = 'general'"
-            >
-              {{ $t('general') }}
-            </button>
-            <button
-              class="tablinks collections-tab"
-              :class="{ active: currentTab === 'collections' }"
-              @click="currentTab = 'collections'"
-            >
-              {{ $t('collections') }}
-            </button>
-          </div>
-
-          <div
-            v-show="currentTab === 'general'"
-            id="General"
-            class="communities__form tabcontent"
-          >
-            <div>
-              <h1>{{ $t('general') }}</h1>
-              {{ $t('manage-community-information') }}
-              <br /><br />
-              <CommunityForm v-model="formData" :errors="errors" />
-            </div>
-          </div>
-          <div
-            v-show="currentTab === 'collections'"
-            id="Collections"
-            class="communities__collections tabcontent"
-          >
-            <br /><br />
-            <div class="collections__add">
-              <button
-                class="collections__add__link button"
-                @click.prevent="showAddCollection"
-              >
-                {{ $t('New-collection') }}
-              </button>
-            </div>
-            <div>
-              <Collections
-                v-if="community_collections"
-                :collections="community_collections.results"
-                :editable-content="true"
-                :loading="community_collections_loading"
-                @input="setCollectionSelection"
-              >
-                <template slot="header-info">
-                  <h2>{{ $t('Collections-2') }}</h2>
-                </template>
-              </Collections>
-            </div>
-            <AddCollection
-              v-if="showPopup"
-              :close="close"
-              :show-popup="showPopup"
-              submit-method="postCommunityCollection"
-              @submitted="saveCollection"
-            />
-          </div>
+          <Tabs>
+            <Tab :title="$t('general')" identifier="general">
+              <div id="General" class="communities__form">
+                <h1>{{ $t('general') }}</h1>
+                {{ $t('manage-community-information') }}
+                <br /><br />
+                <CommunityForm v-model="formData" :errors="errors" />
+              </div>
+            </Tab>
+            <Tab :title="$t('collections')" identifier="collections-tab">
+              <div id="Collections" class="communities__collections">
+                <div class="collections__add">
+                  <button
+                    class="collections__add__link button"
+                    @click.prevent="showAddCollection"
+                  >
+                    {{ $t('New-collection') }}
+                  </button>
+                </div>
+                <div>
+                  <Collections
+                    v-if="community_collections"
+                    :collections="community_collections.results"
+                    :editable-content="true"
+                    :loading="community_collections_loading"
+                    @input="setCollectionSelection"
+                  >
+                    <template slot="header-info">
+                      <h2>{{ $t('Collections-2') }}</h2>
+                    </template>
+                  </Collections>
+                </div>
+                <AddCollection
+                  v-if="showPopup"
+                  :close="close"
+                  :show-popup="showPopup"
+                  submit-method="postCommunityCollection"
+                  @submitted="saveCollection"
+                />
+              </div>
+            </Tab>
+          </Tabs>
         </div>
       </div>
     </div>
@@ -131,6 +109,8 @@ import Error from '~/components/error'
 import SwitchInput from '~/components/switch-input'
 import CommunityForm from '~/components/CommunityForm'
 import InfoBlock from '~/components/InfoBlock'
+import Tabs from '~/components/Tabs'
+import Tab from '~/components/Tab'
 import { PublishStatus } from '~/utils'
 
 const defaultFormData = {
@@ -155,7 +135,9 @@ export default {
     AddCollection,
     SwitchInput,
     CommunityForm,
-    InfoBlock
+    InfoBlock,
+    Tabs,
+    Tab
   },
   data() {
     return {
@@ -401,7 +383,7 @@ export default {
       width: 40%;
       min-width: 440px; // or break tablets
       border-radius: 20px;
-      margin-top: -80px;
+      margin-top: -20px;
       margin-bottom: 30px;
       color: white;
       font-size: 16px;
@@ -518,59 +500,6 @@ export default {
     background-repeat: no-repeat;
     background-size: 24px 24px;
   }
-}
-
-@active-tab-indicator-size: 15px;
-
-/* Style the tab */
-.tab {
-  overflow: hidden;
-  padding-bottom: @active-tab-indicator-size;
-}
-
-/* Style the buttons that are used to open the tab content */
-.tab button {
-  position: relative;
-  display: inline-block;
-  border-radius: 5px;
-  background-color: inherit;
-  border: 1px solid #ccc;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 50px;
-  margin-right: 25px;
-  transition: 0.3s;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-/* Change background color of buttons on hover */
-.tab button:hover {
-  background-color: cornflowerblue;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-  background-color: @dark-blue;
-  color: white;
-}
-.tab button.active:after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -1 * @active-tab-indicator-size;
-  width: 0;
-  height: 0;
-  border-top: solid @active-tab-indicator-size @dark-blue;
-  border-left: solid @active-tab-indicator-size transparent;
-  border-right: solid @active-tab-indicator-size transparent;
-}
-
-/* Style the tab content */
-.tabcontent {
-  padding: 6px 12px;
-  border-top: none;
 }
 
 .success {

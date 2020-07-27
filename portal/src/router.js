@@ -100,16 +100,6 @@ export default new Router({
       }
     },
     {
-      path: '/en/my/communities',
-      component: Communities,
-      name: 'my-communities___en'
-    },
-    {
-      path: '/mijn/communities',
-      component: Communities,
-      name: 'my-communities___nl'
-    },
-    {
       path: '/en/my/community/:community',
       component: MyCommunity,
       name: 'my-community___en'

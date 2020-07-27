@@ -1,71 +1,60 @@
 <template>
   <section class="container main">
     <section class="communities">
-      <HeaderBlock
-        :title="!userCommunities ? $t('Communities') : $t('My-communities')"
-      />
+      <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
-        <ul v-if="communities.length" class="communities__items">
+        <Tabs v-if="user.id && myCommunities.length">
+          <template v-slot:after-tabs>
+            <SwitchInput
+              v-model="showDrafts"
+              class="draft-switch"
+              :label="$t('Show-drafts')"
+            />
+          </template>
+          <Tab :title="$t('All-communities')">
+            <ul v-if="communities.length" class="communities__items">
+              <li
+                v-for="community in communities"
+                :key="community.id"
+                class="communities__item"
+              >
+                <CommunityItem :community="community" />
+              </li>
+            </ul>
+            <h3 v-else class="text-center">
+              {{ $t('No-communities-available') }}
+            </h3>
+          </Tab>
+          <Tab :title="$t('My-communities')" identifier="my-communities-tab">
+            <ul
+              v-if="myCommunities.length"
+              class="communities__items my-communities"
+            >
+              <li
+                v-for="community in myCommunities"
+                :key="community.id"
+                class="communities__item"
+              >
+                <CommunityItem
+                  :community="community"
+                  :editable="editable(community)"
+                />
+              </li>
+            </ul>
+            <h3 v-else class="text-center">
+              {{ $t('No-communities-available') }}
+            </h3>
+          </Tab>
+        </Tabs>
+        <ul v-else-if="communities.length" class="communities__items">
           <li
             v-for="community in communities"
             :key="community.id"
-            class="communities__item tile tile--items-in-line-3 materials__item--items-in-line-3"
+            class="communities__item"
           >
-            <div class="communities__item_wrapper tile__wrapper">
-              <div
-                v-if="getCommunityDetail(community, $i18n.locale, 'logo')"
-                class="communities__item_logo"
-              >
-                <img
-                  :src="
-                    `${getCommunityDetail(community, $i18n.locale, 'logo')}`
-                  "
-                  alt=""
-                />
-              </div>
-              <h3 class="communities__item_name">
-                {{ getCommunityDetail(community, $i18n.locale, 'title') }}
-              </h3>
-              <div class="communities__item_count">
-                {{ $tc('learning-materials', community.materials_count) }}
-              </div>
-              <!-- eslint-disable vue/no-v-html -->
-              <div
-                v-show="false"
-                class="communities__item_description html-content"
-                v-html="
-                  getCommunityDetail(community, $i18n.locale, 'description')
-                "
-              />
-              <!-- eslint-enable vue/no-v-html -->
-              <div class="arrow-link communities__item_link">
-                {{ $t('See') }}
-              </div>
-            </div>
-            <router-link
-              :key="`${community.id}`"
-              :to="
-                localePath({
-                  name: userCommunities
-                    ? 'my-community'
-                    : 'communities-community',
-                  params: { community: community.id }
-                })
-              "
-              class="communities__item_link_wrapper"
-              @click.native="setCommunity(community)"
-            >
-              {{ $t('See') }}
-            </router-link>
+            <CommunityItem :community="community" />
           </li>
         </ul>
-        <!-- eslint-disable vue/no-v-html -->
-        <h3
-          v-else-if="userCommunities"
-          class="text-center"
-          v-html="$t('html-No-communities-available-logged-in')"
-        />
-        <!-- eslint-enable vue/no-v-html -->
         <h3 v-else class="text-center">
           {{ $t('No-communities-available') }}
         </h3>
@@ -76,50 +65,48 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
+import CommunityItem from '~/components/CommunityItem'
 import HeaderBlock from '~/components/HeaderBlock'
+import SwitchInput from '~/components/switch-input'
+import Tabs from '~/components/Tabs'
+import Tab from '~/components/Tab'
+import { PublishStatus } from '~/utils'
 
 export default {
   name: 'Communities',
   components: {
-    HeaderBlock
+    CommunityItem,
+    HeaderBlock,
+    SwitchInput,
+    Tab,
+    Tabs
   },
   data() {
     return {
-      userCommunities: this.$route.name.startsWith('my')
+      showDrafts: true
     }
   },
   computed: {
+    ...mapGetters(['user']),
     communities() {
-      if (this.userCommunities) {
-        return this.$store.getters.getUserCommunities(this.user)
-      } else {
-        return this.$store.getters.getPublicCommunities(this.user)
-      }
+      return this.$store.getters.getPublicCommunities(this.user)
     },
-    ...mapGetters(['user'])
-  },
-  watch: {
-    $route() {
-      this.userCommunities = this.$route.name.startsWith('my')
+    myCommunities() {
+      if (this.showDrafts) {
+        return this.$store.getters.getUserCommunities(this.user)
+      }
+
+      return this.$store.getters
+        .getUserCommunities(this.user)
+        .filter(c => c.publish_status === PublishStatus.PUBLISHED)
     }
   },
   mounted() {
     this.$store.dispatch('getCommunities')
   },
   methods: {
-    /**
-     * Set community on click
-     * @param community - {Object}
-     */
-    setCommunity(community) {
-      this.$store.commit('SET_COMMUNITY', community)
-    },
-    getCommunityDetail(community, language, detail) {
-      let communityDetails = _.find(community.community_details, {
-        language_code: language.toUpperCase()
-      })
-      return communityDetails[detail] || null
+    editable(community) {
+      return this.user.communities.some(id => id === community.id)
     }
   }
 }
@@ -209,56 +196,13 @@ export default {
       width: 100%;
       margin-left: 0;
     }
-    &_wrapper {
-      padding: 28px 25px 45px 48px;
-      border-radius: 20px;
-      position: relative;
-      &:before {
-        content: '';
-        position: absolute;
-        width: 5px;
-        height: 92px;
-        background: #0077c8;
-        border-radius: 5px;
-        top: 25px;
-        left: 0;
-      }
-    }
-    &_logo {
-      margin-bottom: 22px;
-      height: 52px;
-      width: 120px;
-      background-color: #fafafa;
-      img {
-        display: block;
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
-    &_name {
-      line-height: 1.2;
-      margin-bottom: 36px;
-    }
-    &_count {
-      margin-bottom: 14px;
-    }
-    &_description {
-      margin-bottom: 37px;
-    }
-    &_link {
-      text-decoration: none;
-      font-weight: bold;
-      color: @dark-blue;
-
-      &_wrapper {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        color: transparent;
-      }
-    }
   }
+}
+
+.draft-switch {
+  color: black;
+  font-weight: bold;
+  display: inline-flex;
+  margin-left: 20px;
 }
 </style>

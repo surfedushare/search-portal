@@ -30,8 +30,7 @@ export default {
 <style scoped lang="less">
 @import url('../variables');
 .center-header {
-  padding-top: 80px;
-  padding-bottom: 120px;
+  padding: 80px 0;
 
   @media @mobile {
     padding: 30px;
@@ -55,8 +54,9 @@ export default {
   .bg {
     position: absolute;
     right: 26px;
-    top: -51px;
-    width: 40%;
+    top: -35px;
+    max-width: 370px;
+    max-height: 220px;
     border-radius: 21px;
 
     @media @mobile {
