@@ -115,7 +115,9 @@ export default {
         return this.collection
       } else if (
         this.user &&
-        this.user.collections.find({ id: this.collection.id })
+        this.user.collections.find(
+          collection => collection.id === this.collection.id
+        )
       ) {
         return this.collection
       }
