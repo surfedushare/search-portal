@@ -11,9 +11,8 @@ from elasticsearch import Elasticsearch
 class BaseTestCase(StaticLiveServerTestCase):
     fixtures = ['locales', 'privacy_statements']
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUp(cls):
+        super().setUp()
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("window-size=1920,1080")
@@ -21,10 +20,9 @@ class BaseTestCase(StaticLiveServerTestCase):
         cls.selenium = WebDriver(options=chrome_options)
         cls.selenium.implicitly_wait(10)
 
-    @classmethod
-    def tearDownClass(cls):
+    def tearDown(cls):
+        super().tearDown()
         cls.selenium.quit()
-        super().tearDownClass()
         # FIXME: Ugly hack to kill open connections. Somehow it doesn't work on Github Actions otherwise.
         # There seems to be a running query for the filter tree which doesn't terminate in time.
         with connection.cursor() as c:

@@ -11,6 +11,7 @@ from surf.statusenums import PublishStatus
 
 class TestCommunities(BaseTestCase):
     def setUp(cls):
+        super().setUp()
         cls.user = UserFactory.create()
         login(cls, cls.user)
 
