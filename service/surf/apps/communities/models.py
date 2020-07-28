@@ -6,7 +6,6 @@ import re
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, URLValidator, validate_image_file_extension
-from django.core.files.images import get_image_dimensions
 from django.db import models as django_models
 from django.utils import timezone
 from django_enumfield import enum
@@ -82,7 +81,7 @@ class CommunityDetail(django_models.Model):
     logo = ProcessedImageField(upload_to='communities',
                                blank=True,
                                null=True,
-                               processors=[ResizeToFill(230, 136)],
+                               processors=[ResizeToFill(120, 52)],
                                validators=[validate_image_file_extension])
 
     featured_image = ProcessedImageField(upload_to='communities',

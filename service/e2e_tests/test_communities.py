@@ -146,15 +146,24 @@ class TestCommunities(BaseTestCase):
 
         nl_logo = self.selenium.find_element_by_css_selector("#logo_nl input")
         nl_logo.send_keys(os.path.dirname(__file__)+"/images/community_logo.png")
+        self.selenium.find_element_by_css_selector(".crop-popup button.crop").click()
 
         en_logo = self.selenium.find_element_by_css_selector("#logo_en input")
         en_logo.send_keys(os.path.dirname(__file__)+"/images/community_logo.png")
+        self.selenium.find_element_by_css_selector("#logo_en .crop-popup button.crop").click()
 
         nl_featured = self.selenium.find_element_by_css_selector("#featured_image_nl input")
         nl_featured.send_keys(os.path.dirname(__file__)+"/images/community_featured_image.png")
+        self.selenium.find_element_by_css_selector("#featured_image_nl .crop-popup button.crop").click()
 
         en_featured = self.selenium.find_element_by_css_selector("#featured_image_en input")
         en_featured.send_keys(os.path.dirname(__file__)+"/images/community_featured_image.png")
+        self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup button.crop").click()
+
+        crop_popup = self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup")
+        WebDriverWait(self.selenium, 2).until(
+            EC.staleness_of(crop_popup)
+        )
 
         self.selenium.find_element_by_css_selector(".communities__form__buttons button[type='submit']").click()
         WebDriverWait(self.selenium, 2).until(
