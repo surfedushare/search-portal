@@ -16,7 +16,7 @@ ujson==3.0.0  # implicit dependency of django-log-formatter-json
 
 # Datagrowth
 jsonschema==2.6.0
-pytz==2018.5
+pytz==2020.1
 urlobject==2.4.3
 pandas==0.23.4
 git+https://github.com/fako/django-json-field.git
