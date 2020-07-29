@@ -8,6 +8,7 @@ from e2e_tests.helpers import login, replace_content
 
 class TestCollections(BaseTestCase):
     def setUp(self):
+        super().setUp()
         self.user = UserFactory.create()
         self.community = CommunityFactory.create()
         TeamFactory.create(user=self.user, community=self.community)

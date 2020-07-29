@@ -19,6 +19,7 @@ class TestCollectionMaterials(ElasticSearchTestCase):
         )
 
     def setUp(self):
+        super().setUp()
         self.user = UserFactory.create()
         self.community = CommunityFactory.create()
         TeamFactory.create(user=self.user, community=self.community)
