@@ -247,7 +247,7 @@ export default {
       const data = this.normalizeFormData()
       this.errors = {}
       this.$store
-        .dispatch('putCommunities', {
+        .dispatch('putCommunity', {
           id: this.formData.external_id,
           data: data
         })

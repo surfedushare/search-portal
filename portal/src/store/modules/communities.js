@@ -24,7 +24,7 @@ export default {
         if (!state.communities) {
           return []
         }
-        return state.communities.results.filter(community => {
+        return state.communities.filter(community => {
           return (
             community.publish_status === PublishStatus.PUBLISHED ||
             (user &&
@@ -40,7 +40,7 @@ export default {
         if (!state.communities || isNil(user)) {
           return []
         }
-        return state.communities.results.filter(community => {
+        return state.communities.filter(community => {
           return user.communities.indexOf(community.id) >= 0
         })
       }
@@ -103,20 +103,17 @@ export default {
         const { data: communities } = await axios.get('communities/', {
           params
         })
-        commit('SET_COMMUNITIES', communities)
+        commit('SET_COMMUNITIES', communities.results)
         return communities
       } else {
         $log.error('Validate error: ', { params })
       }
     },
-    async putCommunities({ commit }, { id, data = {} } = {}) {
+    async putCommunity({ commit }, { id, data = {} } = {}) {
       if (validateID(id) && validateParams(data)) {
-        const { data: communities } = await axios.put(
-          `communities/${id}/`,
-          data
-        )
-        commit('SET_COMMUNITIES', communities)
-        return communities
+        const { data: community } = await axios.put(`communities/${id}/`, data)
+        commit('UPDATE_COMMUNITY', community)
+        return community
       } else {
         $log.error('Validate error: ', { id, data })
       }
@@ -203,6 +200,15 @@ export default {
   mutations: {
     SET_COMMUNITIES(state, payload) {
       state.communities = payload
+    },
+    UPDATE_COMMUNITY(state, payload) {
+      state.communities = state.communities.map(community => {
+        if (payload.id === community.id) {
+          return payload
+        }
+
+        return community
+      })
     },
     SET_COMMUNITY(state, payload) {
       state.community_info = payload
