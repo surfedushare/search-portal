@@ -6,12 +6,10 @@ import re
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, URLValidator, validate_image_file_extension
+from django.core.files.images import get_image_dimensions
 from django.db import models as django_models
 from django.utils import timezone
 from django_enumfield import enum
-
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
 
 from surf.apps.core.models import UUIDModel
 
@@ -71,6 +69,18 @@ class Community(UUIDModel):
                                       "https://en.wikipedia.org/wiki/Uniform_Resource_Name for examples of valid URNs.")
 
 
+def validate_logo_size(image):
+    width, height = get_image_dimensions(image)
+    if width != 230 or height != 136:
+        raise ValidationError("The proportion of the logo image should be 230x136")
+
+
+def validate_featured_size(image):
+    width, height = get_image_dimensions(image)
+    if width != 388 or height != 227:
+        raise ValidationError("The proportion of the featured image should be 388x227")
+
+
 class CommunityDetail(django_models.Model):
     community = django_models.ForeignKey(Community, on_delete=django_models.CASCADE, related_name='community_details')
     language_code = django_models.CharField(max_length=2)
@@ -78,17 +88,11 @@ class CommunityDetail(django_models.Model):
     description = django_models.TextField(max_length=16384, null=True, blank=True)
     website_url = django_models.URLField(blank=True, null=True, validators=[URLValidator])
 
-    logo = ProcessedImageField(upload_to='communities',
-                               blank=True,
-                               null=True,
-                               processors=[ResizeToFill(120, 52)],
-                               validators=[validate_image_file_extension])
+    logo = django_models.ImageField(upload_to='communities', blank=True, null=True,
+                                    validators=[validate_image_file_extension, validate_logo_size])
 
-    featured_image = ProcessedImageField(upload_to='communities',
-                                         blank=True,
-                                         null=True,
-                                         processors=[ResizeToFill(388, 227)],
-                                         validators=[validate_image_file_extension])
+    featured_image = django_models.ImageField(upload_to='communities', blank=True, null=True,
+                                              validators=[validate_image_file_extension, validate_featured_size])
 
     class Meta:
         # only allow unique language codes for communities
