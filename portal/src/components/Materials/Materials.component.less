@@ -27,12 +27,16 @@
       .materials__item_subinfo {
         padding: 20px;
         width: 230px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
     }
 
     &.tile {
       .materials__item_content {
         flex-direction: column;
+        justify-content: space-between;
       }
     }
 
@@ -55,7 +59,6 @@
       &:focus {
         outline: none;
       }
-
     }
 
     &.deleting {
@@ -135,7 +138,7 @@
       }
     }
 
-    &_community_link{
+    &_community_link {
       font-weight: bold;
       text-decoration: none;
       font-family: @second-font;
@@ -157,8 +160,7 @@
     }
 
     &_applauds {
-      background: @green url('/images/clap_white.svg') 2px 50%
-        no-repeat;
+      background: @green url('/images/clap_white.svg') 2px 50% no-repeat;
       background-size: 20px 20px;
       height: 25px;
       border-radius: 4px;
@@ -171,8 +173,7 @@
     }
 
     &_external_link {
-      background: @yellow url('/images/open-link-black.svg') 50%
-        50% no-repeat;
+      background: @yellow url('/images/open-link-black.svg') 50% 50% no-repeat;
       background-size: 20px 20px;
       margin: 0 0 0 7px;
       display: inline-block;
