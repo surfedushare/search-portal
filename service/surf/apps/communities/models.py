@@ -71,8 +71,9 @@ class Community(UUIDModel):
 
 def validate_logo_size(image):
     width, height = get_image_dimensions(image)
-    if width != 230 or height != 136:
-        raise ValidationError("The proportion of the logo image should be 230x136")
+    # Also support older images of 230x136
+    if (width != 230 and width != 120) or (height != 136 and height != 52):
+        raise ValidationError("The proportion of the logo image should be 120x52")
 
 
 def validate_featured_size(image):
