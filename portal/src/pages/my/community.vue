@@ -52,6 +52,19 @@
         </div>
         <div v-show="!previewMode">
           <Tabs>
+            <template v-slot:after-tabs="slotProps">
+              <div
+                v-if="slotProps.activeTab === 'collections-tab'"
+                class="collections__add"
+              >
+                <button
+                  class="collections__add__link button"
+                  @click.prevent="showAddCollection"
+                >
+                  {{ $t('New-collection') }}
+                </button>
+              </div>
+            </template>
             <Tab :title="$t('general')" identifier="general">
               <div id="General" class="communities__form">
                 {{ $t('manage-community-information') }}
@@ -61,14 +74,6 @@
             </Tab>
             <Tab :title="$t('collections')" identifier="collections-tab">
               <div id="Collections" class="communities__collections">
-                <div class="collections__add">
-                  <button
-                    class="collections__add__link button"
-                    @click.prevent="showAddCollection"
-                  >
-                    {{ $t('New-collection') }}
-                  </button>
-                </div>
                 <div>
                   <Collections
                     v-if="community_collections"
@@ -77,9 +82,6 @@
                     :loading="community_collections_loading"
                     @input="setCollectionSelection"
                   >
-                    <template slot="header-info">
-                      <h2>{{ $t('Collections-2') }}</h2>
-                    </template>
                   </Collections>
                 </div>
                 <AddCollection
@@ -387,8 +389,7 @@ export default {
       font-size: 16px;
       font-weight: 600;
       @media @mobile {
-        margin-bottom: 20px;
-        margin-top: 0;
+        margin: 0 0 20px 20px;
       }
       button.preview {
         background: @dark-blue;
@@ -498,10 +499,16 @@ export default {
   }
 }
 .collections__add {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: -55px;
+  display: inline-block;
   position: relative;
+
+  @media @desktop {
+    float: right;
+  }
+
+  @media @mobile {
+    margin-bottom: 20px;
+  }
 
   button {
     padding-left: 40px;

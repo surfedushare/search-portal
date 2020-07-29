@@ -5,12 +5,13 @@
         v-for="(tab, index) in tabs"
         :key="tab.title"
         :class="{ active: selectedIndex === index, [tab.identifier]: true }"
+        class="tab"
         @click="selectTab(index)"
       >
         {{ tab.title }}
       </button>
     </div>
-    <slot name="after-tabs"></slot>
+    <slot name="after-tabs" :active-tab="activeTab"></slot>
     <slot></slot>
   </div>
 </template>
@@ -21,6 +22,12 @@ export default {
     return {
       selectedIndex: 0,
       tabs: []
+    }
+  },
+  computed: {
+    activeTab() {
+      const tab = this.tabs.find(tab => tab.isActive)
+      return tab && tab.identifier
     }
   },
   mounted() {
@@ -57,7 +64,7 @@ export default {
   }
 }
 
-.tabs button {
+.tabs button.tab {
   position: relative;
   display: inline-block;
   border-radius: 5px;
