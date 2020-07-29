@@ -95,6 +95,7 @@ export default {
         placeholder: this.placeholder || this.$t('Search'),
         id: 'autosuggest__input',
         type: 'search',
+        autofocus: true,
         class: {
           'with-dropdown': this.suggestions.length > 0
         }
