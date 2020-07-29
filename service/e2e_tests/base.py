@@ -23,15 +23,6 @@ class BaseTestCase(StaticLiveServerTestCase):
     def tearDown(cls):
         super().tearDown()
         cls.selenium.quit()
-        # FIXME: Ugly hack to kill open connections. Somehow it doesn't work on Github Actions otherwise.
-        # There seems to be a running query for the filter tree which doesn't terminate in time.
-        with connection.cursor() as c:
-            c.execute("""
-                SELECT pg_terminate_backend(pg_stat_activity.pid)
-                FROM pg_stat_activity
-                WHERE pg_stat_activity.datname = 'test_edushare'
-                    AND pid <> pg_backend_pid();
-                """)
 
 
 @override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
