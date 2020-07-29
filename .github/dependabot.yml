@@ -7,6 +7,12 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "pip"
+    directory: "/"
+    target-branch: "develop"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "pip"
     directory: "/harvester"
     target-branch: "develop"
     schedule:
