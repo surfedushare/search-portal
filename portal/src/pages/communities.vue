@@ -18,7 +18,10 @@
                 :key="community.id"
                 class="communities__item"
               >
-                <CommunityItem :community="community" />
+                <CommunityItem
+                  :community="community"
+                  :editable="editable(community)"
+                />
               </li>
             </ul>
             <h3 v-else class="text-center">
@@ -106,6 +109,10 @@ export default {
   },
   methods: {
     editable(community) {
+      if (!this.user || !this.user.communities) {
+        return false
+      }
+
       return this.user.communities.some(id => id === community.id)
     }
   }
