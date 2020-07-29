@@ -211,5 +211,9 @@ export default {
   font-weight: bold;
   display: inline-flex;
   margin-left: 20px;
+
+  @media @mobile {
+    margin-left: 0;
+  }
 }
 </style>

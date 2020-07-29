@@ -24,7 +24,13 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import url('../variables');
+
 .tabcontent {
   margin-top: 50px;
+
+  @media @mobile {
+    margin-top: 20px;
+  }
 }
 </style>

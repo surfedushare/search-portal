@@ -1,13 +1,15 @@
 <template>
   <div class="tabs">
-    <button
-      v-for="(tab, index) in tabs"
-      :key="tab.title"
-      :class="{ active: selectedIndex === index, [tab.identifier]: true }"
-      @click="selectTab(index)"
-    >
-      {{ tab.title }}
-    </button>
+    <div class="buttons">
+      <button
+        v-for="(tab, index) in tabs"
+        :key="tab.title"
+        :class="{ active: selectedIndex === index, [tab.identifier]: true }"
+        @click="selectTab(index)"
+      >
+        {{ tab.title }}
+      </button>
+    </div>
     <slot name="after-tabs"></slot>
     <slot></slot>
   </div>
@@ -46,6 +48,15 @@ export default {
   padding: @active-tab-indicator-size;
 }
 
+.buttons {
+  display: inline-block;
+
+  @media @mobile {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .tabs button {
   position: relative;
   display: inline-block;
@@ -59,6 +70,10 @@ export default {
   transition: 0.3s;
   font-size: 16px;
   font-weight: bold;
+
+  @media @mobile {
+    margin-bottom: 20px;
+  }
 }
 
 .tabs button:hover {
@@ -80,5 +95,9 @@ export default {
   border-top: solid @active-tab-indicator-size @dark-blue;
   border-left: solid @active-tab-indicator-size transparent;
   border-right: solid @active-tab-indicator-size transparent;
+
+  @media @mobile {
+    display: none;
+  }
 }
 </style>
