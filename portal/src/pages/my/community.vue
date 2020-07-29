@@ -54,7 +54,6 @@
           <Tabs>
             <Tab :title="$t('general')" identifier="general">
               <div id="General" class="communities__form">
-                <h1>{{ $t('general') }}</h1>
                 {{ $t('manage-community-information') }}
                 <br /><br />
                 <CommunityForm v-model="formData" :errors="errors" />
@@ -380,15 +379,15 @@ export default {
     &__blue_box {
       border: 1px;
       background: @dark-blue;
-      width: 40%;
-      min-width: 440px; // or break tablets
       border-radius: 20px;
+      display: inline-block;
       margin-top: -20px;
       margin-bottom: 30px;
       color: white;
       font-size: 16px;
       font-weight: 600;
       @media @mobile {
+        margin-bottom: 20px;
         margin-top: 0;
       }
       button.preview {
@@ -398,7 +397,12 @@ export default {
         border-radius: 10px;
         line-height: 1em;
         padding: 16px 23px;
-        margin-right: 10px;
+        margin-right: 15px;
+
+        @media @mobile {
+          margin-right: 0;
+          margin-bottom: 10px;
+        }
 
         i {
           margin-right: 10px;
@@ -428,7 +432,6 @@ export default {
     }
     &__column {
       flex: 1;
-      min-width: 400px;
       margin-right: 50px;
     }
     &__row {
@@ -465,7 +468,12 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 15px;
+
+      @media @mobile {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   }
   &__collections {
@@ -474,7 +482,13 @@ export default {
 }
 .public-switch {
   flex: 1;
+  margin-right: 15px;
   justify-content: center;
+
+  @media @mobile {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 
   input + .slider {
     background-color: #2196f3;
