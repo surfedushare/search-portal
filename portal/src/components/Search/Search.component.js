@@ -30,9 +30,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: function() {
-        return this.$t('Search-by-keywords')
-      }
+      default: null
     },
     value: {
       type: String
@@ -94,7 +92,7 @@ export default {
     }),
     autosuggestInputProps: function() {
       return {
-        placeholder: this.placeholder,
+        placeholder: this.placeholder || this.$t('Search'),
         id: 'autosuggest__input',
         type: 'search',
         class: {
