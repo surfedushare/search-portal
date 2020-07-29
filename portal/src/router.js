@@ -6,7 +6,6 @@ import Home from '~/pages/index'
 import Search from '~/pages/search'
 import HowDoesItWork from '~/pages/how-does-it-work'
 import Communities from '~/pages/communities'
-import MyCollections from '~/pages/my/collections'
 import MyCommunity from '~/pages/my/community'
 import MyPrivacy from '~/pages/my/privacy'
 import Theme from '~/pages/theme'
@@ -72,16 +71,6 @@ export default new Router({
       path: '/materialen/zoeken',
       component: Search,
       name: 'materials-search___nl'
-    },
-    {
-      path: '/en/my/collections',
-      component: MyCollections,
-      name: 'my-collections___en'
-    },
-    {
-      path: '/mijn/collecties',
-      component: MyCollections,
-      name: 'my-collections___nl'
     },
     {
       path: '/en/my/collection/:id',
