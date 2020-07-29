@@ -236,6 +236,7 @@ export default {
   border-radius: 7px;
   padding: 10px;
   max-height: 300px;
+  min-height: 100px;
   overflow-y: scroll;
 
   &.with-language {
