@@ -74,7 +74,7 @@ export default {
     return {
       isOpen,
       showAll: false,
-      visibleItems: 3
+      visibleItems: 5
     }
   },
   computed: {
