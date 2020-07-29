@@ -252,10 +252,7 @@ export default new Router({
       beforeEnter(to, from, next) {
         let authFlowToken = to.query.partial_token || null
         store.commit('AUTH_FLOW_TOKEN', authFlowToken)
-        next({
-          path: localePath('my-privacy'),
-          query: { popup: 1 }
-        })
+        next(localePath({ name: 'my-privacy', query: { popup: 1 } }))
       }
     },
     {
