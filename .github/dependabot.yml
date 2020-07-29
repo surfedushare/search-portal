@@ -6,13 +6,13 @@ updates:
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "python"
+  - package-ecosystem: "pip"
     directory: "/harvester"
     target-branch: "develop"
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "python"
+  - package-ecosystem: "pip"
     directory: "/service"
     target-branch: "develop"
     schedule:
