@@ -19,7 +19,7 @@ boto3==1.12.44
 requests-aws4auth==1.0
 
 # Tools
-ipython==7.7.0
+ipython==7.16.1
 tqdm==4.35.0
 invoke==1.4.1
 fabric==2.5.0
