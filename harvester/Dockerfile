@@ -60,5 +60,7 @@ ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 # The default command is to start a supervisord that runs: Celery, Celery Beat and a small UWSGI
 CMD ["supervisord", "-c", "/usr/src/app/harvester/supervisord/main.conf"]
 
-# EXPOSE port 8000 to allow communication to/from server
-EXPOSE 8000
+# EXPOSE port 8080 to allow communication to/from server
+EXPOSE 8080
+# EXPOSE port 5555 for Flower a Celery monitor tool
+EXPOSE 5555

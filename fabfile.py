@@ -4,7 +4,7 @@ from fabric import task
 
 from environments.surfpol import create_configuration_and_session
 from postgres.tasks_remote import restore_snapshot, setup_postgres, create_snapshot
-from harvester.tasks_remote import create_super_user, connect_uwsgi
+from harvester.tasks_remote import create_super_user, connect_uwsgi, connect_flower
 from legacy import download_database
 
 
@@ -19,7 +19,7 @@ def setup_bastion(ctx):
 namespace = Collection(
     Collection("bastion", setup_bastion),
     Collection("db", setup_postgres, restore_snapshot, create_snapshot),
-    Collection("hrv", create_super_user, connect_uwsgi),
+    Collection("hrv", create_super_user, connect_uwsgi, connect_flower),
     Collection("legacy", download_database),
 )
 namespace.configure(environment)

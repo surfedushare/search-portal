@@ -43,6 +43,7 @@ services:
       - POL_DJANGO_POSTGRES_USER=${POL_DJANGO_POSTGRES_USER}
     ports:
       - "127.0.0.1:8888:8080"
+      - "127.0.0.1:5555:5555"
     volumes:
       - ./harvester:/usr/src/app
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
