@@ -6,16 +6,9 @@ from invoke.exceptions import Exit
 from git import Repo
 import boto3
 
-from environments.surfpol import MODE, get_package_info
-from service.package import PACKAGE as SERVICE_PACKAGE
-from harvester.package import PACKAGE as HARVESTER_PACKAGE
-
-
-TARGETS = {
-    "service": SERVICE_PACKAGE,
-    "harvester": HARVESTER_PACKAGE
-}
-REPOSITORY = "017973353230.dkr.ecr.eu-central-1.amazonaws.com"
+from commands import TARGETS, REPOSITORY
+from commands.aws.ecs import register_task_definition, run_task
+from environments.surfpol import get_package_info
 
 
 @task()
@@ -28,11 +21,13 @@ def prepare_builds(ctx):
     # TODO: we can make assertions about the git state like: no uncommited changes and no untracked files
     with open(os.path.join("portal", "package.json")) as portal_package_file:
         portal_package = json.load(portal_package_file)
+    service_package = TARGETS["service"]
+    harvester_package = TARGETS["harvester"]
     info = {
         "commit": commit,
         "versions": {
-            "service": SERVICE_PACKAGE["version"],
-            "harvester": HARVESTER_PACKAGE["version"],
+            "service": service_package["version"],
+            "harvester": harvester_package["version"],
             "portal": portal_package["version"]
         }
     }
@@ -96,47 +91,6 @@ def push(ctx, target, version=None):
     ctx.run(f"docker tag {name}:{version} {REPOSITORY}/{name}:{version}", echo=True)
     # Push to AWS ECR
     ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
-
-
-def register_task_definition(ecs_client, task_role_arn, target, mode, version, cpu, memory):
-
-    # Validating input
-    if target not in TARGETS:
-        raise Exit(f"Unknown target: {target}", code=1)
-    if mode != MODE:
-        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
-
-    # Load data
-    target_info = TARGETS[target]
-    version = version or target_info["version"]
-
-    # Read the service AWS container definition and replace some variables with actual values
-    print(f"Reading container definitions for: {target_info['name']}")
-    with open(os.path.join(target, "aws-container-definitions.json")) as container_definitions_file:
-        container_definitions_json = container_definitions_file.read()
-        container_variables = {
-            "REPOSITORY": REPOSITORY,
-            "mode": mode,
-            "version": version
-        }
-        for name, value in container_variables.items():
-            container_definitions_json = container_definitions_json.replace(f"${{{name}}}", value)
-        container_definitions = json.loads(container_definitions_json)
-
-    # Now we push the task definition to AWS
-    print("Setting up task definition")
-    response = ecs_client.register_task_definition(
-        family=f"{target_info['name']}",
-        taskRoleArn=task_role_arn,
-        executionRoleArn=task_role_arn,
-        networkMode="awsvpc",
-        cpu=cpu,
-        memory=memory,
-        containerDefinitions=container_definitions
-    )
-    # And we update the service with new task definition
-    task_definition = response["taskDefinition"]
-    return target_info['name'], task_definition["taskDefinitionArn"]
 
 
 def register_clearlogins_task(session, aws_config, task_definition_arn):
@@ -232,54 +186,17 @@ def deploy(ctx, target, mode, version=None):
 })
 def migrate(ctx, target, mode, version=None):
     """
-    Executes migration command on container cluser for development, acceptance or production environment on AWS
+    Executes migration task on container cluster for development, acceptance or production environment on AWS
     """
-
-    # Setup the AWS SDK
-    print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
-    ecs_client = session.client('ecs', region_name='eu-central-1')
-
-    target_info = TARGETS[target]
-    target_name, task_definition_arn = register_task_definition(
-        ecs_client,
-        ctx.config.aws.superuser_task_role_arn,
-        target,
-        mode,
-        version,
-        target_info["cpu"],
-        target_info["memory"]
-    )
-
-    print("Migrating")
-    ecs_client.run_task(
-        cluster=ctx.config.aws.cluster_arn,
-        taskDefinition=task_definition_arn,
-        launchType="FARGATE",
-        overrides={
-            "containerOverrides": [{
-                "name": f"{target_info['name']}-container",
-                "command": ["python", "manage.py", "migrate"],
-                "environment": [
-                    {
-                        "name": "POL_DJANGO_POSTGRES_USER",
-                        "value": f"{ctx.config.django.postgres_user}"
-                    },
-                    {
-                        "name": "POL_SECRETS_POSTGRES_PASSWORD",
-                        "value": f"{ctx.config.aws.postgres_password_arn}"
-                    },
-                ]
-            }]
+    command = ["python", "manage.py", "migrate"]
+    environment = [
+        {
+            "name": "POL_DJANGO_POSTGRES_USER",
+            "value": f"{ctx.config.django.postgres_user}"
         },
-        networkConfiguration={
-            "awsvpcConfiguration": {
-                "subnets": [ctx.config.aws.private_subnet_id],
-                "securityGroups": [
-                    ctx.config.aws.rds_security_group_id,
-                    ctx.config.aws.default_security_group_id
-
-                ]
-            }
+        {
+            "name": "POL_SECRETS_POSTGRES_PASSWORD",
+            "value": f"{ctx.config.aws.postgres_password_arn}"
         },
-    )
+    ]
+    run_task(ctx, target, mode, command, environment, version=version)
