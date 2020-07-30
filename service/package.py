@@ -1,6 +1,6 @@
 PACKAGE = {
-    "version": "1.13.1",
+    "version": "1.13.2",
     "name": "search-portal",
-    "cpu": "1024",
+    "cpu": "512",
     "memory": "1024"
 }
