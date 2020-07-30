@@ -18,16 +18,16 @@
     "@sentry/browser": "5.15.5",
     "@sentry/integrations": "5.20.1",
     "axios": "0.19.0",
-    "cookie": "0.4.0",
+    "cookie": "0.4.1",
     "core-js": "3.6.5",
     "js-cookie": "2.2.1",
     "numeral": "2.0.6",
     "tiptap": "1.29.0",
-    "tiptap-extensions": "1.31.0",
+    "tiptap-extensions": "1.31.3",
     "uuid-validate": "0.0.3",
     "vue": "^2.6.11",
     "vue-autosuggest": "^2.2.0",
-    "vue-click-outside": "1.0.7",
+    "vue-click-outside": "1.1.0",
     "vue-clipboard2": "0.2.1",
     "vue-croppie": "2.0.2",
     "vue-i18n": "8.14.0",
@@ -37,7 +37,7 @@
     "vue-router": "3.0.6",
     "vue-social-sharing": "2.4.7",
     "vuejs-datepicker": "1.5.4",
-    "vuex": "3.0.1"
+    "vuex": "3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.4.6",
