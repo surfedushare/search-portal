@@ -32,13 +32,16 @@ import SocialSharing from 'vue-social-sharing'
 import VueClipboard from 'vue-clipboard2'
 import VueMasonry from 'vue-masonry-css'
 import InfiniteScroll from 'vue-infinite-scroll'
+import VueCroppie from 'vue-croppie'
 import './i18n/plugin.routing.js'
+import 'croppie/croppie.css'
 
 Vue.use(injector)
 Vue.use(SocialSharing)
 Vue.use(VueClipboard)
 Vue.use(VueMasonry)
 Vue.use(InfiniteScroll)
+Vue.use(VueCroppie)
 
 const $log = injector.get('$log')
 

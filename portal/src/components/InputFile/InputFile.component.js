@@ -1,6 +1,7 @@
+import ImageCropPopup from '~/components/Popup/ImageCropPopup'
+
 export default {
   name: 'input-file',
-  mounted() {},
   props: {
     imagesrc: {
       default: false
@@ -10,29 +11,39 @@ export default {
     },
     refinput: {
       default: 'file'
+    },
+    width: {
+      type: Number,
+      default: 100
+    },
+    height: {
+      type: Number,
+      default: 50
     }
+  },
+  components: {
+    ImageCropPopup
   },
   data() {
     return {
       image: null,
-      accept: 'image/jpeg,image/gif,image/png'
+      accept: 'image/jpeg,image/gif,image/png',
+      showPopup: false
     }
   },
-  watch: {},
   methods: {
     onFileChange(e) {
       const files = e.target.files || e.dataTransfer.files
       if (!files.length) return
-      this.$emit('add_image', files[0])
-      this.createImage(files[0])
+      this.openModal(files[0])
     },
-    createImage(file) {
+    openModal(file) {
       const reader = new FileReader()
-      const that = this
 
       reader.onload = e => {
-        that.image = e.target.result
-        that.$emit('preview_url', e.target.result)
+        this.originalImage = e.target.result
+        this.name = file.name
+        this.showPopup = true
       }
       reader.readAsDataURL(file)
     },
@@ -40,6 +51,18 @@ export default {
       this.$emit('remove_image')
       this.image = null
       this.$refs.file.value = null
+    },
+    onCrop(croppedImage) {
+      const file = new File([croppedImage], this.name)
+      this.$emit('add_image', file)
+    },
+    onPreview(preview) {
+      this.image = preview
+      this.$emit('preview_url', preview)
+    },
+    closePopup() {
+      this.$refs.file.value = null
+      this.showPopup = false
     }
   },
   computed: {

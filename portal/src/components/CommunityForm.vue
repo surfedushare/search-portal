@@ -81,8 +81,11 @@
             <InputFile
               id="logo_nl"
               :imagesrc="value.logo_nl"
+              :width="120"
+              :height="52"
               @remove_image="onRemoveImage('logo_nl')"
               @add_image="onAddImage('logo_nl', $event)"
+              @preview_url="onPreviewUrl('logo_nl', $event)"
             />
           </InputLanguageWrapper>
         </ErrorWrapper>
@@ -93,8 +96,11 @@
             <InputFile
               id="logo_en"
               :imagesrc="value.logo_en"
+              :width="120"
+              :height="52"
               @remove_image="onRemoveImage('logo_en')"
               @add_image="onAddImage('logo_en', $event)"
+              @preview_url="onPreviewUrl('logo_en', $event)"
             />
           </InputLanguageWrapper>
         </ErrorWrapper>
@@ -129,6 +135,8 @@
             <InputFile
               id="featured_image_nl"
               :imagesrc="value.featured_image_nl"
+              :width="388"
+              :height="227"
               @remove_image="onRemoveImage('featured_image_nl')"
               @add_image="onAddImage('featured_image_nl', $event)"
               @preview_url="onPreviewUrl('featured_image_nl', $event)"
@@ -142,6 +150,8 @@
             <InputFile
               id="featured_image_en"
               :imagesrc="value.featured_image_en"
+              :width="388"
+              :height="227"
               @remove_image="onRemoveImage('featured_image_en')"
               @add_image="onAddImage('featured_image_en', $event)"
               @preview_url="onPreviewUrl('featured_image_en', $event)"
