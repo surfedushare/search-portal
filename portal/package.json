@@ -37,7 +37,7 @@
     "vue-router": "3.0.6",
     "vue-social-sharing": "2.4.7",
     "vuejs-datepicker": "1.5.4",
-    "vuex": "3.0.1"
+    "vuex": "3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.4.6",
