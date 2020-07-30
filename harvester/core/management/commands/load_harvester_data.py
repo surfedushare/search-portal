@@ -24,7 +24,6 @@ class Command(base.LabelCommand, HarvesterCommand):
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument('-s', '--skip-download', action="store_true")
-        parser.add_argument('-d', '--default-aws-credentials', action="store_true")
 
     def load_resources(self):
         for resource_model in self.resources:
@@ -39,7 +38,6 @@ class Command(base.LabelCommand, HarvesterCommand):
 
     def handle_label(self, dataset_label, **options):
 
-        default_aws_credentials = options["default_aws_credentials"]
         skip_download = options["skip_download"]
 
         # Delete old datasets
@@ -58,9 +56,8 @@ class Command(base.LabelCommand, HarvesterCommand):
         if not len(dump_files) and not skip_download:
             self.info(f"Downloading dump file for: {dataset_label}")
             ctx = Context(environment)
-            profile_declaration = "" if default_aws_credentials else "AWS_DEFAULT_PROFILE=pol-dev"
             harvester_data_bucket = "s3://edushare-data/datasets/harvester"
-            ctx.run(f"{profile_declaration} aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
+            ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
         self.info(f"Importing dataset: {dataset_label}")
         for entry in os.scandir(get_dumps_path(Dataset)):
             if entry.is_file() and entry.name.startswith(dataset_label):
