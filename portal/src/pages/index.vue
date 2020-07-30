@@ -148,7 +148,7 @@ export default {
 
         if (filterCategory) {
           return {
-            name: filterCategory.name,
+            name: filterCategory.title_translations[this.$i18n.locale],
             options: filterCategory.children
           }
         }

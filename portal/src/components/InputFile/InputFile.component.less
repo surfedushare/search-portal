@@ -8,6 +8,11 @@
   color: @dark-grey;
   position: relative;
   display: flex;
+
+  @media @mobile {
+    flex-direction: column;
+  }
+
   &_input {
     display: none;
   }

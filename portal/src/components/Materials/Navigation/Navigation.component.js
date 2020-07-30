@@ -30,7 +30,7 @@ export default {
      */
     links() {
       const { materials, material, materials_loading } = this
-      if (materials) {
+      if (materials && materials.search_text) {
         const { records } = materials
         if (records && records.length && material) {
           const materialIndex = records.findIndex(

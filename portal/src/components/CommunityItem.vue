@@ -19,6 +19,7 @@
         <i class="fa fa-chevron-right"></i>
       </span>
       <router-link
+        v-if="editable"
         :key="community.id"
         :to="
           localePath({
@@ -26,11 +27,10 @@
             params: { community: community.id }
           })
         "
+        class="button edit"
         @click.native="$event.stopImmediatePropagation()"
       >
-        <div v-if="editable" class="edit">
-          <i class="fa fa-pencil-alt"></i>
-        </div>
+        <i class="fa fa-pencil-alt"></i>
       </router-link>
     </div>
   </div>
@@ -84,6 +84,9 @@ export default {
   position: relative;
   word-break: break-all;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &:before {
     content: '';
@@ -126,9 +129,11 @@ export default {
   color: @dark-blue;
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 
-  i {
+  .button.edit {
     margin-left: 10px;
+    padding: 10px;
   }
 }
 </style>
