@@ -1,5 +1,5 @@
 # Service Django
-django-filter==2.0.0
+django-filter==2.3.0
 django-3-jet==1.0.8
 django-ckeditor==5.9.0
 django-mptt==0.11.0
