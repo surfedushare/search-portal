@@ -1,7 +1,7 @@
 # Service Django
 django-filter==2.0.0
 django-jet==1.0.8
-django-ckeditor==5.7.1
+django-ckeditor==5.9.0
 django-mptt==0.10.0
 django-debug-toolbar==2.0
 django-enumfield==1.5
