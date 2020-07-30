@@ -18,7 +18,7 @@
     "@sentry/browser": "5.15.5",
     "@sentry/integrations": "5.20.1",
     "axios": "0.19.0",
-    "cookie": "0.4.0",
+    "cookie": "0.4.1",
     "core-js": "3.6.5",
     "js-cookie": "2.2.1",
     "numeral": "2.0.6",
