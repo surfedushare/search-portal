@@ -7,10 +7,8 @@ export default {
   components: { DatesRange, FilterCategory },
   data() {
     const publisherDateExternalId = 'lom.lifecycle.contribute.publisherdate'
-    const visibleItems = 3
     return {
       publisherDateExternalId,
-      visibleItems,
       data: {
         start_date: null,
         end_date: null

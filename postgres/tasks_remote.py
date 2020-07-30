@@ -73,13 +73,13 @@ def restore_snapshot(conn, snapshot_name=None, add_superuser=True, migrate=True)
     # Make minor adjustments to dumps for legacy dumps to work on AWS
     if migrate:
         print("Migrating dump file")
-        conn.local(f"sed -i 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
+        conn.local(f"sed -i.bak 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
 
     if "test" in conn.config.surfconext.oidc_endpoint:
         print("Rewriting team ARN's for test communities")
         production_test_team_urn = "urn:collab:group:surfteams.nl:nl:surfnet:diensten:test_team_zoekportal"
         development_test_team_urn = "urn:collab:group:test.surfconext.nl:nl:surfnet:diensten:zoekportaal_test_community"
-        conn.local(f"sed -i 's/{production_test_team_urn}/{development_test_team_urn}/g' {snapshot_file_path}",
+        conn.local(f"sed -i.bak 's/{production_test_team_urn}/{development_test_team_urn}/g' {snapshot_file_path}",
                    echo=True)
 
     print("Restoring snapshot")
@@ -102,6 +102,7 @@ def restore_snapshot(conn, snapshot_name=None, add_superuser=True, migrate=True)
                 echo=True, warn=True, watchers=[postgres_password_responder], pty=True
             )
 
+    conn.local(f"rm {snapshot_file_path}.bak", warn=True)
     print("Done")
 
 

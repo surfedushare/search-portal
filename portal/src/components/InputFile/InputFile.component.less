@@ -8,6 +8,11 @@
   color: @dark-grey;
   position: relative;
   display: flex;
+
+  @media @mobile {
+    flex-direction: column;
+  }
+
   &_input {
     display: none;
   }
@@ -20,7 +25,6 @@
   }
   &_img {
     max-width: 100%;
-    opacity: 0.8;
   }
   &_text {
     margin: 0 0 13px;

@@ -8,6 +8,7 @@ from e2e_tests.helpers import login, replace_content
 
 class TestCollections(BaseTestCase):
     def setUp(self):
+        super().setUp()
         self.user = UserFactory.create()
         self.community = CommunityFactory.create()
         TeamFactory.create(user=self.user, community=self.community)
@@ -15,7 +16,7 @@ class TestCollections(BaseTestCase):
 
     def test_add_collection(self):
         self.selenium.get(f"{self.live_server_url}/mijn/community/{self.community.id}")
-        self.selenium.find_element_by_css_selector(".tablinks.collections-tab").click()
+        self.selenium.find_element_by_css_selector(".collections-tab").click()
         self.selenium.find_element_by_css_selector(".collections__add__link").click()
         replace_content(self.selenium.find_element_by_id("collection_title_nl"), 'Mijn collectie')
         replace_content(self.selenium.find_element_by_id("collection_title_en"), 'My collection')
@@ -27,7 +28,7 @@ class TestCollections(BaseTestCase):
     def test_remove_collection(self):
         CollectionFactory.create(communities=[self.community])
         self.selenium.get(f"{self.live_server_url}/mijn/community/{self.community.id}")
-        self.selenium.find_element_by_css_selector(".tablinks.collections-tab").click()
+        self.selenium.find_element_by_css_selector(".collections-tab").click()
         self.selenium.find_element_by_css_selector(".collections__item .select-icon").click()
         self.selenium.find_element_by_css_selector(".communities__form__buttons button[type='submit']").click()
         WebDriverWait(self.selenium, 2).until(

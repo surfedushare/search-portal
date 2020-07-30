@@ -1,10 +1,10 @@
 @import './../../variables';
 .collections {
   width: 100%;
-  &.community__collections h2{
+  &.community__collections h2 {
     margin-bottom: 20px;
   }
-  h2{
+  h2 {
     margin-bottom: 81px;
   }
   &__items {
@@ -36,7 +36,7 @@
       }
     }
   }
-  &__description{
+  &__description {
     font-size: 20px;
     line-height: 1.15;
     margin: 1px 0 76px;
@@ -50,23 +50,26 @@
     font-size: 16px;
     line-height: 1.44;
 
-    &_wrapper{
+    &_wrapper {
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     &_wrapper.selected {
       opacity: 0.5;
       pointer-events: none;
     }
 
-    &_header{
+    &_header {
       padding: 0 10px 0 31px;
       position: relative;
-      margin: 0 0 43px;
+      margin: 0 0 20px;
       font-weight: bold;
       font-family: @second-font;
-      &:before{
+      &:before {
         content: '';
-        background: url("/images/keurmerk.svg") no-repeat 0 0;
+        background: url('/images/keurmerk.svg') no-repeat 0 0;
         height: 39px;
         width: 24px;
         position: absolute;
@@ -74,10 +77,12 @@
         left: 0;
       }
     }
-    &_ttl{
+    &_ttl {
       line-height: 1.2;
-      margin-bottom: 58px;
-      &_link{
+      margin-bottom: 20px;
+      flex: 1;
+
+      &_link {
         text-decoration: none;
         color: transparent;
         position: absolute;
@@ -87,7 +92,7 @@
         height: 100%;
       }
     }
-    &_link{
+    &_link {
       text-decoration: none;
       font-weight: bold;
       margin-bottom: 5px;

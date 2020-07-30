@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isNil, isEmpty, find, filter } from 'lodash'
 import injector from 'vue-inject'
 import { validateID, validateParams } from './_helpers'
 import { PublishStatus } from '~/utils'
@@ -24,7 +24,7 @@ export default {
         if (!state.communities) {
           return []
         }
-        return _.filter(state.communities.results, community => {
+        return state.communities.filter(community => {
           return (
             community.publish_status === PublishStatus.PUBLISHED ||
             (user &&
@@ -37,17 +37,17 @@ export default {
     },
     getUserCommunities(state) {
       return user => {
-        if (!state.communities || _.isNil(user)) {
+        if (!state.communities || isNil(user)) {
           return []
         }
-        return _.filter(state.communities.results, community => {
+        return state.communities.filter(community => {
           return user.communities.indexOf(community.id) >= 0
         })
       }
     },
     getCommunityInfo(state) {
       return user => {
-        if (_.isEmpty(state.community_info)) {
+        if (isEmpty(state.community_info)) {
           return state.community_info
         } else if (
           state.community_info.publish_status === PublishStatus.PUBLISHED
@@ -64,7 +64,7 @@ export default {
     getCommunityDetails(state, getters) {
       return (user, language) => {
         let communityInfo = getters.getCommunityInfo(user)
-        return _.find(communityInfo.community_details, {
+        return find(communityInfo.community_details, {
           language_code: language.toUpperCase()
         })
       }
@@ -86,11 +86,11 @@ export default {
         if (!state.community_collections) {
           return []
         }
-        return _.filter(state.community_collections.results, collection => {
+        return filter(state.community_collections.results, collection => {
           return (
             collection.publish_status === PublishStatus.PUBLISHED ||
             (user &&
-              _.find(user.collections, { id: collection.id }) &&
+              find(user.collections, { id: collection.id }) &&
               collection.publish_status !== PublishStatus.DRAFT)
           )
         })
@@ -103,20 +103,17 @@ export default {
         const { data: communities } = await axios.get('communities/', {
           params
         })
-        commit('SET_COMMUNITIES', communities)
+        commit('SET_COMMUNITIES', communities.results)
         return communities
       } else {
         $log.error('Validate error: ', { params })
       }
     },
-    async putCommunities({ commit }, { id, data = {} } = {}) {
+    async putCommunity({ commit }, { id, data = {} } = {}) {
       if (validateID(id) && validateParams(data)) {
-        const { data: communities } = await axios.put(
-          `communities/${id}/`,
-          data
-        )
-        commit('SET_COMMUNITIES', communities)
-        return communities
+        const { data: community } = await axios.put(`communities/${id}/`, data)
+        commit('UPDATE_COMMUNITY', community)
+        return community
       } else {
         $log.error('Validate error: ', { id, data })
       }
@@ -203,6 +200,15 @@ export default {
   mutations: {
     SET_COMMUNITIES(state, payload) {
       state.communities = payload
+    },
+    UPDATE_COMMUNITY(state, payload) {
+      state.communities = state.communities.map(community => {
+        if (payload.id === community.id) {
+          return payload
+        }
+
+        return community
+      })
     },
     SET_COMMUNITY(state, payload) {
       state.community_info = payload

@@ -53,6 +53,7 @@ class Command(base.LabelCommand, HarvesterCommand):
         # Use AWS CLI here because it handles a lot of cases that we don't want to manage ourselves
         # especially in this throw away command
         dumps_path = os.path.join(settings.DATAGROWTH_DATA_DIR, "core", "dumps", "dataset")
+        os.makedirs(dumps_path, exist_ok=True)
         dump_files = glob(os.path.join(dumps_path, f"{dataset_label}*"))
         if not len(dump_files) and not skip_download:
             self.info(f"Downloading dump file for: {dataset_label}")

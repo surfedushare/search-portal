@@ -9,6 +9,11 @@
                 "hostPort": 8080,
                 "protocol": "tcp",
                 "containerPort": 8080
+            },
+            {
+                "hostPort": 5555,
+                "protocol": "tcp",
+                "containerPort": 5555
             }
         ],
         "environment": [

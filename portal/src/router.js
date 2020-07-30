@@ -6,7 +6,6 @@ import Home from '~/pages/index'
 import Search from '~/pages/search'
 import HowDoesItWork from '~/pages/how-does-it-work'
 import Communities from '~/pages/communities'
-import MyCollections from '~/pages/my/collections'
 import MyCommunity from '~/pages/my/community'
 import MyPrivacy from '~/pages/my/privacy'
 import Theme from '~/pages/theme'
@@ -74,16 +73,6 @@ export default new Router({
       name: 'materials-search___nl'
     },
     {
-      path: '/en/my/collections',
-      component: MyCollections,
-      name: 'my-collections___en'
-    },
-    {
-      path: '/mijn/collecties',
-      component: MyCollections,
-      name: 'my-collections___nl'
-    },
-    {
       path: '/en/my/collection/:id',
       component: Collection,
       name: 'my-collection___en',
@@ -98,16 +87,6 @@ export default new Router({
       meta: {
         editable: true
       }
-    },
-    {
-      path: '/en/my/communities',
-      component: Communities,
-      name: 'my-communities___en'
-    },
-    {
-      path: '/mijn/communities',
-      component: Communities,
-      name: 'my-communities___nl'
     },
     {
       path: '/en/my/community/:community',
@@ -262,10 +241,7 @@ export default new Router({
       beforeEnter(to, from, next) {
         let authFlowToken = to.query.partial_token || null
         store.commit('AUTH_FLOW_TOKEN', authFlowToken)
-        next({
-          path: localePath('my-privacy'),
-          query: { popup: 1 }
-        })
+        next(localePath({ name: 'my-privacy', query: { popup: 1 } }))
       }
     },
     {

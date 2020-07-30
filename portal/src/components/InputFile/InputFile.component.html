@@ -33,4 +33,14 @@
       </label>
     </div>
   </div>
+  <ImageCropPopup
+    v-if="showPopup"
+    :is-show="showPopup"
+    :image="originalImage"
+    :width="width"
+    :height="height"
+    @crop="onCrop"
+    @preview="onPreview"
+    @close="closePopup"
+  />
 </div>
