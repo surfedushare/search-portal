@@ -23,7 +23,7 @@ ipython==7.16.1
 tqdm==4.35.0
 invoke==1.4.1
 fabric==2.5.0
-ipdb==0.13.2
+ipdb==0.13.3
 sentry-sdk==0.16.2
 selenium==3.141.0
 factory_boy==2.12.0
