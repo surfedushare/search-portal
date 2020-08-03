@@ -158,7 +158,7 @@ export default {
       'communities',
       'isAuthenticated',
       'user',
-      'getUserCommunities'
+      'userCommunities'
     ]),
     isPublished: {
       get() {
@@ -199,7 +199,7 @@ export default {
         return
       }
 
-      const communities = this.getUserCommunities(this.user)
+      const communities = this.userCommunities(this.user)
       const community = find(communities, community => {
         return community.id === this.$route.params.community
       })
