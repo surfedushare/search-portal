@@ -14,7 +14,7 @@ boto3==1.14.32
 requests-aws4auth==1.0
 
 # Tools
-ipython==7.16.1
+ipython==7.17.0
 tqdm==4.48.1
 invoke==1.4.1
 ipdb==0.13.3
