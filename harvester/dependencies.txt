@@ -16,7 +16,7 @@ django-log-formatter-json==0.2.0
 ujson==3.1.0  # implicit dependency of django-log-formatter-json
 
 # Datagrowth
-jsonschema==2.6.0
+jsonschema==3.2.0
 pytz==2020.1
 urlobject==2.4.3
 pandas==0.23.4
