@@ -3,7 +3,7 @@
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
-        <Tabs v-if="user.id && myCommunities.length">
+        <Tabs v-if="user.id && userCommunities(user).length">
           <template v-slot:after-tabs>
             <SwitchInput
               v-model="showDrafts"
@@ -90,18 +90,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'allCommunities', 'userCommunities']),
     communities() {
-      return this.$store.getters.getPublicCommunities(this.user)
+      if (this.showDrafts) {
+        return this.allCommunities(this.user)
+      }
+
+      return this.allCommunities(this.user).filter(
+        c => c.publish_status === PublishStatus.PUBLISHED
+      )
     },
     myCommunities() {
       if (this.showDrafts) {
-        return this.$store.getters.getUserCommunities(this.user)
+        return this.userCommunities(this.user)
       }
 
-      return this.$store.getters
-        .getUserCommunities(this.user)
-        .filter(c => c.publish_status === PublishStatus.PUBLISHED)
+      return this.userCommunities(this.user).filter(
+        c => c.publish_status === PublishStatus.PUBLISHED
+      )
     }
   },
   mounted() {
