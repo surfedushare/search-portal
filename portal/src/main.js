@@ -3,7 +3,7 @@ import * as Integrations from '@sentry/integrations'
 
 if (process.env.VUE_APP_USE_SENTRY) {
   Sentry.init({
-    dsn: 'https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956',
+    dsn: `${window.location.protocol}//21fab3e788584cbe999f20ea1bb7e2df@${window.location.host}/sentry/2964956`,
     integrations: [new Integrations.CaptureConsole()],
     beforeSend(event) {
       if (event.user) {

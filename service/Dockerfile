@@ -29,7 +29,11 @@ RUN npm install && npm run build
 
 FROM python:3.6-stretch
 
-RUN apt-get update && apt-get install -y less vim build-essential gettext
+RUN apt-get update && apt-get install -y less vim build-essential gettext nginx supervisor
+
+# Setup nginx
+COPY service/search-portal.conf /etc/nginx/conf.d/
+RUN rm /etc/nginx/sites-enabled/default
 
 # Create the app environment
 RUN mkdir -p /usr/src/app
@@ -78,8 +82,8 @@ RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinpu
 # There are some translations of Django packages that we want to use
 RUN export APPLICATION_MODE=localhost && python manage.py compilemessages
 
-# The default command is to start a uWSGI server
-CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
+USER root:root
+CMD ["/usr/bin/supervisord"]
 
-# EXPOSE port 8080 to allow communication to/from server
-EXPOSE 8080
+# EXPOSE port 80 to allow communication to/from server
+EXPOSE 80

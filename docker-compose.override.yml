@@ -7,7 +7,7 @@ services:
     build:
       dockerfile: "service/Dockerfile"
       context: .
-    command: uwsgi --ini uwsgi.ini --py-autoreload=3 --honour-stdin
+    command: /usr/bin/supervisord
     stdin_open: true
     tty: true
     environment:
@@ -18,7 +18,7 @@ services:
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
       - POL_DJANGO_POSTGRES_USER=${POL_DJANGO_POSTGRES_USER}
     ports:
-      - "127.0.0.1:8000:8080"
+      - "127.0.0.1:8000:80"
     volumes:
       - ./service:/usr/src/app
       - ./media:/usr/src/media
