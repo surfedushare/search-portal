@@ -3,6 +3,7 @@ This module contains some common functions for materials app.
 """
 
 import json
+from functools import reduce
 
 from surf.apps.communities.models import Community
 from surf.apps.filters.models import MpttFilterItem
@@ -162,3 +163,80 @@ def get_material_details_by_id(material_id, api_client=None):
             material["number_of_collections"] = m.collections.count()
 
     return rv
+
+
+def create_search_results_index(client):
+    body = {
+        'mappings': {
+            'date_detection': False,
+            'properties': {
+                'number_of_results': {
+                    'type': 'integer'
+                },
+                'query': {
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword'
+                        }
+                    }
+                },
+                'filters': {
+                    'type': 'nested'
+                }
+
+            }
+        }
+    }
+    client.indices.create('search-results', body=body)
+
+
+def add_search_query_to_elastic_index(number_of_results, query, filters):
+    elastic = ElasticSearchApiClient()
+    if not elastic.client.indices.exists(index='search-results'):
+        create_search_results_index(elastic.client)
+
+    document = {
+        'number_of_results': number_of_results,
+        'query': query,
+        'filters': _get_translated_filters(filters)
+    }
+    elastic.client.index('search-results', body=document)
+
+
+def _get_translated_filters(filters):
+    def append_external_ids(memo, filter):
+        filter_list = list(filter.items())
+        name = filter_list[0][1]
+        memo.append(name)
+        items = filter_list[1][1]
+        for item in items:
+            memo.append(item)
+        return memo
+
+    external_ids = reduce(append_external_ids, filters, [])
+    filter_items = {
+        filter_item.external_id: filter_item
+        for filter_item in MpttFilterItem.objects.filter(
+            external_id__in=external_ids
+        ).select_related("title_translations").all()
+    }
+
+    def add_translated_filter(memo, filter_item):
+        filter_list = list(filter_item.items())
+        external_id = filter_list[0][1]
+        filter_item_external_id = filter_items.get(external_id, None)
+        items = filter_list[1][1]
+        name = filter_item_external_id.title_translations.en if filter_item_external_id else external_id
+        translated_items = [
+            filter_items.get(item).title_translations.en
+            if filter_items.get(item, None) else item for item in items
+        ]
+
+        memo.append({
+            'name': name,
+            'values': translated_items
+        })
+        return memo
+
+    return reduce(add_translated_filter, filters, [])

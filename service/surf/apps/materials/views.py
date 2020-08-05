@@ -47,7 +47,8 @@ from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
     get_material_details_by_id,
     add_material_themes,
-    add_material_disciplines
+    add_material_disciplines,
+    add_search_query_to_elastic_index
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID,
@@ -168,6 +169,8 @@ class MaterialSearchAPIView(APIView):
             many=True,
             context={'search_counts': drill_down_flat}
         )
+
+        add_search_query_to_elastic_index(res["recordcount"], data["search_text"], data["filters"])
 
         rv = dict(records=records,
                   records_total=res["recordcount"],

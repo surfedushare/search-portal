@@ -33,7 +33,7 @@ class ElasticSearchApiClient:
         else:
             http_auth = (settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD,)
 
-        self.elastic = Elasticsearch(
+        self.client = Elasticsearch(
             [elastic_url],
             http_auth=http_auth,
             connection_class=RequestsHttpConnection,
@@ -130,7 +130,7 @@ class ElasticSearchApiClient:
             }
         }
 
-        result = self.elastic.search(
+        result = self.client.search(
             index=[self.index_nl, self.index_en],
             body=query_dictionary
         )
@@ -206,7 +206,7 @@ class ElasticSearchApiClient:
                 "_score"
             ]
         # make query and parse
-        result = self.elastic.search(
+        result = self.client.search(
             index=indices,
             body=body
         )
@@ -225,7 +225,7 @@ class ElasticSearchApiClient:
         :param external_ids: the id's of the materials to retrieve
         :return: a list of search results (like a regular search).
         """
-        result = self.elastic.search(
+        result = self.client.search(
             index=[self.index_nl, self.index_en],
             body={
                 "query": {
