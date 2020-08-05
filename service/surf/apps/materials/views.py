@@ -186,8 +186,7 @@ def _get_filter_categories():
     Make list of filter categories in format "edurep_field_id:item_count"
     :return: list of "edurep_field_id:item_count"
     """
-    return [f.external_id for f in MpttFilterItem.objects.all()
-            if f.external_id not in IGNORED_FIELDS and f.level == 0]
+    return [f.external_id for f in MpttFilterItem.objects.filter(parent=None).exclude(external_id__in=IGNORED_FIELDS)]
 
 
 class KeywordsAPIView(APIView):
