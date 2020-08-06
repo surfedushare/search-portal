@@ -19,6 +19,6 @@ jobs:
     - name: Install dependencies and lint
       run: |
         cd portal
-        npm set registry https://registry.npmjs.org/
+        npm config set registry http://registry.npmjs.org
         npm install
         npm run lint
