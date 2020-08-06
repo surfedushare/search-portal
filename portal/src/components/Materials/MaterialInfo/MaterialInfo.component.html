@@ -78,10 +78,11 @@
     </div>
   </template>
 
-  <div class="material__info_thems_and_communities">
-    <Themes class="material__info_thems" :themes="material_themes"/>
-    <Keywords class="material__info_keywords" :material="material" />
-  </div>
+  <Keywords
+    class="material__info_keywords"
+    :material="material"
+    v-if="material.keywords.length"
+  />
 
   <PopularList
     class="material__info_communities"
