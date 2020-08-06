@@ -193,9 +193,9 @@ class ElasticSearchApiClient:
             body["query"]["bool"]["should"] = {
                 "distance_feature": {
                     "field": "publisher_date",
-                    "pivot": "1095d",
+                    "pivot": "90d",
                     "origin": "now",
-                    "boost": 1.0
+                    "boost": 1.5
                 }
             }
 
