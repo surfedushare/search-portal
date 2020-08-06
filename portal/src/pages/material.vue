@@ -1,7 +1,6 @@
 <template>
   <section class="container main material">
     <Navigation :materials="materials" :material="material" />
-    <MaterialTitleMobile :material="material" />
     <div v-if="material" class="center_block material__wrapper">
       <Sidebar :material="material" :collections="collections" />
       <MaterialInfo :material="material" :communities="communities" />
@@ -23,7 +22,6 @@ import { uniqBy } from 'lodash'
 import Materials from '~/components/Materials'
 import Sidebar from '~/components/Materials/Sidebar'
 import MaterialInfo from '~/components/Materials/MaterialInfo'
-import MaterialTitleMobile from '~/components/Materials/MaterialTitleMobile'
 import Navigation from '~/components/Materials/Navigation'
 
 export default {
@@ -31,8 +29,7 @@ export default {
     Materials,
     Sidebar,
     MaterialInfo,
-    Navigation,
-    MaterialTitleMobile
+    Navigation
   },
   data() {
     return {
@@ -74,9 +71,10 @@ export default {
   }
 
   &__wrapper {
-    /* margin: 0 auto 50px; */
-    @media @desktop {
-      display: flex;
+    display: flex;
+
+    @media @mobile {
+      flex-direction: column-reverse;
     }
   }
 }
