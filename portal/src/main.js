@@ -47,7 +47,13 @@ const $log = injector.get('$log')
 
 async function authenticate() {
   if (store.getters.api_token) {
-    return store.dispatch('authenticate', { token: store.getters.api_token })
+    try {
+      return await store.dispatch('authenticate', {
+        token: store.getters.api_token
+      })
+    } catch {
+      return store.dispatch('getUser')
+    }
   }
 
   return store.dispatch('getUser')

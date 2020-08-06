@@ -19,23 +19,23 @@ export default {
     communities(state) {
       return state.communities
     },
-    getPublicCommunities(state) {
+    allCommunities(state) {
       return user => {
         if (!state.communities) {
           return []
         }
+
         return state.communities.filter(community => {
           return (
             community.publish_status === PublishStatus.PUBLISHED ||
             (user &&
               user.communities &&
-              user.communities.indexOf(community.id) >= 0 &&
-              community.publish_status !== PublishStatus.DRAFT)
+              user.communities.indexOf(community.id) >= 0)
           )
         })
       }
     },
-    getUserCommunities(state) {
+    userCommunities(state) {
       return user => {
         if (!state.communities || isNil(user)) {
           return []

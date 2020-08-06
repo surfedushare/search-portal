@@ -59,7 +59,7 @@ router.register(r'filters', FilterViewSet)
 router.register(r'collections', CollectionViewSet)
 router.register(r'communities', CommunityViewSet)
 router.register(r'themes', ThemeViewSet)
-router.register(r'stats', StatsView, base_name="stats")
+router.register(r'stats', StatsView, basename="stats")
 
 apipatterns = [
     url(r'^users/me/', UserDetailsAPIView.as_view()),

@@ -134,9 +134,10 @@ export default {
         page: 1
       }
     })
-    this.$store.dispatch('getCollection', id).finally(() => {
-      this.isLoading = false
-    })
+    Promise.all([
+      this.$store.dispatch('getCollection', id),
+      this.$store.dispatch('getUser')
+    ]).finally(() => (this.isLoading = false))
   },
   methods: {
     showAddMaterial() {

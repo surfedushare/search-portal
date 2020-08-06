@@ -1,6 +1,8 @@
 import os
 from invoke import task
 
+from commands.aws.ecs import run_task
+
 
 HARVESTER_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(HARVESTER_DIR, "..", "data", "harvester")
@@ -22,13 +24,18 @@ def setup_harvester(ctx, skip_superuser=False):
 
 
 @task(help={
+    "mode": "Mode you want to migrate: localhost, development, acceptance or production. Must match APPLICATION_MODE",
     "dataset": "The name of the greek letter that represents the dataset you want to import"
 })
-def import_dataset(ctx, dataset="epsilon", role="primary"):
+def import_dataset(ctx, mode, dataset="epsilon"):
     """
     Sets up the database with some basic data for the harvester
     """
-    with ctx.cd(HARVESTER_DIR):
-        download_flag = "" if role == "primary" else "--skip-download"  # only download as primary not as replica
-        ctx.run(f"python manage.py load_harvester_data {dataset} {download_flag}")
-        ctx.run(f"python manage.py push_es_index --dataset={dataset} --recreate")
+    command = ["python", "manage.py", "import_dataset", dataset]
+    # On localhost we call the command directly and exit
+    if mode == "localhost":
+        with ctx.cd(HARVESTER_DIR):
+            ctx.run(" ".join(command))
+        return
+    # On AWS we trigger a harvester task on the container cluster to run the command for us
+    run_task(ctx, "harvester", mode, command)

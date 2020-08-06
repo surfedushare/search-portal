@@ -3,7 +3,7 @@ supervisor==4.2.0
 
 # Harvester Celery
 celery==4.4.6
-django-celery-results==1.0.1
+django-celery-results==1.2.1
 anyjson==0.3.3
 redis==3.5.3
 flower==0.9.5
@@ -13,16 +13,16 @@ git+https://github.com/saffsd/langid.py.git
 scikit-learn==0.23.1
 mwparserfromhell==0.5.4
 django-log-formatter-json==0.2.0
-ujson==3.0.0  # implicit dependency of django-log-formatter-json
+ujson==3.1.0  # implicit dependency of django-log-formatter-json
 
 # Datagrowth
-jsonschema==2.6.0
+jsonschema==3.2.0
 pytz==2020.1
 urlobject==2.4.3
 pandas==0.23.4
 git+https://github.com/fako/django-json-field.git
 lxml==4.5.2
-beautifulsoup4==4.6.3
+beautifulsoup4==4.9.1
 datagrowth==0.16.0
 
 # Always latest version required

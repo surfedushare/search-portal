@@ -54,14 +54,20 @@ def setup_postgres(conn):
             f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
             echo=True, watchers=[postgres_password_responder], pty=True
         )
+        # Create generic superuser named supersurf for search-portal
+        application_password = conn.config.secrets.postgres_application.password
+        insert_user = insert_django_user_statement("supersurf", application_password, is_edushare=True)
+        conn.local(
+            f'psql -h localhost -p 1111 -U {postgres_user} -d edushare -W -c "{insert_user}"',
+            echo=True, warn=True, watchers=[postgres_password_responder], pty=True
+        )
 
 
 @task(help={
     "snapshot_name": "The file name of the snapshot you want to restore. Defaults to last updated snapshot",
-    "add_superuser": "Whether to add a superuser named supersurf that uses the application database password",
     "migrate": "Whether to apply some changes to the snapshot file to migrate from a pre-AWS format"
 })
-def restore_snapshot(conn, snapshot_name=None, add_superuser=True, migrate=True):
+def restore_snapshot(conn, snapshot_name=None, migrate=True):
     """
     Loads a particular snapshot into the database on AWS through a bastion host
     """
@@ -91,16 +97,6 @@ def restore_snapshot(conn, snapshot_name=None, add_superuser=True, migrate=True)
     with conn.forward_local(local_port=1111, remote_host=conn.config.django.postgres_host, remote_port=5432):
         conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {snapshot_file_path}",
                    echo=True, watchers=[postgres_password_responder], pty=True)
-
-    if add_superuser:
-        print("Adding superuser")
-        password = conn.config.secrets.postgres_application.password
-        insert_user = insert_django_user_statement("supersurf", password, is_edushare=True)
-        with conn.forward_local(local_port=1111, remote_host=conn.config.django.postgres_host, remote_port=5432):
-            conn.local(
-                f'psql -h localhost -p 1111 -U {postgres_user} -d edushare -W -c "{insert_user}"',
-                echo=True, warn=True, watchers=[postgres_password_responder], pty=True
-            )
 
     conn.local(f"rm {snapshot_file_path}.bak", warn=True)
     print("Done")
