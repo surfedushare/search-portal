@@ -23,7 +23,7 @@
     "js-cookie": "2.2.1",
     "numeral": "2.0.6",
     "tiptap": "1.29.3",
-    "tiptap-extensions": "1.31.3",
+    "tiptap-extensions": "1.32.1",
     "uuid-validate": "0.0.3",
     "vue": "^2.6.11",
     "vue-autosuggest": "^2.2.0",
