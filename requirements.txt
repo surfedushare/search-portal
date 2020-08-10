@@ -3,7 +3,7 @@ gitpython==3.1.7
 flake8==3.8.3
 
 # Common
-django==2.2.13
+django==3.1
 djangorestframework==3.11.0
 django-cors-headers==3.4.0
 whitenoise==5.1.0
