@@ -14,7 +14,7 @@ class Command(HarvesterCommand):
         parser.add_argument('-r', '--reset', action="store_true",
                             help="Resets the Dataset model to be empty and deletes all OAI-PMH data")
 
-    def handle_label(self, **options):
+    def handle(self, **options):
         reset = options["reset"]
         self.info(f"Calling harvest outside of schedule; reset={reset}")
         harvest(reset=reset)
