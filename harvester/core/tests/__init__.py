@@ -1,1 +1,2 @@
 from .commands.push_es_index import TestPushToIndex, TestPushToIndexWithHistory
+from .commands.update_dataset import TestCreateOrUpdateDatasetNoHistory, TestCreateOrUpdateDatasetWithHistory
