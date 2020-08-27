@@ -77,4 +77,9 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
         ),
+        migrations.AlterField(
+            model_name='oaipmhset',
+            name='repository',
+            field=models.CharField(choices=[('edurep.EdurepOAIPMH', 'Edurep')], max_length=50),
+        ),
     ]
