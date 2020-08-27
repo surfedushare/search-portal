@@ -38,4 +38,4 @@ def harvest(role="primary", reset=False):
             dataset.reset()
         # First we call the commands that will query the OAI-PMH interfaces
         if role == "primary":
-            call_command("harvest_edurep_seeds", dataset)
+            call_command("harvest_edurep_seeds", f"--dataset={dataset}")
