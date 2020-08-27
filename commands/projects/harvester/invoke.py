@@ -1,10 +1,10 @@
 import os
 from invoke import task
 
+from commands import HARVESTER_DIR
 from commands.aws.ecs import run_task
 
 
-HARVESTER_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(HARVESTER_DIR, "..", "data", "harvester")
 
 
@@ -29,7 +29,7 @@ def setup_harvester(ctx, skip_superuser=False):
 })
 def import_dataset(ctx, mode, dataset="epsilon"):
     """
-    Sets up the database with some basic data for the harvester
+    Loads the production database and sets up Elastic data on localhost or an AWS cluster
     """
     command = ["python", "manage.py", "import_dataset", dataset]
     # On localhost we call the command directly and exit
