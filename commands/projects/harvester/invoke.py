@@ -39,3 +39,23 @@ def import_dataset(ctx, mode, dataset="epsilon"):
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
     run_task(ctx, "harvester", mode, command)
+
+
+@task(help={
+    "mode": "Mode you want to migrate: localhost, development, acceptance or production. Must match APPLICATION_MODE",
+    "reset": "Whether to reset the active datasets before harvesting"
+})
+def harvest(ctx, mode, reset=False):
+    """
+    Starts a harvest tasks on the AWS container cluster or localhost
+    """
+    command = ["python", "manage.py", "run_harvest"]
+    if reset:
+        command += ["--reset"]
+    # On localhost we call the command directly and exit
+    if mode == "localhost":
+        with ctx.cd(HARVESTER_DIR):
+            ctx.run(" ".join(command))
+        return
+    # On AWS we trigger a harvester task on the container cluster to run the command for us
+    run_task(ctx, "harvester", mode, command)
