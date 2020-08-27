@@ -8,3 +8,6 @@ from .oaipmh import OAIPMHSet, OAIPMHHarvest
 from .search import ElasticIndex, ElasticIndexSerializer
 
 from .ims import CommonCartridge
+
+from .resources.basic import FileResource, TikaResource
+from .resources.youtube_dl import YouTubeDLResource
