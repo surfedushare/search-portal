@@ -5,7 +5,7 @@ from elastic.tasks import setup, create_snapshot, load_repository, restore_snaps
 from deploy import prepare_builds, build, push, deploy, migrate
 from test import e2e_tests, harvester_tests, service_tests, elastic_search_tests, test
 from postgres.tasks_local import import_snapshot as postgres_import_snapshot
-from harvester.tasks_local import setup_harvester, import_dataset
+from commands.projects.harvester.invoke import setup_harvester, import_dataset
 from service.tasks_local import setup_service
 from legacy import upload_database, download_media, upload_media
 
