@@ -17,7 +17,11 @@ HANDLE_UPSERT_SEEDS_TARGET = "core.management.commands.update_dataset.Command.ha
 HANDLE_DELETION_SEEDS_TARGET = "core.management.commands.update_dataset.Command.handle_deletion_seeds"
 DUMMY_SEEDS = [
     {"state": "active", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html"},
-    {"state": "active", "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1", "mime_type": "application/pdf"},
+    {
+        "state": "active",
+        "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1",
+        "mime_type": "application/pdf"
+    },
     {"state": "deleted", "url": None, "mime_type": None}
 ]
 
