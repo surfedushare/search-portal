@@ -47,3 +47,4 @@ secrets:
 
 aws:
   image_upload_bucket: null
+  harvest_content_bucket: null

@@ -159,13 +159,13 @@ WHITENOISE_ALLOW_ALL_ORIGINS = True
 if environment.aws.harvest_content_bucket:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     MEDIA_ROOT = ''
-    MEDIA_URL = f'https://{environment.aws.harvest_content_bucket}.s3.eu-central-1.amazonaws.com/media/'
+    MEDIA_URL = f'https://{environment.aws.harvest_content_bucket}.s3.eu-central-1.amazonaws.com/'
     AWS_STORAGE_BUCKET_NAME = environment.aws.harvest_content_bucket
     AWS_S3_REGION_NAME = 'eu-central-1'
     AWS_LOCATION = 'media'
 else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
-    MEDIA_URL = 'http://localhost:8000/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
+    MEDIA_URL = 'http://localhost:8000/media/harvester/'
 
 
 # Rest framework
