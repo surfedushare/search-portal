@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from datagrowth.admin import DataStorageAdmin, DocumentAdmin
+from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 
-from core.models import Dataset, Collection, Arrangement, Document, OAIPMHSet, ElasticIndex, CommonCartridge
+from core.models import (Dataset, Collection, Arrangement, Document, OAIPMHSet, ElasticIndex, CommonCartridge,
+                         FileResource, TikaResource)
 
 
 class OAIPMHSetAdmin(admin.ModelAdmin):
@@ -40,3 +41,5 @@ admin.site.register(Arrangement, DataStorageAdmin)
 admin.site.register(Document, ExtendedDocumentAdmin)
 admin.site.register(ElasticIndex, ElasticIndexAdmin)
 admin.site.register(CommonCartridge, CommonCartridgeAdmin)
+admin.site.register(FileResource, HttpResourceAdmin)
+admin.site.register(TikaResource, ShellResourceAdmin)
