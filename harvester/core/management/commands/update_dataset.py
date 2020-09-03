@@ -21,9 +21,8 @@ class Command(OutputCommand):
 
     def get_documents_from_transcription(self, transcription_resource, metadata, pipeline):
         if transcription_resource is None or not transcription_resource.success:
-            transcript = None
-        else:
-            _, transcript = transcription_resource.content
+            return []
+        _, transcript = transcription_resource.content
         return [self._create_document(
             transcript,
             meta=metadata,
