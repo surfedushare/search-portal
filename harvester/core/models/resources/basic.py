@@ -1,4 +1,5 @@
 import os
+from urllib.parse import quote_plus
 
 from django.conf import settings
 from django.db import models
@@ -8,7 +9,7 @@ from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResourc
 class FileResource(HttpFileResource):
 
     def get_absolute_uri(self):
-        return os.path.join(settings.MEDIA_URL, self.body)
+        return os.path.join(settings.MEDIA_URL, quote_plus(self.body, safe="/"))
 
 
 class TikaResource(DGTikaResource):
