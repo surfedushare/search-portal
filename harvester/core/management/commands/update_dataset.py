@@ -32,29 +32,31 @@ class Command(OutputCommand):
 
     def get_documents_from_zip(self, file_resource, tika_resource, metadata, pipeline):
         # Load zip as an IMS Common Cardridge
-        cc = CommonCartridge(file=file_resource.body)
-        try:
-            cc.clean()
-        except (ValidationError, BadZipFile):
-            self.warning(f"Invalid or missing common cartridge for file resource: {file_resource.id}")
-            return []
+        # cc = CommonCartridge(file=file_resource.body)
+        # try:
+        #     cc.clean()
+        # except (ValidationError, BadZipFile):
+        #     self.warning(f"Invalid or missing common cartridge for file resource: {file_resource.id}")
+        #     return []
         # Extract texts per file in the Common Cartridge
-        files = set()
-        texts_by_file = defaultdict(list)
-        for resource in cc.get_resources().values():
-            files.update(resource["files"])
+        # files = set()
+        # texts_by_file = defaultdict(list)
+        # for resource in cc.get_resources().values():
+        #     files.update(resource["files"])
         tika_content_type, data = tika_resource.content
         if data is None:
             return False
-        text = data.get("text", "")
-        current_file = None
-        for line in text.split("\n"):
-            line = line.strip()
-            if line in files:
-                current_file = line
-                continue
-            if current_file and line:
-                texts_by_file[current_file].append(line)
+        text = data.get("X-TIKA:content", "")
+        # TODO: Tika is doing something different than before and isn't recursing files in packages
+        # What happened and which settings will fix this?
+        # current_file = None
+        # for line in text.split("\n"):
+        #     line = line.strip()
+        #     if line in files:
+        #         current_file = line
+        #         continue
+        #     if current_file and line:
+        #         texts_by_file[current_file].append(line)
         # We temporarily disable creating multiple documents for a package
         # When there is a design to display courses in the portal we can re-enable this
         # Until that time concatenating all documents in a package to a single learning material
@@ -69,9 +71,9 @@ class Command(OutputCommand):
         #     )
         #     documents[doc["id"]] = doc
         # return list(documents.values())
-        text = ""
-        for file, texts in texts_by_file.items():
-            text += "\n".join(texts)
+        # text = ""
+        # for file, texts in texts_by_file.items():
+        #     text += "\n".join(texts)
         return [self._create_document(
             text,
             url=metadata.get("package_url"),
@@ -89,7 +91,7 @@ class Command(OutputCommand):
         tika_content_type, data = tika_resource.content
         if data is None:
             return [self._create_document(text, meta=metadata, pipeline=pipeline)]
-        text = data.get("text", "")
+        text = data.get("X-TIKA:content", "")
         return [self._create_document(text, meta=metadata, pipeline=pipeline)]
 
     def handle_upsert_seeds(self, collection, seeds):
