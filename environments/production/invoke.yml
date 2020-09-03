@@ -44,3 +44,4 @@ secrets:
 
 aws:
   image_upload_bucket: "search-portal-media-uploads-prod"
+  harvest_content_bucket: "surfpol-harvester-content-prod"
