@@ -1,9 +1,14 @@
+import os
+
+from django.conf import settings
 from django.db import models
 from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResource, file_resource_delete_handler
 
 
 class FileResource(HttpFileResource):
-    pass
+
+    def get_absolute_uri(self):
+        return os.path.join(settings.MEDIA_URL, self.body)
 
 
 class TikaResource(DGTikaResource):
@@ -12,7 +17,7 @@ class TikaResource(DGTikaResource):
         tika_content_type, data = self.content
         if data is None:
             return False
-        text = data.get("text", "")
+        text = data.get("X-TIKA:content", "")
         content_type = data.get("content-type", "")
         if "leraar24.nl/api/video/" in text:
             return True
@@ -24,7 +29,7 @@ class TikaResource(DGTikaResource):
         tika_content_type, data = self.content
         if data is None:
             return False
-        content_type = data.get("mime-type", "")
+        content_type = data.get("Content-Type", "")
         return content_type == "application/zip"
 
 
