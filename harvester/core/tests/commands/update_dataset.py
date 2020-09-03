@@ -28,7 +28,7 @@ DUMMY_SEEDS = [
 
 class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
-    fixtures = ["datasets-new", "surf-oaipmh-1970-01-01"]  # TODO: include later: , "resources"]
+    fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
 
     def setUp(self):
         # Moving the VIDEO source to complete to test it gets ignored by the dataset command
@@ -112,6 +112,13 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # Then the arrangement count and document count should equal output of handle_upsert_seeds
         self.assertEqual(collection.arrangement_set.count(), dumped)
         self.assertEqual(collection.document_set.count(), documents_count)
+        # Check that we allow passing through of documents that were unable to fetch content
+        text_count = 0
+        for doc in collection.document_set.all():
+            if doc.properties.get("text", None):
+                text_count += 1
+        self.assertGreater(text_count, 0, "No documents with texts found")
+        self.assertGreater(documents_count - text_count, 0, "No documents without texts found")
 
     def test_handle_deletion_seeds(self):
         dataset = Dataset.objects.last()
@@ -130,7 +137,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
 class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
-    fixtures = ["datasets-history", "surf-oaipmh-2020-01-01"]  # TODO: include later: , "resources"]
+    fixtures = ["datasets-history", "surf-oaipmh-2020-01-01", "resources"]
 
     def setUp(self):
         # Setting the stage of the "surf" set harvests to VIDEO.
@@ -208,10 +215,6 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
                 not_update.created_at.replace(microsecond=0), not_update.modified_at.replace(microsecond=0),
                 f"Document is unexpectedly updated after upsert: {not_update.id}"
             )
-
-    def test_handle_empty_upsert_seeds(self):
-        # TODO: implement
-        self.skipTest("currently all seeds are empty")
 
     def test_handle_deletion_seeds(self):
         dataset = Dataset.objects.last()
