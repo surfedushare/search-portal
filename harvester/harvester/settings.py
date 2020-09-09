@@ -162,7 +162,7 @@ if environment.aws.harvest_content_bucket:
     MEDIA_URL = f'https://{environment.aws.harvest_content_bucket}.s3.eu-central-1.amazonaws.com/'
     AWS_STORAGE_BUCKET_NAME = environment.aws.harvest_content_bucket
     AWS_S3_REGION_NAME = 'eu-central-1'
-    AWS_LOCATION = 'media'
+    AWS_DEFAULT_ACL = None
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
     MEDIA_URL = 'http://localhost:8000/media/harvester/'
