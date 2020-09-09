@@ -1,7 +1,7 @@
 from django.core.management import base
 
+from harvester.background import celery_import_dataset
 from core.management.base import HarvesterCommand
-from core.background import celery_import_dataset
 
 
 class Command(base.LabelCommand, HarvesterCommand):

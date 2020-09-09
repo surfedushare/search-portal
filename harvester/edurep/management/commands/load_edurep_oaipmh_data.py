@@ -13,7 +13,8 @@ from core.management.base import HarvesterCommand
 class Command(HarvesterCommand):
     """
     A command to load EdurepOAIPMH data from S3 bucket.
-    This is to prevent local machines from connecting to Edurep themselves (which they can't do)
+    This is to prevent local machines from connecting to Edurep themselves (which they can't do).
+    Also we want dev and acc environment to stay away from connecting to Edurep (on their request).
     """
 
     resources = [
@@ -23,11 +24,6 @@ class Command(HarvesterCommand):
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument('-f', '--force-download', action="store_false")
-
-    def bulk_create_objects(self, objects):
-        obj = objects[0]
-        model = type(obj)
-        model.objects.bulk_create(objects)
 
     def handle(self, **options):
 
