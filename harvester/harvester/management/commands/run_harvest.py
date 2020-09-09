@@ -1,5 +1,5 @@
+from harvester.background import harvest
 from core.management.base import HarvesterCommand
-from core.background import harvest
 
 
 class Command(HarvesterCommand):
