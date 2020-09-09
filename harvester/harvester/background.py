@@ -42,7 +42,7 @@ def harvest(role="primary", reset=False):
             # TODO: enable this line for "primary" once the NAT gateway on AWS passes on internet
             # call_command("harvest_edurep_seeds", f"--dataset={dataset.name}")
             # TODO: this command should only be run if role is not primary once everything is migrated to AWS
-            call_command("load_edurep_oaipmh_data", f"--dataset={dataset.name}")
+            call_command("load_edurep_oaipmh_data", "--force-download")
             # After getting all the metadata we'll download content
             call_command("harvest_basic_content", f"--dataset={dataset.name}")
             # We skip any video downloading/processing for now
