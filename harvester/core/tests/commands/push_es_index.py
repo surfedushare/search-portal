@@ -28,11 +28,13 @@ class ElasticSearchClientTestCase(TestCase):
         self.elastic_client.indices.delete.reset_mock()
 
     def assert_document_structure(self, document, is_deleted=False):
-        # Removing Elastic Search dependant keys
+        # Deleted documents have a very limited structure
         if is_deleted:
             self.assertEqual(document["_op_type"], "delete")
-            document.pop("_op_type")
-        # And then check for document structure (including _id)
+            self.assertIn("_id", document)
+            self.assertIn("language", document)
+            return
+        # Here we check if documents have all required keys including _id
         expected_keys = {
             "title", "text", "transcription", "url", "external_id", "disciplines", "lom_educational_levels",
             "educational_levels", "author", "description", "publisher_date", "copyright", "language", "title_plain",
@@ -218,7 +220,6 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc, doc["_id"] == "9e6ce6e9192bdf4b494df9011dbe77c5fd54332e")
-
             self.assertEqual(index_name, "test")
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 0)

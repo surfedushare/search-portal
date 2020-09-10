@@ -86,7 +86,8 @@
                 "keywords": [
                     "Instructie",
                     "Praktische muzieknotatie en audiobewerking"
-                ]
+                ],
+                "language": "unk"
             }
         }
     },
@@ -109,7 +110,8 @@
                     "Exercise",
                     "WEKA",
                     "MOOC"
-                ]
+                ],
+                "language": "en"
             }
         }
     },
@@ -130,7 +132,8 @@
                 "url": "https://surfsharekit.nl/dl/surf/5af0e26f-c4d2-4ddd-94ab-7dd0bd531751/182216be-31a2-43c3-b7de-e5dd355b09f7",
                 "keywords": [
                     "Exercise"
-                ]
+                ],
+                "language": "en"
             }
         }
     },
@@ -153,7 +156,8 @@
                     "Video",
                     "Practicum clip",
                     "Instructie clip"
-                ]
+                ],
+                "language": "nl"
             }
         }
     },
@@ -182,7 +186,8 @@
                     "micro",
                     "scheikunde",
                     "structuur"
-                ]
+                ],
+                "language": "nl"
             }
         }
     },
@@ -207,7 +212,8 @@
                     "micro economics",
                     "economic structure",
                     "labour market"
-                ]
+                ],
+                "language": "en"
             }
         }
     },
@@ -289,9 +295,9 @@
                 "authors": [],
                 "suggest": "Using a Vortex | Wageningen UR",
                 "language": {
-                    "metadata": "en",
-                    "from_text": "nl",
-                    "from_title": "nl"
+                    "metadata": "nl",
+                    "from_text": null,
+                    "from_title": null
                 },
                 "pipeline": {
                     "file": {
@@ -348,9 +354,9 @@
                 "authors": [],
                 "suggest": "Using a Vortex (Responsibly) | Wageningen UR",
                 "language": {
-                    "metadata": "en",
-                    "from_text": "en",
-                    "from_title": "nl"
+                    "metadata": "nl",
+                    "from_text": null,
+                    "from_title": null
                 },
                 "pipeline": {
                     "file": {
