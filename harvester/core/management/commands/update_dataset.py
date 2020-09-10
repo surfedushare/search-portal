@@ -127,11 +127,12 @@ class Command(OutputCommand):
             arrangement.meta.update({
                 "reference_id": reference_id,
                 "url": seed["url"],
-                "keywords": seed.get("keywords", [])
+                "keywords": seed.get("keywords", []),
             })
             arrangement.save()
             if len(documents):
                 arrangement.update(documents, "id", validate=False, collection=collection)
+                arrangement.store_language()
                 documents_count += len(documents)
 
         return skipped, dumped, documents_count

@@ -1,4 +1,4 @@
-from collections import Iterator
+from collections import Iterator, defaultdict
 
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
@@ -60,7 +60,25 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
 
         return count
 
+    def store_language(self):
+        text_documents = self.documents.exclude(properties__file_type="video")
+        video_documents = self.documents.filter(properties__file_type="video")
+        base_document = video_documents.first()
+        if base_document is None:
+            base_document = text_documents.first()
+        self.meta["language"] = base_document.get_language() if base_document else "unk"
+        self.save()
+
     def to_search(self):
+
+        elastic_search_action = {
+            "_id": self.meta["reference_id"],
+            "language": self.meta["language"],
+        }
+
+        if self.deleted_at:
+            elastic_search_action["_op_type"] = "delete"
+            return elastic_search_action
 
         text_documents = self.documents.exclude(properties__file_type="video")
         texts = []
@@ -84,7 +102,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             return
 
         # Elastic Search actions get streamed to the Elastic Search service
-        elastic_search_action = {
+        elastic_search_action.update({
             'title': base_document.properties['title'],
             'text': text,
             'transcription': transcription,
@@ -100,7 +118,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'publisher_date': base_document.properties['publisher_date'],
             'copyright': base_document.properties['copyright'],
             'aggregation_level': base_document.properties['aggregation_level'],
-            'language': base_document.get_language(),
             'title_plain': base_document.properties['title'],
             'text_plain': text,
             'transcription_plain': transcription,
@@ -108,12 +125,9 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'file_type': base_document['file_type'] if 'file_type' in base_document.properties else 'unknown',
             'mime_type': base_document['mime_type'],
             'suggest': base_document['title'].split(" ") if base_document['title'] else [],
-            '_id': self.meta['reference_id'],
             'oaipmh_set': self.collection.name,
             'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
-        }
-        if self.deleted_at:
-            elastic_search_action["_op_type"] = "delete"
+        })
         return elastic_search_action
 
     def restore(self):
