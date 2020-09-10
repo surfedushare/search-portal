@@ -80,6 +80,9 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         if base_document is None:
             base_document = text_documents.first()
 
+        if base_document is None:
+            return
+
         # Elastic Search actions get streamed to the Elastic Search service
         elastic_search_action = {
             'title': base_document.properties['title'],
