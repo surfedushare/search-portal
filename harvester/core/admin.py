@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib import messages
 
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 
@@ -19,6 +20,16 @@ class OAIPMHHarvestAdminInline(admin.TabularInline):
 
 class DatasetAdmin(DataStorageAdmin):
     inlines = [OAIPMHHarvestAdminInline]
+
+    actions = ["reset_dataset_harvest"]
+
+    def reset_dataset_harvest(self, request, queryset):
+        """
+        Convenience method to reset dataset harvests from the admin interface
+        """
+        for dataset in queryset:
+            dataset.reset()
+        messages.success(request, f"{queryset.count()} datasets reset to harvest from 01-01-1970")
 
 
 class ExtendedDocumentAdmin(DocumentAdmin):
