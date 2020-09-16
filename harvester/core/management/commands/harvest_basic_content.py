@@ -16,6 +16,7 @@ class Command(HarvesterCommand):
     def download_seed_files(self, seeds):
         download_config = create_config("http_resource", {
             "resource": "core.FileResource",
+            "interval_duration": 1000  # 1s between downloads to prevent too many request errors
         })
         success, error = send_serie(
             self.progress([[seed["url"]] for seed in seeds]),
