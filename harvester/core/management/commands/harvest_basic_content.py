@@ -38,8 +38,12 @@ class Command(HarvesterCommand):
         tika_config = create_config("shell_resource", {
             "resource": "core.TikaResource",
         })
+        signed_urls = [
+            resource.get_signed_absolute_uri()
+            for resource in file_resources
+        ]
         success, error = run_serie(
-            self.progress([[resource.get_absolute_uri()] for resource in file_resources]),
+            self.progress([[url] for url in signed_urls if url is not None]),
             [{} for _ in file_resources],
             config=tika_config
         )
