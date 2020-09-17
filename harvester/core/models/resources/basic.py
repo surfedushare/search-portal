@@ -1,15 +1,39 @@
+import logging
 import os
 from urllib.parse import quote_plus
+import boto3
+from botocore.exceptions import ClientError
 
 from django.conf import settings
 from django.db import models
 from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResource, file_resource_delete_handler
 
 
+logger = logging.getLogger("harvester")
+
+
 class FileResource(HttpFileResource):
 
-    def get_absolute_uri(self):
-        return os.path.join(settings.MEDIA_URL, quote_plus(self.body, safe="/"))
+    def get_signed_absolute_uri(self, duration=300):
+        """
+        Generate a presigned URL to share the S3 object where this resource is stored.
+        If the application is not connected to S3 it simply returns a local path.
+        """
+        if settings.AWS_STORAGE_BUCKET_NAME is None:
+            return os.path.join(settings.MEDIA_URL, quote_plus(self.body, safe="/"))
+
+        # Generate a presigned URL for the S3 object
+        s3_client = boto3.client("s3")
+        lookup_params = {
+            "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
+            "Key": self.body
+        }
+        try:
+            url = s3_client.generate_presigned_url("get_object", Params=lookup_params, ExpiresIn=duration)
+            return url
+        except ClientError as e:
+            logger.error(e)
+            return None
 
 
 class TikaResource(DGTikaResource):

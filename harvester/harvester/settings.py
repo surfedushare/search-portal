@@ -166,6 +166,7 @@ if environment.aws.harvest_content_bucket:
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
     MEDIA_URL = 'http://localhost:8000/media/harvester/'
+    AWS_STORAGE_BUCKET_NAME = None
 
 
 # Rest framework
