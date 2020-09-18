@@ -1,8 +1,9 @@
+import os
 from unittest.mock import patch
 from io import StringIO
 from datetime import datetime
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.core.management import call_command
 from django.utils.timezone import make_aware
 
@@ -16,6 +17,7 @@ DOWNLOAD_SEED_FILES_TARGET = "core.management.commands.harvest_basic_content.Com
 EXTRACT_FROM_SEEDS_TARGET = "core.management.commands.harvest_basic_content.Command.extract_from_seed_files"
 SEND_SERIE_TARGET = "core.management.commands.harvest_basic_content.send_serie"
 RUN_SERIE_TARGET = "core.management.commands.harvest_basic_content.run_serie"
+GENERATE_PRESIGNED_URL_TARGET = "core.models.resources.basic.s3_client.generate_presigned_url"
 DUMMY_SEEDS = [
     {"state": "dummy", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html"},
     {
@@ -24,6 +26,10 @@ DUMMY_SEEDS = [
         "mime_type": "application/pdf"
     }
 ]
+
+
+def generate_presigned_url(permission, Params, ExpiresIn):
+    return os.path.join("https://test-bucket-name.s3.aws.com", Params["Key"])
 
 
 class TestBasicHarvest(TestCase):
@@ -109,9 +115,38 @@ class TestBasicHarvest(TestCase):
             "Wrong arguments given to send_serie processing multiple core.FileResource")
         self.assertEqual(kwargs["method"], "get", "core.FileResource is not using HTTP GET method")
 
-    def test_extract_from_seed_files(self):
+    @override_settings(AWS_STORAGE_BUCKET_NAME="test-bucket-name")
+    @patch(GENERATE_PRESIGNED_URL_TARGET, side_effect=generate_presigned_url)
+    def test_extract_from_seed_files_s3(self, generate_presigned_url_mock):
         # Asserting Datagrowth usage for extracting content from files with Tika.
         # This handles many edge cases for us.
+        # The test also mocks the generate_presigned_url method on the S3 client.
+        # We're expecting that client to return a signed URL that Tika can use without getting 403's,
+        # but our mocks simply return the paths
+        command = self.get_command_instance()
+        with patch(RUN_SERIE_TARGET, return_value=[[1, 2], []]) as send_serie_mock:
+            command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025])
+        self.assertEqual(send_serie_mock.call_count, 1, "More than 1 call to send_serie?")
+        self.assertEqual(generate_presigned_url_mock.call_count, 2)
+        args, kwargs = send_serie_mock.call_args
+        config = kwargs["config"]
+        self.assertEqual(config.resource, "core.TikaResource", "Wrong resource used for extracting content")
+        s3_url = "https://test-bucket-name.s3.amazonaws.com/"  # a fake URL
+        self.assertEqual(
+            args,
+            (
+                [
+                    [s3_url + "core/downloads/7/c7/20191209102536078995.index.html"],
+                    [s3_url + "core/downloads/f/03/20191209102536508370.MetaDataEditDownload.csp"]
+                ],
+                [{}, {}],
+            ),
+            "Wrong arguments given to send_serie processing multiple core.TikaResource"
+        )
+
+    def test_extract_from_seed_files_local(self):
+        # Asserting extracting content from files with Tika on localhost.
+        # Not strictly necessary, but convenient to keep around as it was already here
         command = self.get_command_instance()
         with patch(RUN_SERIE_TARGET, return_value=[[1, 2], []]) as send_serie_mock:
             command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025])
