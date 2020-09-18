@@ -1,5 +1,5 @@
 from django.conf import settings
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
@@ -144,5 +144,29 @@ class TestSearchFiltering(ElasticSearchTestCase):
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (1)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (1)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
+
+    def test_filter_search_home_by_education_level(self):
+        self.selenium.get(self.live_server_url)
+
+        select_element = self.selenium.find_element_by_css_selector(".search.main__info_search select")
+        select = Select(select_element)
+        select.select_by_value("WO")
+        self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
+        self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
+
+        self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
+
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (2)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (3)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (2)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (2)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
