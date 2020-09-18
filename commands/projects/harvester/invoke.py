@@ -59,3 +59,20 @@ def harvest(ctx, mode, reset=False):
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
     run_task(ctx, "harvester", mode, command)
+
+
+@task(help={
+    "mode": "Mode you want to cleanup: localhost, development, acceptance or production. Must match APPLICATION_MODE"
+})
+def cleanup(ctx, mode):
+    """
+    Starts a clean up tasks on the AWS container cluster or localhost
+    """
+    command = ["python", "manage.py", "clean_resources"]
+    # On localhost we call the command directly and exit
+    if mode == "localhost":
+        with ctx.cd(HARVESTER_DIR):
+            ctx.run(" ".join(command))
+        return
+    # On AWS we trigger a harvester task on the container cluster to run the command for us
+    run_task(ctx, "harvester", mode, command)
