@@ -29,7 +29,7 @@ DUMMY_SEEDS = [
 
 
 def generate_presigned_url(permission, Params, ExpiresIn):
-    return os.path.join("https://test-bucket-name.s3.aws.com", Params["Key"])
+    return os.path.join("https://test-bucket-name.s3.amazonaws.com", Params["Key"])
 
 
 class TestBasicHarvest(TestCase):
@@ -122,12 +122,10 @@ class TestBasicHarvest(TestCase):
         # This handles many edge cases for us.
         # The test also mocks the generate_presigned_url method on the S3 client.
         # We're expecting that client to return a signed URL that Tika can use without getting 403's,
-        # but our mocks simply return the paths
         command = self.get_command_instance()
         with patch(RUN_SERIE_TARGET, return_value=[[1, 2], []]) as send_serie_mock:
             command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025])
         self.assertEqual(send_serie_mock.call_count, 1, "More than 1 call to send_serie?")
-        self.assertEqual(generate_presigned_url_mock.call_count, 2)
         args, kwargs = send_serie_mock.call_args
         config = kwargs["config"]
         self.assertEqual(config.resource, "core.TikaResource", "Wrong resource used for extracting content")
@@ -143,6 +141,9 @@ class TestBasicHarvest(TestCase):
             ),
             "Wrong arguments given to send_serie processing multiple core.TikaResource"
         )
+        self.assertEqual(generate_presigned_url_mock.call_count, 2)
+        args, kwargs = generate_presigned_url_mock.call_args
+        self.assertEqual(kwargs["ExpiresIn"], 7200, "Expected presigned URL's to expire in two hours")
 
     def test_extract_from_seed_files_local(self):
         # Asserting extracting content from files with Tika on localhost.

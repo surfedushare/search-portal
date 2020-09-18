@@ -16,7 +16,7 @@ s3_client = boto3.client("s3")
 
 class FileResource(HttpFileResource):
 
-    def get_signed_absolute_uri(self, duration=300):
+    def get_signed_absolute_uri(self, duration=7200):
         """
         Generate a presigned URL to share the S3 object where this resource is stored.
         If the application is not connected to S3 it simply returns a local path.
