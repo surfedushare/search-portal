@@ -11,6 +11,7 @@ from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResourc
 
 
 logger = logging.getLogger("harvester")
+s3_client = boto3.client("s3")
 
 
 class FileResource(HttpFileResource):
@@ -24,7 +25,6 @@ class FileResource(HttpFileResource):
             return os.path.join(settings.MEDIA_URL, quote_plus(self.body, safe="/"))
 
         # Generate a presigned URL for the S3 object
-        s3_client = boto3.client("s3")
         lookup_params = {
             "Bucket": settings.AWS_STORAGE_BUCKET_NAME,
             "Key": self.body
