@@ -158,15 +158,22 @@ class TestSearchFiltering(ElasticSearchTestCase):
 
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.XPATH, "//li[.//h4[text()[contains(., 'Onderwijsniveau')]]]"),
+                "Onderwijsniveau"
+            )
+        )
+
+        WebDriverWait(self.selenium, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (3)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
