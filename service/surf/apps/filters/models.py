@@ -35,7 +35,7 @@ class MpttFilterItem(MPTTModel, UUIDModel):
         verbose_name = "filter category item"
 
 
-class Filter(UUIDModel):
+class Filter(object):
     """
     Implementation of user custom Filter model.
     """
@@ -61,13 +61,13 @@ class Filter(UUIDModel):
         return self.title
 
 
-class FilterItem(UUIDModel):
+class FilterItem(object):
     """
     Implementation of user custom Filter item model.
     """
 
     # related filter
-    filter = django_models.ForeignKey(Filter,
+    filter = django_models.ForeignKey("Filter",
                                       related_name='items',
                                       on_delete=django_models.CASCADE)
 
