@@ -87,7 +87,7 @@ class TestSeedHarvestWithHistory(TestCase):
     This test case represents the scenario where a harvest from a previous harvest
     """
 
-    fixtures = ["datasets-history", "surf-oaipmh-2020-01-01", "datasets-history-pre-delete"]
+    fixtures = ["datasets-history", "surf-oaipmh-2020-01-01"]
 
     def test_edurep_surf(self):
         # Checking whether end result of the command returned by "handle" matches expectations.

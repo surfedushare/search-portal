@@ -21,13 +21,21 @@ class Command(OutputCommand):
 
     def get_documents_from_transcription(self, transcription_resource, metadata, pipeline):
         if transcription_resource is None or not transcription_resource.success:
-            return []
+            # TODO: as long as Amber is not implemented we return empty documents for transcriptions
+            return [self._create_document(
+                "",
+                meta=metadata,
+                pipeline=pipeline,
+                file_type="video",
+                identifier_postfix="video"
+            )]
         _, transcript = transcription_resource.content
         return [self._create_document(
             transcript,
             meta=metadata,
             pipeline=pipeline,
-            file_type="video"
+            file_type="video",
+            identifier_postfix="video"
         )]
 
     def get_documents_from_zip(self, file_resource, tika_resource, metadata, pipeline):
@@ -35,8 +43,7 @@ class Command(OutputCommand):
         cc = CommonCartridge(file=file_resource.body)
         try:
             cc.clean()
-        except (ValidationError, BadZipFile) as exc:
-            print(exc)
+        except (ValidationError, BadZipFile):
             self.warning(f"Invalid or missing common cartridge for file resource: {file_resource.id}")
             return []
         # Extract texts per file in the Common Cartridge
@@ -65,8 +72,7 @@ class Command(OutputCommand):
         #         "\n".join(texts),
         #         url="{}/{}".format(metadata.get("package_url"), file),
         #         meta=metadata,
-        #         pipeline=pipeline,
-        #         hash_postfix=""  # updating URL to create unique hash instead, keeps legacy ids intact
+        #         pipeline=pipeline
         #     )
         #     documents[doc["id"]] = doc
         # return list(documents.values())
@@ -77,8 +83,7 @@ class Command(OutputCommand):
             text,
             url=metadata.get("package_url"),
             meta=metadata,
-            pipeline=pipeline,
-            hash_postfix=""  # updating URL to create unique hash instead, keeps legacy ids intact
+            pipeline=pipeline
         )]
 
     def get_documents(self, file_resource, tika_resource, metadata, pipeline):
@@ -119,7 +124,7 @@ class Command(OutputCommand):
                 continue
             dumped += 1
 
-            reference_id = self.get_hash_from_url(seed["url"])
+            reference_id = seed["external_id"]
             arrangement, created = Arrangement.objects.get_or_create(
                 meta__reference_id=reference_id,
                 dataset=collection.dataset,

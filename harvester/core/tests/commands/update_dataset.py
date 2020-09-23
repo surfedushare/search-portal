@@ -161,7 +161,8 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         handson_queryset = dataset.documents.filter(
             properties__title="Hands-on exercise based on WEKA - Tuning and Testing"
         )
-        self.assertEqual(vortex_queryset.count(), 1, "Expected the start state to contain 'Using a Vortex'")
+        self.assertEqual(vortex_queryset.count(), 2,
+                         "Expected the start state to contain 'Using a Vortex' twice (text + video)")
         self.assertEqual(handson_queryset.count(), 1, "Expected the start state to contain 'Hands-on exercise'")
         for doc in dataset.documents.all():
             self.assertEqual(doc.created_at, doc.modified_at, f"Document is unexpectedly updated: {doc.id}")
@@ -182,14 +183,11 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         self.assertEqual(collection.arrangement_set.count(), arrangement_count+2,
                          "Upsert seeds should have added 2 Arrangements")
         self.assertEqual(collection.document_set.count(), document_count+2)
-        # TODO: bring back the asserts for video transcriptions once they work through Amber
-        # Videos normally contain multiple documents, because they have multiple file types (HTML and video)
-        # But now only HTML is supported
-        # START VIDEO CONTENT
+        # Check video documents content updates
         vortex_updateset = dataset.documents.filter(properties__title="Using a Vortex (responsibly) | Wageningen UR")
-        self.assertEqual(vortex_updateset.count(), 1)
+        self.assertEqual(vortex_updateset.count(), 2)
         self.assertEqual(vortex_queryset.count(), 0)
-        # END VIDEO CONTENT
+        # Check regular document content updates
         handson_updateset = dataset.documents.filter(
             properties__title="Hands-off exercise based on WEKA - Tuning and Testing"
         )
