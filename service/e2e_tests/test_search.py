@@ -51,7 +51,7 @@ class TestSearch(ElasticSearchTestCase):
 
 
 class TestSearchFiltering(ElasticSearchTestCase):
-    fixtures = ['filter-categories', 'locales']
+    fixtures = ElasticSearchTestCase.fixtures + ['filter-categories', 'locales']
 
     @classmethod
     def setUpClass(cls):
@@ -148,32 +148,79 @@ class TestSearchFiltering(ElasticSearchTestCase):
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
     def test_filter_search_home_by_education_level(self):
+        """
+        Loading the homepage, selecting WO as educational level and making a search
+        """
         self.selenium.get(self.live_server_url)
-
         select_element = self.selenium.find_element_by_css_selector(".search.main__info_search select")
         select = Select(select_element)
         select.select_by_value("WO")
         self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
         self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
-
+        # Checking search results and educational level filters should be visible and selected
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
-
-        WebDriverWait(self.selenium, 30).until(
+        WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
                 (By.XPATH, "//li[.//h4[text()[contains(., 'Onderwijsniveau')]]]"),
                 "Onderwijsniveau"
             )
         )
+        WebDriverWait(self.selenium, 2).until(
+            EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#WO"), True))
+        WebDriverWait(self.selenium, 2).until(
+            EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#HBO"), False))
 
-        WebDriverWait(self.selenium, 30).until(
+        # Now we'll be clicking open a lot of the other filters to make sure their counts are correct
+        file_types = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Soort materiaal')]]]")
+        file_types.click()
+        source_category = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bron')]]]")
+        source_category.click()
+        # And check the actual counts per filter
+        WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
-        WebDriverWait(self.selenium, 30).until(
+        WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (2)"))
-        WebDriverWait(self.selenium, 30).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (3)"))
-        WebDriverWait(self.selenium, 30).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (2)"))
-        WebDriverWait(self.selenium, 30).until(
+        WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (2)"))
-        WebDriverWait(self.selenium, 30).until(
+        WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
+
+    def test_filter_search_home_by_file_type(self):
+        """
+        Loading the homepage, selecting WO as educational level and making a search
+        """
+        self.selenium.get(self.live_server_url)
+        self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
+        self.selenium.find_element_by_css_selector("#text").click()
+        self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
+        # Checking search results and file type filters should be visible
+        self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.XPATH, "//li[.//h4[text()[contains(., 'Soort materiaal')]]]"),
+                "Soort materiaal"
+            )
+        )
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (2)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (3)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#video"), False))
+        WebDriverWait(self.selenium, 2).until(
+            EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#text"), True))
+
+        # Now we'll be clicking open a lot of the other filters to make sure their counts are correct
+        educational_levels = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Onderwijsniveau')]]]")
+        educational_levels.click()
+        source_category = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bron')]]]")
+        source_category.click()
+        # And check the actual counts per filter
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (2)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (1)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (1)"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (2)"))
