@@ -161,6 +161,7 @@ class Collection(UUIDModel):
 
     is_shared = django_models.BooleanField(default=False)
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
+    created_at = django_models.DateTimeField(auto_now_add=True)
     deleted_at = django_models.DateTimeField(null=True)
 
     def restore(self):
@@ -176,6 +177,9 @@ class Collection(UUIDModel):
 
     def __str__(self):
         return self.title_nl
+
+    class Meta:
+        ordering = ("created_at",)
 
 
 class CollectionMaterial(django_models.Model):

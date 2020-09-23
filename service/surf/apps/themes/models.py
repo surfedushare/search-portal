@@ -16,6 +16,7 @@ class Theme(UUIDModel):
     """
 
     description = django_models.TextField(null=True, blank=True)
+    created_at = django_models.DateTimeField(auto_now_add=True)
 
     external_id = django_models.CharField(max_length=255)
 
@@ -39,3 +40,6 @@ class Theme(UUIDModel):
 
     def __str__(self):
         return self.external_id
+
+    class Meta:
+        ordering = ("created_at",)
