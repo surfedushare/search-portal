@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "serve": "npm_config_server=vue vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --dest ../service/surf/apps/materials/static/portal/",
     "lint": "eslint --ext .vue,.js src",
     "watch": "vue-cli-service build --watch --dest ../service/surf/apps/materials/static/portal/"
   },

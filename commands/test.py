@@ -11,7 +11,7 @@ log = logging.getLogger(__file__)
 @task(prepare_builds)
 def prepare_e2e(ctx):
     with ctx.cd("portal"):
-        ctx.run("npm run build -- --dest=../service/surf/apps/materials/static/portal/")
+        ctx.run("npm run build")
 
 
 @task(prepare_e2e)
