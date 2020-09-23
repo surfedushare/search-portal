@@ -1,5 +1,7 @@
 from collections import defaultdict
+from zipfile import BadZipFile
 
+from django.core.exceptions import ValidationError
 from django.db.models import Count
 
 from datagrowth.utils import ibatch
@@ -8,6 +10,7 @@ from core.constants import HarvestStages
 from core.management.base import OutputCommand
 from core.utils.resources import get_material_resources
 from edurep.utils import get_edurep_oaipmh_seeds
+from core.models import CommonCartridge
 
 
 class Command(OutputCommand):
