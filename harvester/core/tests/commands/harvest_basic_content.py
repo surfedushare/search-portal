@@ -20,11 +20,7 @@ RUN_SERIE_TARGET = "core.management.commands.harvest_basic_content.run_serie"
 GENERATE_PRESIGNED_URL_TARGET = "core.models.resources.basic.s3_client.generate_presigned_url"
 DUMMY_SEEDS = [
     {"state": "dummy", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html"},
-    {
-        "state": "dummy",
-        "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1",
-        "mime_type": "application/pdf"
-    }
+    {"state": "dummy", "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1", "mime_type": "application/pdf"}
 ]
 
 
