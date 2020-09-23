@@ -28,7 +28,7 @@ class EdurepOAIPMH(HttpResource):
     set_specification = models.CharField(max_length=255, blank=True, null=False)
     since = models.DateTimeField()
 
-    URI_TEMPLATE = "http://oai.edurep.kennisnet.nl:8001/edurep/oai?set={}&from={}"
+    URI_TEMPLATE = "https://wszoeken.edurep.kennisnet.nl/edurep/oai?set={}&from={}"
     PARAMETERS = {
         "verb": "ListRecords",
         "metadataPrefix": "lom"
