@@ -150,7 +150,7 @@ class Collection(UUIDModel):
     Implementation of Collection model.
     """
 
-    title_nl = django_models.CharField(max_length=255)
+    title_nl = django_models.CharField(max_length=255, blank=True, null=True)
     title_en = django_models.CharField(max_length=255, blank=True, null=True)
 
     # the list of collection materials
