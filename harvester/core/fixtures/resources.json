@@ -158,7 +158,7 @@
         "data_hash": "",
         "request": "\"{\\\"args\\\": [\\\"https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/88c687c8-fbc4-4d69-a27d-45d9f30d642b\\\"], \\\"kwargs\\\": {}, \\\"method\\\": \\\"get\\\", \\\"url\\\": \\\"https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/88c687c8-fbc4-4d69-a27d-45d9f30d642b\\\", \\\"headers\\\": {\\\"User-Agent\\\": \\\"DataGrowth (v0.16.0); python-requests/2.20.0\\\", \\\"Accept-Encoding\\\": \\\"gzip, deflate\\\", \\\"Accept\\\": \\\"*/*\\\", \\\"Connection\\\": \\\"keep-alive\\\"}, \\\"data\\\": null, \\\"cancel\\\": false}\"",
         "head": "\"{\\\"Server\\\": \\\"nginx\\\", \\\"Date\\\": \\\"Mon, 17 Feb 2020 09:13:30 GMT\\\", \\\"Content-Type\\\": \\\"application/x-zip-compressed\\\", \\\"Transfer-Encoding\\\": \\\"chunked\\\", \\\"Connection\\\": \\\"keep-alive\\\", \\\"Content-Security-Policy\\\": \\\"default-src https:; style-src 'unsafe-inline' https:; img-src 'self' data:; font-src 'self' data: https:\\\", \\\"Feature-Policy\\\": \\\"geolocation 'none'\\\", \\\"Referrer-Policy\\\": \\\"strict-origin\\\", \\\"Strict-Transport-Security\\\": \\\"max-age=31536000; includeSubDomains\\\", \\\"X-Content-Type-Options\\\": \\\"nosniff\\\", \\\"X-Frame-Options\\\": \\\"SAMEORIGIN\\\", \\\"X-XSS-Protection\\\": \\\"1; mode=block\\\", \\\"Cache-Control\\\": \\\"private\\\", \\\"Content-Disposition\\\": \\\"attachment; filename=IMSCP_94812.zip\\\", \\\"Expires\\\": \\\"Thu, 01 Jan 1970 01:00:00 CET\\\", \\\"X-Robots-Tag\\\": \\\"noarchive\\\", \\\"Content-Encoding\\\": \\\"gzip\\\"}\"",
-        "body": "core/downloads/a/2d/20200217091330242458.88c687c8-fbc4-4d69-a27d-45d9f30d642b.html"
+        "body": "test/IMSCP_94812.zip"
     }
 },
 {
