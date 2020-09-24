@@ -704,25 +704,6 @@
   },
   {
     "model": "filters.mpttfilteritem",
-    "pk": "06bb0338-fd55-43c5-b03d-ccd829c8ee7b",
-    "fields": {
-      "name": "Chinese taal en cultuur",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.509Z",
-      "updated_at": "2019-09-26T11:14:09.616Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "bb061cc5-4abc-4e9d-a357-27daa61aa2e0",
-      "external_id": "1f7aa29f-38d8-4dab-91db-3be52669951f",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 328,
-      "rght": 329,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
     "pk": "06fddfa3-e65c-4821-8b6d-7797101f6e6f",
     "fields": {
       "name": "Gezond en redzaam gedrag",
@@ -7468,25 +7449,6 @@
   },
   {
     "model": "filters.mpttfilteritem",
-    "pk": "49dd7eac-e043-4323-8e88-0b0ecea90ddb",
-    "fields": {
-      "name": "Vormgeving",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.901Z",
-      "updated_at": "2019-09-13T09:01:56.901Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": null,
-      "external_id": "",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 2462,
-      "rght": 2463,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
     "pk": "49e44c9b-68f2-4fb1-af6b-364223f0f782",
     "fields": {
       "name": "Handel (Landbouw breed thema)",
@@ -7709,25 +7671,6 @@
       "is_hidden": false,
       "lft": 1940,
       "rght": 1941,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
-    "pk": "4d10e833-2ee1-4759-8fcc-598710de2430",
-    "fields": {
-      "name": "Russische studies",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.637Z",
-      "updated_at": "2019-09-26T11:17:37.943Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "8d2ae08c-5212-470e-8f97-1c51f03839f7",
-      "external_id": "116fbfd6-77d8-4676-8634-8cfd686942c9",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 1982,
-      "rght": 1983,
       "tree_id": 10,
       "level": 1
     }
@@ -9362,25 +9305,6 @@
       "is_hidden": false,
       "lft": 2312,
       "rght": 2313,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
-    "pk": "5caeac35-526f-490e-a505-d1d8f991a83c",
-    "fields": {
-      "name": "Arabische taal en cultuur",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.459Z",
-      "updated_at": "2019-09-26T11:13:22.944Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "22958d28-16b6-4b86-a0dd-1e506fd4513c",
-      "external_id": "455d527a-bfd0-4460-919e-12e0478a54cf",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 90,
-      "rght": 91,
       "tree_id": 10,
       "level": 1
     }
@@ -11680,25 +11604,6 @@
       "is_hidden": false,
       "lft": 2430,
       "rght": 2431,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
-    "pk": "701cbb6c-e834-4a9c-bfed-2b09ef2a99ab",
-    "fields": {
-      "name": "Griekse en Latijnse taal en cultuur",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T08:52:06.570Z",
-      "updated_at": "2019-09-13T08:52:06.570Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "56938e27-79e6-4ff5-8033-e571b2ea9cae",
-      "external_id": "596e13b2-5626-4312-8440-50e9bd7b4271",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 876,
-      "rght": 877,
       "tree_id": 10,
       "level": 1
     }
@@ -15581,25 +15486,6 @@
   },
   {
     "model": "filters.mpttfilteritem",
-    "pk": "949cf699-9bab-40b6-a5bf-e81beed44597",
-    "fields": {
-      "name": "Spaanse taal en cultuur",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.665Z",
-      "updated_at": "2019-09-26T11:17:59.679Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "3c7f0e74-4464-437a-8fed-4c126f6b2f7f",
-      "external_id": "952bf604-cc38-44e3-889a-a9e74a18da8e",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 2068,
-      "rght": 2069,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
     "pk": "94ab2409-c6f4-4811-9136-86803956ae8a",
     "fields": {
       "name": "Homeostase op celniveau",
@@ -16411,25 +16297,6 @@
       "is_hidden": false,
       "lft": 1714,
       "rght": 1715,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
-    "pk": "9ceafaca-0193-4dbe-8c85-ed6b841a1b22",
-    "fields": {
-      "name": "Italiaanse taal en cultuur",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.573Z",
-      "updated_at": "2019-09-26T11:16:57.248Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "033f7f27-8084-45ca-bab6-75d2c9fa2a8e",
-      "external_id": "aedcfc1c-a676-4f40-8587-4a5f43a354b5",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 1082,
-      "rght": 1083,
       "tree_id": 10,
       "level": 1
     }
@@ -19229,25 +19096,6 @@
   },
   {
     "model": "filters.mpttfilteritem",
-    "pk": "b788b664-13e3-4d3f-83fd-9fb2fc7bd986",
-    "fields": {
-      "name": "Portugese taal en cultuur",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.607Z",
-      "updated_at": "2019-09-26T11:17:17.198Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "0e363e44-b1b7-4672-9e68-a3c767b865fb",
-      "external_id": "dabf3753-248a-495b-b861-bcd36e2b55cb",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 1740,
-      "rght": 1741,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
     "pk": "b78961f6-d9dd-4876-9ce8-00c7f2c3f906",
     "fields": {
       "name": "Productiedieren 3",
@@ -20692,25 +20540,6 @@
   },
   {
     "model": "filters.mpttfilteritem",
-    "pk": "c5924e4c-d81c-4e3e-be53-80a020c1dc5a",
-    "fields": {
-      "name": "population studies",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:57.096Z",
-      "updated_at": "2019-09-13T09:01:57.096Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": null,
-      "external_id": "",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 1736,
-      "rght": 1737,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
     "pk": "c5d91ff1-b894-4334-b0cb-314f8a694418",
     "fields": {
       "name": "Kringlopen",
@@ -21123,25 +20952,6 @@
       "is_hidden": false,
       "lft": 2394,
       "rght": 2395,
-      "tree_id": 10,
-      "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
-    "pk": "cab6eee0-b286-4d79-aa02-4fcd8018efe7",
-    "fields": {
-      "name": "Taal- en literatuurwetenschap",
-      "parent": "cb822d42-7d96-4770-a9ca-56321bc3fdc4",
-      "created_at": "2019-09-13T09:01:56.691Z",
-      "updated_at": "2019-09-26T11:18:18.004Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "bb48cd7f-4d98-436b-a234-d821d51be679",
-      "external_id": "b3f61346-92c4-4fb5-9207-6a4142b64122",
-      "enabled_by_default": false,
-      "is_hidden": false,
-      "lft": 2152,
-      "rght": 2153,
       "tree_id": 10,
       "level": 1
     }
@@ -21866,25 +21676,6 @@
       "rght": 2221,
       "tree_id": 10,
       "level": 1
-    }
-  },
-  {
-    "model": "filters.mpttfilteritem",
-    "pk": "cf916376-2773-4863-a540-b9d2a814f96f",
-    "fields": {
-      "name": "yes",
-      "parent": "94af3b32-543e-4e8b-874c-0d130c5799b6",
-      "created_at": "2019-09-13T08:51:33.804Z",
-      "updated_at": "2019-09-13T09:29:56.483Z",
-      "deleted_from_edurep_at": null,
-      "title_translations": "189ebded-c11a-4bdf-9af1-727699d3f87d",
-      "external_id": "yes",
-      "enabled_by_default": false,
-      "is_hidden": true,
-      "lft": 21,
-      "rght": 22,
-      "tree_id": 4,
-      "level": 2
     }
   },
   {
