@@ -1,6 +1,6 @@
 # Common
 django==3.0.8
-djangorestframework==3.11.0
+djangorestframework==3.12.1
 psycopg2-binary==2.8.5
 whitenoise==5.1.0
 requests==2.24.0
