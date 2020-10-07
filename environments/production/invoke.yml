@@ -8,7 +8,7 @@ django:
   postgres_host: "surfpol-edushare.cef190hciiol.eu-central-1.rds.amazonaws.com"
   redis_host: "harvester.o1edd0.0001.euc1.cache.amazonaws.com:6379"
   protocol: "https"
-  domain: "zoekportaal.surf.nl"
+  domain: "prod.surfedushare.nl"
 
 harvester:
   import_dataset:
