@@ -26,16 +26,20 @@ def download_database(connection):
 
 @local_task(name="download_media")
 def download_media(ctx):
-    ctx.run("rsync -zrthv --progress --delete zoekportaalback.surf.nl:/volumes/surf/media/communities media/")
+    ctx.run("rsync -zrthv --progress --delete legacy.zoekportaal:/volumes/surf/media/communities media/")
 
 
 @local_task(name="upload_database")
 def upload_database(ctx, dump_file):
     target_file = os.path.join("postgres", "dumps", dump_file)
-    ctx.run(f"aws s3 cp {target_file} s3://edushare-data/databases/")
+    ctx.run(f"aws s3 cp {target_file} s3://edushare-data/databases/", echo=True)
 
 
 @local_task(name="upload_media")
 def upload_media(ctx):
     media = os.path.join("media", "communities")
-    ctx.run(f"aws s3 sync {media} s3://{ctx.config.aws.image_upload_bucket}/communities")
+    ctx.run(
+        f"AWS_PROFILE={ctx.config.aws.profile_name} aws s3 sync {media} "
+        f"s3://{ctx.config.aws.image_upload_bucket}/communities",
+        echo=True
+    )
