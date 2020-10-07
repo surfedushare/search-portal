@@ -48,7 +48,8 @@ def harvest(role="primary", reset=False):
         # Aggregating the metadata and content into the dataset
         call_command("update_dataset", f"--dataset={dataset.name}")
         # Based on the dataset we push to Elastic Search
-        call_command("push_es_index", f"--dataset={dataset.name}")
+        extra_push_index_args = ["--recreate"] if reset else []
+        call_command("push_es_index", f"--dataset={dataset.name}", *extra_push_index_args)
 
     # After processing all active datasets we dump the seeds and store on S3 so other nodes can use that
     # TODO: only enable this when production can take on the role as primary (and legacy harvester will be ignored)
