@@ -13,7 +13,7 @@ but there is also an admin available for that part.
 Prerequisites
 -------------
 
-This project uses ``Python 3.6``, ``npm``, ``Docker``, ``docker-compose`` and ``chromedriver``.
+This project uses ``Python 3.6``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
 Make sure they are installed on your system before installing the project.
 
 
@@ -23,7 +23,7 @@ Installation
 The local setup is made in such a way that you can run the project inside and outside of containers.
 It can be convenient to run some code for inspection outside of containers.
 To stay close to the production environment it works well to run the project in containers.
-External services like the database run in containers so it's always necessary to use Docker.
+External services like the database run in containers, so it's always necessary to use Docker.
 
 
 #### General setup
@@ -50,30 +50,6 @@ To finish the general setup you can run this command to build all containers:
 ```bash
 docker-compose -f docker-compose.yml up --build
 ```
-
-
-##### Elastic Search setup
-
-It's possible to load data into the Elastic Search cluster from a few commands
-In order to do that you first need to setup with:
-
-```bash
-invoke es.setup
-```
-
-Backups are stored in a so called repository. You'll need to download the latest ES repository file to load the data.
-Ask somebody for the file and name of the latest backup repository and run:
-
-```bash
-invoke es.load-repository <repository-file>
-invoke es.restore-snapshot <repository-name>
-```
-
-This should have loaded the indices you need to make searches locally.
-Alternatively you can set the
-``POL_ELASTIC_SEARCH_HOST``, ``POL_ELASTIC_SEARCH_PROTOCOL``, ``POL_ELASTIC_SEARCH_USERNAME`` and
-``POL_SECRETS_ELASTIC_SEARCH_PASSWORD`` variables inside your ``.env`` file.
-This allows to connect your local setup to a remote development or testing cluster.
 
 
 Getting started
@@ -221,6 +197,35 @@ To load snapshot data into the database on an AWS environment run:
 ```bash
 APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.restore-snapshot
 ```
+
+
+Elastic Search data
+-------------------
+
+> NB: It's recommended to [create your own copies of indices with the harvester commands](harvester/README.md#harvesting),
+> instead of loading (possibly old and stale) production snapshots.
+
+It's possible to load data into your localhost Elastic Search cluster with a few commands
+In order to do that you first need to setup with:
+
+```bash
+invoke es.setup
+```
+
+Backups are stored in a so called repository. You'll need to download the latest ES repository file to load the data.
+Ask somebody for the file and name of the latest backup repository and run:
+
+```bash
+invoke es.load-repository <repository-file>
+invoke es.restore-snapshot <repository-name>
+```
+
+This should have loaded the indices you need to make searches locally.
+Alternatively you can set the
+``POL_ELASTIC_SEARCH_HOST``, ``POL_ELASTIC_SEARCH_PROTOCOL``, ``POL_ELASTIC_SEARCH_USERNAME`` and
+``POL_SECRETS_ELASTIC_SEARCH_PASSWORD`` variables inside your ``.env`` file.
+This allows to connect your local setup to a remote development or testing cluster.
+
 
 Linting
 -------

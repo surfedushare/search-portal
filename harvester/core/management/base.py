@@ -1,5 +1,4 @@
 import os
-import hashlib
 import json
 from urllib.parse import urlparse
 from copy import copy
@@ -89,13 +88,6 @@ class OutputCommand(HarvesterCommand):
             "resource": ["{}.{}".format(resource._meta.app_label, resource._meta.model_name), resource.id]
         }
 
-    @staticmethod
-    def get_hash_from_url(url, postfix=None):
-        hasher = hashlib.sha1()
-        payload = url + postfix if postfix else url
-        hasher.update(payload.encode("utf-8"))
-        return hasher.hexdigest()
-
     def get_file_type(self, mime_type=None, url=None):
         # TODO: this part needs a big refactor
         file_type = None
@@ -110,14 +102,15 @@ class OutputCommand(HarvesterCommand):
         return file_type
 
     def _create_document(self, text, meta, title=None, url=None, mime_type=None, file_type=None, pipeline=None,
-                         hash_postfix=None):
+                         identifier_postfix=None):
 
         url = url or meta.get("url")
         mime_type = mime_type or meta.get("mime_type", None)
         file_type = file_type or self.get_file_type(mime_type, url)
 
-        hash_postfix = hash_postfix if hash_postfix is not None else file_type
-        identifier = self.get_hash_from_url(url, postfix=hash_postfix)
+        identifier = meta["external_id"]
+        if identifier_postfix:
+            identifier += f":{identifier_postfix}"
 
         text_language = get_language_from_snippet(text)
         title = title or meta.get("title", None)

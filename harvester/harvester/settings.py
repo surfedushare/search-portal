@@ -156,6 +156,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
+if environment.aws.harvest_content_bucket:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_ROOT = ''
+    MEDIA_URL = f'https://{environment.aws.harvest_content_bucket}.s3.eu-central-1.amazonaws.com/'
+    AWS_STORAGE_BUCKET_NAME = environment.aws.harvest_content_bucket
+    AWS_S3_REGION_NAME = 'eu-central-1'
+    AWS_DEFAULT_ACL = None
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
+    MEDIA_URL = 'http://localhost:8000/media/harvester/'
+    AWS_STORAGE_BUCKET_NAME = None
+
 
 # Rest framework
 # https://www.django-rest-framework.org/
@@ -334,6 +346,14 @@ CELERY_BEAT_SCHEDULE = {
         ),
         'args': ("epsilon", environment.harvester.import_dataset.role)
     },
+    'harvest': {  # TODO: when refactoring the configuration we should give harvest its own time slot
+        'task': 'harvest',
+        'schedule': crontab(
+            hour=environment.harvester.import_dataset.hour,
+            minute=environment.harvester.import_dataset.minute,
+        ),
+        'args': tuple()
+    },
 }
 
 
@@ -341,3 +361,4 @@ CELERY_BEAT_SCHEDULE = {
 # https://data-scope.com/datagrowth/index.html
 
 DATAGROWTH_DATA_DIR = os.path.join(BASE_DIR, "..", "data", "harvester")
+DATAGROWTH_BIN_DIR = os.path.join(BASE_DIR, "harvester", "bin")

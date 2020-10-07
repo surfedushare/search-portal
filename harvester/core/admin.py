@@ -1,8 +1,10 @@
 from django.contrib import admin
+from django.contrib import messages
 
-from datagrowth.admin import DataStorageAdmin, DocumentAdmin
+from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 
-from core.models import Dataset, Collection, Arrangement, Document, OAIPMHSet, ElasticIndex, CommonCartridge
+from core.models import (Dataset, Collection, Arrangement, Document, OAIPMHSet, ElasticIndex, CommonCartridge,
+                         FileResource, TikaResource)
 
 
 class OAIPMHSetAdmin(admin.ModelAdmin):
@@ -18,6 +20,16 @@ class OAIPMHHarvestAdminInline(admin.TabularInline):
 
 class DatasetAdmin(DataStorageAdmin):
     inlines = [OAIPMHHarvestAdminInline]
+
+    actions = ["reset_dataset_harvest"]
+
+    def reset_dataset_harvest(self, request, queryset):
+        """
+        Convenience method to reset dataset harvests from the admin interface
+        """
+        for dataset in queryset:
+            dataset.reset()
+        messages.success(request, f"{queryset.count()} datasets reset to harvest from 01-01-1970")
 
 
 class ExtendedDocumentAdmin(DocumentAdmin):
@@ -40,3 +52,5 @@ admin.site.register(Arrangement, DataStorageAdmin)
 admin.site.register(Document, ExtendedDocumentAdmin)
 admin.site.register(ElasticIndex, ElasticIndexAdmin)
 admin.site.register(CommonCartridge, CommonCartridgeAdmin)
+admin.site.register(FileResource, HttpResourceAdmin)
+admin.site.register(TikaResource, ShellResourceAdmin)

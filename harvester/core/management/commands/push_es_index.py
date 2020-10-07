@@ -1,4 +1,6 @@
 from django.conf import settings
+from datetime import datetime
+from dateutil import tz
 
 from core.models import Dataset, ElasticIndex
 from core.management.base import HarvesterCommand
@@ -17,7 +19,7 @@ class Command(HarvesterCommand):
         dataset = Dataset.objects.get(name=options["dataset"])
         recreate = options["recreate"]
         promote = options["promote"]
-        earliest_harvest = dataset.get_earliest_harvest_date()
+        earliest_harvest = dataset.get_earliest_harvest_date() or datetime(year=1970, month=1, day=1, tzinfo=tz.tzutc())
 
         self.info(f"Upserting ES index for {dataset.name}")
         self.info(f"since:{earliest_harvest:%Y-%m-%d}, recreate:{recreate} and promote:{promote}")
