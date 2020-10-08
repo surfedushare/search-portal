@@ -4,6 +4,7 @@ import json
 from urllib.parse import quote_plus
 import boto3
 from botocore.exceptions import ClientError
+from urlobject import URLObject
 
 from django.conf import settings
 from django.db import models
@@ -72,6 +73,17 @@ class TikaResource(DGTikaResource):
         variables = self.variables()
         data["resourcePath"] = variables["input"][0]
         return content_type, data
+
+    @staticmethod
+    def cmd_to_uri(cmd):
+        """
+        Removes the AWS signature from the command to be able to lookup similar runs with different signatures
+        """
+        signed_url = URLObject(cmd[-1])
+        signature_keys = [key for key in signed_url.query_dict.keys() if key.startswith("X-Amz")]
+        signed_url.del_query_params(str(signature_keys))
+        cmd[-1] = signed_url
+        return cmd
 
 
 models.signals.post_delete.connect(file_resource_delete_handler, sender=FileResource)
