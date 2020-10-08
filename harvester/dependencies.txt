@@ -23,7 +23,7 @@ pandas==0.23.4
 git+https://github.com/fako/django-json-field.git
 lxml==4.5.2
 beautifulsoup4==4.9.1
-datagrowth==0.16.1
+datagrowth==0.16.2
 
 # Always latest version required
 youtube-dl
