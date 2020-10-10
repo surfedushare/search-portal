@@ -137,10 +137,9 @@ class Command(OutputCommand):
                 "keywords": seed.get("keywords", []),
             })
             arrangement.save()
-            if len(documents):
-                arrangement.update(documents, "id", validate=False, collection=collection)
-                arrangement.store_language()
-                documents_count += len(documents)
+            arrangement.update(documents, "id", validate=False, collection=collection)
+            arrangement.store_language()
+            documents_count += len(documents)
 
         return skipped, dumped, documents_count
 

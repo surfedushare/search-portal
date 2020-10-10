@@ -73,7 +73,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
 
         elastic_search_action = {
             "_id": self.meta["reference_id"],
-            "language": self.meta["language"],
+            "language": self.meta.get("language", "unk"),
         }
 
         if self.deleted_at:
