@@ -14,6 +14,8 @@ def get_basic_material_resources(url):
         file_resource = FileResource(config={"cache_only": True}).get(url)
     except DGResourceDoesNotExist:
         return None, None
+    if not file_resource.body:
+        return file_resource, None
     try:
         tika_resource = TikaResource(config={"cache_only": True}).run(file_resource.get_signed_absolute_uri())
     except DGResourceDoesNotExist:
