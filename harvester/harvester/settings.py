@@ -111,7 +111,7 @@ DATABASES = {
         'USER': environment.django.postgres_user,
         'PASSWORD': environment.secrets.postgres.password,
         'HOST': environment.django.postgres_host,
-        'PORT': 5432,
+        'PORT': environment.django.postgres_port,
     }
 }
 

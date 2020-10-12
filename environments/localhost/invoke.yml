@@ -9,6 +9,7 @@ django:
   debug: true
   postgres_user: "django"
   postgres_host: "postgres"
+  postgres_port: 5432
   redis_host: "redis:6379"
   protocol: "http"
   domain: "localhost"

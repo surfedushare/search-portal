@@ -54,6 +54,23 @@ def setup_postgres(conn):
             f"postgres/docker-entrypoint-initdb.d/set-default-privileges.tpl",
             echo=True, watchers=[postgres_password_responder], pty=True
         )
+        # Create all tables for both applications
+        conn.local(
+            f"cd service && "
+            f"AWS_PROFILE={conn.config.aws.profile_name} "
+            f"POL_DJANGO_POSTGRES_HOST=localhost "
+            f"POL_DJANGO_POSTGRES_PORT=1111 "
+            f"python manage.py migrate",
+            echo=True, pty=True
+        )
+        conn.local(
+            f"cd harvester && "
+            f"AWS_PROFILE={conn.config.aws.profile_name} "
+            f"POL_DJANGO_POSTGRES_HOST=localhost "
+            f"POL_DJANGO_POSTGRES_PORT=1111 "
+            f"AWS_PROFILE={conn.config.aws.profile_name} python manage.py migrate",
+            echo=True, pty=True
+        )
         # Create generic superuser named supersurf for search-portal
         application_password = conn.config.secrets.postgres_application.password
         insert_user = insert_django_user_statement("supersurf", application_password, is_edushare=True)
