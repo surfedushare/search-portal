@@ -339,21 +339,13 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60,
         'args': tuple()
     },
-    'import-dataset': {
-        'task': 'import_dataset',
-        'schedule': crontab(
-            hour=environment.harvester.import_dataset.hour,
-            minute=environment.harvester.import_dataset.minute,
-        ),
-        'args': ("epsilon", environment.harvester.import_dataset.role)
-    },
     'harvest': {  # TODO: when refactoring the configuration we should give harvest its own time slot
         'task': 'harvest',
         'schedule': crontab(
             hour=environment.harvester.import_dataset.hour,
             minute=environment.harvester.import_dataset.minute,
         ),
-        'args': tuple()
+        'args': tuple(environment.harvester.import_dataset.role)
     },
 }
 

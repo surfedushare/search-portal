@@ -13,7 +13,7 @@ harvester:
   import_dataset:
     hour: 5  # uses UTC
     minute: 0
-    role: "replica"
+    role: "primary"
 
 surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"
