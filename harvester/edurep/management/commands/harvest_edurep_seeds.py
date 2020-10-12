@@ -2,13 +2,12 @@ from collections import defaultdict
 
 from django.core.management import CommandError
 from django.utils.timezone import now
-
 from datagrowth.resources.http.tasks import send
 from datagrowth.configuration import create_config
+
 from core.management.base import HarvesterCommand
 from core.constants import HarvestStages
-from core.models import Arrangement
-from core.models import OAIPMHHarvest
+from core.models import Arrangement, OAIPMHHarvest, OAIPMHRepositories
 
 
 class Command(HarvesterCommand):
@@ -20,7 +19,12 @@ class Command(HarvesterCommand):
 
     def prepare_harvest(self, dataset_name):
         Arrangement.objects.filter(deleted_at__isnull=False).delete()
-        for harvest in OAIPMHHarvest.objects.filter(dataset__name=dataset_name, stage=HarvestStages.COMPLETE):
+        harvest_queryset = OAIPMHHarvest.objects.filter(
+            dataset__name=dataset_name,
+            stage=HarvestStages.COMPLETE,
+            source__repository=OAIPMHRepositories.EDUREP
+        )
+        for harvest in harvest_queryset:
             harvest.stage = HarvestStages.NEW
             harvest.latest_update_at = harvest.harvested_at
             harvest.save()
@@ -35,8 +39,8 @@ class Command(HarvesterCommand):
 
         harvest_queryset = OAIPMHHarvest.objects.filter(
             dataset__name=dataset_name,
-            stage=HarvestStages.NEW
-            # TODO: filter on Edurep
+            stage=HarvestStages.NEW,
+            source__repository=OAIPMHRepositories.EDUREP
         )
         if not harvest_queryset.exists():
             raise OAIPMHHarvest.DoesNotExist(

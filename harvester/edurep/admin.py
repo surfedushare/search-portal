@@ -1,8 +1,7 @@
 from django.contrib import admin
 
 from datagrowth.admin import HttpResourceAdmin
-from edurep.models import EdurepFile, EdurepOAIPMH
+from edurep.models import EdurepOAIPMH
 
 
-admin.site.register(EdurepFile, HttpResourceAdmin)
 admin.site.register(EdurepOAIPMH, HttpResourceAdmin)

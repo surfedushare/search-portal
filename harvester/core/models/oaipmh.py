@@ -10,7 +10,7 @@ class OAIPMHRepositories:
 
 
 OAIPMH_REPOSITORY_CHOICES = [
-    (attr.lower().capitalize(), value)
+    (value, attr.lower().capitalize())
     for attr, value in sorted(OAIPMHRepositories.__dict__.items()) if not attr.startswith("_")
 ]
 

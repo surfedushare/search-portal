@@ -14,6 +14,7 @@ import os
 import sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
 from celery.schedules import crontab
@@ -25,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
-from surfpol import create_configuration_and_session, get_package_info
+from surfpol import create_configuration_and_session, get_package_info, MODE
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
@@ -39,7 +40,7 @@ environment, session = create_configuration_and_session()
 SECRET_KEY = environment.secrets.django.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = environment.django.debug
+DEBUG = MODE == "localhost"
 
 # We're disabling the ALLOWED_HOSTS check, because containers will run in a VPC environment
 # This environment is expected to be unreachable with disallowed hosts.
@@ -156,6 +157,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
+if environment.aws.harvest_content_bucket:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_ROOT = ''
+    MEDIA_URL = f'https://{environment.aws.harvest_content_bucket}.s3.eu-central-1.amazonaws.com/'
+    AWS_STORAGE_BUCKET_NAME = environment.aws.harvest_content_bucket
+    AWS_S3_REGION_NAME = 'eu-central-1'
+    AWS_DEFAULT_ACL = None
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
+    MEDIA_URL = 'http://localhost:8000/media/harvester/'
+    AWS_STORAGE_BUCKET_NAME = None
+
 
 # Rest framework
 # https://www.django-rest-framework.org/
@@ -202,7 +215,7 @@ if not DEBUG:
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn="https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021",
-        integrations=[DjangoIntegration()],
+        integrations=[DjangoIntegration(), CeleryIntegration()],
         send_default_pii=False  # GDPR requirement
     )
     # We kill all DisallowedHost logging on the servers,
@@ -326,13 +339,13 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60,
         'args': tuple()
     },
-    'import-dataset': {
-        'task': 'import_dataset',
+    'harvest': {  # TODO: when refactoring the configuration we should give harvest its own time slot
+        'task': 'harvest',
         'schedule': crontab(
             hour=environment.harvester.import_dataset.hour,
             minute=environment.harvester.import_dataset.minute,
         ),
-        'args': ("epsilon", environment.harvester.import_dataset.role)
+        'args': tuple(environment.harvester.import_dataset.role)
     },
 }
 
@@ -341,3 +354,4 @@ CELERY_BEAT_SCHEDULE = {
 # https://data-scope.com/datagrowth/index.html
 
 DATAGROWTH_DATA_DIR = os.path.join(BASE_DIR, "..", "data", "harvester")
+DATAGROWTH_BIN_DIR = os.path.join(BASE_DIR, "harvester", "bin")
