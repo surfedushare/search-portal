@@ -113,6 +113,6 @@ To do e2e testing for this project and the portal frontend you can run:
 
 ```bash
 cd ..
-invoke e2e_tests
+invoke test.e2e
 ```
 

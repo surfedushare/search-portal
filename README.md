@@ -118,7 +118,7 @@ Tests
 You can run all tests for the entire repo (except external Elastic Search integration) by running:
 
 ```bash
-invoke test
+invoke test.run
 ```
 
 It's also possible to run tests for specific Django projects.
@@ -128,7 +128,7 @@ For more details see: [testing service project](service/README.md#tests) and
 To see whether the code integrates correctly with the external Elastic Search service run:
 
 ```bash
-invoke elastic_search_tests
+invoke test.elastic_search
 ```
 
 
