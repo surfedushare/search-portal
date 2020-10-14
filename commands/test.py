@@ -1,7 +1,7 @@
 import logging
 from invoke.tasks import task
 
-from deploy import prepare_builds
+from deploy.container import prepare_builds
 
 
 log = logging.getLogger(__file__)
