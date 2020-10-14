@@ -1,0 +1,33 @@
+django:
+  directory: "service"
+  fixtures:
+    - "surf/apps/locale/fixtures/locales.json"
+    - "surf/apps/filters/fixtures/filter-categories.json"
+
+postgres:
+  database: "edushare"
+  user: "edushare"
+  application_user: "edushare"
+
+surfconext:
+  oidc_endpoint: "https://connect.surfconext.nl"
+  voot_api_endpoint: "https://voot.surfconext.nl"
+  client_id: "acc.surfedushare.nl"
+
+edurep:
+  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
+  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
+  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+aws:
+  image_upload_bucket: "search-portal-media-uploads-acc"
+
+secrets:
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
+    application_password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
+  django:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/django"
+    admin_password: "qwerty"  # TODO: create
+  surfconext:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/surfconext"

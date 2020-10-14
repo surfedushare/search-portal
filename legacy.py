@@ -1,7 +1,7 @@
 import os
 from datetime import date
 from fabric import task
-from invoke import task as local_task
+from invoke import task as local_task, Responder, Exit
 
 
 @task(name="download_database")
@@ -29,10 +29,33 @@ def download_media(ctx):
     ctx.run("rsync -zrthv --progress --delete legacy.zoekportaal:/volumes/surf/media/communities media/")
 
 
-@local_task(name="upload_database")
-def upload_database(ctx, dump_file):
-    target_file = os.path.join("postgres", "dumps", dump_file)
-    ctx.run(f"aws s3 cp {target_file} s3://edushare-data/databases/", echo=True)
+@task(name="upload_database")
+def upload_database(conn, dump_file):
+    if conn.host != conn.config.aws.bastion:
+        raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
+    if conn.config.env != "production":
+        raise Exit("Please migrate legacy database only to production and create snapshot from there")
+
+    dump_directory = os.path.join("postgres", "dumps")
+    dump_file_path = os.path.join(dump_directory, dump_file)
+    print("Uploading database dump:", dump_file_path)
+
+    # Make minor adjustments to dumps for legacy dumps to work on AWS
+    print("Migrating dump file")
+    conn.local(f"sed -i.bak 's/OWNER TO surf/OWNER TO postgres/g' {dump_file_path}", echo=True)
+
+    print("Uploading snapshot through port-forwarding")
+    # Setup auto-responder
+    postgres_user = conn.config.postgres_user
+    postgres_password = conn.config.secrets.postgres.password
+    postgres_password_responder = Responder(pattern=r"Password: ", response=postgres_password + "\n")
+    # Run Postgres command with port forwarding
+    with conn.forward_local(local_port=1111, remote_host=conn.config.postgres.host, remote_port=5432):
+        conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {dump_file_path}",
+                   echo=True, watchers=[postgres_password_responder], pty=True)
+
+    conn.local(f"rm {dump_file_path}.bak", warn=True)
+    print("Done")
 
 
 @local_task(name="upload_media")

@@ -1,11 +1,9 @@
 secrets:
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres"
-  postgres_application:
-    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-application"
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres"    # TODO: remove search-portal prefix
 
-django:
-  postgres_user: "postgres"
+postgres:
+  user: "postgres"
 
 aws:
   bastion: "bastion.acc.surfedushare.nl"

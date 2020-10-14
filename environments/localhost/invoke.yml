@@ -4,26 +4,16 @@
 
 # NB: When making changes restart your container or development server to load the update
 
+env: "localhost"
 
 django:
   debug: true
-  postgres_user: "django"
-  postgres_host: "postgres"
-  postgres_port: 5432
-  redis_host: "redis:6379"
   protocol: "http"
   domain: "localhost"
 
-harvester:
-  import_dataset:
-    hour: 5  # uses UTC
-    minute: 0
-    role: "primary"
-
-surfconext:
-  oidc_endpoint: none
-  voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "https@//front-test.surfcatalog.nl/"
+postgres:
+  host: "postgres"
+  port: 5432
 
 elastic_search:
   username: "search_portal_backend_prod"
@@ -31,21 +21,6 @@ elastic_search:
   protocol: "http"
   is_aws: false
 
-edurep:
-  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
-  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
-  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
-
 secrets:
-  django:
-    secret_key: "development-secret-key--do-not-use"
-  postgres:
-    password: "qwerty"
-  surfconext:
-    secret_key: "development-secret-key--ignored"
   elastic_search:
     password: "qwerty"
-
-aws:
-  image_upload_bucket: null
-  harvest_content_bucket: null
