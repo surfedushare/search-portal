@@ -21,7 +21,7 @@ def setup_database_statements(database_name, root_user, application_user, applic
         f"DROP OWNED BY {application_user}",
         f"DROP USER {application_user}",
         # Create objects
-        f"CREATE SCHEMA IF NOT EXISTS public",
+        "CREATE SCHEMA IF NOT EXISTS public",
         f"CREATE DATABASE {database_name}",
         f"CREATE USER {application_user} WITH ENCRYPTED PASSWORD \'{application_password}\'",
     ]

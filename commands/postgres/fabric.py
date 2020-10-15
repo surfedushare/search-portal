@@ -1,9 +1,6 @@
-import os
-from datetime import date
 from invoke import Responder, Exit
 from fabric import task
 
-from commands.postgres.download import download_snapshot
 from commands.postgres.sql import insert_django_user_statement, setup_database_statements
 
 
