@@ -6,7 +6,7 @@ from commands.deploy import prepare_builds, build, push, deploy, migrate
 from commands.test import test_collection
 from commands.projects.service.invoke import import_snapshot
 from commands.projects.harvester.invoke import import_dataset, harvest, cleanup
-from legacy import download_media, upload_media
+from commands.legacy import download_media, upload_media
 
 
 service_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="service")

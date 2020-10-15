@@ -80,7 +80,7 @@ def upload_database(conn, dump_file):
             watchers=[postgres_password_responder],
         )
 
-    #conn.local(f"rm {dump_file_path}.bak", warn=True)
+    conn.local(f"rm {dump_file_path}.bak", warn=True)
     print("Done")
 
 

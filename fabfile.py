@@ -5,7 +5,7 @@ from environments.surfpol import create_configuration_and_session
 from commands.postgres.fabric import setup_postgres_remote
 from commands.projects.service.fabric import create_snapshot, restore_snapshot
 from commands.projects.harvester.fabric import connect_uwsgi, connect_flower
-from legacy import download_database, upload_database
+from commands.legacy import download_database, upload_database
 
 
 service_environment, _ = create_configuration_and_session(
