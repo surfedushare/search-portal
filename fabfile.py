@@ -29,13 +29,7 @@ harvester_collection = Collection("hrv", setup_postgres_remote, connect_uwsgi, c
 harvester_collection.configure(harvester_environment)
 
 
-@task(name="setup")
-def setup_bastion(ctx):
-    ctx.sudo("apt-get install -y awscli", echo=True)  # TODO: add commands we really need
-
-
 namespace = Collection(
-    Collection("bastion", setup_bastion),
     service_collection,
     harvester_collection,
     legacy_collection

@@ -1,6 +1,6 @@
 from invoke.tasks import task
 
-from commands.aws.ecs import  run_task
+from commands.aws.ecs import run_task
 
 
 @task(help={
