@@ -15,4 +15,4 @@ aws:
   task_role_arn: "arn:aws:iam::017973353230:role/ecsTaskExecutionRole"
   harvester_task_role_arn: "arn:aws:iam::017973353230:role/ecsHarvesterTaskExecutionRole"
   superuser_task_role_arn: "arn:aws:iam::017973353230:role/ecsSuperuserTaskExecutionRole"
-  postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/postgres"
+  postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:postgres"
