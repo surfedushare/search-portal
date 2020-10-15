@@ -28,6 +28,6 @@ secrets:
     application_password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
   django:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/django"
-    admin_password: "qwerty"  # TODO: create
+    admin_password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/django"
   surfconext:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/surfconext"
