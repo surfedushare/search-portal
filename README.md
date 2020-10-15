@@ -141,35 +141,42 @@ Use ``invoke -h <command>`` to learn more about any invoke command.
 Once your tests pass you can make a new build for the project you want to deploy:
 
 ```bash
-invoke build <target-project-name>
+invoke aws.build <target-project-name>
 ```
 
 After you have created the image you can push it to AWS.
 This command will push to a registry that's available to all environments on AWS:
 
 ```bash
-invoke push <target-project-name>
+invoke aws.push <target-project-name>
 ```
 
-When an image is pushed to the registry you can deploy it with:
+When an image is pushed to the registry you can deploy the service with:
 
 ```bash
-APPLICATION_MODE=<environment> invoke deploy <target-project-name> <environment>
+APPLICATION_MODE=<environment> invoke srv.deploy <environment>
+```
+
+And the harvester with:
+
+```bash
+APPLICATION_MODE=<environment> invoke hrv.deploy <environment>
 ```
 
 
 #### Rollback
 
 In order to rollback you can specify an existing Docker image to deploy command.
+For instance with the service:
 
 ```bash
-APPLICATION_MODE=<environment> invoke deploy <target-project-name> <environment> -v <rollback-version>
+APPLICATION_MODE=<environment> invoke srv.deploy <environment> -v <rollback-version>
 ```
 
 
 #### Migrate
 
-To migrate the database you can run the migration command:
+To migrate the database on AWS you can run the migration command:
 
 ```bash
 APPLICATION_MODE=<environment> invoke migrate <target-project-name> <environment>
@@ -183,20 +190,8 @@ There are a few commands that can help to provision things like the database on 
 We're using Fabric for provisioning.
 You can run ``fab -h <command>`` to learn more about a particular Fabric command
 
-
-#### Database
-
-To setup the database on an AWS environment run:
-
-```bash
-APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.setup
-```
-
-To load snapshot data into the database on an AWS environment run:
-
-```bash
-APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.restore-snapshot
-```
+For more details on how to provision things on AWS see [provisioning the service](service/README.md#provisioning) and
+[provisioning the harvester](harvester/README.md#provisioning)
 
 
 Linting
