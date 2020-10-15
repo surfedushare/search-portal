@@ -3,6 +3,8 @@ from datetime import date
 from fabric import task
 from invoke import task as local_task, Responder, Exit
 
+from commands.postgres.sql import insert_django_user_statement
+
 
 @task(name="download_database")
 def download_database(connection):
@@ -43,18 +45,42 @@ def upload_database(conn, dump_file):
     # Make minor adjustments to dumps for legacy dumps to work on AWS
     print("Migrating dump file")
     conn.local(f"sed -i.bak 's/OWNER TO surf/OWNER TO postgres/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/OWNER TO django/OWNER TO edushare/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/OWNER FROM django/OWNER FROM edushare/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/OWNER ROLE django/OWNER ROLE edushare/g' {dump_file_path}", echo=True)
 
-    print("Uploading snapshot through port-forwarding")
     # Setup auto-responder
     postgres_user = conn.config.postgres.user
     postgres_password = conn.config.secrets.postgres.password
     postgres_password_responder = Responder(pattern=r"Password: ", response=postgres_password + "\n")
-    # Run Postgres command with port forwarding
+    # Run commands with port forwarding
     with conn.forward_local(local_port=1111, remote_host=conn.config.postgres.host, remote_port=5432):
+        print("Uploading snapshot through port-forwarding")
         conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {dump_file_path}",
                    echo=True, watchers=[postgres_password_responder], pty=True)
+        print("Migrating tables to new format")
+        conn.local(
+            f"cd {conn.config.django.directory} && "
+            f"AWS_PROFILE={conn.config.aws.profile_name} "
+            f"POL_POSTGRES_HOST=localhost "
+            f"POL_POSTGRES_PORT=1111 "
+            f"python manage.py migrate",
+            echo=True, pty=True
+        )
+        print("Creating supersurf user")
+        admin_password = conn.config.secrets.django.admin_password
+        insert_user = insert_django_user_statement(
+            "supersurf", admin_password, is_edushare=True
+        )
+        conn.local(
+            f'psql -h localhost -p 1111 -U {postgres_user} -d {conn.config.postgres.database} -W -c "{insert_user}"',
+            echo=True,
+            pty=True,
+            warn=True,
+            watchers=[postgres_password_responder],
+        )
 
-    conn.local(f"rm {dump_file_path}.bak", warn=True)
+    #conn.local(f"rm {dump_file_path}.bak", warn=True)
     print("Done")
 
 
