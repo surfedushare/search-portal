@@ -14,6 +14,8 @@ service_collection = Collection("srv", setup_postgres_localhost, import_snapshot
 service_collection.configure(service_environment)
 legacy_collection = Collection("legacy", download_media, upload_media)
 legacy_collection.configure(service_environment)
+aws_collection = Collection("aws", build, push, deploy, migrate)
+aws_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="harvester")
@@ -24,11 +26,8 @@ harvester_collection.configure(harvester_environment)
 namespace = Collection(
     service_collection,
     harvester_collection,
+    aws_collection,
     legacy_collection,
     prepare_builds,
-    build,
-    push,
-    deploy,
-    migrate,
     test_collection
 )

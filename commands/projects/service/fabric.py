@@ -29,11 +29,11 @@ def create_snapshot(conn):
     ])
 
     # Setup auto-responder
-    postgres_user = conn.config.django.postgres_user
+    postgres_user = conn.config.postgres.user
     postgres_password = conn.config.secrets.postgres.password
     postgres_password_responder = Responder(pattern=r"Password: ", response=postgres_password + "\n")
     # Run Postgres command with port forwarding
-    with conn.forward_local(local_port=1111, remote_host=conn.config.django.postgres_host, remote_port=5432):
+    with conn.forward_local(local_port=1111, remote_host=conn.config.postgres.host, remote_port=5432):
         conn.local(
             f"pg_dump -h localhost -p 1111 -U {postgres_user} {excluded_table_flags} -c edushare > {dump_file_path}",
             echo=True, watchers=[postgres_password_responder], pty=True
@@ -74,11 +74,11 @@ def restore_snapshot(conn, snapshot_name=None, migrate=True):
 
     print("Restoring snapshot")
     # Setup auto-responder
-    postgres_user = conn.config.django.postgres_user
+    postgres_user = conn.config.postgres.user
     postgres_password = conn.config.secrets.postgres.password
     postgres_password_responder = Responder(pattern=r"Password: ", response=postgres_password + "\n")
     # Run Postgres command with port forwarding
-    with conn.forward_local(local_port=1111, remote_host=conn.config.django.postgres_host, remote_port=5432):
+    with conn.forward_local(local_port=1111, remote_host=conn.config.postgres.host, remote_port=5432):
         conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {snapshot_file_path}",
                    echo=True, watchers=[postgres_password_responder], pty=True)
 

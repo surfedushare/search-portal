@@ -46,7 +46,7 @@ def upload_database(conn, dump_file):
 
     print("Uploading snapshot through port-forwarding")
     # Setup auto-responder
-    postgres_user = conn.config.postgres_user
+    postgres_user = conn.config.postgres.user
     postgres_password = conn.config.secrets.postgres.password
     postgres_password_responder = Responder(pattern=r"Password: ", response=postgres_password + "\n")
     # Run Postgres command with port forwarding
