@@ -1,3 +1,5 @@
+project: "service"
+
 django:
   directory: "service"
   fixtures:
@@ -21,6 +23,7 @@ edurep:
 
 aws:
   image_upload_bucket: "search-portal-media-uploads-acc"
+  task_role_arn: "arn:aws:iam::000428825067:role/ecsTaskExecutionRole"
 
 secrets:
   postgres:

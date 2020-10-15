@@ -51,14 +51,14 @@ def register_clearlogins_task(session, aws_config, task_definition_arn):
 
 
 @task(help={
-    "target": "Name of the project you want to deploy on AWS: service or harvester",
     "mode": "Mode you want to deploy to: development, acceptance or production. Must match APPLICATION_MODE",
     "version": "Version of the project you want to deploy. Defaults to latest version"
 })
-def deploy(ctx, target, mode, version=None):
+def deploy(ctx, mode, version=None):
     """
     Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
     """
+    target = ctx.config.project
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
     target_info = TARGETS[target]
@@ -67,9 +67,7 @@ def deploy(ctx, target, mode, version=None):
     print(f"Starting AWS session for: {mode}")
     session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name='eu-central-1')
     ecs_client = session.client('ecs', )
-    task_role_arn = ctx.config.aws.harvester_task_role_arn if target == "harvester" else \
-        ctx.config.aws.task_role_arn
-
+    task_role_arn = ctx.config.aws.task_role_arn
     target_name, task_definition_arn = register_task_definition(
         ecs_client,
         task_role_arn,

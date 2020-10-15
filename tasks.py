@@ -10,16 +10,16 @@ from legacy import download_media, upload_media
 
 
 service_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="service")
-service_collection = Collection("srv", setup_postgres_localhost, import_snapshot)
+service_collection = Collection("srv", setup_postgres_localhost, import_snapshot, deploy)
 service_collection.configure(service_environment)
 legacy_collection = Collection("legacy", download_media, upload_media)
 legacy_collection.configure(service_environment)
-aws_collection = Collection("aws", build, push, deploy, migrate)
+aws_collection = Collection("aws", build, push, migrate)
 aws_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="harvester")
-harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, cleanup, import_dataset)
+harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, cleanup, import_dataset, deploy)
 harvester_collection.configure(harvester_environment)
 
 
