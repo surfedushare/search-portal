@@ -49,7 +49,7 @@ def create_snapshot(conn):
     "snapshot_name": "The file name of the snapshot you want to restore. Defaults to last updated snapshot",
     "migrate": "Whether to apply some changes to the snapshot file to migrate from a pre-AWS format"
 })
-def restore_snapshot(conn, snapshot_name=None, migrate=True):
+def restore_snapshot(conn, snapshot_name=None):
     """
     Loads a particular snapshot into the database on AWS through a bastion host
     """
@@ -59,11 +59,6 @@ def restore_snapshot(conn, snapshot_name=None, migrate=True):
         raise Exit("Cowardly refusing to restore the production database")
 
     snapshot_file_path = download_snapshot(snapshot_name)
-
-    # Make minor adjustments to dumps for legacy dumps to work on AWS
-    if migrate:
-        print("Migrating dump file")
-        conn.local(f"sed -i.bak 's/OWNER TO surf/OWNER TO postgres/g' {snapshot_file_path}", echo=True)
 
     if "test" in conn.config.surfconext.oidc_endpoint:
         print("Rewriting team ARN's for test communities")
