@@ -19,11 +19,5 @@ elastic_search:
   is_aws: true
 
 secrets:
-  django:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/django"
-  postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-application"
-  surfconext:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/surfconext"
   elastic_search:
     password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/elastic"

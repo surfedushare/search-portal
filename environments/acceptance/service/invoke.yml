@@ -27,10 +27,10 @@ aws:
 
 secrets:
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
-    application_password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-application"
+    application_password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres-application"
   django:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/django"
-    admin_password: "qwerty"  # TODO: create
+    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/django"
+    admin_password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/django"
   surfconext:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/surfconext"
+    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/surfconext"

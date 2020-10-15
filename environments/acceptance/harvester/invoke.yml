@@ -24,8 +24,8 @@ aws:
 
 secrets:
   postgres:
-    password: "qwerty"  # TODO: create
-    application_password: "qwerty"  # TODO: create
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/postgres-application"
+    application_password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/postgres-application"
   django:
-    secret_key: "development-secret-key--do-not-use"  # TODO: create
-    admin_password: "qwerty"  # TODO: create
+    secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/django"
+    admin_password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/django"

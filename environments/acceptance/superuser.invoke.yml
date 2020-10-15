@@ -1,6 +1,6 @@
 secrets:
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/postgres"    # TODO: remove search-portal prefix
+    password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:postgres"
 
 postgres:
   user: "postgres"
