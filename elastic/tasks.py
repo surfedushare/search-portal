@@ -1,7 +1,14 @@
+"""
+As it's impossible to connect to Elastic clusters from the outside directly,
+it's not possible to use the commands in this file as is.
+However we're considering ways to work locally with remote ES and these commands may become useful again.
+Until that time we're removing them from the default invoke.
+"""
 import os
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 import boto3
+from invoke import Collection
 try:
     from invoke import ctask as task
 except ImportError:
@@ -74,3 +81,6 @@ def restore_snapshot(ctx, name):
     client = get_es_client(ctx)
     client.indices.delete("_all", allow_no_indices=True, ignore_unavailable=True)
     client.snapshot.restore(repository="backups", snapshot=name, wait_for_completion=True, request_timeout=300)
+
+
+Collection("es", setup, create_snapshot, load_repository, restore_snapshot)

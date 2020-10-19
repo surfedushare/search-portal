@@ -1,5 +1,0 @@
-CREATE SCHEMA IF NOT EXISTS public;
-GRANT CONNECT ON DATABASE edushare TO django;
-
-CREATE DATABASE harvester;
-GRANT CONNECT ON DATABASE harvester TO django;

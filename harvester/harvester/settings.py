@@ -31,7 +31,7 @@ from surfpol import create_configuration_and_session, get_package_info, MODE
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
 VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
-environment, session = create_configuration_and_session()
+environment, session = create_configuration_and_session(project='harvester')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -108,10 +108,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'harvester',
-        'USER': environment.django.postgres_user,
+        'USER': environment.postgres.user,
         'PASSWORD': environment.secrets.postgres.password,
-        'HOST': environment.django.postgres_host,
-        'PORT': environment.django.postgres_port,
+        'HOST': environment.postgres.host,
+        'PORT': environment.postgres.port,
     }
 }
 
@@ -339,13 +339,13 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60,
         'args': tuple()
     },
-    'harvest': {  # TODO: when refactoring the configuration we should give harvest its own time slot
+    'harvest': {
         'task': 'harvest',
         'schedule': crontab(
-            hour=environment.harvester.import_dataset.hour,
-            minute=environment.harvester.import_dataset.minute,
+            hour=environment.schedule.harvest.hour,
+            minute=environment.schedule.harvest.minute,
         ),
-        'args': tuple(environment.harvester.import_dataset.role)
+        'args': tuple(environment.schedule.harvest.role)
     },
 }
 

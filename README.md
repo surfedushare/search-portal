@@ -118,7 +118,7 @@ Tests
 You can run all tests for the entire repo (except external Elastic Search integration) by running:
 
 ```bash
-invoke test
+invoke test.run
 ```
 
 It's also possible to run tests for specific Django projects.
@@ -128,7 +128,7 @@ For more details see: [testing service project](service/README.md#tests) and
 To see whether the code integrates correctly with the external Elastic Search service run:
 
 ```bash
-invoke elastic_search_tests
+invoke test.elastic_search
 ```
 
 
@@ -141,35 +141,42 @@ Use ``invoke -h <command>`` to learn more about any invoke command.
 Once your tests pass you can make a new build for the project you want to deploy:
 
 ```bash
-invoke build <target-project-name>
+invoke aws.build <target-project-name>
 ```
 
 After you have created the image you can push it to AWS.
 This command will push to a registry that's available to all environments on AWS:
 
 ```bash
-invoke push <target-project-name>
+invoke aws.push <target-project-name>
 ```
 
-When an image is pushed to the registry you can deploy it with:
+When an image is pushed to the registry you can deploy the service with:
 
 ```bash
-APPLICATION_MODE=<environment> invoke deploy <target-project-name> <environment>
+APPLICATION_MODE=<environment> invoke srv.deploy <environment>
+```
+
+And the harvester with:
+
+```bash
+APPLICATION_MODE=<environment> invoke hrv.deploy <environment>
 ```
 
 
 #### Rollback
 
 In order to rollback you can specify an existing Docker image to deploy command.
+For instance with the service:
 
 ```bash
-APPLICATION_MODE=<environment> invoke deploy <target-project-name> <environment> -v <rollback-version>
+APPLICATION_MODE=<environment> invoke srv.deploy <environment> -v <rollback-version>
 ```
 
 
 #### Migrate
 
-To migrate the database you can run the migration command:
+To migrate the database on AWS you can run the migration command:
 
 ```bash
 APPLICATION_MODE=<environment> invoke migrate <target-project-name> <environment>
@@ -183,48 +190,8 @@ There are a few commands that can help to provision things like the database on 
 We're using Fabric for provisioning.
 You can run ``fab -h <command>`` to learn more about a particular Fabric command
 
-
-#### Database
-
-To setup the database on an AWS environment run:
-
-```bash
-APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.setup
-```
-
-To load snapshot data into the database on an AWS environment run:
-
-```bash
-APPLICATION_MODE=<environment> fab -H <bastion-host-domain> db.restore-snapshot
-```
-
-
-Elastic Search data
--------------------
-
-> NB: It's recommended to [create your own copies of indices with the harvester commands](harvester/README.md#harvesting),
-> instead of loading (possibly old and stale) production snapshots.
-
-It's possible to load data into your localhost Elastic Search cluster with a few commands
-In order to do that you first need to setup with:
-
-```bash
-invoke es.setup
-```
-
-Backups are stored in a so called repository. You'll need to download the latest ES repository file to load the data.
-Ask somebody for the file and name of the latest backup repository and run:
-
-```bash
-invoke es.load-repository <repository-file>
-invoke es.restore-snapshot <repository-name>
-```
-
-This should have loaded the indices you need to make searches locally.
-Alternatively you can set the
-``POL_ELASTIC_SEARCH_HOST``, ``POL_ELASTIC_SEARCH_PROTOCOL``, ``POL_ELASTIC_SEARCH_USERNAME`` and
-``POL_SECRETS_ELASTIC_SEARCH_PASSWORD`` variables inside your ``.env`` file.
-This allows to connect your local setup to a remote development or testing cluster.
+For more details on how to provision things on AWS see [provisioning the service](service/README.md#provisioning) and
+[provisioning the harvester](harvester/README.md#provisioning)
 
 
 Linting

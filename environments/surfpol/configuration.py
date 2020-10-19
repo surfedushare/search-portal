@@ -45,20 +45,23 @@ class POLConfig(Config):
     env_prefix = PREFIX
 
 
-def create_configuration_and_session(use_aws_default_profile=True, config_class=POLConfig):
+def create_configuration_and_session(use_aws_default_profile=True, config_class=POLConfig, project=None):
     """
     Creates an environment holding all the configuration for current mode and creates an AWS session.
     The used profile for AWS session is either default or the configured profile_name for the environment
 
     :param use_aws_default_profile: Set to false when you want to load environment specific AWS profile
     :param config_class: Set to invoke.config.Config if you want to use Fabric
+    :param project: The name of the project to get the environment for
     :return: environment, session
     """
 
     # Now we use the customize invoke load as described above
     environment = config_class(
         system_prefix=MODE_ENVIRONMENT + os.path.sep,
-        user_prefix=os.path.join(MODE_ENVIRONMENT, "superuser.") if CONTEXT == "host" else None
+        runtime_path=os.path.join(MODE_ENVIRONMENT, "superuser.invoke.yml") if CONTEXT == "host" else None,
+        project_location=os.path.join(MODE_ENVIRONMENT, project) if project else None,
+        lazy=True
     )
     environment.load_system()
     environment.load_user()

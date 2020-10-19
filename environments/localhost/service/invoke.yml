@@ -1,0 +1,33 @@
+django:
+  directory: "service"
+  fixtures:
+    - "surf/apps/locale/fixtures/locales.json"
+    - "surf/apps/filters/fixtures/filter-categories.json"
+
+postgres:
+  database: "edushare"
+  user: "edushare"
+  application_user: "edushare"
+
+surfconext:
+  oidc_endpoint: none
+  voot_api_endpoint: "https://voot.test.surfconext.nl"
+  client_id: "https@//front-test.surfcatalog.nl/"
+
+edurep:
+  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
+  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
+  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+aws:
+  image_upload_bucket: null
+
+secrets:
+  postgres:
+    password: "qwerty"
+    application_password: "qwerty"
+  django:
+    secret_key: "development-secret-key--do-not-use"
+    admin_password: "qwerty"
+  surfconext:
+    secret_key: "development-secret-key--ignored"
