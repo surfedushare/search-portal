@@ -15,7 +15,7 @@ def migrate(ctx, target, mode, version=None):
     command = ["python", "manage.py", "migrate"]
     environment = [
         {
-            "name": "POL_DJANGO_POSTGRES_USER",
+            "name": "POL_POSTGRES_USER",
             "value": f"{ctx.config.postgres.user}"
         },
         {
