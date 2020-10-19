@@ -170,7 +170,8 @@ class MaterialSearchAPIView(APIView):
             context={'search_counts': drill_down_flat}
         )
 
-        add_search_query_to_elastic_index(res["recordcount"], data["search_text"], data["filters"])
+        if data['page'] == 1 and data["search_text"]:
+            add_search_query_to_elastic_index(res["recordcount"], data["search_text"], data["filters"])
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
