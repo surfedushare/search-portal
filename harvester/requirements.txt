@@ -17,7 +17,7 @@ django-storages==1.9.1
 
 # Tools
 ipython==7.16.1
-tqdm==4.48.1
+tqdm==4.50.2
 invoke==1.4.1
 ipdb==0.13.3
 sentry-sdk==0.16.2
