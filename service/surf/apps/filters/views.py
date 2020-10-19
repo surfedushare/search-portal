@@ -6,22 +6,11 @@ from types import SimpleNamespace
 
 from rest_framework import status, generics
 from rest_framework.mixins import ListModelMixin
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import (
-    GenericViewSet,
-    ModelViewSet
-)
+from rest_framework.viewsets import GenericViewSet
 
-from surf.apps.filters.models import (
-    Filter,
-    MpttFilterItem
-)
-from surf.apps.filters.serializers import (
-    FilterSerializer,
-    FilterShortSerializer,
-    MpttFilterItemSerializer,
-)
+from surf.apps.filters.models import MpttFilterItem
+from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.views import MaterialSearchAPIView
 
 
@@ -87,34 +76,6 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
                 external_id_count[sub_item['external_id']] = sub_item['count']
             external_id_count[item['external_id']] = category_count
         return external_id_count
-
-
-class FilterViewSet(ModelViewSet):
-    """
-    Viewset class that provides CRUD actions for Filter.
-    """
-    queryset = Filter.objects.none()
-    serializer_class = FilterSerializer
-    permission_classes = [IsAuthenticated]
-    pagination_class = None
-
-    def get_serializer_class(self):
-        """
-        Returns serializer class depending on action method
-        """
-
-        if self.action == 'list':
-            return FilterShortSerializer
-
-        return FilterSerializer
-
-    def get_queryset(self):
-        """
-        Returns queryset only with current user filters
-        """
-
-        user = self.request.user
-        return Filter.objects.filter(owner_id=user.id).all()
 
 
 class MpttFilterItems(generics.GenericAPIView):
