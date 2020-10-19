@@ -3,8 +3,9 @@
 #################################################
 
 FROM python:3.6-stretch
+SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update && apt-get install -y less vim ffmpeg \
+RUN apt-get update && apt-get install -y less vim ffmpeg default-jre \
     time dialog sox subversion build-essential zlib1g-dev automake autoconf libtool libatlas3-base
 
 # Create the app environment
@@ -53,6 +54,11 @@ COPY environments /usr/src/environments
 # If you doubt this decision then read the "infrequently asked question" section for details
 # Here we gather static files that get served through uWSGI if they don't exist
 RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinput
+
+# Install and verify Tika
+ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.24.1.jar /usr/src/app/harvester/bin/
+ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.24.1.jar.sha512 /usr/src/app/harvester/bin/
+RUN cat /usr/src/app/harvester/bin/tika-app-1.24.1.jar.sha512 | echo "$(</dev/stdin)  /usr/src/app/harvester/bin/tika-app-1.24.1.jar" | sha512sum -c
 
 # Entrypoint sets our environment correctly
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

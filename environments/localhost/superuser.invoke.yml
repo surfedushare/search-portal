@@ -1,9 +1,5 @@
-secrets:
-  postgres_application:
-    password: "qwerty"
-
-django:
-  postgres_user: "postgres"
+postgres:
+  user: "postgres"
 
 aws:
   bastion: null

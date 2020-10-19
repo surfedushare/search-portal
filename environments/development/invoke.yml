@@ -1,45 +1,23 @@
 # NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
 # It uses AWS Secret Manager to lookup any secrets at application bootstrap
 
+env: "development"
+
 django:
   debug: true
-  postgres_user: "django"
-  postgres_host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
-  redis_host: "harvester.2w7uxm.0001.euc1.cache.amazonaws.com:6379"
-  protocol: "http"
+  protocol: "https"
   domain: "dev.surfedushare.nl"
 
-harvester:
-  import_dataset:
-    hour: 5  # uses UTC
-    minute: 0
-    role: "replica"
-
-surfconext:
-  oidc_endpoint: "https://connect.test.surfconext.nl"
-  voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "front-dev.surfcatalog.nl"
+postgres:
+  host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
+  port: 5432
 
 elastic_search:
-  username: "search_portal_backend_test"
+  username: null
   host: "vpc-surfpol-main-7uhb7niqpopd6z6ioyzohcah3i.eu-central-1.es.amazonaws.com"
   protocol: "https"
   is_aws: true
 
-edurep:
-  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
-  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
-  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
-
 secrets:
-  django:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/django"
-  postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/postgres-application"
-  surfconext:
-    secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/surfconext"
   elastic_search:
     password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/elastic"
-
-aws:
-  image_upload_bucket: "search-portal-media-uploads-dev"

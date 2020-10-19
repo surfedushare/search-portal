@@ -45,12 +45,9 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
     def get_elastic_documents_by_language(self, since):
         by_language = defaultdict(list)
         for arrangement in self.arrangement_set.prefetch_related("document_set").filter(modified_at__gte=since):
-            languages = {doc.get_language() for doc in arrangement.documents.all()}
-            if len(languages) != 1:
-                by_language["unk"].append(arrangement.to_search())
-                continue
-            language = languages.pop()
-            by_language[language].append(arrangement.to_search())
+            language = arrangement.meta.get("language", "unk")
+            search_document = arrangement.to_search()
+            by_language[language].append(search_document)
         return by_language
 
     def get_documents_by_language(self, minimal_educational_level=-1):

@@ -26,7 +26,7 @@ from surfpol import create_configuration_and_session, MODE, CONTEXT, get_package
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 PACKAGE_INFO = get_package_info()
-environment, session = create_configuration_and_session()
+environment, session = create_configuration_and_session(project='service')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environment.secrets.django.secret_key
@@ -144,11 +144,11 @@ WSGI_APPLICATION = 'surf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'edushare',
-        'USER': environment.django.postgres_user,
+        'NAME': environment.postgres.database,
+        'USER': environment.postgres.user,
         'PASSWORD': environment.secrets.postgres.password,
-        'HOST': environment.django.postgres_host,
-        'PORT': 5432,
+        'HOST': environment.postgres.host,
+        'PORT': environment.postgres.port,
     }
 }
 
