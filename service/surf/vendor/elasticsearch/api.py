@@ -189,6 +189,14 @@ class ElasticSearchApiClient:
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
+            body["query"]["bool"]["should"] = {
+                "distance_feature": {
+                    "field": "publisher_date",
+                    "pivot": "90d",
+                    "origin": "now",
+                    "boost": 1.5
+                }
+            }
 
         indices = self.parse_index_language(self, filters)
 

@@ -1,0 +1,28 @@
+django:
+  directory: "harvester"
+  fixtures:
+    - "core/fixtures/datasets-history.json"
+    - "edurep/fixtures/surf-oaipmh-1970-01-01.json"
+  redis_host: "redis:6379"
+
+postgres:
+  database: "harvester"
+  user: "harvester"
+  application_user: "harvester"
+
+schedule:
+  harvest:
+    hour: 5  # uses UTC
+    minute: 0
+    role: "primary"
+
+aws:
+  harvest_content_bucket: null
+
+secrets:
+  postgres:
+    password: "qwerty"
+    application_password: "qwerty"
+  django:
+    secret_key: "development-secret-key--do-not-use"
+    admin_password: "qwerty"

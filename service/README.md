@@ -11,20 +11,25 @@ Installation
 ------------
 
 After the [initial Python/machine installation](../README.md#installation) 
-and following the [getting started with the services guide](../README.md#getting-started)
+and following the [getting started guide](../README.md#getting-started)
 you can further setup your Django database for the API with the following commands.
 
 ```bash
-invoke srv.setup
+invoke srv.setup-postgres
 ```
 
-This should have setup your database for the most part.
-Unfortunately due to historic reasons there is a lot of configuration going on in the database.
-So it's wise to get a production dump and import it to your system.
-You can do this with:
+This should have setup your database completely.
+However it can be beneficial to get a production dump and import it to your system.
+You can create such a dump with:
+
+```
+APPLICATION_MODE=production fab -H bastion.prod.surfedushare.nl srv.create-snapshot
+```
+
+The output of this command will include a SQL file name. You can then use that name to import the dump locally:
 
 ```bash
-invoke db.import-snapshot
+invoke srv.import-snapshot <sql-file-name>
 ```
 
 
@@ -56,6 +61,9 @@ Either way the Django admin and API endpoints become available under:
 http://localhost:8000/admin/
 http://localhost:8000/api/v1/
 ```
+
+The setup command will have created a superuser called supersurf. On localhost the password is "qwerty".
+For AWS environments you can find the admin password under the Django secrets in the Secret Manager.
 
 
 #### Production parity on localhost
@@ -113,6 +121,25 @@ To do e2e testing for this project and the portal frontend you can run:
 
 ```bash
 cd ..
-invoke e2e_tests
+invoke test.e2e
 ```
 
+
+Provisioning
+------------
+
+The service only needs to provision its database. To setup the database on an AWS environment run:
+
+> If you setup the database in this way all data is irreversibly destroyed
+
+```bash
+APPLICATION_MODE=<environment> fab -H <bastion-host-domain> srv.setup-postgres
+```
+
+To load snapshot data into the database on an AWS environment run:
+
+```bash
+APPLICATION_MODE=<environment> fab -H <bastion-host-domain> srv.restore-snapshot <sql-file-name>
+```
+
+The SQL file name is the file name as printed by [the create snapshot](README.md#installation) command described above

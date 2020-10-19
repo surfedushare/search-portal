@@ -3,7 +3,7 @@ from dateutil.parser import parse as parse_date_string
 
 from django.utils.timezone import make_aware
 from django.db import models
-from datagrowth.resources import HttpResource, HttpFileResource, file_resource_delete_handler
+from datagrowth.resources import HttpResource
 
 
 class EdurepOAIPMH(HttpResource):
@@ -28,7 +28,7 @@ class EdurepOAIPMH(HttpResource):
     set_specification = models.CharField(max_length=255, blank=True, null=False)
     since = models.DateTimeField()
 
-    URI_TEMPLATE = "http://oai.edurep.kennisnet.nl:8001/edurep/oai?set={}&from={}"
+    URI_TEMPLATE = "https://wszoeken.edurep.kennisnet.nl/edurep/oai?set={}&from={}"
     PARAMETERS = {
         "verb": "ListRecords",
         "metadataPrefix": "lom"
@@ -108,10 +108,3 @@ class EdurepOAIPMH(HttpResource):
     class Meta:
         verbose_name = "Edurep OAIPMH harvest"
         verbose_name_plural = "Edurep OAIPMH harvests"
-
-
-class EdurepFile(HttpFileResource):
-    pass
-
-
-models.signals.post_delete.connect(file_resource_delete_handler, sender=EdurepFile)
