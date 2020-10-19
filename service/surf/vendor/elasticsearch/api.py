@@ -195,7 +195,7 @@ class ElasticSearchApiClient:
                     "field": "publisher_date",
                     "pivot": "90d",
                     "origin": "now",
-                    "boost": 1.5
+                    "boost": 1.15
                 }
             }
 
