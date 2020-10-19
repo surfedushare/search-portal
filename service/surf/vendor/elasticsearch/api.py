@@ -5,7 +5,6 @@ from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 import boto3
 
-from surf.apps.querylog.models import QueryLog
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 
 
@@ -33,7 +32,7 @@ class ElasticSearchApiClient:
         else:
             http_auth = (settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD,)
 
-        self.elastic = Elasticsearch(
+        self.client = Elasticsearch(
             [elastic_url],
             http_auth=http_auth,
             connection_class=RequestsHttpConnection,
@@ -130,7 +129,7 @@ class ElasticSearchApiClient:
             }
         }
 
-        result = self.elastic.search(
+        result = self.client.search(
             index=[self.index_nl, self.index_en],
             body=query_dictionary
         )
@@ -214,18 +213,11 @@ class ElasticSearchApiClient:
                 "_score"
             ]
         # make query and parse
-        result = self.elastic.search(
+        result = self.client.search(
             index=indices,
             body=body
         )
-        parsed_result = self.parse_elastic_result(result)
-        # store the searches in the database to be able to analyse them later on.
-        # however, dont store results when scrolling as not to overload the database
-        if start_record == 0 and search_text:
-            url = f"es.search(index={indices}, body={body})"
-            QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
-                     result_size=parsed_result['recordcount'], result=parsed_result).save()
-        return parsed_result
+        return self.parse_elastic_result(result)
 
     def get_materials_by_id(self, external_ids, **kwargs):
         """
@@ -233,7 +225,7 @@ class ElasticSearchApiClient:
         :param external_ids: the id's of the materials to retrieve
         :return: a list of search results (like a regular search).
         """
-        result = self.elastic.search(
+        result = self.client.search(
             index=[self.index_nl, self.index_en],
             body={
                 "query": {
