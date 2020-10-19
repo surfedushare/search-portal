@@ -6,6 +6,7 @@ FROM node:12.13 AS builder
 
 # Create the app environment
 RUN mkdir -p /usr/src/portal
+RUN mkdir -p /usr/src/service
 WORKDIR /usr/src/portal
 
 # Adding an app user to prevent container access as root
@@ -14,7 +15,7 @@ WORKDIR /usr/src/portal
 # The -m option forces a home folder (which Python tools rely upon rather heavily)
 RUN groupadd -r app -g 1001 && useradd app -u 1001 -r -m -g app
 # Give access to app user
-RUN chown app:app /usr/src/portal
+RUN chown -R app:app /usr/src
 # Become app user to prevent attacks during install (possibly from hijacked npm packages)
 USER app:app
 
@@ -63,7 +64,7 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Copy application and frontend build
 COPY service /usr/src/app
-COPY --from=builder /usr/src/portal/dist /usr/src/app/surf/apps/materials/static/portal
+COPY --from=builder /usr/src/service/surf /usr/src/app/surf
 # Copy environment configurations
 # The default environment mode is production, but during image build we use the localhost mode
 # This allows to run setup commands locally without loading secrets
