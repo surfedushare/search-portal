@@ -14,7 +14,7 @@ postgres:
 
 schedule:
   harvest:
-    hour: 13  # uses UTC
+    hour: 5  # uses UTC
     minute: 0
     role: "primary"
 
