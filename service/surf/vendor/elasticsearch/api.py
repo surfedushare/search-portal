@@ -229,7 +229,7 @@ class ElasticSearchApiClient:
         """
         start_record = page_size * (page - 1)
 
-        result = self.elastic.search(
+        result = self.client.search(
             index=[self.index_nl, self.index_en],
             body={
                 "query": {
