@@ -219,13 +219,17 @@ class ElasticSearchApiClient:
         )
         return self.parse_elastic_result(result)
 
-    def get_materials_by_id(self, external_ids, **kwargs):
+    def get_materials_by_id(self, external_ids, page=1, page_size=5, **kwargs):
         """
         Retrieve specific materials from elastic through their external id.
         :param external_ids: the id's of the materials to retrieve
+        :param page: The page index of the results
+        :param page_size: How many items are loaded per page.
         :return: a list of search results (like a regular search).
         """
-        result = self.client.search(
+        start_record = page_size * (page - 1)
+
+        result = self.elastic.search(
             index=[self.index_nl, self.index_en],
             body={
                 "query": {
@@ -233,6 +237,8 @@ class ElasticSearchApiClient:
                         "must": [{"terms": {"external_id": external_ids}}]
                     }
                 },
+                'from': start_record,
+                'size': page_size,
             },
         )
         materials = self.parse_elastic_result(result)

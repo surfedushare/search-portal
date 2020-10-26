@@ -25,7 +25,11 @@
         </button>
       </div>
 
-      <div>
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="materials_loading"
+        infinite-scroll-distance="10"
+      >
         <Materials
           v-model="formData.materials_for_deleting"
           :materials="collection_materials"
@@ -155,6 +159,23 @@ export default {
         .finally(() => {
           this.isLoading = false
         })
+    },
+    loadMore() {
+      const { id } = this.$route.params
+      const { collection_materials } = this
+      if (collection_materials) {
+        const { page_size, page, records_total } = collection_materials
+
+        if (records_total > page_size * page) {
+          this.$store.dispatch('getNextMaterialInMyCollection', {
+            id,
+            params: {
+              page_size: this.search.page_size,
+              page: page + 1
+            }
+          })
+        }
+      }
     },
     /**
      * Set editable to the collection
