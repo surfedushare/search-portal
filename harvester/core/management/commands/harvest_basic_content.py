@@ -18,38 +18,66 @@ class Command(HarvesterCommand):
             "resource": "core.FileResource",
             "interval_duration": 2000  # 2s between downloads to prevent too many request errors
         })
-        success, error = send_serie(
+        self.info("Starting with main content")
+        success_main, error_main = send_serie(
             self.progress([[seed["url"]] for seed in seeds]),
             [{} for _ in seeds],
             config=download_config,
             method="get"
         )
-        self.info("Errors while downloading content: {}".format(len(error)))
-        self.info("Content downloaded successfully: {}".format(len(success)))
-        return success
+        self.info("Errors while downloading main content: {}".format(len(error_main)))
+        self.info("Main content downloaded successfully: {}".format(len(success_main)))
+
+        self.info("Starting with package content")
+        package_urls = [[seed["package_url"]] for seed in seeds if seed.get("package_url", None)]
+        success_package, error_package = send_serie(
+            self.progress(package_urls),
+            [{} for _ in package_urls],
+            config=download_config,
+            method="get"
+        )
+        self.info("Errors while downloading package content: {}".format(len(error_package)))
+        self.info("Package content downloaded successfully: {}".format(len(error_main)))
+
+        return success_main + success_package
 
     def extract_from_seed_files(self, seeds, downloads):
         if not len(seeds):
             return
 
-        uris = [FileResource.uri_from_url(seed["url"]) for seed in seeds]
-        file_resources = FileResource.objects.filter(uri__in=uris, id__in=downloads)
-
         tika_config = create_config("shell_resource", {
             "resource": "core.TikaResource",
         })
+
+        self.info("Starting with main content")
+        uris = [FileResource.uri_from_url(seed["url"]) for seed in seeds]
+        file_resources = FileResource.objects.filter(uri__in=uris, id__in=downloads)
         signed_urls = [
             resource.get_signed_absolute_uri()
             for resource in file_resources
         ]
-        success, error = run_serie(
+        main_success, main_error = run_serie(
             self.progress([[url] for url in signed_urls if url is not None]),
             [{} for _ in file_resources],
             config=tika_config
         )
+        self.info("Errors while extracting main texts: {}".format(len(main_error)))
+        self.info("Main texts extracted successfully: {}".format(len(main_success)))
 
-        self.info("Errors while extracting texts: {}".format(len(error)))
-        self.info("Texts extracted successfully: {}".format(len(success)))
+        self.info("Starting with package content")
+        uris = [FileResource.uri_from_url(seed["package_url"]) for seed in seeds if seed.get("package_url", None)]
+        file_resources = FileResource.objects.filter(uri__in=uris, id__in=downloads)
+        signed_urls = [
+            resource.get_signed_absolute_uri()
+            for resource in file_resources
+        ]
+        package_success, package_error = run_serie(
+            self.progress([[url] for url in signed_urls if url is not None]),
+            [{} for _ in file_resources],
+            config=tika_config
+        )
+        self.info("Errors while extracting package texts: {}".format(len(package_error)))
+        self.info("Package texts extracted successfully: {}".format(len(package_success)))
 
     def handle(self, *args, **options):
 

@@ -9,6 +9,7 @@ from edurep.extraction import EdurepDataExtraction
 
 EDUREP_EXTRACTION_OBJECTIVE = {
     "url": EdurepDataExtraction.get_url,
+    "files": EdurepDataExtraction.get_files,
     "title": EdurepDataExtraction.get_title,
     "language": EdurepDataExtraction.get_language,
     "keywords": EdurepDataExtraction.get_keywords,
@@ -63,9 +64,9 @@ def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=Tr
             continue
         # We adjust url's of seeds if the source files are not at the URL
         # We should improve data extraction to always get source files
-        if seed["mime_type"] == "application/x-Wikiwijs-Arrangement" and seed.get("url", None):
-            seed["package_url"] = seed["url"]
-            seed["url"] += "?p=imscp"
+        url = seed.get("url", None)
+        if url and "maken.wikiwijs.nl" in url:
+            seed["package_url"] = seed["url"] + "?p=imscp"
         # We deduplicate based on the external_id a UID by Edurep
         seeds.append(seed)
     # Now we'll mark any invalid seeds as deleted to make sure they disappear

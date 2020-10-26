@@ -8,7 +8,7 @@ from datagrowth.utils import ibatch
 from core.models import Dataset, Collection, Arrangement, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.management.base import OutputCommand
-from core.utils.resources import get_material_resources
+from core.utils.resources import get_material_resources, get_basic_material_resources
 from edurep.utils import get_edurep_oaipmh_seeds
 from core.models import CommonCartridge
 
@@ -46,39 +46,10 @@ class Command(OutputCommand):
         except (ValidationError, BadZipFile):
             self.warning(f"Invalid or missing common cartridge for file resource: {file_resource.id}")
             return []
-        # Extract texts per file in the Common Cartridge
-        files = set()
-        texts_by_file = defaultdict(list)
-        for resource in cc.get_resources().values():
-            files.update(resource["files"])
         tika_content_type, data = tika_resource.content
         if data is None:
-            return False
+            return []
         text = data.get("X-TIKA:content", "")
-        current_file = None
-        for line in text.split("\n"):
-            line = line.strip()
-            if line in files:
-                current_file = line
-                continue
-            if current_file and line:
-                texts_by_file[current_file].append(line)
-        # We temporarily disable creating multiple documents for a package
-        # When there is a design to display courses in the portal we can re-enable this
-        # Until that time concatenating all documents in a package to a single learning material
-        # documents = {}
-        # for file, texts in texts_by_file.items():
-        #     doc = self._create_document(
-        #         "\n".join(texts),
-        #         url="{}/{}".format(metadata.get("package_url"), file),
-        #         meta=metadata,
-        #         pipeline=pipeline
-        #     )
-        #     documents[doc["id"]] = doc
-        # return list(documents.values())
-        # text = ""
-        # for file, texts in texts_by_file.items():
-        #     text += "\n".join(texts)
         return [self._create_document(
             text,
             url=metadata.get("package_url"),
@@ -112,10 +83,19 @@ class Command(OutputCommand):
                 "video": self._serialize_resource(video_resource),
                 "kaldi": self._serialize_resource(transcription_resource)
             }
+            document_resource = tika_resource
+            is_package = "package_url" in seed
+            if is_package:
+                package_file_resource, package_tika_resource = get_basic_material_resources(seed["package_url"])
+                pipeline.update({
+                    "package_file": self._serialize_resource(package_file_resource),
+                    "package_tika": self._serialize_resource(package_tika_resource),
+                })
+                document_resource = package_tika_resource
             has_video = tika_resource.has_video() if tika_resource is not None else False
 
             documents = []
-            documents += self.get_documents(file_resource, tika_resource, seed, pipeline)
+            documents += self.get_documents(file_resource, document_resource, seed, pipeline)
             if has_video:
                 documents += self.get_documents_from_transcription(transcription_resource, seed, pipeline)
 
@@ -133,6 +113,7 @@ class Command(OutputCommand):
             )
             arrangement.meta.update({
                 "reference_id": reference_id,
+                "is_package": is_package,
                 "url": seed["url"],
                 "keywords": seed.get("keywords", []),
             })
@@ -148,8 +129,9 @@ class Command(OutputCommand):
         document_delete_total = 0
         for seeds in ibatch(deletion_seeds, 32, progress_bar=self.show_progress):
             ids = [seed["external_id"] for seed in seeds]
-            for id in ids:
-                for doc in collection.documents.filter(collection=collection, properties__contains={"external_id": id}):
+            for external_id in ids:
+                for doc in collection.documents.filter(collection=collection,
+                                                       properties__contains={"external_id": external_id}):
                     doc.delete()
                     document_delete_total += 1
         arrangement_delete_count = 0
