@@ -163,12 +163,8 @@ export default {
       state.collection_materials = Object.assign(
         {},
         state.collection_materials,
-        payload, {
-          records: [
-            ...records,
-            ...payload.records,
-          ]
-        }
+        payload,
+        { records: [...records, ...payload.records]}
       )
     }
   }
