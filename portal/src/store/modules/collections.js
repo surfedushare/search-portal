@@ -133,8 +133,8 @@ export default {
           {
             params: {
               ...params,
-              timestamp: Date.now(),
-            },
+              timestamp: Date.now()
+            }
           }
         )
         commit('SET_NEXT_PAGE_MATERIAL_TO_COLLECTION', materialsInfo)
@@ -142,7 +142,7 @@ export default {
       } else {
         $log.error('Validate error: ', { id, params })
       }
-    },
+    }
   },
   mutations: {
     SET_COLLECTION(state, payload) {
@@ -160,12 +160,16 @@ export default {
       const records = state.collection_materials.records || []
       payload.records.forEach(decodeAuthor)
 
-      state.collection_materials = Object.assign({}, state.collection_materials, payload, {
-        records: [
-          ...records,
-          ...payload.records,
-        ],
-      })
+      state.collection_materials = Object.assign(
+        {},
+        state.collection_materials,
+        payload, {
+          records: [
+            ...records,
+            ...payload.records,
+          ]
+        }
+      )
     }
   }
 }
