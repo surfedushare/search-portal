@@ -164,7 +164,7 @@ export default {
         {},
         state.collection_materials,
         payload,
-        { records: [...records, ...payload.records]}
+        { records: [...records, ...payload.records] }
       )
     }
   }
