@@ -155,10 +155,9 @@ export default {
       const { id } = this.$route.params
       this.isLoading = true
       Promise.all([
-        this.$store.dispatch('getUser'),
         this.$store.dispatch('getMaterialInMyCollection', {
           id,
-          params: { page_size: 10 }
+          params: { page: 1, page_size: 10 }
         }),
         this.$store.dispatch('getCollection', id)
       ]).finally(() => {
@@ -172,10 +171,10 @@ export default {
         const { page_size, page, records_total } = collection_materials
 
         if (records_total > page_size * page) {
-          this.$store.dispatch('getNextMaterialInMyCollection', {
+          this.$store.dispatch('getMaterialInMyCollection', {
             id,
             params: {
-              page_size: this.search.page_size,
+              page_size: 10,
               page: page + 1
             }
           })

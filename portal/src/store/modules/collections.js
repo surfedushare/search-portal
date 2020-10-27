@@ -2,8 +2,7 @@ import injector from 'vue-inject'
 import {
   validateID,
   validateIDString,
-  validateParams,
-  decodeAuthor
+  validateParams
 } from './_helpers'
 import axios from '~/axios'
 
@@ -124,24 +123,6 @@ export default {
       } else {
         $log.error('Validate error: ', { id, params })
       }
-    },
-    async getNextMaterialInMyCollection({ commit }, { id, params }) {
-      if (validateIDString(id) && validateParams(params)) {
-        commit('SET_MATERIAL_TO_COLLECTION_LOADING', true)
-        const { data: materialsInfo } = await axios.get(
-          `collections/${id}/materials/`,
-          {
-            params: {
-              ...params,
-              timestamp: Date.now()
-            }
-          }
-        )
-        commit('SET_NEXT_PAGE_MATERIAL_TO_COLLECTION', materialsInfo)
-        commit('SET_MATERIAL_TO_COLLECTION_LOADING', false)
-      } else {
-        $log.error('Validate error: ', { id, params })
-      }
     }
   },
   mutations: {
@@ -149,23 +130,15 @@ export default {
       state.collection = payload
     },
     SET_MATERIAL_TO_COLLECTION(state, payload) {
-      const records = payload.records || payload
-      records.forEach(decodeAuthor)
-      state.collection_materials = payload
+      const records = state.collection_materials.records || []
+      state.collection_materials = {
+        ...state.collection_materials,
+        ...payload,
+        ...{ records: [...records, ...payload.records] }
+      }
     },
     SET_MATERIAL_TO_COLLECTION_LOADING(state, payload) {
       state.collection_materials_loading = payload
-    },
-    SET_NEXT_PAGE_MATERIAL_TO_COLLECTION(state, payload) {
-      const records = state.collection_materials.records || []
-      payload.records.forEach(decodeAuthor)
-
-      state.collection_materials = Object.assign(
-        {},
-        state.collection_materials,
-        payload,
-        { records: [...records, ...payload.records] }
-      )
     }
   }
 }
