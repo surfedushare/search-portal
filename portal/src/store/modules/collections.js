@@ -126,7 +126,7 @@ export default {
       state.collection = payload
     },
     SET_MATERIAL_TO_COLLECTION(state, payload) {
-      if (payload?.page === 1) {
+      if (payload.page === 1) {
         state.collection_materials = payload
       } else {
         const records = state.collection_materials.records || []
