@@ -1,10 +1,5 @@
 import injector from 'vue-inject'
-import {
-  validateID,
-  validateIDString,
-  validateParams,
-  decodeAuthor
-} from './_helpers'
+import { validateID, validateIDString, validateParams } from './_helpers'
 import axios from '~/axios'
 
 const $log = injector.get('$log')
@@ -88,7 +83,7 @@ export default {
     },
     async setMaterialInMyCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
-        await axios
+        return await axios
           .post(`collections/${collection_id}/materials/`, data)
           .then(res => res.data)
       } else {
@@ -131,9 +126,16 @@ export default {
       state.collection = payload
     },
     SET_MATERIAL_TO_COLLECTION(state, payload) {
-      const records = payload.records || payload
-      records.forEach(decodeAuthor)
-      state.collection_materials = payload
+      if (payload.page === 1) {
+        state.collection_materials = payload
+      } else {
+        const records = state.collection_materials.records || []
+        state.collection_materials = {
+          ...state.collection_materials,
+          ...payload,
+          ...{ records: [...records, ...payload.records] }
+        }
+      }
     },
     SET_MATERIAL_TO_COLLECTION_LOADING(state, payload) {
       state.collection_materials_loading = payload

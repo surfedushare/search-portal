@@ -109,7 +109,6 @@ export default {
       this.$store
         .dispatch('setMaterialInMyCollection', submitData)
         .then(collection => {
-          this.$store.dispatch('getUser')
           this.saved = true
           if (this.$listeners.submitted) {
             this.$emit('submitted', collection)
@@ -117,6 +116,7 @@ export default {
         })
         .finally(() => {
           this.submitting = false
+          this.close()
         })
     }
   }

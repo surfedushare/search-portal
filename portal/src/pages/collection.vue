@@ -25,7 +25,11 @@
         </button>
       </div>
 
-      <div>
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="materials_loading"
+        infinite-scroll-distance="10"
+      >
         <Materials
           v-model="formData.materials_for_deleting"
           :materials="collection_materials"
@@ -150,11 +154,32 @@ export default {
     saveMaterials() {
       const { id } = this.$route.params
       this.isLoading = true
-      this.$store
-        .dispatch('getMaterialInMyCollection', { id, params: {} })
-        .finally(() => {
-          this.isLoading = false
-        })
+      Promise.all([
+        this.$store.dispatch('getMaterialInMyCollection', {
+          id,
+          params: { page: 1, page_size: 10 }
+        }),
+        this.$store.dispatch('getCollection', id)
+      ]).finally(() => {
+        this.isLoading = false
+      })
+    },
+    loadMore() {
+      const { id } = this.$route.params
+      const { collection_materials } = this
+      if (collection_materials) {
+        const { page_size, page, records_total } = collection_materials
+
+        if (records_total > page_size * page) {
+          this.$store.dispatch('getMaterialInMyCollection', {
+            id,
+            params: {
+              page_size: 10,
+              page: page + 1
+            }
+          })
+        }
+      }
     },
     /**
      * Set editable to the collection
