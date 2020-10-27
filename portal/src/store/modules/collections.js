@@ -126,11 +126,15 @@ export default {
       state.collection = payload
     },
     SET_MATERIAL_TO_COLLECTION(state, payload) {
-      const records = state.collection_materials.records || []
-      state.collection_materials = {
-        ...state.collection_materials,
-        ...payload,
-        ...{ records: [...records, ...payload.records] }
+      if (payload?.page === 1) {
+        state.collection_materials = payload
+      } else {
+        const records = state.collection_materials.records || []
+        state.collection_materials = {
+          ...state.collection_materials,
+          ...payload,
+          ...{ records: [...records, ...payload.records] }
+        }
       }
     },
     SET_MATERIAL_TO_COLLECTION_LOADING(state, payload) {
