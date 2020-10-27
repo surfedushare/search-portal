@@ -1,9 +1,5 @@
 import injector from 'vue-inject'
-import {
-  validateID,
-  validateIDString,
-  validateParams
-} from './_helpers'
+import { validateID, validateIDString, validateParams } from './_helpers'
 import axios from '~/axios'
 
 const $log = injector.get('$log')
