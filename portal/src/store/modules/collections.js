@@ -88,7 +88,7 @@ export default {
     },
     async setMaterialInMyCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
-        await axios
+        return await axios
           .post(`collections/${collection_id}/materials/`, data)
           .then(res => res.data)
       } else {

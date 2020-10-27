@@ -219,7 +219,7 @@ class ElasticSearchApiClient:
         )
         return self.parse_elastic_result(result)
 
-    def get_materials_by_id(self, external_ids, page=1, page_size=5, **kwargs):
+    def get_materials_by_id(self, external_ids, page=1, page_size=10, **kwargs):
         """
         Retrieve specific materials from elastic through their external id.
         :param external_ids: the id's of the materials to retrieve

@@ -154,11 +154,13 @@ export default {
     saveMaterials() {
       const { id } = this.$route.params
       this.isLoading = true
-      this.$store
-        .dispatch('getMaterialInMyCollection', { id, params: {} })
-        .finally(() => {
-          this.isLoading = false
-        })
+      Promise.all([
+        this.$store.dispatch('getUser'),
+        this.$store.dispatch('getMaterialInMyCollection', { id, params: { page_size: 10 } }),
+        this.$store.dispatch('getCollection', id)
+      ]).finally(() => {
+        this.isLoading = false
+      })
     },
     loadMore() {
       const { id } = this.$route.params
