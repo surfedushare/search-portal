@@ -156,7 +156,10 @@ export default {
       this.isLoading = true
       Promise.all([
         this.$store.dispatch('getUser'),
-        this.$store.dispatch('getMaterialInMyCollection', { id, params: { page_size: 10 } }),
+        this.$store.dispatch('getMaterialInMyCollection', {
+          id,
+          params: { page_size: 10 }
+        }),
         this.$store.dispatch('getCollection', id)
       ]).finally(() => {
         this.isLoading = false
