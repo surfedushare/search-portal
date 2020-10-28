@@ -3,6 +3,7 @@ This module contains some common functions for materials app.
 """
 
 import json
+import datetime
 from functools import reduce
 
 from surf.apps.communities.models import Community
@@ -170,6 +171,9 @@ def create_search_results_index(client):
         'mappings': {
             'date_detection': False,
             'properties': {
+                'timestamp': {
+                    'type': 'date'
+                },
                 'number_of_results': {
                     'type': 'integer'
                 },
@@ -182,7 +186,15 @@ def create_search_results_index(client):
                     }
                 },
                 'filters': {
-                    'type': 'nested'
+                    'type': 'nested',
+                    'properties': {
+                        'name': {
+                            'type': 'keyword'
+                        },
+                        'values': {
+                            'type': 'keyword'
+                        }
+                    }
                 }
 
             }
@@ -197,6 +209,7 @@ def add_search_query_to_elastic_index(number_of_results, query, filters):
         create_search_results_index(elastic.client)
 
     document = {
+        'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(),
         'number_of_results': number_of_results,
         'query': query,
         'filters': _get_translated_filters(filters)
