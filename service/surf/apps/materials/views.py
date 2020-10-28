@@ -244,7 +244,7 @@ class MaterialAPIView(APIView):
             # return overview of newest Materials
             elastic = ElasticSearchApiClient()
 
-            res = elastic.search([],
+            res = elastic.search('',
                                  # sort by newest items first
                                  ordering="-lom.lifecycle.contribute.publisherdate",
                                  page_size=_MATERIALS_COUNT_IN_OVERVIEW)
