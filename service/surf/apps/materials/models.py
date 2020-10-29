@@ -172,8 +172,8 @@ class Collection(UUIDModel):
         if not self.deleted_at:
             self.deleted_at = timezone.now()
             self.save()
-        else:
-            super().delete(using=using, keep_parents=keep_parents)
+
+        super().delete(using=using, keep_parents=keep_parents)
 
     def __str__(self):
         return self.title_nl
