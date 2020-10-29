@@ -27,10 +27,7 @@ export default {
       type: String,
       default: 'delete'
     },
-    value: {
-      // type: Array,
-      // default: []
-    }
+    value: {}
   },
   components: {
     StarRating
@@ -54,20 +51,46 @@ export default {
       }
     },
     /**
-     * Select material
+     * Select material from collection
+     * @param material - {Object}
+     * @param selectFor - string
+     */
+    selectMaterial(material, selectFor) {
+      if (selectFor === 'delete') {
+        this.deleteMaterial(material)
+      } else {
+        let selected_materials = this.value.slice(0)
+
+        if (selected_materials.indexOf(material.external_id) === -1) {
+          selected_materials.push(material.external_id)
+        } else {
+          selected_materials = selected_materials.filter(
+            item => item !== material.external_id
+          )
+        }
+        this.$emit('input', selected_materials)
+      }
+    },
+    /**
+     * Delete material from collection
      * @param material - {Object}
      */
-    selectMaterial(material) {
-      let selected_materials = this.value.slice(0)
-
-      if (selected_materials.indexOf(material.external_id) === -1) {
-        selected_materials.push(material.external_id)
-      } else {
-        selected_materials = selected_materials.filter(
-          item => item !== material.external_id
-        )
-      }
-      this.$emit('input', selected_materials)
+    deleteMaterial(material) {
+      const { id } = this.$route.params
+      this.$store
+        .dispatch('removeMaterialFromMyCollection', {
+          collection_id: id,
+          data: [{external_id: material.external_id}]
+        })
+        .then(() => {
+          Promise.all([
+            this.$store.dispatch('getMaterialInMyCollection', {
+              id,
+              params: { page: 1, page_size: 10 }
+            }),
+            this.$store.dispatch('getCollection', id)
+          ]).then(() => null)
+        })
     }
   },
   watch: {

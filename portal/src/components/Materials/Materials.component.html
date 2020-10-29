@@ -26,7 +26,7 @@
       <button
         :class="{'select-icon': true, 'selected': material.selected}"
         v-if="contenteditable"
-        @click="selectMaterial(material)"
+        @click="selectMaterial(material, selectFor)"
       >
         Delete
       </button>
