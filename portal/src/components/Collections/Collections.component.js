@@ -1,4 +1,4 @@
-import { find, without } from 'lodash'
+import { without } from 'lodash'
 import Spinner from './../Spinner'
 
 export default {
@@ -27,12 +27,6 @@ export default {
   },
   components: { Spinner },
   methods: {
-    getCommunityDetail(community, language, detail) {
-      let communityDetails = find(community.community_details, {
-        language_code: language.toUpperCase()
-      })
-      return communityDetails[detail] || null
-    },
     selectCollection(collection) {
       collection.selected = !collection.selected
       if (this.selection.indexOf(collection.id) === -1) {
