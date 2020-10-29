@@ -38,6 +38,8 @@ export default {
         .then(() => this.closeDeleteCollection())
     },
     closeDeleteCollection() {
+      const { community } = this.$route.params
+      this.$store.dispatch('getCommunityCollections', community)
       this.isShowDeleteCollection = false
     },
   }
