@@ -4,7 +4,7 @@
       v-bind="$attrs"
       @input="onChange"
       @focus="showCounter = true"
-      @blur="showCounter = false"
+      @blur="onBlur"
     />
     <div v-if="showCounter" class="counter">
       {{ charactersRemaining }}
@@ -14,6 +14,7 @@
 <script>
 export default {
   name: 'InputWithCounter',
+  props: ['onSubmit'],
   inheritAttrs: false,
   data() {
     return {
@@ -32,6 +33,10 @@ export default {
   methods: {
     onChange(event) {
       this.$emit('input', event.target.value)
+    },
+    onBlur() {
+      this.onSubmit()
+      this.showCounter = false
     }
   }
 }

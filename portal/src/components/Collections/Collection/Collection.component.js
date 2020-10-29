@@ -86,10 +86,17 @@ export default {
       this.isShowDeleteCollection = false
     },
     onSubmit() {
-      if (this.$i18n.locale === 'nl') {
-        this.$emit('onSubmit', { title_nl: this.collectionTitle })
+      if (this.collectionTitle.trim().length === 0) {
+        this.$store.commit('ADD_MESSAGE', {
+          level: 'error',
+          message: 'collection-title-can-not-be-empty'
+        })
       } else {
-        this.$emit('onSubmit', { title_en: this.collectionTitle })
+        if (this.$i18n.locale === 'nl') {
+          this.$emit('onSubmit', { title_nl: this.collectionTitle })
+        } else {
+          this.$emit('onSubmit', { title_en: this.collectionTitle })
+        }
       }
     },
     setSocialCounters() {
