@@ -11,7 +11,7 @@
       <button
         :class="{'select-icon': true, 'selected': collection.selected}"
         v-if="editableContent"
-        @click="selectCollection(collection)"
+        @click="deleteCollectionPopup(collection)"
       >
         Delete
       </button>
@@ -34,4 +34,9 @@
   </ul>
   <div v-if="loading"><Spinner /></div>
   <div class="collections__info" v-else-if="collections && !collections.length">{{ $t('No-collections') }}</div>
+  <DeleteCollection
+    :close="closeDeleteCollection"
+    :is-show="isShowDeleteCollection"
+    :deletefunction="deleteCollection"
+  ></DeleteCollection>
 </section>

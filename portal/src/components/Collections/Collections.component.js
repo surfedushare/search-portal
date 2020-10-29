@@ -1,5 +1,5 @@
-import { without } from 'lodash'
 import Spinner from './../Spinner'
+import DeleteCollection from '~/components/Popup/DeleteCollection'
 
 export default {
   name: 'collections',
@@ -17,25 +17,28 @@ export default {
     },
     editableContent: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data() {
     return {
-      selection: []
+      selectedCollectionId: '',
+      isShowDeleteCollection: false,
     }
   },
-  components: { Spinner },
+  components: { Spinner, DeleteCollection },
   methods: {
-    selectCollection(collection) {
-      collection.selected = !collection.selected
-      if (this.selection.indexOf(collection.id) === -1) {
-        this.selection.push(collection)
-      } else {
-        this.selection = without(this.selection, { id: collection.id })
-      }
-      this.$emit('input', this.selection)
-      this.$forceUpdate()
-    }
+    deleteCollectionPopup(collection) {
+      this.isShowDeleteCollection = true
+      this.selectedCollectionId = collection.id
+    },
+    deleteCollection() {
+      this.$store
+        .dispatch('deleteMyCollection', this.selectedCollectionId)
+        .then(() => this.closeDeleteCollection())
+    },
+    closeDeleteCollection() {
+      this.isShowDeleteCollection = false
+    },
   }
 }
