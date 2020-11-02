@@ -41,6 +41,8 @@ class Command(HarvesterCommand):
                     "configuration": ElasticIndex.get_index_config(lang)
                 }
             )
+            if recreate:
+                index.configuration = None  # gets recreated by the clean method below
             index.clean()
             index.push(docs, recreate=recreate)
             index.save()
