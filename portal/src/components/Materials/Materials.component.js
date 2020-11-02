@@ -80,7 +80,7 @@ export default {
       this.$store
         .dispatch('removeMaterialFromMyCollection', {
           collection_id: id,
-          data: [{external_id: material.external_id}]
+          data: [{ external_id: material.external_id }]
         })
         .then(() => {
           Promise.all([

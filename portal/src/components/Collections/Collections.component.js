@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       selectedCollectionId: '',
-      isShowDeleteCollection: false,
+      isShowDeleteCollection: false
     }
   },
   components: { Spinner, DeleteCollection },
@@ -41,6 +41,6 @@ export default {
       const { community } = this.$route.params
       this.$store.dispatch('getCommunityCollections', community)
       this.isShowDeleteCollection = false
-    },
+    }
   }
 }

@@ -165,7 +165,9 @@ export default {
       this.resetData()
     },
     isPublished() {
-      const publish_status = this.isPublished ? PublishStatus.PUBLISHED : PublishStatus.DRAFT
+      const publish_status = this.isPublished
+        ? PublishStatus.PUBLISHED
+        : PublishStatus.DRAFT
       this.$emit('onSubmit', { publish_status })
     }
   }
