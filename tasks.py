@@ -5,7 +5,7 @@ from commands.postgres.invoke import setup_postgres_localhost
 from commands.deploy import prepare_builds, build, push, deploy, migrate
 from commands.test import test_collection
 from commands.projects.service.invoke import import_snapshot
-from commands.projects.harvester.invoke import import_dataset, harvest, cleanup
+from commands.projects.harvester.invoke import import_dataset, harvest, cleanup, push_es_index
 from commands.legacy import download_media, upload_media
 
 
@@ -19,7 +19,8 @@ aws_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="harvester")
-harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, cleanup, import_dataset, deploy)
+harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, cleanup, import_dataset, deploy,
+                                  push_es_index)
 harvester_collection.configure(harvester_environment)
 
 
