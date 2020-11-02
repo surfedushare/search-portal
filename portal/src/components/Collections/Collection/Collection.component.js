@@ -1,5 +1,4 @@
 import ShareCollection from '~/components/Popup/ShareCollection'
-import DeleteCollection from '~/components/Popup/DeleteCollection'
 import { validateHREF } from '~/components/_helpers'
 import SwitchInput from '~/components/switch-input'
 import InputWithCounter from '~/components/InputWithCounter'
@@ -16,9 +15,6 @@ export default {
     contenteditable: {
       default: false
     },
-    setEditable: {
-      default: false
-    },
     submitting: {
       default: false
     },
@@ -31,7 +27,6 @@ export default {
   },
   components: {
     ShareCollection,
-    DeleteCollection,
     SwitchInput,
     InputWithCounter
   },
@@ -45,7 +40,6 @@ export default {
       href: '',
       collectionTitle: null,
       search: {},
-      isShowDeleteCollection: false,
       isShowShareCollection: false,
       isCopied: false
     }
@@ -67,23 +61,6 @@ export default {
       const { collection } = this
       this.collectionTitle =
         this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
-    },
-    deleteCollectionPopup() {
-      this.isShowDeleteCollection = true
-    },
-    deleteCollection() {
-      this.$store
-        .dispatch('deleteMyCollection', this.collection.id)
-        .then(() => {
-          if (window.history.length > 1) {
-            this.$router.go(-1)
-          } else {
-            this.$router.push(this.localePath({ name: 'communities' }))
-          }
-        })
-    },
-    closeDeleteCollection() {
-      this.isShowDeleteCollection = false
     },
     onSubmit() {
       if (this.collectionTitle.trim().length === 0) {
@@ -186,6 +163,10 @@ export default {
     },
     '$i18n.locale': function() {
       this.resetData()
+    },
+    isPublished() {
+      const publish_status = this.isPublished ? PublishStatus.PUBLISHED : PublishStatus.DRAFT
+      this.$emit('onSubmit', { publish_status })
     }
   }
 }

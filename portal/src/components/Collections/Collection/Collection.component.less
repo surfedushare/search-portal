@@ -5,7 +5,6 @@
     margin: 0 0 40px;
     position: relative;
     @media @mobile {
-      //padding: 0;
       padding: 0 25px 0;
     }
     &_wrapper {
@@ -98,61 +97,6 @@
         @media @mobile {
           display: block;
           height: 30px;
-        }
-      }
-    }
-    &_filter {
-      text-align: center;
-      //margin: 0 -10px 0 0;
-      padding-bottom: 20px;
-      padding-top: 5px;
-      @media @desktop, @tablet {
-        width: 45%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
-      @media @tablet {
-        width: 100%;
-      }
-      @media @desktop {
-        padding-bottom: 0;
-      }
-      &__link {
-        font-weight: bold;
-        padding-left: 30px;
-        position: relative;
-        font-size: 16px;
-        font-family: @second-font;
-      }
-      &__edit {
-        @media @mobile {
-          display: flex;
-        }
-        a {
-          background: url('/images/edit.svg') no-repeat 0 50%;
-          background-size: 30px 30px;
-        }
-      }
-      &__delete {
-        margin-left: 32px;
-        @media @mobile {
-          padding: 15px 0;
-          display: flex;
-          margin: 0;
-        }
-        a {
-          background: url('/images/trash.svg') no-repeat 0 50%;
-          background-size: 30px 30px;
-        }
-      }
-      &__button {
-        margin-left: 38px;
-        @media @mobile {
-          margin: 0;
-        }
-        a {
-          padding: 13px 60px;
         }
       }
     }
