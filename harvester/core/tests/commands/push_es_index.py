@@ -49,7 +49,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
     This test case represents the scenario where a all harvest data gets pushed to an index for the first time
     """
 
-    fixtures = ["datasets-history"]
+    fixtures = ["datasets-history", "resources"]
     elastic_client = get_elastic_client_mock()
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
@@ -59,7 +59,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 2
+            "nl": 8
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -116,7 +116,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 2
+            "nl": 8
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -179,7 +179,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
      * complete recreate of existing indices (drop + create)
     """
 
-    fixtures = ["datasets-history", "index-history", "surf-oaipmh-2020-01-01"]
+    fixtures = ["datasets-history", "index-history", "surf-oaipmh-2020-01-01", "resources"]
     elastic_client = get_elastic_client_mock(has_history=True)
 
     @classmethod
@@ -203,7 +203,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 2
+            "nl": 8
         }
 
         # Calling command and catching output for some checks
@@ -298,7 +298,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 2
+            "nl": 8
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),

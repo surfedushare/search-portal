@@ -1,6 +1,7 @@
 import json
 import os
 from zipfile import ZipFile
+from collections import defaultdict
 
 from bs4 import BeautifulSoup
 
@@ -32,6 +33,17 @@ class CommonCartridge(models.Model):
     def get_content_tree(self):
         manifest = BeautifulSoup(self.manifest, "lxml")
         return manifest.find('organization').find('item')
+
+    def list_content_by_title(self):
+        manifest = BeautifulSoup(self.manifest, "lxml")
+        results = defaultdict(list)
+        items = manifest.find_all('item', identifier=True)
+        for item in items:
+            content = self.read(item['identifier'].lower() + '.html')
+            soup = BeautifulSoup(content, "html5lib")
+            texts = soup.find_all(text=True)
+            results[item.find('title').text.strip()].append("\n".join(texts))
+        return results
 
     def get_resources(self):
         manifest = BeautifulSoup(self.manifest, "lxml")
@@ -67,6 +79,10 @@ class CommonCartridge(models.Model):
             self.manifest = cartridge.read('imsmanifest.xml')
         except KeyError:
             raise ValidationError('The common cartridge should contain a manifest file')
+
+    def read(self, file_path):
+        cartridge = ZipFile(self.file)
+        return cartridge.read(file_path)
 
     @property
     def success(self):

@@ -244,8 +244,8 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
                     self.assertIn("resource", result)
                 if "package" in phase:
                     package_pipeline_phase_count += 1
-        self.assertEqual(package_pipeline_phase_count, 0, "Unexpectedly found a package in the update seeds")
-        self.assertEqual(collection.arrangement_set.filter(meta__is_package=True).count(), 0)
+        self.assertEqual(package_pipeline_phase_count, 2, "Unexpectedly found a package in the update seeds")
+        self.assertEqual(collection.arrangement_set.filter(meta__is_package=True).count(), 1)
 
     def test_handle_deletion_seeds(self):
         dataset = Dataset.objects.last()

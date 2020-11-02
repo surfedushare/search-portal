@@ -1,7 +1,4 @@
 from collections import defaultdict
-from zipfile import BadZipFile
-
-from django.core.exceptions import ValidationError
 from django.db.models import Count
 
 from datagrowth.utils import ibatch
@@ -10,7 +7,6 @@ from core.constants import HarvestStages
 from core.management.base import OutputCommand
 from core.utils.resources import get_material_resources, get_basic_material_resources
 from edurep.utils import get_edurep_oaipmh_seeds
-from core.models import CommonCartridge
 
 
 class Command(OutputCommand):
@@ -39,20 +35,12 @@ class Command(OutputCommand):
         )]
 
     def get_documents_from_zip(self, file_resource, tika_resource, metadata, pipeline):
-        # Load zip as an IMS Common Cardridge
-        cc = CommonCartridge(file=file_resource.body)
-        try:
-            cc.clean()
-        except (ValidationError, BadZipFile):
-            self.warning(f"Invalid or missing common cartridge for file resource: {file_resource.id}")
-            return []
         tika_content_type, data = tika_resource.content
         if data is None:
             return []
         text = data.get("X-TIKA:content", "")
         return [self._create_document(
             text,
-            url=metadata.get("package_url"),
             meta=metadata,
             pipeline=pipeline
         )]

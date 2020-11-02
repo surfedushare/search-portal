@@ -187,7 +187,8 @@
                     "scheikunde",
                     "structuur"
                 ],
-                "language": "nl"
+                "language": "nl",
+                "is_package": true
             }
         }
     },
@@ -420,11 +421,19 @@
                 "pipeline": {
                     "file": {
                         "success": true,
-                        "resource": ["edurep.edurepfile", 6448]
+                        "resource": ["core.fileresource", 12048]
                     },
                     "tika": {
                         "success": true,
-                        "resource": ["pol_harvester.httptikaresource", 38540]
+                        "resource": ["core.tikaresource", 77]
+                    },
+                    "package_file": {
+                        "success": true,
+                        "resource": ["core.fileresource", 12046]
+                    },
+                    "package_tika": {
+                        "success": true,
+                        "resource": ["core.tikaresource", 76]
                     },
                     "kaldi": {
                         "success": false,
@@ -436,6 +445,7 @@
                     },
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
+                "package_url": "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
                 "copyright": "cc-by-sa-40",
                 "file_type": "digiboard",
                 "mime_type": "application/x-zip-compressed",
