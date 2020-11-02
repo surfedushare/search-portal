@@ -20,9 +20,9 @@ class TestCollections(BaseTestCase):
         self.selenium.find_element_by_css_selector(".collections__add__link").click()
         replace_content(self.selenium.find_element_by_id("collection_title_nl"), 'Mijn collectie')
         replace_content(self.selenium.find_element_by_id("collection_title_en"), 'My collection')
-        self.selenium.find_element_by_css_selector(".add-collection button[type='submit']").click()
+        self.selenium.find_element_by_css_selector(".popup.add-collection .form__button button").click()
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".add-collection"), "Je collectie is aangemaakt")
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".collections__item_ttl"), "Mijn collectie")
         )
 
     def test_remove_collection(self):
@@ -30,10 +30,7 @@ class TestCollections(BaseTestCase):
         self.selenium.get(f"{self.live_server_url}/mijn/community/{self.community.id}")
         self.selenium.find_element_by_css_selector(".collections-tab").click()
         self.selenium.find_element_by_css_selector(".collections__item .select-icon").click()
-        self.selenium.find_element_by_css_selector(".communities__form__buttons button[type='submit']").click()
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "body"), "Gegevens opgeslagen!")
-        )
+        self.selenium.find_element_by_css_selector(".popup.delete-collection .share-collection__actions button").click()
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".collections"), "Geen collecties")
         )
