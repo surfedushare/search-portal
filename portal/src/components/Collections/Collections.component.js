@@ -17,7 +17,7 @@ export default {
     },
     editableContent: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
