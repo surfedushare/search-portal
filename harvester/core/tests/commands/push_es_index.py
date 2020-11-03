@@ -314,7 +314,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         stdout = out.getvalue().split("\n")
         results = [rsl for rsl in stdout if rsl]
         self.assertIn(
-            "since:2020-02-10, recreate:True and promote:False",
+            "since:1970-01-01, recreate:True and promote:False",
             results,
             "Expected command to print what actions it will undertake and since what modification date"
         )
