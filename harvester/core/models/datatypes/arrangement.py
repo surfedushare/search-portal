@@ -188,6 +188,11 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
     def to_search(self):
 
         elastic_base = self.get_search_document_base()
+        if not self.base_document:
+            # TODO: figure out why some arrangements get 0 documents
+            # Is this only in old dataset dumps or still happening??
+            elastic_base["_id"] = self.meta["reference_id"]
+            return elastic_base
 
         # Gather text from text media
         text_documents = self.documents.exclude(properties__file_type="video")
