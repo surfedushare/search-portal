@@ -4,6 +4,7 @@ from zipfile import BadZipFile
 from bs4 import BeautifulSoup
 from urlobject import URLObject
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
@@ -84,9 +85,11 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         self.save()
 
     @staticmethod
-    def get_search_document_details(url, title, text, transcription, mime_type):
-        file_type = None  # TODO: refactor type determination
+    def get_search_document_details(reference_id, url, title, text, transcription, mime_type, file_type,
+                                    is_part_of=None, has_part=None):
+        has_part = has_part or []
         return {
+            '_id': reference_id,
             'title': title,
             'text': text,
             'transcription': transcription,
@@ -96,23 +99,23 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'transcription_plain': transcription,
             'file_type': file_type,
             'mime_type': mime_type,
+            'has_part': has_part,
+            'is_part_of': is_part_of,
             'suggest': title.split(" ") if title else [],
         }
 
-    def get_search_document_base(self, reference_id):
+    def get_search_document_base(self):
         """
         This method returns either a delete action or a partial upsert action.
         If it returns a partial update action it will only fill out all data
         that's the same for all documents coming from this Arrangement.
         Only the reference_id gets added for both partial update and delete actions
 
-        :param reference_id: the id that the Elastic Search document will use
         :return: Elastic Search partial update or delete action
         """
         # First we fill out all data we know from the Arrangement or we have an early return for deletes
         # and unknown data
         base = {
-            "_id": reference_id,
             "language": self.meta.get("language", "unk"),
         }
         if self.deleted_at:
@@ -139,7 +142,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         })
         return base
 
-    def unpack_package_documents(self, base_url):
+    def unpack_package_documents(self, reference_id, base_url):
         """
         This methods returns content data if this arrangement is a package.
         The content should be merged with other ES data to form a proper search document.
@@ -171,6 +174,9 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         for title, links in navigation_links.items():
             results += [
                 {
+                    "_id": reference_id + link,
+                    "is_part_of": reference_id,
+                    "link": link,
                     "url": base_url + link,
                     "title": title,
                     "text": package_content[title].pop(0) if len(package_content[title]) else "",
@@ -181,7 +187,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
 
     def to_search(self):
 
-        elastic_base = self.get_search_document_base(self.meta["reference_id"])
+        elastic_base = self.get_search_document_base()
 
         # Gather text from text media
         text_documents = self.documents.exclude(properties__file_type="video")
@@ -203,25 +209,33 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         base_url = str(URLObject(self.base_document["url"]).with_fragment(""))
 
         # First we yield documents for each file in a package when dealing with a package
+        child_ids = []
         if self.meta.get("is_package", False):
-            for package_document in self.unpack_package_documents(base_url):
+            for package_document in self.unpack_package_documents(self.meta["reference_id"], base_url):
+                child_ids.append(package_document["_id"])
                 elastic_details = self.get_search_document_details(
+                    package_document["_id"],
                     package_document["url"],
                     package_document["title"],
                     package_document["text"],
                     transcription="",
-                    mime_type="text/html"
+                    mime_type="text/html",
+                    file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
+                    is_part_of=package_document["is_part_of"]
                 )
                 elastic_details.update(elastic_base)
                 yield elastic_details
 
         # Then we yield a Elastic Search document for the Arrangement as a whole
         elastic_details = self.get_search_document_details(
+            self.meta["reference_id"],
             self.base_document["url"],
             self.base_document["title"],
             text,
             transcription,
-            self.base_document["mime_type"]
+            self.base_document["mime_type"],
+            self.base_document["file_type"],
+            has_part=child_ids
         )
         elastic_details.update(elastic_base)
         yield elastic_details
