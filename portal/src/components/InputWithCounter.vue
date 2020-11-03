@@ -14,8 +14,10 @@
 <script>
 export default {
   name: 'InputWithCounter',
-  props: ['onSubmit'],
   inheritAttrs: false,
+  props: {
+    onSubmit: Function
+  },
   data() {
     return {
       showCounter: false

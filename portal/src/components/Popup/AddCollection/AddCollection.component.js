@@ -34,9 +34,6 @@ export default {
           this.close()
           this.submitting = false
         })
-    },
-    onSubmit() {
-      return
     }
   },
   computed: {}

@@ -27,7 +27,10 @@ export default {
       type: String,
       default: 'delete'
     },
-    value: {}
+    value: {
+      // type: Array,
+      // default: []
+    }
   },
   components: {
     StarRating
@@ -52,23 +55,12 @@ export default {
     },
     /**
      * Select material from collection
-     * @param material - {Object}
-     * @param selectFor - string
      */
-    selectMaterial(material, selectFor) {
-      if (selectFor === 'delete') {
+    selectMaterial(material) {
+      if (this.selectFor === 'delete') {
         this.deleteMaterial(material)
       } else {
-        let selected_materials = this.value.slice(0)
-
-        if (selected_materials.indexOf(material.external_id) === -1) {
-          selected_materials.push(material.external_id)
-        } else {
-          selected_materials = selected_materials.filter(
-            item => item !== material.external_id
-          )
-        }
-        this.$emit('input', selected_materials)
+        this.toggleMaterial(material)
       }
     },
     /**
@@ -91,6 +83,22 @@ export default {
             this.$store.dispatch('getCollection', id)
           ]).then(() => null)
         })
+    },
+    /**
+     * Toggle material from selection
+     * @param material - {Object}
+     */
+    toggleMaterial(material) {
+      let selected_materials = this.value.slice(0)
+
+      if (selected_materials.indexOf(material.external_id) === -1) {
+        selected_materials.push(material.external_id)
+      } else {
+        selected_materials = selected_materials.filter(
+          item => item !== material.external_id
+        )
+      }
+      this.$emit('input', selected_materials)
     }
   },
   watch: {
