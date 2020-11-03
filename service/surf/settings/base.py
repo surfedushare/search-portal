@@ -91,9 +91,13 @@ CSRF_COOKIE_SECURE = PROTOCOL == "https"
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.locale.LocaleMiddleware',
