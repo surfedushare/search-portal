@@ -27,6 +27,25 @@ class TestSearch(ElasticSearchTestCase):
         search.send_keys("Wiskunde")
         button.click()
 
+        WebDriverWait(self.selenium, 2).until_not(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
+
+        self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
+
+    def test_search_by_author_from_searchbox(self):
+        self.selenium.get(self.live_server_url)
+
+        search = self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search.main__info_search button")
+
+        search.send_keys("Theo")
+        button.click()
+
+        WebDriverWait(self.selenium, 2).until_not(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
+
+        search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
+        self.assertEqual(len(search_results), 1)
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
 
     def test_search_by_author(self):
@@ -35,6 +54,9 @@ class TestSearch(ElasticSearchTestCase):
 
         author_link = self.selenium.find_element_by_css_selector(".material__info_author a")
         author_link.click()
+
+        WebDriverWait(self.selenium, 2).until_not(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
         self.assertEqual(len(search_results), 1)
@@ -45,6 +67,9 @@ class TestSearch(ElasticSearchTestCase):
 
         author_link = self.selenium.find_element_by_css_selector(".material__info_publishers a")
         author_link.click()
+
+        WebDriverWait(self.selenium, 2).until_not(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
         self.assertEqual(len(search_results), 1)

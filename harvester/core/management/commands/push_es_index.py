@@ -19,7 +19,8 @@ class Command(HarvesterCommand):
         dataset = Dataset.objects.get(name=options["dataset"])
         recreate = options["recreate"]
         promote = options["promote"]
-        earliest_harvest = dataset.get_earliest_harvest_date() or datetime(year=1970, month=1, day=1, tzinfo=tz.tzutc())
+        begin_of_time = datetime(year=1970, month=1, day=1, tzinfo=tz.tzutc())
+        earliest_harvest = begin_of_time if recreate else dataset.get_earliest_harvest_date() or begin_of_time
 
         self.info(f"Upserting ES index for {dataset.name}")
         self.info(f"since:{earliest_harvest:%Y-%m-%d}, recreate:{recreate} and promote:{promote}")
@@ -41,6 +42,8 @@ class Command(HarvesterCommand):
                     "configuration": ElasticIndex.get_index_config(lang)
                 }
             )
+            if recreate:
+                index.configuration = None  # gets recreated by the clean method below
             index.clean()
             index.push(docs, recreate=recreate)
             index.save()

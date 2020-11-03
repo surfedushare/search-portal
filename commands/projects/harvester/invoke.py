@@ -60,3 +60,29 @@ def cleanup(ctx, mode):
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
     run_task(ctx, "harvester", mode, command)
+
+
+@task(help={
+    "mode": "Mode you want to push indices for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE",
+    "dataset": "Name of the dataset (a Greek letter) that you want to change indices for",
+    "recreate": "Whether to destroy and then create the indices or update in place",
+    "promote": "Whether you want this dataset to become 'latest' "
+               "which means that the service will start to use it when searching"
+})
+def push_es_index(ctx, mode, dataset, recreate=False, promote=False):
+    """
+    Starts a task on the AWS container cluster or localhost to update the ES indices
+    """
+    command = ["python", "manage.py", "push_es_index", f"--dataset={dataset}"]
+    if recreate:
+        command += ["--recreate"]
+    if promote:
+        command += ["--promote"]
+    # On localhost we call the command directly and exit
+    if mode == "localhost":
+        with ctx.cd(HARVESTER_DIR):
+            ctx.run(" ".join(command))
+        return
+    # On AWS we trigger a harvester task on the container cluster to run the command for us
+    run_task(ctx, "harvester", mode, command)

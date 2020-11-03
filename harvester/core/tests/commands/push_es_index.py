@@ -190,6 +190,12 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         )
         deleted_arrangement.delete()
 
+    def setUp(self):
+        super().setUp()
+        self.elastic_client.indices.put_alias.reset_mock()
+        self.elastic_client.indices.create.reset_mock()
+        self.elastic_client.indices.delete.reset_mock()
+
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
     def test_edurep_surf_deletes(self, streaming_bulk, get_es_client):
@@ -295,8 +301,8 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
             "nl": 2
         }
         expected_index_configuration = {
-            "en": ElasticIndex.objects.get(language="en", dataset__name="test").configuration,
-            "nl": ElasticIndex.objects.get(language="nl", dataset__name="test").configuration
+            "en": ElasticIndex.get_index_config("en"),
+            "nl": ElasticIndex.get_index_config("nl")
         }
         get_es_client.reset_mock()
 
@@ -308,7 +314,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         stdout = out.getvalue().split("\n")
         results = [rsl for rsl in stdout if rsl]
         self.assertIn(
-            "since:2020-02-10, recreate:True and promote:False",
+            "since:1970-01-01, recreate:True and promote:False",
             results,
             "Expected command to print what actions it will undertake and since what modification date"
         )
@@ -347,4 +353,64 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
             index_name, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
+
+    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.streaming_bulk")
+    def test_edurep_surf_with_promote(self, streaming_bulk, get_es_client):
+
+        # Setting basic expectations used in the test
+        expected_doc_count = {
+            "en": 3,
+            "nl": 2
+        }
+        expected_index_configuration = {
+            "en": ElasticIndex.objects.get(language="en", dataset__name="test").configuration,
+            "nl": ElasticIndex.objects.get(language="nl", dataset__name="test").configuration
+        }
+
+        # Calling command and catching output for some checks
+        out = StringIO()
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", "--no-logger", stdout=out)
+
+        # Asserting output of command
+        stdout = out.getvalue().split("\n")
+        results = [rsl for rsl in stdout if rsl]
+        self.assertIn(
+            "since:2020-02-10, recreate:False and promote:True",
+            results,
+            "Expected command to print what actions it will undertake and since what modification date"
+        )
+        self.assertIn(f"nl:{expected_doc_count['nl']}", results,
+                      "Expected command to print how many Dutch documents it encountered")
+        self.assertIn(f"en:{expected_doc_count['en']}", results,
+                      "Expected command to print how many English documents it encountered")
+        self.assertIn("unk:1", results,
+                      "Expected command to print how many documents it encountered with unknown language")
+
+        # Asserting calls to Elastic Search library
+        self.assertEqual(get_es_client.call_count, 4,
+                         "Expected an Elastic Search client to get created for each language")
+        for args, kwargs in streaming_bulk.call_args_list:
+            client, docs = args
+            index_name, language, id = kwargs["index"].split("-")
+            self.assertEqual(len(docs), expected_doc_count[language])
+            for doc in docs:
+                self.assert_document_structure(
+                    doc,
+                    doc["_id"] == "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af"
+                )
+
+            self.assertEqual(index_name, "test")
+        self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
+        self.assertEqual(self.elastic_client.indices.create.call_count, 0)
+        for args, kwargs in self.elastic_client.indices.create.call_args_list:
+            index_name, language, id = kwargs["index"].split("-")
+            self.assertEqual(index_name, "test")
+            self.assertEqual(kwargs["body"], expected_index_configuration[language])
+        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
+                         "Expected an Elastic Search alias creation for each language")
+        for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
+            index_name, language, id = kwargs["index"].split("-")
+            self.assertIn(index_name, "test")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])

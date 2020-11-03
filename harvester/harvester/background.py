@@ -52,8 +52,7 @@ def harvest(role="primary", reset=False):
         call_command("push_es_index", f"--dataset={dataset.name}", "--no-progress", *extra_push_index_args)
 
     # After processing all active datasets we dump the seeds and store on S3 so other nodes can use that
-    # TODO: only enable this when production can take on the role as primary (and legacy harvester will be ignored)
-    if role == "primary" and False:
+    if role == "primary":
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         ctx = Context(environment)
         harvester_data_bucket = "s3://edushare-data/datasets/harvester/edurep"
