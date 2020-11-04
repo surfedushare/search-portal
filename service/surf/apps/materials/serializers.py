@@ -45,7 +45,8 @@ class SearchRequestSerializer(serializers.Serializer):
     Serializer for material search request
     """
 
-    search_text = serializers.ListField(child=serializers.CharField())
+    search_text = serializers.CharField(required=False, allow_blank=True,
+                                        allow_null=True)
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
 
@@ -74,7 +75,8 @@ class SearchRequestShortSerializer(serializers.Serializer):
     Serializer for material search request with a few parameters
     """
 
-    search_text = serializers.ListField(child=serializers.CharField())
+    search_text = serializers.CharField(required=False, allow_blank=True,
+                                        allow_null=True)
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
 

@@ -64,7 +64,7 @@ class FilterCategoryViewSet(ListModelMixin, GenericViewSet):
         filters = []
         if 'filters' in request.data.keys():
             filters = request.data['filters']
-        base_request = SimpleNamespace(**{'data': {'search_text': [], 'filters': filters}, 'user': None})
+        base_request = SimpleNamespace(**{'data': {'search_text': '', 'filters': filters}, 'user': None})
         viewer = MaterialSearchAPIView()
         response = viewer.post(request=base_request)
         # extract the filter counts from the response
