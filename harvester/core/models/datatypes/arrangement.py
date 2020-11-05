@@ -152,6 +152,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         # First we try to find all navigation links and their href's by looking at the HTML in the downloaded file
         _, html_file_id = self.base_document.properties["pipeline"]["file"]["resource"]
         file_resource = FileResource.objects.get(id=html_file_id)
+        if not file_resource.success:
+            return []
         content_type, file = file_resource.content
         soup = BeautifulSoup(file, "html5lib")
         navigation_links = defaultdict(list)
@@ -161,6 +163,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         # Then we parse the IMSCC package file and extract items from its manifest file
         _, package_file_id = self.base_document.properties["pipeline"]["package_file"]["resource"]
         package_file = FileResource.objects.get(id=package_file_id)
+        if not package_file.success:
+            return []
         cc = CommonCartridge(file=package_file.body)
         try:
             cc.clean()
