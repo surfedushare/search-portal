@@ -86,3 +86,22 @@ def push_es_index(ctx, mode, dataset, recreate=False, promote=False):
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
     run_task(ctx, "harvester", mode, command)
+
+
+@task(help={
+    "mode": "Mode you want to push indices for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE",
+    "dataset": "Name of the dataset (a Greek letter) that you want to dump",
+})
+def dump_data(ctx, mode, dataset):
+    """
+    Starts a task on the AWS container cluster to dump a specific Dataset and its related models
+    """
+    command = ["python", "manage.py", "dump_harvester_data", dataset]
+    # On localhost we call the command directly and exit
+    if mode == "localhost":
+        with ctx.cd(HARVESTER_DIR):
+            ctx.run(" ".join(command))
+        return
+    # On AWS we trigger a harvester task on the container cluster to run the command for us
+    run_task(ctx, "harvester", mode, command)
