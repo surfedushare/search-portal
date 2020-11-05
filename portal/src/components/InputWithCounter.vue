@@ -16,7 +16,10 @@ export default {
   name: 'InputWithCounter',
   inheritAttrs: false,
   props: {
-    onSubmit: Function
+    onSubmit: {
+      type: Function,
+      default: () => {}
+    },
   },
   data() {
     return {
