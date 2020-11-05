@@ -307,23 +307,6 @@ MIME_TYPE_TO_FILE_TYPE = {  # TODO: this is Edurep based, how do we want this fo
     'application/x-java': 'app',
 }
 
-EXTENSION_TO_FILE_TYPE = {  # TODO: we should map from extension to mime and then file_type
-    '.html': 'text',
-    '.pdf': 'pdf',
-    '.pptx': 'presentation',
-    '.ppt': 'presentation',
-    '.doc': 'text',
-    '.docx': 'text',
-    '.rtf': 'text',
-    '.txt': 'text',
-    '.xls': 'spreadsheet',
-    '.xlsx': 'spreadsheet',
-    '.png': 'image',
-    '.jpeg': 'image',
-    '.jpg': 'image',
-    '.zip': 'zip',
-}
-
 
 # Celery
 # https://docs.celeryproject.org/en/v4.1.0/
