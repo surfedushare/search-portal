@@ -15,7 +15,7 @@ def get_es_client():
             "scheme": "https",
             "port": 443,
             "use_ssl": True,
-            "verify_certs": True,
+            "verify_certs": settings.ELASTICSEARCH_VERIFY_CERTS,
         }
 
     if settings.ELASTICSEARCH_IS_AWS:

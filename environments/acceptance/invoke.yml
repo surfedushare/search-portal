@@ -17,6 +17,7 @@ elastic_search:
   host: "vpc-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com"
   protocol: "https"
   is_aws: true
+  verify_certs: true
 
 secrets:
   elastic_search:

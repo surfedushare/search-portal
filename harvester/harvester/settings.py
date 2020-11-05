@@ -231,6 +231,7 @@ ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_HOST = environment.elastic_search.host
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch'
