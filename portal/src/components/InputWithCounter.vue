@@ -19,7 +19,7 @@ export default {
     onSubmit: {
       type: Function,
       default: () => {}
-    },
+    }
   },
   data() {
     return {
