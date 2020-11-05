@@ -53,20 +53,13 @@ export default {
         )
       }
     },
-    /**
-     * Select material from collection
-     */
     selectMaterial(material) {
       if (this.selectFor === 'delete') {
         this.deleteMaterial(material)
       } else {
-        this.toggleMaterial(material)
+        this.$emit('input', this.toggleMaterial(material))
       }
     },
-    /**
-     * Delete material from collection
-     * @param material - {Object}
-     */
     deleteMaterial(material) {
       const { id } = this.$route.params
       this.$store
@@ -84,10 +77,6 @@ export default {
           ]).then(() => null)
         })
     },
-    /**
-     * Toggle material from selection
-     * @param material - {Object}
-     */
     toggleMaterial(material) {
       let selected_materials = this.value.slice(0)
 
@@ -98,7 +87,7 @@ export default {
           item => item !== material.external_id
         )
       }
-      this.$emit('input', selected_materials)
+      return selected_materials
     }
   },
   watch: {
