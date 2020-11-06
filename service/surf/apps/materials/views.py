@@ -432,11 +432,22 @@ class CollectionViewSet(ModelViewSet):
                 res = elastic.get_materials_by_id(ids, **data)
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
+
                 for record in records:
-                    if record['external_id'] in featured_ids:
-                        record['featured'] = True
-                    else:
-                        record['featured'] = False
+                    material = Material.objects.filter(external_id=record["external_id"])
+                    collection_materials = CollectionMaterial.objects.filter(collection=instance)
+                    collection_material = collection_materials.filter(material_id=material.id)[0]
+                    record['featured'] = collection_material['featured']
+                    record['position'] = collection_material['position']
+                    # if record['external_id'] in featured_ids:
+                    #     record['featured'] = True
+                    # else:
+                    #     record['featured'] = False
+
+                # collection_materials = CollectionMaterial.object.filter(get_material_details_by_id() [r.external_id for r in records])
+                # for collection_material in collection_materials:
+                #     record['featured'] = collection_material['featured']
+                #     r['position'] = collection_material['position']
 
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]

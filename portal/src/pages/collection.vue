@@ -29,12 +29,11 @@
         infinite-scroll-disabled="materials_loading"
         infinite-scroll-distance="10"
       >
-        <Materials
+        <SortableMaterials
           :materials="collection_materials"
           :items-in-line="materials_in_line"
           :loading="collection_materials_loading"
-          :contenteditable="contenteditable"
-          class="collection__materials"
+          :content-editable="contenteditable"
         />
         <Spinner v-if="collection_materials_loading" />
       </div>
@@ -56,18 +55,18 @@
 <script>
 import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
-import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
 import Collection from '~/components/Collections/Collection'
 import AddMaterialPopup from '~/components/Collections/AddMaterialPopup'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
 import Error from '~/components/error'
 import { PublishStatus } from '~/utils'
+import SortableMaterials from '~/components/Materials/SortableMaterials'
 
 export default {
   components: {
+    SortableMaterials,
     Collection,
-    Materials,
     Spinner,
     DeleteCollection,
     Error,
@@ -167,10 +166,6 @@ export default {
         }
       }
     },
-    /**
-     * Deleting collection by id
-     * @param id - String
-     */
     deleteCollectionPopup() {
       this.isShowDeleteCollection = true
     },
@@ -178,9 +173,6 @@ export default {
       this.isShowDeleteCollection = false
       this.submitting = false
     },
-    /**
-     * Change 1 item in line to 4 and back.
-     */
     changeViewType() {
       if (this.materials_in_line === 1) {
         this.materials_in_line = 4
@@ -188,10 +180,6 @@ export default {
         this.materials_in_line = 1
       }
     },
-    /**
-     * Save collection
-     * @param data - Object
-     */
     onSubmit(data) {
       this.submitting = true
       this.submitData = data

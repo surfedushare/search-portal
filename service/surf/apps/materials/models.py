@@ -186,13 +186,13 @@ class CollectionMaterial(django_models.Model):
     collection = django_models.ForeignKey(Collection, on_delete=django_models.CASCADE)
     material = django_models.ForeignKey(Material, on_delete=django_models.CASCADE)
     featured = django_models.BooleanField(default=False)
+    position = django_models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'Material'
         constraints = [
             django_models.UniqueConstraint(fields=['collection', 'material'], name='unique materials in collection')
         ]
-
 
 class SharedResourceCounter(UUIDModel):
     """
