@@ -63,7 +63,7 @@ export default {
       })
     },
     sortByPosition(records) {
-      return records.sort((a,b) => (a.position > b.position ? 1 : -1))
+      return records.sort((a, b) => (a.position > b.position ? 1 : -1))
     }
   },
   computed: {
@@ -92,15 +92,17 @@ export default {
             position: material.position
           }
         })
-        this.$store.dispatch('removeMaterialFromMyCollection', {
+        this.$store.
+          dispatch('removeMaterialFromMyCollection', {
             collection_id: id,
             data: external_ids
-          }).then(() => {
+          })
+          .then(() => {
             this.$store.dispatch('setMaterialInMyCollection', {
               collection_id: id,
               data: materials
             })
-        })
+          })
       }
     }
   }
