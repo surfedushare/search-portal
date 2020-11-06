@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { isEmpty, map } from 'lodash'
+import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
 import Popup from '~/components/Popup'
 import Search from '~/components/Search'
@@ -111,7 +111,8 @@ export default {
       })
       this.$store
         .dispatch('setMaterialInMyCollection', {
-          collection_id: this.collectionId, data
+          collection_id: this.collectionId,
+          data
         })
         .then(collection => {
           this.saved = true

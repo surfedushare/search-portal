@@ -194,6 +194,7 @@ class CollectionMaterial(django_models.Model):
             django_models.UniqueConstraint(fields=['collection', 'material'], name='unique materials in collection')
         ]
 
+
 class SharedResourceCounter(UUIDModel):
     """
     Implementation of model for counter of shared resource.

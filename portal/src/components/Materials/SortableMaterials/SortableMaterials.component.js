@@ -63,7 +63,7 @@ export default {
       })
     },
     sortByPosition(records) {
-      return records.sort((a,b) => (a.position > b.position) ? 1 : -1)
+      return records.sort((a,b) => (a.position > b.position ? 1 : -1))
     }
   },
   computed: {
@@ -73,7 +73,9 @@ export default {
     },
     myList: {
       get() {
-        return this.sortByPosition(this.shortenDescriptions(this.materials.records))
+        return this.sortByPosition(
+          this.shortenDescriptions(this.materials.records)
+        )
       },
       set(values) {
         const { id } = this.$route.params
@@ -81,9 +83,14 @@ export default {
           value.position = index
           return value
         })
-        const external_ids = values.map(material => ({ external_id: material.external_id }))
+        const external_ids = values.map(material => ({
+          external_id: material.external_id
+        }))
         const materials = orderedList.map(material => {
-          return { external_id: material.external_id, position: material.position }
+          return {
+            external_id: material.external_id,
+            position: material.position
+          }
         })
         this.$store.dispatch('removeMaterialFromMyCollection', {
             collection_id: id,
@@ -95,6 +102,6 @@ export default {
             })
         })
       }
-    },
+    }
   }
 }
