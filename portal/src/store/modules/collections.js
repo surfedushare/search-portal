@@ -8,8 +8,7 @@ export default {
   state: {
     collection: false,
     collection_materials: false,
-    collection_materials_loading: false,
-    myList: []
+    collection_materials_loading: false
   },
   getters: {
     collection(state) {
@@ -20,9 +19,6 @@ export default {
     },
     collection_materials_loading(state) {
       return state.collection_materials_loading
-    },
-    getMyList(state) {
-      return state.myList
     }
   },
   actions: {
@@ -143,9 +139,6 @@ export default {
     },
     SET_MATERIAL_TO_COLLECTION_LOADING(state, payload) {
       state.collection_materials_loading = payload
-    },
-    UPDATE_MY_LIST(state, payload) {
-      state.myList = payload
     }
   }
 }

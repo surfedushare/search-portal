@@ -47,6 +47,7 @@
       :close="closeAddMaterial"
       :is-show="isShowAddMaterial"
       :collection-id="collection.id"
+      :collection-count="collection_materials.length"
       @submitted="saveMaterials"
     />
   </section>

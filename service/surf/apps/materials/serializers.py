@@ -150,6 +150,16 @@ class MaterialShortSerializer(serializers.ModelSerializer):
         fields = ('external_id',)
 
 
+class CollectionMaterialPositionSerializer(serializers.Serializer):
+    """
+    Collection Material instance serializer with external_id and position
+    """
+
+    external_id = serializers.CharField(required=False)
+
+    position = serializers.IntegerField(required=False)
+
+
 class CollectionShortSerializer(serializers.ModelSerializer):
     """
     Minimal collection instance serializer

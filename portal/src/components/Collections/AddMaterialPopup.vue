@@ -54,7 +54,8 @@ export default {
   props: {
     isShow: { type: Boolean },
     close: { type: Function, default: () => {} },
-    collectionId: { type: String, default: '' }
+    collectionId: { type: String, default: '' },
+    collectionCount: { type: Number, default: 0 }
   },
   data() {
     return {
@@ -102,12 +103,16 @@ export default {
     },
     onSaveMaterials() {
       this.submitting = true
-      const submitData = {
-        collection_id: this.collectionId,
-        data: map(this.selection, external_id => ({ external_id }))
-      }
+      const data = this.selection.map((material, index) => {
+        return {
+          external_id: material,
+          position: index + this.collectionCount
+        }
+      })
       this.$store
-        .dispatch('setMaterialInMyCollection', submitData)
+        .dispatch('setMaterialInMyCollection', {
+          collection_id: this.collectionId, data
+        })
         .then(collection => {
           this.saved = true
           if (this.$listeners.submitted) {

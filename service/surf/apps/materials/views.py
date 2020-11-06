@@ -41,6 +41,7 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
+    CollectionMaterialPositionSerializer,
     SharedResourceCounterSerializer
 )
 from surf.apps.materials.utils import (
@@ -447,7 +448,11 @@ class CollectionViewSet(ModelViewSet):
         data = []
         for d in request.data:
             # validate request parameters
-            serializer = MaterialShortSerializer(data=d)
+            if request.method == "POST":
+                serializer = CollectionMaterialPositionSerializer(data=d)
+            elif request.method == "DELETE":
+                serializer = MaterialShortSerializer(data=d)
+
             serializer.is_valid(raise_exception=True)
             data.append(serializer.validated_data)
 
@@ -471,6 +476,7 @@ class CollectionViewSet(ModelViewSet):
 
         for material in materials:
             m_external_id = material["external_id"]
+            m_position = material["position"]
 
             details = get_material_details_by_id(m_external_id)
             if not details:
@@ -489,7 +495,7 @@ class CollectionViewSet(ModelViewSet):
 
             add_material_themes(m, details[0].get("themes", []))
             add_material_disciplines(m, details[0].get("disciplines", []))
-            CollectionMaterial.objects.create(collection=instance, material=m)
+            CollectionMaterial.objects.create(collection=instance, material=m, position=m_position)
 
     @staticmethod
     def _delete_materials(instance, materials):

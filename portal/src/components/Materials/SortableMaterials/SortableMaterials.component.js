@@ -61,33 +61,39 @@ export default {
         }
         return record
       })
+    },
+    sortByPosition(records) {
+      return records.sort((a,b) => (a.position > b.position) ? 1 : -1)
     }
   },
   computed: {
-    ...mapGetters(['materials_loading', 'getMyList']),
+    ...mapGetters(['materials_loading']),
     current_loading() {
       return this.materials_loading || this.loading
     },
     myList: {
       get() {
-        return this.getMyList.length === 0
-          ? this.shortenDescriptions(this.materials.records)
-          : this.getMyList
+        return this.sortByPosition(this.shortenDescriptions(this.materials.records))
       },
-      set(value) {
+      set(values) {
         const { id } = this.$route.params
-        this.$store.commit('UPDATE_MY_LIST', value, id)
-        const materials = this.getMyList.map(material => ({ external_id: material.external_id }))
+        const orderedList = values.map((value, index) => {
+          value.position = index
+          return value
+        })
+        const external_ids = values.map(material => ({ external_id: material.external_id }))
+        const materials = orderedList.map(material => {
+          return { external_id: material.external_id, position: material.position }
+        })
         this.$store.dispatch('removeMaterialFromMyCollection', {
             collection_id: id,
-            data: materials
+            data: external_ids
           }).then(() => {
             this.$store.dispatch('setMaterialInMyCollection', {
               collection_id: id,
               data: materials
             })
         })
-
       }
     },
   }
