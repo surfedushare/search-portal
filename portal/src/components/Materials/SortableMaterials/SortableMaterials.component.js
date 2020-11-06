@@ -92,8 +92,8 @@ export default {
             position: material.position
           }
         })
-        this.$store.
-          dispatch('removeMaterialFromMyCollection', {
+        this.$store
+          .dispatch('removeMaterialFromMyCollection', {
             collection_id: id,
             data: external_ids
           })
