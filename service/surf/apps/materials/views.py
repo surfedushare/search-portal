@@ -417,9 +417,6 @@ class CollectionViewSet(ModelViewSet):
             data = serializer.validated_data
             ids = [m.external_id for m in instance.materials.order_by("id").all()]
 
-            featured = CollectionMaterial.objects.filter(collection=instance, featured=True)
-            featured_ids = [m.material.external_id for m in featured]
-
             rv = dict(records=[],
                       records_total=0,
                       filters=[],
@@ -433,21 +430,14 @@ class CollectionViewSet(ModelViewSet):
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
 
-                for record in records:
-                    material = Material.objects.filter(external_id=record["external_id"])
-                    collection_materials = CollectionMaterial.objects.filter(collection=instance)
-                    collection_material = collection_materials.filter(material_id=material.id)[0]
-                    record['featured'] = collection_material['featured']
-                    record['position'] = collection_material['position']
-                    # if record['external_id'] in featured_ids:
-                    #     record['featured'] = True
-                    # else:
-                    #     record['featured'] = False
+                collection_materials = CollectionMaterial.objects.filter(
+                    collection=instance, material__external_id__in=[r['external_id'] for r in records]
+                )
 
-                # collection_materials = CollectionMaterial.object.filter(get_material_details_by_id() [r.external_id for r in records])
-                # for collection_material in collection_materials:
-                #     record['featured'] = collection_material['featured']
-                #     r['position'] = collection_material['position']
+                for collection_material in collection_materials:
+                    record = next(r for r in records if r['external_id'] == collection_material.material.external_id)
+                    record['featured'] = collection_material.featured
+                    record['position'] = collection_material.position
 
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
