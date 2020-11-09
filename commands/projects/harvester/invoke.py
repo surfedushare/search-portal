@@ -25,9 +25,10 @@ def import_dataset(ctx, mode, dataset="epsilon"):
 @task(help={
     "mode": "Mode you want to migrate: localhost, development, acceptance or production. Must match APPLICATION_MODE",
     "reset": "Whether to reset the active datasets before harvesting",
-    "secondary": "Whether you want the node to replicate Edurep data or get it from Edurep directly"
+    "secondary": "Whether you want the node to replicate Edurep data or get it from Edurep directly",
+    "version": "Version of the harvester you want to harvest with. Defaults to latest version"
 })
-def harvest(ctx, mode, reset=False, secondary=False):
+def harvest(ctx, mode, reset=False, secondary=False, version=None):
     """
     Starts a harvest tasks on the AWS container cluster or localhost
     """
@@ -42,7 +43,7 @@ def harvest(ctx, mode, reset=False, secondary=False):
             ctx.run(" ".join(command))
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command)
+    run_task(ctx, "harvester", mode, command, version=version)
 
 
 @task(help={
