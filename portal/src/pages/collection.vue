@@ -24,6 +24,14 @@
         </button>
       </div>
       <SortableMaterials
+        v-if="contenteditable"
+        :materials="collection_materials"
+        :items-in-line="materials_in_line"
+        :loading="collection_materials_loading"
+        :content-editable="contenteditable"
+      />
+      <Materials
+        v-if="!contenteditable"
         :materials="collection_materials"
         :items-in-line="materials_in_line"
         :loading="collection_materials_loading"
@@ -55,10 +63,12 @@ import AddMaterialPopup from '~/components/Collections/AddMaterialPopup'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
 import Error from '~/components/error'
 import { PublishStatus } from '~/utils'
+import Materials from '~/components/Materials'
 import SortableMaterials from '~/components/Materials/SortableMaterials'
 
 export default {
   components: {
+    Materials,
     SortableMaterials,
     Collection,
     Spinner,
