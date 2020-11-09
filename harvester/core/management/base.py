@@ -1,6 +1,4 @@
-import os
 import json
-from urllib.parse import urlparse
 from copy import copy
 from tqdm import tqdm
 import logging

@@ -43,7 +43,7 @@ class Command(base.LabelCommand, HarvesterCommand):
         resource_files = self.dump_resources()
 
         # Sync files with AWS
-        self.info(f"Uploading files to AWS")
+        self.info("Uploading files to AWS")
         ctx = Context(environment)
         harvester_data_bucket = "s3://edushare-data/datasets/harvester"
         for file in [dataset_file] + resource_files:
