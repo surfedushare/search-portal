@@ -38,7 +38,7 @@ class ThemeDisciplineSerializer(MpttFilterItemSerializer):
         if obj.external_id:
             elastic = ElasticSearchApiClient()
             filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
-            res = elastic.search([], filters=filters, page_size=0)
+            res = elastic.search('', filters=filters, page_size=0)
             return res['recordcount']
 
         return 0

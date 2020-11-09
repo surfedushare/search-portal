@@ -11,9 +11,9 @@ class TestsElasticSearch(TestCase):
         self.instance = ElasticSearchApiClient()
 
     def test_basic_search(self):
-        search_result = self.instance.search([])
+        search_result = self.instance.search('')
         search_result_filter = self.instance.search(
-            [], filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
+            '', filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
         self.assertIsNotNone(search_result_filter)
@@ -29,13 +29,13 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(len(search_result['drilldowns']), 0)
 
         # basic search
-        search_biologie = self.instance.search(["biologie"])
+        search_biologie = self.instance.search("biologie")
         self.assertIsNotNone(search_biologie)
         self.assertIsNot(search_result, search_biologie)
         self.assertNotEqual(search_result['recordcount'], search_biologie['recordcount'])
 
         # basic search second page
-        search_biologie_2 = self.instance.search(["biologie"], page=2)
+        search_biologie_2 = self.instance.search("biologie", page=2)
         self.assertIsNotNone(search_biologie_2)
         self.assertNotEqual(search_biologie_2, search_biologie)
 
@@ -43,13 +43,13 @@ class TestsElasticSearch(TestCase):
 
         # search with single filter applied
         search_biologie_video = self.instance.search(
-            ["biologie"],
+            "biologie",
             filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
         )
         for record in search_biologie_video["records"]:
             self.assertEqual(record["format"], "video")
         search_biologie_video_and_pdf = self.instance.search(
-            ["biologie"],
+            "biologie",
             filters=[{"external_id": "lom.technical.format", "items": ["video", "pdf"]}]
         )
         for record in search_biologie_video_and_pdf["records"]:
@@ -57,7 +57,7 @@ class TestsElasticSearch(TestCase):
 
         # search with multiple filters applied
         search_biologie_text_and_cc_by = self.instance.search(
-            ["biologie"],
+            "biologie",
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]},
                 {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by"]}
@@ -68,9 +68,9 @@ class TestsElasticSearch(TestCase):
             self.assertEqual(record["copyright"], "cc-by-40")
 
         # AND search with multiple filters applied
-        search_biologie_and_natuur = self.instance.search(["biologie", "natuur"])
+        search_biologie_and_natuur = self.instance.search("biologie natuur")
         search_biologie_and_natuur_with_filters = self.instance.search(
-            ["biologie", "natuur"],
+            "biologie natuur",
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]},
                 {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by"]}
@@ -84,19 +84,19 @@ class TestsElasticSearch(TestCase):
         )
 
         # search with publish date filter applied
-        search_biologie_upper_date = self.instance.search(["biologie"], filters=[
+        search_biologie_upper_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, "2018-12-31"]}
         ])
         for record in search_biologie_upper_date["records"]:
             publish_date = parse(record["publish_datetime"], ignoretz=True)
             self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
-        search_biologie_lower_date = self.instance.search(["biologie"], filters=[
+        search_biologie_lower_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", None]}
         ])
         for record in search_biologie_lower_date["records"]:
             publish_date = parse(record["publish_datetime"], ignoretz=True)
             self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
-        search_biologie_between_date = self.instance.search(["biologie"], filters=[
+        search_biologie_between_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", "2018-12-31"]}
         ])
         for record in search_biologie_between_date["records"]:
@@ -105,30 +105,30 @@ class TestsElasticSearch(TestCase):
             self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
 
         # search with None, None as date filter. This search should give the same result as not filtering at all.
-        search_biologie_none_date = self.instance.search(["biologie"], filters=[
+        search_biologie_none_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, None]}
         ])
-        search_biologie = self.instance.search(["biologie"])
+        search_biologie = self.instance.search("biologie")
         self.assertEqual(search_biologie_none_date, search_biologie)
 
     def test_search_disciplines(self):
-        search_result = self.instance.search([])
+        search_result = self.instance.search()
         search_result_filter_1 = self.instance.search(
-            [],
+            '',
             filters=[{
                 "external_id": "lom.classification.obk.discipline.id",
                 "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2']
             }]
         )
         search_result_filter_2 = self.instance.search(
-            [],
+            '',
             filters=[{
                 "external_id": "lom.classification.obk.discipline.id",
                 "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
         search_result_filter_3 = self.instance.search(
-            [],
+            '',
             filters=[{
                 "external_id": "lom.classification.obk.discipline.id",
                 "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2', '2b363227-8633-4652-ad57-c61f1efc02c8']
@@ -148,7 +148,7 @@ class TestsElasticSearch(TestCase):
         )
 
     def test_drilldown_search(self):
-        search_biologie = self.instance.search(["biologie"], drilldown_names=["lom.technical.format"])
+        search_biologie = self.instance.search("biologie", drilldown_names=["lom.technical.format"])
         self.assertIsNotNone(search_biologie)
         self.assertTrue(search_biologie['drilldowns'])
         self.assertTrue(search_biologie['drilldowns'][0]['items'])
@@ -157,7 +157,7 @@ class TestsElasticSearch(TestCase):
             self.assertIsNotNone(item['count'])
 
         search_with_theme_drilldown = self.instance.search(
-            [],
+            '',
             drilldown_names=["lom.classification.obk.discipline.id"]
         )
         self.assertIsNotNone(search_with_theme_drilldown)
@@ -174,7 +174,7 @@ class TestsElasticSearch(TestCase):
 
     def test_drilldown_with_filters(self):
         search = self.instance.search(
-            ["biologie"],
+            "biologie",
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]}
             ],
@@ -194,13 +194,13 @@ class TestsElasticSearch(TestCase):
 
     def test_ordering_search(self):
         # make a bunch of queries with different ordering
-        search_biologie = self.instance.search(["biologie"])
+        search_biologie = self.instance.search("biologie")
         self.assertIsNotNone(search_biologie)
         search_biologie_dates = [record["publish_datetime"] for record in search_biologie["records"]]
-        search_biologie_asc = self.instance.search(["biologie"], ordering="lom.lifecycle.contribute.publisherdate")
+        search_biologie_asc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
         self.assertIsNotNone(search_biologie_asc)
         search_biologie_asc_dates = [record["publish_datetime"] for record in search_biologie_asc["records"]]
-        search_biologie_desc = self.instance.search(["biologie"], ordering="lom.lifecycle.contribute.publisherdate")
+        search_biologie_desc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
         self.assertIsNotNone(search_biologie_desc)
         search_biologie_desc_dates = [record["publish_datetime"] for record in search_biologie_desc["records"]]
         # make sure that a default ordering is different than a date ordering
@@ -229,7 +229,7 @@ class TestsElasticSearch(TestCase):
         self.assertFalse(empty_drilldowns['records'])
         self.assertFalse(empty_drilldowns['drilldowns'])
 
-        biologie_drilldowns = self.instance.drilldowns([], search_text=["biologie"])
+        biologie_drilldowns = self.instance.drilldowns([], search_text="biologie")
         # {'recordcount': 32, 'records': [], 'drilldowns': []}
         self.assertGreater(biologie_drilldowns['recordcount'], 0)
         self.assertGreater(empty_drilldowns['recordcount'], biologie_drilldowns['recordcount'])
@@ -312,7 +312,7 @@ class TestsElasticSearch(TestCase):
 
     def check_author_search(self, author, expected_record_count):
         search_author = self.instance.search(
-            [],
+            '',
             filters=[{"external_id": "lom.lifecycle.contribute.author", "items": [author]}]
         )
         for record in search_author['records']:

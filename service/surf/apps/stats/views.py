@@ -24,5 +24,5 @@ class StatsView(ViewSet):
 
         elastic = ElasticSearchApiClient()
 
-        res = elastic.search([], page_size=0)
+        res = elastic.search('', page_size=0)
         return Response(dict(value=res.get("recordcount", 0)))

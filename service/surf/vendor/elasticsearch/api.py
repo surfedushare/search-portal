@@ -154,7 +154,7 @@ class ElasticSearchApiClient:
         search_results["records"] = []
         return search_results
 
-    def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
+    def search(self, search_text, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
         """
         Build and send a query to elasticsearch and parse it before returning.
         :param search_text: A list of strings to search for.
@@ -165,8 +165,6 @@ class ElasticSearchApiClient:
         :param page_size: How many items are loaded per page.
         :return:
         """
-        search_text = search_text or []
-        assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
 
         start_record = page_size * (page - 1)
         body = {
@@ -180,12 +178,13 @@ class ElasticSearchApiClient:
             }
         }
 
-        if len(search_text):
+        if search_text:
             query_string = {
-                "query_string": {
+                "simple_query_string": {
                     "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors",
                                "publishers"],
-                    "query": ' AND '.join(search_text)
+                    "query": search_text,
+                    "default_operator": "and"
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
@@ -371,7 +370,7 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.classification.obk.discipline.id':
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
-            return 'authors'
+            return 'authors.keyword'
         elif external_id == 'lom.general.language':
             return 'language.keyword'
         elif external_id == 'lom.general.aggregationlevel':
