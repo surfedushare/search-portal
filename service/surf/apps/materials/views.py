@@ -266,7 +266,7 @@ class MaterialAPIView(APIView):
         res = _get_material_by_external_id(request, external_id, shared=shared, count_view=count_view)
 
         if not res:
-            raise Http404('No materials matches the given query.')
+            raise Http404()
 
         return Response(res[0])
 
@@ -355,8 +355,7 @@ class CollectionMaterialPromotionAPIView(APIView):
         collection_materials = CollectionMaterial.objects.filter(
             collection=collection_instance, material__external_id=external_id)
         if not collection_materials:
-            raise Http404(f"Collection {collection_instance} does not contain a material with "
-                          f"external id {external_id}, cannot promote or demote")
+            raise Http404()
 
         # The material should only be in the collection once
         assert len(collection_materials) == 1, f"Material with id {external_id} is in collection " \
