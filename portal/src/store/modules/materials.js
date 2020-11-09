@@ -11,16 +11,13 @@ import axios from '~/axios'
 const $log = injector.get('$log')
 
 function generateSearchParams(search) {
-  const { search_text = '', filters = {} } = search
+  const { filters = {} } = search
   const filterArray = Object.keys(filters).map(key => {
     return { external_id: key, items: filters[key] }
   })
 
-  const splittedSearchText = search_text.split(/\s+/).filter(x => x !== '')
-
   return {
     ...search,
-    search_text: splittedSearchText,
     filters: filterArray
   }
 }

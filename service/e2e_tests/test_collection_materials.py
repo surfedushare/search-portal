@@ -51,8 +51,6 @@ class TestCollectionMaterials(ElasticSearchTestCase):
             )
         )
         self.selenium.find_element_by_css_selector(".collection__materials .select-icon").click()
-        self.selenium.find_element_by_css_selector(".collection__info_filter__button button").click()
-        self.selenium.find_element_by_css_selector(".popup.delete-material button.button").click()
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".collection__materials"), "Niet gevonden"

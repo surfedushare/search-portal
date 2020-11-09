@@ -69,6 +69,9 @@ class ElasticSearchTestCase(BaseTestCase):
                     'publishers': {
                         'type': 'keyword'
                     },
+                    'publisher_date': {
+                        'type': 'date'
+                    },
                     'aggregation_level': {
                         'type': 'keyword'
                     },

@@ -12,7 +12,6 @@ export default {
   mounted() {},
   data() {
     return {
-      saved: false,
       submitting: false,
       formData: {
         title_nl: null,
@@ -27,12 +26,12 @@ export default {
         .dispatch(this.submitMethod || 'postMyCollection', this.formData)
         .then(collection => {
           this.$store.dispatch('getUser')
-          this.saved = true
           if (this.$listeners.submitted) {
             this.$emit('submitted', collection)
           }
         })
         .finally(() => {
+          this.close()
           this.submitting = false
         })
     }
