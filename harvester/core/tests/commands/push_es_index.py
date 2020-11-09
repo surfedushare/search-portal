@@ -200,11 +200,25 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
     @patch("core.models.search.streaming_bulk")
     def test_edurep_surf_deletes(self, streaming_bulk, get_es_client):
 
+        # Marking the Wikiwijsmaken packages as deleted to see how that propagates
+        arrangement = Arrangement.objects.get(id=92378)
+        arrangement.delete()  # this sets deleted_at
+
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
             "nl": 8
         }
+        expected_deleted_ids = [
+            "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
+            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
+            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e#!page-2935729",
+            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e#!page-2935768",
+            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e#!page-2935734",
+            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e#!page-3703806",
+            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e#!page-2935733",
+            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e#!page-colofon",
+        ]
 
         # Calling command and catching output for some checks
         out = StringIO()
@@ -228,15 +242,18 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Asserting calls to Elastic Search library
         self.assertEqual(get_es_client.call_count, 2,
                          "Expected an Elastic Search client to get created for each language")
+        deleted_count = 0
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, language, id = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
-                self.assert_document_structure(
-                    doc, doc["_id"] == "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af"
-                )
+                is_deleted = doc["_id"] in expected_deleted_ids
+                if is_deleted:
+                    deleted_count += 1
+                self.assert_document_structure(doc, is_deleted=is_deleted)
             self.assertEqual(index_name, "test")
+        self.assertEqual(deleted_count, 8)
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 0)
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 0,
