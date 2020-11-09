@@ -163,7 +163,7 @@ class TestBasicHarvest(TestCase):
                 [
                     [s3_url + "core/downloads/7/c7/20191209102536078995.index.html"],
                     [s3_url + "core/downloads/f/03/20191209102536508370.MetaDataEditDownload.csp"],
-                    [s3_url + "core/downloads/e/9b/20201022123202360897.Macro_meso_micro.html"]
+                    [s3_url + "test/20201022123202360897.Macro_meso_micro.html"]
                 ],
                 [{}, {}, {}],
             ),
@@ -202,7 +202,7 @@ class TestBasicHarvest(TestCase):
                 [
                     [localhost + "core/downloads/7/c7/20191209102536078995.index.html"],
                     [localhost + "core/downloads/f/03/20191209102536508370.MetaDataEditDownload.csp"],
-                    [localhost + "core/downloads/e/9b/20201022123202360897.Macro_meso_micro.html"]
+                    [localhost + "test/20201022123202360897.Macro_meso_micro.html"]
                 ],
                 [{}, {}, {}],
             ),

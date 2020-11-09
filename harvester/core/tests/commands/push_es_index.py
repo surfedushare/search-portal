@@ -362,7 +362,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 2
+            "nl": 8
         }
         expected_index_configuration = {
             "en": ElasticIndex.objects.get(language="en", dataset__name="test").configuration,
