@@ -1,6 +1,7 @@
 from django.test import TestCase
+from django.apps import apps
 
-from core.models import Arrangement
+from core.models import Arrangement, FileResource
 
 
 class TestArrangement(TestCase):
@@ -42,3 +43,27 @@ class TestArrangement(TestCase):
                 self.assertFalse(document["text"])
             else:
                 self.assertTrue(document["text"])
+
+    def test_unpack_package_documents_file_download_error(self):
+        # Setting the package file download resource to failed state
+        _, file_resource_id = self.package.base_document.properties["pipeline"]["file"]["resource"]
+        file_resource = FileResource.objects.get(id=file_resource_id)
+        file_resource.status = 404
+        file_resource.save()
+        # And executing tests with that
+        reference_id = "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa"
+        base_url = "http://localhost/test"
+        documents = self.package.unpack_package_documents(reference_id, base_url)
+        self.assertEqual(len(documents), 0)
+
+    def test_unpack_package_documents_package_download_error(self):
+        # Setting the package file download resource to failed state
+        _, file_resource_id = self.package.base_document.properties["pipeline"]["package_file"]["resource"]
+        file_resource = FileResource.objects.get(id=file_resource_id)
+        file_resource.status = 404
+        file_resource.save()
+        # And executing tests with that
+        reference_id = "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa"
+        base_url = "http://localhost/test"
+        documents = self.package.unpack_package_documents(reference_id, base_url)
+        self.assertEqual(len(documents), 0)
