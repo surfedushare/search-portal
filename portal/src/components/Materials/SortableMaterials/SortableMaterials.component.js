@@ -37,7 +37,7 @@ export default {
     deleteFromCollection(material) {
       const { id } = this.$route.params
       this.$store
-        .dispatch('removeMaterialFromMyCollection', {
+        .dispatch('removeMaterialFromCollection', {
           collection_id: id,
           data: [{ external_id: material.external_id }]
         })
@@ -90,7 +90,7 @@ export default {
           }
         })
         this.$store
-          .dispatch('removeMaterialFromMyCollection', {
+          .dispatch('removeMaterialFromCollection', {
             collection_id: id,
             data: external_ids
           })

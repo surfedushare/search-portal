@@ -42,7 +42,7 @@ export default {
         $log.error('Validate error: ', { id, params })
       }
     },
-    async putMyCollection({ commit }, data) {
+    async editCollection({ commit }, data) {
       if (validateID(data.id) && validateParams(data)) {
         const { data: collection } = await axios.put(
           `collections/${data.id}/`,
@@ -74,7 +74,7 @@ export default {
         $log.error('Validate error: ', id)
       }
     },
-    async postMyCollection(context, data) {
+    async createCollection(context, data) {
       if (validateParams(data)) {
         return await axios.post(`collections/`, data).then(res => res.data)
       } else {
@@ -90,7 +90,7 @@ export default {
         $log.error('Validate error: ', { collection_id, data })
       }
     },
-    async removeMaterialFromMyCollection(context, { collection_id, data }) {
+    async removeMaterialFromCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
         return axios
           .delete(`collections/${collection_id}/materials/`, {

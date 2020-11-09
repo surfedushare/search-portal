@@ -151,7 +151,7 @@ export default {
       this.submitting = true
       this.submitData = data
       this.$store
-        .dispatch('putMyCollection', {
+        .dispatch('editCollection', {
           ...this.collection,
           ...data
         })

@@ -88,7 +88,7 @@ export default {
       this.submitting = true
 
       return this.$store
-        .dispatch('removeMaterialFromMyCollection', {
+        .dispatch('removeMaterialFromCollection', {
           collection_id: collectionId,
           data: [
             {

@@ -23,7 +23,7 @@ export default {
     onSaveCollection() {
       this.submitting = true
       this.$store
-        .dispatch(this.submitMethod || 'postMyCollection', this.formData)
+        .dispatch(this.submitMethod || 'createCollection', this.formData)
         .then(collection => {
           this.$store.dispatch('getUser')
           if (this.$listeners.submitted) {
