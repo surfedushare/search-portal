@@ -11,7 +11,7 @@
       <button
         :class="{'select-icon': true, 'selected': collection.selected}"
         v-if="editableContent"
-        @click="selectCollection(collection)"
+        @click="deleteCollectionPopup(collection)"
       >
         Delete
       </button>
@@ -20,13 +20,6 @@
         <h3 class="collections__item_ttl">
           {{ $i18n.locale === 'nl' ? collection.title_nl : collection.title_en }}
         </h3>
-        <router-link
-          :to="localePath({name: 'communities-community', params: {community: community.id}})"
-          class="collections__item_link"
-          v-for="community in collection.communities"
-          :key="`${community.id}`"
-          >{{ getCommunityDetail(community, $i18n.locale, 'title') }}
-        </router-link>
         <p class="collections__item_count">{{ $tc('items', collection.materials_count) }}</p>
       </div>
 
@@ -41,4 +34,9 @@
   </ul>
   <div v-if="loading"><Spinner /></div>
   <div class="collections__info" v-else-if="collections && !collections.length">{{ $t('No-collections') }}</div>
+  <DeleteCollection
+    :close="closeDeleteCollection"
+    :is-show="isShowDeleteCollection"
+    :deletefunction="deleteCollection"
+  ></DeleteCollection>
 </section>

@@ -99,7 +99,7 @@ To apply migrations locally you'll need to switch the connection to the root use
 You can do so by setting an environment variable before running the migration:
 
 ```bash
-export POL_DJANGO_POSTGRES_USER=postgres
+export POL_POSTGRES_USER=postgres
 python manage.py migrate
 ```
 

@@ -157,7 +157,7 @@ export default {
       return null
     },
     setEducationalLevelFilter(value) {
-      this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = value
+      this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value]
     },
     setMaterialTypeFilter({ value, checked }) {
       const currentChecked = this.filters[MATERIAL_FORMAT_ID] || []

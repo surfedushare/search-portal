@@ -10,8 +10,6 @@ from urllib.parse import quote_plus
 
 import logging
 
-from surf.apps.querylog.models import QueryLog
-
 from surf.vendor.edurep.xml_endpoint.v1_2.xml_parser import (
     parse_response,
     TECH_FORMAT_LOM,
@@ -159,14 +157,7 @@ class XmlEndpointApiClient:
                             maximum_records=maximum_records,
                             response_parsing=False)
 
-        url = result.request.url
-        parsed_result = parse_response(result.text, record_schema=EXTRA_RECORD_SCHEMA)
-        # only store the first record, otherwise we store every query that occurs while scrolling
-        if start_record == 1 and maximum_records > 0:
-            QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
-                     result_size=parsed_result['recordcount'], result=parsed_result).save()
-
-        return parsed_result
+        return parse_response(result.text, record_schema=EXTRA_RECORD_SCHEMA)
 
     def _call(self, query, drilldown_names=None,
               start_record=1, maximum_records=0, ordering=None,

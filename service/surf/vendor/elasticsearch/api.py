@@ -5,7 +5,6 @@ from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 import boto3
 
-from surf.apps.querylog.models import QueryLog
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 
 
@@ -33,7 +32,7 @@ class ElasticSearchApiClient:
         else:
             http_auth = (settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD,)
 
-        self.elastic = Elasticsearch(
+        self.client = Elasticsearch(
             [elastic_url],
             http_auth=http_auth,
             connection_class=RequestsHttpConnection,
@@ -130,7 +129,7 @@ class ElasticSearchApiClient:
             }
         }
 
-        result = self.elastic.search(
+        result = self.client.search(
             index=[self.index_nl, self.index_en],
             body=query_dictionary
         )
@@ -155,7 +154,7 @@ class ElasticSearchApiClient:
         search_results["records"] = []
         return search_results
 
-    def search(self, search_text: list, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
+    def search(self, search_text, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
         """
         Build and send a query to elasticsearch and parse it before returning.
         :param search_text: A list of strings to search for.
@@ -166,8 +165,6 @@ class ElasticSearchApiClient:
         :param page_size: How many items are loaded per page.
         :return:
         """
-        search_text = search_text or []
-        assert isinstance(search_text, list), "A search needs to be specified as a list of terms"
 
         start_record = page_size * (page - 1)
         body = {
@@ -181,12 +178,13 @@ class ElasticSearchApiClient:
             }
         }
 
-        if len(search_text):
+        if search_text:
             query_string = {
-                "query_string": {
+                "simple_query_string": {
                     "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors",
                                "publishers"],
-                    "query": ' AND '.join(search_text)
+                    "query": search_text,
+                    "default_operator": "and"
                 }
             }
             body["query"]["bool"]["must"] += [query_string]
@@ -195,7 +193,7 @@ class ElasticSearchApiClient:
                     "field": "publisher_date",
                     "pivot": "90d",
                     "origin": "now",
-                    "boost": 1.5
+                    "boost": 1.15
                 }
             }
 
@@ -214,26 +212,23 @@ class ElasticSearchApiClient:
                 "_score"
             ]
         # make query and parse
-        result = self.elastic.search(
+        result = self.client.search(
             index=indices,
             body=body
         )
-        parsed_result = self.parse_elastic_result(result)
-        # store the searches in the database to be able to analyse them later on.
-        # however, dont store results when scrolling as not to overload the database
-        if start_record == 0 and search_text:
-            url = f"es.search(index={indices}, body={body})"
-            QueryLog(search_text=" AND ".join(search_text), filters=filters, query_url=url,
-                     result_size=parsed_result['recordcount'], result=parsed_result).save()
-        return parsed_result
+        return self.parse_elastic_result(result)
 
-    def get_materials_by_id(self, external_ids, **kwargs):
+    def get_materials_by_id(self, external_ids, page=1, page_size=10, **kwargs):
         """
         Retrieve specific materials from elastic through their external id.
         :param external_ids: the id's of the materials to retrieve
+        :param page: The page index of the results
+        :param page_size: How many items are loaded per page.
         :return: a list of search results (like a regular search).
         """
-        result = self.elastic.search(
+        start_record = page_size * (page - 1)
+
+        result = self.client.search(
             index=[self.index_nl, self.index_en],
             body={
                 "query": {
@@ -241,6 +236,8 @@ class ElasticSearchApiClient:
                         "must": [{"terms": {"external_id": external_ids}}]
                     }
                 },
+                'from': start_record,
+                'size': page_size,
             },
         )
         materials = self.parse_elastic_result(result)
@@ -373,7 +370,7 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.classification.obk.discipline.id':
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
-            return 'authors'
+            return 'authors.keyword'
         elif external_id == 'lom.general.language':
             return 'language.keyword'
         elif external_id == 'lom.general.aggregationlevel':

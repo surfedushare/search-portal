@@ -6,64 +6,50 @@
     class="add-collection"
   >
     <slot>
-      <template v-if="saved">
-        <h2 class="popup__title">{{ $t('Collection-created') }}</h2>
-        <div class="popup__subtext">{{ $t('The-collection-has-been-created') }}</div>
-        <div>
+      <h2 class="popup__title">{{ $t('Create-private-collection') }}</h2>
+      <div class="popup__subtext">{{ $t('Create-private-collection-text') }}</div>
+      <form
+        action=""
+        @submit.prevent="onSaveCollection"
+      >
+        <div class="name-container">
+          <InputLanguageWrapper language='NL'>
+            <InputWithCounter
+              id="collection_title_nl"
+              v-model="formData.title_nl"
+              type="text"
+              :placeholder="$t('Name-for-collection')"
+              required
+              name="title_nl"
+              maxlength="80"
+              class="title-input"
+            />
+          </InputLanguageWrapper>
+        </div>
+        <div class="name-container">
+          <InputLanguageWrapper language='EN'>
+            <InputWithCounter
+              id="collection_title_en"
+              v-model="formData.title_en"
+              type="text"
+              :placeholder="$t('Name-for-collection')"
+              required
+              name="title_en"
+              maxlength="80"
+              class="title-input"
+            />
+          </InputLanguageWrapper>
+        </div>
+        <div class="form__button">
           <button
             class="button"
-            @click.prevent="close"
+            type="submit"
+            :disabled="submitting"
           >
-            {{ $t('See') }}
+            {{ $t('Make-a-collection') }}
           </button>
         </div>
-      </template>
-      <template v-else>
-        <h2 class="popup__title">{{ $t('Create-private-collection') }}</h2>
-        <div class="popup__subtext">{{ $t('Create-private-collection-text') }}</div>
-        <form
-          action=""
-          @submit.prevent="onSaveCollection"
-        >
-          <div class="name-container">
-            <InputLanguageWrapper language='NL'>
-              <InputWithCounter
-                id="collection_title_nl"
-                v-model="formData.title_nl"
-                type="text"
-                :placeholder="$t('Name-for-collection')"
-                required
-                name="title_nl"
-                maxlength="80"
-                class="title-input"
-              />
-            </InputLanguageWrapper>
-          </div>
-          <div class="name-container">
-            <InputLanguageWrapper language='EN'>
-              <InputWithCounter
-                id="collection_title_en"
-                v-model="formData.title_en"
-                type="text"
-                :placeholder="$t('Name-for-collection')"
-                required
-                name="title_en"
-                maxlength="80"
-                class="title-input"
-              />
-            </InputLanguageWrapper>
-          </div>
-          <div class="form__button">
-            <button
-              class="button"
-              type="submit"
-              :disabled="submitting"
-            >
-              {{ $t('Make-a-collection') }}
-            </button>
-          </div>
-        </form>
-      </template>
+      </form>
     </slot>
   </Popup>
 </transition>

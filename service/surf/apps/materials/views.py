@@ -47,7 +47,8 @@ from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
     get_material_details_by_id,
     add_material_themes,
-    add_material_disciplines
+    add_material_disciplines,
+    add_search_query_to_elastic_index
 )
 from surf.vendor.edurep.xml_endpoint.v1_2.api import (
     AUTHOR_FIELD_ID,
@@ -169,6 +170,9 @@ class MaterialSearchAPIView(APIView):
             context={'search_counts': drill_down_flat}
         )
 
+        if data['page'] == 1 and data["search_text"]:
+            add_search_query_to_elastic_index(res["recordcount"], data["search_text"], data["filters"])
+
         rv = dict(records=records,
                   records_total=res["recordcount"],
                   filters=res["drilldowns"],
@@ -183,8 +187,7 @@ def _get_filter_categories():
     Make list of filter categories in format "edurep_field_id:item_count"
     :return: list of "edurep_field_id:item_count"
     """
-    return [f.external_id for f in MpttFilterItem.objects.all()
-            if f.external_id not in IGNORED_FIELDS and f.level == 0]
+    return [f.external_id for f in MpttFilterItem.objects.filter(parent=None).exclude(external_id__in=IGNORED_FIELDS)]
 
 
 class KeywordsAPIView(APIView):
@@ -241,7 +244,7 @@ class MaterialAPIView(APIView):
             # return overview of newest Materials
             elastic = ElasticSearchApiClient()
 
-            res = elastic.search([],
+            res = elastic.search('',
                                  # sort by newest items first
                                  ordering="-lom.lifecycle.contribute.publisherdate",
                                  page_size=_MATERIALS_COUNT_IN_OVERVIEW)

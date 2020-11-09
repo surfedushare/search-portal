@@ -19,7 +19,8 @@ class MpttFilterItem(MPTTModel, UUIDModel):
     deleted_from_edurep_at = django_models.DateTimeField(default=None, null=True, blank=True)
 
     title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE, null=True, blank=False)
-    external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=True)
+    external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=False, null=False,
+                                          unique=True)
     enabled_by_default = django_models.BooleanField(default=False)
     is_hidden = django_models.BooleanField(default=False)
 
@@ -35,7 +36,7 @@ class MpttFilterItem(MPTTModel, UUIDModel):
         verbose_name = "filter category item"
 
 
-class Filter(UUIDModel):
+class Filter(object):
     """
     Implementation of user custom Filter model.
     """
@@ -61,13 +62,13 @@ class Filter(UUIDModel):
         return self.title
 
 
-class FilterItem(UUIDModel):
+class FilterItem(object):
     """
     Implementation of user custom Filter item model.
     """
 
     # related filter
-    filter = django_models.ForeignKey(Filter,
+    filter = django_models.ForeignKey("Filter",
                                       related_name='items',
                                       on_delete=django_models.CASCADE)
 
