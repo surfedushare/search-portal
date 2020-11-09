@@ -43,7 +43,7 @@ export default {
         })
         .then(() => {
           Promise.all([
-            this.$store.dispatch('getMaterialInMyCollection', {
+            this.$store.dispatch('getCollectionMaterials', {
               id,
               params: { page: 1, page_size: 10 }
             }),

@@ -23,20 +23,13 @@
           {{ $t('Add-materials') }}
         </button>
       </div>
-
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="materials_loading"
-        infinite-scroll-distance="10"
-      >
-        <SortableMaterials
-          :materials="collection_materials"
-          :items-in-line="materials_in_line"
-          :loading="collection_materials_loading"
-          :content-editable="contenteditable"
-        />
-        <Spinner v-if="collection_materials_loading" />
-      </div>
+      <SortableMaterials
+        :materials="collection_materials"
+        :items-in-line="materials_in_line"
+        :loading="collection_materials_loading"
+        :content-editable="contenteditable"
+      />
+      <Spinner v-if="collection_materials_loading" />
     </div>
     <DeleteCollection
       :close="closeDeleteCollection"
@@ -94,7 +87,6 @@ export default {
     ...mapGetters([
       'collection',
       'collection_materials',
-      'materials_loading',
       'collection_materials_loading',
       'user'
     ]),
@@ -117,7 +109,7 @@ export default {
   },
   mounted() {
     const { id } = this.$route.params
-    this.$store.dispatch('getMaterialInMyCollection', {
+    this.$store.dispatch('getCollectionMaterials', {
       id,
       params: {
         page_size: this.search.page_size,
@@ -141,7 +133,7 @@ export default {
       const { id } = this.$route.params
       this.isLoading = true
       Promise.all([
-        this.$store.dispatch('getMaterialInMyCollection', {
+        this.$store.dispatch('getCollectionMaterials', {
           id,
           params: { page: 1, page_size: 10 }
         }),
@@ -149,23 +141,6 @@ export default {
       ]).finally(() => {
         this.isLoading = false
       })
-    },
-    loadMore() {
-      const { id } = this.$route.params
-      const { collection_materials } = this
-      if (collection_materials) {
-        const { page_size, page, records_total } = collection_materials
-
-        if (records_total > page_size * page) {
-          this.$store.dispatch('getMaterialInMyCollection', {
-            id,
-            params: {
-              page_size: 10,
-              page: page + 1
-            }
-          })
-        }
-      }
     },
     deleteCollectionPopup() {
       this.isShowDeleteCollection = true

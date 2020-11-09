@@ -427,7 +427,7 @@ class CollectionViewSet(ModelViewSet):
             if ids:
                 elastic = ElasticSearchApiClient()
 
-                res = elastic.get_materials_by_id(ids, **data)
+                res = elastic.get_materials_by_id(ids, 1, len(ids))
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
 

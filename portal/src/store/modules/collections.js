@@ -101,7 +101,7 @@ export default {
         $log.error('Validate error: ', { collection_id, data })
       }
     },
-    async getMaterialInMyCollection({ commit }, { id, params }) {
+    async getCollectionMaterials({ commit }, { id, params }) {
       if (validateIDString(id) && validateParams(params)) {
         commit('SET_MATERIAL_TO_COLLECTION_LOADING', true)
         const { data: materialsInfo } = await axios.get(
