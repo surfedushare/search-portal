@@ -7,20 +7,20 @@ from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
 from core.management.base import HarvesterCommand
-from core.models import Dataset
+from core.models import Dataset, FileResource, TikaResource
 from edurep.models import EdurepOAIPMH
 
 
 class Command(base.LabelCommand, HarvesterCommand):
 
     def dump_resources(self):
+        call_command("dump_resource", "core.FileResource")
+        call_command("dump_resource", "core.TikaResource")
         call_command("dump_resource", "edurep.EdurepOAIPMH")
-        edurep_oaipmh_file_path = os.path.join(
-            get_dumps_path(EdurepOAIPMH),
-            f"{EdurepOAIPMH.get_name()}.dump.json"
-        )
         return [
-            edurep_oaipmh_file_path
+            os.path.join(get_dumps_path(FileResource), f"{FileResource.get_name()}.dump.json"),
+            os.path.join(get_dumps_path(TikaResource), f"{TikaResource.get_name()}.dump.json"),
+            os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json")
         ]
 
     def handle_label(self, dataset_label, **options):

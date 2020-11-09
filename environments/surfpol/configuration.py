@@ -8,13 +8,6 @@ The latter specifies where the code is run either "host" or "container"
 Any configuration that you want to override can be set by using environment variables prefixed with "POL_".
 For instance: if you want to override the django.debug configuration for acceptance set POL_DJANGO_DEBUG=0.
 If you leave empty any POL environment variables they are assumed to be unset. Use "0" for a False value.
-
-We're using invoke Config as base for our configuration:
-http://docs.pyinvoke.org/en/stable/concepts/configuration.html#config-hierarchy.
-Since the config is created outside of invoke it works slightly different than normal.
-The system invoke files are the environment configuration files.
-Runtime configurations are used to load superuser configurations and are set only in a host context.
-Shell environment variables override all other configuration.
 """
 import os
 import json
@@ -27,7 +20,6 @@ CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 
 PREFIX = "POL"
 ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODE_ENVIRONMENT = os.path.join(ENVIRONMENTS, MODE)
 
 
 # Now we'll delete any items that are POL variables, but with empty values
@@ -45,6 +37,36 @@ class POLConfig(Config):
     env_prefix = PREFIX
 
 
+def create_configuration(mode, project=None, context="container", config_class=POLConfig):
+    """
+    We're using invoke Config as base for our configuration:
+    http://docs.pyinvoke.org/en/stable/concepts/configuration.html#config-hierarchy.
+    Since the config is created outside of invoke it works slightly different than normal.
+    The system invoke files are the environment configuration files.
+    Runtime configurations are used to load superuser configurations and are set only in a host context.
+    Shell environment variables override all other configuration.
+
+    :param mode: the mode you want a configuration for
+    :param project: the project you want a configuration for (service or harvester)
+    :param context: the context you want a configuration for (host or container)
+    :param config_class: Which configuration class to use (default is POLConfig)
+    :return: configuration
+    """
+    mode_environment = os.path.join(ENVIRONMENTS, mode)
+    config = config_class(
+        system_prefix=mode_environment + os.path.sep,
+        runtime_path=os.path.join(mode_environment, "superuser.invoke.yml") if context == "host" else None,
+        project_location=os.path.join(mode_environment, project) if project else None,
+        lazy=True
+    )
+    config.load_system()
+    config.load_user()
+    config.load_project()
+    config.load_shell_env()
+    config.load_runtime()
+    return config
+
+
 def create_configuration_and_session(use_aws_default_profile=True, config_class=POLConfig, project=None):
     """
     Creates an environment holding all the configuration for current mode and creates an AWS session.
@@ -57,17 +79,7 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
     """
 
     # Now we use the customize invoke load as described above
-    environment = config_class(
-        system_prefix=MODE_ENVIRONMENT + os.path.sep,
-        runtime_path=os.path.join(MODE_ENVIRONMENT, "superuser.invoke.yml") if CONTEXT == "host" else None,
-        project_location=os.path.join(MODE_ENVIRONMENT, project) if project else None,
-        lazy=True
-    )
-    environment.load_system()
-    environment.load_user()
-    environment.load_project()
-    environment.load_shell_env()
-    environment.load_runtime()
+    environment = create_configuration(MODE, project=project, context=CONTEXT, config_class=config_class)
 
     # Creating a AWS session based on configuration and context
     session = boto3.Session() if use_aws_default_profile else boto3.Session(profile_name=environment.aws.profile_name)
