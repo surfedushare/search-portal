@@ -43,10 +43,7 @@ export default {
         })
         .then(() => {
           Promise.all([
-            this.$store.dispatch('getCollectionMaterials', {
-              id,
-              params: { page: 1, page_size: 10 }
-            }),
+            this.$store.dispatch('getCollectionMaterials', id),
             this.$store.dispatch('getCollection', id)
           ]).then(() => null)
         })
@@ -98,7 +95,7 @@ export default {
             data: external_ids
           })
           .then(() => {
-            this.$store.dispatch('setMaterialInMyCollection', {
+            this.$store.dispatch('addMaterialToCollection', {
               collection_id: id,
               data: materials
             })

@@ -71,7 +71,7 @@ export default {
       this.submitting = true
 
       return this.$store
-        .dispatch('setMaterialInMyCollection', {
+        .dispatch('addMaterialToCollection', {
           collection_id: collectionId,
           data: [
             {

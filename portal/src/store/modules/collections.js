@@ -81,7 +81,7 @@ export default {
         $log.error('Validate error: ', data)
       }
     },
-    async setMaterialInMyCollection(context, { collection_id, data }) {
+    async addMaterialToCollection(context, { collection_id, data }) {
       if (validateID(collection_id) && validateParams(data)) {
         return await axios
           .post(`collections/${collection_id}/materials/`, data)
@@ -101,14 +101,13 @@ export default {
         $log.error('Validate error: ', { collection_id, data })
       }
     },
-    async getCollectionMaterials({ commit }, { id, params }) {
-      if (validateIDString(id) && validateParams(params)) {
+    async getCollectionMaterials({ commit }, id) {
+      if (validateIDString(id)) {
         commit('SET_MATERIAL_TO_COLLECTION_LOADING', true)
         const { data: materialsInfo } = await axios.get(
           `collections/${id}/materials/`,
           {
             params: {
-              ...params,
               timestamp: Date.now()
             }
           }
@@ -117,7 +116,7 @@ export default {
         commit('SET_MATERIAL_TO_COLLECTION_LOADING', false)
         return materialsInfo
       } else {
-        $log.error('Validate error: ', { id, params })
+        $log.error('Validate error: ', { id })
       }
     }
   },

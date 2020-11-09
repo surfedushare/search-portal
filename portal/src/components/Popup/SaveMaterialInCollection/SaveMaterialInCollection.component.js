@@ -19,7 +19,7 @@ export default {
     onSaveMaterial() {
       this.submitting = true
       this.$store
-        .dispatch('setMaterialInMyCollection', {
+        .dispatch('addMaterialToCollection', {
           collection_id: this.collection,
           data: [
             {

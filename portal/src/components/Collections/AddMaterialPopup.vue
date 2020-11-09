@@ -110,7 +110,7 @@ export default {
         }
       })
       this.$store
-        .dispatch('setMaterialInMyCollection', {
+        .dispatch('addMaterialToCollection', {
           collection_id: this.collectionId,
           data
         })

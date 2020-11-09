@@ -109,13 +109,7 @@ export default {
   },
   mounted() {
     const { id } = this.$route.params
-    this.$store.dispatch('getCollectionMaterials', {
-      id,
-      params: {
-        page_size: this.search.page_size,
-        page: 1
-      }
-    })
+    this.$store.dispatch('getCollectionMaterials', id)
     Promise.all([
       this.$store.dispatch('getCollection', id),
       this.$store.dispatch('getUser')
@@ -133,10 +127,7 @@ export default {
       const { id } = this.$route.params
       this.isLoading = true
       Promise.all([
-        this.$store.dispatch('getCollectionMaterials', {
-          id,
-          params: { page: 1, page_size: 10 }
-        }),
+        this.$store.dispatch('getCollectionMaterials', id),
         this.$store.dispatch('getCollection', id)
       ]).finally(() => {
         this.isLoading = false
