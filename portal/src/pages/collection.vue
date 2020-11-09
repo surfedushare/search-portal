@@ -210,4 +210,8 @@ export default {
   background-repeat: no-repeat;
   background-size: 24px 24px;
 }
+
+.not_found {
+  margin-bottom: 40px;
+}
 </style>
