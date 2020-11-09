@@ -53,11 +53,31 @@ export default {
         )
       }
     },
-    /**
-     * Select material
-     * @param material - {Object}
-     */
     selectMaterial(material) {
+      if (this.selectFor === 'delete') {
+        this.deleteMaterial(material)
+      } else {
+        this.$emit('input', this.toggleMaterial(material))
+      }
+    },
+    deleteMaterial(material) {
+      const { id } = this.$route.params
+      this.$store
+        .dispatch('removeMaterialFromMyCollection', {
+          collection_id: id,
+          data: [{ external_id: material.external_id }]
+        })
+        .then(() => {
+          Promise.all([
+            this.$store.dispatch('getMaterialInMyCollection', {
+              id,
+              params: { page: 1, page_size: 10 }
+            }),
+            this.$store.dispatch('getCollection', id)
+          ]).then(() => null)
+        })
+    },
+    toggleMaterial(material) {
       let selected_materials = this.value.slice(0)
 
       if (selected_materials.indexOf(material.external_id) === -1) {
@@ -67,7 +87,7 @@ export default {
           item => item !== material.external_id
         )
       }
-      this.$emit('input', selected_materials)
+      return selected_materials
     }
   },
   watch: {
