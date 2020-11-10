@@ -73,8 +73,7 @@
         </div>
         <div
           v-if="
-            material.keywords && material.keywords.length &&
-              itemsInLine === 1
+            material.keywords && material.keywords.length && itemsInLine === 1
           "
           class="materials__item_keywords"
         >
@@ -135,8 +134,8 @@ export default {
   },
   props: {
     material: {
-      // type: Object,
-      // default: {}
+      type: Object,
+      required: false
     },
     index: {
       type: Number,
