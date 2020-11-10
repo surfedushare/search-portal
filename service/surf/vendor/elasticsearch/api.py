@@ -109,6 +109,8 @@ class ElasticSearchApiClient:
                 themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
         record['themes'] = list(themes)
         record['source'] = hit['_source']['arrangement_collection_name']
+        record['has_part'] = hit['_source']['has_part']
+        record['is_part_of'] = hit['_source']['is_part_of']
         return record
 
     def autocomplete(self, query):
