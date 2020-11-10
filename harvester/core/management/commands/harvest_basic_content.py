@@ -13,19 +13,22 @@ class Command(HarvesterCommand):
         super().add_arguments(parser)
         parser.add_argument('-d', '--dataset', type=str, required=True)
 
-    def download_seed_files(self, seeds):
+    def download_seed_files(self, seeds, interval=0):
         download_config = create_config("http_resource", {
             "resource": "core.FileResource",
-            "interval_duration": 2000  # 2s between downloads to prevent too many request errors
+            "interval_duration": interval
         })
+
         success, error = send_serie(
             self.progress([[seed["url"]] for seed in seeds]),
             [{} for _ in seeds],
             config=download_config,
             method="get"
         )
+
         self.info("Errors while downloading content: {}".format(len(error)))
         self.info("Content downloaded successfully: {}".format(len(success)))
+
         return success
 
     def extract_from_seed_files(self, seeds, downloads):
@@ -83,9 +86,19 @@ class Command(HarvesterCommand):
             self.info(f'Amount of extracted results by OAI-PMH for "{set_name}": {seeds_count}')
         self.info("")
 
-        # Download files of all seeds
-        self.info("Downloading files ...")
-        download_ids = self.download_seed_files(seeds)
+        download_ids = []
+
+        # Download youtube videos
+        youtube_videos = [seed for seed in seeds if seed['from_youtube']]
+        if len(youtube_videos) > 0:
+            self.info("Downloading youtube videos ...")
+            download_ids = download_ids + self.download_seed_files(youtube_videos, 2000)
+
+        # Download other seeds
+        other_seeds = [seed for seed in seeds if not seed['from_youtube']]
+        if len(other_seeds) > 0:
+            self.info("Downloading other seeds ...")
+            download_ids = download_ids + self.download_seed_files(other_seeds)
 
         # Process files with Tika to extract data from content
         self.info("Extracting basic content from files ...")
