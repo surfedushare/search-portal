@@ -1,34 +1,31 @@
 <template>
   <div
-    :class="{'selected': material.selected}"
+    :class="{ selected: material.selected }"
     class="materials__item_wrapper tile__wrapper"
     @click="handleMaterialClick(material)"
   >
     <div class="materials__item_content">
       <div class="materials__item_main_info">
         <h3 class="materials__item_title">
-          {{material.title}}
+          {{ material.title }}
         </h3>
-        <div
-          v-if="material.authors.length > 0"
-          class="materials__item_author"
-        >
-          {{material.authors.join(', ')}}
+        <div v-if="material.authors.length > 0" class="materials__item_author">
+          {{ material.authors.join(', ') }}
         </div>
         <div
           v-if="material.publishers.length > 0"
           class="materials__item_publisher"
         >
-          {{material.publishers.join(', ')}}
+          {{ material.publishers.join(', ') }}
         </div>
         <div class="materials__item_date">
-          {{material.date || null}}
+          {{ material.date || null }}
         </div>
         <div
           v-if="itemsInLine === 1 && material.description"
           class="materials__item_description"
           v-html="material.description"
-        ></div>
+        />
       </div>
       <div class="materials__item_subinfo">
         <div
@@ -36,11 +33,16 @@
           class="materials__item_disciplines"
         >
           <span
-            v-for="(discipline, index) in material.disciplines"
-            v-if="index < 2"
+            v-for="discipline in material.disciplines.slice(0, 2)"
             class="materials__item_discipline"
+            :key="discipline"
           >
-            {{titleTranslation(discipline, $i18n.locale)}}<span v-if="material.disciplines.length > 1 && index < material.disciplines.length - 1">,</span>
+            {{ titleTranslation(discipline, $i18n.locale) }}<span
+              v-if="
+                material.disciplines.length > 1 &&
+                index < material.disciplines.length - 1
+              "
+            >,</span>
           </span>
           {{ material.disciplines.length < 3 ? '' : '...' }}
         </div>
@@ -49,8 +51,7 @@
           class="materials__item_educationallevels"
         >
           <span
-            v-for="(educationallevel, index) in material.educationallevels"
-            v-if="index < 2"
+            v-for="educationallevel in material.educationallevels.slice(0,2)"
             class="materials__item_educationallevel"
           >
             {{ educationallevel[$i18n.locale] }}
@@ -65,43 +66,63 @@
           {{ $t(material.format) }}
         </div>
         <div
+          v-if="
+            material.keywords && material.keywords.length && itemsInLine === 1
+          "
           class="materials__item_keywords"
-          v-if="material.keywords && material.keywords.length && itemsInLine === 1"
         >
           <span
+            v-for="keyword in material.keywords.slice(0,2)"
+            :key="keyword"
             class="materials__item_keyword"
-            v-for="(keyword, index) in material.keywords"
-            v-if="index < 2"
-          >{{keyword}}<span v-if="material.keywords.length > 1 && index < material.keywords.length - 1">, </span></span>
+          >{{ keyword
+            }}<span
+              v-if="
+                material.keywords.length > 1 &&
+                index < material.keywords.length - 1
+              "
+            >,
+            </span>
+          </span>
           {{ material.keywords.length < 3 ? '' : '...' }}
         </div>
-        <router-link
-          :to="localePath({name: 'communities-community', params: {community: community.id}})"
-          @click.native="$event.stopImmediatePropagation()"
-          class="materials__item_community_link"
+        <routerLink
           v-for="community in material.communities"
+          class="materials__item_community_link"
+          :to="
+            localePath({
+              name: 'communities-community',
+              params: { community: community.id }
+            })
+          "
           :key="`${community.id}`"
+          @click.native="$event.stopImmediatePropagation()"
         >
-          {{titleTranslation(community, $i18n.locale) }}
-        </router-link>
-        <div class="materials__item_copyrights" :class="material.copyright"></div>
+          {{ titleTranslation(community, $i18n.locale) }}
+        </routerLink>
+        <div
+          class="materials__item_copyrights"
+          :class="material.copyright"
+        />
       </div>
     </div>
     <footer class="materials__item_footer">
       <StarRating
-      v-model="material.avg_star_rating"
-      :counter="material.count_star_rating"
-      :disabled="true"
-      :dark-stars="true"
+        v-model="material.avg_star_rating"
+        :counter="material.count_star_rating"
+        :disabled="true"
+        :dark-stars="true"
       />
       <div class="materials__item_actions">
-        <div class="materials__item_applauds"><span>{{material.applaud_count}}</span></div>
+        <div class="materials__item_applauds">
+          <span>{{ material.applaud_count }}</span>
+        </div>
         <a
           v-if="material.url"
           class="materials__item_external_link"
           target="_blank"
           :href="material.url"
-          ></a>
+        />
       </div>
     </footer>
   </div>
@@ -117,15 +138,17 @@ export default {
   },
   props: {
     material: {
+      type: Object,
       default: false
     },
-    'items-in-line': {
+    itemsInLine: {
       type: Number,
       default: 4
     },
     handleMaterialClick: {
       type: Function,
-      params: 1
+      params: 1,
+      default: () => {}
     }
   }
 }
