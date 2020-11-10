@@ -38,7 +38,13 @@
             :key="i"
             class="materials__item_discipline"
           >
-            {{ punctuate(titleTranslation(discipline, $i18n.locale), i, material.disciplines.length) }}
+            {{
+              punctuate(
+                titleTranslation(discipline, $i18n.locale),
+                i,
+                material.disciplines.length
+              )
+            }}
           </span>
         </div>
         <div
@@ -46,11 +52,20 @@
           class="materials__item_educationallevels"
         >
           <span
-            v-for="(educationallevel, i) in material.educationallevels.slice(0, 2)"
+            v-for="(educationallevel, i) in material.educationallevels.slice(
+              0,
+              2
+            )"
             :key="i"
             class="materials__item_educationallevel"
           >
-            {{ punctuate(educationallevel[$i18n.locale], i, material.educationallevels.length) }}
+            {{
+              punctuate(
+                educationallevel[$i18n.locale],
+                i,
+                material.educationallevels.length
+              )
+            }}
           </span>
         </div>
         <div v-if="material.format" class="materials__item_format">
@@ -120,8 +135,8 @@ export default {
   },
   props: {
     material: {
-      type: Object,
-      default: {}
+      // type: Object,
+      // default: {}
     },
     index: {
       type: Number,
