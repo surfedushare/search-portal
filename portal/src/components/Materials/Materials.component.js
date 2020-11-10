@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import StarRating from './../StarRating'
+import Material from './Material/Material'
 
 export default {
   name: 'materials',
@@ -33,7 +34,8 @@ export default {
     }
   },
   components: {
-    StarRating
+    StarRating,
+    Material
   },
   data() {
     return {

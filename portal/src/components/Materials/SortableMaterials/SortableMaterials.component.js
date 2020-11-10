@@ -1,12 +1,14 @@
 import draggable from 'vuedraggable'
 import { mapGetters } from 'vuex'
 import StarRating from '../../StarRating'
+import Material from '../Material/Material'
 
 export default {
-  name: 'sortable-materials',
+  name: 'SortableMaterials',
   components: {
     draggable,
-    StarRating
+    StarRating,
+    Material
   },
   props: {
     materials: {
