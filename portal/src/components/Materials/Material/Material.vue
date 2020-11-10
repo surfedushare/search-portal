@@ -24,8 +24,9 @@
         <div
           v-if="itemsInLine === 1 && material.description"
           class="materials__item_description"
-          v-html="material.description"
-        />
+        >
+          {{ material.description }}
+        </div>
       </div>
       <div class="materials__item_subinfo">
         <div
@@ -34,15 +35,17 @@
         >
           <span
             v-for="discipline in material.disciplines.slice(0, 2)"
-            class="materials__item_discipline"
             :key="discipline"
+            class="materials__item_discipline"
           >
-            {{ titleTranslation(discipline, $i18n.locale) }}<span
+            {{ titleTranslation(discipline, $i18n.locale) }}
+            <span
               v-if="
                 material.disciplines.length > 1 &&
                 index < material.disciplines.length - 1
               "
-            >,</span>
+            >,</span
+            >
           </span>
           {{ material.disciplines.length < 3 ? '' : '...' }}
         </div>
@@ -51,18 +54,21 @@
           class="materials__item_educationallevels"
         >
           <span
-            v-for="educationallevel in material.educationallevels.slice(0,2)"
+            v-for="educationallevel in material.educationallevels.slice(0, 2)"
             class="materials__item_educationallevel"
+            :key="educationallevel"
           >
             {{ educationallevel[$i18n.locale] }}
-            <span v-if="material.educationallevels.length > 1 && index < material.educationallevels.length - 1">,</span>
+            <span
+              v-if="
+                material.educationallevels.length > 1 && index < material.educationallevels.length - 1
+              "
+            >,</span
+            >
           </span>
           {{ material.educationallevels.length < 3 ? '' : '...' }}
         </div>
-        <div
-          v-if="material.format"
-          class="materials__item_format"
-        >
+        <div v-if="material.format" class="materials__item_format">
           {{ $t(material.format) }}
         </div>
         <div
@@ -72,14 +78,14 @@
           class="materials__item_keywords"
         >
           <span
-            v-for="keyword in material.keywords.slice(0,2)"
+            v-for="keyword in material.keywords.slice(0, 2)"
             :key="keyword"
             class="materials__item_keyword"
-          >{{ keyword
-            }}<span
+          >
+            {{ keyword }}
+            <span
               v-if="
-                material.keywords.length > 1 &&
-                index < material.keywords.length - 1
+                material.keywords.length > 1 && index < material.keywords.length - 1
               "
             >,
             </span>
@@ -89,21 +95,18 @@
         <routerLink
           v-for="community in material.communities"
           class="materials__item_community_link"
+          :key="`${community.id}`"
           :to="
             localePath({
               name: 'communities-community',
               params: { community: community.id }
             })
           "
-          :key="`${community.id}`"
           @click.native="$event.stopImmediatePropagation()"
         >
           {{ titleTranslation(community, $i18n.locale) }}
         </routerLink>
-        <div
-          class="materials__item_copyrights"
-          :class="material.copyright"
-        />
+        <div class="materials__item_copyrights" :class="material.copyright"/>
       </div>
     </div>
     <footer class="materials__item_footer">
@@ -138,7 +141,7 @@ export default {
   },
   props: {
     material: {
-      type: Object,
+      type: Function,
       default: false
     },
     itemsInLine: {
