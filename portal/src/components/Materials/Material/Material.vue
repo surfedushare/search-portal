@@ -42,9 +42,9 @@
             <span
               v-if="
                 material.disciplines.length > 1 &&
-                index < material.disciplines.length - 1
+                  index < material.disciplines.length - 1
               "
-            >,</span
+              >,</span
             >
           </span>
           {{ material.disciplines.length < 3 ? '' : '...' }}
@@ -55,18 +55,19 @@
         >
           <span
             v-for="educationallevel in material.educationallevels.slice(0, 2)"
-            class="materials__item_educationallevel"
             :key="educationallevel"
+            class="materials__item_educationallevel"
           >
             {{ educationallevel[$i18n.locale] }}
             <span
               v-if="
-                material.educationallevels.length > 1 && index < material.educationallevels.length - 1
+                material.educationallevels.length > 1 &&
+                  index < material.educationallevels.length - 1
               "
-            >,</span
+              >,</span
             >
+            {{ material.educationallevels.length < 3 ? '' : '...' }}
           </span>
-          {{ material.educationallevels.length < 3 ? '' : '...' }}
         </div>
         <div v-if="material.format" class="materials__item_format">
           {{ $t(material.format) }}
@@ -87,14 +88,13 @@
               v-if="
                 material.keywords.length > 1 && index < material.keywords.length - 1
               "
-            >,
-            </span>
+            >,</span
+          >
+            {{ material.keywords.length < 3 ? '' : '...' }}
           </span>
-          {{ material.keywords.length < 3 ? '' : '...' }}
         </div>
         <routerLink
           v-for="community in material.communities"
-          class="materials__item_community_link"
           :key="`${community.id}`"
           :to="
             localePath({
@@ -102,11 +102,12 @@
               params: { community: community.id }
             })
           "
+          class="materials__item_community_link"
           @click.native="$event.stopImmediatePropagation()"
         >
           {{ titleTranslation(community, $i18n.locale) }}
         </routerLink>
-        <div class="materials__item_copyrights" :class="material.copyright"/>
+        <div class="materials__item_copyrights" :class="material.copyright" />
       </div>
     </div>
     <footer class="materials__item_footer">
@@ -142,7 +143,7 @@ export default {
   props: {
     material: {
       type: Function,
-      default: false
+      default: () => {}
     },
     itemsInLine: {
       type: Number,
