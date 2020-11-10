@@ -34,39 +34,23 @@
           class="materials__item_disciplines"
         >
           <span
-            v-for="discipline in material.disciplines.slice(0, 2)"
-            :key="discipline"
+            v-for="(discipline, i) in material.disciplines.slice(0, 2)"
+            :key="i"
             class="materials__item_discipline"
           >
-            {{ titleTranslation(discipline, $i18n.locale) }}
-            <span
-              v-if="
-                material.disciplines.length > 1 &&
-                  index < material.disciplines.length - 1
-              "
-              >,</span
-            >
+            {{ punctuate(titleTranslation(discipline, $i18n.locale), i, material.disciplines.length) }}
           </span>
-          {{ material.disciplines.length < 3 ? '' : '...' }}
         </div>
         <div
           v-if="material.educationallevels && material.educationallevels.length"
           class="materials__item_educationallevels"
         >
           <span
-            v-for="educationallevel in material.educationallevels.slice(0, 2)"
-            :key="educationallevel"
+            v-for="(educationallevel, i) in material.educationallevels.slice(0, 2)"
+            :key="i"
             class="materials__item_educationallevel"
           >
-            {{ educationallevel[$i18n.locale] }}
-            <span
-              v-if="
-                material.educationallevels.length > 1 &&
-                  index < material.educationallevels.length - 1
-              "
-              >,</span
-            >
-            {{ material.educationallevels.length < 3 ? '' : '...' }}
+            {{ punctuate(educationallevel[$i18n.locale], i, material.educationallevels.length) }}
           </span>
         </div>
         <div v-if="material.format" class="materials__item_format">
@@ -74,23 +58,17 @@
         </div>
         <div
           v-if="
-            material.keywords && material.keywords.length && itemsInLine === 1
+            material.keywords && material.keywords.length &&
+              itemsInLine === 1
           "
           class="materials__item_keywords"
         >
           <span
-            v-for="keyword in material.keywords.slice(0, 2)"
+            v-for="(keyword, i) in material.keywords.slice(0, 2)"
             :key="keyword"
             class="materials__item_keyword"
           >
-            {{ keyword }}
-            <span
-              v-if="
-                material.keywords.length > 1 && index < material.keywords.length - 1
-              "
-            >,</span
-          >
-            {{ material.keywords.length < 3 ? '' : '...' }}
+            {{ punctuate(keyword, i, material.keywords.length) }}
           </span>
         </div>
         <routerLink
@@ -142,8 +120,12 @@ export default {
   },
   props: {
     material: {
-      type: Function,
-      default: () => {}
+      type: Object,
+      default: {}
+    },
+    index: {
+      type: Number,
+      default: 0
     },
     itemsInLine: {
       type: Number,
@@ -153,6 +135,18 @@ export default {
       type: Function,
       params: 1,
       default: () => {}
+    }
+  },
+  methods: {
+    punctuate(word, index, len) {
+      let punctuated = word
+      if (len > 1 && index < len - 1) {
+        punctuated = punctuated + ', '
+      }
+      if (index === 1 && len >= 3) {
+        punctuated = punctuated + '...'
+      }
+      return punctuated
     }
   }
 }

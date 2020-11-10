@@ -11,7 +11,7 @@
     }"
   >
     <div
-      v-for="material in myList"
+      v-for="(material, index) in myList"
       :class="[
         `tile--items-in-line-${itemsInLine}`,
         `materials__item--items-in-line-${itemsInLine}`,
@@ -30,6 +30,7 @@
         :material="material"
         :handle-material-click="handleMaterialClick"
         :items-in-line="itemsInLine"
+        :index="index"
       />
     </div>
   </draggable>
