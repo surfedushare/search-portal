@@ -61,6 +61,13 @@ def build(ctx, target, version):
         echo=True
     )
 
+    if target == 'service':
+        ctx.run(
+            f"docker build -f {target}/Dockerfile-nginx -t {target_info['name']}-nginx:{version} .",
+            pty=True,
+            echo=True
+        )
+
 
 @task(help={
     "target": "Name of the project you want to push to AWS registry: service or harvester",
@@ -89,3 +96,7 @@ def push(ctx, target, version=None):
     ctx.run(f"docker tag {name}:{version} {REPOSITORY}/{name}:{version}", echo=True)
     # Push to AWS ECR
     ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
+
+    if target == 'service':
+        ctx.run(f"docker tag {name}-nginx:{version} {REPOSITORY}/{name}-nginx:{version}", echo=True)
+        ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{version}", echo=True, pty=True)
