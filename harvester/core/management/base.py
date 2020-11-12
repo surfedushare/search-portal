@@ -1,9 +1,8 @@
-import os
 import json
-from urllib.parse import urlparse
 from copy import copy
 from tqdm import tqdm
 import logging
+from mimetypes import guess_type
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -88,25 +87,14 @@ class OutputCommand(HarvesterCommand):
             "resource": ["{}.{}".format(resource._meta.app_label, resource._meta.model_name), resource.id]
         }
 
-    def get_file_type(self, mime_type=None, url=None):
-        # TODO: this part needs a big refactor
-        file_type = None
-        if mime_type:
-            file_type = settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, None)
-        if not file_type and url:
-            url = urlparse(url)
-            file, extension = os.path.splitext(url.path)
-            if extension and extension.lower() not in settings.EXTENSION_TO_FILE_TYPE:
-                self.warning("Unknown extension: {}".format(extension))
-            file_type = settings.EXTENSION_TO_FILE_TYPE.get(extension.lower(), "unknown")
-        return file_type
-
     def _create_document(self, text, meta, title=None, url=None, mime_type=None, file_type=None, pipeline=None,
                          identifier_postfix=None):
 
         url = url or meta.get("url")
         mime_type = mime_type or meta.get("mime_type", None)
-        file_type = file_type or self.get_file_type(mime_type, url)
+        if mime_type is None:
+            mime_type, encoding = guess_type(url)
+        file_type = file_type or settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown")
 
         identifier = meta["external_id"]
         if identifier_postfix:

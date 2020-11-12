@@ -231,6 +231,7 @@ ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_HOST = environment.elastic_search.host
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch'
@@ -305,23 +306,6 @@ MIME_TYPE_TO_FILE_TYPE = {  # TODO: this is Edurep based, how do we want this fo
     'message/rfc822': 'message',
     'application/vnd.google-earth.kmz': 'googleearth',
     'application/x-java': 'app',
-}
-
-EXTENSION_TO_FILE_TYPE = {  # TODO: we should map from extension to mime and then file_type
-    '.html': 'text',
-    '.pdf': 'pdf',
-    '.pptx': 'presentation',
-    '.ppt': 'presentation',
-    '.doc': 'text',
-    '.docx': 'text',
-    '.rtf': 'text',
-    '.txt': 'text',
-    '.xls': 'spreadsheet',
-    '.xlsx': 'spreadsheet',
-    '.png': 'image',
-    '.jpeg': 'image',
-    '.jpg': 'image',
-    '.zip': 'zip',
 }
 
 
