@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import StarRating from './../StarRating'
+import Material from './Material/Material'
 
 export default {
   name: 'materials',
@@ -33,7 +34,8 @@ export default {
     }
   },
   components: {
-    StarRating
+    StarRating,
+    Material
   },
   data() {
     return {
@@ -63,16 +65,13 @@ export default {
     deleteMaterial(material) {
       const { id } = this.$route.params
       this.$store
-        .dispatch('removeMaterialFromMyCollection', {
+        .dispatch('removeMaterialFromCollection', {
           collection_id: id,
           data: [{ external_id: material.external_id }]
         })
         .then(() => {
           Promise.all([
-            this.$store.dispatch('getMaterialInMyCollection', {
-              id,
-              params: { page: 1, page_size: 10 }
-            }),
+            this.$store.dispatch('getCollectionMaterials', id),
             this.$store.dispatch('getCollection', id)
           ]).then(() => null)
         })

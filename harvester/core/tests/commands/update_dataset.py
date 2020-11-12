@@ -22,6 +22,13 @@ DUMMY_SEEDS = [
         "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1",
         "mime_type": "application/pdf"
     },
+    {
+        "state": "active",
+        "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
+        "package_url": "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e"
+                       "/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
+        "mime_type": "text/html"
+    },
     {"state": "deleted", "url": None, "mime_type": None}
 ]
 
@@ -56,12 +63,12 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         call_command("update_dataset", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)))
-        # Asserting usage of download_seed_files
+        # Asserting usage of handle_upsert_seeds
         upsert_target.assert_called_once()
         args, kwargs = upsert_target.call_args
         self.assertIsInstance(args[0], Collection)
         self.assertEqual(args[1], DUMMY_SEEDS[:-1])
-        # And then usage of extract_from_seeds
+        # And then usage of handle_deletion_seeds
         deletion_target.assert_called_once()
         args, kwargs = deletion_target.call_args
         self.assertIsInstance(args[0], Collection)
@@ -119,6 +126,19 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
                 text_count += 1
         self.assertGreater(text_count, 0, "No documents with texts found")
         self.assertGreater(documents_count - text_count, 0, "No documents without texts found")
+        # Check that pipelines are filled correctly
+        package_pipeline_phase_count = 0
+        for doc in collection.document_set.all():
+            for phase, result in doc.properties["pipeline"].items():
+                if phase == "harvest":
+                    self.assertIsInstance(result, str)
+                else:
+                    self.assertIn("success", result)
+                    self.assertIn("resource", result)
+                if "package" in phase:
+                    package_pipeline_phase_count += 1
+        self.assertEqual(package_pipeline_phase_count, 2)
+        self.assertEqual(collection.arrangement_set.filter(meta__is_package=True).count(), 1)
 
     def test_handle_deletion_seeds(self):
         dataset = Dataset.objects.last()
@@ -213,6 +233,19 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
                 not_update.created_at.replace(microsecond=0), not_update.modified_at.replace(microsecond=0),
                 f"Document is unexpectedly updated after upsert: {not_update.id}"
             )
+        # Check that pipelines are filled correctly
+        package_pipeline_phase_count = 0
+        for doc in collection.document_set.all():
+            for phase, result in doc.properties["pipeline"].items():
+                if phase == "harvest":
+                    self.assertIsInstance(result, str)
+                else:
+                    self.assertIn("success", result)
+                    self.assertIn("resource", result)
+                if "package" in phase:
+                    package_pipeline_phase_count += 1
+        self.assertEqual(package_pipeline_phase_count, 2, "Unexpectedly found a package in the update seeds")
+        self.assertEqual(collection.arrangement_set.filter(meta__is_package=True).count(), 1)
 
     def test_handle_deletion_seeds(self):
         dataset = Dataset.objects.last()

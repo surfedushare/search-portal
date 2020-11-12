@@ -26,6 +26,14 @@ DUMMY_SEEDS = [
         "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1",
         "mime_type": "application/pdf",
         "from_youtube": False
+    },
+    {
+        "state": "dummy",
+        "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
+        "package_url": "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e"
+                       "/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
+        "mime_type": "text/html",
+        "from_youtube": False
     }
 ]
 
@@ -91,19 +99,19 @@ class TestBasicHarvest(TestCase):
         out = StringIO()
         with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
             call_command("harvest_basic_content", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
-        self.assertEqual(send_serie_mock.call_count, 2, "Expects two calls to send_serie")
+        self.assertEqual(send_serie_mock.call_count, 4, "Expects two calls to send_serie")
 
-        first_name, first_args, first_kwargs = send_serie_mock.mock_calls[0]
-        resource = first_kwargs['config'].resource
-        interval = first_kwargs['config'].interval_duration
-        self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
-        self.assertEqual(interval, 2000, "Wrong interval for videos")
+        for name, args, kwargs in send_serie_mock.mock_calls[0:2]:  # Youtube
+            resource = kwargs['config'].resource
+            interval = kwargs['config'].interval_duration
+            self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
+            self.assertEqual(interval, 2000, "Wrong interval for videos")
 
-        second_name, second_args, second_kwargs = send_serie_mock.mock_calls[1]
-        resource = second_kwargs['config'].resource
-        interval = second_kwargs['config'].interval_duration
-        self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
-        self.assertEqual(interval, 0, "Wrong interval for other files")
+        for name, args, kwargs in send_serie_mock.mock_calls[2:]:
+            resource = kwargs['config'].resource
+            interval = kwargs['config'].interval_duration
+            self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
+            self.assertEqual(interval, 0, "Wrong interval for other files")
 
     def test_basic_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
@@ -128,8 +136,10 @@ class TestBasicHarvest(TestCase):
         command = self.get_command_instance()
         with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
             command.download_seed_files(DUMMY_SEEDS)
-        self.assertEqual(send_serie_mock.call_count, 1, "More than 1 call to send_serie?")
-        args, kwargs = send_serie_mock.call_args
+        self.assertEqual(send_serie_mock.call_count, 2, "More than 2 calls to send_serie?")
+        main_call, package_call = send_serie_mock.call_args_list
+        # Checking how main content got downloaded
+        args, kwargs = main_call
         config = kwargs["config"]
         self.assertEqual(config.resource, "core.FileResource", "Wrong resource used for downloading files")
         self.assertEqual(
@@ -137,12 +147,28 @@ class TestBasicHarvest(TestCase):
             (
                 [
                     ['https://www.vn.nl/speciaalmelk-rechtstreeks-koe/'],
-                    ['http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1']
+                    ['http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1'],
+                    ['https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729'],
                 ],
-                [{}, {}],
+                [{}, {}, {}],
             ),
-            "Wrong arguments given to send_serie processing multiple core.FileResource")
-        self.assertEqual(kwargs["method"], "get", "core.FileResource is not using HTTP GET method")
+            "Wrong arguments given to send_serie processing multiple core.FileResource (main)")
+        self.assertEqual(kwargs["method"], "get", "core.FileResource for main content is not using HTTP GET method")
+        # Checking how package content got downloaded
+        args, kwargs = package_call
+        config = kwargs["config"]
+        self.assertEqual(config.resource, "core.FileResource", "Wrong resource used for downloading files")
+        self.assertEqual(
+            args,
+            (
+                [
+                    ["https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e"
+                     "/88c687c8-fbc4-4d69-a27d-45d9f30d642b"],
+                ],
+                [{}],
+            ),
+            "Wrong arguments given to send_serie processing multiple core.FileResource (package)")
+        self.assertEqual(kwargs["method"], "get", "core.FileResource for package content is not using HTTP GET method")
 
     @override_settings(AWS_STORAGE_BUCKET_NAME="test-bucket-name")
     @patch(GENERATE_PRESIGNED_URL_TARGET, side_effect=generate_presigned_url)
@@ -153,9 +179,11 @@ class TestBasicHarvest(TestCase):
         # We're expecting that client to return a signed URL that Tika can use without getting 403's,
         command = self.get_command_instance()
         with patch(RUN_SERIE_TARGET, return_value=[[1, 2], []]) as send_serie_mock:
-            command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025])
-        self.assertEqual(send_serie_mock.call_count, 1, "More than 1 call to send_serie?")
-        args, kwargs = send_serie_mock.call_args
+            command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025, 12046, 12048])
+        self.assertEqual(send_serie_mock.call_count, 2, "More than 2 calls to send_serie?")
+        main_call, package_call = send_serie_mock.call_args_list
+        # Checking how main content got extracted
+        args, kwargs = main_call
         config = kwargs["config"]
         self.assertEqual(config.resource, "core.TikaResource", "Wrong resource used for extracting content")
         s3_url = "https://test-bucket-name.s3.amazonaws.com/"  # a fake URL
@@ -164,13 +192,25 @@ class TestBasicHarvest(TestCase):
             (
                 [
                     [s3_url + "core/downloads/7/c7/20191209102536078995.index.html"],
-                    [s3_url + "core/downloads/f/03/20191209102536508370.MetaDataEditDownload.csp"]
+                    [s3_url + "core/downloads/f/03/20191209102536508370.MetaDataEditDownload.csp"],
+                    [s3_url + "test/20201022123202360897.Macro_meso_micro.html"]
                 ],
-                [{}, {}],
+                [{}, {}, {}],
             ),
-            "Wrong arguments given to send_serie processing multiple core.TikaResource"
+            "Wrong arguments given to send_serie processing multiple core.TikaResource (main)"
         )
-        self.assertEqual(generate_presigned_url_mock.call_count, 2)
+        # Checking how package content got extracted
+        args, kwargs = package_call
+        config = kwargs["config"]
+        self.assertEqual(config.resource, "core.TikaResource", "Wrong resource used for extracting content")
+        s3_url = "https://test-bucket-name.s3.amazonaws.com/"  # a fake URL
+        self.assertEqual(
+            args,
+            ([[s3_url + "test/IMSCP_94812.zip"]], [{}],),
+            "Wrong arguments given to send_serie processing multiple core.TikaResource (package)"
+        )
+        # Check if presigning went ok otherwise it won't work on AWS environments
+        self.assertEqual(generate_presigned_url_mock.call_count, 4, "Expected 3 normal and 1 package signing call")
         args, kwargs = generate_presigned_url_mock.call_args
         self.assertEqual(kwargs["ExpiresIn"], 7200, "Expected presigned URL's to expire in two hours")
 
@@ -179,9 +219,10 @@ class TestBasicHarvest(TestCase):
         # Not strictly necessary, but convenient to keep around as it was already here
         command = self.get_command_instance()
         with patch(RUN_SERIE_TARGET, return_value=[[1, 2], []]) as send_serie_mock:
-            command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025])
-        self.assertEqual(send_serie_mock.call_count, 1, "More than 1 call to send_serie?")
-        args, kwargs = send_serie_mock.call_args
+            command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025, 12046, 12048])
+        self.assertEqual(send_serie_mock.call_count, 2, "More than 2 calls to send_serie?")
+        main_call, package_call = send_serie_mock.call_args_list
+        args, kwargs = main_call
         config = kwargs["config"]
         self.assertEqual(config.resource, "core.TikaResource", "Wrong resource used for extracting content")
         localhost = "http://localhost:8000/media/harvester/"
@@ -190,9 +231,10 @@ class TestBasicHarvest(TestCase):
             (
                 [
                     [localhost + "core/downloads/7/c7/20191209102536078995.index.html"],
-                    [localhost + "core/downloads/f/03/20191209102536508370.MetaDataEditDownload.csp"]
+                    [localhost + "core/downloads/f/03/20191209102536508370.MetaDataEditDownload.csp"],
+                    [localhost + "test/20201022123202360897.Macro_meso_micro.html"]
                 ],
-                [{}, {}],
+                [{}, {}, {}],
             ),
             "Wrong arguments given to send_serie processing multiple core.TikaResource"
         )
