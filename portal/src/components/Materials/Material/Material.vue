@@ -1,11 +1,14 @@
 <template>
   <div
-    :class="{ selected: material.selected }"
+    :class="{ selected: material.selected, stack: hasPart }"
     class="materials__item_wrapper tile__wrapper"
     @click="handleMaterialClick(material)"
   >
     <div class="materials__item_content">
       <div class="materials__item_main_info">
+        <span v-if="hasPart" class="materials__item_set">
+          {{ $t('Set') }}
+        </span>
         <h3 class="materials__item_title">
           {{ material.title }}
         </h3>
@@ -20,6 +23,9 @@
         </div>
         <div class="materials__item_date">
           {{ material.date || null }}
+        </div>
+        <div v-if="hasPart" class="materials__item_set_count">
+          {{ $tc('Materials', material.has_part.length + 1) }}
         </div>
         <div
           v-if="itemsInLine === 1 && material.description"
@@ -161,6 +167,11 @@ export default {
         punctuated = punctuated + '...'
       }
       return punctuated
+    }
+  },
+  computed: {
+    hasPart() {
+      return this.material.has_part.length > 0
     }
   }
 }
