@@ -33,10 +33,18 @@ class TestArrangement(TestCase):
             "#!page-2935733",
             "#!page-colofon",
         }
+        expected_ids = {
+            "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa-page-2935729",
+            "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa-page-2935768",
+            "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa-page-2935734",
+            "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa-page-3703806",
+            "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa-page-2935733",
+            "aaaaaaaa-aaaa-aaaa-aaaaaaaa-aaaaaaaa-page-colofon",
+        }
         for document in documents:
             self.assertEqual(document["is_part_of"], reference_id)
             self.assertIn(document["title"], expected_titles)
-            self.assertIn(document["_id"].replace(reference_id, ""), expected_links)
+            self.assertIn(document["_id"], expected_ids)
             self.assertIn(document["url"].replace(base_url, ""), expected_links)
             if document["title"] == "Colofon":
                 self.assertFalse(document["text"])
