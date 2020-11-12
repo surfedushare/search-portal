@@ -41,6 +41,7 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
+    CollectionMaterialPositionSerializer,
     SharedResourceCounterSerializer
 )
 from surf.apps.materials.utils import (
@@ -417,9 +418,6 @@ class CollectionViewSet(ModelViewSet):
             data = serializer.validated_data
             ids = [m.external_id for m in instance.materials.order_by("id").all()]
 
-            featured = CollectionMaterial.objects.filter(collection=instance, featured=True)
-            featured_ids = [m.material.external_id for m in featured]
-
             rv = dict(records=[],
                       records_total=0,
                       filters=[],
@@ -429,14 +427,18 @@ class CollectionViewSet(ModelViewSet):
             if ids:
                 elastic = ElasticSearchApiClient()
 
-                res = elastic.get_materials_by_id(ids, **data)
+                res = elastic.get_materials_by_id(ids, 1, len(ids))
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
-                for record in records:
-                    if record['external_id'] in featured_ids:
-                        record['featured'] = True
-                    else:
-                        record['featured'] = False
+
+                collection_materials = CollectionMaterial.objects.filter(
+                    collection=instance, material__external_id__in=[r['external_id'] for r in records]
+                )
+
+                for collection_material in collection_materials:
+                    record = next(r for r in records if r['external_id'] == collection_material.material.external_id)
+                    record['featured'] = collection_material.featured
+                    record['position'] = collection_material.position
 
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
@@ -446,7 +448,11 @@ class CollectionViewSet(ModelViewSet):
         data = []
         for d in request.data:
             # validate request parameters
-            serializer = MaterialShortSerializer(data=d)
+            if request.method == "POST":
+                serializer = CollectionMaterialPositionSerializer(data=d)
+            elif request.method == "DELETE":
+                serializer = MaterialShortSerializer(data=d)
+
             serializer.is_valid(raise_exception=True)
             data.append(serializer.validated_data)
 
@@ -470,6 +476,7 @@ class CollectionViewSet(ModelViewSet):
 
         for material in materials:
             m_external_id = material["external_id"]
+            m_position = material["position"]
 
             details = get_material_details_by_id(m_external_id)
             if not details:
@@ -488,7 +495,7 @@ class CollectionViewSet(ModelViewSet):
 
             add_material_themes(m, details[0].get("themes", []))
             add_material_disciplines(m, details[0].get("disciplines", []))
-            CollectionMaterial.objects.create(collection=instance, material=m)
+            CollectionMaterial.objects.create(collection=instance, material=m, position=m_position)
 
     @staticmethod
     def _delete_materials(instance, materials):
