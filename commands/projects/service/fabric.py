@@ -20,11 +20,11 @@ def create_snapshot(conn):
     print("Creating snapshot:", dump_file)
 
     excluded_tables = [
-        "django*", "auth*", "social_auth*", "users*",
+        "django_session", "auth*", "social_auth*", "users*",
         "communities_team", "filters_filter", "surfconext_datagoalpermission",
     ]
     excluded_table_flags = " ".join([
-        f'-T "{excluded_table}"'
+        f'--exclude-table-data="{excluded_table}"'
         for excluded_table in excluded_tables
     ])
 
