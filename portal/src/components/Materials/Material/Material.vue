@@ -157,6 +157,11 @@ export default {
       default: () => {}
     }
   },
+  computed: {
+    hasPart() {
+      return this.material.has_part.length > 0
+    }
+  },
   methods: {
     punctuate(word, index, len) {
       let punctuated = word
@@ -167,11 +172,6 @@ export default {
         punctuated = punctuated + '...'
       }
       return punctuated
-    }
-  },
-  computed: {
-    hasPart() {
-      return this.material.has_part.length > 0
     }
   }
 }
