@@ -81,8 +81,8 @@ class TikaResource(DGTikaResource):
         """
         signed_url = URLObject(cmd[-1])
         signature_keys = [key for key in signed_url.query_dict.keys() if key.startswith("X-Amz")]
-        signed_url.del_query_params(str(signature_keys))
-        cmd[-1] = signed_url
+        unsigned_url = signed_url.del_query_params(signature_keys)
+        cmd[-1] = str(unsigned_url)
         return cmd
 
 
