@@ -28,6 +28,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
     "disciplines": EdurepDataExtraction.get_disciplines,
     "humanized_disciplines": EdurepDataExtraction.get_humanized_disciplines,
+    "from_youtube": EdurepDataExtraction.get_from_youtube
 }
 
 

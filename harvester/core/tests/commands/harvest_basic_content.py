@@ -19,19 +19,30 @@ SEND_SERIE_TARGET = "core.management.commands.harvest_basic_content.send_serie"
 RUN_SERIE_TARGET = "core.management.commands.harvest_basic_content.run_serie"
 GENERATE_PRESIGNED_URL_TARGET = "core.models.resources.basic.s3_client.generate_presigned_url"
 DUMMY_SEEDS = [
-    {"state": "dummy", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html"},
+    {"state": "dummy", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html",
+     "from_youtube": False},
     {
         "state": "dummy",
         "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1",
-        "mime_type": "application/pdf"
+        "mime_type": "application/pdf",
+        "from_youtube": False
     },
     {
         "state": "dummy",
         "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
         "package_url": "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e"
                        "/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
-        "mime_type": "text/html"
+        "mime_type": "text/html",
+        "from_youtube": False
     }
+]
+
+DUMMY_SEEDS_WITH_YOUTUBE = [
+    {"state": "dummy", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html",
+     "from_youtube": False},
+    {"state": "dummy", "url": "https://www.youtube.com/watch?v=FBkZ2TJZZUY", "mime_type": "text/html",
+     "from_youtube": False},
+    {"state": "dummy", "url": "https://youtu.be/FBkZ2TJZZUY", "mime_type": "text/html", "from_youtube": True}
 ]
 
 
@@ -82,6 +93,25 @@ class TestBasicHarvest(TestCase):
             HarvestStages.VIDEO,
             "edurep_delen set harvest got updated to other than VIDEO while we expected it to be ignored"
         )
+
+    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS_WITH_YOUTUBE)
+    def test_harvest_with_youtube(self, seeds_mock):
+        out = StringIO()
+        with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
+            call_command("harvest_basic_content", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+        self.assertEqual(send_serie_mock.call_count, 4, "Expects two calls to send_serie")
+
+        for name, args, kwargs in send_serie_mock.mock_calls[0:2]:  # Youtube
+            resource = kwargs['config'].resource
+            interval = kwargs['config'].interval_duration
+            self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
+            self.assertEqual(interval, 2000, "Wrong interval for videos")
+
+        for name, args, kwargs in send_serie_mock.mock_calls[2:]:
+            resource = kwargs['config'].resource
+            interval = kwargs['config'].interval_duration
+            self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
+            self.assertEqual(interval, 0, "Wrong interval for other files")
 
     def test_basic_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all

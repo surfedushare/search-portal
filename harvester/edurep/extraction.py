@@ -7,6 +7,7 @@ from core.constants import HIGHER_EDUCATION_LEVELS
 class EdurepDataExtraction(object):
 
     vcard_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
+    youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
     @classmethod
     def parse_vcard(cls, vcard, key=None):
@@ -75,6 +76,13 @@ class EdurepDataExtraction(object):
             files[0][1]
         )
         return main_url
+
+    @classmethod
+    def get_from_youtube(cls, soup, el):
+        url = cls.get_url(soup, el)
+        if not url:
+            return False
+        return cls.youtube_regex.match(url) is not None
 
     @classmethod
     def get_title(cls, soup, el):
