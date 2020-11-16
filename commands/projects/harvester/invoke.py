@@ -1,7 +1,9 @@
+import os
 from invoke import task
 
 from commands import HARVESTER_DIR
 from commands.aws.ecs import run_task
+from environments.surfpol.configuration import create_configuration
 
 
 @task(help={
@@ -106,3 +108,25 @@ def dump_data(ctx, mode, dataset):
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
     run_task(ctx, "harvester", mode, command)
+
+
+@task()
+def sync_harvest_content(ctx, source, path="core"):
+    """
+    Performs a sync between the harvest content buckets of two environments
+    """
+    local_directory = os.path.join("media", "harvester")
+    source_config = create_configuration(source, project="harvester", context="host")
+    source = source_config.aws.harvest_content_bucket
+    if source is None:
+        source = local_directory
+    else:
+        source = "s3://" + source
+    destination = ctx.config.aws.harvest_content_bucket
+    if destination is None:
+        destination = local_directory
+    else:
+        destination = "s3://" + destination
+    source_path = os.path.join(source, path)
+    destination_path = os.path.join(destination, path)
+    ctx.run(f"aws s3 sync {source_path} {destination_path}", echo=True)
