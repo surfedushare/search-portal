@@ -557,6 +557,13 @@ class MaterialSetAPIView(APIView):
         serializer = MaterialShortSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-        res = _get_material_by_external_id(request, data['external_id'])
+        results = _get_material_by_external_id(request, data['external_id'])
+        parts = results[0]['has_part']
 
-        return Response(res)
+        materials = []
+        for part in parts:
+            material = _get_material_by_external_id(request, part)[0]
+            if material:
+                materials.append(material)
+
+        return Response(materials)

@@ -1,5 +1,5 @@
 <div class="material__info">
-  <span v-if="material.has_part.length === 0" class="material__info_set">
+  <span v-if="material.has_part.length > 0" class="material__info_set">
     <i class="set-icon"/>
     {{ $t('Set') }}
   </span>
@@ -81,7 +81,7 @@
       {{ $t('No-description') }}
     </div>
   </template>
-  <template v-if="material.has_part.length === 0">
+  <template v-if="material.has_part.length > 0">
     <h3 class="material__info_subttl">
       <i class="set-icon large"/>
       {{ $t('Parts') }}

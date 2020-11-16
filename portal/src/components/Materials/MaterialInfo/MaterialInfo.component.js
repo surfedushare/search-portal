@@ -28,9 +28,11 @@ export default {
         this.is_loading_applaud = false
       })
 
-    this.$store
-      .dispatch('getSetMaterials', { external_id: 'wikiwijsmaken:94812'})
-        .then(res => { this.setMaterials = res })
+    if (this.material.has_part.length > 0) {
+      this.$store
+      .dispatch('getSetMaterials', { external_id: this.material.external_id})
+        .then(result => this.setMaterials = result)
+    }
 
     this.href = validateHREF(window.location.href)
   },
