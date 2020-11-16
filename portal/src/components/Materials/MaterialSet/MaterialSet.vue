@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="setMaterials.length > 0">
     <h3 class="material__info_subttl">
-      <i class="set-icon large"/>
+      <i class="set-icon large" />
       {{ $t('Parts') }}
     </h3>
     <h4>{{ $t('Learning-materials-in-set') }}</h4>
@@ -12,14 +12,18 @@
         <span class="level">{{ $t('Learning-levels') }}</span>
         <span class="link"></span>
       </div>
-      <div v-for="(setMaterial, i) in setMaterials" class="row">
+      <div
+        v-for="(setMaterial, i) in setMaterials"
+        :key="setMaterial.external_id"
+        class="row"
+      >
         <span class="title">{{ `${i + 1}. ${setMaterial.title}` }}</span>
         <span class="type">{{ setMaterial.format }}</span>
         <span class="level">
           <span
-            class="level"
             v-for="(level, i) in setMaterial.educationallevels.slice(0, 2)"
             :key="i"
+            class="level"
           >
             {{
               addComma(
@@ -44,13 +48,12 @@
 </template>
 
 <script>
-
 export default {
-  name: 'Set',
+  name: 'MaterialSet',
   props: {
     setMaterials: {
-      type: Array,
-      default: []
+      //type: Array,
+      //default: []
     }
   },
   methods: {
@@ -63,7 +66,6 @@ export default {
     }
   }
 }
-
 </script>
 
-<style src="../MaterialInfo/MaterialInfo.component.less" scoped lang="less"></style>
+<style src="../MaterialInfo/MaterialInfo.component.less" scoped lang="less" />

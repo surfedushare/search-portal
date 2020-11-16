@@ -32,7 +32,7 @@ export default {
 
     if (this.material.has_part.length > 0) {
       this.$store
-        .dispatch('getSetMaterials', { external_id: this.material.external_id})
+        .dispatch('getSetMaterials', { external_id: this.material.external_id })
         .then(result => (this.setMaterials = result))
     }
 
