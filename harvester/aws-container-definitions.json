@@ -28,7 +28,7 @@
     {
       "name": "celery-beat-container",
       "image": "${REPOSITORY}/harvester:${version}",
-      "cpu": 0,
+      "cpu": 512,
       "essential": true,
       "command": ["celery", "-A", "harvester", "beat", "-s", "/tmp/celerybeat-schedule"],
       "environment": [
