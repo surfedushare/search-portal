@@ -7,6 +7,7 @@ from core.constants import HIGHER_EDUCATION_LEVELS
 class EdurepDataExtraction(object):
 
     vcard_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
+    youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
     @classmethod
     def parse_vcard(cls, vcard, key=None):
@@ -54,9 +55,34 @@ class EdurepDataExtraction(object):
         return blocks
 
     @classmethod
+    def get_files(cls, soup, el):
+        mime_types = el.find_all('czp:format')
+        urls = el.find_all('czp:location')
+        return list(
+            zip(
+                [mime_node.text.strip() for mime_node in mime_types],
+                [url_node.text.strip() for url_node in urls],
+            )
+        )
+
+    @classmethod
     def get_url(cls, soup, el):
-        node = el.find('czp:location')
-        return node.text.strip() if node else None
+        files = cls.get_files(soup, el)
+        if not len(files):  # happens when a record was deleted
+            return
+        # Takes the first html file to be the main file and otherwise the first file
+        main_url = next(
+            (url for mime_type, url in files if mime_type == "text/html"),
+            files[0][1]
+        )
+        return main_url
+
+    @classmethod
+    def get_from_youtube(cls, soup, el):
+        url = cls.get_url(soup, el)
+        if not url:
+            return False
+        return cls.youtube_regex.match(url) is not None
 
     @classmethod
     def get_title(cls, soup, el):

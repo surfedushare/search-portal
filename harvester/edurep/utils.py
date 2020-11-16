@@ -1,4 +1,5 @@
 import logging
+from urlobject import URLObject
 
 from datagrowth.configuration import create_config
 from datagrowth.processors import ExtractProcessor
@@ -9,6 +10,7 @@ from edurep.extraction import EdurepDataExtraction
 
 EDUREP_EXTRACTION_OBJECTIVE = {
     "url": EdurepDataExtraction.get_url,
+    "files": EdurepDataExtraction.get_files,
     "title": EdurepDataExtraction.get_title,
     "language": EdurepDataExtraction.get_language,
     "keywords": EdurepDataExtraction.get_keywords,
@@ -26,6 +28,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
     "disciplines": EdurepDataExtraction.get_disciplines,
     "humanized_disciplines": EdurepDataExtraction.get_humanized_disciplines,
+    "from_youtube": EdurepDataExtraction.get_from_youtube
 }
 
 
@@ -63,9 +66,10 @@ def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=Tr
             continue
         # We adjust url's of seeds if the source files are not at the URL
         # We should improve data extraction to always get source files
-        if seed["mime_type"] == "application/x-Wikiwijs-Arrangement" and seed.get("url", None):
-            seed["package_url"] = seed["url"]
-            seed["url"] += "?p=imscp"
+        url = seed.get("url", None)
+        if url and "maken.wikiwijs.nl" in url:
+            package_url = URLObject(seed["url"])
+            seed["package_url"] = package_url.with_fragment("").with_query("p=imscp")
         # We deduplicate based on the external_id a UID by Edurep
         seeds.append(seed)
     # Now we'll mark any invalid seeds as deleted to make sure they disappear
