@@ -178,7 +178,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         for title, links in navigation_links.items():
             results += [
                 {
-                    "_id": reference_id + link,
+                    "_id": reference_id + link.replace("#!", "-"),
                     "is_part_of": reference_id,
                     "link": link,
                     "url": base_url + link,
@@ -233,6 +233,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
                     is_part_of=package_document["is_part_of"]
                 )
                 elastic_details.update(elastic_base)
+                elastic_details["external_id"] = elastic_details["_id"]
                 yield elastic_details
 
         # Then we yield a Elastic Search document for the Arrangement as a whole
