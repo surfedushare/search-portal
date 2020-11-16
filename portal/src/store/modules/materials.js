@@ -169,6 +169,19 @@ export default {
       commit('SET_MATERIALS_IN_LINE', count)
 
       return count
+    },
+    async getSetMaterials(context, { external_id }) {
+      if (validateIDString(external_id)) {
+        return await axios
+          .get('materials/set/', {
+            params: {
+              external_id: external_id
+            }
+          })
+          .then(res => res.data)
+      } else {
+        $log.error('Validate error: ', external_id)
+      }
     }
   },
   mutations: {

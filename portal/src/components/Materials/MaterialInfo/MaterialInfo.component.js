@@ -28,6 +28,10 @@ export default {
         this.is_loading_applaud = false
       })
 
+    this.$store
+      .dispatch('getSetMaterials', { external_id: 'wikiwijsmaken:94812'})
+        .then(res => { this.setMaterials = res })
+
     this.href = validateHREF(window.location.href)
   },
   data() {
@@ -45,7 +49,8 @@ export default {
         page: 1,
         filters: [],
         search_text: ''
-      }
+      },
+      setMaterials: []
     }
   },
   methods: {
@@ -105,6 +110,13 @@ export default {
               this.is_loading_applaud = false
             })
         })
+    },
+    addComma(word, index, len) {
+      if (len > 1 && index < len - 1) {
+        return word + ', '
+      } else {
+        return word
+      }
     }
   },
   computed: {
