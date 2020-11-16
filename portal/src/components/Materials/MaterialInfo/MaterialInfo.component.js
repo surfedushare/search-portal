@@ -6,6 +6,7 @@ import numeral from 'numeral'
 import Themes from '~/components/Themes'
 import Keywords from '~/components/Keywords'
 import SaveRating from '~/components/Popup/SaveRating'
+import MaterialSet from '../MaterialSet/MaterialSet'
 import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
 
 export default {
@@ -16,7 +17,8 @@ export default {
     Themes,
     PopularList,
     Keywords,
-    SaveRating
+    SaveRating,
+    MaterialSet
   },
   mounted() {
     this.$store
@@ -112,13 +114,6 @@ export default {
               this.is_loading_applaud = false
             })
         })
-    },
-    addComma(word, index, len) {
-      if (len > 1 && index < len - 1) {
-        return word + ', '
-      } else {
-        return word
-      }
     }
   },
   computed: {
