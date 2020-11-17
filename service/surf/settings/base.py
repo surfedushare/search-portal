@@ -86,7 +86,6 @@ INSTALLED_APPS = [
 ]
 
 SESSION_COOKIE_SECURE = PROTOCOL == "https"
-CSRF_COOKIE_SECURE = PROTOCOL == "https"
 
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -105,7 +104,6 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
