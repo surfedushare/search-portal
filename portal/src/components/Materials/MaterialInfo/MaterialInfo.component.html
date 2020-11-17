@@ -1,6 +1,6 @@
 <div class="material__info">
   <span v-if="material.has_part.length > 0" class="material__info_set">
-    <i class="set-icon"/>
+    <i class="set-icon"></i>
     {{ $t('Set') }}
   </span>
   <h1 class="material__info_ttl">{{ material.title }}</h1>
@@ -82,19 +82,9 @@
     </div>
   </template>
 
-  <MaterialSet v-if="material.has_part.length > 0" :setMaterials="setMaterials"/>
+  <MaterialSet v-if="material.has_part.length > 0" :material="material"/>
 
-  <div v-if="material.is_part_of !== null">
-    <h3 class="material__info_subttl">{{ $t('Part-of-set') }}</h3>
-    <div class="material__info_part_of">
-      <div class="material__info_main">
-        <h3 class="">{{ mainMaterial.title }} <i class="material__info_main_arrow"></i></h3>
-        <div v-if="mainMaterial.has_part" class="">
-          {{ $tc('Materials', mainMaterial.has_part.length + 1) }}
-        </div>
-      </div>
-    </div>
-  </div>
+  <MaterialPartOfSet v-if="material.is_part_of !== null" :material="material"/>
 
   <Keywords
     class="material__info_keywords"

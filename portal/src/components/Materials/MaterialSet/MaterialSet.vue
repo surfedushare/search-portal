@@ -1,5 +1,5 @@
 <template>
-  <div v-if="setMaterials.length > 0">
+  <div>
     <h3 class="material__info_subttl">
       <i class="set-icon large" />
       {{ $t('Parts') }}
@@ -51,9 +51,23 @@
 export default {
   name: 'MaterialSet',
   props: {
-    setMaterials: {
+    material: {
       //type: Array,
       //default: []
+    }
+  },
+  data() {
+    return {
+      setMaterials: []
+    }
+  },
+  mounted() {
+    if (this.material.has_part.length > 0) {
+      this.$store
+        .dispatch('getSetMaterials', {
+          external_id: this.material.external_id
+        })
+        .then(res => (this.setMaterials = res))
     }
   },
   methods: {

@@ -7,6 +7,7 @@ import Themes from '~/components/Themes'
 import Keywords from '~/components/Keywords'
 import SaveRating from '~/components/Popup/SaveRating'
 import MaterialSet from '../MaterialSet/MaterialSet'
+import MaterialPartOfSet from '../MaterialSet/MaterialPartOfSet'
 import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
 
 export default {
@@ -18,7 +19,8 @@ export default {
     PopularList,
     Keywords,
     SaveRating,
-    MaterialSet
+    MaterialSet,
+    MaterialPartOfSet
   },
   mounted() {
     this.$store
@@ -29,20 +31,6 @@ export default {
         this.is_applauded = !!applaud.count
         this.is_loading_applaud = false
       })
-
-    if (this.material.has_part.length > 0) {
-      this.$store
-        .dispatch('getSetMaterials', { external_id: this.material.external_id })
-        .then(result => (this.setMaterials = result))
-    }
-
-    if (this.material.is_part_of !== null) {
-      this.$store
-        .dispatch('getMaterialByExternalId', { id: this.material.is_part_of })
-        .then(result => {
-          this.mainMaterial = result[0]
-        })
-    }
 
     this.href = validateHREF(window.location.href)
   },
@@ -61,9 +49,7 @@ export default {
         page: 1,
         filters: [],
         search_text: ''
-      },
-      setMaterials: [],
-      mainMaterial: {}
+      }
     }
   },
   methods: {
