@@ -91,6 +91,45 @@
     font-size: 16px;
     line-height: 1.44;
 
+    &_set {
+      display: inline-flex;
+      background-color: @light-grey;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      align-items: center;
+
+      &:before {
+        content: '';
+        display: inline-flex;
+        vertical-align: middle;
+        width: 13px;
+        height: 13px;
+        margin-right: 6px;
+        background: url('/images/icon-set.svg') 50% 50% no-repeat;
+        background-size: contain;
+      }
+    }
+
+    &_set_count {
+      display: flex;
+      margin-top: 10px;
+      align-items: center;
+      font-size: 14px;
+
+      &:before {
+        content: '';
+        display: inline-flex;
+        vertical-align: middle;
+        width: 13px;
+        height: 13px;
+        margin-right: 6px;
+        background: url('/images/icon-materials.svg') 50% 50% no-repeat;
+        background-size: contain;
+      }
+    }
+
     &.select-delete {
       cursor: pointer;
     }
