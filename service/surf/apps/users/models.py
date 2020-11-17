@@ -22,7 +22,7 @@ class User(AbstractUser):
         communities = Community.objects.filter(team__user=self)
         if communities:
             communities = f"User is member of the following communities:<br>" \
-                f"{'<br>'.join([community.name for community in communities])}<br>"
+                f"{'<br>'.join([escape(community.name) for community in communities])}<br>"
         else:
             communities = "User is not a member of any communities<br>"
 
