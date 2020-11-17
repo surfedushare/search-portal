@@ -20,19 +20,12 @@
         <span class="title">{{ `${i + 1}. ${setMaterial.title}` }}</span>
         <span class="type">{{ setMaterial.format }}</span>
         <span class="level">
-          <span
-            v-for="(level, index) in setMaterial.educationallevels.slice(0, 2)"
-            :key="index"
-            class="level"
-          >
-            {{
-              addComma(
-                level[$i18n.locale],
-                index,
-                setMaterial.educationallevels.length
-              )
-            }}
-          </span>
+          {{
+            setMaterial.educationallevels
+              .slice(0, 2)
+              .map(level => level[$i18n.locale])
+              .join(', ')
+          }}
         </span>
         <span class="link">
           <a

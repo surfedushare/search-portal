@@ -7,7 +7,7 @@
           {{ mainMaterial.title }}
           <i class="material__info_main_arrow"></i>
         </h3>
-        <div v-if="mainMaterial.has_part" class="">
+        <div v-if="mainMaterial.has_part">
           {{ $tc('Materials', mainMaterial.has_part.length + 1) }}
         </div>
       </div>
@@ -40,8 +40,8 @@ export default {
     goToMaterial() {
       const route = this.$router.resolve(
         this.localePath({
-          name: 'materials-id', // put your route information in
-          params: { id: this.mainMaterial.external_id } // put your route information in
+          name: 'materials-id',
+          params: { id: this.mainMaterial.external_id }
         })
       )
       window.location.assign(route.href)
