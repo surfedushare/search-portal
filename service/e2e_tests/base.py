@@ -101,10 +101,10 @@ class ElasticSearchTestCase(BaseTestCase):
                         "type": "completion"
                     },
                     "has_part": {
-                        'type': 'array'
+                        'type': 'keyword'
                     },
                     "is_part_of": {
-                        'type': 'external_id'
+                        'type': 'keyword'
                     },
                 }
             }
