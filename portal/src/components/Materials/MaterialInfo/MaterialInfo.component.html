@@ -70,8 +70,8 @@
     <h3 class="material__info_subttl">{{ $t('Resume') }}</h3>
     <div
       class="material__info_description"
-    v-html="material.description"
-    v-if="material.description">
+      v-html="material.description"
+      v-if="material.description">
       {{ $t('No-description') }}
    </div>
     <div
@@ -83,6 +83,18 @@
   </template>
 
   <MaterialSet v-if="material.has_part.length > 0" :setMaterials="setMaterials"/>
+
+  <div v-if="material.is_part_of !== null">
+    <h3 class="material__info_subttl">{{ $t('Part-of-set') }}</h3>
+    <div class="material__info_part_of">
+      <div class="material__info_main">
+        <h3 class="">{{ mainMaterial.title }} <i class="material__info_main_arrow"></i></h3>
+        <div v-if="mainMaterial.has_part" class="">
+          {{ $tc('Materials', mainMaterial.has_part.length + 1) }}
+        </div>
+      </div>
+    </div>
+  </div>
 
   <Keywords
     class="material__info_keywords"

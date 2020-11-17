@@ -182,6 +182,19 @@ export default {
       } else {
         $log.error('Validate error: ', external_id)
       }
+    },
+    async getMaterialByExternalId(context, { id }) {
+      if (validateIDString(id)) {
+        return await axios
+          .get('materials/', {
+            params: {
+              external_id: id
+            }
+          })
+          .then(res => res.data)
+      } else {
+        $log.error('Validate error: ', id)
+      }
     }
   },
   mutations: {

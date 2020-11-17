@@ -36,6 +36,14 @@ export default {
         .then(result => (this.setMaterials = result))
     }
 
+    if (this.material.is_part_of !== null) {
+      this.$store
+        .dispatch('getMaterialByExternalId', { id: this.material.is_part_of })
+        .then(result => {
+          this.mainMaterial = result[0]
+        })
+    }
+
     this.href = validateHREF(window.location.href)
   },
   data() {
@@ -54,7 +62,8 @@ export default {
         filters: [],
         search_text: ''
       },
-      setMaterials: []
+      setMaterials: [],
+      mainMaterial: {}
     }
   },
   methods: {
