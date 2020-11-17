@@ -21,14 +21,14 @@
         <span class="type">{{ setMaterial.format }}</span>
         <span class="level">
           <span
-            v-for="(level, i) in setMaterial.educationallevels.slice(0, 2)"
-            :key="i"
+            v-for="(level, index) in setMaterial.educationallevels.slice(0, 2)"
+            :key="index"
             class="level"
           >
             {{
               addComma(
                 level[$i18n.locale],
-                i,
+                index,
                 setMaterial.educationallevels.length
               )
             }}
