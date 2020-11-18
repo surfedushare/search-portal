@@ -2,11 +2,10 @@
 
 from django.db import migrations
 import datetime
-from surf.apps.filters.utils import check_and_update_mptt_filters
 
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.models import Locale
-from surf.vendor.edurep.xml_endpoint.v1_2.api import LANGUAGE_FIELD_ID
+from surf.vendor.elasticsearch.api import LANGUAGE_FIELD_ID
 
 
 def migrate_filter_categories_to_mptt(apps, schema_editor):
@@ -33,8 +32,6 @@ def migrate_filter_categories_to_mptt(apps, schema_editor):
                 en='Dutch', nl='Nederlands', is_fuzzy=False)
             MpttFilterItem.objects.create(name='nl', title_translations=translation_nl, parent=root_node,
                                           external_id='nl')
-
-    check_and_update_mptt_filters()
 
 
 def undo_migrate_filter_categories_to_mptt(apps, schema_editor):

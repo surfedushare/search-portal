@@ -12,9 +12,9 @@ from surf.apps.materials.models import (
     Material,
 )
 from surf.apps.themes.models import Theme
-from surf.vendor.edurep.xml_endpoint.v1_2.api import (
-    DISCIPLINE_FIELD_ID,
-    CUSTOM_THEME_FIELD_ID
+from surf.vendor.elasticsearch.api import (
+    CUSTOM_THEME_FIELD_ID,
+    DISCIPLINE_FIELD_ID
 )
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 

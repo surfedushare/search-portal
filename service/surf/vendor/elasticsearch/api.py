@@ -9,6 +9,12 @@ from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 
 
 _VCARD_FORMATED_NAME_KEY = "FN"
+AUTHOR_FIELD_ID = "lom.lifecycle.contribute.author"
+CUSTOM_THEME_FIELD_ID = "custom_theme.id"
+DISCIPLINE_FIELD_ID = "lom.classification.obk.discipline.id"
+LANGUAGE_FIELD_ID = "lom.general.language"
+PUBLISHER_DATE_FIELD_ID = "lom.lifecycle.contribute.publisherdate"
+PUBLISHER_FIELD_ID = "lom.lifecycle.contribute.publisher"
 
 
 class ElasticSearchApiClient:
@@ -257,7 +263,7 @@ class ElasticSearchApiClient:
         for filter_item in filters:
             # skip filter_items that are empty
             # and the language filter item (it's handled by telling elastic in what index to search).
-            if not filter_item['items'] or 'lom.general.language' in filter_item['external_id']:
+            if not filter_item['items'] or LANGUAGE_FIELD_ID in filter_item['external_id']:
                 continue
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(filter_item['external_id'])
             # date range query
@@ -346,7 +352,7 @@ class ElasticSearchApiClient:
         indices = [self.index_nl, self.index_en]
         if not filters:
             return indices
-        language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'lom.general.language']
+        language_item = [filter_item for filter_item in filters if filter_item['external_id'] == LANGUAGE_FIELD_ID]
         if not language_item:
             return indices
         language_indices = [f"latest-{language}" for language in language_item[0]['items']]
@@ -371,7 +377,7 @@ class ElasticSearchApiClient:
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
             return 'authors.keyword'
-        elif external_id == 'lom.general.language':
+        elif external_id == LANGUAGE_FIELD_ID:
             return 'language.keyword'
         elif external_id == 'lom.general.aggregationlevel':
             return 'aggregation_level'

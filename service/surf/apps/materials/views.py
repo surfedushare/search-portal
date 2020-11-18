@@ -51,7 +51,7 @@ from surf.apps.materials.utils import (
     add_material_disciplines,
     add_search_query_to_elastic_index
 )
-from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+from surf.vendor.elasticsearch.api import (
     AUTHOR_FIELD_ID,
     PUBLISHER_FIELD_ID
 )

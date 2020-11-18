@@ -8,7 +8,7 @@ from django.contrib import admin
 from surf.apps.themes import models
 from surf.apps.filters.models import MpttFilterItem
 
-from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+from surf.vendor.elasticsearch.api import (
     CUSTOM_THEME_FIELD_ID,
     DISCIPLINE_FIELD_ID
 )

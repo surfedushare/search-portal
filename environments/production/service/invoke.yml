@@ -16,11 +16,6 @@ surfconext:
   voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "zoekportaal.surf.nl"
 
-edurep:
-  xml_api_endpoint: "http://wszoeken.edurep.kennisnet.nl:8000"
-  soap_api_endpoint: "http://smb.edurep.kennisnet.nl/smdBroker/ws"
-  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
-
 aws:
   image_upload_bucket: "search-portal-media-uploads-prod"
   task_role_arn: "arn:aws:iam::017973353230:role/ecsTaskExecutionRole"
