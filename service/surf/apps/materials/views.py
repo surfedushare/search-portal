@@ -331,11 +331,6 @@ class MaterialRatingAPIView(APIView):
 
 
 class MaterialApplaudAPIView(APIView):
-    # I don't think we really need the get, but the frontend uses it so I'll leave it be
-    def get(self, request, *args, **kwargs):
-        external_id = request.GET['external_id']
-        return Response(f"External id {external_id} is valid")
-
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']

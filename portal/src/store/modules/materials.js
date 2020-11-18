@@ -116,19 +116,6 @@ export default {
         $log.error('Validate error: ', external_id)
       }
     },
-    async getApplaudMaterial(context, { external_id }) {
-      if (validateIDString(external_id)) {
-        return await axios
-          .get('applaud_material/', {
-            params: {
-              external_id: external_id
-            }
-          })
-          .then(res => res.data)
-      } else {
-        $log.error('Validate error: ', external_id)
-      }
-    },
     async searchMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true)
