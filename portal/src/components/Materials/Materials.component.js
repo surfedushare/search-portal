@@ -28,6 +28,11 @@ export default {
     selectFor: {
       type: String,
       default: 'delete'
+    },
+    value: {
+      required: false,
+      type: Array,
+      default: null
     }
   },
   components: {
