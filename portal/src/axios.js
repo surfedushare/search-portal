@@ -4,8 +4,6 @@ import store from '~/store'
 
 const baseURL = '/api/v1'
 const axios = Axios.create({ baseURL })
-axios.defaults.xsrfCookieName = 'csrftoken'
-axios.defaults.xsrfHeaderName = 'x-csrftoken'
 
 setLanguage(i18n.locale)
 
