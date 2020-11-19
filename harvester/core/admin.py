@@ -32,6 +32,10 @@ class DatasetAdmin(DataStorageAdmin):
         messages.success(request, f"{queryset.count()} datasets reset to harvest from 01-01-1970")
 
 
+class ArrangementAdmin(DataStorageAdmin):
+    search_fields = ["meta"]
+
+
 class ExtendedDocumentAdmin(DocumentAdmin):
     list_display = ['__str__', 'dataset', 'collection', 'arrangement', 'created_at', 'modified_at']
     list_filter = ('dataset', 'collection',)
@@ -48,7 +52,7 @@ class CommonCartridgeAdmin(admin.ModelAdmin):
 admin.site.register(OAIPMHSet, OAIPMHSetAdmin)
 admin.site.register(Dataset, DatasetAdmin)
 admin.site.register(Collection, DataStorageAdmin)
-admin.site.register(Arrangement, DataStorageAdmin)
+admin.site.register(Arrangement, ArrangementAdmin)
 admin.site.register(Document, ExtendedDocumentAdmin)
 admin.site.register(ElasticIndex, ElasticIndexAdmin)
 admin.site.register(CommonCartridge, CommonCartridgeAdmin)
