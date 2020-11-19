@@ -13,7 +13,8 @@ export default {
     community_themes: null,
     community_disciplines: null,
     community_collections: null,
-    community_collections_loading: null
+    community_collections_loading: null,
+    community_active_tab: 0
   },
   getters: {
     communities(state) {
@@ -95,6 +96,9 @@ export default {
           )
         })
       }
+    },
+    communityActiveTab(state) {
+      return state.community_active_tab
     }
   },
   actions: {
@@ -252,6 +256,9 @@ export default {
     },
     SET_COMMUNITY_COLLECTIONS_LOADING(state, payload) {
       state.community_collections_loading = payload
+    },
+    SET_COMMUNITY_ACTIVE_TAB(state, payload) {
+      state.community_active_tab = payload
     }
   }
 }

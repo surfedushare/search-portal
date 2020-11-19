@@ -16,6 +16,8 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Tabs',
   data() {
@@ -25,6 +27,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['communityActiveTab']),
     activeTab() {
       const tab = this.tabs.find(tab => tab.isActive)
       return tab && tab.identifier
@@ -34,12 +37,12 @@ export default {
     this.tabs = this.$children.filter(c => {
       return c.$slots.default
     })
-    this.selectTab(0)
+    this.selectTab(this.communityActiveTab)
   },
   methods: {
     selectTab(index) {
       this.selectedIndex = index
-
+      this.$store.commit('SET_COMMUNITY_ACTIVE_TAB', index)
       this.tabs.forEach((tab, i) => (tab.isActive = index === i))
     }
   }
