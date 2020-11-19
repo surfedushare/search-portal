@@ -560,10 +560,7 @@ class MaterialSetAPIView(APIView):
         results = _get_material_by_external_id(request, data['external_id'])
         parts = results[0]['has_part']
 
-        materials = []
-        for part in parts:
-            material = _get_material_by_external_id(request, part)[0]
-            if material:
-                materials.append(material)
+        api_client = ElasticSearchApiClient()
+        materials = api_client.get_materials_by_id(parts)
 
         return Response(materials)

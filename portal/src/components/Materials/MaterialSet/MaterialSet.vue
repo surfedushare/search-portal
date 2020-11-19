@@ -60,7 +60,7 @@ export default {
         .dispatch('getSetMaterials', {
           external_id: this.material.external_id
         })
-        .then(res => (this.setMaterials = res))
+        .then(res => (this.setMaterials = res.records))
     }
   }
 }
