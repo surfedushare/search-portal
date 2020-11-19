@@ -6,7 +6,8 @@ export default {
   name: 'materials',
   props: {
     materials: {
-      default: false
+      type: Object,
+      default: null
     },
     'items-in-line': {
       type: Number,
@@ -27,10 +28,6 @@ export default {
     selectFor: {
       type: String,
       default: 'delete'
-    },
-    value: {
-      // type: Array,
-      // default: []
     }
   },
   components: {
