@@ -57,7 +57,7 @@ export default {
   },
   actions: {
     async getMaterial({ commit }, { id, params }) {
-      if (id) {
+      if (validateIDString(id)) {
         commit('SET_MATERIAL_LOADING', true)
         const { data: material } = await axios.get(`materials/${id}/`, {
           params
