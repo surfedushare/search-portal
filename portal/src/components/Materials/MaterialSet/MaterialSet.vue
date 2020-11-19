@@ -62,15 +62,6 @@ export default {
         })
         .then(res => (this.setMaterials = res))
     }
-  },
-  methods: {
-    addComma(word, index, len) {
-      if (len > 1 && index < len - 1) {
-        return word + ', '
-      } else {
-        return word
-      }
-    }
   }
 }
 </script>

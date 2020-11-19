@@ -32,7 +32,9 @@ export default {
   mounted() {
     if (this.material.is_part_of !== null) {
       this.$store
-        .dispatch('getMaterialByExternalId', { id: this.material.is_part_of })
+        .dispatch('getMaterial', {
+          params: { external_id: this.material.is_part_of }
+        })
         .then(result => (this.mainMaterial = result[0]))
     }
   },
