@@ -135,6 +135,7 @@ export default {
   props: {
     material: {
       type: Object,
+      default: null,
       required: false
     },
     index: {
