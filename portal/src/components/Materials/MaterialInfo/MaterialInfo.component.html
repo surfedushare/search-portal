@@ -1,4 +1,8 @@
 <div class="material__info">
+  <span v-if="material.has_part.length > 0" class="material__info_set">
+    <i class="set-icon"></i>
+    {{ $t('Set') }}
+  </span>
   <h1 class="material__info_ttl">{{ material.title }}</h1>
   <div class="material__info_author_publishers">
     <div class="material__info_author" v-if="material.authors.length > 0">
@@ -66,8 +70,8 @@
     <h3 class="material__info_subttl">{{ $t('Resume') }}</h3>
     <div
       class="material__info_description"
-    v-html="material.description"
-    v-if="material.description">
+      v-html="material.description"
+      v-if="material.description">
       {{ $t('No-description') }}
    </div>
     <div
@@ -77,6 +81,10 @@
       {{ $t('No-description') }}
     </div>
   </template>
+
+  <MaterialSet v-if="material.has_part.length > 0" :material="material"/>
+
+  <MaterialPartOfSet v-if="material.is_part_of !== null" :material="material"/>
 
   <Keywords
     class="material__info_keywords"

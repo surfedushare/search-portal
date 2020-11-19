@@ -540,3 +540,17 @@ def add_share_counters_to_materials(materials):
         m["sharing_counters"] = SharedResourceCounterSerializer(many=True).to_representation(qs.all())
 
     return materials
+
+
+class MaterialSetAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        serializer = MaterialShortSerializer(data=request.GET)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        results = _get_material_by_external_id(request, data['external_id'])
+        parts = results[0]['has_part']
+
+        api_client = ElasticSearchApiClient()
+        materials = api_client.get_materials_by_id(parts)
+
+        return Response(materials)

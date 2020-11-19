@@ -6,6 +6,8 @@ import numeral from 'numeral'
 import Themes from '~/components/Themes'
 import Keywords from '~/components/Keywords'
 import SaveRating from '~/components/Popup/SaveRating'
+import MaterialSet from '../MaterialSet/MaterialSet'
+import MaterialPartOfSet from '../MaterialSet/MaterialPartOfSet'
 import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
 
 export default {
@@ -16,7 +18,9 @@ export default {
     Themes,
     PopularList,
     Keywords,
-    SaveRating
+    SaveRating,
+    MaterialSet,
+    MaterialPartOfSet
   },
   mounted() {
     this.href = validateHREF(window.location.href)
