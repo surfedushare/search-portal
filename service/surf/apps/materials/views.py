@@ -305,11 +305,6 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
 
 
 class MaterialRatingAPIView(APIView):
-    # I don't think we really need the get, but the frontend uses it so I'll leave it be
-    def get(self, request, *args, **kwargs):
-        external_id = request.GET['external_id']
-        return Response(f"External id {external_id} is valid")
-
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']
@@ -331,11 +326,6 @@ class MaterialRatingAPIView(APIView):
 
 
 class MaterialApplaudAPIView(APIView):
-    # I don't think we really need the get, but the frontend uses it so I'll leave it be
-    def get(self, request, *args, **kwargs):
-        external_id = request.GET['external_id']
-        return Response(f"External id {external_id} is valid")
-
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']

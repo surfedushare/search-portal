@@ -19,15 +19,6 @@ export default {
     SaveRating
   },
   mounted() {
-    this.$store
-      .dispatch('getApplaudMaterial', {
-        external_id: this.material.external_id
-      })
-      .then(applaud => {
-        this.is_applauded = !!applaud.count
-        this.is_loading_applaud = false
-      })
-
     this.href = validateHREF(window.location.href)
   },
   data() {
@@ -35,7 +26,7 @@ export default {
       href: '',
       shared_link: false,
       isShow: false,
-      is_loading_applaud: true,
+      is_loading_applaud: false,
       is_applauded: false,
       rating: false,
       rating_given: this.isMaterialRated(this.material.external_id),
