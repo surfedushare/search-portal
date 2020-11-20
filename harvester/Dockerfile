@@ -63,7 +63,7 @@ RUN cat /usr/src/app/harvester/bin/tika-app-1.24.1.jar.sha512 | echo "$(</dev/st
 # Entrypoint sets our environment correctly
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
-CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini", "--logger", "file:logfile=/tmp/harvest-uwsgi.log,maxsize=2000000"]
+CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
 
 # EXPOSE port 8080 to allow communication to/from server
 EXPOSE 8080
