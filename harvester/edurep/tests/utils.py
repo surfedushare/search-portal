@@ -66,3 +66,9 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
             datetime(year=2020, month=2, day=10, hour=22, minute=22)), include_deleted=False)
         self.assertEqual(len(seeds), 4)
         self.check_seed_integrity(seeds, include_deleted=False)
+
+    def test_from_youtube_property(self):
+        seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(len(seeds), 13)
+        youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
+        self.assertEqual(len(youtube_seeds), 3)

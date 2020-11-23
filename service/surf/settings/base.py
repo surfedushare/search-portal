@@ -105,8 +105,8 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -328,6 +328,7 @@ ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_HOST = environment.elastic_search.host
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_NL_INDEX = "latest-nl"
 ELASTICSEARCH_EN_INDEX = "latest-en"
 

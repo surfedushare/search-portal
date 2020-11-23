@@ -23,21 +23,21 @@
           {{ $t('Add-materials') }}
         </button>
       </div>
-
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="materials_loading"
-        infinite-scroll-distance="10"
-      >
-        <Materials
-          :materials="collection_materials"
-          :items-in-line="materials_in_line"
-          :loading="collection_materials_loading"
-          :contenteditable="contenteditable"
-          class="collection__materials"
-        />
-        <Spinner v-if="collection_materials_loading" />
-      </div>
+      <SortableMaterials
+        v-if="contenteditable && collection_materials"
+        :materials="collection_materials"
+        :items-in-line="materials_in_line"
+        :loading="collection_materials_loading"
+        :content-editable="contenteditable"
+      />
+      <Materials
+        v-if="!contenteditable"
+        :materials="collection_materials"
+        :items-in-line="materials_in_line"
+        :loading="collection_materials_loading"
+        :content-editable="contenteditable"
+      />
+      <Spinner v-if="collection_materials_loading" />
     </div>
     <DeleteCollection
       :close="closeDeleteCollection"
@@ -48,6 +48,7 @@
       :close="closeAddMaterial"
       :is-show="isShowAddMaterial"
       :collection-id="collection.id"
+      :collection-count="collection_materials.length"
       @submitted="saveMaterials"
     />
   </section>
@@ -56,18 +57,20 @@
 <script>
 import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
-import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
 import Collection from '~/components/Collections/Collection'
 import AddMaterialPopup from '~/components/Collections/AddMaterialPopup'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
 import Error from '~/components/error'
 import { PublishStatus } from '~/utils'
+import Materials from '~/components/Materials'
+import SortableMaterials from '~/components/Materials/SortableMaterials'
 
 export default {
   components: {
-    Collection,
     Materials,
+    SortableMaterials,
+    Collection,
     Spinner,
     DeleteCollection,
     Error,
@@ -94,7 +97,6 @@ export default {
     ...mapGetters([
       'collection',
       'collection_materials',
-      'materials_loading',
       'collection_materials_loading',
       'user'
     ]),
@@ -117,13 +119,7 @@ export default {
   },
   mounted() {
     const { id } = this.$route.params
-    this.$store.dispatch('getMaterialInMyCollection', {
-      id,
-      params: {
-        page_size: this.search.page_size,
-        page: 1
-      }
-    })
+    this.$store.dispatch('getCollectionMaterials', id)
     Promise.all([
       this.$store.dispatch('getCollection', id),
       this.$store.dispatch('getUser')
@@ -141,36 +137,12 @@ export default {
       const { id } = this.$route.params
       this.isLoading = true
       Promise.all([
-        this.$store.dispatch('getMaterialInMyCollection', {
-          id,
-          params: { page: 1, page_size: 10 }
-        }),
+        this.$store.dispatch('getCollectionMaterials', id),
         this.$store.dispatch('getCollection', id)
       ]).finally(() => {
         this.isLoading = false
       })
     },
-    loadMore() {
-      const { id } = this.$route.params
-      const { collection_materials } = this
-      if (collection_materials) {
-        const { page_size, page, records_total } = collection_materials
-
-        if (records_total > page_size * page) {
-          this.$store.dispatch('getMaterialInMyCollection', {
-            id,
-            params: {
-              page_size: 10,
-              page: page + 1
-            }
-          })
-        }
-      }
-    },
-    /**
-     * Deleting collection by id
-     * @param id - String
-     */
     deleteCollectionPopup() {
       this.isShowDeleteCollection = true
     },
@@ -178,9 +150,6 @@ export default {
       this.isShowDeleteCollection = false
       this.submitting = false
     },
-    /**
-     * Change 1 item in line to 4 and back.
-     */
     changeViewType() {
       if (this.materials_in_line === 1) {
         this.materials_in_line = 4
@@ -188,15 +157,11 @@ export default {
         this.materials_in_line = 1
       }
     },
-    /**
-     * Save collection
-     * @param data - Object
-     */
     onSubmit(data) {
       this.submitting = true
       this.submitData = data
       this.$store
-        .dispatch('putMyCollection', {
+        .dispatch('editCollection', {
           ...this.collection,
           ...data
         })
@@ -244,5 +209,9 @@ export default {
   background-position: 10px 50%;
   background-repeat: no-repeat;
   background-size: 24px 24px;
+}
+
+.not_found {
+  margin-bottom: 40px;
 }
 </style>

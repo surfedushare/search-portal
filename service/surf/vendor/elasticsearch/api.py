@@ -22,7 +22,7 @@ class ElasticSearchApiClient:
                 "scheme": "https",
                 "port": 443,
                 "use_ssl": True,
-                "verify_certs": True,
+                "verify_certs": settings.ELASTICSEARCH_VERIFY_CERTS,
             }
 
         if settings.ELASTICSEARCH_IS_AWS:
@@ -109,6 +109,8 @@ class ElasticSearchApiClient:
                 themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
         record['themes'] = list(themes)
         record['source'] = hit['_source']['arrangement_collection_name']
+        record['has_part'] = hit['_source']['has_part']
+        record['is_part_of'] = hit['_source']['is_part_of']
         return record
 
     def autocomplete(self, query):

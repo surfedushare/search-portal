@@ -41,6 +41,7 @@ from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
+    CollectionMaterialPositionSerializer,
     SharedResourceCounterSerializer
 )
 from surf.apps.materials.utils import (
@@ -266,7 +267,7 @@ class MaterialAPIView(APIView):
         res = _get_material_by_external_id(request, external_id, shared=shared, count_view=count_view)
 
         if not res:
-            raise Http404('No materials matches the given query.')
+            raise Http404()
 
         return Response(res[0])
 
@@ -304,11 +305,6 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
 
 
 class MaterialRatingAPIView(APIView):
-    # I don't think we really need the get, but the frontend uses it so I'll leave it be
-    def get(self, request, *args, **kwargs):
-        external_id = request.GET['external_id']
-        return Response(f"External id {external_id} is valid")
-
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']
@@ -330,11 +326,6 @@ class MaterialRatingAPIView(APIView):
 
 
 class MaterialApplaudAPIView(APIView):
-    # I don't think we really need the get, but the frontend uses it so I'll leave it be
-    def get(self, request, *args, **kwargs):
-        external_id = request.GET['external_id']
-        return Response(f"External id {external_id} is valid")
-
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']
@@ -355,8 +346,7 @@ class CollectionMaterialPromotionAPIView(APIView):
         collection_materials = CollectionMaterial.objects.filter(
             collection=collection_instance, material__external_id=external_id)
         if not collection_materials:
-            raise Http404(f"Collection {collection_instance} does not contain a material with "
-                          f"external id {external_id}, cannot promote or demote")
+            raise Http404()
 
         # The material should only be in the collection once
         assert len(collection_materials) == 1, f"Material with id {external_id} is in collection " \
@@ -417,9 +407,6 @@ class CollectionViewSet(ModelViewSet):
             data = serializer.validated_data
             ids = [m.external_id for m in instance.materials.order_by("id").all()]
 
-            featured = CollectionMaterial.objects.filter(collection=instance, featured=True)
-            featured_ids = [m.material.external_id for m in featured]
-
             rv = dict(records=[],
                       records_total=0,
                       filters=[],
@@ -429,14 +416,18 @@ class CollectionViewSet(ModelViewSet):
             if ids:
                 elastic = ElasticSearchApiClient()
 
-                res = elastic.get_materials_by_id(ids, **data)
+                res = elastic.get_materials_by_id(ids, 1, len(ids))
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(request.user, records)
-                for record in records:
-                    if record['external_id'] in featured_ids:
-                        record['featured'] = True
-                    else:
-                        record['featured'] = False
+
+                collection_materials = CollectionMaterial.objects.filter(
+                    collection=instance, material__external_id__in=[r['external_id'] for r in records]
+                )
+
+                for collection_material in collection_materials:
+                    record = next(r for r in records if r['external_id'] == collection_material.material.external_id)
+                    record['featured'] = collection_material.featured
+                    record['position'] = collection_material.position
 
                 rv["records"] = records
                 rv["records_total"] = res["recordcount"]
@@ -446,7 +437,11 @@ class CollectionViewSet(ModelViewSet):
         data = []
         for d in request.data:
             # validate request parameters
-            serializer = MaterialShortSerializer(data=d)
+            if request.method == "POST":
+                serializer = CollectionMaterialPositionSerializer(data=d)
+            elif request.method == "DELETE":
+                serializer = MaterialShortSerializer(data=d)
+
             serializer.is_valid(raise_exception=True)
             data.append(serializer.validated_data)
 
@@ -470,6 +465,7 @@ class CollectionViewSet(ModelViewSet):
 
         for material in materials:
             m_external_id = material["external_id"]
+            m_position = material["position"]
 
             details = get_material_details_by_id(m_external_id)
             if not details:
@@ -488,7 +484,7 @@ class CollectionViewSet(ModelViewSet):
 
             add_material_themes(m, details[0].get("themes", []))
             add_material_disciplines(m, details[0].get("disciplines", []))
-            CollectionMaterial.objects.create(collection=instance, material=m)
+            CollectionMaterial.objects.create(collection=instance, material=m, position=m_position)
 
     @staticmethod
     def _delete_materials(instance, materials):
@@ -544,3 +540,17 @@ def add_share_counters_to_materials(materials):
         m["sharing_counters"] = SharedResourceCounterSerializer(many=True).to_representation(qs.all())
 
     return materials
+
+
+class MaterialSetAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        serializer = MaterialShortSerializer(data=request.GET)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        results = _get_material_by_external_id(request, data['external_id'])
+        parts = results[0]['has_part']
+
+        api_client = ElasticSearchApiClient()
+        materials = api_client.get_materials_by_id(parts)
+
+        return Response(materials)

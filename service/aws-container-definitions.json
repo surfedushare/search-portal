@@ -17,6 +17,28 @@
       "memoryReservation": 50
     },
     {
+      "name": "search-portal-nginx",
+      "image": "${REPOSITORY}/search-portal-nginx:${version}",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awsfirelens",
+        "options": {
+          "Name": "firehose",
+          "region": "eu-central-1",
+          "delivery_stream": "logs_to_es",
+          "time_key": "time",
+          "time_key_format": "%Y-%m-%dT%H:%M:%S%z"
+        }
+      }
+    },
+    {
         "name": "search-portal-container",
         "image": "${REPOSITORY}/search-portal:${version}",
         "cpu": 0,
@@ -36,7 +58,9 @@
             "options": {
               "Name": "firehose",
               "region": "eu-central-1",
-              "delivery_stream": "logs_to_es"
+              "delivery_stream": "logs_to_es",
+              "time_key": "time",
+              "time_key_format": "%Y-%m-%dT%H:%M:%S%z"
             }
         }
     }

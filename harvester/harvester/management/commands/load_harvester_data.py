@@ -18,6 +18,8 @@ class Command(base.LabelCommand, HarvesterCommand):
     """
 
     resources = [
+        "core.FileResource",
+        "core.TikaResource",
         "edurep.EdurepOAIPMH"
     ]
 

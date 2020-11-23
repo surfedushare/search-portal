@@ -100,6 +100,12 @@ class ElasticSearchTestCase(BaseTestCase):
                     "suggest": {
                         "type": "completion"
                     },
+                    "has_part": {
+                        'type': 'keyword'
+                    },
+                    "is_part_of": {
+                        'type': 'keyword'
+                    },
                 }
             }
         }

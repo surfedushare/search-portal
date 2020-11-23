@@ -15,7 +15,9 @@ NL_MATERIAL = {
     "publishers": ["Wikiwijs Maken"],
     "file_type": "text",
     "disciplines": [],
-    "arrangement_collection_name": "wikiwijsmaken"
+    "arrangement_collection_name": "wikiwijsmaken",
+    "has_part": [],
+    "is_part_of": None
 }
 
 

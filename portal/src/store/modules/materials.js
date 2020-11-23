@@ -57,11 +57,17 @@ export default {
   },
   actions: {
     async getMaterial({ commit }, { id, params }) {
-      commit('SET_MATERIAL_LOADING', true)
-      const { data: material } = await axios.get(`materials/${id}/`, { params })
-      decodeAuthor(material)
-      commit('SET_MATERIAL', material)
-      commit('SET_MATERIAL_LOADING', false)
+      if (validateIDString(id)) {
+        commit('SET_MATERIAL_LOADING', true)
+        const { data: material } = await axios.get(`materials/${id}/`, {
+          params
+        })
+        decodeAuthor(material)
+        commit('SET_MATERIAL', material)
+        commit('SET_MATERIAL_LOADING', false)
+      } else {
+        return await axios.get('materials/', { params }).then(res => res.data)
+      }
     },
     async setMaterialSocial({ commit }, { id, params }) {
       if (validateParams(params)) {
@@ -116,19 +122,6 @@ export default {
         $log.error('Validate error: ', external_id)
       }
     },
-    async getApplaudMaterial(context, { external_id }) {
-      if (validateIDString(external_id)) {
-        return await axios
-          .get('applaud_material/', {
-            params: {
-              external_id: external_id
-            }
-          })
-          .then(res => res.data)
-      } else {
-        $log.error('Validate error: ', external_id)
-      }
-    },
     async searchMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true)
@@ -169,6 +162,19 @@ export default {
       commit('SET_MATERIALS_IN_LINE', count)
 
       return count
+    },
+    async getSetMaterials(context, { external_id }) {
+      if (validateIDString(external_id)) {
+        return await axios
+          .get('materials/set/', {
+            params: {
+              external_id: external_id
+            }
+          })
+          .then(res => res.data)
+      } else {
+        $log.error('Validate error: ', external_id)
+      }
     }
   },
   mutations: {

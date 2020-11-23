@@ -1,12 +1,23 @@
-from collections import Iterator
+import logging
+from collections import Iterator, defaultdict
+from zipfile import BadZipFile
+from bs4 import BeautifulSoup
+from urlobject import URLObject
 
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
 from django.utils.timezone import now
+from django.utils.functional import cached_property
 
 from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
+from core.models import CommonCartridge, FileResource
+
+
+log = logging.getLogger("harvester")
 
 
 class Arrangement(DocumentCollectionMixin, CollectionBase):
@@ -60,32 +71,141 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
 
         return count
 
-    def store_language(self):
+    @cached_property
+    def base_document(self):
         text_documents = self.documents.exclude(properties__file_type="video")
         video_documents = self.documents.filter(properties__file_type="video")
         base_document = video_documents.first()
         if base_document is None:
             base_document = text_documents.first()
-        self.meta["language"] = base_document.get_language() if base_document else "unk"
+        return base_document
+
+    def store_language(self):
+        self.meta["language"] = self.base_document.get_language() if self.base_document else "unk"
         self.save()
+
+    @staticmethod
+    def get_search_document_details(reference_id, url, title, text, transcription, mime_type, file_type,
+                                    is_part_of=None, has_part=None):
+        has_part = has_part or []
+        return {
+            '_id': reference_id,
+            'title': title,
+            'text': text,
+            'transcription': transcription,
+            'url': url,
+            'title_plain': title,
+            'text_plain': text,
+            'transcription_plain': transcription,
+            'file_type': file_type,
+            'mime_type': mime_type,
+            'has_part': has_part,
+            'is_part_of': is_part_of,
+            'suggest': title.split(" ") if title else [],
+        }
+
+    def get_search_document_base(self):
+        """
+        This method returns either a delete action or a partial upsert action.
+        If it returns a partial update action it will only fill out all data
+        that's the same for all documents coming from this Arrangement.
+        Only the reference_id gets added for both partial update and delete actions
+
+        :return: Elastic Search partial update or delete action
+        """
+        # First we fill out all data we know from the Arrangement or we have an early return for deletes
+        # and unknown data
+        base = {
+            "language": self.meta.get("language", "unk"),
+        }
+        if self.deleted_at:
+            base["_op_type"] = "delete"
+            return base
+        elif not self.base_document:
+            return base
+        # Then we enhance the data with any data coming from the base document belonging to the arrangement
+        base.update({
+            'external_id': self.base_document.properties['external_id'],
+            'disciplines': self.base_document.properties['disciplines'],
+            'educational_levels': self.base_document.properties['educational_levels'],
+            'lom_educational_levels': self.base_document.properties['lom_educational_levels'],
+            'author': self.base_document.properties['author'],
+            'authors': self.base_document.properties['authors'],
+            'publishers': self.base_document.properties['publishers'],
+            'description': self.base_document.properties['description'],
+            'publisher_date': self.base_document.properties['publisher_date'],
+            'copyright': self.base_document.properties['copyright'],
+            'aggregation_level': self.base_document.properties['aggregation_level'],
+            'keywords': self.meta['keywords'],
+            'oaipmh_set': self.collection.name,
+            'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
+        })
+        return base
+
+    def unpack_package_documents(self, reference_id, base_url):
+        """
+        This methods returns content data if this arrangement is a package.
+        The content should be merged with other ES data to form a proper search document.
+        Currently this method relies heavily on the structure in wikiwijsmaken packages
+        and is not expected to work with IMSCC in general.
+        """
+        # First we try to find all navigation links and their href's by looking at the HTML in the downloaded file
+        _, html_file_id = self.base_document.properties["pipeline"]["file"]["resource"]
+        file_resource = FileResource.objects.get(id=html_file_id)
+        if not file_resource.success:
+            return []
+        content_type, file = file_resource.content
+        soup = BeautifulSoup(file, "html5lib")
+        navigation_links = defaultdict(list)
+        for navigation_link in soup.find_all("a", class_="js-menu-item"):
+            navigation_links[navigation_link.text.strip()].append(navigation_link["href"])
+
+        # Then we parse the IMSCC package file and extract items from its manifest file
+        _, package_file_id = self.base_document.properties["pipeline"]["package_file"]["resource"]
+        package_file = FileResource.objects.get(id=package_file_id)
+        if not package_file.success:
+            return []
+        cc = CommonCartridge(file=package_file.body)
+        try:
+            cc.clean()
+            package_content = cc.list_content_by_title()
+        except (ValidationError, BadZipFile):
+            log.warning(f"Invalid or missing common cartridge for file resource: {package_file.id}")
+            return []
+
+        # Combine the links and content into documents we may search for
+        results = []
+        for title, links in navigation_links.items():
+            results += [
+                {
+                    "_id": reference_id + link.replace("#!", "-"),
+                    "is_part_of": reference_id,
+                    "link": link,
+                    "url": base_url + link,
+                    "title": title,
+                    "text": package_content[title].pop(0) if len(package_content[title]) else "",
+                }
+                for link in links
+            ]
+        return results
 
     def to_search(self):
 
-        elastic_search_action = {
-            "_id": self.meta["reference_id"],
-            "language": self.meta.get("language", "unk"),
-        }
+        elastic_base = self.get_search_document_base()
+        if not self.base_document:
+            # TODO: figure out why some arrangements get 0 documents
+            # Is this only in old dataset dumps or still happening??
+            elastic_base["_id"] = self.meta["reference_id"]
+            return elastic_base
 
-        if self.deleted_at:
-            elastic_search_action["_op_type"] = "delete"
-            return elastic_search_action
-
+        # Gather text from text media
         text_documents = self.documents.exclude(properties__file_type="video")
         texts = []
         for doc in text_documents:
             texts.append(doc.properties["text"])
         text = "\n\n".join(texts)
 
+        # Gather text from video media
         video_documents = self.documents.filter(properties__file_type="video")
         transcriptions = []
         for doc in video_documents:
@@ -94,41 +214,41 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             transcriptions.append(doc.properties["text"])
         transcription = "\n\n".join(transcriptions)
 
-        base_document = video_documents.first()
-        if base_document is None:
-            base_document = text_documents.first()
+        # Get the base url without any anchor fragment
+        base_url = str(URLObject(self.base_document["url"]).with_fragment(""))
 
-        if base_document is None:
-            return
+        # First we yield documents for each file in a package when dealing with a package
+        child_ids = []
+        if self.meta.get("is_package", False):
+            for package_document in self.unpack_package_documents(self.meta["reference_id"], base_url):
+                child_ids.append(package_document["_id"])
+                elastic_details = self.get_search_document_details(
+                    package_document["_id"],
+                    package_document["url"],
+                    package_document["title"],
+                    package_document["text"],
+                    transcription="",
+                    mime_type="text/html",
+                    file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
+                    is_part_of=package_document["is_part_of"]
+                )
+                elastic_details.update(elastic_base)
+                elastic_details["external_id"] = elastic_details["_id"]
+                yield elastic_details
 
-        # Elastic Search actions get streamed to the Elastic Search service
-        elastic_search_action.update({
-            'title': base_document.properties['title'],
-            'text': text,
-            'transcription': transcription,
-            'url': base_document.properties['url'],
-            'external_id': base_document.properties['external_id'],
-            'disciplines': base_document.properties['disciplines'],
-            'educational_levels': base_document.properties['educational_levels'],
-            'lom_educational_levels': base_document.properties['lom_educational_levels'],
-            'author': base_document.properties['author'],
-            'authors': base_document.properties['authors'],
-            'publishers': base_document.properties['publishers'],
-            'description': base_document.properties['description'],
-            'publisher_date': base_document.properties['publisher_date'],
-            'copyright': base_document.properties['copyright'],
-            'aggregation_level': base_document.properties['aggregation_level'],
-            'title_plain': base_document.properties['title'],
-            'text_plain': text,
-            'transcription_plain': transcription,
-            'keywords': self.meta['keywords'],
-            'file_type': base_document['file_type'] if 'file_type' in base_document.properties else 'unknown',
-            'mime_type': base_document['mime_type'],
-            'suggest': base_document['title'].split(" ") if base_document['title'] else [],
-            'oaipmh_set': self.collection.name,
-            'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
-        })
-        return elastic_search_action
+        # Then we yield a Elastic Search document for the Arrangement as a whole
+        elastic_details = self.get_search_document_details(
+            self.meta["reference_id"],
+            self.base_document["url"],
+            self.base_document["title"],
+            text,
+            transcription,
+            self.base_document["mime_type"],
+            self.base_document["file_type"],
+            has_part=child_ids
+        )
+        elastic_details.update(elastic_base)
+        yield elastic_details
 
     def restore(self):
         self.deleted_at = None

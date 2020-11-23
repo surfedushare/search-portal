@@ -20,6 +20,7 @@ elastic_search:
   host: "elasticsearch:9200"
   protocol: "http"
   is_aws: false
+  verify_certs: true  # ignored as long as protocol is http
 
 secrets:
   elastic_search:
