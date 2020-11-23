@@ -30,6 +30,7 @@ def setup_database_statements(database_name, root_user, application_user, applic
     database_statements = [
         # Set permissions
         f"GRANT CONNECT ON DATABASE {database_name} TO {application_user}",
+        f"GRANT USAGE ON SCHEMA public TO {application_user}",
         (f"ALTER DEFAULT PRIVILEGES FOR USER {root_user} IN SCHEMA public "
          f"GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO {application_user}"),
         (f"ALTER DEFAULT PRIVILEGES FOR USER {root_user} IN SCHEMA public "

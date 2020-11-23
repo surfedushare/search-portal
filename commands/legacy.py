@@ -12,7 +12,8 @@ def download_database(connection):
     rsl = connection.sudo("docker ps -qf label=nl.surfcatalog.db", echo=True, pty=True)
     container_id = rsl.stdout.split("\n")[1].strip()
     connection.sudo(
-        f"docker exec -i {container_id} pg_dump -h localhost -U surf -c surf > edushare.postgres.sql",
+        f"docker exec -i {container_id} pg_dump -h localhost -U surf -c --if-exists surf > "
+        f"edushare.postgres-legacy.sql",
         echo=True,
         pty=True
     )
@@ -21,8 +22,8 @@ def download_database(connection):
     os.makedirs(dump_directory, exist_ok=True)
     # Download dump to local
     today = date.today()
-    dump_file = f"edushare.{today:%Y-%m-%d}.postgres.sql"
-    connection.get("edushare.postgres.sql", f"{dump_directory}/{dump_file}")
+    dump_file = f"edushare.{today:%Y-%m-%d}.postgres-legacy.sql"
+    connection.get("edushare.postgres-legacy.sql", f"{dump_directory}/{dump_file}")
     print("Downloaded:", dump_file)
 
 
@@ -45,9 +46,11 @@ def upload_database(conn, dump_file):
     # Make minor adjustments to dumps for legacy dumps to work on AWS
     print("Migrating dump file")
     conn.local(f"sed -i.bak 's/OWNER TO surf/OWNER TO postgres/g' {dump_file_path}", echo=True)
-    conn.local(f"sed -i.bak 's/OWNER TO django/OWNER TO edushare/g' {dump_file_path}", echo=True)
-    conn.local(f"sed -i.bak 's/OWNER FROM django/OWNER FROM edushare/g' {dump_file_path}", echo=True)
-    conn.local(f"sed -i.bak 's/OWNER ROLE django/OWNER ROLE edushare/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/FOR ROLE surf/FOR ROLE postgres/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/FROM surf/FROM postgres/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/FOR ROLE django/FOR ROLE edushare/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/FROM django/FROM edushare/g' {dump_file_path}", echo=True)
+    conn.local(f"sed -i.bak 's/TO django/TO edushare/g' {dump_file_path}", echo=True)
 
     # Setup auto-responder
     postgres_user = conn.config.postgres.user
@@ -56,7 +59,8 @@ def upload_database(conn, dump_file):
     # Run commands with port forwarding
     with conn.forward_local(local_port=1111, remote_host=conn.config.postgres.host, remote_port=5432):
         print("Uploading snapshot through port-forwarding")
-        conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {dump_file_path}",
+        conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d {conn.config.postgres.database} "
+                   f"-f {dump_file_path}",
                    echo=True, watchers=[postgres_password_responder], pty=True)
         print("Migrating tables to new format")
         conn.local(
