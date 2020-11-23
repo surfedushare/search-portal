@@ -12,7 +12,8 @@ export default {
   },
   props: {
     materials: {
-      default: false
+      type: Object,
+      default: null
     },
     'items-in-line': {
       type: Number,
@@ -72,9 +73,13 @@ export default {
     },
     myList: {
       get() {
-        return this.sortByPosition(
-          this.shortenDescriptions(this.materials.records)
-        )
+        if (this.materials) {
+          return this.sortByPosition(
+            this.shortenDescriptions(this.materials.records)
+          )
+        } else {
+          return []
+        }
       },
       set(values) {
         const { id } = this.$route.params

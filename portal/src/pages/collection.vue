@@ -24,7 +24,7 @@
         </button>
       </div>
       <SortableMaterials
-        v-if="contenteditable"
+        v-if="contenteditable && collection_materials"
         :materials="collection_materials"
         :items-in-line="materials_in_line"
         :loading="collection_materials_loading"

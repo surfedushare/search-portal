@@ -6,8 +6,8 @@ const $log = injector.get('$log')
 
 export default {
   state: {
-    collection: false,
-    collection_materials: false,
+    collection: null,
+    collection_materials: null,
     collection_materials_loading: false
   },
   getters: {
@@ -125,9 +125,9 @@ export default {
       state.collection = payload
     },
     SET_MATERIAL_TO_COLLECTION(state, payload) {
-      if (payload.page === 1) {
+      if (payload && payload.page === 1) {
         state.collection_materials = payload
-      } else {
+      } else if (state.collection_materials) {
         const records = state.collection_materials.records || []
         state.collection_materials = {
           ...state.collection_materials,
