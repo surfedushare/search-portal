@@ -50,6 +50,11 @@ class WidgetEndpointApiClient:
             response.raise_for_status()
 
         try:
-            return response.json()["search"]["drilldowns"]
+            search = response.json()["search"]
+
+            if not search:
+                return dict()
+
+            return search["drilldowns"]
         except KeyError:
             return dict()
