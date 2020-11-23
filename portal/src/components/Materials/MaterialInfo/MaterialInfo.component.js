@@ -8,11 +8,12 @@ import Keywords from '~/components/Keywords'
 import SaveRating from '~/components/Popup/SaveRating'
 import MaterialSet from '../MaterialSet/MaterialSet'
 import MaterialPartOfSet from '../MaterialSet/MaterialPartOfSet'
+import CollectionList from '../CollectionList/CollectionList'
 import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
 
 export default {
   name: 'material-info',
-  props: ['material', 'communities'],
+  props: ['material', 'communities', 'collections'],
   components: {
     StarRating,
     Themes,
@@ -20,7 +21,8 @@ export default {
     Keywords,
     SaveRating,
     MaterialSet,
-    MaterialPartOfSet
+    MaterialPartOfSet,
+    CollectionList
   },
   mounted() {
     this.href = validateHREF(window.location.href)
