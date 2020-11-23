@@ -227,10 +227,7 @@ if not DEBUG:
 # https://www.elastic.co/guide/index.html
 
 ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
-ELASTICSEARCH_USER = environment.elastic_search.username
 ELASTICSEARCH_HOST = environment.elastic_search.host
-if "elastic_search" in environment.secrets:
-    ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_ANALYSERS = {

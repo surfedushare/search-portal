@@ -108,8 +108,7 @@ class ElasticSearchTestCase(BaseTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.elastic = Elasticsearch(
-            [settings.ELASTICSEARCH_HOST],
-            http_auth=(settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD)
+            [settings.ELASTICSEARCH_HOST]
         )
         cls.elastic.indices.create(settings.ELASTICSEARCH_NL_INDEX, ignore=400, body=cls.index_body('nl'))
         cls.elastic.indices.create(settings.ELASTICSEARCH_EN_INDEX, ignore=400, body=cls.index_body('en'))

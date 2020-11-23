@@ -16,12 +16,7 @@ postgres:
   port: 5432
 
 elastic_search:
-  username: "search_portal_backend_prod"
   host: "elasticsearch:9200"
   protocol: "http"
   is_aws: false
   verify_certs: true  # ignored as long as protocol is http
-
-secrets:
-  elastic_search:
-    password: "qwerty"
