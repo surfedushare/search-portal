@@ -15,8 +15,6 @@ surfconext:
   client_id: "https@//front-test.surfcatalog.nl/"
 
 edurep:
-  xml_api_endpoint: "http://staging.edurep.kennisnet.nl:8000"
-  soap_api_endpoint: "http://staging.edurep.kennisnet.nl/smdBroker/ws"
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"
 
 aws:
