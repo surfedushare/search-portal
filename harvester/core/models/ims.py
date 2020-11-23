@@ -1,6 +1,5 @@
 import json
 import os
-from zipfile import ZipFile
 from collections import defaultdict
 
 from bs4 import BeautifulSoup
@@ -9,6 +8,8 @@ from django.conf import settings
 from django.db import models
 from django import forms
 from django.core.exceptions import ValidationError
+
+from core.utils.unzip import SafeUnzip
 
 
 class CommonCartridge(models.Model):
@@ -65,7 +66,7 @@ class CommonCartridge(models.Model):
         destination = self.get_extract_destination()
         if os.path.exists(destination):
             return
-        cartridge = ZipFile(self.file)
+        cartridge = SafeUnzip(self.file.path)
         cartridge.extractall(destination)
 
     def metadata_tag(self):
@@ -74,14 +75,14 @@ class CommonCartridge(models.Model):
     metadata_tag.allow_tags = True
 
     def clean(self):
-        cartridge = ZipFile(self.file)
+        cartridge = SafeUnzip(self.file.path)
         try:
             self.manifest = cartridge.read('imsmanifest.xml')
         except KeyError:
             raise ValidationError('The common cartridge should contain a manifest file')
 
     def read(self, file_path):
-        cartridge = ZipFile(self.file)
+        cartridge = SafeUnzip(self.file.path)
         return cartridge.read(file_path)
 
     @property
