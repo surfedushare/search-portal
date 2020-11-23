@@ -18,7 +18,3 @@ elastic_search:
   protocol: "https"
   is_aws: true
   verify_certs: true
-
-secrets:
-  elastic_search:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/elastic"

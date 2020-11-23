@@ -322,8 +322,6 @@ VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
 EDUREP_JSON_API_ENDPOINT = environment.edurep.json_api_endpoint
 
 ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
-ELASTICSEARCH_USER = environment.elastic_search.username
-ELASTICSEARCH_PASSWORD = environment.secrets.elastic_search.password
 ELASTICSEARCH_HOST = environment.elastic_search.host
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https

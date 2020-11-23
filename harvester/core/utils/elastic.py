@@ -23,7 +23,7 @@ def get_es_client():
         http_auth = AWS4Auth(credentials.access_key, credentials.secret_key, "eu-central-1", "es",
                              session_token=credentials.token)
     else:
-        http_auth = (settings.ELASTICSEARCH_USER, settings.ELASTICSEARCH_PASSWORD,)
+        http_auth = (None, None)
 
     return Elasticsearch(
         [elastic_url],

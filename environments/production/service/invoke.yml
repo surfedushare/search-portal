@@ -32,3 +32,5 @@ secrets:
     admin_password: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/django"
   surfconext:
     secret_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/surfconext"
+  elastic_search:
+    password: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/elastic"

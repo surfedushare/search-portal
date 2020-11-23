@@ -63,8 +63,7 @@ RUN cat /usr/src/app/harvester/bin/tika-app-1.24.1.jar.sha512 | echo "$(</dev/st
 # Entrypoint sets our environment correctly
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
-# The default command is to start a supervisord that runs: Celery, Celery Beat and a small UWSGI
-CMD ["supervisord", "-c", "/usr/src/app/harvester/supervisord/main.conf"]
+CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
 
 # EXPOSE port 8080 to allow communication to/from server
 EXPOSE 8080
