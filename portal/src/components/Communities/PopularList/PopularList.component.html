@@ -1,4 +1,3 @@
-
 <section class="popular-list">
   <slot name="header-info"></slot>
   <template v-if="computed_communities">
@@ -8,16 +7,18 @@
           class="popular-list__link"
           :to="localePath({name: 'communities-community', params: {community: community.id}})"
         >
-          <h3 class="popular-list__title">{{ getCommunityTitle(community) }}</h3>
-          {{ $tc('learning-materials', community.materials_count) }}
+          <h3 class="popular-list__title">
+            {{ getCommunityTitle(community) }}
+            <i class="popular-list__arrow"></i>
+          </h3>
+          <div>
+            {{ $tc('Materials', community.materials_count) }}
+          </div>
         </router-link>
       </li>
     </ul>
-    <div class="popular-list--all"  v-if="type !== 'material'">
-      <router-link
-        :to="localePath('communities')"
-        class="arrow-link"
-      >
+    <div class="popular-list--all" v-if="type !== 'material'">
+      <router-link :to="localePath('communities')" class="arrow-link">
         {{ $t('All-Communities') }}
       </router-link>
     </div>
@@ -26,4 +27,3 @@
     {{ $t('No-communities') }}
   </div>
 </section>
-
