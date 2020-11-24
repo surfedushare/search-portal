@@ -34,7 +34,8 @@ export default {
   name: 'CollectionList',
   props: {
     collections: {
-      type: Array
+      type: Array,
+      default: null
     }
   },
   mounted() {},
