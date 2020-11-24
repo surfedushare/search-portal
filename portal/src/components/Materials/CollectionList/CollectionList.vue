@@ -5,10 +5,10 @@
       <li
         v-for="collection in collections"
         :key="collection.id"
-        class="material__info_part_of"
+        class="blue-bar material__info_collection"
       >
         <router-link
-          class="material__info_main"
+          class="content"
           :to="
             localePath({
               name: 'collections-id',
@@ -18,7 +18,7 @@
         >
           <h3>
             {{ collectionTitle(collection) }}
-            <i class="material__info_main_arrow"></i>
+            <i class="arrow"></i>
           </h3>
           <div>
             {{ $tc('Materials', collection.materials_count) }}

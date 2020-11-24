@@ -2,14 +2,17 @@
   <slot name="header-info"></slot>
   <template v-if="computed_communities">
     <ul class="popular-list__items">
-      <li class="popular-list__item" v-for="community in computed_communities">
+      <li
+        class="popular-list__item blue-bar"
+        v-for="community in computed_communities"
+      >
         <router-link
-          class="popular-list__link"
+          class="content"
           :to="localePath({name: 'communities-community', params: {community: community.id}})"
         >
-          <h3 class="popular-list__title">
+          <h3>
             {{ getCommunityTitle(community) }}
-            <i class="popular-list__arrow"></i>
+            <i class="arrow"></i>
           </h3>
           <div>
             {{ $tc('Materials', community.materials_count) }}

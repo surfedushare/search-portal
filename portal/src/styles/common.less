@@ -372,3 +372,44 @@ pre {
     margin: 10px 0
   }
 }
+
+.blue-bar {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30px;
+
+  &:before {
+    content: '';
+    position: relative;
+    background: @dark-blue;
+    height: auto;
+    width: 4px;
+    border-radius: 2px;
+  }
+
+  .content {
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    color: @dark-grey;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  h3 {
+    display: flex;
+  }
+
+  .arrow {
+    content: '';
+    display: inline-flex;
+    width: 18px;
+    height: 33px;
+    margin-left: 20px;
+    background: url('/images/arrow-bold-grey.svg') 50% 50% no-repeat;
+    background-size: contain;
+  }
+}
