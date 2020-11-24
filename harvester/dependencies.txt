@@ -14,6 +14,7 @@ scikit-learn==0.23.1
 mwparserfromhell==0.5.4
 django-log-formatter-json==0.2.0
 ujson==3.1.0  # implicit dependency of django-log-formatter-json
+sunzip==0.0.3
 
 # Datagrowth
 jsonschema==3.2.0
