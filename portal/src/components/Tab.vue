@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isActive" class="tabcontent">
+  <div v-show="isActive" class="tab-content">
     <slot></slot>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
 <style lang="less" scoped>
 @import url('../variables');
 
-.tabcontent {
+.tab-content {
   margin-top: 50px;
 
   @media @mobile {

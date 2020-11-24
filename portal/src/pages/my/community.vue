@@ -51,7 +51,7 @@
           />
         </div>
         <div v-show="!previewMode">
-          <Tabs>
+          <Tabs :active-index="myCommunityActiveTab" :set-tab="setTab">
             <template v-slot:after-tabs="slotProps">
               <div
                 v-if="slotProps.activeTab === 'collections-tab'"
@@ -147,7 +147,6 @@ export default {
       errors: {},
       formData: null,
       notFound: false,
-      currentTab: 'general',
       previewMode: false
     }
   },
@@ -158,7 +157,8 @@ export default {
       'communities',
       'isAuthenticated',
       'user',
-      'userCommunities'
+      'userCommunities',
+      'myCommunityActiveTab'
     ]),
     isPublished: {
       get() {
@@ -368,6 +368,9 @@ export default {
     },
     setCollectionSelection(selection) {
       this.selection = selection
+    },
+    setTab(index) {
+      this.$store.commit('SET_MY_COMMUNITY_ACTIVE_TAB', index)
     }
   }
 }

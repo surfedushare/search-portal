@@ -14,7 +14,8 @@ export default {
     community_disciplines: null,
     community_collections: null,
     community_collections_loading: null,
-    community_active_tab: 0
+    my_community_active_tab: 0,
+    communities_active_tab: 0
   },
   getters: {
     communities(state) {
@@ -97,8 +98,11 @@ export default {
         })
       }
     },
-    communityActiveTab(state) {
-      return state.community_active_tab
+    myCommunityActiveTab(state) {
+      return state.my_community_active_tab
+    },
+    communitiesActiveTab(state) {
+      return state.communities_active_tab
     }
   },
   actions: {
@@ -257,8 +261,11 @@ export default {
     SET_COMMUNITY_COLLECTIONS_LOADING(state, payload) {
       state.community_collections_loading = payload
     },
-    SET_COMMUNITY_ACTIVE_TAB(state, payload) {
-      state.community_active_tab = payload
+    SET_MY_COMMUNITY_ACTIVE_TAB(state, payload) {
+      state.my_community_active_tab = payload
+    },
+    SET_COMMUNITIES_ACTIVE_TAB(state, payload) {
+      state.communities_active_tab = payload
     }
   }
 }

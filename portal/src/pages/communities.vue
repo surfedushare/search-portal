@@ -3,7 +3,11 @@
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
-        <Tabs v-if="user.id && userCommunities(user).length">
+        <Tabs
+          v-if="user.id && userCommunities(user).length"
+          :active-index="communitiesActiveTab"
+          :set-tab="setTab"
+        >
           <template v-slot:after-tabs>
             <SwitchInput
               v-model="showDrafts"
@@ -90,7 +94,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'allCommunities', 'userCommunities']),
+    ...mapGetters([
+      'user',
+      'allCommunities',
+      'userCommunities',
+      'communitiesActiveTab'
+    ]),
     communities() {
       if (this.showDrafts) {
         return this.allCommunities(this.user)
@@ -120,6 +129,9 @@ export default {
       }
 
       return this.user.communities.some(id => id === community.id)
+    },
+    setTab(index) {
+      this.$store.commit('SET_COMMUNITIES_ACTIVE_TAB', index)
     }
   }
 }
