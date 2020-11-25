@@ -94,8 +94,9 @@ SECURE_HSTS_PRELOAD = True
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
 CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+CSP_IMG_SRC = ["'self'", "data:"]
 if MODE != 'localhost':
-    CSP_IMG_SRC = ["'self'", f"{environment.aws.image_upload_bucket}.s3.amazonaws.com"]
+    CSP_IMG_SRC.append(f"{environment.aws.image_upload_bucket}.s3.amazonaws.com")
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
