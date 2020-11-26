@@ -3,7 +3,11 @@
     <Navigation :materials="materials" :material="material" />
     <div v-if="material" class="center_block material__wrapper">
       <Sidebar :material="material" :collections="collections" />
-      <MaterialInfo :material="material" :communities="communities" />
+      <MaterialInfo
+        :material="material"
+        :communities="communities"
+        :collections="collections"
+      />
     </div>
     <div v-show="false" class="main__materials">
       <div class="center_block">

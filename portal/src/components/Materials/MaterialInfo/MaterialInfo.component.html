@@ -92,16 +92,11 @@
     v-if="material.keywords.length"
   />
 
-  <PopularList
-    class="material__info_communities"
-    :type="'material'"
-    :communities="communities"
-    v-if="communities && communities.length > 0"
-  >
-    <template slot="header-info">
-      <h3>{{ $t('In-the-collection-of') }}</h3>
-    </template>
-  </PopularList>
+  <CollectionList
+    :collections="collections"
+    v-if="collections && collections.length > 0"
+  />
+
   <SaveRating
     v-if="isShow"
     :close="closePopupSaveRating"

@@ -1,11 +1,11 @@
 <template>
   <div>
     <h3 class="material__info_subttl">{{ $t('Part-of-set') }}</h3>
-    <div class="material__info_part_of">
-      <div class="material__info_main" @click="goToMaterial">
+    <div class="blue-bar">
+      <div class="content" @click="goToMaterial">
         <h3>
           {{ mainMaterial.title }}
-          <i class="material__info_main_arrow"></i>
+          <i class="arrow"></i>
         </h3>
         <div v-if="mainMaterial.has_part">
           {{ $tc('Materials', mainMaterial.has_part.length + 1) }}
