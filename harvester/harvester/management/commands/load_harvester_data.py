@@ -1,11 +1,12 @@
 import os
+from io import StringIO
 from glob import glob
 from invoke import Context
 
 from django.conf import settings
 from django.core.management import base, call_command, CommandError
 from django.apps import apps
-from django.db import models
+from django.db import models, connection
 
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from harvester.settings import environment
@@ -44,6 +45,14 @@ class Command(base.LabelCommand, HarvesterCommand):
             sender=FileResource,
             dispatch_uid="file_resource_delete"
         )
+
+    def reset_postgres_sequences(self):
+        app_labels = set([resource.split(".")[0] for resource in self.resources])
+        for app_label in app_labels:
+            out = StringIO()
+            call_command("sqlsequencereset", app_label, stdout=out)
+            with connection.cursor() as cursor:
+                cursor.execute(out.getvalue())
 
     def bulk_create_objects(self, objects):
         obj = objects[0]
@@ -87,6 +96,7 @@ class Command(base.LabelCommand, HarvesterCommand):
 
         # Load resources
         self.load_resources()
+        self.reset_postgres_sequences()
 
         # Migrate indices to 7.0
         ElasticIndex.objects.all().update(configuration="")
