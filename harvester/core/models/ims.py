@@ -66,7 +66,7 @@ class CommonCartridge(models.Model):
         destination = self.get_extract_destination()
         if os.path.exists(destination):
             return
-        cartridge = SafeUnzip(self.file.path)
+        cartridge = SafeUnzip(self.file.file)
         cartridge.extractall(destination)
 
     def metadata_tag(self):
@@ -75,14 +75,14 @@ class CommonCartridge(models.Model):
     metadata_tag.allow_tags = True
 
     def clean(self):
-        cartridge = SafeUnzip(self.file.path)
+        cartridge = SafeUnzip(self.file.file)
         try:
             self.manifest = cartridge.read('imsmanifest.xml')
         except KeyError:
             raise ValidationError('The common cartridge should contain a manifest file')
 
     def read(self, file_path):
-        cartridge = SafeUnzip(self.file.path)
+        cartridge = SafeUnzip(self.file.file)
         return cartridge.read(file_path)
 
     @property
