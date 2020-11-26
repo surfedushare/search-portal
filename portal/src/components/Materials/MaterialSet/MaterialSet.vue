@@ -16,6 +16,7 @@
         v-for="(setMaterial, i) in setMaterials"
         :key="setMaterial.external_id"
         class="row"
+        @click="onMaterialClick(setMaterial)"
       >
         <span class="title">{{ `${i + 1}. ${setMaterial.title}` }}</span>
         <span class="type">{{ setMaterial.format }}</span>
@@ -61,6 +62,17 @@ export default {
           external_id: this.material.external_id
         })
         .then(res => (this.setMaterials = res.records))
+    }
+  },
+  methods: {
+    onMaterialClick(material) {
+      const route = this.$router.resolve(
+        this.localePath({
+          name: 'materials-id',
+          params: { id: material.external_id }
+        })
+      )
+      window.location.assign(route.href)
     }
   }
 }
