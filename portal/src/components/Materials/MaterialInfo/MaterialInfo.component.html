@@ -16,15 +16,15 @@
         <span v-if="index + 1 < material.authors.length">, </span>
       </span>
     </div>
-    <div class="material__info_publishers" v-if="material.publishers.length > 0">
-      <h3 class="material__info_subttl">{{ $tc('Publishers', material.publishers.length) }}</h3>
-      <span v-for="(publisher, index) in material.publishers">
+    <div class="material__info_publishers" v-if="publisherList.length > 0">
+      <h3 class="material__info_subttl">{{ $tc('Publishers', publisherList.length) }}</h3>
+      <span v-for="(publisher, index) in publisherList">
         <router-link
           :to="publisherUrl(publisher)"
           >
           <span>{{ publisher }}</span>
         </router-link>
-        <span v-if="index + 1 < material.publishers.length">, </span>
+        <span v-if="index + 1 < publisherList.length">, </span>
       </span>
     </div>
   </div>
@@ -46,7 +46,7 @@
     </div>
     <div class="quality__views">
       <div class="quality__views_count">
-        {{ contedNumber }}
+        {{ materialViewCount }}
       </div>
       <div class="quality__views_txt">{{ $t('Viewed') }}</div>
     </div>

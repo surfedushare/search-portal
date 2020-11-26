@@ -106,11 +106,14 @@ export default {
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'themes']),
+    publisherList() {
+      return this.material.publishers.join().split('\\;')
+    },
     /**
      * Get formatted 'number_of_views'
      * @returns String
      */
-    contedNumber() {
+    materialViewCount() {
       return numeral(this.material.view_count).format('0a')
     },
     /**

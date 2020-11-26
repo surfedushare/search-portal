@@ -21,7 +21,7 @@
           v-if="material.publishers.length > 0"
           class="materials__item_publisher"
         >
-          {{ material.publishers.join(', ') }}
+          {{ material.publishers.join().replaceAll('\\;', ', ') }}
         </div>
         <div class="materials__item_date">
           {{ material.date || null }}
