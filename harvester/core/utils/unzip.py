@@ -6,6 +6,10 @@ class SafeUnzip(Sunzip):
     A Sunzip implementation that respects the interface of zipfile.ZipFile
     """
 
+    def get_zip_file_size(self):
+        # Return undecompressd zip file size
+        return self.path.size  # path is not actually a path, but a FileField (file is stored on S3)
+
     def check_is_safe(self):
         """
         Raises ZipFilePitfall if any checks fail and enables Layer 2 protection.
