@@ -5,11 +5,13 @@ from invoke import Context
 from django.conf import settings
 from django.core.management import base, call_command, CommandError
 from django.apps import apps
+from django.db import models
 
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from harvester.settings import environment
 from core.management.base import HarvesterCommand
-from core.models import Dataset, ElasticIndex
+from core.models import Dataset, ElasticIndex, FileResource
+from core.models.resources.basic import file_resource_delete_handler
 
 
 class Command(base.LabelCommand, HarvesterCommand):
@@ -28,10 +30,20 @@ class Command(base.LabelCommand, HarvesterCommand):
         parser.add_argument('-s', '--skip-download', action="store_true")
 
     def load_resources(self):
+        models.signals.post_delete.disconnect(
+            file_resource_delete_handler,
+            sender=FileResource,
+            dispatch_uid="file_resource_delete"
+        )
         for resource_model in self.resources:
             model = apps.get_model(resource_model)
             model.objects.all().delete()
             call_command("load_resource", resource_model)
+        models.signals.post_delete.connect(
+            file_resource_delete_handler,
+            sender=FileResource,
+            dispatch_uid="file_resource_delete"
+        )
 
     def bulk_create_objects(self, objects):
         obj = objects[0]
