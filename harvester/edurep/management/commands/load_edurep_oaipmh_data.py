@@ -37,7 +37,7 @@ class Command(HarvesterCommand):
         if not len(dump_files) or force_download:
             self.info("Downloading dump file for EdurepOAIPMH")
             ctx = Context(environment)
-            harvester_data_bucket = "s3://edushare-data/datasets/harvester/edurep"
+            harvester_data_bucket = f"s3://{settings.AWS_STORAGE_BUCKET_NAME}/datasets/harvester/edurep"
             ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}/edurep")
 
         for resource_model in self.resources:
