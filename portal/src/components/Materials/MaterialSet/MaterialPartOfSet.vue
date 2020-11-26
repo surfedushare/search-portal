@@ -20,8 +20,9 @@ export default {
   name: 'MaterialPartOfSet',
   props: {
     material: {
-      //type: Object,
-      //default: {}
+      type: Object,
+      default: null,
+      required: false
     }
   },
   data() {

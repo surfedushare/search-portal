@@ -45,8 +45,9 @@ export default {
   name: 'MaterialSet',
   props: {
     material: {
-      //type: Array,
-      //default: []
+      type: Object,
+      default: null,
+      required: false
     }
   },
   data() {
