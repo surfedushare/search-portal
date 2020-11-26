@@ -25,7 +25,7 @@
           {{ material.date || null }}
         </div>
         <div v-if="hasPart" class="materials__item_set_count">
-          {{ $tc('Materials', material.has_part.length + 1) }}
+          {{ $tc('Materials', material.has_part.length) }}
         </div>
         <div
           v-if="itemsInLine === 1 && material.description"
