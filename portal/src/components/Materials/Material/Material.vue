@@ -4,11 +4,13 @@
     class="materials__item_wrapper tile__wrapper"
     @click="handleMaterialClick(material)"
   >
+    <div class="materials__item_set-wrapper">
+      <span v-if="hasPart" class="materials__item_set">
+        {{ $t('Set') }}
+      </span>
+    </div>
     <div class="materials__item_content">
       <div class="materials__item_main_info">
-        <span v-if="hasPart" class="materials__item_set">
-          {{ $t('Set') }}
-        </span>
         <h3 class="materials__item_title">
           {{ material.title }}
         </h3>
