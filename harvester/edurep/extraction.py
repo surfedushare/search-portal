@@ -219,3 +219,12 @@ class EdurepDataExtraction(object):
     def get_humanized_disciplines(cls, soup, el):
         blocks = cls.find_all_classification_blocks(el, "discipline", "czp:entry")
         return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
+
+    @classmethod
+    def get_analysis_allowed(cls, soup, el):
+        node = el.find('czp:copyrightandotherrestrictions')
+        value = node.find('czp:value').find('czp:langstring').text.strip() if node else None
+        if value:
+            return "-nd" not in value
+        else:
+            return True
