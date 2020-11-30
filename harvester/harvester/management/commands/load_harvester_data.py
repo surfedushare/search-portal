@@ -58,7 +58,7 @@ class Command(base.LabelCommand, HarvesterCommand):
         if not len(dump_files) and not skip_download:
             self.info(f"Downloading dump file for: {dataset_label}")
             ctx = Context(environment)
-            harvester_data_bucket = "s3://edushare-data/datasets/harvester"
+            harvester_data_bucket = f"s3://{environment.aws.harvest_content_bucket}/datasets/harvester"
             ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
         self.info(f"Importing dataset: {dataset_label}")
         for entry in os.scandir(get_dumps_path(Dataset)):
