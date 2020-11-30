@@ -55,5 +55,5 @@ def harvest(role="primary", reset=False):
     if role == "primary":
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         ctx = Context(environment)
-        harvester_data_bucket = "s3://edushare-data/datasets/harvester/edurep"
+        harvester_data_bucket = f"s3://{settings.AWS_STORAGE_BUCKET_NAME}/datasets/harvester/edurep"
         ctx.run(f"aws s3 sync {settings.DATAGROWTH_DATA_DIR}/edurep {harvester_data_bucket}", echo=True)
