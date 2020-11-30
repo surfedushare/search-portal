@@ -75,7 +75,7 @@ class TikaResource(DGTikaResource):
         return content_type, data
 
     @staticmethod
-    def cmd_to_uri(cmd):
+    def uri_from_cmd(cmd):
         """
         Removes the AWS signature from the command to be able to lookup similar runs with different signatures
         """
