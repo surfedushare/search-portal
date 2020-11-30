@@ -3,7 +3,11 @@
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
-        <Tabs v-if="user.id && userCommunities(user).length">
+        <Tabs
+          v-if="user.id && userCommunities(user).length"
+          :active-tab="activeTab"
+          :select-tab="setActiveTab"
+        >
           <template v-slot:after-tabs>
             <SwitchInput
               v-model="showDrafts"
@@ -11,7 +15,7 @@
               :label="$t('Show-drafts')"
             />
           </template>
-          <Tab :title="$t('All-communities')">
+          <Tab :title="$t('All-communities')" identifier="all-communities">
             <ul v-if="communities.length" class="communities__items">
               <li
                 v-for="community in communities"
@@ -86,6 +90,7 @@ export default {
   },
   data() {
     return {
+      activeTab: this.$route.query.tab || 'all-communities',
       showDrafts: true
     }
   },
@@ -120,6 +125,14 @@ export default {
       }
 
       return this.user.communities.some(id => id === community.id)
+    },
+    setActiveTab(tabIdentifier) {
+      this.activeTab = tabIdentifier
+
+      this.$router.replace({
+        name: this.localePath({ name: 'communities' }).name,
+        query: { tab: tabIdentifier }
+      })
     }
   }
 }

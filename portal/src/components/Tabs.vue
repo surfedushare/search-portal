@@ -2,30 +2,42 @@
   <div class="tabs">
     <div class="buttons">
       <button
-        v-for="(tab, index) in tabs"
+        v-for="tab in tabs"
         :key="tab.title"
-        :class="{ active: selectedIndex === index, [tab.identifier]: true }"
+        :class="{
+          active: tab.identifier === currentTab,
+          [tab.identifier]: true
+        }"
         class="tab"
-        @click="selectTab(index)"
+        @click="clickTab(tab.identifier)"
       >
         {{ tab.title }}
       </button>
     </div>
-    <slot name="after-tabs" :active-tab="activeTab"></slot>
+    <slot name="after-tabs" :active-tab="currentTab"></slot>
     <slot></slot>
   </div>
 </template>
 <script>
 export default {
   name: 'Tabs',
+  props: {
+    activeTab: {
+      type: String,
+      default: null
+    },
+    selectTab: {
+      type: Function,
+      default: () => {}
+    }
+  },
   data() {
     return {
-      selectedIndex: 0,
       tabs: []
     }
   },
   computed: {
-    activeTab() {
+    currentTab() {
       const tab = this.tabs.find(tab => tab.isActive)
       return tab && tab.identifier
     }
@@ -34,13 +46,18 @@ export default {
     this.tabs = this.$children.filter(c => {
       return c.$slots.default
     })
-    this.selectTab(0)
+
+    this.tabs.forEach(tab => {
+      tab.isActive = tab.identifier === this.activeTab
+    })
   },
   methods: {
-    selectTab(index) {
-      this.selectedIndex = index
+    clickTab(identifier) {
+      this.tabs.forEach(tab => {
+        tab.isActive = tab.identifier === identifier
+      })
 
-      this.tabs.forEach((tab, i) => (tab.isActive = index === i))
+      this.selectTab(identifier)
     }
   }
 }
