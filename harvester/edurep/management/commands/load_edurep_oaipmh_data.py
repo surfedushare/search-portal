@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.management import call_command
 from django.apps import apps
 
-from harvester.settings import environment
+from surfpol.configuration import create_configuration
 from core.management.base import HarvesterCommand
 
 
@@ -24,10 +24,13 @@ class Command(HarvesterCommand):
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument('-f', '--force-download', action="store_false")
+        parser.add_argument('-s', '--source', type=str, required=True)
 
     def handle(self, **options):
 
         force_download = options["force_download"]
+        source = options["source"]
+        source_environment = create_configuration(source, project="harvester")
 
         # Look for resource files or download from AWS
         # Use AWS CLI to download because it handles a lot of cases that we don't want to manage ourselves
@@ -36,8 +39,8 @@ class Command(HarvesterCommand):
         dump_files = glob(os.path.join(dumps_path, "*"))
         if not len(dump_files) or force_download:
             self.info("Downloading dump file for EdurepOAIPMH")
-            ctx = Context(environment)
-            harvester_data_bucket = f"s3://{settings.AWS_STORAGE_BUCKET_NAME}/datasets/harvester/edurep"
+            ctx = Context(source_environment)
+            harvester_data_bucket = f"s3://{ctx.config.aws.harvest_content_bucket}/datasets/harvester/edurep"
             ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}/edurep")
 
         for resource_model in self.resources:

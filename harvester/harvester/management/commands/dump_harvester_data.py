@@ -43,9 +43,10 @@ class Command(base.LabelCommand, HarvesterCommand):
         resource_files = self.dump_resources()
 
         # Sync files with AWS
-        self.info("Uploading files to AWS")
-        ctx = Context(environment)
-        harvester_data_bucket = f"s3://{environment.aws.harvest_content_bucket}/datasets/harvester"
-        for file in [dataset_file] + resource_files:
-            remote_file = harvester_data_bucket + file.replace(settings.DATAGROWTH_DATA_DIR, "", 1)
-            ctx.run(f"aws s3 cp {file} {remote_file}", echo=True)
+        if environment.env != "localhost":
+            self.info("Uploading files to AWS")
+            ctx = Context(environment)
+            harvester_data_bucket = f"s3://{environment.aws.harvest_content_bucket}/datasets/harvester"
+            for file in [dataset_file] + resource_files:
+                remote_file = harvester_data_bucket + file.replace(settings.DATAGROWTH_DATA_DIR, "", 1)
+                ctx.run(f"aws s3 cp {file} {remote_file}", echo=True)
