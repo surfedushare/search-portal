@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from django.views.decorators.cache import never_cache
 from django.contrib.sessions.models import Session
 
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
@@ -21,6 +22,7 @@ class UserDetailsAPIView(APIView):
     View class that provides detail information about current user .
     """
 
+    @never_cache
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             data = UserDetailsSerializer().to_representation(request.user)
@@ -37,6 +39,7 @@ class UserDetailsAPIView(APIView):
         request.session.modified = True  # this extends expiry
         return Response(data)
 
+    @never_cache
     def post(self, request, *args, **kwargs):
         # Handle the permissions part of the data
         raw_permission = request.data.get("permissions", None)
@@ -67,6 +70,7 @@ class ObtainTokenAPIView(APIView):
     authentication_classes = (SessionAuthentication,)
     permission_classes = (IsAuthenticated,)
 
+    @never_cache
     def get(self, request, *args, **kwargs):
         token, created = SessionToken.objects.get_or_create(user=request.user)
         session_key = request.session.session_key
