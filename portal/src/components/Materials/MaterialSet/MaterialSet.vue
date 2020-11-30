@@ -13,12 +13,12 @@
         <span class="link"></span>
       </div>
       <div
-        v-for="(setMaterial, i) in setMaterials"
+        v-for="setMaterial in setMaterials"
         :key="setMaterial.external_id"
         class="row"
         @click="onMaterialClick(setMaterial)"
       >
-        <span class="title">{{ `${i + 1}. ${setMaterial.title}` }}</span>
+        <span class="title">{{ setMaterial.title }}</span>
         <span class="type">{{ setMaterial.format }}</span>
         <span class="level">
           {{
