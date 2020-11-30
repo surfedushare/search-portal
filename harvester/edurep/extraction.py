@@ -157,10 +157,13 @@ class EdurepDataExtraction(object):
         if not contribution:
             return []
         nodes = contribution.find_all('czp:vcard')
-        return [
-            cls.parse_vcard(unescape(node.text.strip()), "FN")
-            for node in nodes
-        ]
+
+        parsed_publishers = []
+        for node in nodes:
+            item = cls.parse_vcard(unescape(node.text.strip()), "FN").split('\\; ')
+            parsed_publishers = parsed_publishers + item
+
+        return parsed_publishers
 
     @classmethod
     def get_publisher_date(cls, soup, el):
