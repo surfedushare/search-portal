@@ -41,6 +41,15 @@ class FileResource(HttpFileResource):
 
 class TikaResource(DGTikaResource):
 
+    CMD_TEMPLATE = [
+        "java",
+        "-jar",
+        "tika-app-1.25.jar",
+        "-J",
+        "-t",
+        "{}"
+    ]
+
     def has_video(self):
         tika_content_type, data = self.content
         if data is None:
