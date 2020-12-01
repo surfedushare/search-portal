@@ -83,7 +83,7 @@ class TikaResource(DGTikaResource):
         signature_keys = [key for key in signed_url.query_dict.keys() if key.startswith("X-Amz")]
         unsigned_url = signed_url.del_query_params(signature_keys)
         cmd[-1] = str(unsigned_url)
-        return cmd
+        return DGTikaResource.uri_from_cmd(cmd)
 
 
 models.signals.post_delete.connect(file_resource_delete_handler, sender=FileResource)
