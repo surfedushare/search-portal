@@ -9,8 +9,10 @@ class SessionTokenAuthentication(TokenAuthentication):
 
 
 def delete_api_auth_token(sender, user, request, **kwargs):
-    if user.auth_token:
+    try:
         user.auth_token.delete()
+    except SessionToken.DoesNotExist:
+        pass
 
 
 user_logged_out.connect(delete_api_auth_token)
