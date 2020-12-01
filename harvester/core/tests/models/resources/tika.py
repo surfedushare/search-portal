@@ -33,7 +33,7 @@ class TestTikaResource(TestCase):
         # Then we check if the resource actually behaved as expected
         self.assertEqual(
             resource.uri,
-            "java -J -jar -t http://localhost:8000/test tika-app-1.24.1.jar",
+            "java -J -jar -t http://localhost:8000/test tika-app-1.25.jar",
             "Expected the URI to exclude any X-Amz parameters"
         )
         command = resource.command
