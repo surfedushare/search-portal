@@ -1,4 +1,5 @@
 import re
+import vobject
 from html import unescape
 
 from core.constants import HIGHER_EDUCATION_LEVELS
@@ -8,18 +9,6 @@ class EdurepDataExtraction(object):
 
     vcard_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
-
-    @classmethod
-    def parse_vcard(cls, vcard, key=None):
-        # "BEGIN:VCARD FN:Edurep Delen N:;Edurep Delen VERSION:3.0 END:VCARD"
-        results = dict()
-        if vcard:
-            lines = vcard.split("\n")
-            for line in lines:
-                match = cls.vcard_regex.match(line)
-                if match:
-                    results[match.groups()[0]] = match.groups()[1]
-        return results if key is None else results.get(key, vcard)
 
     #############################
     # OAI-PMH
@@ -146,7 +135,7 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_authors(cls, soup, el):
-        return [cls.parse_vcard(author, "FN") for author in cls.get_author(soup, el)]
+        return [vobject.readOne(author).fn.value for author in cls.get_author(soup, el)]
 
     @classmethod
     def get_publishers(cls, soup, el):
@@ -157,8 +146,9 @@ class EdurepDataExtraction(object):
         if not contribution:
             return []
         nodes = contribution.find_all('czp:vcard')
+
         return [
-            cls.parse_vcard(unescape(node.text.strip()), "FN")
+            vobject.readOne(unescape(node.text.strip())).fn.value
             for node in nodes
         ]
 
