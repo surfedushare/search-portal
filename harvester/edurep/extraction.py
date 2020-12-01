@@ -108,12 +108,12 @@ class EdurepDataExtraction(object):
         return node.text.strip() if node else None
 
     @classmethod
-    def get_copyright(clscls, soup, el):
+    def get_copyright(cls, soup, el):
         node = el.find('czp:copyrightandotherrestrictions')
         return node.find('czp:value').find('czp:langstring').text.strip() if node else None
 
     @classmethod
-    def get_aggregation_level(clscls, soup, el):
+    def get_aggregation_level(cls, soup, el):
         node = el.find('czp:aggregationlevel', None)
         if node is None:
             return None
@@ -222,6 +222,5 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_analysis_allowed(cls, soup, el):
-        node = el.find('czp:copyrightandotherrestrictions')
-        value = node.find('czp:value').find('czp:langstring').text.strip() if node else False
-        return value and "-nd" not in value
+        value = EdurepDataExtraction.get_copyright(soup, el)
+        return (value or False) and "-nd" not in value

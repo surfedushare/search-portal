@@ -84,5 +84,6 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
 
     def test_analysis_allowed_property(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]['analysis_allowed'], False)
         self.assertEqual(seeds[3]['analysis_allowed'], True)
         self.assertEqual(seeds[10]['analysis_allowed'], False)
