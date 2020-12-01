@@ -183,5 +183,5 @@ class Command(OutputCommand):
 
         # Finish the dataset and harvest
         for harvest in harvest_queryset:
-            harvest.stage = HarvestStages.COMPLETE
+            harvest.stage = HarvestStages.PREVIEW
             harvest.save()
