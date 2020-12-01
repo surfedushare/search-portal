@@ -49,6 +49,9 @@ def harvest(role="primary", reset=False):
         call_command("update_dataset", f"--dataset={dataset.name}", "--no-progress")
         # Based on the dataset we push to Elastic Search
         extra_push_index_args = ["--recreate"] if reset else []
+
+        call_command("generate_browser_previews", f"--dataset={dataset.name}", "--no-progress")
+
         call_command("push_es_index", f"--dataset={dataset.name}", "--no-progress", *extra_push_index_args)
 
     # After processing all active datasets we dump the seeds and store on S3 so other nodes can use that

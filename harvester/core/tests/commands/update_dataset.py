@@ -78,7 +78,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
         self.assertEqual(
             surf_harvest.stage,
-            HarvestStages.COMPLETE,
+            HarvestStages.PREVIEW,
             "surf set harvest should got updated to stage BASIC to prevent re-harvest in the future"
         )
         edurep_delen_harvest = OAIPMHHarvest.objects.get(source__spec="edurep_delen")

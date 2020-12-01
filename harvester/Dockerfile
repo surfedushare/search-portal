@@ -5,8 +5,11 @@
 FROM python:3.6-stretch
 SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update && apt-get install -y less vim ffmpeg default-jre \
-    time dialog sox subversion build-essential zlib1g-dev automake autoconf libtool libatlas3-base
+RUN apt-get update && apt-get install -y apt-transport-https && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+        && echo "deb https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+        && apt-get update \
+        && apt-get install -y less vim ffmpeg default-jre time dialog sox subversion build-essential zlib1g-dev automake \
+        autoconf libtool libatlas3-base google-chrome-stable
 
 # Create the app environment
 RUN mkdir -p /usr/src/app
