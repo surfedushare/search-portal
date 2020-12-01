@@ -2,6 +2,7 @@ import logging
 import os
 import json
 from urllib.parse import quote_plus
+from copy import copy
 import boto3
 from botocore.exceptions import ClientError
 from urlobject import URLObject
@@ -79,6 +80,7 @@ class TikaResource(DGTikaResource):
         """
         Removes the AWS signature from the command to be able to lookup similar runs with different signatures
         """
+        cmd = copy(cmd)
         signed_url = URLObject(cmd[-1])
         signature_keys = [key for key in signed_url.query_dict.keys() if key.startswith("X-Amz")]
         unsigned_url = signed_url.del_query_params(signature_keys)
