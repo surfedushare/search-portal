@@ -223,8 +223,5 @@ class EdurepDataExtraction(object):
     @classmethod
     def get_analysis_allowed(cls, soup, el):
         node = el.find('czp:copyrightandotherrestrictions')
-        value = node.find('czp:value').find('czp:langstring').text.strip() if node else None
-        if value:
-            return "-nd" not in value
-        else:
-            return True
+        value = node.find('czp:value').find('czp:langstring').text.strip() if node else False
+        return value and "-nd" not in value

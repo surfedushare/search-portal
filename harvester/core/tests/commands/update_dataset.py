@@ -199,10 +199,10 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         ]
         skipped, dumped, documents_count = command.handle_upsert_seeds(collection, upserts)
         # Checking the state after the test
-        self.assertEqual(skipped, 0)
-        self.assertEqual(collection.arrangement_set.count(), arrangement_count+2,
-                         "Upsert seeds should have added 2 Arrangements")
-        self.assertEqual(collection.document_set.count(), document_count+2)
+        self.assertEqual(skipped, 2)
+        self.assertEqual(collection.arrangement_set.count(), arrangement_count,
+                         "Upsert seeds should have added 2 Arrangements and removed 2 Arrangements")
+        self.assertEqual(collection.document_set.count(), document_count)
         # Check video documents content updates
         vortex_updateset = dataset.documents.filter(properties__title="Using a Vortex (responsibly) | Wageningen UR")
         self.assertEqual(vortex_updateset.count(), 2)
