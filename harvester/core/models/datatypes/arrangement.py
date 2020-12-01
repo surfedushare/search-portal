@@ -136,6 +136,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'publisher_date': self.base_document.properties['publisher_date'],
             'copyright': self.base_document.properties['copyright'],
             'aggregation_level': self.base_document.properties['aggregation_level'],
+            'preview_path': self.base_document.properties.get('preview_path', None),
             'keywords': self.meta['keywords'],
             'oaipmh_set': self.collection.name,
             'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set

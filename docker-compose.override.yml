@@ -43,11 +43,60 @@ services:
       - POL_POSTGRES_USER=${POL_POSTGRES_USER}
     ports:
       - "127.0.0.1:8888:8080"
-      - "127.0.0.1:5555:5555"
     volumes:
       - ./harvester:/usr/src/app
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     links:
       - postgres:database
     depends_on:
+      - postgres
+
+  celery_worker:
+    build:
+      dockerfile: "harvester/Dockerfile"
+      context: .
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONIOENCODING=UTF-8
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=harvester.settings
+      - APPLICATION_MODE=${APPLICATION_MODE}
+      - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
+      - POL_POSTGRES_USER=${POL_POSTGRES_USER}
+    volumes:
+      - ./harvester:/usr/src/app
+      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+    command: celery -A harvester worker -l info
+    links:
+      - postgres:database
+      - redis:redis
+    depends_on:
+      - redis
+      - postgres
+
+  flower:
+    build:
+      dockerfile: "harvester/Dockerfile"
+      context: .
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONIOENCODING=UTF-8
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=harvester.settings
+      - APPLICATION_MODE=${APPLICATION_MODE}
+      - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
+      - POL_POSTGRES_USER=${POL_POSTGRES_USER}
+    volumes:
+      - ./harvester:/usr/src/app
+      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+    command: celery -A harvester flower
+    ports:
+      - "127.0.0.1:5555:5555"
+    links:
+      - postgres:database
+      - redis:redis
+    depends_on:
+      - redis
       - postgres

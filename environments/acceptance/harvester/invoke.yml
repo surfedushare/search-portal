@@ -20,6 +20,7 @@ schedule:
 
 aws:
   harvest_content_bucket: "surfpol-harvester-content-acc"
+  previews_bucket: "harvester-preview-images-acc"
   task_role_arn: "arn:aws:iam::000428825067:role/ecsHarvesterTaskExecutionRole"
 
 secrets:

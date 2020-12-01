@@ -169,6 +169,7 @@ else:
     MEDIA_URL = 'http://localhost:8000/media/harvester/'
     AWS_STORAGE_BUCKET_NAME = None
 
+AWS_PREVIEWS_BUCKET_NAME = environment.aws.previews_bucket
 
 # Rest framework
 # https://www.django-rest-framework.org/
