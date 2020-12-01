@@ -56,9 +56,9 @@ COPY environments /usr/src/environments
 RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinput
 
 # Install and verify Tika
-ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.24.1.jar /usr/src/app/harvester/bin/
-ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.24.1.jar.sha512 /usr/src/app/harvester/bin/
-RUN cat /usr/src/app/harvester/bin/tika-app-1.24.1.jar.sha512 | echo "$(</dev/stdin)  /usr/src/app/harvester/bin/tika-app-1.24.1.jar" | sha512sum -c
+ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.25.jar /usr/src/app/harvester/bin/
+ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.25.jar.sha512 /usr/src/app/harvester/bin/
+RUN cat /usr/src/app/harvester/bin/tika-app-1.25.jar.sha512 | echo "$(</dev/stdin)  /usr/src/app/harvester/bin/tika-app-1.25.jar" | sha512sum -c
 
 # Entrypoint sets our environment correctly
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
