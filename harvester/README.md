@@ -160,12 +160,12 @@ APPLICATION_MODE=<environment> fab -H <bastion-host-domain> hrv.setup-postgres
 To load the latest data into the database and push that data to Elastic Search on an AWS environment run:
 
 ```bash
-APPLICATION_MODE=<environment> fab -H <bastion-host-domain> hrv.import-dataset
+APPLICATION_MODE=<environment> invoke import-dataset <dataset-name> -m <environment>
 ```
 
 The harvester keeps its harvest results in the database. It may be required to clean these results to start fresh.
 You can force deletion of previous results with:
 
 ```bash
-APPLICATION_MODE=<environment> fab -H <bastion-host-domain> hrv.cleanup
+APPLICATION_MODE=<environment> invoke hrv.cleanup <environment>
 ```

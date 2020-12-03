@@ -13,7 +13,7 @@ class Command(base.LabelCommand, HarvesterCommand):
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument('-s', '--skip-download', action="store_true")
-        parser.add_argument('-h', '--harvest-source', type=str)
+        parser.add_argument('-hs', '--harvest-source', type=str)
 
     def handle_label(self, dataset, **options):
         harvest_source = options.get("harvest_source", None)
