@@ -1,6 +1,5 @@
 import os
 from io import StringIO
-from glob import glob
 from invoke import Context
 
 from django.conf import settings
