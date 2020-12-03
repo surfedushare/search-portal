@@ -18,31 +18,45 @@ EXTRACT_FROM_SEEDS_TARGET = "core.management.commands.harvest_basic_content.Comm
 SEND_SERIE_TARGET = "core.management.commands.harvest_basic_content.send_serie"
 RUN_SERIE_TARGET = "core.management.commands.harvest_basic_content.run_serie"
 GENERATE_PRESIGNED_URL_TARGET = "core.models.resources.basic.s3_client.generate_presigned_url"
-DUMMY_SEEDS = [
-    {"state": "dummy", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html",
-     "from_youtube": False},
-    {
-        "state": "dummy",
-        "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1",
-        "mime_type": "application/pdf",
-        "from_youtube": False
-    },
+
+DOWNLOAD_NOT_ALLOWED_DUMMY_SEEDS = [
     {
         "state": "dummy",
         "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
         "package_url": "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e"
                        "/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
         "mime_type": "text/html",
-        "from_youtube": False
+        "from_youtube": False,
+        "analysis_allowed": False
     }
 ]
 
+DOWNLOAD_ALLOWED_DUMMY_SEEDS = [
+    {
+        "state": "dummy",
+        "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/",
+        "mime_type": "text/html",
+        "from_youtube": False,
+        "analysis_allowed": True
+    },
+    {
+        "state": "dummy",
+        "url": "http://www.samhao.nl/webopac/MetaDataEditDownload.csp?file=2:145797:1",
+        "mime_type": "application/pdf",
+        "from_youtube": False,
+        "analysis_allowed": True
+    },
+]
+
+DUMMY_SEEDS = DOWNLOAD_ALLOWED_DUMMY_SEEDS + DOWNLOAD_NOT_ALLOWED_DUMMY_SEEDS
+
 DUMMY_SEEDS_WITH_YOUTUBE = [
     {"state": "dummy", "url": "https://www.vn.nl/speciaalmelk-rechtstreeks-koe/", "mime_type": "text/html",
-     "from_youtube": False},
+     "from_youtube": False, "analysis_allowed": True},
     {"state": "dummy", "url": "https://www.youtube.com/watch?v=FBkZ2TJZZUY", "mime_type": "text/html",
-     "from_youtube": False},
-    {"state": "dummy", "url": "https://youtu.be/FBkZ2TJZZUY", "mime_type": "text/html", "from_youtube": True}
+     "from_youtube": False, "analysis_allowed": True},
+    {"state": "dummy", "url": "https://youtu.be/FBkZ2TJZZUY", "mime_type": "text/html", "from_youtube": True,
+     "analysis_allowed": True}
 ]
 
 
@@ -60,7 +74,7 @@ class TestBasicHarvest(TestCase):
         command.info = lambda x: x
         return command
 
-    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS)
+    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DOWNLOAD_ALLOWED_DUMMY_SEEDS)
     @patch(DOWNLOAD_SEED_FILES_TARGET, return_value=[1])
     @patch(EXTRACT_FROM_SEEDS_TARGET)
     def test_basic_surf(self, extract_target, download_target, seeds_target):
@@ -76,9 +90,9 @@ class TestBasicHarvest(TestCase):
             include_deleted=False
         )
         # Asserting usage of download_seed_files
-        download_target.assert_called_once_with(DUMMY_SEEDS)
+        download_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS)
         # And then usage of extract_from_seeds
-        extract_target.assert_called_once_with(DUMMY_SEEDS, [1])
+        extract_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
         surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
