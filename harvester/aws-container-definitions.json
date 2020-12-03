@@ -62,6 +62,12 @@
         { "name" : "PYTHONUNBUFFERED", "value" : "1" },
         { "name" : "APPLICATION_MODE", "value" : "${mode}" }
       ],
+      "secrets": [
+        {
+          "name" : "FLOWER_BASIC_AUTH",
+          "valueFrom":  "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/flower-basic-auth-credentials"
+        }
+      ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
