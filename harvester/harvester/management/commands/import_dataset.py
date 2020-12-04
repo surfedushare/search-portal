@@ -1,6 +1,6 @@
 from django.core.management import base
 
-from harvester.background import celery_import_dataset
+from harvester.tasks import celery_import_dataset
 from core.management.base import HarvesterCommand
 
 
