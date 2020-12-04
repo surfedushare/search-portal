@@ -63,10 +63,7 @@ class Command(OutputCommand):
         documents_count = 0
         self.info(f"Upserting for {collection.name} ...")
 
-        analysis_allowed_seeds = [seed for seed in seeds if seed['analysis_allowed']]
-        no_analysis_allowed_seeds = [seed for seed in seeds if not seed['analysis_allowed']]
-
-        for seed in self.progress(analysis_allowed_seeds):
+        for seed in self.progress(seeds):
             file_resource, tika_resource, video_resource, transcription_resource = \
                 get_material_resources(seed["url"], seed.get("title", None))
             pipeline = {
@@ -114,7 +111,6 @@ class Command(OutputCommand):
             arrangement.store_language()
             documents_count += len(documents)
 
-        skipped = skipped + len(no_analysis_allowed_seeds)
         return skipped, dumped, documents_count
 
     def handle_deletion_seeds(self, collection, deletion_seeds):
