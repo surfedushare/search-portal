@@ -18,7 +18,6 @@ EXTRACT_FROM_SEEDS_TARGET = "core.management.commands.harvest_basic_content.Comm
 SEND_SERIE_TARGET = "core.management.commands.harvest_basic_content.send_serie"
 RUN_SERIE_TARGET = "core.management.commands.harvest_basic_content.run_serie"
 GENERATE_PRESIGNED_URL_TARGET = "core.models.resources.basic.s3_client.generate_presigned_url"
-
 DOWNLOAD_NOT_ALLOWED_DUMMY_SEEDS = [
     {
         "state": "dummy",
@@ -74,7 +73,7 @@ class TestBasicHarvest(TestCase):
         command.info = lambda x: x
         return command
 
-    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DOWNLOAD_ALLOWED_DUMMY_SEEDS)
+    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS)
     @patch(DOWNLOAD_SEED_FILES_TARGET, return_value=[1])
     @patch(EXTRACT_FROM_SEEDS_TARGET)
     def test_basic_surf(self, extract_target, download_target, seeds_target):

@@ -62,7 +62,6 @@ class Command(OutputCommand):
         dumped = 0
         documents_count = 0
         self.info(f"Upserting for {collection.name} ...")
-
         for seed in self.progress(seeds):
             file_resource, tika_resource, video_resource, transcription_resource = \
                 get_material_resources(seed["url"], seed.get("title", None))
