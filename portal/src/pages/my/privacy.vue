@@ -45,16 +45,16 @@
                   </div>
                 </div>
               </div>
+              <div class="warning">
+                <span class="nota-bene">i</span>
+                <p>{{ $t('Delete-account-warning') }}</p>
+              </div>
 
               <div v-if="isSaved" class="success">
                 &#10004; {{ $t('Data-saved') }}
               </div>
               <div class="privacy__form__buttons">
-                <button
-                  :disabled="isSubmitting"
-                  type="submit"
-                  class="button privacy__form__button"
-                >
+                <button :disabled="isSubmitting" :class="submitButtonStyle">
                   {{ submitButtonLabel }}
                 </button>
                 <button
@@ -63,10 +63,6 @@
                 >
                   {{ $t('cancel-privacy-settings') }}
                 </button>
-              </div>
-              <div class="warning">
-                <span class="nota-bene">i</span>
-                <p>{{ $t('remove-account-warning') }}</p>
               </div>
             </form>
           </div>
@@ -95,6 +91,11 @@
       :show-popup="showPopup"
       :close="closePopupCreateAccount"
     />
+    <DeleteAccountPopup
+      v-if="showDeleteAccountPopup"
+      :show-popup="showDeleteAccountPopup"
+      :delete-account="deleteAccount"
+    />
   </section>
 </template>
 <script>
@@ -102,10 +103,12 @@ import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
 import SwitchInput from '~/components/switch-input'
 import CreateAccount from '~/components/Popup/CreateAccount'
+import DeleteAccountPopup from '~/components/Popup/DeleteAccountPopup'
 import HeaderBlock from '~/components/HeaderBlock'
 
 export default {
   components: {
+    DeleteAccountPopup,
     HeaderBlock,
     SwitchInput,
     CreateAccount
@@ -117,7 +120,8 @@ export default {
       isSaved: false,
       isSubmitting: false,
       permissionsKey: 0,
-      showPopup
+      showPopup,
+      showDeleteAccountPopup: false
     }
   },
   computed: {
@@ -146,19 +150,47 @@ export default {
     },
     submitButtonLabel() {
       if (
+        !this.$store.getters.hasGivenCommunityPermission &&
+        this.hasInitialCommunityPermission
+      ) {
+        return this.$t('Delete-account-and-login')
+      } else if (
         this.$store.getters.hasGivenCommunityPermission !==
         this.hasInitialCommunityPermission
       ) {
         return this.$t('save-privacy-settings-and-logout')
       }
       return this.$t('save-privacy-settings')
+    },
+    submitButtonStyle() {
+      if (
+        !this.$store.getters.hasGivenCommunityPermission &&
+        this.hasInitialCommunityPermission
+      ) {
+        return 'button privacy__form__button warning'
+      }
+      return 'button privacy__form__button'
     }
   },
   mounted() {
     this.hasInitialCommunityPermission = this.$store.getters.hasGivenCommunityPermission
   },
   methods: {
+    deleteAccount() {
+      this.submit()
+      this.closeDeleteAccountPopup()
+    },
     onSubmit() {
+      if (
+        !this.$store.getters.hasGivenCommunityPermission &&
+        this.hasInitialCommunityPermission
+      ) {
+        this.showDeleteAccountPopup = true
+      } else {
+        this.submit()
+      }
+    },
+    submit() {
       this.isSubmitting = true
       this.$store
         .dispatch('postUser')
@@ -180,6 +212,9 @@ export default {
     },
     closePopupCreateAccount() {
       this.showPopup = false
+    },
+    closeDeleteAccountPopup() {
+      this.showDeleteAccountPopup = false
     }
   }
 }
@@ -341,6 +376,10 @@ export default {
 
       @media @small-mobile {
         display: block !important;
+      }
+
+      &.warning {
+        background-color: @red !important;
       }
 
       &.cancel {
