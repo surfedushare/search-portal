@@ -14,3 +14,4 @@ aws:
   cluster_arn: "arn:aws:ecs:eu-central-1:322480324822:cluster/surfpol"
   superuser_task_role_arn: "arn:aws:iam::322480324822:role/ecsSuperuserTaskExecutionRole"
   postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:postgres"
+  flower_secret_arn: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/flower-basic-auth-credentials"

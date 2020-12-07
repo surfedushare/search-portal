@@ -74,6 +74,7 @@ def deploy(ctx, mode, version=None):
         target,
         mode,
         version,
+        ctx.config.aws.flower_secret_arn,
         target_info["cpu"],
         target_info["memory"]
     )

@@ -7,7 +7,7 @@ from commands import TARGETS, REPOSITORY
 from environments.surfpol import MODE
 
 
-def register_task_definition(ecs_client, task_role_arn, target, mode, version, cpu, memory):
+def register_task_definition(ecs_client, task_role_arn, target, mode, version, flower_secret_arn, cpu, memory):
 
     # Validating input
     if target not in TARGETS:
@@ -26,7 +26,8 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version, c
         container_variables = {
             "REPOSITORY": REPOSITORY,
             "mode": mode,
-            "version": version
+            "version": version,
+            "flower_secret_arn": flower_secret_arn
         }
         for name, value in container_variables.items():
             container_definitions_json = container_definitions_json.replace(f"${{{name}}}", value)
@@ -69,6 +70,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None):
         target,
         mode,
         version,
+        ctx.config.aws.flower_secret_arn,
         target_info["cpu"],
         target_info["memory"]
     )
