@@ -30,7 +30,7 @@ class TestCollections(BaseTestCase):
         self.selenium.get(f"{self.live_server_url}/mijn/community/{self.community.id}")
         self.selenium.find_element_by_css_selector(".collections-tab").click()
         self.selenium.find_element_by_css_selector(".collections__item .select-icon").click()
-        self.selenium.find_element_by_css_selector(".popup.delete-collection .share-collection__actions button").click()
+        self.selenium.find_element_by_css_selector(".popup.popup-content .share-collection__actions button").click()
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".collections"), "Geen collecties")
         )
