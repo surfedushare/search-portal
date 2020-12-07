@@ -1,4 +1,4 @@
-from unittest.mock import patch, Mock, call
+from unittest.mock import patch, Mock, call, mock_open, ANY
 from django.test import TestCase, override_settings
 from PIL import Image
 
@@ -25,32 +25,43 @@ class PreviewTestCase(TestCase):
     @patch('core.models.ChromeScreenshotResource.run')
     @patch('core.models.ChromeScreenshotResource.success', return_value=True)
     @patch('core.models.ChromeScreenshotResource.close')
-    @patch('boto3.client')
     @patch('PIL.Image.open')
     @patch('os.remove')
-    def test_uploaded_to_s3(self, os_remove, image_open, s3_client, close_mock,
-                            screenshot_resource_success, screenshot_resource_run):
-        upload_mock = s3_client.return_value.upload_file = Mock()
+    @patch('django.core.files.storage.default_storage.save')
+    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    def test_save(self, open_mock, save_mock, os_remove, image_open, close_mock,
+                  screenshot_resource_success, screenshot_resource_run):
         document = DocumentFactory.create()
 
         generate_browser_preview(document.id)
 
-        s3_client.assert_called_once_with("s3")
-        upload_mock.assert_has_calls([
+        open_mock.assert_has_calls([
             call(
                 f"/home/search-portal/screenshot-{document.id}.png",
-                "preview-bucket",
-                f"previews/{document.id}/preview.png"
+                "rb"
             ),
             call(
                 f"/home/search-portal/screenshot-{document.id}-400x300.png",
-                "preview-bucket",
-                f"previews/{document.id}/preview-400x300.png"
+                "rb"
             ),
             call(
                 f"/home/search-portal/screenshot-{document.id}-200x150.png",
-                "preview-bucket",
-                f"previews/{document.id}/preview-200x150.png"
+                "rb"
+            )
+        ], any_order=True)
+
+        save_mock.assert_has_calls([
+            call(
+                f"previews/{document.id}/preview.png",
+                ANY
+            ),
+            call(
+                f"previews/{document.id}/preview-400x300.png",
+                ANY
+            ),
+            call(
+                f"previews/{document.id}/preview-200x150.png",
+                ANY
             )
         ])
 
@@ -59,25 +70,11 @@ class PreviewTestCase(TestCase):
     @patch('core.models.ChromeScreenshotResource.run')
     @patch('core.models.ChromeScreenshotResource.success', return_value=True)
     @patch('core.models.ChromeScreenshotResource.close')
-    @patch('boto3.client')
     @patch('PIL.Image.open')
     @patch('os.remove')
-    def test_not_uploaded_to_s3(self, os_remove, image_open, s3_client, close_mock,
-                                screenshot_resource_success, screenshot_resource_run):
-        document = DocumentFactory.create()
-
-        generate_browser_preview(document.id)
-
-        s3_client.assert_not_called()
-
-    @override_settings(BASE_DIR="/home/search-portal")
-    @override_settings(AWS_PREVIEWS_BUCKET_NAME=None)
-    @patch('core.models.ChromeScreenshotResource.run')
-    @patch('core.models.ChromeScreenshotResource.success', return_value=True)
-    @patch('core.models.ChromeScreenshotResource.close')
-    @patch('PIL.Image.open')
-    @patch('os.remove')
-    def test_writes_preview_url_to_properties(self, os_remove, image_open, close_mock,
+    @patch('django.core.files.storage.default_storage.save')
+    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    def test_writes_preview_url_to_properties(self, open_mock, save_mock, os_remove, image_open, close_mock,
                                               screenshot_resource_success, screenshot_resource_run):
         document = DocumentFactory.create()
 
@@ -94,7 +91,9 @@ class PreviewTestCase(TestCase):
     @patch('core.models.ChromeScreenshotResource.close')
     @patch('PIL.Image.open')
     @patch('os.remove')
-    def test_generates_thumbnails(self, os_remove, image_open, close_mock,
+    @patch('django.core.files.storage.default_storage.save')
+    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    def test_generates_thumbnails(self, open_mock, save_mock, os_remove, image_open, close_mock,
                                   screenshot_resource_success, screenshot_resource_run):
         resize_mock = Mock()
         image_open.return_value.resize = resize_mock
@@ -117,7 +116,9 @@ class PreviewTestCase(TestCase):
     @patch('core.models.ChromeScreenshotResource.close')
     @patch('PIL.Image.open')
     @patch('os.remove')
-    def test_cleanup(self, os_remove, image_open, close_mock,
+    @patch('django.core.files.storage.default_storage.save')
+    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    def test_cleanup(self, open_mock, save_mock, os_remove, image_open, close_mock,
                      screenshot_resource_success, screenshot_resource_run):
         resize_mock = Mock()
         image_open.return_value.resize = resize_mock
