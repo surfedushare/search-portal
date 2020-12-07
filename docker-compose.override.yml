@@ -60,16 +60,13 @@ services:
     environment:
       - PYTHONIOENCODING=UTF-8
       - PYTHONUNBUFFERED=1
-      - DJANGO_SETTINGS_MODULE=harvester.settings
       - APPLICATION_MODE=${APPLICATION_MODE}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
-      - POL_POSTGRES_USER=${POL_POSTGRES_USER}
     volumes:
       - ./harvester:/usr/src/app
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     command: celery -A harvester worker -l info
     links:
-      - postgres:database
       - redis:redis
     depends_on:
       - redis
@@ -84,10 +81,8 @@ services:
     environment:
       - PYTHONIOENCODING=UTF-8
       - PYTHONUNBUFFERED=1
-      - DJANGO_SETTINGS_MODULE=harvester.settings
       - APPLICATION_MODE=${APPLICATION_MODE}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
-      - POL_POSTGRES_USER=${POL_POSTGRES_USER}
     volumes:
       - ./harvester:/usr/src/app
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
@@ -95,8 +90,6 @@ services:
     ports:
       - "127.0.0.1:5555:5555"
     links:
-      - postgres:database
       - redis:redis
     depends_on:
       - redis
-      - postgres
