@@ -13,7 +13,9 @@ class Command(HarvesterCommand):
 
     def handle(self, *args, **options):
         dataset_name = options["dataset"]
-        html_documents = Document.objects.filter(properties__mime_type="text/html").filter(dataset__name=dataset_name)
+        html_documents = Document.objects.filter(
+            properties__mime_type="text/html"
+        ).filter(dataset__name=dataset_name).filter(properties__preview_path__isnull=True)
         signatures = self.create_task_signatures(html_documents)
         self.run_jobs_in_group(signatures)
         self.complete_preview_stage(dataset_name)
