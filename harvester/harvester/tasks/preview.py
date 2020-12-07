@@ -4,6 +4,9 @@ import os
 
 from celery.exceptions import SoftTimeLimitExceeded
 from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files import File
+
 
 from core.models import ChromeScreenshotResource, Document
 from harvester.celery import app
@@ -28,29 +31,25 @@ def generate_browser_preview(document_id):
     if resource.success:
         bucket_folder_path = f"previews/{document.id}"
         create_thumbnails(screenshot_location, document.id)
-        upload_preview_to_s3(bucket_folder_path, document.id)
+        store_previews(bucket_folder_path, document.id)
         update_document(document, resource, bucket_folder_path)
         resource.close()
         remove_files_from_filesystem(document.id)
 
 
-def upload_preview_to_s3(destination_location, document_id):
-    if not settings.AWS_PREVIEWS_BUCKET_NAME:
-        return
-
-    s3_client = boto3.client('s3')
-    s3_client.upload_file(
-        f"{settings.BASE_DIR}/screenshot-{document_id}.png",
-        settings.AWS_PREVIEWS_BUCKET_NAME,
-        f"{destination_location}/preview.png"
-    )
+def store_previews(destination_location, document_id):
+    with open(f"{settings.BASE_DIR}/screenshot-{document_id}.png", "rb") as file:
+        default_storage.save(
+            f"{destination_location}/preview.png",
+            file
+        )
 
     for (width, height) in THUMBNAIL_SIZES:
-        s3_client.upload_file(
-            f"{settings.BASE_DIR}/screenshot-{document_id}-{width}x{height}.png",
-            settings.AWS_PREVIEWS_BUCKET_NAME,
-            f"{destination_location}/preview-{width}x{height}.png"
-        )
+        with open(f"{settings.BASE_DIR}/screenshot-{document_id}-{width}x{height}.png", "rb") as file:
+            default_storage.save(
+                f"{destination_location}/preview-{width}x{height}.png",
+                file
+            )
 
 
 def update_document(document, resource, preview_path):

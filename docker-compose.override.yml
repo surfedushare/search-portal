@@ -45,6 +45,7 @@ services:
       - "127.0.0.1:8888:8080"
     volumes:
       - ./harvester:/usr/src/app
+      - ./media:/usr/src/media
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     links:
       - postgres:database
@@ -64,6 +65,7 @@ services:
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
     volumes:
       - ./harvester:/usr/src/app
+      - ./media:/usr/src/media
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     command: celery -A harvester worker -l info
     links:
@@ -85,6 +87,7 @@ services:
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
     volumes:
       - ./harvester:/usr/src/app
+      - ./media:/usr/src/media
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     command: celery -A harvester flower
     ports:

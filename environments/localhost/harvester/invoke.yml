@@ -18,7 +18,6 @@ schedule:
 
 aws:
   harvest_content_bucket: null
-  previews_bucket: null
 
 secrets:
   postgres:
