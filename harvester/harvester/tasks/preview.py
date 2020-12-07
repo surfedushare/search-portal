@@ -7,6 +7,7 @@ from django.conf import settings
 
 from core.models import ChromeScreenshotResource, Document
 from harvester.celery import app
+from core.utils.resources import serialize_resource
 
 
 THUMBNAIL_SIZES = [(400, 300), (200, 150)]
@@ -28,7 +29,7 @@ def generate_browser_preview(document_id):
         bucket_folder_path = f"previews/{document.id}"
         create_thumbnails(screenshot_location, document.id)
         upload_preview_to_s3(bucket_folder_path, document.id)
-        add_preview_path_to_document(document, bucket_folder_path)
+        update_document(document, resource, bucket_folder_path)
         resource.close()
         remove_files_from_filesystem(document.id)
 
@@ -52,10 +53,14 @@ def upload_preview_to_s3(destination_location, document_id):
         )
 
 
-def add_preview_path_to_document(document, preview_path):
-    properties = document.properties
-    properties["preview_path"] = preview_path
-    document.properties = properties
+def update_document(document, resource, preview_path):
+    current_pipeline = document.properties.get("pipeline", {})
+    document.properties.update({
+        "preview_path": preview_path,
+        "pipeline": current_pipeline.update({
+            "preview": serialize_resource(resource)
+        })
+    })
     document.save()
 
 

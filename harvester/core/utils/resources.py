@@ -3,6 +3,19 @@ from datagrowth.exceptions import DGResourceDoesNotExist
 from core.models import FileResource, TikaResource, YouTubeDLResource
 
 
+def serialize_resource(resource=None):
+    if resource is None:
+        return {
+            "success": False,
+            "resource": None
+            }
+
+    return {
+        "success": resource.success,
+        "resource": ["{}.{}".format(resource._meta.app_label, resource._meta.model_name), resource.id]
+    }
+
+
 def get_basic_material_resources(url):
     """
     Convenience function to return a file resource and Tika resource based on a URL.
