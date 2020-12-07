@@ -12,3 +12,4 @@ aws:
   harvester_task_role_arn: null
   superuser_task_role_arn: null
   postgres_password_arn: null
+  flower_secret_arn: null

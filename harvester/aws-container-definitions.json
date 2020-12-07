@@ -65,7 +65,7 @@
       "secrets": [
         {
           "name" : "FLOWER_BASIC_AUTH",
-          "valueFrom":  "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/flower-basic-auth-credentials"
+          "valueFrom":  "${flower_secret_arn}"
         }
       ],
       "logConfiguration": {
