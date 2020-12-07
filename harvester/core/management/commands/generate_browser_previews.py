@@ -21,9 +21,11 @@ class Command(HarvesterCommand):
         self.complete_preview_stage(dataset_name)
 
     def run_jobs_in_group(self, signatures):
+        self.info(f"Started {len(signatures)} tasks to generate previews")
         job = group(signatures)
         result = job.apply_async()
         result.join()
+        self.info("Done generating previews")
 
     def create_task_signatures(self, documents):
         return [generate_browser_preview.s(document.id) for document in documents]
