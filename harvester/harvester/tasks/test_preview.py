@@ -21,7 +21,6 @@ class PreviewTestCase(TestCase):
         )
 
     @override_settings(BASE_DIR="/home/search-portal")
-    @override_settings(AWS_PREVIEWS_BUCKET_NAME="preview-bucket")
     @patch('core.models.ChromeScreenshotResource.run')
     @patch('core.models.ChromeScreenshotResource.success', return_value=True)
     @patch('core.models.ChromeScreenshotResource.close')
@@ -66,7 +65,6 @@ class PreviewTestCase(TestCase):
         ])
 
     @override_settings(BASE_DIR="/home/search-portal")
-    @override_settings(AWS_PREVIEWS_BUCKET_NAME=None)
     @patch('core.models.ChromeScreenshotResource.run')
     @patch('core.models.ChromeScreenshotResource.success', return_value=True)
     @patch('core.models.ChromeScreenshotResource.close')
@@ -85,7 +83,6 @@ class PreviewTestCase(TestCase):
         self.assertEqual(document.properties["preview_path"], f"previews/{document.id}")
 
     @override_settings(BASE_DIR="/home/search-portal")
-    @override_settings(AWS_PREVIEWS_BUCKET_NAME=None)
     @patch('core.models.ChromeScreenshotResource.run')
     @patch('core.models.ChromeScreenshotResource.success', return_value=True)
     @patch('core.models.ChromeScreenshotResource.close')
@@ -110,7 +107,6 @@ class PreviewTestCase(TestCase):
         ])
 
     @override_settings(BASE_DIR="/home/search-portal")
-    @override_settings(AWS_PREVIEWS_BUCKET_NAME=None)
     @patch('core.models.ChromeScreenshotResource.run')
     @patch('core.models.ChromeScreenshotResource.success', return_value=True)
     @patch('core.models.ChromeScreenshotResource.close')
