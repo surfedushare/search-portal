@@ -1,11 +1,9 @@
-import boto3
 from PIL import Image
 import os
 
 from celery.exceptions import SoftTimeLimitExceeded
 from django.conf import settings
 from django.core.files.storage import default_storage
-from django.core.files import File
 
 
 from core.models import ChromeScreenshotResource, Document
