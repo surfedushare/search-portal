@@ -19,14 +19,11 @@ def health_check():
     log.info(f"Healthy: {environment.django.domain}")
 
 
-@app.task(name="import_dataset")
-def celery_import_dataset(dataset, role="primary"):
-    call_command("load_harvester_data", dataset)
-    call_command("push_es_index", dataset=dataset, recreate=True)
-
-
 @app.task(name="harvest")
-def harvest(role="primary", reset=False):
+def harvest(seeds_source=None, reset=False):
+    role = "primary" if seeds_source is None else "secondary"
+    assert seeds_source or environment.env != "localhost", \
+        "Expected a seeds source for localhost, because direct downloads are impossible"
 
     # Iterate over all active datasets to get data updates
     for dataset in Dataset.objects.filter(is_active=True):
@@ -39,7 +36,7 @@ def harvest(role="primary", reset=False):
         if role == "primary":
             call_command("harvest_edurep_seeds", f"--dataset={dataset.name}", "--no-progress")
         else:
-            call_command("load_edurep_oaipmh_data", "--force-download", "--no-progress")
+            call_command("load_edurep_oaipmh_data", "--force-download", "--no-progress", f"--source={seeds_source}")
         # After getting all the metadata we'll download content
         call_command("harvest_basic_content", f"--dataset={dataset.name}", "--no-progress")
         # We skip any video downloading/processing for now
@@ -51,7 +48,10 @@ def harvest(role="primary", reset=False):
         extra_push_index_args = ["--recreate"] if reset else []
         call_command("push_es_index", f"--dataset={dataset.name}", "--no-progress", *extra_push_index_args)
 
-    # After processing all active datasets we dump the seeds and store on S3 so other nodes can use that
+    # When dealing with a harvest on a primary node the seeds need to get copied to S3.
+    # Other nodes can use these copies instead of making their own.
+    # Copying seeds is done to minimize downloading of seeds (a request by Edurep)
+    # and local machines will never get whitelisted to download seeds.
     if role == "primary":
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         ctx = Context(environment)

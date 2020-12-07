@@ -327,7 +327,7 @@ CELERY_BEAT_SCHEDULE = {
             hour=environment.schedule.harvest.hour,
             minute=environment.schedule.harvest.minute,
         ),
-        'args': (environment.schedule.harvest.role,)
+        'args': (environment.schedule.harvest.source,)
     },
 }
 
