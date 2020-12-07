@@ -177,7 +177,14 @@ export default {
   },
   methods: {
     deleteAccount() {
-      this.submit()
+      this.isSubmitting = true
+      this.$store.dispatch('deleteUser').then(() => {
+        this.isSaved = true
+        setTimeout(() => {
+          this.isSaved = false
+          this.$store.dispatch('logout', { fully: true })
+        })
+      })
       this.closeDeleteAccountPopup()
     },
     onSubmit() {

@@ -5,12 +5,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 from django.views.decorators.cache import never_cache
 from django.contrib.sessions.models import Session
 
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
-from surf.apps.users.models import SessionToken
+from surf.apps.users.models import SessionToken, User
 from surf.apps.users.serializers import UserDetailsSerializer
 
 
@@ -83,3 +84,10 @@ class ObtainTokenAPIView(APIView):
         if "permissions" in request.session:
             del request.session["permissions"]
         return Response({'token': token.key})
+
+
+class DeleteAccountAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.data["id"])
+        user.delete()
+        return Response(status=status.HTTP_200_OK)
