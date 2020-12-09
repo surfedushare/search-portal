@@ -52,12 +52,13 @@ def store_previews(destination_location, document_id):
 
 
 def update_document(document, resource, preview_path):
-    current_pipeline = document.properties.get("pipeline", {})
+    pipeline = document.properties.get("pipeline", {})
+    pipeline.update({
+        "preview": serialize_resource(resource)
+    })
     document.properties.update({
         "preview_path": preview_path,
-        "pipeline": current_pipeline.update({
-            "preview": serialize_resource(resource)
-        })
+        "pipeline": pipeline
     })
     document.save()
 
