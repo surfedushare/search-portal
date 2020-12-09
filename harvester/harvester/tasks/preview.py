@@ -18,7 +18,8 @@ THUMBNAIL_SIZES = [(400, 300), (200, 150)]
     name="generate_browser_preview",
     soft_time_limit=60,
     autoretry_for=(SoftTimeLimitExceeded,),
-    default_retry_delay=10
+    default_retry_delay=10,
+    max_retries=3
 )
 def generate_browser_preview(document_id):
     document = Document.objects.get(pk=document_id)
