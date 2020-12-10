@@ -2,6 +2,7 @@ from invoke import Collection
 
 from environments.surfpol import create_configuration_and_session
 from commands.postgres.invoke import setup_postgres_localhost
+from commands.elastic.tasks import create_decompound_dictionary, push_decompound_dictionary
 from commands.deploy import prepare_builds, build, push, deploy, migrate
 from commands.test import test_collection
 from commands.projects.service.invoke import import_snapshot
@@ -31,5 +32,6 @@ namespace = Collection(
     aws_collection,
     legacy_collection,
     prepare_builds,
-    test_collection
+    test_collection,
+    Collection("es", create_decompound_dictionary, push_decompound_dictionary)
 )

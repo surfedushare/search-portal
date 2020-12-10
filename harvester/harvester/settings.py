@@ -234,6 +234,7 @@ ELASTICSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch'
 }
+ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
 
 
 # Project Open Leermaterialen
