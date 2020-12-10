@@ -78,9 +78,9 @@ export default {
       commit('SET_USER', state.user)
       commit('USER_LOADING', false)
     },
-    async deleteUser({ commit, state }) {
+    async deleteUser({ commit }) {
       commit('USER_LOADING', true)
-      await axios.post(`users/delete-account/`, state.user)
+      await axios.post(`users/delete-account/`)
       commit('USER_LOADING', false)
     },
     async authenticate({ commit }, { token }) {
