@@ -54,7 +54,11 @@
                 &#10004; {{ $t('Data-saved') }}
               </div>
               <div class="privacy__form__buttons">
-                <button :disabled="isSubmitting" :class="submitButtonStyle">
+                <button
+                  :disabled="isSubmitting"
+                  class="button privacy__form__button"
+                  :class="withdrawnCommunityPermission && 'warning'"
+                >
                   {{ submitButtonLabel }}
                 </button>
                 <button
@@ -125,7 +129,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'isAuthenticated']),
+    ...mapGetters(['user', 'isAuthenticated', 'hasGivenCommunityPermission']),
     permissions() {
       if (isNil(this.user) || isNil(this.user.permissions)) {
         return []
@@ -149,49 +153,34 @@ export default {
       } else return false
     },
     submitButtonLabel() {
-      if (
-        !this.$store.getters.hasGivenCommunityPermission &&
-        this.hasInitialCommunityPermission
-      ) {
+      if (this.withdrawnCommunityPermission) {
         return this.$t('Delete-account-and-login')
       } else if (
-        this.$store.getters.hasGivenCommunityPermission !==
-        this.hasInitialCommunityPermission
+        this.hasGivenCommunityPermission !== this.hasInitialCommunityPermission
       ) {
         return this.$t('save-privacy-settings-and-logout')
       }
       return this.$t('save-privacy-settings')
     },
-    submitButtonStyle() {
-      if (
-        !this.$store.getters.hasGivenCommunityPermission &&
-        this.hasInitialCommunityPermission
-      ) {
-        return 'button privacy__form__button warning'
-      }
-      return 'button privacy__form__button'
+    withdrawnCommunityPermission() {
+      return (
+        !this.hasGivenCommunityPermission && this.hasInitialCommunityPermission
+      )
     }
   },
   mounted() {
-    this.hasInitialCommunityPermission = this.$store.getters.hasGivenCommunityPermission
+    this.hasInitialCommunityPermission = this.hasGivenCommunityPermission
   },
   methods: {
     deleteAccount() {
       this.isSubmitting = true
       this.$store.dispatch('deleteUser').then(() => {
-        this.isSaved = true
-        setTimeout(() => {
-          this.isSaved = false
-          this.$store.dispatch('logout', { fully: true })
-        })
+        this.$store.dispatch('logout', { fully: true })
       })
       this.closeDeleteAccountPopup()
     },
     onSubmit() {
-      if (
-        !this.$store.getters.hasGivenCommunityPermission &&
-        this.hasInitialCommunityPermission
-      ) {
+      if (this.withdrawnCommunityPermission) {
         this.showDeleteAccountPopup = true
       } else {
         this.submit()
@@ -206,7 +195,7 @@ export default {
           setTimeout(() => {
             this.isSaved = false
             if (
-              this.$store.getters.hasGivenCommunityPermission !==
+              this.hasGivenCommunityPermission !==
               this.hasInitialCommunityPermission
             ) {
               this.$store.dispatch('logout', { fully: true })
