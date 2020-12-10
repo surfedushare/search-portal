@@ -34,7 +34,7 @@ services:
     volumes:
       - elastic-data:/usr/share/elasticsearch/data
       - ./elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - ./elastic/repositories:/usr/share/elasticsearch/repositories
+      - ./elastic/config/decompound_word_list.txt:/usr/share/elasticsearch/config/decompound_word_list.txt
     ulimits:
       memlock:
         soft: -1
