@@ -6,6 +6,10 @@ from harvester.tasks.preview import generate_browser_preview
 from core.tests.factories import DocumentFactory
 
 
+def success_mock():
+    return True
+
+
 class PreviewTestCase(TestCase):
 
     @override_settings(BASE_DIR="/home/search-portal")
@@ -22,7 +26,7 @@ class PreviewTestCase(TestCase):
 
     @override_settings(BASE_DIR="/home/search-portal")
     @patch('core.models.ChromeScreenshotResource.run')
-    @patch('core.models.ChromeScreenshotResource.success', return_value=True)
+    @patch('core.models.ChromeScreenshotResource.success', new_callable=success_mock)
     @patch('core.models.ChromeScreenshotResource.close')
     @patch('PIL.Image.open')
     @patch('os.remove')
@@ -66,7 +70,7 @@ class PreviewTestCase(TestCase):
 
     @override_settings(BASE_DIR="/home/search-portal")
     @patch('core.models.ChromeScreenshotResource.run')
-    @patch('core.models.ChromeScreenshotResource.success', return_value=True)
+    @patch('core.models.ChromeScreenshotResource.success', new_callable=success_mock)
     @patch('core.models.ChromeScreenshotResource.close')
     @patch('PIL.Image.open')
     @patch('os.remove')
@@ -84,7 +88,7 @@ class PreviewTestCase(TestCase):
 
     @override_settings(BASE_DIR="/home/search-portal")
     @patch('core.models.ChromeScreenshotResource.run')
-    @patch('core.models.ChromeScreenshotResource.success', return_value=True)
+    @patch('core.models.ChromeScreenshotResource.success', new_callable=success_mock)
     @patch('core.models.ChromeScreenshotResource.close')
     @patch('PIL.Image.open')
     @patch('os.remove')
@@ -108,7 +112,7 @@ class PreviewTestCase(TestCase):
 
     @override_settings(BASE_DIR="/home/search-portal")
     @patch('core.models.ChromeScreenshotResource.run')
-    @patch('core.models.ChromeScreenshotResource.success', return_value=True)
+    @patch('core.models.ChromeScreenshotResource.success', new_callable=success_mock)
     @patch('core.models.ChromeScreenshotResource.close')
     @patch('PIL.Image.open')
     @patch('os.remove')
