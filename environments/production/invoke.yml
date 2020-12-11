@@ -18,3 +18,6 @@ elastic_search:
   protocol: "https"
   is_aws: true
   verify_certs: true
+
+aws:
+  harvest_content_bucket: "surfpol-harvester-content-prod"
