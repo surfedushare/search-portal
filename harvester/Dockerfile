@@ -1,7 +1,3 @@
-#################################################
-# SERVICE
-#################################################
-
 FROM python:3.6-stretch
 SHELL ["/bin/bash", "-c"]
 
@@ -32,6 +28,13 @@ RUN chown app:app /usr/src/static
 RUN chown app:app /usr/src/media
 RUN chown app:app /usr/src/environments
 RUN chown app:app /usr/src/logs
+
+# Download and verify Tika
+RUN curl -sSL https://www.apache.org/dist/tika/tika-app-1.25.jar -o /home/app/tika-app-1.25.jar
+RUN curl -sSL https://www.apache.org/dist/tika/tika-app-1.25.jar.sha512 -o /home/app/tika-app-1.25.jar.sha512
+RUN cat /home/app/tika-app-1.25.jar.sha512 | echo "$(</dev/stdin) /home/app/tika-app-1.25.jar" | sha512sum -c
+RUN rm /home/app/tika-app-1.25.jar.sha512
+
 # Become app user to prevent attacks during install (possibly from hijacked PyPi packages)
 USER app:app
 
@@ -49,16 +52,17 @@ COPY harvester /usr/src/app
 # This allows to run setup commands locally without loading secrets
 COPY environments /usr/src/environments
 
+# Move tika to harvester bin folder
+USER root
+RUN mv /home/app/tika-app-1.25.jar /usr/src/app/harvester/bin
+RUN chown app:app /usr/src/app/harvester/bin/tika-app-1.25.jar
+USER app:app
+
 # We're serving static files through Whitenoise
 # See: http://whitenoise.evans.io/en/stable/index.html#
 # If you doubt this decision then read the "infrequently asked question" section for details
 # Here we gather static files that get served through uWSGI if they don't exist
 RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinput
-
-# Install and verify Tika
-ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.25.jar /usr/src/app/harvester/bin/
-ADD --chown=app:app https://www.apache.org/dist/tika/tika-app-1.25.jar.sha512 /usr/src/app/harvester/bin/
-RUN cat /usr/src/app/harvester/bin/tika-app-1.25.jar.sha512 | echo "$(</dev/stdin)  /usr/src/app/harvester/bin/tika-app-1.25.jar" | sha512sum -c
 
 # Entrypoint sets our environment correctly
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
