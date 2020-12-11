@@ -19,7 +19,6 @@ schedule:
     source: "acceptance"
 
 aws:
-  harvest_content_bucket: "surfpol-harvester-content-dev"
   task_role_arn: "arn:aws:iam::322480324822:role/ecsHarvesterTaskExecutionRole"
 
 secrets:

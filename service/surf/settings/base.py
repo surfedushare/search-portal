@@ -229,6 +229,8 @@ if MODE != 'localhost':
     AWS_STORAGE_BUCKET_NAME = environment.aws.image_upload_bucket
     AWS_S3_REGION_NAME = 'eu-central-1'
 
+AWS_HARVESTER_BUCKET_NAME = environment.aws.harvest_content_bucket
+
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
 
