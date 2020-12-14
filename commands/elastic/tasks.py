@@ -3,8 +3,13 @@ import os
 from invoke.tasks import task
 
 
-@task
+@task(help={
+    "input_file": "The .tab file that contains decompound definitions",
+})
 def create_decompound_dictionary(ctx, input_file):
+    """
+    Creates a Dutch decompound words dictionary that is suitable for ES from a .tab file.
+    """
     output_file_path = os.path.join("elastic", "config", "decompound_word_list.nl.txt")
     tokens = set()
     with open(input_file, encoding="latin-1") as dictionary_input:
@@ -16,8 +21,14 @@ def create_decompound_dictionary(ctx, input_file):
     print("Created decompound dictionary file:", output_file_path)
 
 
-@task
+@task(help={
+    "decompound_file_path": "The decompound words dictionary to push to AWS",
+    "package_id": "When updating the AWS ES package_id that should get updated"
+})
 def push_decompound_dictionary(ctx, decompound_file_path, package_id=None):
+    """
+    Creates or updates an AWS ES decompound word package based on a decompound dictionary
+    """
     s3_bucket_name = "edushare-data"
     s3_keypath = "elastic/decompound_word_list.nl.txt"
     # Uploading to S3
