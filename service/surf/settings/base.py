@@ -383,3 +383,8 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
     }
+
+EMAIL_HOST = 'outgoing.surfmailfilter.nl'
+EMAIL_PORT = 25
+MAIL_USE_SSL = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

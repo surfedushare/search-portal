@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import axios from '~/axios'
 import Popup from '~/components/Popup'
 export default {
   name: 'FeedbackPopup',
@@ -51,8 +52,14 @@ export default {
     }
   },
   methods: {
-    sendFeedback() {
-      console.log('feedback', this.message)
+    async sendFeedback() {
+      if (this.message.trim().length > 0) {
+        const currentUrl = window.location.pathname
+        await axios.post('feedback/', {
+          feedback: this.message,
+          current_url: currentUrl
+        })
+      }
       this.close()
     }
   }
