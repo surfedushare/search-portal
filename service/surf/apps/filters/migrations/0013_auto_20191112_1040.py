@@ -7,8 +7,11 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('filters', '0012_auto_20191112_0918'),
-        ('themes', '0006_update_filtercat_disciplines'),
-        ('materials', '0020_remove_old_collection_materials'),
+        # Seeing which operations are involved below I do not understand why they depend on these two migrations.
+        # Keeping it around though, because perhaps I'm missing something.
+        # We'll delete this migration soon anyway.
+        #('themes', '0006_update_filtercat_disciplines'),
+        #('materials', '0020_remove_old_collection_materials'),
     ]
 
     operations = [

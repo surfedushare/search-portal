@@ -5,8 +5,6 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    replaces = [('materials', '0020_auto_20191104_1637'), ('materials', '0021_auto_20191104_1637'), ('materials', '0022_auto_20191104_1637')]
-
     dependencies = [
         ('materials', '0019_auto_20191104_1226'),
     ]
