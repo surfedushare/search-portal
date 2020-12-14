@@ -38,7 +38,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('external_id', models.CharField(max_length=255, verbose_name='EduRep material id')),
-                ('disciplines', models.ManyToManyField(blank=True, related_name='materials', to='filters.FilterCategoryItem')),
                 ('themes', models.ManyToManyField(blank=True, related_name='materials', to='themes.Theme')),
                 ('description', models.TextField(blank=True, null=True)),
                 ('keywords', models.TextField(blank=True, null=True)),
@@ -116,10 +115,6 @@ class Migration(migrations.Migration):
             model_name='material',
             name='mptt_disciplines',
             field=models.ManyToManyField(blank=True, related_name='materials', to='filters.MpttFilterItem'),
-        ),
-        migrations.RemoveField(
-            model_name='material',
-            name='disciplines',
         ),
         migrations.RenameField(
             model_name='material',

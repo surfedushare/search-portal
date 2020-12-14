@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('locale', '0004_improved_translations'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('materials', '0006_viewmaterial_viewed_at'),
+        ('materials', '0001_squashed_0028_collectionmaterial_position'),
     ]
 
     operations = [
@@ -153,14 +153,6 @@ class Migration(migrations.Migration):
                 ('featured_image', models.ImageField(blank=True, help_text='The proportion of the image should be 388x227', null=True, upload_to='communities')),
                 ('community', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='community_details', to='communities.Community')),
             ],
-        ),
-        migrations.AddConstraint(
-            model_name='communitydetail',
-            constraint=models.UniqueConstraint(fields=('language_code', 'community'), name='unique materials in collection'),
-        ),
-        migrations.RemoveConstraint(
-            model_name='communitydetail',
-            name='unique materials in collection',
         ),
         migrations.AlterField(
             model_name='community',

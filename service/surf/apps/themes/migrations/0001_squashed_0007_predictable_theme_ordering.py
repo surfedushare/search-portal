@@ -29,8 +29,6 @@ class Migration(migrations.Migration):
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('external_id', models.CharField(max_length=255)),
-                ('disciplines', models.ManyToManyField(blank=True, related_name='parent_themes', to='filters.FilterCategoryItem')),
-                ('filter_category_item', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='theme', to='filters.FilterCategoryItem')),
                 ('description_translations', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='locale.LocaleHTML')),
                 ('title_translations', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='locale.Locale')),
                 ('mptt_disciplines', models.ManyToManyField(blank=True, related_name='parent_themes', to='filters.MpttFilterItem')),
@@ -39,14 +37,6 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-        ),
-        migrations.RemoveField(
-            model_name='theme',
-            name='disciplines',
-        ),
-        migrations.RemoveField(
-            model_name='theme',
-            name='filter_category_item',
         ),
         migrations.RenameField(
             model_name='theme',

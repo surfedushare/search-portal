@@ -28,57 +28,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Filter',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=255)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='filters', to=settings.AUTH_USER_MODEL, verbose_name='Owner')),
-                ('end_date', models.DateField(blank=True, null=True)),
-                ('start_date', models.DateField(blank=True, null=True)),
-                ('materials_count', models.IntegerField(default=0)),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='FilterCategory',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=255)),
-                ('edurep_field_id', models.CharField(max_length=255, verbose_name='Field id in EduRep')),
-                ('max_item_count', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0)])),
-                ('title_translations', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='locale.Locale')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='FilterCategoryItem',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=255)),
-                ('external_id', models.CharField(max_length=255, verbose_name='Filter item id in EduRep')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='filters.FilterCategory', verbose_name='Filter category')),
-                ('order', models.IntegerField(default=0)),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='FilterItem',
-            fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('category_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='filter_items', to='filters.FilterCategoryItem')),
-                ('filter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='filters.Filter')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
             name='MpttFilterItem',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
@@ -100,36 +49,9 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
         ),
-        migrations.AddField(
-            model_name='filteritem',
-            name='mptt_category_item',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='filter_items', to='filters.MpttFilterItem'),
-        ),
         migrations.AlterModelOptions(
             name='mpttfilteritem',
             options={'verbose_name': 'filter category item'},
-        ),
-        migrations.RemoveField(
-            model_name='filtercategoryitem',
-            name='category',
-        ),
-        migrations.RemoveField(
-            model_name='filteritem',
-            name='category_item',
-        ),
-        migrations.DeleteModel(
-            name='FilterCategory',
-        ),
-        migrations.DeleteModel(
-            name='FilterCategoryItem',
-        ),
-        migrations.RemoveField(
-            model_name='filteritem',
-            name='filter',
-        ),
-        migrations.RemoveField(
-            model_name='filteritem',
-            name='mptt_category_item',
         ),
         migrations.AlterField(
             model_name='mpttfilteritem',
@@ -145,12 +67,6 @@ class Migration(migrations.Migration):
             model_name='mpttfilteritem',
             name='rght',
             field=models.PositiveIntegerField(editable=False),
-        ),
-        migrations.DeleteModel(
-            name='Filter',
-        ),
-        migrations.DeleteModel(
-            name='FilterItem',
         ),
         migrations.AlterField(
             model_name='mpttfilteritem',
