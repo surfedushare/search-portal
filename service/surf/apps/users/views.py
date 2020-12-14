@@ -1,4 +1,6 @@
 import logging
+
+from rest_framework.exceptions import AuthenticationFailed
 from sentry_sdk import capture_message
 
 from rest_framework.response import Response
@@ -88,6 +90,9 @@ class ObtainTokenAPIView(APIView):
 
 class DeleteAccountAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        user = User.objects.get(id=request.user.id)
-        user.delete()
-        return Response(status=status.HTTP_200_OK)
+        if request.user.is_authenticated:
+            user = User.objects.get(id=request.user.id)
+            user.delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            raise AuthenticationFailed()
