@@ -113,6 +113,7 @@ class ElasticIndex(models.Model):
                         "dictionary_decompound": {
                             "type": "dictionary_decompounder",
                             "word_list_path": settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch,
+                            "updateable": True
                         },
                         "dutch_stop": {
                             "type": "stop",

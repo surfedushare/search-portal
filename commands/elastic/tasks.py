@@ -17,5 +17,19 @@ def create_decompound_dictionary(ctx, input_file):
 
 
 @task
-def push_decompound_dictionary(ctx, decompound_file_path):
-    ctx.run(f"aws s3 cp {decompound_file_path} s3://edushare-data/elastic/decompound_word_list.nl.txt")
+def push_decompound_dictionary(ctx, decompound_file_path, package_id=None):
+    s3_bucket_name = "edushare-data"
+    s3_keypath = "elastic/decompound_word_list.nl.txt"
+    # Uploading to S3
+    ctx.run(f"aws s3 cp {decompound_file_path} s3://{s3_bucket_name}/{s3_keypath}")
+    # Associating the dictionary with a AWS ES package
+    package_command = "create-package --package-name=decompound-words-list-nl --package-type=TXT-DICTIONARY"
+    if package_id is not None:
+        package_command = f"update-package --package-id={package_id}"
+    ctx.run(
+        f"aws es {package_command} "
+        f"--package-source='S3BucketName={s3_bucket_name},S3Key={s3_keypath}'",
+        echo=True, pty=True
+    )
+    print("AWS ES dictionary package created.")
+    print("Do not forget to change the package identifier under the elastic_search.decompound_word_lists configuration")
