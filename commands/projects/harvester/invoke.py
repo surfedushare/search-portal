@@ -76,7 +76,7 @@ def cleanup(ctx, mode):
     "promote": "Whether you want this dataset to become 'latest' "
                "which means that the service will start to use it when searching"
 })
-def push_es_index(ctx, mode, dataset, recreate=False, promote=False):
+def push_es_index(ctx, mode, dataset, recreate=False, promote=False, version=None):
     """
     Starts a task on the AWS container cluster or localhost to update the ES indices
     """
@@ -91,7 +91,7 @@ def push_es_index(ctx, mode, dataset, recreate=False, promote=False):
             ctx.run(" ".join(command))
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command)
+    run_task(ctx, "harvester", mode, command, version=version)
 
 
 @task(help={
