@@ -174,9 +174,19 @@ export default {
   methods: {
     deleteAccount() {
       this.isSubmitting = true
-      this.$store.dispatch('deleteUser').then(() => {
-        this.$store.dispatch('logout', { fully: true })
-      })
+      this.$store
+        .dispatch('deleteUser')
+        .then(() => {
+          this.$store.dispatch('logout', { fully: true })
+        })
+        .catch(error => {
+          if (error) {
+            this.$store.commit('ADD_MESSAGE', {
+              level: 'error',
+              message: 'Session-expired'
+            })
+          }
+        })
       this.closeDeleteAccountPopup()
     },
     onSubmit() {

@@ -89,10 +89,10 @@ class ObtainTokenAPIView(APIView):
 
 
 class DeleteAccountAPIView(APIView):
+
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            user = User.objects.get(id=request.user.id)
-            user.delete()
-            return Response(status=status.HTTP_200_OK)
-        else:
-            raise AuthenticationFailed()
+        user = User.objects.get(id=request.user.id)
+        user.delete()
+        return Response(status=status.HTTP_200_OK)
