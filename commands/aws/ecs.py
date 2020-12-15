@@ -55,7 +55,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None):
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
         container_variables,
-        os.path.join(target, "aws-container-definitions.json"),
+        os.path.join(target, "task-container-definitions.json"),
         target_info["cpu"],
         target_info["memory"]
     )

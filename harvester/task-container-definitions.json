@@ -1,10 +1,16 @@
 [
   {
-    "name": "celery-worker-container",
+    "name": "harvester-container",
     "image": "${REPOSITORY}/harvester:${version}",
     "cpu": 0,
     "essential": true,
-    "command": ["celery", "-A", "harvester", "worker", "--concurrency=${concurrency}", "--loglevel=info", "-n=main-worker@%h"],
+    "portMappings": [
+      {
+        "hostPort": 8080,
+        "protocol": "tcp",
+        "containerPort": 8080
+      }
+    ],
     "environment": [
       { "name" : "PYTHONUNBUFFERED", "value" : "1" },
       { "name" : "APPLICATION_MODE", "value" : "${mode}" }
@@ -14,7 +20,7 @@
       "options": {
         "awslogs-group": "/ecs/harvester",
         "awslogs-region": "eu-central-1",
-        "awslogs-stream-prefix": "celery-worker-${version}",
+        "awslogs-stream-prefix": "harvester-${version}",
         "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
       }
     }

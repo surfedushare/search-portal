@@ -55,6 +55,9 @@ def register_clearlogins_task(ctx, aws_config, task_definition_arn):
 def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
     target_info = TARGETS["harvester"]
     harvester_container_variables = build_default_container_variables(mode, version)
+    harvester_container_variables.update({
+        "flower_secret_arn": ctx.config.aws.flower_secret_arn
+    })
 
     harvester_task_definition_arn = register_task_definition(
         "harvester",
@@ -74,7 +77,7 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
 
     celery_container_variables = build_default_container_variables(mode, version)
     celery_container_variables.update({
-        "flower_secret_arn": ctx.config.aws.flower_secret_arn
+        "concurrency": "4"
     })
 
     celery_task_definition_arn = register_task_definition(
@@ -83,8 +86,8 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
         task_role_arn,
         celery_container_variables,
         os.path.join("harvester", "celery-container-definitions.json"),
-        target_info["cpu"],
-        target_info["memory"]
+        target_info["celery_cpu"],
+        target_info["celery_memory"]
     )
 
     ecs_client.update_service(
