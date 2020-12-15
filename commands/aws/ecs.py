@@ -33,7 +33,7 @@ def register_task_definition(family, ecs_client, task_role_arn, container_variab
     return task_definition["taskDefinitionArn"]
 
 
-def run_task(ctx, target, mode, command, environment=None, version=None):
+def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False, concurrency=4):
     """
     Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
     """
@@ -49,13 +49,17 @@ def run_task(ctx, target, mode, command, environment=None, version=None):
     session = create_aws_session(profile_name=ctx.config.aws.profile_name)
     ecs_client = session.client('ecs')
     container_variables = build_default_container_variables(mode, version)
+    if extra_workers:
+        container_variables.update({
+            concurrency: concurrency
+        })
 
     task_definition_arn = register_task_definition(
         "harvester",
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
         container_variables,
-        os.path.join(target, "task-container-definitions.json"),
+        os.path.join(target, task_container_definitions(extra_workers)),
         target_info["cpu"],
         target_info["memory"]
     )
@@ -78,7 +82,9 @@ def run_task(ctx, target, mode, command, environment=None, version=None):
                 "subnets": [ctx.config.aws.private_subnet_id],
                 "securityGroups": [
                     ctx.config.aws.rds_security_group_id,
-                    ctx.config.aws.default_security_group_id
+                    ctx.config.aws.default_security_group_id,
+                    ctx.config.aws.elasticsearch_security_group_id,
+                    ctx.config.aws.redis_security_group_id
                 ]
             }
         },
@@ -91,3 +97,10 @@ def build_default_container_variables(mode, version):
         "mode": mode,
         "version": version
     }
+
+
+def task_container_definitions(extra_workers):
+    if extra_workers:
+        return "task-with-workers-container-definitions.json"
+
+    return "task-container-definitions.json"
