@@ -24,9 +24,9 @@ class TestGenerateBrowserReviews(TestCase):
         out = StringIO()
         dataset = DatasetFactory.create(name="test")
         oaipmh_harvest = OAIPMHHarvestFactory.create(dataset=dataset, stage=HarvestStages.PREVIEW)
-        document_with_website = DocumentFactory.create(dataset=dataset, properties={"mime_type": "text/html"})
-        DocumentFactory.create(dataset=dataset, properties={"mime_type": "foo/bar"})
-        DocumentFactory.create(dataset=dataset, properties={"mime_type": "text/html", "preview_path": "previews/8"})
+        document_with_website = DocumentFactory.create(dataset=dataset, mime_type="text/html")
+        DocumentFactory.create(dataset=dataset, mime_type="foo/bar")
+        DocumentFactory.create(dataset=dataset, mime_type="text/html", preview_path="previews/8")
 
         call_command(
             "generate_browser_previews", f"--dataset={dataset.name}", "--no-progress", "--no-logger", stdout=out
