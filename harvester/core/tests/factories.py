@@ -19,13 +19,15 @@ class DocumentFactory(factory.django.DjangoModelFactory):
     class Params:
         url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
         mime_type = "text/html"
+        preview_path = None
 
     dataset = factory.SubFactory(DatasetFactory)
     reference = factory.Sequence(lambda n: "surf:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
             "mime_type": o.mime_type,
-            "url": o.url
+            "url": o.url,
+            "preview_path": o.preview_path
         })
 
 
