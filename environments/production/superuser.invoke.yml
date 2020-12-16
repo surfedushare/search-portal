@@ -11,6 +11,8 @@ aws:
   private_subnet_id: "subnet-09d3c96d0807e6974"
   default_security_group_id: "sg-01bca68a95ed1b08f"
   rds_security_group_id: "sg-0a07785f16949a500"
+  elasticsearch_security_group_id: "sg-0e20cdf850da2ae6d"
+  redis_security_group_id: "sg-0a52817093962a3bd"
   cluster_arn: "arn:aws:ecs:eu-central-1:017973353230:cluster/surfpol"
   superuser_task_role_arn: "arn:aws:iam::017973353230:role/ecsSuperuserTaskExecutionRole"
   postgres_password_arn: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:postgres"

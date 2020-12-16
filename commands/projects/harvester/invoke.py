@@ -48,7 +48,7 @@ def harvest(ctx, mode, reset=False, secondary=False, version=None):
             ctx.run(" ".join(command))
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command, version=version)
+    run_task(ctx, "harvester", mode, command, version=version, extra_workers=reset, concurrency=8)
 
 
 @task(help={

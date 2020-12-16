@@ -1,6 +1,8 @@
 PACKAGE = {
-    "version": "1.17.8",
+    "version": "1.17.11",
     "name": "harvester",
     "cpu": "2048",
-    "memory": "8192"
+    "memory": "8192",
+    "celery_cpu": "2048",
+    "celery_memory": "8192"
 }
