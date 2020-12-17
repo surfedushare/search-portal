@@ -1,4 +1,5 @@
 import os
+import json
 
 from invoke.tasks import task
 
@@ -25,7 +26,7 @@ def create_decompound_dictionary(ctx, input_file):
     "decompound_file_path": "The decompound words dictionary to push to AWS",
     "package_id": "When updating the AWS ES package_id that should get updated"
 })
-def push_decompound_dictionary(ctx, decompound_file_path, package_id=None):
+def push_decompound_dictionary(ctx, decompound_file_path):
     """
     Creates or updates an AWS ES decompound word package based on a decompound dictionary
     """
@@ -33,7 +34,16 @@ def push_decompound_dictionary(ctx, decompound_file_path, package_id=None):
     s3_keypath = "elastic/decompound_word_list.nl.txt"
     # Uploading to S3
     ctx.run(f"aws s3 cp {decompound_file_path} s3://{s3_bucket_name}/{s3_keypath}")
-    # Associating the dictionary with a AWS ES package
+    # Now we're associating the dictionary with a AWS ES package
+    # First we check for existing packages
+    package_id = None
+    package_descriptions = ctx.run(
+        "aws es describe-packages --filter='Name=PackageName,Value=decompound-words-list-nl'"
+    )
+    package_details_list = json.loads(package_descriptions.stdout).get("PackageDetailsList", [])
+    if len(package_details_list):
+        package_id = package_details_list[0]["PackageID"]
+    # Then we create or update the package with the given decompound dictionary
     package_command = "create-package --package-name=decompound-words-list-nl --package-type=TXT-DICTIONARY"
     if package_id is not None:
         package_command = f"update-package --package-id={package_id}"
@@ -42,5 +52,5 @@ def push_decompound_dictionary(ctx, decompound_file_path, package_id=None):
         f"--package-source='S3BucketName={s3_bucket_name},S3Key={s3_keypath}'",
         echo=True, pty=True
     )
-    print("AWS ES dictionary package created.")
-    print("Do not forget to change the package identifier under the elastic_search.decompound_word_lists configuration")
+    print("AWS ES dictionary package processed.")
+    print("Do not forget to set the package identifier under the elastic_search.decompound_word_lists configuration")
