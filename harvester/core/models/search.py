@@ -1,9 +1,8 @@
-from elasticsearch.helpers import streaming_bulk
-
 from django.conf import settings
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.text import slugify
-from django.contrib.postgres.fields import JSONField
+from elasticsearch.helpers import streaming_bulk
 from rest_framework import serializers
 
 from core.models import Dataset
@@ -94,30 +93,56 @@ class ElasticIndex(models.Model):
         Returns the elasticsearch index configuration.
         Configures the analysers based on the language passed in.
         """
+        search_analyzer = "dutch_dictionary_decompound" if lang == "nl" else \
+            settings.ELASTICSEARCH_ANALYSERS[lang]
         return {
             "settings": {
                 "index": {
                     "number_of_shards": 1,
                     "number_of_replicas": 0
+                },
+                "analysis": {
+                    "analyzer": {
+                        "dutch_dictionary_decompound": {
+                            "type": "custom",
+                            "tokenizer": "standard",
+                            "filter": ["dutch_stop", "dictionary_decompound"]
+                        }
+                    },
+                    "filter": {
+                        "dictionary_decompound": {
+                            "type": "dictionary_decompounder",
+                            "word_list_path": settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch,
+                            "updateable": True
+                        },
+                        "dutch_stop": {
+                            "type": "stop",
+                            "stopwords": "_dutch_"
+                        }
+                    }
                 }
             },
             'mappings': {
                 'properties': {
                     'title': {
                         'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
+                        'search_analyzer': search_analyzer
                     },
                     'text': {
                         'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
+                        'search_analyzer': search_analyzer
                     },
                     'transcription': {
                         'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
+                        'search_analyzer': search_analyzer
                     },
                     'description': {
                         'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang]
+                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
+                        'search_analyzer': search_analyzer
                     },
                     'url': {'type': 'text'},
                     'title_plain': {'type': 'text'},
