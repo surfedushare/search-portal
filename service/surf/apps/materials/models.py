@@ -163,6 +163,7 @@ class Collection(UUIDModel):
     publish_status = enum.EnumField(PublishStatus, default=PublishStatus.DRAFT)
     created_at = django_models.DateTimeField(auto_now_add=True)
     deleted_at = django_models.DateTimeField(null=True)
+    position = django_models.IntegerField(default=0)
 
     def restore(self):
         self.deleted_at = None
