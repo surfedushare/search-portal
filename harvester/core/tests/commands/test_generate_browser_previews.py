@@ -20,8 +20,9 @@ class TestGenerateBrowserReviews(TestCase):
     @patch("harvester.tasks.generate_browser_preview.s")
     @patch("harvester.tasks.generate_youtube_preview.s")
     def test_calling_jobs_with_html_documents(self, youtube_task_mock, preview_task_mock, apply_async_mock):
-        join_mock = Mock()
-        apply_async_mock.return_value.join = join_mock
+        ready_mock = Mock()
+        ready_mock.return_value = True
+        apply_async_mock.return_value.ready = ready_mock
         out = StringIO()
         dataset = DatasetFactory.create(name="test")
         oaipmh_harvest = OAIPMHHarvestFactory.create(dataset=dataset, stage=HarvestStages.PREVIEW)
@@ -37,6 +38,6 @@ class TestGenerateBrowserReviews(TestCase):
         preview_task_mock.assert_called_once_with(document_with_website.id)
         youtube_task_mock.assert_called_once_with(document_from_youtube.id)
         apply_async_mock.assert_called()
-        join_mock.assert_called()
+        ready_mock.assert_called()
         oaipmh_harvest.refresh_from_db()
         self.assertEqual(oaipmh_harvest.stage, HarvestStages.COMPLETE)

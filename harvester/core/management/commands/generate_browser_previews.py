@@ -1,3 +1,4 @@
+import time
 from core.management.base import HarvesterCommand
 from celery import group
 from core.models import Document, OAIPMHHarvest
@@ -24,7 +25,10 @@ class Command(HarvesterCommand):
         self.info(f"Started {len(signatures)} tasks to generate previews")
         job = group(signatures)
         result = job.apply_async()
-        result.join()
+
+        while not result.ready():
+            time.sleep(10)
+
         self.info("Done generating previews")
 
     def create_task_signatures(self, documents):
