@@ -140,7 +140,8 @@ class ElasticIndex(models.Model):
                         'type': 'keyword'
                     },
                     'publisher_date': {
-                        'type': 'date'
+                        'type': 'date',
+                        'format': 'strict_date_optional_time||yyyy-MM||epoch_millis'
                     },
                     'aggregation_level': {
                         'type': 'keyword'
