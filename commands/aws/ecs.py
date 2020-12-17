@@ -59,7 +59,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
         container_variables,
-        os.path.join(target, task_container_definitions(extra_workers)),
+        os.path.join(target, task_container_definitions(target, extra_workers)),
         target_info["cpu"],
         target_info["memory"]
     )
@@ -99,7 +99,10 @@ def build_default_container_variables(mode, version):
     }
 
 
-def task_container_definitions(extra_workers):
+def task_container_definitions(target, extra_workers):
+    if target == "service":
+        return "aws-container-definitions.json"
+
     if extra_workers:
         return "task-with-workers-container-definitions.json"
 
