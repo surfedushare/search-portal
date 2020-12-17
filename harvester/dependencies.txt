@@ -15,6 +15,7 @@ mwparserfromhell==0.5.4
 django-log-formatter-json==0.2.0
 ujson==3.1.0  # implicit dependency of django-log-formatter-json
 vobject==0.9.6.1
+youtube-dl==2020.12.14
 
 # Datagrowth
 jsonschema==3.2.0
@@ -25,6 +26,3 @@ git+https://github.com/fako/django-json-field.git
 lxml==4.6.1
 beautifulsoup4==4.9.1
 datagrowth==0.16.3
-
-# Always latest version required
-youtube-dl
