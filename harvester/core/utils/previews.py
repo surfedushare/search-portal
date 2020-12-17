@@ -16,7 +16,7 @@ def store_previews(destination_location, document_id):
             file
         )
 
-    for (width, height) in THUMBNAIL_SIZES:
+    for width, height in THUMBNAIL_SIZES:
         with open(f"{settings.BASE_DIR}/screenshot-{document_id}-{width}x{height}.png", "rb") as file:
             default_storage.save(
                 f"{destination_location}/preview-{width}x{height}.png",
