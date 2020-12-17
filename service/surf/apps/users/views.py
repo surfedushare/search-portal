@@ -1,6 +1,5 @@
 import logging
 
-from rest_framework.exceptions import AuthenticationFailed
 from sentry_sdk import capture_message
 
 from rest_framework.response import Response
