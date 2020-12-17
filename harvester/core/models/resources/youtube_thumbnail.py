@@ -26,7 +26,7 @@ class YoutubeThumbnailResource(ShellResource):
         return
 
     def get_extension(self):
-        if (self.stdout):
+        if self.stdout:
             metadata = json.loads(self.stdout)
             extension = os.path.splitext(metadata["thumbnail"])[1]
             return extension.split("?")[0]
