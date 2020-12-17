@@ -51,7 +51,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
     container_variables = build_default_container_variables(mode, version)
     if extra_workers:
         container_variables.update({
-            concurrency: f"{concurrency}"
+            "concurrency": f"{concurrency}"
         })
 
     task_definition_arn = register_task_definition(
