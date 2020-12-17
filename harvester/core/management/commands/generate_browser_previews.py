@@ -1,7 +1,7 @@
 from core.management.base import HarvesterCommand
 from celery import group
 from core.models import Document, OAIPMHHarvest
-from harvester.tasks.preview import generate_browser_preview
+from harvester.tasks import generate_browser_preview, generate_youtube_preview
 from core.constants import HarvestStages
 
 
@@ -28,7 +28,7 @@ class Command(HarvesterCommand):
         self.info("Done generating previews")
 
     def create_task_signatures(self, documents):
-        return [generate_browser_preview.s(document.id) for document in documents]
+        return [self.determine_task_signature(document) for document in documents]
 
     def complete_preview_stage(self, dataset_name):
         OAIPMHHarvest.objects.filter(
@@ -37,3 +37,11 @@ class Command(HarvesterCommand):
         ).update(
             stage=HarvestStages.COMPLETE
         )
+
+    def determine_task_signature(self, document):
+        from_youtube = document.properties.get('from_youtube', False)
+
+        if from_youtube:
+            return generate_youtube_preview.s(document.id)
+
+        return generate_browser_preview.s(document.id)

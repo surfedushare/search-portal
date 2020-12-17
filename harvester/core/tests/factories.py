@@ -17,17 +17,19 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         model = Document
 
     class Params:
-        url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
+        from_youtube = False
         mime_type = "text/html"
         preview_path = None
+        url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
 
     dataset = factory.SubFactory(DatasetFactory)
     reference = factory.Sequence(lambda n: "surf:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
+            "from_youtube": o.from_youtube,
             "mime_type": o.mime_type,
-            "url": o.url,
-            "preview_path": o.preview_path
+            "preview_path": o.preview_path,
+            "url": o.url
         })
 
 

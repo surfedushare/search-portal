@@ -17,14 +17,16 @@ class TestGenerateBrowserReviews(TestCase):
         return command
 
     @patch("celery.group.apply_async")
-    @patch("harvester.tasks.preview.generate_browser_preview.s")
-    def test_calling_jobs_with_html_documents(self, preview_task_mock, apply_async_mock):
+    @patch("harvester.tasks.generate_browser_preview.s")
+    @patch("harvester.tasks.generate_youtube_preview.s")
+    def test_calling_jobs_with_html_documents(self, youtube_task_mock, preview_task_mock, apply_async_mock):
         join_mock = Mock()
         apply_async_mock.return_value.join = join_mock
         out = StringIO()
         dataset = DatasetFactory.create(name="test")
         oaipmh_harvest = OAIPMHHarvestFactory.create(dataset=dataset, stage=HarvestStages.PREVIEW)
         document_with_website = DocumentFactory.create(dataset=dataset, mime_type="text/html")
+        document_from_youtube = DocumentFactory.create(dataset=dataset, mime_type="text/html", from_youtube=True)
         DocumentFactory.create(dataset=dataset, mime_type="foo/bar")
         DocumentFactory.create(dataset=dataset, mime_type="text/html", preview_path="previews/8")
 
@@ -33,6 +35,7 @@ class TestGenerateBrowserReviews(TestCase):
         )
 
         preview_task_mock.assert_called_once_with(document_with_website.id)
+        youtube_task_mock.assert_called_once_with(document_from_youtube.id)
         apply_async_mock.assert_called()
         join_mock.assert_called()
         oaipmh_harvest.refresh_from_db()

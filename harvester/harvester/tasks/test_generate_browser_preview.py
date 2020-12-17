@@ -2,7 +2,7 @@ from unittest.mock import patch, Mock, call, mock_open, ANY
 from django.test import TestCase, override_settings
 from PIL import Image
 
-from harvester.tasks.preview import generate_browser_preview
+from harvester.tasks import generate_browser_preview
 from core.tests.factories import DocumentFactory
 
 
@@ -31,7 +31,7 @@ class PreviewTestCase(TestCase):
     @patch('PIL.Image.open')
     @patch('os.remove')
     @patch('django.core.files.storage.default_storage.save')
-    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    @patch('core.utils.previews.open', new_callable=mock_open(read_data='test'))
     def test_save(self, open_mock, save_mock, os_remove, image_open, close_mock,
                   screenshot_resource_success, screenshot_resource_run):
         document = DocumentFactory.create()
@@ -75,7 +75,7 @@ class PreviewTestCase(TestCase):
     @patch('PIL.Image.open')
     @patch('os.remove')
     @patch('django.core.files.storage.default_storage.save')
-    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    @patch('core.utils.previews.open', new_callable=mock_open(read_data='test'))
     def test_writes_preview_url_to_properties(self, open_mock, save_mock, os_remove, image_open, close_mock,
                                               screenshot_resource_success, screenshot_resource_run):
         document = DocumentFactory.create()
@@ -93,11 +93,11 @@ class PreviewTestCase(TestCase):
     @patch('PIL.Image.open')
     @patch('os.remove')
     @patch('django.core.files.storage.default_storage.save')
-    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    @patch('core.utils.previews.open', new_callable=mock_open(read_data='test'))
     def test_generates_thumbnails(self, open_mock, save_mock, os_remove, image_open, close_mock,
                                   screenshot_resource_success, screenshot_resource_run):
         resize_mock = Mock()
-        image_open.return_value.resize = resize_mock
+        image_open.return_value.thumbnail = resize_mock
 
         document = DocumentFactory.create()
 
@@ -105,9 +105,7 @@ class PreviewTestCase(TestCase):
 
         resize_mock.assert_has_calls([
             call((400, 300), Image.ANTIALIAS),
-            call().save(f"/home/search-portal/screenshot-{document.id}-400x300.png"),
-            call((200, 150), Image.ANTIALIAS),
-            call().save(f"/home/search-portal/screenshot-{document.id}-200x150.png")
+            call((200, 150), Image.ANTIALIAS)
         ])
 
     @override_settings(BASE_DIR="/home/search-portal")
@@ -117,7 +115,7 @@ class PreviewTestCase(TestCase):
     @patch('PIL.Image.open')
     @patch('os.remove')
     @patch('django.core.files.storage.default_storage.save')
-    @patch('harvester.tasks.preview.open', new_callable=mock_open(read_data='test'))
+    @patch('core.utils.previews.open', new_callable=mock_open(read_data='test'))
     def test_cleanup(self, open_mock, save_mock, os_remove, image_open, close_mock,
                      screenshot_resource_success, screenshot_resource_run):
         resize_mock = Mock()

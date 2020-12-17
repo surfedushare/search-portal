@@ -122,6 +122,7 @@ class OutputCommand(HarvesterCommand):
             "preview_path": meta.get("preview_path", None),
             "lom_educational_levels": meta.get("lom_educational_levels", []),
             "lowest_educational_level": meta.get("lowest_educational_level", -1),
+            "from_youtube": meta.get("from_youtube", False),
             "suggest": title,
             "pipeline": pipeline
         }
