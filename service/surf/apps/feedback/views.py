@@ -1,22 +1,20 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
 from django.core.mail import send_mail
-from django.http import HttpResponse
 
 
 def send_feedback_mail(feedback, current_url, user):
-    print(feedback, current_url, user)
-
-    res = send_mail(
-        'Feedback Zoekportaal Openleermaterialen',
-        feedback,
-        'noreply@edusources.nl',
-        ['kirsten.ruys@gmail.com']
+    message = (
+        f"url: {current_url} "
+        f"user: {user} "
+        f"comments: {feedback}"
     )
 
-    return HttpResponse('%s' % res)
+    send_mail(
+        'Feedback Zoekportaal Openleermaterialen',
+        message,
+        'noreply@edusources.nl',
+        ['edusources-team@surf.nl']
+    )
 
 
 class FeedbackAPIView(APIView):
@@ -24,5 +22,4 @@ class FeedbackAPIView(APIView):
         feedback = request.data["feedback"]
         current_url = request.data["current_url"]
         user = request.user
-        res = send_feedback_mail(feedback, current_url, user)
-        return Response(status=res)
+        send_feedback_mail(feedback, current_url, user)
