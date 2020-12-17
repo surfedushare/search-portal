@@ -10,7 +10,8 @@ class SessionTokenAuthentication(TokenAuthentication):
 
 def delete_api_auth_token(sender, user, request, **kwargs):
     try:
-        user.auth_token.delete()
+        if user is not None:
+            user.auth_token.delete()
     except SessionToken.DoesNotExist:
         pass
 

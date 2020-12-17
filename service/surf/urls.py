@@ -40,6 +40,7 @@ from surf.apps.filters.views import (
     MpttFilterItems
 )
 from surf.apps.users.views import (
+    DeleteAccountAPIView,
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
@@ -62,6 +63,7 @@ router.register(r'stats', StatsView, basename="stats")
 
 apipatterns = [
     url(r'^users/me/', UserDetailsAPIView.as_view()),
+    url(r'^users/delete-account/', DeleteAccountAPIView.as_view()),
     url(r'^users/obtain-token/', ObtainTokenAPIView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^rate_material/', MaterialRatingAPIView.as_view()),
