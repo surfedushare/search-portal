@@ -30,7 +30,7 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     """
     Creates or updates an AWS ES decompound word package based on a decompound dictionary
     """
-    s3_bucket_name = "edushare-data"
+    s3_bucket_name = ctx.config.aws.harvest_content_bucket
     s3_keypath = "elastic/decompound_word_list.nl.txt"
     # Uploading to S3
     ctx.run(f"aws s3 cp {decompound_file_path} s3://{s3_bucket_name}/{s3_keypath}")

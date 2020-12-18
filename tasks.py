@@ -22,7 +22,8 @@ aws_collection.configure(service_environment)
 
 harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="harvester")
 harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, cleanup, import_dataset, deploy,
-                                  push_es_index, dump_data, sync_harvest_content)
+                                  push_es_index, dump_data, sync_harvest_content, create_decompound_dictionary,
+                                  push_decompound_dictionary)
 harvester_collection.configure(harvester_environment)
 
 
@@ -33,5 +34,4 @@ namespace = Collection(
     legacy_collection,
     prepare_builds,
     test_collection,
-    Collection("es", create_decompound_dictionary, push_decompound_dictionary)
 )
