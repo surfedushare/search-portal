@@ -1,0 +1,56 @@
+<section class="collections">
+  <slot name="header-info"> </slot>
+  <draggable
+    v-model="myCollections"
+    draggable=".collections__item"
+    class="collections__items"
+  >
+    <div
+      v-for="collection in myCollections"
+      :class="[
+        `tile--items-in-line-${itemsInLine}`,
+        `materials__item--items-in-line-${itemsInLine}`]
+      "
+      class="collections__item tile"
+    >
+      <button
+        :class="{'select-icon': true, 'selected': collection.selected}"
+        v-if="editableContent"
+        @click="deleteCollectionPopup(collection)"
+      >
+        Delete
+      </button>
+      <div
+        :class="{'selected': collection.selected}"
+        class="collections__item_wrapper tile__wrapper"
+      >
+        <div class="collections__item_header">{{ $t('Collection') }}</div>
+        <h3 class="collections__item_ttl">
+          {{
+            $i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+          }}
+        </h3>
+        <p class="collections__item_count">
+          {{ $tc('items', collection.materials_count) }}
+        </p>
+      </div>
+
+      <router-link
+        :to="localePath({name: (editableContent) ? 'my-collection' : 'collections-id', params: {id: collection.id}})"
+        class="collections__item_ttl_link"
+        :key="`${collection.id}`"
+      >
+        {{ $i18n.locale === 'nl' ? collection.title_nl : collection.title_en }}
+      </router-link>
+    </div>
+  </draggable>
+  <div v-if="loading"><Spinner></Spinner></div>
+  <div class="collections__info" v-else-if="collections && !collections.length">
+    {{ $t('No-collections') }}
+  </div>
+  <DeleteCollection
+    :close="closeDeleteCollection"
+    :is-show="isShowDeleteCollection"
+    :deletefunction="deleteCollection"
+  ></DeleteCollection>
+</section>

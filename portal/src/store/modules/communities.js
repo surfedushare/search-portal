@@ -158,15 +158,6 @@ export default {
         $log.error('Validate error: ', id)
       }
     },
-    async getCommunityCollectionsNextPage({ commit, state }) {
-      commit('SET_COMMUNITY_COLLECTIONS_LOADING', true)
-      const { data: communityCollections } = await axios.get(
-        state.community_collections.next
-      )
-
-      commit('SET_COMMUNITY_COLLECTIONS_NEXT', communityCollections)
-      commit('SET_COMMUNITY_COLLECTIONS_LOADING', false)
-    },
     async postCommunityCollection({ commit }, data) {
       if (validateParams(data)) {
         const { data: collection } = await axios.post(`collections/`, data)

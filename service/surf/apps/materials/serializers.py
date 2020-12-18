@@ -5,7 +5,6 @@ This module contains API view serializers for materials app.
 from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
-from django.db import models as django_models
 
 from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.models import (
@@ -170,7 +169,7 @@ class CollectionShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Collection
-        fields = ('id', 'title_nl', 'title_en')
+        fields = ('id', 'title_nl', 'title_en', 'position')
 
 
 class CollectionSerializer(CollectionShortSerializer):
@@ -184,7 +183,7 @@ class CollectionSerializer(CollectionShortSerializer):
     communities_count = serializers.SerializerMethodField()
     communities = CommunitySerializer(many=True, read_only=True)
     sharing_counters = serializers.SerializerMethodField()
-    position = django_models.IntegerField(default=0)
+    position = serializers.IntegerField(required=False)
 
     @staticmethod
     def get_sharing_counters(obj):
