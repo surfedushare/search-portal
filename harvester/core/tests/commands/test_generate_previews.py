@@ -32,7 +32,7 @@ class TestGeneratePreviews(TestCase):
         DocumentFactory.create(dataset=dataset, mime_type="text/html", preview_path="previews/8")
 
         call_command(
-            "generate_browser_previews", f"--dataset={dataset.name}", "--no-progress", "--no-logger", stdout=out
+            "generate_previews", f"--dataset={dataset.name}", "--no-progress", "--no-logger", stdout=out
         )
 
         preview_task_mock.assert_called_once_with(document_with_website.id)
