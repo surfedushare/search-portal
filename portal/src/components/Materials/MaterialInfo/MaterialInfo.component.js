@@ -111,7 +111,7 @@ export default {
      * Get formatted 'number_of_views'
      * @returns String
      */
-    contedNumber() {
+    viewCount() {
       return numeral(this.material.view_count).format('0a')
     },
     /**
