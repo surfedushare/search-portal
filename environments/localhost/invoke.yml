@@ -20,3 +20,6 @@ elastic_search:
   protocol: "http"
   is_aws: false
   verify_certs: true  # ignored as long as protocol is http
+
+aws:
+  harvest_content_bucket: null
