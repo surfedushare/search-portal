@@ -97,6 +97,7 @@ CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
 CSP_IMG_SRC = ["'self'", "data:"]
 if MODE != 'localhost':
     CSP_IMG_SRC.append(f"{environment.aws.image_upload_bucket}.s3.amazonaws.com")
+    CSP_IMG_SRC.append(f"{environment.aws.harvest_content_bucket}.s3.amazonaws.com")
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
