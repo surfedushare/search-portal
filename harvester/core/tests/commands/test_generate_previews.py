@@ -4,14 +4,14 @@ from unittest.mock import patch, Mock
 from django.test import TestCase
 from django.core.management import call_command
 
-from core.management.commands.generate_browser_previews import Command as GenerateBrowserPreviewsCommand
+from core.management.commands.generate_previews import Command as GeneratePreviewsCommand
 from core.tests.factories import DocumentFactory, DatasetFactory, OAIPMHHarvestFactory
 from core.constants import HarvestStages
 
 
-class TestGenerateBrowserReviews(TestCase):
+class TestGeneratePreviews(TestCase):
     def get_command_instance(self):
-        command = GenerateBrowserPreviewsCommand()
+        command = GeneratePreviewsCommand()
         command.show_progress = False
         command.info = lambda x: x
         return command
