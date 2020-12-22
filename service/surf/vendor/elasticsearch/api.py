@@ -11,10 +11,12 @@ from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 
 
 _VCARD_FORMATED_NAME_KEY = "FN"
+PREVIEW_SMALL = "preview-200x150.png"
+PREVIEW_ORIGINAL = "preview.png"
 s3_client = boto3.client("s3")
 
 
-def get_preview_absolute_uri(preview_path, duration=7200):
+def get_preview_absolute_uri(preview_path, preview_type, duration=7200):
     """
     Generate a presigned URL to share the S3 object where this resource is stored.
     If the application is not connected to S3 it simply returns a local path.
@@ -23,12 +25,12 @@ def get_preview_absolute_uri(preview_path, duration=7200):
         return None
 
     if settings.AWS_HARVESTER_BUCKET_NAME is None:
-        return os.path.join(settings.MEDIA_URL, "harvester", preview_path, "preview-200x150.png")
+        return os.path.join(settings.MEDIA_URL, "harvester", preview_path, preview_type)
 
     # Generate a presigned URL for the S3 object
     lookup_params = {
         "Bucket": settings.AWS_HARVESTER_BUCKET_NAME,
-        "Key": f"{preview_path}/preview-200x150.png"
+        "Key": f"{preview_path}/{preview_type}"
     }
     try:
         return s3_client.generate_presigned_url("get_object", Params=lookup_params, ExpiresIn=duration)
@@ -128,7 +130,9 @@ class ElasticSearchApiClient:
         record['disciplines'] = hit['_source']['disciplines']
         record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['copyright'] = hit['_source']['copyright']
-        record['preview_url'] = get_preview_absolute_uri(hit['_source'].get('preview_path', None))
+        preview_path = hit['_source'].get('preview_path', None)
+        record['preview_thumbnail_url'] = get_preview_absolute_uri(preview_path, PREVIEW_SMALL)
+        record['preview_url'] = get_preview_absolute_uri(preview_path, PREVIEW_ORIGINAL)
         themes = set()
         for discipline in hit['_source']['disciplines']:
             if discipline in DISCIPLINE_CUSTOM_THEME:

@@ -31,7 +31,7 @@
   <div class="material__info_quality_preview">
     <div class="material__info_preview" v-if="material.preview_url">
       <h3 class="material__info_subttl">{{ $t('Preview') }}</h3>
-      <img class="preview-image" :src="material.preview_url" />
+      <enlargeable-image :src="material.preview_thumbnail_url" :src_large="material.preview_url" />
     </div>
     <div class="material__info_quality_container">
       <h3 class="material__info_subttl">{{ $t('Quality') }}</h3>
