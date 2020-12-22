@@ -16,6 +16,7 @@ django-log-formatter-json==0.2.0
 ujson==3.1.0  # implicit dependency of django-log-formatter-json
 vobject==0.9.6.1
 youtube-dl==2020.12.14
+pdf2image==1.14.0
 
 # Datagrowth
 jsonschema==3.2.0

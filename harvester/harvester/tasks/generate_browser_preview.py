@@ -24,6 +24,6 @@ def generate_browser_preview(document_id):
         bucket_folder_path = f"previews/{document.id}"
         create_thumbnails(screenshot_location, document.id)
         store_previews(bucket_folder_path, document.id)
-        update_document(document, resource, bucket_folder_path)
+        update_document(document, bucket_folder_path, resource)
         resource.close()
         remove_files_from_filesystem(document.id)

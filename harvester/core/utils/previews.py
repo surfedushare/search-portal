@@ -24,15 +24,20 @@ def store_previews(destination_location, document_id):
             )
 
 
-def update_document(document, resource, preview_path):
-    pipeline = document.properties.get("pipeline", {})
-    pipeline.update({
-        "preview": serialize_resource(resource)
-    })
+def update_document(document, preview_path, resource=None):
     document.properties.update({
-        "preview_path": preview_path,
-        "pipeline": pipeline
+        "preview_path": preview_path
     })
+
+    if resource:
+        pipeline = document.properties.get("pipeline", {})
+        pipeline.update({
+            "preview": serialize_resource(resource)
+        })
+        document.properties.update({
+            "pipeline": pipeline
+        })
+
     document.save()
 
 
@@ -44,8 +49,6 @@ def remove_files_from_filesystem(document_id):
 
 
 def create_thumbnails(screenshot_location, document_id):
-    screenshot = Image.open(screenshot_location)
-
     for (width, height) in THUMBNAIL_SIZES:
         screenshot = Image.open(screenshot_location)
         screenshot.thumbnail((width, height), Image.ANTIALIAS)
