@@ -1,5 +1,5 @@
 from celery.exceptions import SoftTimeLimitExceeded
-from pdf2image import convert_from_bytes
+import pdf2image
 
 from core.models import Document, FileResource
 from django.conf import settings
@@ -31,7 +31,7 @@ def generate_pdf_preview(document_id):
 
 
 def convert_pdf_file_to_image(path_to_pdf, destination):
-    image = convert_from_bytes(path_to_pdf.read(), single_file=True)[0]
+    image = pdf2image.convert_from_bytes(path_to_pdf.read(), single_file=True)[0]
     image.save(destination)
 
 
