@@ -20,6 +20,6 @@ ipython==7.16.1
 tqdm==4.50.2
 invoke==1.4.1
 ipdb==0.13.3
-sentry-sdk==0.16.2
+sentry-sdk==0.19.5
 
 -r dependencies.txt
