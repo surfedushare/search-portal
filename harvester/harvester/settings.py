@@ -200,7 +200,7 @@ LOGGING = {
     'loggers': {
         'harvester': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': f"{environment.django.logging.level}",
             'propagate': True,
         },
     },
