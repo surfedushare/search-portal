@@ -1,4 +1,5 @@
 import os
+import logging
 from unittest.mock import patch
 from io import StringIO
 from datetime import datetime
@@ -67,6 +68,12 @@ class TestBasicHarvest(TestCase):
 
     fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
 
+    def setUp(self):
+        logging.disable(logging.CRITICAL)
+
+    def tearDown(self):
+        logging.disable(logging.NOTSET)
+
     def get_command_instance(self):
         command = BasicHarvestCommand()
         command.show_progress = False
@@ -89,9 +96,9 @@ class TestBasicHarvest(TestCase):
             include_deleted=False
         )
         # Asserting usage of download_seed_files
-        download_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS)
+        download_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, dataset='test')
         # And then usage of extract_from_seeds
-        extract_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1])
+        extract_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1], dataset='test')
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
         surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")

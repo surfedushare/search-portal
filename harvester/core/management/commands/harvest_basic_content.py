@@ -1,3 +1,5 @@
+from itertools import chain
+
 from datagrowth.resources.http.tasks import send_serie
 from datagrowth.resources.shell.tasks import run_serie
 from datagrowth.configuration import create_config
@@ -5,6 +7,7 @@ from core.management.base import HarvesterCommand
 from core.constants import HarvestStages
 from core.models import OAIPMHHarvest, FileResource
 from edurep.utils import get_edurep_oaipmh_seeds
+from harvester import logger
 
 
 class Command(HarvesterCommand):
@@ -13,13 +16,13 @@ class Command(HarvesterCommand):
         super().add_arguments(parser)
         parser.add_argument('-d', '--dataset', type=str, required=True)
 
-    def download_seed_files(self, seeds, interval=0):
+    def download_seed_files(self, seeds, interval=0, dataset=None):
         download_config = create_config("http_resource", {
             "resource": "core.FileResource",
             "interval_duration": interval
         })
 
-        self.info("Starting with main content")
+        logger.info("Starting with main content", dataset=dataset)
         success_main, error_main = send_serie(
             self.progress([[seed["url"]] for seed in seeds]),
             [{} for _ in seeds],
@@ -27,10 +30,10 @@ class Command(HarvesterCommand):
             method="get"
         )
 
-        self.info("Errors while downloading main content: {}".format(len(error_main)))
-        self.info("Main content downloaded successfully: {}".format(len(success_main)))
+        logger.info(f"Errors while downloading main content: {len(error_main)}", dataset=dataset)
+        logger.info(f"Main content downloaded successfully: {len(success_main)}", dataset=dataset)
 
-        self.info("Starting with package content")
+        logger.info("Starting with package content")
         package_urls = [[seed["package_url"]] for seed in seeds if seed.get("package_url", None)]
         success_package, error_package = send_serie(
             self.progress(package_urls),
@@ -38,12 +41,12 @@ class Command(HarvesterCommand):
             config=download_config,
             method="get"
         )
-        self.info("Errors while downloading package content: {}".format(len(error_package)))
-        self.info("Package content downloaded successfully: {}".format(len(error_main)))
+        logger.info(f"Errors while downloading package content: {len(error_package)}", dataset=dataset)
+        logger.info(f"Package content downloaded successfully: {len(success_package)}", dataset=dataset)
 
         return success_main + success_package
 
-    def extract_from_seed_files(self, seeds, downloads):
+    def extract_from_seed_files(self, seeds, downloads, dataset=None):
         if not len(seeds):
             return
 
@@ -51,7 +54,7 @@ class Command(HarvesterCommand):
             "resource": "core.TikaResource",
         })
 
-        self.info("Starting with main content")
+        logger.info("Starting with main content", dataset=dataset)
         uris = [FileResource.uri_from_url(seed["url"]) for seed in seeds]
         file_resources = FileResource.objects.filter(uri__in=uris, id__in=downloads)
         signed_urls = [
@@ -63,10 +66,10 @@ class Command(HarvesterCommand):
             [{} for _ in file_resources],
             config=tika_config
         )
-        self.info("Errors while extracting main texts: {}".format(len(main_error)))
-        self.info("Main texts extracted successfully: {}".format(len(main_success)))
+        logger.info(f"Errors while extracting main texts: {main_error}", dataset=dataset)
+        logger.info(f"Main texts extracted successfully: {main_success}", dataset=dataset)
 
-        self.info("Starting with package content")
+        logger.info("Starting with package content")
         uris = [FileResource.uri_from_url(seed["package_url"]) for seed in seeds if seed.get("package_url", None)]
         file_resources = FileResource.objects.filter(uri__in=uris, id__in=downloads)
         signed_urls = [
@@ -78,8 +81,23 @@ class Command(HarvesterCommand):
             [{} for _ in file_resources],
             config=tika_config
         )
-        self.info("Errors while extracting package texts: {}".format(len(package_error)))
-        self.info("Package texts extracted successfully: {}".format(len(package_success)))
+        logger.info("Errors while extracting package texts: {package_error}", dataset=dataset)
+        logger.info("Package texts extracted successfully: {package_success}", dataset=dataset)
+
+    def generate_seeds(self, harvest, dataset_name):
+        logger.debug(f"Getting edurep OAI-PMH seeds for '{harvest.source.spec}'", dataset=dataset_name)
+        set_specification = harvest.source.spec
+        harvest_seeds = get_edurep_oaipmh_seeds(
+            set_specification,
+            harvest.latest_update_at,
+            include_deleted=False
+        )
+        logger.info(
+            f'Amount of extracted results by OAI-PMH for "{set_specification}": {len(harvest_seeds)}',
+            dataset=dataset_name
+        )
+
+        return [seed for seed in harvest_seeds if seed['analysis_allowed']]
 
     def handle(self, *args, **options):
 
@@ -94,45 +112,30 @@ class Command(HarvesterCommand):
                 f"There are no scheduled and NEW OAIPMHHarvest objects for '{dataset_name}'"
             )
 
-        self.header("BASIC CONTENT HARVEST", options)
+        logger.info(f"Starting basic content harvest for dataset '{dataset_name}'", dataset=dataset_name)
 
         # From the Edurep metadata we generate "seeds" that are the starting point for our own data structure
-        self.info("Extracting data from sources ...")
-        seeds = []
-        progress = {}
-        for harvest in self.progress(harvest_queryset, total=harvest_queryset.count()):
-            set_specification = harvest.source.spec
-            harvest_seeds = get_edurep_oaipmh_seeds(
-                set_specification,
-                harvest.latest_update_at,
-                include_deleted=False
-            )
-            seeds += harvest_seeds
-            progress[set_specification] = len(harvest_seeds)
-        for set_name, seeds_count in progress.items():
-            self.info(f'Amount of extracted results by OAI-PMH for "{set_name}": {seeds_count}')
-        self.info("")
+        logger.info("Extracting data from sources...", dataset=dataset_name)
+        seeds = list(chain.from_iterable([self.generate_seeds(harvest, dataset_name) for harvest in harvest_queryset]))
 
         download_ids = []
-        download_allowed_seeds = [seed for seed in seeds if seed['analysis_allowed']]
 
         # Download youtube videos
-        youtube_videos = [seed for seed in download_allowed_seeds if seed['from_youtube']]
+        youtube_videos = [seed for seed in seeds if seed['from_youtube']]
         if len(youtube_videos) > 0:
-            self.info("Downloading youtube videos ...")
-            download_ids = download_ids + self.download_seed_files(youtube_videos, 2000)
+            logger.info("Downloading youtube videos...", dataset=dataset_name)
+            download_ids = download_ids + self.download_seed_files(youtube_videos, 2000, dataset=dataset_name)
 
         # Download other seeds
-        other_seeds = [seed for seed in download_allowed_seeds if not seed['from_youtube']]
+        other_seeds = [seed for seed in seeds if not seed['from_youtube']]
         if len(other_seeds) > 0:
-            self.info("Downloading other seeds ...")
-            download_ids = download_ids + self.download_seed_files(other_seeds)
+            logger.info("Downloading other seeds...", dataset=dataset_name)
+            download_ids = download_ids + self.download_seed_files(other_seeds, dataset=dataset_name)
 
         # Process files with Tika to extract data from content
-        self.info("Extracting basic content from files ...")
-        self.extract_from_seed_files(download_allowed_seeds, download_ids)
+        logger.info("Extracting basic content from files...")
+        self.extract_from_seed_files(seeds, download_ids, dataset=dataset_name)
 
-        # Finish the basic harvest
-        for harvest in harvest_queryset:
-            harvest.stage = HarvestStages.BASIC
-            harvest.save()
+        harvest_queryset.update(stage=HarvestStages.BASIC)
+
+        logger.debug("Finished harvesting of basic content.", dataset=dataset_name)

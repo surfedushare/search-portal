@@ -10,6 +10,7 @@ from django.db import models, connection
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from surfpol.configuration import create_configuration
 from harvester.settings import environment
+from harvester import logger
 from core.management.base import HarvesterCommand
 from core.models import Dataset, ElasticIndex, FileResource
 from core.models.resources.basic import file_resource_delete_handler
@@ -78,7 +79,7 @@ class Command(base.LabelCommand, HarvesterCommand):
             dataset.delete()
 
         if harvest_source and not skip_download:
-            self.info(f"Downloading dump file for: {dataset_label}")
+            logger.info(f"Downloading dump file for: {dataset_label}", dataset=dataset_label)
             ctx = Context(environment)
             harvester_data_bucket = f"s3://{source_environment.aws.harvest_content_bucket}/datasets/harvester"
             ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
