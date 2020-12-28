@@ -1,5 +1,6 @@
 from unittest.mock import patch
 from io import StringIO
+import logging
 from datetime import datetime
 
 from django.test import TestCase
@@ -11,7 +12,15 @@ from core.models import Arrangement, Document, OAIPMHHarvest
 from core.constants import HarvestStages
 
 
-class TestSeedHarvest(TestCase):
+class TestCaseWithoutLogging(TestCase):
+    def setUp(self):
+        logging.disable(logging.CRITICAL)
+
+    def tearDown(self):
+        logging.disable(logging.NOTSET)
+
+
+class TestSeedHarvest(TestCaseWithoutLogging):
     """
     This test case represents the scenario where a harvest is started from t=0
     """
@@ -82,7 +91,7 @@ class TestSeedHarvest(TestCase):
                 pass
 
 
-class TestSeedHarvestWithHistory(TestCase):
+class TestSeedHarvestWithHistory(TestCaseWithoutLogging):
     """
     This test case represents the scenario where a harvest from a previous harvest
     """
