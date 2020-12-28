@@ -1,6 +1,7 @@
 from unittest.mock import patch
 from io import StringIO
 from datetime import datetime
+import logging
 
 from django.test import TestCase
 from django.core.management import call_command
@@ -33,7 +34,15 @@ DUMMY_SEEDS = [
 ]
 
 
-class TestCreateOrUpdateDatasetNoHistory(TestCase):
+class TestCaseWithoutLogging(TestCase):
+    def setUp(self):
+        logging.disable(logging.CRITICAL)
+
+    def tearDown(self):
+        logging.disable(logging.NOTSET)
+
+
+class TestCreateOrUpdateDatasetNoHistory(TestCaseWithoutLogging):
 
     fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
 
@@ -43,6 +52,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # The only valid stage for "update_dataset" to act on.
         OAIPMHHarvest.objects.filter(stage=HarvestStages.VIDEO).update(stage=HarvestStages.COMPLETE)
         OAIPMHHarvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        super().setUp()
 
     def get_command_instance(self):
         command = DatasetCommand()
@@ -155,7 +165,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         self.assertEqual(collection.arrangement_set.count(), 0)
 
 
-class TestCreateOrUpdateDatasetWithHistory(TestCase):
+class TestCreateOrUpdateDatasetWithHistory(TestCaseWithoutLogging):
 
     fixtures = ["datasets-history", "surf-oaipmh-2020-01-01", "resources"]
 
@@ -163,6 +173,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         # Setting the stage of the "surf" set harvests to VIDEO.
         # The only valid stage for "update_dataset" to act on.
         OAIPMHHarvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        super().setUp()
 
     def get_command_instance(self):
         command = DatasetCommand()

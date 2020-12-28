@@ -7,6 +7,7 @@ from core.constants import HarvestStages
 from core.management.base import OutputCommand
 from core.utils.resources import get_material_resources, get_basic_material_resources, serialize_resource
 from edurep.utils import get_edurep_oaipmh_seeds
+from harvester import logger
 
 
 class Command(OutputCommand):
@@ -61,7 +62,7 @@ class Command(OutputCommand):
         skipped = 0
         dumped = 0
         documents_count = 0
-        self.info(f"Upserting for {collection.name} ...")
+        logger.info(f"Upserting for {collection.name}...", dataset=collection.dataset.name)
         for seed in self.progress(seeds):
             file_resource, tika_resource, video_resource, transcription_resource = \
                 get_material_resources(seed["url"], seed.get("title", None))
@@ -88,6 +89,10 @@ class Command(OutputCommand):
                 documents += self.get_documents_from_transcription(transcription_resource, seed, pipeline)
 
             if not len(documents):
+                logger.debug(
+                    f"Skipped material with external id '{seed['external_id']}'",
+                    dataset=collection.dataset
+                )
                 skipped += 1
                 continue
             dumped += 1
@@ -110,10 +115,14 @@ class Command(OutputCommand):
             arrangement.store_language()
             documents_count += len(documents)
 
+        logger.info(f"Skipped URL's for {collection.name} during dump: {skipped}", dataset=collection.dataset.name)
+        logger.info(f"Dumped Arrangements for {collection.name}: {dumped}", dataset=collection.dataset.name)
+        logger.info(f"Dumped Documents for {collection.name}: {documents_count}", dataset=collection.dataset.name)
+
         return skipped, dumped, documents_count
 
     def handle_deletion_seeds(self, collection, deletion_seeds):
-        self.info(f"Deleting for {collection.name} ...")
+        logger.info(f"Deleting for {collection.name} ...")
         document_delete_total = 0
         for seeds in ibatch(deletion_seeds, 32, progress_bar=self.show_progress):
             ids = [seed["external_id"] for seed in seeds]
@@ -127,6 +136,14 @@ class Command(OutputCommand):
                 .filter(collection=collection, num_docs=0):
             arrangement.delete()
             arrangement_delete_count += 1
+
+        logger.info(
+            f"Deleted Arrangements for {collection.name}: {arrangement_delete_count}", dataset=collection.dataset.name
+        )
+        logger.info(
+            f"Deleted Documents for {collection.name}: {document_delete_total}", dataset=collection.dataset.name
+        )
+
         return arrangement_delete_count, document_delete_total
 
     def handle(self, *args, **options):
@@ -143,9 +160,10 @@ class Command(OutputCommand):
                 f"There are no scheduled and VIDEO EdurepHarvest objects for '{dataset_name}'"
             )
 
-        self.header("CREATE OR UPDATE DATASET", options)
+        logger.info(f"Update dataset for {dataset_name}", dataset=dataset_name)
 
-        self.info("Extracting data from sources ...")
+        logger.info("Extracting data from sources...", dataset=dataset_name)
+
         seeds_by_collection = defaultdict(list)
         for harvest in self.progress(harvest_queryset, total=harvest_queryset.count()):
             set_specification = harvest.source.spec
@@ -157,7 +175,12 @@ class Command(OutputCommand):
                 else:
                     deletes.append(seed)
             seeds_by_collection[harvest.source.spec] += (upserts, deletes,)
-            self.info(f"Files considered for processing, upserts:{len(upserts)} deletes:{len(deletes)}")
+            logger.info(
+                f"Files of collection '{harvest.source.spec} considered for processing, "
+                f"upserts:{len(upserts)} deletes:{len(deletes)}",
+                dataset=dataset_name,
+                aggregate={"upserts": len(upserts), "deletes": len(deletes)}
+            )
 
         for spec_name, seeds in seeds_by_collection.items():
             # Unpacking seeds
@@ -168,20 +191,13 @@ class Command(OutputCommand):
             collection.referee = "id"
             collection.save()
             if created:
-                self.info("Created collection " + spec_name)
+                logger.info(f"Created collection '{spec_name}'", dataset=dataset_name)
             else:
-                self.info("Adding to collection " + spec_name)
+                logger.info(f"Adding to existing collection '{spec_name}'", dataset=dataset_name)
 
-            skipped, dumped, documents_count = self.handle_upsert_seeds(collection, upserts)
-            deleted_arrangements, deleted_documents = self.handle_deletion_seeds(collection, deletes)
+            self.handle_upsert_seeds(collection, upserts)
+            self.handle_deletion_seeds(collection, deletes)
 
-            self.info(f"Skipped URL's for {collection.name} during dump: {skipped}")
-            self.info(f"Dumped Arrangements for {collection.name}: {dumped}")
-            self.info(f"Dumped Documents for {collection.name}: {documents_count}")
-            self.info(f"Deleted Arrangements for {collection.name}: {deleted_arrangements}")
-            self.info(f"Deleted Documents for {collection.name}: {deleted_documents}")
+        harvest_queryset.update(stage=HarvestStages.PREVIEW)
 
-        # Finish the dataset and harvest
-        for harvest in harvest_queryset:
-            harvest.stage = HarvestStages.PREVIEW
-            harvest.save()
+        logger.info("Finished updating the dataset", dataset=dataset_name)
