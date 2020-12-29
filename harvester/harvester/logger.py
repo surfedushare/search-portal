@@ -1,6 +1,4 @@
-import django_log_formatter_json
 import logging
-
 
 logger = logging.getLogger('harvester')
 
@@ -11,11 +9,16 @@ def _convert_to_extra_field(level=None, **kwargs):
     return extra
 
 
-def debug(message, **kwargs):
+def debug(message, *args, **kwargs):
     extra = _convert_to_extra_field(level='DEBUG', **kwargs)
-    logger.debug(message, extra=extra)
+    logger.debug(message, *args, extra=extra)
 
 
-def info(message, **kwargs):
+def info(message, *args, **kwargs):
     extra = _convert_to_extra_field(level='INFO', **kwargs)
-    logger.info(message, extra=extra)
+    logger.info(message, *args, extra=extra)
+
+
+def warning(message, *args, **kwargs):
+    extra = _convert_to_extra_field(level='WARNING', **kwargs)
+    logger.warning(message, *args, extra=extra)
