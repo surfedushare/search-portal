@@ -68,7 +68,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", "--no-logger")
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
 
         # Asserting logging of command
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", dataset='test')
@@ -116,7 +116,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger")
+        call_command("push_es_index", "--dataset=test", "--no-progress")
 
         # Asserting logging of command
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False", dataset='test')
@@ -146,7 +146,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
     def test_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
         try:
-            call_command("push_es_index", "--dataset=invalid", "--no-logger")
+            call_command("push_es_index", "--dataset=invalid")
             self.fail("push_es_index did not raise for an invalid dataset")
         except Dataset.DoesNotExist:
             pass
@@ -204,7 +204,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         ]
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger")
+        call_command("push_es_index", "--dataset=test", "--no-progress")
 
         # Asserting logging of command
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False", dataset='test')
@@ -248,7 +248,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks similar to TestPushToIndex.test_edurep_surf_with_promote
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger")
+        call_command("push_es_index", "--dataset=test", "--no-progress")
         # Asserting output
         info_logger.assert_any_call("since:2020-06-01, recreate:False and promote:False", dataset='test')
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
@@ -289,7 +289,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         get_es_client.reset_mock()
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress", "--no-logger")
+        call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress")
 
         # Asserting output of command
         info_logger.assert_any_call("since:1970-01-01, recreate:True and promote:False", dataset='test')
@@ -343,7 +343,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", "--no-logger")
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
 
         # Asserting logging of command
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", dataset='test')

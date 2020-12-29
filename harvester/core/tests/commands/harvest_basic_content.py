@@ -1,5 +1,4 @@
 import os
-import logging
 from unittest.mock import patch
 from io import StringIO
 from datetime import datetime
@@ -68,12 +67,6 @@ class TestBasicHarvest(TestCase):
 
     fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
 
-    def setUp(self):
-        logging.disable(logging.CRITICAL)
-
-    def tearDown(self):
-        logging.disable(logging.NOTSET)
-
     def get_command_instance(self):
         command = BasicHarvestCommand()
         command.show_progress = False
@@ -89,7 +82,7 @@ class TestBasicHarvest(TestCase):
         # After that the heavy lifting is done by two methods named download_seed_files and extract_from_seed_files.
         # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
         out = StringIO()
-        call_command("harvest_basic_content", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+        call_command("harvest_basic_content", "--dataset=test", "--no-progress", stdout=out)
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with(
             "surf", make_aware(datetime(year=1970, month=1, day=1)),
@@ -118,7 +111,7 @@ class TestBasicHarvest(TestCase):
     def test_harvest_with_youtube(self, seeds_mock):
         out = StringIO()
         with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
-            call_command("harvest_basic_content", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+            call_command("harvest_basic_content", "--dataset=test", "--no-progress", stdout=out)
         self.assertEqual(send_serie_mock.call_count, 4, "Expects two calls to send_serie")
 
         for name, args, kwargs in send_serie_mock.mock_calls[0:2]:  # Youtube

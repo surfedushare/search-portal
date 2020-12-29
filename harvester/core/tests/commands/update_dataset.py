@@ -1,7 +1,6 @@
 from unittest.mock import patch
 from io import StringIO
 from datetime import datetime
-import logging
 
 from django.test import TestCase
 from django.core.management import call_command
@@ -34,15 +33,7 @@ DUMMY_SEEDS = [
 ]
 
 
-class TestCaseWithoutLogging(TestCase):
-    def setUp(self):
-        logging.disable(logging.CRITICAL)
-
-    def tearDown(self):
-        logging.disable(logging.NOTSET)
-
-
-class TestCreateOrUpdateDatasetNoHistory(TestCaseWithoutLogging):
+class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
     fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
 
@@ -70,7 +61,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCaseWithoutLogging):
         # handle_upsert_seeds and handle_deletion_seeds.
         # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
         out = StringIO()
-        call_command("update_dataset", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+        call_command("update_dataset", "--dataset=test", "--no-progress", stdout=out)
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)))
         # Asserting usage of handle_upsert_seeds
@@ -165,7 +156,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCaseWithoutLogging):
         self.assertEqual(collection.arrangement_set.count(), 0)
 
 
-class TestCreateOrUpdateDatasetWithHistory(TestCaseWithoutLogging):
+class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
     fixtures = ["datasets-history", "surf-oaipmh-2020-01-01", "resources"]
 

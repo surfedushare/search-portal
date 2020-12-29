@@ -1,6 +1,5 @@
 from unittest.mock import patch
 from io import StringIO
-import logging
 from datetime import datetime
 
 from django.test import TestCase
@@ -12,15 +11,7 @@ from core.models import Arrangement, Document, OAIPMHHarvest
 from core.constants import HarvestStages
 
 
-class TestCaseWithoutLogging(TestCase):
-    def setUp(self):
-        logging.disable(logging.CRITICAL)
-
-    def tearDown(self):
-        logging.disable(logging.NOTSET)
-
-
-class TestSeedHarvest(TestCaseWithoutLogging):
+class TestSeedHarvest(TestCase):
     """
     This test case represents the scenario where a harvest is started from t=0
     """
@@ -34,7 +25,7 @@ class TestSeedHarvest(TestCaseWithoutLogging):
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
         out = StringIO()
         with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", stdout=out)
         # Asserting main result (ignoring any white lines at the end of output)
         stdout = out.getvalue().split("\n")
         stdout.reverse()
@@ -67,7 +58,7 @@ class TestSeedHarvest(TestCaseWithoutLogging):
     def test_edurep_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
         try:
-            call_command("harvest_edurep_seeds", "--dataset=invalid", "--no-logger")
+            call_command("harvest_edurep_seeds", "--dataset=invalid")
             self.fail("harvest_edurep_seeds did not raise for an invalid dataset")
         except OAIPMHHarvest.DoesNotExist:
             pass
@@ -76,7 +67,7 @@ class TestSeedHarvest(TestCaseWithoutLogging):
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
         try:
-            call_command("harvest_edurep_seeds", "--dataset=invalid", "--no-logger")
+            call_command("harvest_edurep_seeds", "--dataset=invalid")
             self.fail("harvest_edurep_seeds did not raise for a dataset without pending harvests")
         except OAIPMHHarvest.DoesNotExist:
             pass
@@ -85,13 +76,13 @@ class TestSeedHarvest(TestCaseWithoutLogging):
         out = StringIO()
         with patch("edurep.management.commands.harvest_edurep_seeds.send", return_value=([], [100],)):
             try:
-                call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+                call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", stdout=out)
                 self.fail("harvest_edurep_seeds did not fail when EdurepOAIPMH was returning errors")
             except CommandError:
                 pass
 
 
-class TestSeedHarvestWithHistory(TestCaseWithoutLogging):
+class TestSeedHarvestWithHistory(TestCase):
     """
     This test case represents the scenario where a harvest from a previous harvest
     """
@@ -105,7 +96,7 @@ class TestSeedHarvestWithHistory(TestCaseWithoutLogging):
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
         out = StringIO()
         with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", stdout=out)
         # Asserting main result (ignoring any white lines at the end of output)
         stdout = out.getvalue().split("\n")
         stdout.reverse()
