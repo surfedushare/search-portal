@@ -182,25 +182,38 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
 
+TESTING = sys.argv[1:2] == ['test']
+log_handlers = ['console', 'json'] if not TESTING else []
+log_level = environment.django.logging.level if not TESTING else 'CRITICAL'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'json': {
             '()': 'django_log_formatter_json.JSONFormatter',
+        },
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
         }
     },
     'handlers': {
+        'json': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/harvester.log.json',
+            'formatter': 'json'
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'json'
-        },
+            'formatter': 'standard'
+        }
     },
     'loggers': {
         'harvester': {
-            'handlers': ['console'],
-            'level': f"{environment.django.logging.level}",
+            'handlers': log_handlers,
+            'level': log_level,
             'propagate': True,
         },
     },
