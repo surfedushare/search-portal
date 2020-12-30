@@ -1,4 +1,3 @@
-import logging
 from invoke import Context
 
 from django.conf import settings
@@ -9,14 +8,12 @@ from harvester.celery import app
 from core.models import Dataset, OAIPMHHarvest
 from core.constants import HarvestStages
 from edurep.models import EdurepOAIPMH
-
-
-log = logging.getLogger("harvester")
+from harvester import logger
 
 
 @app.task(name="health_check")
 def health_check():
-    log.info(f"Healthy: {environment.django.domain}")
+    logger.info(f"Healthy: {environment.django.domain}")
 
 
 @app.task(name="harvest")

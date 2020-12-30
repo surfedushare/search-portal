@@ -1,4 +1,3 @@
-import logging
 from collections import Iterator, defaultdict
 from zipfile import BadZipFile
 from bs4 import BeautifulSoup
@@ -15,9 +14,7 @@ from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
 from core.models import CommonCartridge, FileResource
-
-
-log = logging.getLogger("harvester")
+from harvester import logger
 
 
 class Arrangement(DocumentCollectionMixin, CollectionBase):
@@ -171,7 +168,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             cc.clean()
             package_content = cc.list_content_by_title()
         except (ValidationError, BadZipFile):
-            log.warning(f"Invalid or missing common cartridge for file resource: {package_file.id}")
+            logger.warning(f"Invalid or missing common cartridge for file resource: {package_file.id}")
             return []
 
         # Combine the links and content into documents we may search for

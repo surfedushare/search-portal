@@ -1,4 +1,3 @@
-import logging
 from urlobject import URLObject
 
 from datagrowth.configuration import create_config
@@ -6,6 +5,7 @@ from datagrowth.processors import ExtractProcessor
 
 from edurep.models import EdurepOAIPMH
 from edurep.extraction import EdurepDataExtraction
+from harvester import logger
 
 
 EDUREP_EXTRACTION_OBJECTIVE = {
@@ -33,9 +33,6 @@ EDUREP_EXTRACTION_OBJECTIVE = {
 }
 
 
-err = logging.getLogger(__file__)
-
-
 def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=True):
     queryset = EdurepOAIPMH.objects\
         .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
@@ -56,7 +53,7 @@ def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=Tr
         try:
             results += list(prc.extract_from_resource(harvest))
         except ValueError as exc:
-            err.warning("Invalid XML:", exc, harvest.uri)
+            logger.warning("Invalid XML:", exc, harvest.uri)
     seeds = []
     for seed in results:
         # Some records in Edurep do not have any known URL

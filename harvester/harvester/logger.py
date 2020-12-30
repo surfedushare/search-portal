@@ -22,3 +22,8 @@ def info(message, *args, **kwargs):
 def warning(message, *args, **kwargs):
     extra = _convert_to_extra_field(level='WARNING', **kwargs)
     logger.warning(message, *args, extra=extra)
+
+
+def error(message, *args, **kwargs):
+    extra = _convert_to_extra_field(level='ERROR', **kwargs)
+    logger.error(message, *args, extra=extra)

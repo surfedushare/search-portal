@@ -1,14 +1,10 @@
 from tqdm import tqdm
-import logging
 from mimetypes import guess_type
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from core.utils.language import get_language_from_snippet
-
-
-logger = logging.getLogger("harvester")
 
 
 class HarvesterCommand(BaseCommand):
