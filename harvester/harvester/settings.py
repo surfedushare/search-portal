@@ -183,7 +183,7 @@ REST_FRAMEWORK = {
 # https://docs.sentry.io/
 
 TESTING = sys.argv[1:2] == ['test']
-log_handlers = ['console', 'json'] if not TESTING else []
+log_handlers = [environment.django.logging.handler] if not TESTING else []
 log_level = environment.django.logging.level if not TESTING else 'CRITICAL'
 
 LOGGING = {
@@ -200,8 +200,7 @@ LOGGING = {
     'handlers': {
         'json': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'logs/harvester.log.json',
+            'class': 'logging.StreamHandler',
             'formatter': 'json'
         },
         'console': {
