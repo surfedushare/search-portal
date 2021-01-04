@@ -1,10 +1,11 @@
 import draggable from 'vuedraggable'
 import Spinner from './../../Spinner'
 import DeleteCollection from '~/components/Popup/DeleteCollection'
+import CollectionCard from '../CollectionCard/CollectionCard'
 
 export default {
   name: 'SortableCollections',
-  components: { draggable, Spinner, DeleteCollection },
+  components: { draggable, Spinner, DeleteCollection, CollectionCard },
   props: {
     collections: {
       default: false
