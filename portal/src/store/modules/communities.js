@@ -180,7 +180,18 @@ export default {
           `communities/${id}/collections/`,
           data
         )
-
+        commit('EXTEND_COMMUNITY_COLLECTION', communityCollections)
+        return communityCollections
+      } else {
+        $log.error('Validate error: ', { id, data })
+      }
+    },
+    async updateCommunityCollections({ commit }, { id, data }) {
+      if (validateID(id) && validateParams(data)) {
+        const { data: communityCollections } = await axios.put(
+          `communities/${id}/collections/`,
+          data
+        )
         commit('EXTEND_COMMUNITY_COLLECTION', communityCollections)
         return communityCollections
       } else {

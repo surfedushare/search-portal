@@ -70,11 +70,9 @@ export default {
             position: collection.position
           }
         })
-        collections.map(collection => {
-          this.$store.dispatch('editCollection', {
-            ...collection,
-            ...{ position: collection.position }
-          })
+        this.$store.dispatch('updateCommunityCollections', {
+          id: this.$route.params.community,
+          data: collections
         })
       }
     }
