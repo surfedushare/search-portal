@@ -1,12 +1,5 @@
 <template>
   <div class="collection-card">
-    <button
-      v-if="editableContent"
-      :class="{ 'select-icon': true, selected: collection.selected }"
-      @click="deleteCollectionPopup(collection)"
-    >
-      Delete
-    </button>
     <div
       :class="{ selected: collection.selected }"
       class="collections__item_wrapper tile__wrapper"
