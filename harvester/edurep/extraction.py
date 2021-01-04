@@ -135,10 +135,12 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_authors(cls, soup, el):
+        return []  # TODO: revert when new Sharekit parses VCARD correctly
         return [vobject.readOne(author).fn.value for author in cls.get_author(soup, el)]
 
     @classmethod
     def get_publishers(cls, soup, el):
+        return []  # TODO: revert when new Sharekit parses VCARD correctly
         publisher = el.find(string='publisher')
         if not publisher:
             return []
