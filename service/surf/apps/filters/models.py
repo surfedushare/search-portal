@@ -2,7 +2,6 @@
 This module contains implementation of models for filters app.
 """
 
-from django.conf import settings
 from django.db import models as django_models
 from mptt.models import MPTTModel, TreeForeignKey
 
