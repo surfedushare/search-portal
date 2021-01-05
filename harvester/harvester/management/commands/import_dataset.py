@@ -1,6 +1,7 @@
 from django.core.management import base, call_command
 
 from core.management.base import HarvesterCommand
+from harvester import logger
 
 
 class Command(base.LabelCommand, HarvesterCommand):
@@ -17,7 +18,7 @@ class Command(base.LabelCommand, HarvesterCommand):
 
     def handle_label(self, dataset, **options):
         harvest_source = options.get("harvest_source", None)
-        self.info(f"Calling import_dataset for: {dataset} using:{harvest_source}")
+        logger.info(f"Calling import_dataset for: {dataset} using:{harvest_source}")
         extra_args = [] if harvest_source is None else [f"--harvest-source={harvest_source}"]
         call_command("load_harvester_data", dataset, *extra_args)
         call_command("push_es_index", dataset=dataset, recreate=True)

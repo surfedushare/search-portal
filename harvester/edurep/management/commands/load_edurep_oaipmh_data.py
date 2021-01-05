@@ -8,6 +8,7 @@ from django.apps import apps
 
 from surfpol.configuration import create_configuration
 from core.management.base import HarvesterCommand
+from harvester import logger
 
 
 class Command(HarvesterCommand):
@@ -38,7 +39,7 @@ class Command(HarvesterCommand):
         os.makedirs(dumps_path, exist_ok=True)
         dump_files = glob(os.path.join(dumps_path, "*"))
         if not len(dump_files) or force_download:
-            self.info("Downloading dump file for EdurepOAIPMH")
+            logger.info("Downloading dump file for EdurepOAIPMH")
             ctx = Context(source_environment)
             harvester_data_bucket = f"s3://{ctx.config.aws.harvest_content_bucket}/datasets/harvester/edurep"
             ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}/edurep")

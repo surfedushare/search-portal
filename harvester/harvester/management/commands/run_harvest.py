@@ -1,5 +1,6 @@
 from harvester.tasks import harvest
 from core.management.base import HarvesterCommand
+from harvester import logger
 
 
 class Command(HarvesterCommand):
@@ -19,5 +20,5 @@ class Command(HarvesterCommand):
     def handle(self, **options):
         reset = options["reset"]
         source = options.get("source", None)
-        self.info(f"Calling harvest outside of schedule; reset={reset}")
+        logger.info(f"Calling harvest outside of schedule; reset={reset}")
         harvest(seeds_source=source, reset=reset)

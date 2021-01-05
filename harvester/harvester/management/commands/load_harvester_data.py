@@ -83,7 +83,7 @@ class Command(base.LabelCommand, HarvesterCommand):
             ctx = Context(environment)
             harvester_data_bucket = f"s3://{source_environment.aws.harvest_content_bucket}/datasets/harvester"
             ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
-        self.info(f"Importing dataset: {dataset_label}")
+        logger.info(f"Importing dataset: {dataset_label}")
         for entry in os.scandir(get_dumps_path(Dataset)):
             if entry.is_file() and entry.name.startswith(dataset_label):
                 dataset_file = entry.path
