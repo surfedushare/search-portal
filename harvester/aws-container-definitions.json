@@ -1,81 +1,87 @@
 [
-    {
-        "name": "harvester-container",
-        "image": "${REPOSITORY}/harvester:${version}",
-        "cpu": 0,
-        "essential": true,
-        "portMappings": [
-            {
-                "hostPort": 8080,
-                "protocol": "tcp",
-                "containerPort": 8080
-            }
-        ],
-        "environment": [
-            { "name" : "PYTHONUNBUFFERED", "value" : "1" },
-            { "name" : "APPLICATION_MODE", "value" : "${mode}" }
-        ],
-        "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-                "awslogs-group": "/ecs/harvester",
-                "awslogs-region": "eu-central-1",
-                "awslogs-stream-prefix": "harvester-${version}",
-                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
-            }
-        }
-    },
-    {
-      "name": "celery-beat-container",
-      "image": "${REPOSITORY}/harvester:${version}",
-      "cpu": 512,
-      "essential": true,
-      "command": ["celery", "-A", "harvester", "beat", "-s", "/tmp/celerybeat-schedule"],
-      "environment": [
-        { "name" : "PYTHONUNBUFFERED", "value" : "1" },
-        { "name" : "APPLICATION_MODE", "value" : "${mode}" }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/harvester",
-          "awslogs-region": "eu-central-1",
-          "awslogs-stream-prefix": "celery-beat-${version}",
-          "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
-        }
+  {
+    "essential": true,
+    "image": "906394416424.dkr.ecr.eu-central-1.amazonaws.com/aws-for-fluent-bit:latest",
+    "name": "log_router",
+    "firelensConfiguration": {
+      "type": "fluentbit",
+      "options": {
+        "config-file-type": "s3",
+        "config-file-value": "arn:aws:s3:::${harvester_bucket}/fluent.conf"
       }
     },
-    {
-      "name": "flower-container",
-      "image": "${REPOSITORY}/harvester:${version}",
-      "cpu": 0,
-      "essential": true,
-      "portMappings": [
-        {
-          "hostPort": 5555,
-          "protocol": "tcp",
-          "containerPort": 5555
-        }
-      ],
-      "command": ["celery", "-A", "harvester", "flower"],
-      "environment": [
-        { "name" : "PYTHONUNBUFFERED", "value" : "1" },
-        { "name" : "APPLICATION_MODE", "value" : "${mode}" }
-      ],
-      "secrets": [
-        {
-          "name" : "FLOWER_BASIC_AUTH",
-          "valueFrom":  "${flower_secret_arn}"
-        }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/harvester",
-          "awslogs-region": "eu-central-1",
-          "awslogs-stream-prefix": "flower-${version}",
-          "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
-        }
+    "environment": [
+      { "name" : "VERSION", "value" : "${version}" }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "firelens-container",
+        "awslogs-region": "eu-central-1",
+        "awslogs-stream-prefix": "firelens"
       }
+    },
+    "memoryReservation": 50
+  },
+  {
+    "name": "harvester-container",
+    "image": "${REPOSITORY}/harvester:${version}",
+    "cpu": 0,
+    "essential": true,
+    "portMappings": [
+      {
+        "hostPort": 8080,
+        "protocol": "tcp",
+        "containerPort": 8080
+      }
+    ],
+    "environment": [
+      { "name" : "PYTHONUNBUFFERED", "value" : "1" },
+      { "name" : "APPLICATION_MODE", "value" : "${mode}" }
+    ],
+    "logConfiguration": {
+      "logDriver": "awsfirelens"
     }
+  },
+  {
+    "name": "celery-beat-container",
+    "image": "${REPOSITORY}/harvester:${version}",
+    "cpu": 512,
+    "essential": true,
+    "command": ["celery", "-A", "harvester", "beat", "-s", "/tmp/celerybeat-schedule"],
+    "environment": [
+      { "name" : "PYTHONUNBUFFERED", "value" : "1" },
+      { "name" : "APPLICATION_MODE", "value" : "${mode}" }
+    ],
+    "logConfiguration": {
+      "logDriver": "awsfirelens"
+    }
+  },
+  {
+    "name": "flower-container",
+    "image": "${REPOSITORY}/harvester:${version}",
+    "cpu": 0,
+    "essential": true,
+    "portMappings": [
+      {
+        "hostPort": 5555,
+        "protocol": "tcp",
+        "containerPort": 5555
+      }
+    ],
+    "command": ["celery", "-A", "harvester", "flower"],
+    "environment": [
+      { "name" : "PYTHONUNBUFFERED", "value" : "1" },
+      { "name" : "APPLICATION_MODE", "value" : "${mode}" }
+    ],
+    "secrets": [
+      {
+        "name" : "FLOWER_BASIC_AUTH",
+        "valueFrom":  "${flower_secret_arn}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awsfirelens"
+    }
+  }
 ]

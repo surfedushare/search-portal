@@ -1,4 +1,3 @@
-from io import StringIO
 from unittest.mock import patch, Mock
 
 from django.test import TestCase
@@ -24,7 +23,6 @@ class TestGeneratePreviews(TestCase):
         ready_mock = Mock()
         ready_mock.return_value = True
         apply_async_mock.return_value.ready = ready_mock
-        out = StringIO()
         dataset = DatasetFactory.create(name="test")
         oaipmh_harvest = OAIPMHHarvestFactory.create(dataset=dataset, stage=HarvestStages.PREVIEW)
         document_with_website = DocumentFactory.create(dataset=dataset, mime_type="text/html")
@@ -33,9 +31,7 @@ class TestGeneratePreviews(TestCase):
         DocumentFactory.create(dataset=dataset, mime_type="foo/bar")
         DocumentFactory.create(dataset=dataset, mime_type="text/html", preview_path="previews/8")
 
-        call_command(
-            "generate_previews", f"--dataset={dataset.name}", "--no-progress", "--no-logger", stdout=out
-        )
+        call_command("generate_previews", f"--dataset={dataset.name}", "--no-progress")
 
         preview_task_mock.assert_called_once_with(document_with_website.id)
         youtube_task_mock.assert_called_once_with(document_from_youtube.id)

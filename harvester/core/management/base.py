@@ -1,17 +1,10 @@
-import json
-from copy import copy
 from tqdm import tqdm
-import logging
 from mimetypes import guess_type
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.utils import timezone
 
 from core.utils.language import get_language_from_snippet
-
-
-logger = logging.getLogger("harvester")
 
 
 class HarvesterCommand(BaseCommand):
@@ -20,52 +13,13 @@ class HarvesterCommand(BaseCommand):
     """
 
     show_progress = True
-    use_logger = True
 
     def add_arguments(self, parser):
         parser.add_argument('-n', '--no-progress', action="store_true")
-        parser.add_argument('-L', '--no-logger', action="store_false")
 
     def execute(self, *args, **options):
         self.show_progress = not options.get("no_progress", False)
-        self.use_logger = options.get("no_logger", True)
         super().execute(*args, **options)
-
-    def error(self, message):
-        if self.use_logger:
-            logger.error(message)
-        self.stderr.write(self.style.ERROR(message))
-
-    def warning(self, message):
-        if self.use_logger:
-            logger.warning(message)
-        self.stderr.write(self.style.WARNING(message))
-
-    def info(self, message, object=None, log=False):
-        if self.use_logger:
-            extra = {"extra": object} if object is not None else {}
-            logger.info(message, extra=extra)
-        if object is not None:
-            message += " " + json.dumps(object, indent=4)
-        self.stdout.write(message)
-
-    def success(self, message):
-        self.stdout.write(self.style.SUCCESS(message))
-
-    def header(self, header, options=None):
-        self.info("")
-        self.info("")
-        self.info(header)
-        self.info("-" * len(header))
-        if options:
-            opts = copy(options)
-            opts.pop("stdout", None)
-            opts.pop("stderr", None)
-            self.info("Options: ", opts)
-        self.info("Commit: {}".format(settings.GIT_COMMIT))
-        now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.info("Time: {}".format(now))
-        self.info("")
 
     def progress(self, iterator, total=None):
         if not self.show_progress:

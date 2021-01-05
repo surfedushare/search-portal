@@ -7,7 +7,6 @@ to update the indices.
 """
 
 from unittest.mock import patch
-from io import StringIO
 
 from django.utils.timezone import make_aware, datetime
 from django.test import TestCase
@@ -55,7 +54,8 @@ class TestPushToIndex(ElasticSearchClientTestCase):
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
-    def test_edurep_surf_with_promote(self, streaming_bulk, get_es_client):
+    @patch("harvester.logger.info")
+    def test_edurep_surf_with_promote(self, info_logger, streaming_bulk, get_es_client):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
@@ -68,23 +68,16 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", "--no-logger", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
 
-        # Asserting output of command
-        stdout = out.getvalue().split("\n")
-        results = [rsl for rsl in stdout if rsl]
-        self.assertIn(
-            "since:2020-02-10, recreate:False and promote:True",
-            results,
-            "Expected command to print what actions it will undertake and since what modification date"
-        )
-        self.assertIn(f"nl:{expected_doc_count['nl']}", results,
-                      "Expected command to print how many Dutch documents it encountered")
-        self.assertIn(f"en:{expected_doc_count['en']}", results,
-                      "Expected command to print how many English documents it encountered")
-        self.assertIn("unk:1", results,
-                      "Expected command to print how many documents it encountered with unknown language")
+        # Expect command to print what actions it will undertake and since what modification date
+        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
+        info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
+        info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
+        info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
         self.assertEqual(get_es_client.call_count, 2,
@@ -112,7 +105,8 @@ class TestPushToIndex(ElasticSearchClientTestCase):
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
-    def test_edurep_surf_without_promote(self, streaming_bulk, get_es_client):
+    @patch("harvester.logger.info")
+    def test_edurep_surf_without_promote(self, info_logger, streaming_bulk, get_es_client):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
@@ -125,23 +119,16 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress")
 
-        # Asserting output of command
-        stdout = out.getvalue().split("\n")
-        results = [rsl for rsl in stdout if rsl]
-        self.assertIn(
-            "since:2020-02-10, recreate:False and promote:False",
-            results,
-            "Expected command to print what actions it will undertake and since what modification date"
-        )
-        self.assertIn(f"nl:{expected_doc_count['nl']}", results,
-                      "Expected command to print how many Dutch documents it encountered")
-        self.assertIn(f"en:{expected_doc_count['en']}", results,
-                      "Expected command to print how many English documents it encountered")
-        self.assertIn("unk:1", results,
-                      "Expected command to print how many documents it encountered with unknown language")
+        # Expect command to print what actions it will undertake and since what modification date
+        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
+        info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
+        info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
+        info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
         self.assertEqual(get_es_client.call_count, 2,
@@ -165,7 +152,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
     def test_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
         try:
-            call_command("push_es_index", "--dataset=invalid", "--no-logger")
+            call_command("push_es_index", "--dataset=invalid")
             self.fail("push_es_index did not raise for an invalid dataset")
         except Dataset.DoesNotExist:
             pass
@@ -199,7 +186,8 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
-    def test_edurep_surf_deletes(self, streaming_bulk, get_es_client):
+    @patch("harvester.logger.info")
+    def test_edurep_surf_deletes(self, info_logger, streaming_bulk, get_es_client):
 
         # Marking the Wikiwijsmaken packages as deleted to see how that propagates
         arrangement = Arrangement.objects.get(id=92378)
@@ -222,23 +210,16 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         ]
 
         # Calling command and catching output for some checks
-        out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress")
 
-        # Asserting output of command
-        stdout = out.getvalue().split("\n")
-        results = [rsl for rsl in stdout if rsl]
-        self.assertIn(
-            "since:2020-02-10, recreate:False and promote:False",
-            results,
-            "Expected command to print what actions it will undertake and since what modification date"
-        )
-        self.assertIn(f"nl:{expected_doc_count['nl']}", results,
-                      "Expected command to print how many Dutch documents it encountered")
-        self.assertIn(f"en:{expected_doc_count['en']}", results,
-                      "Expected command to print how many English documents it encountered")
-        self.assertIn("unk:1", results,
-                      "Expected command to print how many documents it encountered with unknown language")
+        # Expect command to print what actions it will undertake and since what modification date
+        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
+        info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
+        info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
+        info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
         self.assertEqual(get_es_client.call_count, 2,
@@ -262,7 +243,8 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
-    def test_edurep_surf_delta(self, streaming_bulk, get_es_client):
+    @patch("harvester.logger.info")
+    def test_edurep_surf_delta(self, info_logger, streaming_bulk, get_es_client):
 
         # Putting latest harvest into the future to test partial update
         harvested_at = make_aware(datetime(year=2020, month=6, day=1))
@@ -275,22 +257,16 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks similar to TestPushToIndex.test_edurep_surf_with_promote
-        out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
-        # Asserting output
-        stdout = out.getvalue().split("\n")
-        results = [rsl for rsl in stdout if rsl]
-        self.assertIn(
-            "since:2020-06-01, recreate:False and promote:False",
-            results,
-            "Expected command to print what actions it will undertake and since what modification date"
-        )
-        self.assertIn(f"nl:{expected_doc_count['nl']}", results,
-                      "Expected command to print how many Dutch documents it encountered")
-        self.assertIn(f"en:{expected_doc_count['en']}", results,
-                      "Expected command to print how many English documents it encountered")
-        self.assertIn("unk:1", results,
-                      "Expected command to print how many documents it encountered with unknown language")
+        call_command("push_es_index", "--dataset=test", "--no-progress")
+
+        # Expect command to print what actions it will undertake and since what modification date
+        info_logger.assert_any_call("since:2020-06-01, recreate:False and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
+        info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
+        info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
+        info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
         self.assertEqual(get_es_client.call_count, 2,
@@ -311,7 +287,8 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
-    def test_edurep_surf_recreate(self, streaming_bulk, get_es_client):
+    @patch("harvester.logger.info")
+    def test_edurep_surf_recreate(self, info_logger, streaming_bulk, get_es_client):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
@@ -325,23 +302,16 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         get_es_client.reset_mock()
 
         # Calling command and catching output for some checks
-        out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress", "--no-logger", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress")
 
-        # Asserting output of command
-        stdout = out.getvalue().split("\n")
-        results = [rsl for rsl in stdout if rsl]
-        self.assertIn(
-            "since:1970-01-01, recreate:True and promote:False",
-            results,
-            "Expected command to print what actions it will undertake and since what modification date"
-        )
-        self.assertIn(f"nl:{expected_doc_count['nl']}", results,
-                      "Expected command to print how many Dutch documents it encountered")
-        self.assertIn(f"en:{expected_doc_count['en']}", results,
-                      "Expected command to print how many English documents it encountered")
-        self.assertIn("unk:1", results,
-                      "Expected command to print how many documents it encountered with unknown language")
+        # Expect command to print what actions it will undertake and since what modification date
+        info_logger.assert_any_call("since:1970-01-01, recreate:True and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
+        info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
+        info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
+        info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
         self.assertEqual(get_es_client.call_count, 2,
@@ -375,7 +345,8 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
-    def test_edurep_surf_with_promote(self, streaming_bulk, get_es_client):
+    @patch("harvester.logger.info")
+    def test_edurep_surf_with_promote(self, info_logger, streaming_bulk, get_es_client):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
@@ -388,23 +359,16 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        out = StringIO()
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote", "--no-logger", stdout=out)
+        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
 
-        # Asserting output of command
-        stdout = out.getvalue().split("\n")
-        results = [rsl for rsl in stdout if rsl]
-        self.assertIn(
-            "since:2020-02-10, recreate:False and promote:True",
-            results,
-            "Expected command to print what actions it will undertake and since what modification date"
-        )
-        self.assertIn(f"nl:{expected_doc_count['nl']}", results,
-                      "Expected command to print how many Dutch documents it encountered")
-        self.assertIn(f"en:{expected_doc_count['en']}", results,
-                      "Expected command to print how many English documents it encountered")
-        self.assertIn("unk:1", results,
-                      "Expected command to print how many documents it encountered with unknown language")
+        # Expect command to print what actions it will undertake and since what modification date
+        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
+        info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
+        info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
+        info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
         self.assertEqual(get_es_client.call_count, 4,

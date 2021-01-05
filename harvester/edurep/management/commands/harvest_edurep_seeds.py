@@ -1,4 +1,5 @@
 from collections import defaultdict
+from harvester import logger
 
 from django.core.management import CommandError
 from django.utils.timezone import now
@@ -18,6 +19,7 @@ class Command(HarvesterCommand):
         parser.add_argument('-f', '--fake', action="store_true", default=False)
 
     def prepare_harvest(self, dataset_name):
+        logger.debug("Deleting all arrangements")
         Arrangement.objects.filter(deleted_at__isnull=False).delete()
         harvest_queryset = OAIPMHHarvest.objects.filter(
             dataset__name=dataset_name,
@@ -25,14 +27,37 @@ class Command(HarvesterCommand):
             source__repository=OAIPMHRepositories.EDUREP
         )
         for harvest in harvest_queryset:
+            logger.debug(f"Setting harvest stage to NEW for '{harvest.source.name}'", dataset=dataset_name)
             harvest.stage = HarvestStages.NEW
             harvest.latest_update_at = harvest.harvested_at
             harvest.save()
 
-    def handle(self, *args, **options):
+    def harvest_seeds(self, harvest, current_time, fake):
+        send_config = create_config("http_resource", {
+            "resource": "edurep.EdurepOAIPMH",
+            "continuation_limit": 1000,
+        })
 
+        set_specification = harvest.source.spec
+        scc, err = send(set_specification, f"{harvest.latest_update_at:%Y-%m-%d}", config=send_config, method="get")
+
+        if len(err):
+            raise CommandError("Failed to harvest seeds from Edurep OAI-PMH")
+
+        if not fake:
+            harvest.harvested_at = current_time
+            harvest.save()
+
+        return len(scc), len(err)
+
+    def handle(self, *args, **options):
         dataset_name = options["dataset"]
         fake = options["fake"]
+
+        logger.info(
+            f"Started harvesting of edurep seeds for dataset '{dataset_name}', fake: {fake}",
+            dataset=dataset_name
+        )
 
         if not fake:
             self.prepare_harvest(dataset_name)
@@ -47,29 +72,31 @@ class Command(HarvesterCommand):
                 f"There are no NEW OAIPMHHarvest objects for '{dataset_name}'"
             )
 
-        self.header("EDUREP SEEDS HARVEST", options)
-
         # Calling the Edurep OAI-PMH interface and get the Edurep meta data about learning materials
-        self.info("Fetching metadata for sources ...")
-        send_config = create_config("http_resource", {
-            "resource": "edurep.EdurepOAIPMH",
-            "continuation_limit": 1000,
-        })
+        logger.info("Fetching metadata for sources ...")
+
         current_time = now()
         successes = defaultdict(int)
         fails = defaultdict(int)
-        for harvest in self.progress(harvest_queryset, total=harvest_queryset.count()):
+
+        for harvest in harvest_queryset:
+            success_count, error_count = self.harvest_seeds(harvest, current_time, fake)
             set_specification = harvest.source.spec
-            scc, err = send(set_specification, f"{harvest.latest_update_at:%Y-%m-%d}", config=send_config, method="get")
-            if len(err):
-                raise CommandError("Failed to harvest seeds from Edurep OAI-PMH")
-            successes[set_specification] += len(scc)
-            fails[set_specification] += len(err)
-            if not fake:
-                harvest.harvested_at = current_time
-                harvest.save()
-        self.info('Failed OAI-PMH calls: ', fails)
-        self.info('Successful OAI-PMH calls: ', successes)
-        success_count = sum(successes.values())
-        fail_count = sum(fails.values())
-        return f'OAI-PMH: {success_count}/{success_count+fail_count}'
+            successes[set_specification] += success_count
+            fails[set_specification] += error_count
+            logger.debug(
+                f"Fetched metadata for source '{set_specification}' with name '{harvest.source.name}'",
+                dataset=dataset_name,
+                aggregate={"success": success_count, "failed": error_count}
+            )
+
+        total_success_count = sum(successes.values())
+        total_fail_count = sum(fails.values())
+
+        logger.info(
+            f"Finished harvesting edurep seeds, "
+            f"successful OAI-PMG call: '{total_success_count}', failed OAI-PMH calls: '{total_fail_count}'",
+            aggregate={"success": total_success_count, "failed": total_fail_count}
+        )
+
+        return f'OAI-PMH: {total_success_count}/{total_success_count + total_fail_count}'
