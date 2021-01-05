@@ -245,8 +245,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             transcription,
             self.base_document["mime_type"],
             self.base_document["file_type"],
-            is_part_of=self.base_document["is_part_of"],
-            has_part=child_ids or self.base_document["has_part"]
+            is_part_of=self.base_document.properties.get("is_part_of", None),
+            has_part=child_ids or self.base_document.properties.get("has_part", [])
         )
         elastic_details.update(elastic_base)
         yield elastic_details
