@@ -71,7 +71,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
 
         # Expect command to print what actions it will undertake and since what modification date
-        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", "ASSERT", dataset='test')
+        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", dataset='test')
         # Expect command to print how many Dutch documents it encountered
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
         # Expect command to print how many English documents it encountered
