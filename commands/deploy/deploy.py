@@ -78,7 +78,8 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
 
     celery_container_variables = build_default_container_variables(mode, version)
     celery_container_variables.update({
-        "concurrency": "4"
+        "concurrency": "4",
+        "harvester_bucket": ctx.config.aws.harvest_content_bucket
     })
 
     celery_task_definition_arn = register_task_definition(
