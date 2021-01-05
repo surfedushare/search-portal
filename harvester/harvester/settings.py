@@ -182,9 +182,9 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
 
-TESTING = sys.argv[1:2] == ['test']
-log_handlers = [environment.django.logging.handler] if not TESTING else []
-log_level = environment.django.logging.level if not TESTING else 'CRITICAL'
+_logging_enabled = sys.argv[1:2] != ['test']
+log_handlers = [environment.django.logging.handler] if _logging_enabled else []
+log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
 
 LOGGING = {
     'version': 1,
