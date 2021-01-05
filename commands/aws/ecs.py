@@ -59,7 +59,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         })
 
     task_definition_arn = register_task_definition(
-        "harvester",
+        target_info["name"],
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
         container_variables,
