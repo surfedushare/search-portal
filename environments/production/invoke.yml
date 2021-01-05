@@ -19,4 +19,4 @@ elastic_search:
   is_aws: true
   verify_certs: true
   decompound_word_lists:
-    dutch: null
+    dutch: "analyzers/F131123737"
