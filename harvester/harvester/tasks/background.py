@@ -44,8 +44,12 @@ def harvest(seeds_source=None, reset=False):
         OAIPMHHarvest.objects.filter(stage=HarvestStages.BASIC).update(stage=HarvestStages.VIDEO)
         # Aggregating the metadata and content into the dataset
         call_command("update_dataset", f"--dataset={dataset.name}", "--no-progress")
+
+        call_command("generate_previews", f"--dataset={dataset.name}", "--no-progress")
+
         # Based on the dataset we push to Elastic Search
         extra_push_index_args = ["--recreate"] if reset else []
+
         call_command("push_es_index", f"--dataset={dataset.name}", "--no-progress", *extra_push_index_args)
 
     # When dealing with a harvest on a primary node the seeds need to get copied to S3.

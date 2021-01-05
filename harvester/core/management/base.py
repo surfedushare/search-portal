@@ -75,18 +75,6 @@ class HarvesterCommand(BaseCommand):
 
 class OutputCommand(HarvesterCommand):
 
-    @staticmethod
-    def _serialize_resource(resource=None):
-        if resource is None:
-            return {
-                "success": False,
-                "resource": None
-            }
-        return {
-            "success": resource.success,
-            "resource": ["{}.{}".format(resource._meta.app_label, resource._meta.model_name), resource.id]
-        }
-
     def _create_document(self, text, meta, title=None, url=None, mime_type=None, file_type=None, pipeline=None,
                          identifier_postfix=None):
 
@@ -131,8 +119,10 @@ class OutputCommand(HarvesterCommand):
             "publisher_date": meta.get("publisher_date", None),
             "disciplines": meta.get("disciplines", []),
             "educational_levels": meta.get("educational_levels", []),
+            "preview_path": meta.get("preview_path", None),
             "lom_educational_levels": meta.get("lom_educational_levels", []),
             "lowest_educational_level": meta.get("lowest_educational_level", -1),
+            "from_youtube": meta.get("from_youtube", False),
             "suggest": title,
             "pipeline": pipeline
         }

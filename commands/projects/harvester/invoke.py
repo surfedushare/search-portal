@@ -6,6 +6,17 @@ from commands.aws.ecs import run_task
 from environments.surfpol.configuration import create_configuration
 
 
+def run_harvester_task(ctx, mode, command, **kwargs):
+    # On localhost we call the command directly and exit
+    if ctx.config.env == "localhost":
+        with ctx.cd(HARVESTER_DIR):
+            ctx.run(" ".join(command), echo=True)
+        return
+
+    # On AWS we trigger a harvester task on the container cluster to run the command for us
+    run_task(ctx, "harvester", mode, command, **kwargs)
+
+
 @task(help={
     "source": "Source you want to import from: development, acceptance or production.",
     "dataset": "The name of the greek letter that represents the dataset you want to import"
@@ -18,13 +29,8 @@ def import_dataset(ctx, source, dataset="epsilon"):
         raise ValueError("Can't import data from localhost")
 
     command = ["python", "manage.py", "import_dataset", dataset, f"--harvest-source={source}"]
-    # On localhost we call the command directly and exit
-    if ctx.config.env == "localhost":
-        with ctx.cd(HARVESTER_DIR):
-            ctx.run(" ".join(command), echo=True)
-        return
-    # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", source, command)
+
+    run_harvester_task(ctx, source, command)
 
 
 @task(help={
@@ -42,13 +48,20 @@ def harvest(ctx, mode, reset=False, secondary=False, version=None):
         command += ["--reset"]
     if secondary:
         command += ["--secondary"]
-    # On localhost we call the command directly and exit
-    if mode == "localhost":
-        with ctx.cd(HARVESTER_DIR):
-            ctx.run(" ".join(command))
-        return
-    # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command, version=version, extra_workers=reset, concurrency=8)
+
+    run_harvester_task(ctx, mode, command, version=version, extra_workers=reset, concurrency=8)
+
+
+@task(help={
+    "mode": "Mode you want to generate previews for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE",
+    "dataset": "Name of the dataset (a Greek letter) that you want to generate previews for",
+    "version": "Version of the harvester you want to use. Defaults to latest version"
+})
+def generate_previews(ctx, mode, dataset, version=None):
+    command = ["python", "manage.py", "generate_previews", f"--dataset={dataset}"]
+
+    run_harvester_task(ctx, mode, command, version=version, extra_workers=True, concurrency=8)
 
 
 @task(help={
@@ -59,13 +72,8 @@ def cleanup(ctx, mode):
     Starts a clean up tasks on the AWS container cluster or localhost
     """
     command = ["python", "manage.py", "clean_resources"]
-    # On localhost we call the command directly and exit
-    if mode == "localhost":
-        with ctx.cd(HARVESTER_DIR):
-            ctx.run(" ".join(command))
-        return
-    # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command)
+
+    run_harvester_task(ctx, mode, command)
 
 
 @task(help={
@@ -85,13 +93,8 @@ def push_es_index(ctx, mode, dataset, recreate=False, promote=False, version=Non
         command += ["--recreate"]
     if promote:
         command += ["--promote"]
-    # On localhost we call the command directly and exit
-    if mode == "localhost":
-        with ctx.cd(HARVESTER_DIR):
-            ctx.run(" ".join(command))
-        return
-    # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command, version=version)
+
+    run_harvester_task(ctx, mode, command, version=version)
 
 
 @task(help={
@@ -104,13 +107,8 @@ def dump_data(ctx, mode, dataset):
     Starts a task on the AWS container cluster to dump a specific Dataset and its related models
     """
     command = ["python", "manage.py", "dump_harvester_data", dataset]
-    # On localhost we call the command directly and exit
-    if mode == "localhost":
-        with ctx.cd(HARVESTER_DIR):
-            ctx.run(" ".join(command))
-        return
-    # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command)
+
+    run_harvester_task(ctx, mode, command)
 
 
 @task()

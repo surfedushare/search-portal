@@ -2,6 +2,7 @@ class HarvestStages:
     NEW = "New"
     BASIC = "Basic"
     VIDEO = "Video"
+    PREVIEW = "Preview"
     COMPLETE = "Complete"
 
 

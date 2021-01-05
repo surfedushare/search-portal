@@ -9,6 +9,7 @@ import SaveRating from '~/components/Popup/SaveRating'
 import MaterialSet from '../MaterialSet/MaterialSet'
 import MaterialPartOfSet from '../MaterialSet/MaterialPartOfSet'
 import CollectionList from '../CollectionList/CollectionList'
+import EnlargeableImage from '@diracleo/vue-enlargeable-image'
 import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
 import { PublishStatus } from '~/utils'
 
@@ -23,7 +24,8 @@ export default {
     SaveRating,
     MaterialSet,
     MaterialPartOfSet,
-    CollectionList
+    CollectionList,
+    EnlargeableImage
   },
   mounted() {
     this.href = validateHREF(window.location.href)
@@ -111,7 +113,7 @@ export default {
      * Get formatted 'number_of_views'
      * @returns String
      */
-    contedNumber() {
+    viewCount() {
       return numeral(this.material.view_count).format('0a')
     },
     /**

@@ -165,10 +165,10 @@ if environment.aws.harvest_content_bucket:
     AWS_S3_REGION_NAME = 'eu-central-1'
     AWS_DEFAULT_ACL = None
 else:
+    DEFAULT_FILE_STORAGE = 'core.files.storage.OverwriteStorage'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
     MEDIA_URL = 'http://localhost:8000/media/harvester/'
     AWS_STORAGE_BUCKET_NAME = None
-
 
 # Rest framework
 # https://www.django-rest-framework.org/

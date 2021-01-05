@@ -142,9 +142,22 @@
         margin-top: 20px;
       }
     }
+    &_quality_preview {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    &_quality_container {
+      flex: 1;
+    }
+    &_preview {
+      margin-right: 50px;
+      margin-bottom: 20px;
+    }
     &_quality {
       margin-bottom: 20px;
-      justify-content: flex-start;
+      min-width: 580px;
+      justify-content: space-between;
       align-items: flex-start;
       display: flex;
       flex-wrap: wrap;
@@ -316,5 +329,11 @@
       font-family: @second-font;
       font-weight: bold;
     }
+  }
+}
+
+.enlargeable-image {
+  /deep/ .full.enlarged, /deep/ .full.enlarging, /deep/ .full.delarging {
+    top: 82px !important;
   }
 }

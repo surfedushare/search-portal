@@ -1,4 +1,4 @@
-from harvester.background import harvest
+from harvester.tasks import harvest
 from core.management.base import HarvesterCommand
 
 
