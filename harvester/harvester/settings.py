@@ -209,7 +209,11 @@ LOGGING = {
 if not DEBUG:
 
     def strip_sensitive_data(event, hint):
-        del event['request']['headers']['User-Agent']
+        user_agent = event.get('request', {}).get('headers', {}).get('User-Agent', None)
+
+        if user_agent:
+            del event['request']['headers']['User-Agent']
+
         return event
 
     sentry_sdk.init(
@@ -234,6 +238,7 @@ ELASTICSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch'
 }
+ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
 
 
 # Project Open Leermaterialen
@@ -327,7 +332,7 @@ CELERY_BEAT_SCHEDULE = {
             hour=environment.schedule.harvest.hour,
             minute=environment.schedule.harvest.minute,
         ),
-        'args': (environment.schedule.harvest.role,)
+        'args': (environment.schedule.harvest.source,)
     },
 }
 

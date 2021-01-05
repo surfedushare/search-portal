@@ -1,33 +1,18 @@
 import os
 import json
 from invoke import Exit
-import boto3
 
-from commands import TARGETS, REPOSITORY
 from environments.surfpol import MODE
+from commands.aws.utils import create_aws_session
+from commands import TARGETS, REPOSITORY
 
 
-def register_task_definition(ecs_client, task_role_arn, target, mode, version, cpu, memory):
-
-    # Validating input
-    if target not in TARGETS:
-        raise Exit(f"Unknown target: {target}", code=1)
-    if mode != MODE:
-        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
-
-    # Load data
-    target_info = TARGETS[target]
-    version = version or target_info["version"]
-
+def register_task_definition(family, ecs_client, task_role_arn, container_variables, container_definition_path, cpu,
+                             memory):
     # Read the service AWS container definition and replace some variables with actual values
-    print(f"Reading container definitions for: {target_info['name']}")
-    with open(os.path.join(target, "aws-container-definitions.json")) as container_definitions_file:
+    print(f"Reading container definitions for: {family}")
+    with open(container_definition_path) as container_definitions_file:
         container_definitions_json = container_definitions_file.read()
-        container_variables = {
-            "REPOSITORY": REPOSITORY,
-            "mode": mode,
-            "version": version
-        }
         for name, value in container_variables.items():
             container_definitions_json = container_definitions_json.replace(f"${{{name}}}", value)
         container_definitions = json.loads(container_definitions_json)
@@ -35,7 +20,7 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version, c
     # Now we push the task definition to AWS
     print("Setting up task definition")
     response = ecs_client.register_task_definition(
-        family=f"{target_info['name']}",
+        family=family,
         taskRoleArn=task_role_arn,
         executionRoleArn=task_role_arn,
         networkMode="awsvpc",
@@ -45,10 +30,10 @@ def register_task_definition(ecs_client, task_role_arn, target, mode, version, c
     )
     # And we update the service with new task definition
     task_definition = response["taskDefinition"]
-    return target_info['name'], task_definition["taskDefinitionArn"]
+    return task_definition["taskDefinitionArn"]
 
 
-def run_task(ctx, target, mode, command, environment=None, version=None):
+def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False, concurrency=4):
     """
     Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
     """
@@ -56,19 +41,25 @@ def run_task(ctx, target, mode, command, environment=None, version=None):
         raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
 
     environment = environment or []
+    target_info = TARGETS[target]
+    version = version or target_info["version"]
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
-    ecs_client = session.client('ecs', region_name='eu-central-1')
+    session = create_aws_session(profile_name=ctx.config.aws.profile_name)
+    ecs_client = session.client('ecs')
+    container_variables = build_default_container_variables(mode, version)
+    if extra_workers:
+        container_variables.update({
+            "concurrency": f"{concurrency}"
+        })
 
-    target_info = TARGETS[target]
-    target_name, task_definition_arn = register_task_definition(
+    task_definition_arn = register_task_definition(
+        "harvester",
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
-        target,
-        mode,
-        version,
+        container_variables,
+        os.path.join(target, task_container_definitions(target, extra_workers)),
         target_info["cpu"],
         target_info["memory"]
     )
@@ -91,9 +82,28 @@ def run_task(ctx, target, mode, command, environment=None, version=None):
                 "subnets": [ctx.config.aws.private_subnet_id],
                 "securityGroups": [
                     ctx.config.aws.rds_security_group_id,
-                    ctx.config.aws.default_security_group_id
-
+                    ctx.config.aws.default_security_group_id,
+                    ctx.config.aws.elasticsearch_security_group_id,
+                    ctx.config.aws.redis_security_group_id
                 ]
             }
         },
     )
+
+
+def build_default_container_variables(mode, version):
+    return {
+        "REPOSITORY": REPOSITORY,
+        "mode": mode,
+        "version": version
+    }
+
+
+def task_container_definitions(target, extra_workers):
+    if target == "service":
+        return "aws-container-definitions.json"
+
+    if extra_workers:
+        return "task-with-workers-container-definitions.json"
+
+    return "task-container-definitions.json"

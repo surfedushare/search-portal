@@ -62,32 +62,18 @@
         { "name" : "PYTHONUNBUFFERED", "value" : "1" },
         { "name" : "APPLICATION_MODE", "value" : "${mode}" }
       ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/harvester",
-          "awslogs-region": "eu-central-1",
-          "awslogs-stream-prefix": "flower-${version}",
-          "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+      "secrets": [
+        {
+          "name" : "FLOWER_BASIC_AUTH",
+          "valueFrom":  "${flower_secret_arn}"
         }
-      }
-    },
-    {
-      "name": "celery-worker-container",
-      "image": "${REPOSITORY}/harvester:${version}",
-      "cpu": 0,
-      "essential": true,
-      "command": ["celery", "-A", "harvester", "worker", "--concurrency=2", "--loglevel=info", "--max-tasks-per-child=10", "--pool=solo"],
-      "environment": [
-        { "name" : "PYTHONUNBUFFERED", "value" : "1" },
-        { "name" : "APPLICATION_MODE", "value" : "${mode}" }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/harvester",
           "awslogs-region": "eu-central-1",
-          "awslogs-stream-prefix": "celery-worker-${version}",
+          "awslogs-stream-prefix": "flower-${version}",
           "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
         }
       }

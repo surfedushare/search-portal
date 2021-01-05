@@ -97,4 +97,8 @@ class TikaResource(DGTikaResource):
         return DGTikaResource.uri_from_cmd(cmd)
 
 
-models.signals.post_delete.connect(file_resource_delete_handler, sender=FileResource)
+models.signals.post_delete.connect(
+    file_resource_delete_handler,
+    sender=FileResource,
+    dispatch_uid="file_resource_delete"
+)

@@ -64,9 +64,6 @@ export default {
     closeSaveMaterial() {
       this.isShowSaveMaterial = false
     },
-    /**
-     * Triggering event the save material
-     */
     addToCollection(collectionId) {
       this.submitting = true
 
@@ -75,7 +72,8 @@ export default {
           collection_id: collectionId,
           data: [
             {
-              external_id: this.material.external_id
+              external_id: this.material.external_id,
+              position: this.collectionItems.length
             }
           ]
         })

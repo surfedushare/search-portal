@@ -10,6 +10,7 @@ import MaterialSet from '../MaterialSet/MaterialSet'
 import MaterialPartOfSet from '../MaterialSet/MaterialPartOfSet'
 import CollectionList from '../CollectionList/CollectionList'
 import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
+import { PublishStatus } from '~/utils'
 
 export default {
   name: 'material-info',
@@ -131,6 +132,11 @@ export default {
       }
 
       return false
+    },
+    publishedCollections() {
+      return this.collections.filter(
+        collection => collection.publish_status === PublishStatus.PUBLISHED
+      )
     }
   },
   watch: {

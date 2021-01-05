@@ -27,7 +27,7 @@
           {{ material.date || null }}
         </div>
         <div v-if="hasPart" class="materials__item_set_count">
-          {{ $tc('Materials', material.has_part.length + 1) }}
+          {{ $tc('Materials', material.has_part.length) }}
         </div>
         <div
           v-if="itemsInLine === 1 && material.description"
@@ -37,76 +37,80 @@
         </div>
       </div>
       <div class="materials__item_subinfo">
-        <div
-          v-if="material.disciplines && material.disciplines.length"
-          class="materials__item_disciplines"
-        >
-          <span
-            v-for="(discipline, i) in material.disciplines.slice(0, 2)"
-            :key="i"
-            class="materials__item_discipline"
+        <div>
+          <div
+            v-if="material.disciplines && material.disciplines.length"
+            class="materials__item_disciplines"
           >
-            {{
-              punctuate(
-                titleTranslation(discipline, $i18n.locale),
-                i,
-                material.disciplines.length
-              )
-            }}
-          </span>
-        </div>
-        <div
-          v-if="material.educationallevels && material.educationallevels.length"
-          class="materials__item_educationallevels"
-        >
-          <span
-            v-for="(educationallevel, i) in material.educationallevels.slice(
-              0,
-              2
-            )"
-            :key="i"
-            class="materials__item_educationallevel"
+            <span
+              v-for="(discipline, i) in material.disciplines.slice(0, 2)"
+              :key="i"
+              class="materials__item_discipline"
+            >
+              {{
+                punctuate(
+                  titleTranslation(discipline, $i18n.locale),
+                  i,
+                  material.disciplines.length
+                )
+              }}
+            </span>
+          </div>
+          <div
+            v-if="
+              material.educationallevels && material.educationallevels.length
+            "
+            class="materials__item_educationallevels"
           >
-            {{
-              punctuate(
-                educationallevel[$i18n.locale],
-                i,
-                material.educationallevels.length
-              )
-            }}
-          </span>
-        </div>
-        <div v-if="material.format" class="materials__item_format">
-          {{ $t(material.format) }}
-        </div>
-        <div
-          v-if="
-            material.keywords && material.keywords.length && itemsInLine === 1
-          "
-          class="materials__item_keywords"
-        >
-          <span
-            v-for="(keyword, i) in material.keywords.slice(0, 2)"
-            :key="keyword"
-            class="materials__item_keyword"
+            <span
+              v-for="(educationallevel, i) in material.educationallevels.slice(
+                0,
+                2
+              )"
+              :key="i"
+              class="materials__item_educationallevel"
+            >
+              {{
+                punctuate(
+                  educationallevel[$i18n.locale],
+                  i,
+                  material.educationallevels.length
+                )
+              }}
+            </span>
+          </div>
+          <div v-if="material.format" class="materials__item_format">
+            {{ $t(material.format) }}
+          </div>
+          <div
+            v-if="
+              material.keywords && material.keywords.length && itemsInLine === 1
+            "
+            class="materials__item_keywords"
           >
-            {{ punctuate(keyword, i, material.keywords.length) }}
-          </span>
+            <span
+              v-for="(keyword, i) in material.keywords.slice(0, 2)"
+              :key="keyword"
+              class="materials__item_keyword"
+            >
+              {{ punctuate(keyword, i, material.keywords.length) }}
+            </span>
+          </div>
+          <routerLink
+            v-for="community in material.communities"
+            :key="`${community.id}`"
+            :to="
+              localePath({
+                name: 'communities-community',
+                params: { community: community.id }
+              })
+            "
+            class="materials__item_community_link"
+            @click.native="$event.stopImmediatePropagation()"
+          >
+            {{ titleTranslation(community, $i18n.locale) }}
+          </routerLink>
         </div>
-        <routerLink
-          v-for="community in material.communities"
-          :key="`${community.id}`"
-          :to="
-            localePath({
-              name: 'communities-community',
-              params: { community: community.id }
-            })
-          "
-          class="materials__item_community_link"
-          @click.native="$event.stopImmediatePropagation()"
-        >
-          {{ titleTranslation(community, $i18n.locale) }}
-        </routerLink>
         <div class="materials__item_copyrights" :class="material.copyright" />
       </div>
     </div>

@@ -16,7 +16,7 @@ schedule:
   harvest:
     hour: 6  # uses UTC
     minute: 0
-    role: "replica"
+    source: "acceptance"
 
 aws:
   harvest_content_bucket: "surfpol-harvester-content-dev"

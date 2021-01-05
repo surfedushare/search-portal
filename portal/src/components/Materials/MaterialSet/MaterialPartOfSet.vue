@@ -8,7 +8,7 @@
           <i class="arrow"></i>
         </h3>
         <div v-if="mainMaterial.has_part">
-          {{ $tc('Materials', mainMaterial.has_part.length + 1) }}
+          {{ $tc('Materials', mainMaterial.has_part.length) }}
         </div>
       </div>
     </div>
@@ -20,8 +20,9 @@ export default {
   name: 'MaterialPartOfSet',
   props: {
     material: {
-      //type: Object,
-      //default: {}
+      type: Object,
+      default: null,
+      required: false
     }
   },
   data() {

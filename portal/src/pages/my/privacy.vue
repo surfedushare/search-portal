@@ -45,6 +45,10 @@
                   </div>
                 </div>
               </div>
+              <div class="warning">
+                <span class="nota-bene">i</span>
+                <p>{{ $t('Delete-account-warning') }}</p>
+              </div>
 
               <div v-if="isSaved" class="success">
                 &#10004; {{ $t('Data-saved') }}
@@ -52,8 +56,8 @@
               <div class="privacy__form__buttons">
                 <button
                   :disabled="isSubmitting"
-                  type="submit"
                   class="button privacy__form__button"
+                  :class="withdrawnCommunityPermission && 'warning'"
                 >
                   {{ submitButtonLabel }}
                 </button>
@@ -63,10 +67,6 @@
                 >
                   {{ $t('cancel-privacy-settings') }}
                 </button>
-              </div>
-              <div class="warning">
-                <span class="nota-bene">i</span>
-                <p>{{ $t('remove-account-warning') }}</p>
               </div>
             </form>
           </div>
@@ -95,6 +95,11 @@
       :show-popup="showPopup"
       :close="closePopupCreateAccount"
     />
+    <DeleteAccountPopup
+      v-if="showDeleteAccountPopup"
+      :show-popup="showDeleteAccountPopup"
+      :delete-account="deleteAccount"
+    />
   </section>
 </template>
 <script>
@@ -102,10 +107,12 @@ import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
 import SwitchInput from '~/components/switch-input'
 import CreateAccount from '~/components/Popup/CreateAccount'
+import DeleteAccountPopup from '~/components/Popup/DeleteAccountPopup'
 import HeaderBlock from '~/components/HeaderBlock'
 
 export default {
   components: {
+    DeleteAccountPopup,
     HeaderBlock,
     SwitchInput,
     CreateAccount
@@ -117,11 +124,12 @@ export default {
       isSaved: false,
       isSubmitting: false,
       permissionsKey: 0,
-      showPopup
+      showPopup,
+      showDeleteAccountPopup: false
     }
   },
   computed: {
-    ...mapGetters(['user', 'isAuthenticated']),
+    ...mapGetters(['user', 'isAuthenticated', 'hasGivenCommunityPermission']),
     permissions() {
       if (isNil(this.user) || isNil(this.user.permissions)) {
         return []
@@ -145,20 +153,50 @@ export default {
       } else return false
     },
     submitButtonLabel() {
-      if (
-        this.$store.getters.hasGivenCommunityPermission !==
-        this.hasInitialCommunityPermission
+      if (this.withdrawnCommunityPermission) {
+        return this.$t('Delete-account-and-login')
+      } else if (
+        this.hasGivenCommunityPermission !== this.hasInitialCommunityPermission
       ) {
         return this.$t('save-privacy-settings-and-logout')
       }
       return this.$t('save-privacy-settings')
+    },
+    withdrawnCommunityPermission() {
+      return (
+        !this.hasGivenCommunityPermission && this.hasInitialCommunityPermission
+      )
     }
   },
   mounted() {
-    this.hasInitialCommunityPermission = this.$store.getters.hasGivenCommunityPermission
+    this.hasInitialCommunityPermission = this.hasGivenCommunityPermission
   },
   methods: {
+    deleteAccount() {
+      this.isSubmitting = true
+      this.$store
+        .dispatch('deleteUser')
+        .then(() => {
+          this.$store.dispatch('logout', { fully: true })
+        })
+        .catch(error => {
+          if (error) {
+            this.$store.commit('ADD_MESSAGE', {
+              level: 'error',
+              message: 'Session-expired'
+            })
+          }
+        })
+      this.closeDeleteAccountPopup()
+    },
     onSubmit() {
+      if (this.withdrawnCommunityPermission) {
+        this.showDeleteAccountPopup = true
+      } else {
+        this.submit()
+      }
+    },
+    submit() {
       this.isSubmitting = true
       this.$store
         .dispatch('postUser')
@@ -167,7 +205,7 @@ export default {
           setTimeout(() => {
             this.isSaved = false
             if (
-              this.$store.getters.hasGivenCommunityPermission !==
+              this.hasGivenCommunityPermission !==
               this.hasInitialCommunityPermission
             ) {
               this.$store.dispatch('logout', { fully: true })
@@ -180,6 +218,9 @@ export default {
     },
     closePopupCreateAccount() {
       this.showPopup = false
+    },
+    closeDeleteAccountPopup() {
+      this.showDeleteAccountPopup = false
     }
   }
 }
@@ -341,6 +382,10 @@ export default {
 
       @media @small-mobile {
         display: block !important;
+      }
+
+      &.warning {
+        background-color: @red !important;
       }
 
       &.cancel {

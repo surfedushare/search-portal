@@ -114,22 +114,23 @@ class Command(HarvesterCommand):
         self.info("")
 
         download_ids = []
+        download_allowed_seeds = [seed for seed in seeds if seed['analysis_allowed']]
 
         # Download youtube videos
-        youtube_videos = [seed for seed in seeds if seed['from_youtube']]
+        youtube_videos = [seed for seed in download_allowed_seeds if seed['from_youtube']]
         if len(youtube_videos) > 0:
             self.info("Downloading youtube videos ...")
             download_ids = download_ids + self.download_seed_files(youtube_videos, 2000)
 
         # Download other seeds
-        other_seeds = [seed for seed in seeds if not seed['from_youtube']]
+        other_seeds = [seed for seed in download_allowed_seeds if not seed['from_youtube']]
         if len(other_seeds) > 0:
             self.info("Downloading other seeds ...")
             download_ids = download_ids + self.download_seed_files(other_seeds)
 
         # Process files with Tika to extract data from content
         self.info("Extracting basic content from files ...")
-        self.extract_from_seed_files(seeds, download_ids)
+        self.extract_from_seed_files(download_allowed_seeds, download_ids)
 
         # Finish the basic harvest
         for harvest in harvest_queryset:

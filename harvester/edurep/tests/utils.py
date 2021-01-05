@@ -72,3 +72,18 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         self.assertEqual(len(seeds), 13)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
         self.assertEqual(len(youtube_seeds), 3)
+
+    def test_authors_property(self):
+        seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[3]['authors'], ['Ruud Kok'])
+
+    def test_publishers_property(self):
+        seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])
+        self.assertEqual(seeds[5]['publishers'], ['Hanze Hogeschool'])
+
+    def test_analysis_allowed_property(self):
+        seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]['analysis_allowed'], False)
+        self.assertEqual(seeds[3]['analysis_allowed'], True)
+        self.assertEqual(seeds[10]['analysis_allowed'], False)

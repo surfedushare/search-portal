@@ -51,7 +51,7 @@
           />
         </div>
         <div v-show="!previewMode">
-          <Tabs>
+          <Tabs :active-tab="activeTab" :select-tab="setActiveTab">
             <template v-slot:after-tabs="slotProps">
               <div
                 v-if="slotProps.activeTab === 'collections-tab'"
@@ -147,8 +147,8 @@ export default {
       errors: {},
       formData: null,
       notFound: false,
-      currentTab: 'general',
-      previewMode: false
+      previewMode: false,
+      activeTab: this.$route.query.tab || 'general'
     }
   },
   computed: {
@@ -192,6 +192,14 @@ export default {
       }
 
       return image
+    },
+    setActiveTab(tabIdentifier) {
+      this.activeTab = tabIdentifier
+
+      this.$router.replace({
+        name: this.localePath({ name: 'my-community' }).name,
+        query: { tab: tabIdentifier }
+      })
     },
     setInitialFormData() {
       if (!this.user) {

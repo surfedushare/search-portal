@@ -7,21 +7,24 @@ from environments.surfpol.configuration import create_configuration
 
 
 @task(help={
-    "mode": "Mode you want to migrate: localhost, development, acceptance or production. Must match APPLICATION_MODE",
+    "source": "Source you want to import from: development, acceptance or production.",
     "dataset": "The name of the greek letter that represents the dataset you want to import"
 })
-def import_dataset(ctx, mode, dataset="epsilon"):
+def import_dataset(ctx, source, dataset="epsilon"):
     """
     Loads the production database and sets up Elastic data on localhost or an AWS cluster
     """
-    command = ["python", "manage.py", "import_dataset", dataset]
+    if source == "localhost":
+        raise ValueError("Can't import data from localhost")
+
+    command = ["python", "manage.py", "import_dataset", dataset, f"--harvest-source={source}"]
     # On localhost we call the command directly and exit
-    if mode == "localhost":
+    if ctx.config.env == "localhost":
         with ctx.cd(HARVESTER_DIR):
-            ctx.run(" ".join(command))
+            ctx.run(" ".join(command), echo=True)
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command)
+    run_task(ctx, "harvester", source, command)
 
 
 @task(help={
@@ -45,7 +48,7 @@ def harvest(ctx, mode, reset=False, secondary=False, version=None):
             ctx.run(" ".join(command))
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command, version=version)
+    run_task(ctx, "harvester", mode, command, version=version, extra_workers=reset, concurrency=8)
 
 
 @task(help={
@@ -73,7 +76,7 @@ def cleanup(ctx, mode):
     "promote": "Whether you want this dataset to become 'latest' "
                "which means that the service will start to use it when searching"
 })
-def push_es_index(ctx, mode, dataset, recreate=False, promote=False):
+def push_es_index(ctx, mode, dataset, recreate=False, promote=False, version=None):
     """
     Starts a task on the AWS container cluster or localhost to update the ES indices
     """
@@ -88,7 +91,7 @@ def push_es_index(ctx, mode, dataset, recreate=False, promote=False):
             ctx.run(" ".join(command))
         return
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command)
+    run_task(ctx, "harvester", mode, command, version=version)
 
 
 @task(help={

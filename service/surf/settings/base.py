@@ -258,8 +258,11 @@ WEBPACK_LOADER = {
 if not DEBUG:
 
     def strip_sensitive_data(event, hint):
-        # modify event here
-        del event['request']['headers']['User-Agent']
+        user_agent = event.get('request', {}).get('headers', {}).get('User-Agent', None)
+
+        if user_agent:
+            del event['request']['headers']['User-Agent']
+
         return event
 
     # Initiates sentry without sending personal data

@@ -1,15 +1,18 @@
 import logging
+
 from sentry_sdk import capture_message
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
+from django.views.decorators.cache import never_cache
 from django.contrib.sessions.models import Session
 
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer
-from surf.apps.users.models import SessionToken
+from surf.apps.users.models import SessionToken, User
 from surf.apps.users.serializers import UserDetailsSerializer
 
 
@@ -21,6 +24,7 @@ class UserDetailsAPIView(APIView):
     View class that provides detail information about current user .
     """
 
+    @never_cache
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             data = UserDetailsSerializer().to_representation(request.user)
@@ -37,6 +41,7 @@ class UserDetailsAPIView(APIView):
         request.session.modified = True  # this extends expiry
         return Response(data)
 
+    @never_cache
     def post(self, request, *args, **kwargs):
         # Handle the permissions part of the data
         raw_permission = request.data.get("permissions", None)
@@ -67,6 +72,7 @@ class ObtainTokenAPIView(APIView):
     authentication_classes = (SessionAuthentication,)
     permission_classes = (IsAuthenticated,)
 
+    @never_cache
     def get(self, request, *args, **kwargs):
         token, created = SessionToken.objects.get_or_create(user=request.user)
         session_key = request.session.session_key
@@ -79,3 +85,13 @@ class ObtainTokenAPIView(APIView):
         if "permissions" in request.session:
             del request.session["permissions"]
         return Response({'token': token.key})
+
+
+class DeleteAccountAPIView(APIView):
+
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        user.delete()
+        return Response(status=status.HTTP_200_OK)
