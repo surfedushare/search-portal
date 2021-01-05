@@ -70,10 +70,13 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         # Calling command and catching output for some checks
         call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
 
-        # Asserting logging of command
-        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", dataset='test')
+        # Expect command to print what actions it will undertake and since what modification date
+        info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", "ASSERT", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
@@ -118,10 +121,13 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         # Calling command and catching output for some checks
         call_command("push_es_index", "--dataset=test", "--no-progress")
 
-        # Asserting logging of command
+        # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
@@ -206,10 +212,13 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Calling command and catching output for some checks
         call_command("push_es_index", "--dataset=test", "--no-progress")
 
-        # Asserting logging of command
+        # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
@@ -249,10 +258,14 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
         # Calling command and catching output for some checks similar to TestPushToIndex.test_edurep_surf_with_promote
         call_command("push_es_index", "--dataset=test", "--no-progress")
-        # Asserting output
+
+        # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-06-01, recreate:False and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
@@ -291,10 +304,13 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Calling command and catching output for some checks
         call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress")
 
-        # Asserting output of command
+        # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:1970-01-01, recreate:True and promote:False", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
@@ -345,10 +361,13 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Calling command and catching output for some checks
         call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
 
-        # Asserting logging of command
+        # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True", dataset='test')
+        # Expect command to print how many Dutch documents it encountered
         info_logger.assert_any_call(f"nl:{expected_doc_count['nl']}", dataset='test')
+        # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}", dataset='test')
+        # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call("unk:1", dataset='test')
 
         # Asserting calls to Elastic Search library
