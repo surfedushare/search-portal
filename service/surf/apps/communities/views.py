@@ -52,7 +52,7 @@ class CommunityViewSet(ListModelMixin,
             check_access_to_community(self.request.user, obj)
         return obj
 
-    @action(methods=['get', 'post', 'delete'], detail=True)
+    @action(methods=['get', 'post', 'put', 'delete'], detail=True)
     def collections(self, request, pk=None, **kwargs):
         """
         Returns community collections
@@ -61,7 +61,7 @@ class CommunityViewSet(ListModelMixin,
         instance = self.get_object()
 
         qs = instance.collections
-        if request.method in {"POST", "DELETE"}:
+        if request.method in {"POST", "DELETE", "PUT"}:
             # validate request parameters
             serializer = CollectionSerializer(many=True, data=request.data) if request.method == "POST" else \
                 CollectionShortSerializer(many=True, data=request.data)
@@ -70,6 +70,10 @@ class CommunityViewSet(ListModelMixin,
             collection_ids = [d["id"] for d in data]
             if request.method == "POST":
                 self._add_collections(instance, data)
+                qs = qs.filter(id__in=collection_ids)
+
+            elif request.method == "PUT":
+                self._update_collections(instance, data)
                 qs = qs.filter(id__in=collection_ids)
 
             elif request.method == "DELETE":
@@ -140,6 +144,22 @@ class CommunityViewSet(ListModelMixin,
         collections = [c["id"] for c in collections]
         collections = Collection.objects.filter(id__in=collections).all()
         instance.collections.add(*collections)
+
+    @staticmethod
+    def _update_collections(instance, collections):
+        """
+        Updates collection positions for a community
+        :param instance: community instance
+        :param collections: collections
+        :return:
+        """
+        updated_collections = []
+        for collection in collections:
+            updated_collection = Collection.objects.get(id=collection["id"])
+            updated_collection.position = collection["position"]
+            updated_collection.save()
+            updated_collections.append(updated_collection)
+        return Response(updated_collections)
 
     @staticmethod
     def _delete_collections(instance, collections):

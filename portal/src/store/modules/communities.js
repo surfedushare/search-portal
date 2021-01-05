@@ -158,15 +158,6 @@ export default {
         $log.error('Validate error: ', id)
       }
     },
-    async getCommunityCollectionsNextPage({ commit, state }) {
-      commit('SET_COMMUNITY_COLLECTIONS_LOADING', true)
-      const { data: communityCollections } = await axios.get(
-        state.community_collections.next
-      )
-
-      commit('SET_COMMUNITY_COLLECTIONS_NEXT', communityCollections)
-      commit('SET_COMMUNITY_COLLECTIONS_LOADING', false)
-    },
     async postCommunityCollection({ commit }, data) {
       if (validateParams(data)) {
         const { data: collection } = await axios.post(`collections/`, data)
@@ -189,7 +180,18 @@ export default {
           `communities/${id}/collections/`,
           data
         )
-
+        commit('EXTEND_COMMUNITY_COLLECTION', communityCollections)
+        return communityCollections
+      } else {
+        $log.error('Validate error: ', { id, data })
+      }
+    },
+    async updateCommunityCollections({ commit }, { id, data }) {
+      if (validateID(id) && validateParams(data)) {
+        const { data: communityCollections } = await axios.put(
+          `communities/${id}/collections/`,
+          data
+        )
         commit('EXTEND_COMMUNITY_COLLECTION', communityCollections)
         return communityCollections
       } else {
