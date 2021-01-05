@@ -82,7 +82,6 @@ INSTALLED_APPS = [
     'surf.apps.themes',
     'surf.apps.stats',
     'surf.apps.locale',
-    'surf.apps.querylog',
 ]
 
 SESSION_COOKIE_SECURE = PROTOCOL == "https"
