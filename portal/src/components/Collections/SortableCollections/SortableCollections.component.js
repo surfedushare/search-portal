@@ -58,16 +58,13 @@ export default {
         }
       },
       set(values) {
-        const orderedList = values.map((value, index) => {
-          value.position = index
-          return value
-        })
-        const collections = orderedList.map(collection => {
+        const collections = values.map((collection, index) => {
+          values[index].position = index
           return {
             id: collection.id,
             title_nl: collection.title_nl,
             title_en: collection.title_en,
-            position: collection.position
+            position: index
           }
         })
         this.$store.dispatch('updateCommunityCollections', {
