@@ -209,7 +209,11 @@ LOGGING = {
 if not DEBUG:
 
     def strip_sensitive_data(event, hint):
-        del event['request']['headers']['User-Agent']
+        user_agent = event.get('request', {}).get('headers', {}).get('User-Agent', None)
+
+        if user_agent:
+            del event['request']['headers']['User-Agent']
+
         return event
 
     sentry_sdk.init(
