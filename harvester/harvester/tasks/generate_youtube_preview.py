@@ -30,7 +30,7 @@ def generate_youtube_preview(document_id):
         convert_to_png(screenshot_location, extension)
         create_thumbnails(full_filename, document.id)
         store_previews(bucket_folder_path, document.id)
-        update_document(document, resource, bucket_folder_path)
+        update_document(document, bucket_folder_path, resource)
         resource.close()
         os.remove(full_filename)
         remove_files_from_filesystem(document.id)
