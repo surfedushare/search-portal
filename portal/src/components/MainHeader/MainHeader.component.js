@@ -1,13 +1,15 @@
 import { mapGetters } from 'vuex'
 import Menu from './Menu'
 import LanguageSwitch from './LanguageSwitch'
+import Feedback from '../Feedback/Feedback'
 
 export default {
   name: 'main-header',
   props: [],
   components: {
     LanguageSwitch,
-    Menu
+    Menu,
+    Feedback
   },
   methods: {
     getLoginLink() {
