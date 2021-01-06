@@ -155,7 +155,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         content_type, file = file_resource.content
         soup = BeautifulSoup(file, "html5lib")
         navigation_links = defaultdict(list)
-        for navigation_link in soup.find_all("a", class_="js-menu-item"):
+        for navigation_link in soup.find_all("a", role="button", class_="js-menu-item"):
             navigation_links[navigation_link.text.strip()].append(navigation_link["href"])
 
         # Then we parse the IMSCC package file and extract items from its manifest file
