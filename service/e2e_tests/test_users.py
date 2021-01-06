@@ -31,7 +31,7 @@ class TestUsers(BaseTestCase):
 
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".privacy__form__button"), "Delete-account-and-login"
+                (By.CSS_SELECTOR, ".privacy__form__button"), "Delete-account-and-logout"
             )
         )
 
