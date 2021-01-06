@@ -318,3 +318,11 @@ class TestsElasticSearch(TestCase):
         for record in search_author['records']:
             self.assertIn(author, record['authors'])
         self.assertEqual(search_author['recordcount'], expected_record_count)
+
+    def test_search_did_you_mean(self):
+        spelling_mistake = self.instance.search('leermateriaal')
+        self.assertIn("did_you_mean", spelling_mistake)
+        self.assertEqual(spelling_mistake["did_you_mean"]["original"], "leermateriaal")
+        self.assertEqual(spelling_mistake["did_you_mean"]["suggestion"], "lesmateriaal")
+        no_mistake = self.instance.search('lesmateriaal')
+        self.assertEqual(no_mistake["did_you_mean"], {})

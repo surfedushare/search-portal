@@ -101,6 +101,17 @@ class ElasticSearchApiClient:
 
         result['drilldowns'] = drilldowns
 
+        # Parse spelling suggestions
+        did_you_mean = {}
+        spelling_suggestion = search_result['suggest']['did-you-mean-suggestion'][0]
+        if len(spelling_suggestion['options']):
+            option = spelling_suggestion['options'][0]
+            did_you_mean = {
+                'original': spelling_suggestion['text'],
+                'suggestion': option['text']
+            }
+        result['did_you_mean'] = did_you_mean
+
         # Transform hits into records
         result['records'] = [
             ElasticSearchApiClient.parse_elastic_hit(hit)
@@ -155,7 +166,7 @@ class ElasticSearchApiClient:
                 "autocomplete": {
                     'text': query,
                     "completion": {
-                        "field": "suggest"
+                        "field": "suggest_completion"
                     }
                 }
             }
@@ -226,6 +237,20 @@ class ElasticSearchApiClient:
                     "pivot": "90d",
                     "origin": "now",
                     "boost": 1.15
+                }
+            }
+            body["suggest"] = {
+                'did-you-mean-suggestion': {
+                    'text': search_text,
+                    'phrase': {
+                        'field': 'suggest_phrase',
+                        'size': 1,
+                        'gram_size': 3,
+                        'direct_generator': [{
+                            'field': 'suggest_phrase',
+                            'suggest_mode': 'always'
+                        }],
+                    },
                 }
             }
 
