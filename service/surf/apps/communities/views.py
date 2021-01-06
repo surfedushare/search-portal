@@ -60,7 +60,7 @@ class CommunityViewSet(ListModelMixin,
 
         instance = self.get_object()
 
-        qs = instance.collections
+        qs = instance.collections.order_by("position")
         if request.method in {"POST", "DELETE", "PUT"}:
             # validate request parameters
             serializer = CollectionSerializer(many=True, data=request.data) if request.method == "POST" else \
