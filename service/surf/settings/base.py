@@ -272,6 +272,7 @@ if not DEBUG:
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn="https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956",
+        environment=environment.env,
         integrations=[DjangoIntegration()]
     )
 
