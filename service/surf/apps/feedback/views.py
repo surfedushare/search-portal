@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from django.core.mail import send_mail
+from django.http import HttpResponse
 
 
 def send_feedback_mail(feedback, current_url, user):
@@ -23,3 +24,4 @@ class FeedbackAPIView(APIView):
         current_url = request.data["current_url"]
         user = request.user
         send_feedback_mail(feedback, current_url, user)
+        return HttpResponse(status=204)
