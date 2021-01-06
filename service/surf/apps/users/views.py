@@ -93,5 +93,6 @@ class DeleteAccountAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
-        user.delete()
+        if not user.is_staff:
+            user.delete()
         return Response(status=status.HTTP_200_OK)

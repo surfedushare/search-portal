@@ -14,7 +14,7 @@ service_environment, _ = create_configuration_and_session(
     config_class=Config,
     project="service"
 )
-service_collection = Collection("srv", setup_postgres_remote, create_snapshot, restore_snapshot)
+service_collection = Collection("srv", setup_postgres_remote, create_snapshot, restore_snapshot, connect_with_shell)
 service_collection.configure(service_environment)
 legacy_collection = Collection("legacy", download_database, upload_database)
 legacy_collection.configure(service_environment)
