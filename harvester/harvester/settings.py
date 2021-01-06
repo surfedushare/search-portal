@@ -231,6 +231,7 @@ if not DEBUG:
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn="https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021",
+        environment=environment.env,
         integrations=[DjangoIntegration(), CeleryIntegration()],
         send_default_pii=False  # GDPR requirement
     )
