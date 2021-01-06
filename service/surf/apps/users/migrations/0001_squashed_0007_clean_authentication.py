@@ -10,8 +10,6 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    replaces = [('users', '0001_initial'), ('users', '0002_auto_20181026_0857'), ('users', '0003_surfconextauth'), ('users', '0004_auto_20181113_1532'), ('users', '0005_auto_20181114_0742'), ('users', '0006_custom_user_and_login'), ('users', '0007_clean_authentication')]
-
     initial = True
 
     dependencies = [

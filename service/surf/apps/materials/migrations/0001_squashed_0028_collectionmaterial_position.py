@@ -21,14 +21,12 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    replaces = [('materials', '0001_initial'), ('materials', '0002_collection_owner'), ('materials', '0003_auto_20181026_0857'), ('materials', '0004_applaudmaterial'), ('materials', '0005_viewmaterial'), ('materials', '0006_viewmaterial_viewed_at'), ('materials', '0007_collection_is_shared'), ('materials', '0008_auto_20181117_1410'), ('materials', '0009_auto_20181205_1421'), ('materials', '0010_sharedresourcecounter'), ('materials', '0011_material_applaud_count'), ('materials', '0012_set_material_applaud_count'), ('materials', '0013_auto_20190214_1026'), ('materials', '0014_set_material_applaud_count'), ('materials', '0015_material_mptt_disciplines'), ('materials', '0016_auto_20190830_0926'), ('materials', '0017_remove_material_disciplines'), ('materials', '0018_auto_20190830_0934'), ('materials', '0019_auto_20191104_1226'), ('materials', '0020_remove_old_collection_materials'), ('materials', '0021_auto_20191112_1336'), ('materials', '0022_auto_20200121_0828'), ('materials', '0023_update_meta_communities'), ('materials', '0024_collection_title_en'), ('materials', '0025_auto_20200714_1304'), ('materials', '0026_update_title_fields'), ('materials', '0027_predictable_theme_ordering'), ('materials', '0028_collectionmaterial_position')]
-
     initial = True
 
     dependencies = [
         ('filters', '0001_squashed_0016_filters_external_id_unique'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('themes', '0001_initial'),
+        ('themes', '0001_squashed_0007_predictable_theme_ordering'),
 
     ]
 
