@@ -326,3 +326,5 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(spelling_mistake["did_you_mean"]["suggestion"], "lesmateriaal")
         no_mistake = self.instance.search('lesmateriaal')
         self.assertEqual(no_mistake["did_you_mean"], {})
+        unknown_mistake = self.instance.search('sdfkhjsdgaqegkjwfgklsd')
+        self.assertEqual(unknown_mistake["did_you_mean"], {})

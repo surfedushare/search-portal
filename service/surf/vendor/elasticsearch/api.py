@@ -76,7 +76,7 @@ class ElasticSearchApiClient:
         :param search_result: result from elasticsearch
         :return result: list of results in edurep format
         """
-        hits = search_result["hits"]
+        hits = search_result.pop("hits")
         aggregations = search_result.get("aggregations", {})
         result = dict()
         result['recordcount'] = hits['total']['value']
@@ -103,13 +103,14 @@ class ElasticSearchApiClient:
 
         # Parse spelling suggestions
         did_you_mean = {}
-        spelling_suggestion = search_result['suggest']['did-you-mean-suggestion'][0]
-        if len(spelling_suggestion['options']):
-            option = spelling_suggestion['options'][0]
-            did_you_mean = {
-                'original': spelling_suggestion['text'],
-                'suggestion': option['text']
-            }
+        if 'suggest' in search_result:
+            spelling_suggestion = search_result['suggest']['did-you-mean-suggestion'][0]
+            if len(spelling_suggestion['options']):
+                option = spelling_suggestion['options'][0]
+                did_you_mean = {
+                    'original': spelling_suggestion['text'],
+                    'suggestion': option['text']
+                }
         result['did_you_mean'] = did_you_mean
 
         # Transform hits into records

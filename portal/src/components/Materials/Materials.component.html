@@ -34,5 +34,11 @@
       />
     </li>
   </ul>
-  <div class="not_found" v-else-if="!current_loading">{{ $t('Not-found') }}</div>
+  <div class="not_found" v-else-if="!current_loading && has_no_result_suggestion">
+    {{ $t('No-results-for') }} {{ this.didYouMean.original }}. {{ $t('Did-you-mean ') }}:
+    <a :href="no_result_suggestion_link">{{ didYouMean.suggestion }}</a>?
+  </div>
+  <div class="not_found" v-else-if="!current_loading">
+    {{ $t('Not-found') }}
+  </div>
 </section>
