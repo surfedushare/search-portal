@@ -55,7 +55,8 @@ class Command(OutputCommand):
         tika_content_type, data = tika_resource.content
         if data is None:
             return [self._create_document(text, meta=metadata, pipeline=pipeline)]
-        text = data.get("X-TIKA:content", "")
+        if not metadata.get("from_youtube"):
+            text = data.get("X-TIKA:content", "")
         return [self._create_document(text, meta=metadata, pipeline=pipeline)]
 
     def handle_upsert_seeds(self, collection, seeds):
