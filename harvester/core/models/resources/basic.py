@@ -1,5 +1,4 @@
 import os
-import json
 from urllib.parse import quote_plus
 from copy import copy
 import boto3
@@ -67,21 +66,6 @@ class TikaResource(DGTikaResource):
             return False
         content_type = data.get("Content-Type", "")
         return content_type == "application/zip"
-
-    @property
-    def content(self):
-        content_type, raw = super(DGTikaResource, self).content
-        if not raw:
-            return content_type, raw
-        docs = json.loads(raw)
-        data = docs[0]
-        data["X-TIKA:content"] = "\n\n".join(
-            [f"{doc.get('resourceName', '')}\n\n{doc['X-TIKA:content']}"
-             for doc in docs if doc.get('X-TIKA:content', None)]
-        )
-        variables = self.variables()
-        data["resourcePath"] = variables["input"][0]
-        return content_type, data
 
     @staticmethod
     def uri_from_cmd(cmd):
