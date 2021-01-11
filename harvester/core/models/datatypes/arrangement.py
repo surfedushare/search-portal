@@ -225,7 +225,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
                     package_document["_id"],
                     package_document["url"],
                     package_document["title"],
-                    package_document["text"] if elastic_base["analysis_allowed"] else "",
+                    package_document["text"] if elastic_base.get("analysis_allowed", False) else "",
                     transcription="",
                     mime_type="text/html",
                     file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
