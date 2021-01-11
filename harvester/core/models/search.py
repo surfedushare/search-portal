@@ -184,6 +184,9 @@ class ElasticIndex(models.Model):
                     'arrangement_collection_name': {
                         'type': 'keyword'
                     },
+                    'oaipmh_set': {
+                        'type': 'keyword'
+                    },
                     'educational_levels': {
                         'type': 'keyword'
                     },

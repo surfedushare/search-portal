@@ -134,6 +134,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'copyright': self.base_document.properties['copyright'],
             'aggregation_level': self.base_document.properties['aggregation_level'],
             'preview_path': self.base_document.properties.get('preview_path', None),
+            'analysis_allowed': self.base_document.properties.get('analysis_allowed', False),
             'keywords': self.meta['keywords'],
             'oaipmh_set': self.collection.name,
             'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
@@ -224,7 +225,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
                     package_document["_id"],
                     package_document["url"],
                     package_document["title"],
-                    package_document["text"],
+                    package_document["text"] if elastic_base.get("analysis_allowed", False) else "",
                     transcription="",
                     mime_type="text/html",
                     file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
