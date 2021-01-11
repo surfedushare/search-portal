@@ -223,4 +223,4 @@ class EdurepDataExtraction(object):
     @classmethod
     def get_analysis_allowed(cls, soup, el):
         value = EdurepDataExtraction.get_copyright(soup, el)
-        return (value or False) and not ("-nd" or "yes") in value
+        return (value is not None and "nd" not in value) and value != "yes"
