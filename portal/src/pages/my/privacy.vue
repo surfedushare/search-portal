@@ -45,7 +45,7 @@
                   </div>
                 </div>
               </div>
-              <div class="warning">
+              <div v-show="withdrawnCommunityPermission" class="warning">
                 <span class="nota-bene">i</span>
                 <p>{{ $t('Delete-account-warning') }}</p>
               </div>
@@ -154,11 +154,7 @@ export default {
     },
     submitButtonLabel() {
       if (this.withdrawnCommunityPermission) {
-        return this.$t('Delete-account-and-login')
-      } else if (
-        this.hasGivenCommunityPermission !== this.hasInitialCommunityPermission
-      ) {
-        return this.$t('save-privacy-settings-and-logout')
+        return this.$t('Delete-account-and-logout')
       }
       return this.$t('save-privacy-settings')
     },

@@ -1,8 +1,9 @@
 import Spinner from './../Spinner'
-import DeleteCollection from '~/components/Popup/DeleteCollection'
+import CollectionCard from './CollectionCard/CollectionCard'
 
 export default {
   name: 'collections',
+  components: { Spinner, CollectionCard },
   props: {
     collections: {
       default: false
@@ -14,33 +15,6 @@ export default {
     loading: {
       type: Boolean,
       default: false
-    },
-    editableContent: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      selectedCollectionId: '',
-      isShowDeleteCollection: false
-    }
-  },
-  components: { Spinner, DeleteCollection },
-  methods: {
-    deleteCollectionPopup(collection) {
-      this.isShowDeleteCollection = true
-      this.selectedCollectionId = collection.id
-    },
-    deleteCollection() {
-      this.$store
-        .dispatch('deleteMyCollection', this.selectedCollectionId)
-        .then(() => this.closeDeleteCollection())
-    },
-    closeDeleteCollection() {
-      const { community } = this.$route.params
-      this.$store.dispatch('getCommunityCollections', community)
-      this.isShowDeleteCollection = false
     }
   }
 }

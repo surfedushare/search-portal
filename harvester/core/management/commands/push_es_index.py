@@ -4,6 +4,7 @@ from dateutil import tz
 
 from core.models import Dataset, ElasticIndex
 from core.management.base import HarvesterCommand
+from harvester import logger
 
 
 class Command(HarvesterCommand):
@@ -22,17 +23,23 @@ class Command(HarvesterCommand):
         begin_of_time = datetime(year=1970, month=1, day=1, tzinfo=tz.tzutc())
         earliest_harvest = begin_of_time if recreate else dataset.get_earliest_harvest_date() or begin_of_time
 
-        self.info(f"Upserting ES index for {dataset.name}")
-        self.info(f"since:{earliest_harvest:%Y-%m-%d}, recreate:{recreate} and promote:{promote}")
+        logger.info(f"Upserting ES index for {dataset.name}", dataset=dataset.name)
+        logger.info(
+            f"since:{earliest_harvest:%Y-%m-%d}, recreate:{recreate} and promote:{promote}", dataset=dataset.name
+        )
 
         lang_doc_dict = dataset.get_elastic_documents_by_language(since=earliest_harvest)
         for lang in lang_doc_dict.keys():
-            self.info(f'{lang}:{len(lang_doc_dict[lang])}')
+            logger.info(f'{lang}:{len(lang_doc_dict[lang])}', dataset=dataset.name)
 
         for lang, docs in lang_doc_dict.items():
             if lang == "unk":
-                self.info("Found arrangements with ambiguous language", [doc["_id"] for doc in docs])
+                logger.warning(
+                    f"Found arrangements with ambiguous language {[doc['_id'] for doc in docs]}",
+                    dataset=dataset.name
+                )
             if lang not in settings.ELASTICSEARCH_ANALYSERS:
+                logger.warning(f"Found language not in analysers: {lang}", dataset=dataset.name)
                 continue
             index, created = ElasticIndex.objects.get_or_create(
                 name=dataset.name,
@@ -48,6 +55,6 @@ class Command(HarvesterCommand):
             index.push(docs, recreate=recreate)
             index.save()
             if promote or recreate:
-                self.info(f"Promoting index { index.remote_name } to latest")
+                logger.info(f"Promoting index { index.remote_name } to latest", dataset=dataset.name)
                 index.promote_to_latest()
-            self.info(f'{lang} errors:{index.error_count}')
+            logger.info(f'{lang} errors:{index.error_count}', dataset=dataset.name)

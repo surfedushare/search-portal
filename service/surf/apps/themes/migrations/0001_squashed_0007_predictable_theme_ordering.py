@@ -13,8 +13,6 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    replaces = [('themes', '0001_initial'), ('themes', '0002_auto_20181207_1243'), ('themes', '0003_improved_translations'), ('themes', '0004_auto_20190830_0813'), ('themes', '0005_auto_20190830_0813'), ('themes', '0006_update_filtercat_disciplines'), ('themes', '0007_predictable_theme_ordering')]
-
     initial = True
 
     dependencies = [

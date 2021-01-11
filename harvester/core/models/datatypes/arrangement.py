@@ -1,4 +1,3 @@
-import logging
 from collections import Iterator, defaultdict
 from zipfile import BadZipFile
 from bs4 import BeautifulSoup
@@ -15,9 +14,7 @@ from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
 from core.models import CommonCartridge, FileResource
-
-
-log = logging.getLogger("harvester")
+from harvester import logger
 
 
 class Arrangement(DocumentCollectionMixin, CollectionBase):
@@ -136,6 +133,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'publisher_date': self.base_document.properties['publisher_date'],
             'copyright': self.base_document.properties['copyright'],
             'aggregation_level': self.base_document.properties['aggregation_level'],
+            'preview_path': self.base_document.properties.get('preview_path', None),
             'keywords': self.meta['keywords'],
             'oaipmh_set': self.collection.name,
             'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
@@ -157,7 +155,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         content_type, file = file_resource.content
         soup = BeautifulSoup(file, "html5lib")
         navigation_links = defaultdict(list)
-        for navigation_link in soup.find_all("a", class_="js-menu-item"):
+        for navigation_link in soup.find_all("a", role="button", class_="js-menu-item"):
             navigation_links[navigation_link.text.strip()].append(navigation_link["href"])
 
         # Then we parse the IMSCC package file and extract items from its manifest file
@@ -170,7 +168,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             cc.clean()
             package_content = cc.list_content_by_title()
         except (ValidationError, BadZipFile):
-            log.warning(f"Invalid or missing common cartridge for file resource: {package_file.id}")
+            logger.warning(f"Invalid or missing common cartridge for file resource: {package_file.id}")
             return []
 
         # Combine the links and content into documents we may search for

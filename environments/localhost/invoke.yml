@@ -22,3 +22,6 @@ elastic_search:
   verify_certs: true  # ignored as long as protocol is http
   decompound_word_lists:
     dutch: "decompound_word_list.nl.txt"
+
+aws:
+  harvest_content_bucket: null

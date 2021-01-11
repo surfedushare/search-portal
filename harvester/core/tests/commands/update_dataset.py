@@ -43,6 +43,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # The only valid stage for "update_dataset" to act on.
         OAIPMHHarvest.objects.filter(stage=HarvestStages.VIDEO).update(stage=HarvestStages.COMPLETE)
         OAIPMHHarvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        super().setUp()
 
     def get_command_instance(self):
         command = DatasetCommand()
@@ -60,7 +61,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # handle_upsert_seeds and handle_deletion_seeds.
         # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
         out = StringIO()
-        call_command("update_dataset", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+        call_command("update_dataset", "--dataset=test", "--no-progress", stdout=out)
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)))
         # Asserting usage of handle_upsert_seeds
@@ -78,7 +79,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
         self.assertEqual(
             surf_harvest.stage,
-            HarvestStages.COMPLETE,
+            HarvestStages.PREVIEW,
             "surf set harvest should got updated to stage BASIC to prevent re-harvest in the future"
         )
         edurep_delen_harvest = OAIPMHHarvest.objects.get(source__spec="edurep_delen")
@@ -163,6 +164,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         # Setting the stage of the "surf" set harvests to VIDEO.
         # The only valid stage for "update_dataset" to act on.
         OAIPMHHarvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        super().setUp()
 
     def get_command_instance(self):
         command = DatasetCommand()

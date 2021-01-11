@@ -9,6 +9,7 @@ from harvester.settings import environment
 from core.management.base import HarvesterCommand
 from core.models import Dataset, FileResource, TikaResource
 from edurep.models import EdurepOAIPMH
+from harvester import logger
 
 
 class Command(base.LabelCommand, HarvesterCommand):
@@ -44,7 +45,7 @@ class Command(base.LabelCommand, HarvesterCommand):
 
         # Sync files with AWS
         if environment.env != "localhost":
-            self.info("Uploading files to AWS")
+            logger.info("Uploading files to AWS")
             ctx = Context(environment)
             harvester_data_bucket = f"s3://{environment.aws.harvest_content_bucket}/datasets/harvester"
             for file in [dataset_file] + resource_files:

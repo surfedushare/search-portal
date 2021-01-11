@@ -165,10 +165,10 @@ if environment.aws.harvest_content_bucket:
     AWS_S3_REGION_NAME = 'eu-central-1'
     AWS_DEFAULT_ACL = None
 else:
+    DEFAULT_FILE_STORAGE = 'core.files.storage.OverwriteStorage'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
     MEDIA_URL = 'http://localhost:8000/media/harvester/'
     AWS_STORAGE_BUCKET_NAME = None
-
 
 # Rest framework
 # https://www.django-rest-framework.org/
@@ -182,25 +182,37 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
 
+_logging_enabled = sys.argv[1:2] != ['test']
+log_handlers = [environment.django.logging.handler] if _logging_enabled else []
+log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'json': {
             '()': 'django_log_formatter_json.JSONFormatter',
+        },
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
         }
     },
     'handlers': {
-        'console': {
+        'json': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'json'
         },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        }
     },
     'loggers': {
         'harvester': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+            'handlers': log_handlers,
+            'level': log_level,
             'propagate': True,
         },
     },
@@ -219,6 +231,7 @@ if not DEBUG:
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn="https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021",
+        environment=environment.env,
         integrations=[DjangoIntegration(), CeleryIntegration()],
         send_default_pii=False  # GDPR requirement
     )

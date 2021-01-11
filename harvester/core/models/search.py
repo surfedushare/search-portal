@@ -196,6 +196,9 @@ class ElasticIndex(models.Model):
                     "suggest": {
                         "type": "completion"
                     },
+                    "preview_path": {
+                        'type': 'keyword'
+                    }
                 }
             }
         }

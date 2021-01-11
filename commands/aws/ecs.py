@@ -49,6 +49,10 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
     session = create_aws_session(profile_name=ctx.config.aws.profile_name)
     ecs_client = session.client('ecs')
     container_variables = build_default_container_variables(mode, version)
+    container_variables.update({
+        "harvester_bucket": ctx.config.aws.harvest_content_bucket
+    })
+
     if extra_workers:
         container_variables.update({
             "concurrency": f"{concurrency}"

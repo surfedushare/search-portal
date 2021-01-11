@@ -169,7 +169,7 @@ class CollectionShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Collection
-        fields = ('id', 'title_nl', 'title_en')
+        fields = ('id', 'title_nl', 'title_en', 'position')
 
 
 class CollectionSerializer(CollectionShortSerializer):
@@ -183,6 +183,7 @@ class CollectionSerializer(CollectionShortSerializer):
     communities_count = serializers.SerializerMethodField()
     communities = CommunitySerializer(many=True, read_only=True)
     sharing_counters = serializers.SerializerMethodField()
+    position = serializers.IntegerField(required=False)
 
     @staticmethod
     def get_sharing_counters(obj):
@@ -214,7 +215,7 @@ class CollectionSerializer(CollectionShortSerializer):
     class Meta:
         model = Collection
         fields = ('id', 'title_nl', 'title_en', 'materials_count', 'communities_count',
-                  'communities', 'sharing_counters', 'publish_status')
+                  'communities', 'sharing_counters', 'publish_status', 'position')
 
 
 def _get_and_check_user_from_context(context):

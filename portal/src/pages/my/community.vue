@@ -75,14 +75,14 @@
             <Tab :title="$t('collections')" identifier="collections-tab">
               <div id="Collections" class="communities__collections">
                 <div>
-                  <Collections
+                  <SortableCollections
                     v-if="community_collections"
                     :collections="community_collections.results"
                     :editable-content="true"
                     :loading="community_collections_loading"
                     @input="setCollectionSelection"
                   >
-                  </Collections>
+                  </SortableCollections>
                 </div>
                 <AddCollection
                   v-if="showPopup"
@@ -103,7 +103,7 @@
 <script>
 import { isEmpty, find, forEach } from 'lodash'
 import { mapGetters } from 'vuex'
-import Collections from '~/components/Collections'
+import SortableCollections from '~/components/Collections/SortableCollections'
 import HeaderBlock from '~/components/HeaderBlock'
 import AddCollection from '~/components/Popup/AddCollection'
 import Error from '~/components/error'
@@ -132,7 +132,7 @@ export default {
   components: {
     HeaderBlock,
     Error,
-    Collections,
+    SortableCollections,
     AddCollection,
     SwitchInput,
     CommunityForm,

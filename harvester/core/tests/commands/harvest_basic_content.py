@@ -82,16 +82,16 @@ class TestBasicHarvest(TestCase):
         # After that the heavy lifting is done by two methods named download_seed_files and extract_from_seed_files.
         # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
         out = StringIO()
-        call_command("harvest_basic_content", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+        call_command("harvest_basic_content", "--dataset=test", "--no-progress", stdout=out)
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with(
             "surf", make_aware(datetime(year=1970, month=1, day=1)),
             include_deleted=False
         )
         # Asserting usage of download_seed_files
-        download_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS)
+        download_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, dataset='test')
         # And then usage of extract_from_seeds
-        extract_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1])
+        extract_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1], dataset='test')
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
         surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
@@ -111,7 +111,7 @@ class TestBasicHarvest(TestCase):
     def test_harvest_with_youtube(self, seeds_mock):
         out = StringIO()
         with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
-            call_command("harvest_basic_content", "--dataset=test", "--no-progress", "--no-logger", stdout=out)
+            call_command("harvest_basic_content", "--dataset=test", "--no-progress", stdout=out)
         self.assertEqual(send_serie_mock.call_count, 4, "Expects two calls to send_serie")
 
         for name, args, kwargs in send_serie_mock.mock_calls[0:2]:  # Youtube

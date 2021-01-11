@@ -28,42 +28,50 @@
       </span>
     </div>
   </div>
-  <h3 class="material__info_subttl">{{ $t('Quality') }}</h3>
-  <div class="material__info_quality">
-    <a
-      :href="`/applaud-materials/?material__external_id=${material.external_id}`"
-      class="quality__applauds quality__applauds--link"
-      @click.prevent="setApplaudMaterial(material)"
-      :class="{'quality__applauds--saving': is_loading_applaud}"
-    >
-      {{ material.applaud_count}}
-    </a>
-    <div class="quality__collections">
-      <span class="quality__collections_count">
-        {{material.number_of_collections}}
-      </span>
-      <span class="quality__collections_txt">{{ $t('Collections-2') }}</span>
+  <div class="material__info_quality_preview">
+    <div class="material__info_preview" v-if="material.preview_url && false">
+      <h3 class="material__info_subttl">{{ $t('Preview') }}</h3>
+      <enlargeable-image :src="material.preview_thumbnail_url" :src_large="material.preview_url" />
     </div>
-    <div class="quality__views">
-      <div class="quality__views_count">
-        {{ contedNumber }}
+    <div class="material__info_quality_container">
+      <h3 class="material__info_subttl">{{ $t('Quality') }}</h3>
+      <div class="material__info_quality">
+        <a
+          :href="`/applaud-materials/?material__external_id=${material.external_id}`"
+          class="quality__applauds quality__applauds--link"
+          @click.prevent="setApplaudMaterial(material)"
+          :class="{'quality__applauds--saving': is_loading_applaud}"
+          >
+          {{ material.applaud_count}}
+        </a>
+          <div class="quality__collections">
+            <span class="quality__collections_count">
+              {{material.number_of_collections}}
+            </span>
+            <span class="quality__collections_txt">{{ $t('Collections-2') }}</span>
+          </div>
+          <div class="quality__views">
+            <div class="quality__views_count">
+              {{ viewCount }}
+            </div>
+            <div class="quality__views_txt">{{ $t('Viewed') }}</div>
+          </div>
+          <div class="quality__star">
+            <StarRating
+              v-model="material.avg_star_rating"
+              :counter="material.count_star_rating"
+              type="big"
+              :disabled="true"
+              />
+            <a
+              href="/save-rating/"
+              @click.prevent="showPopupSaveRating"
+              v-show=!rating_given
+              >
+              {{ $t('Geef-waardering') }}
+            </a>
+          </div>
       </div>
-      <div class="quality__views_txt">{{ $t('Viewed') }}</div>
-    </div>
-    <div class="quality__star">
-      <StarRating
-        v-model="material.avg_star_rating"
-        :counter="material.count_star_rating"
-        type="big"
-        :disabled="true"
-      />
-      <a
-        href="/save-rating/"
-        @click.prevent="showPopupSaveRating"
-        v-show=!rating_given
-      >
-        {{ $t('Geef-waardering') }}
-      </a>
     </div>
   </div>
   <template v-if="material.description">

@@ -56,7 +56,8 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
     target_info = TARGETS["harvester"]
     harvester_container_variables = build_default_container_variables(mode, version)
     harvester_container_variables.update({
-        "flower_secret_arn": ctx.config.aws.flower_secret_arn
+        "flower_secret_arn": ctx.config.aws.flower_secret_arn,
+        "harvester_bucket": ctx.config.aws.harvest_content_bucket
     })
 
     harvester_task_definition_arn = register_task_definition(
@@ -77,7 +78,8 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
 
     celery_container_variables = build_default_container_variables(mode, version)
     celery_container_variables.update({
-        "concurrency": "4"
+        "concurrency": "4",
+        "harvester_bucket": ctx.config.aws.harvest_content_bucket
     })
 
     celery_task_definition_arn = register_task_definition(

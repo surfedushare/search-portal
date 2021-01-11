@@ -82,7 +82,6 @@ INSTALLED_APPS = [
     'surf.apps.themes',
     'surf.apps.stats',
     'surf.apps.locale',
-    'surf.apps.querylog',
 ]
 
 SESSION_COOKIE_SECURE = PROTOCOL == "https"
@@ -97,6 +96,7 @@ CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
 CSP_IMG_SRC = ["'self'", "data:"]
 if MODE != 'localhost':
     CSP_IMG_SRC.append(f"{environment.aws.image_upload_bucket}.s3.amazonaws.com")
+    CSP_IMG_SRC.append(f"{environment.aws.harvest_content_bucket}.s3.amazonaws.com")
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -229,6 +229,8 @@ if MODE != 'localhost':
     AWS_STORAGE_BUCKET_NAME = environment.aws.image_upload_bucket
     AWS_S3_REGION_NAME = 'eu-central-1'
 
+AWS_HARVESTER_BUCKET_NAME = environment.aws.harvest_content_bucket
+
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
 
@@ -269,6 +271,7 @@ if not DEBUG:
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn="https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956",
+        environment=environment.env,
         integrations=[DjangoIntegration()]
     )
 
@@ -380,3 +383,7 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
     }
+
+EMAIL_HOST = 'outgoing.mf.surf.net'
+EMAIL_PORT = 25
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

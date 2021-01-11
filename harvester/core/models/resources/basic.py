@@ -1,4 +1,3 @@
-import logging
 import os
 import json
 from urllib.parse import quote_plus
@@ -10,9 +9,9 @@ from urlobject import URLObject
 from django.conf import settings
 from django.db import models
 from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResource, file_resource_delete_handler
+from harvester import logger
 
 
-logger = logging.getLogger("harvester")
 s3_client = boto3.client("s3")
 
 
