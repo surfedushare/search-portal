@@ -75,6 +75,7 @@
           <Materials
             :materials="materials"
             :items-in-line="materials_in_line"
+            :did-you-mean="did_you_mean"
           />
           <Spinner v-if="materials_loading" />
         </div>
@@ -118,7 +119,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['materials', 'materials_loading', 'materials_in_line'])
+    ...mapGetters([
+      'materials',
+      'materials_loading',
+      'materials_in_line',
+      'did_you_mean'
+    ])
   },
   watch: {
     search(search) {

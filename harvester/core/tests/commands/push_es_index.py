@@ -37,9 +37,9 @@ class ElasticSearchClientTestCase(TestCase):
         expected_keys = {
             "title", "text", "transcription", "url", "external_id", "disciplines", "lom_educational_levels",
             "educational_levels", "author", "description", "publisher_date", "copyright", "language", "title_plain",
-            "text_plain", "transcription_plain", "keywords", "file_type", "mime_type", "suggest", "_id", "oaipmh_set",
-            "arrangement_collection_name", "aggregation_level", "publishers", "authors", "has_part", "is_part_of",
-            "preview_path", "analysis_allowed"
+            "text_plain", "transcription_plain", "keywords", "file_type", "mime_type", "suggest_phrase",
+            "suggest_completion", "_id", "oaipmh_set", "arrangement_collection_name", "aggregation_level", "publishers",
+            "authors", "has_part", "is_part_of", "preview_path", "analysis_allowed"
         }
         self.assertEqual(set(document.keys()), expected_keys)
 

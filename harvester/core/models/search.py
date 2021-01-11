@@ -107,7 +107,12 @@ class ElasticIndex(models.Model):
                             "type": "custom",
                             "tokenizer": "standard",
                             "filter": ["dutch_stop", "dictionary_decompound"]
-                        }
+                        },
+                        "trigram": {
+                            "type": "custom",
+                            "tokenizer": "standard",
+                            "filter": ["lowercase", "shingle"]
+                        },
                     },
                     "filter": {
                         "dictionary_decompound": {
@@ -118,6 +123,11 @@ class ElasticIndex(models.Model):
                         "dutch_stop": {
                             "type": "stop",
                             "stopwords": "_dutch_"
+                        },
+                        "shingle": {
+                            "type": "shingle",
+                            "min_shingle_size": 2,
+                            "max_shingle_size": 3
                         }
                     }
                 }
@@ -196,12 +206,13 @@ class ElasticIndex(models.Model):
                     'disciplines': {
                         'type': 'keyword'
                     },
-                    "suggest": {
+                    "suggest_completion": {
                         "type": "completion"
                     },
-                    "preview_path": {
-                        'type': 'keyword'
-                    }
+                    "suggest_phrase": {
+                        "type": "text",
+                        "analyzer": "trigram"
+                    },
                 }
             }
         }

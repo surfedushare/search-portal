@@ -1,6 +1,8 @@
 import { mapGetters } from 'vuex'
+import { isEmpty } from 'lodash'
 import StarRating from './../StarRating'
 import Material from './Material/Material'
+import { generateSearchMaterialsQuery } from '../_helpers'
 
 export default {
   name: 'materials',
@@ -8,6 +10,12 @@ export default {
     materials: {
       type: Object,
       default: null
+    },
+    didYouMean: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     'items-in-line': {
       type: Number,
@@ -124,6 +132,18 @@ export default {
       }
 
       return false
+    },
+    has_no_result_suggestion() {
+      return !isEmpty(this.didYouMean)
+    },
+    no_result_suggestion_link() {
+      let searchQuery = generateSearchMaterialsQuery({
+        search_text: this.didYouMean.suggestion,
+        filters: this.materials.search_filters,
+        page_size: 10,
+        page: 1
+      })
+      return this.$router.resolve(searchQuery).href
     }
   }
 }

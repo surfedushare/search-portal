@@ -97,7 +97,10 @@ class ElasticSearchTestCase(BaseTestCase):
                     'disciplines': {
                         'type': 'keyword'
                     },
-                    "suggest": {
+                    "suggest_completion": {
+                        "type": "completion"
+                    },
+                    "suggest_phrase": {
                         "type": "completion"
                     },
                     "has_part": {

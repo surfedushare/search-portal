@@ -98,7 +98,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'mime_type': mime_type,
             'has_part': has_part,
             'is_part_of': is_part_of,
-            'suggest': title.split(" ") if title else [],
+            'suggest_completion': title.split(" ") if title else [],
+            'suggest_phrase': text
         }
 
     def get_search_document_base(self):

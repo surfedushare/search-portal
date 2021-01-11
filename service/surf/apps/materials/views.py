@@ -169,7 +169,8 @@ class MaterialSearchAPIView(APIView):
                   filters=res["drilldowns"],
                   filter_categories=filter_categories.data,
                   page=data["page"],
-                  page_size=data["page_size"])
+                  page_size=data["page_size"],
+                  did_you_mean=res["did_you_mean"])
         return Response(rv)
 
 

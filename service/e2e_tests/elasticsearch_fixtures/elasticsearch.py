@@ -20,6 +20,8 @@ NL_MATERIAL = {
     "oaipmh_set": "wikiwijsmaken",
     "has_part": [],
     "is_part_of": None,
+    "suggest_phrase": "Leermateriaal over wiskunde en didactiek op de universiteit.",
+    "suggest_completion": "Leermateriaal over wiskunde en didactiek op de universiteit.",
     "analysis_allowed": True,
 }
 

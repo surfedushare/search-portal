@@ -76,7 +76,7 @@ class ElasticSearchApiClient:
         :param search_result: result from elasticsearch
         :return result: list of results in edurep format
         """
-        hits = search_result["hits"]
+        hits = search_result.pop("hits")
         aggregations = search_result.get("aggregations", {})
         result = dict()
         result['recordcount'] = hits['total']['value']
@@ -100,6 +100,18 @@ class ElasticSearchApiClient:
             })
 
         result['drilldowns'] = drilldowns
+
+        # Parse spelling suggestions
+        did_you_mean = {}
+        if 'suggest' in search_result:
+            spelling_suggestion = search_result['suggest']['did-you-mean-suggestion'][0]
+            if len(spelling_suggestion['options']):
+                option = spelling_suggestion['options'][0]
+                did_you_mean = {
+                    'original': spelling_suggestion['text'],
+                    'suggestion': option['text']
+                }
+        result['did_you_mean'] = did_you_mean
 
         # Transform hits into records
         result['records'] = [
@@ -155,7 +167,7 @@ class ElasticSearchApiClient:
                 "autocomplete": {
                     'text': query,
                     "completion": {
-                        "field": "suggest"
+                        "field": "suggest_completion"
                     }
                 }
             }
@@ -171,7 +183,7 @@ class ElasticSearchApiClient:
         # and sort by length
         autocomplete = result['suggest']['autocomplete']
         options = autocomplete[0]['options']
-        flat_options = list(set([item for option in options for item in option['_source']['suggest']]))
+        flat_options = list(set([item for option in options for item in option['_source']['suggest_completion']]))
         options_with_prefix = [option for option in flat_options if option.startswith(query)]
         options_with_prefix.sort(key=lambda option: len(option))
         return options_with_prefix
@@ -226,6 +238,20 @@ class ElasticSearchApiClient:
                     "pivot": "90d",
                     "origin": "now",
                     "boost": 1.15
+                }
+            }
+            body["suggest"] = {
+                'did-you-mean-suggestion': {
+                    'text': search_text,
+                    'phrase': {
+                        'field': 'suggest_phrase',
+                        'size': 1,
+                        'gram_size': 3,
+                        'direct_generator': [{
+                            'field': 'suggest_phrase',
+                            'suggest_mode': 'always'
+                        }],
+                    },
                 }
             }
 

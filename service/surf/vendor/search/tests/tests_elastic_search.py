@@ -112,7 +112,7 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(search_biologie_none_date, search_biologie)
 
     def test_search_disciplines(self):
-        search_result = self.instance.search()
+        search_result = self.instance.search('')
         search_result_filter_1 = self.instance.search(
             '',
             filters=[{
@@ -286,7 +286,7 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(material_2['title'], '07 AS_AD model')
         self.assertEqual(
             material_2['url'],
-            'https://surfsharekit.nl/dl/surf/651a50f7-8942-4615-af67-a6841e00b78b/bf30be37-dc7c-4106-8ef4-9773b48b547b'
+            'https://learn.canvas.net/courses/2192/pages/week-3-7-as-ad-model?module_item_id=210172'
         )
         self.assertEqual(material_2['external_id'], test_id_2)
         self.assertEqual(
@@ -299,15 +299,15 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(material_2['language'], 'en')
         self.assertEqual(material_2['authors'], ['Dr. Ning Ding'])
         self.assertEqual(len(material_2['themes']), 0)
-        self.assertEqual(material_2['format'], 'pdf')
+        self.assertEqual(material_2['format'], 'text')
 
     def test_search_by_author(self):
         author = "John van Dongen"
-        expected_record_count = 2
+        expected_record_count = 14
         self.check_author_search(author, expected_record_count)
 
         author2 = "Ruud Kok"
-        expected_record_count2 = 3
+        expected_record_count2 = 21
         self.check_author_search(author2, expected_record_count2)
 
     def check_author_search(self, author, expected_record_count):
@@ -318,3 +318,13 @@ class TestsElasticSearch(TestCase):
         for record in search_author['records']:
             self.assertIn(author, record['authors'])
         self.assertEqual(search_author['recordcount'], expected_record_count)
+
+    def test_search_did_you_mean(self):
+        spelling_mistake = self.instance.search('leermateriaal')
+        self.assertIn("did_you_mean", spelling_mistake)
+        self.assertEqual(spelling_mistake["did_you_mean"]["original"], "leermateriaal")
+        self.assertEqual(spelling_mistake["did_you_mean"]["suggestion"], "lesmateriaal")
+        no_mistake = self.instance.search('lesmateriaal')
+        self.assertEqual(no_mistake["did_you_mean"], {})
+        unknown_mistake = self.instance.search('sdfkhjsdgaqegkjwfgklsd')
+        self.assertEqual(unknown_mistake["did_you_mean"], {})
