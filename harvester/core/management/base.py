@@ -79,5 +79,7 @@ class OutputCommand(HarvesterCommand):
             "from_youtube": meta.get("from_youtube", False),
             "suggest": title,
             "pipeline": pipeline,
-            "analysis_allowed": meta.get("analysis_allowed", False)
+            "analysis_allowed": meta.get("analysis_allowed", False),
+            "is_part_of": meta.get("is_part_of", None),
+            "has_part": meta.get("has_part", []),
         }

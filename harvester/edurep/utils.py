@@ -29,7 +29,9 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "disciplines": EdurepDataExtraction.get_disciplines,
     "humanized_disciplines": EdurepDataExtraction.get_humanized_disciplines,
     "from_youtube": EdurepDataExtraction.get_from_youtube,
-    "analysis_allowed": EdurepDataExtraction.get_analysis_allowed
+    "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
+    "is_part_of": EdurepDataExtraction.get_is_part_of,
+    "has_part": EdurepDataExtraction.get_has_part,
 }
 
 
