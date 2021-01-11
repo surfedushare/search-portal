@@ -4,7 +4,6 @@ import StarRating from './../StarRating'
 import Material from './Material/Material'
 import { generateSearchMaterialsQuery } from '../_helpers'
 
-
 export default {
   name: 'materials',
   props: {

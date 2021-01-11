@@ -119,7 +119,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['materials', 'materials_loading', 'materials_in_line', 'did_you_mean'])
+    ...mapGetters([
+      'materials',
+      'materials_loading',
+      'materials_in_line',
+      'did_you_mean'
+    ])
   },
   watch: {
     search(search) {
