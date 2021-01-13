@@ -256,7 +256,7 @@ export default {
       }
 
       & .bg {
-        background: @dark-blue;
+        background: @green;
         opacity: 0.9;
         position: absolute;
         border-radius: 0 20px 20px 20px;
@@ -272,7 +272,7 @@ export default {
         }
         &:before {
           content: '';
-          background: url('/images/buble-background-blue.svg') 0 0 no-repeat;
+          background: url('/images/bubble-background-green.svg') 0 0 no-repeat;
           position: absolute;
           top: -36px;
           left: -46px;
