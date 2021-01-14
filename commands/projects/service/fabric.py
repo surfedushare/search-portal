@@ -4,6 +4,7 @@ from invoke import Responder, Exit
 from fabric import task
 
 from commands.postgres.download import download_snapshot
+from commands.postgres.sql import insert_django_user_statement
 
 
 @task()
@@ -72,10 +73,24 @@ def restore_snapshot(conn, snapshot_name=None):
     postgres_user = conn.config.postgres.user
     postgres_password = conn.config.secrets.postgres.password
     postgres_password_responder = Responder(pattern=r"Password: ", response=postgres_password + "\n")
+
     # Run Postgres command with port forwarding
     with conn.forward_local(local_port=1111, remote_host=conn.config.postgres.host, remote_port=5432):
+        # Restore actual database
         conn.local(f"psql -h localhost -p 1111 -U {postgres_user} -W -d edushare -f {snapshot_file_path}",
                    echo=True, watchers=[postgres_password_responder], pty=True)
+        # Create generic superuser named supersurf
+        admin_password = conn.config.secrets.django.admin_password
+        insert_user = insert_django_user_statement(
+            "supersurf", admin_password, is_edushare=conn.config.postgres.database == "edushare"
+        )
+        conn.local(
+            f'psql -h localhost -p 1111 -U {postgres_user} -d {conn.config.postgres.database} -W -c "{insert_user}"',
+            echo=True,
+            pty=True,
+            warn=True,
+            watchers=[postgres_password_responder],
+        )
 
     conn.local(f"rm {snapshot_file_path}.bak", warn=True)
     print("Done")
