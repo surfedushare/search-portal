@@ -21,7 +21,7 @@ def run_harvester_task(ctx, mode, command, **kwargs):
     "source": "Source you want to import from: development, acceptance or production.",
     "dataset": "The name of the greek letter that represents the dataset you want to import"
 })
-def import_dataset(ctx, source, dataset="epsilon"):
+def import_dataset(ctx, source, dataset="eta"):
     """
     Loads the production database and sets up Elastic data on localhost or an AWS cluster
     """
@@ -98,7 +98,7 @@ def push_es_index(ctx, mode, dataset, recreate=False, promote=False, version=Non
 
 
 @task(help={
-    "mode": "Mode you want to push indices for: localhost, development, acceptance or production. "
+    "mode": "Mode you want to dump data for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
     "dataset": "Name of the dataset (a Greek letter) that you want to dump",
 })
