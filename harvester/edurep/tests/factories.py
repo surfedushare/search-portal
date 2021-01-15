@@ -1,5 +1,6 @@
 import os
 import factory
+from datetime import datetime
 
 from django.conf import settings
 from django.utils.timezone import make_aware
@@ -18,7 +19,11 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
         is_initial = True
         number = 0
 
-    since = factory.Maybe("is_initial", "1970-01-01", "2020-02-10")
+    since = factory.Maybe(
+        "is_initial",
+        make_aware(datetime(year=1970, month=1, day=1)),
+        make_aware(datetime(year=2020, month=2, day=10))
+    )
     set_specification = "surf"
     status = 200
     head = {
@@ -28,7 +33,7 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
     @factory.lazy_attribute
     def uri(self):
         return "wszoeken.edurep.kennisnet.nl/edurep/oai?" \
-               f"from={self.since}&metadataPrefix=lom&set={self.set_specification}&verb=ListRecords"
+               f"from={self.since.date()}&metadataPrefix=lom&set={self.set_specification}&verb=ListRecords"
 
     @factory.lazy_attribute
     def body(self):
