@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2020-02-06T18:15:51Z</responseDate>
+    <request resumptionToken="c1576069959151499|u|f1970-01-01T00:00:00Z|mlom|ssurf" verb="ListRecords">
+        http://oai.prod8.edurep.seecr.nl/edurep/oai
+    </request>
+    <ListRecords>
+        <record>
+            <header>
+                <identifier>surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd</identifier>
+                <datestamp>2019-12-11T13:12:39Z</datestamp>
+                <setSpec>surf</setSpec>
+            </header>
+            <metadata>
+                <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
+                         xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd">
+                    <czp:general>
+                        <czp:title>
+                            <czp:langstring xml:lang="x-none">Les 12 - Audio en MIDI 1</czp:langstring>
+                        </czp:title>
+                        <czp:catalogentry>
+                            <czp:catalog>UUID</czp:catalog>
+                            <czp:entry>
+                                <czp:langstring xml:lang="x-none">urn:uuid:b35875c5-678b-4d58-af85-4111c321c5cd
+                                </czp:langstring>
+                            </czp:entry>
+                        </czp:catalogentry>
+                        <czp:language>nl</czp:language>
+                        <czp:description>
+                            <czp:langstring xml:lang="x-none">Als we op een computer met muziek werken, komen we in
+                                aanraking met Audio, MIDI of een combinatie van beide. In deze les ligt de nadruk op
+                                MIDI. &#13;
+                                &#13;
+                                Aan de orde komen:&#13;
+                                Wat is het en wat kun je ermee? &#13;
+                                Hoe kun je binnen Sibelius software gebruik maken van MIDI (play, record, mixer, sounds,
+                                export audio) &#13;
+                                Het verschijnsel Latency
+                            </czp:langstring>
+                        </czp:description>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">Instructie</czp:langstring>
+                        </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">Praktische muzieknotatie en audiobewerking
+                            </czp:langstring>
+                        </czp:keyword>
+                    </czp:general>
+                    <czp:lifecycle>
+                        <czp:contribute>
+                            <czp:role>
+                                <czp:source>
+                                    <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                                </czp:source>
+                                <czp:value>
+                                    <czp:langstring xml:lang="x-none">hogeschool</czp:langstring>
+                                </czp:value>
+                            </czp:role>
+                            <czp:centity>
+                                <czp:vcard>BEGIN:VCARD
+                                    VERSION:3.0
+                                    FN:Codarts Rotterdam
+                                    N:Codarts Rotterdam;;;;
+                                    ORG:Codarts Rotterdam
+                                    END:VCARD
+                                </czp:vcard>
+                            </czp:centity>
+                        </czp:contribute>
+                        <czp:contribute>
+                            <czp:date>
+                                <czp:datetime>2017</czp:datetime>
+                            </czp:date>
+                        </czp:contribute>
+                    </czp:lifecycle>
+                    <czp:metametadata>
+                        <czp:catalogentry>
+                            <czp:catalog>UUID</czp:catalog>
+                            <czp:entry>
+                                <czp:langstring xml:lang="x-none">urn:uuid:b35875c5-678b-4d58-af85-4111c321c5cd
+                                </czp:langstring>
+                            </czp:entry>
+                        </czp:catalogentry>
+                        <czp:metadatascheme>LOMv1.0</czp:metadatascheme>
+                        <czp:metadatascheme>nl_lom_v1p0</czp:metadatascheme>
+                    </czp:metametadata>
+                    <czp:technical>
+                        <czp:format>text/html</czp:format>
+                        <czp:location>http://online.codarts.nl/mod/page/view.php?id=313</czp:location>
+                    </czp:technical>
+                    <czp:educational>
+                        <czp:context>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/vdex_context_czp_20060628.xml
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">HBO</czp:langstring>
+                            </czp:value>
+                        </czp:context>
+                    </czp:educational>
+                    <czp:rights>
+                        <czp:cost>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">no</czp:langstring>
+                            </czp:value>
+                        </czp:cost>
+                        <czp:copyrightandotherrestrictions>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20131202
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">cc-by-nc-40</czp:langstring>
+                            </czp:value>
+                        </czp:copyrightandotherrestrictions>
+                        <czp:description>
+                            <czp:langstring xml:lang="x-none">https://creativecommons.org/licenses/by-nc/4.0/
+                            </czp:langstring>
+                        </czp:description>
+                    </czp:rights>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">educational level</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">http://purl.edustandaard.nl/begrippenkader
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>be140797-803f-4b9e-81cc-5572c711e09c</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">HBO</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                            <czp:taxon>
+                                <czp:id>f33b30ee-3c82-4ead-bc20-4255be9ece2d</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">HBO - Bachelor</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/classification_purpose_nllom_20180530
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">access rights</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/classification_accessrights_nllom_20180530
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>OpenAccess</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">open toegang</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
+                </czp:lom>
+            </metadata>
+            <about>
+                <provenance xmlns="http://www.openarchives.org/OAI/2.0/provenance"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/provenance
+                      http://www.openarchives.org/OAI/2.0/provenance.xsd">
+
+                    <originDescription harvestDate="2019-12-11T13:12:30Z" altered="true">
+                        <baseURL>https://surfsharekit.nl/oai/surf/</baseURL>
+                        <identifier>oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd</identifier>
+                        <datestamp>2019-07-23T04:39:24Z</datestamp>
+                        <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>
+                    </originDescription>
+                </provenance>
+            </about>
+        </record>
+        <record>
+            <header>
+                <identifier>surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af</identifier>
+                <datestamp>2019-12-11T13:18:38Z</datestamp>
+                <setSpec>surf</setSpec>
+            </header>
+            <metadata>
+                <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
+                         xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd">
+                    <czp:general>
+                        <czp:title>
+                            <czp:langstring xml:lang="en">COOC (Community of Open Online Course)</czp:langstring>
+                        </czp:title>
+                        <czp:catalogentry>
+                            <czp:catalog>UUID</czp:catalog>
+                            <czp:entry>
+                                <czp:langstring xml:lang="x-none">urn:uuid:b500d389-2fda-4696-ae51-9cd0603a48af
+                                </czp:langstring>
+                            </czp:entry>
+                        </czp:catalogentry>
+                        <czp:language>en</czp:language>
+                        <czp:description>
+                            <czp:langstring xml:lang="en">Learning objective:&#13;
+                                &#13;
+                                - Explain the effect of changes in the labour market on&#13;
+                                the real wage rate and quantity of labour in hours.
+                            </czp:langstring>
+                        </czp:description>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">economics</czp:langstring>
+                        </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">macro economics</czp:langstring>
+                        </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">micro economics</czp:langstring>
+                        </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">economic structure</czp:langstring>
+                        </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">labour market</czp:langstring>
+                        </czp:keyword>
+                        <czp:aggregationlevel>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">1</czp:langstring>
+                            </czp:value>
+                        </czp:aggregationlevel>
+                    </czp:general>
+                    <czp:lifecycle>
+                        <czp:contribute>
+                            <czp:role>
+                                <czp:source>
+                                    <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                                </czp:source>
+                                <czp:value>
+                                    <czp:langstring xml:lang="x-none">hogeschool</czp:langstring>
+                                </czp:value>
+                            </czp:role>
+                            <czp:centity>
+                                <czp:vcard>BEGIN:VCARD
+                                    VERSION:3.0
+                                    FN:International Business School\, Hanze University of Applied Sciences
+                                    N:International Business School\, Hanze University of Applied Sciences;;;;
+                                    ORG:International Business School\, Hanze University of Applied Sciences
+                                    END:VCARD
+                                </czp:vcard>
+                            </czp:centity>
+                        </czp:contribute>
+                        <czp:contribute>
+                            <czp:role>
+                                <czp:source>
+                                    <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                                </czp:source>
+                                <czp:value><czp:langstring xml:lang="x-none">author</czp:langstring></czp:value></czp:role><czp:centity><czp:vcard>BEGIN:VCARD
+VERSION:3.0
+FN:Dr. Ning Ding
+N:Dr. Ning Ding;;;;
+END:VCARD</czp:vcard></czp:centity></czp:contribute>
+                        <czp:contribute>
+                            <czp:role>
+                                <czp:source>
+                                    <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                                </czp:source>
+                                <czp:value>
+                                    <czp:langstring xml:lang="x-none">publisher</czp:langstring></czp:value></czp:role><czp:centity><czp:vcard>BEGIN:VCARD
+VERSION:3.0
+FN:Hanze Hogeschool
+N:Hanze Hogeschool;;;;
+ORG:Hanze Hogeschool
+END:VCARD</czp:vcard>
+                            </czp:centity>
+                            <czp:date>
+                                <czp:datetime>2019-04-01</czp:datetime>
+                            </czp:date>
+                        </czp:contribute>
+                    </czp:lifecycle>
+                    <czp:metametadata>
+                        <czp:catalogentry>
+                            <czp:catalog>UUID</czp:catalog>
+                            <czp:entry>
+                                <czp:langstring xml:lang="x-none">urn:uuid:b500d389-2fda-4696-ae51-9cd0603a48af
+                                </czp:langstring>
+                            </czp:entry>
+                        </czp:catalogentry>
+                        <czp:metadatascheme>LOMv1.0</czp:metadatascheme>
+                        <czp:metadatascheme>nl_lom_v1p0</czp:metadatascheme>
+                    </czp:metametadata>
+                    <czp:technical>
+                        <czp:format>application/pdf</czp:format>
+                        <czp:location>
+                            https://surfsharekit.nl/dl/surf/b500d389-2fda-4696-ae51-9cd0603a48af/48fac5c4-c846-48b3-9318-6b01e151a508
+                        </czp:location>
+                    </czp:technical>
+                    <czp:educational>
+                        <czp:intendedenduserrole>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">learner</czp:langstring>
+                            </czp:value>
+                        </czp:intendedenduserrole>
+                        <czp:context>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/vdex_context_czp_20060628.xml
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">HBO</czp:langstring>
+                            </czp:value>
+                        </czp:context>
+                        <czp:typicalagerange>
+                            <czp:langstring xml:lang="x-none">16-90</czp:langstring>
+                        </czp:typicalagerange>
+                    </czp:educational>
+                    <czp:rights>
+                        <czp:cost>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">no</czp:langstring>
+                            </czp:value>
+                        </czp:cost>
+                        <czp:copyrightandotherrestrictions>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20131202
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">cc-by-40</czp:langstring>
+                            </czp:value>
+                        </czp:copyrightandotherrestrictions>
+                        <czp:description>
+                            <czp:langstring xml:lang="x-none">https://creativecommons.org/licenses/by/4.0/
+                            </czp:langstring>
+                        </czp:description>
+                    </czp:rights>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">educational level</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">http://purl.edustandaard.nl/begrippenkader
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>be140797-803f-4b9e-81cc-5572c711e09c</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">HBO</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                            <czp:taxon>
+                                <czp:id>f33b30ee-3c82-4ead-bc20-4255be9ece2d</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">HBO - Bachelor</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/classification_purpose_nllom_20180530
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">access rights</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/classification_accessrights_nllom_20180530
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>OpenAccess</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">open toegang</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
+                </czp:lom>
+            </metadata>
+            <about>
+                <provenance xmlns="http://www.openarchives.org/OAI/2.0/provenance"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/provenance
+                      http://www.openarchives.org/OAI/2.0/provenance.xsd">
+
+                    <originDescription harvestDate="2019-12-11T13:18:36Z" altered="true">
+                        <baseURL>https://surfsharekit.nl/oai/surf/</baseURL>
+                        <identifier>oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af</identifier>
+                        <datestamp>2019-07-23T04:39:24Z</datestamp>
+                        <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>
+                    </originDescription>
+                </provenance>
+            </about>
+        </record>
+
+        <record>
+            <header>
+                <identifier>surf:oai:surfsharekit.nl:b5473dd1-8aa4-455f-b359-9af8081ce697</identifier>
+                <datestamp>2019-12-11T13:18:38Z</datestamp>
+                <setSpec>surf</setSpec>
+            </header>
+            <metadata>
+                <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
+                         xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd">
+                    <czp:general>
+                        <czp:title>
+                            <czp:langstring xml:lang="nl">Hands-on exercise based on WEKA - Tuning and Testing
+                            </czp:langstring>
+                        </czp:title>
+                        <czp:catalogentry>
+                            <czp:catalog>UUID</czp:catalog>
+                            <czp:entry>
+                                <czp:langstring xml:lang="x-none">urn:uuid:b5473dd1-8aa4-455f-b359-9af8081ce697
+                                </czp:langstring>
+                            </czp:entry>
+                        </czp:catalogentry>
+                        <czp:language>en</czp:language>
+                        <czp:description>
+                            <czp:langstring xml:lang="nl">Hands-on exercise based on WEKA - Tuning and Testing
+                            </czp:langstring>
+                        </czp:description>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">Exercise</czp:langstring>
+                        </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">WEKA</czp:langstring>
+                        </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">MOOC</czp:langstring>
+                        </czp:keyword>
+                        <czp:aggregationlevel>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">3</czp:langstring>
+                            </czp:value>
+                        </czp:aggregationlevel>
+                    </czp:general>
+                    <czp:lifecycle>
+                        <czp:contribute>
+                            <czp:role>
+                                <czp:source>
+                                    <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                                </czp:source>
+                                <czp:value>
+                                    <czp:langstring xml:lang="x-none">university</czp:langstring>
+                                </czp:value>
+                            </czp:role>
+                            <czp:centity>
+                                <czp:vcard>BEGIN:VCARD
+                                    VERSION:3.0
+                                    FN:Open Universiteit Nederland
+                                    N:Open Universiteit Nederland;;;;
+                                    ORG:Open Universiteit Nederland
+                                    END:VCARD
+                                </czp:vcard>
+                            </czp:centity>
+                        </czp:contribute>
+                        <czp:contribute>
+                            <czp:role>
+                                <czp:source>
+                                    <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                                </czp:source>
+                                <czp:value>
+                                    <czp:langstring xml:lang="x-none">university</czp:langstring>
+                                </czp:value>
+                            </czp:role>
+                            <czp:centity>
+                                <czp:vcard>BEGIN:VCARD
+                                    VERSION:3.0
+                                    FN:Tilburg University
+                                    N:Tilburg University;;;;
+                                    ORG:Tilburg University
+                                    END:VCARD
+                                </czp:vcard>
+                            </czp:centity>
+                        </czp:contribute>
+                    </czp:lifecycle>
+                    <czp:metametadata>
+                        <czp:catalogentry>
+                            <czp:catalog>UUID</czp:catalog>
+                            <czp:entry>
+                                <czp:langstring xml:lang="x-none">urn:uuid:b5473dd1-8aa4-455f-b359-9af8081ce697
+                                </czp:langstring>
+                            </czp:entry>
+                        </czp:catalogentry>
+                        <czp:metadatascheme>LOMv1.0</czp:metadatascheme>
+                        <czp:metadatascheme>nl_lom_v1p0</czp:metadatascheme>
+                    </czp:metametadata>
+                    <czp:technical>
+                        <czp:format>text/html</czp:format>
+                        <czp:location>
+                            https://github.com/ericpostma/ep/blob/master/chris/Week%203%20-%20Tuning%20and%20Testing/Practical%203.ipynb
+                        </czp:location>
+                    </czp:technical>
+                    <czp:educational>
+                        <czp:intendedenduserrole>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">learner</czp:langstring>
+                            </czp:value>
+                        </czp:intendedenduserrole>
+                        <czp:context>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/vdex_context_czp_20060628.xml
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">WO</czp:langstring>
+                            </czp:value>
+                        </czp:context>
+                        <czp:typicalagerange>
+                            <czp:langstring xml:lang="x-none">16-90</czp:langstring>
+                        </czp:typicalagerange>
+                    </czp:educational>
+                    <czp:rights>
+                        <czp:cost>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">no</czp:langstring>
+                            </czp:value>
+                        </czp:cost>
+                        <czp:copyrightandotherrestrictions>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20131202
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">cc-by-sa-40</czp:langstring>
+                            </czp:value>
+                        </czp:copyrightandotherrestrictions>
+                        <czp:description>
+                            <czp:langstring xml:lang="x-none">https://creativecommons.org/licenses/by-sa/4.0/
+                            </czp:langstring>
+                        </czp:description>
+                    </czp:rights>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">educational level</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">http://purl.edustandaard.nl/begrippenkader
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>bbbd99c6-cf49-4980-baed-12388f8dcff4</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">WO</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                            <czp:taxon>
+                                <czp:id>18656a7c-95a5-4831-8085-020d3151aceb</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">WO - Bachelor</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/classification_purpose_nllom_20180530
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">access rights</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">
+                                    http://purl.edustandaard.nl/classification_accessrights_nllom_20180530
+                                </czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>OpenAccess</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">open toegang</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
+                </czp:lom>
+            </metadata>
+            <about>
+                <provenance xmlns="http://www.openarchives.org/OAI/2.0/provenance"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/provenance
+                      http://www.openarchives.org/OAI/2.0/provenance.xsd">
+
+                    <originDescription harvestDate="2019-12-11T13:18:36Z" altered="true">
+                        <baseURL>https://surfsharekit.nl/oai/surf/</baseURL>
+                        <identifier>oai:surfsharekit.nl:b5473dd1-8aa4-455f-b359-9af8081ce697</identifier>
+                        <datestamp>2019-07-23T04:39:24Z</datestamp>
+                        <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>
+                    </originDescription>
+                </provenance>
+            </about>
+        </record>
+
+        <resumptionToken/>
+    </ListRecords>
+</OAI-PMH>
