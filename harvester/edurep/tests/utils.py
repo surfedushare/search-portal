@@ -3,12 +3,16 @@ from datetime import datetime
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
+from edurep.tests.factories import EdurepOAIPMHFactory
 from edurep.utils import get_edurep_oaipmh_seeds, EDUREP_EXTRACTION_OBJECTIVE
 
 
 class TestGetEdurepOAIPMHSeeds(TestCase):
 
-    fixtures = ["surf-oaipmh-1970-01-01", "surf-oaipmh-2020-01-01"]
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        EdurepOAIPMHFactory.create_common_edurep_responses(include_delta=True)
 
     def extract_seed_types(self, seeds):
         normal = next(
