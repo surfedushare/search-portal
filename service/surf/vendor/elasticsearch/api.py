@@ -298,8 +298,13 @@ class ElasticSearchApiClient:
                 'size': page_size,
             },
         )
-        materials = self.parse_elastic_result(result)
-        return materials
+        results = self.parse_elastic_result(result)
+        materials = {
+            material["external_id"]: material
+            for material in results["records"]
+        }
+        results["records"] = [materials[external_id] for external_id in external_ids]
+        return results
 
     @staticmethod
     def parse_filters(filters):

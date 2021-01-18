@@ -296,6 +296,7 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
 
 
 class MaterialRatingAPIView(APIView):
+
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']
@@ -317,6 +318,7 @@ class MaterialRatingAPIView(APIView):
 
 
 class MaterialApplaudAPIView(APIView):
+
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']
@@ -328,6 +330,7 @@ class MaterialApplaudAPIView(APIView):
 
 
 class CollectionMaterialPromotionAPIView(APIView):
+
     def post(self, request, *args, **kwargs):
         # only active and authorized users can promote materials in the collection
         collection_instance = Collection.objects.get(id=kwargs['collection_id'])
@@ -534,6 +537,7 @@ def add_share_counters_to_materials(materials):
 
 
 class MaterialSetAPIView(APIView):
+
     def get(self, request, *args, **kwargs):
         serializer = MaterialShortSerializer(data=request.GET)
         serializer.is_valid(raise_exception=True)
@@ -542,6 +546,5 @@ class MaterialSetAPIView(APIView):
         parts = results[0]['has_part']
 
         api_client = ElasticSearchApiClient()
-        materials = api_client.get_materials_by_id(parts)
-
-        return Response(materials)
+        api_response = api_client.get_materials_by_id(parts, page_size=100)
+        return Response(api_response)
