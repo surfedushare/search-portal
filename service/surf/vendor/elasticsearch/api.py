@@ -303,7 +303,7 @@ class ElasticSearchApiClient:
             material["external_id"]: material
             for material in results["records"]
         }
-        results["records"] = [materials[external_id] for external_id in external_ids]
+        results["records"] = [materials[external_id] for external_id in external_ids if external_id in materials]
         return results
 
     @staticmethod
