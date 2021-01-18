@@ -219,22 +219,23 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
 
         # First we yield documents for each file in a package when dealing with a package
         child_ids = []
-        if self.meta.get("is_package", False):
-            for package_document in self.unpack_package_documents(self.meta["reference_id"], base_url):
-                child_ids.append(package_document["_id"])
-                elastic_details = self.get_search_document_details(
-                    package_document["_id"],
-                    package_document["url"],
-                    package_document["title"],
-                    package_document["text"] if elastic_base.get("analysis_allowed", False) else "",
-                    transcription="",
-                    mime_type="text/html",
-                    file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
-                    is_part_of=package_document["is_part_of"]
-                )
-                elastic_details.update(elastic_base)
-                elastic_details["external_id"] = elastic_details["_id"]
-                yield elastic_details
+        # TODO: re-enable this once solution has been found for doubling of materials and metadata
+        # if self.meta.get("is_package", False):
+        #     for package_document in self.unpack_package_documents(self.meta["reference_id"], base_url):
+        #         child_ids.append(package_document["_id"])
+        #         elastic_details = self.get_search_document_details(
+        #             package_document["_id"],
+        #             package_document["url"],
+        #             package_document["title"],
+        #             package_document["text"] if elastic_base.get("analysis_allowed", False) else "",
+        #             transcription="",
+        #             mime_type="text/html",
+        #             file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
+        #             is_part_of=package_document["is_part_of"]
+        #         )
+        #         elastic_details.update(elastic_base)
+        #         elastic_details["external_id"] = elastic_details["_id"]
+        #         yield elastic_details
 
         # Then we yield a Elastic Search document for the Arrangement as a whole
         elastic_details = self.get_search_document_details(
