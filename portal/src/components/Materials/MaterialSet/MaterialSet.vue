@@ -18,7 +18,7 @@
         @click="onMaterialClick(setMaterial)"
       >
         <span class="title">{{ setMaterial.title }}</span>
-        <span class="type">{{ setMaterial.format }}</span>
+        <span class="type">{{ $t(setMaterial.format) }}</span>
         <span class="link">
           <a
             v-if="setMaterial.url"
