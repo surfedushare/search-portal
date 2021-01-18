@@ -9,7 +9,6 @@
       <div class="row header">
         <span class="title">{{ $t('Title') }}</span>
         <span class="type">{{ $t('File-format') }}</span>
-        <span class="level">{{ $t('Learning-levels') }}</span>
         <span class="link"></span>
       </div>
       <div
@@ -20,14 +19,6 @@
       >
         <span class="title">{{ setMaterial.title }}</span>
         <span class="type">{{ setMaterial.format }}</span>
-        <span class="level">
-          {{
-            setMaterial.educationallevels
-              .slice(0, 2)
-              .map(level => level[$i18n.locale])
-              .join(', ')
-          }}
-        </span>
         <span class="link">
           <a
             v-if="setMaterial.url"
