@@ -52,7 +52,7 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
 
     def test_get_complete_set(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 13)
+        self.assertEqual(len(seeds), 18)
         self.check_seed_integrity(seeds)
 
     def test_get_partial_set(self):
@@ -62,7 +62,7 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
 
     def test_get_complete_set_without_deletes(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)), include_deleted=False)
-        self.assertEqual(len(seeds), 10)
+        self.assertEqual(len(seeds), 15)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set_without_deletes(self):
@@ -73,9 +73,9 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
 
     def test_from_youtube_property(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 13)
+        self.assertEqual(len(seeds), 18)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
-        self.assertEqual(len(youtube_seeds), 3)
+        self.assertEqual(len(youtube_seeds), 8)
 
     def test_authors_property(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
@@ -84,10 +84,10 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
     def test_publishers_property(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])
-        self.assertEqual(seeds[5]['publishers'], ['Hanze Hogeschool'])
+        self.assertEqual(seeds[5]['publishers'], ['SURFnet'])
 
     def test_analysis_allowed_property(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[0]['analysis_allowed'], False)
-        self.assertEqual(seeds[3]['analysis_allowed'], True)
-        self.assertEqual(seeds[10]['analysis_allowed'], False)
+        self.assertEqual(seeds[0]['analysis_allowed'], False, "Expected deleted material to disallow analysis")
+        self.assertEqual(seeds[1]['analysis_allowed'], True, "Expected standard material to allow analysis")
+        self.assertEqual(seeds[15]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
