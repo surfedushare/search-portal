@@ -48,12 +48,11 @@ export default {
     }
   },
   mounted() {
-    if (this.material.has_part.length > 0) {
-      this.$store
-        .dispatch('getSetMaterials', {
-          external_id: this.material.external_id
-        })
-        .then(res => (this.setMaterials = res.records))
+    this.updateSetMaterials()
+  },
+  watch: {
+    material: function() {
+      this.updateSetMaterials()
     }
   },
   methods: {
@@ -65,6 +64,15 @@ export default {
         })
       )
       window.location.assign(route.href)
+    },
+    updateSetMaterials() {
+      if (this.material.has_part.length > 0) {
+        this.$store
+          .dispatch('getSetMaterials', {
+            external_id: this.material.external_id
+          })
+          .then(res => {this.setMaterials = res.records})
+      }
     }
   }
 }
