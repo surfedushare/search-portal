@@ -1,9 +1,7 @@
 from collections import Iterator, defaultdict
 from zipfile import BadZipFile
 from bs4 import BeautifulSoup
-from urlobject import URLObject
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
@@ -215,7 +213,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         transcription = "\n\n".join(transcriptions)
 
         # Get the base url without any anchor fragment
-        base_url = str(URLObject(self.base_document["url"]).with_fragment(""))
+        # base_url = str(URLObject(self.base_document["url"]).with_fragment(""))
 
         # First we yield documents for each file in a package when dealing with a package
         child_ids = []
