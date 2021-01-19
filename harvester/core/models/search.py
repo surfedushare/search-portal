@@ -200,6 +200,9 @@ class ElasticIndex(models.Model):
                     'disciplines': {
                         'type': 'keyword'
                     },
+                    'ideas': {
+                        'type': 'keyword'
+                    },
                     "suggest_completion": {
                         "type": "completion"
                     },
