@@ -47,14 +47,15 @@ export default {
       setMaterials: []
     }
   },
-  mounted() {
-    this.updateSetMaterials()
-  },
   watch: {
     material: function() {
       this.updateSetMaterials()
     }
   },
+  mounted() {
+    this.updateSetMaterials()
+  },
+
   methods: {
     onMaterialClick(material) {
       const route = this.$router.resolve(
@@ -71,7 +72,7 @@ export default {
           .dispatch('getSetMaterials', {
             external_id: this.material.external_id
           })
-          .then(res => {this.setMaterials = res.records})
+          .then(res => (this.setMaterials = res.records))
       }
     }
   }
