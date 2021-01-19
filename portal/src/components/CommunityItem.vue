@@ -82,7 +82,7 @@ export default {
   padding: 20px 20px 20px 40px;
   border-radius: 20px;
   position: relative;
-  word-break: break-all;
+  word-break: normal;
   cursor: pointer;
   display: flex;
   flex-direction: column;
