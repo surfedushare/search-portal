@@ -2,6 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 from collections import defaultdict
+import sentry_sdk
 
 from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
@@ -303,7 +304,17 @@ class ElasticSearchApiClient:
             material["external_id"]: material
             for material in results["records"]
         }
-        results["records"] = [materials[external_id] for external_id in external_ids if external_id in materials]
+        records = []
+        for external_id in external_ids:
+            if external_id not in materials:
+                if not settings.DEBUG:
+                    sentry_sdk.capture_message(
+                        f"Failed to find material with external_id: {external_id}",
+                        "warning"
+                    )
+                continue
+            records.append(materials[external_id])
+        results["records"] = records
         return results
 
     @staticmethod
