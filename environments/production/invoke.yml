@@ -18,6 +18,7 @@ elastic_search:
   protocol: "https"
   is_aws: true
   verify_certs: true
+  enable_decompound_analyzers: true
   decompound_word_lists:
     dutch: "analyzers/F131123737"
 
