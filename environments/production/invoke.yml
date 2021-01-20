@@ -6,7 +6,7 @@ env: "production"
 django:
   debug: false
   protocol: "https"
-  domain: "zoekportaal.surf.nl"
+  domain: "edusources.nl"
 
 postgres:
   host: "surfpol-edushare.cef190hciiol.eu-central-1.rds.amazonaws.com"
