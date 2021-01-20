@@ -32,9 +32,9 @@ class OutputCommand(HarvesterCommand):
     def _create_document(self, text, meta, title=None, url=None, mime_type=None, file_type=None, pipeline=None,
                          identifier_postfix=None):
 
-        url = url or meta.get("url")
+        url = url or meta.get("url", None)
         mime_type = mime_type or meta.get("mime_type", None)
-        if mime_type is None:
+        if mime_type is None and url:
             mime_type, encoding = guess_type(url)
         file_type = file_type or settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown")
 

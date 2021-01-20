@@ -63,7 +63,8 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         out = StringIO()
         call_command("update_dataset", "--dataset=test", "--no-progress", stdout=out)
         # Asserting usage of get_edurep_oaipmh_seeds
-        seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)),
+                                             include_no_url=True)
         # Asserting usage of handle_upsert_seeds
         upsert_target.assert_called_once()
         args, kwargs = upsert_target.call_args
