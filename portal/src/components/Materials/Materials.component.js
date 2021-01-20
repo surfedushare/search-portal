@@ -134,7 +134,9 @@ export default {
       return false
     },
     has_no_result_suggestion() {
-      return !isEmpty(this.didYouMean)
+      // For now we disable the suggestions, because multi-term suggestions do not work as intended
+      // And we want to go live without them
+      return false  // !isEmpty(this.didYouMean)
     },
     no_result_suggestion_link() {
       let searchQuery = generateSearchMaterialsQuery({
