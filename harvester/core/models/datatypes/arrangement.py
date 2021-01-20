@@ -1,9 +1,7 @@
 from collections import Iterator, defaultdict
 from zipfile import BadZipFile
 from bs4 import BeautifulSoup
-from urlobject import URLObject
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
@@ -127,7 +125,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'disciplines': self.base_document.properties['disciplines'],
             'educational_levels': self.base_document.properties['educational_levels'],
             'lom_educational_levels': self.base_document.properties['lom_educational_levels'],
-            'author': self.base_document.properties['author'],
+            'ideas': self.base_document.properties.get('ideas', []),
+            'author': '',
             'authors': self.base_document.properties['authors'],
             'publishers': self.base_document.properties['publishers'],
             'description': self.base_document.properties['description'],
@@ -215,26 +214,27 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         transcription = "\n\n".join(transcriptions)
 
         # Get the base url without any anchor fragment
-        base_url = str(URLObject(self.base_document["url"]).with_fragment(""))
+        # base_url = str(URLObject(self.base_document["url"]).with_fragment(""))
 
         # First we yield documents for each file in a package when dealing with a package
         child_ids = []
-        if self.meta.get("is_package", False):
-            for package_document in self.unpack_package_documents(self.meta["reference_id"], base_url):
-                child_ids.append(package_document["_id"])
-                elastic_details = self.get_search_document_details(
-                    package_document["_id"],
-                    package_document["url"],
-                    package_document["title"],
-                    package_document["text"] if elastic_base.get("analysis_allowed", False) else "",
-                    transcription="",
-                    mime_type="text/html",
-                    file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
-                    is_part_of=package_document["is_part_of"]
-                )
-                elastic_details.update(elastic_base)
-                elastic_details["external_id"] = elastic_details["_id"]
-                yield elastic_details
+        # TODO: re-enable this once solution has been found for doubling of materials and metadata
+        # if self.meta.get("is_package", False):
+        #     for package_document in self.unpack_package_documents(self.meta["reference_id"], base_url):
+        #         child_ids.append(package_document["_id"])
+        #         elastic_details = self.get_search_document_details(
+        #             package_document["_id"],
+        #             package_document["url"],
+        #             package_document["title"],
+        #             package_document["text"] if elastic_base.get("analysis_allowed", False) else "",
+        #             transcription="",
+        #             mime_type="text/html",
+        #             file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
+        #             is_part_of=package_document["is_part_of"]
+        #         )
+        #         elastic_details.update(elastic_base)
+        #         elastic_details["external_id"] = elastic_details["_id"]
+        #         yield elastic_details
 
         # Then we yield a Elastic Search document for the Arrangement as a whole
         elastic_details = self.get_search_document_details(

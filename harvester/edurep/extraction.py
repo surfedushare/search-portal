@@ -221,6 +221,18 @@ class EdurepDataExtraction(object):
         return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
 
     @classmethod
+    def get_ideas(cls, soup, el):
+        external_id = cls.get_oaipmh_external_id(soup, el)
+        if not external_id.startswith("surfsharekit"):
+            return []
+        blocks = cls.find_all_classification_blocks(el, "idea", "czp:entry")
+        compound_ideas = list(set([block.find('czp:langstring').text.strip() for block in blocks]))
+        ideas = []
+        for compound_idea in compound_ideas:
+            ideas += compound_idea.split(" - ")
+        return ideas
+
+    @classmethod
     def get_analysis_allowed(cls, soup, el):
         value = EdurepDataExtraction.get_copyright(soup, el)
         return (value is not None and "nd" not in value) and value != "yes"

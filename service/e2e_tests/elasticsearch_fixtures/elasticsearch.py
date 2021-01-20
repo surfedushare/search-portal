@@ -23,6 +23,7 @@ NL_MATERIAL = {
     "suggest_phrase": "Leermateriaal over wiskunde en didactiek op de universiteit.",
     "suggest_completion": "Leermateriaal over wiskunde en didactiek op de universiteit.",
     "analysis_allowed": True,
+    "ideas": []
 }
 
 
@@ -33,5 +34,5 @@ def generate_nl_material(educational_levels=None, file_type=None, source=None):
     if file_type:
         copy["file_type"] = file_type
     if source:
-        copy["arrangement_collection_name"] = source
+        copy["oaipmh_set"] = source
     return copy
