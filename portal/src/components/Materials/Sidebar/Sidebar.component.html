@@ -11,8 +11,10 @@
           {{ educational_level[$i18n.locale] }}
         </div>
       </template>
-      <!--<h4>Soort materiaal</h4>-->
-      <!--Video-->
+      <h4 v-if="material.ideas && material.ideas.length">{{ $t('Idea') }}</h4>
+      <div v-for="idea in material.ideas">
+        {{ idea }}
+      </div>
       <h4>{{ $t('File-format') }}</h4>
       {{ $t(material.format) }}
       <h4>{{ $t('Publication-date') }}</h4>

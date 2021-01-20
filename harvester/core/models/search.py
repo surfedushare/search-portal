@@ -201,7 +201,13 @@ class ElasticIndex(models.Model):
                         'type': 'keyword'
                     },
                     'ideas': {
-                        'type': 'keyword'
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256
+                            }
+                        }
                     },
                     "suggest_completion": {
                         "type": "completion"

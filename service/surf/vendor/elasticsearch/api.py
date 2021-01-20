@@ -142,6 +142,7 @@ class ElasticSearchApiClient:
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
         record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
+        record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['copyright'] = hit['_source']['copyright']
         preview_path = hit['_source'].get('preview_path', None)
         record['preview_thumbnail_url'] = get_preview_absolute_uri(preview_path, PREVIEW_SMALL)
@@ -154,6 +155,7 @@ class ElasticSearchApiClient:
         record['source'] = hit['_source']['arrangement_collection_name']
         record['has_part'] = hit['_source']['has_part']
         record['is_part_of'] = hit['_source']['is_part_of']
+        record['ideas'] = hit['_source'].get('ideas', [])
         return record
 
     def autocomplete(self, query):
@@ -227,7 +229,7 @@ class ElasticSearchApiClient:
             query_string = {
                 "simple_query_string": {
                     "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors",
-                               "publishers"],
+                               "publishers", "ideas"],
                     "query": search_text,
                     "default_operator": "and"
                 }
