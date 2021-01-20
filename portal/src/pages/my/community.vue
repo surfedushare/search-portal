@@ -388,7 +388,7 @@ export default {
   &__section {
     &__blue_box {
       border: 1px;
-      background: @dark-blue;
+      background: @green;
       border-radius: 20px;
       display: inline-block;
       margin-top: -20px;
@@ -400,7 +400,7 @@ export default {
         margin: 0 0 20px 20px;
       }
       button.preview {
-        background: @dark-blue;
+        background: @green;
         color: white;
         border: 1px solid white;
         border-radius: 10px;
@@ -418,7 +418,7 @@ export default {
         }
 
         &:hover:not([disabled]) {
-          background: darken(@dark-blue, 5%);
+          background: darken(@green, 5%);
         }
       }
       a:link {
@@ -500,7 +500,7 @@ export default {
   }
 
   input + .slider {
-    background-color: #2196f3;
+    background-color: @green-hover;
   }
   input:checked + .slider {
     background-color: #ffc300;

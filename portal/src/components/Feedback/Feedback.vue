@@ -39,13 +39,13 @@ export default {
   position: fixed;
   right: 0;
   top: 75%;
-  background-color: @dark-blue;
+  background-color: @green;
   color: white;
   padding: 23px 17px;
   max-height: none;
 
   &:hover {
-    background-color: @dark-blue-hover !important;
+    background-color: @green-hover !important;
     color: white !important;
   }
 

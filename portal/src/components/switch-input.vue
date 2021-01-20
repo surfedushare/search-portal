@@ -31,6 +31,9 @@ export default {
 }
 </script>
 <style lang="less">
+
+@import "../variables";
+
 .switch-input {
   display: flex;
   color: white;
@@ -81,7 +84,7 @@ span.label {
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: @green-hover;
 }
 
 input:checked + .slider:before {
