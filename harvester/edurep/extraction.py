@@ -222,6 +222,9 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_ideas(cls, soup, el):
+        external_id = cls.get_oaipmh_external_id(soup, el)
+        if not external_id.startswith("surfsharekit"):
+            return []
         blocks = cls.find_all_classification_blocks(el, "idea", "czp:entry")
         compound_ideas = list(set([block.find('czp:langstring').text.strip() for block in blocks]))
         ideas = []
