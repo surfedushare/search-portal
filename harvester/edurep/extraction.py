@@ -14,6 +14,12 @@ class EdurepDataExtraction(object):
     # OAI-PMH
     #############################
 
+    @staticmethod
+    def parse_vcard_element(el):
+        card = unescape(el.text.strip())
+        card = "\n".join(field.strip() for field in card.split("\n"))
+        return vobject.readOne(card)
+
     @classmethod
     def get_oaipmh_records(cls, soup):
         return soup.find_all('record')
@@ -135,7 +141,14 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_authors(cls, soup, el):
-        return [vobject.readOne(author).fn.value for author in cls.get_author(soup, el)]
+        author = el.find(string='author')
+        if not author:
+            return []
+        contribution = author.find_parent('czp:contribute')
+        if not contribution:
+            return []
+        nodes = contribution.find_all('czp:vcard')
+        return [cls.parse_vcard_element(node).fn.value for node in nodes]
 
     @classmethod
     def get_publishers(cls, soup, el):
@@ -148,7 +161,7 @@ class EdurepDataExtraction(object):
         nodes = contribution.find_all('czp:vcard')
 
         return [
-            vobject.readOne(unescape(node.text.strip())).fn.value
+            cls.parse_vcard_element(node).fn.value
             for node in nodes
         ]
 
