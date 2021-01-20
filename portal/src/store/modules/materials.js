@@ -25,6 +25,7 @@ function generateSearchParams(search) {
 export default {
   state: {
     materials: null,
+    did_you_mean: {},
     material: null,
     material_loading: null,
     material_communities: null,
@@ -35,6 +36,9 @@ export default {
   getters: {
     materials(state) {
       return state.materials
+    },
+    did_you_mean(state) {
+      return state.did_you_mean
     },
     material(state) {
       return state.material
@@ -122,7 +126,7 @@ export default {
         $log.error('Validate error: ', external_id)
       }
     },
-    async searchMaterials({ commit }, search) {
+    async searchMaterials({ commit, state }, search) {
       if (validateSearch(search)) {
         commit('SET_MATERIALS_LOADING', true)
         const { data: materials } = await axios.post(
@@ -132,6 +136,7 @@ export default {
         materials.search_text = search.search_text
         materials.active_filters = search.filters
         materials.ordering = search.ordering
+        state.did_you_mean = materials.did_you_mean
         commit('SET_MATERIALS', materials)
         commit('SET_MATERIALS_LOADING', false)
         return materials

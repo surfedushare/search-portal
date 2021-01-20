@@ -2,7 +2,8 @@ NL_MATERIAL = {
     "title": "Didactiek van wiskundig denken",
     "text": "Leermateriaal over wiskunde en didactiek op de universiteit.",
     "url": "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT",
-    "description": "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op wiskundedidactiek en ICT",
+    "description":
+        "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op wiskundedidactiek en ICT",
     "language": "nl",
     "title_plain": "Wiskunde en Didactiek",
     "text_plain": "Leermateriaal over wiskunde en didactiek op de universiteit.",
@@ -16,8 +17,13 @@ NL_MATERIAL = {
     "file_type": "text",
     "disciplines": [],
     "arrangement_collection_name": "wikiwijsmaken",
+    "oaipmh_set": "wikiwijsmaken",
     "has_part": [],
-    "is_part_of": None
+    "is_part_of": None,
+    "suggest_phrase": "Leermateriaal over wiskunde en didactiek op de universiteit.",
+    "suggest_completion": "Leermateriaal over wiskunde en didactiek op de universiteit.",
+    "analysis_allowed": True,
+    "ideas": []
 }
 
 
@@ -28,5 +34,5 @@ def generate_nl_material(educational_levels=None, file_type=None, source=None):
     if file_type:
         copy["file_type"] = file_type
     if source:
-        copy["arrangement_collection_name"] = source
+        copy["oaipmh_set"] = source
     return copy

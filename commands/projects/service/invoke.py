@@ -3,6 +3,7 @@ from invoke import task, Responder, Exit
 
 from environments.surfpol.configuration import create_configuration
 from commands.postgres.download import download_snapshot
+from commands.postgres.sql import insert_django_user_statement
 
 
 @task(name="import_snapshot", help={
@@ -20,6 +21,21 @@ def import_snapshot(ctx, snapshot_name=None):
     print("Importing snapshot")
     ctx.run(f"psql -h localhost -U postgres -d edushare -f {snapshot_file_path}",
             pty=True, watchers=[postgres_password_responder])
+
+    print("creating superuser")
+    admin_password = ctx.config.secrets.django.admin_password
+    insert_user = insert_django_user_statement(
+        "supersurf", admin_password, is_edushare=True
+    )
+    ctx.run(
+        f'psql -h localhost -p 1111 -U postgres -d edushare -W -c "{insert_user}"',
+        echo=True,
+        pty=True,
+        warn=True,
+        watchers=[postgres_password_responder],
+    )
+
+    print("Cleanup")
     ctx.run(f"rm {snapshot_file_path}.bak", warn=True)
 
 
@@ -44,4 +60,4 @@ def sync_upload_media(ctx, source="production", path="communities"):
 
     source_path = os.path.join(source, path)
     destination_path = os.path.join(destination, path)
-    ctx.run(f"AWS_PROFILE={ctx.config.aws.profile_name} aws s3 sync {source_path} {destination_path}", echo=True)
+    ctx.run(f"AWS_PROFILE={source_config.aws.profile_name} aws s3 sync {source_path} {destination_path}", echo=True)

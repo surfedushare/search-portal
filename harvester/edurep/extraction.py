@@ -221,6 +221,47 @@ class EdurepDataExtraction(object):
         return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
 
     @classmethod
+    def get_ideas(cls, soup, el):
+        external_id = cls.get_oaipmh_external_id(soup, el)
+        if not external_id.startswith("surfsharekit"):
+            return []
+        blocks = cls.find_all_classification_blocks(el, "idea", "czp:entry")
+        compound_ideas = list(set([block.find('czp:langstring').text.strip() for block in blocks]))
+        ideas = []
+        for compound_idea in compound_ideas:
+            ideas += compound_idea.split(" - ")
+        return ideas
+
+    @classmethod
     def get_analysis_allowed(cls, soup, el):
         value = EdurepDataExtraction.get_copyright(soup, el)
-        return (value or False) and not ("-nd" or "yes") in value
+        return (value is not None and "nd" not in value) and value != "yes"
+
+    @classmethod
+    def get_is_part_of(cls, soup, el):
+        is_part_of = el.find(string='ispartof')
+        if not is_part_of:
+            return
+        relation = is_part_of.find_parent('czp:relation')
+        if not relation:
+            return
+        catalog = relation.find(string='oai:surfsharekit.nl')
+        if not catalog:
+            return
+        catalog_entry = catalog.find_next('czp:entry')
+        return "surfsharekit:" + catalog_entry.text.strip()  # prefix excluded by Edurep, but it's needed
+
+    @classmethod
+    def get_has_part(cls, soup, el):
+        elements = el.find_all(string='haspart')
+        results = []
+        for element in elements:
+            relation = element.find_parent('czp:relation')
+            if not relation:
+                continue
+            catalog = relation.find(string='oai:surfsharekit.nl')
+            if not catalog:
+                continue
+            catalog_entry = catalog.find_next('czp:entry')
+            results.append("surfsharekit:" + catalog_entry.text.strip())  # prefixes excluded by Edurep, but are needed
+        return results

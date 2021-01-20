@@ -251,6 +251,7 @@ ELASTICSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch'
 }
+ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
 ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
 
 

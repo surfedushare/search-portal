@@ -78,5 +78,9 @@ class OutputCommand(HarvesterCommand):
             "lowest_educational_level": meta.get("lowest_educational_level", -1),
             "from_youtube": meta.get("from_youtube", False),
             "suggest": title,
-            "pipeline": pipeline
+            "pipeline": pipeline,
+            "analysis_allowed": meta.get("analysis_allowed", False),
+            "is_part_of": meta.get("is_part_of", None),
+            "has_part": meta.get("has_part", []),
+            "ideas": meta.get("ideas", [])
         }

@@ -9,7 +9,6 @@
       <div class="row header">
         <span class="title">{{ $t('Title') }}</span>
         <span class="type">{{ $t('File-format') }}</span>
-        <span class="level">{{ $t('Learning-levels') }}</span>
         <span class="link"></span>
       </div>
       <div
@@ -19,15 +18,7 @@
         @click="onMaterialClick(setMaterial)"
       >
         <span class="title">{{ setMaterial.title }}</span>
-        <span class="type">{{ setMaterial.format }}</span>
-        <span class="level">
-          {{
-            setMaterial.educationallevels
-              .slice(0, 2)
-              .map(level => level[$i18n.locale])
-              .join(', ')
-          }}
-        </span>
+        <span class="type">{{ $t(setMaterial.format) }}</span>
         <span class="link">
           <a
             v-if="setMaterial.url"
@@ -56,15 +47,15 @@ export default {
       setMaterials: []
     }
   },
-  mounted() {
-    if (this.material.has_part.length > 0) {
-      this.$store
-        .dispatch('getSetMaterials', {
-          external_id: this.material.external_id
-        })
-        .then(res => (this.setMaterials = res.records))
+  watch: {
+    material: function() {
+      this.updateSetMaterials()
     }
   },
+  mounted() {
+    this.updateSetMaterials()
+  },
+
   methods: {
     onMaterialClick(material) {
       const route = this.$router.resolve(
@@ -74,6 +65,15 @@ export default {
         })
       )
       window.location.assign(route.href)
+    },
+    updateSetMaterials() {
+      if (this.material.has_part.length > 0) {
+        this.$store
+          .dispatch('getSetMaterials', {
+            external_id: this.material.external_id
+          })
+          .then(res => (this.setMaterials = res.records))
+      }
     }
   }
 }

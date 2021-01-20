@@ -25,8 +25,8 @@
       <div class="main-header__wrapper">
         <router-link :to="localePath('index')" class="main-header__logo">
           <img
-            src="/images/surflogo.png"
-            srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
+            src="/images/edusourceslogo.png"
+            srcset="/images/edusourceslogo@2x.png 2x, /images/edusourceslogo@3x.png 3x"
             class="main-header__logo_img"
           >
         </router-link>
@@ -67,8 +67,8 @@
       <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
       <router-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
         <img
-          src="/images/surflogo.png"
-          srcset="/images/surflogo@2x.png 2x, /images/surflogo@3x.png 3x"
+          src="/images/edusourceslogo.png"
+          srcset="/images/edusourceslogo@2x.png 2x, /images/edusourceslogo@3x.png 3x"
           class="main-header__logo_img"
         >
       </router-link>
@@ -122,5 +122,5 @@
       <LanguageSwitch />
     </div>
 
-    <Feedback />
+    <Feedback v-if="false"/>
 </section>

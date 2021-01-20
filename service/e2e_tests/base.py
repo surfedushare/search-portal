@@ -26,6 +26,7 @@ class BaseTestCase(StaticLiveServerTestCase):
 
 @override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
 class ElasticSearchTestCase(BaseTestCase):
+
     @classmethod
     def index_body(cls, language):
         # TODO: Share config with harvester somehow
@@ -88,6 +89,9 @@ class ElasticSearchTestCase(BaseTestCase):
                     'arrangement_collection_name': {
                         'type': 'keyword'
                     },
+                    'oaipmh_set': {
+                        'type': 'keyword'
+                    },
                     'educational_levels': {
                         'type': 'keyword'
                     },
@@ -97,7 +101,10 @@ class ElasticSearchTestCase(BaseTestCase):
                     'disciplines': {
                         'type': 'keyword'
                     },
-                    "suggest": {
+                    "suggest_completion": {
+                        "type": "completion"
+                    },
+                    "suggest_phrase": {
                         "type": "completion"
                     },
                     "has_part": {
@@ -105,6 +112,15 @@ class ElasticSearchTestCase(BaseTestCase):
                     },
                     "is_part_of": {
                         'type': 'keyword'
+                    },
+                    'ideas': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256
+                            }
+                        }
                     },
                 }
             }

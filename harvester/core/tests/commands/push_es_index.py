@@ -37,9 +37,9 @@ class ElasticSearchClientTestCase(TestCase):
         expected_keys = {
             "title", "text", "transcription", "url", "external_id", "disciplines", "lom_educational_levels",
             "educational_levels", "author", "description", "publisher_date", "copyright", "language", "title_plain",
-            "text_plain", "transcription_plain", "keywords", "file_type", "mime_type", "suggest", "_id", "oaipmh_set",
-            "arrangement_collection_name", "aggregation_level", "publishers", "authors", "has_part", "is_part_of",
-            "preview_path"
+            "text_plain", "transcription_plain", "keywords", "file_type", "mime_type", "suggest_phrase",
+            "suggest_completion", "_id", "oaipmh_set", "arrangement_collection_name", "aggregation_level", "publishers",
+            "authors", "has_part", "is_part_of", "preview_path", "analysis_allowed", "ideas"
         }
         self.assertEqual(set(document.keys()), expected_keys)
 
@@ -60,7 +60,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 8
+            "nl": 2
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -111,7 +111,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 8
+            "nl": 2
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -196,7 +196,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 8
+            "nl": 2
         }
         expected_deleted_ids = [
             "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
@@ -235,7 +235,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
                     deleted_count += 1
                 self.assert_document_structure(doc, is_deleted=is_deleted)
             self.assertEqual(index_name, "test")
-        self.assertEqual(deleted_count, 8)
+        self.assertEqual(deleted_count, 2)
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 0)
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 0,
@@ -293,7 +293,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 8
+            "nl": 2
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -351,7 +351,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 3,
-            "nl": 8
+            "nl": 2
         }
         expected_index_configuration = {
             "en": ElasticIndex.objects.get(language="en", dataset__name="test").configuration,

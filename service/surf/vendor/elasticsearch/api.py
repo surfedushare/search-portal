@@ -2,6 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 from collections import defaultdict
+import sentry_sdk
 
 from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
@@ -76,7 +77,7 @@ class ElasticSearchApiClient:
         :param search_result: result from elasticsearch
         :return result: list of results in edurep format
         """
-        hits = search_result["hits"]
+        hits = search_result.pop("hits")
         aggregations = search_result.get("aggregations", {})
         result = dict()
         result['recordcount'] = hits['total']['value']
@@ -100,6 +101,18 @@ class ElasticSearchApiClient:
             })
 
         result['drilldowns'] = drilldowns
+
+        # Parse spelling suggestions
+        did_you_mean = {}
+        if 'suggest' in search_result:
+            spelling_suggestion = search_result['suggest']['did-you-mean-suggestion'][0]
+            if len(spelling_suggestion['options']):
+                option = spelling_suggestion['options'][0]
+                did_you_mean = {
+                    'original': spelling_suggestion['text'],
+                    'suggestion': option['text']
+                }
+        result['did_you_mean'] = did_you_mean
 
         # Transform hits into records
         result['records'] = [
@@ -129,6 +142,7 @@ class ElasticSearchApiClient:
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
         record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
+        record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['copyright'] = hit['_source']['copyright']
         preview_path = hit['_source'].get('preview_path', None)
         record['preview_thumbnail_url'] = get_preview_absolute_uri(preview_path, PREVIEW_SMALL)
@@ -138,9 +152,10 @@ class ElasticSearchApiClient:
             if discipline in DISCIPLINE_CUSTOM_THEME:
                 themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
         record['themes'] = list(themes)
-        record['source'] = hit['_source']['arrangement_collection_name']
+        record['source'] = hit['_source']['oaipmh_set']
         record['has_part'] = hit['_source']['has_part']
         record['is_part_of'] = hit['_source']['is_part_of']
+        record['ideas'] = hit['_source'].get('ideas', [])
         return record
 
     def autocomplete(self, query):
@@ -155,7 +170,7 @@ class ElasticSearchApiClient:
                 "autocomplete": {
                     'text': query,
                     "completion": {
-                        "field": "suggest"
+                        "field": "suggest_completion"
                     }
                 }
             }
@@ -171,7 +186,7 @@ class ElasticSearchApiClient:
         # and sort by length
         autocomplete = result['suggest']['autocomplete']
         options = autocomplete[0]['options']
-        flat_options = list(set([item for option in options for item in option['_source']['suggest']]))
+        flat_options = list(set([item for option in options for item in option['_source']['suggest_completion']]))
         options_with_prefix = [option for option in flat_options if option.startswith(query)]
         options_with_prefix.sort(key=lambda option: len(option))
         return options_with_prefix
@@ -214,7 +229,7 @@ class ElasticSearchApiClient:
             query_string = {
                 "simple_query_string": {
                     "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors",
-                               "publishers"],
+                               "publishers", "ideas"],
                     "query": search_text,
                     "default_operator": "and"
                 }
@@ -226,6 +241,20 @@ class ElasticSearchApiClient:
                     "pivot": "90d",
                     "origin": "now",
                     "boost": 1.15
+                }
+            }
+            body["suggest"] = {
+                'did-you-mean-suggestion': {
+                    'text': search_text,
+                    'phrase': {
+                        'field': 'suggest_phrase',
+                        'size': 1,
+                        'gram_size': 3,
+                        'direct_generator': [{
+                            'field': 'suggest_phrase',
+                            'suggest_mode': 'always'
+                        }],
+                    },
                 }
             }
 
@@ -272,8 +301,23 @@ class ElasticSearchApiClient:
                 'size': page_size,
             },
         )
-        materials = self.parse_elastic_result(result)
-        return materials
+        results = self.parse_elastic_result(result)
+        materials = {
+            material["external_id"]: material
+            for material in results["records"]
+        }
+        records = []
+        for external_id in external_ids:
+            if external_id not in materials:
+                if not settings.DEBUG:
+                    sentry_sdk.capture_message(
+                        f"Failed to find material with external_id: {external_id}",
+                        "warning"
+                    )
+                continue
+            records.append(materials[external_id])
+        results["records"] = records
+        return results
 
     @staticmethod
     def parse_filters(filters):
@@ -390,7 +434,7 @@ class ElasticSearchApiClient:
         if external_id == 'lom.technical.format':
             return 'file_type'
         elif external_id == 'about.repository':
-            return 'arrangement_collection_name'  # TODO: should become oaipmh_set
+            return 'oaipmh_set'
         elif external_id == 'lom.rights.copyrightandotherrestrictions':
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':

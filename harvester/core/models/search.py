@@ -93,9 +93,13 @@ class ElasticIndex(models.Model):
         Returns the elasticsearch index configuration.
         Configures the analysers based on the language passed in.
         """
-        search_analyzer = "dutch_dictionary_decompound" if lang == "nl" else \
-            settings.ELASTICSEARCH_ANALYSERS[lang]
-        return {
+        if settings.ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS and lang == "nl":
+            search_analyzer = "dutch_dictionary_decompound"
+        else:
+            search_analyzer = settings.ELASTICSEARCH_ANALYSERS[lang]
+        # We first create a basic configuration without decompound dictionaries
+        # Once AWS fixes problems with decompound dictionaries these can be included always
+        configuration = {
             "settings": {
                 "index": {
                     "number_of_shards": 1,
@@ -103,21 +107,21 @@ class ElasticIndex(models.Model):
                 },
                 "analysis": {
                     "analyzer": {
-                        "dutch_dictionary_decompound": {
+                        "trigram": {
                             "type": "custom",
                             "tokenizer": "standard",
-                            "filter": ["dutch_stop", "dictionary_decompound"]
-                        }
+                            "filter": ["lowercase", "shingle"]
+                        },
                     },
                     "filter": {
-                        "dictionary_decompound": {
-                            "type": "dictionary_decompounder",
-                            "word_list_path": settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch,
-                            "updateable": True
-                        },
                         "dutch_stop": {
                             "type": "stop",
                             "stopwords": "_dutch_"
+                        },
+                        "shingle": {
+                            "type": "shingle",
+                            "min_shingle_size": 2,
+                            "max_shingle_size": 3
                         }
                     }
                 }
@@ -184,6 +188,9 @@ class ElasticIndex(models.Model):
                     'arrangement_collection_name': {
                         'type': 'keyword'
                     },
+                    'oaipmh_set': {
+                        'type': 'keyword'
+                    },
                     'educational_levels': {
                         'type': 'keyword'
                     },
@@ -193,15 +200,40 @@ class ElasticIndex(models.Model):
                     'disciplines': {
                         'type': 'keyword'
                     },
-                    "suggest": {
+                    'ideas': {
+                        'type': 'text',
+                        'fields': {
+                            'keyword': {
+                                'type': 'keyword',
+                                'ignore_above': 256
+                            }
+                        }
+                    },
+                    "suggest_completion": {
                         "type": "completion"
                     },
-                    "preview_path": {
-                        'type': 'keyword'
-                    }
+                    "suggest_phrase": {
+                        "type": "text",
+                        "analyzer": "trigram"
+                    },
                 }
             }
         }
+
+        # Then if our (AWS) environment supports it we add decompound settings
+        if settings.ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS:
+            configuration["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"] = {
+                "type": "custom",
+                "tokenizer": "standard",
+                "filter": ["dutch_stop", "dictionary_decompound"]
+            }
+            configuration["settings"]["analysis"]["filter"]["dictionary_decompound"] = {
+                "type": "dictionary_decompounder",
+                "word_list_path": settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch,
+                "updateable": True
+            }
+
+        return configuration
 
 
 class ElasticIndexSerializer(serializers.ModelSerializer):
