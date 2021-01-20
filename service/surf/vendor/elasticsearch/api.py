@@ -152,7 +152,7 @@ class ElasticSearchApiClient:
             if discipline in DISCIPLINE_CUSTOM_THEME:
                 themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
         record['themes'] = list(themes)
-        record['source'] = hit['_source']['arrangement_collection_name']
+        record['source'] = hit['_source']['oaipmh_set']
         record['has_part'] = hit['_source']['has_part']
         record['is_part_of'] = hit['_source']['is_part_of']
         record['ideas'] = hit['_source'].get('ideas', [])
@@ -434,7 +434,7 @@ class ElasticSearchApiClient:
         if external_id == 'lom.technical.format':
             return 'file_type'
         elif external_id == 'about.repository':
-            return 'arrangement_collection_name'  # TODO: should become oaipmh_set
+            return 'oaipmh_set'
         elif external_id == 'lom.rights.copyrightandotherrestrictions':
             return 'copyright.keyword'
         elif external_id == 'lom.classification.obk.educationallevel.id':
