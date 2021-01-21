@@ -243,7 +243,7 @@ class EdurepDataExtraction(object):
         ideas = []
         for compound_idea in compound_ideas:
             ideas += compound_idea.split(" - ")
-        return ideas
+        return list(set(ideas))
 
     @classmethod
     def get_analysis_allowed(cls, soup, el):
