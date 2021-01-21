@@ -62,11 +62,7 @@
         <section class="preview">
           <div class="preview__bg_block">
             <img
-              src="/images/pictures/image_home.jpg"
-              srcset="
-                /images/pictures/image_home@2x.jpg 2x,
-                /images/pictures/image_home@3x.jpg 3x
-              "
+              src="/images/pictures/hoe-werkt-het.png"
               class="preview__bg_block-img"
             />
           </div>
