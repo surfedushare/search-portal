@@ -148,7 +148,13 @@ class EdurepDataExtraction(object):
         if not contribution:
             return []
         nodes = contribution.find_all('czp:vcard')
-        return [cls.parse_vcard_element(node).fn.value for node in nodes]
+
+        authors = []
+        for node in nodes:
+            author = cls.parse_vcard_element(node)
+            if hasattr(author, "fn"):
+                authors.append(author.fn.value)
+        return authors
 
     @classmethod
     def get_publishers(cls, soup, el):
@@ -160,10 +166,12 @@ class EdurepDataExtraction(object):
             return []
         nodes = contribution.find_all('czp:vcard')
 
-        return [
-            cls.parse_vcard_element(node).fn.value
-            for node in nodes
-        ]
+        publishers = []
+        for node in nodes:
+            publisher = cls.parse_vcard_element(node)
+            if hasattr(publisher, "fn"):
+                publishers.append(publisher.fn.value)
+        return publishers
 
     @classmethod
     def get_publisher_date(cls, soup, el):
