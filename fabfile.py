@@ -6,7 +6,6 @@ from commands.postgres.fabric import setup_postgres_remote
 from commands.elastic.fabric import connect_elastic_cluster
 from commands.projects.service.fabric import create_snapshot, restore_snapshot
 from commands.projects.harvester.fabric import connect_uwsgi, connect_flower, connect_with_shell
-from commands.legacy import download_database, upload_database
 
 
 service_environment, _ = create_configuration_and_session(
@@ -16,8 +15,6 @@ service_environment, _ = create_configuration_and_session(
 )
 service_collection = Collection("srv", setup_postgres_remote, create_snapshot, restore_snapshot, connect_with_shell)
 service_collection.configure(service_environment)
-legacy_collection = Collection("legacy", download_database, upload_database)
-legacy_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(
@@ -35,5 +32,4 @@ namespace = Collection(
     elastic_connection,
     service_collection,
     harvester_collection,
-    legacy_collection
 )
