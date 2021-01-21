@@ -5,6 +5,7 @@ import AddCollection from './../../Popup/AddCollection'
 import ShareMaterial from '~/components/Popup/ShareMaterial'
 import Multiselect from './../../Multiselect'
 import { validateHREF } from '~/components/_helpers'
+import { generateSearchMaterialsQuery } from '../../_helpers'
 
 export default {
   name: 'sidebar',
@@ -39,6 +40,11 @@ export default {
     }
   },
   methods: {
+    getIdeaLink(idea) {
+      const query = generateSearchMaterialsQuery({search_text: '"' + idea + '"', filters: []})
+      const route = this.$router.resolve(query)
+      return route.href
+    },
     /**
      * generate login URL
      * @returns {string}
