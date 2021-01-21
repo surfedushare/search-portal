@@ -79,7 +79,10 @@
               }}
             </span>
           </div>
-          <div v-if="material.format && material.format !== 'unknown'" class="materials__item_format">
+          <div
+            v-if="material.format && material.format !== 'unknown'"
+            class="materials__item_format"
+          >
             {{ $t(material.format) }}
           </div>
           <div

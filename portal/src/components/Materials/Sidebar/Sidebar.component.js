@@ -41,7 +41,10 @@ export default {
   },
   methods: {
     getIdeaLink(idea) {
-      const query = generateSearchMaterialsQuery({search_text: '"' + idea + '"', filters: []})
+      const query = generateSearchMaterialsQuery({
+        search_text: '"' + idea + '"',
+        filters: []
+      })
       const route = this.$router.resolve(query)
       return route.href
     },
