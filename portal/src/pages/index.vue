@@ -48,7 +48,7 @@
       </div>
 
       <div class="center_block main__thems_and_communities">
-        <PopularList :communities="communities" class="main__communities">
+        <PopularList :communities="allCommunities()" class="main__communities">
           <template slot="header-info">
             <h2>{{ $t('Communities') }}</h2>
             <div class="popular-list__description">
@@ -113,7 +113,7 @@ export default {
     ...mapGetters({
       filterCategories: 'filter_categories',
       materials: 'materials',
-      communities: 'communities',
+      allCommunities: 'allCommunities',
       sortedThemes: 'sortedThemes',
       statistic: 'statistic'
     }),
