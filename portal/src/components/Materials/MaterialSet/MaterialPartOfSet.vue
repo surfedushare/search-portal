@@ -30,24 +30,31 @@ export default {
       mainMaterial: {}
     }
   },
-  mounted() {
-    if (this.material.is_part_of !== null) {
-      this.$store
-        .dispatch('getMaterial', {
-          params: { external_id: this.material.is_part_of }
-        })
-        .then(result => (this.mainMaterial = result[0]))
+  watch: {
+    material: function() {
+      this.updateMainMaterial()
     }
+  },
+  mounted() {
+    this.updateMainMaterial()
   },
   methods: {
     goToMaterial() {
-      const route = this.$router.resolve(
+      this.$router.push(
         this.localePath({
           name: 'materials-id',
           params: { id: this.mainMaterial.external_id }
         })
       )
-      window.location.assign(route.href)
+    },
+    updateMainMaterial() {
+      if (this.material.is_part_of !== null) {
+        this.$store
+          .dispatch('getMaterial', {
+            params: { external_id: this.material.is_part_of }
+          })
+          .then(result => (this.mainMaterial = result[0]))
+      }
     }
   }
 }

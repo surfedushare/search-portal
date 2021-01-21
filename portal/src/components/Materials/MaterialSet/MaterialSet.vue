@@ -57,7 +57,6 @@ export default {
   mounted() {
     this.updateSetMaterials()
   },
-
   methods: {
     onMaterialClick(material) {
       this.$router.push(
