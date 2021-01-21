@@ -60,13 +60,12 @@ export default {
 
   methods: {
     onMaterialClick(material) {
-      const route = this.$router.resolve(
+      this.$router.push(
         this.localePath({
           name: 'materials-id',
           params: { id: material.external_id }
         })
       )
-      window.location.assign(route.href)
     },
     updateSetMaterials() {
       if (this.material.has_part.length > 0) {
