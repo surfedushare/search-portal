@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from surf.apps.filters.utils import check_and_update_mptt_filters
 
