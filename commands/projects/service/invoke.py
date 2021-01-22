@@ -29,7 +29,7 @@ def import_snapshot(ctx, snapshot_name=None):
         "supersurf", admin_password, is_edushare=True
     )
     ctx.run(
-        f'psql -h localhost -p 1111 -U postgres -d edushare -W -c "{insert_user}"',
+        f'psql -h localhost -U postgres -d edushare -W -c "{insert_user}"',
         echo=True,
         pty=True,
         warn=True,
