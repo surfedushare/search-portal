@@ -103,7 +103,7 @@ export default {
   }
 
   &.published:before {
-    background: #0077c8;
+    background: @green;
   }
 }
 .logo {
@@ -126,7 +126,7 @@ export default {
 .actions {
   text-decoration: none;
   font-weight: bold;
-  color: @dark-blue;
+  color: @green;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;

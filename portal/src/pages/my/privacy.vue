@@ -385,7 +385,7 @@ export default {
       }
 
       &.cancel {
-        color: @dark-blue !important;
+        color: @green !important;
         background-color: white !important;
         border: 2px solid @light-grey !important;
         box-sizing: border-box;
