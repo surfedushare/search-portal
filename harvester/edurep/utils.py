@@ -37,6 +37,10 @@ EDUREP_EXTRACTION_OBJECTIVE = {
 
 
 def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=True, include_no_url=False):
+    """
+    Extracts metadata from OAI-PMH XML responses by Edurep.
+    More information on Edurep: https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
+    """
     queryset = EdurepOAIPMH.objects\
         .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
 

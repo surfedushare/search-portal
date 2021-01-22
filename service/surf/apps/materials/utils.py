@@ -12,7 +12,7 @@ from surf.apps.materials.models import (
     Material,
 )
 from surf.apps.themes.models import Theme
-from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+from surf.vendor.search.choices import (
     DISCIPLINE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID
 )
