@@ -31,8 +31,7 @@ export default {
 }
 </script>
 <style lang="less">
-
-@import "../variables";
+@import '../variables';
 
 .switch-input {
   display: flex;
