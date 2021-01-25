@@ -32,3 +32,8 @@ HIGHER_EDUCATION_LEVELS = {  # TODO: consider whether to strip this down to stri
     "HBO": 2,
     "WO": 3
 }
+
+
+RESTRICTED_MATERIAL_OAIPMH_SETS = {
+    "l4l",
+}

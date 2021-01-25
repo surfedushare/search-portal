@@ -2,7 +2,7 @@ import re
 import vobject
 from html import unescape
 
-from core.constants import HIGHER_EDUCATION_LEVELS
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_OAIPMH_SETS
 
 
 class EdurepDataExtraction(object):
@@ -255,8 +255,14 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_analysis_allowed(cls, soup, el):
-        value = EdurepDataExtraction.get_copyright(soup, el)
-        return (value is not None and "nd" not in value) and value != "yes"
+        # We don't have access to restricted materials so we disallow analysis for them
+        external_id = cls.get_oaipmh_external_id(soup, el)
+        for restricted_set in RESTRICTED_MATERIAL_OAIPMH_SETS:
+            if external_id.startswith(restricted_set + ":"):
+                return
+        # We also disallow analysis for non-derivative materials as we'll create derivatives in that process
+        copyright = EdurepDataExtraction.get_copyright(soup, el)
+        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
     @classmethod
     def get_is_part_of(cls, soup, el):
