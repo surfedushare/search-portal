@@ -106,11 +106,11 @@ class ElasticSearchApiClient:
         did_you_mean = {}
         if 'suggest' in search_result:
             spelling_suggestion = search_result['suggest']['did-you-mean-suggestion'][0]
-            if len(spelling_suggestion['options']):
-                option = spelling_suggestion['options'][0]
+            spelling_option = spelling_suggestion['options'][0] if len(spelling_suggestion['options']) else None
+            if spelling_option is not None and spelling_option["score"] >= 0.01:
                 did_you_mean = {
                     'original': spelling_suggestion['text'],
-                    'suggestion': option['text']
+                    'suggestion': spelling_option['text']
                 }
         result['did_you_mean'] = did_you_mean
 
