@@ -5,18 +5,18 @@ import datetime
 
 from django.db import models
 
-from surf.apps.filters.models import (
-    MpttFilterItem
-)
-from surf.apps.locale.models import Locale
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from surf.vendor.search.choices import (PUBLISHER_DATE_FIELD_ID, CUSTOM_THEME_FIELD_ID, LANGUAGE_FIELD_ID,
+                                        COPYRIGHT_FIELD_ID)
+from surf.apps.filters.models import MpttFilterItem
+from surf.apps.locale.models import Locale
 
 
 MANUAL_FILTER_CATEGORIES = {
-    "lom.lifecycle.contribute.publisherdate",
-    "custom_theme.id",
-    "lom.general.language",
-    "lom.rights.copyrightandotherrestrictions",
+    PUBLISHER_DATE_FIELD_ID,
+    CUSTOM_THEME_FIELD_ID,
+    LANGUAGE_FIELD_ID,
+    COPYRIGHT_FIELD_ID,
 }
 
 
