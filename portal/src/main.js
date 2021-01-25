@@ -6,6 +6,9 @@ if (process.env.VUE_APP_USE_SENTRY) {
     dsn: `${window.location.protocol}//21fab3e788584cbe999f20ea1bb7e2df@${window.location.host}/sentry/2964956`,
     integrations: [new Integrations.CaptureConsole()],
     beforeSend(event) {
+      if (window.location.host !== 'edusources.nl') {
+        return event
+      }
       if (event.user) {
         delete event.user
       }
