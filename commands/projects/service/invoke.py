@@ -69,6 +69,6 @@ def sync_upload_media(ctx, source="production", path="communities"):
 })
 def sync_category_filters(ctx, mode):
     """
-    Syncs the list of category filters with Edurep
+    Syncs the list of category filters with Elastic Search
     """
     run_task(ctx, "service", mode, ["python", "manage.py", "check_and_update_filters"])

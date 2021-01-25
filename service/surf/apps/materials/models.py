@@ -13,7 +13,7 @@ from surf.apps.core.models import UUIDModel
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.themes.models import Theme
 from surf.statusenums import PublishStatus
-from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+from surf.vendor.search.choices import (
     DISCIPLINE_FIELD_ID,
     CUSTOM_THEME_FIELD_ID
 )

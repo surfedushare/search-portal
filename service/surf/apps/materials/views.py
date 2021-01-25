@@ -22,7 +22,6 @@ from rest_framework.viewsets import (
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
-from surf.apps.filters.utils import IGNORED_FIELDS
 from surf.apps.materials.filters import (
     CollectionFilter
 )
@@ -51,7 +50,7 @@ from surf.apps.materials.utils import (
     add_material_disciplines,
     add_search_query_to_elastic_index
 )
-from surf.vendor.edurep.xml_endpoint.v1_2.api import (
+from surf.vendor.search.choices import (
     AUTHOR_FIELD_ID,
     PUBLISHER_FIELD_ID
 )
@@ -128,7 +127,9 @@ class MaterialSearchAPIView(APIView):
             data["page_size"] = 0
 
         if return_filters:
-            data["drilldown_names"] = _get_filter_categories()
+            data["drilldown_names"] = [
+                mptt_filter.external_id for mptt_filter in MpttFilterItem.objects.filter(parent=None)
+            ]
 
         elastic = ElasticSearchApiClient()
 
@@ -172,14 +173,6 @@ class MaterialSearchAPIView(APIView):
                   page_size=data["page_size"],
                   did_you_mean=res["did_you_mean"])
         return Response(rv)
-
-
-def _get_filter_categories():
-    """
-    Make list of filter categories in format "edurep_field_id:item_count"
-    :return: list of "edurep_field_id:item_count"
-    """
-    return [f.external_id for f in MpttFilterItem.objects.filter(parent=None).exclude(external_id__in=IGNORED_FIELDS)]
 
 
 class KeywordsAPIView(APIView):
