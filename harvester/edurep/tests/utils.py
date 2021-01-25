@@ -90,6 +90,7 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['analysis_allowed'], False, "Expected deleted material to disallow analysis")
         self.assertEqual(seeds[1]['analysis_allowed'], True, "Expected standard material to allow analysis")
+        self.assertEqual(seeds[8]['analysis_allowed'], False, "Expected restricted material to disallow analysis")
         self.assertEqual(seeds[15]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
 
     def test_is_part_of_property(self):
