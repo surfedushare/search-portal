@@ -61,17 +61,20 @@ def _update_mptt_filter_category(filter_category, api_client):
         item["external_id"]: item["count"]
         for item in response["drilldowns"][0]["items"]
     }
-    children = filter_category.get_descendants()
     for external_id, count in filters.items():
-        if not children.filter(external_id=external_id).exists():
+        filter_item, created = MpttFilterItem.objects.get_or_create(
+            external_id=external_id,
+            defaults={
+                "name": external_id,
+                "parent": filter_category,
+            }
+        )
+        if created or filter_item.title_translations is None:
             translation = Locale.objects.create(
                 asset=f"{external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
                 en=external_id, nl=external_id, is_fuzzy=True
             )
-            MpttFilterItem.objects.create(
-                name=external_id,
-                parent=filter_category,
-                title_translations=translation,
-                external_id=external_id
-            )
+            filter_item.title_translations = translation
+            filter_item.save()
+
         yield external_id
