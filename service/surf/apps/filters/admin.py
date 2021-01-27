@@ -12,5 +12,5 @@ from surf.apps.filters import models
 class MpttFilterItemAdmin(DraggableMPTTAdmin):
 
     search_fields = ('name', 'external_id',)
-    list_display = ('tree_actions', 'indented_title', 'enabled_by_default', 'is_hidden')
+    list_display = ('tree_actions', 'indented_title', 'is_hidden')
     list_display_links = ('indented_title',)

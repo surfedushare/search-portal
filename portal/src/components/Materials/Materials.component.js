@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
 import StarRating from './../StarRating'
 import Material from './Material/Material'
@@ -133,9 +134,7 @@ export default {
       return false
     },
     has_no_result_suggestion() {
-      // For now we disable the suggestions, because multi-term suggestions do not work as intended
-      // And we want to go live without them
-      return false // !isEmpty(this.didYouMean)
+      return !isEmpty(this.didYouMean)
     },
     no_result_suggestion_link() {
       let searchQuery = generateSearchMaterialsQuery({

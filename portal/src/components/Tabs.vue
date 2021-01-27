@@ -101,11 +101,11 @@ export default {
 }
 
 .tabs button:hover {
-  background-color: cornflowerblue;
+  background-color: @green-hover;
 }
 
 .tabs button.active {
-  background-color: @dark-blue;
+  background-color: @green;
   color: white;
 }
 .tabs button.active:after {
@@ -116,7 +116,7 @@ export default {
   margin-left: -1 * @active-tab-indicator-size;
   width: 0;
   height: 0;
-  border-top: solid @active-tab-indicator-size @dark-blue;
+  border-top: solid @active-tab-indicator-size @green;
   border-left: solid @active-tab-indicator-size transparent;
   border-right: solid @active-tab-indicator-size transparent;
 

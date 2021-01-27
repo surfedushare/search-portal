@@ -57,7 +57,6 @@ ALLOWED_REDIRECT_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -324,9 +323,6 @@ VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
 
 
 # Search
-# https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
-
-EDUREP_JSON_API_ENDPOINT = environment.edurep.json_api_endpoint
 
 ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
 ELASTICSEARCH_HOST = environment.elastic_search.host

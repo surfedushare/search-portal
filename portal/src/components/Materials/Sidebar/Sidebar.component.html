@@ -13,10 +13,10 @@
       </template>
       <h4 v-if="material.ideas && material.ideas.length">{{ $t('Idea') }}</h4>
       <div v-for="idea in material.ideas">
-        {{ idea }}
+        <a :href="getIdeaLink(idea)">{{ idea }}</a>
       </div>
-      <h4>{{ $t('File-format') }}</h4>
-      {{ $t(material.format) }}
+      <h4 v-if="material.format !== 'unknown'">{{ $t('File-format') }}</h4>
+      <span v-if="material.format !== 'unknown'">{{ $t(material.format) }}</span>
       <h4>{{ $t('Publication-date') }}</h4>
       {{ material.date || '-' }}
       <h4>{{ $t('Language') }}</h4>

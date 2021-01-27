@@ -53,15 +53,24 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getMaterial', {
-      id: this.$route.params.id,
-      params: { count_view: true }
-    })
-    this.$store
-      .dispatch('checkMaterialInCollection', this.$route.params.id)
-      .then(collections => {
-        this.collections = collections.results
+    this.updateMaterial(this.$route.params.id)
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.updateMaterial(to.params.id)
+    next()
+  },
+  methods: {
+    updateMaterial(externalId) {
+      this.$store.dispatch('getMaterial', {
+        id: externalId,
+        params: { count_view: true }
       })
+      this.$store
+        .dispatch('checkMaterialInCollection', externalId)
+        .then(collections => {
+          this.collections = collections.results
+        })
+    }
   }
 }
 </script>

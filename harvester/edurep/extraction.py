@@ -2,7 +2,7 @@ import re
 import vobject
 from html import unescape
 
-from core.constants import HIGHER_EDUCATION_LEVELS
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_OAIPMH_SETS
 
 
 class EdurepDataExtraction(object):
@@ -13,6 +13,12 @@ class EdurepDataExtraction(object):
     #############################
     # OAI-PMH
     #############################
+
+    @staticmethod
+    def parse_vcard_element(el):
+        card = unescape(el.text.strip())
+        card = "\n".join(field.strip() for field in card.split("\n"))
+        return vobject.readOne(card)
 
     @classmethod
     def get_oaipmh_records(cls, soup):
@@ -135,7 +141,20 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_authors(cls, soup, el):
-        return [vobject.readOne(author).fn.value for author in cls.get_author(soup, el)]
+        author = el.find(string='author')
+        if not author:
+            return []
+        contribution = author.find_parent('czp:contribute')
+        if not contribution:
+            return []
+        nodes = contribution.find_all('czp:vcard')
+
+        authors = []
+        for node in nodes:
+            author = cls.parse_vcard_element(node)
+            if hasattr(author, "fn"):
+                authors.append(author.fn.value)
+        return authors
 
     @classmethod
     def get_publishers(cls, soup, el):
@@ -147,10 +166,12 @@ class EdurepDataExtraction(object):
             return []
         nodes = contribution.find_all('czp:vcard')
 
-        return [
-            vobject.readOne(unescape(node.text.strip())).fn.value
-            for node in nodes
-        ]
+        publishers = []
+        for node in nodes:
+            publisher = cls.parse_vcard_element(node)
+            if hasattr(publisher, "fn"):
+                publishers.append(publisher.fn.value)
+        return publishers
 
     @classmethod
     def get_publisher_date(cls, soup, el):
@@ -230,12 +251,18 @@ class EdurepDataExtraction(object):
         ideas = []
         for compound_idea in compound_ideas:
             ideas += compound_idea.split(" - ")
-        return ideas
+        return list(set(ideas))
 
     @classmethod
     def get_analysis_allowed(cls, soup, el):
-        value = EdurepDataExtraction.get_copyright(soup, el)
-        return (value is not None and "nd" not in value) and value != "yes"
+        # We don't have access to restricted materials so we disallow analysis for them
+        external_id = cls.get_oaipmh_external_id(soup, el)
+        for restricted_set in RESTRICTED_MATERIAL_OAIPMH_SETS:
+            if external_id.startswith(restricted_set + ":"):
+                return False
+        # We also disallow analysis for non-derivative materials as we'll create derivatives in that process
+        copyright = EdurepDataExtraction.get_copyright(soup, el)
+        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
     @classmethod
     def get_is_part_of(cls, soup, el):

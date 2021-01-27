@@ -18,7 +18,9 @@
         @click="onMaterialClick(setMaterial)"
       >
         <span class="title">{{ setMaterial.title }}</span>
-        <span class="type">{{ $t(setMaterial.format) }}</span>
+        <span v-if="setMaterial.format !== 'unknown'" class="type">
+          {{ $t(setMaterial.format) }}
+        </span>
         <span class="link">
           <a
             v-if="setMaterial.url"
@@ -55,16 +57,14 @@ export default {
   mounted() {
     this.updateSetMaterials()
   },
-
   methods: {
     onMaterialClick(material) {
-      const route = this.$router.resolve(
+      this.$router.push(
         this.localePath({
           name: 'materials-id',
           params: { id: material.external_id }
         })
       )
-      window.location.assign(route.href)
     },
     updateSetMaterials() {
       if (this.material.has_part.length > 0) {

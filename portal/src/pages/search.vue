@@ -273,7 +273,7 @@ export default {
       padding: 0;
     }
     &_block {
-      background: fade(@dark-blue, 90%);
+      background: fade(@green, 90%);
       color: #fff;
       width: 572px;
       border-radius: 20px;
@@ -314,7 +314,7 @@ export default {
     &_type_button {
       border-radius: 0;
       border: 0;
-      color: @dark-blue;
+      color: @green;
       font-family: @second-font;
       font-size: 16px;
       font-weight: bold;

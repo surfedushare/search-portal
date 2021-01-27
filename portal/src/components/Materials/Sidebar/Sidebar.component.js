@@ -5,9 +5,11 @@ import AddCollection from './../../Popup/AddCollection'
 import ShareMaterial from '~/components/Popup/ShareMaterial'
 import Multiselect from './../../Multiselect'
 import { validateHREF } from '~/components/_helpers'
+import { generateSearchMaterialsQuery } from '../../_helpers'
 
 export default {
   name: 'sidebar',
+  dependencies: ['$log'],
   props: {
     material: {
       type: Object,
@@ -39,6 +41,14 @@ export default {
     }
   },
   methods: {
+    getIdeaLink(idea) {
+      const query = generateSearchMaterialsQuery({
+        search_text: '"' + idea + '"',
+        filters: []
+      })
+      const route = this.$router.resolve(query)
+      return route.href
+    },
     /**
      * generate login URL
      * @returns {string}
@@ -181,6 +191,12 @@ export default {
         this.$nextTick().then(() => {
           const { material } = this
           const { social_counters } = this.$refs
+          // Somehow the $refs can be empty when this method runs, but it rarely happens.
+          // We'll log to Sentry and hope it sends some information to reproduce the problem.
+          if (!social_counters) {
+            this.$log.warn('Problems with social counter')
+            return
+          }
           const linkedIn = social_counters.querySelector('#linkedin_counter')
 
           if (material && material.sharing_counters && linkedIn) {

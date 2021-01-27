@@ -170,7 +170,7 @@ class Command(OutputCommand):
             set_specification = harvest.source.spec
             upserts = []
             deletes = []
-            for seed in get_edurep_oaipmh_seeds(set_specification, harvest.latest_update_at):
+            for seed in get_edurep_oaipmh_seeds(set_specification, harvest.latest_update_at, include_no_url=True):
                 if seed.get("state", "active") == "active":
                     upserts.append(seed)
                 else:

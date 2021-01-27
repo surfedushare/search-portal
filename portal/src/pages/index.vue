@@ -48,7 +48,7 @@
       </div>
 
       <div class="center_block main__thems_and_communities">
-        <PopularList :communities="communities" class="main__communities">
+        <PopularList :communities="allCommunities()" class="main__communities">
           <template slot="header-info">
             <h2>{{ $t('Communities') }}</h2>
             <div class="popular-list__description">
@@ -62,11 +62,7 @@
         <section class="preview">
           <div class="preview__bg_block">
             <img
-              src="/images/pictures/image_home.jpg"
-              srcset="
-                /images/pictures/image_home@2x.jpg 2x,
-                /images/pictures/image_home@3x.jpg 3x
-              "
+              src="/images/pictures/hoe-werkt-het.png"
               class="preview__bg_block-img"
             />
           </div>
@@ -117,7 +113,7 @@ export default {
     ...mapGetters({
       filterCategories: 'filter_categories',
       materials: 'materials',
-      communities: 'communities',
+      allCommunities: 'allCommunities',
       sortedThemes: 'sortedThemes',
       statistic: 'statistic'
     }),

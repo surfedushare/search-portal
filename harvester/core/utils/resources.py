@@ -49,6 +49,8 @@ def get_material_resources(url, language_hint):
     :param language_hint:
     :return:
     """
+    if url is None:
+        return None, None, None, None
     # Checking for basic resources
     file_resource, tika_resource = get_basic_material_resources(url)
     if file_resource is None or not file_resource.success or tika_resource is None or not tika_resource.success:

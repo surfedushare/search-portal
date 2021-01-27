@@ -36,7 +36,11 @@ EDUREP_EXTRACTION_OBJECTIVE = {
 }
 
 
-def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=True):
+def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=True, include_no_url=False):
+    """
+    Extracts metadata from OAI-PMH XML responses by Edurep.
+    More information on Edurep: https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
+    """
     queryset = EdurepOAIPMH.objects\
         .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
 
@@ -59,15 +63,13 @@ def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=Tr
             logger.warning("Invalid XML:", exc, harvest.uri)
     seeds = []
     for seed in results:
-        # Some records in Edurep do not have any known URL
-        # As we can't possibly process those we ignore them (silently)
-        # If we want to fix this it should happen on Edurep's or Sharekit's side
-        # We informed Kirsten van Veelo and Martine Teirlinck about the situation.
-        if seed["state"] == "active" and not seed["url"]:
+        # In many cases it doesn't make sense to try and process files without a URL
+        # So by default we skip these seeds,
+        # but some seeds that group together materials do not have files/URLs and you can include these
+        if seed["state"] == "active" and not seed["url"] and not include_no_url:
             continue
-        # We adjust url's of seeds if the source files are not at the URL
-        # We should improve data extraction to always get source files
-        url = seed.get("url", None)
+        url = seed.get("url", None)  # None for some parent materials
+        # When dealing with Wikiwijs Maken we also get packages instead of just the plain HTML
         if url and "maken.wikiwijs.nl" in url:
             package_url = URLObject(seed["url"])
             seed["package_url"] = package_url.with_fragment("").with_query("p=imscp")

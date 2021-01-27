@@ -90,7 +90,6 @@ urlpatterns = [
     url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
 
     # Admin interface
-    url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^admin/', admin.site.urls),
 
     # API and other data
