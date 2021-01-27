@@ -259,7 +259,7 @@ class EdurepDataExtraction(object):
         external_id = cls.get_oaipmh_external_id(soup, el)
         for restricted_set in RESTRICTED_MATERIAL_OAIPMH_SETS:
             if external_id.startswith(restricted_set + ":"):
-                return
+                return False
         # We also disallow analysis for non-derivative materials as we'll create derivatives in that process
         copyright = EdurepDataExtraction.get_copyright(soup, el)
         return (copyright is not None and "nd" not in copyright) and copyright != "yes"
