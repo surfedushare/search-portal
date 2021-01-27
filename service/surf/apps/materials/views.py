@@ -74,7 +74,7 @@ def portal_material(request, *args, **kwargs):
 
 def portal_single_page_application(request, *args):
     return render(request, "portal/index.html", {
-        'meta_og_title': "SURF | Edusources",
+        'meta_og_title': "SURF | edusources",
         'meta_og_description': "Edusources"
     })
 
