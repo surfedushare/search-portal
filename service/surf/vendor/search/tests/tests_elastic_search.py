@@ -264,18 +264,17 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         self.assertEqual(search_biologie_asc_dates, sorted(search_biologie_asc_dates))
         self.assertEqual(search_biologie_desc_dates, sorted(search_biologie_desc_dates, reverse=False))
 
-    # def test_autocomplete(self):
-    #     empty_autocomplete = self.instance.autocomplete(query='')
-    #     self.assertEqual(len(empty_autocomplete), 0)
-    #
-    #     biologie_autocomplete = self.instance.autocomplete(query='biologie')
-    #     self.assertGreater(len(biologie_autocomplete), 0)
-    #     self.assertIsNot(empty_autocomplete, biologie_autocomplete)
-    #     self.assertIsInstance(biologie_autocomplete, list)
-    #     for item in biologie_autocomplete:
-    #         self.assertIsInstance(item, str)
-    #         self.assertTrue('biologie' in item)
-    #
+    def test_autocomplete(self):
+        empty_autocomplete = self.instance.autocomplete(query='')
+        self.assertEqual(len(empty_autocomplete), 0)
+        biologie_autocomplete = self.instance.autocomplete(query='bio')
+        self.assertGreater(len(biologie_autocomplete), 0)
+        self.assertIsNot(empty_autocomplete, biologie_autocomplete)
+        self.assertIsInstance(biologie_autocomplete, list)
+        for item in biologie_autocomplete:
+            self.assertIsInstance(item, str)
+            self.assertTrue('biologie' in item)
+
     def test_drilldowns(self):
         empty_drilldowns = self.instance.drilldowns(drilldown_names=[])
         self.assertGreater(empty_drilldowns['recordcount'], 0)
@@ -347,14 +346,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertIn(author, record['authors'])
         self.assertEqual(search_author['recordcount'], expected_record_count)
 
-    # def test_search_did_you_mean(self):
-    #     spelling_mistake = self.instance.search('didaktiek')
-    #     self.assertIn("did_you_mean", spelling_mistake)
-    #     self.assertEqual(spelling_mistake["did_you_mean"]["original"], "didaktiek")
-    #     self.assertEqual(spelling_mistake["did_you_mean"]["suggestion"], "main")
-    #     no_result_spelling_mistake = self.instance.search('magik is fantastic')
-    #     self.assertEqual(no_result_spelling_mistake["did_you_mean"], {})
-    #     no_mistake = self.instance.search('lesmateriaal')
-    #     self.assertEqual(no_mistake["did_you_mean"], {})
-    #     unknown_mistake = self.instance.search('sdfkhjsdgaqegkjwfgklsd')
-    #     self.assertEqual(unknown_mistake["did_you_mean"], {})
+    def test_search_did_you_mean(self):
+        spelling_mistake = self.instance.search('didaktiek')
+        self.assertIn("did_you_mean", spelling_mistake)
+        self.assertEqual(spelling_mistake["did_you_mean"]["original"], "didaktiek")
+        self.assertEqual(spelling_mistake["did_you_mean"]["suggestion"], "didactiek")
+        no_result_spelling_mistake = self.instance.search('didaktiek is fantastiek')
+        self.assertEqual(no_result_spelling_mistake["did_you_mean"], {})
+        no_mistake = self.instance.search('biologie')
+        self.assertEqual(no_mistake["did_you_mean"], {})
+        unknown_mistake = self.instance.search('sdfkhjsdgaqegkjwfgklsd')
+        self.assertEqual(unknown_mistake["did_you_mean"], {})

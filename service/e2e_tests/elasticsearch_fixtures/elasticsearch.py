@@ -22,7 +22,7 @@ NL_MATERIAL = {
         "has_part": [],
         "is_part_of": None,
         "suggest_phrase": "Leermateriaal over wiskunde en didactiek op de universiteit.",
-        "suggest_completion": "Leermateriaal over wiskunde en didactiek op de universiteit.",
+        "suggest_completion": ["Leermateriaal", "over", "wiskunde", "en", "didactiek", "op", "de", "universiteit."],
         "analysis_allowed": True,
         "ideas": []
     },
@@ -49,7 +49,7 @@ NL_MATERIAL = {
         "has_part": [],
         "is_part_of": None,
         "suggest_phrase": "Leermateriaal over biologie en didactiek op de universiteit.",
-        "suggest_completion": "Leermateriaal over biologie en didactiek op de universiteit.",
+        "suggest_completion": ["Leermateriaal", "over", "biologie", "en", "didactiek", "op", "de", "universiteit."],
         "analysis_allowed": True,
         "ideas": []
     }
