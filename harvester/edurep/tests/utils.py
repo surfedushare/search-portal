@@ -22,13 +22,9 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         deleted = next(
             (seed for seed in seeds if seed["state"] == "deleted"), None
         )
-        # imscp = next(
-        #     (seed for seed in seeds if seed["url"] and "maken.wikiwijs.nl" in seed["url"]), None
-        # )
         return {
             "normal": normal,
             "deleted": deleted,
-            # "imscp": imscp
         }
 
     def check_seed_integrity(self, seeds, include_deleted=True):
@@ -45,10 +41,6 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         # A deleted seed is special due to its "state"
         if include_deleted:
             self.assertEqual(seed_types["deleted"]["state"], "deleted")
-        # IMSCP seeds are special due to their adjusted URL's
-        # TODO: fix this, currently SURF can contain Wikiwijsmaken materials that don't support IMSCP interface
-        # self.assertIn("package_url", seed_types["imscp"])
-        # self.assertTrue(seed_types["imscp"]["url"].endswith("?imscp"))
 
     def test_get_complete_set(self):
         seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
