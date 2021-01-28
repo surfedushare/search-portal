@@ -23,13 +23,7 @@ def e2e(ctx):
 @task
 def service(ctx):
     with ctx.cd("service"):
-        ctx.run("python manage.py test surf.apps", echo=True, pty=True)
-
-
-@task
-def elastic_search(ctx):
-    with ctx.cd("service"):
-        ctx.run("python manage.py test surf.vendor", echo=True, pty=True)
+        ctx.run("python manage.py test", echo=True, pty=True)
 
 
 @task
@@ -48,6 +42,5 @@ test_collection = Collection(
     e2e,
     service,
     harvester,
-    elastic_search,
     run
 )
