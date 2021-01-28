@@ -1,14 +1,54 @@
 from dateutil.parser import parse
 from datetime import datetime
 
-from django.test import TestCase
+from django.conf import settings
 
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from e2e_tests.base import BaseElasticSearchTestCase
+from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
-class TestsElasticSearch(TestCase):
-    def setUp(self):
-        self.instance = ElasticSearchApiClient()
+class TestsElasticSearch(BaseElasticSearchTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        math_and_education_disciplines = [
+            "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",  # math
+            "0861c43d-1874-4788-b522-df8be575677f"  # onderwijskunde
+        ]
+        biology_disciplines = [
+            "2b363227-8633-4652-ad57-c61f1efc02c8"
+        ]
+        biology_and_education_disciplines = biology_disciplines + [
+            "0861c43d-1874-4788-b522-df8be575677f"
+        ]
+
+        cls.instance = ElasticSearchApiClient()
+        cls.elastic.index(
+            index=settings.ELASTICSEARCH_NL_INDEX,
+            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surf",
+                                      disciplines=math_and_education_disciplines),
+        )
+        cls.elastic.index(
+            index=settings.ELASTICSEARCH_NL_INDEX,
+            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surf", copyright="cc-by-40",
+                                      topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
+                                      disciplines=biology_and_education_disciplines),
+        )
+        cls.elastic.index(
+            index=settings.ELASTICSEARCH_NL_INDEX,
+            body=generate_nl_material(educational_levels=["HBO"], file_type="pdf", source="surf", topic="biology",
+                                      publisher_date="2019-04-16T22:35:09+02:00",
+                                      disciplines=biology_and_education_disciplines),
+        )
+        cls.elastic.index(
+            index=settings.ELASTICSEARCH_NL_INDEX,
+            body=generate_nl_material(educational_levels=["HBO"], file_type="video", source="surf", topic="biology",
+                                      disciplines=biology_disciplines),
+            refresh=True  # always put refresh on the last material
+        )
 
     def test_basic_search(self):
         search_result = self.instance.search('')
@@ -18,7 +58,7 @@ class TestsElasticSearch(TestCase):
         self.assertIsNotNone(search_result)
         self.assertIsNotNone(search_result_filter)
         self.assertGreater(search_result['recordcount'], search_result_filter['recordcount'])
-        self.assertEqual(set(search_result.keys()), {"recordcount", "records", "drilldowns"})
+        self.assertEqual(set(search_result.keys()), {"recordcount", "records", "drilldowns", "did_you_mean"})
         # check if record count is an actual number
         # Edurep returns everything and Elastic nothing with an empty search
         self.assertIsInstance(search_result['recordcount'], int)
@@ -31,27 +71,32 @@ class TestsElasticSearch(TestCase):
         # basic search
         search_biologie = self.instance.search("biologie")
         self.assertIsNotNone(search_biologie)
+        self.assertTrue(search_biologie["records"])
         self.assertIsNot(search_result, search_biologie)
         self.assertNotEqual(search_result['recordcount'], search_biologie['recordcount'])
 
-        # basic search second page
-        search_biologie_2 = self.instance.search("biologie", page=2)
-        self.assertIsNotNone(search_biologie_2)
-        self.assertNotEqual(search_biologie_2, search_biologie)
+        # basic search pagination
+        search_page_1 = self.instance.search("", page_size=1)
+        self.assertIsNotNone(search_page_1)
+        self.assertNotEqual(search_page_1, search_result)
+        search_page_2 = self.instance.search("", page=2, page_size=1)
+        self.assertIsNotNone(search_page_2)
+        self.assertNotEqual(search_page_2, search_page_1)
 
     def test_filter_search(self):
-
         # search with single filter applied
         search_biologie_video = self.instance.search(
             "biologie",
             filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
         )
+        self.assertTrue(search_biologie_video["records"])
         for record in search_biologie_video["records"]:
             self.assertEqual(record["format"], "video")
         search_biologie_video_and_pdf = self.instance.search(
             "biologie",
             filters=[{"external_id": "lom.technical.format", "items": ["video", "pdf"]}]
         )
+        self.assertGreater(len(search_biologie_video_and_pdf["records"]), len(search_biologie_video["records"]))
         for record in search_biologie_video_and_pdf["records"]:
             self.assertIn(record["format"], ["video", "pdf"])
 
@@ -60,45 +105,51 @@ class TestsElasticSearch(TestCase):
             "biologie",
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by"]}
+                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
             ]
         )
+        self.assertTrue(search_biologie_text_and_cc_by["records"])
         for record in search_biologie_text_and_cc_by["records"]:
             self.assertEqual(record["format"], "text")
             self.assertEqual(record["copyright"], "cc-by-40")
 
         # AND search with multiple filters applied
-        search_biologie_and_natuur = self.instance.search("biologie natuur")
-        search_biologie_and_natuur_with_filters = self.instance.search(
-            "biologie natuur",
+        search_biologie_and_didactiek = self.instance.search("biologie didactiek")
+        search_biologie_and_didactiek_with_filters = self.instance.search(
+            "biologie didactiek",
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by"]}
+                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
             ])
 
-        self.assertIsNotNone(search_biologie_and_natuur)
-        self.assertIsNot(search_biologie_and_natuur, search_biologie_and_natuur_with_filters)
+        self.assertIsNotNone(search_biologie_and_didactiek)
+        self.assertTrue(search_biologie_and_didactiek["records"])
+        self.assertIsNot(search_biologie_and_didactiek, search_biologie_and_didactiek_with_filters)
+        self.assertTrue(search_biologie_and_didactiek_with_filters["records"])
         self.assertNotEqual(
-            search_biologie_and_natuur['recordcount'],
-            search_biologie_and_natuur_with_filters['recordcount']
+            search_biologie_and_didactiek['recordcount'],
+            search_biologie_and_didactiek_with_filters['recordcount']
         )
 
         # search with publish date filter applied
         search_biologie_upper_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, "2018-12-31"]}
         ])
+        self.assertTrue(search_biologie_upper_date["records"])
         for record in search_biologie_upper_date["records"]:
             publish_date = parse(record["publish_datetime"], ignoretz=True)
             self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
         search_biologie_lower_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", None]}
         ])
+        self.assertTrue(search_biologie_lower_date["records"])
         for record in search_biologie_lower_date["records"]:
             publish_date = parse(record["publish_datetime"], ignoretz=True)
             self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
         search_biologie_between_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", "2018-12-31"]}
         ])
+        self.assertTrue(search_biologie_between_date["records"])
         for record in search_biologie_between_date["records"]:
             publish_date = parse(record["publish_datetime"], ignoretz=True)
             self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
@@ -117,7 +168,7 @@ class TestsElasticSearch(TestCase):
             '',
             filters=[{
                 "external_id": "lom.classification.obk.discipline.id",
-                "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2']
+                "items": ['0861c43d-1874-4788-b522-df8be575677f']
             }]
         )
         search_result_filter_2 = self.instance.search(
@@ -131,7 +182,7 @@ class TestsElasticSearch(TestCase):
             '',
             filters=[{
                 "external_id": "lom.classification.obk.discipline.id",
-                "items": ['db5b20c4-4e94-4554-8137-a45acb130ad2', '2b363227-8633-4652-ad57-c61f1efc02c8']
+                "items": ['0861c43d-1874-4788-b522-df8be575677f', '2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
         self.assertNotEqual(search_result, search_result_filter_1)
@@ -167,7 +218,7 @@ class TestsElasticSearch(TestCase):
             ["lom.classification.obk.discipline.id"]
         )
         for drilldown in search_with_theme_drilldown['drilldowns']:
-            self.assertGreater(len(drilldown["items"]), 0)
+            self.assertTrue(drilldown["items"])
             for item in drilldown['items']:
                 self.assertTrue(item['external_id'])
                 self.assertIsNotNone(item['count'])
@@ -196,12 +247,15 @@ class TestsElasticSearch(TestCase):
         # make a bunch of queries with different ordering
         search_biologie = self.instance.search("biologie")
         self.assertIsNotNone(search_biologie)
+        self.assertTrue(search_biologie["records"])
         search_biologie_dates = [record["publish_datetime"] for record in search_biologie["records"]]
         search_biologie_asc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
         self.assertIsNotNone(search_biologie_asc)
+        self.assertTrue(search_biologie_asc["records"])
         search_biologie_asc_dates = [record["publish_datetime"] for record in search_biologie_asc["records"]]
         search_biologie_desc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
         self.assertIsNotNone(search_biologie_desc)
+        self.assertTrue(search_biologie_asc["records"])
         search_biologie_desc_dates = [record["publish_datetime"] for record in search_biologie_desc["records"]]
         # make sure that a default ordering is different than a date ordering
         self.assertNotEqual(search_biologie_dates, search_biologie_asc_dates)
@@ -213,8 +267,7 @@ class TestsElasticSearch(TestCase):
     def test_autocomplete(self):
         empty_autocomplete = self.instance.autocomplete(query='')
         self.assertEqual(len(empty_autocomplete), 0)
-
-        biologie_autocomplete = self.instance.autocomplete(query='biologie')
+        biologie_autocomplete = self.instance.autocomplete(query='bio')
         self.assertGreater(len(biologie_autocomplete), 0)
         self.assertIsNot(empty_autocomplete, biologie_autocomplete)
         self.assertIsInstance(biologie_autocomplete, list)
@@ -224,13 +277,11 @@ class TestsElasticSearch(TestCase):
 
     def test_drilldowns(self):
         empty_drilldowns = self.instance.drilldowns(drilldown_names=[])
-        # {'recordcount': 1298193, 'records': [], 'drilldowns': []}
         self.assertGreater(empty_drilldowns['recordcount'], 0)
         self.assertFalse(empty_drilldowns['records'])
         self.assertFalse(empty_drilldowns['drilldowns'])
 
         biologie_drilldowns = self.instance.drilldowns([], search_text="biologie")
-        # {'recordcount': 32, 'records': [], 'drilldowns': []}
         self.assertGreater(biologie_drilldowns['recordcount'], 0)
         self.assertGreater(empty_drilldowns['recordcount'], biologie_drilldowns['recordcount'])
         self.assertFalse(biologie_drilldowns['records'])
@@ -253,61 +304,37 @@ class TestsElasticSearch(TestCase):
 
     def test_get_materials_by_id(self):
 
-        def test_material(external_id):
-            result = self.instance.get_materials_by_id(external_ids=[external_id])
+        test_id = 'surf:oai:surfsharekit.nl:3522b79c-928c-4249-a7f7-d2bcb3077f10'
+        result = self.instance.get_materials_by_id(external_ids=[test_id])
+        self.assertIsNotNone(result)
+        # we're searching for one id, we should get only one result
+        self.assertEqual(result['recordcount'], 1)
+        material = result['records'][0]
 
-            self.assertIsNotNone(result)
-            # we're searching for one id, we should get only one result
-            self.assertEqual(result['recordcount'], 1)
-
-            return result['records'][0]
-
-        test_id_1 = 'surf:oai:surfsharekit.nl:bef89539-a037-454d-bee3-da09f4c94e0b'
-        test_id_2 = 'surf:oai:surfsharekit.nl:651a50f7-8942-4615-af67-a6841e00b78b'
-        material_1 = test_material(test_id_1)
-        material_2 = test_material(test_id_2)
-
-        self.assertIsNot(material_1, material_2)
-
-        self.assertEqual(material_1['title'], 'Decision Trees and Random Decision Forests')
+        self.assertEqual(material['title'], 'Didactiek van wiskundig denken')
         self.assertEqual(
-            material_1['url'],
-            'https://surfsharekit.nl/dl/surf/bef89539-a037-454d-bee3-da09f4c94e0b/53c7bb36-e374-431c-a50c-e208ab53e412'
+            material['url'],
+            "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT"
         )
-        self.assertEqual(material_1['external_id'], test_id_1)
-        self.assertEqual(material_1['publishers'], [])
-        self.assertEqual(material_1['publish_datetime'], None)
-        self.assertEqual(material_1['authors'], [])
-        self.assertEqual(material_1['keywords'], ['Powerpoint', 'Orange', 'MOOC'])
-        self.assertEqual(len(material_1['disciplines']), 0)
-        self.assertEqual(material_1['language'], 'en')
-        self.assertEqual(material_1['format'], 'pdf')
-
-        self.assertEqual(material_2['title'], '07 AS_AD model')
-        self.assertEqual(
-            material_2['url'],
-            'https://learn.canvas.net/courses/2192/pages/week-3-7-as-ad-model?module_item_id=210172'
-        )
-        self.assertEqual(material_2['external_id'], test_id_2)
-        self.assertEqual(
-            material_2['keywords'],
-            ['economics', 'macro economics', 'micro economics',
-             'economic structure', 'inflationary gap', 'deflationary gap', 'full-employment equilibrium']
-        )
-        self.assertEqual(material_2['publishers'], ['Hanze Hogeschool'])
-        self.assertEqual(material_2['publish_datetime'], '2019-04-01')
-        self.assertEqual(material_2['language'], 'en')
-        self.assertEqual(material_2['authors'], ['Dr. Ning Ding'])
-        self.assertEqual(len(material_2['themes']), 0)
-        self.assertEqual(material_2['format'], 'text')
+        self.assertEqual(material['external_id'], test_id)
+        self.assertEqual(material['publishers'], ["Wikiwijs Maken"])
+        self.assertEqual(material['publish_datetime'], "2017-04-16T22:35:09+02:00")
+        self.assertEqual(material['authors'], ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"])
+        self.assertEqual(material['keywords'], ["nerds"])
+        self.assertEqual(material['disciplines'], [
+            "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",  # math
+            "0861c43d-1874-4788-b522-df8be575677f"  # onderwijskunde
+        ])
+        self.assertEqual(material['language'], 'nl')
+        self.assertEqual(material['format'], 'text')
 
     def test_search_by_author(self):
-        author = "John van Dongen"
-        expected_record_count = 14
+        author = "Michel van Ast"
+        expected_record_count = 4
         self.check_author_search(author, expected_record_count)
 
-        author2 = "Ruud Kok"
-        expected_record_count2 = 21
+        author2 = "Theo van den Bogaart"
+        expected_record_count2 = 1
         self.check_author_search(author2, expected_record_count2)
 
     def check_author_search(self, author, expected_record_count):
@@ -320,11 +347,13 @@ class TestsElasticSearch(TestCase):
         self.assertEqual(search_author['recordcount'], expected_record_count)
 
     def test_search_did_you_mean(self):
-        spelling_mistake = self.instance.search('leermateriaal')
+        spelling_mistake = self.instance.search('didaktiek')
         self.assertIn("did_you_mean", spelling_mistake)
-        self.assertEqual(spelling_mistake["did_you_mean"]["original"], "leermateriaal")
-        self.assertEqual(spelling_mistake["did_you_mean"]["suggestion"], "lesmateriaal")
-        no_mistake = self.instance.search('lesmateriaal')
+        self.assertEqual(spelling_mistake["did_you_mean"]["original"], "didaktiek")
+        self.assertEqual(spelling_mistake["did_you_mean"]["suggestion"], "didactiek")
+        no_result_spelling_mistake = self.instance.search('didaktiek is fantastiek')
+        self.assertEqual(no_result_spelling_mistake["did_you_mean"], {})
+        no_mistake = self.instance.search('biologie')
         self.assertEqual(no_mistake["did_you_mean"], {})
         unknown_mistake = self.instance.search('sdfkhjsdgaqegkjwfgklsd')
         self.assertEqual(unknown_mistake["did_you_mean"], {})

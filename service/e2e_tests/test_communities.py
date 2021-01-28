@@ -1,6 +1,6 @@
 import os
 import factory
-from e2e_tests.base import BaseTestCase
+from e2e_tests.base import BaseLiveServerTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,7 +9,8 @@ from e2e_tests.helpers import login, replace_content
 from surf.statusenums import PublishStatus
 
 
-class TestCommunities(BaseTestCase):
+class TestCommunities(BaseLiveServerTestCase):
+
     def setUp(cls):
         super().setUp()
         cls.user = UserFactory.create()
@@ -203,7 +204,8 @@ class TestCommunities(BaseTestCase):
         self.assertIn("data:image/png", featured_image)
 
 
-class TestCommunityTabVisibility(BaseTestCase):
+class TestCommunityTabVisibility(BaseLiveServerTestCase):
+
     def test_community_not_authenticated(self):
         self.community = CommunityFactory.create()
         self.selenium.get(f"{self.live_server_url}/communities")

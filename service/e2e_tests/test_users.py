@@ -3,12 +3,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-from e2e_tests.base import BaseTestCase
+from e2e_tests.base import BaseLiveServerTestCase
 from e2e_tests.factories import UserFactory, DataGoalPermissionFactory
 from e2e_tests.helpers import login
 
 
-class TestUsers(BaseTestCase):
+class TestUsers(BaseLiveServerTestCase):
+
     def setUp(self):
         super().setUp()
         self.user = UserFactory.create()

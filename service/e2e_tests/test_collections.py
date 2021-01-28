@@ -1,12 +1,12 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from e2e_tests.base import BaseTestCase
+from e2e_tests.base import BaseLiveServerTestCase
 from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, CollectionFactory
 from e2e_tests.helpers import login, replace_content
 
 
-class TestCollections(BaseTestCase):
+class TestCollections(BaseLiveServerTestCase):
     def setUp(self):
         super().setUp()
         self.user = UserFactory.create()
