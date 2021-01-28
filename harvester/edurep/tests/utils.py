@@ -119,3 +119,17 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
             "Expected parent material to have children and specify the external ids"
         )
         self.assertEqual(seeds[5]['has_part'], [], "Expected child material to have no children")
+
+    def test_ideas_property(self):
+        seeds = get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]["ideas"], [], "Expected deleted material to return no idea data")
+        possible_ideas = [
+            "Informatievaardigheid vocabulaire 2020",
+            "Publiceren en communiceren",
+            "Publiceren (van eindproduct)"
+        ]
+        self.assertTrue(seeds[1]["ideas"])
+        for idea in seeds[1]["ideas"]:
+            self.assertIn(idea, possible_ideas, "Expected material with idea elements to return the spliced strings")
+        self.assertEqual(seeds[2]["ideas"], [], "Expected material without ideas to return empty list")
+        self.assertEqual(seeds[3]["ideas"], [], "Expected material from other than Sharekit to ignore ideas")

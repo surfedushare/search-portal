@@ -8,7 +8,7 @@
     <ListRecords>
         <record>
             <header>
-                <identifier>surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd</identifier>
+                <identifier>surfsharekit:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd</identifier>
                 <datestamp>2019-12-11T13:12:39Z</datestamp>
                 <setSpec>surf</setSpec>
             </header>
@@ -197,7 +197,7 @@
         </record>
         <record>
             <header>
-                <identifier>surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af</identifier>
+                <identifier>surfsharekit:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af</identifier>
                 <datestamp>2019-12-11T13:18:38Z</datestamp>
                 <setSpec>surf</setSpec>
             </header>
@@ -433,7 +433,7 @@ END:VCARD</czp:vcard>
 
         <record>
             <header>
-                <identifier>surf:oai:surfsharekit.nl:b5473dd1-8aa4-455f-b359-9af8081ce697</identifier>
+                <identifier>surfsharekit:oai:surfsharekit.nl:b5473dd1-8aa4-455f-b359-9af8081ce697</identifier>
                 <datestamp>2019-12-11T13:18:38Z</datestamp>
                 <setSpec>surf</setSpec>
             </header>

@@ -9,14 +9,14 @@
 
         <record>
             <header status="deleted">
-                <identifier>surf:oai:surfsharekit.nl:3d2940a0-9573-412e-8fa2-067c55e2a72f</identifier>
+                <identifier>surfsharekit:oai:surfsharekit.nl:3d2940a0-9573-412e-8fa2-067c55e2a72f</identifier>
                 <datestamp>2019-11-05T00:06:37Z</datestamp>
                 <setSpec>surf</setSpec>
             </header>
         </record>
         <record>
             <header>
-                <identifier>surf:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751</identifier>
+                <identifier>surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751</identifier>
                 <datestamp>2019-12-11T13:06:21Z</datestamp>
                 <setSpec>surf</setSpec>
             </header>
@@ -170,6 +170,27 @@
                             </czp:taxon>
                         </czp:taxonpath>
                     </czp:classification>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">idea</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">http://purl.edustandaard.nl/concept</czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>http://purl.edustandaard.nl/concept/8f984395-e090-41be-96df-503f53ddaa09</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">Informatievaardigheid vocabulaire 2020 - Publiceren en communiceren - Publiceren (van eindproduct)</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
                 </czp:lom>
             </metadata>
             <about>
@@ -189,7 +210,7 @@
         </record>
         <record>
             <header>
-                <identifier>surf:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257</identifier>
+                <identifier>surfsharekit:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257</identifier>
                 <datestamp>2019-12-11T13:06:21Z</datestamp>
                 <setSpec>surf</setSpec>
             </header>
@@ -373,7 +394,7 @@
 
         <record>
             <header>
-                <identifier>surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e</identifier>
+                <identifier>wikiwijs:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e</identifier>
                 <datestamp>2019-12-11T13:06:23Z</datestamp>
                 <setSpec>surf</setSpec>
             </header>
@@ -627,6 +648,27 @@ END:VCARD</czp:vcard></czp:centity>
                                 <czp:id>OpenAccess</czp:id>
                                 <czp:entry>
                                     <czp:langstring xml:lang="nl">open toegang</czp:langstring>
+                                </czp:entry>
+                            </czp:taxon>
+                        </czp:taxonpath>
+                    </czp:classification>
+                    <czp:classification>
+                        <czp:purpose>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                            </czp:source>
+                            <czp:value>
+                                <czp:langstring xml:lang="x-none">idea</czp:langstring>
+                            </czp:value>
+                        </czp:purpose>
+                        <czp:taxonpath>
+                            <czp:source>
+                                <czp:langstring xml:lang="x-none">http://purl.edustandaard.nl/concept</czp:langstring>
+                            </czp:source>
+                            <czp:taxon>
+                                <czp:id>http://purl.edustandaard.nl/concept/8f984395-e090-41be-96df-503f53ddaa09</czp:id>
+                                <czp:entry>
+                                    <czp:langstring xml:lang="nl">a terrible idea!!</czp:langstring>
                                 </czp:entry>
                             </czp:taxon>
                         </czp:taxonpath>
