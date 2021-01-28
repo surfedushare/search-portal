@@ -6,107 +6,15 @@ from django.test import override_settings, TestCase
 
 from elasticsearch import Elasticsearch
 
+from surfpol.configuration import create_elastic_search_index_configuration
+
 
 class BaseElasticSearchMixin(object):
 
     @classmethod
     def index_body(cls, language):
-        # TODO: Share config with harvester somehow
         analyzer = 'dutch' if language == 'nl' else 'english'
-        return {
-            "mappings": {
-                "properties": {
-                    'title': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'text': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'transcription': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'description': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'url': {'type': 'text'},
-                    'title_plain': {'type': 'text'},
-                    'text_plain': {'type': 'text'},
-                    'transcription_plain': {'type': 'text'},
-                    'description_plain': {'type': 'text'},
-                    'author': {
-                        'type': 'keyword'
-                    },
-                    'authors': {
-                        'type': 'text',
-                        'fields': {
-                            'keyword': {
-                                'type': 'keyword',
-                                'ignore_above': 256
-                            }
-                        }
-                    },
-                    'publishers': {
-                        'type': 'keyword'
-                    },
-                    'publisher_date': {
-                        'type': 'date'
-                    },
-                    'aggregation_level': {
-                        'type': 'keyword'
-                    },
-                    'keywords': {
-                        'type': 'keyword'
-                    },
-                    'file_type': {
-                        'type': 'keyword'
-                    },
-                    'id': {'type': 'text'},
-                    'external_id': {
-                        'type': 'keyword'
-                    },
-                    'arrangement_collection_name': {
-                        'type': 'keyword'
-                    },
-                    'oaipmh_set': {
-                        'type': 'keyword'
-                    },
-                    'educational_levels': {
-                        'type': 'keyword'
-                    },
-                    'lom_educational_levels': {
-                        'type': 'keyword'
-                    },
-                    'disciplines': {
-                        'type': 'keyword'
-                    },
-                    "suggest_completion": {
-                        "type": "completion"
-                    },
-                    "suggest_phrase": {
-                        "type": "completion"
-                    },
-                    "has_part": {
-                        'type': 'keyword'
-                    },
-                    "is_part_of": {
-                        'type': 'keyword'
-                    },
-                    'ideas': {
-                        'type': 'text',
-                        'fields': {
-                            'keyword': {
-                                'type': 'keyword',
-                                'ignore_above': 256
-                            }
-                        }
-                    },
-                }
-            }
-        }
+        return create_elastic_search_index_configuration(language, analyzer, "decompound_word_list.nl.txt")
 
     @classmethod
     def setUpClass(cls):

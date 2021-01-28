@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from elasticsearch.helpers import streaming_bulk
 from rest_framework import serializers
 
+from surfpol.configuration import create_elastic_search_index_configuration
 from core.models import Dataset
 from core.utils.elastic import get_es_client
 
@@ -93,147 +94,14 @@ class ElasticIndex(models.Model):
         Returns the elasticsearch index configuration.
         Configures the analysers based on the language passed in.
         """
-        if settings.ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS and lang == "nl":
-            search_analyzer = "dutch_dictionary_decompound"
-        else:
-            search_analyzer = settings.ELASTICSEARCH_ANALYSERS[lang]
-        # We first create a basic configuration without decompound dictionaries
-        # Once AWS fixes problems with decompound dictionaries these can be included always
-        configuration = {
-            "settings": {
-                "index": {
-                    "number_of_shards": 1,
-                    "number_of_replicas": 0
-                },
-                "analysis": {
-                    "analyzer": {
-                        "trigram": {
-                            "type": "custom",
-                            "tokenizer": "standard",
-                            "filter": ["lowercase", "shingle"]
-                        },
-                    },
-                    "filter": {
-                        "dutch_stop": {
-                            "type": "stop",
-                            "stopwords": "_dutch_"
-                        },
-                        "shingle": {
-                            "type": "shingle",
-                            "min_shingle_size": 2,
-                            "max_shingle_size": 3
-                        }
-                    }
-                }
-            },
-            'mappings': {
-                'properties': {
-                    'title': {
-                        'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
-                        'search_analyzer': search_analyzer
-                    },
-                    'text': {
-                        'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
-                        'search_analyzer': search_analyzer
-                    },
-                    'transcription': {
-                        'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
-                        'search_analyzer': search_analyzer
-                    },
-                    'description': {
-                        'type': 'text',
-                        'analyzer': settings.ELASTICSEARCH_ANALYSERS[lang],
-                        'search_analyzer': search_analyzer
-                    },
-                    'url': {'type': 'text'},
-                    'title_plain': {'type': 'text'},
-                    'text_plain': {'type': 'text'},
-                    'transcription_plain': {'type': 'text'},
-                    'description_plain': {'type': 'text'},
-                    'author': {
-                        'type': 'keyword'
-                    },
-                    'authors': {
-                        'type': 'text',
-                        'fields': {
-                            'keyword': {
-                                'type': 'keyword',
-                                'ignore_above': 256
-                            }
-                        }
-                    },
-                    'publishers': {
-                        'type': 'keyword'
-                    },
-                    'publisher_date': {
-                        'type': 'date',
-                        'format': 'strict_date_optional_time||yyyy-MM||epoch_millis'
-                    },
-                    'aggregation_level': {
-                        'type': 'keyword'
-                    },
-                    'keywords': {
-                        'type': 'keyword'
-                    },
-                    'file_type': {
-                        'type': 'keyword'
-                    },
-                    'id': {'type': 'text'},
-                    'external_id': {
-                        'type': 'keyword'
-                    },
-                    'arrangement_collection_name': {
-                        'type': 'keyword'
-                    },
-                    'oaipmh_set': {
-                        'type': 'keyword'
-                    },
-                    'educational_levels': {
-                        'type': 'keyword'
-                    },
-                    'lom_educational_levels': {
-                        'type': 'keyword'
-                    },
-                    'disciplines': {
-                        'type': 'keyword'
-                    },
-                    'ideas': {
-                        'type': 'text',
-                        'fields': {
-                            'keyword': {
-                                'type': 'keyword',
-                                'ignore_above': 256
-                            }
-                        }
-                    },
-                    "suggest_completion": {
-                        "type": "completion"
-                    },
-                    "suggest_phrase": {
-                        "type": "text",
-                        "analyzer": "trigram"
-                    },
-                }
-            }
-        }
-
-        # Then if our (AWS) environment supports it we add decompound settings
+        decompound_word_list = None
         if settings.ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS:
-            configuration["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"] = {
-                "type": "custom",
-                "tokenizer": "standard",
-                "filter": ["dutch_stop", "dictionary_decompound"]
-            }
-            configuration["settings"]["analysis"]["filter"]["dictionary_decompound"] = {
-                "type": "dictionary_decompounder",
-                "word_list_path": settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch,
-                "updateable": True
-            }
-
-        return configuration
+            decompound_word_list = settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch
+        return create_elastic_search_index_configuration(
+            lang,
+            settings.ELASTICSEARCH_ANALYSERS[lang],
+            decompound_word_list=decompound_word_list
+        )
 
 
 class ElasticIndexSerializer(serializers.ModelSerializer):
