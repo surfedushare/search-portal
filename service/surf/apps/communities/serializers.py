@@ -52,13 +52,13 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_collections_count(obj):
-        return obj.collections.filter(deleted_at__isnull=True).count()
+        return obj.collections.filter(deleted_at=None).count()
 
     @staticmethod
     def get_materials_count(obj):
         materials_set = Material.objects.filter(
-            collections__in=obj.collections.filter(deleted_at__isnull=True),
-            deleted_at__isnull=True
+            collections__in=obj.collections.filter(deleted_at=None),
+            deleted_at=None
         )
         return materials_set.count()
 

@@ -100,10 +100,10 @@ class ThemeViewSet(ListModelMixin,
 
         instance = self.get_object()
 
-        qs = Material.objects.filter(themes__id=instance.id, deleted_at__isnull=True)
+        qs = Material.objects.filter(themes__id=instance.id, deleted_at=None)
         ids = qs.values_list('collections__id', flat=True)
-        qs = Collection.objects.filter(id__in=ids, communities__isnull=False, deleted_at__isnull=True)
-        qs = qs.annotate(community_cnt=Count('communities', filter=Q(deleted_at__isnull=True)))
+        qs = Collection.objects.filter(id__in=ids, communities__isnull=False, deleted_at=None)
+        qs = qs.annotate(community_cnt=Count('communities', filter=Q(deleted_at=None)))
         cs = qs.all()
         if qs.count() > _COLLECTIONS_COUNT_IN_OVERVIEW:
             cs = cs[:_COLLECTIONS_COUNT_IN_OVERVIEW]
