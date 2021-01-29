@@ -7,8 +7,7 @@ import logging
 
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db.models import Count
-from django.db.models import F
+from django.db.models import Count, F, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import action
@@ -265,7 +264,7 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
     :return: list of materials
     """
 
-    material, created = Material.objects.get_or_create(external_id=external_id)
+    material, created = Material.objects.get_or_create(external_id=external_id, deleted_at__isnull=True)
     if created:
         material.sync_info()
     # increase unique view counter
@@ -294,7 +293,7 @@ class MaterialRatingAPIView(APIView):
         params = request.data.get('params')
         external_id = params['external_id']
         star_rating = params['star_rating']
-        material_object = Material.objects.get(external_id=external_id)
+        material_object = Material.objects.get(external_id=external_id, deleted_at__isnull=True)
         if star_rating == 1:
             material_object.star_1 = F('star_1') + 1
         if star_rating == 2:
@@ -315,7 +314,7 @@ class MaterialApplaudAPIView(APIView):
     def post(self, request, *args, **kwargs):
         params = request.data.get('params')
         external_id = params['external_id']
-        material_object = Material.objects.get(external_id=external_id)
+        material_object = Material.objects.get(external_id=external_id, deleted_at__isnull=True)
         material_object.applaud_count = F('applaud_count') + 1
         material_object.save()
         material_object.refresh_from_db()
@@ -352,13 +351,12 @@ class CollectionViewSet(ModelViewSet):
     and `delete` methods for its materials.
     """
 
-    queryset = Collection.objects.filter(deleted_at=None)
+    queryset = Collection.objects \
+        .filter(deleted_at=None) \
+        .annotate(community_cnt=Count('communities', filter=Q(deleted_at__isnull=True)))
     serializer_class = CollectionSerializer
     filter_class = CollectionFilter
     permission_classes = []
-
-    def get_queryset(self):
-        return Collection.objects.annotate(community_cnt=Count('communities')).filter(community_cnt__gt=0)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -392,7 +390,7 @@ class CollectionViewSet(ModelViewSet):
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
-            ids = [m.external_id for m in instance.materials.order_by("id").all()]
+            ids = [m.external_id for m in instance.materials.order_by("id").filter(deleted_at__isnull=True)]
 
             rv = dict(records=[],
                       records_total=0,
@@ -438,7 +436,9 @@ class CollectionViewSet(ModelViewSet):
         elif request.method == "DELETE":
             self._delete_materials(instance, data)
 
-        res = MaterialShortSerializer(many=True).to_representation(instance.materials.all())
+        res = MaterialShortSerializer(many=True).to_representation(
+            instance.materials.filter(deleted_at__isnull=True)
+        )
         return Response(res)
 
     @staticmethod
@@ -463,7 +463,7 @@ class CollectionViewSet(ModelViewSet):
                 keywords = json.dumps(keywords)
 
             m, _ = Material.objects.update_or_create(
-                external_id=m_external_id,
+                external_id=m_external_id, deleted_at__isnull=True,
                 defaults=dict(material_url=details[0].get("url"),
                               title=details[0].get("title"),
                               description=details[0].get("description"),

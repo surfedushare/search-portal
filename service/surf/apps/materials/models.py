@@ -13,16 +13,11 @@ from surf.apps.core.models import UUIDModel
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.themes.models import Theme
 from surf.statusenums import PublishStatus
-from surf.vendor.search.choices import (
-    DISCIPLINE_FIELD_ID,
-    CUSTOM_THEME_FIELD_ID
-)
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+
 
 RESOURCE_TYPE_MATERIAL = "material"
 RESOURCE_TYPE_COLLECTION = "collection"
-
-_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
 
 
 def add_material_themes(material, themes):
@@ -33,36 +28,6 @@ def add_material_themes(material, themes):
 def add_material_disciplines(material, disciplines):
     ds = MpttFilterItem.objects.filter(external_id__in=disciplines).all()
     material.disciplines.set(ds)
-
-
-def get_material_details_by_id(material_id, api_client=None):
-    """
-    Request from EduRep and return details of material by its EduRep id
-    :param material_id: id of material in EduRep
-    :param api_client: EduRep API client (optional)
-    :return: list of requested materials
-    """
-
-    if not api_client:
-        api_client = ElasticSearchApiClient()
-
-    res = api_client.get_materials_by_id([material_id], drilldown_names=[_DISCIPLINE_FILTER])
-
-    # define themes and disciplines for requested material
-    themes = []
-    disciplines = []
-    for f in res.get("drilldowns", []):
-        if f["external_id"] == CUSTOM_THEME_FIELD_ID:
-            themes = [item["external_id"] for item in f["items"]]
-        elif f["external_id"] == DISCIPLINE_FIELD_ID:
-            disciplines = [item["external_id"] for item in f["items"]]
-
-    # set extra details for requested material
-    rv = res.get("records", [])
-    for material in rv:
-        material["themes"] = themes
-        material["disciplines"] = disciplines
-    return rv
 
 
 class Material(UUIDModel):
@@ -125,21 +90,27 @@ class Material(UUIDModel):
     def sync_info(self):
         assert self.external_id, "Can't sync info if instance doesn't have an external id"
 
-        details = get_material_details_by_id(self.external_id)
-        if details:
-            m = details[0]
-            self.material_url = m.get("url")
-            self.title = m.get("title")
-            self.description = m.get("description")
-            keywords = m.get("keywords")
-            if keywords:
-                keywords = json.dumps(keywords)
-                self.keywords = keywords
+        # Fetch data from Elastic Search
+        api_client = ElasticSearchApiClient()
+        response = api_client.get_materials_by_id([self.external_id])
+        records = response.get("records", [])
+        if not records:
+            return
 
-            # always save info before adding themes & disciplines
-            self.save()
-            add_material_themes(self, m.get("themes", []))
-            add_material_disciplines(self, m.get("disciplines", []))
+        # Update the model
+        m = records[0]
+        self.material_url = m.get("url")
+        self.title = m.get("title")
+        self.description = m.get("description")
+        keywords = m.get("keywords")
+        if keywords:
+            keywords = json.dumps(keywords)
+            self.keywords = keywords
+
+        # always save info before adding themes & disciplines
+        self.save()
+        add_material_themes(self, m.get("themes", []))  # currently themes are not at all returned from ES
+        add_material_disciplines(self, m.get("disciplines", []))
 
     def __str__(self):
         return self.external_id
