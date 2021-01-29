@@ -60,7 +60,7 @@ class CommunityViewSet(ListModelMixin,
 
         instance = self.get_object()
 
-        qs = instance.collections.filter(deleted_at__isnull=True).order_by("position")
+        qs = instance.collections.filter(deleted_at=None).order_by("position")
         if request.method in {"POST", "DELETE", "PUT"}:
             # validate request parameters
             serializer = CollectionSerializer(many=True, data=request.data) if request.method == "POST" else \
@@ -80,7 +80,7 @@ class CommunityViewSet(ListModelMixin,
                 self._delete_collections(instance, data)
                 return Response()
 
-        qs = qs.annotate(community_cnt=Count('communities', filter=Q(deleted_at__isnull=True)))
+        qs = qs.annotate(community_cnt=Count('communities', filter=Q(deleted_at=None)))
 
         if request.method == "GET":
             page = self.paginate_queryset(qs)
@@ -99,7 +99,7 @@ class CommunityViewSet(ListModelMixin,
 
         instance = self.get_object()
 
-        ids = instance.collections.filter(deleted_at__isnull=True).values_list("materials__themes__id", flat=True)
+        ids = instance.collections.filter(deleted_at=None).values_list("materials__themes__id", flat=True)
         qs = Theme.objects.filter(id__in=ids)
 
         res = []
@@ -116,7 +116,7 @@ class CommunityViewSet(ListModelMixin,
 
         instance = self.get_object()
 
-        ids = instance.collections.filter(deleted_at__isnull=True).values_list("materials__disciplines__id", flat=True)
+        ids = instance.collections.filter(deleted_at=None).values_list("materials__disciplines__id", flat=True)
         qs = MpttFilterItem.objects.filter(id__in=ids)
 
         context = self.get_serializer_context()

@@ -140,8 +140,8 @@ def get_material_details_by_id(external_id):
         return records
 
     material = records[0]
-    details = Material.objects.filter(external_id=external_id, deleted_at__isnull=True).first()
-    material["number_of_collections"] = details.collections.filter(deleted_at__isnull=True).count() if details else 0
+    details = Material.objects.filter(external_id=external_id, deleted_at=None).first()
+    material["number_of_collections"] = details.collections.filter(deleted_at=None).count() if details else 0
     return [material]
 
 
