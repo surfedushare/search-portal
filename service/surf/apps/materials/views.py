@@ -11,7 +11,7 @@ from django.db.models import Count, F, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import action
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import (
@@ -426,6 +426,8 @@ class CollectionViewSet(ModelViewSet):
                 serializer = CollectionMaterialPositionSerializer(data=d)
             elif request.method == "DELETE":
                 serializer = MaterialShortSerializer(data=d)
+            else:
+                raise MethodNotAllowed(request.method, detail="Method not supported")
 
             serializer.is_valid(raise_exception=True)
             data.append(serializer.validated_data)
