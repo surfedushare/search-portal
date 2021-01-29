@@ -12,10 +12,6 @@ from surf.apps.materials.models import (
     Material,
 )
 from surf.apps.themes.models import Theme
-from surf.vendor.search.choices import (
-    DISCIPLINE_FIELD_ID,
-    CUSTOM_THEME_FIELD_ID
-)
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
@@ -62,6 +58,8 @@ def add_extra_parameters_to_materials(user, materials):
     """
     Add additional parameters for materials (bookmark, number of applauds,
     number of views)
+    NB: this gets added to deleted materials as well, but as they were being found still that seems good
+
     :param user: user who requested material
     :param materials: array of materials
     :return: updated array of materials
@@ -128,42 +126,23 @@ def add_extra_parameters_to_materials(user, materials):
     return materials
 
 
-_DISCIPLINE_FILTER = "{}:0".format(DISCIPLINE_FIELD_ID)
-
-
-def get_material_details_by_id(material_id, api_client=None):
+def get_material_details_by_id(external_id):
     """
-    Request from EduRep and return details of material by its EduRep id
-    :param material_id: id of material in EduRep
-    :param api_client: EduRep API client (optional)
-    :return: list of requested materials
+    Request from ES and return details of material by its id
+
+    :param external_id: id of material
+    :return: list containing updated material
     """
+    api_client = ElasticSearchApiClient()
+    response = api_client.get_materials_by_id([external_id])
+    records = response.get("records", [])
+    if not records:
+        return records
 
-    if not api_client:
-        api_client = ElasticSearchApiClient()
-
-    res = api_client.get_materials_by_id([material_id], drilldown_names=[_DISCIPLINE_FILTER])
-
-    # define themes and disciplines for requested material
-    themes = []
-    disciplines = []
-    for f in res.get("drilldowns", []):
-        if f["external_id"] == CUSTOM_THEME_FIELD_ID:
-            themes = [item["external_id"] for item in f["items"]]
-        elif f["external_id"] == DISCIPLINE_FIELD_ID:
-            disciplines = [item["external_id"] for item in f["items"]]
-
-    # set extra details for requested material
-    rv = res.get("records", [])
-    for material in rv:
-        material["themes"] = themes
-        material["disciplines"] = disciplines
-
-        m = Material.objects.filter(external_id=material_id).first()
-        if m:
-            material["number_of_collections"] = m.collections.count()
-
-    return rv
+    material = records[0]
+    details = Material.objects.filter(external_id=external_id, deleted_at__isnull=True).first()
+    material["number_of_collections"] = details.collections.filter(deleted_at__isnull=True).count() if details else 0
+    return [material]
 
 
 def create_search_results_index(client):
