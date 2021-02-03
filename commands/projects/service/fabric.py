@@ -13,7 +13,7 @@ def create_snapshot(conn):
     Dumps database content as SQL creating a snapshot that other nodes can load easily
     """
     if conn.host != conn.config.aws.bastion:
-        raise Exit("Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
+        raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
 
     today = date.today()
     dump_file = f"edushare.{today:%Y-%m-%d}.postgres.sql"
