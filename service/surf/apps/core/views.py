@@ -9,6 +9,6 @@ from rest_framework.permissions import AllowAny
 @permission_classes([AllowAny])
 @schema(None)
 def health_check(request):
-    data = {"healthy": True}
+    data = {"healthy": True, "ip": settings.IP}
     data.update(settings.PACKAGE_INFO)
     return Response(data, status.HTTP_200_OK)

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import sys
 import os
 import sentry_sdk
+import requests
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
@@ -34,6 +35,11 @@ SECRET_KEY = environment.secrets.django.secret_key
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
 BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
+try:
+    response = requests.get("https://api.ipify.org/?format=json")
+    IP = response.json()["ip"]
+except Exception:
+    IP = None
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
