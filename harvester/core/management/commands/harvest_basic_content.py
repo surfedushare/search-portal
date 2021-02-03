@@ -66,8 +66,8 @@ class Command(HarvesterCommand):
             [{} for _ in file_resources],
             config=tika_config
         )
-        logger.info(f"Errors while extracting main texts: {main_error}", dataset=dataset)
-        logger.info(f"Main texts extracted successfully: {main_success}", dataset=dataset)
+        logger.info(f"Errors while extracting main texts: {len(main_error)}", dataset=dataset)
+        logger.info(f"Main texts extracted successfully: {len(main_success)}", dataset=dataset)
 
         logger.info("Starting with package content")
         uris = [FileResource.uri_from_url(seed["package_url"]) for seed in seeds if seed.get("package_url", None)]
