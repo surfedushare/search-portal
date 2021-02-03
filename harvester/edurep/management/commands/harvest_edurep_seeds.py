@@ -96,7 +96,6 @@ class Command(HarvesterCommand):
         logger.info(
             f"Finished harvesting edurep seeds, "
             f"successful OAI-PMG call: '{total_success_count}', failed OAI-PMH calls: '{total_fail_count}'",
+            dataset=dataset_name,
             aggregate={"success": total_success_count, "failed": total_fail_count}
         )
-
-        return f'OAI-PMH: {total_success_count}/{total_success_count + total_fail_count}'
