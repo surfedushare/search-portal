@@ -81,8 +81,8 @@ class Command(HarvesterCommand):
             [{} for _ in file_resources],
             config=tika_config
         )
-        logger.info("Errors while extracting package texts: {package_error}", dataset=dataset)
-        logger.info("Package texts extracted successfully: {package_success}", dataset=dataset)
+        logger.info(f"Errors while extracting package texts: {package_error}", dataset=dataset)
+        logger.info(f"Package texts extracted successfully: {package_success}", dataset=dataset)
 
     def generate_seeds(self, harvest, dataset_name):
         logger.debug(f"Getting edurep OAI-PMH seeds for '{harvest.source.spec}'", dataset=dataset_name)
