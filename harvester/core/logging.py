@@ -65,11 +65,12 @@ class HarvestLogger(object):
         })
         logger.info(f"Ending: {phase}", extra=extra)
 
-    def report_material(self, external_id, title, url, pipeline):
+    def report_material(self, external_id, title=None, url=None, pipeline=None, state="upsert"):
         extra = self._get_extra_info(level="DEBUG", phase="report", material={
             "external_id": external_id,
             "title": title,
             "url": url,
-            "pipeline": pipeline
+            "pipeline": pipeline,
+            "state": state
         })
         logger.debug(f"Report: {external_id}", extra=extra)

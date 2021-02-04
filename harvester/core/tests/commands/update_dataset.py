@@ -9,6 +9,7 @@ from django.utils.timezone import make_aware
 from core.models import Dataset, Collection, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.management.commands.update_dataset import Command as DatasetCommand
+from core.logging import HarvestLogger
 from edurep.utils import get_edurep_oaipmh_seeds
 
 
@@ -47,8 +48,8 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
     def get_command_instance(self):
         command = DatasetCommand()
-        command.show_progress = False
-        command.info = lambda x: x
+        command.logger = HarvestLogger("test", "update_dataset", {})
+        command.batch_size = 32
         return command
 
     @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS)
@@ -169,8 +170,8 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
     def get_command_instance(self):
         command = DatasetCommand()
-        command.show_progress = False
-        command.info = lambda x: x
+        command.logger = HarvestLogger("test", "update_dataset", {})
+        command.batch_size = 32
         return command
 
     def test_handle_upsert_seeds(self):
