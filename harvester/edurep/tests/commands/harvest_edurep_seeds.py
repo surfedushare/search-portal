@@ -23,7 +23,7 @@ class TestSeedHarvest(TestCase):
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
         with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress")
+            call_command("harvest_edurep_seeds", "--dataset=test")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
@@ -68,7 +68,7 @@ class TestSeedHarvest(TestCase):
     def test_edurep_down(self):
         with patch("edurep.management.commands.harvest_edurep_seeds.send", return_value=([], [100],)):
             try:
-                call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress")
+                call_command("harvest_edurep_seeds", "--dataset=test")
                 self.fail("harvest_edurep_seeds did not fail when EdurepOAIPMH was returning errors")
             except CommandError:
                 pass
@@ -87,7 +87,7 @@ class TestSeedHarvestWithHistory(TestCase):
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
         with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress")
+            call_command("harvest_edurep_seeds", "--dataset=test")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
