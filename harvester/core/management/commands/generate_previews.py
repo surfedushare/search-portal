@@ -1,20 +1,17 @@
 import time
 
-from core.management.base import HarvesterCommand
+from core.management.base import PipelineCommand
 from celery import group
 from django.db.models import Q
 
 from core.constants import HarvestStages
 from core.models import Document, OAIPMHHarvest
 from harvester.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
-from harvester import logger
 
 
-class Command(HarvesterCommand):
+class Command(PipelineCommand):
 
-    def add_arguments(self, parser):
-        super().add_arguments(parser)
-        parser.add_argument('-d', '--dataset', type=str, required=True)
+    command_name = "generate_previews"
 
     def handle(self, *args, **options):
         dataset_name = options["dataset"]
@@ -24,11 +21,11 @@ class Command(HarvesterCommand):
         ).filter(dataset__name=dataset_name).filter(properties__preview_path=None)
         signatures = self.create_task_signatures(html_documents)
 
-        logger.info(f"Started {len(signatures)} tasks to generate previews", dataset=dataset_name)
+        self.logger.start("previews")
         self.run_jobs_in_group(signatures)
 
         self.complete_preview_stage(dataset_name)
-        logger.info("Done generating previews", dataset=dataset_name)
+        self.logger.end("previews")
 
     def run_jobs_in_group(self, signatures):
         job = group(signatures)

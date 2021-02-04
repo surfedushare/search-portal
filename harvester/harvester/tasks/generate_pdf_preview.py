@@ -1,11 +1,12 @@
 from celery.exceptions import SoftTimeLimitExceeded
 import pdf2image
 
-from core.models import Document, FileResource
 from django.conf import settings
-from harvester.celery import app
 
+from core.models import Document, FileResource
 from core.utils.previews import store_previews, update_document, remove_files_from_filesystem, create_thumbnails
+from core.logging import HarvestLogger
+from harvester.celery import app
 
 
 @app.task(
@@ -28,6 +29,16 @@ def generate_pdf_preview(document_id):
         store_previews(bucket_folder_path, document.id)
         update_document(document, bucket_folder_path)
         remove_files_from_filesystem(document.id)
+
+        logger = HarvestLogger(document.dataset.name, "generate_previews", {})
+
+        logger.report_material(
+            document.properties["external_id"],
+            title=document.properties["title"],
+            url=document.properties["url"],
+            pipeline=document.properties["pipeline"],
+            state="preview"
+        )
 
 
 def convert_pdf_file_to_image(path_to_pdf, destination):

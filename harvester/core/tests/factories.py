@@ -8,7 +8,7 @@ class DatasetFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Dataset
 
-    name = "epsilon"
+    name = "test"
     is_active = True
 
 
@@ -17,6 +17,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         model = Document
 
     class Params:
+        title = "Zorgwekkend gedrag"
         file_type = "text"
         from_youtube = False
         mime_type = "text/html"
@@ -28,6 +29,8 @@ class DocumentFactory(factory.django.DjangoModelFactory):
     reference = factory.Sequence(lambda n: "surf:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
+            "external_id": o.reference,
+            "title": o.title,
             "file_type": o.file_type,
             "from_youtube": o.from_youtube,
             "mime_type": o.mime_type,
