@@ -47,19 +47,19 @@ class HarvestLogger(object):
         extra = self._get_extra_info(level="INFO", phase=phase, progress="start")
         logger.info(f"Starting: {phase}", extra=extra)
 
-    def progress(self, phase, current, total):
+    def progress(self, phase, current, total, success=None, fail=None):
         extra = self._get_extra_info(level="DEBUG", phase=phase, progress="busy", result={
-            "success": None,
-            "fail": None,
+            "success": success,
+            "fail": fail,
             "current": current,
             "total": total
         })
         logger.debug(f"Progress: {phase}", extra=extra)
 
-    def end(self, phase, success_count, fail_count):
+    def end(self, phase, success=None, fail=None):
         extra = self._get_extra_info(level="INFO", phase=phase, progress="end", result={
-            "success": success_count,
-            "fail": fail_count,
+            "success": success,
+            "fail": fail,
             "current": None,
             "total": None
         })

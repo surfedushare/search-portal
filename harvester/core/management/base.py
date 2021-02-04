@@ -1,9 +1,12 @@
-from tqdm import tqdm
+import math
 from mimetypes import guess_type
+from tqdm import tqdm
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from datagrowth.utils import ibatch
 
+from core.logging import HarvestLogger
 from core.utils.language import get_language_from_snippet
 
 
@@ -25,6 +28,36 @@ class HarvesterCommand(BaseCommand):
         if not self.show_progress:
             return iterator
         return tqdm(iterator, total=total)
+
+
+class PipelineCommand(BaseCommand):
+    """
+    This class adds a logger to make pipeline output of all commands similar
+    """
+
+    command_name = None
+    batch_size = None
+    logger = None
+
+    def add_arguments(self, parser):
+        # TODO: remove no-progress flag
+        parser.add_argument('-n', '--no-progress', action="store_true")
+        parser.add_argument('-d', '--dataset', type=str, required=True)
+        parser.add_argument('-b', '--batch-size', type=int, default=32)
+
+    def execute(self, *args, **options):
+        self.batch_size = options["batch_size"]
+        self.logger = HarvestLogger(options["dataset"], self.command_name, options)
+        super().execute(*args, **options)
+
+    def batchify(self, phase, iterator, total):
+        batches = int(math.floor(total / self.batch_size))
+        rest = total % self.batch_size
+        if rest:
+            batches += 1
+        for ix, batch in enumerate(ibatch(iterator, batch_size=self.batch_size)):
+            self.logger.progress(phase, ix, batches)
+            yield batch
 
 
 class OutputCommand(HarvesterCommand):
