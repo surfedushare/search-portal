@@ -1,6 +1,5 @@
 import os
 from unittest.mock import patch
-from io import StringIO
 from datetime import datetime
 
 from django.test import TestCase, override_settings
@@ -10,6 +9,7 @@ from django.utils.timezone import make_aware
 from core.constants import HarvestStages
 from core.models import OAIPMHHarvest
 from core.management.commands.harvest_basic_content import Command as BasicHarvestCommand
+from core.logging import HarvestLogger
 
 
 GET_EDUREP_OAIPMH_SEEDS_TARGET = "core.management.commands.harvest_basic_content.get_edurep_oaipmh_seeds"
@@ -69,8 +69,8 @@ class TestBasicHarvest(TestCase):
 
     def get_command_instance(self):
         command = BasicHarvestCommand()
-        command.show_progress = False
-        command.info = lambda x: x
+        command.logger = HarvestLogger("test", "harvest_basic_content", {})
+        command.batch_size = 32
         return command
 
     @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS)
@@ -81,17 +81,16 @@ class TestBasicHarvest(TestCase):
         # We'd expect the command to get seeds from get_edurep_oaipmh_seeds function.
         # After that the heavy lifting is done by two methods named download_seed_files and extract_from_seed_files.
         # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
-        out = StringIO()
-        call_command("harvest_basic_content", "--dataset=test", "--no-progress", stdout=out)
+        call_command("harvest_basic_content", "--dataset=test")
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with(
             "surf", make_aware(datetime(year=1970, month=1, day=1)),
             include_deleted=False
         )
         # Asserting usage of download_seed_files
-        download_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, dataset='test')
+        download_target.assert_called_once_with("basic.download.other", DOWNLOAD_ALLOWED_DUMMY_SEEDS)
         # And then usage of extract_from_seeds
-        extract_target.assert_called_once_with(DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1], dataset='test')
+        extract_target.assert_called_once_with("basic.extract", DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
         surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
@@ -109,22 +108,21 @@ class TestBasicHarvest(TestCase):
 
     @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS_WITH_YOUTUBE)
     def test_harvest_with_youtube(self, seeds_mock):
-        out = StringIO()
         with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
-            call_command("harvest_basic_content", "--dataset=test", "--no-progress", stdout=out)
-        self.assertEqual(send_serie_mock.call_count, 4, "Expects two calls to send_serie")
+            call_command("harvest_basic_content", "--dataset=test")
+        self.assertEqual(send_serie_mock.call_count, 2, "Expects two calls to send_serie")
 
-        for name, args, kwargs in send_serie_mock.mock_calls[0:2]:  # Youtube
-            resource = kwargs['config'].resource
-            interval = kwargs['config'].interval_duration
-            self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
-            self.assertEqual(interval, 2000, "Wrong interval for videos")
+        name, args, kwargs = send_serie_mock.mock_calls[0]  # Youtube
+        resource = kwargs['config'].resource
+        interval = kwargs['config'].interval_duration
+        self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
+        self.assertEqual(interval, 2000, "Wrong interval for videos")
 
-        for name, args, kwargs in send_serie_mock.mock_calls[2:]:
-            resource = kwargs['config'].resource
-            interval = kwargs['config'].interval_duration
-            self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
-            self.assertEqual(interval, 0, "Wrong interval for other files")
+        name, args, kwargs = send_serie_mock.mock_calls[1]
+        resource = kwargs['config'].resource
+        interval = kwargs['config'].interval_duration
+        self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
+        self.assertEqual(interval, 0, "Wrong interval for other files")
 
     def test_basic_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
@@ -148,7 +146,7 @@ class TestBasicHarvest(TestCase):
         # This handles many edge cases for us.
         command = self.get_command_instance()
         with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
-            command.download_seed_files(DUMMY_SEEDS)
+            command.download_seed_files("test-phase", DUMMY_SEEDS)
         self.assertEqual(send_serie_mock.call_count, 2, "More than 2 calls to send_serie?")
         main_call, package_call = send_serie_mock.call_args_list
         # Checking how main content got downloaded
@@ -192,7 +190,7 @@ class TestBasicHarvest(TestCase):
         # We're expecting that client to return a signed URL that Tika can use without getting 403's,
         command = self.get_command_instance()
         with patch(RUN_SERIE_TARGET, return_value=[[1, 2], []]) as send_serie_mock:
-            command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025, 12046, 12048])
+            command.extract_from_seed_files("test-phase", DUMMY_SEEDS, [12024, 12025, 12046, 12048])
         self.assertEqual(send_serie_mock.call_count, 2, "More than 2 calls to send_serie?")
         main_call, package_call = send_serie_mock.call_args_list
         # Checking how main content got extracted
@@ -232,7 +230,7 @@ class TestBasicHarvest(TestCase):
         # Not strictly necessary, but convenient to keep around as it was already here
         command = self.get_command_instance()
         with patch(RUN_SERIE_TARGET, return_value=[[1, 2], []]) as send_serie_mock:
-            command.extract_from_seed_files(DUMMY_SEEDS, [12024, 12025, 12046, 12048])
+            command.extract_from_seed_files("test-phase", DUMMY_SEEDS, [12024, 12025, 12046, 12048])
         self.assertEqual(send_serie_mock.call_count, 2, "More than 2 calls to send_serie?")
         main_call, package_call = send_serie_mock.call_args_list
         args, kwargs = main_call
