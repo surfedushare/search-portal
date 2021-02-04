@@ -101,3 +101,146 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
             secrets[group_name][secret_name] = secret_payload[secret_name]
 
     return environment, session
+
+
+def create_elastic_search_index_configuration(lang, analyzer, decompound_word_list=None):
+    search_analyzer = analyzer
+    if decompound_word_list and lang == "nl":
+        search_analyzer = "dutch_dictionary_decompound"
+    # We first create a basic configuration without decompound dictionaries
+    # Once AWS fixes problems with decompound dictionaries these can be included always
+    configuration = {
+        "settings": {
+            "index": {
+                "number_of_shards": 1,
+                "number_of_replicas": 0
+            },
+            "analysis": {
+                "analyzer": {
+                    "trigram": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "filter": ["lowercase", "shingle"]
+                    },
+                },
+                "filter": {
+                    "dutch_stop": {
+                        "type": "stop",
+                        "stopwords": "_dutch_"
+                    },
+                    "shingle": {
+                        "type": "shingle",
+                        "min_shingle_size": 2,
+                        "max_shingle_size": 3
+                    }
+                }
+            }
+        },
+        'mappings': {
+            'properties': {
+                'title': {
+                    'type': 'text',
+                    'analyzer': analyzer,
+                    'search_analyzer': search_analyzer
+                },
+                'text': {
+                    'type': 'text',
+                    'analyzer': analyzer,
+                    'search_analyzer': search_analyzer
+                },
+                'transcription': {
+                    'type': 'text',
+                    'analyzer': analyzer,
+                    'search_analyzer': search_analyzer
+                },
+                'description': {
+                    'type': 'text',
+                    'analyzer': analyzer,
+                    'search_analyzer': search_analyzer
+                },
+                'url': {'type': 'text'},
+                'title_plain': {'type': 'text'},
+                'text_plain': {'type': 'text'},
+                'transcription_plain': {'type': 'text'},
+                'description_plain': {'type': 'text'},
+                'author': {
+                    'type': 'keyword'
+                },
+                'authors': {
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword',
+                            'ignore_above': 256
+                        }
+                    }
+                },
+                'publishers': {
+                    'type': 'keyword'
+                },
+                'publisher_date': {
+                    'type': 'date',
+                    'format': 'strict_date_optional_time||yyyy-MM||epoch_millis'
+                },
+                'aggregation_level': {
+                    'type': 'keyword'
+                },
+                'keywords': {
+                    'type': 'keyword'
+                },
+                'file_type': {
+                    'type': 'keyword'
+                },
+                'id': {'type': 'text'},
+                'external_id': {
+                    'type': 'keyword'
+                },
+                'arrangement_collection_name': {
+                    'type': 'keyword'
+                },
+                'oaipmh_set': {
+                    'type': 'keyword'
+                },
+                'educational_levels': {
+                    'type': 'keyword'
+                },
+                'lom_educational_levels': {
+                    'type': 'keyword'
+                },
+                'disciplines': {
+                    'type': 'keyword'
+                },
+                'ideas': {
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword',
+                            'ignore_above': 256
+                        }
+                    }
+                },
+                "suggest_completion": {
+                    "type": "completion"
+                },
+                "suggest_phrase": {
+                    "type": "text",
+                    "analyzer": "trigram"
+                },
+            }
+        }
+    }
+
+    # Then if our (AWS) environment supports it we add decompound settings
+    if decompound_word_list:
+        configuration["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"] = {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["dutch_stop", "dictionary_decompound"]
+        }
+        configuration["settings"]["analysis"]["filter"]["dictionary_decompound"] = {
+            "type": "dictionary_decompounder",
+            "word_list_path": decompound_word_list,
+            "updateable": True
+        }
+
+    return configuration

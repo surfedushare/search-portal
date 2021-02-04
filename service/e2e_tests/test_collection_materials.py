@@ -3,13 +3,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-from e2e_tests.base import ElasticSearchTestCase
+from e2e_tests.base import BaseLiveServerTestCase
 from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, CollectionFactory, MaterialFactory
 from e2e_tests.helpers import login
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
-class TestCollectionMaterials(ElasticSearchTestCase):
+class TestCollectionMaterials(BaseLiveServerTestCase):
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

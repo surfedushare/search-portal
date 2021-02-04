@@ -11,7 +11,6 @@ from requests_aws4auth import AWS4Auth
 from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 
 
-_VCARD_FORMATED_NAME_KEY = "FN"
 PREVIEW_SMALL = "preview-200x150.png"
 PREVIEW_ORIGINAL = "preview.png"
 s3_client = boto3.client("s3")
@@ -141,7 +140,6 @@ class ElasticSearchApiClient:
         record['authors'] = hit['_source']['authors']
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
-        record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
         record['copyright'] = hit['_source']['copyright']
         preview_path = hit['_source'].get('preview_path', None)

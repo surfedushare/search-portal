@@ -2,129 +2,19 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.chrome.options import Options
 from django.conf import settings
-from django.test import override_settings
+from django.test import override_settings, TestCase
 
 from elasticsearch import Elasticsearch
 
-
-class BaseTestCase(StaticLiveServerTestCase):
-    fixtures = ['locales', 'privacy_statements']
-
-    def setUp(cls):
-        super().setUp()
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("window-size=1920,1080")
-
-        cls.selenium = WebDriver(options=chrome_options)
-        cls.selenium.implicitly_wait(10)
-
-    def tearDown(cls):
-        super().tearDown()
-        cls.selenium.quit()
+from surfpol.configuration import create_elastic_search_index_configuration
 
 
-@override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
-class ElasticSearchTestCase(BaseTestCase):
+class BaseElasticSearchMixin(object):
 
     @classmethod
     def index_body(cls, language):
-        # TODO: Share config with harvester somehow
         analyzer = 'dutch' if language == 'nl' else 'english'
-        return {
-            "mappings": {
-                "properties": {
-                    'title': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'text': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'transcription': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'description': {
-                        'type': 'text',
-                        'analyzer': analyzer
-                    },
-                    'url': {'type': 'text'},
-                    'title_plain': {'type': 'text'},
-                    'text_plain': {'type': 'text'},
-                    'transcription_plain': {'type': 'text'},
-                    'description_plain': {'type': 'text'},
-                    'author': {
-                        'type': 'keyword'
-                    },
-                    'authors': {
-                        'type': 'text',
-                        'fields': {
-                            'keyword': {
-                                'type': 'keyword',
-                                'ignore_above': 256
-                            }
-                        }
-                    },
-                    'publishers': {
-                        'type': 'keyword'
-                    },
-                    'publisher_date': {
-                        'type': 'date'
-                    },
-                    'aggregation_level': {
-                        'type': 'keyword'
-                    },
-                    'keywords': {
-                        'type': 'keyword'
-                    },
-                    'file_type': {
-                        'type': 'keyword'
-                    },
-                    'id': {'type': 'text'},
-                    'external_id': {
-                        'type': 'keyword'
-                    },
-                    'arrangement_collection_name': {
-                        'type': 'keyword'
-                    },
-                    'oaipmh_set': {
-                        'type': 'keyword'
-                    },
-                    'educational_levels': {
-                        'type': 'keyword'
-                    },
-                    'lom_educational_levels': {
-                        'type': 'keyword'
-                    },
-                    'disciplines': {
-                        'type': 'keyword'
-                    },
-                    "suggest_completion": {
-                        "type": "completion"
-                    },
-                    "suggest_phrase": {
-                        "type": "completion"
-                    },
-                    "has_part": {
-                        'type': 'keyword'
-                    },
-                    "is_part_of": {
-                        'type': 'keyword'
-                    },
-                    'ideas': {
-                        'type': 'text',
-                        'fields': {
-                            'keyword': {
-                                'type': 'keyword',
-                                'ignore_above': 256
-                            }
-                        }
-                    },
-                }
-            }
-        }
+        return create_elastic_search_index_configuration(language, analyzer)  # TODO: enable decompound search and test
 
     @classmethod
     def setUpClass(cls):
@@ -139,3 +29,28 @@ class ElasticSearchTestCase(BaseTestCase):
     def tearDownClass(cls):
         cls.elastic.indices.delete(settings.ELASTICSEARCH_NL_INDEX)
         cls.elastic.indices.delete(settings.ELASTICSEARCH_EN_INDEX)
+
+
+@override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
+class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
+
+    fixtures = ['locales', 'filter-categories', 'privacy_statements']
+
+    def setUp(self):
+        super().setUp()
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("window-size=1920,1080")
+
+        self.selenium = WebDriver(options=chrome_options)
+        self.selenium.implicitly_wait(10)
+
+    def tearDown(self):
+        super().tearDown()
+        self.selenium.quit()
+
+
+@override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
+class BaseElasticSearchTestCase(BaseElasticSearchMixin, TestCase):
+
+    fixtures = ['locales', 'filter-categories', 'privacy_statements']

@@ -1,10 +1,11 @@
-from e2e_tests.base import BaseTestCase
+from e2e_tests.base import BaseLiveServerTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 
-class TestLogin(BaseTestCase):
+class TestLogin(BaseLiveServerTestCase):
+
     def test_expired_session_token(self):
         self.selenium.get(self.live_server_url)
         self.selenium.execute_script(

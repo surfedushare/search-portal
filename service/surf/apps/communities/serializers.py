@@ -9,6 +9,7 @@ from rest_framework import serializers
 from surf.apps.communities.models import Community, CommunityDetail
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
+from surf.apps.materials.models import Material
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from django.core.exceptions import ValidationError
 from rest_framework.exceptions import APIException
@@ -51,13 +52,15 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_collections_count(obj):
-        return obj.collections.count()
+        return obj.collections.filter(deleted_at=None).count()
 
     @staticmethod
     def get_materials_count(obj):
-        ids = obj.collections.values_list("materials__id", flat=True)
-        ids = [i for i in ids if i]
-        return len(set(ids))
+        materials_set = Material.objects.filter(
+            collections__in=obj.collections.filter(deleted_at=None),
+            deleted_at=None
+        )
+        return materials_set.count()
 
     def create(self, validated_data):
         details_data = validated_data.pop('community_details')
