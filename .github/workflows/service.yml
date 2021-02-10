@@ -50,7 +50,7 @@ jobs:
     - name: Runs Elasticsearch
       uses: elastic/elastic-github-actions/elasticsearch@master
       with:
-        stack-version: 7.4.2
+        stack-version: 7.9.3
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip

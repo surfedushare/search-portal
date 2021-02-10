@@ -263,7 +263,7 @@ class ElasticSearchApiClient:
 
         filters = self.parse_filters(filters)
         if filters:
-            body["post_filter"]["bool"]["must"] += [filters]
+            body["post_filter"]["bool"]["must"] += filters
 
         if ordering:
             body["sort"] = [
