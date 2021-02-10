@@ -89,15 +89,15 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["WO"], file_type="text", source="surf")
+            body=generate_nl_material(educational_levels=["WO"], file_type="text", source="surfsharekit")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["WO"], file_type="video", source="surf")
+            body=generate_nl_material(educational_levels=["WO"], file_type="video", source="surfsharekit")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="video", source="surf")
+            body=generate_nl_material(educational_levels=["HBO"], file_type="video", source="surfsharekit")
         )
 
     def test_filter_search(self):
@@ -108,7 +108,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         # Open filter categories
         educational_levels = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Onderwijsniveau')]]]")
         educational_levels.click()
-        file_types = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Soort materiaal')]]]")
+        file_types = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bestandstype')]]]")
         file_types.click()
         source_category = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bron')]]]")
         source_category.click()
@@ -123,7 +123,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (2)"))
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (3)"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (3)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (2)"))
 
@@ -138,7 +138,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (2)"))
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (2)"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (2)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
@@ -153,11 +153,11 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (2)"))
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (1)"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (1)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
-        # Filter on SURF
+        # Filter on Sharekit
         source_category.find_element_by_css_selector("input").click()
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (1)"))
@@ -166,7 +166,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (1)"))
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (1)"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (1)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
@@ -194,7 +194,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
             EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#HBO"), False))
 
         # Now we'll be clicking open a lot of the other filters to make sure their counts are correct
-        file_types = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Soort materiaal')]]]")
+        file_types = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bestandstype')]]]")
         file_types.click()
         source_category = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bron')]]]")
         source_category.click()
@@ -204,7 +204,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (2)"))
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (2)"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (2)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
@@ -220,8 +220,8 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
-                (By.XPATH, "//li[.//h4[text()[contains(., 'Soort materiaal')]]]"),
-                "Soort materiaal"
+                (By.XPATH, "//li[.//h4[text()[contains(., 'Bestandstype')]]]"),
+                "Bestandstype"
             )
         )
         WebDriverWait(self.selenium, 2).until(
@@ -244,6 +244,6 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (1)"))
         WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#surf ~ label"), "SURF (1)"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (1)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (2)"))
