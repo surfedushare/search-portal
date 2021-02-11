@@ -28,25 +28,25 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         cls.instance = ElasticSearchApiClient()
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surf",
+            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surfsharekit",
                                       disciplines=math_and_education_disciplines),
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surf", copyright="cc-by-40",
-                                      topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
+            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surfsharekit",
+                                      copyright="cc-by-40", topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
                                       disciplines=biology_and_education_disciplines),
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="pdf", source="surf", topic="biology",
-                                      publisher_date="2019-04-16T22:35:09+02:00",
+            body=generate_nl_material(educational_levels=["HBO"], file_type="pdf", source="surfsharekit",
+                                      topic="biology", publisher_date="2019-04-16T22:35:09+02:00",
                                       disciplines=biology_and_education_disciplines),
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="video", source="surf", topic="biology",
-                                      disciplines=biology_disciplines),
+            body=generate_nl_material(educational_levels=["HBO"], file_type="video", source="surfsharekit",
+                                      topic="biology", disciplines=biology_disciplines),
             refresh=True  # always put refresh on the last material
         )
 

@@ -388,4 +388,5 @@ if DEBUG:
 
 EMAIL_HOST = 'outgoing.mf.surf.net'
 EMAIL_PORT = 25
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
