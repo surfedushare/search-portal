@@ -32,7 +32,7 @@ class TestUsers(BaseLiveServerTestCase):
 
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".privacy__form__button"), "Delete-account-and-logout"
+                (By.CSS_SELECTOR, ".privacy__form__button"), "Verwijder account en log uit"
             )
         )
 
@@ -40,7 +40,7 @@ class TestUsers(BaseLiveServerTestCase):
 
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".popup__title"), "Delete-account"
+                (By.CSS_SELECTOR, ".popup__title"), "Account verwijderen"
             )
         )
         self.selenium.find_element_by_css_selector(".popup-content__actions button").click()
