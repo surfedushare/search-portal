@@ -8,7 +8,7 @@ django:
   redis_host: "harvester.2w7uxm.0001.euc1.cache.amazonaws.com:6379"
   logging:
     level: "DEBUG"
-    handler: "json"
+    handler: "elasticsearch"
 
 postgres:
   database: "harvester"

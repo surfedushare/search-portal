@@ -16,6 +16,7 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.logging import ignore_logger
+from cmreslogging.handlers import CMRESHandler
 
 from celery.schedules import crontab
 
@@ -32,6 +33,7 @@ PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
 VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
 environment, session = create_configuration_and_session(project='harvester')
+credentials = session.get_credentials()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -178,6 +180,21 @@ REST_FRAMEWORK = {
 }
 
 
+# Elastic Search
+# https://www.elastic.co/guide/index.html
+
+ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
+ELASTICSEARCH_HOST = environment.elastic_search.host
+ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
+ELASTICSEARCH_ANALYSERS = {
+    'en': 'english',
+    'nl': 'dutch'
+}
+ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
+ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
+
+
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
@@ -185,6 +202,32 @@ REST_FRAMEWORK = {
 _logging_enabled = sys.argv[1:2] != ['test']
 log_handlers = [environment.django.logging.handler] if _logging_enabled else []
 log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
+
+
+def _create_elastic_handler(index_name, index_frequency):
+    assert not index_name.startswith("logs"), \
+        "Index names starting with 'logs' have a special meaning in ES and won't work"
+    elastic_domain = ELASTICSEARCH_HOST.split(":")[0]
+    elastic_port = 443 if ELASTICSEARCH_PROTOCOL == 'https' else 9200
+    handler = {
+        'level': 'DEBUG',
+        'class': 'cmreslogging.handlers.CMRESHandler',
+        'hosts': [{'host': elastic_domain, 'port': elastic_port}],
+        'es_index_name': index_name,
+        #'es_additional_fields': {'container_id': 'Test'},
+        'flush_frequency_in_sec': 5,
+        'index_name_frequency': index_frequency,
+        'auth_type': CMRESHandler.AuthType.NO_AUTH,  # gets overridden for AWS
+        'use_ssl': ELASTICSEARCH_PROTOCOL == 'https',
+    }
+    if ELASTICSEARCH_IS_AWS:
+        handler.update({
+            'auth_type': CMRESHandler.AuthType.AWS_SIGNED_AUTH,
+            'aws_access_key': credentials.access_key,
+            'aws_secret_key': credentials.secret_key
+        })
+    return handler
+
 
 LOGGING = {
     'version': 1,
@@ -207,7 +250,11 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
-        }
+        },
+        'elasticsearch': _create_elastic_handler(
+            "harvest-logs",
+            CMRESHandler.IndexNameFrequency.WEEKLY
+        ),
     },
     'loggers': {
         'harvester': {
@@ -238,21 +285,6 @@ if not DEBUG:
     # We kill all DisallowedHost logging on the servers,
     # because it happens so frequently that we can't do much about it
     ignore_logger('django.security.DisallowedHost')
-
-
-# Elastic Search
-# https://www.elastic.co/guide/index.html
-
-ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_ANALYSERS = {
-    'en': 'english',
-    'nl': 'dutch'
-}
-ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
-ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
 
 
 # Project Open Leermaterialen
