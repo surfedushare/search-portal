@@ -73,6 +73,52 @@ class TestSearch(BaseLiveServerTestCase):
         search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
         self.assertEqual(len(search_results), 1)
 
+    def test_search_did_you_mean(self):
+
+        self.selenium.get(self.live_server_url)
+
+        search = self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search.main__info_search button")
+
+        search.send_keys("didaktiek")
+        button.click()
+
+        WebDriverWait(self.selenium, 2).until_not(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
+
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Geen resultaten voor"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "didaktiek"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Bedoelde je"))
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "didactiek"))
+
+        spelling_link = self.selenium.find_element_by_css_selector(".not_found a")
+        spelling_link.click()
+
+        WebDriverWait(self.selenium, 2).until_not(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
+
+        self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
+
+    def test_search_no_results(self):
+
+        self.selenium.get(self.live_server_url)
+
+        search = self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search.main__info_search button")
+
+        search.send_keys("kauwgomballenautomaat")
+        button.click()
+
+        WebDriverWait(self.selenium, 2).until_not(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
+
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Niet gevonden"))
+
 
 class TestSearchFiltering(BaseLiveServerTestCase):
 
