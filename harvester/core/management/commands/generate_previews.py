@@ -15,11 +15,17 @@ class Command(PipelineCommand):
 
     def handle(self, *args, **options):
         dataset_name = options["dataset"]
-        html_documents = Document.objects.filter(
-            Q(properties__mime_type="text/html") |
-            Q(properties__file_type="pdf")
-        ).filter(dataset__name=dataset_name).filter(properties__preview_path=None)
-        signatures = self.create_task_signatures(html_documents)
+        html_documents = Document.objects \
+            .filter(
+                Q(properties__mime_type="text/html") |
+                Q(properties__file_type="pdf")
+            ) \
+            .filter(dataset__name=dataset_name) \
+            .filter(properties__preview_path=None) \
+            .filter(properties__analysis_allowed=True)
+        documents_count = html_documents.count()
+
+        signatures = [self.determine_task_signature(document, documents_count) for document in html_documents]
 
         self.logger.start("previews")
         self.run_jobs_in_group(signatures)
@@ -34,9 +40,6 @@ class Command(PipelineCommand):
         while not result.ready():
             time.sleep(10)
 
-    def create_task_signatures(self, documents):
-        return [self.determine_task_signature(document) for document in documents]
-
     def complete_preview_stage(self, dataset_name):
         OAIPMHHarvest.objects.filter(
             dataset__name=dataset_name,
@@ -45,14 +48,14 @@ class Command(PipelineCommand):
             stage=HarvestStages.COMPLETE
         )
 
-    def determine_task_signature(self, document):
+    def determine_task_signature(self, document, total):
         file_type = document.properties.get('file_type', None)
         from_youtube = document.properties.get('from_youtube', False)
 
         if file_type == 'pdf':
-            return generate_pdf_preview.s(document.id)
+            return generate_pdf_preview.s(document.id, total)
 
         if from_youtube:
-            return generate_youtube_preview.s(document.id)
+            return generate_youtube_preview.s(document.id, total)
 
-        return generate_browser_preview.s(document.id)
+        return generate_browser_preview.s(document.id, total)

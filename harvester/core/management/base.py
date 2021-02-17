@@ -53,8 +53,8 @@ class PipelineCommand(BaseCommand):
         rest = total % self.batch_size
         if rest:
             batches += 1
-        for ix, batch in enumerate(ibatch(iterator, batch_size=self.batch_size)):
-            self.logger.progress(phase, ix, batches)
+        for batch in ibatch(iterator, batch_size=self.batch_size):
+            self.logger.progress(phase, batches)
             yield batch
 
 

@@ -120,7 +120,7 @@ class Command(PipelineCommand):
         # From the Edurep metadata we generate "seeds" that are the starting point for our own data structure
         self.logger.start("basic.sourcing")
         seeds = []
-        for ix, harvest in enumerate(harvest_queryset):
+        for harvest in harvest_queryset:
             set_specification = harvest.source.spec
             harvest_seeds = get_edurep_oaipmh_seeds(
                 set_specification,
@@ -128,7 +128,7 @@ class Command(PipelineCommand):
                 include_deleted=False
             )
             seeds += [seed for seed in harvest_seeds if seed['analysis_allowed']]
-            self.logger.progress(f'basic.sourcing.{set_specification}', current=ix, total=harvest_queryset.count(),
+            self.logger.progress(f'basic.sourcing.{set_specification}', total=harvest_queryset.count(),
                                  success=len(harvest_seeds))
 
         self.logger.start("basic.download")

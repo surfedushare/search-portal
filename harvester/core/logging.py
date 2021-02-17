@@ -49,11 +49,10 @@ class HarvestLogger(object):
         extra = self._get_extra_info(level="INFO", phase=phase, progress="start")
         harvester.info(f"Starting: {phase}", extra=extra)
 
-    def progress(self, phase, current, total, success=None, fail=None):
+    def progress(self, phase, total, success=None, fail=None):
         extra = self._get_extra_info(level="DEBUG", phase=phase, progress="busy", result={
             "success": success,
             "fail": fail,
-            "current": current,
             "total": total
         })
         harvester.debug(f"Progress: {phase}", extra=extra)
@@ -62,7 +61,6 @@ class HarvestLogger(object):
         extra = self._get_extra_info(level="INFO", phase=phase, progress="end", result={
             "success": success,
             "fail": fail,
-            "current": None,
             "total": None
         })
         harvester.info(f"Ending: {phase}", extra=extra)
@@ -76,7 +74,9 @@ class HarvestLogger(object):
         pipeline = pipeline or {}
         # Report on pipeline steps
         for step, result in pipeline.items():
-            if result["resource"] is None:
+            if result["resource"] is None:  # do not report non-existent pipeline steps
+                continue
+            if state == "preview" and step != "preview":  # prevents double reporting
                 continue
             material = copy(material_info)
             material.update({

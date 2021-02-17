@@ -15,7 +15,7 @@ from harvester.celery import app
     default_retry_delay=10,
     max_retries=3
 )
-def generate_browser_preview(document_id):
+def generate_browser_preview(document_id, total):
     document = Document.objects.get(pk=document_id)
     screenshot_location = f"{settings.BASE_DIR}/screenshot-{document_id}.png"
     resource = ChromeScreenshotResource()
@@ -30,6 +30,7 @@ def generate_browser_preview(document_id):
         remove_files_from_filesystem(document.id)
 
         logger = HarvestLogger(document.dataset.name, "generate_previews", {})
+        logger.progress("preview.generate", total)
         logger.report_material(
             document.properties["external_id"],
             title=document.properties["title"],

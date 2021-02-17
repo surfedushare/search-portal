@@ -77,13 +77,13 @@ class Command(PipelineCommand):
         fails = defaultdict(int)
         sources_count = harvest_queryset.count()
 
-        for ix, harvest in enumerate(harvest_queryset):
+        for harvest in harvest_queryset:
             success_count, error_count = self.harvest_seeds(harvest, current_time, fake)
             set_specification = harvest.source.spec
             successes[set_specification] += success_count
             fails[set_specification] += error_count
-            self.logger.progress(f"seed.metadata.{set_specification}", current=ix, total=sources_count,
-                                 success=success_count, fail=error_count)
+            self.logger.progress(f"seed.metadata.{set_specification}", total=sources_count, success=success_count,
+                                 fail=error_count)
 
         total_success_count = sum(successes.values())
         total_fail_count = sum(fails.values())
