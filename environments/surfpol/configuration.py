@@ -13,10 +13,12 @@ import os
 import json
 from invoke.config import Config
 import boto3
+import requests
 
 
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
+ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 
 PREFIX = "POL"
 ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -64,6 +66,25 @@ def create_configuration(mode, project=None, context="container", config_class=P
     config.load_project()
     config.load_shell_env()
     config.load_runtime()
+
+    # See: https://docs.aws.amazon.com/AmazonECS/latest/userguide/task-metadata-endpoint-v3-fargate.html
+    container_metadata = {}
+    if ECS_CONTAINER_METADATA_URI:
+        response = requests.get(ECS_CONTAINER_METADATA_URI)
+        if response.status_code == 200:
+            container_metadata = response.json()
+        else:
+            container_metadata = {
+                "status_code": response.status_code,
+                "reason": response.reason
+            }
+    config.load_overrides({
+        "container": {
+            "id": container_metadata.get("DockerId", None),
+            "family": container_metadata.get("family", None)
+        }
+    })
+
     return config
 
 
