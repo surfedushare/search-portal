@@ -16,7 +16,6 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.logging import ignore_logger
-from cmreslogging.handlers import CMRESHandler
 
 from celery.schedules import crontab
 
@@ -28,6 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from surfpol import create_configuration_and_session, get_package_info, MODE
+from surfpol.logging import POLElasticsearchHandler, create_elasticsearch_handler
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
@@ -200,34 +200,7 @@ ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word
 # https://docs.sentry.io/
 
 _logging_enabled = sys.argv[1:2] != ['test']
-log_handlers = [environment.django.logging.handler] if _logging_enabled else []
-log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
-
-
-def _create_elastic_handler(index_name, index_frequency):
-    assert not index_name.startswith("logs"), \
-        "Index names starting with 'logs' have a special meaning in ES and won't work"
-    elastic_domain = ELASTICSEARCH_HOST.split(":")[0]
-    elastic_port = 443 if ELASTICSEARCH_PROTOCOL == 'https' else 9200
-    handler = {
-        'level': 'DEBUG',
-        'class': 'cmreslogging.handlers.CMRESHandler',
-        'hosts': [{'host': elastic_domain, 'port': elastic_port}],
-        'es_index_name': index_name,
-        #'es_additional_fields': {'container_id': 'Test'},
-        'flush_frequency_in_sec': 5,
-        'index_name_frequency': index_frequency,
-        'auth_type': CMRESHandler.AuthType.NO_AUTH,  # gets overridden for AWS
-        'use_ssl': ELASTICSEARCH_PROTOCOL == 'https',
-    }
-    if ELASTICSEARCH_IS_AWS:
-        handler.update({
-            'auth_type': CMRESHandler.AuthType.AWS_SIGNED_AUTH,
-            'aws_access_key': credentials.access_key,
-            'aws_secret_key': credentials.secret_key
-        })
-    return handler
-
+_log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
 
 LOGGING = {
     'version': 1,
@@ -251,15 +224,28 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'elasticsearch': _create_elastic_handler(
+        'es_harvest': create_elasticsearch_handler(
             "harvest-logs",
-            CMRESHandler.IndexNameFrequency.WEEKLY
+            POLElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            environment,
+            session
+        ),
+        'es_documents': create_elasticsearch_handler(
+            "document-logs",
+            POLElasticsearchHandler.IndexNameFrequency.YEARLY,
+            environment,
+            session
         ),
     },
     'loggers': {
         'harvester': {
-            'handlers': log_handlers,
-            'level': log_level,
+            'handlers': ['es_harvest'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
+            'propagate': True,
+        },
+        'documents': {
+            'handlers': ['es_documents'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
             'propagate': True,
         },
     },
