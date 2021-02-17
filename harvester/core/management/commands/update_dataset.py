@@ -147,10 +147,7 @@ class Command(PipelineCommand):
                 documents += self.get_documents_from_transcription(transcription_resource, seed, pipeline)
 
             if not len(documents):
-                self.logger.debug(
-                    f"Skipped material with external id '{seed['external_id']}'",
-                    dataset=collection.dataset
-                )
+                self.logger.debug(f"Skipped material with external id '{seed['external_id']}'")
                 skipped += 1
                 continue
             dumped += 1
