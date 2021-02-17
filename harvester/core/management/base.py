@@ -7,7 +7,6 @@ from datagrowth.utils import ibatch
 from core.logging import HarvestLogger
 
 
-
 class HarvesterCommand(BaseCommand):
     """
     This class adds some syntax sugar to make output of all commands similar

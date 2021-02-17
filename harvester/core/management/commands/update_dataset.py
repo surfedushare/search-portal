@@ -4,7 +4,6 @@ from collections import defaultdict
 from django.db.models import Count
 from django.conf import settings
 
-from datagrowth.utils import ibatch
 from core.models import Dataset, Collection, Arrangement, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.management.base import PipelineCommand

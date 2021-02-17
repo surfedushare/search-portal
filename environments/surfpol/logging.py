@@ -164,8 +164,8 @@ class POLElasticsearchHandler(logging.Handler):
         :param auth_details: When ```POLElasticsearchHandler.AuthType.BASIC_AUTH``` is used this argument must contain
                     a tuple of string with the user and password that will be used to authenticate against
                     the Elasticsearch servers, for example```('User','Password')
-        :param aws_session: When ```POLElasticsearchHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must contain
-                    the AWS session object
+        :param aws_session: When ```POLElasticsearchHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must
+                    contain the AWS session object
         :param auth_type: The authentication type to be used in the connection ```POLElasticsearchHandler.AuthType```
                     Currently, NO_AUTH, BASIC_AUTH, KERBEROS_AUTH are supported
         :param use_ssl: A boolean that defines if the communications should use SSL encrypted communication
