@@ -135,6 +135,15 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'aggregation_level': self.base_document.properties['aggregation_level'],
             'preview_path': self.base_document.properties.get('preview_path', None),
             'analysis_allowed': self.base_document.properties.get('analysis_allowed', False),
+            'pipeline': [
+                {
+                    "step": step,
+                    "success": result["success"],
+                    "resource": result["resource"][0],
+                    "resource_id": result["resource"][1],
+                }
+                for step, result in self.base_document["pipeline"].items() if result["resource"] is not None
+            ],
             'keywords': self.meta['keywords'],
             'oaipmh_set': self.collection.name,
             'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
