@@ -57,4 +57,4 @@ def harvest(seeds_source=None, reset=False):
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         ctx = Context(environment)
         harvester_data_bucket = f"s3://{settings.AWS_STORAGE_BUCKET_NAME}/datasets/harvester/edurep"
-        ctx.run(f"aws s3 sync {settings.DATAGROWTH_DATA_DIR}/edurep {harvester_data_bucket}", echo=True)
+        ctx.run(f"aws s3 sync --no-progress {settings.DATAGROWTH_DATA_DIR}/edurep {harvester_data_bucket}", echo=True)
