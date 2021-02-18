@@ -26,7 +26,7 @@ class HarvestLogger(object):
             "phase": phase,
             "progress": progress,
             "material": material,
-            "result": result
+            "result": result or {}
         }
 
     def debug(self, message):
