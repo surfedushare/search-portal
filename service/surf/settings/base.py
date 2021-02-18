@@ -270,9 +270,6 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'json': {
-            '()': 'django_log_formatter_json.JSONFormatter',
-        },
         'standard': {
             'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
         }
