@@ -4,14 +4,16 @@ from copy import copy
 import boto3
 from botocore.exceptions import ClientError
 from urlobject import URLObject
+import logging
 
 from django.conf import settings
 from django.db import models
 from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResource, file_resource_delete_handler
-from harvester import logger
+
 
 
 s3_client = boto3.client("s3")
+logger = logging.getLogger("harvester")
 
 
 class FileResource(HttpFileResource):

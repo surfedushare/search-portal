@@ -1,6 +1,7 @@
 from collections import Iterator, defaultdict
 from zipfile import BadZipFile
 from bs4 import BeautifulSoup
+import logging
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -12,7 +13,9 @@ from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
 from core.models import CommonCartridge, FileResource
-from harvester import logger
+
+
+logger = logging.getLogger("harvester")
 
 
 class Arrangement(DocumentCollectionMixin, CollectionBase):
