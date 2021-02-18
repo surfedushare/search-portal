@@ -1,4 +1,5 @@
 import os
+import logging
 from io import StringIO
 from invoke import Context
 
@@ -10,13 +11,14 @@ from django.db import models, connection
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from surfpol.configuration import create_configuration
 from harvester.settings import environment
-from harvester import logger
-from core.management.base import HarvesterCommand
 from core.models import Dataset, ElasticIndex, FileResource
 from core.models.resources.basic import file_resource_delete_handler
 
 
-class Command(base.LabelCommand, HarvesterCommand):
+logger = logging.getLogger("harvester")
+
+
+class Command(base.LabelCommand):
     """
     A temporary command to load data from S3 bucket as long as harvester can't generate all production data
     """

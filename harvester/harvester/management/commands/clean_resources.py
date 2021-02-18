@@ -1,10 +1,9 @@
 from django.apps import apps
 from django.utils.timezone import now
+from django.core.management.base import BaseCommand
 
-from core.management.base import HarvesterCommand
 
-
-class Command(HarvesterCommand):
+class Command(BaseCommand):
     """
     A convenience command to delete any resources that are erroneous or considered stale
     """

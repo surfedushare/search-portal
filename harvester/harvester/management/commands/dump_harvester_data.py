@@ -1,4 +1,5 @@
 import os
+import logging
 from invoke import Context
 
 from django.conf import settings
@@ -6,13 +7,14 @@ from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.management.base import HarvesterCommand
 from core.models import Dataset, FileResource, TikaResource
 from edurep.models import EdurepOAIPMH
-from harvester import logger
 
 
-class Command(base.LabelCommand, HarvesterCommand):
+logger = logging.getLogger("harvester")
+
+
+class Command(base.LabelCommand):
 
     def dump_resources(self):
         call_command("dump_resource", "core.FileResource")

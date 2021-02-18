@@ -1,10 +1,12 @@
+import logging
+
 from django.core.management import base, call_command
 
-from core.management.base import HarvesterCommand
-from harvester import logger
+
+logger = logging.getLogger("harvester")
 
 
-class Command(base.LabelCommand, HarvesterCommand):
+class Command(base.LabelCommand):
     """
     A convenience command that calls the load_harvester_data and push_es_index commands together.
     This will get the harvest data from the specified source (or the current environment),

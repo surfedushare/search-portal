@@ -1,30 +1,9 @@
 import math
-from tqdm import tqdm
 
 from django.core.management.base import BaseCommand
 from datagrowth.utils import ibatch
 
 from core.logging import HarvestLogger
-
-
-class HarvesterCommand(BaseCommand):
-    """
-    This class adds some syntax sugar to make output of all commands similar
-    """
-
-    show_progress = True
-
-    def add_arguments(self, parser):
-        parser.add_argument('-n', '--no-progress', action="store_true")
-
-    def execute(self, *args, **options):
-        self.show_progress = not options.get("no_progress", False)
-        super().execute(*args, **options)
-
-    def progress(self, iterator, total=None):
-        if not self.show_progress:
-            return iterator
-        return tqdm(iterator, total=total)
 
 
 class PipelineCommand(BaseCommand):
@@ -53,7 +32,3 @@ class PipelineCommand(BaseCommand):
         for batch in ibatch(iterator, batch_size=self.batch_size):
             self.logger.progress(phase, batches)
             yield batch
-
-
-class OutputCommand(HarvesterCommand):
-    pass
