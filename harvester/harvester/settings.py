@@ -353,11 +353,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_BEAT_SCHEDULE = {
-    'health-check': {
-        'task': 'health_check',
-        'schedule': 60,
-        'args': tuple()
-    },
     'harvest': {
         'task': 'harvest',
         'schedule': crontab(
