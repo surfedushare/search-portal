@@ -3,7 +3,7 @@ from invoke.config import Config
 
 from environments.surfpol import create_configuration_and_session
 from commands.postgres.fabric import setup_postgres_remote
-from commands.elastic.fabric import connect_elastic_cluster
+from commands.elastic.fabric import connect_elastic_cluster, push_indices_template
 from commands.projects.service.fabric import create_snapshot, restore_snapshot
 from commands.projects.harvester.fabric import connect_uwsgi, connect_flower, connect_with_shell
 
@@ -24,12 +24,12 @@ harvester_environment, _ = create_configuration_and_session(
 )
 harvester_collection = Collection("hrv", setup_postgres_remote, connect_uwsgi, connect_flower, connect_with_shell)
 harvester_collection.configure(harvester_environment)
-elastic_connection = Collection("aws", connect_elastic_cluster)
-elastic_connection.configure(harvester_environment)
+elastic_collection = Collection("aws", connect_elastic_cluster, push_indices_template)
+elastic_collection.configure(harvester_environment)
 
 
 namespace = Collection(
-    elastic_connection,
+    elastic_collection,
     service_collection,
     harvester_collection,
 )
