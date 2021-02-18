@@ -74,6 +74,8 @@ class HarvestLogger(object):
         pipeline = pipeline or {}
         # Report on pipeline steps
         for step, result in pipeline.items():
+            if step == "harvest":  # skips harvest metadata (commit)
+                continue
             if result["resource"] is None:  # do not report non-existent pipeline steps
                 continue
             if state == "preview" and step != "preview":  # prevents double reporting

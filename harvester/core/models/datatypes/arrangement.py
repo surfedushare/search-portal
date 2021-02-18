@@ -142,7 +142,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
                     "resource": result["resource"][0],
                     "resource_id": result["resource"][1],
                 }
-                for step, result in self.base_document["pipeline"].items() if result["resource"] is not None
+                for step, result in self.base_document["pipeline"].items()
+                if isinstance(result, dict) and result["resource"] is not None
             ],
             'keywords': self.meta['keywords'],
             'oaipmh_set': self.collection.name,
