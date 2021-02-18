@@ -1,5 +1,4 @@
 from unittest.mock import patch
-from io import StringIO
 from datetime import datetime
 
 from django.test import TestCase

@@ -11,7 +11,6 @@ from django.db import models
 from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResource, file_resource_delete_handler
 
 
-
 s3_client = boto3.client("s3")
 logger = logging.getLogger("harvester")
 
