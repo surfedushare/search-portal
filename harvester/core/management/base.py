@@ -37,8 +37,6 @@ class PipelineCommand(BaseCommand):
     logger = None
 
     def add_arguments(self, parser):
-        # TODO: remove no-progress flag
-        parser.add_argument('-n', '--no-progress', action="store_true")
         parser.add_argument('-d', '--dataset', type=str, required=True)
         parser.add_argument('-b', '--batch-size', type=int, default=32)
 

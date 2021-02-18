@@ -32,7 +32,7 @@ class TestGeneratePreviews(TestCase):
         DocumentFactory.create(dataset=dataset, mime_type="text/html", preview_path="previews/8")
         DocumentFactory.create(dataset=dataset, mime_type="text/html", analysis_allowed=False)
 
-        call_command("generate_previews", f"--dataset={dataset.name}", "--no-progress")
+        call_command("generate_previews", f"--dataset={dataset.name}")
 
         preview_task_mock.assert_called_once_with(document_with_website.id, 3)
         youtube_task_mock.assert_called_once_with(document_from_youtube.id, 3)

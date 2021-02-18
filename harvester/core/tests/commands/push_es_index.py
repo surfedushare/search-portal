@@ -68,7 +68,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
+        call_command("push_es_index", "--dataset=test", "--promote")
 
         # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True")
@@ -119,7 +119,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress")
+        call_command("push_es_index", "--dataset=test")
 
         # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False")
@@ -210,7 +210,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         ]
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress")
+        call_command("push_es_index", "--dataset=test")
 
         # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:False")
@@ -257,7 +257,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks similar to TestPushToIndex.test_edurep_surf_with_promote
-        call_command("push_es_index", "--dataset=test", "--no-progress")
+        call_command("push_es_index", "--dataset=test")
 
         # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-06-01, recreate:False and promote:False")
@@ -302,7 +302,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         get_es_client.reset_mock()
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--recreate", "--no-progress")
+        call_command("push_es_index", "--dataset=test", "--recreate")
 
         # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:1970-01-01, recreate:True and promote:False")
@@ -359,7 +359,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         }
 
         # Calling command and catching output for some checks
-        call_command("push_es_index", "--dataset=test", "--no-progress", "--promote")
+        call_command("push_es_index", "--dataset=test", "--promote")
 
         # Expect command to print what actions it will undertake and since what modification date
         info_logger.assert_any_call("since:2020-02-10, recreate:False and promote:True")

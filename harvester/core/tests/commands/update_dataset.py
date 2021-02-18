@@ -61,8 +61,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # After that the modifications to the dataset are done by two methods named:
         # handle_upsert_seeds and handle_deletion_seeds.
         # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
-        out = StringIO()
-        call_command("update_dataset", "--dataset=test", "--no-progress", stdout=out)
+        call_command("update_dataset", "--dataset=test")
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)),
                                              include_no_url=True)
