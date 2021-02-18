@@ -20,6 +20,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         title = "Zorgwekkend gedrag"
         file_type = "text"
         from_youtube = False
+        analysis_allowed = True
         mime_type = "text/html"
         pipeline = {}
         preview_path = None
@@ -33,6 +34,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "title": o.title,
             "file_type": o.file_type,
             "from_youtube": o.from_youtube,
+            "analysis_allowed": o.analysis_allowed,
             "mime_type": o.mime_type,
             "pipeline": o.pipeline,
             "preview_path": o.preview_path,

@@ -20,7 +20,7 @@ class PreviewYoutubeTestCase(TestCase):
             from_youtube=True
         )
 
-        generate_youtube_preview(document.id)
+        generate_youtube_preview(document.id, 1)
 
         resource_mock.assert_called_once_with(
             "https://www.youtube.com/watch?v=uqCO6AunQtE&list=PL-J9RGSpAwsTUz3q-4-Iv-v4i4FBO8Avf&index=62",
@@ -42,7 +42,7 @@ class PreviewYoutubeTestCase(TestCase):
             from_youtube=True
         )
 
-        generate_youtube_preview(document.id)
+        generate_youtube_preview(document.id, 1)
 
         open_mock.assert_has_calls([
             call(
@@ -89,7 +89,7 @@ class PreviewYoutubeTestCase(TestCase):
             from_youtube=True
         )
 
-        generate_youtube_preview(document.id)
+        generate_youtube_preview(document.id, 1)
 
         document.refresh_from_db()
 
@@ -113,7 +113,7 @@ class PreviewYoutubeTestCase(TestCase):
             from_youtube=True
         )
 
-        generate_youtube_preview(document.id)
+        generate_youtube_preview(document.id, 1)
 
         resize_mock.assert_has_calls([
             call((400, 300), Image.ANTIALIAS),
@@ -139,7 +139,7 @@ class PreviewYoutubeTestCase(TestCase):
             from_youtube=True
         )
 
-        generate_youtube_preview(document.id)
+        generate_youtube_preview(document.id, 1)
 
         os_remove.assert_has_calls([
             call(f"screenshot-{document.id}.webp"),

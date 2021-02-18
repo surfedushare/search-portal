@@ -30,12 +30,13 @@ class TestGeneratePreviews(TestCase):
         pdf_document = DocumentFactory.create(dataset=dataset, mime_type="application/pdf", file_type="pdf")
         DocumentFactory.create(dataset=dataset, mime_type="foo/bar")
         DocumentFactory.create(dataset=dataset, mime_type="text/html", preview_path="previews/8")
+        DocumentFactory.create(dataset=dataset, mime_type="text/html", analysis_allowed=False)
 
         call_command("generate_previews", f"--dataset={dataset.name}", "--no-progress")
 
-        preview_task_mock.assert_called_once_with(document_with_website.id)
-        youtube_task_mock.assert_called_once_with(document_from_youtube.id)
-        pdf_mock.assert_called_once_with(pdf_document.id)
+        preview_task_mock.assert_called_once_with(document_with_website.id, 3)
+        youtube_task_mock.assert_called_once_with(document_from_youtube.id, 3)
+        pdf_mock.assert_called_once_with(pdf_document.id, 3)
         apply_async_mock.assert_called()
         ready_mock.assert_called()
         oaipmh_harvest.refresh_from_db()
