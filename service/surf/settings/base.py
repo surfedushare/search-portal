@@ -22,6 +22,7 @@ from sentry_sdk.integrations.logging import ignore_logger
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from surfpol import create_configuration_and_session, MODE, CONTEXT, get_package_info
+from surfpol.logging import POLElasticsearchHandler, create_elasticsearch_handler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -261,6 +262,42 @@ WEBPACK_LOADER = {
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
+
+_logging_enabled = sys.argv[1:2] != ['test']
+_log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'json': {
+            '()': 'django_log_formatter_json.JSONFormatter',
+        },
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'es_service': create_elasticsearch_handler(
+            'service-logs',
+            POLElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            environment,
+            session
+        ),
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['es_service'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
+            'propagate': True,
+        }
+    },
+}
 
 if not DEBUG:
 

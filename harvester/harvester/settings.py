@@ -225,13 +225,13 @@ LOGGING = {
             'formatter': 'standard'
         },
         'es_harvest': create_elasticsearch_handler(
-            "harvest-logs",
+            'harvest-logs',
             POLElasticsearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             session
         ),
         'es_documents': create_elasticsearch_handler(
-            "document-logs",
+            'document-logs',
             POLElasticsearchHandler.IndexNameFrequency.YEARLY,
             environment,
             session
