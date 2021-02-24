@@ -94,7 +94,7 @@ class HarvestLogger(object):
                 documents.error(f"Pipeline error: {external_id}", extra=extra)
         # Report material state
         material_info.update({
-            "state": state
+            "step": state
         })
         extra = self._get_extra_info(phase="report", material=material_info)
         documents.info(f"Report: {external_id}", extra=extra)
