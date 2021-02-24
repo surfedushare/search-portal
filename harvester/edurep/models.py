@@ -1,7 +1,7 @@
 from urlobject import URLObject
 from dateutil.parser import parse as parse_date_string
 
-from django.utils.timezone import make_aware
+from django.utils.timezone import make_aware, is_aware
 from django.db import models
 from datagrowth.resources import HttpResource
 
@@ -60,7 +60,9 @@ class EdurepOAIPMH(HttpResource):
             since_time = vars["url"][1]
             if isinstance(since_time, str):
                 since_time = parse_date_string(since_time)
-        vars["since"] = make_aware(since_time)
+                if not is_aware(since_time):
+                    since_time = make_aware(since_time)
+        vars["since"] = since_time
         return vars
 
     def clean(self):
