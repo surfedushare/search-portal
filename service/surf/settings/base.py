@@ -98,8 +98,9 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
-CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://webstats.surf.nl"]
 CSP_IMG_SRC = ["'self'", "data:"]
+CSP_CONNECT_SRC = ["'self'", "https://webstats.surf.nl"]
 if MODE != 'localhost':
     CSP_IMG_SRC.append(f"{environment.aws.image_upload_bucket}.s3.amazonaws.com")
     CSP_IMG_SRC.append(f"{environment.aws.harvest_content_bucket}.s3.amazonaws.com")
@@ -262,6 +263,8 @@ WEBPACK_LOADER = {
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
+
+MOTOMO_ID = environment.django.motomo_id
 
 _logging_enabled = sys.argv[1:2] != ['test']
 _log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'

@@ -26,6 +26,7 @@ import MainFooter from '~/components/MainFooter'
 import { setLanguage } from '~/axios'
 
 export default {
+  dependencies: ['$log'],
   components: {
     MainHeader,
     MainFooter
@@ -36,7 +37,12 @@ export default {
     }
   },
   mounted() {
+    this.$log.pageView(this.$route.path)
     this.$store.dispatch('getThemes')
+    this.$router.beforeEach((to, from, next) => {
+      this.$log.pageView(to.path)
+      next()
+    })
   }
 }
 </script>
