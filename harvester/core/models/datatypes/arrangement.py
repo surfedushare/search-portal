@@ -129,7 +129,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'educational_levels': self.base_document.properties['educational_levels'],
             'lom_educational_levels': self.base_document.properties['lom_educational_levels'],
             'ideas': self.base_document.properties.get('ideas', []),
-            'author': '',
             'authors': self.base_document.properties['authors'],
             'publishers': self.base_document.properties['publishers'],
             'description': self.base_document.properties['description'],
