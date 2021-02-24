@@ -36,6 +36,16 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
                f"from={self.since.date()}&metadataPrefix=lom&set={self.set_specification}&verb=ListRecords"
 
     @factory.lazy_attribute
+    def request(self):
+        return {
+            "args": [self.set_specification, self.since],
+            "kwargs": {},
+            "method": "get",
+            "url": "https://" + self.uri,
+            "headers": {}
+        }
+
+    @factory.lazy_attribute
     def body(self):
         response_type = "initial" if self.is_initial else "delta"
         response_file = f"edurep-oaipmh.{response_type}.{self.number}.xml"
