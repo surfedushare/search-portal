@@ -30,7 +30,10 @@ def push_indices_template(conn):
     with conn.forward_local(local_port=9222, remote_host=conn.config.elastic_search.host, remote_port=443):
         client = get_es_client(conn)
         client.indices.put_template("basic-settings", body={
-            "index_patterns": ["harvest-logs*", "documents-logs*", "service-logs*", "search-results*"],
+            "index_patterns": [
+                "harvest-logs*", "document-logs*", "service-logs*", "search-results*",  # used logs
+                "harvester-logs*", "logs*"  # legacy access logs
+            ],
             "settings": {
                 "number_of_shards": 1,
                 "number_of_replicas": 0
