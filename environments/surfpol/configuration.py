@@ -216,9 +216,6 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'external_id': {
                     'type': 'keyword'
                 },
-                'arrangement_collection_name': {
-                    'type': 'keyword'
-                },
                 'oaipmh_set': {
                     'type': 'keyword'
                 },

@@ -140,7 +140,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'analysis_allowed': self.base_document.properties.get('analysis_allowed', False),
             'keywords': self.meta['keywords'],
             'oaipmh_set': self.collection.name,
-            'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
         })
         return base
 
