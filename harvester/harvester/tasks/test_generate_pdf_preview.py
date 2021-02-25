@@ -29,7 +29,7 @@ class PdfPreviewTestCase(TestCase):
     @patch('django.core.files.storage.default_storage.save')
     @patch('core.utils.previews.open', new_callable=mock_open(read_data='test'))
     def test_convert_from_bytes_called(self, open_mock, save_mock, os_remove, image_open, pdf_mock, resource_mock):
-        generate_pdf_preview(self.document.id)
+        generate_pdf_preview(self.document.id, 1)
 
         pdf_mock.assert_called_with(ANY, single_file=True)
 
@@ -40,7 +40,7 @@ class PdfPreviewTestCase(TestCase):
     @patch('django.core.files.storage.default_storage.save')
     @patch('core.utils.previews.open', new_callable=mock_open(read_data='test'))
     def test_save(self, open_mock, save_mock, os_remove, image_open, pdf_mock, resource_mock):
-        generate_pdf_preview(self.document.id)
+        generate_pdf_preview(self.document.id, 1)
 
         open_mock.assert_has_calls([
             call(
@@ -79,7 +79,7 @@ class PdfPreviewTestCase(TestCase):
     @patch('django.core.files.storage.default_storage.save')
     @patch('core.utils.previews.open', new_callable=mock_open(read_data='test'))
     def test_writes_preview_url(self, open_mock, save_mock, os_remove, image_open, pdf_mock, resource_mock):
-        generate_pdf_preview(self.document.id)
+        generate_pdf_preview(self.document.id, 1)
 
         self.document.refresh_from_db()
 
@@ -95,7 +95,7 @@ class PdfPreviewTestCase(TestCase):
         resize_mock = Mock()
         image_open.return_value.thumbnail = resize_mock
 
-        generate_pdf_preview(self.document.id)
+        generate_pdf_preview(self.document.id, 1)
 
         resize_mock.assert_has_calls([
             call((400, 300), Image.ANTIALIAS),
@@ -112,7 +112,7 @@ class PdfPreviewTestCase(TestCase):
         resize_mock = Mock()
         image_open.return_value.resize = resize_mock
 
-        generate_pdf_preview(self.document.id)
+        generate_pdf_preview(self.document.id, 1)
 
         os_remove.assert_has_calls([
             call(f"/home/search-portal/screenshot-{self.document.id}.png"),

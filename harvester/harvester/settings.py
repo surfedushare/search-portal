@@ -27,11 +27,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from surfpol import create_configuration_and_session, get_package_info, MODE
+from surfpol.logging import POLElasticsearchHandler, create_elasticsearch_handler
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
 VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
 environment, session = create_configuration_and_session(project='harvester')
+credentials = session.get_credentials()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -178,13 +180,27 @@ REST_FRAMEWORK = {
 }
 
 
+# Elastic Search
+# https://www.elastic.co/guide/index.html
+
+ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
+ELASTICSEARCH_HOST = environment.elastic_search.host
+ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
+ELASTICSEARCH_ANALYSERS = {
+    'en': 'english',
+    'nl': 'dutch'
+}
+ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
+ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
+
+
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
 
 _logging_enabled = sys.argv[1:2] != ['test']
-log_handlers = [environment.django.logging.handler] if _logging_enabled else []
-log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
+_log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
 
 LOGGING = {
     'version': 1,
@@ -207,12 +223,29 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
-        }
+        },
+        'es_harvest': create_elasticsearch_handler(
+            'harvest-logs',
+            POLElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            environment,
+            session
+        ),
+        'es_documents': create_elasticsearch_handler(
+            'document-logs',
+            POLElasticsearchHandler.IndexNameFrequency.YEARLY,
+            environment,
+            session
+        ),
     },
     'loggers': {
         'harvester': {
-            'handlers': log_handlers,
-            'level': log_level,
+            'handlers': ['es_harvest'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
+            'propagate': True,
+        },
+        'documents': {
+            'handlers': ['es_documents'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
             'propagate': True,
         },
     },
@@ -238,21 +271,6 @@ if not DEBUG:
     # We kill all DisallowedHost logging on the servers,
     # because it happens so frequently that we can't do much about it
     ignore_logger('django.security.DisallowedHost')
-
-
-# Elastic Search
-# https://www.elastic.co/guide/index.html
-
-ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_ANALYSERS = {
-    'en': 'english',
-    'nl': 'dutch'
-}
-ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
-ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
 
 
 # Project Open Leermaterialen
@@ -335,11 +353,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_BEAT_SCHEDULE = {
-    'health-check': {
-        'task': 'health_check',
-        'schedule': 60,
-        'args': tuple()
-    },
     'harvest': {
         'task': 'harvest',
         'schedule': crontab(

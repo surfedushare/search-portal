@@ -17,7 +17,7 @@ class PreviewTestCase(TestCase):
     def test_screenshot_resource_called_properly(self, screenshot_mock):
         document = DocumentFactory.create(url="https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1")
 
-        generate_browser_preview(document.id)
+        generate_browser_preview(document.id, 1)
 
         screenshot_mock.assert_called_once_with(
             "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1",
@@ -36,7 +36,7 @@ class PreviewTestCase(TestCase):
                   screenshot_resource_success, screenshot_resource_run):
         document = DocumentFactory.create()
 
-        generate_browser_preview(document.id)
+        generate_browser_preview(document.id, 1)
 
         open_mock.assert_has_calls([
             call(
@@ -80,7 +80,7 @@ class PreviewTestCase(TestCase):
                                               screenshot_resource_success, screenshot_resource_run):
         document = DocumentFactory.create()
 
-        generate_browser_preview(document.id)
+        generate_browser_preview(document.id, 1)
 
         document.refresh_from_db()
 
@@ -101,7 +101,7 @@ class PreviewTestCase(TestCase):
 
         document = DocumentFactory.create()
 
-        generate_browser_preview(document.id)
+        generate_browser_preview(document.id, 1)
 
         resize_mock.assert_has_calls([
             call((400, 300), Image.ANTIALIAS),
@@ -123,7 +123,7 @@ class PreviewTestCase(TestCase):
 
         document = DocumentFactory.create()
 
-        generate_browser_preview(document.id)
+        generate_browser_preview(document.id, 1)
 
         os_remove.assert_has_calls([
             call(f"/home/search-portal/screenshot-{document.id}.png"),

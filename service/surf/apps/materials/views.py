@@ -5,6 +5,7 @@ This module contains implementation of REST API views for materials app.
 import json
 import logging
 
+from django.conf import settings
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count, F, Q
@@ -65,7 +66,8 @@ def portal_material(request, *args, **kwargs):
     if material:
         return render(request, "portal/index.html", {
             'meta_og_title': material[0]["title"],
-            'meta_og_description': material[0]["description"]
+            'meta_og_description': material[0]["description"],
+            'motomo_id': settings.MOTOMO_ID
         })
 
     return portal_single_page_application(request, args)
@@ -74,7 +76,8 @@ def portal_material(request, *args, **kwargs):
 def portal_single_page_application(request, *args):
     return render(request, "portal/index.html", {
         'meta_og_title': "SURF | edusources",
-        'meta_og_description': "Edusources"
+        'meta_og_description': "Edusources",
+        'motomo_id': settings.MOTOMO_ID
     })
 
 

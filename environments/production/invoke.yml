@@ -7,6 +7,9 @@ django:
   debug: false
   protocol: "https"
   domain: "edusources.nl"
+  logging:
+    level: "DEBUG"
+    is_elastic: true
 
 postgres:
   host: "surfpol-edushare.cef190hciiol.eu-central-1.rds.amazonaws.com"

@@ -1,25 +1,25 @@
 from collections import defaultdict
-from harvester import logger
 
 from django.core.management import CommandError
 from django.utils.timezone import now
 from datagrowth.resources.http.tasks import send
 from datagrowth.configuration import create_config
 
-from core.management.base import HarvesterCommand
+from core.management.base import PipelineCommand
 from core.constants import HarvestStages
 from core.models import Arrangement, OAIPMHHarvest, OAIPMHRepositories
 
 
-class Command(HarvesterCommand):
+class Command(PipelineCommand):
+
+    command_name = "harvest_edurep_seeds"
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('-d', '--dataset', type=str, required=True)
         parser.add_argument('-f', '--fake', action="store_true", default=False)
 
     def prepare_harvest(self, dataset_name):
-        logger.debug("Deleting all arrangements")
+        self.logger.debug("Deleting all arrangements")
         Arrangement.objects.filter(deleted_at__isnull=False).delete()
         harvest_queryset = OAIPMHHarvest.objects.filter(
             dataset__name=dataset_name,
@@ -27,7 +27,7 @@ class Command(HarvesterCommand):
             source__repository=OAIPMHRepositories.EDUREP
         )
         for harvest in harvest_queryset:
-            logger.debug(f"Setting harvest stage to NEW for '{harvest.source.name}'", dataset=dataset_name)
+            self.logger.debug(f"Setting harvest stage to NEW for '{harvest.source.name}'")
             harvest.stage = HarvestStages.NEW
             harvest.latest_update_at = harvest.harvested_at
             harvest.save()
@@ -54,10 +54,7 @@ class Command(HarvesterCommand):
         dataset_name = options["dataset"]
         fake = options["fake"]
 
-        logger.info(
-            f"Started harvesting of edurep seeds for dataset '{dataset_name}', fake: {fake}",
-            dataset=dataset_name
-        )
+        self.logger.start("seeds")
 
         if not fake:
             self.prepare_harvest(dataset_name)
@@ -73,30 +70,23 @@ class Command(HarvesterCommand):
             )
 
         # Calling the Edurep OAI-PMH interface and get the Edurep meta data about learning materials
-        logger.info("Fetching metadata for sources ...")
+        self.logger.start("seeds.metadata")
 
         current_time = now()
         successes = defaultdict(int)
         fails = defaultdict(int)
+        sources_count = harvest_queryset.count()
 
         for harvest in harvest_queryset:
             success_count, error_count = self.harvest_seeds(harvest, current_time, fake)
             set_specification = harvest.source.spec
             successes[set_specification] += success_count
             fails[set_specification] += error_count
-            logger.debug(
-                f"Fetched metadata for source '{set_specification}' with name '{harvest.source.name}'",
-                dataset=dataset_name,
-                aggregate={"success": success_count, "failed": error_count}
-            )
+            self.logger.progress(f"seed.metadata.{set_specification}", total=sources_count, success=success_count,
+                                 fail=error_count)
 
         total_success_count = sum(successes.values())
         total_fail_count = sum(fails.values())
 
-        logger.info(
-            f"Finished harvesting edurep seeds, "
-            f"successful OAI-PMG call: '{total_success_count}', failed OAI-PMH calls: '{total_fail_count}'",
-            aggregate={"success": total_success_count, "failed": total_fail_count}
-        )
-
-        return f'OAI-PMH: {total_success_count}/{total_success_count + total_fail_count}'
+        self.logger.end("seeds.metadata", total_success_count, total_fail_count)
+        self.logger.end("seeds")

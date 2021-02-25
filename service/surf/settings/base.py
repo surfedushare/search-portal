@@ -22,6 +22,7 @@ from sentry_sdk.integrations.logging import ignore_logger
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from surfpol import create_configuration_and_session, MODE, CONTEXT, get_package_info
+from surfpol.logging import POLElasticsearchHandler, create_elasticsearch_handler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -97,8 +98,9 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
-CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://webstats.surf.nl"]
 CSP_IMG_SRC = ["'self'", "data:"]
+CSP_CONNECT_SRC = ["'self'", "https://webstats.surf.nl"]
 if MODE != 'localhost':
     CSP_IMG_SRC.append(f"{environment.aws.image_upload_bucket}.s3.amazonaws.com")
     CSP_IMG_SRC.append(f"{environment.aws.harvest_content_bucket}.s3.amazonaws.com")
@@ -261,6 +263,41 @@ WEBPACK_LOADER = {
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
+
+MOTOMO_ID = environment.django.motomo_id
+
+_logging_enabled = sys.argv[1:2] != ['test']
+_log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'es_service': create_elasticsearch_handler(
+            'service-logs',
+            POLElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            environment,
+            session
+        ),
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['es_service'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
+            'propagate': True,
+        }
+    },
+}
 
 if not DEBUG:
 

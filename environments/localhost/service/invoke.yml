@@ -3,6 +3,7 @@ django:
   fixtures:
     - "surf/apps/locale/fixtures/locales.json"
     - "surf/apps/filters/fixtures/filter-categories.json"
+  motomo_id: null
 
 postgres:
   database: "edushare"

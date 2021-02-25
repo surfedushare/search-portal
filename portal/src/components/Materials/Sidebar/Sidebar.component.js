@@ -281,6 +281,9 @@ export default {
         return item.title_translations[language]
       }
       return item.name
+    },
+    downloadOnClick(event) {
+      this.$log.customEvent('Goal', 'Download', event.currentTarget.href)
     }
   },
   computed: {

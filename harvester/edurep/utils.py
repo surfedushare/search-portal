@@ -1,3 +1,4 @@
+import logging
 from urlobject import URLObject
 
 from datagrowth.configuration import create_config
@@ -5,7 +6,9 @@ from datagrowth.processors import ExtractProcessor
 
 from edurep.models import EdurepOAIPMH
 from edurep.extraction import EdurepDataExtraction
-from harvester import logger
+
+
+logger = logging.getLogger("harvester")
 
 
 EDUREP_EXTRACTION_OBJECTIVE = {

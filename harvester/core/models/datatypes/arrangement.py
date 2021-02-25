@@ -1,6 +1,7 @@
 from collections import Iterator, defaultdict
 from zipfile import BadZipFile
 from bs4 import BeautifulSoup
+import logging
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -12,7 +13,9 @@ from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
 from core.models import CommonCartridge, FileResource
-from harvester import logger
+
+
+logger = logging.getLogger("harvester")
 
 
 class Arrangement(DocumentCollectionMixin, CollectionBase):
@@ -126,7 +129,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'educational_levels': self.base_document.properties['educational_levels'],
             'lom_educational_levels': self.base_document.properties['lom_educational_levels'],
             'ideas': self.base_document.properties.get('ideas', []),
-            'author': '',
             'authors': self.base_document.properties['authors'],
             'publishers': self.base_document.properties['publishers'],
             'description': self.base_document.properties['description'],
@@ -137,7 +139,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'analysis_allowed': self.base_document.properties.get('analysis_allowed', False),
             'keywords': self.meta['keywords'],
             'oaipmh_set': self.collection.name,
-            'arrangement_collection_name': self.collection.name  # TODO: remove this once everything uses oaipmh_set
         })
         return base
 

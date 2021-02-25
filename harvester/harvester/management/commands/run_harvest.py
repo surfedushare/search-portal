@@ -1,9 +1,14 @@
+import logging
+
+from django.core.management.base import BaseCommand
+
 from harvester.tasks import harvest
-from core.management.base import HarvesterCommand
-from harvester import logger
 
 
-class Command(HarvesterCommand):
+logger = logging.getLogger("harvester")
+
+
+class Command(BaseCommand):
     """
     A command that calls the harvest background task.
     Normally this background task runs once a day, but we may want to trigger this manually as well,
@@ -11,7 +16,6 @@ class Command(HarvesterCommand):
     """
 
     def add_arguments(self, parser):
-        super().add_arguments(parser)
         parser.add_argument('-r', '--reset', action="store_true",
                             help="Resets the Dataset model to be empty and deletes all OAI-PMH data")
         parser.add_argument('-s', '--source', type=str,

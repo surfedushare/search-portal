@@ -7,11 +7,10 @@ from django.core.management import call_command
 from django.apps import apps
 
 from surfpol.configuration import create_configuration
-from core.management.base import HarvesterCommand
-from harvester import logger
+from core.management.base import PipelineCommand
 
 
-class Command(HarvesterCommand):
+class Command(PipelineCommand):
     """
     A command to load EdurepOAIPMH data from S3 bucket.
     This is to prevent local machines from connecting to Edurep themselves (which they can't do).
@@ -39,10 +38,10 @@ class Command(HarvesterCommand):
         os.makedirs(dumps_path, exist_ok=True)
         dump_files = glob(os.path.join(dumps_path, "*"))
         if not len(dump_files) or force_download:
-            logger.info("Downloading dump file for EdurepOAIPMH")
+            self.logger.info("Downloading dump file for EdurepOAIPMH")
             ctx = Context(source_environment)
             harvester_data_bucket = f"s3://{ctx.config.aws.harvest_content_bucket}/datasets/harvester/edurep"
-            ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}/edurep")
+            ctx.run(f"aws s3 sync --no-progress {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}/edurep")
 
         for resource_model in self.resources:
             model = apps.get_model(resource_model)

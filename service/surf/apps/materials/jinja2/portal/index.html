@@ -62,6 +62,22 @@
             document.body.removeChild(document.getElementById("mobile"));
         }
     </script>
+    <script type="text/javascript">
+        var MOTOMO_ID = {% if motomo_id %}'{{ motomo_id }}'{% else %}null{% endif %};
+        if(MOTOMO_ID) {
+            var _paq = window._paq = window._paq || [];
+            (function () {
+                var u = "https://webstats.surf.nl/";
+                _paq.push(['setTrackerUrl', u + 'piwik.php']);
+                _paq.push(['setSiteId', '{{ motomo_id }}']);
+                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+                g.type = 'text/javascript';
+                g.async = true;
+                g.src = u + 'piwik.js';
+                s.parentNode.insertBefore(g, s);
+            })();
+        }
+    </script>
 
     {{ render_bundle('chunk-vendors', 'js') }}
     {{ render_bundle('app', 'js') }}
