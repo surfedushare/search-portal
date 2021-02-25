@@ -63,7 +63,7 @@
         }
     </script>
     <script type="text/javascript">
-        var MOTOMO_ID = '{{ motomo_id }}' || null
+        var MOTOMO_ID = {% if motomo_id %}'{{ motomo_id }}'{% else %}null{% endif %};
         if(MOTOMO_ID) {
             var _paq = window._paq = window._paq || [];
             (function () {

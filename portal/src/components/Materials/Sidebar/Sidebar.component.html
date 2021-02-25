@@ -36,7 +36,7 @@
       <a :href="copyrightURL(material.copyright)"
         target="_blank"
         v-if="material.copyright === 'yes'">{{ $t('cc-by-nc-nd') }}</a>
-      <a
+      <a @click="downloadOnClick($event)"
         v-if="material.url"
         :href="material.url"
         class="button button--full-width material__grey_block-btn"
