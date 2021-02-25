@@ -81,7 +81,7 @@ def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=Tr
     # Now we'll mark any invalid seeds as deleted to make sure they disappear
     # Invalid seeds have a copyright or are of insufficient education level
     for seed in seeds:
-        if not seed["copyright"] or seed["copyright"] == "no":
+        if not seed["copyright"] or seed["copyright"] == "yes":
             seed["state"] = "deleted"
         if seed["lowest_educational_level"] < 1:  # lower level than MBO
             seed["state"] = "deleted"
