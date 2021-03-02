@@ -131,9 +131,6 @@
                         "description_plain": {
                             "type": "text"
                         },
-                        "author": {
-                            "type": "keyword"
-                        },
                         "authors": {
                             "type": "keyword"
                         },

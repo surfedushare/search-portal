@@ -184,9 +184,6 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'text_plain': {'type': 'text'},
                 'transcription_plain': {'type': 'text'},
                 'description_plain': {'type': 'text'},
-                'author': {
-                    'type': 'keyword'
-                },
                 'authors': {
                     'type': 'text',
                     'fields': {
