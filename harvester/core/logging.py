@@ -1,6 +1,8 @@
 import logging
 from copy import copy
 
+from django.conf import settings
+
 
 harvester = logging.getLogger('harvester')
 documents = logging.getLogger('documents')
@@ -22,6 +24,8 @@ class HarvestLogger(object):
             "dataset": self.dataset,
             "command": self.command,
             "command_options": self.command_options,
+            "version": settings.VERSION,
+            "commit": settings.GIT_COMMIT,
             "phase": phase,
             "progress": progress,
             "material": material,
