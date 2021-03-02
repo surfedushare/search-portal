@@ -262,7 +262,7 @@ class EdurepDataExtraction(object):
                 return False
         # We also disallow analysis for non-derivative materials as we'll create derivatives in that process
         copyright = EdurepDataExtraction.get_copyright(soup, el)
-        return (copyright is not None and "nd" not in copyright) or copyright == "no"
+        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
     @classmethod
     def get_is_part_of(cls, soup, el):
