@@ -27,7 +27,8 @@ def harvest(seeds_source=None, reset=False):
         if role == "primary":
             call_command("harvest_edurep_seeds", f"--dataset={dataset.name}")
         else:
-            call_command("load_edurep_oaipmh_data", "--force-download", f"--source={seeds_source}")
+            call_command("load_edurep_oaipmh_data", f"--dataset={dataset.name}",
+                         "--force-download", f"--source={seeds_source}")
         # After getting all the metadata we'll download content
         call_command("harvest_basic_content", f"--dataset={dataset.name}")
         # We skip any video downloading/processing for now

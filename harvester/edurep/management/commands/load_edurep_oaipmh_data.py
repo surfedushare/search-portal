@@ -17,6 +17,8 @@ class Command(PipelineCommand):
     Also we want dev and acc environment to stay away from connecting to Edurep (on their request).
     """
 
+    command_name = "load_edurep_oaipmh_data"
+
     resources = [
         "edurep.EdurepOAIPMH"
     ]
