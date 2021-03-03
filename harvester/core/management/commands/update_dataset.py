@@ -211,7 +211,7 @@ class Command(PipelineCommand):
             )
 
         self.logger.start("update")
-        self.logger.start("update.extract")
+        self.logger.start("update.sourcing")
 
         seeds_by_collection = defaultdict(list)
         source_count = harvest_queryset.count()
@@ -225,9 +225,9 @@ class Command(PipelineCommand):
                 else:
                     deletes.append(seed)
             seeds_by_collection[harvest.source.spec] += (upserts, deletes,)
-            self.logger.progress("update.extract", source_count, success=len(upserts) + len(deletes))
+            self.logger.progress("update.sourcing", source_count, success=len(upserts) + len(deletes))
 
-        self.logger.end("update.extract")
+        self.logger.end("update.sourcing")
 
         for spec_name, seeds in seeds_by_collection.items():
             # Unpacking seeds

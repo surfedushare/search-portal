@@ -131,6 +131,7 @@ class Command(PipelineCommand):
             self.logger.progress(f'basic.sourcing.{set_specification}', total=harvest_queryset.count(),
                                  success=len(harvest_seeds))
 
+        self.logger.end("basic.sourcing")
         self.logger.start("basic.download")
         download_ids = []
 
@@ -150,6 +151,7 @@ class Command(PipelineCommand):
             download_ids += self.download_seed_files(phase_name, other_seeds)
             self.logger.end(phase_name)
 
+        self.logger.end(phase_name)
         self.logger.end("basic.download")
 
         # Process files with Tika to extract data from content
