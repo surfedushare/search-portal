@@ -178,7 +178,7 @@ class Command(PipelineCommand):
     def handle_deletion_seeds(self, collection, deletion_seeds):
         self.logger.start("update.delete")
         document_delete_total = 0
-        for seeds in self.batchify("upsert.delete", deletion_seeds, len(deletion_seeds)):
+        for seeds in self.batchify("update.delete.batch", deletion_seeds, len(deletion_seeds)):
             ids = [seed["external_id"] for seed in seeds]
             for external_id in ids:
                 for doc in collection.documents.filter(collection=collection,
