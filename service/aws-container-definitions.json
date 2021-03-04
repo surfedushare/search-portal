@@ -1,22 +1,5 @@
 [
     {
-      "essential": true,
-      "image": "906394416424.dkr.ecr.eu-central-1.amazonaws.com/aws-for-fluent-bit:latest",
-      "name": "log_router",
-      "firelensConfiguration": {
-          "type": "fluentbit"
-      },
-      "logConfiguration": {
-          "logDriver": "awslogs",
-          "options": {
-              "awslogs-group": "firelens-container",
-              "awslogs-region": "eu-central-1",
-              "awslogs-stream-prefix": "firelens"
-          }
-      },
-      "memoryReservation": 50
-    },
-    {
       "name": "search-portal-nginx",
       "image": "${REPOSITORY}/search-portal-nginx:${version}",
       "essential": true,
@@ -28,13 +11,12 @@
         }
       ],
       "logConfiguration": {
-        "logDriver": "awsfirelens",
+        "logDriver": "awslogs",
         "options": {
-          "Name": "firehose",
-          "region": "eu-central-1",
-          "delivery_stream": "logs_to_es",
-          "time_key": "time",
-          "time_key_format": "%Y-%m-%dT%H:%M:%S%z"
+          "awslogs-group": "/ecs/search-portal",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "${version}",
+          "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
         }
       }
     },
@@ -54,13 +36,12 @@
             { "name" : "APPLICATION_MODE", "value" : "${mode}" }
         ],
         "logConfiguration": {
-            "logDriver": "awsfirelens",
+            "logDriver": "awslogs",
             "options": {
-              "Name": "firehose",
-              "region": "eu-central-1",
-              "delivery_stream": "logs_to_es",
-              "time_key": "time",
-              "time_key_format": "%Y-%m-%dT%H:%M:%S%z"
+              "awslogs-group": "/ecs/search-portal",
+              "awslogs-region": "eu-central-1",
+              "awslogs-stream-prefix": "${version}",
+              "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
             }
         }
     }
