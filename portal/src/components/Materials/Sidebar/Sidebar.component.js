@@ -162,7 +162,7 @@ export default {
           str = 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
           break
         case 'pdm-10':
-          str = ' https://creativecommons.org/share-your-work/public-domain/pdm/'
+          str = 'https://creativecommons.org/share-your-work/public-domain/pdm/'
           break
         default:
           str = 'https://creativecommons.org/licenses/'
