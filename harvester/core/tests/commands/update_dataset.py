@@ -1,5 +1,4 @@
 from unittest.mock import patch
-from io import StringIO
 from datetime import datetime
 
 from django.test import TestCase
@@ -9,6 +8,7 @@ from django.utils.timezone import make_aware
 from core.models import Dataset, Collection, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.management.commands.update_dataset import Command as DatasetCommand
+from core.logging import HarvestLogger
 from edurep.utils import get_edurep_oaipmh_seeds
 
 
@@ -47,8 +47,8 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
     def get_command_instance(self):
         command = DatasetCommand()
-        command.show_progress = False
-        command.info = lambda x: x
+        command.logger = HarvestLogger("test", "update_dataset", {})
+        command.batch_size = 32
         return command
 
     @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS)
@@ -60,8 +60,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # After that the modifications to the dataset are done by two methods named:
         # handle_upsert_seeds and handle_deletion_seeds.
         # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
-        out = StringIO()
-        call_command("update_dataset", "--dataset=test", "--no-progress", stdout=out)
+        call_command("update_dataset", "--dataset=test")
         # Asserting usage of get_edurep_oaipmh_seeds
         seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)),
                                              include_no_url=True)
@@ -169,8 +168,8 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
     def get_command_instance(self):
         command = DatasetCommand()
-        command.show_progress = False
-        command.info = lambda x: x
+        command.logger = HarvestLogger("test", "update_dataset", {})
+        command.batch_size = 32
         return command
 
     def test_handle_upsert_seeds(self):

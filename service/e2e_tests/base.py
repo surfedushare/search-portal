@@ -14,7 +14,7 @@ class BaseElasticSearchMixin(object):
     @classmethod
     def index_body(cls, language):
         analyzer = 'dutch' if language == 'nl' else 'english'
-        return create_elastic_search_index_configuration(language, analyzer)  # TODO: enable decompound search and test
+        return create_elastic_search_index_configuration(language, analyzer)
 
     @classmethod
     def setUpClass(cls):

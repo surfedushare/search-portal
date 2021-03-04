@@ -1,5 +1,4 @@
 from unittest.mock import patch
-from io import StringIO
 from datetime import datetime
 
 from django.test import TestCase
@@ -23,14 +22,8 @@ class TestSeedHarvest(TestCase):
         # We'd expect two OAI-PMH calls to be made which should be both a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
-        out = StringIO()
         with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", stdout=out)
-        # Asserting main result (ignoring any white lines at the end of output)
-        stdout = out.getvalue().split("\n")
-        stdout.reverse()
-        result = next((rsl for rsl in stdout if rsl))
-        self.assertEqual(result, "OAI-PMH: 2/2")
+            call_command("harvest_edurep_seeds", "--dataset=test")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
@@ -73,10 +66,9 @@ class TestSeedHarvest(TestCase):
             pass
 
     def test_edurep_down(self):
-        out = StringIO()
         with patch("edurep.management.commands.harvest_edurep_seeds.send", return_value=([], [100],)):
             try:
-                call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", stdout=out)
+                call_command("harvest_edurep_seeds", "--dataset=test")
                 self.fail("harvest_edurep_seeds did not fail when EdurepOAIPMH was returning errors")
             except CommandError:
                 pass
@@ -94,14 +86,8 @@ class TestSeedHarvestWithHistory(TestCase):
         # We'd expect one OAI-PMH calls to be made which should be a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
-        out = StringIO()
         with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test", "--no-progress", stdout=out)
-        # Asserting main result (ignoring any white lines at the end of output)
-        stdout = out.getvalue().split("\n")
-        stdout.reverse()
-        result = next((rsl for rsl in stdout if rsl))
-        self.assertEqual(result, "OAI-PMH: 1/1")
+            call_command("harvest_edurep_seeds", "--dataset=test")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args

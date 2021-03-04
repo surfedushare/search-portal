@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.conf import settings
 
+from surfpol.configuration import create_elastic_search_index_configuration
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from e2e_tests.base import BaseElasticSearchTestCase
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
@@ -357,3 +358,37 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         self.assertEqual(no_mistake["did_you_mean"], {})
         unknown_mistake = self.instance.search('sdfkhjsdgaqegkjwfgklsd')
         self.assertEqual(unknown_mistake["did_you_mean"], {})
+
+    def test_composed_word_search(self):
+        # Github Actions does not support mounting docker volumes
+        # So it is impossible to mount a decompound dictionary and truly test this
+        # Instead we test that indices will get created correctly and composed word search should function
+        dutch_index = create_elastic_search_index_configuration("nl", "dutch", "dutch-decompound-words.txt")
+        self.assertIn("dutch_dictionary_decompound", dutch_index["settings"]["analysis"]["analyzer"])
+        decompound_analyser = dutch_index["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"]
+        self.assertEqual(decompound_analyser, {
+            'type': 'custom',
+            'tokenizer': 'standard',
+            'filter': [
+                'dutch_stop',
+                'dictionary_decompound'
+            ]
+        })
+        self.assertIn("dictionary_decompound", dutch_index["settings"]["analysis"]["filter"])
+        decompound_filter = dutch_index["settings"]["analysis"]["filter"]["dictionary_decompound"]
+        self.assertEqual(decompound_filter, {
+            'type': 'dictionary_decompounder',
+            'word_list_path': 'dutch-decompound-words.txt',
+            'updateable': True
+        })
+        for text_field in ["title", "text", "transcription", "description"]:
+            self.assertEqual(dutch_index["mappings"]["properties"][text_field]["analyzer"], "dutch")
+            self.assertEqual(dutch_index["mappings"]["properties"][text_field]["search_analyzer"],
+                             "dutch_dictionary_decompound")
+
+        english_index = create_elastic_search_index_configuration("en", "english")
+        self.assertNotIn("dutch_dictionary_decompound", english_index["settings"]["analysis"]["analyzer"])
+        self.assertNotIn("dictionary_decompound", english_index["settings"]["analysis"]["filter"])
+        for text_field in ["title", "text", "transcription", "description"]:
+            self.assertEqual(english_index["mappings"]["properties"][text_field]["analyzer"], "english")
+            self.assertEqual(english_index["mappings"]["properties"][text_field]["search_analyzer"], "english")

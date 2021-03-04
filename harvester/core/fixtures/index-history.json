@@ -64,9 +64,6 @@
                         "external_id": {
                             "type": "keyword"
                         },
-                        "arrangement_collection_name": {
-                            "type": "keyword"
-                        },
                         "educational_levels": {
                             "type": "keyword"
                         },
@@ -134,9 +131,6 @@
                         "description_plain": {
                             "type": "text"
                         },
-                        "author": {
-                            "type": "keyword"
-                        },
                         "authors": {
                             "type": "keyword"
                         },
@@ -156,9 +150,6 @@
                             "type": "text"
                         },
                         "external_id": {
-                            "type": "keyword"
-                        },
-                        "arrangement_collection_name": {
                             "type": "keyword"
                         },
                         "educational_levels": {

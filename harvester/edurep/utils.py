@@ -1,3 +1,4 @@
+import logging
 from urlobject import URLObject
 
 from datagrowth.configuration import create_config
@@ -5,7 +6,9 @@ from datagrowth.processors import ExtractProcessor
 
 from edurep.models import EdurepOAIPMH
 from edurep.extraction import EdurepDataExtraction
-from harvester import logger
+
+
+logger = logging.getLogger("harvester")
 
 
 EDUREP_EXTRACTION_OBJECTIVE = {
@@ -78,7 +81,7 @@ def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=Tr
     # Now we'll mark any invalid seeds as deleted to make sure they disappear
     # Invalid seeds have a copyright or are of insufficient education level
     for seed in seeds:
-        if not seed["copyright"] or seed["copyright"] == "no":
+        if not seed["copyright"]:  # tmp disable of all-rights-reserved (or seed["copyright"] == "yes":)
             seed["state"] = "deleted"
         if seed["lowest_educational_level"] < 1:  # lower level than MBO
             seed["state"] = "deleted"

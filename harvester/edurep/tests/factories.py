@@ -15,7 +15,7 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
         strategy = factory.BUILD_STRATEGY
 
     class Params:
-        set = "surf"
+        set = "surfsharekit"
         is_initial = True
         number = 0
 
@@ -24,7 +24,7 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
         make_aware(datetime(year=1970, month=1, day=1)),
         make_aware(datetime(year=2020, month=2, day=10))
     )
-    set_specification = "surf"
+    set_specification = "surfsharekit"
     status = 200
     head = {
         "content-type": "text/xml"
@@ -34,6 +34,16 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
     def uri(self):
         return "wszoeken.edurep.kennisnet.nl/edurep/oai?" \
                f"from={self.since.date()}&metadataPrefix=lom&set={self.set_specification}&verb=ListRecords"
+
+    @factory.lazy_attribute
+    def request(self):
+        return {
+            "args": [self.set_specification, self.since],
+            "kwargs": {},
+            "method": "get",
+            "url": "https://" + self.uri,
+            "headers": {}
+        }
 
     @factory.lazy_attribute
     def body(self):

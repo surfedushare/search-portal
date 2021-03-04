@@ -1,29 +1,4 @@
-import * as Sentry from '@sentry/browser'
-import * as Integrations from '@sentry/integrations'
-
-if (process.env.VUE_APP_USE_SENTRY) {
-  Sentry.init({
-    dsn: `${window.location.protocol}//21fab3e788584cbe999f20ea1bb7e2df@${window.location.host}/sentry/2964956`,
-    integrations: [new Integrations.CaptureConsole()],
-    beforeSend(event) {
-      if (window.location.host !== 'edusources.nl') {
-        return event
-      }
-      if (event.user) {
-        delete event.user
-      }
-      if (
-        event.request &&
-        event.request.headers &&
-        event.request.headers['User-Agent']
-      ) {
-        delete event.request.headers['User-Agent']
-      }
-      return event
-    }
-  })
-}
-
+import './logging.js'
 import Vue from 'vue'
 import injector from 'vue-inject'
 import i18n, { loadLanguages } from './i18n'

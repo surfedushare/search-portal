@@ -10,6 +10,9 @@ django:
   debug: true
   protocol: "http"
   domain: "localhost"
+  logging:
+    level: "DEBUG"
+    is_elastic: false
 
 postgres:
   host: "postgres"

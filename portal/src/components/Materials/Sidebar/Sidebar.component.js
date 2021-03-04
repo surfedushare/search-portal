@@ -158,6 +158,12 @@ export default {
         case 'cc-by-sa-30':
           str = 'https://creativecommons.org/licenses/by-sa/3.0/legalcode'
           break
+        case 'cc0-10':
+          str = 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
+          break
+        case 'pdm-10':
+          str = 'https://creativecommons.org/share-your-work/public-domain/pdm/'
+          break
         default:
           str = 'https://creativecommons.org/licenses/'
           break
@@ -281,6 +287,9 @@ export default {
         return item.title_translations[language]
       }
       return item.name
+    },
+    downloadOnClick(event) {
+      this.$log.customEvent('Goal', 'Download', event.currentTarget.href)
     }
   },
   computed: {
