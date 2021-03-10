@@ -27,3 +27,7 @@ elastic_search:
 
 aws:
   harvest_content_bucket: "surfpol-harvester-content-dev"
+
+secrets:
+  eduterm:
+    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:eduterm"

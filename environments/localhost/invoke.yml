@@ -29,3 +29,7 @@ elastic_search:
 
 aws:
   harvest_content_bucket: null
+
+secrets:
+  eduterm:
+    api_key: null
