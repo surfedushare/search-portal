@@ -201,12 +201,6 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         expected_deleted_ids = [
             "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
             "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935729",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935768",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935734",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-3703806",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935733",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-colofon",
         ]
 
         # Calling command and catching output for some checks

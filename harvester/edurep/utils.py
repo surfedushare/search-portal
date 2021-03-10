@@ -71,12 +71,6 @@ def get_edurep_oaipmh_seeds(set_specification, latest_update, include_deleted=Tr
         # but some seeds that group together materials do not have files/URLs and you can include these
         if seed["state"] == "active" and not seed["url"] and not include_no_url:
             continue
-        url = seed.get("url", None)  # None for some parent materials
-        # When dealing with Wikiwijs Maken we also get packages instead of just the plain HTML
-        if url and "maken.wikiwijs.nl" in url:
-            package_url = URLObject(seed["url"])
-            seed["package_url"] = package_url.with_fragment("").with_query("p=imscp")
-        # We deduplicate based on the external_id a UID by Edurep
         seeds.append(seed)
     # Now we'll mark any invalid seeds as deleted to make sure they disappear
     # Invalid seeds have a copyright or are of insufficient education level
