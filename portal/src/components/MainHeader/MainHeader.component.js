@@ -12,9 +12,6 @@ export default {
     Feedback
   },
   methods: {
-    getLoginLink() {
-      return this.$store.getters.getLoginLink(this.$route)
-    },
     logout() {
       this.$store.dispatch('logout', { fully: true })
     },
