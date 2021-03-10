@@ -39,6 +39,8 @@ class Community(UUIDModel):
     collections = django_models.ManyToManyField(Collection, blank=True, related_name="communities")
     # identifier of SURFconext Team
     external_id = django_models.CharField(max_length=255, verbose_name="SurfConext group id", null=True, blank=True)
+    # search query that finds most materials in this Community
+    search_query = django_models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         ordering = ['name']
