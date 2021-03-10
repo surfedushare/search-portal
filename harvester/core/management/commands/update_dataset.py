@@ -7,7 +7,7 @@ from django.conf import settings
 from core.models import Dataset, Collection, Arrangement, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.management.base import PipelineCommand
-from core.utils.resources import get_material_resources, get_basic_material_resources, serialize_resource
+from core.utils.resources import get_material_resources, serialize_resource
 from core.utils.language import get_language_from_snippet
 from edurep.utils import get_edurep_oaipmh_seeds
 

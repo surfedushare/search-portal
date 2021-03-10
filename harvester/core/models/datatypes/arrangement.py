@@ -1,9 +1,6 @@
-from collections import Iterator, defaultdict
-from zipfile import BadZipFile
-from bs4 import BeautifulSoup
+from collections import Iterator
 import logging
 
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
 from django.utils.timezone import now
@@ -12,7 +9,6 @@ from django.utils.functional import cached_property
 from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
-from core.models import CommonCartridge, FileResource
 
 
 logger = logging.getLogger("harvester")

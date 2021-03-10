@@ -1,5 +1,4 @@
 import logging
-from urlobject import URLObject
 
 from datagrowth.configuration import create_config
 from datagrowth.processors import ExtractProcessor
