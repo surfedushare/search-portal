@@ -1,29 +1,5 @@
 [
   {
-    "essential": true,
-    "image": "906394416424.dkr.ecr.eu-central-1.amazonaws.com/aws-for-fluent-bit:latest",
-    "name": "log_router",
-    "firelensConfiguration": {
-      "type": "fluentbit",
-      "options": {
-        "config-file-type": "s3",
-        "config-file-value": "arn:aws:s3:::${harvester_bucket}/fluent.conf"
-      }
-    },
-    "environment": [
-      { "name" : "VERSION", "value" : "${version}" }
-    ],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "firelens-container",
-        "awslogs-region": "eu-central-1",
-        "awslogs-stream-prefix": "firelens"
-      }
-    },
-    "memoryReservation": 50
-  },
-  {
     "name": "harvester-container",
     "image": "${REPOSITORY}/harvester:${version}",
     "cpu": 0,
@@ -40,7 +16,13 @@
       { "name" : "APPLICATION_MODE", "value" : "${mode}" }
     ],
     "logConfiguration": {
-      "logDriver": "awsfirelens"
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/harvester",
+        "awslogs-region": "eu-central-1",
+        "awslogs-stream-prefix": "${version}",
+        "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+      }
     }
   }
 ]
