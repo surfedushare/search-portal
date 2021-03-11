@@ -2,7 +2,13 @@ import os
 
 from django.apps import apps
 from django.core.wsgi import get_wsgi_application
-from celery import Celery
+from celery import Celery, signals
+
+
+# Prevent Celery from setting up their own loggers
+@signals.setup_logging.connect
+def on_celery_setup_logging(**kwargs):
+    pass
 
 
 app = Celery('harvester')
