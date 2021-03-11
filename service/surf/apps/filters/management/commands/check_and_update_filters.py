@@ -1,6 +1,11 @@
+import logging
+
 from django.core.management.base import BaseCommand
 
 from surf.apps.filters.utils import check_and_update_mptt_filters
+
+
+logger = logging.getLogger("service")
 
 
 class Command(BaseCommand):
@@ -12,6 +17,6 @@ class Command(BaseCommand):
     help = 'Updates the filter items through Edurep'
 
     def handle(self, *args, **options):
-        self.stdout.write('Starting filter update')
+        logger.info('Starting filter update')
         check_and_update_mptt_filters()
-        self.stdout.write(self.style.SUCCESS('Successfully updated the filters and translations'))
+        logger.info('Successfully updated the filters and translations')

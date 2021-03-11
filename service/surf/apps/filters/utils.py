@@ -4,6 +4,7 @@ This module contains some common functions for filters app.
 import datetime
 import requests
 from requests.status_codes import codes
+import logging
 
 from django.conf import settings
 from django.db import models
@@ -11,6 +12,9 @@ from django.db import models
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.models import Locale
+
+
+logger = logging.getLogger("service")
 
 
 EDUTERM_QUERY_TEMPLATE = "http://api.onderwijsbegrippen.kennisnet.nl/1.0/Query/GetConcept" \
@@ -29,18 +33,18 @@ def check_and_update_mptt_filters():
 
     for f_category in filter_categories.filter(parent=None):
         valid_external_ids.append(f_category.external_id)
-        print(f"Filter category name: {f_category.name}")
+        logger.info(f"Filter category name: {f_category.name}")
         for external_id in _update_mptt_filter_category(f_category, ac):
             valid_external_ids.append(external_id)
 
-    print("Deleting redundant filters and translations")
+    logger.info("Deleting redundant filters and translations")
     filter_categories.exclude(external_id__in=valid_external_ids).delete()
     Locale.objects \
         .annotate(filter_count=models.Count("mpttfilteritem")) \
         .filter(asset__contains="auto_generated_at", filter_count=0, is_fuzzy=True) \
         .delete()
 
-    print("Finished Update")
+    logger.info("Finished Update")
 
 
 def _update_mptt_filter_category(filter_category, api_client):
