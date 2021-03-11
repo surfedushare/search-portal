@@ -7,7 +7,7 @@ from django.conf import settings
 from core.models import Dataset, Collection, Arrangement, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.management.base import PipelineCommand
-from core.utils.resources import get_material_resources, get_basic_material_resources, serialize_resource
+from core.utils.resources import get_material_resources, serialize_resource
 from core.utils.language import get_language_from_snippet
 from edurep.utils import get_edurep_oaipmh_seeds
 
@@ -129,19 +129,8 @@ class Command(PipelineCommand):
                 "video": serialize_resource(video_resource),
                 "kaldi": serialize_resource(transcription_resource)
             }
-            document_resource = tika_resource
-            is_package = "package_url" in seed
-            if is_package:
-                package_file_resource, package_tika_resource = get_basic_material_resources(seed["package_url"])
-                pipeline.update({
-                    "package_file": serialize_resource(package_file_resource),
-                    "package_tika": serialize_resource(package_tika_resource),
-                })
-                document_resource = package_tika_resource
             has_video = tika_resource.has_video() if tika_resource is not None else False
-
-            documents = []
-            documents += self.get_documents(file_resource, document_resource, seed, pipeline)
+            documents = self.get_documents(file_resource, tika_resource, seed, pipeline)
             if has_video:
                 documents += self.get_documents_from_transcription(transcription_resource, seed, pipeline)
 
@@ -160,7 +149,6 @@ class Command(PipelineCommand):
             )
             arrangement.meta.update({
                 "reference_id": reference_id,
-                "is_package": is_package,
                 "url": seed["url"],
                 "keywords": seed.get("keywords", []),
             })

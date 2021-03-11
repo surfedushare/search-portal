@@ -12,7 +12,7 @@ from django.utils.timezone import make_aware, datetime
 from django.test import TestCase
 from django.core.management import call_command
 
-from core.models import Dataset, OAIPMHHarvest, ElasticIndex, Arrangement
+from core.models import Dataset, OAIPMHHarvest, ElasticIndex, Arrangement, Document
 from core.tests.mocks import get_elastic_client_mock
 
 
@@ -189,9 +189,12 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
     @patch("core.logging.HarvestLogger.info")
     def test_edurep_surf_deletes(self, info_logger, streaming_bulk, get_es_client):
 
-        # Marking the Wikiwijsmaken packages as deleted to see how that propagates
-        arrangement = Arrangement.objects.get(id=92378)
+        # Marking the Wikiwijsmaken packages as deleted to see how that propagates.
+        # Deleted Arrangements should not have any documents, so removing all those documents as well.
+        delete_target_id = 92378
+        arrangement = Arrangement.objects.get(id=delete_target_id)
         arrangement.delete()  # this sets deleted_at
+        Document.objects.filter(arrangement_id=delete_target_id).delete()
 
         # Setting basic expectations used in the test
         expected_doc_count = {
@@ -201,12 +204,6 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         expected_deleted_ids = [
             "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
             "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935729",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935768",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935734",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-3703806",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-2935733",
-            "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e-page-colofon",
         ]
 
         # Calling command and catching output for some checks

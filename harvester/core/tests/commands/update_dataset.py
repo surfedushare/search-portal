@@ -25,8 +25,6 @@ DUMMY_SEEDS = [
     {
         "state": "active",
         "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
-        "package_url": "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e"
-                       "/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
         "mime_type": "text/html"
     },
     {"state": "deleted", "url": None, "mime_type": None}
@@ -128,7 +126,6 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         self.assertGreater(text_count, 0, "No documents with texts found")
         self.assertGreater(documents_count - text_count, 0, "No documents without texts found")
         # Check that pipelines are filled correctly
-        package_pipeline_phase_count = 0
         for doc in collection.document_set.all():
             for phase, result in doc.properties["pipeline"].items():
                 if phase == "harvest":
@@ -136,10 +133,6 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
                 else:
                     self.assertIn("success", result)
                     self.assertIn("resource", result)
-                if "package" in phase:
-                    package_pipeline_phase_count += 1
-        self.assertEqual(package_pipeline_phase_count, 2)
-        self.assertEqual(collection.arrangement_set.filter(meta__is_package=True).count(), 1)
 
     def test_handle_deletion_seeds(self):
         dataset = Dataset.objects.last()
@@ -236,7 +229,6 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
                 f"Document is unexpectedly updated after upsert: {not_update.id}"
             )
         # Check that pipelines are filled correctly
-        package_pipeline_phase_count = 0
         for doc in collection.document_set.all():
             for phase, result in doc.properties["pipeline"].items():
                 if phase == "harvest":
@@ -244,10 +236,6 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
                 else:
                     self.assertIn("success", result)
                     self.assertIn("resource", result)
-                if "package" in phase:
-                    package_pipeline_phase_count += 1
-        self.assertEqual(package_pipeline_phase_count, 2, "Unexpectedly found a package in the update seeds")
-        self.assertEqual(collection.arrangement_set.filter(meta__is_package=True).count(), 1)
 
     def test_handle_deletion_seeds(self):
         dataset = Dataset.objects.last()

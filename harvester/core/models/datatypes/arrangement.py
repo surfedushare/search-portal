@@ -1,9 +1,6 @@
-from collections import Iterator, defaultdict
-from zipfile import BadZipFile
-from bs4 import BeautifulSoup
+from collections import Iterator
 import logging
 
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
 from django.utils.timezone import now
@@ -12,7 +9,6 @@ from django.utils.functional import cached_property
 from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
-from core.models import CommonCartridge, FileResource
 
 
 logger = logging.getLogger("harvester")
@@ -143,53 +139,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         })
         return base
 
-    def unpack_package_documents(self, reference_id, base_url):
-        """
-        This methods returns content data if this arrangement is a package.
-        The content should be merged with other ES data to form a proper search document.
-        Currently this method relies heavily on the structure in wikiwijsmaken packages
-        and is not expected to work with IMSCC in general.
-        """
-        # First we try to find all navigation links and their href's by looking at the HTML in the downloaded file
-        _, html_file_id = self.base_document.properties["pipeline"]["file"]["resource"]
-        file_resource = FileResource.objects.get(id=html_file_id)
-        if not file_resource.success:
-            return []
-        content_type, file = file_resource.content
-        soup = BeautifulSoup(file, "html5lib")
-        navigation_links = defaultdict(list)
-        for navigation_link in soup.find_all("a", role="button", class_="js-menu-item"):
-            navigation_links[navigation_link.text.strip()].append(navigation_link["href"])
-
-        # Then we parse the IMSCC package file and extract items from its manifest file
-        _, package_file_id = self.base_document.properties["pipeline"]["package_file"]["resource"]
-        package_file = FileResource.objects.get(id=package_file_id)
-        if not package_file.success:
-            return []
-        cc = CommonCartridge(file=package_file.body)
-        try:
-            cc.clean()
-            package_content = cc.list_content_by_title()
-        except (ValidationError, BadZipFile):
-            logger.warning(f"Invalid or missing common cartridge for file resource: {package_file.id}")
-            return []
-
-        # Combine the links and content into documents we may search for
-        results = []
-        for title, links in navigation_links.items():
-            results += [
-                {
-                    "_id": reference_id + link.replace("#!", "-"),
-                    "is_part_of": reference_id,
-                    "link": link,
-                    "url": base_url + link,
-                    "title": title,
-                    "text": package_content[title].pop(0) if len(package_content[title]) else "",
-                }
-                for link in links
-            ]
-        return results
-
     def to_search(self):
 
         elastic_base = self.get_search_document_base()
@@ -214,29 +163,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             transcriptions.append(doc.properties["text"])
         transcription = "\n\n".join(transcriptions)
 
-        # Get the base url without any anchor fragment
-        # base_url = str(URLObject(self.base_document["url"]).with_fragment(""))
-
-        # First we yield documents for each file in a package when dealing with a package
-        child_ids = []
-        # TODO: re-enable this once solution has been found for doubling of materials and metadata
-        # if self.meta.get("is_package", False):
-        #     for package_document in self.unpack_package_documents(self.meta["reference_id"], base_url):
-        #         child_ids.append(package_document["_id"])
-        #         elastic_details = self.get_search_document_details(
-        #             package_document["_id"],
-        #             package_document["url"],
-        #             package_document["title"],
-        #             package_document["text"] if elastic_base.get("analysis_allowed", False) else "",
-        #             transcription="",
-        #             mime_type="text/html",
-        #             file_type=settings.MIME_TYPE_TO_FILE_TYPE["text/html"],
-        #             is_part_of=package_document["is_part_of"]
-        #         )
-        #         elastic_details.update(elastic_base)
-        #         elastic_details["external_id"] = elastic_details["_id"]
-        #         yield elastic_details
-
         # Then we yield a Elastic Search document for the Arrangement as a whole
         elastic_details = self.get_search_document_details(
             self.meta["reference_id"],
@@ -247,7 +173,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             self.base_document["mime_type"],
             self.base_document["file_type"],
             is_part_of=self.base_document.properties.get("is_part_of", None),
-            has_part=child_ids or self.base_document.properties.get("has_part", [])
+            has_part=self.base_document.properties.get("has_part", [])
         )
         elastic_details.update(elastic_base)
         yield elastic_details
