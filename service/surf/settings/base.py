@@ -291,7 +291,7 @@ LOGGING = {
         ),
     },
     'loggers': {
-        'django': {
+        'service': {
             'handlers': ['es_service'] if environment.django.logging.is_elastic else ['console'],
             'level': _log_level,
             'propagate': True,

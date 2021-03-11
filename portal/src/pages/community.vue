@@ -21,6 +21,13 @@
             >
               <template slot="header-info">
                 <h2>{{ $t('Collections-2') }}</h2>
+                <button
+                  v-if="!isLoading && community_info.search_query"
+                  class="button"
+                  @click="goToCommunitySearch(community_info.search_query)"
+                >
+                  {{ $t('Search-in-community-materials') }}
+                </button>
               </template>
             </Collections>
             <Spinner v-if="community_collections_loading" />
@@ -52,6 +59,7 @@ import Collections from '~/components/Collections'
 import Spinner from '~/components/Spinner'
 import Error from '~/components/error'
 import _ from 'lodash'
+import { localePath } from '~/i18n/plugin.routing'
 
 export default {
   name: 'Community',
@@ -114,6 +122,13 @@ export default {
     this.$store.dispatch('getCommunityThemes', community)
     this.$store.dispatch('getCommunityDisciplines', community)
     this.$store.dispatch('getCommunityCollections', community)
+  },
+  methods: {
+    goToCommunitySearch(searchQuery) {
+      const searchRoute = localePath('materials-search')
+      const searchLocation = this.$router.resolve(searchRoute)
+      this.$router.push(searchLocation.href + searchQuery)
+    }
   }
 }
 </script>

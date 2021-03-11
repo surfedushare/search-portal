@@ -20,6 +20,9 @@ export default {
     toggleSubMenuThemes() {
       this.isShowSubMenu = !this.isShowSubMenu
       this.$store.dispatch('setSubMenuShow', this.isShowSubMenu)
+    },
+    getLoginLink() {
+      return this.$store.getters.getLoginLink(this.$route)
     }
   },
   watch: {
@@ -32,6 +35,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['show_sub_menu'])
+    ...mapGetters(['show_sub_menu', 'isAuthenticated'])
   }
 }
