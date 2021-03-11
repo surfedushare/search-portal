@@ -21,7 +21,7 @@ EDUTERM_QUERY_TEMPLATE = "http://api.onderwijsbegrippen.kennisnet.nl/1.0/Query/G
                          "?format=json&apikey={api_key}&concept=<http://purl.edustandaard.nl/concept/{concept}>"
 
 
-def check_and_update_mptt_filters():
+def sync_category_filters():
     """
     Updates all filter categories and their items in database according to information from Elastic Search.
     """

@@ -2,7 +2,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from surf.apps.filters.utils import check_and_update_mptt_filters
+from surf.apps.filters.utils import sync_category_filters
 
 
 logger = logging.getLogger("service")
@@ -18,5 +18,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         logger.info('Starting filter update')
-        check_and_update_mptt_filters()
+        sync_category_filters()
         logger.info('Successfully updated the filters and translations')

@@ -71,4 +71,4 @@ def sync_category_filters(ctx, mode):
     """
     Syncs the list of category filters with Elastic Search
     """
-    run_task(ctx, "service", mode, ["python", "manage.py", "check_and_update_filters"])
+    run_task(ctx, "service", mode, ["python", "manage.py", "sync_category_filters"])
