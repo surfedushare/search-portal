@@ -74,9 +74,10 @@ def _update_mptt_filter_category(filter_category, api_client):
             dutch = labels[0].get("label_nl", default)
             english = labels[0].get("label_en", default)
             translation = Locale.objects.create(
-                asset=f"{english}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
+                asset=f"{english['value']}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
                 en=english["value"], nl=dutch["value"], is_fuzzy=True
             )
+            filter_item.name = english["value"]
             filter_item.title_translations = translation
             filter_item.save()
 
