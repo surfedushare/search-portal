@@ -178,10 +178,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
         elastic_details.update(elastic_base)
         yield elastic_details
 
-    def restore(self):
-        self.deleted_at = None
-        self.save()
-
     def delete(self, using=None, keep_parents=False):
         if not self.deleted_at:
             self.deleted_at = now()

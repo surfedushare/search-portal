@@ -8,7 +8,7 @@ def serialize_resource(resource=None):
         return {
             "success": False,
             "resource": None
-            }
+        }
 
     return {
         "success": resource.success,
