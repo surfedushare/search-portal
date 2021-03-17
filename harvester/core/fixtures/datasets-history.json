@@ -243,11 +243,11 @@
                 "pipeline": {
                     "file": {
                         "success": true,
-                        "resource": ["edurep.edurepfile", 6359]
+                        "resource": ["core.fileresource", 6359]
                     },
                     "tika": {
                         "success": true,
-                        "resource": ["pol_harvester.httptikaresource", 38451]
+                        "resource": ["core.tikaresource", 38451]
                     },
                     "kaldi": {
                         "success": false,
@@ -302,11 +302,11 @@
                 "pipeline": {
                     "file": {
                         "success": true,
-                        "resource": ["edurep.edurepfile", 6018]
+                        "resource": ["core.fileresource", 12033]
                     },
                     "tika": {
                         "success": true,
-                        "resource": ["pol_harvester.httptikaresource", 38111]
+                        "resource": ["core.tikaresource", 75]
                     },
                     "kaldi": {
                         "success": false,
@@ -361,11 +361,11 @@
                 "pipeline": {
                     "file": {
                         "success": true,
-                        "resource": ["edurep.edurepfile", 6018]
+                        "resource": ["core.fileresource", 6018]
                     },
                     "tika": {
                         "success": true,
-                        "resource": ["pol_harvester.httptikaresource", 38111]
+                        "resource": ["core.tikaresource", 38111]
                     },
                     "kaldi": {
                         "success": false,
@@ -479,11 +479,11 @@
                 "pipeline": {
                     "file": {
                         "success": true,
-                        "resource": ["edurep.edurepfile", 6235]
+                        "resource": ["core.fileresource", 6235]
                     },
                     "tika": {
                         "success": true,
-                        "resource": ["pol_harvester.httptikaresource", 38328]
+                        "resource": ["core.tikaresource", 38328]
                     },
                     "kaldi": {
                         "success": false,
@@ -538,11 +538,11 @@
                 "pipeline": {
                     "file": {
                         "success": true,
-                        "resource": ["edurep.edurepfile", 6429]
+                        "resource": ["core.fileresource", 6429]
                     },
                     "tika": {
                         "success": true,
-                        "resource": ["pol_harvester.httptikaresource", 38521]
+                        "resource": ["core.tikaresource", 38521]
                     },
                     "kaldi": {
                         "success": false,
@@ -597,11 +597,11 @@
                 "pipeline": {
                     "file": {
                         "success": true,
-                        "resource": ["edurep.edurepfile", 6706]
+                        "resource": ["core.fileresource", 6706]
                     },
                     "tika": {
                         "success": true,
-                        "resource": ["pol_harvester.httptikaresource", 38797]
+                        "resource": ["core.tikaresource", 38797]
                     },
                     "kaldi": {
                         "success": false,
