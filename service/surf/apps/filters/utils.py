@@ -51,6 +51,26 @@ def sync_category_filters():
     return has_new
 
 
+def _translate_mptt_filter_item(filter_item):
+    query_url = EDUTERM_QUERY_TEMPLATE.format(concept=filter_item.external_id, api_key=settings.EDUTERM_API_KEY)
+    response = requests.get(query_url)
+    if response.status_code != codes.ok:
+        return
+    labels = response.json()["results"]["bindings"]
+    if not len(labels):
+        return
+    default = labels[0]["label"]
+    dutch = labels[0].get("label_nl", default)
+    english = labels[0].get("label_en", default)
+    translation = Locale.objects.create(
+        asset=f"{english['value']}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
+        en=english["value"], nl=dutch["value"], is_fuzzy=True
+    )
+    filter_item.name = english["value"]
+    filter_item.title_translations = translation
+    filter_item.save()
+
+
 def _update_mptt_filter_category(filter_category, api_client):
     """
     Updates filter category according to data received from EduRep
@@ -73,23 +93,7 @@ def _update_mptt_filter_category(filter_category, api_client):
             }
         )
         if created or filter_item.title_translations is None:
-            query_url = EDUTERM_QUERY_TEMPLATE.format(concept=external_id, api_key=settings.EDUTERM_API_KEY)
-            response = requests.get(query_url)
-            if response.status_code != codes.ok:
-                continue
-            labels = response.json()["results"]["bindings"]
-            if not len(labels):
-                continue
-            default = labels[0]["label"]
-            dutch = labels[0].get("label_nl", default)
-            english = labels[0].get("label_en", default)
-            translation = Locale.objects.create(
-                asset=f"{english['value']}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
-                en=english["value"], nl=dutch["value"], is_fuzzy=True
-            )
-            filter_item.name = english["value"]
-            filter_item.title_translations = translation
-            filter_item.save()
+            _translate_mptt_filter_item(filter_item)
             is_new = True
 
         yield external_id, is_new
