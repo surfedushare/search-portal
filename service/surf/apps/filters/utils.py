@@ -30,11 +30,14 @@ def sync_category_filters():
 
     ac = ElasticSearchApiClient()
     valid_external_ids = []
+    has_new = False
 
     for f_category in filter_categories.filter(parent=None):
         valid_external_ids.append(f_category.external_id)
         logger.info(f"Filter category name: {f_category.name}")
-        for external_id in _update_mptt_filter_category(f_category, ac):
+        for external_id, is_new in _update_mptt_filter_category(f_category, ac):
+            if is_new:
+                has_new = True
             valid_external_ids.append(external_id)
 
     logger.info("Deleting redundant filters and translations")
@@ -45,6 +48,7 @@ def sync_category_filters():
         .delete()
 
     logger.info("Finished Update")
+    return has_new
 
 
 def _update_mptt_filter_category(filter_category, api_client):
@@ -59,11 +63,13 @@ def _update_mptt_filter_category(filter_category, api_client):
         for item in response["drilldowns"][0]["items"]
     }
     for external_id, count in filters.items():
+        is_new = False
         filter_item, created = MpttFilterItem.objects.get_or_create(
             external_id=external_id,
             defaults={
                 "name": external_id,
                 "parent": filter_category,
+                "is_hidden": True
             }
         )
         if created or filter_item.title_translations is None:
@@ -84,5 +90,6 @@ def _update_mptt_filter_category(filter_category, api_client):
             filter_item.name = english["value"]
             filter_item.title_translations = translation
             filter_item.save()
+            is_new = True
 
-        yield external_id
+        yield external_id, is_new

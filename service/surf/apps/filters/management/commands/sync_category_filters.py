@@ -1,6 +1,7 @@
 import logging
 
 from django.core.management.base import BaseCommand
+from django.core.mail import send_mail
 
 from surf.apps.filters.utils import sync_category_filters
 
@@ -18,5 +19,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         logger.info('Starting filter update')
-        sync_category_filters()
+        has_new_filters = sync_category_filters()
+        if has_new_filters:
+            send_mail(
+                'Nieuwe Zoekportaal filters en/of filter vertalingen',
+                'Login op de admin om de filters zichtbaar te maken en vertalingen goed te keuren.',
+                'noreply@edusources.nl',
+                ['edusources-team@surf.nl']
+            )
         logger.info('Successfully updated the filters and translations')
