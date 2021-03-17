@@ -20,7 +20,7 @@ class MpttFilterItem(MPTTModel, UUIDModel):
     title_translations = django_models.OneToOneField(to=Locale, on_delete=django_models.CASCADE, null=True, blank=False)
     external_id = django_models.CharField(max_length=255, verbose_name="Field id in EduRep", blank=False, null=False,
                                           unique=True)
-    enabled_by_default = django_models.BooleanField(default=False)
+    is_manual = django_models.BooleanField(default=False)
     is_hidden = django_models.BooleanField(default=False)
 
     item_count = 0

@@ -30,3 +30,5 @@ secrets:
     admin_password: "qwerty"
   surfconext:
     secret_key: "development-secret-key--ignored"
+  eduterm:
+    api_key: null

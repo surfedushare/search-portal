@@ -9,11 +9,26 @@ from commands.aws.ecs import register_task_definition, build_default_container_v
 from commands.aws.utils import create_aws_session
 
 
-def register_clearlogins_task(ctx, aws_config, task_definition_arn):
+def register_scheduled_tasks(ctx, aws_config, task_definition_arn):
     session = create_aws_session(ctx.config.aws.profile_name)
     events_client = session.client('events')
     iam = session.resource('iam')
     role = iam.Role('ecsEventsRole')
+    ecs_parameters = {
+        'TaskDefinitionArn': task_definition_arn,
+        'TaskCount': 1,
+        'LaunchType': 'FARGATE',
+        'NetworkConfiguration': {
+            "awsvpcConfiguration": {
+                "Subnets": [aws_config.private_subnet_id],
+                "SecurityGroups": [
+                    aws_config.rds_security_group_id,
+                    aws_config.default_security_group_id
+
+                ]
+            }
+        }
+    }
 
     events_client.put_targets(
         Rule='clearlogins',
@@ -32,21 +47,28 @@ def register_clearlogins_task(ctx, aws_config, task_definition_arn):
                         ]
                     }
                 ),
-                'EcsParameters': {
-                    'TaskDefinitionArn': task_definition_arn,
-                    'TaskCount': 1,
-                    'LaunchType': 'FARGATE',
-                    'NetworkConfiguration': {
-                        "awsvpcConfiguration": {
-                            "Subnets": [aws_config.private_subnet_id],
-                            "SecurityGroups": [
-                                aws_config.rds_security_group_id,
-                                aws_config.default_security_group_id
-
-                            ]
-                        }
+                'EcsParameters': ecs_parameters
+            }
+        ]
+    )
+    events_client.put_targets(
+        Rule='sync_category_filters',
+        Targets=[
+            {
+                'Id': '2',
+                'Arn': aws_config.cluster_arn,
+                'RoleArn': role.arn,
+                'Input': json.dumps(
+                    {
+                        "containerOverrides": [
+                            {
+                                "name": "search-portal-container",
+                                "command": ["python", "manage.py", "sync_category_filters"]
+                            }
+                        ]
                     }
-                }
+                ),
+                'EcsParameters': ecs_parameters
             }
         ]
     )
@@ -121,8 +143,8 @@ def deploy_service(ctx, mode, ecs_client, task_role_arn, version):
         taskDefinition=service_task_definition_arn
     )
 
-    print("Registering clearlogins scheduled task")
-    register_clearlogins_task(ctx, ctx.config.aws, service_task_definition_arn)
+    print("Registering scheduled tasks")
+    register_scheduled_tasks(ctx, ctx.config.aws, service_task_definition_arn)
 
 
 @task(help={
