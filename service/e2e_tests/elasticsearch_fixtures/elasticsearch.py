@@ -16,7 +16,7 @@ NL_MATERIAL = {
         "authors": ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"],
         "publishers": ["Wikiwijs Maken"],
         "file_type": "text",
-        "disciplines": [],
+        "disciplines": ["7afbb7a6-c29b-425c-9c59-6f79c845f5f0"],
         "oaipmh_set": "wikiwijsmaken",
         "has_part": [],
         "is_part_of": None,
