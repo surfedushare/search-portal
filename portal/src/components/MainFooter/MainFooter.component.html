@@ -28,6 +28,11 @@
       </router-link>
     </div>
     <Menu />
+    <div class="main-footer__login" v-if="!isAuthenticated">
+      <a :href="getLoginLink()" class="button">
+        {{ $t('login') }}
+      </a>
+    </div>
   </div>
 </section>
 

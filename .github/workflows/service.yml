@@ -40,7 +40,7 @@ jobs:
       with:
         node-version: ${{ steps.nvm.outputs.NVMRC }}
     - name: psycopg2 prerequisites
-      run: sudo apt-get install python-dev libpq-dev
+      run: sudo apt-get install python3-dev libpq-dev
     - name: Configure sysctl limits
       run: |
         sudo swapoff -a

@@ -33,24 +33,7 @@ class Command(PipelineCommand):
             error_main += len(error_batch)
         self.logger.end(main_phase, success=success_main, fail=error_main)
 
-        package_phase = phase + ".package"
-        self.logger.start(package_phase)
-        package_urls = [[seed["package_url"]] for seed in seeds if seed.get("package_url", None)]
-        success_package = []
-        error_package = 0
-        for batch in self.batchify(package_phase, package_urls, len(package_urls)):
-            batch_urls = list(batch)
-            success_batch, error_batch = send_serie(
-                batch_urls,
-                [{} for _ in batch_urls],
-                config=download_config,
-                method="get"
-            )
-            success_package += success_batch
-            error_package += len(error_batch)
-        self.logger.end(package_phase, success=success_package, fail=error_package)
-
-        return success_main + success_package
+        return success_main
 
     def extract_from_seed_files(self, phase, seeds, downloads):
         if not len(seeds):
@@ -80,27 +63,6 @@ class Command(PipelineCommand):
             success_main += len(batch_success)
             error_main += len(batch_error)
         self.logger.end(main_phase, success=success_main, fail=error_main)
-
-        package_phase = phase + ".package"
-        self.logger.start(package_phase)
-        uris = [FileResource.uri_from_url(seed["package_url"]) for seed in seeds if seed.get("package_url", None)]
-        file_resources = FileResource.objects.filter(uri__in=uris, id__in=downloads)
-        signed_urls = [
-            resource.get_signed_absolute_uri()
-            for resource in file_resources
-        ]
-        success_package = 0
-        error_package = 0
-        for batch in self.batchify(package_phase, signed_urls, len(signed_urls)):
-            batch_urls = [[url] for url in batch if url is not None]
-            batch_success, batch_error = run_serie(
-                batch_urls,
-                [{} for _ in batch_urls],
-                config=tika_config
-            )
-            success_package += len(batch_success)
-            error_package += len(batch_error)
-        self.logger.end(package_phase, success=success_package, fail=error_package)
 
     def handle(self, *args, **options):
 

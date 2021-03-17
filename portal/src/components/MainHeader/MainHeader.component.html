@@ -53,11 +53,6 @@
               </ul>
             </nav>
           </div>
-          <div class="main-header__login" v-else>
-            <a :href="getLoginLink()" class="button">
-              {{ $t('login') }}
-            </a>
-          </div>
           <LanguageSwitch />
         </div>
       </div>
@@ -110,11 +105,6 @@
                 >
                 {{ $t('logout') }}
               </a>
-            </li>
-            <li class="main-header__user_menu_item" v-if="!isAuthenticated">
-                <a class="main-header__user_menu_link" :href="getLoginLink()">
-                  {{ $t('login') }}
-                </a>
             </li>
           </ul>
         </div>

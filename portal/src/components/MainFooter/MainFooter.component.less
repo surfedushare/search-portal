@@ -3,6 +3,7 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  max-width: 1300px;
   padding: 0 20px;
   margin-top: 80px;
 
@@ -99,6 +100,7 @@
   &__bottom_block {
     @media @desktop {
       display: flex;
+      justify-content: space-around;
       height: 139px;
     }
     margin: auto;
@@ -131,6 +133,13 @@
   &__logo {
     @media @desktop {
     padding: 31px 0 0;
+    }
+  }
+
+  &__login {
+    @media @mobile {
+      margin-top: 10px;
+      padding-left: 45px;
     }
   }
 }
