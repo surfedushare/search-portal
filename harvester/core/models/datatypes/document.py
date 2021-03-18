@@ -10,7 +10,7 @@ class Document(DocumentPostgres, DocumentBase):
     arrangement = models.ForeignKey("Arrangement", blank=True, null=True, on_delete=models.CASCADE)
 
     def get_language(self):
-        for field in ['from_text', 'from_title', 'metadata']:
+        for field in ['metadata', 'from_text', 'from_title']:
             if field in self.properties['language']:
                 language = self.properties['language'][field]
                 if language is not None:
