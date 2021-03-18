@@ -11,10 +11,8 @@ from unittest.mock import patch
 from django.utils.timezone import make_aware, datetime
 from django.test import TestCase
 from django.core.management import call_command
-from django.db import models
 
-from datagrowth.resources import file_resource_delete_handler
-from core.models import Dataset, OAIPMHHarvest, ElasticIndex, Arrangement, Document, FileResource
+from core.models import Dataset, OAIPMHHarvest, ElasticIndex, Arrangement, Document
 from core.tests.mocks import get_elastic_client_mock
 
 

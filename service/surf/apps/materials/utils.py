@@ -2,7 +2,6 @@
 This module contains some common functions for materials app.
 """
 
-import json
 import datetime
 from functools import reduce
 
