@@ -95,6 +95,8 @@ class Material(UUIDModel):
         response = api_client.get_materials_by_id([self.external_id])
         records = response.get("records", [])
         if not records:
+            if not self.deleted_at:
+                self.delete()
             return
 
         # Update the model

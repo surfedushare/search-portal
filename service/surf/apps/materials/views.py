@@ -393,7 +393,7 @@ class CollectionViewSet(ModelViewSet):
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
-            ids = [m.external_id for m in instance.materials.order_by("id").filter(deleted_at=None)]
+            ids = [m.external_id for m in instance.materials.order_by("id").filter()]
 
             rv = dict(records=[],
                       records_total=0,
