@@ -467,12 +467,7 @@ class CollectionViewSet(ModelViewSet):
             if keywords:
                 keywords = json.dumps(keywords)
 
-            m, _ = Material.objects.update_or_create(
-                external_id=m_external_id, deleted_at=None,
-                defaults=dict(material_url=details[0].get("url"),
-                              title=details[0].get("title"),
-                              description=details[0].get("description"),
-                              keywords=keywords))
+            m, _ = Material.objects.update_or_create(external_id=m_external_id)
 
             add_material_themes(m, details[0].get("themes", []))
             add_material_disciplines(m, details[0].get("disciplines", []))

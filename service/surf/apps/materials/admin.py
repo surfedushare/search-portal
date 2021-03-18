@@ -58,14 +58,13 @@ class MaterialAdmin(admin.ModelAdmin):
     Provides admin options and functionality for Material model.
     """
 
-    list_display = ("title", "external_id")
+    list_display = ('external_id', 'view_count', 'applaud_count', 'get_avg_star_rating', 'deleted_at',)
     list_filter = (TrashListFilter,)
     readonly_fields = (
-        'title', 'external_id', 'material_url', 'description', 'themes',
-        'disciplines', 'keywords', 'view_count', 'applaud_count',
-        'get_avg_star_rating', 'get_star_count', "deleted_at",
+        'external_id', 'themes', 'disciplines', 'view_count', 'applaud_count', 'get_avg_star_rating',
+        'get_star_count', "deleted_at",
     )
-    search_fields = ('title', 'external_id', 'description', 'keywords',)
+    search_fields = ('external_id',)
     inlines = (CollectionMaterialInline,)
     exclude = ['star_1', 'star_2', 'star_3', 'star_4', 'star_5']
     actions = [restore_nodes, trash_nodes, sync_info_nodes]
