@@ -15,7 +15,7 @@ class Command(BaseCommand):
     When there are no filter items in the database this will not do anything.
     When there are only root nodes this will add the appropriate children to those filter items.
     """
-    help = 'Updates the filter items through Edurep'
+    help = 'Updates the filter items through Elastic Search aggregations'
 
     def handle(self, *args, **options):
         logger.info('Starting filter update')
