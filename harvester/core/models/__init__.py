@@ -8,8 +8,8 @@ from .resources.youtube_thumbnail import YoutubeThumbnailResource
 from .datatypes.dataset import Dataset
 from .datatypes.collection import Collection
 from .datatypes.arrangement import Arrangement
-from .datatypes.document import Document
+from .datatypes.document import Document, document_delete_handler
 
-from .oaipmh import OAIPMHSet, OAIPMHHarvest, OAIPMHRepositories
+from .oaipmh import OAIPMHSet, OAIPMHHarvest, OAIPMHRepositories, HarvestStages
 
 from .search import ElasticIndex, ElasticIndexSerializer
