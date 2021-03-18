@@ -29,49 +29,33 @@ def register_scheduled_tasks(ctx, aws_config, task_definition_arn):
             }
         }
     }
-
-    events_client.put_targets(
-        Rule='clearlogins',
-        Targets=[
-            {
-                'Id': '1',
-                'Arn': aws_config.cluster_arn,
-                'RoleArn': role.arn,
-                'Input': json.dumps(
-                    {
-                        "containerOverrides": [
-                            {
-                                "name": "search-portal-container",
-                                "command": ["python", "manage.py", "clearlogins"]
-                            }
-                        ]
-                    }
-                ),
-                'EcsParameters': ecs_parameters
-            }
-        ]
-    )
-    events_client.put_targets(
-        Rule='sync_category_filters',
-        Targets=[
-            {
-                'Id': '2',
-                'Arn': aws_config.cluster_arn,
-                'RoleArn': role.arn,
-                'Input': json.dumps(
-                    {
-                        "containerOverrides": [
-                            {
-                                "name": "search-portal-container",
-                                "command": ["python", "manage.py", "sync_category_filters"]
-                            }
-                        ]
-                    }
-                ),
-                'EcsParameters': ecs_parameters
-            }
-        ]
-    )
+    scheduled_tasks = [
+        ("clearlogins", '1', ["python", "manage.py", "clearlogins"]),
+        ("sync_category_filters", '2', ["python", "manage.py", "sync_category_filters"]),
+        ("sync_materials", '3', ["python", "manage.py", "sync_materials"]),
+    ]
+    for rule, identifier, command in scheduled_tasks:
+        events_client.put_targets(
+            Rule=rule,
+            Targets=[
+                {
+                    'Id': identifier,
+                    'Arn': aws_config.cluster_arn,
+                    'RoleArn': role.arn,
+                    'Input': json.dumps(
+                        {
+                            "containerOverrides": [
+                                {
+                                    "name": "search-portal-container",
+                                    "command": command
+                                }
+                            ]
+                        }
+                    ),
+                    'EcsParameters': ecs_parameters
+                }
+            ]
+        )
 
 
 def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
