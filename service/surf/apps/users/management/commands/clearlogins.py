@@ -5,7 +5,8 @@ from django.core.management import call_command
 
 from surf.apps.users.models import SessionToken
 
-logger = logging.getLogger(__name__)
+
+logger = logging.getLogger("service")
 
 
 class Command(BaseCommand):

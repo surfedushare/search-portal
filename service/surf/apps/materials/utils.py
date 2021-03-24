@@ -120,7 +120,8 @@ def add_extra_parameters_to_materials(user, materials):
 
         m["disciplines"] = [dict(
             id=d.id,
-            title_translations={"nl": d.title_translations.nl, "en": d.title_translations.en}
+            title_translations={"nl": d.title_translations.nl, "en": d.title_translations.en} if d.title_translations
+            else {"nl": d.name, "en": d.name}
         ) for d in disciplines]
 
     return materials

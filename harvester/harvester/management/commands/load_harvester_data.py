@@ -81,7 +81,7 @@ class Command(base.LabelCommand):
             dataset.delete()
 
         if harvest_source and not skip_download:
-            logger.info(f"Downloading dump file for: {dataset_label}", dataset=dataset_label)
+            logger.info(f"Downloading dump file for: {dataset_label}")
             ctx = Context(environment)
             harvester_data_bucket = f"s3://{source_environment.aws.harvest_content_bucket}/datasets/harvester"
             ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")

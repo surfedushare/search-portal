@@ -423,7 +423,11 @@ if DEBUG:
         "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
     }
 
+
 EMAIL_HOST = 'outgoing.mf.surf.net'
 EMAIL_PORT = 25
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+EDUTERM_API_KEY = environment.secrets.eduterm.api_key

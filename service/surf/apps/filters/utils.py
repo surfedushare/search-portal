@@ -2,52 +2,73 @@
 This module contains some common functions for filters app.
 """
 import datetime
+import requests
+from requests.status_codes import codes
+import logging
 
+from django.conf import settings
 from django.db import models
 
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
-from surf.vendor.search.choices import (PUBLISHER_DATE_FIELD_ID, CUSTOM_THEME_FIELD_ID, LANGUAGE_FIELD_ID,
-                                        COPYRIGHT_FIELD_ID)
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.models import Locale
 
 
-MANUAL_FILTER_CATEGORIES = {
-    PUBLISHER_DATE_FIELD_ID,
-    CUSTOM_THEME_FIELD_ID,
-    LANGUAGE_FIELD_ID,
-    COPYRIGHT_FIELD_ID,
-}
+logger = logging.getLogger("service")
 
 
-def check_and_update_mptt_filters():
+EDUTERM_QUERY_TEMPLATE = "http://api.onderwijsbegrippen.kennisnet.nl/1.0/Query/GetConcept" \
+                         "?format=json&apikey={api_key}&concept=<http://purl.edustandaard.nl/concept/{concept}>"
+
+
+def sync_category_filters():
     """
     Updates all filter categories and their items in database according to information from Elastic Search.
     """
 
-    # First we create a queryset that only targets all non-manual filter categories
-    # We ignore any manual filter categories and their children (up to two levels deep)
-    filter_categories = MpttFilterItem.objects.exclude(external_id__in=MANUAL_FILTER_CATEGORIES)
-    filter_categories = filter_categories.exclude(parent__external_id__in=MANUAL_FILTER_CATEGORIES)
-    filter_categories = filter_categories.exclude(parent__parent__external_id__in=MANUAL_FILTER_CATEGORIES)
+    filter_categories = MpttFilterItem.objects.exclude(is_manual=True)
 
     ac = ElasticSearchApiClient()
     valid_external_ids = []
+    has_new = False
 
     for f_category in filter_categories.filter(parent=None):
         valid_external_ids.append(f_category.external_id)
-        print(f"Filter category name: {f_category.name}")
-        for external_id in _update_mptt_filter_category(f_category, ac):
+        logger.info(f"Filter category name: {f_category.name}")
+        for external_id, is_new in _update_mptt_filter_category(f_category, ac):
+            if is_new:
+                has_new = True
             valid_external_ids.append(external_id)
 
-    print("Deleting redundant filters and translations")
+    logger.info("Deleting redundant filters and translations")
     filter_categories.exclude(external_id__in=valid_external_ids).delete()
     Locale.objects \
         .annotate(filter_count=models.Count("mpttfilteritem")) \
         .filter(asset__contains="auto_generated_at", filter_count=0, is_fuzzy=True) \
         .delete()
 
-    print("Finished Update")
+    logger.info("Finished Update")
+    return has_new
+
+
+def _translate_mptt_filter_item(filter_item):
+    query_url = EDUTERM_QUERY_TEMPLATE.format(concept=filter_item.external_id, api_key=settings.EDUTERM_API_KEY)
+    response = requests.get(query_url)
+    if response.status_code != codes.ok:
+        return
+    labels = response.json()["results"]["bindings"]
+    if not len(labels):
+        return
+    default = labels[0]["label"]
+    dutch = labels[0].get("label_nl", default)
+    english = labels[0].get("label_en", default)
+    translation = Locale.objects.create(
+        asset=f"{english['value']}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
+        en=english["value"], nl=dutch["value"], is_fuzzy=True
+    )
+    filter_item.name = english["value"]
+    filter_item.title_translations = translation
+    filter_item.save()
 
 
 def _update_mptt_filter_category(filter_category, api_client):
@@ -62,19 +83,17 @@ def _update_mptt_filter_category(filter_category, api_client):
         for item in response["drilldowns"][0]["items"]
     }
     for external_id, count in filters.items():
+        is_new = False
         filter_item, created = MpttFilterItem.objects.get_or_create(
             external_id=external_id,
             defaults={
                 "name": external_id,
                 "parent": filter_category,
+                "is_hidden": True
             }
         )
         if created or filter_item.title_translations is None:
-            translation = Locale.objects.create(
-                asset=f"{external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
-                en=external_id, nl=external_id, is_fuzzy=True
-            )
-            filter_item.title_translations = translation
-            filter_item.save()
+            _translate_mptt_filter_item(filter_item)
+            is_new = True
 
-        yield external_id
+        yield external_id, is_new
