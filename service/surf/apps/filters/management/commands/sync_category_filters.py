@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 
@@ -20,7 +21,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         logger.info('Starting filter update')
         has_new_filters = sync_category_filters()
-        if has_new_filters:
+        if has_new_filters and settings.ENABLE_ADMINISTRATIVE_EMAILS:
             send_mail(
                 'Nieuwe Zoekportaal filters en/of filter vertalingen',
                 'Login op de admin om de filters zichtbaar te maken en vertalingen goed te keuren.',
