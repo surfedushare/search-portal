@@ -187,7 +187,9 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
-    def test_edurep_surf_deletes(self, info_logger, streaming_bulk, get_es_client):
+    @patch("core.utils.previews.default_storage")  # prevents collateral file deletion
+    @patch("datagrowth.resources.http.files.default_storage")  # prevents collateral file deletion
+    def test_edurep_surf_deletes(self, resource_storage, preview_storage, info_logger, streaming_bulk, get_es_client):
 
         # Marking the Wikiwijsmaken packages as deleted to see how that propagates.
         # Deleted Arrangements should not have any documents, so removing all those documents as well.

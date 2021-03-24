@@ -6,7 +6,7 @@ from django.db.models import Q
 
 from core.constants import HarvestStages
 from core.models import Document, OAIPMHHarvest
-from harvester.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
+from core.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
 
 
 class Command(PipelineCommand):

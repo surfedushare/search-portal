@@ -135,9 +135,6 @@ class MaterialFactory(factory.django.DjangoModelFactory):
         model = Material
 
     external_id = "external:id"
-    title = "De kunst van materiaal"
-    description = "Alles over het maken van kwalitatieve materialen"
-    material_url = "https://www.surf.nl/"
     applaud_count = 2
     star_4 = 1
     view_count = 104

@@ -2,7 +2,7 @@ from unittest.mock import patch, Mock, call, mock_open, ANY
 from django.test import TestCase, override_settings
 from PIL import Image
 
-from harvester.tasks import generate_browser_preview
+from core.tasks import generate_browser_preview
 from core.tests.factories import DocumentFactory
 
 
