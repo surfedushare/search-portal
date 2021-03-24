@@ -1,3 +1,4 @@
+import logging
 from invoke import Context
 
 from django.conf import settings
@@ -7,7 +8,11 @@ from harvester.settings import environment
 from harvester.celery import app
 from core.models import Dataset, OAIPMHHarvest
 from core.constants import HarvestStages
+from core.utils.harvest import prepare_harvest
 from edurep.models import EdurepOAIPMH
+
+
+logger = logging.getLogger("harvester")
 
 
 @app.task(name="harvest")
@@ -20,9 +25,13 @@ def harvest(seeds_source=None, reset=False):
     for dataset in Dataset.objects.filter(is_active=True):
         # Sometimes we may want to trigger a complete dataset reset
         if reset and role == "primary":
+            logger.info("Deleting seed Resources")
             EdurepOAIPMH.objects.all().delete()
         if reset:
+            logger.info(f"Resetting dataset: {dataset.name}")
             dataset.reset()
+        # Preparing dataset state and deletes old model instances
+        prepare_harvest(dataset)
         # First we call the commands that will query the OAI-PMH interfaces
         if role == "primary":
             call_command("harvest_edurep_seeds", f"--dataset={dataset.name}")

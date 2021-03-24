@@ -6,8 +6,9 @@ from django.core.management import call_command, CommandError
 from django.utils.timezone import make_aware
 
 from datagrowth.resources.http.tasks import send
-from core.models import Arrangement, Document, OAIPMHHarvest
+from core.models import Dataset, Arrangement, Document, OAIPMHHarvest
 from core.constants import HarvestStages
+from core.utils.harvest import prepare_harvest
 
 
 class TestSeedHarvest(TestCase):
@@ -86,6 +87,8 @@ class TestSeedHarvestWithHistory(TestCase):
         # We'd expect one OAI-PMH calls to be made which should be a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
+        dataset = Dataset.objects.last()
+        prepare_harvest(dataset)
         with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
             call_command("harvest_edurep_seeds", "--dataset=test")
         # Asserting Datagrowth usage
