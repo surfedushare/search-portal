@@ -292,3 +292,31 @@ class EdurepDataExtraction(object):
             catalog_entry = catalog.find_next('czp:entry')
             results.append("surfsharekit:" + catalog_entry.text.strip())  # prefixes excluded by Edurep, but are needed
         return results
+
+
+EDUREP_EXTRACTION_OBJECTIVE = {
+    "url": EdurepDataExtraction.get_url,
+    "files": EdurepDataExtraction.get_files,
+    "title": EdurepDataExtraction.get_title,
+    "language": EdurepDataExtraction.get_language,
+    "keywords": EdurepDataExtraction.get_keywords,
+    "description": EdurepDataExtraction.get_description,
+    "mime_type": EdurepDataExtraction.get_mime_type,
+    "copyright": EdurepDataExtraction.get_copyright,
+    "aggregation_level": EdurepDataExtraction.get_aggregation_level,
+    "author": EdurepDataExtraction.get_author,
+    "authors": EdurepDataExtraction.get_authors,
+    "publishers": EdurepDataExtraction.get_publishers,
+    "publisher_date": EdurepDataExtraction.get_publisher_date,
+    "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
+    "educational_levels": EdurepDataExtraction.get_educational_levels,
+    "humanized_educational_levels": EdurepDataExtraction.get_humanized_educational_levels,
+    "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
+    "disciplines": EdurepDataExtraction.get_disciplines,
+    "humanized_disciplines": EdurepDataExtraction.get_humanized_disciplines,
+    "ideas": EdurepDataExtraction.get_ideas,
+    "from_youtube": EdurepDataExtraction.get_from_youtube,
+    "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
+    "is_part_of": EdurepDataExtraction.get_is_part_of,
+    "has_part": EdurepDataExtraction.get_has_part,
+}

@@ -4,7 +4,7 @@ from datagrowth.configuration import create_config
 from core.management.base import PipelineCommand
 from core.constants import HarvestStages
 from core.models import OAIPMHHarvest, FileResource
-from edurep.utils import get_edurep_oaipmh_seeds
+from harvester.utils.extraction import get_harvest_seeds
 
 
 class Command(PipelineCommand):
@@ -84,7 +84,7 @@ class Command(PipelineCommand):
         seeds = []
         for harvest in harvest_queryset:
             set_specification = harvest.source.spec
-            harvest_seeds = get_edurep_oaipmh_seeds(
+            harvest_seeds = get_harvest_seeds(
                 set_specification,
                 harvest.latest_update_at,
                 include_deleted=False

@@ -3,8 +3,9 @@ from datetime import datetime
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
+from harvester.utils.extraction import get_harvest_seeds
 from edurep.tests.factories import EdurepOAIPMHFactory
-from edurep.utils import get_edurep_oaipmh_seeds, EDUREP_EXTRACTION_OBJECTIVE
+from edurep.extraction import EDUREP_EXTRACTION_OBJECTIVE
 
 
 class TestGetEdurepOAIPMHSeeds(TestCase):
@@ -43,52 +44,52 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
             self.assertEqual(seed_types["deleted"]["state"], "deleted")
 
     def test_get_complete_set(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(len(seeds), 18)
         self.check_seed_integrity(seeds)
 
     def test_get_partial_set(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit",
+        seeds = get_harvest_seeds("surfsharekit",
                                         make_aware(datetime(year=2020, month=2, day=10, hour=22, minute=22)))
         self.assertEqual(len(seeds), 6)
         self.check_seed_integrity(seeds)
 
     def test_get_complete_set_without_deletes(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)),
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)),
                                         include_deleted=False)
         self.assertEqual(len(seeds), 15)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set_without_deletes(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(
+        seeds = get_harvest_seeds("surfsharekit", make_aware(
             datetime(year=2020, month=2, day=10, hour=22, minute=22)), include_deleted=False)
         self.assertEqual(len(seeds), 4)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_from_youtube_property(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(len(seeds), 18)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
         self.assertEqual(len(youtube_seeds), 8)
 
     def test_authors_property(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[3]['authors'], ['Ruud Kok'])
 
     def test_publishers_property(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])
         self.assertEqual(seeds[5]['publishers'], ['SURFnet'])
 
     def test_analysis_allowed_property(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['analysis_allowed'], False, "Expected deleted material to disallow analysis")
         self.assertEqual(seeds[1]['analysis_allowed'], True, "Expected standard material to allow analysis")
         self.assertEqual(seeds[8]['analysis_allowed'], False, "Expected restricted material to disallow analysis")
         self.assertEqual(seeds[15]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
 
     def test_is_part_of_property(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['is_part_of'], None, "Expected deleted material to be part of nothing")
         self.assertEqual(seeds[1]['is_part_of'], None, "Expected standard material to have no parent")
         self.assertEqual(seeds[4]['is_part_of'], None, "Expected parent material to have no parent")
@@ -99,7 +100,7 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         )
 
     def test_has_part_property(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['has_part'], [], "Expected deleted material to have no parts")
         self.assertEqual(seeds[1]['has_part'], [], "Expected standard material to have no parts")
         self.assertEqual(
@@ -115,7 +116,7 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         self.assertEqual(seeds[5]['has_part'], [], "Expected child material to have no children")
 
     def test_ideas_property(self):
-        seeds = get_edurep_oaipmh_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]["ideas"], [], "Expected deleted material to return no idea data")
         possible_ideas = [
             "Informatievaardigheid vocabulaire 2020",

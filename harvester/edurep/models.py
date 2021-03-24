@@ -1,9 +1,47 @@
+import logging
 from urlobject import URLObject
 
+from django.db import models
+
+from datagrowth.configuration import create_config
+from datagrowth.processors import ExtractProcessor
+
 from core.models import HarvestHttpResource
+from edurep.extraction import EdurepDataExtraction, EDUREP_EXTRACTION_OBJECTIVE
+
+
+logger = logging.getLogger("harvester")
+
+
+class EdurepOAIPMHManager(models.Manager):
+
+    def extract_seeds(self, set_specification, latest_update):
+        queryset = self.get_queryset() \
+            .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
+
+        oaipmh_objective = {
+            "@": EdurepDataExtraction.get_oaipmh_records,
+            "external_id": EdurepDataExtraction.get_oaipmh_external_id,
+            "state": EdurepDataExtraction.get_oaipmh_record_state
+        }
+        oaipmh_objective.update(EDUREP_EXTRACTION_OBJECTIVE)
+        extract_config = create_config("extract_processor", {
+            "objective": oaipmh_objective
+        })
+        prc = ExtractProcessor(config=extract_config)
+
+        results = []
+        for harvest in queryset:
+            try:
+                results += list(prc.extract_from_resource(harvest))
+            except ValueError as exc:
+                logger.warning("Invalid XML:", exc, harvest.uri)
+        return results
 
 
 class EdurepOAIPMH(HarvestHttpResource):
+
+    objects = EdurepOAIPMHManager()
 
     URI_TEMPLATE = "https://wszoeken.edurep.kennisnet.nl/edurep/oai?set={}&from={}"
     PARAMETERS = {

@@ -9,7 +9,7 @@ from core.constants import HarvestStages
 from core.management.base import PipelineCommand
 from core.utils.resources import get_material_resources, serialize_resource
 from core.utils.language import get_language_from_snippet
-from edurep.utils import get_edurep_oaipmh_seeds
+from harvester.utils.extraction import get_harvest_seeds
 
 
 class Command(PipelineCommand):
@@ -207,7 +207,7 @@ class Command(PipelineCommand):
             set_specification = harvest.source.spec
             upserts = []
             deletes = []
-            for seed in get_edurep_oaipmh_seeds(set_specification, harvest.latest_update_at, include_no_url=True):
+            for seed in get_harvest_seeds(set_specification, harvest.latest_update_at, include_no_url=True):
                 if seed.get("state", "active") == "active":
                     upserts.append(seed)
                 else:

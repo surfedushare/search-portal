@@ -9,10 +9,10 @@ from core.models import Dataset, Collection, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.management.commands.update_dataset import Command as DatasetCommand
 from core.logging import HarvestLogger
-from edurep.utils import get_edurep_oaipmh_seeds
+from harvester.utils.extraction import get_harvest_seeds
 
 
-GET_EDUREP_OAIPMH_SEEDS_TARGET = "core.management.commands.update_dataset.get_edurep_oaipmh_seeds"
+GET_HARVEST_SEEDS_TARGET = "core.management.commands.update_dataset.get_harvest_seeds"
 HANDLE_UPSERT_SEEDS_TARGET = "core.management.commands.update_dataset.Command.handle_upsert_seeds"
 HANDLE_DELETION_SEEDS_TARGET = "core.management.commands.update_dataset.Command.handle_deletion_seeds"
 DUMMY_SEEDS = [
@@ -49,17 +49,17 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         command.batch_size = 32
         return command
 
-    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS)
+    @patch(GET_HARVEST_SEEDS_TARGET, return_value=DUMMY_SEEDS)
     @patch(HANDLE_UPSERT_SEEDS_TARGET, return_value=[0, 7, 14])
     @patch(HANDLE_DELETION_SEEDS_TARGET, return_value=[1, 3])
     def test_dataset(self, deletion_target, upsert_target, seeds_target):
         # Checking whether end result of the command returned by "handle" matches expectations.
-        # We'd expect the command to get seeds from get_edurep_oaipmh_seeds function.
+        # We'd expect the command to get seeds from get_harvest_seeds function.
         # After that the modifications to the dataset are done by two methods named:
         # handle_upsert_seeds and handle_deletion_seeds.
-        # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
+        # We'll test those separately, but check if they get called with the seeds returned by get_harvest_seeds
         call_command("update_dataset", "--dataset=test")
-        # Asserting usage of get_edurep_oaipmh_seeds
+        # Asserting usage of get_harvest_seeds
         seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)),
                                              include_no_url=True)
         # Asserting usage of handle_upsert_seeds
@@ -110,7 +110,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         command = self.get_command_instance()
         upserts = [
             seed
-            for seed in get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") == "active"
         ]
         skipped, dumped, documents_count = command.handle_upsert_seeds(collection, upserts)
@@ -140,7 +140,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         command = self.get_command_instance()
         deletes = [
             seed
-            for seed in get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") != "active"
         ]
         # Basically we're testing that deletion seeds are not triggering errors when their targets do not exist.
@@ -189,7 +189,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         # Perform the test
         upserts = [
             seed
-            for seed in get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") == "active"
         ]
         skipped, dumped, documents_count = command.handle_upsert_seeds(collection, upserts)
@@ -245,7 +245,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         document_count = collection.document_set.count()
         deletes = [
             seed
-            for seed in get_edurep_oaipmh_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") != "active"
         ]
         arrangement_deletes, document_deletes = command.handle_deletion_seeds(collection, deletes)
