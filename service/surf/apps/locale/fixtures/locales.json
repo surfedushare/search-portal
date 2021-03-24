@@ -341,6 +341,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "1a156764-bb11-45a5-b707-c5a9d49d86de",
+    "fields": {
+        "asset": "cc0",
+        "en": "No rights reserved",
+        "nl": "Geen rechten voorbehouden",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "1a48f5e5-11bb-4f36-95de-b8948f34cc8d",
     "fields": {
         "asset": "Informatiebron (Niv. 2)_auto_generated_at_Fri Sep 13 08:51:33 2019-210799",
@@ -1681,6 +1691,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "706ff48b-a5df-4b4d-be97-bfaef6bb9ef8",
+    "fields": {
+        "asset": "pdm-10",
+        "en": "Public Domain Mark",
+        "nl": "Publiek Domein Markering",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "70d4f7ad-8a60-483e-9b1f-f244db35aa37",
     "fields": {
         "asset": "cc-by-30_auto_generated_at_Fri Sep 13 08:51:33 2019-739596",
@@ -2064,8 +2084,8 @@
     "pk": "8f05bb7a-5f28-4aa3-b8fe-54778ca53465",
     "fields": {
         "asset": "Give-feedback-subtext",
-        "en": "If you have any comments on how we could improve the SURF search portal, we would like to hear from you.",
-        "nl": "Als je opmerkingen hebt over hoe we het SURF zoekportaal kunnen verbeteren, dan horen we het graag.",
+        "en": "If you have any comments on how we could improve the edusources, we would like to hear from you.",
+        "nl": "Als je opmerkingen hebt over hoe we edusources kunnen verbeteren, dan horen we het graag.",
         "is_fuzzy": false
     }
 },
@@ -2186,6 +2206,16 @@
         "asset": "Scheikunde_auto_generated_at_Fri Sep 13 08:53:14 2019-080970",
         "en": "Chemistry",
         "nl": "Scheikunde",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "93b918f0-4ab1-46c9-ba8e-3fe1ac5a7aa8",
+    "fields": {
+        "asset": "Domein Applied Science",
+        "en": "Domain Applied Science",
+        "nl": "Domein Applied Science",
         "is_fuzzy": false
     }
 },
@@ -2481,6 +2511,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "a45b84ba-5acd-49bc-b7a2-25662e6d05ca",
+    "fields": {
+        "asset": "cc0-10",
+        "en": "Creative Commons Zero",
+        "nl": "Creative Commons Zero",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "a680af5c-bcf4-4bff-a104-42ecb985cdc2",
     "fields": {
         "asset": "save-privacy-settings-and-logout",
@@ -2506,6 +2546,16 @@
         "asset": "Engels_auto_generated_at_Fri Sep 13 08:51:51 2019-587929",
         "en": "English",
         "nl": "Engels",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "a8e1e999-6cd8-4b1b-b99c-37f36abd4b17",
+    "fields": {
+        "asset": "no-copyright",
+        "en": "No rights reserved",
+        "nl": "Geen rechten voorbehouden",
         "is_fuzzy": false
     }
 },
@@ -2866,6 +2916,16 @@
         "asset": "Contact-email",
         "en": "Contact",
         "nl": "Contact",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "baca2875-d1d5-427b-a00a-1bd2f1550113",
+    "fields": {
+        "asset": "cc-none",
+        "en": "None",
+        "nl": "Geen",
         "is_fuzzy": false
     }
 },
@@ -3961,6 +4021,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "faf46efa-0555-4b31-ba6c-df7daf05819d",
+    "fields": {
+        "asset": "Search-in-community-materials",
+        "en": "Search in community materials",
+        "nl": "Zoek in leermaterialen community",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "fbf48113-d6b7-4f13-a4d2-790eaceae680",
     "fields": {
         "asset": "back-to-search-results",
@@ -4046,6 +4116,16 @@
         "asset": "aarde-milieu-thema-filter",
         "en": "Earth and environment",
         "nl": "Aarde en Milieu",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "ffba7b91-2d92-4b11-8f27-69422119c846",
+    "fields": {
+        "asset": "pdm",
+        "en": "Public Domain Mark",
+        "nl": "Publiek Domein Markering",
         "is_fuzzy": false
     }
 },
