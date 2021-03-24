@@ -7,6 +7,7 @@ from core.models.datatypes.dataset import Dataset
 
 class OAIPMHRepositories:
     EDUREP = "edurep.EdurepOAIPMH"
+    SHAREKIT = "sharekit.SharekitMetadataHarvest"
 
 
 OAIPMH_REPOSITORY_CHOICES = [

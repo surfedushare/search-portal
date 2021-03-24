@@ -26,3 +26,5 @@ secrets:
   django:
     secret_key: "development-secret-key--do-not-use"
     admin_password: "qwerty"
+  sharekit:
+    api_key: null
