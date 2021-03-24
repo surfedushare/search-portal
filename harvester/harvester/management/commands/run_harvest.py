@@ -2,7 +2,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from core.tasks import harvest
+from harvester.tasks import harvest
 
 
 logger = logging.getLogger("harvester")
