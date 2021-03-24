@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from django.core.management import CommandError
 from django.utils.timezone import now
 from datagrowth.resources.http.tasks import send
@@ -12,11 +10,16 @@ from core.models import OAIPMHHarvest, OAIPMHRepositories
 
 class Command(PipelineCommand):
 
-    command_name = "harvest_edurep_seeds"
+    command_name = "harvest_metadata"
+
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
+        parser.add_argument('-r', '--repository', action="store", default=OAIPMHRepositories.EDUREP)
+        parser.add_argument('-p', '--promote', action="store_true")
 
     def harvest_seeds(self, harvest, current_time):
         send_config = create_config("http_resource", {
-            "resource": "edurep.EdurepOAIPMH",
+            "resource": harvest.source.repository,
             "continuation_limit": 1000,
         })
 
@@ -32,14 +35,16 @@ class Command(PipelineCommand):
         return len(scc), len(err)
 
     def handle(self, *args, **options):
+
         dataset_name = options["dataset"]
+        repository_resource = options["repository"]
 
         self.logger.start("seeds")
 
         harvest_queryset = OAIPMHHarvest.objects.filter(
             dataset__name=dataset_name,
             stage=HarvestStages.NEW,
-            source__repository=OAIPMHRepositories.EDUREP
+            source__repository=repository_resource
         )
         if not harvest_queryset.exists():
             raise OAIPMHHarvest.DoesNotExist(

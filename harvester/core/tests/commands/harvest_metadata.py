@@ -11,7 +11,7 @@ from core.constants import HarvestStages
 from core.utils.harvest import prepare_harvest
 
 
-class TestSeedHarvest(TestCase):
+class TestMetadataHarvest(TestCase):
     """
     This test case represents the scenario where a harvest is started from t=0
     """
@@ -23,8 +23,8 @@ class TestSeedHarvest(TestCase):
         # We'd expect two OAI-PMH calls to be made which should be both a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
-        with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test")
+        with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
+            call_command("harvest_metadata", "--dataset=test")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
@@ -52,8 +52,8 @@ class TestSeedHarvest(TestCase):
     def test_edurep_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
         try:
-            call_command("harvest_edurep_seeds", "--dataset=invalid")
-            self.fail("harvest_edurep_seeds did not raise for an invalid dataset")
+            call_command("harvest_metadata", "--dataset=invalid")
+            self.fail("harvest_metadata did not raise for an invalid dataset")
         except OAIPMHHarvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
@@ -61,21 +61,21 @@ class TestSeedHarvest(TestCase):
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
         try:
-            call_command("harvest_edurep_seeds", "--dataset=invalid")
-            self.fail("harvest_edurep_seeds did not raise for a dataset without pending harvests")
+            call_command("harvest_metadata", "--dataset=invalid")
+            self.fail("harvest_metadata did not raise for a dataset without pending harvests")
         except OAIPMHHarvest.DoesNotExist:
             pass
 
     def test_edurep_down(self):
-        with patch("edurep.management.commands.harvest_edurep_seeds.send", return_value=([], [100],)):
+        with patch("core.management.commands.harvest_metadata.send", return_value=([], [100],)):
             try:
-                call_command("harvest_edurep_seeds", "--dataset=test")
-                self.fail("harvest_edurep_seeds did not fail when EdurepOAIPMH was returning errors")
+                call_command("harvest_metadata", "--dataset=test")
+                self.fail("harvest_metadata did not fail when Resource was returning errors")
             except CommandError:
                 pass
 
 
-class TestSeedHarvestWithHistory(TestCase):
+class TestMetadataHarvestWithHistory(TestCase):
     """
     This test case represents the scenario where a harvest from a previous harvest
     """
@@ -89,8 +89,8 @@ class TestSeedHarvestWithHistory(TestCase):
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
         dataset = Dataset.objects.last()
         prepare_harvest(dataset)
-        with patch("edurep.management.commands.harvest_edurep_seeds.send", wraps=send) as send_mock:
-            call_command("harvest_edurep_seeds", "--dataset=test")
+        with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
+            call_command("harvest_metadata", "--dataset=test")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args

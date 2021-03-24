@@ -126,7 +126,7 @@ class TestBasicHarvest(TestCase):
         # Testing the case where a Dataset does not exist at all
         try:
             call_command("harvest_basic_content", "--dataset=invalid")
-            self.fail("harvest_edurep_seeds did not raise for an invalid dataset")
+            self.fail("harvest_basic_content did not raise for an invalid dataset")
         except OAIPMHHarvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
