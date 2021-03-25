@@ -15,6 +15,7 @@ def get_harvest_seeds(set_specification, latest_update, include_deleted=True, in
     More information on Edurep: https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
     """
     results = EdurepOAIPMH.objects.extract_seeds(set_specification, latest_update)
+    results += SharekitMetadataHarvest.objects.extract_seeds(set_specification, latest_update)
 
     seeds = []
     for seed in results:
