@@ -29,4 +29,4 @@ secrets:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/django"
     admin_password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/django"
   sharekit:
-    api_key: null
+    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/sharekit-credentials"
