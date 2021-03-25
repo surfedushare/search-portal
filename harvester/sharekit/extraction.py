@@ -109,24 +109,24 @@ class SharekitMetadataExtraction(object):
 
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
-    "url": SharekitMetadataExtraction.get_url,  # TODO: more selection??
-    # "files": EdurepDataExtraction.get_files,  # TODO: add this
+    "url": SharekitMetadataExtraction.get_url,  # REFACTOR: more selection??
+    # "files": EdurepDataExtraction.get_files,  # REFACTOR: add this
     "title": "$.attributes.title",
     "language": "$.attributes.language",
     "keywords": "$.attributes.keywords",
     "description": "$.attributes.abstract",
-    "mime_type": "text/html",  # TODO: add this
+    "mime_type": "text/html",  # REFACTOR: add this
     "copyright": SharekitMetadataExtraction.get_copyright,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
-    "publishers": SharekitMetadataExtraction.get_publishers,  # TODO: only one?
+    "publishers": SharekitMetadataExtraction.get_publishers,  # REFACTOR: only one?
     "publisher_date": "$.attributes.dateIssued",
-    "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,  # TODO: only one?
+    "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,  # REFACTOR: only one?
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
-    "disciplines": [],  # TODO: add this
+    "disciplines": [],  # REFACTOR: add this
     "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
-    "is_part_of": SharekitMetadataExtraction.get_is_part_of,  # TODO: multiple?
+    "is_part_of": SharekitMetadataExtraction.get_is_part_of,  # REFACTOR: multiple?
     "has_parts": "$.attributes.hasParts"
 }
