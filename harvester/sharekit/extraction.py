@@ -94,7 +94,7 @@ class SharekitMetadataExtraction(object):
         ideas = node["attributes"]["vocabulary"]
         if not ideas:
             return []
-        return ideas.split(" - ")
+        return ideas
 
     @classmethod
     def get_analysis_allowed(cls, node):
