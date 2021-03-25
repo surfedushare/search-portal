@@ -1,6 +1,6 @@
 import factory
 
-from core.models import Document, Dataset, OAIPMHHarvest, OAIPMHSet, FileResource
+from core.models import Document, Dataset, Harvest, HarvestSource, FileResource
 from core.constants import HarvestStages
 
 
@@ -42,21 +42,21 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         })
 
 
-class OAIPMHSetFactory(factory.django.DjangoModelFactory):
+class HarvestSourceFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = OAIPMHSet
+        model = HarvestSource
 
     name = "SURF Sharekit"
     repository = "edurep.EdurepOAIPMH"
     spec = "surf"
 
 
-class OAIPMHHarvestFactory(factory.django.DjangoModelFactory):
+class HarvestFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = OAIPMHHarvest
+        model = Harvest
 
     dataset = factory.SubFactory(DatasetFactory)
-    source = factory.SubFactory(OAIPMHSetFactory)
+    source = factory.SubFactory(HarvestSourceFactory)
     stage = HarvestStages.NEW
 
 

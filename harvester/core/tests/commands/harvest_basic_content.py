@@ -7,7 +7,7 @@ from django.core.management import call_command
 from django.utils.timezone import make_aware
 
 from core.constants import HarvestStages
-from core.models import OAIPMHHarvest
+from core.models import Harvest
 from core.management.commands.harvest_basic_content import Command as BasicHarvestCommand
 from core.logging import HarvestLogger
 
@@ -91,13 +91,13 @@ class TestBasicHarvest(TestCase):
         extract_target.assert_called_once_with("basic.extract", DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         self.assertEqual(
             surf_harvest.stage,
             HarvestStages.BASIC,
             "surf set harvest should got updated to stage BASIC to prevent re-harvest in the future"
         )
-        edurep_delen_harvest = OAIPMHHarvest.objects.get(source__spec="edurep_delen")
+        edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
             edurep_delen_harvest.stage,
             HarvestStages.VIDEO,
@@ -127,16 +127,16 @@ class TestBasicHarvest(TestCase):
         try:
             call_command("harvest_basic_content", "--dataset=invalid")
             self.fail("harvest_basic_content did not raise for an invalid dataset")
-        except OAIPMHHarvest.DoesNotExist:
+        except Harvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         surf_harvest.stage = HarvestStages.BASIC
         surf_harvest.save()
         try:
             call_command("harvest_basic_content", "--dataset=invalid")
             self.fail("harvest_basic_content did not raise for a dataset without pending harvests")
-        except OAIPMHHarvest.DoesNotExist:
+        except Harvest.DoesNotExist:
             pass
 
     def test_download_seed_files(self):

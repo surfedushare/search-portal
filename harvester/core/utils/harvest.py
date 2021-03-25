@@ -1,6 +1,6 @@
 import logging
 
-from core.models import Arrangement, OAIPMHHarvest
+from core.models import Arrangement, Harvest
 from core.constants import HarvestStages
 
 
@@ -10,7 +10,7 @@ logger = logging.getLogger("harvester")
 def prepare_harvest(dataset):
     logger.debug("Deleting arrangements in trash")
     Arrangement.objects.filter(deleted_at__isnull=False).delete()
-    harvest_queryset = OAIPMHHarvest.objects.filter(
+    harvest_queryset = Harvest.objects.filter(
         dataset=dataset,
         stage=HarvestStages.COMPLETE
     )

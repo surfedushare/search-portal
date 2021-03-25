@@ -1,3 +1,14 @@
+class Repositories:
+    EDUREP = "edurep.EdurepOAIPMH"
+    SHAREKIT = "sharekit.SharekitMetadataHarvest"
+
+
+REPOSITORY_CHOICES = [
+    (value, attr.lower().capitalize())
+    for attr, value in sorted(Repositories.__dict__.items()) if not attr.startswith("_")
+]
+
+
 class HarvestStages:
     NEW = "New"
     BASIC = "Basic"

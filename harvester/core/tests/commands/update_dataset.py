@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.core.management import call_command
 from django.utils.timezone import make_aware
 
-from core.models import Dataset, Collection, OAIPMHHarvest
+from core.models import Dataset, Collection, Harvest
 from core.constants import HarvestStages
 from core.management.commands.update_dataset import Command as DatasetCommand
 from core.logging import HarvestLogger
@@ -39,8 +39,8 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # Moving the VIDEO source to complete to test it gets ignored by the dataset command
         # Setting the stage of the "surf" set harvests to VIDEO
         # The only valid stage for "update_dataset" to act on.
-        OAIPMHHarvest.objects.filter(stage=HarvestStages.VIDEO).update(stage=HarvestStages.COMPLETE)
-        OAIPMHHarvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        Harvest.objects.filter(stage=HarvestStages.VIDEO).update(stage=HarvestStages.COMPLETE)
+        Harvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
         super().setUp()
 
     def get_command_instance(self):
@@ -74,13 +74,13 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         self.assertEqual(args[1], DUMMY_SEEDS[-1:])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         self.assertEqual(
             surf_harvest.stage,
             HarvestStages.PREVIEW,
             "surf set harvest should got updated to stage BASIC to prevent re-harvest in the future"
         )
-        edurep_delen_harvest = OAIPMHHarvest.objects.get(source__spec="edurep_delen")
+        edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
             edurep_delen_harvest.stage,
             HarvestStages.COMPLETE,
@@ -95,13 +95,13 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         except Dataset.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         surf_harvest.stage = HarvestStages.BASIC
         surf_harvest.save()
         try:
             call_command("update_dataset", "--dataset=test")
             self.fail("update_dataset did not raise for a dataset without pending harvests")
-        except OAIPMHHarvest.DoesNotExist:
+        except Harvest.DoesNotExist:
             pass
 
     def test_handle_upsert_seeds(self):
@@ -156,7 +156,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
     def setUp(self):
         # Setting the stage of the "surf" set harvests to VIDEO.
         # The only valid stage for "update_dataset" to act on.
-        OAIPMHHarvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        Harvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
         super().setUp()
 
     def get_command_instance(self):

@@ -4,7 +4,7 @@ from collections import defaultdict
 from django.db.models import Count
 from django.conf import settings
 
-from core.models import Dataset, Collection, Arrangement, OAIPMHHarvest
+from core.models import Dataset, Collection, Arrangement, Harvest
 from core.constants import HarvestStages
 from core.management.base import PipelineCommand
 from core.utils.resources import get_material_resources, serialize_resource
@@ -189,13 +189,13 @@ class Command(PipelineCommand):
         dataset_name = options["dataset"]
         dataset = Dataset.objects.get(name=dataset_name)
 
-        harvest_queryset = OAIPMHHarvest.objects.filter(
-            dataset__name=dataset_name,
+        harvest_queryset = Harvest.objects.filter(
+            dataset__name=dataset_name,  # REFACTOR: needs more filtering
             stage=HarvestStages.VIDEO
         )
         if not harvest_queryset.exists():
-            raise OAIPMHHarvest.DoesNotExist(
-                f"There are no scheduled and VIDEO EdurepHarvest objects for '{dataset_name}'"
+            raise Harvest.DoesNotExist(
+                f"There are no scheduled and VIDEO Harvest objects for '{dataset_name}'"
             )
 
         self.logger.start("update")

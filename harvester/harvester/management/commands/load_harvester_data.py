@@ -76,8 +76,8 @@ class Command(base.LabelCommand):
         # Delete old datasets
         dataset = Dataset.objects.filter(name=dataset_label).last()
         if dataset is not None:
-            dataset.oaipmhset_set.all().delete()
-            dataset.oaipmhharvest_set.all().delete()
+            dataset.harvestsource_set.all().delete()
+            dataset.harvest_set.all().delete()
             dataset.delete()
 
         if harvest_source and not skip_download:

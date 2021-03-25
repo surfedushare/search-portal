@@ -3,7 +3,7 @@ from datagrowth.resources.shell.tasks import run_serie
 from datagrowth.configuration import create_config
 from core.management.base import PipelineCommand
 from core.constants import HarvestStages
-from core.models import OAIPMHHarvest, FileResource
+from core.models import Harvest, FileResource
 from harvester.utils.extraction import get_harvest_seeds
 
 
@@ -68,13 +68,13 @@ class Command(PipelineCommand):
 
         dataset_name = options["dataset"]
 
-        harvest_queryset = OAIPMHHarvest.objects.filter(
+        harvest_queryset = Harvest.objects.filter(
             dataset__name=dataset_name,
             stage=HarvestStages.NEW
         )
         if not harvest_queryset.exists():
-            raise OAIPMHHarvest.DoesNotExist(
-                f"There are no scheduled and NEW OAIPMHHarvest objects for '{dataset_name}'"
+            raise Harvest.DoesNotExist(
+                f"There are no scheduled and NEW Harvest objects for '{dataset_name}'"
             )
 
         self.logger.start("basic")

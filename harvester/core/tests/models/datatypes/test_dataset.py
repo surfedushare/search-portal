@@ -4,7 +4,8 @@ from datetime import datetime
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
-from core.models import Dataset, FileResource, TikaResource, HarvestStages
+from core.constants import HarvestStages
+from core.models import Dataset, FileResource, TikaResource
 
 
 class TestResetDataset(TestCase):
@@ -37,8 +38,8 @@ class TestResetDataset(TestCase):
         self.assertEqual(preview_storage_mock.delete.call_count, 0, "Expected preview files to remain after a reset")
         self.assertEqual(dataset.collection_set.count(), 0)
         self.assertEqual(dataset.document_set.count(), 0)
-        self.assertEqual(dataset.oaipmhharvest_set.count(), 2)
-        for harvest in dataset.oaipmhharvest_set.all():
+        self.assertEqual(dataset.harvest_set.count(), 2)
+        for harvest in dataset.harvest_set.all():
             self.assertEqual(harvest.latest_update_at, make_aware(datetime(day=1, month=1, year=1970)))
             self.assertIsNone(harvest.harvested_at)
             self.assertEqual(harvest.stage, HarvestStages.NEW)

@@ -6,7 +6,7 @@ from django.core.management import call_command, CommandError
 from django.utils.timezone import make_aware
 
 from datagrowth.resources.http.tasks import send
-from core.models import Dataset, Arrangement, Document, OAIPMHHarvest
+from core.models import Dataset, Arrangement, Document, Harvest
 from core.constants import HarvestStages
 from core.utils.harvest import prepare_harvest
 
@@ -37,13 +37,13 @@ class TestMetadataHarvest(TestCase):
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         self.assertGreater(
             surf_harvest.harvested_at,
             make_aware(datetime(year=1970, month=1, day=1)),
             "surf set harvested_at should got updated to prevent re-harvest in the future"
         )
-        edurep_delen_harvest = OAIPMHHarvest.objects.get(source__spec="edurep_delen")
+        edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
             edurep_delen_harvest.latest_update_at, make_aware(datetime(year=1970, month=1, day=1)),
             "edurep_delen set harvest got updated while we expected it to be ignored"
@@ -54,16 +54,16 @@ class TestMetadataHarvest(TestCase):
         try:
             call_command("harvest_metadata", "--dataset=invalid")
             self.fail("harvest_metadata did not raise for an invalid dataset")
-        except OAIPMHHarvest.DoesNotExist:
+        except Harvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
         try:
             call_command("harvest_metadata", "--dataset=invalid")
             self.fail("harvest_metadata did not raise for a dataset without pending harvests")
-        except OAIPMHHarvest.DoesNotExist:
+        except Harvest.DoesNotExist:
             pass
 
     def test_edurep_down(self):
@@ -103,13 +103,13 @@ class TestMetadataHarvestWithHistory(TestCase):
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         self.assertGreater(
             surf_harvest.harvested_at,
             make_aware(datetime(year=2020, month=2, day=10)),
             "surf set harvested_at should got updated to prevent re-harvest in the future"
         )
-        edurep_delen_harvest = OAIPMHHarvest.objects.get(source__spec="edurep_delen")
+        edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
             edurep_delen_harvest.latest_update_at, make_aware(datetime(year=1970, month=1, day=1)),
             "edurep_delen set harvest got updated while we expected it to be ignored"

@@ -12,7 +12,7 @@ from django.utils.timezone import make_aware, datetime
 from django.test import TestCase
 from django.core.management import call_command
 
-from core.models import Dataset, OAIPMHHarvest, ElasticIndex, Arrangement, Document
+from core.models import Dataset, Harvest, ElasticIndex, Arrangement, Document
 from core.tests.mocks import get_elastic_client_mock
 
 
@@ -247,7 +247,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
         # Putting latest harvest into the future to test partial update
         harvested_at = make_aware(datetime(year=2020, month=6, day=1))
-        OAIPMHHarvest.objects.all().update(harvested_at=harvested_at)
+        Harvest.objects.all().update(harvested_at=harvested_at)
 
         # Setting basic expectations used in the test
         expected_doc_count = {

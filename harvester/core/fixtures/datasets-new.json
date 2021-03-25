@@ -12,7 +12,7 @@
     }
 },
 {
-    "model": "core.oaipmhset",
+    "model": "core.harvestsource",
     "pk": 1,
     "fields": {
         "name": "SURF Sharekit",
@@ -23,7 +23,7 @@
     }
 },
 {
-    "model": "core.oaipmhset",
+    "model": "core.harvestsource",
     "pk": 2,
     "fields": {
         "name": "Edurep Delen",
@@ -34,7 +34,7 @@
     }
 },
 {
-    "model": "core.oaipmhharvest",
+    "model": "core.harvest",
     "pk": 46,
     "fields": {
         "source": 1,
@@ -45,7 +45,7 @@
     }
 },
 {
-    "model": "core.oaipmhharvest",
+    "model": "core.harvest",
     "pk": 42,
     "fields": {
         "source": 2,

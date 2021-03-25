@@ -11,6 +11,6 @@ from .datatypes.collection import Collection
 from .datatypes.arrangement import Arrangement
 from .datatypes.document import Document, document_delete_handler
 
-from .oaipmh import OAIPMHSet, OAIPMHHarvest, OAIPMHRepositories, HarvestStages
+from .harvest import Harvest, HarvestSource
 
 from .search import ElasticIndex, ElasticIndexSerializer

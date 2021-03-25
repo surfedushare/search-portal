@@ -41,7 +41,7 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
             dispatch_uid="document_delete"
         )
         self.collection_set.all().delete()
-        for harvest in self.oaipmhharvest_set.all():
+        for harvest in self.harvest_set.all():
             harvest.reset()
         models.signals.post_delete.connect(
             document_delete_handler,
@@ -53,7 +53,7 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         return ",".join([index.remote_name for index in self.indices.all()])
 
     def get_earliest_harvest_date(self):
-        latest_harvest = self.oaipmhharvest_set.order_by("harvested_at").first()
+        latest_harvest = self.harvest_set.order_by("harvested_at").first()
         return latest_harvest.harvested_at if latest_harvest else None
 
     def get_elastic_documents_by_language(self, since):

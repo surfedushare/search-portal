@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.core.management import call_command
 
 from core.management.commands.generate_previews import Command as GeneratePreviewsCommand
-from core.tests.factories import DocumentFactory, DatasetFactory, OAIPMHHarvestFactory
+from core.tests.factories import DocumentFactory, DatasetFactory, HarvestFactory
 from core.constants import HarvestStages
 
 
@@ -24,7 +24,7 @@ class TestGeneratePreviews(TestCase):
         ready_mock.return_value = True
         apply_async_mock.return_value.ready = ready_mock
         dataset = DatasetFactory.create(name="test")
-        oaipmh_harvest = OAIPMHHarvestFactory.create(dataset=dataset, stage=HarvestStages.PREVIEW)
+        harvest = HarvestFactory.create(dataset=dataset, stage=HarvestStages.PREVIEW)
         document_with_website = DocumentFactory.create(dataset=dataset, mime_type="text/html")
         document_from_youtube = DocumentFactory.create(dataset=dataset, mime_type="text/html", from_youtube=True)
         pdf_document = DocumentFactory.create(dataset=dataset, mime_type="application/pdf", file_type="pdf")
@@ -39,5 +39,5 @@ class TestGeneratePreviews(TestCase):
         pdf_mock.assert_called_once_with(pdf_document.id, 3)
         apply_async_mock.assert_called()
         ready_mock.assert_called()
-        oaipmh_harvest.refresh_from_db()
-        self.assertEqual(oaipmh_harvest.stage, HarvestStages.COMPLETE)
+        harvest.refresh_from_db()
+        self.assertEqual(harvest.stage, HarvestStages.COMPLETE)

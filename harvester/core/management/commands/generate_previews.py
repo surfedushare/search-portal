@@ -5,7 +5,7 @@ from celery import group
 from django.db.models import Q
 
 from core.constants import HarvestStages
-from core.models import Document, OAIPMHHarvest
+from core.models import Document, Harvest
 from core.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
 
 
@@ -25,7 +25,9 @@ class Command(PipelineCommand):
                 Q(properties__mime_type="text/html") |
                 Q(properties__file_type="pdf")
             ) \
-            .filter(dataset__name=dataset_name) \
+            .filter(
+                dataset__name=dataset_name  # REFACTOR: needs more filtering
+            ) \
             .filter(properties__preview_path=None) \
             .filter(properties__analysis_allowed=True)
         documents_count = html_documents.count()
@@ -47,8 +49,8 @@ class Command(PipelineCommand):
             time.sleep(10)
 
     def complete_preview_stage(self, dataset_name):
-        OAIPMHHarvest.objects.filter(
-            dataset__name=dataset_name,
+        Harvest.objects.filter(
+            dataset__name=dataset_name,  # REFACTOR: needs more filtering
             stage=HarvestStages.PREVIEW
         ).update(
             stage=HarvestStages.COMPLETE

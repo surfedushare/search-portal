@@ -3,23 +3,23 @@ from django.contrib import messages
 
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 
-from core.models import (Dataset, Collection, Arrangement, Document, OAIPMHSet, ElasticIndex, CommonCartridge,
+from core.models import (Dataset, Collection, Arrangement, Document, HarvestSource, ElasticIndex, CommonCartridge,
                          FileResource, TikaResource)
 
 
-class OAIPMHSetAdmin(admin.ModelAdmin):
+class HarvestSourceAdmin(admin.ModelAdmin):
     list_display = ("name", "spec", "created_at", "modified_at",)
 
 
-class OAIPMHHarvestAdminInline(admin.TabularInline):
-    model = OAIPMHSet.datasets.through
+class HarvestAdminInline(admin.TabularInline):
+    model = HarvestSource.datasets.through
     fields = ("source", "harvested_at", "latest_update_at", "stage",)
     readonly_fields = ("harvested_at",)
     extra = 0
 
 
 class DatasetAdmin(DataStorageAdmin):
-    inlines = [OAIPMHHarvestAdminInline]
+    inlines = [HarvestAdminInline]
 
     actions = ["reset_dataset_harvest"]
 
@@ -49,7 +49,7 @@ class CommonCartridgeAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'upload_at', 'metadata_tag')
 
 
-admin.site.register(OAIPMHSet, OAIPMHSetAdmin)
+admin.site.register(HarvestSource, HarvestSourceAdmin)
 admin.site.register(Dataset, DatasetAdmin)
 admin.site.register(Collection, DataStorageAdmin)
 admin.site.register(Arrangement, ArrangementAdmin)

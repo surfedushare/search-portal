@@ -4,8 +4,8 @@ from datagrowth.resources.http.tasks import send
 from datagrowth.configuration import create_config
 
 from core.management.base import PipelineCommand
-from core.constants import HarvestStages
-from core.models import OAIPMHHarvest, OAIPMHRepositories
+from core.constants import HarvestStages, Repositories
+from core.models import Harvest
 
 
 class Command(PipelineCommand):
@@ -14,7 +14,7 @@ class Command(PipelineCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('-r', '--repository', action="store", default=OAIPMHRepositories.EDUREP)
+        parser.add_argument('-r', '--repository', action="store", default=Repositories.EDUREP)  # REFACTOR: no default
         parser.add_argument('-p', '--promote', action="store_true")
 
     def harvest_seeds(self, harvest, current_time):
@@ -41,14 +41,14 @@ class Command(PipelineCommand):
 
         self.logger.start("seeds")
 
-        harvest_queryset = OAIPMHHarvest.objects.filter(
-            dataset__name=dataset_name,
+        harvest_queryset = Harvest.objects.filter(
+            dataset__name=dataset_name,  # REFACTOR: needs more filtering
             stage=HarvestStages.NEW,
             source__repository=repository_resource
         )
         if not harvest_queryset.exists():
-            raise OAIPMHHarvest.DoesNotExist(
-                f"There are no NEW OAIPMHHarvest objects for '{dataset_name}'"
+            raise Harvest.DoesNotExist(
+                f"There are no NEW Harvest objects for '{dataset_name}'"
             )
 
         # Calling the Edurep OAI-PMH interface and get the Edurep meta data about learning materials
