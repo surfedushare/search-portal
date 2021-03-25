@@ -6,6 +6,7 @@ from django.core.management import call_command
 
 from harvester.settings import environment
 from harvester.celery import app
+from core.models.oaipmh import OAIPMHRepositories
 from core.models import Dataset, OAIPMHHarvest
 from core.constants import HarvestStages
 from core.utils.harvest import prepare_harvest
@@ -34,7 +35,8 @@ def harvest(seeds_source=None, reset=False):
         prepare_harvest(dataset)
         # First we call the commands that will query the OAI-PMH interfaces
         if role == "primary":
-            call_command("harvest_metadata", f"--dataset={dataset.name}")
+            call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={OAIPMHRepositories.EDUREP}")
+            call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={OAIPMHRepositories.SHAREKIT}")
         else:
             call_command("load_edurep_oaipmh_data", f"--dataset={dataset.name}",
                          "--force-download", f"--source={seeds_source}")
