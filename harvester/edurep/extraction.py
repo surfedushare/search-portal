@@ -126,20 +126,6 @@ class EdurepDataExtraction(object):
         return node.find('czp:value').find('czp:langstring').text.strip() if node else None
 
     @classmethod
-    def get_author(cls, soup, el):
-        author = el.find(string='author')
-        if not author:
-            return []
-        contribution = author.find_parent('czp:contribute')
-        if not contribution:
-            return []
-        nodes = contribution.find_all('czp:vcard')
-        return [
-            unescape(node.text.strip())
-            for node in nodes
-        ]
-
-    @classmethod
     def get_authors(cls, soup, el):
         author = el.find(string='author')
         if not author:
@@ -222,24 +208,9 @@ class EdurepDataExtraction(object):
         return current_numeric_level
 
     @classmethod
-    def get_educational_levels(cls, soup, el):
-        blocks = cls.find_all_classification_blocks(el, "educational level", "czp:id")
-        return list(set([block.text.strip() for block in blocks]))
-
-    @classmethod
-    def get_humanized_educational_levels(cls, soup, el):
-        blocks = cls.find_all_classification_blocks(el, "educational level", "czp:entry")
-        return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
-
-    @classmethod
     def get_disciplines(cls, soup, el):
         blocks = cls.find_all_classification_blocks(el, "discipline", "czp:id")
         return list(set([block.text.strip() for block in blocks]))
-
-    @classmethod
-    def get_humanized_disciplines(cls, soup, el):
-        blocks = cls.find_all_classification_blocks(el, "discipline", "czp:entry")
-        return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
 
     @classmethod
     def get_ideas(cls, soup, el):
@@ -304,16 +275,12 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "mime_type": EdurepDataExtraction.get_mime_type,
     "copyright": EdurepDataExtraction.get_copyright,
     "aggregation_level": EdurepDataExtraction.get_aggregation_level,
-    "author": EdurepDataExtraction.get_author,
     "authors": EdurepDataExtraction.get_authors,
     "publishers": EdurepDataExtraction.get_publishers,
     "publisher_date": EdurepDataExtraction.get_publisher_date,
     "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
-    "educational_levels": EdurepDataExtraction.get_educational_levels,
-    "humanized_educational_levels": EdurepDataExtraction.get_humanized_educational_levels,
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
     "disciplines": EdurepDataExtraction.get_disciplines,
-    "humanized_disciplines": EdurepDataExtraction.get_humanized_disciplines,
     "ideas": EdurepDataExtraction.get_ideas,
     "from_youtube": EdurepDataExtraction.get_from_youtube,
     "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
