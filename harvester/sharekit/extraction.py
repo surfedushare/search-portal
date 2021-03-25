@@ -13,6 +13,10 @@ class SharekitMetadataExtraction(object):
     def get_record_state(cls, node):
         return "active"
 
+    @classmethod
+    def mirror(cls, value):
+        return lambda node: value
+
     #############################
     # GENERIC
     #############################
@@ -115,7 +119,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "language": "$.attributes.language",
     "keywords": "$.attributes.keywords",
     "description": "$.attributes.abstract",
-    "mime_type": "text/html",  # REFACTOR: add this
+    "mime_type": SharekitMetadataExtraction.mirror("text/html"),  # REFACTOR: add this
     "copyright": SharekitMetadataExtraction.get_copyright,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
@@ -123,7 +127,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "publisher_date": "$.attributes.dateIssued",
     "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,  # REFACTOR: only one?
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
-    "disciplines": [],  # REFACTOR: add this
+    "disciplines": SharekitMetadataExtraction.mirror([]),  # REFACTOR: add this
     "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
