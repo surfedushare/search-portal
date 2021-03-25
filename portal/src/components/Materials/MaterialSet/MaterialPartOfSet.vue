@@ -7,8 +7,8 @@
           {{ mainMaterial.title }}
           <i class="arrow"></i>
         </h3>
-        <div v-if="mainMaterial.has_part">
-          {{ $tc('Materials', mainMaterial.has_part.length) }}
+        <div v-if="mainMaterial.has_parts">
+          {{ $tc('Materials', mainMaterial.has_parts.length) }}
         </div>
       </div>
     </div>

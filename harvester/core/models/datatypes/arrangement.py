@@ -80,8 +80,8 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
 
     @staticmethod
     def get_search_document_details(reference_id, url, title, text, transcription, mime_type, file_type,
-                                    is_part_of=None, has_part=None):
-        has_part = has_part or []
+                                    is_part_of=None, has_parts=None):
+        has_parts = has_parts or []
         return {
             '_id': reference_id,
             'title': title,
@@ -93,7 +93,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             'transcription_plain': transcription,
             'file_type': file_type,
             'mime_type': mime_type,
-            'has_part': has_part,
+            'has_parts': has_parts,
             'is_part_of': is_part_of,
             'suggest_completion': title.split(" ") if title else [],
             'suggest_phrase': text
@@ -173,7 +173,7 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
             self.base_document["mime_type"],
             self.base_document["file_type"],
             is_part_of=self.base_document.properties.get("is_part_of", None),
-            has_part=self.base_document.properties.get("has_part", [])
+            has_parts=self.base_document.properties.get("has_parts", [])
         )
         elastic_details.update(elastic_base)
         yield elastic_details

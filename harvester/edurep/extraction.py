@@ -250,7 +250,7 @@ class EdurepDataExtraction(object):
         return "surfsharekit:" + catalog_entry.text.strip()  # prefix excluded by Edurep, but it's needed
 
     @classmethod
-    def get_has_part(cls, soup, el):
+    def get_has_parts(cls, soup, el):
         elements = el.find_all(string='haspart')
         results = []
         for element in elements:
@@ -285,5 +285,5 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "from_youtube": EdurepDataExtraction.get_from_youtube,
     "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
     "is_part_of": EdurepDataExtraction.get_is_part_of,
-    "has_part": EdurepDataExtraction.get_has_part,
+    "has_parts": EdurepDataExtraction.get_has_parts,
 }

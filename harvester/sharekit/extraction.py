@@ -128,5 +128,5 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
     "is_part_of": SharekitMetadataExtraction.get_is_part_of,  # TODO: multiple?
-    "has_part": "$.attributes.hasParts"
+    "has_parts": "$.attributes.hasParts"
 }

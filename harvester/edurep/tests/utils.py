@@ -99,12 +99,12 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
             "Expected child material to specify its parent"
         )
 
-    def test_has_part_property(self):
+    def test_has_parts_property(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[0]['has_part'], [], "Expected deleted material to have no parts")
-        self.assertEqual(seeds[1]['has_part'], [], "Expected standard material to have no parts")
+        self.assertEqual(seeds[0]['has_parts'], [], "Expected deleted material to have no parts")
+        self.assertEqual(seeds[1]['has_parts'], [], "Expected standard material to have no parts")
         self.assertEqual(
-            seeds[4]['has_part'],
+            seeds[4]['has_parts'],
             [
                 "surfsharekit:oai:surfsharekit.nl:a18cdda7-e9c7-40d7-a7ad-6e875d9015ce",
                 "surfsharekit:oai:surfsharekit.nl:8936d0a3-4157-45f4-9595-c26d4c029d97",
@@ -113,7 +113,7 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
             ],
             "Expected parent material to have children and specify the external ids"
         )
-        self.assertEqual(seeds[5]['has_part'], [], "Expected child material to have no children")
+        self.assertEqual(seeds[5]['has_parts'], [], "Expected child material to have no children")
 
     def test_ideas_property(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))

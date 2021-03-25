@@ -68,7 +68,7 @@ class Command(PipelineCommand):
             "pipeline": pipeline,
             "analysis_allowed": meta.get("analysis_allowed", False),
             "is_part_of": meta.get("is_part_of", None),
-            "has_part": meta.get("has_part", []),
+            "has_parts": meta.get("has_parts", []),
             "ideas": meta.get("ideas", [])
         }
 

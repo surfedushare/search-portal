@@ -151,7 +151,7 @@ class ElasticSearchApiClient:
                 themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
         record['themes'] = list(themes)
         record['source'] = hit['_source']['oaipmh_set']
-        record['has_part'] = hit['_source']['has_part']
+        record['has_parts'] = hit['_source']['has_parts']
         record['is_part_of'] = hit['_source']['is_part_of']
         record['ideas'] = hit['_source'].get('ideas', [])
         return record
