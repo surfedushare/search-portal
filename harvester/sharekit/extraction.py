@@ -22,19 +22,33 @@ class SharekitMetadataExtraction(object):
     #############################
 
     @classmethod
-    def get_files(cls, soup, el):
-        mime_types = el.find_all('czp:format')
-        urls = el.find_all('czp:location')
-        return list(
-            zip(
-                [mime_node.text.strip() for mime_node in mime_types],
-                [url_node.text.strip() for url_node in urls],
-            )
-        )
+    def get_files(cls, node):
+        files = node["attributes"]["file"] or []
+        links = node["attributes"]["link"] or []
+        output = [
+            [file["resourceMimeType"], file["url"]]
+            for file in files
+        ]
+        output += [
+            ["text/html", link["url"]]
+            for link in links
+        ]
+        return output
 
     @classmethod
     def get_url(cls, node):
-        return reach("$.attributes.file.0.url", node)
+        files = cls.get_files(node)
+        if not files:
+            return
+        return files[0][1]
+
+    @classmethod
+    def get_mime_type(cls, node):
+        files = cls.get_files(node)
+        if not files:
+            return
+        return files[0][0]
+
 
     @classmethod
     def get_copyright(cls, node):
@@ -64,10 +78,10 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_lom_educational_levels(cls, node):
-        educational_level = node["attributes"]["publisher"]
+        educational_level = node["attributes"]["level"]
         if not educational_level:
             return []
-        return [educational_level]
+        return [educational_level] if isinstance(educational_level, str) else educational_level
 
     @classmethod
     def get_lowest_educational_level(cls, node):
@@ -92,10 +106,13 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_ideas(cls, node):
-        ideas = node["attributes"]["vocabulary"]
-        if not ideas:
+        compound_ideas = reach("$.0.taxonPath.0.taxon.entry", node)
+        if not compound_ideas:
             return []
-        return ideas
+        ideas = []
+        for compound_idea in compound_ideas:
+            ideas += compound_idea.split(" - ")
+        return list(set(ideas))
 
     @classmethod
     def get_analysis_allowed(cls, node):
@@ -115,12 +132,12 @@ class SharekitMetadataExtraction(object):
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
     "url": SharekitMetadataExtraction.get_url,  # REFACTOR: more selection??
-    # "files": EdurepDataExtraction.get_files,  # REFACTOR: add this
+    "files": SharekitMetadataExtraction.get_files,
     "title": "$.attributes.title",
     "language": "$.attributes.language",
     "keywords": "$.attributes.keywords",
     "description": "$.attributes.abstract",
-    "mime_type": SharekitMetadataExtraction.mirror("text/html"),  # REFACTOR: add this
+    "mime_type": SharekitMetadataExtraction.get_mime_type,
     "copyright": SharekitMetadataExtraction.get_copyright,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
@@ -129,7 +146,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,  # REFACTOR: only one?
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
     "disciplines": SharekitMetadataExtraction.mirror([]),  # REFACTOR: add this
-    "ideas": SharekitMetadataExtraction.get_ideas,
+    "ideas": SharekitMetadataExtraction.get_ideas,  # REFACTOR: simplify?
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
     "is_part_of": SharekitMetadataExtraction.get_is_part_of,  # REFACTOR: multiple?
