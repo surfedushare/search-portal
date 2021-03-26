@@ -28,10 +28,30 @@ class Migration(migrations.Migration):
             name='source',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.HarvestSource'),
         ),
-
-        # migrations.AddField(
-        #     model_name='harvestsource',
-        #     name='datasets',
-        #     field=models.ManyToManyField(through='core.Harvest', to='core.Dataset'),
-        # ),
+        migrations.AlterModelOptions(
+            name='harvestsource',
+            options={},
+        ),
+        migrations.RemoveField(
+            model_name='arrangement',
+            name='collection',
+        ),
+        migrations.RemoveField(
+            model_name='arrangement',
+            name='dataset',
+        ),
+        migrations.RemoveField(
+            model_name='document',
+            name='arrangement',
+        ),
+        migrations.AddField(
+            model_name='document',
+            name='deleted_at',
+            field=models.DateTimeField(blank=True, null=True),
+        ),
+        migrations.AlterField(
+            model_name='harvestsource',
+            name='spec',
+            field=models.CharField(help_text="The code for the 'set' you want to harvest", max_length=255),
+        ),
     ]

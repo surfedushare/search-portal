@@ -4,7 +4,7 @@ from collections import defaultdict
 from django.db.models import Count
 from django.conf import settings
 
-from core.models import Dataset, Collection, Arrangement, Harvest
+from core.models import Dataset, Collection, Document, Harvest
 from core.constants import HarvestStages
 from core.management.base import PipelineCommand
 from core.utils.resources import get_material_resources, serialize_resource
@@ -72,52 +72,32 @@ class Command(PipelineCommand):
             "ideas": meta.get("ideas", [])
         }
 
-    def get_documents_from_transcription(self, transcription_resource, metadata, pipeline):
-        if transcription_resource is None or not transcription_resource.success:
-            # TODO: as long as Amber is not implemented we return empty documents for transcriptions
-            return [self._create_document(
-                "",
-                meta=metadata,
-                pipeline=pipeline,
-                file_type="video",
-                identifier_postfix="video"
-            )]
-        _, transcript = transcription_resource.content
-        return [self._create_document(
-            transcript,
-            meta=metadata,
-            pipeline=pipeline,
-            file_type="video",
-            identifier_postfix="video"
-        )]
-
     def get_documents_from_zip(self, file_resource, tika_resource, metadata, pipeline):
         tika_content_type, data = tika_resource.content
         if data is None:
             return []
         text = data.get("X-TIKA:content", "")
-        return [self._create_document(
+        return self._create_document(
             text,
             meta=metadata,
             pipeline=pipeline
-        )]
+        )
 
-    def get_documents(self, file_resource, tika_resource, metadata, pipeline):
+    def get_document(self, file_resource, tika_resource, metadata, pipeline):
         text = ""
         if tika_resource is None or not tika_resource.success:
-            return [self._create_document(text, meta=metadata, pipeline=pipeline)]
+            return self._create_document(text, meta=metadata, pipeline=pipeline)
         if tika_resource.is_zip():
             return self.get_documents_from_zip(file_resource, tika_resource, metadata, pipeline)
         tika_content_type, data = tika_resource.content
         if data is None:
-            return [self._create_document(text, meta=metadata, pipeline=pipeline)]
+            return self._create_document(text, meta=metadata, pipeline=pipeline)
         if not metadata.get("from_youtube"):
             text = data.get("X-TIKA:content", "")
-        return [self._create_document(text, meta=metadata, pipeline=pipeline)]
+        return self._create_document(text, meta=metadata, pipeline=pipeline)
 
     def handle_upsert_seeds(self, collection, seeds):
         skipped = 0
-        dumped = 0
         documents_count = 0
         self.logger.start("update.upsert")
         for seed in seeds:
@@ -126,42 +106,26 @@ class Command(PipelineCommand):
             pipeline = {
                 "file": serialize_resource(file_resource),
                 "tika": serialize_resource(tika_resource),
-                "video": serialize_resource(video_resource),
-                "kaldi": serialize_resource(transcription_resource)
             }
-            has_video = tika_resource.has_video() if tika_resource is not None else False
-            documents = self.get_documents(file_resource, tika_resource, seed, pipeline)
-            if has_video:
-                documents += self.get_documents_from_transcription(transcription_resource, seed, pipeline)
-
-            if not len(documents):
-                self.logger.debug(f"Skipped material with external id '{seed['external_id']}'")
-                skipped += 1
-                continue
-            dumped += 1
+            properties = self.get_document(file_resource, tika_resource, seed, pipeline)
 
             reference_id = seed["external_id"]
-            arrangement, created = Arrangement.objects.get_or_create(
-                meta__reference_id=reference_id,
+            document, created = Document.objects.get_or_create(
+                reference=reference_id,
                 dataset=collection.dataset,
                 collection=collection,
-                defaults={"referee": "id"}
+                defaults={"properties": properties}
             )
-            arrangement.meta.update({
-                "reference_id": reference_id,
-                "url": seed["url"],
-                "keywords": seed.get("keywords", []),
-            })
-            arrangement.save()
-            arrangement.update(documents, "id", validate=False, collection=collection)
-            arrangement.store_language()
-            documents_count += len(documents)
+            if not created:
+                document.properties = properties
+                document.save()
 
+            documents_count += 1
             self.logger.report_material(seed["external_id"], title=seed["title"], url=seed["url"], pipeline=pipeline)
 
-        self.logger.end("update.upsert", success=dumped, fail=skipped)
+        self.logger.end("update.upsert", success=documents_count, fail=skipped)
 
-        return skipped, dumped, documents_count
+        return skipped, documents_count
 
     def handle_deletion_seeds(self, collection, deletion_seeds):
         self.logger.start("update.delete")
@@ -174,15 +138,8 @@ class Command(PipelineCommand):
                     self.logger.report_material(external_id, state="delete")
                     doc.delete()
                     document_delete_total += 1
-        arrangement_delete_count = 0
-        for arrangement in Arrangement.objects.annotate(num_docs=Count('document')) \
-                .filter(collection=collection, num_docs=0):
-            arrangement.delete()
-            arrangement_delete_count += 1
-
-        self.logger.end("update.delete", success=arrangement_delete_count)
-
-        return arrangement_delete_count, document_delete_total
+        self.logger.end("update.delete", success=document_delete_total)
+        return document_delete_total
 
     def handle(self, *args, **options):
 

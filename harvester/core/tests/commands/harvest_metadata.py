@@ -6,7 +6,7 @@ from django.core.management import call_command, CommandError
 from django.utils.timezone import make_aware
 
 from datagrowth.resources.http.tasks import send
-from core.models import Dataset, Arrangement, Document, Harvest
+from core.models import Dataset, Document, Harvest
 from core.constants import HarvestStages
 from core.utils.harvest import prepare_harvest
 
@@ -114,12 +114,7 @@ class TestMetadataHarvestWithHistory(TestCase):
             edurep_delen_harvest.latest_update_at, make_aware(datetime(year=1970, month=1, day=1)),
             "edurep_delen set harvest got updated while we expected it to be ignored"
         )
-        # Check if Arrangement and documents got removed correctly
-        try:
-            Arrangement.objects.get(id=73743)
-            self.fail("Old deleted Arrangement did not get removed")
-        except Arrangement.DoesNotExist:
-            pass
+        # Check if Documents got removed correctly
         try:
             Document.objects.get(id=197515)
             self.fail("Old deleted Document did not get removed")

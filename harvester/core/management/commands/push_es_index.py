@@ -33,7 +33,7 @@ class Command(PipelineCommand):
         for lang, docs in lang_doc_dict.items():
             if lang == "unk":
                 self.logger.warning(
-                    f"Found arrangements with ambiguous language {[doc['_id'] for doc in docs]}",
+                    f"Found documents with ambiguous language {[doc['_id'] for doc in docs]}",
                 )
             if lang not in settings.ELASTICSEARCH_ANALYSERS:
                 self.logger.warning(f"Found language not in analysers: {lang}")

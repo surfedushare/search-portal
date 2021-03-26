@@ -12,7 +12,7 @@ from django.utils.timezone import make_aware, datetime
 from django.test import TestCase
 from django.core.management import call_command
 
-from core.models import Dataset, Harvest, ElasticIndex, Arrangement, Document
+from core.models import Dataset, Harvest, ElasticIndex, Document
 from core.tests.mocks import get_elastic_client_mock
 
 
@@ -59,8 +59,8 @@ class TestPushToIndex(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 3,
-            "nl": 2
+            "en": 2,
+            "nl": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -110,8 +110,8 @@ class TestPushToIndex(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 3,
-            "nl": 2
+            "en": 2,
+            "nl": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -173,10 +173,10 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        deleted_arrangement = Arrangement.objects.get(
-            meta__reference_id="surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af"
+        deleted_document = Document.objects.get(
+            properties__external_id="surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd"
         )
-        deleted_arrangement.delete()
+        deleted_document.delete()
 
     def setUp(self):
         super().setUp()
@@ -192,19 +192,16 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
     def test_edurep_surf_deletes(self, resource_storage, preview_storage, info_logger, streaming_bulk, get_es_client):
 
         # Marking the Wikiwijsmaken packages as deleted to see how that propagates.
-        # Deleted Arrangements should not have any documents, so removing all those documents as well.
-        delete_target_id = 92378
-        arrangement = Arrangement.objects.get(id=delete_target_id)
-        arrangement.delete()  # this sets deleted_at
-        Document.objects.filter(arrangement_id=delete_target_id).delete()
+        delete_target_id = 222331
+        Document.objects.filter(id=delete_target_id).delete()  # this sets deleted_at
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 3,
+            "en": 2,
             "nl": 2
         }
         expected_deleted_ids = [
-            "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
+            "surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd",
             "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
         ]
 
@@ -234,7 +231,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
                     deleted_count += 1
                 self.assert_document_structure(doc, is_deleted=is_deleted)
             self.assertEqual(index_name, "test")
-        self.assertEqual(deleted_count, 2)
+        self.assertEqual(deleted_count, 1)
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 0)
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 0,
@@ -276,7 +273,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(
-                    doc, doc["_id"] == "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af"
+                    doc, doc["_id"] == "surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd"
                 )
             self.assertEqual(index_name, "test")
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
@@ -291,8 +288,8 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 3,
-            "nl": 2
+            "en": 2,
+            "nl": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -321,7 +318,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(
-                    doc, doc["_id"] == "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af"
+                    doc, doc["_id"] == "surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd"
                 )
 
             self.assertIn(index_name, "test")
@@ -349,8 +346,8 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 3,
-            "nl": 2
+            "en": 2,
+            "nl": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.objects.get(language="en", dataset__name="test").configuration,
@@ -379,7 +376,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
             for doc in docs:
                 self.assert_document_structure(
                     doc,
-                    doc["_id"] == "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af"
+                    doc["_id"] == "surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd"
                 )
 
             self.assertEqual(index_name, "test")

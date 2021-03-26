@@ -40,7 +40,6 @@ class Command(base.LabelCommand):
             queryset_to_disk(dataset.harvest_set, json_file)
             queryset_to_disk(dataset.indices, json_file)
             queryset_to_disk(dataset.collection_set, json_file)
-            queryset_to_disk(dataset.arrangement_set, json_file)
             queryset_to_disk(dataset.document_set, json_file)
 
         resource_files = self.dump_resources()

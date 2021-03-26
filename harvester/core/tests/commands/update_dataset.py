@@ -113,10 +113,9 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
             for seed in get_harvest_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") == "active"
         ]
-        skipped, dumped, documents_count = command.handle_upsert_seeds(collection, upserts)
+        skipped, documents_count = command.handle_upsert_seeds(collection, upserts)
         # When dealing with an entirely new Dataset
-        # Then the arrangement count and document count should equal output of handle_upsert_seeds
-        self.assertEqual(collection.arrangement_set.count(), dumped)
+        # Then the document count should equal output of handle_upsert_seeds
         self.assertEqual(collection.document_set.count(), documents_count)
         # Check that we allow passing through of documents that were unable to fetch content
         text_count = 0
@@ -146,7 +145,6 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # Basically we're testing that deletion seeds are not triggering errors when their targets do not exist.
         command.handle_deletion_seeds(collection, deletes)
         self.assertEqual(collection.document_set.count(), 0)
-        self.assertEqual(collection.arrangement_set.count(), 0)
 
 
 class TestCreateOrUpdateDatasetWithHistory(TestCase):
@@ -170,37 +168,29 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         collection = Collection.objects.get(name="surf", dataset=dataset)
         command = self.get_command_instance()
         # Checking the state before the test
-        arrangement_count = collection.arrangement_set.count()
         document_count = collection.document_set.count()
         vortex_queryset = dataset.documents.filter(properties__title="Using a Vortex | Wageningen UR")
         handson_queryset = dataset.documents.filter(
             properties__title="Hands-on exercise based on WEKA - Tuning and Testing"
         )
-        self.assertEqual(vortex_queryset.count(), 2,
-                         "Expected the start state to contain 'Using a Vortex' twice (text + video)")
+        self.assertEqual(vortex_queryset.count(), 1,
+                         "Expected the start state to contain 'Using a Vortex'")
         self.assertEqual(handson_queryset.count(), 1, "Expected the start state to contain 'Hands-on exercise'")
         for doc in dataset.documents.all():
             self.assertEqual(doc.created_at, doc.modified_at, f"Document is unexpectedly updated: {doc.id}")
-        for arrangement in dataset.arrangement_set.all():
-            self.assertEqual(
-                arrangement.created_at, arrangement.modified_at,
-                f"Arrangement is unexpectedly updated: {arrangement.id}"
-            )
         # Perform the test
         upserts = [
             seed
             for seed in get_harvest_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") == "active"
         ]
-        skipped, dumped, documents_count = command.handle_upsert_seeds(collection, upserts)
+        skipped, documents_count = command.handle_upsert_seeds(collection, upserts)
         # Checking the state after the test
         self.assertEqual(skipped, 0)
-        self.assertEqual(collection.arrangement_set.count(), arrangement_count+2,
-                         "Upsert seeds should have added 2 Arrangements")
         self.assertEqual(collection.document_set.count(), document_count+2)
         # Check video documents content updates
         vortex_updateset = dataset.documents.filter(properties__title="Using a Vortex (responsibly) | Wageningen UR")
-        self.assertEqual(vortex_updateset.count(), 2)
+        self.assertEqual(vortex_updateset.count(), 1)
         self.assertEqual(vortex_queryset.count(), 0)
         # Check regular document content updates
         handson_updateset = dataset.documents.filter(
@@ -212,14 +202,10 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         for update in vortex_updateset:
             self.assertNotEqual(update.created_at, update.modified_at,
                                 f"Document is unexpectedly not updated: {update.id}")
-            self.assertNotEqual(update.arrangement.created_at, update.arrangement.modified_at,
-                                f"Arrangement of document is unexpectedly not updated: {update.id}")
             update_ids.add(update.id)
         for update in handson_updateset:
             self.assertNotEqual(update.created_at, update.modified_at,
                                 f"Document is unexpectedly not updated: {update.id}")
-            self.assertNotEqual(update.arrangement.created_at, update.arrangement.modified_at,
-                                f"Arrangement of document is unexpectedly not updated: {update.id}")
             update_ids.add(update.id)
         not_updated = dataset.documents.exclude(id__in=update_ids)
         self.assertNotEqual(not_updated.count(), 0)
@@ -241,17 +227,17 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         dataset = Dataset.objects.last()
         collection = Collection.objects.get(name="surf", dataset=dataset)
         command = self.get_command_instance()
-        arrangement_count = collection.arrangement_set.count()
         document_count = collection.document_set.count()
         deletes = [
             seed
             for seed in get_harvest_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") != "active"
         ]
-        arrangement_deletes, document_deletes = command.handle_deletion_seeds(collection, deletes)
-        self.assertEqual(arrangement_deletes, 1)
+        document_deletes = command.handle_deletion_seeds(collection, deletes)
         self.assertEqual(document_deletes, 1)
-        self.assertEqual(collection.arrangement_set.count(), arrangement_count,
-                         "Did not expect arrangements to disappear after a delete")
-        self.assertEqual(collection.arrangement_set.filter(deleted_at__isnull=False).count(), arrangement_deletes)
-        self.assertEqual(collection.document_set.count(), document_count - document_deletes)
+        self.assertEqual(collection.document_set.count(), document_count,
+                         "Did not expect documents to disappear after a delete immediately")
+        self.assertEqual(
+            collection.document_set.filter(deleted_at__isnull=False).count(),
+            document_deletes
+        )
