@@ -40,7 +40,7 @@ class SharekitMetadataHarvest(HarvestHttpResource):
 
     URI_TEMPLATE = "https://api.surfsharekit.nl/api/jsonapi/channel/v1/{}/repoItems?filter[modified][GE]={}"
     PARAMETERS = {
-        "page[size]": 50
+        "page[size]": 10
     }
 
     def auth_headers(self):
