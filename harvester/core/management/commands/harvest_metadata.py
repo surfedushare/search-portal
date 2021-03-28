@@ -27,7 +27,7 @@ class Command(PipelineCommand):
         scc, err = send(set_specification, f"{harvest.latest_update_at:%Y-%m-%d}", config=send_config, method="get")
 
         if len(err):
-            raise CommandError("Failed to harvest seeds from Edurep OAI-PMH")
+            raise CommandError(f"Failed to harvest seeds from f{harvest.source.repository}")
 
         harvest.harvested_at = current_time
         harvest.save()
@@ -38,8 +38,10 @@ class Command(PipelineCommand):
 
         dataset_name = options["dataset"]
         repository_resource = options["repository"]
+        repository, resource = repository_resource.split(".")
+        harvest_phase = f"seeds.{repository}"
 
-        self.logger.start("seeds")
+        self.logger.start(harvest_phase)
 
         harvest_queryset = Harvest.objects.filter(
             dataset__name=dataset_name,  # REFACTOR: needs more filtering
@@ -47,13 +49,10 @@ class Command(PipelineCommand):
             source__repository=repository_resource
         )
         if not harvest_queryset.exists():
-            raise Harvest.DoesNotExist(
-                f"There are no NEW Harvest objects for '{dataset_name}'"
-            )
+            self.logger.end(harvest_phase, success=0, fail=0)
+            return
 
-        # Calling the Edurep OAI-PMH interface and get the Edurep meta data about learning materials
-        self.logger.start("seeds.metadata")
-
+        # Calling the Resources to get meta data about learning materials
         current_time = now()
         total_success_count = 0
         total_fail_count = 0
@@ -64,8 +63,7 @@ class Command(PipelineCommand):
             set_specification = harvest.source.spec
             total_success_count += success_count
             total_fail_count += error_count
-            self.logger.progress(f"seed.metadata.{set_specification}", total=sources_count, success=success_count,
+            self.logger.progress(f"{harvest_phase}.{set_specification}", total=sources_count, success=success_count,
                                  fail=error_count)
 
-        self.logger.end("seeds.metadata", total_success_count, total_fail_count)
-        self.logger.end("seeds")
+        self.logger.end(harvest_phase, total_success_count, total_fail_count)
