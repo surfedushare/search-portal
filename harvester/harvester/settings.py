@@ -349,9 +349,6 @@ MIME_TYPE_TO_FILE_TYPE = {  # TODO: this is Edurep based, how do we want this fo
 
 CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'
 CELERY_RESULT_BACKEND = 'django-db'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_BEAT_SCHEDULE = {
     'harvest': {
         'task': 'harvest',
@@ -362,6 +359,7 @@ CELERY_BEAT_SCHEDULE = {
         'args': (environment.schedule.harvest.source,)
     },
 }
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 
 # Datagrowth
