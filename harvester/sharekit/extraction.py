@@ -49,7 +49,6 @@ class SharekitMetadataExtraction(object):
             return
         return files[0][0]
 
-
     @classmethod
     def get_copyright(cls, node):
         return node["attributes"]["termsOfUse"]

@@ -1,7 +1,6 @@
 from mimetypes import guess_type
 from collections import defaultdict
 
-from django.db.models import Count
 from django.conf import settings
 
 from core.models import Dataset, Collection, Document, Harvest
