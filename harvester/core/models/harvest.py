@@ -1,8 +1,14 @@
 from django.db import models
 from django.utils.timezone import datetime, make_aware
+from django.contrib.postgres.fields import JSONField
 
-from core.constants import HarvestStages, HARVEST_STAGE_CHOICES, REPOSITORY_CHOICES
+from core.constants import (HarvestStages, HARVEST_STAGE_CHOICES, REPOSITORY_CHOICES, DeletePolicies,
+                            DELETE_POLICY_CHOICES)
 from core.models.datatypes.dataset import Dataset
+
+
+def thirty_days_default():
+    return {"days": 30}
 
 
 class HarvestSource(models.Model):
@@ -14,6 +20,8 @@ class HarvestSource(models.Model):
         max_length=255,
         help_text="The code for the 'set' you want to harvest"
     )
+    delete_policy = models.CharField(max_length=50, choices=DELETE_POLICY_CHOICES, default=DeletePolicies.TRANSIENT)
+    purge_interval = JSONField(default=thirty_days_default)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -31,6 +39,7 @@ class Harvest(models.Model):
         null=True, blank=True, default=make_aware(datetime(year=1970, month=1, day=1))
     )
     harvested_at = models.DateTimeField(null=True, blank=True)
+    purge_after = models.DateTimeField(null=True, blank=True)
     stage = models.CharField(max_length=50, choices=HARVEST_STAGE_CHOICES, default=HarvestStages.NEW)
 
     def clean(self):

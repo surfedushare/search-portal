@@ -3,17 +3,17 @@ from django.contrib import messages
 
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 
-from core.models import (Dataset, Collection, Arrangement, Document, HarvestSource, ElasticIndex, CommonCartridge,
-                         FileResource, TikaResource)
+from core.models import (Dataset, DatasetVersion, Collection, Arrangement, Document, HarvestSource, ElasticIndex,
+                         CommonCartridge, FileResource, TikaResource)
 
 
 class HarvestSourceAdmin(admin.ModelAdmin):
-    list_display = ("name", "spec", "created_at", "modified_at",)
+    list_display = ("name", "spec", "delete_policy", "created_at", "modified_at",)
 
 
 class HarvestAdminInline(admin.TabularInline):
     model = HarvestSource.datasets.through
-    fields = ("source", "harvested_at", "latest_update_at", "stage",)
+    fields = ("source", "harvested_at", "latest_update_at", "purge_after", "stage",)
     readonly_fields = ("harvested_at",)
     extra = 0
 
@@ -32,13 +32,17 @@ class DatasetAdmin(DataStorageAdmin):
         messages.success(request, f"{queryset.count()} datasets reset to harvest from 01-01-1970")
 
 
+class DatasetVersionAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'is_current', "created_at")
+
+
 class ArrangementAdmin(DataStorageAdmin):
     search_fields = ["meta"]
 
 
 class ExtendedDocumentAdmin(DocumentAdmin):
-    list_display = ['__str__', 'dataset', 'collection', 'created_at', 'modified_at']
-    list_filter = ('dataset', 'collection',)
+    list_display = ['__str__', 'dataset_version', 'collection', 'created_at', 'modified_at']
+    list_filter = ('dataset_version', 'collection',)
 
 
 class ElasticIndexAdmin(admin.ModelAdmin):
@@ -51,6 +55,7 @@ class CommonCartridgeAdmin(admin.ModelAdmin):
 
 admin.site.register(HarvestSource, HarvestSourceAdmin)
 admin.site.register(Dataset, DatasetAdmin)
+admin.site.register(DatasetVersion, DatasetVersionAdmin)
 admin.site.register(Collection, DataStorageAdmin)
 admin.site.register(Arrangement, ArrangementAdmin)
 admin.site.register(Document, ExtendedDocumentAdmin)

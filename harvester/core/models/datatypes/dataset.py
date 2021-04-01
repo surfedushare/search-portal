@@ -91,3 +91,14 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         except FileNotFoundError:
             pass
         return vec
+
+
+class DatasetVersion(models.Model):
+
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False, blank=False)
+    is_current = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    version = models.CharField(max_length=50)
+
+    def __str__(self):
+        return "{} (v={}, id={})".format(self.dataset.name, self.version, self.id)

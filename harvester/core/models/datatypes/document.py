@@ -9,6 +9,7 @@ from core.utils.previews import delete_previews
 class Document(DocumentPostgres, DocumentBase):
 
     dataset = models.ForeignKey("Dataset", blank=True, null=True, on_delete=models.CASCADE)
+    dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
     # arrangement = models.ForeignKey("Arrangement", blank=True, null=True, on_delete=models.CASCADE)
     deleted_at = models.DateTimeField(null=True, blank=True)
