@@ -21,7 +21,8 @@ class PipelineCommand(BaseCommand):
 
     def execute(self, *args, **options):
         self.batch_size = options["batch_size"]
-        self.logger = HarvestLogger(options["dataset"], self.command_name, options)
+        if not self.logger:
+            self.logger = HarvestLogger(options["dataset"], self.command_name, options)
         super().execute(*args, **options)
 
     def batchify(self, phase, iterator, total):

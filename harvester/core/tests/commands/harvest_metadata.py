@@ -9,6 +9,7 @@ from datagrowth.resources.http.tasks import send
 from core.models import Dataset, Document, Harvest
 from core.constants import HarvestStages
 from core.utils.harvest import prepare_harvest
+from core.logging import HarvestLogger
 
 
 class TestMetadataHarvest(TestCase):
@@ -49,22 +50,19 @@ class TestMetadataHarvest(TestCase):
             "edurep_delen set harvest got updated while we expected it to be ignored"
         )
 
-    def test_edurep_invalid_dataset(self):
+    @patch("core.management.base.PipelineCommand.logger", spec_set=HarvestLogger)
+    def test_edurep_invalid_dataset(self, logger_mock):
         # Testing the case where a Dataset does not exist at all
-        try:
-            call_command("harvest_metadata", "--dataset=invalid")
-            self.fail("harvest_metadata did not raise for an invalid dataset")
-        except Harvest.DoesNotExist:
-            pass
+
+        call_command("harvest_metadata", "--dataset=invalid")
+        logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
         # Testing the case where a Dataset exists, but no harvest tasks are present
+        logger_mock.end.reset_mock()
         surf_harvest = Harvest.objects.get(source__spec="surf")
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
-        try:
-            call_command("harvest_metadata", "--dataset=invalid")
-            self.fail("harvest_metadata did not raise for a dataset without pending harvests")
-        except Harvest.DoesNotExist:
-            pass
+        call_command("harvest_metadata", "--dataset=test")
+        logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
 
     def test_edurep_down(self):
         with patch("core.management.commands.harvest_metadata.send", return_value=([], [100],)):
