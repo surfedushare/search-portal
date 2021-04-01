@@ -94,6 +94,8 @@ class Material(UUIDModel):
             return
 
         # Update the model
+        if self.deleted_at:  # we restore materials if they reappear in an index
+            self.deleted_at = None
         self.save()
         m = records[0]
         add_material_themes(self, m.get("themes", []))  # currently themes are not at all returned from ES
