@@ -37,7 +37,7 @@ def harvest(seeds_source=None, reset=False):
         # Aggregating the metadata and content into the dataset
         call_command("update_dataset", f"--dataset={dataset.name}")
 
-        call_command("generate_previews", f"--dataset={dataset.name}")
+        call_command("generate_previews", f"--dataset={dataset.name}" "--fake")
 
         # Based on the dataset we push to Elastic Search
         extra_push_index_args = ["--recreate"] if reset else []
