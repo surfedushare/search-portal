@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.core.management import call_command
 from django.utils.timezone import make_aware
 
-from core.models import Dataset, Collection, Harvest
+from core.models import DatasetVersion, Collection, Harvest
 from core.constants import HarvestStages
 from core.management.commands.update_dataset import Command as DatasetCommand
 from core.logging import HarvestLogger
@@ -92,7 +92,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         try:
             call_command("update_dataset", "--dataset=invalid")
             self.fail("update_dataset did not raise for an invalid dataset")
-        except Dataset.DoesNotExist:
+        except Harvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
         surf_harvest = Harvest.objects.get(source__spec="surf")
@@ -105,8 +105,8 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
             pass
 
     def test_handle_upsert_seeds(self):
-        dataset = Dataset.objects.last()
-        collection = Collection.objects.create(name="surf", dataset=dataset)
+        dataset_version = DatasetVersion.objects.last()
+        collection = Collection.objects.create(name="surf", dataset_version=dataset_version)
         command = self.get_command_instance()
         upserts = [
             seed
@@ -134,8 +134,8 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
                     self.assertIn("resource", result)
 
     def test_handle_deletion_seeds(self):
-        dataset = Dataset.objects.last()
-        collection = Collection.objects.create(name="surf", dataset=dataset)
+        dataset_version = DatasetVersion.objects.last()
+        collection = Collection.objects.create(name="surf", dataset_version=dataset_version)
         command = self.get_command_instance()
         deletes = [
             seed
@@ -164,19 +164,19 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         return command
 
     def test_handle_upsert_seeds(self):
-        dataset = Dataset.objects.last()
-        collection = Collection.objects.get(name="surf", dataset=dataset)
+        dataset_version = DatasetVersion.objects.last()
+        collection = Collection.objects.get(name="surf", dataset_version=dataset_version)
         command = self.get_command_instance()
         # Checking the state before the test
         document_count = collection.document_set.count()
-        vortex_queryset = dataset.documents.filter(properties__title="Using a Vortex | Wageningen UR")
-        handson_queryset = dataset.documents.filter(
+        vortex_queryset = collection.documents.filter(properties__title="Using a Vortex | Wageningen UR")
+        handson_queryset = collection.documents.filter(
             properties__title="Hands-on exercise based on WEKA - Tuning and Testing"
         )
         self.assertEqual(vortex_queryset.count(), 1,
                          "Expected the start state to contain 'Using a Vortex'")
         self.assertEqual(handson_queryset.count(), 1, "Expected the start state to contain 'Hands-on exercise'")
-        for doc in dataset.documents.all():
+        for doc in collection.documents.all():
             self.assertEqual(doc.created_at, doc.modified_at, f"Document is unexpectedly updated: {doc.id}")
         # Perform the test
         upserts = [
@@ -189,11 +189,11 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         self.assertEqual(skipped, 0)
         self.assertEqual(collection.document_set.count(), document_count+2)
         # Check video documents content updates
-        vortex_updateset = dataset.documents.filter(properties__title="Using a Vortex (responsibly) | Wageningen UR")
+        vortex_updateset = collection.documents.filter(properties__title="Using a Vortex (responsibly) | Wageningen UR")
         self.assertEqual(vortex_updateset.count(), 1)
         self.assertEqual(vortex_queryset.count(), 0)
         # Check regular document content updates
-        handson_updateset = dataset.documents.filter(
+        handson_updateset = collection.documents.filter(
             properties__title="Hands-off exercise based on WEKA - Tuning and Testing"
         )
         self.assertEqual(handson_updateset.count(), 1)
@@ -207,7 +207,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
             self.assertNotEqual(update.created_at, update.modified_at,
                                 f"Document is unexpectedly not updated: {update.id}")
             update_ids.add(update.id)
-        not_updated = dataset.documents.exclude(id__in=update_ids)
+        not_updated = collection.documents.exclude(id__in=update_ids)
         self.assertNotEqual(not_updated.count(), 0)
         for not_update in not_updated:
             self.assertEqual(
@@ -224,8 +224,8 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
                     self.assertIn("resource", result)
 
     def test_handle_deletion_seeds(self):
-        dataset = Dataset.objects.last()
-        collection = Collection.objects.get(name="surf", dataset=dataset)
+        dataset_version = DatasetVersion.objects.last()
+        collection = Collection.objects.get(name="surf", dataset_version=dataset_version)
         command = self.get_command_instance()
         document_count = collection.document_set.count()
         deletes = [

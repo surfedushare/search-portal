@@ -84,7 +84,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -93,13 +93,13 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 2)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
                          "Expected an Elastic Search alias creation for each language")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertIn(index_name, "test")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
 
@@ -135,7 +135,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -143,7 +143,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 2)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 0,
@@ -223,7 +223,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         deleted_count = 0
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 is_deleted = doc["_id"] in expected_deleted_ids
@@ -269,7 +269,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(
@@ -314,7 +314,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(
@@ -324,18 +324,18 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
             self.assertIn(index_name, "test")
         self.assertEqual(self.elastic_client.indices.delete.call_count, 2)
         for args, kwargs in self.elastic_client.indices.delete.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
         self.assertEqual(self.elastic_client.indices.create.call_count, 2)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],
                              "Expected index configuration to come from database if one was created in the past")
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
                          "Expected an Elastic Search alias creation for each language")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
 
@@ -371,7 +371,7 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(
@@ -383,12 +383,12 @@ class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 0)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
                          "Expected an Elastic Search alias creation for each language")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
-            index_name, language, id = kwargs["index"].split("-")
+            index_name, version, language, id = kwargs["index"].split("-")
             self.assertIn(index_name, "test")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
