@@ -65,7 +65,8 @@ class Document(DocumentPostgres, DocumentBase):
             'preview_path': self.properties.get('preview_path', None),
             'analysis_allowed': self.properties.get('analysis_allowed', False),
             'keywords': self.properties.get('keywords', []),
-            'oaipmh_set': self.collection.name,  # REFACTOR: harvest_source
+            'oaipmh_set': self.collection.name,
+            'harvest_source': self.collection.name,
         }
 
     def to_search(self):
@@ -75,7 +76,7 @@ class Document(DocumentPostgres, DocumentBase):
             self.properties["url"],
             self.properties["title"],
             self.properties["text"],
-            self.properties.get("transcription", None),  # REFACTOR: is this correct?
+            self.properties.get("transcription", None),
             self.properties["mime_type"],
             self.properties["file_type"],
             is_part_of=self.properties.get("is_part_of", None),

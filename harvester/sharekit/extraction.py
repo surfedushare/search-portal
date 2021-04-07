@@ -13,18 +13,14 @@ class SharekitMetadataExtraction(object):
     def get_record_state(cls, node):
         return "active"
 
-    @classmethod
-    def mirror(cls, value):
-        return lambda node: value
-
     #############################
     # GENERIC
     #############################
 
     @classmethod
     def get_files(cls, node):
-        files = node["attributes"]["file"] or []
-        links = node["attributes"]["link"] or []
+        files = node["attributes"]["files"] or []
+        links = node["attributes"]["links"] or []
         output = [
             [file["resourceMimeType"], file["url"]]
             for file in files
@@ -77,10 +73,14 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_lom_educational_levels(cls, node):
-        educational_level = node["attributes"]["level"]
-        if not educational_level:
-            return []
-        return [educational_level] if isinstance(educational_level, str) else educational_level
+        return ["HBO", "WO"]  # REFACTOR: handle this once we get real values from API
+        # educational_contexts = node["attributes"]["educationalContexts"]
+        # if not educational_level:
+        #     return []
+        # return [
+        #     educational_level.value for educational_context in educational_contexts
+        #     if educational_context.value
+        # ]
 
     @classmethod
     def get_lowest_educational_level(cls, node):
@@ -104,14 +104,19 @@ class SharekitMetadataExtraction(object):
         return current_numeric_level
 
     @classmethod
+    def get_disciplines(cls, node):
+        return []
+
+    @classmethod
     def get_ideas(cls, node):
-        compound_ideas = reach("$.0.taxonPath.0.taxon.entry", node)
-        if not compound_ideas:
-            return []
-        ideas = []
-        for compound_idea in compound_ideas:
-            ideas += compound_idea.split(" - ")
-        return list(set(ideas))
+        return []  # REFACTOR: manage this once updates
+        # compound_ideas = reach("$.0.taxonPath.0.taxon.entry", node)
+        # if not compound_ideas:
+        #     return []
+        # ideas = []
+        # for compound_idea in compound_ideas:
+        #     ideas += compound_idea.split(" - ")
+        # return list(set(ideas))
 
     @classmethod
     def get_analysis_allowed(cls, node):
@@ -130,7 +135,7 @@ class SharekitMetadataExtraction(object):
 
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
-    "url": SharekitMetadataExtraction.get_url,  # REFACTOR: more selection??
+    "url": SharekitMetadataExtraction.get_url,
     "files": SharekitMetadataExtraction.get_files,
     "title": "$.attributes.title",
     "language": "$.attributes.language",
@@ -140,14 +145,14 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "copyright": SharekitMetadataExtraction.get_copyright,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
-    "publishers": SharekitMetadataExtraction.get_publishers,  # REFACTOR: only one?
+    "publishers": SharekitMetadataExtraction.get_publishers,
     "publisher_date": "$.attributes.dateIssued",
-    "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,  # REFACTOR: only one?
+    "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
-    "disciplines": SharekitMetadataExtraction.mirror([]),  # REFACTOR: add this
-    "ideas": SharekitMetadataExtraction.get_ideas,  # REFACTOR: simplify?
+    "disciplines": SharekitMetadataExtraction.get_disciplines,
+    "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
-    "is_part_of": SharekitMetadataExtraction.get_is_part_of,  # REFACTOR: multiple?
+    "is_part_of": SharekitMetadataExtraction.get_is_part_of,
     "has_parts": "$.attributes.hasParts"
 }

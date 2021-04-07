@@ -31,7 +31,7 @@ class ElasticSearchClientTestCase(TestCase):
             "title", "text", "transcription", "url", "external_id", "disciplines", "lom_educational_levels",
             "educational_levels", "description", "publisher_date", "copyright", "language", "title_plain",
             "text_plain", "transcription_plain", "keywords", "file_type", "mime_type", "suggest_phrase",
-            "suggest_completion", "_id", "oaipmh_set", "aggregation_level", "publishers",
+            "suggest_completion", "_id", "oaipmh_set", "harvest_source",  "aggregation_level", "publishers",
             "authors", "has_parts", "has_part", "is_part_of", "preview_path", "analysis_allowed", "ideas",
         }
         self.assertEqual(set(document.keys()), expected_keys)

@@ -49,7 +49,7 @@ class Command(PipelineCommand):
 
     def complete_preview_stage(self, dataset_name):
         Harvest.objects.filter(
-            dataset__name=dataset_name,  # REFACTOR: needs more filtering
+            dataset__name=dataset_name,
             stage=HarvestStages.PREVIEW
         ).update(
             stage=HarvestStages.COMPLETE
