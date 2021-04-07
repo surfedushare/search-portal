@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from django.conf import settings
 
-from core.models import Dataset, Collection, Document, Harvest
+from core.models import DatasetVersion, Collection, Document, Harvest
 from core.constants import HarvestStages
 from core.management.base import PipelineCommand
 from core.utils.resources import get_material_resources, serialize_resource
@@ -111,7 +111,7 @@ class Command(PipelineCommand):
             reference_id = seed["external_id"]
             document, created = Document.objects.get_or_create(
                 reference=reference_id,
-                dataset=collection.dataset,
+                dataset_version=collection.dataset_version,
                 collection=collection,
                 defaults={"properties": properties}
             )
@@ -143,10 +143,10 @@ class Command(PipelineCommand):
     def handle(self, *args, **options):
 
         dataset_name = options["dataset"]
-        dataset = Dataset.objects.get(name=dataset_name)
+        dataset_version = DatasetVersion.objects.filter(dataset__name=dataset_name, is_current=True).last()
 
         harvest_queryset = Harvest.objects.filter(
-            dataset__name=dataset_name,  # REFACTOR: needs more filtering
+            dataset__name=dataset_name,
             stage=HarvestStages.VIDEO
         )
         if not harvest_queryset.exists():
@@ -178,7 +178,7 @@ class Command(PipelineCommand):
             upserts, deletes = seeds
 
             # Get or create the collection these seeds belong to
-            collection, created = Collection.objects.get_or_create(name=spec_name, dataset=dataset)
+            collection, created = Collection.objects.get_or_create(name=spec_name, dataset_version=dataset_version)
             collection.referee = "id"
             collection.save()
             if created:

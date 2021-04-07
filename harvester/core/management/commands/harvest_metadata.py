@@ -44,7 +44,7 @@ class Command(PipelineCommand):
         self.logger.start(harvest_phase)
 
         harvest_queryset = Harvest.objects.filter(
-            dataset__name=dataset_name,  # REFACTOR: needs more filtering
+            dataset__name=dataset_name,
             stage=HarvestStages.NEW,
             source__repository=repository_resource
         )

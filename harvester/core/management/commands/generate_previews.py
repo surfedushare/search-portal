@@ -5,7 +5,7 @@ from celery import group
 from django.db.models import Q
 
 from core.constants import HarvestStages
-from core.models import Document, Harvest
+from core.models import DatasetVersion, Document, Harvest
 from core.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
 
 
@@ -19,15 +19,14 @@ class Command(PipelineCommand):
 
     def handle(self, *args, **options):
         dataset_name = options["dataset"]
+        dataset_version = DatasetVersion.objects.filter(dataset__name=dataset_name, is_current=True).last()
         fake = options["fake"]
         html_documents = Document.objects \
             .filter(
                 Q(properties__mime_type="text/html") |
                 Q(properties__file_type="pdf")
             ) \
-            .filter(
-                dataset__name=dataset_name  # REFACTOR: needs more filtering
-            ) \
+            .filter(dataset_version=dataset_version) \
             .filter(properties__preview_path=None) \
             .filter(properties__analysis_allowed=True)
         documents_count = html_documents.count()

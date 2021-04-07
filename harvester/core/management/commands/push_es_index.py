@@ -18,6 +18,7 @@ class Command(PipelineCommand):
     def handle(self, *args, **options):
 
         dataset = Dataset.objects.get(name=options["dataset"])
+        dataset_version = dataset.versions.filter(is_current=True).last()
         recreate = options["recreate"]
         promote = options["promote"]
         begin_of_time = datetime(year=1970, month=1, day=1, tzinfo=tz.tzutc())
@@ -26,7 +27,7 @@ class Command(PipelineCommand):
         self.logger.start("index")
         self.logger.info(f"since:{earliest_harvest:%Y-%m-%d}, recreate:{recreate} and promote:{promote}")
 
-        lang_doc_dict = dataset.get_elastic_documents_by_language(since=earliest_harvest)
+        lang_doc_dict = dataset_version.get_elastic_documents_by_language(since=earliest_harvest)
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
@@ -42,10 +43,10 @@ class Command(PipelineCommand):
             self.logger.start(f"index.{lang}")
 
             index, created = ElasticIndex.objects.get_or_create(
-                name=dataset.name,
+                name=f"{dataset.name}-{dataset_version.version}",
                 language=lang,
                 defaults={
-                    "dataset": dataset,
+                    "dataset_version": dataset_version,
                     "configuration": ElasticIndex.get_index_config(lang)
                 }
             )
