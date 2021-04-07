@@ -81,21 +81,15 @@ def cleanup(ctx, mode):
 @task(help={
     "mode": "Mode you want to push indices for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
-    "dataset": "Name of the dataset (a Greek letter) that you want to change indices for",
-    "recreate": "Whether to destroy and then create the indices or update in place",
-    "promote": "Whether you want this dataset to become 'latest' "
-               "which means that the service will start to use it when searching"
+    "dataset": "Name of the dataset (a Greek letter) that you want to change indices for"
 })
-def push_es_index(ctx, mode, dataset, recreate=False, promote=False, version=None):
+def index_dataset_version(ctx, mode, dataset, version=None):
     """
     Starts a task on the AWS container cluster or localhost to update the ES indices
     """
-    command = ["python", "manage.py", "push_es_index", f"--dataset={dataset}"]
-    if recreate:
-        command += ["--recreate"]
-    if promote:
-        command += ["--promote"]
-
+    command = ["python", "manage.py", "index_dataset_version", f"--dataset={dataset}"]
+    if version:
+        command += [f"--harvest-version={version}"]
     run_harvester_task(ctx, mode, command, version=version)
 
 

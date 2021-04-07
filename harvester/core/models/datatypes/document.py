@@ -1,6 +1,5 @@
 from django.db import models
 from django.apps import apps
-from django.utils.timezone import now
 
 from datagrowth.datatypes import DocumentBase, DocumentPostgres
 from core.utils.previews import delete_previews
@@ -12,7 +11,7 @@ class Document(DocumentPostgres, DocumentBase):
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
     # arrangement = models.ForeignKey("Arrangement", blank=True, null=True, on_delete=models.CASCADE)
-    deleted_at = models.DateTimeField(null=True, blank=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)  # REFACTOR: get rid of this
 
     def get_language(self):
         for field in ['metadata', 'from_text', 'from_title']:
@@ -46,21 +45,12 @@ class Document(DocumentPostgres, DocumentBase):
 
     def get_search_document_base(self):
         """
-        This method returns either a delete action or a partial upsert action.
+        This method returns a partial upsert action.
 
-        :return: Elastic Search partial update or delete action
+        :return: Elastic Search partial update
         """
-        # First we fill out all data we know from the Arrangement or we have an early return for deletes
-        # and unknown data
-        base = {
-            "language": self.get_language()
-        }
-        if self.deleted_at:
-            base["_id"] = self.properties["external_id"]
-            base["_op_type"] = "delete"
-            return base
-        # Then we enhance the data with any data coming from the base document belonging to the arrangement
-        base.update({
+        return {
+            "language": self.get_language(),
             'external_id': self.properties['external_id'],
             'disciplines': self.properties['disciplines'],
             'educational_levels': self.properties['educational_levels'],
@@ -76,18 +66,10 @@ class Document(DocumentPostgres, DocumentBase):
             'analysis_allowed': self.properties.get('analysis_allowed', False),
             'keywords': self.properties.get('keywords', []),
             'oaipmh_set': self.collection.name,  # REFACTOR: harvest_source
-        })
-        return base
+        }
 
     def to_search(self):
-
         elastic_base = self.get_search_document_base()
-
-        if self.deleted_at:
-            yield elastic_base
-            return
-
-        # Then we yield a Elastic Search document for the Arrangement as a whole
         elastic_details = self.get_search_document_details(
             self.properties["external_id"],
             self.properties["url"],
@@ -101,13 +83,6 @@ class Document(DocumentPostgres, DocumentBase):
         )
         elastic_details.update(elastic_base)
         yield elastic_details
-
-    def delete(self, using=None, keep_parents=False):
-        if not self.deleted_at:
-            self.deleted_at = now()
-            self.save()
-        else:
-            super().delete(using=using, keep_parents=keep_parents)
 
 
 def document_delete_handler(sender, instance, **kwargs):

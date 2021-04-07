@@ -1,6 +1,6 @@
 import logging
 
-from core.models import Document, Harvest
+from core.models import Harvest
 from core.constants import HarvestStages
 
 
@@ -8,8 +8,6 @@ logger = logging.getLogger("harvester")
 
 
 def prepare_harvest(dataset):
-    logger.debug("Deleting documents in trash")
-    Document.objects.filter(deleted_at__isnull=False).delete()
     harvest_queryset = Harvest.objects.filter(
         dataset=dataset,
         stage=HarvestStages.COMPLETE

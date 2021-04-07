@@ -50,9 +50,7 @@ def harvest(seeds_source=None, reset=False):
         call_command("generate_previews", f"--dataset={dataset.name}", "--fake")
 
         # Based on the dataset we push to Elastic Search
-        extra_push_index_args = ["--recreate"] if reset else []
-
-        call_command("push_es_index", f"--dataset={dataset.name}", *extra_push_index_args)
+        call_command("index_dataset_version", f"--dataset={dataset.name}")
 
     # When dealing with a harvest on a primary node the seeds need to get copied to S3.
     # Other nodes can use these copies instead of making their own.

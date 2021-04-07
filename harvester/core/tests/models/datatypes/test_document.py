@@ -27,8 +27,6 @@ class TestDocument(TestCase):
         self.instance.id = 666
         self.instance.save()
         self.instance.delete()
-        self.assertIsNotNone(self.instance.deleted_at)
-        self.instance.delete()
         try:
             FileResource.objects.get(id=file_id)
             self.fail("Expected file resource to be deleted after Document deletion")

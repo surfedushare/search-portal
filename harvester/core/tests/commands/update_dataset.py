@@ -235,9 +235,4 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         ]
         document_deletes = command.handle_deletion_seeds(collection, deletes)
         self.assertEqual(document_deletes, 1)
-        self.assertEqual(collection.document_set.count(), document_count,
-                         "Did not expect documents to disappear after a delete immediately")
-        self.assertEqual(
-            collection.document_set.filter(deleted_at__isnull=False).count(),
-            document_deletes
-        )
+        self.assertEqual(collection.document_set.count(), document_count - document_deletes)

@@ -1,11 +1,7 @@
-import os
 from collections import defaultdict
-from sklearn.feature_extraction.text import TfidfVectorizer
-import joblib
 
 from django.db import models
 
-from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from core.models.datatypes.document import Document, document_delete_handler
 
@@ -64,9 +60,9 @@ class DatasetVersion(models.Model):
     def __str__(self):
         return "{} (v={}, id={})".format(self.dataset.name, self.version, self.id)
 
-    def get_elastic_documents_by_language(self, since):
+    def get_elastic_documents_by_language(self):
         by_language = defaultdict(list)
-        for document in self.document_set.filter(modified_at__gte=since):
+        for document in self.document_set.all():
             language = document.get_language()
             by_language[language] += list(document.to_search())
         return by_language
