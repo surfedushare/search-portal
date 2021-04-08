@@ -10,8 +10,6 @@ class Document(DocumentPostgres, DocumentBase):
     dataset = models.ForeignKey("Dataset", blank=True, null=True, on_delete=models.CASCADE)
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
-    # arrangement = models.ForeignKey("Arrangement", blank=True, null=True, on_delete=models.CASCADE)
-    deleted_at = models.DateTimeField(null=True, blank=True)  # REFACTOR: get rid of this
 
     def get_language(self):
         for field in ['metadata', 'from_text', 'from_title']:

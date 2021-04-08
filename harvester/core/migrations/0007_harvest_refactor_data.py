@@ -35,7 +35,7 @@ def migrate_dataset_data_to_dataset_version(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0007_harvest_refactor_02'),
+        ('core', '0006_harvest_refactor'),
     ]
 
     operations = [
