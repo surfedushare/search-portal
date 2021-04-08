@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.core.management import call_command
 
 from core.management.commands.generate_previews import Command as GeneratePreviewsCommand
-from core.tests.factories import DocumentFactory, DatasetFactory, HarvestFactory
+from core.tests.factories import DocumentFactory, DatasetFactory, DatasetVersionFactory, HarvestFactory
 from core.constants import HarvestStages
 
 
@@ -24,13 +24,16 @@ class TestGeneratePreviews(TestCase):
         ready_mock.return_value = True
         apply_async_mock.return_value.ready = ready_mock
         dataset = DatasetFactory.create(name="test")
+        dataset_version = DatasetVersionFactory.create(dataset=dataset)
         harvest = HarvestFactory.create(dataset=dataset, stage=HarvestStages.PREVIEW)
-        document_with_website = DocumentFactory.create(dataset=dataset, mime_type="text/html")
-        document_from_youtube = DocumentFactory.create(dataset=dataset, mime_type="text/html", from_youtube=True)
-        pdf_document = DocumentFactory.create(dataset=dataset, mime_type="application/pdf", file_type="pdf")
-        DocumentFactory.create(dataset=dataset, mime_type="foo/bar")
-        DocumentFactory.create(dataset=dataset, mime_type="text/html", preview_path="previews/8")
-        DocumentFactory.create(dataset=dataset, mime_type="text/html", analysis_allowed=False)
+        document_with_website = DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html")
+        document_from_youtube = DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html",
+                                                       from_youtube=True)
+        pdf_document = DocumentFactory.create(dataset_version=dataset_version, mime_type="application/pdf",
+                                              file_type="pdf")
+        DocumentFactory.create(dataset_version=dataset_version, mime_type="foo/bar")
+        DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html", preview_path="previews/8")
+        DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html", analysis_allowed=False)
 
         call_command("generate_previews", f"--dataset={dataset.name}")
 

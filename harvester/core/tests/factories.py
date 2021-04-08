@@ -1,7 +1,7 @@
 import factory
 
-from core.models import Document, Dataset, Harvest, HarvestSource, FileResource
-from core.constants import HarvestStages
+from core.models import Document, Dataset, DatasetVersion, Harvest, HarvestSource, FileResource
+from core.constants import HarvestStages, Repositories, DeletePolicies
 
 
 class DatasetFactory(factory.django.DjangoModelFactory):
@@ -10,6 +10,15 @@ class DatasetFactory(factory.django.DjangoModelFactory):
 
     name = "test"
     is_active = True
+
+
+class DatasetVersionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = DatasetVersion
+
+    version = "0.0.1"
+    is_current = True
+    dataset = factory.SubFactory(DatasetFactory)
 
 
 class DocumentFactory(factory.django.DjangoModelFactory):
@@ -26,7 +35,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         preview_path = None
         url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
 
-    dataset = factory.SubFactory(DatasetFactory)
+    dataset_version = factory.SubFactory(DatasetVersionFactory)
     reference = factory.Sequence(lambda n: "surf:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
@@ -47,8 +56,9 @@ class HarvestSourceFactory(factory.django.DjangoModelFactory):
         model = HarvestSource
 
     name = "SURF Sharekit"
-    repository = "edurep.EdurepOAIPMH"
+    repository = Repositories.EDUREP
     spec = "surf"
+    delete_policy = DeletePolicies.TRANSIENT
 
 
 class HarvestFactory(factory.django.DjangoModelFactory):

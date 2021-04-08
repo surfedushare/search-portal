@@ -6,9 +6,8 @@ from django.core.management import call_command, CommandError
 from django.utils.timezone import make_aware
 
 from datagrowth.resources.http.tasks import send
-from core.models import Dataset, Document, Harvest
+from core.models import Document, Harvest
 from core.constants import HarvestStages
-from core.utils.harvest import prepare_harvest
 from core.logging import HarvestLogger
 
 
@@ -85,8 +84,8 @@ class TestMetadataHarvestWithHistory(TestCase):
         # We'd expect one OAI-PMH calls to be made which should be a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
-        dataset = Dataset.objects.last()
-        prepare_harvest(dataset)
+        test_harvest = Harvest.objects.get(source__spec="surf")
+        test_harvest.prepare()
         with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
             call_command("harvest_metadata", "--dataset=test")
         # Asserting Datagrowth usage
