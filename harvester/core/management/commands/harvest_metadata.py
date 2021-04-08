@@ -27,7 +27,7 @@ class Command(PipelineCommand):
         scc, err = send(set_specification, f"{harvest.latest_update_at:%Y-%m-%d}", config=send_config, method="get")
 
         if len(err):
-            raise CommandError(f"Failed to harvest seeds from f{harvest.source.repository}")
+            raise CommandError(f"Failed to harvest seeds from {harvest.source.name}")
 
         harvest.harvested_at = current_time
         harvest.save()
