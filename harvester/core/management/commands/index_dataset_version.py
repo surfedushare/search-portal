@@ -14,8 +14,6 @@ class Command(PipelineCommand):
 
     def handle(self, *args, **options):
 
-        # REFACTOR: start a new DatasetVersion when starting a harvest
-        # REFACTOR: restore replica/source for dev env
         # REFACTOR: write test for indexing version specifically
 
         dataset_name = options["dataset"]

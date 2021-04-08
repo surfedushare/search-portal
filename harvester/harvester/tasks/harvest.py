@@ -9,7 +9,6 @@ from harvester.celery import app
 from core.models import Dataset, Harvest
 from core.constants import HarvestStages, Repositories
 from core.utils.harvest import prepare_harvest
-from edurep.models import EdurepOAIPMH
 
 
 logger = logging.getLogger("harvester")
@@ -23,22 +22,16 @@ def harvest(seeds_source=None, reset=False):
 
     # Iterate over all active datasets to get data updates
     for dataset in Dataset.objects.filter(is_active=True):
-        # Sometimes we may want to trigger a complete dataset reset
-        if reset and role == "primary":
-            logger.info("Deleting seed Resources")
-            EdurepOAIPMH.objects.all().delete()
-        if reset:
-            logger.info(f"Resetting dataset: {dataset.name}")
-            dataset.reset()
         # Preparing dataset state and deletes old model instances
-        prepare_harvest(dataset)
-        # First we call the commands that will query the OAI-PMH interfaces
+        prepare_harvest(dataset, reset=reset)
+        # First we call the commands that will query the repository interfaces or load them
         if role == "primary":
             call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.EDUREP}")
             call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.SHAREKIT}")
         else:
             call_command("load_edurep_oaipmh_data", f"--dataset={dataset.name}",
                          "--force-download", f"--source={seeds_source}")
+            call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.SHAREKIT}")
         # After getting all the metadata we'll download content
         call_command("harvest_basic_content", f"--dataset={dataset.name}")
         # We skip any video downloading/processing for now
