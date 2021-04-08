@@ -17,8 +17,6 @@ logger = logging.getLogger("harvester")
 @app.task(name="harvest")
 def harvest(seeds_source=None, reset=False):
     role = "primary" if seeds_source is None else "secondary"
-    assert seeds_source or environment.env != "localhost", \
-        "Expected a seeds source for localhost, because direct downloads are impossible"
 
     # Iterate over all active datasets to get data updates
     for dataset in Dataset.objects.filter(is_active=True):
