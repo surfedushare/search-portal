@@ -1,5 +1,5 @@
 import os
-from invoke import task
+from invoke import task, Exit
 
 from commands import HARVESTER_DIR
 from commands.aws.ecs import run_task
@@ -79,17 +79,41 @@ def cleanup(ctx, mode):
 
 
 @task(help={
-    "mode": "Mode you want to push indices for: localhost, development, acceptance or production. "
+    "mode": "Mode you want to create indices for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
-    "dataset": "Name of the dataset (a Greek letter) that you want to change indices for"
+    "dataset": "Name of the dataset (a Greek letter) that you want to create indices for",
+    "version": "Version of the harvester you want to use. Defaults to latest version"
 })
 def index_dataset_version(ctx, mode, dataset, version=None):
     """
-    Starts a task on the AWS container cluster or localhost to update the ES indices
+    Starts a task on the AWS container cluster or localhost to create the ES indices for a DatasetVersion
     """
     command = ["python", "manage.py", "index_dataset_version", f"--dataset={dataset}"]
     if version:
-        command += [f"--harvest-version={version}"]
+        command += [f"--harvester-version={version}"]
+    run_harvester_task(ctx, mode, command, version=version)
+
+
+@task(help={
+    "mode": "Mode you want to push indices for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE",
+    "dataset": "Name of the dataset (a Greek letter) that you want to promote to latest index "
+               "(ignored if version_id is specified)",
+    "version": "Version of the harvester you want to use. Defaults to latest version "
+               "(ignored if version_id is specified)",
+    "version_id": "Id of the DatasetVersion you want to promote"
+})
+def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=None):
+    """
+    Starts a task on the AWS container cluster or localhost to promote a DatasetVersion index to latest
+    """
+    command = ["python", "manage.py", "promote_dataset_version", ]
+    if version_id:
+        command += [f"--dataset-version-id={version_id}"]
+    elif dataset:
+        command += [f"--dataset={dataset}", f"--harvester-version={version}"]
+    else:
+        Exit("Either specify a dataset of a dataset version id")
     run_harvester_task(ctx, mode, command, version=version)
 
 

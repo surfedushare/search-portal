@@ -37,7 +37,7 @@ class ElasticSearchClientTestCase(TestCase):
         self.assertEqual(set(document.keys()), expected_keys)
 
 
-class TestPushToIndex(ElasticSearchClientTestCase):
+class TestIndexDatasetVersion(ElasticSearchClientTestCase):
     """
     This test case represents the scenario where a all harvest data gets pushed to an index for the first time
     """
@@ -104,7 +104,7 @@ class TestPushToIndex(ElasticSearchClientTestCase):
             pass
 
 
-class TestPushToIndexWithHistory(ElasticSearchClientTestCase):
+class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
     """
     This test case represents the scenario where indices exist.
     Under this condition the following should be possible

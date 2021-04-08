@@ -10,20 +10,21 @@ class Command(PipelineCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('-V', '--harvest-version', type=str, default="")
+        parser.add_argument('-hv', '--harvester-version', type=str, default="")
 
     def handle(self, *args, **options):
 
-        # REFACTOR: command to switch latest index, is_latest?
         # REFACTOR: start a new DatasetVersion when starting a harvest
         # REFACTOR: restore replica/source for dev env
         # REFACTOR: write test for indexing version specifically
 
         dataset_name = options["dataset"]
-        version = options["harvest_version"]
+        version = options["harvester_version"]
 
         dataset = Dataset.objects.get(name=dataset_name)
-        version_filter = {"version": version} if version else {"is_current": True}
+        version_filter = {"is_current": True}
+        if version:
+            version_filter.update({"version": version})
         dataset_version = dataset.versions.filter(**version_filter).last()
 
         self.logger.start("index")
