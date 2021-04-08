@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.timezone import datetime, make_aware
+from django.apps import apps
+from django.utils.timezone import datetime, make_aware, timedelta
 from django.contrib.postgres.fields import JSONField
 
 from core.constants import (HarvestStages, HARVEST_STAGE_CHOICES, REPOSITORY_CHOICES, DeletePolicies,
@@ -26,6 +27,10 @@ class HarvestSource(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    def clear_repository_resources(self):
+        harvest_resource = apps.get_model(self.repository)
+        harvest_resource.objects.all().delete()
+
     def __str__(self):
         return self.name
 
@@ -45,9 +50,24 @@ class Harvest(models.Model):
     def clean(self):
         if not self.id:
             self.stage = HarvestStages.NEW
+        if not self.purge_after:
+            self.purge_after = make_aware(datetime.now()) + timedelta(**self.source.purge_interval)
+
+    def should_purge(self):
+        return self.source.delete_policy == DeletePolicies.NO or \
+               (self.source.delete_policy == DeletePolicies.TRANSIENT and self.purge_after and
+                self.purge_after < make_aware(datetime.now()))
+
+    def prepare(self):
+        self.stage = HarvestStages.NEW
+        if self.harvested_at:
+            self.latest_update_at = self.harvested_at
+        self.save()
 
     def reset(self):
         self.latest_update_at = make_aware(datetime(year=1970, month=1, day=1))
         self.harvested_at = None
         self.stage = HarvestStages.NEW
+        self.purge_after = None
+        self.clean()
         self.save()

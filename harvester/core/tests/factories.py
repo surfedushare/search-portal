@@ -1,6 +1,6 @@
 import factory
 
-from core.models import Document, Dataset, DatasetVersion, Harvest, HarvestSource, FileResource
+from core.models import Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, FileResource
 from core.constants import HarvestStages, Repositories, DeletePolicies
 
 
@@ -19,6 +19,11 @@ class DatasetVersionFactory(factory.django.DjangoModelFactory):
     version = "0.0.1"
     is_current = True
     dataset = factory.SubFactory(DatasetFactory)
+
+
+class CollectionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Collection
 
 
 class DocumentFactory(factory.django.DjangoModelFactory):
