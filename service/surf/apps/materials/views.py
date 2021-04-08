@@ -267,7 +267,7 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
     :return: list of materials
     """
 
-    material, created = Material.objects.get_or_create(external_id=external_id, deleted_at=None)
+    material, created = Material.objects.get_or_create(external_id=external_id)
     if created:
         material.sync_info()
     # increase unique view counter
