@@ -6,6 +6,7 @@ from django.core.files.storage import default_storage
 
 from core.utils.resources import serialize_resource
 
+
 THUMBNAIL_SIZES = [(400, 300), (200, 150)]
 
 
@@ -22,6 +23,13 @@ def store_previews(destination_location, document_id):
                 f"{destination_location}/preview-{width}x{height}.png",
                 file
             )
+
+
+def delete_previews(source_location):
+    default_storage.delete(f"{source_location}/preview.png")
+    for width, height in THUMBNAIL_SIZES:
+        default_storage.delete(f"{source_location}/preview-{width}x{height}.png")
+    default_storage.delete(source_location)  # for local directories, noop for S3
 
 
 def update_document(document, preview_path, resource=None):

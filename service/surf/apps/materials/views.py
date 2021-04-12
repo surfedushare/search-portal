@@ -267,7 +267,7 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
     :return: list of materials
     """
 
-    material, created = Material.objects.get_or_create(external_id=external_id, deleted_at=None)
+    material, created = Material.objects.get_or_create(external_id=external_id)
     if created:
         material.sync_info()
     # increase unique view counter
@@ -393,7 +393,7 @@ class CollectionViewSet(ModelViewSet):
             serializer = CollectionMaterialsRequestSerializer(data=request.GET)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
-            ids = [m.external_id for m in instance.materials.order_by("id").filter(deleted_at=None)]
+            ids = [m.external_id for m in instance.materials.order_by("id").filter()]
 
             rv = dict(records=[],
                       records_total=0,
@@ -467,12 +467,7 @@ class CollectionViewSet(ModelViewSet):
             if keywords:
                 keywords = json.dumps(keywords)
 
-            m, _ = Material.objects.update_or_create(
-                external_id=m_external_id, deleted_at=None,
-                defaults=dict(material_url=details[0].get("url"),
-                              title=details[0].get("title"),
-                              description=details[0].get("description"),
-                              keywords=keywords))
+            m, _ = Material.objects.update_or_create(external_id=m_external_id)
 
             add_material_themes(m, details[0].get("themes", []))
             add_material_disciplines(m, details[0].get("disciplines", []))

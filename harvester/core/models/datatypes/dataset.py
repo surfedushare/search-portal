@@ -7,6 +7,7 @@ from django.db import models
 
 from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
+from core.models.datatypes.document import Document, document_delete_handler
 
 
 class Dataset(DocumentCollectionMixin, CollectionBase):
@@ -31,9 +32,22 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         return "dataset"
 
     def reset(self):
+        """
+        Resets all related harvest instances and deletes all data, but retains all cache
+        """
+        models.signals.post_delete.disconnect(
+            document_delete_handler,
+            sender=Document,
+            dispatch_uid="document_delete"
+        )
         self.collection_set.all().delete()
         for harvest in self.oaipmhharvest_set.all():
             harvest.reset()
+        models.signals.post_delete.connect(
+            document_delete_handler,
+            sender=Document,
+            dispatch_uid="document_delete"
+        )
 
     def get_elastic_indices(self):
         return ",".join([index.remote_name for index in self.indices.all()])

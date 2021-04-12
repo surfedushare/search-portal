@@ -2,8 +2,6 @@
 This module contains implementation of models for materials app.
 """
 
-import json
-
 from django.db import models as django_models
 from django.db.models import F
 from django.utils import timezone
@@ -49,11 +47,7 @@ class Material(UUIDModel):
                                                 blank=True,
                                                 related_name="materials")
 
-    material_url = django_models.URLField(blank=True, null=True)
-    title = django_models.TextField(blank=True, null=True)
-    description = django_models.TextField(blank=True, null=True)
-    keywords = django_models.TextField(blank=True, null=True)
-    deleted_at = django_models.DateTimeField(null=True)
+    deleted_at = django_models.DateTimeField(null=True, blank=True, default=None)
 
     star_1 = django_models.PositiveIntegerField(default=0)
     star_2 = django_models.PositiveIntegerField(default=0)
@@ -95,20 +89,15 @@ class Material(UUIDModel):
         response = api_client.get_materials_by_id([self.external_id])
         records = response.get("records", [])
         if not records:
+            if not self.deleted_at:
+                self.delete()
             return
 
         # Update the model
-        m = records[0]
-        self.material_url = m.get("url")
-        self.title = m.get("title")
-        self.description = m.get("description")
-        keywords = m.get("keywords")
-        if keywords:
-            keywords = json.dumps(keywords)
-            self.keywords = keywords
-
-        # always save info before adding themes & disciplines
+        if self.deleted_at:  # we restore materials if they reappear in an index
+            self.deleted_at = None
         self.save()
+        m = records[0]
         add_material_themes(self, m.get("themes", []))  # currently themes are not at all returned from ES
         add_material_disciplines(self, m.get("disciplines", []))
 

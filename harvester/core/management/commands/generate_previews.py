@@ -6,15 +6,20 @@ from django.db.models import Q
 
 from core.constants import HarvestStages
 from core.models import Document, OAIPMHHarvest
-from harvester.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
+from core.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
 
 
 class Command(PipelineCommand):
 
     command_name = "generate_previews"
 
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
+        parser.add_argument('-f', '--fake', action="store_true", default=False)
+
     def handle(self, *args, **options):
         dataset_name = options["dataset"]
+        fake = options["fake"]
         html_documents = Document.objects \
             .filter(
                 Q(properties__mime_type="text/html") |
@@ -28,7 +33,8 @@ class Command(PipelineCommand):
         signatures = [self.determine_task_signature(document, documents_count) for document in html_documents]
 
         self.logger.start("previews")
-        self.run_jobs_in_group(signatures)
+        if not fake:
+            self.run_jobs_in_group(signatures)
 
         self.complete_preview_stage(dataset_name)
         self.logger.end("previews")

@@ -2,7 +2,6 @@
 This module contains some common functions for materials app.
 """
 
-import json
 import datetime
 from functools import reduce
 
@@ -13,35 +12,6 @@ from surf.apps.materials.models import (
 )
 from surf.apps.themes.models import Theme
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
-
-
-def update_materials_data(materials):
-    """
-    Updates materials extra data from EduRep
-    :param materials: list of material DB instances
-    """
-
-    for material in materials:
-        details = get_material_details_by_id(material.external_id)
-        if not details:
-            continue
-
-        try:
-            m = details[0]
-            material.material_url = m.get("url")
-            material.title = m.get("title")
-            material.description = m.get("description")
-            keywords = m.get("keywords")
-            if keywords:
-                keywords = json.dumps(keywords)
-            material.keywords = keywords
-            material.save()
-
-            add_material_themes(material, m.get("themes", []))
-            add_material_disciplines(material, m.get("disciplines", []))
-
-        except IndexError:
-            pass
 
 
 def add_material_themes(material, themes):

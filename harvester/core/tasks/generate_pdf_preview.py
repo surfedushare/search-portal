@@ -1,12 +1,12 @@
-from celery.exceptions import SoftTimeLimitExceeded
 import pdf2image
 
 from django.conf import settings
+from celery import current_app as app
+from celery.exceptions import SoftTimeLimitExceeded
 
 from core.models import Document, FileResource
 from core.utils.previews import store_previews, update_document, remove_files_from_filesystem, create_thumbnails
 from core.logging import HarvestLogger
-from harvester.celery import app
 
 
 @app.task(

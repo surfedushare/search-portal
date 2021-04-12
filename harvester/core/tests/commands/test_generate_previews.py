@@ -16,9 +16,9 @@ class TestGeneratePreviews(TestCase):
         return command
 
     @patch("celery.group.apply_async")
-    @patch("harvester.tasks.generate_browser_preview.s")
-    @patch("harvester.tasks.generate_youtube_preview.s")
-    @patch("harvester.tasks.generate_pdf_preview.s")
+    @patch("core.tasks.generate_browser_preview.s")
+    @patch("core.tasks.generate_youtube_preview.s")
+    @patch("core.tasks.generate_pdf_preview.s")
     def test_calling_jobs_with_html_documents(self, pdf_mock, youtube_task_mock, preview_task_mock, apply_async_mock):
         ready_mock = Mock()
         ready_mock.return_value = True

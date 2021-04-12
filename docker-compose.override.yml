@@ -67,7 +67,7 @@ services:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
-    command: celery -A harvester worker -l info
+    command: celery -A harvester worker -l info --beat -s /tmp/celerybeat-schedule
     links:
       - redis:redis
     depends_on:

@@ -206,7 +206,7 @@ class CollectionSerializer(CollectionShortSerializer):
     def get_materials_count(obj):
         if not obj:
             return 0
-        return obj.materials.count()
+        return obj.materials.filter(deleted_at=None).count()
 
     @staticmethod
     def get_communities_count(obj):
