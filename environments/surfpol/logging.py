@@ -208,7 +208,7 @@ class POLElasticsearchHandler(logging.Handler):
 
         try:
             host_ip = socket.gethostbyname(socket.gethostname())
-        except ValueError:
+        except Exception:
             pass
 
         self.es_additional_fields.update({'host': hostname,
