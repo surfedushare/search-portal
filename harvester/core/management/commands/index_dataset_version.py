@@ -11,13 +11,15 @@ class Command(PipelineCommand):
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument('-hv', '--harvester-version', type=str, default="")
+        parser.add_argument('-np', '--no-promote', action="store_true")
 
     def handle(self, *args, **options):
 
-        # REFACTOR: write test for indexing version specifically
+        # REFACTOR: write test for indexing version specifically and skip promotion step
 
         dataset_name = options["dataset"]
         version = options["harvester_version"]
+        should_promote = not options["no_promote"]
 
         dataset = Dataset.objects.get(name=dataset_name)
         version_filter = {"is_current": True}
@@ -54,8 +56,9 @@ class Command(PipelineCommand):
             index.clean()
             index.push(docs, recreate=True)
             index.save()
-            self.logger.info(f"Promoting index { index.remote_name } to latest")
-            index.promote_to_latest()
+            if should_promote:
+                self.logger.info(f"Promoting index { index.remote_name } to latest")
+                index.promote_to_latest()
             self.logger.end(f"index.{lang}", fail=index.error_count)
 
         self.logger.end("index")
