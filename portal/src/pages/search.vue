@@ -103,10 +103,9 @@ export default {
     Spinner
   },
   data() {
+    const urlInfo = parseSearchMaterialsQuery(this.$route.query)
     return {
-      search: {
-        filters: {}
-      },
+      search: urlInfo.search,
       formData: {
         name: null
       },
@@ -134,9 +133,7 @@ export default {
     }
   },
   mounted() {
-    const urlInfo = parseSearchMaterialsQuery(this.$route.query)
-    this.search = urlInfo.search
-    this.$store.dispatch('searchMaterials', urlInfo.search)
+    this.$store.dispatch('searchMaterials', this.search)
   },
   methods: {
     searchMaterials() {
