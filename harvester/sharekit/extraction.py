@@ -66,7 +66,7 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_publishers(cls, node):
-        publisher = node["attributes"]["publisher"]
+        publisher = node["attributes"]["publishers"]
         if not publisher:
             return []
         return [publisher]
