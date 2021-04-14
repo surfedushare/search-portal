@@ -17,7 +17,7 @@ def migrate_dataset_data_to_dataset_version(apps, schema_editor):
             collection.dataset = None
             collection.dataset_version = version
             collection.save()
-        for document in dataset.document_set.all():  # REFACTOR: speed up?
+        for document in dataset.document_set.all():
             document.dataset = None
             document.dataset_version = version
             document.save()

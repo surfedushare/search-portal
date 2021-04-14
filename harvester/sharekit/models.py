@@ -58,16 +58,6 @@ class SharekitMetadataHarvest(HarvestHttpResource):
             "page[number]": next_url.query_dict["page[number]"]
         }
 
-    @property
-    def content(self):  # REFACTOR: remove this
-        if self.success:
-            content_type = self.head.get("content-type", "unknown/unknown").split(';')[0]
-            if content_type == "application/vnd.api+json":
-                return content_type, json.loads(self.body.replace("\\u0000", ""))  # REFACTOR: fix null bytes
-            else:
-                return content_type, None
-        return None, None
-
     class Meta:
         verbose_name = "Sharekit metadata harvest"
         verbose_name_plural = "Sharekit metadata harvest"
