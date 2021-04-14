@@ -305,11 +305,11 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
 
     def test_get_materials_by_id(self):
 
-        test_id = 'surf:oai:surfsharekit.nl:3522b79c-928c-4249-a7f7-d2bcb3077f10'
+        # Sharekit material
+        test_id = '3522b79c-928c-4249-a7f7-d2bcb3077f10'
         result = self.instance.get_materials_by_id(external_ids=[test_id])
         self.assertIsNotNone(result)
-        # we're searching for one id, we should get only one result
-        self.assertEqual(result['recordcount'], 1)
+        self.assertEqual(result['recordcount'], 1, "Expected one result when searching for one id")
         material = result['records'][0]
 
         self.assertEqual(material['title'], 'Didactiek van wiskundig denken')
@@ -317,7 +317,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             material['url'],
             "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT"
         )
-        self.assertEqual(material['external_id'], test_id)
+        self.assertEqual(material['external_id'], "3522b79c-928c-4249-a7f7-d2bcb3077f10")
         self.assertEqual(material['publishers'], ["Wikiwijs Maken"])
         self.assertEqual(material['publish_datetime'], "2017-04-16T22:35:09+02:00")
         self.assertEqual(material['authors'], ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"])
@@ -328,6 +328,22 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         ])
         self.assertEqual(material['language'], 'nl')
         self.assertEqual(material['format'], 'text')
+
+        # Sharekit (legacy id format)
+        test_id = 'surfsharekit:oai:surfsharekit.nl:3522b79c-928c-4249-a7f7-d2bcb3077f10'
+        result = self.instance.get_materials_by_id(external_ids=[test_id])
+        self.assertIsNotNone(result)
+        self.assertEqual(result['recordcount'], 1, "Expected one result when searching for one id")
+        material = result['records'][0]
+        self.assertEqual(material['external_id'], "3522b79c-928c-4249-a7f7-d2bcb3077f10")
+
+        # Edurep material
+        test_id = 'wikiwijs:123'
+        result = self.instance.get_materials_by_id(external_ids=[test_id])
+        self.assertIsNotNone(result)
+        self.assertEqual(result['recordcount'], 1, "Expected one result when searching for one id")
+        material = result['records'][0]
+        self.assertEqual(material['external_id'], "wikiwijs:123")
 
     def test_search_by_author(self):
         author = "Michel van Ast"
