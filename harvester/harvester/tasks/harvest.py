@@ -15,7 +15,7 @@ logger = logging.getLogger("harvester")
 
 
 @app.task(name="harvest")
-def harvest(seeds_source=None, reset=False):
+def harvest(seeds_source=None, reset=False, no_promote=False):
     role = "primary" if seeds_source is None else "secondary"
 
     # Iterate over all active datasets to get data updates
@@ -41,7 +41,10 @@ def harvest(seeds_source=None, reset=False):
         call_command("generate_previews", f"--dataset={dataset.name}", "--fake")
 
         # Based on the dataset we push to Elastic Search
-        call_command("index_dataset_version", f"--dataset={dataset.name}")
+        index_command = ["index_dataset_version", f"--dataset={dataset.name}"]
+        if no_promote:
+            index_command += ["--no-promote"]
+        call_command(*index_command)
 
     # When dealing with a harvest on a primary node the seeds need to get copied to S3.
     # Other nodes can use these copies instead of making their own.

@@ -41,7 +41,7 @@ def import_dataset(ctx, source, dataset):
     "secondary": "Whether you want the node to replicate Edurep data or get it from Edurep directly",
     "version": "Version of the harvester you want to harvest with. Defaults to latest version"
 })
-def harvest(ctx, mode, reset=False, secondary=False, version=None):
+def harvest(ctx, mode, reset=False, secondary=False, no_promote=False, version=None):
     """
     Starts a harvest tasks on the AWS container cluster or localhost
     """
@@ -50,6 +50,8 @@ def harvest(ctx, mode, reset=False, secondary=False, version=None):
         command += ["--reset"]
     if secondary:
         command += ["--secondary"]
+    if no_promote:
+        command += ["--no-promote"]
 
     run_harvester_task(ctx, mode, command, version=version, extra_workers=reset, concurrency=8)
 
