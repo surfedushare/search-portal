@@ -1,4 +1,3 @@
-import json
 from urlobject import URLObject
 
 from django.conf import settings
