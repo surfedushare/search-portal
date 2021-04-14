@@ -47,7 +47,7 @@ def harvest(seeds_source=None, reset=False):
     # Other nodes can use these copies instead of making their own.
     # Copying seeds is done to minimize downloading of seeds (a request by Edurep)
     # and local machines will never get whitelisted to download seeds.
-    if role == "primary":
+    if role == "primary" and settings.AWS_STORAGE_BUCKET_NAME:
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         ctx = Context(environment)
         harvester_data_bucket = f"s3://{settings.AWS_STORAGE_BUCKET_NAME}/datasets/harvester/edurep"

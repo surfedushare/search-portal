@@ -21,8 +21,6 @@ class Arrangement(DocumentCollectionMixin, CollectionBase):
     A Datagrowth Document is akin to a file.
     """
 
-    # dataset = models.ForeignKey("Dataset", blank=True, null=True, on_delete=models.CASCADE)
-    # collection = models.ForeignKey("Collection", blank=True, null=True, on_delete=models.CASCADE)
     meta = postgres_fields.JSONField(default=dict)
     deleted_at = models.DateTimeField(null=True, blank=True)
 

@@ -30,7 +30,7 @@ def import_dataset(ctx, source, dataset):
 
     if source == "localhost":
         print(f"Will try to import {dataset} using pre-downloaded files")
-        command += "--skip-download"
+        command += ["--skip-download"]
 
     run_harvester_task(ctx, source, command)
 
@@ -111,7 +111,9 @@ def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=No
     if version_id:
         command += [f"--dataset-version-id={version_id}"]
     elif dataset:
-        command += [f"--dataset={dataset}", f"--harvester-version={version}"]
+        command += [f"--dataset={dataset}"]
+        if version:
+            command += [f"--harvester-version={version}"]
     else:
         Exit("Either specify a dataset of a dataset version id")
     run_harvester_task(ctx, mode, command, version=version)
