@@ -364,9 +364,6 @@ export default {
     }
 
     &_sticky {
-      position: sticky;
-      top: 0;
-      left: 0;
       width: 100%;
       padding-top: 80px;
       padding-bottom: 102px;
