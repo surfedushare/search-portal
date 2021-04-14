@@ -12,6 +12,7 @@ from django.db import models
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.models import Locale
+from surf.vendor.search.choices import AUTHOR_FIELD_ID
 
 
 logger = logging.getLogger("service")
@@ -71,6 +72,17 @@ def _translate_mptt_filter_item(filter_item):
     filter_item.save()
 
 
+def _auto_enable_mptt_filter_item(filter_item):
+    translation = Locale.objects.create(
+        asset=f"{filter_item.external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
+        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=True
+    )
+    filter_item.name = filter_item.external_id
+    filter_item.title_translations = translation
+    filter_item.is_hidden = False
+    filter_item.save()
+
+
 def _update_mptt_filter_category(filter_category, api_client):
     """
     Updates filter category according to data received from EduRep
@@ -93,7 +105,10 @@ def _update_mptt_filter_category(filter_category, api_client):
             }
         )
         if created or filter_item.title_translations is None:
-            _translate_mptt_filter_item(filter_item)
+            if external_id == AUTHOR_FIELD_ID:
+                _auto_enable_mptt_filter_item(filter_item)
+            else:
+                _translate_mptt_filter_item(filter_item)
             is_new = True
 
         yield external_id, is_new
