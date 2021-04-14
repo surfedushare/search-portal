@@ -204,7 +204,13 @@ class POLElasticsearchHandler(logging.Handler):
         self.index_name_frequency = index_name_frequency
         self.es_additional_fields = es_additional_fields.copy() if es_additional_fields else {}
         hostname = socket.gethostname() or "localhost"
-        host_ip = socket.gethostbyname(socket.gethostname()) or "127.0.0.1"
+        host_ip = '127.0.0.1'
+
+        try:
+            host_ip = socket.gethostbyname(socket.gethostname())
+        except ValueError:
+            pass
+
         self.es_additional_fields.update({'host': hostname,
                                           'host_ip': host_ip})
         self.raise_on_indexing_exceptions = raise_on_indexing_exceptions
