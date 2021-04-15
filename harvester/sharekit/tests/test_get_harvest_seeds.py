@@ -115,6 +115,20 @@ class TestGetHarvestSeedsSharekit(TestCase):
             self.assertIn(idea, possible_ideas, "Expected material with idea elements to return the spliced strings")
         self.assertEqual(seeds[2]["ideas"], [], "Expected material without ideas to return empty list")
 
+    def test_lom_educational_level(self):
+        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]["lom_educational_levels"], ["HBO"],
+                         "Expected HBO materials to have an educational level")
+        self.assertEqual(seeds[1]["lom_educational_levels"], ["WO"],
+                         "Expected HBO materials to have an educational level")
+
+    def test_lowest_educational_level(self):
+        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]["lowest_educational_level"], 2,
+                         "Expected HBO materials to have an educational level of 2")
+        self.assertEqual(seeds[1]["lowest_educational_level"], 3,
+                         "Expected HBO materials to have an educational level of 3")
+
 
 class TestGetHarvestSeedsSharekitRestricted(TestCase):
 

@@ -73,14 +73,13 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_lom_educational_levels(cls, node):
-        return ["HBO", "WO"]  # REFACTOR: handle this once we get real values from API
-        # educational_contexts = node["attributes"]["educationalContexts"]
-        # if not educational_level:
-        #     return []
-        # return [
-        #     educational_level.value for educational_context in educational_contexts
-        #     if educational_context.value
-        # ]
+        educational_levels = node["attributes"]["educationalLevels"]
+        if not educational_levels:
+            return []
+        return [
+            educational_level["value"] for educational_level in educational_levels
+            if educational_level["value"]
+        ]
 
     @classmethod
     def get_lowest_educational_level(cls, node):
