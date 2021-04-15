@@ -30,13 +30,13 @@ class Command(BaseCommand):
             dataset = Dataset.objects.get(name=dataset_name)
             dataset_version = dataset.versions.filter(version=harvester_version).last()
 
+        if not dataset_version:
+            raise CommandError("Can't find a dataset version that matches input")
+
         logger.info(f"Promoting: {dataset_version.dataset.name}, {dataset_version.version} (id={dataset_version.id})")
 
         for index in dataset_version.indices.all():
             logger.info(f"Promoting index { index.remote_name } to latest")
             index.promote_to_latest()
-
-        dataset_version.is_current = True
-        dataset_version.save()
 
         logger.info("Finished promoting indices")
