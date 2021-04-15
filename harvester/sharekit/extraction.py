@@ -23,7 +23,7 @@ class SharekitMetadataExtraction(object):
         links = node["attributes"]["links"] or []
         output = [
             [file["resourceMimeType"], file["url"]]
-            for file in files
+            for file in files if file["resourceMimeType"] and file["url"]
         ]
         output += [
             ["text/html", link["url"]]

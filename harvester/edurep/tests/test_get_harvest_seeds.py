@@ -151,3 +151,12 @@ class TestGetHarvestSeedsEdurep(TestCase):
                          "Expected HBO materials to have an educational level of 2")
         self.assertEqual(seeds[2]["lowest_educational_level"], 3,
                          "Expected HBO materials to have an educational level of 3")
+
+    def test_get_files(self):
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]["files"], [], "Expected deleted material to have no files")
+        self.assertEqual(len(seeds[1]["files"]), 1)
+        mime_type, link = seeds[1]["files"][0]
+        self.assertEqual(mime_type, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        self.assertEqual(link, "https://surfsharekit.nl/dl/surf/5af0e26f-c4d2-4ddd-94ab-7dd0bd531751/"
+                               "182216be-31a2-43c3-b7de-e5dd355b09f7")
