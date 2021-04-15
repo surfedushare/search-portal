@@ -32,7 +32,7 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
     def create_new_version(self, excluded_specs=None):
         excluded_specs = excluded_specs or []
         current_version = self.versions.filter(is_current=True).last()
-        self.versions.filter(is_current=True).update(is_current=False)
+        self.versions.filter(is_current=True, version=settings.VERSION).update(is_current=False)
         new_version = self.versions.create(version=settings.VERSION, is_current=True)
 
         for harvest in self.harvest_set.all():
