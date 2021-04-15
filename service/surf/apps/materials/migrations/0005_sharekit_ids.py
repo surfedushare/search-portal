@@ -29,6 +29,9 @@ def migrate_sharekit_identifiers_2(apps, schema_editor):
             material.star_5 += extra_material.star_5
             material.view_count += extra_material.view_count
             material.applaud_count += extra_material.applaud_count
+            for extra_collection in extra_material.collections.all():
+                if extra_collection not in material.collections.all():
+                    material.collections.add(extra_collection)
             extra_material.delete()
         material.save()
 
