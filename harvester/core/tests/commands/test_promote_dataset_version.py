@@ -1,28 +1,12 @@
-"""
-Checking whether progress information from index_dataset_version command matches expectations.
-This is a very basic high-over way to check if the command succeeds.
-Alternatively the involved models can get unit tested and we can see whether command uses the right methods.
-After checking basic command flow we're checking, whether the Elastic Search library was called correctly
-to update the indices.
-"""
-
 from unittest.mock import patch
 
 from django.test import TestCase, override_settings
 from django.core.management import call_command, CommandError
 
-from core.models import Dataset, DatasetVersion, ElasticIndex
 from core.tests.mocks import get_elastic_client_mock
 
 
 class TestPromoteDatasetVersion(TestCase):
-    """
-    This test case represents the scenario where indices exist.
-    Under this condition the following should be possible
-    * only a small part gets updated
-    * deletes from previous runs
-    * complete recreate of existing indices (drop + create)
-    """
 
     fixtures = ["datasets-history", "index-history", "surf-oaipmh-2020-01-01", "resources"]
     elastic_client = get_elastic_client_mock(has_history=True)
