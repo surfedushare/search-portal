@@ -8,7 +8,7 @@ from edurep.tests.factories import EdurepOAIPMHFactory
 from edurep.extraction import EDUREP_EXTRACTION_OBJECTIVE
 
 
-class TestGetEdurepOAIPMHSeeds(TestCase):
+class TestGetHarvestSeedsEdurep(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -80,12 +80,18 @@ class TestGetEdurepOAIPMHSeeds(TestCase):
         self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])
         self.assertEqual(seeds[5]['publishers'], ['SURFnet'])
 
+    def test_is_restricted(self):
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]['is_restricted'], False, "Expected deleted material to have no restriction")
+        self.assertEqual(seeds[1]['is_restricted'], False, "Expected standard material to have no restriction")
+        self.assertEqual(seeds[8]['is_restricted'], True, "Expected restricted material to indicate restriction")
+
     def test_analysis_allowed_property(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['analysis_allowed'], False, "Expected deleted material to disallow analysis")
         self.assertEqual(seeds[1]['analysis_allowed'], True, "Expected standard material to allow analysis")
         self.assertEqual(seeds[8]['analysis_allowed'], False, "Expected restricted material to disallow analysis")
-        self.assertEqual(seeds[15]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
+        self.assertEqual(seeds[15]['analysis_allowed'], False, "Expected nd copyright material to disallow analysis")
 
     def test_is_part_of_property(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))

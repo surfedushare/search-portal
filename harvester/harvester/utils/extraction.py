@@ -32,6 +32,8 @@ def get_harvest_seeds(set_specification, latest_update, include_deleted=True, in
             seed["state"] = "deleted"
         if seed["lowest_educational_level"] < 1:  # lower level than MBO
             seed["state"] = "deleted"
+        if seed.get("is_restricted", False):
+            seed["analysis_allowed"] = False
     # And we return the seeds based on whether to include deleted or not
     return seeds if include_deleted else \
         [result for result in seeds if result.get("state", "active") == "active"]

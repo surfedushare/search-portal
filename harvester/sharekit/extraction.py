@@ -2,7 +2,7 @@ import re
 
 from datagrowth.utils import reach
 
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_OAIPMH_SETS
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class SharekitMetadataExtraction(object):
@@ -109,23 +109,26 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_ideas(cls, node):
-        return []  # REFACTOR: manage this once updates
-        # compound_ideas = reach("$.0.taxonPath.0.taxon.entry", node)
-        # if not compound_ideas:
-        #     return []
-        # ideas = []
-        # for compound_idea in compound_ideas:
-        #     ideas += compound_idea.split(" - ")
-        # return list(set(ideas))
+        compound_ideas = [vocabulary["value"] for vocabulary in node["attributes"]["vocabularies"]]
+        if not compound_ideas:
+            return []
+        ideas = []
+        for compound_idea in compound_ideas:
+            ideas += compound_idea.split(" - ")
+        return list(set(ideas))
+
+    @classmethod
+    def get_is_restricted(cls, data):
+        link = data["links"]["self"]
+        for restricted_set in RESTRICTED_MATERIAL_SETS:
+            if restricted_set in link:
+                return True
+        return False
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # We don't have access to restricted materials so we disallow analysis for them
-        external_id = node["id"]
-        for restricted_set in RESTRICTED_MATERIAL_OAIPMH_SETS:
-            if external_id.startswith(restricted_set + ":"):
-                return False
-        # We also disallow analysis for non-derivative materials as we'll create derivatives in that process
+        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
+        # NB: any material that is_restricted will also have analysis_allowed set to False
         copyright = SharekitMetadataExtraction.get_copyright(node)
         return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
@@ -152,6 +155,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "disciplines": SharekitMetadataExtraction.get_disciplines,
     "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
+    "#is_restricted": SharekitMetadataExtraction.get_is_restricted,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
     "is_part_of": SharekitMetadataExtraction.get_is_part_of,
     "has_parts": "$.attributes.hasParts"

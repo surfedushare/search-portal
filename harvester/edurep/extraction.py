@@ -2,7 +2,7 @@ import re
 import vobject
 from html import unescape
 
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_OAIPMH_SETS
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class EdurepDataExtraction(object):
@@ -225,13 +225,18 @@ class EdurepDataExtraction(object):
         return list(set(ideas))
 
     @classmethod
-    def get_analysis_allowed(cls, soup, el):
+    def get_is_restricted(cls, soup, el):
         # We don't have access to restricted materials so we disallow analysis for them
         external_id = cls.get_oaipmh_external_id(soup, el)
-        for restricted_set in RESTRICTED_MATERIAL_OAIPMH_SETS:
+        for restricted_set in RESTRICTED_MATERIAL_SETS:
             if external_id.startswith(restricted_set + ":"):
-                return False
-        # We also disallow analysis for non-derivative materials as we'll create derivatives in that process
+                return True
+        return False
+
+    @classmethod
+    def get_analysis_allowed(cls, soup, el):
+        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
+        # NB: any material that is_restricted will also have analysis_allowed set to False
         copyright = EdurepDataExtraction.get_copyright(soup, el)
         return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
@@ -283,6 +288,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "disciplines": EdurepDataExtraction.get_disciplines,
     "ideas": EdurepDataExtraction.get_ideas,
     "from_youtube": EdurepDataExtraction.get_from_youtube,
+    "is_restricted": EdurepDataExtraction.get_is_restricted,
     "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
     "is_part_of": EdurepDataExtraction.get_is_part_of,
     "has_parts": EdurepDataExtraction.get_has_parts,
