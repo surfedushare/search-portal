@@ -39,6 +39,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         pipeline = {}
         preview_path = None
         url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
+        language = "nl"
 
     dataset_version = factory.SubFactory(DatasetVersionFactory)
     reference = factory.Sequence(lambda n: "surf:oai:sufsharekit.nl:{}".format(n))
@@ -52,7 +53,18 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "mime_type": o.mime_type,
             "pipeline": o.pipeline,
             "preview_path": o.preview_path,
-            "url": o.url
+            "url": o.url,
+            "language": {"metadata": o.language},
+            "disciplines": [],
+            "educational_levels": [],
+            "lom_educational_levels": [],
+            "authors": [],
+            "publishers": [],
+            "description": "Gedrag is zorgwekkend",
+            "publisher_date": None,
+            "copyright": "cc-by-40",
+            "aggregation_level": "2",
+            "text": "",
         })
 
 

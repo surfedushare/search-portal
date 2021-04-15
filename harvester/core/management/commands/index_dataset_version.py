@@ -15,8 +15,6 @@ class Command(PipelineCommand):
 
     def handle(self, *args, **options):
 
-        # REFACTOR: write test for indexing version specifically and skip promotion step
-
         dataset_name = options["dataset"]
         version = options["harvester_version"]
         should_promote = not options["no_promote"]
