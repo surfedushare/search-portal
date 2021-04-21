@@ -43,7 +43,7 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
 
         return new_version
 
-    def reset(self):  # REFACTOR: delete
+    def reset(self):
         """
         Resets all related harvest instances and deletes all data, but retains all cache
         """

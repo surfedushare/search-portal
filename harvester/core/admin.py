@@ -21,16 +21,6 @@ class HarvestAdminInline(admin.TabularInline):
 class DatasetAdmin(DataStorageAdmin):
     inlines = [HarvestAdminInline]
 
-    actions = ["reset_dataset_harvest"]
-
-    def reset_dataset_harvest(self, request, queryset):
-        """
-        Convenience method to reset dataset harvests from the admin interface
-        """
-        for dataset in queryset:
-            dataset.reset()
-        messages.success(request, f"{queryset.count()} datasets reset to harvest from 01-01-1970")
-
 
 class DatasetVersionAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'is_current', "created_at")
