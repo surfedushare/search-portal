@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib import messages
 
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 

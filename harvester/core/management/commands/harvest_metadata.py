@@ -4,7 +4,7 @@ from datagrowth.resources.http.tasks import send
 from datagrowth.configuration import create_config
 
 from core.management.base import PipelineCommand
-from core.constants import HarvestStages, Repositories
+from core.constants import HarvestStages
 from core.models import Harvest
 
 
