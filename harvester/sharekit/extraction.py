@@ -148,7 +148,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
     "publishers": SharekitMetadataExtraction.get_publishers,
-    "publisher_date": "$.attributes.dateIssued",
+    "publisher_date": "$.attributes.publishedAt",
     "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
     "disciplines": SharekitMetadataExtraction.get_disciplines,
