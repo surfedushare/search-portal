@@ -39,6 +39,7 @@ def import_dataset(ctx, source, dataset):
     "mode": "Mode you want to migrate: localhost, development, acceptance or production. Must match APPLICATION_MODE",
     "reset": "Whether to reset the active datasets before harvesting",
     "secondary": "Whether you want the node to replicate Edurep data or get it from Edurep directly",
+    "no_promote": "Whether you want to create new indices without adjusting latest aliases",
     "version": "Version of the harvester you want to harvest with. Defaults to latest version"
 })
 def harvest(ctx, mode, reset=False, secondary=False, no_promote=False, version=None):
