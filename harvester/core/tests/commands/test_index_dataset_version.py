@@ -175,9 +175,10 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
 
+    @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
     @override_settings(VERSION="0.0.2")
-    def test_index_specific_version(self, streaming_bulk):
+    def test_index_specific_version(self, streaming_bulk, get_es_client):
         # Setup a new version and modify the old version to a single document version
         dataset = Dataset.objects.last()
         dataset.create_new_version()
@@ -202,6 +203,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "002")
         # Index the previous version and check we only get the modified documents
+        get_es_client.reset_mock()
         streaming_bulk.reset_mock()
         call_command("index_dataset_version", "--dataset=test", "--harvester-version=0.0.1")
         self.assertEqual(streaming_bulk.call_count, 1)
@@ -213,6 +215,15 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assert_document_structure(doc)
         self.assertEqual(index_name, "test")
         self.assertEqual(version, "001")
+        self.assertEqual(self.elastic_client.indices.delete.call_count, 1)
+        self.assertEqual(self.elastic_client.indices.create.call_count, 1)
+        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 1,
+                         "Expected an Elastic Search alias creation for each language")
+        for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
+            index_name, version, language, id = kwargs["index"].split("-")
+            self.assertEqual(index_name, "test")
+            self.assertEqual(version, "001")
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
