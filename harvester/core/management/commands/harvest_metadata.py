@@ -14,7 +14,7 @@ class Command(PipelineCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('-r', '--repository', action="store", default=Repositories.EDUREP)  # REFACTOR: no default
+        parser.add_argument('-r', '--repository', action="store")
         parser.add_argument('-p', '--promote', action="store_true")
 
     def harvest_seeds(self, harvest, current_time):

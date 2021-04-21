@@ -7,7 +7,7 @@ from django.utils.timezone import make_aware
 
 from datagrowth.resources.http.tasks import send
 from core.models import Document, Harvest
-from core.constants import HarvestStages
+from core.constants import HarvestStages, Repositories
 from core.logging import HarvestLogger
 
 
@@ -24,7 +24,7 @@ class TestMetadataHarvest(TestCase):
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
         with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
-            call_command("harvest_metadata", "--dataset=test")
+            call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
@@ -53,20 +53,20 @@ class TestMetadataHarvest(TestCase):
     def test_edurep_invalid_dataset(self, logger_mock):
         # Testing the case where a Dataset does not exist at all
 
-        call_command("harvest_metadata", "--dataset=invalid")
+        call_command("harvest_metadata", "--dataset=invalid", f"--repository={Repositories.EDUREP}")
         logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
         # Testing the case where a Dataset exists, but no harvest tasks are present
         logger_mock.end.reset_mock()
         surf_harvest = Harvest.objects.get(source__spec="surf")
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
-        call_command("harvest_metadata", "--dataset=test")
+        call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
         logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
 
     def test_edurep_down(self):
         with patch("core.management.commands.harvest_metadata.send", return_value=([], [100],)):
             try:
-                call_command("harvest_metadata", "--dataset=test")
+                call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
                 self.fail("harvest_metadata did not fail when Resource was returning errors")
             except CommandError:
                 pass
@@ -87,7 +87,7 @@ class TestMetadataHarvestWithHistory(TestCase):
         test_harvest = Harvest.objects.get(source__spec="surf")
         test_harvest.prepare()
         with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
-            call_command("harvest_metadata", "--dataset=test")
+            call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
