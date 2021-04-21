@@ -16,14 +16,14 @@ class SharekitMetadataHarvestManager(models.Manager):
         queryset = self.get_queryset() \
             .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
 
-        oaipmh_objective = {
+        objective = {
             "@": "$.data",
             "external_id": "$.id",
             "state": SharekitMetadataExtraction.get_record_state
         }
-        oaipmh_objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
+        objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
         extract_config = create_config("extract_processor", {
-            "objective": oaipmh_objective
+            "objective": objective
         })
         prc = ExtractProcessor(config=extract_config)
 
