@@ -1,7 +1,9 @@
 from collections import defaultdict
+from datetime import datetime
 
 from django.conf import settings
 from django.db import models
+from django.utils.timezone import make_aware
 
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
@@ -47,7 +49,15 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         return latest_harvest.harvested_at if latest_harvest else None
 
 
+class DatasetVersionManager(models.Manager):
+
+    def get_latest_version(self):
+        return super().get_queryset().filter(is_current=True).latest()
+
+
 class DatasetVersion(models.Model):
+
+    objects = DatasetVersionManager()
 
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False, blank=False, related_name="versions")
     is_current = models.BooleanField(default=False)
@@ -79,3 +89,6 @@ class DatasetVersion(models.Model):
             language = document.get_language()
             by_language[language] += list(document.to_search())
         return by_language
+
+    class Meta:
+        get_latest_by = "created_at"

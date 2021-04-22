@@ -10,12 +10,12 @@ from datagrowth.resources.http.tasks import send
 from datagrowth.utils.iterators import ibatch
 
 from core.constants import Repositories, HarvestStages
-from core.models import Harvest, Document
+from core.models import Harvest, DatasetVersion
 from sharekit.models import SharekitMetadataHarvest
 
 
-@app.task(name="sync_metadata")
-def sync_metadata():
+@app.task(name="sync_sharekit_metadata")
+def sync_sharekit_metadata():
     harvest_queryset = Harvest.objects.filter(
         dataset__harvestsource__repository=Repositories.SHAREKIT,
         stage=HarvestStages.COMPLETE  # prevents syncing materials half way a full harvest
@@ -32,32 +32,30 @@ def sync_metadata():
                 })
                 set_specification = harvest.source.spec
                 scc, err = send(
-                    set_specification, f"{harvest.latest_update_at:%Y-%m-%d}",
+                    set_specification, f"{harvest.latest_update_at:%Y-%m-%dT%H:%M:%SZ}",
                     config=send_config,
                     method="get"
                 )
-                if len(err):
+                if len(err) or not len(scc):
+                    print(f"Cancel scc:{len(scc)} err:{len(err)}")
                     continue
-                # Now parse the metadata and update Documents
+                print(f"Updating scc:{len(scc)}")
+                # Now parse the metadata and update current Collection for this Harvest
                 seeds = SharekitMetadataHarvest.objects.extract_seeds(set_specification, harvest.latest_update_at)
+                dataset_version = DatasetVersion.objects.get_latest_version()
+                collection = dataset_version.collection_set.get(name=harvest.source.spec)
                 for seeds_batch in ibatch(seeds, batch_size=32):
-                    documents_queryset = Document.objects.filter(
-                        reference__in=[seed["external_id"] for seed in seeds_batch]
-                    )
-                    documents = {
-                        doc.properties["external_id"]: doc
-                        for doc in documents_queryset
-                    }
+                    updates = []
                     for seed in seeds_batch:
+                        print(seed["external_id"])
                         language = seed.pop("language")
                         title = seed["title"]
                         mime_type = seed["mime_type"]
-                        document = documents[seed["external_id"]]
-                        document.properties.update(seed)
-                        document.properties["language"]["metadata"] = language
-                        document.properties["suggest"] = title
-                        document.properties["file_type"] = settings.MIME_TYPE_TO_FILE_TYPE[mime_type]
-                    Document.objects.bulk_update(documents.values(), ["properties"])
+                        seed["language"] = {"metadata": language}
+                        seed["suggest"] = title
+                        seed["file_type"] = settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown")
+                        updates.append(seed)
+                    collection.update(updates, "external_id")
                 # Last but not least we update the harvest update time to get a different delta later
                 harvest.latest_update_at = current_time
                 harvest.save()
