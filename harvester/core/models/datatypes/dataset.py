@@ -1,9 +1,7 @@
 from collections import defaultdict
-from datetime import datetime
 
 from django.conf import settings
 from django.db import models
-from django.utils.timezone import make_aware
 
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch

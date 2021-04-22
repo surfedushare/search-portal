@@ -1,13 +1,9 @@
-from collections import Iterator
 import logging
 
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
-from django.utils.functional import cached_property
 
-from datagrowth import settings as datagrowth_settings
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
-from datagrowth.utils import ibatch
 
 
 logger = logging.getLogger("harvester")
