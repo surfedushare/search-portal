@@ -434,6 +434,9 @@
                         <czp:keyword>
                             <czp:langstring xml:lang="x-none">Klinische stages</czp:langstring>
                         </czp:keyword>
+                        <czp:keyword>
+                            <czp:langstring xml:lang="x-none">#HBOVPK</czp:langstring>
+                        </czp:keyword>
                     </czp:general>
                     <czp:lifecycle>
                         <czp:contribute>
@@ -442,7 +445,7 @@
                                     <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
                                 </czp:source>
                                 <czp:value>
-                                    <czp:langstring xml:lang="x-none">organization</czp:langstring>
+                                    <czp:langstring xml:lang="x-none">publisher</czp:langstring>
                                 </czp:value>
                             </czp:role>
                             <czp:centity>

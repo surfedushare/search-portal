@@ -79,6 +79,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])
         self.assertEqual(seeds[5]['publishers'], ['SURFnet'])
+        self.assertEqual(seeds[16]['publishers'], ['HBO Verpleegkunde', 'Erasmus Medisch Centrum'])
 
     def test_is_restricted(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))

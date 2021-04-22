@@ -144,19 +144,24 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_publishers(cls, soup, el):
-        publisher = el.find(string='publisher')
-        if not publisher:
-            return []
-        contribution = publisher.find_parent('czp:contribute')
-        if not contribution:
-            return []
-        nodes = contribution.find_all('czp:vcard')
-
         publishers = []
+        # Check HBOVPK tags
+        hbovpk_keywords = [keyword for keyword in cls.get_keywords(soup, el) if "hbovpk" in keyword.lower()]
+        if hbovpk_keywords:
+            publishers.append("HBO Verpleegkunde")
+        # Look at actual publishers
+        publisher_element = el.find(string='publisher')
+        if not publisher_element:
+            return publishers
+        contribution_element = publisher_element.find_parent('czp:contribute')
+        if not contribution_element:
+            return publishers
+        nodes = contribution_element.find_all('czp:vcard')
         for node in nodes:
             publisher = cls.parse_vcard_element(node)
             if hasattr(publisher, "fn"):
                 publishers.append(publisher.fn.value)
+
         return publishers
 
     @classmethod
