@@ -23,7 +23,7 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
     since = factory.Maybe(
         "is_initial",
         make_aware(datetime(year=1970, month=1, day=1)),
-        make_aware(datetime(year=2020, month=2, day=10))
+        make_aware(datetime(year=2020, month=2, day=11))
     )
     set_specification = "edusources"
     status = 200

@@ -14,7 +14,7 @@ class SharekitMetadataHarvestManager(models.Manager):
 
     def extract_seeds(self, set_specification, latest_update):
         queryset = self.get_queryset() \
-            .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
+            .filter(set_specification=set_specification, since__gte=latest_update, status=200)
 
         objective = {
             "@": "$.data",
