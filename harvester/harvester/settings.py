@@ -370,6 +370,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'sync_sharekit_metadata',
         'schedule': crontab(minute="*/5"),
     },
+    'sync_indices': {
+        'task': 'sync_indices',
+        'schedule': 30,
+    },
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 

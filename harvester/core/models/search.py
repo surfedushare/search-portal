@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.text import slugify
+from django.utils.timezone import make_aware
 from elasticsearch.helpers import streaming_bulk
 from rest_framework import serializers
 
@@ -21,6 +24,7 @@ class ElasticIndex(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    pushed_at = models.DateTimeField(null=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -47,6 +51,7 @@ class ElasticIndex(models.Model):
         if not self.id:
             raise ValueError("Can't push index with unsaved object")
 
+        current_time = make_aware(datetime.now())
         remote_name = self.remote_name
         remote_exists = self.remote_exists
 
@@ -72,6 +77,7 @@ class ElasticIndex(models.Model):
                 self.error_count += 1
                 errors.append(result)
 
+        self.pushed_at = current_time
         self.save()
         return errors
 
