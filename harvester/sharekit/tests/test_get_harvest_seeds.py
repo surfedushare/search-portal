@@ -18,7 +18,7 @@ class TestGetHarvestSeedsSharekit(TestCase):
     def extract_seed_types(self, seeds):
         normal = next(
             (seed for seed in seeds
-             if seed["state"] != "deleted" and "maken.wikiwijs.nl" not in seed["url"])
+             if seed["state"] != "deleted")
         )
         deleted = next(
             (seed for seed in seeds if seed["state"] == "deleted"), None
