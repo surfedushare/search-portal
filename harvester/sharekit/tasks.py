@@ -37,9 +37,7 @@ def sync_sharekit_metadata():
                     method="get"
                 )
                 if len(err) or not len(scc):
-                    print(f"Cancel scc:{len(scc)} err:{len(err)}")
                     continue
-                print(f"Updating scc:{len(scc)}")
                 # Now parse the metadata and update current Collection for this Harvest
                 seeds = SharekitMetadataHarvest.objects.extract_seeds(set_specification, harvest.latest_update_at)
                 dataset_version = DatasetVersion.objects.get_latest_version()
@@ -47,7 +45,6 @@ def sync_sharekit_metadata():
                 for seeds_batch in ibatch(seeds, batch_size=32):
                     updates = []
                     for seed in seeds_batch:
-                        print(seed["external_id"])
                         language = seed.pop("language")
                         title = seed["title"]
                         mime_type = seed["mime_type"]
