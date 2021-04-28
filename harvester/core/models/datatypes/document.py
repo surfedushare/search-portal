@@ -66,7 +66,6 @@ class Document(DocumentPostgres, DocumentBase):
             "language": self.get_language(),
             'external_id': self.properties['external_id'],
             'disciplines': self.properties['disciplines'],
-            'educational_levels': self.properties['educational_levels'],
             'lom_educational_levels': self.properties['lom_educational_levels'],
             'ideas': self.properties.get('ideas', []),
             'authors': self.properties['authors'],
