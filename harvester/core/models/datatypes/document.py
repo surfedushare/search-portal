@@ -35,26 +35,28 @@ class Document(DocumentPostgres, DocumentBase):
         return "unk"
 
     @staticmethod
-    def get_search_document_details(reference_id, url, title, text, transcription, mime_type, file_type,
+    def get_search_document_details(reference_id, url, title, text, mime_type, file_type,
                                     is_part_of=None, has_parts=None):
         has_parts = has_parts or []
-        return {
+        details = {
             '_id': reference_id,
             'title': title,
-            'text': text,
-            'transcription': transcription,
             'url': url,
             'title_plain': title,
-            'text_plain': text,
-            'transcription_plain': transcription,
             'file_type': file_type,
             'mime_type': mime_type,
             'has_parts': has_parts,
             'has_part': has_parts,  # TODO: remove after migration
             'is_part_of': is_part_of,
             'suggest_completion': title.split(" ") if title else [],
-            'suggest_phrase': text
         }
+        if text:
+            details.update({
+                'text': text,
+                'text_plain': text,
+                'suggest_phrase': text
+            })
+        return details
 
     def get_search_document_base(self):
         """
@@ -87,8 +89,7 @@ class Document(DocumentPostgres, DocumentBase):
             self.properties["external_id"],
             self.properties["url"],
             self.properties["title"],
-            self.properties["text"],
-            self.properties.get("transcription", None),
+            self.properties.get("text", None),
             self.properties["mime_type"],
             self.properties["file_type"],
             is_part_of=self.properties.get("is_part_of", None),
