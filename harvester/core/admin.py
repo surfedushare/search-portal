@@ -35,7 +35,8 @@ class ExtendedDocumentAdmin(DocumentAdmin):
 
 
 class ElasticIndexAdmin(admin.ModelAdmin):
-    list_display = ("name", "remote_name", "remote_exists", "error_count", "language", "created_at", "modified_at",)
+    list_display = ("name", "remote_name", "remote_exists", "error_count", "language", "created_at", "modified_at",
+                    "pushed_at")
 
 
 class CommonCartridgeAdmin(admin.ModelAdmin):
