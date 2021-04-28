@@ -36,6 +36,11 @@ class TestPrepareHarvestBase(TestCase):
             spec="wikiwijsmaken",
             repository=Repositories.EDUREP
         )
+        cls.edurep_delen = HarvestSourceFactory(
+            name="Edurep Delen",
+            spec="edurep_delen",
+            repository=Repositories.EDUREP
+        )
 
 
 class TestPrepareHarvestNoHistory(TestPrepareHarvestBase):
@@ -53,12 +58,17 @@ class TestPrepareHarvestNoHistory(TestPrepareHarvestBase):
             stage=HarvestStages.NEW,
             source=cls.wikiwijs
         )
+        cls.edurep_delen_harvest = HarvestFactory(
+            dataset=cls.dataset,
+            stage=HarvestStages.NEW,
+            source=cls.edurep_delen
+        )
 
     def test_prepare_harvest(self):
         prepare_harvest(self.dataset)
         # See if harvest state is correct
-        self.assertEqual(Harvest.objects.all().count(), 2)
-        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 2)
+        self.assertEqual(Harvest.objects.all().count(), 3)
+        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 3)
         for harvest in Harvest.objects.filter(stage=HarvestStages.NEW):
             self.assertEqual(harvest.latest_update_at, self.begin_of_time)
             self.assertIsNone(harvest.harvested_at)
@@ -75,8 +85,8 @@ class TestPrepareHarvestNoHistory(TestPrepareHarvestBase):
     def test_prepare_harvest_reset(self):
         prepare_harvest(self.dataset, reset=True)
         # See if harvest state is correct
-        self.assertEqual(Harvest.objects.all().count(), 2)
-        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 2)
+        self.assertEqual(Harvest.objects.all().count(), 3)
+        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 3)
         for harvest in Harvest.objects.filter(stage=HarvestStages.NEW):
             self.assertEqual(harvest.latest_update_at, self.begin_of_time)
             self.assertIsNone(harvest.harvested_at)
@@ -114,15 +124,22 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
             source=cls.wikiwijs,
             harvested_at=cls.last_harvest
         )
-        cls.edurep_resource = EdurepOAIPMHFactory.create()
+        cls.edurep_delen_harvest = HarvestFactory(
+            dataset=cls.dataset,
+            stage=HarvestStages.BASIC,
+            source=cls.edurep_delen,
+            harvested_at=cls.last_harvest
+        )
+        cls.wikiwijs_resource = EdurepOAIPMHFactory.create(set_specification="wikiwijsmaken")
+        cls.edurep_delen_resource = EdurepOAIPMHFactory.create(set_specification="edurep_delen")
         cls.sharekit_resource = SharekitMetadataHarvestFactory.create()
 
     @override_settings(VERSION="0.0.1")
     def test_prepare_harvest(self):
         prepare_harvest(self.dataset)
         # See if harvest state is correct
-        self.assertEqual(Harvest.objects.all().count(), 2)
-        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 2)
+        self.assertEqual(Harvest.objects.all().count(), 3)
+        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 3)
         for harvest in Harvest.objects.filter(stage=HarvestStages.NEW):
             if harvest.source.delete_policy == DeletePolicies.NO:
                 self.assertEqual(harvest.latest_update_at, self.begin_of_time)
@@ -131,7 +148,7 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 1)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 2)
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
@@ -147,8 +164,8 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
     def test_prepare_harvest_reset(self):
         prepare_harvest(self.dataset, reset=True)
         # See if harvest state is correct
-        self.assertEqual(Harvest.objects.all().count(), 2)
-        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 2)
+        self.assertEqual(Harvest.objects.all().count(), 3)
+        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 3)
         for harvest in Harvest.objects.filter(stage=HarvestStages.NEW):
             self.assertEqual(harvest.latest_update_at, self.begin_of_time)
             self.assertIsNone(harvest.harvested_at)
@@ -172,13 +189,17 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
         self.wikiwijs_harvest.save()
         prepare_harvest(self.dataset)
         # See if harvest state is correct
-        self.assertEqual(Harvest.objects.all().count(), 2)
-        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 2)
+        self.assertEqual(Harvest.objects.all().count(), 3)
+        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 3)
         for harvest in Harvest.objects.filter(stage=HarvestStages.NEW):
-            self.assertEqual(harvest.latest_update_at, self.begin_of_time)
-            self.assertIsNone(harvest.harvested_at)
+            if harvest.source.spec != "edurep_delen":
+                self.assertEqual(harvest.latest_update_at, self.begin_of_time)
+                self.assertIsNone(harvest.harvested_at)
+            else:
+                self.assertEqual(harvest.latest_update_at, self.last_harvest)
+                self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 0)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 1)
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
@@ -194,8 +215,8 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
     def test_prepare_harvest_new_version(self):
         prepare_harvest(self.dataset)
         # See if harvest state is correct
-        self.assertEqual(Harvest.objects.all().count(), 2)
-        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 2)
+        self.assertEqual(Harvest.objects.all().count(), 3)
+        self.assertEqual(Harvest.objects.filter(stage=HarvestStages.NEW).count(), 3)
         for harvest in Harvest.objects.filter(stage=HarvestStages.NEW):
             if harvest.source.delete_policy == DeletePolicies.NO:
                 self.assertEqual(harvest.latest_update_at, self.begin_of_time)
@@ -204,7 +225,7 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 1)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 2)
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)

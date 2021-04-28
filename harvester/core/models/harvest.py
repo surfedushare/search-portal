@@ -29,7 +29,7 @@ class HarvestSource(models.Model):
 
     def clear_repository_resources(self):
         harvest_resource = apps.get_model(self.repository)
-        harvest_resource.objects.all().delete()
+        harvest_resource.objects.filter(set_specification=self.spec).delete()
 
     def __str__(self):
         return self.name
