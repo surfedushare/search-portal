@@ -50,6 +50,10 @@
           {
             "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
             "value": "HBO"
+          },
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "HBO"
           }
         ],
         "typeResearchObject": null,

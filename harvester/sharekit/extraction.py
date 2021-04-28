@@ -76,10 +76,10 @@ class SharekitMetadataExtraction(object):
         educational_levels = node["attributes"]["educationalLevels"]
         if not educational_levels:
             return []
-        return [
+        return list(set([
             educational_level["value"] for educational_level in educational_levels
             if educational_level["value"]
-        ]
+        ]))
 
     @classmethod
     def get_lowest_educational_level(cls, node):
