@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.db import models
+from django.utils.timezone import make_aware
 
 from datagrowth.datatypes import DocumentBase, DocumentPostgres
 
@@ -19,6 +22,8 @@ class Document(DocumentPostgres, DocumentBase):
         self.clean()
         if commit:
             self.save()
+        else:
+            self.modified_at = make_aware(datetime.now())
         return self.content
 
     def get_language(self):

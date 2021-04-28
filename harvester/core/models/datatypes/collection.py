@@ -1,7 +1,9 @@
 from collections import Iterator, defaultdict
+from datetime import datetime
 
 from django.db import models
 from django.db.models import Q
+from django.utils.timezone import make_aware
 
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
@@ -43,7 +45,8 @@ class Collection(DocumentCollectionMixin, CollectionBase):
             # any update's "by_property" property value and then updating these source objects.
             # One update object can potentially target multiple sources
             # if multiple objects with the same value for the by_property property exist.
-            updated = {}
+            updated = set()
+            prepared = []
             sources_by_lookup = defaultdict(list)
             for update in updates:
                 sources_by_lookup[update[by_property]].append(update)
@@ -54,10 +57,11 @@ class Collection(DocumentCollectionMixin, CollectionBase):
                 for update_value in sources_by_lookup[target.properties[by_property]]:
                     target.update(update_value, commit=False)
                 count += 1
-                updated[target.properties[by_property]] = target
+                updated.add(target.properties[by_property])
+                prepared.append(target)
             Document.objects.bulk_update(
-                updated.values(),
-                ["properties", "identity", "reference"],
+                prepared,
+                ["properties", "identity", "reference", "modified_at"],
                 batch_size=batch_size
             )
             # After all updates we add all data that hasn't been used in any update operation
@@ -68,4 +72,6 @@ class Collection(DocumentCollectionMixin, CollectionBase):
             if len(additions):
                 count += self.add(additions, batch_size=batch_size, collection=collection)
 
+        collection.modified_at = make_aware(datetime.now())
+        collection.save()
         return count
