@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "totalCount": 2246
+  },
+  "links": {
+    "first": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
+    "self": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
+    "next": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2",
+    "last": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2240"
+  },
+  "data": [
+    {
+      "type": "repoItem",
+      "id": "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2017-12-22T13:34:05Z",
+        "title": "Using a Vortex (responsibly) | Wageningen UR",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2016-09-02",
+        "place": null,
+        "abstract": "Instruction on how to use a Vortex mixer without destroying the lab",
+        "keywords": [
+          "Video",
+          "Practicum clip",
+          "Instructie clip"
+        ],
+        "numOfPages": null,
+        "authors": null,
+        "institutes": "Wageningen University & Research",
+        "links": [
+          {
+            "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "aarde_milieu",
+        "hasParts": [],
+        "partOf": [],
+        "technicalFormat": null,
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "3e45b9e3-ba76-4200-a927-2902177f1f6c",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-01-14T10:36:45Z",
+        "title": "Nutr103x 7 3 4 Negative effects of heating",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2015-12-23",
+        "place": null,
+        "abstract": "Video about the negative effects of heating",
+        "keywords": [
+          "Video",
+          "mooc",
+          "nutrition",
+          "health",
+          "Food safety"
+        ],
+        "numOfPages": null,
+        "authors": null,
+        "institutes": "Wageningen University & Research",
+        "links": [
+          {
+            "url": "https://www.youtube.com/watch?v=FV9AGbCN-VM&list=PLb-jwndomijfOwCwM_aZN0c3_FPdGgo_g&index=100",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-nc-nd-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "aarde_milieu",
+        "hasParts": [],
+        "partOf": [],
+        "technicalFormat": null,
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "4842596f-fe60-40ef-8c06-4d3d6e296ba4",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-01-14T10:36:45Z",
+        "title": "E-module Laryngologie",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "1970-01-01",
+        "place": null,
+        "abstract": "E-module over Laryngologie",
+        "keywords": [
+          "interne geneeskunde",
+          "KNO",
+          "E-module",
+          "Klinische stages"
+        ],
+        "numOfPages": null,
+        "authors": null,
+        "institutes": null,
+        "links": [
+          {
+            "url": "https://xoteur.12change.eu/play.php?template_id=444#page9",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "nl",
+        "themesResearchObject": null,
+        "termsOfUse": "yes",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "gezondheid",
+        "hasParts": [],
+        "partOf": [],
+        "technicalFormat": null,
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    }
+  ]
+}

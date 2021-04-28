@@ -15,7 +15,6 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
         strategy = factory.BUILD_STRATEGY
 
     class Params:
-        set = "surfsharekit"
         is_initial = True
         number = 0
 

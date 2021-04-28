@@ -12,6 +12,16 @@
         }
     },
     {
+        "model": "core.datasetversion",
+        "pk": 1,
+        "fields": {
+            "dataset": 19,
+            "is_current": true,
+            "created_at": "2021-04-07T11:40:19.183Z",
+            "version": "0.0.1"
+        }
+    },
+    {
         "model": "core.collection",
         "pk": 171,
         "fields": {
@@ -21,11 +31,11 @@
             "name": "surf",
             "identifier": null,
             "referee": "id",
-            "dataset": 19
+            "dataset_version": 1
         }
     },
     {
-        "model": "core.oaipmhset",
+        "model": "core.harvestsource",
         "pk": 1,
         "fields": {
             "name": "SURF Sharekit",
@@ -36,7 +46,7 @@
         }
     },
     {
-        "model": "core.oaipmhset",
+        "model": "core.harvestsource",
         "pk": 2,
         "fields": {
             "name": "Edurep Delen",
@@ -47,7 +57,7 @@
         }
     },
     {
-        "model": "core.oaipmhharvest",
+        "model": "core.harvest",
         "pk": 46,
         "fields": {
             "source": 1,
@@ -58,7 +68,7 @@
         }
     },
     {
-        "model": "core.oaipmhharvest",
+        "model": "core.harvest",
         "pk": 42,
         "fields": {
             "source": 2,
@@ -66,155 +76,6 @@
             "latest_update_at": "1970-01-01T00:00:00Z",
             "harvested_at": "2020-02-10T13:08:39.315Z",
             "stage": "Video"
-        }
-    },
-    {
-        "model": "core.arrangement",
-        "pk": 92477,
-        "fields": {
-            "schema": "\"{}\"",
-            "created_at": "2020-06-22T12:24:52.137Z",
-            "modified_at": "2020-06-22T12:24:52.137Z",
-            "name": null,
-            "identifier": null,
-            "referee": "id",
-            "dataset": 19,
-            "collection": 171,
-            "meta": {
-                "reference_id": "surf:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd",
-                "url": "http://online.codarts.nl/mod/page/view.php?id=313",
-                "keywords": [
-                    "Instructie",
-                    "Praktische muzieknotatie en audiobewerking"
-                ],
-                "language": "unk"
-            }
-        }
-    },
-    {
-        "model": "core.arrangement",
-        "pk": 92480,
-        "fields": {
-            "schema": "\"{}\"",
-            "created_at": "2020-02-17T12:24:52.167Z",
-            "modified_at": "2020-02-17T12:24:52.167Z",
-            "name": null,
-            "identifier": null,
-            "referee": "id",
-            "dataset": 19,
-            "collection": 171,
-            "meta": {
-                "reference_id": "surf:oai:surfsharekit.nl:b5473dd1-8aa4-455f-b359-9af8081ce697",
-                "url": "https://github.com/ericpostma/ep/blob/master/chris/Week%203%20-%20Tuning%20and%20Testing/Practical%203.ipynb",
-                "keywords": [
-                    "Exercise",
-                    "WEKA",
-                    "MOOC"
-                ],
-                "language": "en"
-            }
-        }
-    },
-    {
-        "model": "core.arrangement",
-        "pk": 92369,
-        "fields": {
-            "schema": "\"{}\"",
-            "created_at": "2020-02-17T12:24:52.192Z",
-            "modified_at": "2020-02-17T12:24:52.192Z",
-            "name": null,
-            "identifier": null,
-            "referee": "id",
-            "dataset": 19,
-            "collection": 171,
-            "meta": {
-                "reference_id": "surf:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
-                "url": "https://surfsharekit.nl/dl/surf/5af0e26f-c4d2-4ddd-94ab-7dd0bd531751/182216be-31a2-43c3-b7de-e5dd355b09f7",
-                "keywords": [
-                    "Exercise"
-                ],
-                "language": "en"
-            }
-        }
-    },
-    {
-        "model": "core.arrangement",
-        "pk": 92370,
-        "fields": {
-            "schema": "\"{}\"",
-            "created_at": "2020-06-22T12:24:52.241Z",
-            "modified_at": "2020-06-22T12:24:52.241Z",
-            "name": null,
-            "identifier": null,
-            "referee": "id",
-            "dataset": 19,
-            "collection": 171,
-            "meta": {
-                "reference_id": "surf:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
-                "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
-                "keywords": [
-                    "Video",
-                    "Practicum clip",
-                    "Instructie clip"
-                ],
-                "language": "nl"
-            }
-        }
-    },
-    {
-        "model": "core.arrangement",
-        "pk": 92378,
-        "fields": {
-            "schema": "\"{}\"",
-            "created_at": "2020-02-17T12:24:52.340Z",
-            "modified_at": "2020-02-17T12:24:52.340Z",
-            "name": null,
-            "identifier": null,
-            "referee": "id",
-            "dataset": 19,
-            "collection": 171,
-            "meta": {
-                "reference_id": "surf:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
-                "url": "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
-                "keywords": [
-                    "correspondentie",
-                    "didactiek",
-                    "eigenschappen",
-                    "macro",
-                    "macro-meso-micro",
-                    "meso",
-                    "micro",
-                    "scheikunde",
-                    "structuur"
-                ],
-                "language": "nl"
-            }
-        }
-    },
-    {
-        "model": "core.arrangement",
-        "pk": 93353,
-        "fields": {
-            "schema": "\"{}\"",
-            "created_at": "2020-06-22T12:24:52.400Z",
-            "modified_at": "2020-06-22T12:24:52.400Z",
-            "name": null,
-            "identifier": null,
-            "referee": "id",
-            "dataset": 19,
-            "collection": 171,
-            "meta": {
-                "reference_id": "surf:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
-                "url": "https://surfsharekit.nl/dl/surf/b500d389-2fda-4696-ae51-9cd0603a48af/48fac5c4-c846-48b3-9318-6b01e151a508",
-                "keywords": [
-                    "economics",
-                    "macro economics",
-                    "micro economics",
-                    "economic structure",
-                    "labour market"
-                ],
-                "language": "en"
-            }
         }
     },
     {
@@ -272,8 +133,7 @@
                 "lom_educational_levels": ["HBO"],
                 "lowest_educational_level": 2
             },
-            "dataset": 19,
-            "arrangement": 92369
+            "dataset_version": 1
         }
     },
     {
@@ -332,67 +192,7 @@
                 "lom_educational_levels": ["WO"],
                 "lowest_educational_level": 3
             },
-            "dataset": 19,
-            "arrangement": 92370
-        }
-    },
-    {
-        "model": "core.document",
-        "pk": 222319,
-        "fields": {
-            "schema": "\"{}\"",
-            "created_at": "2020-06-22T10:53:24.388Z",
-            "modified_at": "2020-06-22T10:53:24.388Z",
-            "collection": 171,
-            "identity": null,
-            "reference": "surf:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257:video",
-            "properties": {
-                "id": "surf:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257:video",
-                "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
-                "text": null,
-                "title": "Using a Vortex | Wageningen UR",
-                "author": [],
-                "authors": [],
-                "suggest": "Using a Vortex | Wageningen UR",
-                "language": {
-                    "metadata": "nl",
-                    "from_text": null,
-                    "from_title": null
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": ["core.fileresource", 6018]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": ["core.tikaresource", 38111]
-                    },
-                    "kaldi": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "video": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
-                },
-                "copyright": "cc-by-40",
-                "file_type": "video",
-                "mime_type": "text/html",
-                "publishers": [],
-                "description": "Instruction on how to use a Vortex mixer\r\n",
-                "disciplines": [],
-                "external_id": "surf:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
-                "publisher_date": null,
-                "aggregation_level": null,
-                "educational_levels": ["18656a7c-95a5-4831-8085-020d3151aceb", "bbbd99c6-cf49-4980-baed-12388f8dcff4"],
-                "lom_educational_levels": ["WO"],
-                "lowest_educational_level": 3
-            },
-            "dataset": 19,
-            "arrangement": 92370
+            "dataset_version": 1
         }
     },
     {
@@ -450,8 +250,7 @@
                 "lom_educational_levels": ["HBO"],
                 "lowest_educational_level": 2
             },
-            "dataset": 19,
-            "arrangement": 92378
+            "dataset_version": 1
         }
     },
     {
@@ -475,7 +274,7 @@
                 "language": {
                     "metadata": "nl",
                     "from_text": "nl",
-                    "from_title": "en"
+                    "from_title": "nl"
                 },
                 "pipeline": {
                     "file": {
@@ -509,8 +308,7 @@
                 "lom_educational_levels": ["HBO"],
                 "lowest_educational_level": 2
             },
-            "dataset": 19,
-            "arrangement": 92477
+            "dataset_version": 1
         }
     },
     {
@@ -568,8 +366,7 @@
                 "lom_educational_levels": ["WO"],
                 "lowest_educational_level": 3
             },
-            "dataset": 19,
-            "arrangement": 92480
+            "dataset_version": 1
         }
     },
     {
@@ -591,9 +388,9 @@
                 "authors": ["Dr. Ning Ding"],
                 "suggest": "09 Changes in the Labour Market",
                 "language": {
-                    "metadata": "en",
-                    "from_text": "en",
-                    "from_title": "en"
+                    "metadata": null,
+                    "from_text": null,
+                    "from_title": null
                 },
                 "pipeline": {
                     "file": {
@@ -627,8 +424,7 @@
                 "lom_educational_levels": ["HBO"],
                 "lowest_educational_level": 2
             },
-            "dataset": 19,
-            "arrangement": 93353
+            "dataset_version": 1
         }
     }
 ]

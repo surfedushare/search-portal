@@ -536,7 +536,7 @@ class MaterialSetAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         results = _get_material_by_external_id(request, data['external_id'])
-        parts = results[0]['has_part']
+        parts = results[0]['has_parts']
 
         api_client = ElasticSearchApiClient()
         api_response = api_client.get_materials_by_id(parts, page_size=100)

@@ -1,7 +1,7 @@
 import factory
 
-from core.models import Document, Dataset, OAIPMHHarvest, OAIPMHSet, FileResource
-from core.constants import HarvestStages
+from core.models import Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, FileResource
+from core.constants import HarvestStages, Repositories, DeletePolicies
 
 
 class DatasetFactory(factory.django.DjangoModelFactory):
@@ -10,6 +10,20 @@ class DatasetFactory(factory.django.DjangoModelFactory):
 
     name = "test"
     is_active = True
+
+
+class DatasetVersionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = DatasetVersion
+
+    version = "0.0.1"
+    is_current = True
+    dataset = factory.SubFactory(DatasetFactory)
+
+
+class CollectionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Collection
 
 
 class DocumentFactory(factory.django.DjangoModelFactory):
@@ -25,8 +39,9 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         pipeline = {}
         preview_path = None
         url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
+        language = "nl"
 
-    dataset = factory.SubFactory(DatasetFactory)
+    dataset_version = factory.SubFactory(DatasetVersionFactory)
     reference = factory.Sequence(lambda n: "surf:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
@@ -38,25 +53,37 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "mime_type": o.mime_type,
             "pipeline": o.pipeline,
             "preview_path": o.preview_path,
-            "url": o.url
+            "url": o.url,
+            "language": {"metadata": o.language},
+            "disciplines": [],
+            "educational_levels": [],
+            "lom_educational_levels": [],
+            "authors": [],
+            "publishers": [],
+            "description": "Gedrag is zorgwekkend",
+            "publisher_date": None,
+            "copyright": "cc-by-40",
+            "aggregation_level": "2",
+            "text": "",
         })
 
 
-class OAIPMHSetFactory(factory.django.DjangoModelFactory):
+class HarvestSourceFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = OAIPMHSet
+        model = HarvestSource
 
     name = "SURF Sharekit"
-    repository = "edurep.EdurepOAIPMH"
+    repository = Repositories.EDUREP
     spec = "surf"
+    delete_policy = DeletePolicies.TRANSIENT
 
 
-class OAIPMHHarvestFactory(factory.django.DjangoModelFactory):
+class HarvestFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = OAIPMHHarvest
+        model = Harvest
 
     dataset = factory.SubFactory(DatasetFactory)
-    source = factory.SubFactory(OAIPMHSetFactory)
+    source = factory.SubFactory(HarvestSourceFactory)
     stage = HarvestStages.NEW
 
 

@@ -68,6 +68,7 @@ INSTALLED_APPS = [
 
     'core',
     'edurep',
+    'sharekit',
 ]
 
 MIDDLEWARE = [
@@ -367,3 +368,8 @@ CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 DATAGROWTH_DATA_DIR = os.path.join(BASE_DIR, "..", "data", "harvester")
 DATAGROWTH_BIN_DIR = os.path.join(BASE_DIR, "harvester", "bin")
+
+
+# Sharekit
+
+SHAREKIT_API_KEY = environment.secrets.sharekit.api_key

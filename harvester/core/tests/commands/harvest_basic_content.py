@@ -7,12 +7,12 @@ from django.core.management import call_command
 from django.utils.timezone import make_aware
 
 from core.constants import HarvestStages
-from core.models import OAIPMHHarvest
+from core.models import Harvest
 from core.management.commands.harvest_basic_content import Command as BasicHarvestCommand
 from core.logging import HarvestLogger
 
 
-GET_EDUREP_OAIPMH_SEEDS_TARGET = "core.management.commands.harvest_basic_content.get_edurep_oaipmh_seeds"
+GET_HARVEST_SEEDS_TARGET = "core.management.commands.harvest_basic_content.get_harvest_seeds"
 DOWNLOAD_SEED_FILES_TARGET = "core.management.commands.harvest_basic_content.Command.download_seed_files"
 EXTRACT_FROM_SEEDS_TARGET = "core.management.commands.harvest_basic_content.Command.extract_from_seed_files"
 SEND_SERIE_TARGET = "core.management.commands.harvest_basic_content.send_serie"
@@ -71,16 +71,16 @@ class TestBasicHarvest(TestCase):
         command.batch_size = 32
         return command
 
-    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS)
+    @patch(GET_HARVEST_SEEDS_TARGET, return_value=DUMMY_SEEDS)
     @patch(DOWNLOAD_SEED_FILES_TARGET, return_value=[1])
     @patch(EXTRACT_FROM_SEEDS_TARGET)
     def test_basic_surf(self, extract_target, download_target, seeds_target):
         # Checking whether end result of the command returned by "handle" matches expectations.
-        # We'd expect the command to get seeds from get_edurep_oaipmh_seeds function.
+        # We'd expect the command to get seeds from get_harvest_seeds function.
         # After that the heavy lifting is done by two methods named download_seed_files and extract_from_seed_files.
-        # We'll test those separately, but check if they get called with the seeds returned by get_edurep_oaipmh_seeds
+        # We'll test those separately, but check if they get called with the seeds returned by get_harvest_seeds
         call_command("harvest_basic_content", "--dataset=test")
-        # Asserting usage of get_edurep_oaipmh_seeds
+        # Asserting usage of get_harvest_seeds
         seeds_target.assert_called_once_with(
             "surf", make_aware(datetime(year=1970, month=1, day=1)),
             include_deleted=False
@@ -91,20 +91,20 @@ class TestBasicHarvest(TestCase):
         extract_target.assert_called_once_with("basic.extract", DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         self.assertEqual(
             surf_harvest.stage,
             HarvestStages.BASIC,
             "surf set harvest should got updated to stage BASIC to prevent re-harvest in the future"
         )
-        edurep_delen_harvest = OAIPMHHarvest.objects.get(source__spec="edurep_delen")
+        edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
             edurep_delen_harvest.stage,
             HarvestStages.VIDEO,
             "edurep_delen set harvest got updated to other than VIDEO while we expected it to be ignored"
         )
 
-    @patch(GET_EDUREP_OAIPMH_SEEDS_TARGET, return_value=DUMMY_SEEDS_WITH_YOUTUBE)
+    @patch(GET_HARVEST_SEEDS_TARGET, return_value=DUMMY_SEEDS_WITH_YOUTUBE)
     def test_harvest_with_youtube(self, seeds_mock):
         with patch(SEND_SERIE_TARGET, return_value=[[12024, 12025], []]) as send_serie_mock:
             call_command("harvest_basic_content", "--dataset=test")
@@ -126,17 +126,17 @@ class TestBasicHarvest(TestCase):
         # Testing the case where a Dataset does not exist at all
         try:
             call_command("harvest_basic_content", "--dataset=invalid")
-            self.fail("harvest_edurep_seeds did not raise for an invalid dataset")
-        except OAIPMHHarvest.DoesNotExist:
+            self.fail("harvest_basic_content did not raise for an invalid dataset")
+        except Harvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
-        surf_harvest = OAIPMHHarvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surf")
         surf_harvest.stage = HarvestStages.BASIC
         surf_harvest.save()
         try:
             call_command("harvest_basic_content", "--dataset=invalid")
             self.fail("harvest_basic_content did not raise for a dataset without pending harvests")
-        except OAIPMHHarvest.DoesNotExist:
+        except Harvest.DoesNotExist:
             pass
 
     def test_download_seed_files(self):

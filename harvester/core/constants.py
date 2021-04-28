@@ -1,3 +1,29 @@
+class Repositories:
+    EDUREP = "edurep.EdurepOAIPMH"
+    SHAREKIT = "sharekit.SharekitMetadataHarvest"
+
+
+REPOSITORY_CHOICES = [
+    (value, attr.lower().capitalize())
+    for attr, value in sorted(Repositories.__dict__.items()) if not attr.startswith("_")
+]
+
+
+class DeletePolicies:
+    """
+    Details: http://www.openarchives.org/OAI/openarchivesprotocol.html#DeletedRecords
+    """
+    NO = "no"
+    PERSISTENT = "persistent"
+    TRANSIENT = "transient"
+
+
+DELETE_POLICY_CHOICES = [
+    (value, attr.lower().capitalize())
+    for attr, value in sorted(DeletePolicies.__dict__.items()) if not attr.startswith("_")
+]
+
+
 class HarvestStages:
     NEW = "New"
     BASIC = "Basic"
@@ -34,7 +60,8 @@ HIGHER_EDUCATION_LEVELS = {  # TODO: consider whether to strip this down to stri
 }
 
 
-RESTRICTED_MATERIAL_OAIPMH_SETS = {
+RESTRICTED_MATERIAL_SETS = {
     "l4l",
     "surfsharekit_restricted",
+    "edusourcesprivate"
 }
