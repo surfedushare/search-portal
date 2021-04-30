@@ -10,7 +10,7 @@ from core.models import Dataset, DatasetVersion, Document, ElasticIndex
 
 class Command(BaseCommand):
     """
-    A convenience command to delete any resources that are erroneous or considered stale
+    A convenience command to delete any data that is considered stale
     """
 
     resources = {

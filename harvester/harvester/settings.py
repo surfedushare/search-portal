@@ -359,6 +359,13 @@ CELERY_BEAT_SCHEDULE = {
         ),
         'args': (environment.schedule.harvest.source,)
     },
+    'clean_data': {
+        'task': 'clean_data',
+        'schedule': crontab(
+            hour=0,
+            minute=0
+        ),
+    },
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
