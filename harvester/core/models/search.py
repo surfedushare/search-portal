@@ -15,7 +15,7 @@ class ElasticIndex(models.Model):
     name = models.CharField(max_length=255)
     language = models.CharField(max_length=5, choices=settings.ELASTICSEARCH_ANALYSERS.items())
     dataset = models.ForeignKey(Dataset, related_name="indices", on_delete=models.CASCADE, null=True)
-    dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.CASCADE, null=True)
+    dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.SET_NULL, null=True)
     configuration = JSONField(blank=True)
     error_count = models.IntegerField(default=0)
 
@@ -25,6 +25,11 @@ class ElasticIndex(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.client = get_es_client()
+
+    def delete(self, using=None, keep_parents=False):
+        if self.remote_exists:
+            self.client.indices.delete(index=self.remote_name)
+        super().delete(using=using, keep_parents=keep_parents)
 
     @property
     def remote_name(self):

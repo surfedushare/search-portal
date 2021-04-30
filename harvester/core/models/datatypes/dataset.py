@@ -5,7 +5,6 @@ from django.db import models
 
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
-from core.models.datatypes.document import Document, document_delete_handler
 
 
 class Dataset(DocumentCollectionMixin, CollectionBase):
@@ -42,24 +41,6 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
                     new_version.copy_collection(collection)
 
         return new_version
-
-    def reset(self):
-        """
-        Resets all related harvest instances and deletes all data, but retains all cache
-        """
-        models.signals.post_delete.disconnect(
-            document_delete_handler,
-            sender=Document,
-            dispatch_uid="document_delete"
-        )
-        self.collection_set.all().delete()
-        for harvest in self.harvest_set.all():
-            harvest.reset()
-        models.signals.post_delete.connect(
-            document_delete_handler,
-            sender=Document,
-            dispatch_uid="document_delete"
-        )
 
     def get_earliest_harvest_date(self):
         latest_harvest = self.harvest_set.order_by("harvested_at").first()
