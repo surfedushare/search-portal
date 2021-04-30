@@ -1,5 +1,4 @@
 from django.db import models
-from django.apps import apps
 
 from datagrowth.datatypes import DocumentBase, DocumentPostgres
 from core.utils.previews import delete_previews

@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from core.models import Document, FileResource, TikaResource
+from core.models import Document
 
 
 class TestDocument(TestCase):
