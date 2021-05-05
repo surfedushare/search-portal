@@ -367,7 +367,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'sync_sharekit_metadata': {
         'task': 'sync_sharekit_metadata',
-        'schedule': 30,
+        'schedule': crontab(minute="*/5"),
     },
     'sync_indices': {
         'task': 'sync_indices',
