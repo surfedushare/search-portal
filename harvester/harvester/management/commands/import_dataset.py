@@ -20,7 +20,10 @@ class Command(base.LabelCommand):
 
     def handle_label(self, dataset, **options):
         harvest_source = options.get("harvest_source", None)
+        skip_download = options.get("skip_download", False)
         logger.info(f"Calling import_dataset for: {dataset} using:{harvest_source}")
         extra_args = [] if harvest_source is None else [f"--harvest-source={harvest_source}"]
+        if skip_download:
+            extra_args.append("--skip-download")
         call_command("load_harvester_data", dataset, *extra_args)
         call_command("index_dataset_version", dataset=dataset)
