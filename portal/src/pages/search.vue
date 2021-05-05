@@ -61,7 +61,7 @@
         class="search__wrapper center_block"
       >
         <div class="search__filter">
-          <div class="search__filter_sticky">
+          <div class="search__filter_content">
             <FilterCategories
               v-model="search"
               :filter-categories="getFilterCategories() || []"
@@ -363,7 +363,7 @@ export default {
       margin: 0;
     }
 
-    &_sticky {
+    &_content {
       width: 100%;
       padding-top: 80px;
       padding-bottom: 102px;
