@@ -12,6 +12,7 @@ from django.db import models
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.models import Locale
+from surf.vendor.search.choices import AUTHOR_FIELD_ID, PUBLISHER_FIELD_ID
 
 
 logger = logging.getLogger("service")
@@ -19,6 +20,8 @@ logger = logging.getLogger("service")
 
 EDUTERM_QUERY_TEMPLATE = "http://api.onderwijsbegrippen.kennisnet.nl/1.0/Query/GetConcept" \
                          "?format=json&apikey={api_key}&concept=<http://purl.edustandaard.nl/concept/{concept}>"
+
+AUTO_ENABLED_FILTERS = [AUTHOR_FIELD_ID, PUBLISHER_FIELD_ID]
 
 
 def sync_category_filters():
@@ -71,6 +74,17 @@ def _translate_mptt_filter_item(filter_item):
     filter_item.save()
 
 
+def _auto_enable_mptt_filter_item(filter_item):
+    translation = Locale.objects.create(
+        asset=f"{filter_item.external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
+        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=True
+    )
+    filter_item.name = filter_item.external_id
+    filter_item.title_translations = translation
+    filter_item.is_hidden = False
+    filter_item.save()
+
+
 def _update_mptt_filter_category(filter_category, api_client):
     """
     Updates filter category according to data received from EduRep
@@ -93,7 +107,11 @@ def _update_mptt_filter_category(filter_category, api_client):
             }
         )
         if created or filter_item.title_translations is None:
-            _translate_mptt_filter_item(filter_item)
             is_new = True
+
+            if filter_category.external_id in AUTO_ENABLED_FILTERS:
+                _auto_enable_mptt_filter_item(filter_item)
+            else:
+                _translate_mptt_filter_item(filter_item)
 
         yield external_id, is_new
