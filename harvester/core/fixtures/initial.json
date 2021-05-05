@@ -1,0 +1,150 @@
+[
+{
+    "model": "core.dataset",
+    "pk": 24,
+    "fields": {
+        "schema": "\"{}\"",
+        "created_at": "2021-04-14T13:54:20.740Z",
+        "modified_at": "2021-04-14T14:13:24.052Z",
+        "name": "alpha",
+        "identifier": null,
+        "referee": null,
+        "is_active": true
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 8,
+    "fields": {
+        "name": "Edurep Delen",
+        "repository": "edurep.EdurepOAIPMH",
+        "spec": "edurep_delen",
+        "delete_policy": "transient",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2019-12-06T10:58:40.757Z",
+        "modified_at": "2019-12-19T15:00:18.560Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 9,
+    "fields": {
+        "name": "Library 4 Learning",
+        "repository": "edurep.EdurepOAIPMH",
+        "spec": "l4l",
+        "delete_policy": "transient",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2021-04-14T13:54:20.742Z",
+        "modified_at": "2021-04-14T13:54:20.742Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 19,
+    "fields": {
+        "name": "Wikiwijs Maken",
+        "repository": "edurep.EdurepOAIPMH",
+        "spec": "wikiwijsmaken",
+        "delete_policy": "transient",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2021-04-14T13:54:20.742Z",
+        "modified_at": "2021-04-14T13:54:20.742Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 34,
+    "fields": {
+        "name": "Sharekit",
+        "repository": "sharekit.SharekitMetadataHarvest",
+        "spec": "edusources",
+        "delete_policy": "no",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2021-04-14T13:54:20.742Z",
+        "modified_at": "2021-04-14T14:13:21.119Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 35,
+    "fields": {
+        "name": "Sharekit (restricted)",
+        "repository": "sharekit.SharekitMetadataHarvest",
+        "spec": "edusourcesprivate",
+        "delete_policy": "no",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2021-04-14T13:54:20.742Z",
+        "modified_at": "2021-04-14T13:54:20.742Z"
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 42,
+    "fields": {
+        "source": 8,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": null,
+        "purge_after": null,
+        "stage": "New"
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 46,
+    "fields": {
+        "source": 9,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": null,
+        "purge_after": null,
+        "stage": "New"
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 90,
+    "fields": {
+        "source": 19,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": null,
+        "purge_after": null,
+        "stage": "New"
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 91,
+    "fields": {
+        "source": 34,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": null,
+        "purge_after": null,
+        "stage": "New"
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 92,
+    "fields": {
+        "source": 35,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": null,
+        "purge_after": null,
+        "stage": "New"
+    }
+}
+]
