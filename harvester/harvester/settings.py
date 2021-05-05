@@ -359,6 +359,13 @@ CELERY_BEAT_SCHEDULE = {
         ),
         'args': (environment.schedule.harvest.source,)
     },
+    'clean_data': {
+        'task': 'clean_data',
+        'schedule': crontab(
+            hour=0,
+            minute=0
+        ),
+    },
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
@@ -368,6 +375,8 @@ CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 DATAGROWTH_DATA_DIR = os.path.join(BASE_DIR, "..", "data", "harvester")
 DATAGROWTH_BIN_DIR = os.path.join(BASE_DIR, "harvester", "bin")
+DATA_RETENTION_PURGE_AFTER = environment.django.data_retention.purge_after or {}
+DATA_RETENTION_KEEP_VERSIONS = environment.django.data_retention.keep_versions
 
 
 # Sharekit

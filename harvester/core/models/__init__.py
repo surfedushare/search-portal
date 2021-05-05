@@ -9,7 +9,7 @@ from .resources.youtube_thumbnail import YoutubeThumbnailResource
 from .datatypes.dataset import Dataset, DatasetVersion
 from .datatypes.collection import Collection
 from .datatypes.arrangement import Arrangement
-from .datatypes.document import Document, document_delete_handler
+from .datatypes.document import Document
 
 from .harvest import Harvest, HarvestSource
 

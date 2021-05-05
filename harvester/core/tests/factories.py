@@ -1,6 +1,8 @@
 import factory
+from datetime import datetime
 
-from core.models import Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, FileResource
+from core.models import (Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, ElasticIndex,
+                         FileResource, TikaResource)
 from core.constants import HarvestStages, Repositories, DeletePolicies
 
 
@@ -19,6 +21,12 @@ class DatasetVersionFactory(factory.django.DjangoModelFactory):
     version = "0.0.1"
     is_current = True
     dataset = factory.SubFactory(DatasetFactory)
+    created_at = datetime.now()
+
+
+class ElasticIndexFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ElasticIndex
 
 
 class CollectionFactory(factory.django.DjangoModelFactory):
@@ -92,3 +100,11 @@ class FileResourceFactory(factory.django.DjangoModelFactory):
         model = FileResource
 
     uri = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
+
+
+class TikaResourceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = TikaResource
+
+    uri = "java -J -jar -t http://localhost:8000/media/harvester/core/downloads/f/78/20200213173646291110." \
+          "Zorgwekkend_gedrag___kopie_1 tika-app-1.25.jar"
