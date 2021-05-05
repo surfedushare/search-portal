@@ -29,6 +29,7 @@ export default {
   },
   mounted() {
     this.href = validateHREF(window.location.href)
+    this.fetchSetMaterials()
   },
   data() {
     return {
@@ -40,6 +41,7 @@ export default {
       rating: false,
       rating_given: this.isMaterialRated(this.material.external_id),
       is_copied: false,
+      setMaterials: [],
       formData: {
         page_size: 10,
         page: 1,
@@ -49,6 +51,15 @@ export default {
     }
   },
   methods: {
+    fetchSetMaterials() {
+      if (this.material.has_parts.length > 0) {
+        this.$store
+          .dispatch('getSetMaterials', {
+            external_id: this.material.external_id
+          })
+          .then(res => (this.setMaterials = res.records))
+      }
+    },
     authorUrl(author) {
       if (this.material) {
         return this.generateSearchMaterialsQuery({

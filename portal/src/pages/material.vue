@@ -4,6 +4,7 @@
     <div v-if="material" class="center_block material__wrapper">
       <Sidebar :material="material" :collections="collections" />
       <MaterialInfo
+        :key="material.external_id"
         :material="material"
         :communities="communities"
         :collections="collections"
