@@ -9,7 +9,7 @@ django:
   data_retention:
     purge_after:
       days: 14
-    keep_versions: 1
+    keep_versions: 3
 
 postgres:
   database: "harvester"
