@@ -38,7 +38,7 @@ class SharekitMetadataHarvest(HarvestHttpResource):
 
     objects = SharekitMetadataHarvestManager()
 
-    URI_TEMPLATE = "https://api.surfsharekit.nl/api/jsonapi/channel/v1/{}/repoItems?filter[modified][GE]={}"
+    URI_TEMPLATE = settings.SHAREKIT_BASE_URL + "/api/jsonapi/channel/v1/{}/repoItems?filter[modified][GE]={}"
     PARAMETERS = {
         "page[size]": 10
     }

@@ -1,6 +1,7 @@
 import logging
 from urlobject import URLObject
 
+from django.conf import settings
 from django.db import models
 
 from datagrowth.configuration import create_config
@@ -43,7 +44,7 @@ class EdurepOAIPMH(HarvestHttpResource):
 
     objects = EdurepOAIPMHManager()
 
-    URI_TEMPLATE = "https://wszoeken.edurep.kennisnet.nl/edurep/oai?set={}&from={}"
+    URI_TEMPLATE = settings.EDUREP_BASE_URL + "/edurep/oai?set={}&from={}"
     PARAMETERS = {
         "verb": "ListRecords",
         "metadataPrefix": "lom"

@@ -24,7 +24,7 @@ class TestEdurepOAIPMH(TestCase):
         self.assertEqual(send_mock.call_count, 1)
         self.assertEqual(handle_errors_mock.call_count, 1)
         self.assertEqual(self.instance.uri,
-                         "wszoeken.edurep.kennisnet.nl/edurep/oai?"
+                         "staging.edurep.kennisnet.nl/edurep/oai?"
                          "from=1970-01-01T00%3A00%3A00Z&metadataPrefix=lom&set=surfsharekit&verb=ListRecords")
         self.assertEqual(self.instance.since, make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(self.instance.set_specification, "surfsharekit")
@@ -36,7 +36,7 @@ class TestEdurepOAIPMH(TestCase):
         self.assertEqual(send_mock.call_count, 1)
         self.assertEqual(handle_errors_mock.call_count, 1)
         self.assertEqual(self.instance.uri,
-                         "wszoeken.edurep.kennisnet.nl/edurep/oai?"
+                         "staging.edurep.kennisnet.nl/edurep/oai?"
                          "from=2021-01-01T01%3A00%3A00Z&metadataPrefix=lom&set=surfsharekit&verb=ListRecords")
         self.assertEqual(self.instance.since, make_aware(datetime(year=2021, month=1, day=1, hour=1)))
         self.assertEqual(self.instance.set_specification, "surfsharekit")
@@ -48,7 +48,7 @@ class TestEdurepOAIPMH(TestCase):
         self.assertEqual(send_mock.call_count, 1)
         self.assertEqual(handle_errors_mock.call_count, 1)
         self.assertEqual(self.instance.uri,
-                         "wszoeken.edurep.kennisnet.nl/edurep/oai?"
+                         "staging.edurep.kennisnet.nl/edurep/oai?"
                          "from=2021-01-01&metadataPrefix=lom&set=surfsharekit&verb=ListRecords")
         self.assertEqual(self.instance.since, make_aware(datetime(year=2021, month=1, day=1)))
         self.assertEqual(self.instance.set_specification, "surfsharekit")
@@ -70,7 +70,7 @@ class TestEdurepOAIPMH(TestCase):
         next_request = previous.create_next_request()
         self.assertEqual(
             unquote(next_request["url"]),
-            "https://wszoeken.edurep.kennisnet.nl/edurep/oai"
+            "https://staging.edurep.kennisnet.nl/edurep/oai"
             "?verb=ListRecords&resumptionToken=c1576069959151499|u|f1970-01-01T00:00:00Z|mlom|ssurf"
         )
 

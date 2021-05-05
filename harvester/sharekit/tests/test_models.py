@@ -15,7 +15,7 @@ class TestSharekitMetadataHarvest(TestCase):
     @classmethod
     def setUp(cls):
         cls.instance = SharekitMetadataHarvest()
-        cls.base_url = "api.surfsharekit.nl/api/jsonapi/channel/v1/edusources/repoItems?"
+        cls.base_url = "api.acc.surfsharekit.nl/api/jsonapi/channel/v1/edusources/repoItems?"
 
     @patch("sharekit.models.SharekitMetadataHarvest.handle_errors")
     @patch("sharekit.models.SharekitMetadataHarvest._send")

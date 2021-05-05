@@ -390,3 +390,9 @@ DATA_RETENTION_KEEP_VERSIONS = environment.django.data_retention.keep_versions
 # Sharekit
 
 SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
+SHAREKIT_BASE_URL = environment.django.repositories.sharekit
+
+
+# Edurep
+
+EDUREP_BASE_URL = environment.django.repositories.edurep

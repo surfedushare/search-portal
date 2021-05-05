@@ -10,6 +10,9 @@ django:
     purge_after:
       days: 14
     keep_versions: 3
+  repositories:
+    edurep: "https://wszoeken.edurep.kennisnet.nl"
+    sharekit: "https://api.surfsharekit.nl"
 
 postgres:
   database: "harvester"

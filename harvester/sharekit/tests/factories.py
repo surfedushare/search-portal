@@ -37,7 +37,7 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def uri(self):
-        return f"api.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems" \
+        return f"api.acc.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems" \
                f"?modified={self.since.date()}"
 
     @factory.lazy_attribute
