@@ -21,6 +21,8 @@ logger = logging.getLogger("service")
 EDUTERM_QUERY_TEMPLATE = "http://api.onderwijsbegrippen.kennisnet.nl/1.0/Query/GetConcept" \
                          "?format=json&apikey={api_key}&concept=<http://purl.edustandaard.nl/concept/{concept}>"
 
+EDUSTANDAARD_TEMPLATE = "{protocol}://purl.edustandaard.nl/begrippenkader/{concept}"
+
 AUTO_ENABLED_FILTERS = [AUTHOR_FIELD_ID, PUBLISHER_FIELD_ID]
 
 
@@ -54,37 +56,6 @@ def sync_category_filters():
     return has_new
 
 
-def _translate_mptt_filter_item(filter_item):
-    query_url = EDUTERM_QUERY_TEMPLATE.format(concept=filter_item.external_id, api_key=settings.EDUTERM_API_KEY)
-    response = requests.get(query_url)
-    if response.status_code != codes.ok:
-        return
-    labels = response.json()["results"]["bindings"]
-    if not len(labels):
-        return
-    default = labels[0]["label"]
-    dutch = labels[0].get("label_nl", default)
-    english = labels[0].get("label_en", default)
-    translation = Locale.objects.create(
-        asset=f"{english['value']}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
-        en=english["value"], nl=dutch["value"], is_fuzzy=True
-    )
-    filter_item.name = english["value"]
-    filter_item.title_translations = translation
-    filter_item.save()
-
-
-def _auto_enable_mptt_filter_item(filter_item):
-    translation = Locale.objects.create(
-        asset=f"{filter_item.external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
-        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=True
-    )
-    filter_item.name = filter_item.external_id
-    filter_item.title_translations = translation
-    filter_item.is_hidden = False
-    filter_item.save()
-
-
 def _update_mptt_filter_category(filter_category, api_client):
     """
     Updates filter category according to data received from EduRep
@@ -106,6 +77,7 @@ def _update_mptt_filter_category(filter_category, api_client):
                 "is_hidden": True
             }
         )
+
         if created or filter_item.title_translations is None:
             is_new = True
 
@@ -115,3 +87,71 @@ def _update_mptt_filter_category(filter_category, api_client):
                 _translate_mptt_filter_item(filter_item)
 
         yield external_id, is_new
+
+
+def _auto_enable_mptt_filter_item(filter_item):
+    translation = Locale.objects.create(
+        asset=f"{filter_item.external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
+        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=True
+    )
+    filter_item.name = filter_item.external_id
+    filter_item.title_translations = translation
+    filter_item.is_hidden = False
+    filter_item.save()
+
+
+def _translate_mptt_filter_item(filter_item):
+    translations = _fetch_eduterm_translations(filter_item.external_id)
+
+    if not translations:
+        translations = _fetch_edustandaard_translations(filter_item.external_id)
+
+    if translations:
+        _save_translations(filter_item, translations[0], translations[1])
+
+
+def _fetch_eduterm_translations(external_id):
+    query_url = EDUTERM_QUERY_TEMPLATE.format(concept=external_id, api_key=settings.EDUTERM_API_KEY)
+    response = requests.get(query_url)
+
+    if response.status_code != codes.ok:
+        return
+
+    labels = response.json()["results"]["bindings"]
+    if not len(labels):
+        return
+
+    default = labels[0]["label"]
+    dutch = labels[0].get("label_nl", default)
+    english = labels[0].get("label_en", default)
+
+    return dutch['value'], english['value']
+
+
+def _fetch_edustandaard_translations(external_id):
+    query_url = EDUSTANDAARD_TEMPLATE.format(concept=external_id, protocol="https")
+    headers = {'Accept': 'application/json'}
+    response = requests.get(query_url, headers=headers)
+
+    if response.status_code != codes.ok:
+        return
+
+    json = response.json()
+    key = EDUSTANDAARD_TEMPLATE.format(concept=external_id, protocol="http")
+
+    if not json.get(key, None):
+        return
+
+    dutch_value = json[key]['http://www.w3.org/2004/02/skos/core#prefLabel'][0]['value']
+
+    return dutch_value, dutch_value
+
+
+def _save_translations(filter_item, nl_value, en_value):
+    translation = Locale.objects.create(
+        asset=f"{en_value}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
+        en=en_value, nl=nl_value, is_fuzzy=True
+    )
+    filter_item.name = en_value
+    filter_item.title_translations = translation
+    filter_item.save()
