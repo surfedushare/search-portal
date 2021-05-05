@@ -1,7 +1,6 @@
 from django.db import models
 
 from datagrowth.datatypes import DocumentBase, DocumentPostgres
-from core.utils.previews import delete_previews
 
 
 class Document(DocumentPostgres, DocumentBase):
@@ -81,16 +80,3 @@ class Document(DocumentPostgres, DocumentBase):
         )
         elastic_details.update(elastic_base)
         yield elastic_details
-
-
-def document_delete_handler(sender, instance, **kwargs):
-    preview_path = instance.properties.get("preview_path", None)
-    if preview_path:
-        delete_previews(preview_path)
-
-
-models.signals.post_delete.connect(
-    document_delete_handler,
-    sender=Document,
-    dispatch_uid="document_delete"
-)
