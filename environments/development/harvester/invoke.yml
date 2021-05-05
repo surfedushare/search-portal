@@ -23,7 +23,6 @@ schedule:
   harvest:
     hour: 6  # uses UTC
     minute: 0
-    source: "acceptance"
 
 aws:
   task_role_arn: "arn:aws:iam::322480324822:role/ecsHarvesterTaskExecutionRole"

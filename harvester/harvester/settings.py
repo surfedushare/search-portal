@@ -356,8 +356,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(
             hour=environment.schedule.harvest.hour,
             minute=environment.schedule.harvest.minute,
-        ),
-        'args': (environment.schedule.harvest.source,)
+        )
     },
     'clean_data': {
         'task': 'clean_data',

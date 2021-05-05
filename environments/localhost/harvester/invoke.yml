@@ -21,7 +21,6 @@ schedule:
   harvest:
     hour: 5  # uses UTC
     minute: 0
-    source: "development"
 
 aws:
   harvest_content_bucket: null
