@@ -38,6 +38,7 @@ class Command(base.LabelCommand):
             object_to_disk(dataset, json_file)
             queryset_to_disk(dataset.harvestsource_set, json_file)
             queryset_to_disk(dataset.harvest_set, json_file)
+            queryset_to_disk(dataset.versions, json_file)
             queryset_to_disk(dataset.indices, json_file)
             queryset_to_disk(dataset.collection_set, json_file)
             queryset_to_disk(dataset.document_set, json_file)
