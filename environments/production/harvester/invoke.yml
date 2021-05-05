@@ -3,9 +3,7 @@ project: "harvester"
 django:
   directory: "harvester"
   fixtures:
-    - "core/fixtures/datasets-history.json"
     - "core/fixtures/initial.json"
-    - "edurep/fixtures/surf-oaipmh-1970-01-01.json"
   redis_host: "harvester.o1edd0.0001.euc1.cache.amazonaws.com:6379"
   data_retention:
     purge_after:
