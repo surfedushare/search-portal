@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "totalCount": 2246
+  },
+  "links": {
+    "first": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
+    "self": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
+    "next": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2",
+    "last": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2240"
+  },
+  "data": [
+    {
+      "type": "repoItem",
+      "id": "b35875c5-678b-4d58-af85-4111c321c5cd",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2017-12-12T08:13:23Z",
+        "title": "Les 12 - Audio en MIDI 1",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2017",
+        "place": null,
+        "abstract": "Als we op een computer met muziek werken, komen we in aanraking met Audio, MIDI of een combinatie van beide. In deze les ligt de nadruk op MIDI. \r\n\r\nAan de orde komen:\r\nWat is het en wat kun je ermee? \r\nHoe kun je binnen Sibelius software gebruik maken van MIDI (play, record, mixer, sounds, export audio) \r\nHet verschijnsel Latency",
+        "keywords": [
+          "instructie",
+          "Praktische muzieknotatie en audiobewerking"
+        ],
+        "numOfPages": null,
+        "authors": null,
+        "institutes": "Codarts Rotterdam",
+        "links": [
+          {
+            "url": "http://online.codarts.nl/mod/page/view.php?id=313",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "nl",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-nc-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "HBO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "kunst_cultuur",
+        "hasParts": [],
+        "partOf": [],
+        "technicalFormat": null,
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "b500d389-2fda-4696-ae51-9cd0603a48af",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-12-18T14:54:57Z",
+        "title": "09 Changes in the Labour Market",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2019-04-01",
+        "place": "Groningen",
+        "abstract": "Learning objective:\r\n- Explain the effect of changes in the labour market on the real wage rate and quantity of labour in hours.",
+        "keywords": [
+          "economics",
+          "Macro economics",
+          "micro economics",
+          "economic structure",
+          "labour market"
+        ],
+        "numOfPages": null,
+        "authors": [
+          {
+            "person": {
+              "id": "94615399-6453-4246-8fa3-29ac42e9af5b",
+              "name": "Ning Ding",
+              "email": "Ning Ding"
+            },
+            "role": null
+          }
+        ],
+        "institutes": null,
+        "links": [
+          {
+            "url": "https://learn.canvas.net/courses/2192/pages/week-3-9-changes-in-the-labour-market?module_item_id=210174",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": [
+          {
+            "fileName": "Week 3_9 changes in the labour market.pdf",
+            "accessRight": "openaccess",
+            "url": "https://surfsharekit.nl/objectstore/48fac5c4-c846-48b3-9318-6b01e151a508",
+            "resourceMimeType": "application/pdf"
+          }
+        ],
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-sa-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "HBO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "economie_bedrijf",
+        "hasParts": [],
+        "partOf": [
+          "0937a9fa-e368-4227-aa9e-d36afdffdd72"
+        ],
+        "technicalFormat": null,
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    }
+  ]
+}

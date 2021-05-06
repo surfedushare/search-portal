@@ -53,7 +53,9 @@ export default {
       if (this.material) {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
-          author: author
+          filters: {
+            'lom.lifecycle.contribute.author': [author]
+          }
         })
       }
     },
@@ -61,7 +63,9 @@ export default {
       if (this.material) {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
-          publisher: publisher
+          filters: {
+            'lom.lifecycle.contribute.publisher': [publisher]
+          }
         })
       }
     },

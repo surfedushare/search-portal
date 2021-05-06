@@ -12,7 +12,17 @@
     }
 },
 {
-    "model": "core.oaipmhset",
+    "model": "core.datasetversion",
+    "pk": 1,
+    "fields": {
+        "dataset": 19,
+        "is_current": true,
+        "created_at": "2021-04-07T11:40:19.183Z",
+        "version": "0.0.1"
+    }
+},
+{
+    "model": "core.harvestsource",
     "pk": 1,
     "fields": {
         "name": "SURF Sharekit",
@@ -23,7 +33,7 @@
     }
 },
 {
-    "model": "core.oaipmhset",
+    "model": "core.harvestsource",
     "pk": 2,
     "fields": {
         "name": "Edurep Delen",
@@ -34,7 +44,7 @@
     }
 },
 {
-    "model": "core.oaipmhharvest",
+    "model": "core.harvest",
     "pk": 46,
     "fields": {
         "source": 1,
@@ -45,7 +55,7 @@
     }
 },
 {
-    "model": "core.oaipmhharvest",
+    "model": "core.harvest",
     "pk": 42,
     "fields": {
         "source": 2,

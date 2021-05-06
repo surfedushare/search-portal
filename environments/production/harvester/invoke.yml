@@ -6,6 +6,10 @@ django:
     - "core/fixtures/datasets-history.json"
     - "edurep/fixtures/surf-oaipmh-1970-01-01.json"
   redis_host: "harvester.o1edd0.0001.euc1.cache.amazonaws.com:6379"
+  data_retention:
+    purge_after:
+      days: 14
+    keep_versions: 3
 
 postgres:
   database: "harvester"
@@ -28,3 +32,5 @@ secrets:
   django:
     secret_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:harvester/django"
     admin_password: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:harvester/django"
+  sharekit:
+    api_key: null

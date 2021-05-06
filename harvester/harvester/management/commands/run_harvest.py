@@ -20,9 +20,11 @@ class Command(BaseCommand):
                             help="Resets the Dataset model to be empty and deletes all OAI-PMH data")
         parser.add_argument('-s', '--source', type=str,
                             help="Indicates to run the harvest as replication of a source")
+        parser.add_argument('-np', '--no-promote', action="store_true")
 
     def handle(self, **options):
         reset = options["reset"]
         source = options.get("source", None)
+        no_promote = options["no_promote"]
         logger.info(f"Calling harvest outside of schedule; reset={reset}")
-        harvest(seeds_source=source, reset=reset)
+        harvest(seeds_source=source, reset=reset, no_promote=no_promote)

@@ -2,7 +2,7 @@ import re
 import vobject
 from html import unescape
 
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_OAIPMH_SETS
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class EdurepDataExtraction(object):
@@ -126,20 +126,6 @@ class EdurepDataExtraction(object):
         return node.find('czp:value').find('czp:langstring').text.strip() if node else None
 
     @classmethod
-    def get_author(cls, soup, el):
-        author = el.find(string='author')
-        if not author:
-            return []
-        contribution = author.find_parent('czp:contribute')
-        if not contribution:
-            return []
-        nodes = contribution.find_all('czp:vcard')
-        return [
-            unescape(node.text.strip())
-            for node in nodes
-        ]
-
-    @classmethod
     def get_authors(cls, soup, el):
         author = el.find(string='author')
         if not author:
@@ -158,19 +144,24 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_publishers(cls, soup, el):
-        publisher = el.find(string='publisher')
-        if not publisher:
-            return []
-        contribution = publisher.find_parent('czp:contribute')
-        if not contribution:
-            return []
-        nodes = contribution.find_all('czp:vcard')
-
         publishers = []
+        # Check HBOVPK tags
+        hbovpk_keywords = [keyword for keyword in cls.get_keywords(soup, el) if "hbovpk" in keyword.lower()]
+        if hbovpk_keywords:
+            publishers.append("HBO Verpleegkunde")
+        # Look at actual publishers
+        publisher_element = el.find(string='publisher')
+        if not publisher_element:
+            return publishers
+        contribution_element = publisher_element.find_parent('czp:contribute')
+        if not contribution_element:
+            return publishers
+        nodes = contribution_element.find_all('czp:vcard')
         for node in nodes:
             publisher = cls.parse_vcard_element(node)
             if hasattr(publisher, "fn"):
                 publishers.append(publisher.fn.value)
+
         return publishers
 
     @classmethod
@@ -222,24 +213,9 @@ class EdurepDataExtraction(object):
         return current_numeric_level
 
     @classmethod
-    def get_educational_levels(cls, soup, el):
-        blocks = cls.find_all_classification_blocks(el, "educational level", "czp:id")
-        return list(set([block.text.strip() for block in blocks]))
-
-    @classmethod
-    def get_humanized_educational_levels(cls, soup, el):
-        blocks = cls.find_all_classification_blocks(el, "educational level", "czp:entry")
-        return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
-
-    @classmethod
     def get_disciplines(cls, soup, el):
         blocks = cls.find_all_classification_blocks(el, "discipline", "czp:id")
         return list(set([block.text.strip() for block in blocks]))
-
-    @classmethod
-    def get_humanized_disciplines(cls, soup, el):
-        blocks = cls.find_all_classification_blocks(el, "discipline", "czp:entry")
-        return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
 
     @classmethod
     def get_ideas(cls, soup, el):
@@ -254,13 +230,18 @@ class EdurepDataExtraction(object):
         return list(set(ideas))
 
     @classmethod
-    def get_analysis_allowed(cls, soup, el):
+    def get_is_restricted(cls, soup, el):
         # We don't have access to restricted materials so we disallow analysis for them
         external_id = cls.get_oaipmh_external_id(soup, el)
-        for restricted_set in RESTRICTED_MATERIAL_OAIPMH_SETS:
+        for restricted_set in RESTRICTED_MATERIAL_SETS:
             if external_id.startswith(restricted_set + ":"):
-                return False
-        # We also disallow analysis for non-derivative materials as we'll create derivatives in that process
+                return True
+        return False
+
+    @classmethod
+    def get_analysis_allowed(cls, soup, el):
+        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
+        # NB: any material that is_restricted will also have analysis_allowed set to False
         copyright = EdurepDataExtraction.get_copyright(soup, el)
         return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
@@ -279,7 +260,7 @@ class EdurepDataExtraction(object):
         return "surfsharekit:" + catalog_entry.text.strip()  # prefix excluded by Edurep, but it's needed
 
     @classmethod
-    def get_has_part(cls, soup, el):
+    def get_has_parts(cls, soup, el):
         elements = el.find_all(string='haspart')
         results = []
         for element in elements:
@@ -292,3 +273,28 @@ class EdurepDataExtraction(object):
             catalog_entry = catalog.find_next('czp:entry')
             results.append("surfsharekit:" + catalog_entry.text.strip())  # prefixes excluded by Edurep, but are needed
         return results
+
+
+EDUREP_EXTRACTION_OBJECTIVE = {
+    "url": EdurepDataExtraction.get_url,
+    "files": EdurepDataExtraction.get_files,
+    "title": EdurepDataExtraction.get_title,
+    "language": EdurepDataExtraction.get_language,
+    "keywords": EdurepDataExtraction.get_keywords,
+    "description": EdurepDataExtraction.get_description,
+    "mime_type": EdurepDataExtraction.get_mime_type,
+    "copyright": EdurepDataExtraction.get_copyright,
+    "aggregation_level": EdurepDataExtraction.get_aggregation_level,
+    "authors": EdurepDataExtraction.get_authors,
+    "publishers": EdurepDataExtraction.get_publishers,
+    "publisher_date": EdurepDataExtraction.get_publisher_date,
+    "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
+    "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
+    "disciplines": EdurepDataExtraction.get_disciplines,
+    "ideas": EdurepDataExtraction.get_ideas,
+    "from_youtube": EdurepDataExtraction.get_from_youtube,
+    "is_restricted": EdurepDataExtraction.get_is_restricted,
+    "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
+    "is_part_of": EdurepDataExtraction.get_is_part_of,
+    "has_parts": EdurepDataExtraction.get_has_parts,
+}

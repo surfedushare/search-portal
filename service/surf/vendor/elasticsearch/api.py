@@ -151,7 +151,7 @@ class ElasticSearchApiClient:
                 themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
         record['themes'] = list(themes)
         record['source'] = hit['_source']['oaipmh_set']
-        record['has_part'] = hit['_source']['has_part']
+        record['has_parts'] = hit['_source']['has_parts']
         record['is_part_of'] = hit['_source']['is_part_of']
         record['ideas'] = hit['_source'].get('ideas', [])
         return record
@@ -287,12 +287,20 @@ class ElasticSearchApiClient:
         """
         start_record = page_size * (page - 1)
 
+        normalized_external_ids = []
+        for external_id in external_ids:
+            if not external_id.startswith("surf"):
+                normalized_external_ids.append(external_id)
+            else:
+                external_id_parts = external_id.split(":")
+                normalized_external_ids.append(external_id_parts[-1])
+
         result = self.client.search(
             index=[self.index_nl, self.index_en],
             body={
                 "query": {
                     "bool": {
-                        "must": [{"terms": {"external_id": external_ids}}]
+                        "must": [{"terms": {"external_id": normalized_external_ids}}]
                     }
                 },
                 'from': start_record,
@@ -305,7 +313,7 @@ class ElasticSearchApiClient:
             for material in results["records"]
         }
         records = []
-        for external_id in external_ids:
+        for external_id in normalized_external_ids:
             if external_id not in materials:
                 if not settings.DEBUG:
                     sentry_sdk.capture_message(
@@ -314,6 +322,7 @@ class ElasticSearchApiClient:
                     )
                 continue
             records.append(materials[external_id])
+        results["recordcount"] = len(records)
         results["records"] = records
         return results
 

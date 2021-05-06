@@ -30,7 +30,7 @@ def generate_pdf_preview(document_id, total):
         update_document(document, bucket_folder_path)
         remove_files_from_filesystem(document.id)
 
-        logger = HarvestLogger(document.dataset.name, "generate_previews", {})
+        logger = HarvestLogger(document.dataset_version.dataset.name, "generate_previews", {})
         logger.progress("preview.generate", total)
         logger.report_material(
             document.properties["external_id"],

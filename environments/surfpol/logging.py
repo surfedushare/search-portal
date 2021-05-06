@@ -186,6 +186,11 @@ class POLElasticsearchHandler(logging.Handler):
         :return: A ready to be used POLElasticsearchHandler.
         """
         logging.Handler.__init__(self)
+        self._client = None
+        self._buffer = []
+        self._buffer_lock = Lock()
+        self._timer = None
+        self._index_name_func = POLElasticsearchHandler._INDEX_FREQUENCY_FUNCION_DICT[index_name_frequency]
 
         self.hosts = hosts
         self.auth_details = auth_details
@@ -198,16 +203,18 @@ class POLElasticsearchHandler(logging.Handler):
         self.es_index_name = es_index_name
         self.index_name_frequency = index_name_frequency
         self.es_additional_fields = es_additional_fields.copy() if es_additional_fields else {}
-        self.es_additional_fields.update({'host': socket.gethostname(),
-                                          'host_ip': socket.gethostbyname(socket.gethostname())})
+        hostname = socket.gethostname() or "localhost"
+        host_ip = '127.0.0.1'
+
+        try:
+            host_ip = socket.gethostbyname(socket.gethostname())
+        except Exception:
+            pass
+
+        self.es_additional_fields.update({'host': hostname,
+                                          'host_ip': host_ip})
         self.raise_on_indexing_exceptions = raise_on_indexing_exceptions
         self.default_timestamp_field_name = default_timestamp_field_name
-
-        self._client = None
-        self._buffer = []
-        self._buffer_lock = Lock()
-        self._timer = None
-        self._index_name_func = POLElasticsearchHandler._INDEX_FREQUENCY_FUNCION_DICT[self.index_name_frequency]
         self.serializer = JSONSerializer()
 
     def __schedule_flush(self):

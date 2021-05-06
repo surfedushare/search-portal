@@ -4,6 +4,10 @@ django:
     - "core/fixtures/datasets-history.json"
     - "edurep/fixtures/surf-oaipmh-1970-01-01.json"
   redis_host: "redis:6379"
+  data_retention:
+    purge_after:
+      days: 14
+    keep_versions: 1
 
 postgres:
   database: "harvester"
@@ -26,3 +30,5 @@ secrets:
   django:
     secret_key: "development-secret-key--do-not-use"
     admin_password: "qwerty"
+  sharekit:
+    api_key: null

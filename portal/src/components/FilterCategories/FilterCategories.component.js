@@ -55,6 +55,9 @@ export default {
       this.selectedFilters[categoryId] = existingItems.filter(
         item => !filters.includes(item)
       )
+      if (this.selectedFilters[categoryId].length === 0) {
+        this.$delete(this.selectedFilters, categoryId)
+      }
       return this.executeSearch(this.selectedFilters)
     },
     onDateChange(dates) {

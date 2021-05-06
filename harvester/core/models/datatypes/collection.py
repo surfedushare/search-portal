@@ -13,10 +13,11 @@ class Collection(DocumentCollectionMixin, CollectionBase):
     """
 
     dataset = models.ForeignKey("Dataset", blank=True, null=True, on_delete=models.CASCADE)
+    dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
 
     def init_document(self, data, collection=None):
         doc = super().init_document(data, collection=collection or self)
-        doc.dataset = self.dataset
+        doc.dataset_version = self.dataset_version
         return doc
 
     def __str__(self):

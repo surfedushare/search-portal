@@ -68,7 +68,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         target_info["memory"]
     )
 
-    print(f"Target/mode: {target}/{mode}")
+    print(f"Target/mode/version: {target}/{mode}/{version}")
     print(f"Executing: {command}")
     ecs_client.run_task(
         cluster=ctx.config.aws.cluster_arn,

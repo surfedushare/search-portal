@@ -3,9 +3,9 @@
         "model": "core.elasticindex",
         "pk": 5,
         "fields": {
-            "name": "test",
+            "name": "test-001-1",
             "language": "nl",
-            "dataset": 19,
+            "dataset_version": 1,
             "configuration": {
                 "mappings": {
                     "properties": {
@@ -94,9 +94,9 @@
         "model": "core.elasticindex",
         "pk": 6,
         "fields": {
-            "name": "test",
+            "name": "test-001-1",
             "language": "en",
-            "dataset": 19,
+            "dataset_version": 1,
             "configuration": {
                 "mappings": {
                     "properties": {

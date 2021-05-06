@@ -61,7 +61,7 @@
         class="search__wrapper center_block"
       >
         <div class="search__filter">
-          <div class="search__filter_sticky">
+          <div class="search__filter_content">
             <FilterCategories
               v-model="search"
               :filter-categories="getFilterCategories() || []"
@@ -103,10 +103,9 @@ export default {
     Spinner
   },
   data() {
+    const urlInfo = parseSearchMaterialsQuery(this.$route.query)
     return {
-      search: {
-        filters: {}
-      },
+      search: urlInfo.search,
       formData: {
         name: null
       },
@@ -134,9 +133,7 @@ export default {
     }
   },
   mounted() {
-    const urlInfo = parseSearchMaterialsQuery(this.$route.query)
-    this.search = urlInfo.search
-    this.$store.dispatch('searchMaterials', urlInfo.search)
+    this.$store.dispatch('searchMaterials', this.search)
   },
   methods: {
     searchMaterials() {
@@ -363,10 +360,7 @@ export default {
       margin: 0;
     }
 
-    &_sticky {
-      position: sticky;
-      top: 0;
-      left: 0;
+    &_content {
       width: 100%;
       padding-top: 80px;
       padding-bottom: 102px;

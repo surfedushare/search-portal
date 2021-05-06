@@ -6,7 +6,7 @@ from elasticsearch.helpers import streaming_bulk
 from rest_framework import serializers
 
 from surfpol.configuration import create_elastic_search_index_configuration
-from core.models import Dataset
+from core.models import Dataset, DatasetVersion
 from core.utils.elastic import get_es_client
 
 
@@ -14,7 +14,8 @@ class ElasticIndex(models.Model):
 
     name = models.CharField(max_length=255)
     language = models.CharField(max_length=5, choices=settings.ELASTICSEARCH_ANALYSERS.items())
-    dataset = models.ForeignKey(Dataset, related_name="indices", on_delete=models.CASCADE)
+    dataset = models.ForeignKey(Dataset, related_name="indices", on_delete=models.CASCADE, null=True)
+    dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.SET_NULL, null=True)
     configuration = JSONField(blank=True)
     error_count = models.IntegerField(default=0)
 
@@ -25,11 +26,16 @@ class ElasticIndex(models.Model):
         super().__init__(*args, **kwargs)
         self.client = get_es_client()
 
+    def delete(self, using=None, keep_parents=False):
+        if self.remote_exists:
+            self.client.indices.delete(index=self.remote_name)
+        super().delete(using=using, keep_parents=keep_parents)
+
     @property
     def remote_name(self):
         if not self.id:
             raise ValueError("Can't get the remote name for an unsaved object")
-        return slugify("{}-{}-{}".format(self.name, self.language, self.id))
+        return slugify(f"{self.name}-{self.language}")
 
     @property
     def remote_exists(self):
@@ -77,7 +83,7 @@ class ElasticIndex(models.Model):
 
     def clean(self):
         if not self.name:
-            self.name = self.dataset.name
+            self.name = f"{self.dataset_version.dataset.name}-{self.dataset_version.version}"
         if self.language and not self.configuration:
             self.configuration = self.get_index_config(self.language)
 

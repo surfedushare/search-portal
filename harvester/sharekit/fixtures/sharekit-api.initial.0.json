@@ -1,0 +1,624 @@
+{
+  "meta": {
+    "totalCount": 2246
+  },
+  "links": {
+    "first": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
+    "self": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
+    "next": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2",
+    "last": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2240"
+  },
+  "data": [
+    {
+      "type": "repoItem",
+      "id": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2017-12-11T12:52:09Z",
+        "title": "Exercises 5",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "1970-01-01",
+        "place": null,
+        "abstract": "Fifth exercises of the course",
+        "keywords": [
+          "exercise"
+        ],
+        "numOfPages": null,
+        "authors": null,
+        "institutes": "Codarts Rotterdam",
+        "links": null,
+        "files": [
+          {
+            "fileName": "40. Exercises 5.docx",
+            "accessRight": "openaccess",
+            "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7",
+            "resourceMimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          }
+        ],
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-nc-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "HBO"
+          },
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "HBO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "kunst_cultuur",
+        "hasParts": [],
+        "partOf": [],
+        "technicalFormat": null,
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [
+          {
+            "source": "http://purl.edustandaard.nl/concept/8f984395-e090-41be-96df-503f53ddaa09",
+            "value": "Informatievaardigheid vocabulaire 2020 - Publiceren en communiceren - Publiceren (van eindproduct)"
+          }
+        ],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2017-12-22T13:34:05Z",
+        "title": "Using a Vortex | Wageningen UR",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2016-09-02",
+        "place": null,
+        "abstract": "Instruction on how to use a Vortex mixer",
+        "keywords": [
+          "Video",
+          "Practicum clip",
+          "Instructie clip"
+        ],
+        "numOfPages": null,
+        "authors": null,
+        "institutes": "Wageningen University & Research",
+        "links": [
+          {
+            "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "aarde_milieu",
+        "hasParts": [],
+        "partOf": [],
+        "technicalFormat": null,
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "63903863-6c93-4bda-b850-277f3c9ec00e",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2019-04-12T13:36:27Z",
+        "title": "Didactiek van macro-meso-micro denken bij scheikunde",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2017-09-27",
+        "place": "Utrecht",
+        "abstract": null,
+        "keywords": [
+          "correspondentie",
+          "Didactiek",
+          "eigenschappen",
+          "macro",
+          "macro-meso-micro",
+          "meso",
+          "micro",
+          "scheikunde",
+          "structuur"
+        ],
+        "numOfPages": null,
+        "authors": [
+          {
+            "person": {
+              "id": "83e7c163-075e-4eb2-8247-d975cf047dba",
+              "name": "Ruud Kok",
+              "email": "Ruud Kok"
+            },
+            "role": "Docent"
+          },
+          {
+            "person": {
+              "id": "1174c1b9-f010-4a0a-98c0-2ceeefd0b506",
+              "name": "Astrid Bulte",
+              "email": "Astrid Bulte"
+            },
+            "role": "Docent"
+          },
+          {
+            "person": {
+              "id": "c0ab267a-ad56-480c-a13a-90b325f45b5d",
+              "name": "Hans Poorthuis",
+              "email": "Hans Poorthuis"
+            },
+            "role": "Docent"
+          }
+        ],
+        "institutes": null,
+        "links": [
+          {
+            "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": [
+          {
+            "fileName": "IMSCP_94812.zip",
+            "accessRight": "openaccess",
+            "url": "https://surfsharekit.nl/objectstore/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
+            "resourceMimeType": "application/x-zip"
+          },
+          {
+            "fileName": "IMSCC_94812.imscc",
+            "accessRight": "openaccess",
+            "url": null,
+            "resourceMimeType": null
+          },
+          {
+            "fileName": "Didactiek van macro-meso-micro denken bij scheikunde.epub",
+            "accessRight": "openaccess",
+            "url": null,
+            "resourceMimeType": null
+          },
+          {
+            "fileName": "Didactiek van macro-meso-micro denken bij scheikunde.pdf",
+            "accessRight": "openaccess",
+            "url": "https://surfsharekit.nl/objectstore/9f71f782-09de-48b1-a10f-15d882471df7",
+            "resourceMimeType": "application/pdf"
+          }
+        ],
+        "language": "nl",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-sa-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "HBO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": null,
+        "themesLearningMaterial": "exact_informatica",
+        "hasParts": [],
+        "partOf": [],
+        "technicalFormat": null,
+        "aggregationlevel": "4",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-12-17T22:37:36Z",
+        "title": "1. A first exploration of big history",
+        "subtitle": null,
+        "publishers": "Stimuleringsregeling Open en Online Onderwijs",
+        "publishedAt": "2016-11-26",
+        "place": null,
+        "abstract": "Big history is a big subject. What do you address and what do you leave out? What is big history about and how can you use little big histories to explore further?",
+        "keywords": [
+          "mooc"
+        ],
+        "numOfPages": null,
+        "authors": [
+          {
+            "person": {
+              "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
+              "name": "Esther Quaedackers",
+              "email": "Esther Quaedackers"
+            },
+            "role": "Overig"
+          }
+        ],
+        "institutes": null,
+        "links": [
+          {
+            "url": "https://youtu.be/D6_p6y3dvXw",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": "kennisoverdracht",
+        "themesLearningMaterial": "exact_informatica",
+        "hasParts": [
+          "a18cdda7-e9c7-40d7-a7ad-6e875d9015ce",
+          "8936d0a3-4157-45f4-9595-c26d4c029d97",
+          "f929b625-5ef7-47b8-8fa8-94c969d0c427",
+          "befb515c-5dce-4f27-82a4-2f5a7a3618a4"
+        ],
+        "partOf": [
+          "b5a91d32-66f4-4c12-8795-c427fe47ed97"
+        ],
+        "technicalFormat": "video",
+        "aggregationlevel": "3",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "a18cdda7-e9c7-40d7-a7ad-6e875d9015ce",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-12-17T22:37:37Z",
+        "title": "01. How can we summarize 13.8 billion years in one brief course?",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2016-11-26",
+        "place": null,
+        "abstract": "Video about the question: how can we summarize 13.8 billion years in one brief course? Obviously, you have to leave things out. How do you determine what to address and what not? You are invited to develop your own personal answer to this question.",
+        "keywords": [
+          "Video",
+          "mooc",
+          "Big history"
+        ],
+        "numOfPages": null,
+        "authors": [
+          {
+            "person": {
+              "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
+              "name": "Esther Quaedackers",
+              "email": "Esther Quaedackers"
+            },
+            "role": null
+          }
+        ],
+        "institutes": "Universiteit van Amsterdam",
+        "links": [
+          {
+            "url": "https://www.youtube.com/watch?v=wVxZDVriTZc",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": "kennisoverdracht",
+        "themesLearningMaterial": "exact_informatica",
+        "hasParts": [],
+        "partOf": [
+          "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
+        ],
+        "technicalFormat": "video",
+        "aggregationlevel": "2",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "8936d0a3-4157-45f4-9595-c26d4c029d97",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-12-17T22:37:37Z",
+        "title": "02. How big is big history?",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2016-11-22",
+        "place": null,
+        "abstract": "Video about the question 'How big is big history?' How can you place human history in a perspective of time and distance? Only recently we know how old the universe is. When you compress the age of the universe in one year, you could say that around Christmas the dinosaurs would appear. And by December 30, they would be wiped out.So the last 2 days of the year would see the evolution of mammals as we know them and human beings only appear in the last 6 minutes of that year. \nIf you compare our sun with a grapefruit the earth can be seen as a peppercorn on 10 metres distance.",
+        "keywords": [
+          "Video",
+          "mooc",
+          "Big history"
+        ],
+        "numOfPages": null,
+        "authors": [
+          {
+            "person": {
+              "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
+              "name": "Esther Quaedackers",
+              "email": "Esther Quaedackers"
+            },
+            "role": null
+          },
+          {
+            "person": {
+              "id": "1ac508bb-0e9c-48d9-9497-d7393e533e7c",
+              "name": "Robbert Dijkgraaf",
+              "email": "Robbert Dijkgraaf"
+            },
+            "role": null
+          }
+        ],
+        "institutes": "Universiteit van Amsterdam",
+        "links": [
+          {
+            "url": "https://www.youtube.com/watch?v=Hx0kUX7MZ7g",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": "kennisoverdracht",
+        "themesLearningMaterial": "exact_informatica",
+        "hasParts": [],
+        "partOf": [
+          "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
+        ],
+        "technicalFormat": "video",
+        "aggregationlevel": "2",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "f929b625-5ef7-47b8-8fa8-94c969d0c427",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-12-17T22:37:37Z",
+        "title": "03. What are little big histories?",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2016-11-22",
+        "place": null,
+        "abstract": "Video about the question 'What are little big histories?' By creating a little big history you can explore big history in a structured an systematic way. Link big history to something close to you and make distant eventss and processes come to life. The concept of little big history makes it easy to come up with your own new ideas.",
+        "keywords": [
+          "Video",
+          "mooc",
+          "Big history"
+        ],
+        "numOfPages": null,
+        "authors": [
+          {
+            "person": {
+              "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
+              "name": "Esther Quaedackers",
+              "email": "Esther Quaedackers"
+            },
+            "role": null
+          }
+        ],
+        "institutes": "Universiteit van Amsterdam",
+        "links": [
+          {
+            "url": "https://www.youtube.com/watch?v=D4w-EClY664&t=8s",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": "kennisoverdracht",
+        "themesLearningMaterial": "exact_informatica",
+        "hasParts": [],
+        "partOf": [
+          "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
+        ],
+        "technicalFormat": "video",
+        "aggregationlevel": "2",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    },
+    {
+      "type": "repoItem",
+      "id": "befb515c-5dce-4f27-82a4-2f5a7a3618a4",
+      "attributes": {
+        "typicalAgeRange": {
+          "string": null
+        },
+        "cost": {
+          "source": null,
+          "value": null
+        },
+        "urn:nbn": null,
+        "modifiedAt": "2020-12-17T22:37:37Z",
+        "title": "04. Can big history reunify all our knowledge?",
+        "subtitle": null,
+        "publishers": "SURFnet",
+        "publishedAt": "2016-11-22",
+        "place": null,
+        "abstract": "Video about the question 'Can big history reunify all our knowledge?' What to leave out and what not? We can make these decisions based on theories: mental constructs that can help us order reality. What is required for the development of complexity? You need energy flows through matter and you need very good circumstances. This theory is underlying all of natural science. But how can we connect all theories, including history, psychology etc. There is a major challenge here.",
+        "keywords": [
+          "Video",
+          "mooc",
+          "Big history"
+        ],
+        "numOfPages": null,
+        "authors": [
+          {
+            "person": {
+              "id": "5e9b6265-2c2d-4802-950e-f9a30c328990",
+              "name": "Fred Spier",
+              "email": "Fred Spier"
+            },
+            "role": null
+          },
+          {
+            "person": {
+              "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
+              "name": "Esther Quaedackers",
+              "email": "Esther Quaedackers"
+            },
+            "role": null
+          }
+        ],
+        "institutes": "Universiteit van Amsterdam",
+        "links": [
+          {
+            "url": "https://www.youtube.com/watch?v=21v9IYUcruI",
+            "accessRight": "openaccess"
+          }
+        ],
+        "files": null,
+        "language": "en",
+        "themesResearchObject": null,
+        "termsOfUse": "cc-by-40",
+        "educationalLevels": [
+          {
+            "source": "http://purl.edustandaard.nl/vdex_context_czp_20060628.xml",
+            "value": "WO"
+          }
+        ],
+        "typeResearchObject": null,
+        "typeLearningMaterial": "kennisoverdracht",
+        "themesLearningMaterial": "exact_informatica",
+        "hasParts": [],
+        "partOf": [
+          "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
+        ],
+        "technicalFormat": "video",
+        "aggregationlevel": "2",
+        "intendedUser": null,
+        "availability": null,
+        "vocabularies": [],
+        "doi": null,
+        "handle": null,
+        "publishedIn": null,
+        "conference": null
+      }
+    }
+  ]
+}
