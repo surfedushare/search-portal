@@ -17,7 +17,7 @@ from sharekit.models import SharekitMetadataHarvest
 @app.task(name="sync_sharekit_metadata")
 def sync_sharekit_metadata():
     harvest_queryset = Harvest.objects.filter(
-        dataset__harvestsource__repository=Repositories.SHAREKIT,
+        source__repository=Repositories.SHAREKIT,
         stage=HarvestStages.COMPLETE  # prevents syncing materials half way a full harvest
     )
     try:
