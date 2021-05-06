@@ -17,6 +17,7 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
     class Params:
         set = "edusources"
         is_initial = True
+        is_empty = False
         number = 0
         is_restricted = False
 
@@ -52,7 +53,12 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def body(self):
-        response_type = "initial" if self.is_initial else "delta"
+        if self.is_empty:
+            response_type = "empty"
+        elif self.is_initial:
+            response_type = "initial"
+        else:
+            response_type = "delta"
         response_file = f"sharekit-api.{response_type}.{self.number}.json"
         response_file_path = os.path.join(settings.BASE_DIR, "sharekit", "fixtures", response_file)
         with open(response_file_path, "r") as response:

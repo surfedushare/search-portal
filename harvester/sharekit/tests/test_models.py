@@ -75,3 +75,8 @@ class TestSharekitMetadataHarvest(TestCase):
             unquote(next_request["url"]),
             f"https://{self.base_url}modified=1970-01-01&page[number]=2"
         )
+
+    def test_handle_no_content(self):
+        empty = SharekitMetadataHarvestFactory(is_empty=True)
+        empty.handle_errors()
+        self.assertEqual(empty.status, 204)
