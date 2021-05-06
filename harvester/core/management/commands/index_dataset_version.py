@@ -43,7 +43,7 @@ class Command(PipelineCommand):
             self.logger.start(f"index.{lang}")
 
             index, created = ElasticIndex.objects.get_or_create(
-                name=f"{dataset.name}-{dataset_version.version}",
+                name=f"{dataset.name}-{dataset_version.version}-{dataset_version.id}",
                 language=lang,
                 defaults={
                     "dataset_version": dataset_version,

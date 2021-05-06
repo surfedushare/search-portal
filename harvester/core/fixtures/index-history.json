@@ -3,7 +3,7 @@
         "model": "core.elasticindex",
         "pk": 5,
         "fields": {
-            "name": "test-001",
+            "name": "test-001-1",
             "language": "nl",
             "dataset_version": 1,
             "configuration": {
@@ -94,7 +94,7 @@
         "model": "core.elasticindex",
         "pk": 6,
         "fields": {
-            "name": "test-001",
+            "name": "test-001-1",
             "language": "en",
             "dataset_version": 1,
             "configuration": {

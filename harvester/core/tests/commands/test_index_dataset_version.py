@@ -76,7 +76,7 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -85,13 +85,13 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
         self.assertEqual(self.elastic_client.indices.create.call_count, 2)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
                          "Expected Elastic Search to ignore aliases")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
@@ -148,7 +148,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -157,12 +157,12 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         self.assertEqual(self.elastic_client.indices.delete.call_count, 2)
         for args, kwargs in self.elastic_client.indices.delete.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
         self.assertEqual(self.elastic_client.indices.create.call_count, 2)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],
@@ -170,7 +170,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
                          "Expected an Elastic Search alias creation for each language")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
@@ -196,7 +196,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         call_command("index_dataset_version", "--dataset=test")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -209,7 +209,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         self.assertEqual(streaming_bulk.call_count, 1)
         args, kwargs = streaming_bulk.call_args_list[0]
         client, docs = args
-        index_name, version, language, id = kwargs["index"].split("-")
+        index_name, version, version_id, language = kwargs["index"].split("-")
         self.assertEqual(len(docs), 1)
         for doc in docs:
             self.assert_document_structure(doc)
@@ -220,7 +220,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 1,
                          "Expected an Elastic Search alias creation for each language")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
@@ -256,7 +256,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -265,12 +265,12 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         self.assertEqual(self.elastic_client.indices.delete.call_count, 2)
         for args, kwargs in self.elastic_client.indices.delete.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
         self.assertEqual(self.elastic_client.indices.create.call_count, 2)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],

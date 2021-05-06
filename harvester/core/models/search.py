@@ -35,7 +35,7 @@ class ElasticIndex(models.Model):
     def remote_name(self):
         if not self.id:
             raise ValueError("Can't get the remote name for an unsaved object")
-        return slugify("{}-{}-{}".format(self.name, self.language, self.id))
+        return slugify(f"{self.name}-{self.language}")
 
     @property
     def remote_exists(self):
