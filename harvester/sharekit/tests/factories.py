@@ -1,6 +1,7 @@
 import os
 import factory
 from datetime import datetime
+from urllib.parse import quote
 
 from django.conf import settings
 from django.utils.timezone import make_aware
@@ -38,8 +39,8 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def uri(self):
-        return f"api.acc.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems" \
-               f"?modified={self.since.date()}"
+        return f"api.acc.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems?" + \
+                          quote(f"filter[modified][GE]={self.since:%Y-%m-%dT%H:%M:%SZ}&page[size]=10", safe="=&")
 
     @factory.lazy_attribute
     def request(self):
