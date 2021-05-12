@@ -88,3 +88,12 @@ class TestSyncIndices(TestCase):
         for index in ElasticIndex.objects.exclude(name__contains="primary-0.0.2"):
             self.assertEqual(index.pushed_at, self.pushed_ats[index.dataset_version_id],
                              "Only the latest DatasetVersions of the newest Dataset should get pushed")
+
+    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.streaming_bulk")
+    def test_sync_indices_new(self, streaming_bulk_mock, get_es_client_mock):
+        ElasticIndex.objects.update(pushed_at=None)  # this makes all indices look like they're just created
+        sync_indices()
+        self.assertEqual(streaming_bulk_mock.call_count, 0)
+        for index in ElasticIndex.objects.all():
+            self.assertIsNone(index.pushed_at)

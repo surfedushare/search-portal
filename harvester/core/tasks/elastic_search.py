@@ -13,7 +13,7 @@ from core.models import ElasticIndex, DatasetVersion
 @app.task(name="sync_indices")
 def sync_indices():
     dataset_version = DatasetVersion.objects.get_latest_version()
-    indices_queryset = ElasticIndex.objects.filter(dataset_version=dataset_version)
+    indices_queryset = ElasticIndex.objects.filter(dataset_version=dataset_version, pushed_at__isnull=False)
     try:
         with atomic():
             current_time = make_aware(datetime.now())
