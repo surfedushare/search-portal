@@ -45,9 +45,10 @@ to the ``.env`` file or add ``127.0.0.1 postgres`` to your hosts file, in order 
 Similarly for the Elastic cluster you need to add ``POL_ELASTIC_SEARCH_HOST=127.0.0.1`` to the ``.env`` file
 or add ``127.0.0.1 elasticsearch`` to your hosts file.
 
-To finish the general setup you can run this command to build all containers:
+To finish the general setup you can run these commands to build all containers:
 
 ```bash
+invoke prepare-builds
 docker-compose -f docker-compose.yml up --build
 ```
 

@@ -5,6 +5,7 @@ django:
   fixtures:
     - "surf/apps/locale/fixtures/locales.json"
     - "surf/apps/filters/fixtures/filter-categories.json"
+    - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   motomo_id: 63
   administrative_emails: false
 
