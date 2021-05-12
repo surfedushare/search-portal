@@ -459,5 +459,5 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.general.aggregationlevel':
             return 'aggregation_level'
         elif external_id == 'lom.lifecycle.contribute.publisher':
-            return 'publishers'
+            return 'publishers.keyword'
         return external_id
