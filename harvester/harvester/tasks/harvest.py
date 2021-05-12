@@ -16,6 +16,10 @@ logger = logging.getLogger("harvester")
 
 @app.task(name="harvest")
 def harvest(reset=False, no_promote=False):
+
+    if reset:
+        call_command("extend_resource_cache")
+
     # Iterate over all active datasets to get data updates
     for dataset in Dataset.objects.filter(is_active=True):
         # Preparing dataset state and deletes old model instances

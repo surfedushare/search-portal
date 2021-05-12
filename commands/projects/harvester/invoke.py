@@ -80,6 +80,19 @@ def clean_data(ctx, mode):
 
 
 @task(help={
+    "mode": "Mode you want to extend resource cache for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE"
+})
+def extend_resource_cache(ctx, mode):
+    """
+    Extends the purge_at time for Resources on the AWS container cluster or localhost
+    """
+    command = ["python", "manage.py", "extend_resource_cache"]
+
+    run_harvester_task(ctx, mode, command)
+
+
+@task(help={
     "mode": "Mode you want to create indices for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
     "dataset": "Name of the dataset (a Greek letter) that you want to create indices for",
