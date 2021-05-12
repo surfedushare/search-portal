@@ -6,7 +6,7 @@ from commands.elastic.tasks import create_decompound_dictionary, push_decompound
 from commands.deploy import prepare_builds, build, push, deploy, migrate
 from commands.test import test_collection
 from commands.projects.service.invoke import import_snapshot, sync_upload_media, sync_category_filters
-from commands.projects.harvester.invoke import (import_dataset, harvest, cleanup, index_dataset_version,
+from commands.projects.harvester.invoke import (import_dataset, harvest, clean_data, index_dataset_version,
                                                 dump_data, sync_harvest_content, generate_previews,
                                                 promote_dataset_version)
 
@@ -20,7 +20,7 @@ aws_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="harvester")
-harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, cleanup, import_dataset, deploy,
+harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, clean_data, import_dataset, deploy,
                                   index_dataset_version, dump_data, sync_harvest_content, promote_dataset_version,
                                   create_decompound_dictionary, push_decompound_dictionary, generate_previews)
 harvester_collection.configure(harvester_environment)

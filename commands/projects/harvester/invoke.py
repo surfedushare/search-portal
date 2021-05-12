@@ -67,13 +67,14 @@ def generate_previews(ctx, mode, dataset, version=None):
 
 
 @task(help={
-    "mode": "Mode you want to cleanup: localhost, development, acceptance or production. Must match APPLICATION_MODE"
+    "mode": "Mode you want to clean data for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE"
 })
-def cleanup(ctx, mode):
+def clean_data(ctx, mode):
     """
     Starts a clean up tasks on the AWS container cluster or localhost
     """
-    command = ["python", "manage.py", "clean_resources"]
+    command = ["python", "manage.py", "clean_data"]
 
     run_harvester_task(ctx, mode, command)
 
