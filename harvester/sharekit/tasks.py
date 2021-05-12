@@ -17,6 +17,7 @@ from sharekit.models import SharekitMetadataHarvest
 @app.task(name="sync_sharekit_metadata")
 def sync_sharekit_metadata():
     harvest_queryset = Harvest.objects.filter(
+        dataset__is_active=True,
         source__repository=Repositories.SHAREKIT,
         stage=HarvestStages.COMPLETE  # prevents syncing materials half way a full harvest
     )
@@ -40,7 +41,7 @@ def sync_sharekit_metadata():
                     continue
                 # Now parse the metadata and update current Collection for this Harvest
                 seeds = SharekitMetadataHarvest.objects.extract_seeds(set_specification, harvest.latest_update_at)
-                dataset_version = DatasetVersion.objects.get_latest_version()
+                dataset_version = DatasetVersion.objects.get_latest_version(dataset=harvest.dataset)
                 collection = dataset_version.collection_set.get(name=harvest.source.spec)
                 for seeds_batch in ibatch(seeds, batch_size=32):
                     updates = []

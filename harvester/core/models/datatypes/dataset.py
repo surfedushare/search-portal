@@ -49,8 +49,13 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
 
 class DatasetVersionManager(models.Manager):
 
-    def get_latest_version(self):
-        return super().get_queryset().filter(is_current=True).latest()
+    def get_latest_version(self, dataset=None):
+        filters = {
+            "is_current": True
+        }
+        if dataset:
+            filters.update({"dataset": dataset})
+        return super().get_queryset().filter(**filters).latest()
 
 
 class DatasetVersion(models.Model):
