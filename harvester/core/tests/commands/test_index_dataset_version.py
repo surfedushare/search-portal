@@ -26,15 +26,19 @@ class ElasticSearchClientTestCase(TestCase):
         self.elastic_client.indices.create.reset_mock()
         self.elastic_client.indices.delete.reset_mock()
 
-    def assert_document_structure(self, document):
+    def assert_document_structure(self, document, has_text=True):
         # Here we check if documents have all required keys including _id
         expected_keys = {
-            "title", "text", "transcription", "url", "external_id", "disciplines", "lom_educational_levels",
-            "educational_levels", "description", "publisher_date", "copyright", "language", "title_plain",
-            "text_plain", "transcription_plain", "keywords", "file_type", "mime_type", "suggest_phrase",
-            "suggest_completion", "_id", "oaipmh_set", "harvest_source",  "aggregation_level", "publishers",
-            "authors", "has_parts", "has_part", "is_part_of", "preview_path", "analysis_allowed", "ideas",
+            "title", "url", "external_id", "disciplines", "lom_educational_levels", "description", "publisher_date",
+            "copyright", "language", "title_plain", "keywords", "file_type", "mime_type", "suggest_completion", "_id",
+            "oaipmh_set", "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "has_part",
+            "is_part_of", "preview_path", "analysis_allowed", "ideas",
         }
+        text_keys = {
+            "text", "text_plain", "suggest_phrase",
+        }
+        if has_text:
+            expected_keys.update(text_keys)
         self.assertEqual(set(document.keys()), expected_keys)
 
 

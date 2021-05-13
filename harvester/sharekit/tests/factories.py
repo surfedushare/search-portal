@@ -1,6 +1,7 @@
 import os
 import factory
 from datetime import datetime
+from urllib.parse import quote
 
 from django.conf import settings
 from django.utils.timezone import make_aware
@@ -17,13 +18,14 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
     class Params:
         set = "edusources"
         is_initial = True
+        is_empty = False
         number = 0
         is_restricted = False
 
     since = factory.Maybe(
         "is_initial",
         make_aware(datetime(year=1970, month=1, day=1)),
-        make_aware(datetime(year=2020, month=2, day=10))
+        make_aware(datetime(year=2020, month=2, day=11))
     )
     set_specification = "edusources"
     status = 200
@@ -37,8 +39,8 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def uri(self):
-        return f"api.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems" \
-               f"?modified={self.since.date()}"
+        return f"api.acc.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems?" + \
+                          quote(f"filter[modified][GE]={self.since:%Y-%m-%dT%H:%M:%SZ}&page[size]=10", safe="=&")
 
     @factory.lazy_attribute
     def request(self):
@@ -52,7 +54,12 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def body(self):
-        response_type = "initial" if self.is_initial else "delta"
+        if self.is_empty:
+            response_type = "empty"
+        elif self.is_initial:
+            response_type = "initial"
+        else:
+            response_type = "delta"
         response_file = f"sharekit-api.{response_type}.{self.number}.json"
         response_file_path = os.path.join(settings.BASE_DIR, "sharekit", "fixtures", response_file)
         with open(response_file_path, "r") as response:

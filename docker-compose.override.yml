@@ -64,6 +64,7 @@ services:
       - PYTHONUNBUFFERED=1
       - APPLICATION_MODE=${APPLICATION_MODE}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
+      - POL_SECRETS_SHAREKIT_API_KEY=${POL_SECRETS_SHAREKIT_API_KEY}
     volumes:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media

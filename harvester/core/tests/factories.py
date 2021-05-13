@@ -72,7 +72,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "publisher_date": None,
             "copyright": "cc-by-40",
             "aggregation_level": "2",
-            "text": "",
+            "text": "blabla",
         })
 
 

@@ -444,8 +444,6 @@ class ElasticSearchApiClient:
             return 'oaipmh_set'
         elif external_id == 'lom.rights.copyrightandotherrestrictions':
             return 'copyright.keyword'
-        elif external_id == 'lom.classification.obk.educationallevel.id':
-            return 'educational_levels'
         elif external_id == 'lom.educational.context':
             return 'lom_educational_levels'
         elif external_id == 'lom.lifecycle.contribute.publisherdate':

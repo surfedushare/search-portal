@@ -32,10 +32,12 @@ class ArrangementAdmin(DataStorageAdmin):
 class ExtendedDocumentAdmin(DocumentAdmin):
     list_display = ['__str__', 'dataset_version', 'collection', 'created_at', 'modified_at']
     list_filter = ('dataset_version', 'collection',)
+    readonly_fields = ("created_at", "modified_at",)
 
 
 class ElasticIndexAdmin(admin.ModelAdmin):
-    list_display = ("name", "remote_name", "remote_exists", "error_count", "language", "created_at", "modified_at",)
+    list_display = ("name", "remote_name", "remote_exists", "error_count", "language", "created_at", "modified_at",
+                    "pushed_at")
 
 
 class CommonCartridgeAdmin(admin.ModelAdmin):

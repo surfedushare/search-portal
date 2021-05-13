@@ -31,7 +31,7 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def uri(self):
-        return "wszoeken.edurep.kennisnet.nl/edurep/oai?" \
+        return "staging.edurep.kennisnet.nl/edurep/oai?" \
                f"from={self.since.date()}&metadataPrefix=lom&set={self.set_specification}&verb=ListRecords"
 
     @factory.lazy_attribute
