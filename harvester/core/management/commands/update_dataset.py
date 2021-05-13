@@ -51,6 +51,7 @@ class Command(PipelineCommand):
             "publishers": meta.get("publishers", []),
             "description": meta.get("description", None),
             "copyright": meta.get("copyright", None),
+            "copyright_description": meta.get("copyright_description", None),
             "aggregation_level": meta.get("aggregation_level", None),
             "publisher_date": meta.get("publisher_date", None),
             "disciplines": meta.get("disciplines", []),

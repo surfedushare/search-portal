@@ -274,6 +274,14 @@ class EdurepDataExtraction(object):
             results.append("surfsharekit:" + catalog_entry.text.strip())  # prefixes excluded by Edurep, but are needed
         return results
 
+    @classmethod
+    def get_copyright_description(cls, soup, el):
+        node = el.find('czp:rights')
+        if not node:
+            return
+        description = node.find('czp:description')
+        return description.find('czp:langstring').text.strip() if description else None
+
 
 EDUREP_EXTRACTION_OBJECTIVE = {
     "url": EdurepDataExtraction.get_url,
@@ -297,4 +305,5 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
     "is_part_of": EdurepDataExtraction.get_is_part_of,
     "has_parts": EdurepDataExtraction.get_has_parts,
+    "copyright_description": EdurepDataExtraction.get_copyright_description,
 }

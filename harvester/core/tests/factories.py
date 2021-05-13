@@ -71,6 +71,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "description": "Gedrag is zorgwekkend",
             "publisher_date": None,
             "copyright": "cc-by-40",
+            "copyright_description": "http://creativecommons.org/licenses/by/4.0/",
             "aggregation_level": "2",
             "text": "blabla",
         })
