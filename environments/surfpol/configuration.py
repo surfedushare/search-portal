@@ -194,7 +194,13 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     }
                 },
                 'publishers': {
-                    'type': 'keyword'
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword',
+                            'ignore_above': 256
+                        }
+                    }
                 },
                 'publisher_date': {
                     'type': 'date',
@@ -204,7 +210,13 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'type': 'keyword'
                 },
                 'keywords': {
-                    'type': 'keyword'
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword',
+                            'ignore_above': 256
+                        }
+                    }
                 },
                 'file_type': {
                     'type': 'keyword'
