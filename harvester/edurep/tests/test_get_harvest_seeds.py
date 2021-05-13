@@ -5,7 +5,7 @@ from django.utils.timezone import make_aware
 
 from harvester.utils.extraction import get_harvest_seeds
 from edurep.tests.factories import EdurepOAIPMHFactory
-from edurep.extraction import EDUREP_EXTRACTION_OBJECTIVE
+from edurep.extraction import EDUREP_EXTRACTION_OBJECTIVE, EdurepDataExtraction
 
 
 class TestGetHarvestSeedsEdurep(TestCase):
@@ -161,3 +161,28 @@ class TestGetHarvestSeedsEdurep(TestCase):
         self.assertEqual(mime_type, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
         self.assertEqual(link, "https://surfsharekit.nl/dl/surf/5af0e26f-c4d2-4ddd-94ab-7dd0bd531751/"
                                "182216be-31a2-43c3-b7de-e5dd355b09f7")
+
+    def test_parse_copyright_description(self):
+        descriptions = {
+            "http://creativecommons.org/licenses/by-nc-sa/3.0/nl/": "cc-by-nc-sa-30",
+            "http://creativecommons.org/licenses/by-nc-sa/4.0/": "cc-by-nc-sa-40",
+            "http://creativecommons.org/licenses/by-nc/4.0/": "cc-by-nc-40",
+            "http://creativecommons.org/licenses/by-sa/3.0/nl/": "cc-by-sa-30",
+            "http://creativecommons.org/licenses/by-sa/4.0/": "cc-by-sa-40",
+            "http://creativecommons.org/licenses/by/3.0/nl/": "cc-by-30",
+            "http://creativecommons.org/licenses/by/4.0/": "cc-by-40",
+            "http://creativecommons.org/publicdomain/mark/1.0/": "pdm-10",
+            "http://creativecommons.org/publicdomain/zero/1.0/": "cc0-10",
+            "invalid": None,
+            None: None
+        }
+        for description, license in descriptions.items():
+            self.assertEqual(EdurepDataExtraction.parse_copyright_description(description), license)
+
+    def test_get_copyright(self):
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(len(seeds), 18, "Expected get_harvest_seeds to filter differently based on copyright")
+        self.assertEqual(seeds[1]["copyright"], "cc-by-nc-40",
+                         "Expected 'yes' copyright to look at copyright_description")
+        self.assertEqual(seeds[2]["copyright"], "cc-by-40",
+                         "Expected copyright to be present even though copyright_description is missing")
