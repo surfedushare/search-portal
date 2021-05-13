@@ -166,7 +166,8 @@ def deploy(ctx, mode, version=None):
     print("Waiting for deploy to finish ...")
     while True:
         running_containers = list_running_containers(ecs_client, ctx.config.aws.cluster_arn, target_info["name"])
-        if len(running_containers) == 1 and running_containers[0]["version"] == version:
+        versions = set([container["version"] for container in running_containers])
+        if len(versions) == 1 and version in versions:
             break
         sleep(10)
     print("Done deploying")
