@@ -1,11 +1,14 @@
 import os
 import json
+import boto3
+from time import sleep
 
 from invoke.tasks import task
 from invoke.exceptions import Exit
 
+from environments.surfpol import MODE
 from commands import TARGETS
-from commands.aws.ecs import register_task_definition, build_default_container_variables
+from commands.aws.ecs import register_task_definition, build_default_container_variables, list_running_containers
 from commands.aws.utils import create_aws_session
 
 
@@ -160,4 +163,34 @@ def deploy(ctx, mode, version=None):
         print(f"Deploying service version {version}")
         deploy_service(ctx, mode, ecs_client, task_role_arn, version)
 
+    print("Waiting for deploy to finish ...")
+    while True:
+        running_containers = list_running_containers(ecs_client, ctx.config.aws.cluster_arn, target_info["name"])
+        if len(running_containers) == 1 and running_containers[0]["version"] == version:
+            break
+        sleep(10)
     print("Done deploying")
+
+
+@task(help={
+    "target": "Name of the project you want to list versions for: service or harvester",
+    "mode": "Mode you want to list versions for: development, acceptance or production. Must match APPLICATION_MODE",
+})
+def print_running_containers(ctx, target, mode):
+    # Check the input for validity
+    if target not in TARGETS:
+        raise Exit(f"Unknown target: {target}", code=1)
+    if mode != MODE:
+        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
+
+    # Load info
+    target_info = TARGETS[target]
+    name = target_info["name"]
+
+    # Start boto
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name)
+    ecs = session.client("ecs")
+
+    # List images
+    running_containers = list_running_containers(ecs, ctx.config.aws.cluster_arn, name)
+    print(json.dumps(running_containers, indent=4))
