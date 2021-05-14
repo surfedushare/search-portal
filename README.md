@@ -126,12 +126,6 @@ It's also possible to run tests for specific Django projects.
 For more details see: [testing service project](service/README.md#tests) and
 [testing harvester project](harvester/README.md#tests)
 
-To see whether the code integrates correctly with the external Elastic Search service run:
-
-```bash
-invoke test.elastic_search
-```
-
 
 Deploy
 ------
@@ -152,6 +146,12 @@ This command will push to a registry that's available to all environments on AWS
 invoke aws.push <target-project-name>
 ```
 
+To see a list of all currently available images for a project you can run:
+
+```bash
+invoke aws.print-available-images <target-project-name>
+```
+
 When an image is pushed to the registry you can deploy the service with:
 
 ```bash
@@ -162,6 +162,19 @@ And the harvester with:
 
 ```bash
 APPLICATION_MODE=<environment> invoke hrv.deploy <environment>
+```
+
+These last deploy commands will wait until all containers in the AWS cluster have been switched to the new version.
+This may take some time and the command will indicate that it is waiting to complete.
+If you do not want to wait you can `CTRL+C` in the terminal safely. This cancels the waiting, not the deploy itself.
+
+
+#### Active containers/versions
+
+You can see which containers and which versions of a project are currently active for a particular environment by using:
+
+```bash
+APPLICATION_MODE=<environment> invoke aws.print-running-containers <target-project-name> <environment>
 ```
 
 
@@ -180,7 +193,7 @@ APPLICATION_MODE=<environment> invoke srv.deploy <environment> -v <rollback-vers
 To migrate the database on AWS you can run the migration command:
 
 ```bash
-APPLICATION_MODE=<environment> invoke migrate <target-project-name> <environment>
+APPLICATION_MODE=<environment> invoke aws.migrate <target-project-name> <environment>
 ```
 
 
