@@ -41,7 +41,7 @@
         :href="material.url"
         class="button button--full-width material__grey_block-btn"
         target="_blank"
-      >{{ $t('Open-link') }}</a>
+      >{{ $t((material.files && material.files.length > 1) ? 'Open-links' : 'Open-link') }}</a>
     </div>
 
     <div class="quality__social material__social" ref="social_counters">
