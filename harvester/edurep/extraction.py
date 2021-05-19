@@ -2,17 +2,36 @@ import re
 import vobject
 from html import unescape
 
+from django.utils.text import slugify
+
 from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class EdurepDataExtraction(object):
 
-    vcard_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
+    cc_regex = re.compile(r"^https?://creativecommons\.org/(?P<type>\w+)/(?P<license>[a-z\-]+)/(?P<version>\d\.\d)",
+                          re.IGNORECASE)
 
     #############################
     # OAI-PMH
     #############################
+
+    @classmethod
+    def parse_copyright_description(cls, description):
+        if description is None:
+            return
+        match = cls.cc_regex.match(description)
+        if match is None:
+            return
+        license = match.group("license")
+        if license == "mark":
+            license = "pdm"
+        elif license == "zero":
+            license = "cc0"
+        else:
+            license = "cc-" + license
+        return slugify(f"{license}-{match.group('version')}")
 
     @staticmethod
     def parse_vcard_element(el):
@@ -116,7 +135,12 @@ class EdurepDataExtraction(object):
     @classmethod
     def get_copyright(cls, soup, el):
         node = el.find('czp:copyrightandotherrestrictions')
-        return node.find('czp:value').find('czp:langstring').text.strip() if node else None
+        if node is None:
+            return
+        copyright = node.find('czp:value').find('czp:langstring').text.strip()
+        if copyright == "yes":
+            copyright = cls.parse_copyright_description(cls.get_copyright_description(soup, el))
+        return copyright
 
     @classmethod
     def get_aggregation_level(cls, soup, el):
@@ -274,6 +298,14 @@ class EdurepDataExtraction(object):
             results.append("surfsharekit:" + catalog_entry.text.strip())  # prefixes excluded by Edurep, but are needed
         return results
 
+    @classmethod
+    def get_copyright_description(cls, soup, el):
+        node = el.find('czp:rights')
+        if not node:
+            return
+        description = node.find('czp:description')
+        return description.find('czp:langstring').text.strip() if description else None
+
 
 EDUREP_EXTRACTION_OBJECTIVE = {
     "url": EdurepDataExtraction.get_url,
@@ -297,4 +329,5 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
     "is_part_of": EdurepDataExtraction.get_is_part_of,
     "has_parts": EdurepDataExtraction.get_has_parts,
+    "copyright_description": EdurepDataExtraction.get_copyright_description,
 }

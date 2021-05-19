@@ -109,7 +109,7 @@
                                 </czp:langstring>
                             </czp:source>
                             <czp:value>
-                                <czp:langstring xml:lang="x-none">cc-by-nc-40</czp:langstring>
+                                <czp:langstring xml:lang="x-none">yes</czp:langstring>
                             </czp:value>
                         </czp:copyrightandotherrestrictions>
                         <czp:description>
@@ -316,10 +316,6 @@
                                 <czp:langstring xml:lang="x-none">cc-by-40</czp:langstring>
                             </czp:value>
                         </czp:copyrightandotherrestrictions>
-                        <czp:description>
-                            <czp:langstring xml:lang="x-none">https://creativecommons.org/licenses/by/4.0/
-                            </czp:langstring>
-                        </czp:description>
                     </czp:rights>
                     <czp:classification>
                         <czp:purpose>

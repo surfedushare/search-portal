@@ -121,6 +121,7 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-nc-40",
+                "copyright_description": "http://creativecommons.org/licenses/by-nc/4.0/",
                 "file_type": "text",
                 "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "publishers": [],
@@ -180,6 +181,7 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-40",
+                "copyright_description": "http://creativecommons.org/licenses/by/4.0/",
                 "file_type": "text",
                 "mime_type": "text/html",
                 "publishers": [],
@@ -238,6 +240,7 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-sa-40",
+                "copyright_description": null,
                 "file_type": "digiboard",
                 "mime_type": "application/x-zip-compressed",
                 "publishers": ["Hogeschool Utrecht"],
@@ -296,6 +299,7 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-nc-40",
+                "copyright_description": null,
                 "file_type": "text",
                 "mime_type": "text/html",
                 "publishers": [],
@@ -354,6 +358,7 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-sa-40",
+                "copyright_description": "http://creativecommons.org/licenses/by-sa/4.0/",
                 "file_type": "text",
                 "mime_type": "text/html",
                 "publishers": [],
@@ -412,6 +417,7 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-sa-40",
+                "copyright_description": "http://creativecommons.org/licenses/by-sa/4.0/",
                 "file_type": "pdf",
                 "mime_type": "application/pdf",
                 "publishers": ["Hanze Hogeschool"],

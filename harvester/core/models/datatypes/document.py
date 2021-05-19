@@ -75,6 +75,7 @@ class Document(DocumentPostgres, DocumentBase):
             'description': self.properties['description'],
             'publisher_date': self.properties['publisher_date'],
             'copyright': self.properties['copyright'],
+            'copyright_description': self.properties['copyright_description'],
             'aggregation_level': self.properties['aggregation_level'],
             'preview_path': self.properties.get('preview_path', None),
             'analysis_allowed': self.properties.get('analysis_allowed', False),
