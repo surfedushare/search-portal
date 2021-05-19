@@ -33,8 +33,8 @@ RUN chown app:app /usr/src/environments
 RUN chown app:app /usr/src/logs
 
 # Download and verify Tika
-RUN curl -sSL https://www.apache.org/dist/tika/tika-app-1.25.jar -o /home/app/tika-app-1.25.jar
-RUN curl -sSL https://www.apache.org/dist/tika/tika-app-1.25.jar.sha512 -o /home/app/tika-app-1.25.jar.sha512
+RUN curl -sSL https://archive.apache.org//dist/tika/tika-app-1.25.jar -o /home/app/tika-app-1.25.jar
+RUN curl -sSL https://archive.apache.org/dist/tika/tika-app-1.25.jar.sha512 -o /home/app/tika-app-1.25.jar.sha512
 RUN cat /home/app/tika-app-1.25.jar.sha512 | echo "$(</dev/stdin) /home/app/tika-app-1.25.jar" | sha512sum -c
 RUN rm /home/app/tika-app-1.25.jar.sha512
 
