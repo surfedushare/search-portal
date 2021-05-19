@@ -30,7 +30,7 @@ def get_harvest_seeds(set_specification, latest_update, include_deleted=True, in
     for seed in seeds:
         if not seed["copyright"] or seed["copyright"] == "yes":
             seed["state"] = "deleted"
-        if seed["lowest_educational_level"] < 1:  # lower level than MBO
+        if seed["lowest_educational_level"] < 2:  # lower level than HBO
             seed["state"] = "deleted"
         if seed.get("is_restricted", False):
             seed["analysis_allowed"] = False
