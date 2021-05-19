@@ -59,6 +59,13 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "from_youtube": o.from_youtube,
             "analysis_allowed": o.analysis_allowed,
             "mime_type": o.mime_type,
+            "files": [
+                [
+                    o.mime_type,
+                    o.url,
+                    "URL 1"
+                ]
+            ],
             "pipeline": o.pipeline,
             "preview_path": o.preview_path,
             "url": o.url,
