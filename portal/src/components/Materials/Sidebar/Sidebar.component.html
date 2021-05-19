@@ -36,7 +36,7 @@
       <a :href="copyrightURL(material.copyright)"
         target="_blank"
         v-if="material.copyright === 'yes'">{{ $t('cc-by-nc-nd') }}</a>
-      <a @click="downloadOnClick($event)"
+      <a @click="downloadOnClick($event, material)"
         v-if="material.url"
         :href="material.url"
         class="button button--full-width material__grey_block-btn"
@@ -111,4 +111,9 @@
     :material="material"
     v-model="is_copied"
   ></ShareMaterial>
+  <SelectDownloadPopup
+    :show-popup="showDownloadPopup"
+    :close="toggleDownloadPopup"
+    :material="material"
+  />
 </div>

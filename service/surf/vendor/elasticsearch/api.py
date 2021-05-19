@@ -130,6 +130,7 @@ class ElasticSearchApiClient:
         """
         record = dict()
         record['external_id'] = hit['_source']['external_id']
+        record['files'] = hit['_source']['files']
         record['url'] = hit['_source']['url']
         record['title'] = hit['_source']['title']
         record['description'] = hit['_source']['description']

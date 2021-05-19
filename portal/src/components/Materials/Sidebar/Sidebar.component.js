@@ -6,6 +6,7 @@ import ShareMaterial from '~/components/Popup/ShareMaterial'
 import Multiselect from './../../Multiselect'
 import { validateHREF } from '~/components/_helpers'
 import { generateSearchMaterialsQuery } from '../../_helpers'
+import SelectDownloadPopup from "@/components/Popup/SelectDownload/SelectDownload"
 
 export default {
   name: 'sidebar',
@@ -24,7 +25,8 @@ export default {
     SaveMaterialInCollection,
     AddCollection,
     ShareMaterial,
-    Multiselect
+    Multiselect,
+    SelectDownloadPopup
   },
   mounted() {
     this.setSocialCounters()
@@ -37,10 +39,14 @@ export default {
       submitting: false,
       isShowSaveMaterial: false,
       isShowShareMaterial: false,
-      isShowAddCollection: false
+      isShowAddCollection: false,
+      showDownloadPopup: false
     }
   },
   methods: {
+    toggleDownloadPopup() {
+      this.showDownloadPopup = !this.showDownloadPopup
+    },
     getIdeaLink(idea) {
       const query = generateSearchMaterialsQuery({
         search_text: '"' + idea + '"',
@@ -288,8 +294,14 @@ export default {
       }
       return item.name
     },
-    downloadOnClick(event) {
+    downloadOnClick(event, material) {
       this.$log.customEvent('Goal', 'Download', event.currentTarget.href)
+      if(!material.files || material.files.length <= 1) {
+        return
+      }
+      // Dealing with a multi file scenario. We'll open the modal instead of navigating away.
+      event.preventDefault()
+      this.showDownloadPopup = true
     }
   },
   computed: {
