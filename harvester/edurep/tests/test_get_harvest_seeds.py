@@ -173,6 +173,9 @@ class TestGetHarvestSeedsEdurep(TestCase):
             "http://creativecommons.org/licenses/by/4.0/": "cc-by-40",
             "http://creativecommons.org/publicdomain/mark/1.0/": "pdm-10",
             "http://creativecommons.org/publicdomain/zero/1.0/": "cc0-10",
+            "CC BY NC SA": "cc-by-nc-sa",
+            "CC BY-NC-SA": "cc-by-nc-sa",
+            "cc by": "cc-by",
             "invalid": None,
             None: None
         }
