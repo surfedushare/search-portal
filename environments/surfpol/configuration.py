@@ -143,6 +143,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         "tokenizer": "standard",
                         "filter": ["lowercase", "shingle"]
                     },
+                    "folding": {
+                        "tokenizer": "standard",
+                        "filter":  ["lowercase", "asciifolding"]
+                    }
                 },
                 "filter": {
                     "dutch_stop": {
@@ -162,22 +166,46 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'title': {
                     'type': 'text',
                     'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'search_analyzer': search_analyzer,
+                    'fields': {
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'text': {
                     'type': 'text',
                     'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'search_analyzer': search_analyzer,
+                    'fields': {
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'transcription': {
                     'type': 'text',
                     'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'search_analyzer': search_analyzer,
+                    'fields': {
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'description': {
                     'type': 'text',
                     'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'search_analyzer': search_analyzer,
+                    'fields': {
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'url': {'type': 'text'},
                 'title_plain': {'type': 'text'},
@@ -190,6 +218,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         'keyword': {
                             'type': 'keyword',
                             'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
                         }
                     }
                 },
@@ -199,6 +231,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         'keyword': {
                             'type': 'keyword',
                             'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
                         }
                     }
                 },
@@ -215,6 +251,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         'keyword': {
                             'type': 'keyword',
                             'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
                         }
                     }
                 },
@@ -243,6 +283,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         'keyword': {
                             'type': 'keyword',
                             'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
                         }
                     }
                 },
