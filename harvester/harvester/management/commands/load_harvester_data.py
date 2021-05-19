@@ -11,7 +11,7 @@ from django.db import models, connection
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from surfpol.configuration import create_configuration
 from harvester.settings import environment
-from core.models import Dataset, ElasticIndex, FileResource
+from core.models import Dataset, FileResource
 from core.models.resources.basic import file_resource_delete_handler
 
 
@@ -101,6 +101,3 @@ class Command(base.LabelCommand):
         # Load resources
         self.load_resources()
         self.reset_postgres_sequences()
-
-        # Migrate indices to 7.0
-        ElasticIndex.objects.all().update(configuration="")

@@ -111,3 +111,22 @@ def task_container_definitions(target, extra_workers):
         return "task-with-workers-container-definitions.json"
 
     return "task-container-definitions.json"
+
+
+def list_running_containers(ecs, cluster, service):
+    tasks_response = ecs.list_tasks(
+        cluster=cluster,
+        serviceName=service,
+        desiredStatus='RUNNING'
+    )
+    response = ecs.describe_tasks(
+        cluster=cluster,
+        tasks=tasks_response["taskArns"]
+    )
+    return [
+        {
+            "version": container["image"].split(":")[-1],
+            "container_id": container.get("runtimeId", None)
+        }
+        for aws_task in response["tasks"] for container in aws_task["containers"] if service in container["name"]
+    ]
