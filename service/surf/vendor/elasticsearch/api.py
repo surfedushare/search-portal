@@ -227,9 +227,9 @@ class ElasticSearchApiClient:
             query_string = {
                 "simple_query_string": {
                     "fields": [
-                        "title^2", "title_plain^2", "title.folded^2",
-                        "text", "text_plain", "text.folded",
-                        "description", "description.folded",
+                        "title^2", "title.analyzed^2", "title.folded^2",
+                        "text", "text.analyzed", "text.folded",
+                        "description", "description.analyzed", "description.folded",
                         "keywords", "keywords.folded",
                         "authors", "authors.folded",
                         "publishers", "publishers.folded",

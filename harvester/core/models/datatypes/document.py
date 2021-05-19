@@ -42,7 +42,6 @@ class Document(DocumentPostgres, DocumentBase):
             '_id': reference_id,
             'title': title,
             'url': url,
-            'title_plain': title,
             'file_type': file_type,
             'mime_type': mime_type,
             'has_parts': has_parts,
@@ -53,7 +52,6 @@ class Document(DocumentPostgres, DocumentBase):
         if text:
             details.update({
                 'text': text,
-                'text_plain': text,
                 'suggest_phrase': text
             })
         return details

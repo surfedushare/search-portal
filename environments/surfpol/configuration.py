@@ -165,9 +165,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
             'properties': {
                 'title': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer,
                     'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
                         'folded': {
                             'type': 'text',
                             'analyzer': 'folding'
@@ -176,9 +179,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 },
                 'text': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer,
                     'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
                         'folded': {
                             'type': 'text',
                             'analyzer': 'folding'
@@ -187,9 +193,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 },
                 'transcription': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer,
                     'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
                         'folded': {
                             'type': 'text',
                             'analyzer': 'folding'
@@ -198,9 +207,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 },
                 'description': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer,
                     'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
                         'folded': {
                             'type': 'text',
                             'analyzer': 'folding'
@@ -208,10 +220,6 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     }
                 },
                 'url': {'type': 'text'},
-                'title_plain': {'type': 'text'},
-                'text_plain': {'type': 'text'},
-                'transcription_plain': {'type': 'text'},
-                'description_plain': {'type': 'text'},
                 'authors': {
                     'type': 'text',
                     'fields': {
