@@ -386,6 +386,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             'type': 'custom',
             'tokenizer': 'standard',
             'filter': [
+                'lowercase',
                 'dutch_stop',
                 'dictionary_decompound'
             ]

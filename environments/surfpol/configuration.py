@@ -262,7 +262,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
         configuration["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"] = {
             "type": "custom",
             "tokenizer": "standard",
-            "filter": ["dutch_stop", "dictionary_decompound"]
+            "filter": ["lowercase", "dutch_stop", "dictionary_decompound"]
         }
         configuration["settings"]["analysis"]["filter"]["dictionary_decompound"] = {
             "type": "dictionary_decompounder",
