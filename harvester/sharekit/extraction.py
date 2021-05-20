@@ -145,6 +145,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "description": "$.attributes.abstract",
     "mime_type": SharekitMetadataExtraction.get_mime_type,
     "copyright": SharekitMetadataExtraction.get_copyright,
+    "copyright_description": lambda node: None,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
     "publishers": SharekitMetadataExtraction.get_publishers,
