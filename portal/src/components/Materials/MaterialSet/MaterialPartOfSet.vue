@@ -1,7 +1,7 @@
 <template>
   <div v-if="mainMaterial != null">
     <h3 class="material__info_subttl">{{ $t('Part-of-set') }}</h3>
-    <div class="blue-bar">
+    <div class="green-bar">
       <div class="content" @click="goToMaterial">
         <h3>
           {{ mainMaterial.title }}
