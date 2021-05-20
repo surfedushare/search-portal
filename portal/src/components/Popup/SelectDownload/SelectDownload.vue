@@ -9,11 +9,14 @@
       <slot>
         <h2 class="popup__title">{{ $t('View-materials') }}</h2>
         <div>
-          <a v-for="(file, ix) in material.files" :key="ix"
-             :href="file[1]"
-             class="button button--full-width material__grey_block-btn"
-             target="_blank"
-          >{{ file[2] }}</a>
+          <a
+            v-for="(file, ix) in material.files"
+            :key="ix"
+            :href="file[1]"
+            class="button button--full-width material__grey_block-btn"
+            target="_blank"
+            >{{ file[2] }}</a
+          >
         </div>
       </slot>
     </Popup>
@@ -38,7 +41,8 @@ export default {
       default: () => {}
     },
     material: {
-      type: Object
+      type: Object,
+      default: null
     }
   }
 }

@@ -6,7 +6,7 @@ import ShareMaterial from '~/components/Popup/ShareMaterial'
 import Multiselect from './../../Multiselect'
 import { validateHREF } from '~/components/_helpers'
 import { generateSearchMaterialsQuery } from '../../_helpers'
-import SelectDownloadPopup from "@/components/Popup/SelectDownload/SelectDownload"
+import SelectDownloadPopup from '@/components/Popup/SelectDownload/SelectDownload'
 
 export default {
   name: 'sidebar',
@@ -296,7 +296,7 @@ export default {
     },
     downloadOnClick(event, material) {
       this.$log.customEvent('Goal', 'Download', event.currentTarget.href)
-      if(!material.files || material.files.length <= 1) {
+      if (!material.files || material.files.length <= 1) {
         return
       }
       // Dealing with a multi file scenario. We'll open the modal instead of navigating away.
