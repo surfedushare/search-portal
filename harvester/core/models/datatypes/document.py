@@ -38,6 +38,7 @@ class Document(DocumentPostgres, DocumentBase):
     def get_search_document_details(reference_id, url, title, text, mime_type, file_type,
                                     is_part_of=None, has_parts=None):
         has_parts = has_parts or []
+        is_part_of = is_part_of or []
         details = {
             '_id': reference_id,
             'title': title,
@@ -91,7 +92,7 @@ class Document(DocumentPostgres, DocumentBase):
             self.properties.get("text", None),
             self.properties["mime_type"],
             self.properties["file_type"],
-            is_part_of=self.properties.get("is_part_of", None),
+            is_part_of=self.properties.get("is_part_of", []),
             has_parts=self.properties.get("has_parts", [])
         )
         elastic_details.update(elastic_base)

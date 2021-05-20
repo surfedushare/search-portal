@@ -1,14 +1,13 @@
 <template>
-  <div v-if="mainMaterial != null">
-    <h3 class="material__info_subttl">{{ $t('Part-of-set') }}</h3>
-    <div class="green-bar">
+  <div v-if="material">
+    <div class="green-bar part-of-set">
       <div class="content" @click="goToMaterial">
         <h3>
-          {{ mainMaterial.title }}
+          {{ material.title }}
           <i class="arrow"></i>
         </h3>
-        <div v-if="mainMaterial.has_parts">
-          {{ $tc('Materials', mainMaterial.has_parts.length) }}
+        <div v-if="material.has_parts">
+          {{ $tc('Materials', material.has_parts.length) }}
         </div>
       </div>
     </div>
@@ -19,42 +18,40 @@
 export default {
   name: 'MaterialPartOfSet',
   props: {
-    material: {
-      type: Object,
+    parentId: {
+      type: String,
       default: null,
-      required: false
+      required: true
     }
   },
   data() {
     return {
-      mainMaterial: {}
-    }
-  },
-  watch: {
-    material: function() {
-      this.updateMainMaterial()
+      material: null
     }
   },
   mounted() {
-    this.updateMainMaterial()
+    this.updateMaterial()
   },
   methods: {
     goToMaterial() {
       this.$router.push(
         this.localePath({
           name: 'materials-id',
-          params: { id: this.mainMaterial.external_id }
+          params: { id: this.parentId }
         })
       )
     },
-    updateMainMaterial() {
-      if (this.material.is_part_of !== null) {
-        this.$store
-          .dispatch('getMaterial', {
-            params: { external_id: this.material.is_part_of }
-          })
-          .then(result => (this.mainMaterial = result[0]))
+    updateMaterial() {
+      if (!this.parentId) {
+        return
       }
+      this.$store
+        .dispatch('getMaterial', {
+          params: { external_id: this.parentId }
+        })
+        .then(result => {
+          return (this.material = result[0])
+        })
     }
   }
 }

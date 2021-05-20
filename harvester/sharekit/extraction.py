@@ -133,7 +133,7 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_is_part_of(cls, node):
-        return reach("$.attributes.partOf.0", node)
+        return reach("$.attributes.partOf", node)
 
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {

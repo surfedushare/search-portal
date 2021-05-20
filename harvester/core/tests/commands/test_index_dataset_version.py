@@ -31,7 +31,7 @@ class ElasticSearchClientTestCase(TestCase):
         expected_keys = {
             "title", "url", "external_id", "disciplines", "lom_educational_levels", "description", "publisher_date",
             "copyright", "language", "keywords", "file_type", "mime_type", "suggest_completion", "_id",
-            "oaipmh_set", "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "has_part",
+            "oaipmh_set", "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts",
             "is_part_of", "preview_path", "analysis_allowed", "ideas", "copyright_description", "files",
         }
         text_keys = {
