@@ -45,7 +45,6 @@ class Document(DocumentPostgres, DocumentBase):
             'file_type': file_type,
             'mime_type': mime_type,
             'has_parts': has_parts,
-            'has_part': has_parts,  # TODO: remove after migration
             'is_part_of': is_part_of,
             'suggest_completion': title.split(" ") if title else [],
         }
