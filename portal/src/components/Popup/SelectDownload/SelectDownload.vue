@@ -7,7 +7,7 @@
       class="popup-content"
     >
       <slot>
-        <h2 class="popup__title">{{ $t('Download-files') }}</h2>
+        <h2 class="popup__title">{{ $t('View-materials') }}</h2>
         <div>
           <a v-for="(file, ix) in material.files" :key="ix"
              :href="file[1]"
