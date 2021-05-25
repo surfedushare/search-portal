@@ -46,6 +46,7 @@ class Harvest(models.Model):
     harvested_at = models.DateTimeField(null=True, blank=True)
     purge_after = models.DateTimeField(null=True, blank=True)
     stage = models.CharField(max_length=50, choices=HARVEST_STAGE_CHOICES, default=HarvestStages.NEW)
+    is_syncing = models.BooleanField(default=False)
 
     def clean(self):
         if not self.id:

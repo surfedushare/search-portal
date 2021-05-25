@@ -12,7 +12,7 @@ class HarvestSourceAdmin(admin.ModelAdmin):
 
 class HarvestAdminInline(admin.TabularInline):
     model = HarvestSource.datasets.through
-    fields = ("source", "harvested_at", "latest_update_at", "purge_after", "stage",)
+    fields = ("source", "harvested_at", "latest_update_at", "purge_after", "stage", "is_syncing",)
     readonly_fields = ("harvested_at",)
     extra = 0
 
