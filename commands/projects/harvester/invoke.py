@@ -38,19 +38,16 @@ def import_dataset(ctx, source, dataset):
 @task(help={
     "mode": "Mode you want to migrate: localhost, development, acceptance or production. Must match APPLICATION_MODE",
     "reset": "Whether to reset the active datasets before harvesting",
-    "secondary": "Whether you want the node to replicate Edurep data or get it from Edurep directly",
     "no_promote": "Whether you want to create new indices without adjusting latest aliases",
     "version": "Version of the harvester you want to harvest with. Defaults to latest version"
 })
-def harvest(ctx, mode, reset=False, secondary=False, no_promote=False, version=None):
+def harvest(ctx, mode, reset=False, no_promote=False, version=None):
     """
     Starts a harvest tasks on the AWS container cluster or localhost
     """
     command = ["python", "manage.py", "run_harvest"]
     if reset:
         command += ["--reset"]
-    if secondary:
-        command += ["--secondary"]
     if no_promote:
         command += ["--no-promote"]
 
@@ -70,13 +67,27 @@ def generate_previews(ctx, mode, dataset, version=None):
 
 
 @task(help={
-    "mode": "Mode you want to cleanup: localhost, development, acceptance or production. Must match APPLICATION_MODE"
+    "mode": "Mode you want to clean data for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE"
 })
-def cleanup(ctx, mode):
+def clean_data(ctx, mode):
     """
     Starts a clean up tasks on the AWS container cluster or localhost
     """
-    command = ["python", "manage.py", "clean_resources"]
+    command = ["python", "manage.py", "clean_data"]
+
+    run_harvester_task(ctx, mode, command)
+
+
+@task(help={
+    "mode": "Mode you want to extend resource cache for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE"
+})
+def extend_resource_cache(ctx, mode):
+    """
+    Extends the purge_at time for Resources on the AWS container cluster or localhost
+    """
+    command = ["python", "manage.py", "extend_resource_cache"]
 
     run_harvester_task(ctx, mode, command)
 

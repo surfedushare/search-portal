@@ -143,6 +143,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         "tokenizer": "standard",
                         "filter": ["lowercase", "shingle"]
                     },
+                    "folding": {
+                        "tokenizer": "standard",
+                        "filter":  ["lowercase", "asciifolding"]
+                    }
                 },
                 "filter": {
                     "dutch_stop": {
@@ -161,40 +165,86 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
             'properties': {
                 'title': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'text': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'transcription': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'description': {
                     'type': 'text',
-                    'analyzer': analyzer,
-                    'search_analyzer': search_analyzer
+                    'fields': {
+                        'analyzed': {
+                            'type': 'text',
+                            'analyzer': analyzer,
+                            'search_analyzer': search_analyzer,
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'url': {'type': 'text'},
-                'title_plain': {'type': 'text'},
-                'text_plain': {'type': 'text'},
-                'transcription_plain': {'type': 'text'},
-                'description_plain': {'type': 'text'},
                 'authors': {
                     'type': 'text',
                     'fields': {
                         'keyword': {
                             'type': 'keyword',
                             'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
                         }
                     }
                 },
                 'publishers': {
-                    'type': 'keyword'
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword',
+                            'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'publisher_date': {
                     'type': 'date',
@@ -204,7 +254,17 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'type': 'keyword'
                 },
                 'keywords': {
-                    'type': 'keyword'
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword',
+                            'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
                 },
                 'file_type': {
                     'type': 'keyword'
@@ -231,6 +291,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         'keyword': {
                             'type': 'keyword',
                             'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
                         }
                     }
                 },
@@ -250,7 +314,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
         configuration["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"] = {
             "type": "custom",
             "tokenizer": "standard",
-            "filter": ["dutch_stop", "dictionary_decompound"]
+            "filter": ["lowercase", "dutch_stop", "dictionary_decompound"]
         }
         configuration["settings"]["analysis"]["filter"]["dictionary_decompound"] = {
             "type": "dictionary_decompounder",

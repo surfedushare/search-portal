@@ -1,5 +1,6 @@
 import os
 import json
+import boto3
 
 from invoke.tasks import task
 from invoke.exceptions import Exit
@@ -100,3 +101,32 @@ def push(ctx, target, version=None):
     if target == 'service':
         ctx.run(f"docker tag {name}-nginx:{version} {REPOSITORY}/{name}-nginx:{version}", echo=True)
         ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{version}", echo=True, pty=True)
+
+
+@task(help={
+    "target": "Name of the project you want to list images for: service or harvester",
+})
+def print_available_images(ctx, target):
+    # Check the input for validity
+    if target not in TARGETS:
+        raise Exit(f"Unknown target: {target}", code=1)
+
+    # Load info
+    target_info = TARGETS[target]
+    name = target_info["name"]
+
+    # Start boto
+    session = boto3.Session(profile_name="pol-prod")
+    ecr = session.client("ecr")
+
+    # List images
+    response = ecr.list_images(
+        registryId="017973353230",
+        repositoryName=name,
+    )
+
+    # Print output
+    def image_version_sort(image):
+        return tuple([int(section) for section in image["imageTag"].split(".")])
+    images = sorted(response["imageIds"], key=image_version_sort, reverse=True)
+    print(json.dumps(images[:10], indent=4))

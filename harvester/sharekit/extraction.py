@@ -22,12 +22,12 @@ class SharekitMetadataExtraction(object):
         files = node["attributes"]["files"] or []
         links = node["attributes"]["links"] or []
         output = [
-            [file["resourceMimeType"], file["url"]]
+            [file["resourceMimeType"], file["url"], file["fileName"]]
             for file in files if file["resourceMimeType"] and file["url"]
         ]
         output += [
-            ["text/html", link["url"]]
-            for link in links
+            ["text/html", link["url"], f"URL {ix+1}"]
+            for ix, link in enumerate(links)
         ]
         return output
 
@@ -145,6 +145,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "description": "$.attributes.abstract",
     "mime_type": SharekitMetadataExtraction.get_mime_type,
     "copyright": SharekitMetadataExtraction.get_copyright,
+    "copyright_description": lambda node: None,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
     "publishers": SharekitMetadataExtraction.get_publishers,

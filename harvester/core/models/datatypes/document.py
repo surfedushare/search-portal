@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.db import models
+from django.utils.timezone import make_aware
 
 from datagrowth.datatypes import DocumentBase, DocumentPostgres
 
@@ -9,6 +12,20 @@ class Document(DocumentPostgres, DocumentBase):
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
 
+    def update(self, data, commit=True):
+        """
+        Update the properties with new data.
+        Ported from Datagrowth 0.17. Best removed when updating to Django 3.2 and Datagrowth 0.17.
+        """
+        content = data.content if isinstance(data, DocumentBase) else data
+        self.properties.update(content)
+        self.clean()
+        if commit:
+            self.save()
+        else:
+            self.modified_at = make_aware(datetime.now())
+        return self.content
+
     def get_language(self):
         for field in ['metadata', 'from_text', 'from_title']:
             if field in self.properties['language']:
@@ -18,26 +35,26 @@ class Document(DocumentPostgres, DocumentBase):
         return "unk"
 
     @staticmethod
-    def get_search_document_details(reference_id, url, title, text, transcription, mime_type, file_type,
+    def get_search_document_details(reference_id, url, title, text, mime_type, file_type,
                                     is_part_of=None, has_parts=None):
         has_parts = has_parts or []
-        return {
+        details = {
             '_id': reference_id,
             'title': title,
-            'text': text,
-            'transcription': transcription,
             'url': url,
-            'title_plain': title,
-            'text_plain': text,
-            'transcription_plain': transcription,
             'file_type': file_type,
             'mime_type': mime_type,
             'has_parts': has_parts,
             'has_part': has_parts,  # TODO: remove after migration
             'is_part_of': is_part_of,
             'suggest_completion': title.split(" ") if title else [],
-            'suggest_phrase': text
         }
+        if text:
+            details.update({
+                'text': text,
+                'suggest_phrase': text
+            })
+        return details
 
     def get_search_document_base(self):
         """
@@ -49,14 +66,15 @@ class Document(DocumentPostgres, DocumentBase):
             "language": self.get_language(),
             'external_id': self.properties['external_id'],
             'disciplines': self.properties['disciplines'],
-            'educational_levels': self.properties['educational_levels'],
             'lom_educational_levels': self.properties['lom_educational_levels'],
             'ideas': self.properties.get('ideas', []),
+            'files': self.properties['files'],
             'authors': self.properties['authors'],
             'publishers': self.properties['publishers'],
             'description': self.properties['description'],
             'publisher_date': self.properties['publisher_date'],
             'copyright': self.properties['copyright'],
+            'copyright_description': self.properties['copyright_description'],
             'aggregation_level': self.properties['aggregation_level'],
             'preview_path': self.properties.get('preview_path', None),
             'analysis_allowed': self.properties.get('analysis_allowed', False),
@@ -71,8 +89,7 @@ class Document(DocumentPostgres, DocumentBase):
             self.properties["external_id"],
             self.properties["url"],
             self.properties["title"],
-            self.properties["text"],
-            self.properties.get("transcription", None),
+            self.properties.get("text", None),
             self.properties["mime_type"],
             self.properties["file_type"],
             is_part_of=self.properties.get("is_part_of", None),

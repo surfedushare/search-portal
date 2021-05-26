@@ -1,5 +1,5 @@
 <div class="material__info">
-  <span v-if="material.has_parts.length > 0" class="material__info_set">
+  <span v-if="setMaterials.length > 0" class="material__info_set">
     <i class="set-icon"></i>
     {{ $t('Set') }}
   </span>
@@ -90,7 +90,7 @@
     </div>
   </template>
 
-  <MaterialSet v-if="material.has_parts.length > 0" :material="material"/>
+  <MaterialSet v-if="setMaterials.length > 0" :setMaterials="setMaterials"/>
 
   <MaterialPartOfSet v-if="material.is_part_of !== null" :material="material"/>
 

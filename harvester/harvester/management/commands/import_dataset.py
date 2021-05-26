@@ -2,6 +2,8 @@ import logging
 
 from django.core.management import base, call_command
 
+from core.models import DatasetVersion
+
 
 logger = logging.getLogger("harvester")
 
@@ -20,7 +22,11 @@ class Command(base.LabelCommand):
 
     def handle_label(self, dataset, **options):
         harvest_source = options.get("harvest_source", None)
+        skip_download = options.get("skip_download", False)
         logger.info(f"Calling import_dataset for: {dataset} using:{harvest_source}")
         extra_args = [] if harvest_source is None else [f"--harvest-source={harvest_source}"]
+        if skip_download:
+            extra_args.append("--skip-download")
         call_command("load_harvester_data", dataset, *extra_args)
-        call_command("index_dataset_version", dataset=dataset)
+        latest_dataset_version = DatasetVersion.objects.get_latest_version()
+        call_command("index_dataset_version", dataset=dataset, harvester_version=latest_dataset_version.version)

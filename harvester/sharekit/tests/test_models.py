@@ -15,7 +15,7 @@ class TestSharekitMetadataHarvest(TestCase):
     @classmethod
     def setUp(cls):
         cls.instance = SharekitMetadataHarvest()
-        cls.base_url = "api.surfsharekit.nl/api/jsonapi/channel/v1/edusources/repoItems?"
+        cls.base_url = "api.acc.surfsharekit.nl/api/jsonapi/channel/v1/edusources/repoItems?"
 
     @patch("sharekit.models.SharekitMetadataHarvest.handle_errors")
     @patch("sharekit.models.SharekitMetadataHarvest._send")
@@ -73,5 +73,10 @@ class TestSharekitMetadataHarvest(TestCase):
         next_request = previous.create_next_request()
         self.assertEqual(
             unquote(next_request["url"]),
-            f"https://{self.base_url}modified=1970-01-01&page[number]=2"
+            f"https://{self.base_url}filter[modified][GE]=1970-01-01T00:00:00Z&page[size]=10&page[number]=2"
         )
+
+    def test_handle_no_content(self):
+        empty = SharekitMetadataHarvestFactory(is_empty=True)
+        empty.handle_errors()
+        self.assertEqual(empty.status, 204)

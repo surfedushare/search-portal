@@ -130,6 +130,7 @@ class ElasticSearchApiClient:
         """
         record = dict()
         record['external_id'] = hit['_source']['external_id']
+        record['files'] = hit['_source']['files']
         record['url'] = hit['_source']['url']
         record['title'] = hit['_source']['title']
         record['description'] = hit['_source']['description']
@@ -226,8 +227,15 @@ class ElasticSearchApiClient:
         if search_text:
             query_string = {
                 "simple_query_string": {
-                    "fields": ["title^2", "title_plain^2", "text", "text_plain", "description", "keywords", "authors",
-                               "publishers", "ideas"],
+                    "fields": [
+                        "title^2", "title.analyzed^2", "title.folded^2",
+                        "text", "text.analyzed", "text.folded",
+                        "description", "description.analyzed", "description.folded",
+                        "keywords", "keywords.folded",
+                        "authors", "authors.folded",
+                        "publishers", "publishers.folded",
+                        "ideas", "ideas.folded"
+                    ],
                     "query": search_text,
                     "default_operator": "and"
                 }
@@ -444,8 +452,6 @@ class ElasticSearchApiClient:
             return 'oaipmh_set'
         elif external_id == 'lom.rights.copyrightandotherrestrictions':
             return 'copyright.keyword'
-        elif external_id == 'lom.classification.obk.educationallevel.id':
-            return 'educational_levels'
         elif external_id == 'lom.educational.context':
             return 'lom_educational_levels'
         elif external_id == 'lom.lifecycle.contribute.publisherdate':
@@ -459,5 +465,5 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.general.aggregationlevel':
             return 'aggregation_level'
         elif external_id == 'lom.lifecycle.contribute.publisher':
-            return 'publishers'
+            return 'publishers.keyword'
         return external_id

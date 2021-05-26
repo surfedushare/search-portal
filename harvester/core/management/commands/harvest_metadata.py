@@ -15,7 +15,6 @@ class Command(PipelineCommand):
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument('-r', '--repository', action="store")
-        parser.add_argument('-p', '--promote', action="store_true")
 
     def harvest_seeds(self, harvest, current_time):
         send_config = create_config("http_resource", {

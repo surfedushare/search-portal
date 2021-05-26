@@ -1,6 +1,12 @@
+from collections import Iterator, defaultdict
+from datetime import datetime
+
 from django.db import models
+from django.db.models import Q
+from django.utils.timezone import make_aware
 
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
+from datagrowth.utils import ibatch
 
 
 class Collection(DocumentCollectionMixin, CollectionBase):
@@ -22,3 +28,50 @@ class Collection(DocumentCollectionMixin, CollectionBase):
 
     def __str__(self):
         return "{} (id={})".format(self.name, self.id)
+
+    def update(self, data, by_property, batch_size=32, collection=None):
+        """
+        Update data to the Collection in batches, using a property value to identify which Documents to update.
+        Ported from Datagrowth 0.17. Best removed when updating to Django 3.2 and Datagrowth 0.17.
+        """
+        collection = collection or self
+        Document = collection.get_document_model()
+        assert isinstance(data, (Iterator, list, tuple,)), \
+            f"Collection.update expects data to be formatted as iteratable not {type(data)}"
+
+        count = 0
+        for updates in ibatch(data, batch_size=batch_size):
+            # We bulk update by getting all objects whose property matches
+            # any update's "by_property" property value and then updating these source objects.
+            # One update object can potentially target multiple sources
+            # if multiple objects with the same value for the by_property property exist.
+            updated = set()
+            prepared = []
+            sources_by_lookup = defaultdict(list)
+            for update in updates:
+                sources_by_lookup[update[by_property]].append(update)
+            target_filters = Q()
+            for lookup_value in sources_by_lookup.keys():
+                target_filters |= Q(**{f"properties__{by_property}": lookup_value})
+            for target in collection.documents.filter(target_filters):
+                for update_value in sources_by_lookup[target.properties[by_property]]:
+                    target.update(update_value, commit=False)
+                count += 1
+                updated.add(target.properties[by_property])
+                prepared.append(target)
+            Document.objects.bulk_update(
+                prepared,
+                ["properties", "identity", "reference", "modified_at"],
+                batch_size=batch_size
+            )
+            # After all updates we add all data that hasn't been used in any update operation
+            additions = []
+            for lookup_value, sources in sources_by_lookup.items():
+                if lookup_value not in updated:
+                    additions += sources
+            if len(additions):
+                count += self.add(additions, batch_size=batch_size, collection=collection)
+
+        collection.modified_at = make_aware(datetime.now())
+        collection.save()
+        return count

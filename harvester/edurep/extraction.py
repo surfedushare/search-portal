@@ -2,17 +2,38 @@ import re
 import vobject
 from html import unescape
 
+from django.utils.text import slugify
+
 from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class EdurepDataExtraction(object):
 
-    vcard_regex = re.compile(r"([A-Z-]+):(.+)", re.IGNORECASE)
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
+    cc_url_regex = re.compile(r"^https?://creativecommons\.org/(?P<type>\w+)/(?P<license>[a-z\-]+)/(?P<version>\d\.\d)",
+                              re.IGNORECASE)
+    cc_code_regex = re.compile(r"^cc([ \-][a-z]{2})+$", re.IGNORECASE)
 
     #############################
     # OAI-PMH
     #############################
+
+    @classmethod
+    def parse_copyright_description(cls, description):
+        if description is None:
+            return
+        url_match = cls.cc_url_regex.match(description)
+        if url_match is None:
+            code_match = cls.cc_code_regex.match(description)
+            return slugify(description.lower()) if code_match else None
+        license = url_match.group("license").lower()
+        if license == "mark":
+            license = "pdm"
+        elif license == "zero":
+            license = "cc0"
+        else:
+            license = "cc-" + license
+        return slugify(f"{license}-{url_match.group('version')}")
 
     @staticmethod
     def parse_vcard_element(el):
@@ -57,6 +78,7 @@ class EdurepDataExtraction(object):
             zip(
                 [mime_node.text.strip() for mime_node in mime_types],
                 [url_node.text.strip() for url_node in urls],
+                [f"URL {ix+1}" for ix, mime_node in enumerate(mime_types)],
             )
         )
 
@@ -67,7 +89,7 @@ class EdurepDataExtraction(object):
             return
         # Takes the first html file to be the main file and otherwise the first file
         main_url = next(
-            (url for mime_type, url in files if mime_type == "text/html"),
+            (url for mime_type, url, name in files if mime_type == "text/html"),
             files[0][1]
         )
         return main_url
@@ -116,7 +138,12 @@ class EdurepDataExtraction(object):
     @classmethod
     def get_copyright(cls, soup, el):
         node = el.find('czp:copyrightandotherrestrictions')
-        return node.find('czp:value').find('czp:langstring').text.strip() if node else None
+        if node is None:
+            return
+        copyright = node.find('czp:value').find('czp:langstring').text.strip()
+        if copyright == "yes":
+            copyright = cls.parse_copyright_description(cls.get_copyright_description(soup, el))
+        return copyright
 
     @classmethod
     def get_aggregation_level(cls, soup, el):
@@ -274,6 +301,14 @@ class EdurepDataExtraction(object):
             results.append("surfsharekit:" + catalog_entry.text.strip())  # prefixes excluded by Edurep, but are needed
         return results
 
+    @classmethod
+    def get_copyright_description(cls, soup, el):
+        node = el.find('czp:rights')
+        if not node:
+            return
+        description = node.find('czp:description')
+        return description.find('czp:langstring').text.strip() if description else None
+
 
 EDUREP_EXTRACTION_OBJECTIVE = {
     "url": EdurepDataExtraction.get_url,
@@ -297,4 +332,5 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "analysis_allowed": EdurepDataExtraction.get_analysis_allowed,
     "is_part_of": EdurepDataExtraction.get_is_part_of,
     "has_parts": EdurepDataExtraction.get_has_parts,
+    "copyright_description": EdurepDataExtraction.get_copyright_description,
 }

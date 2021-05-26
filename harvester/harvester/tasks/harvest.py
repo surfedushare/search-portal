@@ -15,21 +15,18 @@ logger = logging.getLogger("harvester")
 
 
 @app.task(name="harvest")
-def harvest(seeds_source=None, reset=False, no_promote=False):
-    role = "primary" if seeds_source is None else "secondary"
+def harvest(reset=False, no_promote=False):
+
+    if reset:
+        call_command("extend_resource_cache")
 
     # Iterate over all active datasets to get data updates
     for dataset in Dataset.objects.filter(is_active=True):
         # Preparing dataset state and deletes old model instances
         prepare_harvest(dataset, reset=reset)
-        # First we call the commands that will query the repository interfaces or load them
-        if role == "primary":
-            call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.EDUREP}")
-            call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.SHAREKIT}")
-        else:
-            call_command("load_edurep_oaipmh_data", f"--dataset={dataset.name}",
-                         "--force-download", f"--source={seeds_source}")
-            call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.SHAREKIT}")
+        # First we call the commands that will query the repository interfaces
+        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.EDUREP}")
+        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.SHAREKIT}")
         # After getting all the metadata we'll download content
         call_command("harvest_basic_content", f"--dataset={dataset.name}")
         # We skip any video downloading/processing for now
@@ -46,11 +43,9 @@ def harvest(seeds_source=None, reset=False, no_promote=False):
             index_command += ["--no-promote"]
         call_command(*index_command)
 
-    # When dealing with a harvest on a primary node the seeds need to get copied to S3.
-    # Other nodes can use these copies instead of making their own.
-    # Copying seeds is done to minimize downloading of seeds (a request by Edurep)
-    # and local machines will never get whitelisted to download seeds.
-    if role == "primary" and settings.AWS_STORAGE_BUCKET_NAME:
+    # When dealing with a harvest on AWS seeds need to get copied to S3.
+    # Localhost can use these copies instead of getting the seeds from behind Edurep's firewall.
+    if settings.AWS_STORAGE_BUCKET_NAME:
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         ctx = Context(environment)
         harvester_data_bucket = f"s3://{settings.AWS_STORAGE_BUCKET_NAME}/datasets/harvester/edurep"

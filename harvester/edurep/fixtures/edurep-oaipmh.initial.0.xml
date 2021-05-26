@@ -109,7 +109,7 @@
                                 </czp:langstring>
                             </czp:source>
                             <czp:value>
-                                <czp:langstring xml:lang="x-none">cc-by-nc-40</czp:langstring>
+                                <czp:langstring xml:lang="x-none">yes</czp:langstring>
                             </czp:value>
                         </czp:copyrightandotherrestrictions>
                         <czp:description>
@@ -316,10 +316,6 @@
                                 <czp:langstring xml:lang="x-none">cc-by-40</czp:langstring>
                             </czp:value>
                         </czp:copyrightandotherrestrictions>
-                        <czp:description>
-                            <czp:langstring xml:lang="x-none">https://creativecommons.org/licenses/by/4.0/
-                            </czp:langstring>
-                        </czp:description>
                     </czp:rights>
                     <czp:classification>
                         <czp:purpose>
@@ -1026,7 +1022,7 @@ END:VCARD</czp:vcard></czp:centity>
                       http://www.openarchives.org/OAI/2.0/provenance.xsd">
 
                     <originDescription harvestDate="2021-01-13T15:18:47Z" altered="true">
-                        <baseURL>https://api.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
+                        <baseURL>https://api.acc.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
                         <identifier>oai:surfsharekit.nl:3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b</identifier>
                         <datestamp>2020-12-17T08:12:01Z</datestamp>
                         <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>
@@ -1281,7 +1277,7 @@ END:VCARD</czp:vcard></czp:centity>
                       http://www.openarchives.org/OAI/2.0/provenance.xsd">
 
                     <originDescription harvestDate="2021-01-13T15:00:03Z" altered="true">
-                        <baseURL>https://api.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
+                        <baseURL>https://api.acc.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
                         <identifier>oai:surfsharekit.nl:a18cdda7-e9c7-40d7-a7ad-6e875d9015ce</identifier>
                         <datestamp>2017-12-08T15:44:45Z</datestamp>
                         <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>
@@ -1556,7 +1552,7 @@ END:VCARD</czp:vcard></czp:centity>
                       http://www.openarchives.org/OAI/2.0/provenance.xsd">
 
                     <originDescription harvestDate="2021-01-13T15:06:18Z" altered="true">
-                        <baseURL>https://api.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
+                        <baseURL>https://api.acc.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
                         <identifier>oai:surfsharekit.nl:8936d0a3-4157-45f4-9595-c26d4c029d97</identifier>
                         <datestamp>2017-12-11T07:39:02Z</datestamp>
                         <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>
@@ -1810,7 +1806,7 @@ END:VCARD</czp:vcard></czp:centity>
                       http://www.openarchives.org/OAI/2.0/provenance.xsd">
 
                     <originDescription harvestDate="2021-01-13T15:06:18Z" altered="true">
-                        <baseURL>https://api.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
+                        <baseURL>https://api.acc.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
                         <identifier>oai:surfsharekit.nl:f929b625-5ef7-47b8-8fa8-94c969d0c427</identifier>
                         <datestamp>2017-12-11T07:41:06Z</datestamp>
                         <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>
@@ -2084,7 +2080,7 @@ END:VCARD</czp:vcard></czp:centity>
                       http://www.openarchives.org/OAI/2.0/provenance.xsd">
 
                     <originDescription harvestDate="2021-01-13T15:12:33Z" altered="true">
-                        <baseURL>https://api.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
+                        <baseURL>https://api.acc.surfsharekit.nl/api/oaipmh/channel/v1/edurep</baseURL>
                         <identifier>oai:surfsharekit.nl:befb515c-5dce-4f27-82a4-2f5a7a3618a4</identifier>
                         <datestamp>2017-12-11T07:45:27Z</datestamp>
                         <metadataNamespace>http://ltsc.ieee.org/xsd/LOM</metadataNamespace>

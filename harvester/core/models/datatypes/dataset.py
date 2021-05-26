@@ -47,7 +47,20 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         return latest_harvest.harvested_at if latest_harvest else None
 
 
+class DatasetVersionManager(models.Manager):
+
+    def get_latest_version(self, dataset=None):
+        filters = {
+            "is_current": True
+        }
+        if dataset:
+            filters.update({"dataset": dataset})
+        return super().get_queryset().filter(**filters).latest()
+
+
 class DatasetVersion(models.Model):
+
+    objects = DatasetVersionManager()
 
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False, blank=False, related_name="versions")
     is_current = models.BooleanField(default=False)
@@ -79,3 +92,6 @@ class DatasetVersion(models.Model):
             language = document.get_language()
             by_language[language] += list(document.to_search())
         return by_language
+
+    class Meta:
+        get_latest_by = "created_at"

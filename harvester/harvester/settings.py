@@ -356,8 +356,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(
             hour=environment.schedule.harvest.hour,
             minute=environment.schedule.harvest.minute,
-        ),
-        'args': (environment.schedule.harvest.source,)
+        )
     },
     'clean_data': {
         'task': 'clean_data',
@@ -365,6 +364,14 @@ CELERY_BEAT_SCHEDULE = {
             hour=0,
             minute=0
         ),
+    },
+    'sync_sharekit_metadata': {
+        'task': 'sync_sharekit_metadata',
+        'schedule': 30,
+    },
+    'sync_indices': {
+        'task': 'sync_indices',
+        'schedule': 30,
     },
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
@@ -382,3 +389,9 @@ DATA_RETENTION_KEEP_VERSIONS = environment.django.data_retention.keep_versions
 # Sharekit
 
 SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
+SHAREKIT_BASE_URL = environment.django.repositories.sharekit
+
+
+# Edurep
+
+EDUREP_BASE_URL = environment.django.repositories.edurep

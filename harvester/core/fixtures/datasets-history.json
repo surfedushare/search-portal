@@ -121,8 +121,16 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-nc-40",
+                "copyright_description": "http://creativecommons.org/licenses/by-nc/4.0/",
                 "file_type": "text",
                 "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "files": [
+                    [
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        "https://surfsharekit.nl/dl/surf/5af0e26f-c4d2-4ddd-94ab-7dd0bd531751/182216be-31a2-43c3-b7de-e5dd355b09f7",
+                        "URL 1"
+                    ]
+                ],
                 "publishers": [],
                 "description": "Fifth exercises of the course",
                 "disciplines": [],
@@ -180,8 +188,16 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-40",
+                "copyright_description": "http://creativecommons.org/licenses/by/4.0/",
                 "file_type": "text",
                 "mime_type": "text/html",
+                "files": [
+                    [
+                        "text/html",
+                        "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
+                        "URL 1"
+                    ]
+                ],
                 "publishers": [],
                 "description": "Instruction on how to use a Vortex mixer\r\n",
                 "disciplines": [],
@@ -238,8 +254,16 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-sa-40",
+                "copyright_description": null,
                 "file_type": "digiboard",
                 "mime_type": "application/x-zip-compressed",
+                "files": [
+                    [
+                        "application/x-zip-compressed",
+                        "https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
+                        "URL 1"
+                    ]
+                ],
                 "publishers": ["Hogeschool Utrecht"],
                 "description": "",
                 "disciplines": [],
@@ -296,8 +320,16 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-nc-40",
+                "copyright_description": null,
                 "file_type": "text",
                 "mime_type": "text/html",
+                "files": [
+                    [
+                        "text/html",
+                        "http://online.codarts.nl/mod/page/view.php?id=313",
+                        "URL 1"
+                    ]
+                ],
                 "publishers": [],
                 "description": "Als we op een computer met muziek werken, komen we in aanraking met Audio, MIDI of een combinatie van beide. In deze les ligt de nadruk op MIDI. \r\n\r\nAan de orde komen:\r\nWat is het en wat kun je ermee? \r\nHoe kun je binnen Sibelius software gebruik maken van MIDI (play, record, mixer, sounds, export audio) \r\nHet verschijnsel Latency",
                 "disciplines": [],
@@ -354,8 +386,16 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-sa-40",
+                "copyright_description": "http://creativecommons.org/licenses/by-sa/4.0/",
                 "file_type": "text",
                 "mime_type": "text/html",
+                "files": [
+                    [
+                        "text/html",
+                        "https://github.com/ericpostma/ep/blob/master/chris/Week%203%20-%20Tuning%20and%20Testing/Practical%203.ipynb",
+                        "URL 1"
+                    ]
+                ],
                 "publishers": [],
                 "description": "Hands-on exercise based on WEKA - Tuning and Testing",
                 "disciplines": [],
@@ -412,8 +452,16 @@
                     "harvest": "93af3426e3dba041a81ad7c917a990c84b2797d5"
                 },
                 "copyright": "cc-by-sa-40",
+                "copyright_description": "http://creativecommons.org/licenses/by-sa/4.0/",
                 "file_type": "pdf",
                 "mime_type": "application/pdf",
+                "files": [
+                    [
+                        "application/pdf",
+                        "https://surfsharekit.nl/dl/surf/b500d389-2fda-4696-ae51-9cd0603a48af/48fac5c4-c846-48b3-9318-6b01e151a508",
+                        "URL 1"
+                    ]
+                ],
                 "publishers": ["Hanze Hogeschool"],
                 "description": "Learning objective:\r\n- Explain the effect of changes in the labour market on the real wage rate and quantity of labour in hours.",
                 "disciplines": [],

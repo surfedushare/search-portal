@@ -3,6 +3,13 @@ NL_MATERIAL = {
         "title": "Didactiek van wiskundig denken",
         "text": "Leermateriaal over wiskunde en didactiek op de universiteit.",
         "url": "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT",
+        "files": [
+            [
+                "application/x-zip",
+                "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT",
+                "Wiskundedidactiek_en_ICT"
+            ]
+        ],
         "description":
         "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op wiskundedidactiek en ICT",
         "language": "nl",
@@ -29,6 +36,13 @@ NL_MATERIAL = {
         "title": "Didactiek van biologisch denken",
         "text": "Leermateriaal over biologie en didactiek op de universiteit.",
         "url": "https://maken.wikiwijs.nl/91192/Biologiedidactiek_en_ICT",
+        "files": [
+            [
+                "application/x-zip",
+                "https://maken.wikiwijs.nl/91192/Biologiedidactiek_en_ICT",
+                "Biologiedidactiek_en_ICT"
+            ]
+        ],
         "description":
             "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op biologiedidactiek en ICT",
         "language": "nl",

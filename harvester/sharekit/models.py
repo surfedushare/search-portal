@@ -13,17 +13,18 @@ from sharekit.extraction import SharekitMetadataExtraction, SHAREKIT_EXTRACTION_
 class SharekitMetadataHarvestManager(models.Manager):
 
     def extract_seeds(self, set_specification, latest_update):
+        latest_update = latest_update.replace(microsecond=0)
         queryset = self.get_queryset() \
-            .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
+            .filter(set_specification=set_specification, since__gte=latest_update, status=200)
 
-        oaipmh_objective = {
+        objective = {
             "@": "$.data",
             "external_id": "$.id",
             "state": SharekitMetadataExtraction.get_record_state
         }
-        oaipmh_objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
+        objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
         extract_config = create_config("extract_processor", {
-            "objective": oaipmh_objective
+            "objective": objective
         })
         prc = ExtractProcessor(config=extract_config)
 
@@ -37,7 +38,7 @@ class SharekitMetadataHarvest(HarvestHttpResource):
 
     objects = SharekitMetadataHarvestManager()
 
-    URI_TEMPLATE = "https://api.surfsharekit.nl/api/jsonapi/channel/v1/{}/repoItems?filter[modified][GE]={}"
+    URI_TEMPLATE = settings.SHAREKIT_BASE_URL + "/api/jsonapi/channel/v1/{}/repoItems?filter[modified][GE]={}"
     PARAMETERS = {
         "page[size]": 10
     }
@@ -56,6 +57,11 @@ class SharekitMetadataHarvest(HarvestHttpResource):
         return {
             "page[number]": next_url.query_dict["page[number]"]
         }
+
+    def handle_errors(self):
+        content_type, data = self.content
+        if data and not len(data.get("data", [])):
+            self.status = 204
 
     class Meta:
         verbose_name = "Sharekit metadata harvest"
