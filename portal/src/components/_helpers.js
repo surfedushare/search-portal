@@ -10,8 +10,8 @@ export const generateSearchMaterialsQuery = function(
     name: name,
     query: {
       ...data,
-      filters: JSON.stringify(data.filters),
-      search_text: JSON.stringify(data.search_text)
+      filters: encodeURIComponent(data.filters),
+      search_text: encodeURIComponent(data.search_text)
     }
   }
 }
