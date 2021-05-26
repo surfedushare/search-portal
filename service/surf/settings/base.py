@@ -165,6 +165,7 @@ DATABASES = {
         'PORT': environment.postgres.port,
     }
 }
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 
 # Django Rest Framework
