@@ -8,7 +8,6 @@ from datagrowth.datatypes import DocumentBase, DocumentPostgres
 
 class Document(DocumentPostgres, DocumentBase):
 
-    dataset = models.ForeignKey("Dataset", blank=True, null=True, on_delete=models.CASCADE)
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
 

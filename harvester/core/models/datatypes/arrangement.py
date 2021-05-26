@@ -3,13 +3,11 @@ import logging
 from django.db import models
 from django.contrib.postgres import fields as postgres_fields
 
-from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
-
 
 logger = logging.getLogger("harvester")
 
 
-class Arrangement(DocumentCollectionMixin, CollectionBase):
+class Arrangement(object):
     """
     When people search in the portal this is what they find.
     The Arrangement is in other words responsible for generating the Elastic Search Document.

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 
-from core.models import (Dataset, DatasetVersion, Collection, Arrangement, Document, HarvestSource, ElasticIndex,
+from core.models import (Dataset, DatasetVersion, Collection, Document, HarvestSource, ElasticIndex,
                          CommonCartridge, FileResource, TikaResource)
 
 
@@ -25,10 +25,6 @@ class DatasetVersionAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'is_current', "created_at")
 
 
-class ArrangementAdmin(DataStorageAdmin):
-    search_fields = ["meta"]
-
-
 class ExtendedDocumentAdmin(DocumentAdmin):
     list_display = ['__str__', 'dataset_version', 'collection', 'created_at', 'modified_at']
     list_filter = ('dataset_version',)
@@ -48,7 +44,6 @@ admin.site.register(HarvestSource, HarvestSourceAdmin)
 admin.site.register(Dataset, DatasetAdmin)
 admin.site.register(DatasetVersion, DatasetVersionAdmin)
 admin.site.register(Collection, DataStorageAdmin)
-admin.site.register(Arrangement, ArrangementAdmin)
 admin.site.register(Document, ExtendedDocumentAdmin)
 admin.site.register(ElasticIndex, ElasticIndexAdmin)
 admin.site.register(CommonCartridge, CommonCartridgeAdmin)

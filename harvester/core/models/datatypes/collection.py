@@ -18,7 +18,6 @@ class Collection(DocumentCollectionMixin, CollectionBase):
     They are manually curated groups of learning materials.
     """
 
-    dataset = models.ForeignKey("Dataset", blank=True, null=True, on_delete=models.CASCADE)
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
 
     def init_document(self, data, collection=None):
