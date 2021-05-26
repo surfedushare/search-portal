@@ -31,7 +31,7 @@ class ArrangementAdmin(DataStorageAdmin):
 
 class ExtendedDocumentAdmin(DocumentAdmin):
     list_display = ['__str__', 'dataset_version', 'collection', 'created_at', 'modified_at']
-    list_filter = ('dataset_version', 'collection',)
+    list_filter = ('dataset_version',)
     readonly_fields = ("created_at", "modified_at",)
 
 
