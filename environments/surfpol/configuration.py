@@ -276,6 +276,9 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'oaipmh_set': {
                     'type': 'keyword'
                 },
+                'harvest_source': {
+                    'type': 'keyword'
+                },
                 'educational_levels': {
                     'type': 'keyword'
                 },
