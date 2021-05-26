@@ -5,7 +5,7 @@
       <li
         v-for="collection in collections"
         :key="collection.id"
-        class="blue-bar material__info_collection"
+        class="green-bar material__info_collection"
       >
         <router-link
           class="content"

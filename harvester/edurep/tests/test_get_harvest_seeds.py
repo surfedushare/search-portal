@@ -94,33 +94,6 @@ class TestGetHarvestSeedsEdurep(TestCase):
         self.assertEqual(seeds[8]['analysis_allowed'], False, "Expected restricted material to disallow analysis")
         self.assertEqual(seeds[15]['analysis_allowed'], False, "Expected nd copyright material to disallow analysis")
 
-    def test_is_part_of_property(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[0]['is_part_of'], None, "Expected deleted material to be part of nothing")
-        self.assertEqual(seeds[1]['is_part_of'], None, "Expected standard material to have no parent")
-        self.assertEqual(seeds[4]['is_part_of'], None, "Expected parent material to have no parent")
-        self.assertEqual(
-            seeds[5]['is_part_of'],
-            "surfsharekit:oai:surfsharekit.nl:3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b",
-            "Expected child material to specify its parent"
-        )
-
-    def test_has_parts_property(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[0]['has_parts'], [], "Expected deleted material to have no parts")
-        self.assertEqual(seeds[1]['has_parts'], [], "Expected standard material to have no parts")
-        self.assertEqual(
-            seeds[4]['has_parts'],
-            [
-                "surfsharekit:oai:surfsharekit.nl:a18cdda7-e9c7-40d7-a7ad-6e875d9015ce",
-                "surfsharekit:oai:surfsharekit.nl:8936d0a3-4157-45f4-9595-c26d4c029d97",
-                "surfsharekit:oai:surfsharekit.nl:f929b625-5ef7-47b8-8fa8-94c969d0c427",
-                "surfsharekit:oai:surfsharekit.nl:befb515c-5dce-4f27-82a4-2f5a7a3618a4"
-            ],
-            "Expected parent material to have children and specify the external ids"
-        )
-        self.assertEqual(seeds[5]['has_parts'], [], "Expected child material to have no children")
-
     def test_ideas_property(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]["ideas"], [], "Expected deleted material to return no idea data")

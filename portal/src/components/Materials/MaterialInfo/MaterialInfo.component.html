@@ -91,8 +91,15 @@
   </template>
 
   <MaterialSet v-if="setMaterials.length > 0" :setMaterials="setMaterials"/>
+  <div v-if="material.is_part_of.length">
+    <h3 class="material__info_subttl">
+      {{ (material.is_part_of.length === 1) ? $t('Part-of-set') : $t('Part-of-sets')  }}
+    </h3>
+    <div class="sets-container">
+      <MaterialPartOfSet v-for="parentId in material.is_part_of" :parent-id="parentId" :key="parentId"/>
+    </div>
+  </div>
 
-  <MaterialPartOfSet v-if="material.is_part_of !== null" :material="material"/>
 
   <Keywords
     class="material__info_keywords"
