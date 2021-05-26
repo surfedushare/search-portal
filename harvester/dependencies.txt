@@ -2,8 +2,8 @@
 supervisor==4.2.0
 
 # Harvester Celery
-celery==4.4.6
-django-celery-results==1.2.1
+celery==4.4.7
+celery[redis]
 anyjson==0.3.3
 redis==3.5.3
 flower==0.9.5
