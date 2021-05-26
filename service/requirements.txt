@@ -1,5 +1,5 @@
 # Common
-django==2.2.20
+django==3.2.3
 djangorestframework==3.11.2
 psycopg2-binary==2.8.5
 whitenoise==5.1.0
