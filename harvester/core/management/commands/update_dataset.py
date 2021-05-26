@@ -47,6 +47,7 @@ class Command(PipelineCommand):
             "text": text,
             "file_type": file_type,
             "mime_type": mime_type,
+            "files": meta.get("files", []),
             "authors": meta.get("authors", []),
             "publishers": meta.get("publishers", []),
             "description": meta.get("description", None),

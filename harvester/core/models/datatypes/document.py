@@ -68,6 +68,7 @@ class Document(DocumentPostgres, DocumentBase):
             'disciplines': self.properties['disciplines'],
             'lom_educational_levels': self.properties['lom_educational_levels'],
             'ideas': self.properties.get('ideas', []),
+            'files': self.properties['files'],
             'authors': self.properties['authors'],
             'publishers': self.properties['publishers'],
             'description': self.properties['description'],

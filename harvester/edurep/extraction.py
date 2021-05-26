@@ -78,6 +78,7 @@ class EdurepDataExtraction(object):
             zip(
                 [mime_node.text.strip() for mime_node in mime_types],
                 [url_node.text.strip() for url_node in urls],
+                [f"URL {ix+1}" for ix, mime_node in enumerate(mime_types)],
             )
         )
 
@@ -88,7 +89,7 @@ class EdurepDataExtraction(object):
             return
         # Takes the first html file to be the main file and otherwise the first file
         main_url = next(
-            (url for mime_type, url in files if mime_type == "text/html"),
+            (url for mime_type, url, name in files if mime_type == "text/html"),
             files[0][1]
         )
         return main_url
