@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class CommunitiesConfig(AppConfig):
-    name = 'communities'
+    name = 'surf.apps.communities'

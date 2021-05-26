@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class LocaleConfig(AppConfig):
-    name = 'locale'
+    name = 'surf.apps.locale'
