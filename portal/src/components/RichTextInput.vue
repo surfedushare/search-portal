@@ -41,6 +41,20 @@
           >
             <span><i class="fas fa-list"></i></span>
           </div>
+          <div
+            class="menubar-button"
+            :class="{ 'is-active': isActive.link() }"
+            @click="openLinkPopup"
+          >
+            <span><i class="fas fa-link"></i></span>
+          </div>
+          <div
+            v-if="isActive.link()"
+            class="menubar-button"
+            @click="editor.commands.link"
+          >
+            <span><i class="fas fa-unlink"></i></span>
+          </div>
         </div>
       </editor-menu-bar>
     </div>
@@ -52,6 +66,27 @@
         @onUpdate="onUpdate"
       />
     </InputLanguageWrapper>
+    <Popup
+      v-if="showLinkPopup"
+      :is-show="showLinkPopup"
+      :close="closeLinkPopup"
+      class="popup-content"
+    >
+      <slot>
+        <h2 class="popup__title">{{ $t('Add-link') }}</h2>
+        <div class="popup__subtext">
+          {{ $t('Add-link-subtext') }}
+        </div>
+        <div>
+          <input v-model="url" class="input" />
+          <div class="popup-content__actions">
+            <button class="button" @click="saveLink">
+              {{ $t('Save') }}
+            </button>
+          </div>
+        </div>
+      </slot>
+    </Popup>
   </div>
 </template>
 <script>
@@ -65,16 +100,19 @@ import {
   Italic,
   ListItem,
   Placeholder,
-  Underline
+  Underline,
+  Link
 } from 'tiptap-extensions'
 import InputLanguageWrapper from '~/components/InputLanguageWrapper'
+import Popup from '~/components/Popup'
 
 export default {
   name: 'RichTextInput',
   components: {
     EditorContent,
     EditorMenuBar,
-    InputLanguageWrapper
+    InputLanguageWrapper,
+    Popup
   },
   props: {
     title: {
@@ -104,6 +142,8 @@ export default {
   },
   data() {
     return {
+      showLinkPopup: false,
+      url: '',
       editor: new Editor({
         content: this.value,
         onUpdate: this.onUpdate,
@@ -122,7 +162,8 @@ export default {
           new HardBreak(),
           new BulletList(),
           new ListItem(),
-          new History()
+          new History(),
+          new Link({ openOnClick: false, target: '_blank' })
         ]
       })
     }
@@ -145,6 +186,31 @@ export default {
     },
     onUpdate(value) {
       this.$emit('input', value.getHTML())
+    },
+    openLinkPopup() {
+      const selectionPos = this.editor.selection
+      const selectedNode = this.editor.view.docView.node.resolve(
+        selectionPos.from,
+        selectionPos.to
+      ).nodeAfter
+      this.url = selectedNode.marks[0]
+        ? selectedNode.marks[0].attrs.href || ''
+        : ''
+      this.showLinkPopup = true
+    },
+    closeLinkPopup() {
+      this.showLinkPopup = false
+    },
+    saveLink($event) {
+      $event.preventDefault()
+      if (!this.url) {
+        return
+      }
+      if (!this.url.startsWith('mailto') && !this.url.startsWith('http')) {
+        this.url = 'https://' + this.url
+      }
+      this.editor.commands.link({ href: this.url })
+      this.showLinkPopup = false
     }
   }
 }
@@ -223,7 +289,9 @@ export default {
   &.underline {
     text-decoration: underline;
   }
-  .fa-list {
+  .fa-list,
+  .fa-link,
+  .fa-unlink {
     font-size: 0.8em;
   }
   &:last-child {
@@ -241,6 +309,11 @@ export default {
 
   &.with-language {
     padding-left: 60px;
+  }
+}
+.popup-content {
+  button {
+    margin-top: 25px;
   }
 }
 </style>
