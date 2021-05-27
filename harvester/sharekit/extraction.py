@@ -66,10 +66,18 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_publishers(cls, node):
+        publishers = []
         publisher = node["attributes"]["publishers"]
+        keywords = node["attributes"]["keywords"] or []
+        # Check HBOVPK tags
+        hbovpk_keywords = [keyword for keyword in keywords if "hbovpk" in keyword.lower()]
+        if hbovpk_keywords:
+            publishers.append("HBO Verpleegkunde")
+        # Check normal publishers
         if not publisher:
-            return []
-        return [publisher]
+            return publishers
+        publishers.append(publisher)
+        return publishers
 
     @classmethod
     def get_lom_educational_levels(cls, node):
