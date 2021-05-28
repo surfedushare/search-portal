@@ -374,6 +374,7 @@ ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_NL_INDEX = "latest-nl"
 ELASTICSEARCH_EN_INDEX = "latest-en"
+ELASTICSEARCH_UNK_INDEX = "latest-unk"
 
 
 # CKEditor

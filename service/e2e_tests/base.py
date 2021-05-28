@@ -13,7 +13,12 @@ class BaseElasticSearchMixin(object):
 
     @classmethod
     def index_body(cls, language):
-        analyzer = 'dutch' if language == 'nl' else 'english'
+        if language == 'nl':
+            analyzer = 'dutch'
+        elif language == 'en':
+            analyzer = 'english'
+        else:
+            analyzer = 'standard'
         return create_elastic_search_index_configuration(language, analyzer)
 
     @classmethod
@@ -24,11 +29,13 @@ class BaseElasticSearchMixin(object):
         )
         cls.elastic.indices.create(settings.ELASTICSEARCH_NL_INDEX, ignore=400, body=cls.index_body('nl'))
         cls.elastic.indices.create(settings.ELASTICSEARCH_EN_INDEX, ignore=400, body=cls.index_body('en'))
+        cls.elastic.indices.create(settings.ELASTICSEARCH_UNK_INDEX, ignore=400, body=cls.index_body('unk'))
 
     @classmethod
     def tearDownClass(cls):
         cls.elastic.indices.delete(settings.ELASTICSEARCH_NL_INDEX)
         cls.elastic.indices.delete(settings.ELASTICSEARCH_EN_INDEX)
+        cls.elastic.indices.delete(settings.ELASTICSEARCH_UNK_INDEX)
 
 
 @override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
