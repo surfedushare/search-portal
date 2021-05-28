@@ -58,11 +58,13 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 2,
-            "nl": 3
+            "nl": 3,
+            "unk": 1
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
-            "nl": ElasticIndex.get_index_config("nl")
+            "nl": ElasticIndex.get_index_config("nl"),
+            "unk": ElasticIndex.get_index_config("unk")
         }
 
         # Calling command and catching output for some checks
@@ -73,10 +75,10 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
         # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}")
         # Expect command to print how many documents it encountered with unknown language
-        info_logger.assert_any_call("unk:1")
+        info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
         # Asserting calls to Elastic Search library
-        self.assertEqual(get_es_client.call_count, 2,
+        self.assertEqual(get_es_client.call_count, 3,
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
@@ -87,18 +89,18 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
         self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
-        self.assertEqual(self.elastic_client.indices.create.call_count, 2)
+        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
+        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 3,
                          "Expected Elastic Search to ignore aliases")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-            self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
 
     def test_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
@@ -129,11 +131,13 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 2,
-            "nl": 3
+            "nl": 3,
+            "unk": 1
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
-            "nl": ElasticIndex.get_index_config("nl")
+            "nl": ElasticIndex.get_index_config("nl"),
+            "unk": ElasticIndex.get_index_config("unk")
         }
         get_es_client.reset_mock()
 
@@ -145,10 +149,10 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}")
         # Expect command to print how many documents it encountered with unknown language
-        info_logger.assert_any_call("unk:1")
+        info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
         # Asserting calls to Elastic Search library
-        self.assertEqual(get_es_client.call_count, 2,
+        self.assertEqual(get_es_client.call_count, 3,
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
@@ -159,25 +163,25 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 2)
+        self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
         for args, kwargs in self.elastic_client.indices.delete.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.elastic_client.indices.create.call_count, 2)
+        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],
                              "Expected index configuration to come from database if one was created in the past")
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2,
+        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 3,
                          "Expected an Elastic Search alias creation for each language")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-            self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
@@ -194,7 +198,8 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         # Expectations
         expected_doc_count = {
             "en": 2,
-            "nl": 3
+            "nl": 3,
+            "unk": 1
         }
         # Index normally and check that the new version still holds all documents
         call_command("index_dataset_version", "--dataset=test")
@@ -227,7 +232,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-            self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     @patch("core.models.search.streaming_bulk")
@@ -237,11 +242,13 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 2,
-            "nl": 3
+            "nl": 3,
+            "unk": 1
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
-            "nl": ElasticIndex.get_index_config("nl")
+            "nl": ElasticIndex.get_index_config("nl"),
+            "unk": ElasticIndex.get_index_config("unk")
         }
         get_es_client.reset_mock()
 
@@ -253,10 +260,10 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         # Expect command to print how many English documents it encountered
         info_logger.assert_any_call(f"en:{expected_doc_count['en']}")
         # Expect command to print how many documents it encountered with unknown language
-        info_logger.assert_any_call("unk:1")
+        info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
         # Asserting calls to Elastic Search library
-        self.assertEqual(get_es_client.call_count, 2,
+        self.assertEqual(get_es_client.call_count, 3,
                          "Expected an Elastic Search client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
@@ -267,12 +274,12 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 2)
+        self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
         for args, kwargs in self.elastic_client.indices.delete.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.elastic_client.indices.create.call_count, 2)
+        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
         for args, kwargs in self.elastic_client.indices.create.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
