@@ -166,13 +166,14 @@ class Command(PipelineCommand):
                     upserts.append(seed)
                 else:
                     deletes.append(seed)
-            seeds_by_collection[harvest.source.spec] += (upserts, deletes,)
+            seeds_by_collection[(harvest.source.repository, harvest.source.spec)] += (upserts, deletes,)
             self.logger.progress("update.sourcing", source_count, success=len(upserts) + len(deletes))
 
         self.logger.end("update.sourcing")
 
-        for spec_name, seeds in seeds_by_collection.items():
-            # Unpacking seeds
+        for info, seeds in seeds_by_collection.items():
+            # Unpacking
+            repository, spec_name = info
             upserts, deletes = seeds
 
             # Get or create the collection these seeds belong to
@@ -186,6 +187,7 @@ class Command(PipelineCommand):
 
             self.handle_upsert_seeds(collection, upserts)
             self.handle_deletion_seeds(collection, deletes)
+            self.logger.report_results(spec_name, repository, collection.document_set.count())
 
         harvest_queryset.update(stage=HarvestStages.PREVIEW)
 

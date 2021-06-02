@@ -236,6 +236,12 @@ LOGGING = {
             environment,
             session
         ),
+        'es_results': create_elasticsearch_handler(
+            'harvest-results',
+            POLElasticsearchHandler.IndexNameFrequency.YEARLY,
+            environment,
+            session
+        ),
     },
     'loggers': {
         'harvester': {
@@ -245,6 +251,11 @@ LOGGING = {
         },
         'documents': {
             'handlers': ['es_documents'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
+            'propagate': True,
+        },
+        'results': {
+            'handlers': ['es_results'] if environment.django.logging.is_elastic else ['console'],
             'level': _log_level,
             'propagate': True,
         },
