@@ -1,4 +1,4 @@
-FROM python:3.6-stretch
+FROM python:3.8-buster
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && apt-get install -y apt-transport-https && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \

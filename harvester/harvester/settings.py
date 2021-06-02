@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
     'datagrowth',
 
     'core',
@@ -117,7 +116,7 @@ DATABASES = {
         'PORT': environment.postgres.port,
     }
 }
-
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -349,7 +348,7 @@ MIME_TYPE_TO_FILE_TYPE = {  # TODO: this is Edurep based, how do we want this fo
 # https://docs.celeryproject.org/en/v4.1.0/
 
 CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'
-CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = f'redis://{environment.django.redis_host}/0'
 CELERY_BEAT_SCHEDULE = {
     'harvest': {
         'task': 'harvest',

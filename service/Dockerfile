@@ -28,7 +28,7 @@ RUN npm install && npm run build
 # SERVICE
 #################################################
 
-FROM python:3.6-stretch
+FROM python:3.8-buster
 
 RUN apt-get update && apt-get install -y less vim build-essential gettext
 
