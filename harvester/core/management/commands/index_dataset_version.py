@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from core.models import Dataset, ElasticIndex
 from core.management.base import PipelineCommand
 

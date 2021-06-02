@@ -69,7 +69,6 @@ class ElasticSearchApiClient:
         self.index_en = settings.ELASTICSEARCH_EN_INDEX
         self.index_unk = settings.ELASTICSEARCH_UNK_INDEX
 
-
     @staticmethod
     def parse_elastic_result(search_result):
         """
