@@ -81,10 +81,10 @@ class TestGetHarvestSeedsSharekit(TestCase):
 
     def test_is_part_of_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[0]['is_part_of'], None, "Expected standard material to have no parent")
+        self.assertEqual(seeds[0]['is_part_of'], [], "Expected standard material to have no parent")
         self.assertEqual(
             seeds[4]['is_part_of'],
-            "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b",
+            ["3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"],
             "Expected child material to specify its parent"
         )
 

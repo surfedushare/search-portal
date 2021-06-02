@@ -141,7 +141,7 @@ class ElasticSearchApiClient:
         record['authors'] = hit['_source']['authors']
         record['format'] = hit['_source']['file_type']
         record['disciplines'] = hit['_source']['disciplines']
-        record['educationallevels'] = hit['_source'].get('lom_educational_levels', [])
+        record['educationallevels'] = hit['_source']['lom_educational_levels']
         record['copyright'] = hit['_source']['copyright']
         preview_path = hit['_source'].get('preview_path', None)
         record['preview_thumbnail_url'] = get_preview_absolute_uri(preview_path, PREVIEW_SMALL)
@@ -151,10 +151,15 @@ class ElasticSearchApiClient:
             if discipline in DISCIPLINE_CUSTOM_THEME:
                 themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
         record['themes'] = list(themes)
-        record['source'] = hit['_source']['oaipmh_set']
+        record['source'] = hit['_source']['harvest_source']
         record['has_parts'] = hit['_source']['has_parts']
-        record['is_part_of'] = hit['_source']['is_part_of']
-        record['ideas'] = hit['_source'].get('ideas', [])
+        is_part_of = []
+        if isinstance(hit['_source']['is_part_of'], list):
+            is_part_of = hit['_source']['is_part_of']
+        elif hit['_source']['is_part_of']:
+            is_part_of = [hit['_source']['is_part_of']]
+        record['is_part_of'] = is_part_of
+        record['ideas'] = hit['_source']['ideas']
         return record
 
     def autocomplete(self, query):
@@ -449,7 +454,7 @@ class ElasticSearchApiClient:
         if external_id == 'lom.technical.format':
             return 'file_type'
         elif external_id == 'about.repository':
-            return 'oaipmh_set'
+            return 'harvest_source'
         elif external_id == 'lom.rights.copyrightandotherrestrictions':
             return 'copyright.keyword'
         elif external_id == 'lom.educational.context':

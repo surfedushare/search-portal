@@ -24,9 +24,9 @@ NL_MATERIAL = {
         "publishers": ["Wikiwijs Maken"],
         "file_type": "text",
         "disciplines": ["7afbb7a6-c29b-425c-9c59-6f79c845f5f0"],
-        "oaipmh_set": "wikiwijsmaken",
+        "harvest_source": "wikiwijsmaken",
         "has_parts": [],
-        "is_part_of": None,
+        "is_part_of": [],
         "suggest_phrase": "Leermateriaal over wiskunde en didactiek op de universiteit.",
         "suggest_completion": ["Leermateriaal", "over", "wiskunde", "en", "didactiek", "op", "de", "universiteit."],
         "analysis_allowed": True,
@@ -57,9 +57,9 @@ NL_MATERIAL = {
         "publishers": ["Wikiwijs Maken"],
         "file_type": "text",
         "disciplines": [],
-        "oaipmh_set": "wikiwijsmaken",
+        "harvest_source": "wikiwijsmaken",
         "has_parts": [],
-        "is_part_of": None,
+        "is_part_of": [],
         "suggest_phrase": "Leermateriaal over biologie en didactiek op de universiteit.",
         "suggest_completion": ["Leermateriaal", "over", "biologie", "en", "didactiek", "op", "de", "universiteit."],
         "analysis_allowed": True,
@@ -76,7 +76,7 @@ def generate_nl_material(educational_levels=None, file_type=None, source=None, c
     if file_type:
         copy["file_type"] = file_type
     if source:
-        copy["oaipmh_set"] = source
+        copy["harvest_source"] = source
     if copyright:
         copy["copyright"] = copyright
     if publisher_date:

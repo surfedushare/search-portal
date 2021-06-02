@@ -40,7 +40,6 @@ def create_dataset_version_indices(dataset_version):
     for language in ["nl", "en"]:
         ElasticIndexFactory.create(  # this gets ignored for inactive datasets
             name=f"{dataset_version.dataset.name}-{dataset_version.version}-{dataset_version.id}",
-            dataset=dataset_version.dataset,
             dataset_version=dataset_version,
             language=language,
             pushed_at=pushed_at,
