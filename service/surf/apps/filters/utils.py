@@ -23,7 +23,9 @@ EDUTERM_QUERY_TEMPLATE = "http://api.onderwijsbegrippen.kennisnet.nl/1.0/Query/G
 
 EDUSTANDAARD_TEMPLATE = "{protocol}://purl.edustandaard.nl/begrippenkader/{concept}"
 
-AUTO_ENABLED_FILTERS = [AUTHOR_FIELD_ID, PUBLISHER_FIELD_ID]
+DEEPL_ENDPOINT = "https://api-free.deepl.com/v2/translate"
+
+ENGLISH_SAME_AS_DUTCH = [AUTHOR_FIELD_ID, PUBLISHER_FIELD_ID]
 
 
 def sync_category_filters():
@@ -81,18 +83,18 @@ def _update_mptt_filter_category(filter_category, api_client):
         if created or filter_item.title_translations is None:
             is_new = True
 
-            if filter_category.external_id in AUTO_ENABLED_FILTERS:
-                _auto_enable_mptt_filter_item(filter_item)
+            if filter_category.external_id in ENGLISH_SAME_AS_DUTCH:
+                _auto_enable_english_same_as_dutch(filter_item)
             else:
                 _translate_mptt_filter_item(filter_item)
 
         yield external_id, is_new
 
 
-def _auto_enable_mptt_filter_item(filter_item):
+def _auto_enable_english_same_as_dutch(filter_item):
     translation = Locale.objects.create(
         asset=f"{filter_item.external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
-        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=True
+        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=False
     )
     filter_item.name = filter_item.external_id
     filter_item.title_translations = translation
@@ -125,6 +127,10 @@ def _fetch_eduterm_translations(external_id):
     dutch = labels[0].get("label_nl", default)
     english = labels[0].get("label_en", default)
 
+    if english['value'] == dutch['value']:
+        translated = _translate_with_deepl(dutch['value'])
+        return dutch['value'], translated
+
     return dutch['value'], english['value']
 
 
@@ -144,7 +150,9 @@ def _fetch_edustandaard_translations(external_id):
 
     dutch_value = json[key]['http://www.w3.org/2004/02/skos/core#prefLabel'][0]['value']
 
-    return dutch_value, dutch_value
+    english_value = _translate_with_deepl(dutch_value)
+
+    return dutch_value, english_value
 
 
 def _save_translations(filter_item, nl_value, en_value):
@@ -155,3 +163,21 @@ def _save_translations(filter_item, nl_value, en_value):
     filter_item.name = en_value
     filter_item.title_translations = translation
     filter_item.save()
+
+
+def _translate_with_deepl(dutch_value):
+    if not settings.DEEPL_API_KEY:
+        return dutch_value
+
+    response = requests.post(DEEPL_ENDPOINT, {
+        'auth_key': [settings.DEEPL_API_KEY],
+        'text': dutch_value,
+        'source_lang': "NL",
+        'target_lang': "EN"
+    })
+
+    if response.status_code != codes.ok:
+        return dutch_value
+
+    json = response.json()
+    return json['translations'][0]['text']

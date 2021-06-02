@@ -34,3 +34,5 @@ secrets:
     secret_key: "development-secret-key--ignored"
   eduterm:
     api_key: null
+  deepl:
+    api_key: null
