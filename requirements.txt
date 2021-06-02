@@ -14,8 +14,8 @@ elasticsearch==7.8.1
 python-dateutil==2.8.1
 
 # AWS
-awscli==1.18.195
-boto3==1.16.35
+awscli==1.19.85
+boto3==1.17.85
 requests-aws4auth==1.0
 django-storages==1.9.1
 
@@ -29,6 +29,7 @@ ipdb==0.13.3
 sentry-sdk==1.0.0
 selenium==3.141.0
 factory_boy==2.12.0
+wheel==0.36.2
 
 -r service/dependencies.txt
 -r harvester/dependencies.txt

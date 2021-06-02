@@ -13,7 +13,7 @@ but there is also an admin available for that part.
 Prerequisites
 -------------
 
-This project uses ``Python 3.6``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
+This project uses ``Python 3.8``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
 Make sure they are installed on your system before installing the project.
 
 
