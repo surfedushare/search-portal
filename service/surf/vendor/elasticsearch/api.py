@@ -153,12 +153,7 @@ class ElasticSearchApiClient:
         record['themes'] = list(themes)
         record['source'] = hit['_source']['harvest_source']
         record['has_parts'] = hit['_source']['has_parts']
-        is_part_of = []
-        if isinstance(hit['_source']['is_part_of'], list):
-            is_part_of = hit['_source']['is_part_of']
-        elif hit['_source']['is_part_of']:
-            is_part_of = [hit['_source']['is_part_of']]
-        record['is_part_of'] = is_part_of
+        record['is_part_of'] = hit['_source']['is_part_of']
         record['ideas'] = hit['_source']['ideas']
         return record
 
