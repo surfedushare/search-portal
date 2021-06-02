@@ -7,6 +7,7 @@ requests==2.24.0
 Pillow==8.1.1
 elasticsearch==7.8.1
 python-dateutil==2.8.1
+suds-community==0.8.5
 
 # AWS
 awscli==1.18.195
