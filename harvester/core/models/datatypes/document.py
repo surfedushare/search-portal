@@ -78,7 +78,6 @@ class Document(DocumentPostgres, DocumentBase):
             'preview_path': self.properties.get('preview_path', None),
             'analysis_allowed': self.properties.get('analysis_allowed', False),
             'keywords': self.properties.get('keywords', []),
-            'oaipmh_set': self.collection.name,
             'harvest_source': self.collection.name,
         }
 
