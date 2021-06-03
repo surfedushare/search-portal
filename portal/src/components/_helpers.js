@@ -22,8 +22,8 @@ export const parseSearchMaterialsQuery = function(query) {
   if (query) {
     search = {
       ...query,
-      filters: query.filters ? JSON.parse(query.filters) : {},
-      search_text: query.search_text ? JSON.parse(query.search_text) : ''
+      filters: query.filters ? parseFilters(query.filters) : {},
+      search_text: query.search_text ? parseSearchText(query.search_text) : ''
     }
   }
 
@@ -35,6 +35,30 @@ export const parseSearchMaterialsQuery = function(query) {
   }
 
   return { search, dateRange }
+}
+
+const parseFilters = function(filters) {
+  const parsedFilters = JSON.parse(filters)
+  if (Array.isArray(parsedFilters)) {
+    return parsedFilters.reduce((memo, filter) => {
+      if (filter.external_id) {
+        memo[filter.external_id] = filter.items
+      }
+
+      return memo
+    }, {})
+  }
+
+  return parsedFilters
+}
+
+const parseSearchText = function(searchText) {
+  const parsedSearchText = JSON.parse(searchText)
+  if (Array.isArray(parsedSearchText)) {
+    return parsedSearchText[0]
+  }
+
+  return parsedSearchText
 }
 
 export const validateHREF = function(href) {
