@@ -6,7 +6,7 @@ from django.utils.timezone import make_aware
 from datagrowth.datatypes import DocumentBase, DocumentPostgres
 
 
-class Document(DocumentPostgres, DocumentBase):
+class Document(DocumentBase):
 
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
