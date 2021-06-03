@@ -70,7 +70,7 @@ class SharekitMetadataExtraction(object):
         publisher = node["attributes"]["publishers"]
         keywords = node["attributes"]["keywords"] or []
         # Check HBOVPK tags
-        hbovpk_keywords = [keyword for keyword in keywords if "hbovpk" in keyword.lower()]
+        hbovpk_keywords = [keyword for keyword in keywords if keyword and "hbovpk" in keyword.lower()]
         if hbovpk_keywords:
             publishers.append("HBO Verpleegkunde")
         # Check normal publishers
