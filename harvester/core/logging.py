@@ -110,4 +110,4 @@ class HarvestLogger(object):
             "repository": repository,
             "total": total
         })
-        harvester.info(f"{source} ({repository}) => {total}", extra=extra)
+        results.info(f"{source} ({repository}) => {total}", extra=extra)
