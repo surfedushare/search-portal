@@ -1,29 +1,12 @@
-from datetime import datetime
-
 from django.db import models
-from django.utils.timezone import make_aware
 
-from datagrowth.datatypes import DocumentBase, DocumentPostgres
+from datagrowth.datatypes import DocumentBase
 
 
 class Document(DocumentBase):
 
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
-
-    def update(self, data, commit=True):
-        """
-        Update the properties with new data.
-        Ported from Datagrowth 0.17. Best removed when updating to Django 3.2 and Datagrowth 0.17.
-        """
-        content = data.content if isinstance(data, DocumentBase) else data
-        self.properties.update(content)
-        self.clean()
-        if commit:
-            self.save()
-        else:
-            self.modified_at = make_aware(datetime.now())
-        return self.content
 
     def get_language(self):
         for field in ['metadata', 'from_text', 'from_title']:
