@@ -49,6 +49,10 @@ export default {
 </script>
 <style scoped lang="less">
 .button {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   margin-bottom: 15px;
   background-image: url('/images/open-link-black.svg');
   background-position: 17px 15px;
