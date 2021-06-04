@@ -94,7 +94,7 @@ def _update_mptt_filter_category(filter_category, api_client):
 def _auto_enable_english_same_as_dutch(filter_item):
     translation = Locale.objects.create(
         asset=f"{filter_item.external_id}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
-        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=False
+        en=filter_item.external_id, nl=filter_item.external_id, is_fuzzy=True
     )
     filter_item.name = filter_item.external_id
     filter_item.title_translations = translation
