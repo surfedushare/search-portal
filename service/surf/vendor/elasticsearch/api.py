@@ -67,6 +67,7 @@ class ElasticSearchApiClient:
         )
         self.index_nl = settings.ELASTICSEARCH_NL_INDEX
         self.index_en = settings.ELASTICSEARCH_EN_INDEX
+        self.index_unk = settings.ELASTICSEARCH_UNK_INDEX
 
     @staticmethod
     def parse_elastic_result(search_result):
@@ -176,7 +177,7 @@ class ElasticSearchApiClient:
         }
 
         result = self.client.search(
-            index=[self.index_nl, self.index_en],
+            index=[self.index_nl, self.index_en, self.index_unk],
             body=query_dictionary
         )
 
@@ -304,7 +305,7 @@ class ElasticSearchApiClient:
                 normalized_external_ids.append(external_id_parts[-1])
 
         result = self.client.search(
-            index=[self.index_nl, self.index_en],
+            index=[self.index_nl, self.index_en, self.index_unk],
             body={
                 "query": {
                     "bool": {
@@ -434,7 +435,7 @@ class ElasticSearchApiClient:
         Select the index to search on based on language.
         """
         # if no language is selected, search on both.
-        indices = [self.index_nl, self.index_en]
+        indices = [self.index_nl, self.index_en, self.index_unk]
         if not filters:
             return indices
         language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'lom.general.language']

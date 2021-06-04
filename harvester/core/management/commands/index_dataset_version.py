@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from core.models import Dataset, ElasticIndex
 from core.management.base import PipelineCommand
 
@@ -32,13 +30,6 @@ class Command(PipelineCommand):
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
         for lang, docs in lang_doc_dict.items():
-            if lang == "unk":
-                self.logger.warning(
-                    f"Found documents with ambiguous language {[doc['_id'] for doc in docs]}",
-                )
-            if lang not in settings.ELASTICSEARCH_ANALYSERS:
-                self.logger.warning(f"Found language not in analysers: {lang}")
-                continue
 
             self.logger.start(f"index.{lang}")
 
