@@ -2,6 +2,7 @@ from mimetypes import guess_type
 from collections import defaultdict
 
 from django.conf import settings
+from django.db.models import F
 
 from core.models import DatasetVersion, Collection, Document, Harvest
 from core.constants import HarvestStages
@@ -187,6 +188,6 @@ class Command(PipelineCommand):
             self.handle_upsert_seeds(collection, upserts)
             self.handle_deletion_seeds(collection, deletes)
 
-        harvest_queryset.update(stage=HarvestStages.PREVIEW)
+        harvest_queryset.update(stage=HarvestStages.PREVIEW, latest_update_at=F("harvested_at"))
 
         self.logger.end("update")
