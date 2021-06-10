@@ -434,3 +434,4 @@ if DEBUG:
 
 
 EDUTERM_API_KEY = environment.secrets.eduterm.api_key
+DEEPL_API_KEY = environment.secrets.deepl.api_key
