@@ -1,5 +1,5 @@
 # Common
-django==3.2.3
+django==3.2.4
 djangorestframework==3.11.2
 django-cors-headers==3.4.0
 whitenoise==5.1.0
