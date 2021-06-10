@@ -45,6 +45,6 @@ class TestUsers(BaseLiveServerTestCase):
         )
         self.selenium.find_element_by_css_selector(".popup-content__actions button").click()
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.url_to_be("https://engine.surfconext.nl/logout")
         )
