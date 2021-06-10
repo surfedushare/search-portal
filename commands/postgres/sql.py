@@ -16,6 +16,9 @@ def insert_django_user_statement(username, raw_password, is_edushare=False):
 
 def setup_database_statements(database_name, root_user, application_user, application_password, allow_tests=False):
     global_statements = [
+        # Kill all database connections
+        f"SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE "
+        f"pg_stat_activity.datname = '{database_name}'",
         # Remove pre-existing objects
         f"DROP DATABASE {database_name}",
         f"DROP OWNED BY {application_user}",
