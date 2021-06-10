@@ -11,10 +11,9 @@ class Command(PipelineCommand):
 
     command_name = "harvest_basic_content"
 
-    def download_seed_files(self, phase, seeds, interval=0):
+    def download_seed_files(self, phase, seeds):
         download_config = create_config("http_resource", {
-            "resource": "core.FileResource",
-            "interval_duration": interval
+            "resource": "core.FileResource"
         })
 
         main_phase = phase + ".main"
@@ -102,7 +101,7 @@ class Command(PipelineCommand):
         youtube_videos = [seed for seed in seeds if seed['from_youtube']]
         if len(youtube_videos) > 0:
             self.logger.start(phase_name)
-            download_ids += self.download_seed_files(phase_name, youtube_videos, 2000)
+            download_ids += self.download_seed_files(phase_name, youtube_videos)
             self.logger.end(phase_name)
 
         # Download other seeds

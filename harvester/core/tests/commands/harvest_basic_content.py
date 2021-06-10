@@ -112,15 +112,11 @@ class TestBasicHarvest(TestCase):
 
         name, args, kwargs = send_serie_mock.mock_calls[0]  # Youtube
         resource = kwargs['config'].resource
-        interval = kwargs['config'].interval_duration
         self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
-        self.assertEqual(interval, 2000, "Wrong interval for videos")
 
         name, args, kwargs = send_serie_mock.mock_calls[1]
         resource = kwargs['config'].resource
-        interval = kwargs['config'].interval_duration
         self.assertEqual(resource, "core.FileResource", "Wrong resource used for downloading files")
-        self.assertEqual(interval, 0, "Wrong interval for other files")
 
     def test_basic_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
