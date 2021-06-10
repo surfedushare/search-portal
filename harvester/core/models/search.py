@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.conf import settings
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.text import slugify
 from django.utils.timezone import make_aware
@@ -18,7 +17,7 @@ class ElasticIndex(models.Model):
     name = models.CharField(max_length=255)
     language = models.CharField(max_length=5, choices=settings.ELASTICSEARCH_ANALYSERS.items())
     dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.SET_NULL, null=True)
-    configuration = JSONField(blank=True)
+    configuration = models.JSONField(blank=True)
     error_count = models.IntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)

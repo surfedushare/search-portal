@@ -45,7 +45,7 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
     @factory.lazy_attribute
     def request(self):
         return {
-            "args": [self.set_specification, self.since],
+            "args": [self.set_specification, f"{self.since:%Y-%m-%dT%H:%M:%SZ}"],
             "kwargs": {},
             "method": "get",
             "url": "https://" + self.uri,
