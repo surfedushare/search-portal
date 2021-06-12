@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.test import TestCase
 from django.core.management import call_command
-from django.utils.timezone import make_aware
+from django.utils.timezone import make_aware, now
 
 from core.models import DatasetVersion, Collection, Harvest
 from core.constants import HarvestStages
@@ -36,11 +36,13 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
     fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
 
     def setUp(self):
+        self.current_time = now()
         # Moving the VIDEO source to complete to test it gets ignored by the dataset command
         # Setting the stage of the "surf" set harvests to VIDEO
         # The only valid stage for "update_dataset" to act on.
         Harvest.objects.filter(stage=HarvestStages.VIDEO).update(stage=HarvestStages.COMPLETE)
         Harvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        Harvest.objects.update(harvested_at=self.current_time)
         super().setUp()
 
     def get_command_instance(self):
@@ -52,7 +54,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
     @patch(GET_HARVEST_SEEDS_TARGET, return_value=DUMMY_SEEDS)
     @patch(HANDLE_UPSERT_SEEDS_TARGET, return_value=[0, 7, 14])
     @patch(HANDLE_DELETION_SEEDS_TARGET, return_value=[1, 3])
-    def test_dataset(self, deletion_target, upsert_target, seeds_target):
+    def test_update_dataset(self, deletion_target, upsert_target, seeds_target):
         # Checking whether end result of the command returned by "handle" matches expectations.
         # We'd expect the command to get seeds from get_harvest_seeds function.
         # After that the modifications to the dataset are done by two methods named:
@@ -78,13 +80,23 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         self.assertEqual(
             surf_harvest.stage,
             HarvestStages.PREVIEW,
-            "surf set harvest should got updated to stage BASIC to prevent re-harvest in the future"
+            "surf set harvest should got updated to stage PREVIEW to prevent re-harvest in the future"
+        )
+        self.assertEqual(
+            surf_harvest.latest_update_at,
+            self.current_time,
+            "harvest.latest_update_at should be the same value as harvested_at, to prevent re-fetching materials"
         )
         edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
             edurep_delen_harvest.stage,
             HarvestStages.COMPLETE,
             "edurep_delen set harvest got updated to other than COMPLETE while we expected it to be ignored"
+        )
+        self.assertEqual(
+            edurep_delen_harvest.latest_update_at,
+            make_aware(datetime(year=1970, month=1, day=1)),
+            "since harvest should have been ignored expected the harvest.latest_update_at to remain the same"
         )
 
     def test_basic_invalid_dataset(self):
