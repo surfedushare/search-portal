@@ -312,5 +312,5 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "is_part_of": EdurepDataExtraction.get_is_part_of,
     "has_parts": EdurepDataExtraction.get_has_parts,
     "copyright_description": EdurepDataExtraction.get_copyright_description,
-    "doi": lambda node: None,
+    "doi": lambda soup, el: None,
 }
