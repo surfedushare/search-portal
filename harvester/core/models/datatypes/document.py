@@ -62,6 +62,7 @@ class Document(DocumentBase):
             'analysis_allowed': self.properties.get('analysis_allowed', False),
             'keywords': self.properties.get('keywords', []),
             'harvest_source': self.collection.name,
+            'doi': self.properties['doi'],
         }
 
     def to_search(self):

@@ -166,5 +166,6 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "#is_restricted": SharekitMetadataExtraction.get_is_restricted,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
     "is_part_of": SharekitMetadataExtraction.get_is_part_of,
-    "has_parts": "$.attributes.hasParts"
+    "has_parts": "$.attributes.hasParts",
+    "doi": "$.attributes.doi",
 }

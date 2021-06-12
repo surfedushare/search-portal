@@ -156,6 +156,7 @@ class ElasticSearchApiClient:
         record['has_parts'] = hit['_source']['has_parts']
         record['is_part_of'] = hit['_source']['is_part_of']
         record['ideas'] = hit['_source']['ideas']
+        record['doi'] = hit['_source'].get('doi', None)
         return record
 
     def autocomplete(self, query):
