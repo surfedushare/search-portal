@@ -13,7 +13,8 @@ class Command(PipelineCommand):
 
     def download_seed_files(self, phase, seeds):
         download_config = create_config("http_resource", {
-            "resource": "core.FileResource"
+            "resource": "core.FileResource",
+            "backoff_delays": [2, 4, 8, 16]
         })
 
         main_phase = phase + ".main"
