@@ -6,7 +6,7 @@ django:
     - "surf/apps/locale/fixtures/locales.json"
     - "surf/apps/filters/fixtures/filter-categories.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
-  motomo_id: null
+  motomo_id: 64
   administrative_emails: true
 
 postgres:
