@@ -4,7 +4,7 @@
 env: "acceptance"
 
 django:
-  debug: false
+  debug: true
   protocol: "https"
   domain: "acc.surfedushare.nl"
   logging:

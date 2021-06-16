@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
     'datagrowth',
 
     'core',
@@ -117,7 +116,7 @@ DATABASES = {
         'PORT': environment.postgres.port,
     }
 }
-
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -190,7 +189,8 @@ ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_ANALYSERS = {
     'en': 'english',
-    'nl': 'dutch'
+    'nl': 'dutch',
+    'unk': 'standard'
 }
 ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
 ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
@@ -237,6 +237,12 @@ LOGGING = {
             environment,
             session
         ),
+        'es_results': create_elasticsearch_handler(
+            'harvest-results',
+            POLElasticsearchHandler.IndexNameFrequency.YEARLY,
+            environment,
+            session
+        ),
     },
     'loggers': {
         'harvester': {
@@ -246,6 +252,11 @@ LOGGING = {
         },
         'documents': {
             'handlers': ['es_documents'] if environment.django.logging.is_elastic else ['console'],
+            'level': _log_level,
+            'propagate': True,
+        },
+        'results': {
+            'handlers': ['es_results'] if environment.django.logging.is_elastic else ['console'],
             'level': _log_level,
             'propagate': True,
         },
@@ -349,7 +360,7 @@ MIME_TYPE_TO_FILE_TYPE = {  # TODO: this is Edurep based, how do we want this fo
 # https://docs.celeryproject.org/en/v4.1.0/
 
 CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'
-CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = f'redis://{environment.django.redis_host}/0'
 CELERY_BEAT_SCHEDULE = {
     'harvest': {
         'task': 'harvest',

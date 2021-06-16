@@ -96,7 +96,7 @@ class DataGoalPermission(models.Model):
     goal = models.ForeignKey("DataGoal", on_delete=models.CASCADE)
 
     recorded_at = models.DateTimeField(_("recorded at"), auto_now=True)
-    is_allowed = models.NullBooleanField(_("is allowed"), )
+    is_allowed = models.BooleanField(_("is allowed"), null=True)
     is_retained = models.BooleanField(_("is retained"), default=False)
 
 

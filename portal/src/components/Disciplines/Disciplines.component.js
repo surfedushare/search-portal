@@ -21,12 +21,9 @@ export default {
      * @returns {{path, query}}
      */
     generateLink(discipline) {
-      const filters = [
-        {
-          external_id: 'lom.classification.obk.discipline.id',
-          items: [discipline.external_id]
-        }
-      ]
+      const filters = {
+        'lom.classification.obk.discipline.id': [discipline.external_id]
+      }
       return this.generateSearchMaterialsQuery({
         page: 1,
         page_size: 10,

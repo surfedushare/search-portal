@@ -165,6 +165,7 @@ DATABASES = {
         'PORT': environment.postgres.port,
     }
 }
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 
 # Django Rest Framework
@@ -327,7 +328,7 @@ if not DEBUG:
 
 AUTH_USER_MODEL = 'users.User'
 
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = environment.surfconext.oidc_endpoint
@@ -373,6 +374,7 @@ ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_NL_INDEX = "latest-nl"
 ELASTICSEARCH_EN_INDEX = "latest-en"
+ELASTICSEARCH_UNK_INDEX = "latest-unk"
 
 
 # CKEditor
@@ -432,3 +434,4 @@ if DEBUG:
 
 
 EDUTERM_API_KEY = environment.secrets.eduterm.api_key
+DEEPL_API_KEY = environment.secrets.deepl.api_key

@@ -90,6 +90,8 @@ class DatasetVersion(models.Model):
         by_language = defaultdict(list)
         for document in self.document_set.all():
             language = document.get_language()
+            if language not in settings.ELASTICSEARCH_ANALYSERS:
+                language = "unk"
             by_language[language] += list(document.to_search())
         return by_language
 

@@ -31,8 +31,7 @@ def push_indices_template(conn):
         client = get_es_client(conn)
         client.indices.put_template("basic-settings", body={
             "index_patterns": [
-                "harvest-logs*", "document-logs*", "service-logs*", "search-results*",  # used logs
-                "harvester-logs*", "logs*"  # legacy access logs
+                "harvest-logs*", "document-logs*", "service-logs*", "search-results*", "harvest-results*"
             ],
             "settings": {
                 "number_of_shards": 1,

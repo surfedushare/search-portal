@@ -37,6 +37,7 @@ services:
     tty: true
     environment:
       - PYTHONIOENCODING=UTF-8
+      - COLUMNS=80
       - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=harvester.settings
       - APPLICATION_MODE=${APPLICATION_MODE}
@@ -61,6 +62,7 @@ services:
     tty: true
     environment:
       - PYTHONIOENCODING=UTF-8
+      - COLUMNS=80
       - PYTHONUNBUFFERED=1
       - APPLICATION_MODE=${APPLICATION_MODE}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}

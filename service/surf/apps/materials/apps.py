@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class MaterialsConfig(AppConfig):
-    name = 'materials'
+    name = 'surf.apps.materials'
