@@ -36,8 +36,8 @@
       <a :href="copyrightURL(material.copyright)"
         target="_blank"
         v-if="material.copyright === 'yes'">{{ $t('cc-by-nc-nd') }}</a>
-      <h4>{{ $t('DOI') }}</h4>
-      {{ $t(material.doi) }}
+      <h4 v-if="material.doi">{{ $t('DOI') }}</h4>
+      <span v-if="material.doi">{{ $t(material.doi) }}</span>
       <a @click="downloadOnClick($event, material)"
         v-if="material.url"
         :href="material.url"
