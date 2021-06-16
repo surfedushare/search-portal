@@ -36,7 +36,8 @@ class SharekitMetadataExtraction(object):
         files = cls.get_files(node)
         if not files:
             return
-        return files[0][1]
+        url = files[0][1]
+        return url.strip()
 
     @classmethod
     def get_mime_type(cls, node):

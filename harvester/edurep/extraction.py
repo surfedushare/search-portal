@@ -92,7 +92,7 @@ class EdurepDataExtraction(object):
             (url for mime_type, url, name in files if mime_type == "text/html"),
             files[0][1]
         )
-        return main_url
+        return main_url.strip()
 
     @classmethod
     def get_from_youtube(cls, soup, el):
