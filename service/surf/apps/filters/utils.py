@@ -160,7 +160,7 @@ def _save_translations(filter_item, nl_value, en_value):
         asset=f"{en_value}_auto_generated_at_{datetime.datetime.now().strftime('%c-%f')}",
         en=en_value, nl=nl_value, is_fuzzy=True
     )
-    filter_item.name = en_value
+    filter_item.name = nl_value
     filter_item.title_translations = translation
     filter_item.save()
 
