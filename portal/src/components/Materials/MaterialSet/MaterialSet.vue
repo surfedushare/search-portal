@@ -18,8 +18,8 @@
         @click="onMaterialClick(setMaterial)"
       >
         <span class="title">{{ setMaterial.title }}</span>
-        <span v-if="setMaterial.format !== 'unknown'" class="type">
-          {{ $t(setMaterial.format) }}
+        <span class="type">
+          {{ setMaterial.format !== 'unknown' ? $t(setMaterial.format) : '-' }}
         </span>
         <span class="link">
           <a
