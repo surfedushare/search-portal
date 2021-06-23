@@ -202,12 +202,6 @@
         ],
         "files": [
           {
-            "fileName": "IMSCP_94812.zip",
-            "accessRight": "openaccess",
-            "url": "https://surfsharekit.nl/objectstore/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
-            "resourceMimeType": "application/x-zip"
-          },
-          {
             "fileName": "IMSCC_94812.imscc",
             "accessRight": "openaccess",
             "url": null,
@@ -218,6 +212,12 @@
             "accessRight": "openaccess",
             "url": null,
             "resourceMimeType": null
+          },
+          {
+            "fileName": "IMSCP_94812.zip",
+            "accessRight": "openaccess",
+            "url": "https://surfsharekit.nl/objectstore/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
+            "resourceMimeType": "application/x-zip"
           },
           {
             "fileName": "Didactiek van macro-meso-micro denken bij scheikunde.pdf",
@@ -383,7 +383,7 @@
         "partOf": [
           "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
         ],
-        "technicalFormat": "video",
+        "technicalFormat": null,
         "aggregationlevel": "2",
         "intendedUser": null,
         "availability": null,
@@ -438,13 +438,15 @@
           }
         ],
         "institutes": "Universiteit van Amsterdam",
-        "links": [
+        "links": [],
+        "files": [
           {
+            "fileName": "Hx0kUX7MZ7g.flv",
+            "resourceMimeType": "application/xxx",
             "url": "https://www.youtube.com/watch?v=Hx0kUX7MZ7g",
             "accessRight": "openaccess"
           }
         ],
-        "files": null,
         "language": "en",
         "themesResearchObject": null,
         "termsOfUse": "cc-by-40",
@@ -461,7 +463,7 @@
         "partOf": [
           "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
         ],
-        "technicalFormat": "video",
+        "technicalFormat": null,
         "aggregationlevel": "2",
         "intendedUser": null,
         "availability": null,

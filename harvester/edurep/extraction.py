@@ -1,7 +1,9 @@
 import re
 import vobject
 from html import unescape
+from mimetypes import guess_type
 
+from django.conf import settings
 from django.utils.text import slugify
 
 from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
@@ -134,6 +136,17 @@ class EdurepDataExtraction(object):
     def get_mime_type(cls, soup, el):
         node = el.find('czp:format')
         return node.text.strip() if node else None
+
+    @classmethod
+    def get_technical_type(cls, soup, el):
+        mime_type = cls.get_mime_type(soup, el)
+        if mime_type:
+            return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
+        url = cls.get_url(soup, el)
+        if not url:
+            return "unknown"
+        mime_type, encoding = guess_type(url)
+        return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
     def get_copyright(cls, soup, el):
@@ -297,6 +310,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "keywords": EdurepDataExtraction.get_keywords,
     "description": EdurepDataExtraction.get_description,
     "mime_type": EdurepDataExtraction.get_mime_type,
+    "technical_type": EdurepDataExtraction.get_technical_type,
     "copyright": EdurepDataExtraction.get_copyright,
     "aggregation_level": EdurepDataExtraction.get_aggregation_level,
     "authors": EdurepDataExtraction.get_authors,

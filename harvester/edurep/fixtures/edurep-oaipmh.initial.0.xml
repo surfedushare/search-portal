@@ -282,7 +282,7 @@
                         <czp:metadatascheme>nl_lom_v1p0</czp:metadatascheme>
                     </czp:metametadata>
                     <czp:technical>
-                        <czp:format>text/html</czp:format>
+                        <czp:format>text/xxx</czp:format>
                         <czp:location>https://www.youtube.com/watch?v=Zl59P5ZNX3M</czp:location>
                     </czp:technical>
                     <czp:educational>

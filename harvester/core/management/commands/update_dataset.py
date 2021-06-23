@@ -16,18 +16,17 @@ class Command(PipelineCommand):
 
     command_name = "update_dataset"
 
-    def _create_document(self, text, meta, title=None, url=None, mime_type=None, file_type=None, pipeline=None):
+    def _create_document(self, text, meta, pipeline=None):
 
-        url = url or meta.get("url", None)
-        mime_type = mime_type or meta.get("mime_type", None)
+        url = meta.get("url", None)
+        mime_type = meta.get("mime_type", None)
         if mime_type is None and url:
             mime_type, encoding = guess_type(url)
-        file_type = file_type or settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown")
 
         identifier = meta["external_id"]
 
         text_language = get_language_from_snippet(text)
-        title = title or meta.get("title", None)
+        title = meta.get("title", None)
         title_language = get_language_from_snippet(title)
         meta_language = meta.get("language", None)
 
@@ -46,7 +45,8 @@ class Command(PipelineCommand):
             },
             "url": url,
             "text": text,
-            "file_type": file_type,
+            "file_type": settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown"),
+            "technical_type": meta.get("technical_type", "unknown"),
             "mime_type": mime_type,
             "files": meta.get("files", []),
             "authors": meta.get("authors", []),

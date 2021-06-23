@@ -1,4 +1,7 @@
 import re
+from mimetypes import guess_type
+
+from django.conf import settings
 
 from datagrowth.utils import reach
 
@@ -45,6 +48,23 @@ class SharekitMetadataExtraction(object):
         if not files:
             return
         return files[0][0]
+
+    @classmethod
+    def get_technical_type(cls, node):
+        technical_type = node["attributes"]["technicalFormat"]
+        if technical_type:
+            return technical_type
+        files = cls.get_files(node)
+        if not files:
+            return "unknown"
+        technical_type = settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(files[0][0], None)
+        if technical_type:
+            return technical_type
+        file_url = files[0][1]
+        if not file_url:
+            return "unknown"
+        mime_type, encoding = guess_type(file_url)
+        return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
     def get_copyright(cls, node):
@@ -153,6 +173,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "keywords": "$.attributes.keywords",
     "description": "$.attributes.abstract",
     "mime_type": SharekitMetadataExtraction.get_mime_type,
+    "technical_type": SharekitMetadataExtraction.get_technical_type,
     "copyright": SharekitMetadataExtraction.get_copyright,
     "copyright_description": lambda node: None,
     "aggregation_level": "$.attributes.aggregationlevel",

@@ -1,6 +1,8 @@
 import factory
 from datetime import datetime
 
+from django.conf import settings
+
 from core.models import (Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, ElasticIndex,
                          FileResource, TikaResource)
 from core.constants import HarvestStages, Repositories, DeletePolicies
@@ -59,6 +61,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "from_youtube": o.from_youtube,
             "analysis_allowed": o.analysis_allowed,
             "mime_type": o.mime_type,
+            "technical_type": settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(o.mime_type, "unknown"),
             "files": [
                 [
                     o.mime_type,
