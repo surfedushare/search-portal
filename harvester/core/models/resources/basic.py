@@ -8,7 +8,8 @@ import logging
 
 from django.conf import settings
 from django.db import models
-from datagrowth.resources import HttpFileResource, TikaResource as DGTikaResource, file_resource_delete_handler
+from datagrowth.resources import (MicroServiceResource, HttpFileResource, TikaResource as DGTikaResource,
+                                  file_resource_delete_handler)
 
 
 s3_client = boto3.client("s3")
@@ -79,6 +80,43 @@ class TikaResource(DGTikaResource):
         unsigned_url = signed_url.del_query_params(signature_keys)
         cmd[-1] = str(unsigned_url)
         return DGTikaResource.uri_from_cmd(cmd)
+
+
+class HttpTikaResource(MicroServiceResource):
+
+    MICRO_SERVICE = "analyzer"
+    HEADERS = {
+        "Content-Type": "application/json"
+    }
+
+    def has_video(self):
+        tika_content_type, data = self.content
+        if data is None:
+            return False
+        text = data.get("text", "")
+        content_type = data.get("content-type", "")
+        if "leraar24.nl/api/video/" in text:
+            return True
+        if "video" in content_type:
+            return True
+        return any("video" in key for key in data.keys())
+
+    def is_zip(self):
+        tika_content_type, data = self.content
+        if data is None:
+            return False
+        content_type = data.get("mime-type", "")
+        return content_type == "application/zip"
+
+    @staticmethod
+    def hash_from_data(data):
+        if not data:
+            return ""
+        signed_url = URLObject(data["url"])
+        signature_keys = [key for key in signed_url.query_dict.keys() if key.startswith("X-Amz")]
+        unsigned_url = signed_url.del_query_params(signature_keys)
+        data["url"] = unsigned_url
+        return MicroServiceResource.hash_from_data(data)
 
 
 models.signals.post_delete.connect(

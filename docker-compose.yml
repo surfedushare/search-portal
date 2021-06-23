@@ -48,6 +48,12 @@ services:
     ports:
       - "6379:6379"
 
+  analyzer:
+    image: 017973353230.dkr.ecr.eu-central-1.amazonaws.com/analyzer:latest
+    ports:
+      - "9090:9090"
+
+
 volumes:
   postgres_database:
   elastic-data:

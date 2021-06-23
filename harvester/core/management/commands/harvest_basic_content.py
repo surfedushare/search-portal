@@ -39,8 +39,8 @@ class Command(PipelineCommand):
         if not len(seeds):
             return
 
-        tika_config = create_config("shell_resource", {
-            "resource": "core.TikaResource",
+        tika_config = create_config("http_resource", {
+            "resource": "core.HttpTikaResource",
         })
 
         main_phase = phase + ".main"
@@ -54,11 +54,12 @@ class Command(PipelineCommand):
         success_main = 0
         error_main = 0
         for batch in self.batchify(main_phase, signed_urls, len(signed_urls)):
-            batch_urls = [[url] for url in batch if url is not None]
-            batch_success, batch_error = run_serie(
+            batch_urls = [{"url": url} for url in batch if url is not None]
+            batch_success, batch_error = send_serie(
+                [[] for _ in batch_urls],
                 batch_urls,
-                [{} for _ in batch_urls],
-                config=tika_config
+                config=tika_config,
+                method="post"
             )
             success_main += len(batch_success)
             error_main += len(batch_error)
