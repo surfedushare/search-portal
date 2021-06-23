@@ -36,7 +36,8 @@ class SharekitMetadataExtraction(object):
         files = cls.get_files(node)
         if not files:
             return
-        return files[0][1]
+        url = files[0][1]
+        return url.strip()
 
     @classmethod
     def get_mime_type(cls, node):
@@ -166,5 +167,6 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "#is_restricted": SharekitMetadataExtraction.get_is_restricted,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
     "is_part_of": SharekitMetadataExtraction.get_is_part_of,
-    "has_parts": "$.attributes.hasParts"
+    "has_parts": "$.attributes.hasParts",
+    "doi": "$.attributes.doi",
 }

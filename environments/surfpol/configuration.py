@@ -253,6 +253,9 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'aggregation_level': {
                     'type': 'keyword'
                 },
+                'doi': {
+                    'type': 'keyword'
+                },
                 'keywords': {
                     'type': 'text',
                     'fields': {
