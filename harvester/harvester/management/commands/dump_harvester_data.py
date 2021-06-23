@@ -7,7 +7,7 @@ from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.models import Dataset, FileResource, TikaResource
+from core.models import Dataset, FileResource, HttpTikaResource
 from edurep.models import EdurepOAIPMH
 
 
@@ -18,11 +18,11 @@ class Command(base.LabelCommand):
 
     def dump_resources(self):
         call_command("dump_resource", "core.FileResource")
-        call_command("dump_resource", "core.TikaResource")
+        call_command("dump_resource", "core.HttpTikaResource")
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         return [
             os.path.join(get_dumps_path(FileResource), f"{FileResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(TikaResource), f"{TikaResource.get_name()}.dump.json"),
+            os.path.join(get_dumps_path(HttpTikaResource), f"{HttpTikaResource.get_name()}.dump.json"),
             os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json")
         ]
 

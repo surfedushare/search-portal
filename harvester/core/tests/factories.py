@@ -4,7 +4,7 @@ from datetime import datetime
 from django.conf import settings
 
 from core.models import (Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, ElasticIndex,
-                         FileResource, TikaResource)
+                         FileResource, HttpTikaResource)
 from core.constants import HarvestStages, Repositories, DeletePolicies
 
 
@@ -114,9 +114,9 @@ class FileResourceFactory(factory.django.DjangoModelFactory):
     uri = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
 
 
-class TikaResourceFactory(factory.django.DjangoModelFactory):
+class HttpTikaResourceFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = TikaResource
+        model = HttpTikaResource
 
-    uri = "java -J -jar -t http://localhost:8000/media/harvester/core/downloads/f/78/20200213173646291110." \
-          "Zorgwekkend_gedrag___kopie_1 tika-app-1.25.jar"
+    uri = "analyzer:9090/analyze"
+    data_hash = "cca4afcf421c44223806bf089aee485f44b416c6"

@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     resources = [
         "core.FileResource",
-        "core.TikaResource",
+        "core.HttpTikaResource",
     ]
 
     def handle(self, **options):

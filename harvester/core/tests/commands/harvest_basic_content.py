@@ -169,7 +169,7 @@ class TestBasicHarvest(TestCase):
                     {"url": s3_url + "test/20201022123202360897.Macro_meso_micro.html"}
                 ],
             ),
-            "Wrong arguments given to send_serie processing multiple core.TikaResource (main)"
+            "Wrong arguments given to send_serie processing multiple core.HttpTikaResource (main)"
         )
         # Check if presigning went ok otherwise it won't work on AWS environments
         self.assertEqual(generate_presigned_url_mock.call_count, 3)
@@ -198,5 +198,5 @@ class TestBasicHarvest(TestCase):
                     {"url": localhost + "test/20201022123202360897.Macro_meso_micro.html"}
                 ],
             ),
-            "Wrong arguments given to send_serie processing multiple core.TikaResource"
+            "Wrong arguments given to send_serie processing multiple core.HttpTikaResource"
         )
