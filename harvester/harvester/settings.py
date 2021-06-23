@@ -34,6 +34,7 @@ GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
 VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
 environment, session = create_configuration_and_session(project='harvester')
 credentials = session.get_credentials()
+IS_AWS = environment.aws.is_aws
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -159,7 +160,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 
-if environment.aws.harvest_content_bucket:
+if environment.aws.is_aws:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     MEDIA_ROOT = ''
     MEDIA_URL = f'https://{environment.aws.harvest_content_bucket}.s3.eu-central-1.amazonaws.com/'
@@ -183,7 +184,6 @@ REST_FRAMEWORK = {
 # Elastic Search
 # https://www.elastic.co/guide/index.html
 
-ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
 ELASTICSEARCH_HOST = environment.elastic_search.host
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https

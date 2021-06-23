@@ -18,7 +18,7 @@ def get_es_client():
             "verify_certs": settings.ELASTICSEARCH_VERIFY_CERTS,
         }
 
-    if settings.ELASTICSEARCH_IS_AWS:
+    if settings.IS_AWS:
         credentials = boto3.Session().get_credentials()
         http_auth = AWS4Auth(credentials.access_key, credentials.secret_key, "eu-central-1", "es",
                              session_token=credentials.token)

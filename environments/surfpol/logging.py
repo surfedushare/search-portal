@@ -22,7 +22,7 @@ from requests_aws4auth import AWS4Auth
 def create_elasticsearch_handler(index_name, index_frequency, environment, session):
     assert not index_name.startswith("logs"), \
         "Index names starting with 'logs' have a special meaning in ES and won't work"
-    is_aws = environment.elastic_search.is_aws  # AWS requires signing requests
+    is_aws = environment.aws.is_aws  # AWS requires signing requests
     elastic_host = environment.elastic_search.host
     elastic_protocol = environment.elastic_search.protocol
     elastic_domain = elastic_host.split(":")[0]
