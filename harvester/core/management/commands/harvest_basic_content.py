@@ -1,5 +1,4 @@
 from datagrowth.resources.http.tasks import send_serie
-from datagrowth.resources.shell.tasks import run_serie
 from datagrowth.configuration import create_config
 from core.management.base import PipelineCommand
 from core.constants import HarvestStages

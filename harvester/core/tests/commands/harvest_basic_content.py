@@ -49,7 +49,6 @@ DOWNLOAD_ALLOWED_DUMMY_SEEDS = [
 DUMMY_SEEDS = DOWNLOAD_ALLOWED_DUMMY_SEEDS + DOWNLOAD_NOT_ALLOWED_DUMMY_SEEDS
 
 
-
 def generate_presigned_url(permission, Params, ExpiresIn):
     return os.path.join("https://test-bucket-name.s3.amazonaws.com", Params["Key"])
 
