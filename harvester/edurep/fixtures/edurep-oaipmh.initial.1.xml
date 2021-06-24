@@ -10,7 +10,7 @@
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd</identifier>
                 <datestamp>2019-12-11T13:12:39Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -199,7 +199,7 @@
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af</identifier>
                 <datestamp>2019-12-11T13:18:38Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -435,7 +435,7 @@ END:VCARD</czp:vcard>
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:b5473dd1-8aa4-455f-b359-9af8081ce697</identifier>
                 <datestamp>2019-12-11T13:18:38Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -655,7 +655,7 @@ END:VCARD</czp:vcard>
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:wrong-copyright</identifier>
                 <datestamp>2019-12-11T13:18:38Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

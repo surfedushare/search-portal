@@ -11,14 +11,14 @@
             <header status="deleted">
                 <identifier>surfsharekit:oai:surfsharekit.nl:3d2940a0-9573-412e-8fa2-067c55e2a72f</identifier>
                 <datestamp>2019-11-05T00:06:37Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
         </record>
         <record>
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751</identifier>
                 <datestamp>2019-12-11T13:06:21Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -212,7 +212,7 @@
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257</identifier>
                 <datestamp>2019-12-11T13:06:21Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -392,7 +392,7 @@
             <header>
                 <identifier>wikiwijs:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e</identifier>
                 <datestamp>2019-12-11T13:06:23Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
