@@ -120,7 +120,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
     * complete recreate of existing indices (drop + create)
     """
 
-    fixtures = ["datasets-history", "index-history", "surf-oaipmh-2020-01-01", "resources"]
+    fixtures = ["datasets-history", "index-history", "resources"]
     elastic_client = get_elastic_client_mock(has_history=True)
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)

@@ -10,6 +10,7 @@ from core.constants import HarvestStages
 from core.management.commands.update_dataset import Command as DatasetCommand
 from core.logging import HarvestLogger
 from harvester.utils.extraction import get_harvest_seeds
+from edurep.tests.factories import EdurepOAIPMHFactory
 
 
 GET_HARVEST_SEEDS_TARGET = "core.management.commands.update_dataset.get_harvest_seeds"
@@ -33,16 +34,17 @@ DUMMY_SEEDS = [
 
 class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
-    fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
+    fixtures = ["datasets-new", "resources"]
 
     def setUp(self):
         self.current_time = now()
         # Moving the VIDEO source to complete to test it gets ignored by the dataset command
-        # Setting the stage of the "surf" set harvests to VIDEO
+        # Setting the stage of the "surfsharekit" set harvests to VIDEO
         # The only valid stage for "update_dataset" to act on.
         Harvest.objects.filter(stage=HarvestStages.VIDEO).update(stage=HarvestStages.COMPLETE)
-        Harvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        Harvest.objects.filter(source__spec="surfsharekit").update(stage=HarvestStages.VIDEO)
         Harvest.objects.update(harvested_at=self.current_time)
+        EdurepOAIPMHFactory.create_common_edurep_responses()
         super().setUp()
 
     def get_command_instance(self):
@@ -62,7 +64,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         # We'll test those separately, but check if they get called with the seeds returned by get_harvest_seeds
         call_command("update_dataset", "--dataset=test")
         # Asserting usage of get_harvest_seeds
-        seeds_target.assert_called_once_with("surf", make_aware(datetime(year=1970, month=1, day=1)),
+        seeds_target.assert_called_once_with("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)),
                                              include_no_url=True)
         # Asserting usage of handle_upsert_seeds
         upsert_target.assert_called_once()
@@ -76,11 +78,11 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         self.assertEqual(args[1], DUMMY_SEEDS[-1:])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = Harvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
         self.assertEqual(
             surf_harvest.stage,
             HarvestStages.PREVIEW,
-            "surf set harvest should got updated to stage PREVIEW to prevent re-harvest in the future"
+            "surfsharekit set harvest should got updated to stage PREVIEW to prevent re-harvest in the future"
         )
         self.assertEqual(
             surf_harvest.latest_update_at,
@@ -107,7 +109,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
         except Harvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
-        surf_harvest = Harvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
         surf_harvest.stage = HarvestStages.BASIC
         surf_harvest.save()
         try:
@@ -118,11 +120,11 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
     def test_handle_upsert_seeds(self):
         dataset_version = DatasetVersion.objects.last()
-        collection = Collection.objects.create(name="surf", dataset_version=dataset_version)
+        collection = Collection.objects.create(name="surfsharekit", dataset_version=dataset_version)
         command = self.get_command_instance()
         upserts = [
             seed
-            for seed in get_harvest_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") == "active"
         ]
         skipped, documents_count = command.handle_upsert_seeds(collection, upserts)
@@ -147,11 +149,11 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
     def test_handle_deletion_seeds(self):
         dataset_version = DatasetVersion.objects.last()
-        collection = Collection.objects.create(name="surf", dataset_version=dataset_version)
+        collection = Collection.objects.create(name="surfsharekit", dataset_version=dataset_version)
         command = self.get_command_instance()
         deletes = [
             seed
-            for seed in get_harvest_seeds("surf", make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") != "active"
         ]
         # Basically we're testing that deletion seeds are not triggering errors when their targets do not exist.
@@ -161,12 +163,13 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
 class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
-    fixtures = ["datasets-history", "surf-oaipmh-2020-01-01", "resources"]
+    fixtures = ["datasets-history", "resources"]
 
     def setUp(self):
         # Setting the stage of the "surf" set harvests to VIDEO.
         # The only valid stage for "update_dataset" to act on.
         Harvest.objects.filter(source__spec="surf").update(stage=HarvestStages.VIDEO)
+        EdurepOAIPMHFactory.create_common_edurep_responses(include_delta=True)
         super().setUp()
 
     def get_command_instance(self):
@@ -177,7 +180,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
     def test_handle_upsert_seeds(self):
         dataset_version = DatasetVersion.objects.last()
-        collection = Collection.objects.get(name="surf", dataset_version=dataset_version)
+        collection = Collection.objects.get(name="surfsharekit", dataset_version=dataset_version)
         command = self.get_command_instance()
         # Checking the state before the test
         document_count = collection.document_set.count()
@@ -193,7 +196,7 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         # Perform the test
         upserts = [
             seed
-            for seed in get_harvest_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") == "active"
         ]
         skipped, documents_count = command.handle_upsert_seeds(collection, upserts)
@@ -237,12 +240,12 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
     def test_handle_deletion_seeds(self):
         dataset_version = DatasetVersion.objects.last()
-        collection = Collection.objects.get(name="surf", dataset_version=dataset_version)
+        collection = Collection.objects.get(name="surfsharekit", dataset_version=dataset_version)
         command = self.get_command_instance()
         document_count = collection.document_set.count()
         deletes = [
             seed
-            for seed in get_harvest_seeds("surf", make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") != "active"
         ]
         document_deletes = command.handle_deletion_seeds(collection, deletes)

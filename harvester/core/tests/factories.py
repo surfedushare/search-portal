@@ -52,7 +52,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         language = "nl"
 
     dataset_version = factory.SubFactory(DatasetVersionFactory)
-    reference = factory.Sequence(lambda n: "surf:oai:sufsharekit.nl:{}".format(n))
+    reference = factory.Sequence(lambda n: "surfsharekit:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
             "external_id": o.reference,

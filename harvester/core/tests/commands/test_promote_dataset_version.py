@@ -8,7 +8,7 @@ from core.tests.mocks import get_elastic_client_mock
 
 class TestPromoteDatasetVersion(TestCase):
 
-    fixtures = ["datasets-history", "index-history", "surf-oaipmh-2020-01-01", "resources"]
+    fixtures = ["datasets-history", "index-history", "resources"]
     elastic_client = get_elastic_client_mock(has_history=True)
 
     def setUp(self):

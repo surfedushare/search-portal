@@ -10,6 +10,7 @@ from core.constants import HarvestStages
 from core.models import Harvest
 from core.management.commands.harvest_basic_content import Command as BasicHarvestCommand
 from core.logging import HarvestLogger
+from edurep.tests.factories import EdurepOAIPMHFactory
 
 
 GET_HARVEST_SEEDS_TARGET = "core.management.commands.harvest_basic_content.get_harvest_seeds"
@@ -63,7 +64,11 @@ def generate_presigned_url(permission, Params, ExpiresIn):
 
 class TestBasicHarvest(TestCase):
 
-    fixtures = ["datasets-new", "surf-oaipmh-1970-01-01", "resources"]
+    fixtures = ["datasets-new", "resources"]
+
+    def setUp(self):
+        EdurepOAIPMHFactory.create_common_edurep_responses()
+        super().setUp()
 
     def get_command_instance(self):
         command = BasicHarvestCommand()
@@ -82,7 +87,7 @@ class TestBasicHarvest(TestCase):
         call_command("harvest_basic_content", "--dataset=test")
         # Asserting usage of get_harvest_seeds
         seeds_target.assert_called_once_with(
-            "surf", make_aware(datetime(year=1970, month=1, day=1)),
+            "surfsharekit", make_aware(datetime(year=1970, month=1, day=1)),
             include_deleted=False
         )
         # Asserting usage of download_seed_files
@@ -91,11 +96,11 @@ class TestBasicHarvest(TestCase):
         extract_target.assert_called_once_with("basic.extract", DOWNLOAD_ALLOWED_DUMMY_SEEDS, [1])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = Harvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
         self.assertEqual(
             surf_harvest.stage,
             HarvestStages.BASIC,
-            "surf set harvest should got updated to stage BASIC to prevent re-harvest in the future"
+            "surfsharekit set harvest should got updated to stage BASIC to prevent re-harvest in the future"
         )
         edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
@@ -126,7 +131,7 @@ class TestBasicHarvest(TestCase):
         except Harvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
-        surf_harvest = Harvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
         surf_harvest.stage = HarvestStages.BASIC
         surf_harvest.save()
         try:
