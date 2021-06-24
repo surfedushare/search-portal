@@ -64,6 +64,7 @@ class Document(DocumentBase):
             'keywords': self.properties.get('keywords', []),
             'harvest_source': self.collection.name,
             'doi': self.properties.get('doi', None),
+            'material_type': self.properties.get('material_type', None),
         }
 
     def to_search(self):

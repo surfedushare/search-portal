@@ -149,6 +149,16 @@ class EdurepDataExtraction(object):
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
+    def get_material_type(cls, soup, el):
+        material_types = el.find_all('czp:learningresourcetype')
+        if not material_types:
+            return []
+        return [
+            material_type.find('czp:value').find('czp:langstring').text.strip()
+            for material_type in material_types
+        ]
+
+    @classmethod
     def get_copyright(cls, soup, el):
         node = el.find('czp:copyrightandotherrestrictions')
         if node is None:
@@ -311,6 +321,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "description": EdurepDataExtraction.get_description,
     "mime_type": EdurepDataExtraction.get_mime_type,
     "technical_type": EdurepDataExtraction.get_technical_type,
+    "material_type": EdurepDataExtraction.get_material_type,
     "copyright": EdurepDataExtraction.get_copyright,
     "aggregation_level": EdurepDataExtraction.get_aggregation_level,
     "authors": EdurepDataExtraction.get_authors,
