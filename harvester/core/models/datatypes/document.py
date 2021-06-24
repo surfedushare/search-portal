@@ -17,7 +17,7 @@ class Document(DocumentBase):
         return "unk"
 
     @staticmethod
-    def get_search_document_details(reference_id, url, title, text, mime_type, file_type,
+    def get_search_document_details(reference_id, url, title, text, mime_type, file_type, technical_type,
                                     is_part_of=None, has_parts=None):
         has_parts = has_parts or []
         is_part_of = is_part_of or []
@@ -26,6 +26,7 @@ class Document(DocumentBase):
             'title': title,
             'url': url,
             'file_type': file_type,
+            'technical_type': technical_type,
             'mime_type': mime_type,
             'has_parts': has_parts,
             'is_part_of': is_part_of,
@@ -63,6 +64,7 @@ class Document(DocumentBase):
             'keywords': self.properties.get('keywords', []),
             'harvest_source': self.collection.name,
             'doi': self.properties.get('doi', None),
+            'material_type': self.properties.get('material_type', None),
         }
 
     def to_search(self):
@@ -74,6 +76,7 @@ class Document(DocumentBase):
             self.properties.get("text", None),
             self.properties["mime_type"],
             self.properties["file_type"],
+            self.properties["technical_type"],
             is_part_of=self.properties.get("is_part_of", []),
             has_parts=self.properties.get("has_parts", [])
         )

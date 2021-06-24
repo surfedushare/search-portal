@@ -272,6 +272,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'file_type': {
                     'type': 'keyword'
                 },
+                'technical_type': {
+                    'type': 'keyword'
+                },
+                'material_type': {
+                    'type': 'keyword'
+                },
                 'id': {'type': 'text'},
                 'external_id': {
                     'type': 'keyword'

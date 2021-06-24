@@ -38,7 +38,11 @@ class BaseElasticSearchMixin(object):
         cls.elastic.indices.delete(settings.ELASTICSEARCH_UNK_INDEX)
 
 
-@override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
+@override_settings(
+    ELASTICSEARCH_NL_INDEX="test-nl",
+    ELASTICSEARCH_EN_INDEX="test-en",
+    ELASTICSEARCH_UNK_INDEX="test-unk"
+)
 class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 
     fixtures = ['locales', 'filter-categories', 'privacy_statements']
@@ -57,7 +61,11 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
         self.selenium.quit()
 
 
-@override_settings(ELASTICSEARCH_NL_INDEX="test-nl", ELASTICSEARCH_EN_INDEX="test-en")
+@override_settings(
+    ELASTICSEARCH_NL_INDEX="test-nl",
+    ELASTICSEARCH_EN_INDEX="test-en",
+    ELASTICSEARCH_UNK_INDEX="test-unk"
+)
 class BaseElasticSearchTestCase(BaseElasticSearchMixin, TestCase):
 
     fixtures = ['locales', 'filter-categories', 'privacy_statements']

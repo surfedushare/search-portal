@@ -19,7 +19,11 @@
       >
         <span class="title">{{ setMaterial.title }}</span>
         <span class="type">
-          {{ setMaterial.format !== 'unknown' ? $t(setMaterial.format) : '-' }}
+          {{
+            setMaterial.technical_type !== 'unknown'
+              ? $t(setMaterial.technical_type)
+              : '-'
+          }}
         </span>
         <span class="link">
           <a

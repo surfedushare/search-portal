@@ -256,46 +256,6 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
-    def test_filter_search_home_by_file_type(self):
-        """
-        Loading the homepage, selecting WO as educational level and making a search
-        """
-        self.selenium.get(self.live_server_url)
-        self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
-        self.selenium.find_element_by_css_selector("#text").click()
-        self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
-        # Checking search results and file type filters should be visible
-        self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element(
-                (By.XPATH, "//li[.//h4[text()[contains(., 'Bestandstype')]]]"),
-                "Bestandstype"
-            )
-        )
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (2)"))
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#text ~ label"), "Tekst (3)"))
-        WebDriverWait(self.selenium, 2).until(
-            EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#video"), False))
-        WebDriverWait(self.selenium, 2).until(
-            EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#text"), True))
-
-        # Now we'll be clicking open a lot of the other filters to make sure their counts are correct
-        educational_levels = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Onderwijsniveau')]]]")
-        educational_levels.click()
-        source_category = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bron')]]]")
-        source_category.click()
-        # And check the actual counts per filter
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (2)"))
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (1)"))
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (1)"))
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (2)"))
-
     def test_filter_search_missing_filter_translations(self):
         math_discipline = MpttFilterItem.objects.get(id="7268e600-42d4-4508-9072-3365ec12416a")
         math_discipline.name = "Piskunde"

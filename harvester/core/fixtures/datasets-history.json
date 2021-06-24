@@ -120,6 +120,8 @@
                 "copyright": "cc-by-nc-40",
                 "copyright_description": "http://creativecommons.org/licenses/by-nc/4.0/",
                 "file_type": "text",
+                "technical_type": "document",
+                "material_type": ["kennisoverdracht"],
                 "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "files": [
                     [
@@ -186,6 +188,8 @@
                 "copyright": "cc-by-40",
                 "copyright_description": "http://creativecommons.org/licenses/by/4.0/",
                 "file_type": "text",
+                "technical_type": "website",
+                "material_type": [],
                 "mime_type": "text/html",
                 "files": [
                     [
@@ -251,6 +255,8 @@
                 "copyright": "cc-by-sa-40",
                 "copyright_description": null,
                 "file_type": "digiboard",
+                "technical_type": "app",
+                "material_type": [],
                 "mime_type": "application/x-zip-compressed",
                 "files": [
                     [
@@ -316,6 +322,8 @@
                 "copyright": "cc-by-nc-40",
                 "copyright_description": null,
                 "file_type": "text",
+                "technical_type": "website",
+                "material_type": [],
                 "mime_type": "text/html",
                 "files": [
                     [
@@ -381,6 +389,8 @@
                 "copyright": "cc-by-sa-40",
                 "copyright_description": "http://creativecommons.org/licenses/by-sa/4.0/",
                 "file_type": "text",
+                "technical_type": "website",
+                "material_type": [],
                 "mime_type": "text/html",
                 "files": [
                     [
@@ -446,6 +456,8 @@
                 "copyright": "cc-by-sa-40",
                 "copyright_description": "http://creativecommons.org/licenses/by-sa/4.0/",
                 "file_type": "pdf",
+                "technical_type": "document",
+                "material_type": [],
                 "mime_type": "application/pdf",
                 "files": [
                     [
