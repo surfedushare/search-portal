@@ -29,11 +29,9 @@
           <Search
             v-model="searchText"
             :select-options="educationalLevelOptions"
-            :checkbox-options="materialTypeOptions"
             class="main__info_search"
             @onSearch="searchMaterials"
             @selectDropdownOption="setEducationalLevelFilter"
-            @selectCheckboxOption="setMaterialTypeFilter"
           />
         </div>
       </div>
@@ -95,7 +93,6 @@ import PopularList from '~/components/Communities/PopularList'
 import { generateSearchMaterialsQuery } from '../components/_helpers'
 
 const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom.educational.context'
-const MATERIAL_FORMAT_ID = 'lom.technical.format'
 
 export default {
   components: {
@@ -124,9 +121,6 @@ export default {
     },
     educationalLevelOptions() {
       return this.getFilterOptions(EDUCATIONAL_LEVEL_CATEGORY_ID)
-    },
-    materialTypeOptions() {
-      return this.getFilterOptions(MATERIAL_FORMAT_ID)
     }
   },
   mounted() {
@@ -154,16 +148,6 @@ export default {
     },
     setEducationalLevelFilter(value) {
       this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value]
-    },
-    setMaterialTypeFilter({ value, checked }) {
-      const currentChecked = this.filters[MATERIAL_FORMAT_ID] || []
-      if (checked) {
-        this.filters[MATERIAL_FORMAT_ID] = [...currentChecked, value]
-      } else {
-        this.filters[MATERIAL_FORMAT_ID] = currentChecked.filter(
-          x => x !== value
-        )
-      }
     },
     searchMaterials() {
       this.$router.push(
