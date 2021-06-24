@@ -56,23 +56,27 @@
     },
     {
         "model": "core.harvest",
-        "pk": 46,
+        "pk": 1,
         "fields": {
             "source": 1,
             "dataset": 19,
             "latest_update_at": "1970-01-01T00:00:00Z",
             "harvested_at": "2020-02-10T13:08:39.315Z",
+            "purge_after": null,
+            "is_syncing": false,
             "stage": "Complete"
         }
     },
     {
         "model": "core.harvest",
-        "pk": 42,
+        "pk": 2,
         "fields": {
             "source": 2,
             "dataset": 19,
             "latest_update_at": "1970-01-01T00:00:00Z",
             "harvested_at": "2020-02-10T13:08:39.315Z",
+            "purge_after": null,
+            "is_syncing": false,
             "stage": "Video"
         }
     },
