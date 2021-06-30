@@ -34,7 +34,7 @@ DUMMY_SEEDS = [
 
 class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
-    fixtures = ["datasets-new", "resources"]
+    fixtures = ["datasets-new", "resources-basic-initial"]
 
     def setUp(self):
         self.current_time = now()
@@ -163,7 +163,7 @@ class TestCreateOrUpdateDatasetNoHistory(TestCase):
 
 class TestCreateOrUpdateDatasetWithHistory(TestCase):
 
-    fixtures = ["datasets-history", "resources"]
+    fixtures = ["datasets-history", "resources-basic-initial", "resources-basic-delta"]
 
     def setUp(self):
         # Setting the stage of the "surf" set harvests to VIDEO.
@@ -185,12 +185,8 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         # Checking the state before the test
         document_count = collection.document_set.count()
         vortex_queryset = collection.documents.filter(properties__title="Using a Vortex | Wageningen UR")
-        handson_queryset = collection.documents.filter(
-            properties__title="Hands-on exercise based on WEKA - Tuning and Testing"
-        )
         self.assertEqual(vortex_queryset.count(), 1,
                          "Expected the start state to contain 'Using a Vortex'")
-        self.assertEqual(handson_queryset.count(), 1, "Expected the start state to contain 'Hands-on exercise'")
         for doc in collection.documents.all():
             self.assertEqual(doc.created_at, doc.modified_at, f"Document is unexpectedly updated: {doc.id}")
         # Perform the test
@@ -202,27 +198,26 @@ class TestCreateOrUpdateDatasetWithHistory(TestCase):
         skipped, documents_count = command.handle_upsert_seeds(collection, upserts)
         # Checking the state after the test
         self.assertEqual(skipped, 0)
-        self.assertEqual(collection.document_set.count(), document_count+2)
+        self.assertEqual(collection.document_set.count(), document_count+3)
         # Check video documents content updates
         vortex_updateset = collection.documents.filter(properties__title="Using a Vortex (responsibly) | Wageningen UR")
         self.assertEqual(vortex_updateset.count(), 1)
         self.assertEqual(vortex_queryset.count(), 0)
         # Check regular document content updates
-        handson_updateset = collection.documents.filter(
+        handson_insertset = collection.documents.filter(
             properties__title="Hands-off exercise based on WEKA - Tuning and Testing"
         )
-        self.assertEqual(handson_updateset.count(), 1)
-        self.assertEqual(handson_queryset.count(), 0)
-        update_ids = set()
+        self.assertEqual(handson_insertset.count(), 1)
+        processed_ids = set()
         for update in vortex_updateset:
             self.assertNotEqual(update.created_at, update.modified_at,
                                 f"Document is unexpectedly not updated: {update.id}")
-            update_ids.add(update.id)
-        for update in handson_updateset:
-            self.assertNotEqual(update.created_at, update.modified_at,
-                                f"Document is unexpectedly not updated: {update.id}")
-            update_ids.add(update.id)
-        not_updated = collection.documents.exclude(id__in=update_ids)
+            processed_ids.add(update.id)
+        for insert in handson_insertset:
+            self.assertEqual(insert.created_at.replace(microsecond=0), insert.modified_at.replace(microsecond=0),
+                             f"Document is unexpectedly not inserted: {insert.id}")
+            processed_ids.add(insert.id)
+        not_updated = collection.documents.exclude(id__in=processed_ids)
         self.assertNotEqual(not_updated.count(), 0)
         for not_update in not_updated:
             self.assertEqual(

@@ -14,6 +14,7 @@
                 <setSpec>surfsharekit</setSpec>
             </header>
         </record>
+
         <record>
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751</identifier>
@@ -78,7 +79,7 @@
                     <czp:technical>
                         <czp:format>application/vnd.openxmlformats-officedocument.wordprocessingml.document</czp:format>
                         <czp:location>
-                            https://surfsharekit.nl/dl/surf/5af0e26f-c4d2-4ddd-94ab-7dd0bd531751/182216be-31a2-43c3-b7de-e5dd355b09f7
+                            https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7
                         </czp:location>
                     </czp:technical>
                     <czp:educational>
@@ -208,6 +209,7 @@
                 </provenance>
             </about>
         </record>
+
         <record>
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257</identifier>
@@ -530,21 +532,13 @@ END:VCARD</czp:vcard></czp:centity>
                     </czp:metametadata>
                     <czp:technical>
                         <czp:format>application/x-zip-compressed</czp:format>
-                        <czp:format>application/octet-stream</czp:format>
-                        <czp:format>application/epub+zip</czp:format>
                         <czp:format>application/pdf</czp:format>
                         <czp:format>text/html</czp:format>
                         <czp:location>
-                            https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/88c687c8-fbc4-4d69-a27d-45d9f30d642b
+                            https://surfsharekit.nl/objectstore/88c687c8-fbc4-4d69-a27d-45d9f30d642b
                         </czp:location>
                         <czp:location>
-                            https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/96f09972-75e3-4712-bcbd-b93a531ddea3
-                        </czp:location>
-                        <czp:location>
-                            https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/5f92c38d-59b1-4ae9-a614-ee0e588dcf4b
-                        </czp:location>
-                        <czp:location>
-                            https://surfsharekit.nl/dl/surf/63903863-6c93-4bda-b850-277f3c9ec00e/9f71f782-09de-48b1-a10f-15d882471df7
+                            https://surfsharekit.nl/objectstore/9f71f782-09de-48b1-a10f-15d882471df7
                         </czp:location>
                         <czp:location>https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729</czp:location>
                     </czp:technical>

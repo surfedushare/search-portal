@@ -142,7 +142,7 @@ class TestBasicHarvest(TestCase):
             "Wrong arguments given to send_serie processing multiple core.FileResource (main)")
         self.assertEqual(kwargs["method"], "get", "core.FileResource for main content is not using HTTP GET method")
 
-    @override_settings(AWS_STORAGE_BUCKET_NAME="test-bucket-name")
+    @override_settings(IS_AWS=True)
     @patch(GENERATE_PRESIGNED_URL_TARGET, side_effect=generate_presigned_url)
     def test_extract_from_seed_files_s3(self, generate_presigned_url_mock):
         # Asserting Datagrowth usage for extracting content from files with Tika.
@@ -187,7 +187,7 @@ class TestBasicHarvest(TestCase):
         args, kwargs = main_call
         config = kwargs["config"]
         self.assertEqual(config.resource, "core.HttpTikaResource", "Wrong resource used for extracting content")
-        localhost = "http://localhost:8000/media/harvester/"
+        localhost = "http://harvester:8080/media/harvester/"
         self.assertEqual(
             args,
             (

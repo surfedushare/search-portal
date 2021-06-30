@@ -45,7 +45,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
 
     def test_get_complete_set(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 18)
+        self.assertEqual(len(seeds), 17)
         self.check_seed_integrity(seeds)
 
     def test_get_partial_set(self):
@@ -56,7 +56,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
     def test_get_complete_set_without_deletes(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)),
                                   include_deleted=False)
-        self.assertEqual(len(seeds), 15)
+        self.assertEqual(len(seeds), 14)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set_without_deletes(self):
@@ -67,7 +67,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
 
     def test_from_youtube_property(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 18)
+        self.assertEqual(len(seeds), 17)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
         self.assertEqual(len(youtube_seeds), 8)
 
@@ -79,7 +79,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])
         self.assertEqual(seeds[5]['publishers'], ['SURFnet'])
-        self.assertEqual(seeds[16]['publishers'], ['HBO Verpleegkunde', 'Erasmus Medisch Centrum'])
+        self.assertEqual(seeds[15]['publishers'], ['HBO Verpleegkunde', 'Erasmus Medisch Centrum'])
 
     def test_is_restricted(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
@@ -132,8 +132,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
         self.assertEqual(len(seeds[1]["files"]), 1)
         mime_type, link, name = seeds[1]["files"][0]
         self.assertEqual(mime_type, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        self.assertEqual(link, "https://surfsharekit.nl/dl/surf/5af0e26f-c4d2-4ddd-94ab-7dd0bd531751/"
-                               "182216be-31a2-43c3-b7de-e5dd355b09f7")
+        self.assertEqual(link, "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7")
         self.assertEqual(name, "URL 1")
 
     def test_parse_copyright_description(self):
@@ -158,7 +157,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
 
     def test_get_copyright(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 18, "Expected get_harvest_seeds to filter differently based on copyright")
+        self.assertEqual(len(seeds), 17, "Expected get_harvest_seeds to filter differently based on copyright")
         self.assertEqual(seeds[1]["copyright"], "cc-by-nc-40",
                          "Expected 'yes' copyright to look at copyright_description")
         self.assertEqual(seeds[2]["copyright"], "cc-by-40",
