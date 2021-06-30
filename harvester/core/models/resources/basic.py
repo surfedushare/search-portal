@@ -23,8 +23,8 @@ class FileResource(HttpFileResource):
         Generate a presigned URL to share the S3 object where this resource is stored.
         If the application is not connected to S3 it simply returns a local path.
         """
-        if settings.AWS_STORAGE_BUCKET_NAME is None:
-            return os.path.join(settings.MEDIA_URL, quote_plus(self.body, safe="/"))
+        if not settings.IS_AWS:
+            return "http://harvester:8080" + os.path.join(settings.MEDIA_URL, quote_plus(self.body, safe="/"))
 
         # Generate a presigned URL for the S3 object
         lookup_params = {

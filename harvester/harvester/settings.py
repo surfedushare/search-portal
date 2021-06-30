@@ -170,7 +170,7 @@ if environment.aws.is_aws:
 else:
     DEFAULT_FILE_STORAGE = 'core.files.storage.OverwriteStorage'
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
-    MEDIA_URL = 'http://localhost:8000/media/harvester/'
+    MEDIA_URL = '/media/harvester/'
     AWS_STORAGE_BUCKET_NAME = None
 
 # Rest framework
