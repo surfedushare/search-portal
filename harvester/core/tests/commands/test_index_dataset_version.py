@@ -47,7 +47,7 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
     This test case represents the scenario where a all harvest data gets pushed to an index for the first time
     """
 
-    fixtures = ["datasets-history", "resources"]
+    fixtures = ["datasets-history"]
     elastic_client = get_elastic_client_mock()
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
@@ -120,7 +120,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
     * complete recreate of existing indices (drop + create)
     """
 
-    fixtures = ["datasets-history", "index-history", "resources"]
+    fixtures = ["datasets-history", "index-history"]
     elastic_client = get_elastic_client_mock(has_history=True)
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
