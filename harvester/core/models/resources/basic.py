@@ -115,8 +115,9 @@ class HttpTikaResource(MicroServiceResource):
         signed_url = URLObject(data["url"])
         signature_keys = [key for key in signed_url.query_dict.keys() if key.startswith("X-Amz")]
         unsigned_url = signed_url.del_query_params(signature_keys)
-        data["url"] = unsigned_url
-        return MicroServiceResource.hash_from_data(data)
+        unsigned_data = copy(data)
+        unsigned_data["url"] = unsigned_url
+        return MicroServiceResource.hash_from_data(unsigned_data)
 
 
 models.signals.post_delete.connect(
