@@ -9,6 +9,7 @@ from .resources.youtube_thumbnail import YoutubeThumbnailResource
 from .datatypes.dataset import Dataset, DatasetVersion
 from .datatypes.collection import Collection
 from .datatypes.document import Document
+from .datatypes.pipeline import Batch, ProcessResult
 
 from .harvest import Harvest, HarvestSource
 
