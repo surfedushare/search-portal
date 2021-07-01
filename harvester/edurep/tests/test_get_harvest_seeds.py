@@ -166,8 +166,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
 
     def test_get_technical_type(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[0]["technical_type"], "unknown",
-                         "Expected deleted material to have unknown technical type")
+        self.assertIsNone(seeds[0]["technical_type"], "Expected deleted material to have unknown technical type")
         self.assertEqual(seeds[1]["technical_type"], "document",
                          "Expected technical type to be deferred from mime type")
         self.assertEqual(seeds[2]["technical_type"], "unknown",
