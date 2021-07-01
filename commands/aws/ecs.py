@@ -74,6 +74,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         cluster=ctx.config.aws.cluster_arn,
         taskDefinition=task_definition_arn,
         launchType="FARGATE",
+        enableExecuteCommand=True,
         overrides={
             "containerOverrides": [{
                 "name": f"{target_info['name']}-container",
