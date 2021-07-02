@@ -11,7 +11,7 @@
             <header status="deleted">
                 <identifier>surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751</identifier>
                 <datestamp>2020-02-29T00:06:37Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
         </record>
 
@@ -19,7 +19,7 @@
             <header status="deleted">
                 <identifier>surfsharekit:oai:surfsharekit.nl:63e5d051-bb7b-45df-a1be-debea9820240</identifier>
                 <datestamp>2020-02-11T13:06:23Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
         </record>
 
@@ -27,7 +27,7 @@
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257</identifier>
                 <datestamp>2019-12-11T13:06:21Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -211,7 +211,7 @@
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:3e45b9e3-ba76-4200-a927-2902177f1f6c</identifier>
                 <datestamp>2020-01-15T00:11:29Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -401,7 +401,7 @@
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:4842596f-fe60-40ef-8c06-4d3d6e296ba4</identifier>
                 <datestamp>2020-01-15T00:11:29Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -585,7 +585,7 @@
             <header>
                 <identifier>surfsharekit:oai:surfsharekit.nl:b5473dd1-8aa4-455f-b359-9af8081ce697</identifier>
                 <datestamp>2019-12-11T13:18:38Z</datestamp>
-                <setSpec>surf</setSpec>
+                <setSpec>surfsharekit</setSpec>
             </header>
             <metadata>
                 <czp:lom xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

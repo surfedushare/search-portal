@@ -25,7 +25,7 @@ class Command(base.LabelCommand):
 
     resources = [
         "core.FileResource",
-        "core.TikaResource",
+        "core.HttpTikaResource",
         "edurep.EdurepOAIPMH"
     ]
 

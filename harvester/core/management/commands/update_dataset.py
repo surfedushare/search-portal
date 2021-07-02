@@ -93,7 +93,7 @@ class Command(PipelineCommand):
         if data is None:
             return self._create_document(text, meta=metadata, pipeline=pipeline)
         if not metadata.get("from_youtube"):
-            text = data.get("X-TIKA:content", "")
+            text = data.get("text", "")
         return self._create_document(text, meta=metadata, pipeline=pipeline)
 
     def handle_upsert_seeds(self, collection, seeds):

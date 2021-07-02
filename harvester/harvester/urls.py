@@ -31,5 +31,5 @@ urlpatterns = [
 
 
 # We provide *insecure* access to harvester content when dealing with local storage (aka localhost development)
-if settings.DEFAULT_FILE_STORAGE == 'django.core.files.storage.FileSystemStorage':
+if not settings.IS_AWS:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

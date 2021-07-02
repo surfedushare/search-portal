@@ -3,7 +3,7 @@ from django.contrib import admin
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin, HttpResourceAdmin, ShellResourceAdmin
 
 from core.models import (Dataset, DatasetVersion, Collection, Document, HarvestSource, ElasticIndex,
-                         CommonCartridge, FileResource, TikaResource)
+                         CommonCartridge, FileResource, TikaResource, HttpTikaResource)
 
 
 class HarvestSourceAdmin(admin.ModelAdmin):
@@ -49,3 +49,4 @@ admin.site.register(ElasticIndex, ElasticIndexAdmin)
 admin.site.register(CommonCartridge, CommonCartridgeAdmin)
 admin.site.register(FileResource, HttpResourceAdmin)
 admin.site.register(TikaResource, ShellResourceAdmin)
+admin.site.register(HttpTikaResource, HttpResourceAdmin)

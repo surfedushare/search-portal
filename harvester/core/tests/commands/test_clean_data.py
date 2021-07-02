@@ -5,11 +5,11 @@ from django.test import TestCase
 from django.core.management import call_command
 from django.utils.timezone import make_aware
 
-from core.models import Document, FileResource, TikaResource, DatasetVersion, Collection, Dataset, ElasticIndex
+from core.models import Document, FileResource, HttpTikaResource, DatasetVersion, Collection, Dataset, ElasticIndex
 from core.utils.resources import serialize_resource
 from core.tests.mocks import get_elastic_client_mock
 from core.tests.factories import (DatasetFactory, DatasetVersionFactory, CollectionFactory, DocumentFactory,
-                                  ElasticIndexFactory, FileResourceFactory, TikaResourceFactory)
+                                  ElasticIndexFactory, FileResourceFactory, HttpTikaResourceFactory)
 
 
 def create_dataset_version(dataset, version, created_at, copies=3):
@@ -44,7 +44,7 @@ def create_dataset_version(dataset, version, created_at, copies=3):
                 modified_at=created_at,
                 purge_at=created_at
             )
-            tika_resource = TikaResourceFactory.create(
+            tika_resource = HttpTikaResourceFactory.create(
                 created_at=created_at,
                 modified_at=created_at,
                 purge_at=created_at
@@ -97,7 +97,7 @@ class TestCleanData(TestCase):
         self.assertEqual(Collection.objects.count(), 8, "Expected one collection per dataset version")
         self.assertEqual(Document.objects.count(), 40, "Expected five documents per collection")
         self.assertEqual(FileResource.objects.count(), 40, "Expected one FileResource per Document")
-        self.assertEqual(TikaResource.objects.count(), 40, "Expected one TikaResource per Document")
+        self.assertEqual(HttpTikaResource.objects.count(), 40, "Expected one HttpTikaResource per Document")
         # Check if Elastic indices were removed properly as well
         self.assertEqual(get_es_client.call_count, 76, "Not sure why there are two calls per removed ElasticIndex")
         self.assertEqual(self.elastic_client.indices.exists.call_count, 38)
@@ -120,18 +120,18 @@ class TestCleanData(TestCase):
             new_doc.save()
         self.assertEqual(FileResource.objects.filter(id__in=old_file_ids).count(), len(old_file_ids),
                          "Old FileResource should remain, because new Documents use them")
-        self.assertEqual(TikaResource.objects.filter(id__in=old_tika_ids).count(), len(old_tika_ids),
-                         "Old TikaResource should remain, because new Documents use them")
+        self.assertEqual(HttpTikaResource.objects.filter(id__in=old_tika_ids).count(), len(old_tika_ids),
+                         "Old HttpTikaResource should remain, because new Documents use them")
         self.assertEqual(FileResource.objects.filter(id__in=new_file_ids).count(), len(new_file_ids),
                          "New FileResource without Document should remain, because they are new")
-        self.assertEqual(TikaResource.objects.filter(id__in=new_tika_ids).count(), len(new_tika_ids),
-                         "New TikaResource without Document should remain, because they are new")
+        self.assertEqual(HttpTikaResource.objects.filter(id__in=new_tika_ids).count(), len(new_tika_ids),
+                         "New HttpTikaResource without Document should remain, because they are new")
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     def test_clean_data_missing_resources(self, get_es_client):
         # We'll remove all resources. This should not interfere with deletion of other data
         FileResource.objects.all().delete()
-        TikaResource.objects.all().delete()
+        HttpTikaResource.objects.all().delete()
         get_es_client.reset_mock()
         call_command("clean_data")
         # Assert which data remains
@@ -147,7 +147,7 @@ class TestCleanData(TestCase):
         self.assertEqual(Collection.objects.count(), 8, "Expected one collection per dataset version")
         self.assertEqual(Document.objects.count(), 40, "Expected five documents per collection")
         self.assertEqual(FileResource.objects.count(), 0)
-        self.assertEqual(TikaResource.objects.count(), 0)
+        self.assertEqual(HttpTikaResource.objects.count(), 0)
         # Check if Elastic indices were removed properly as well
         self.assertEqual(get_es_client.call_count, 76, "Not sure why there are two calls per removed ElasticIndex")
         self.assertEqual(self.elastic_client.indices.exists.call_count, 38)

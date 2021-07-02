@@ -1,6 +1,6 @@
 from datagrowth.exceptions import DGResourceDoesNotExist
 
-from core.models import FileResource, TikaResource, YouTubeDLResource
+from core.models import FileResource, HttpTikaResource, YouTubeDLResource
 
 
 def serialize_resource(resource=None):
@@ -30,7 +30,9 @@ def get_basic_material_resources(url):
     if not file_resource.body:
         return file_resource, None
     try:
-        tika_resource = TikaResource(config={"cache_only": True}).run(file_resource.get_signed_absolute_uri())
+        tika_resource = HttpTikaResource(config={"cache_only": True}).post(
+            url=file_resource.get_signed_absolute_uri()
+        )
     except DGResourceDoesNotExist:
         return file_resource, None
     return file_resource, tika_resource

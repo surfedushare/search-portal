@@ -26,7 +26,7 @@ class ElasticSearchClientTestCase(TestCase):
         self.elastic_client.indices.create.reset_mock()
         self.elastic_client.indices.delete.reset_mock()
 
-    def assert_document_structure(self, document, has_text=True):
+    def assert_document_structure(self, document):
         # Here we check if documents have all required keys including _id
         expected_keys = {
             "title", "url", "external_id", "disciplines", "lom_educational_levels", "description", "publisher_date",
@@ -37,9 +37,10 @@ class ElasticSearchClientTestCase(TestCase):
         text_keys = {
             "text", "suggest_phrase",
         }
+        has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]
         if has_text:
             expected_keys.update(text_keys)
-        self.assertEqual(set(document.keys()), expected_keys)
+        self.assertEqual(set(document.keys()), expected_keys, document["_id"])
 
 
 class TestIndexDatasetVersion(ElasticSearchClientTestCase):
@@ -57,9 +58,9 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 2,
-            "nl": 3,
-            "unk": 1
+            "en": 7,
+            "nl": 2,
+            "unk": 2
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -130,9 +131,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 2,
-            "nl": 3,
-            "unk": 1
+            "en": 7,
+            "nl": 2,
+            "unk": 2
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -197,9 +198,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             DocumentFactory.create(dataset_version=old_version, collection=collection)
         # Expectations
         expected_doc_count = {
-            "en": 2,
-            "nl": 3,
-            "unk": 1
+            "en": 7,
+            "nl": 2,
+            "unk": 2
         }
         # Index normally and check that the new version still holds all documents
         call_command("index_dataset_version", "--dataset=test")
@@ -241,9 +242,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 2,
-            "nl": 3,
-            "unk": 1
+            "en": 7,
+            "nl": 2,
+            "unk": 2
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),

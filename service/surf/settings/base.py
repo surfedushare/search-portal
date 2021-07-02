@@ -29,6 +29,7 @@ from surfpol.logging import POLElasticsearchHandler, create_elasticsearch_handle
 # Like maintenance tasks and harvesting tasks
 PACKAGE_INFO = get_package_info()
 environment, session = create_configuration_and_session(project='service')
+IS_AWS = environment.aws.is_aws
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environment.secrets.django.secret_key
@@ -368,7 +369,6 @@ VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
 
 # Search
 
-ELASTICSEARCH_IS_AWS = environment.elastic_search.is_aws  # AWS requires signing requests
 ELASTICSEARCH_HOST = environment.elastic_search.host
 ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
 ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
