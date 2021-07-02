@@ -39,8 +39,8 @@ class Command(base.LabelCommand):
             queryset_to_disk(dataset.harvestsource_set, json_file)
             queryset_to_disk(dataset.harvest_set, json_file)
             queryset_to_disk(dataset.versions.filter(is_current=True), json_file)
-            queryset_to_disk(dataset.indices, json_file)
             for version in dataset.versions.filter(is_current=True):
+                queryset_to_disk(version.indices, json_file)
                 queryset_to_disk(version.collection_set, json_file)
                 queryset_to_disk(version.document_set, json_file)
 

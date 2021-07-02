@@ -56,13 +56,13 @@ class SharekitMetadataExtraction(object):
             return technical_type
         files = cls.get_files(node)
         if not files:
-            return "unknown"
+            return
         technical_type = settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(files[0][0], None)
         if technical_type:
             return technical_type
         file_url = files[0][1]
         if not file_url:
-            return "unknown"
+            return
         mime_type, encoding = guess_type(file_url)
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 

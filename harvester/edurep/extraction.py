@@ -144,7 +144,7 @@ class EdurepDataExtraction(object):
             return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
         url = cls.get_url(soup, el)
         if not url:
-            return "unknown"
+            return
         mime_type, encoding = guess_type(url)
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
