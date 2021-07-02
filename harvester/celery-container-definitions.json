@@ -18,5 +18,26 @@
         "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
       }
     }
+  },
+  {
+    "name": "analyzer",
+    "image": "${REPOSITORY}/analyzer:latest",
+    "essential": true,
+    "portMappings": [
+      {
+        "hostPort": 9090,
+        "protocol": "tcp",
+        "containerPort": 9090
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/harvester",
+        "awslogs-region": "eu-central-1",
+        "awslogs-stream-prefix": "analyzer",
+        "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+      }
+    }
   }
 ]
