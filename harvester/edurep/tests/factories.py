@@ -1,6 +1,7 @@
 import os
 import factory
 from datetime import datetime
+from urllib.parse import quote
 
 from django.conf import settings
 from django.utils.timezone import make_aware
@@ -17,6 +18,7 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
     class Params:
         is_initial = True
         number = 0
+        resumption = None
 
     since = factory.Maybe(
         "is_initial",
@@ -31,8 +33,9 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def uri(self):
-        return "staging.edurep.kennisnet.nl/edurep/oai?" \
-               f"from={self.since.date()}&metadataPrefix=lom&set={self.set_specification}&verb=ListRecords"
+        identity = f"from={self.since.date()}&metadataPrefix=lom&set={self.set_specification}" \
+            if not self.resumption else f"resumptionToken={quote(self.resumption)}"
+        return f"staging.edurep.kennisnet.nl/edurep/oai?{identity}&verb=ListRecords"
 
     @factory.lazy_attribute
     def request(self):
@@ -55,6 +58,6 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
     @classmethod
     def create_common_edurep_responses(cls, include_delta=False):
         cls.create(is_initial=True, number=0)
-        cls.create(is_initial=True, number=1)
+        cls.create(is_initial=True, number=1, resumption="c1576069959151499|u|f1970-01-01T00:00:00Z|mlom|ssurf")
         if include_delta:
             cls.create(is_initial=False, number=0)

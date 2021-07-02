@@ -9,6 +9,7 @@ from datagrowth.resources.http.tasks import send
 from core.models import Document, Harvest
 from core.constants import HarvestStages, Repositories
 from core.logging import HarvestLogger
+from edurep.tests.factories import EdurepOAIPMHFactory
 
 
 class TestMetadataHarvest(TestCase):
@@ -16,7 +17,11 @@ class TestMetadataHarvest(TestCase):
     This test case represents the scenario where a harvest is started from t=0
     """
 
-    fixtures = ["datasets-new", "surf-oaipmh-1970-01-01"]
+    fixtures = ["datasets-new"]
+
+    def setUp(self):
+        EdurepOAIPMHFactory.create_common_edurep_responses()
+        super().setUp()
 
     def test_edurep_surf(self):
         # Checking whether end result of the command returned by "handle" matches expectations.
@@ -33,11 +38,11 @@ class TestMetadataHarvest(TestCase):
         self.assertEqual(
             config.continuation_limit, 1000, "Expected very high continuation limit to assert complete sets"
         )
-        self.assertEqual(args, ("surf", "1970-01-01"), "Wrong arguments given to edurep.EdurepOAIPMH")
+        self.assertEqual(args, ("surfsharekit", "1970-01-01"), "Wrong arguments given to edurep.EdurepOAIPMH")
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = Harvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
         self.assertGreater(
             surf_harvest.harvested_at,
             make_aware(datetime(year=1970, month=1, day=1)),
@@ -57,7 +62,7 @@ class TestMetadataHarvest(TestCase):
         logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
         # Testing the case where a Dataset exists, but no harvest tasks are present
         logger_mock.end.reset_mock()
-        surf_harvest = Harvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
         call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
@@ -77,14 +82,18 @@ class TestMetadataHarvestWithHistory(TestCase):
     This test case represents the scenario where a harvest from a previous harvest
     """
 
-    fixtures = ["datasets-history", "surf-oaipmh-2020-01-01"]
+    fixtures = ["datasets-history"]
+
+    def setUp(self):
+        EdurepOAIPMHFactory.create_common_edurep_responses(include_delta=True)
+        super().setUp()
 
     def test_edurep_surf(self):
         # Checking whether end result of the command returned by "handle" matches expectations.
         # We'd expect one OAI-PMH calls to be made which should be a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
-        test_harvest = Harvest.objects.get(source__spec="surf")
+        test_harvest = Harvest.objects.get(source__spec="surfsharekit")
         test_harvest.prepare()
         with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
             call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
@@ -96,11 +105,11 @@ class TestMetadataHarvestWithHistory(TestCase):
         self.assertEqual(
             config.continuation_limit, 1000, "Expected very high continuation limit to assert complete sets"
         )
-        self.assertEqual(args, ("surf", "2020-02-10"), "Wrong arguments given to edurep.EdurepOAIPMH")
+        self.assertEqual(args, ("surfsharekit", "2020-02-10"), "Wrong arguments given to edurep.EdurepOAIPMH")
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = Harvest.objects.get(source__spec="surf")
+        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
         self.assertGreater(
             surf_harvest.harvested_at,
             make_aware(datetime(year=2020, month=2, day=10)),
