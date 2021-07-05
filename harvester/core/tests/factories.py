@@ -75,8 +75,8 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "url": o.url,
             "language": {"metadata": o.language},
             "disciplines": [],
-            "educational_levels": [],
-            "lom_educational_levels": [],
+            "lom_educational_levels": ["WO"],
+            "lowest_educational_level": 3,
             "authors": [],
             "publishers": [],
             "description": "Gedrag is zorgwekkend",
@@ -85,6 +85,11 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "copyright_description": "http://creativecommons.org/licenses/by/4.0/",
             "aggregation_level": "2",
             "text": "blabla",
+            "ideas": [],
+            "has_parts": [],
+            "is_part_of": [],
+            "doi": None,
+            "keywords": []
         })
 
 
