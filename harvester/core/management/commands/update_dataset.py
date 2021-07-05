@@ -35,7 +35,6 @@ class Command(PipelineCommand):
         pipeline["harvest"] = settings.GIT_COMMIT
 
         return {
-            "id": identifier,
             "external_id": meta["external_id"],
             "title": title,
             "language": {
