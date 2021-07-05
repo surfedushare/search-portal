@@ -36,7 +36,7 @@ class TestMetadataHarvest(TestCase):
         config = kwargs["config"]
         self.assertEqual(config.resource, "edurep.EdurepOAIPMH", "Wrong resource used for OAI-PMH calls")
         self.assertEqual(
-            config.continuation_limit, 1000, "Expected very high continuation limit to assert complete sets"
+            config.continuation_limit, 10000, "Expected very high continuation limit to assert complete sets"
         )
         self.assertEqual(args, ("surfsharekit", "1970-01-01"), "Wrong arguments given to edurep.EdurepOAIPMH")
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
@@ -103,7 +103,7 @@ class TestMetadataHarvestWithHistory(TestCase):
         config = kwargs["config"]
         self.assertEqual(config.resource, "edurep.EdurepOAIPMH", "Wrong resource used for OAI-PMH calls")
         self.assertEqual(
-            config.continuation_limit, 1000, "Expected very high continuation limit to assert complete sets"
+            config.continuation_limit, 10000, "Expected very high continuation limit to assert complete sets"
         )
         self.assertEqual(args, ("surfsharekit", "2020-02-10"), "Wrong arguments given to edurep.EdurepOAIPMH")
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
