@@ -29,7 +29,7 @@ def create_elasticsearch_handler(index_name, index_frequency, environment, sessi
     elastic_port = 443 if elastic_protocol == 'https' else 9200
     handler = {
         'level': 'DEBUG',
-        'class': 'surfpol.logging.ElasticsearchHandler',
+        'class': 'utils.logging.ElasticsearchHandler',
         'hosts': [{'host': elastic_domain, 'port': elastic_port}],
         'es_index_name': index_name,
         'es_additional_fields': {'container_id': environment.container.id},
