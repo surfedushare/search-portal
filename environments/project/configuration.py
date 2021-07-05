@@ -14,6 +14,8 @@ import json
 from invoke.config import Config
 import boto3
 import requests
+import importlib
+import sys
 
 
 MODE = os.environ.get("APPLICATION_MODE", "production")
@@ -24,6 +26,10 @@ ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 PREFIX = "POL"
 ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+# Some dynamic configuration depends on the project and we load that module here
+sys.path.append(ENVIRONMENTS)
+project_configuration = importlib.import_module(f"{PROJECT}.configuration")
 
 # Now we'll delete any items that are POL variables, but with empty values
 # Use a value of "0" for a Boolean instead of an empty string
@@ -192,20 +198,6 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         }
                     }
                 },
-                'transcription': {
-                    'type': 'text',
-                    'fields': {
-                        'analyzed': {
-                            'type': 'text',
-                            'analyzer': analyzer,
-                            'search_analyzer': search_analyzer,
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
-                },
                 'description': {
                     'type': 'text',
                     'fields': {
@@ -251,12 +243,6 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'type': 'date',
                     'format': 'strict_date_optional_time||yyyy-MM||epoch_millis'
                 },
-                'aggregation_level': {
-                    'type': 'keyword'
-                },
-                'doi': {
-                    'type': 'keyword'
-                },
                 'keywords': {
                     'type': 'text',
                     'fields': {
@@ -276,37 +262,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'technical_type': {
                     'type': 'keyword'
                 },
-                'material_type': {
-                    'type': 'keyword'
-                },
                 'id': {'type': 'text'},
                 'external_id': {
                     'type': 'keyword'
                 },
                 'harvest_source': {
                     'type': 'keyword'
-                },
-                'educational_levels': {
-                    'type': 'keyword'
-                },
-                'lom_educational_levels': {
-                    'type': 'keyword'
-                },
-                'disciplines': {
-                    'type': 'keyword'
-                },
-                'ideas': {
-                    'type': 'text',
-                    'fields': {
-                        'keyword': {
-                            'type': 'keyword',
-                            'ignore_above': 256
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
                 },
                 "suggest_completion": {
                     "type": "completion"
@@ -318,6 +279,9 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
             }
         }
     }
+
+    # Update the mapping properties with the project configuration
+    configuration["mappings"]["properties"].update(project_configuration.get_project_search_mapping_properties())
 
     # Then if our (AWS) environment supports it we add decompound settings
     if decompound_word_list:
