@@ -70,7 +70,7 @@ class Command(base.LabelCommand):
         harvest_source = options.get("harvest_source", None)
         assert harvest_source or environment.env != "localhost", \
             "Expected a harvest source argument for a localhost environment"
-        source_environment = create_configuration(harvest_source, project="harvester") \
+        source_environment = create_configuration(harvest_source, service="harvester") \
             if harvest_source else environment
 
         # Delete old datasets

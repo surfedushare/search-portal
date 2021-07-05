@@ -53,7 +53,7 @@ def sync_upload_media(ctx, source="production", path="communities"):
         raise Exit("Cowardly refusing to use production as a destination environment")
 
     local_directory = "media"
-    source_config = create_configuration(source, project="service", context="host")
+    source_config = create_configuration(source, service="service", context="host")
     source = source_config.aws.image_upload_bucket
     source = "s3://" + source if source is not None else local_directory
     destination = ctx.config.aws.image_upload_bucket

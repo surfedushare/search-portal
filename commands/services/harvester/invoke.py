@@ -153,7 +153,7 @@ def sync_harvest_content(ctx, source, path="core"):
     Performs a sync between the harvest content buckets of two environments
     """
     local_directory = os.path.join("media", "harvester")
-    source_config = create_configuration(source, project="harvester", context="host")
+    source_config = create_configuration(source, service="harvester", context="host")
     source = source_config.aws.harvest_content_bucket
     if source is None:
         source = local_directory
