@@ -1,0 +1,31 @@
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses low security passwords and secrets for a local setup
+# Make sure your local setup is shielded from the internet
+
+# NB: When making changes restart your container or development server to load the update
+
+env: "localhost"
+
+django:
+  debug: true
+  protocol: "http"
+  domain: "localhost"
+  logging:
+    level: "DEBUG"
+    is_elastic: false
+
+postgres:
+  host: "postgres"
+  port: 5432
+
+elastic_search:
+  host: "elasticsearch:9200"
+  protocol: "http"
+  verify_certs: true  # ignored as long as protocol is http
+  enable_decompound_analyzers: true
+  decompound_word_lists:
+    dutch: "decompound_word_list.nl.txt"
+
+aws:
+  is_aws: false
+  harvest_content_bucket: null

@@ -1,0 +1,36 @@
+django:
+  directory: "harvester"
+  fixtures:
+    - "core/fixtures/datasets-history.json"
+    - "core/fixtures/initial.json"
+  redis_host: "redis:6379"
+  data_retention:
+    purge_after:
+      days: 14
+    keep_versions: 1
+  repositories:
+    edurep: "https://staging.edurep.kennisnet.nl"
+    sharekit: "https://api.acc.surfsharekit.nl"
+
+postgres:
+  database: "harvester"
+  user: "harvester"
+  application_user: "harvester"
+
+schedule:
+  harvest:
+    hour: 5  # uses UTC
+    minute: 0
+
+aws:
+  harvest_content_bucket: null
+
+secrets:
+  postgres:
+    password: "qwerty"
+    application_password: "qwerty"
+  django:
+    secret_key: "development-secret-key--do-not-use"
+    admin_password: "qwerty"
+  sharekit:
+    api_key: null
