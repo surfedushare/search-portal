@@ -7,7 +7,7 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS, REPOSITORY
-from environments.surfpol import get_package_info
+from environments.utils.packaging import get_package_info
 
 
 @task()
