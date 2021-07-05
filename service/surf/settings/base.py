@@ -21,7 +21,7 @@ from sentry_sdk.integrations.logging import ignore_logger
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from surfpol import create_configuration_and_session, MODE, CONTEXT
+from project import create_configuration_and_session, MODE, CONTEXT
 from utils.packaging import get_package_info
 from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 
@@ -29,7 +29,7 @@ from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 PACKAGE_INFO = get_package_info()
-environment, session = create_configuration_and_session(project='service')
+environment, session = create_configuration_and_session(service='service')
 IS_AWS = environment.aws.is_aws
 
 # SECURITY WARNING: keep the secret key used in production secret!

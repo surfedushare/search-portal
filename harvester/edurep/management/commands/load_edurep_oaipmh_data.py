@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.management import call_command
 from django.apps import apps
 
-from surfpol.configuration import create_configuration
+from project.configuration import create_configuration
 from core.management.base import PipelineCommand
 
 

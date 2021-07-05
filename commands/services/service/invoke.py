@@ -1,7 +1,7 @@
 import os
 from invoke import task, Responder, Exit
 
-from environments.surfpol.configuration import create_configuration
+from environments.project.configuration import create_configuration
 from commands.postgres.download import download_snapshot
 from commands.postgres.sql import insert_django_user_statement
 from commands.aws.ecs import run_task

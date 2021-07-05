@@ -26,14 +26,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
-from surfpol import create_configuration_and_session, MODE, CONTEXT
+from project import create_configuration_and_session, MODE, CONTEXT
 from utils.packaging import get_package_info
 from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
 VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
-environment, session = create_configuration_and_session(project='harvester')
+environment, session = create_configuration_and_session(service='harvester')
 credentials = session.get_credentials()
 IS_AWS = environment.aws.is_aws
 

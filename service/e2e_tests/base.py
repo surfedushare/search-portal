@@ -6,7 +6,7 @@ from django.test import override_settings, TestCase
 
 from elasticsearch import Elasticsearch
 
-from surfpol.configuration import create_elastic_search_index_configuration
+from project.configuration import create_elastic_search_index_configuration
 
 
 class BaseElasticSearchMixin(object):

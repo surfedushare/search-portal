@@ -9,7 +9,7 @@ from django.apps import apps
 from django.db import models, connection
 
 from datagrowth.utils import get_dumps_path, objects_from_disk
-from surfpol.configuration import create_configuration
+from project.configuration import create_configuration
 from harvester.settings import environment
 from core.models import Dataset, FileResource
 from core.models.resources.basic import file_resource_delete_handler

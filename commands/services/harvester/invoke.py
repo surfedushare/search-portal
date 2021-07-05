@@ -3,7 +3,7 @@ from invoke import task, Exit
 
 from commands import HARVESTER_DIR
 from commands.aws.ecs import run_task
-from environments.surfpol.configuration import create_configuration
+from environments.project.configuration import create_configuration
 
 
 def run_harvester_task(ctx, mode, command, **kwargs):

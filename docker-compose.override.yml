@@ -22,7 +22,7 @@ services:
     volumes:
       - ./service:/usr/src/app
       - ./media:/usr/src/media
-      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+      - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     links:
       - postgres:database
     depends_on:
@@ -48,7 +48,7 @@ services:
     volumes:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
-      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+      - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     links:
       - postgres:database
     depends_on:
@@ -70,7 +70,7 @@ services:
     volumes:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
-      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+      - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     command: celery -A harvester worker -l info --beat -s /tmp/celerybeat-schedule
     links:
       - redis:redis
@@ -92,7 +92,7 @@ services:
     volumes:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
-      - ./environments/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+      - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     command: celery -A harvester flower
     ports:
       - "127.0.0.1:5555:5555"
