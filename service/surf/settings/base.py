@@ -22,7 +22,7 @@ from sentry_sdk.integrations.logging import ignore_logger
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from surfpol import create_configuration_and_session, MODE, CONTEXT, get_package_info
-from surfpol.logging import POLElasticsearchHandler, create_elasticsearch_handler
+from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -287,7 +287,7 @@ LOGGING = {
         },
         'es_service': create_elasticsearch_handler(
             'service-logs',
-            POLElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            ElasticsearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             session
         ),

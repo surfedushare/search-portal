@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from surfpol import create_configuration_and_session, get_package_info, MODE, CONTEXT
-from surfpol.logging import POLElasticsearchHandler, create_elasticsearch_handler
+from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
@@ -227,19 +227,19 @@ LOGGING = {
         },
         'es_harvest': create_elasticsearch_handler(
             'harvest-logs',
-            POLElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            ElasticsearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             session
         ),
         'es_documents': create_elasticsearch_handler(
             'document-logs',
-            POLElasticsearchHandler.IndexNameFrequency.YEARLY,
+            ElasticsearchHandler.IndexNameFrequency.YEARLY,
             environment,
             session
         ),
         'es_results': create_elasticsearch_handler(
             'harvest-results',
-            POLElasticsearchHandler.IndexNameFrequency.YEARLY,
+            ElasticsearchHandler.IndexNameFrequency.YEARLY,
             environment,
             session
         ),
