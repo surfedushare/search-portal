@@ -19,7 +19,7 @@ class Command(PipelineCommand):
     def harvest_seeds(self, harvest, current_time):
         send_config = create_config("http_resource", {
             "resource": harvest.source.repository,
-            "continuation_limit": 1000,
+            "continuation_limit": 10000,
         })
 
         set_specification = harvest.source.spec

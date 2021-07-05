@@ -41,7 +41,7 @@ def sync_sharekit_metadata():
         # Getting metadata from Sharekit and stop immediately if anything went wrong
         send_config = create_config("http_resource", {
             "resource": harvest.source.repository,
-            "continuation_limit": 1000,
+            "continuation_limit": 10000,
         })
         set_specification = harvest.source.spec
         scc, err = send(
