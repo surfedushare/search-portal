@@ -1,6 +1,6 @@
 """
-This module exposes utilities to handle environment specific configuration for all Python projects in this repo.
-The idea is that configuration across projects is managed by just two environment variables:
+This module exposes utilities to handle environment specific configuration for all Python services in this repo.
+The idea is that configuration across services is managed by just two environment variables:
  * APPLICATION_MODE (exposed as MODE)
  * APPLICATION_CONTEXT (exposed as CONTEXT)
 The first specifies a mode like "production", "acceptance" or "development".
