@@ -89,7 +89,9 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "has_parts": [],
             "is_part_of": [],
             "doi": None,
-            "keywords": []
+            "keywords": [],
+            "research_object_type": None,
+            "research_themes": [],
         })
 
 

@@ -66,6 +66,8 @@ class Command(PipelineCommand):
             "has_parts": meta.get("has_parts", []),
             "ideas": meta.get("ideas", []),
             "doi": meta.get("doi", None),
+            "research_object_type": meta.get("research_object_type", None),
+            "research_themes": meta.get("research_themes", []),
         }
 
     def get_documents_from_zip(self, file_resource, tika_resource, metadata, pipeline):
