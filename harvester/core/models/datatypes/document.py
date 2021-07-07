@@ -34,11 +34,11 @@ class Document(DocumentBase):
     def to_search(self):
         elastic_base = copy(self.properties)
         for private_property in PRIVATE_PROPERTIES:
-            elastic_base.pop(private_property)
+            elastic_base.pop(private_property, False)
         elastic_details = self.get_search_document_extras(
             self.properties["external_id"],
             self.properties["title"],
-            self.properties["text"]
+            self.properties.get("text", None)
         )
         elastic_details.update(elastic_base)
         yield elastic_details
