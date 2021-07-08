@@ -11,6 +11,7 @@ PRIVATE_PROPERTIES = ["pipeline", "from_youtube", "lowest_educational_level"]
 class Document(DocumentBase):
 
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
+    pipeline = models.JSONField(default=dict, blank=True)
     # NB: Collection foreign key is added by the base class
 
     def get_language(self):
