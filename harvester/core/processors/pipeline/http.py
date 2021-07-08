@@ -1,4 +1,4 @@
-from datagrowth.processors.pipeline.base import PipelineProcessor
+from core.processors.pipeline.base import PipelineProcessor
 
 
 class HttpPipelineProcessor(PipelineProcessor):

@@ -26,7 +26,7 @@ def full_merge(config, batch_ids, processor_name):
     models = config.pipeline_models
     Batch, Document, ProcessResult = load_pipeline_models(app_label, models)
     processor = Processor.create_processor(processor_name, config)
-    return processor.full_merge(Document.objects.filter(batch__id__in=batch_ids))
+    return processor.full_merge(Document.objects.filter(processresult__batch_id__in=batch_ids))
 
 
 @app.task(name="pipeline_process_and_merge")  # TODO: namespacing to pipeline?
@@ -60,6 +60,8 @@ class PipelineProcessor(Processor):
         pass
 
     def _dispatch_tasks(self, tasks, finish, asynchronous=True):
+        if not tasks:
+            return
         if asynchronous:
             return chord(tasks)(finish)
         batch_ids = [task() for task in tasks]
