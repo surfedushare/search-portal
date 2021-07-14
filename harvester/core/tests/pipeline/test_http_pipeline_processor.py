@@ -18,18 +18,27 @@ class TestHttpPipelineProcessor(TestCase):
         super().setUp()
         self.collection = Collection.objects.get(id=171)
 
-    def test_synchronous_download_pipeline(self):
-        resource = "core.fileresource"
+    @patch("core.models.resources.basic.HttpTikaResource._send")
+    def test_synchronous_tika_pipeline(self, send_mock):
+        resource = "core.httptikaresource"
         processor = HttpPipelineProcessor({
             "pipeline_app_label": "core",
+            "pipeline_phase": "tika",
             "batch_size": 5,
             "asynchronous": False,
-            "resource_process": {
+            "retrieve_data": {
                 "resource": resource,
-                "method": "get",
-                "args": ["$.url"],
-                "kwargs": {},
-                "result_key": "download"
+                "method": "post",
+                "args": [],
+                "kwargs": {"url": "$.url"},
+            },
+            "contribute_data": {
+                "extractor": "ExtractProcessor.extract_from_resource",
+                "to_property": "text",
+                "objective": {
+                    "@": "$",
+                    "text": "$.text"
+                }
             }
         })
         processor(self.collection.documents)
@@ -37,15 +46,12 @@ class TestHttpPipelineProcessor(TestCase):
         self.assertEqual(ProcessResult.objects.count(), 0)
         self.assertEqual(self.collection.documents.count(), 11)
         for document in self.collection.documents.all():
-            if document.id != 222473:
-                self.assertIn("download", document.pipeline)
-                download_pipeline = document.pipeline["download"]
-                self.assertEqual(download_pipeline["resource"], "core.fileresource")
-                self.assertIsInstance(download_pipeline["id"], int)
-                self.assertTrue(download_pipeline["success"])
-            else:
-                self.assertIsInstance(document.pipeline, dict)
-                self.assertNotIn("download", document.pipeline)
+            self.assertIn("tika", document.pipeline)
+            tika_pipeline = document.pipeline["tika"]
+            self.assertEqual(tika_pipeline["resource"], "core.httptikaresource")
+            self.assertIsInstance(tika_pipeline["id"], int)
+            self.assertIsInstance(tika_pipeline["success"], bool)
+        self.assertEqual(send_mock.call_count, 2, "Expected two erroneous resources to retry")
 
     @patch("core.processors.pipeline.base.chord", return_value=chord_mock_result)
     def test_asynchronous_pipeline(self, chord_mock):
@@ -53,16 +59,25 @@ class TestHttpPipelineProcessor(TestCase):
         This test only asserts if Celery is used as expected.
         See synchronous test for actual result testing.
         """
-        resource = "core.fileresource"
+        resource = "core.httptikaresource"
         processor = HttpPipelineProcessor({
             "pipeline_app_label": "core",
+            "pipeline_phase": "tika",
             "batch_size": 5,
-            "resource_process": {
+            "asynchronous": True,
+            "retrieve_data": {
                 "resource": resource,
-                "method": "get",
-                "args": ["$.url"],
-                "kwargs": {},
-                "result": "download"
+                "method": "post",
+                "args": [],
+                "kwargs": {"url": "$.url"},
+            },
+            "contribute_data": {
+                "extractor": "ExtractProcessor.extract_from_resource",
+                "to_property": "text",
+                "objective": {
+                    "@": "$",
+                    "text": "$.text"
+                }
             }
         })
         task = processor(self.collection.documents)
