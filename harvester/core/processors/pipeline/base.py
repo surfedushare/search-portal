@@ -57,7 +57,7 @@ class PipelineProcessor(Processor):
         pass
 
     def full_merge(self, queryset):
-        pass
+        self.ProcessResult.objects.filter(document__in=queryset).delete()
 
     def _dispatch_tasks(self, tasks, finish, asynchronous=True):
         if not tasks:

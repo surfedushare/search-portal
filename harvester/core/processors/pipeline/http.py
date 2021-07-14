@@ -2,6 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from datagrowth.configuration import create_config
 from datagrowth.resources.http.tasks import send
+from datagrowth.processors import Processor
 
 from core.processors.pipeline.base import PipelineProcessor
 
@@ -10,7 +11,7 @@ class HttpPipelineProcessor(PipelineProcessor):
 
     def process_batch(self, batch):
 
-        config = create_config("http_resource", self.config.resource_process)
+        config = create_config("http_resource", self.config.retrieve_data)
         app_label, resource_model = config.resource.split(".")
         resource_type = ContentType.objects.get_by_natural_key(app_label, resource_model)
 
@@ -27,6 +28,7 @@ class HttpPipelineProcessor(PipelineProcessor):
             process_result.result_id = result_id
             updates.append(process_result)
             for result_id in results:
+                # TODO: create docs here where necessary
                 creates.append(
                     self.ProcessResult(document=process_result.document, batch=batch,
                                        result_id=result_id, result_type=resource_type)
@@ -36,19 +38,31 @@ class HttpPipelineProcessor(PipelineProcessor):
 
     def merge_batch(self, batch):
 
-        config = create_config("http_resource", self.config.resource_process)
-        result_key = config.result_key
+        pipeline_phase = self.config.pipeline_phase
+        config = create_config("extract_processor", self.config.contribute_data)
+        contribution_processor = config.extractor
+        contribution_property = config.to_property
 
         documents = []
         for process_result in batch.processresult_set.filter(result_id__isnull=False):
             result = process_result.result
-            process_result.document.pipeline[result_key] = {
+            # Write results to the pipeline
+            process_result.document.pipeline[pipeline_phase] = {
                 "success": result.success,
                 "resource": f"{result._meta.app_label}.{result._meta.model_name}",
                 "id": result.id
             }
             documents.append(process_result.document)
-        self.Document.objects.bulk_update(documents, ["pipeline"])
+            # Write data to the Document
+            extractor_name, method_name = Processor.get_processor_components(contribution_processor)
+            extractor_class = Processor.get_processor_class(extractor_name)
+            extractor = extractor_class(config)
+            extractor_method = getattr(extractor, method_name)
+            contributions = list(extractor_method(result))
+            if not len(contributions):
+                continue
+            contribution = contributions.pop(0)
+            # TODO: create docs here where necessary
+            process_result.document.properties[contribution_property] = contribution
 
-    def full_merge(self, queryset):
-        self.ProcessResult.objects.filter(document__in=queryset).delete()
+        self.Document.objects.bulk_update(documents, ["pipeline", "properties"])
