@@ -8,8 +8,6 @@ from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
-from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-
 
 PREVIEW_SMALL = "preview-200x150.png"
 PREVIEW_ORIGINAL = "preview.png"

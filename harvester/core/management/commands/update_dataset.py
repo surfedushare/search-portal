@@ -23,8 +23,6 @@ class Command(PipelineCommand):
         if mime_type is None and url:
             mime_type, encoding = guess_type(url)
 
-        identifier = meta["external_id"]
-
         text_language = get_language_from_snippet(text)
         title = meta.get("title", None)
         title_language = get_language_from_snippet(title)
