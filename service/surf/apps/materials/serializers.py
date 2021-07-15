@@ -6,6 +6,7 @@ from rest_framework import serializers
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
+from surf.vendor.elasticsearch.serializers import SearchResultSerializer
 from surf.apps.communities.serializers import CommunitySerializer
 from surf.apps.materials.models import (
     Collection,
@@ -14,6 +15,7 @@ from surf.apps.materials.models import (
     RESOURCE_TYPE_COLLECTION,
     PublishStatus,
 )
+from surf.apps.filters.serializers import MpttFilterItemSerializer
 
 
 class SharedResourceCounterSerializer(serializers.ModelSerializer):
@@ -28,64 +30,40 @@ class SharedResourceCounterSerializer(serializers.ModelSerializer):
         fields = ('sharing_type', 'counter_value',)
 
 
-class SearchFilterSerializer(serializers.Serializer):
+class SearchFilterItemSerializer(serializers.Serializer):
+    external_id = serializers.CharField()
+    count = serializers.IntegerField(read_only=True)
+
+
+class SearchFilterCategorySerializer(serializers.Serializer):
     """
     Serializer for filters in material search request
     """
 
     external_id = serializers.CharField()
 
-    items = serializers.ListField(
-        child=serializers.CharField(allow_null=True, allow_blank=True),
-        default=[])
+    items = SearchFilterItemSerializer(many=True)
 
 
-class SearchRequestSerializer(serializers.Serializer):
+class SearchSerializer(serializers.Serializer):
     """
     Serializer for material search request
     """
 
-    search_text = serializers.CharField(required=False, allow_blank=True,
-                                        allow_null=True)
-    page = serializers.IntegerField(required=False, default=1,
-                                    validators=[MinValueValidator(1)])
-
+    search_text = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+    page = serializers.IntegerField(required=False, default=1, validators=[MinValueValidator(1)])
     page_size = serializers.IntegerField(required=False, default=5,
-                                         validators=[MinValueValidator(0),
-                                                     MaxValueValidator(10)])
+                                         validators=[MinValueValidator(0), MaxValueValidator(10)])
+    return_records = serializers.BooleanField(required=False, default=True, write_only=True)
+    return_filters = serializers.BooleanField(required=False, default=True, write_only=True)
+    ordering = serializers.CharField(required=False, allow_blank=True, default=None, allow_null=True, write_only=True)
+    author = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+    publisher = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+    filters = SearchFilterCategorySerializer(many=True)
 
-    return_records = serializers.BooleanField(required=False, default=True)
-    return_filters = serializers.BooleanField(required=False, default=True)
-
-    ordering = serializers.CharField(required=False, allow_blank=True,
-                                     allow_null=True)
-
-    author = serializers.CharField(required=False, allow_blank=True,
-                                   allow_null=True)
-
-    publisher = serializers.CharField(required=False, allow_blank=True,
-                                      allow_null=True)
-
-    filters = serializers.ListField(child=SearchFilterSerializer(),
-                                    default=[])
-
-
-class SearchRequestShortSerializer(serializers.Serializer):
-    """
-    Serializer for material search request with a few parameters
-    """
-
-    search_text = serializers.CharField(required=False, allow_blank=True,
-                                        allow_null=True)
-    page = serializers.IntegerField(required=False, default=1,
-                                    validators=[MinValueValidator(1)])
-
-    page_size = serializers.IntegerField(required=False, default=5,
-                                         validators=[MinValueValidator(0),
-                                                     MaxValueValidator(10)])
-
-    ordering = serializers.CharField(required=False, allow_blank=True,
-                                     allow_null=True)
+    results = SearchResultSerializer(many=True, read_only=True)
+    records_total = serializers.IntegerField(read_only=True)
+    filter_categories = MpttFilterItemSerializer(many=True, read_only=True)
 
 
 class KeywordsRequestSerializer(serializers.Serializer):

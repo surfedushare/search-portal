@@ -1,6 +1,4 @@
 import boto3
-from botocore.exceptions import ClientError
-import os
 from collections import defaultdict
 import sentry_sdk
 
@@ -8,37 +6,12 @@ from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
-
-PREVIEW_SMALL = "preview-200x150.png"
-PREVIEW_ORIGINAL = "preview.png"
-s3_client = boto3.client("s3")
-
-
-def get_preview_absolute_uri(preview_path, preview_type, duration=7200):
-    """
-    Generate a presigned URL to share the S3 object where this resource is stored.
-    If the application is not connected to S3 it simply returns a local path.
-    """
-    if preview_path is None:
-        return None
-
-    if settings.AWS_HARVESTER_BUCKET_NAME is None:
-        return os.path.join(settings.MEDIA_URL, "harvester", preview_path, preview_type)
-
-    # Generate a presigned URL for the S3 object
-    lookup_params = {
-        "Bucket": settings.AWS_HARVESTER_BUCKET_NAME,
-        "Key": f"{preview_path}/{preview_type}"
-    }
-    try:
-        return s3_client.generate_presigned_url("get_object", Params=lookup_params, ExpiresIn=duration)
-    except ClientError:
-        return None
+from surf.vendor.elasticsearch.serializers import SearchResultSerializer
 
 
 class ElasticSearchApiClient:
 
-    def __init__(self, elastic_url=settings.ELASTICSEARCH_HOST, protocol=settings.ELASTICSEARCH_PROTOCOL):
+    def __init__(self, elastic_url=settings.ELASTICSEARCH_HOST):
 
         protocol = settings.ELASTICSEARCH_PROTOCOL
         protocol_config = {}
@@ -127,31 +100,14 @@ class ElasticSearchApiClient:
         :param hit: result from elasticsearch
         :return record: parsed record in elasticsearch format
         """
-        record = dict()
-        record['external_id'] = hit['_source']['external_id']
-        record['files'] = hit['_source']['files']
-        record['url'] = hit['_source']['url']
-        record['title'] = hit['_source']['title']
-        record['description'] = hit['_source']['description']
-        record['keywords'] = hit['_source']['keywords']
-        record['language'] = hit['_source']['language']
-        record['publish_datetime'] = hit['_source']['publisher_date']
-        record['publishers'] = hit['_source']['publishers']
-        record['authors'] = hit['_source']['authors']
-        record['format'] = hit['_source']['file_type']  # TODO: unused in frontend, remove from backend
-        record['disciplines'] = hit['_source']['disciplines']
-        record['educationallevels'] = hit['_source']['lom_educational_levels']
-        record['copyright'] = hit['_source']['copyright']
-        preview_path = hit['_source'].get('preview_path', None)
-        record['preview_thumbnail_url'] = get_preview_absolute_uri(preview_path, PREVIEW_SMALL)
-        record['preview_url'] = get_preview_absolute_uri(preview_path, PREVIEW_ORIGINAL)
-        record['themes'] = []  # TODO: should be taken from Sharekit API or deferred from disciplines on Edurep
-        record['source'] = hit['_source']['harvest_source']
-        record['has_parts'] = hit['_source']['has_parts']
-        record['is_part_of'] = hit['_source']['is_part_of']
-        record['ideas'] = hit['_source']['ideas']
-        record['doi'] = hit['_source']['doi']
-        record['technical_type'] = hit['_source']['technical_type']
+        field_mapping = {
+            field.source: field_name
+            for field_name, field in SearchResultSerializer().fields.items()
+        }
+        record = {
+            field_mapping[field]: value
+            for field, value in hit["_source"].items() if field in field_mapping
+        }
         return record
 
     def autocomplete(self, query):

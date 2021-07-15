@@ -15,9 +15,11 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.viewsets import (
     ModelViewSet
 )
+from rest_framework.permissions import AllowAny
 
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
@@ -34,7 +36,7 @@ from surf.apps.materials.models import (
     RESOURCE_TYPE_COLLECTION
 )
 from surf.apps.materials.serializers import (
-    SearchRequestSerializer,
+    SearchSerializer,
     KeywordsRequestSerializer,
     MaterialsRequestSerializer,
     CollectionSerializer,
@@ -81,7 +83,7 @@ def portal_single_page_application(request, *args):
     })
 
 
-class MaterialSearchAPIView(APIView):
+class MaterialSearchAPIView(CreateAPIView, GenericAPIView):
     """
     View class that provides search action for Material by filters, author
     lookup text.
@@ -105,7 +107,7 @@ class MaterialSearchAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         # validate request parameters
-        serializer = SearchRequestSerializer(data=request.data)
+        serializer = SearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
