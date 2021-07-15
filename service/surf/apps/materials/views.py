@@ -19,7 +19,6 @@ from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.viewsets import (
     ModelViewSet
 )
-from rest_framework.permissions import AllowAny
 
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
