@@ -33,6 +33,7 @@ class Document(DocumentBase):
 
     def to_search(self):
         elastic_base = copy(self.properties)
+        elastic_base.pop("language")
         for private_property in PRIVATE_PROPERTIES:
             elastic_base.pop(private_property, False)
         elastic_details = self.get_search_document_extras(
