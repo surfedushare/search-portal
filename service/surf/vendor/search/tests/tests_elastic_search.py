@@ -398,7 +398,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             'word_list_path': 'dutch-decompound-words.txt',
             'updateable': True
         })
-        for text_field in ["title", "text", "transcription", "description"]:
+        for text_field in ["title", "text", "description"]:
             self.assertEqual(dutch_index["mappings"]["properties"][text_field]['fields']['analyzed']["analyzer"],
                              "dutch")
             self.assertEqual(dutch_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
@@ -407,7 +407,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         english_index = create_elastic_search_index_configuration("en", "english")
         self.assertNotIn("dutch_dictionary_decompound", english_index["settings"]["analysis"]["analyzer"])
         self.assertNotIn("dictionary_decompound", english_index["settings"]["analysis"]["filter"])
-        for text_field in ["title", "text", "transcription", "description"]:
+        for text_field in ["title", "text", "description"]:
             self.assertEqual(
                 english_index["mappings"]["properties"][text_field]['fields']['analyzed']["analyzer"],
                 "english"
