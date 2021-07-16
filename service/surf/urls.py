@@ -21,6 +21,8 @@ from django.conf.urls import url, include
 from django.urls import path
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
+from rest_framework.schemas import get_schema_view
 
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
@@ -35,10 +37,7 @@ from surf.apps.materials.views import (
     CollectionViewSet,
     CollectionMaterialPromotionAPIView,
 )
-from surf.apps.filters.views import (
-    FilterCategoryViewSet,
-    MpttFilterItems
-)
+from surf.apps.filters.views import FilterCategoryView
 from surf.apps.users.views import (
     DeleteAccountAPIView,
     UserDetailsAPIView,
@@ -51,33 +50,54 @@ from surf.apps.stats.views import StatsView
 from surf.apps.locale.views import get_localisation_strings
 from surf.apps.feedback.views import FeedbackAPIView
 
+
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
 
+
+public_api_patterns = [
+    url(r'^search/', MaterialSearchAPIView.as_view()),
+    url(r'^search/filter-categories/', FilterCategoryView.as_view()),
+    url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
+]
+schema_view = get_schema_view(
+    title="Edusources",
+    description="Edusources API",
+    patterns=public_api_patterns,
+    url="/api/v1/"
+)
+swagger_view = TemplateView.as_view(
+    template_name='swagger/swagger-ui.html',
+    extra_context={'schema_url': 'openapi-schema'}
+)
+
+
 router = CustomRouter()
-router.register(r'filter-categories', FilterCategoryViewSet, basename='MpttFilterItem')
 router.register(r'collections', CollectionViewSet)
 router.register(r'communities', CommunityViewSet)
 router.register(r'themes', ThemeViewSet)
 router.register(r'stats', StatsView, basename="stats")
 
-apipatterns = [
+
+apipatterns = public_api_patterns + router.urls + [
+    path('openapi', schema_view, name='openapi-schema'),
+    path('docs/', swagger_view, name='docs'),
     url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^users/delete-account/', DeleteAccountAPIView.as_view()),
     url(r'^users/obtain-token/', ObtainTokenAPIView.as_view()),
-    url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^rate_material/', MaterialRatingAPIView.as_view()),
     url(r'^applaud_material/', MaterialApplaudAPIView.as_view()),
-    url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^materials/set/', MaterialSetAPIView.as_view()),
+    url(r'^materials/search/', MaterialSearchAPIView.as_view()),
+    url(r'^filter-categories/', FilterCategoryView.as_view()),
+    url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
-    url(r'^filteritems/', MpttFilterItems.as_view()),
     url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
         CollectionMaterialPromotionAPIView.as_view()),
     url(r'^feedback/', FeedbackAPIView.as_view())
-] + router.urls
+]
 
 urlpatterns = [
     # System
@@ -93,7 +113,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # API and other data
-    url(r'^api/(?P<version>(v1))/', include(apipatterns)),
+    url(r'^api/v1/', include(apipatterns)),
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 
     # Frontend
@@ -102,6 +122,7 @@ urlpatterns = [
     url(r'^$', portal_single_page_application, name="portal-spa"),
     url(r'^.*/$', portal_single_page_application),
 ]
+
 
 if settings.MODE == 'localhost':
     # These patterns are ignored in production, but are needed for localhost media and some static files

@@ -19,6 +19,7 @@ from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.viewsets import (
     ModelViewSet
 )
+from rest_framework.permissions import AllowAny
 
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
@@ -51,6 +52,7 @@ from surf.apps.materials.utils import (
     add_material_disciplines,
     add_search_query_to_elastic_index
 )
+from surf.apps.core.schema import SearchSchema
 from surf.vendor.search.choices import (
     AUTHOR_FIELD_ID,
     PUBLISHER_FIELD_ID
@@ -82,13 +84,14 @@ def portal_single_page_application(request, *args):
     })
 
 
-class MaterialSearchAPIView(CreateAPIView, GenericAPIView):
+class MaterialSearchAPIView(CreateAPIView):
     """
     View class that provides search action for Material by filters, author
     lookup text.
     """
-
-    permission_classes = []
+    serializer_class = SearchSerializer
+    permission_classes = (AllowAny,)
+    schema = SearchSchema()
 
     @staticmethod
     def parse_theme_drilldowns(discipline_items):
@@ -178,12 +181,14 @@ class MaterialSearchAPIView(CreateAPIView, GenericAPIView):
         return Response(rv)
 
 
-class KeywordsAPIView(APIView):
+class KeywordsAPIView(GenericAPIView):
     """
     View class that provides search of keywords by text.
     """
 
-    permission_classes = []
+    serializer_class = KeywordsRequestSerializer
+    permission_classes = (AllowAny,)
+    schema = SearchSchema()
 
     def get(self, request, *args, **kwargs):
         # validate request parameters
