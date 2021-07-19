@@ -42,7 +42,7 @@ class SearchFilterCategorySerializer(serializers.Serializer):
 
     external_id = serializers.CharField()
 
-    items = SearchFilterItemSerializer(many=True)
+    items = serializers.ListField(child=serializers.CharField())
 
 
 class SearchSerializer(serializers.Serializer):
