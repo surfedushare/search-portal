@@ -8,8 +8,6 @@ from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
-from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
-
 
 PREVIEW_SMALL = "preview-200x150.png"
 PREVIEW_ORIGINAL = "preview.png"
@@ -140,24 +138,20 @@ class ElasticSearchApiClient:
         record['publish_datetime'] = hit['_source']['publisher_date']
         record['publishers'] = hit['_source']['publishers']
         record['authors'] = hit['_source']['authors']
-        record['format'] = hit['_source']['file_type']
+        record['format'] = hit['_source']['file_type']  # TODO: unused in frontend, remove from backend
         record['disciplines'] = hit['_source']['disciplines']
         record['educationallevels'] = hit['_source']['lom_educational_levels']
         record['copyright'] = hit['_source']['copyright']
         preview_path = hit['_source'].get('preview_path', None)
         record['preview_thumbnail_url'] = get_preview_absolute_uri(preview_path, PREVIEW_SMALL)
         record['preview_url'] = get_preview_absolute_uri(preview_path, PREVIEW_ORIGINAL)
-        themes = set()
-        for discipline in hit['_source']['disciplines']:
-            if discipline in DISCIPLINE_CUSTOM_THEME:
-                themes.update(DISCIPLINE_CUSTOM_THEME[discipline])
-        record['themes'] = list(themes)
+        record['themes'] = []  # TODO: should be taken from Sharekit API or deferred from disciplines on Edurep
         record['source'] = hit['_source']['harvest_source']
         record['has_parts'] = hit['_source']['has_parts']
         record['is_part_of'] = hit['_source']['is_part_of']
         record['ideas'] = hit['_source']['ideas']
-        record['doi'] = hit['_source'].get('doi', None)
-        record['technical_type'] = hit['_source'].get('technical_type', None)
+        record['doi'] = hit['_source']['doi']
+        record['technical_type'] = hit['_source']['technical_type']
         return record
 
     def autocomplete(self, query):

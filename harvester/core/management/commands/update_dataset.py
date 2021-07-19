@@ -23,8 +23,6 @@ class Command(PipelineCommand):
         if mime_type is None and url:
             mime_type, encoding = guess_type(url)
 
-        identifier = meta["external_id"]
-
         text_language = get_language_from_snippet(text)
         title = meta.get("title", None)
         title_language = get_language_from_snippet(title)
@@ -35,7 +33,6 @@ class Command(PipelineCommand):
         pipeline["harvest"] = settings.GIT_COMMIT
 
         return {
-            "id": identifier,
             "external_id": meta["external_id"],
             "title": title,
             "language": {
@@ -62,7 +59,6 @@ class Command(PipelineCommand):
             "lom_educational_levels": meta.get("lom_educational_levels", []),
             "lowest_educational_level": meta.get("lowest_educational_level", -1),
             "from_youtube": meta.get("from_youtube", False),
-            "suggest": title,
             "pipeline": pipeline,
             "analysis_allowed": meta.get("analysis_allowed", False),
             "keywords": meta.get("keywords", []),

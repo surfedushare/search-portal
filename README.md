@@ -124,9 +124,9 @@ You can run all tests for the entire repo (except external Elastic Search integr
 invoke test.run
 ```
 
-It's also possible to run tests for specific Django projects.
-For more details see: [testing service project](service/README.md#tests) and
-[testing harvester project](harvester/README.md#tests)
+It's also possible to run tests for specific Django services.
+For more details see: [testing service](service/README.md#tests) and
+[testing harvester](harvester/README.md#tests)
 
 
 Deploy

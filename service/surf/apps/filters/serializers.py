@@ -30,5 +30,4 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.MpttFilterItem
-        fields = ('id', 'name', 'parent', 'title_translations', 'external_id', 'is_hidden',
-                  'item_count', 'children', 'count')
+        fields = ('id', 'name', 'parent', 'title_translations', 'external_id', 'is_hidden', 'children', 'count',)

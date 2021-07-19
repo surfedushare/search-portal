@@ -30,7 +30,9 @@ NL_MATERIAL = {
         "suggest_phrase": "Leermateriaal over wiskunde en didactiek op de universiteit.",
         "suggest_completion": ["Leermateriaal", "over", "wiskunde", "en", "didactiek", "op", "de", "universiteit."],
         "analysis_allowed": True,
-        "ideas": []
+        "ideas": [],
+        "doi": None,
+        "technical_type": "document"
     },
     "biology": {
         "title": "Didactiek van biologisch denken",
@@ -63,7 +65,9 @@ NL_MATERIAL = {
         "suggest_phrase": "Leermateriaal over biologie en didactiek op de universiteit.",
         "suggest_completion": ["Leermateriaal", "over", "biologie", "en", "didactiek", "op", "de", "universiteit."],
         "analysis_allowed": True,
-        "ideas": []
+        "ideas": [],
+        "doi": None,
+        "technical_type": "document"
     }
 }
 
@@ -74,6 +78,7 @@ def generate_nl_material(educational_levels=None, file_type=None, source=None, c
     if educational_levels:
         copy["lom_educational_levels"] = educational_levels
     if file_type:
+        copy["technical_type"] = file_type
         copy["file_type"] = file_type
     if source:
         copy["harvest_source"] = source

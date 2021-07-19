@@ -169,7 +169,7 @@ class MaterialSearchAPIView(APIView):
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
-                  filters=res["drilldowns"],
+                  filters=[],
                   filter_categories=filter_categories.data,
                   page=data["page"],
                   page_size=data["page_size"],

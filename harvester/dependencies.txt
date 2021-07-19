@@ -1,6 +1,3 @@
-# Process management
-supervisor==4.2.0
-
 # Harvester Celery
 celery==4.4.7
 celery[redis]
