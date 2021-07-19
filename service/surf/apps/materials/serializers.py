@@ -30,18 +30,12 @@ class SharedResourceCounterSerializer(serializers.ModelSerializer):
         fields = ('sharing_type', 'counter_value',)
 
 
-class SearchFilterItemSerializer(serializers.Serializer):
-    external_id = serializers.CharField()
-    count = serializers.IntegerField(read_only=True)
-
-
 class SearchFilterCategorySerializer(serializers.Serializer):
     """
     Serializer for filters in material search request
     """
 
     external_id = serializers.CharField()
-
     items = serializers.ListField(child=serializers.CharField())
 
 
@@ -54,12 +48,8 @@ class SearchSerializer(serializers.Serializer):
     page = serializers.IntegerField(required=False, default=1, validators=[MinValueValidator(1)])
     page_size = serializers.IntegerField(required=False, default=5,
                                          validators=[MinValueValidator(0), MaxValueValidator(10)])
-    return_records = serializers.BooleanField(required=False, default=True, write_only=True)
-    return_filters = serializers.BooleanField(required=False, default=True, write_only=True)
     ordering = serializers.CharField(required=False, allow_blank=True, default=None, allow_null=True, write_only=True)
-    author = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
-    publisher = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
-    filters = SearchFilterCategorySerializer(many=True)
+    filters = SearchFilterCategorySerializer(many=True, write_only=True, default=[])
 
     results = SearchResultSerializer(many=True, read_only=True)
     records_total = serializers.IntegerField(read_only=True)
@@ -71,7 +61,7 @@ class KeywordsRequestSerializer(serializers.Serializer):
     Serializer for keywords request
     """
 
-    query = serializers.CharField()
+    query = serializers.CharField(write_only=True)
 
 
 class MaterialsRequestSerializer(serializers.Serializer):

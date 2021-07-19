@@ -8,14 +8,14 @@ import logging
 from django.conf import settings
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db.models import Count, F, Q
+from django.db.models import Count, F, Q, QuerySet
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView, CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.viewsets import (
     ModelViewSet
 )
@@ -53,11 +53,6 @@ from surf.apps.materials.utils import (
     add_search_query_to_elastic_index
 )
 from surf.apps.core.schema import SearchSchema
-from surf.vendor.search.choices import (
-    AUTHOR_FIELD_ID,
-    PUBLISHER_FIELD_ID
-)
-from surf.vendor.search.choices import DISCIPLINE_CUSTOM_THEME
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
@@ -86,26 +81,51 @@ def portal_single_page_application(request, *args):
 
 class MaterialSearchAPIView(CreateAPIView):
     """
-    View class that provides search action for Material by filters, author
-    lookup text.
+    The main search endpoint.
+    Specify the search query in the ``search_text`` property of the body to do a simple search.
+    All other properties are optional and are described below
+
+    ## Request body
+
+    Apart from search_text you can specify the following properties in the body of the request:
+
+    **page_size**: Number of results to return per page.
+
+    **page**: A page number within the paginated result set.
+
+    **ordering**: The external_id of a filter category to order results by (for instance: "publisher_date").
+    This will ignore relevance of results and order by the specified property.
+    By default ordering is ascending.
+    If you specify the minus sign (for instance: "-publisher_date") the ordering will be descending.
+
+    **filters**: Filters consist of objects that specify a external_id and an items property.
+    The external_id should be the external_id of a root filter category (for instance: "technical_type").
+    See the filter categories endpoint described below for more details on filter categories.
+    Next to the external_id you should specify an array under the items property.
+    Elements in this array should only consist of external_id values.
+    These external_ids are also filter category external_ids (for instance: "video"),
+    but the referenced filter categories should be a descendant of the root filter category specified earlier
+    ("technical_type" in our example).
+    Filters under the same root filter category will function as an OR filter.
+    While multiple filter category items across root filter categories function as AND filters.
+
+    ## Response body
+
+    **results**: An array containing the search results.
+
+    **filter_categories**: An array with all filter categories.
+    The count values of the filter categories will indicate how many results match the filter category.
+
+    **records_total**: Count of all available results
+
+    **page_size**: Number of results to return per page.
+
+    **page**: The current page number.
+
     """
     serializer_class = SearchSerializer
     permission_classes = (AllowAny,)
     schema = SearchSchema()
-
-    @staticmethod
-    def parse_theme_drilldowns(discipline_items):
-        fields = dict()
-        for item in discipline_items:
-            item_id = item["external_id"]
-            theme_ids = DISCIPLINE_CUSTOM_THEME.get(item_id)
-            if not theme_ids:
-                theme_ids = ["Unknown"]
-            for f_id in theme_ids:
-                fields[f_id] = fields.get(f_id, 0) + int(item["count"])
-
-        fields = sorted(fields.items(), key=lambda kv: kv[1], reverse=True)
-        return [dict(external_id=k, count=v) for k, v in fields]
 
     def post(self, request, *args, **kwargs):
         # validate request parameters
@@ -113,44 +133,16 @@ class MaterialSearchAPIView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        filters = data.get("filters", [])
-        # add additional filter by Author
-        # if input data contains `author` parameter
-        author = data.pop("author", None)
-        if author:
-            filters.append(dict(external_id=AUTHOR_FIELD_ID, items=[author]))
-
-        publisher = data.pop("publisher", None)
-        if publisher:
-            filters.append(dict(external_id=PUBLISHER_FIELD_ID, items=[publisher]))
-
-        data["filters"] = filters
-
-        return_records = data.pop("return_records", None)
-        return_filters = data.pop("return_filters", None)
-
-        if not return_records:
-            data["page_size"] = 0
-
-        if return_filters:
-            data["drilldown_names"] = [
-                mptt_filter.external_id for mptt_filter in MpttFilterItem.objects.filter(parent=None)
-            ]
+        data["drilldown_names"] = [
+            mptt_filter.external_id for mptt_filter in MpttFilterItem.objects.filter(parent=None)
+        ]
 
         elastic = ElasticSearchApiClient()
 
         res = elastic.search(**data)
-        records = add_extra_parameters_to_materials(request.user, res["records"])
-
-        if return_filters and "lom.classification.obk.discipline.id" in data["drilldown_names"]:
-            discipline_items = next(
-                drilldown["items"]
-                for drilldown in res["drilldowns"] if drilldown["external_id"] == "lom.classification.obk.discipline.id"
-            )
-            res["drilldowns"].append({
-                "external_id": "custom_theme.id",
-                "items": self.parse_theme_drilldowns(discipline_items)
-            })
+        records = res["records"]
+        if settings.PROJECT == "edusources":
+            records = add_extra_parameters_to_materials(request.user, records)
 
         drill_down_dict = {item['external_id']: item for item in res["drilldowns"]}
         drill_down_flat = {}
@@ -173,7 +165,6 @@ class MaterialSearchAPIView(CreateAPIView):
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
-                  filters=[],
                   filter_categories=filter_categories.data,
                   page=data["page"],
                   page_size=data["page_size"],
@@ -181,14 +172,20 @@ class MaterialSearchAPIView(CreateAPIView):
         return Response(rv)
 
 
-class KeywordsAPIView(GenericAPIView):
+class KeywordsAPIView(ListAPIView):
     """
-    View class that provides search of keywords by text.
+    This endpoint returns suggestions about what a user may be typing.
+    Call this endpoint when a user is typing a search and display the results (for instance below the search bar).
+
+    This endpoint only completes queries that are at least 4 characters.
     """
 
     serializer_class = KeywordsRequestSerializer
     permission_classes = (AllowAny,)
     schema = SearchSchema()
+    queryset = QuerySet()
+    pagination_class = None
+    filter_backends = []
 
     def get(self, request, *args, **kwargs):
         # validate request parameters

@@ -57,13 +57,14 @@ admin.site.index_title = 'Surf'
 
 
 public_api_patterns = [
-    url(r'^search/', MaterialSearchAPIView.as_view()),
     url(r'^search/filter-categories/', FilterCategoryView.as_view()),
     url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
+    url(r'^search/', MaterialSearchAPIView.as_view()),
 ]
 schema_view = get_schema_view(
-    title="Edusources",
-    description="Edusources API",
+    title="Search API",
+    description="An API that allows search through Elastic Search. Instead of writing Elastic queries "
+                "search can be done simply by passing a few parameters to the endpoints.",
     patterns=public_api_patterns,
     url="/api/v1/"
 )

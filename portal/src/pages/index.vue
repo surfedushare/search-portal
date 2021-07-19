@@ -132,7 +132,7 @@ export default {
   methods: {
     getFilterOptions(external_id) {
       if (this.filterCategories) {
-        const filterCategory = this.filterCategories.results.find(
+        const filterCategory = this.filterCategories.find(
           category => category.external_id === external_id
         )
 
