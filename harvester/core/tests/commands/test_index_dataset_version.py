@@ -33,13 +33,17 @@ class ElasticSearchClientTestCase(TestCase):
             "copyright", "language", "keywords", "file_type", "mime_type", "suggest_completion", "_id",
             "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "is_part_of", "preview_path",
             "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_type",
-        }
-        text_keys = {
-            "text", "suggest_phrase",
+            "text", "suggest_phrase", "research_object_type", "research_themes"
         }
         has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]
-        if has_text:
-            expected_keys.update(text_keys)
+        if not has_text:
+            self.assertIsNone(document["text"])
+            self.assertIsNone(document["suggest_phrase"])
+        else:
+            self.assertIsInstance(document["text"], str)
+            self.assertIsInstance(document["suggest_phrase"], str)
+            self.assertTrue(document["text"])
+            self.assertTrue(document["suggest_phrase"])
         self.assertEqual(set(document.keys()), expected_keys, document["_id"])
 
 

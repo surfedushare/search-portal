@@ -1,6 +1,6 @@
 from invoke import Collection
 
-from environments.surfpol import create_configuration_and_session
+from environments.project import create_configuration_and_session
 from commands.postgres.invoke import setup_postgres_localhost
 from commands.elastic.tasks import create_decompound_dictionary, push_decompound_dictionary
 from commands.deploy import (prepare_builds, build, push, deploy, migrate, print_available_images,
@@ -12,7 +12,7 @@ from commands.services.harvester.invoke import (import_dataset, harvest, clean_d
                                                 promote_dataset_version, extend_resource_cache)
 
 
-service_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="service")
+service_environment, _ = create_configuration_and_session(use_aws_default_profile=False, service="service")
 service_collection = Collection("srv", setup_postgres_localhost, import_snapshot, deploy, sync_upload_media,
                                 sync_category_filters)
 service_collection.configure(service_environment)
@@ -20,7 +20,7 @@ aws_collection = Collection("aws", build, push, migrate, print_available_images,
 aws_collection.configure(service_environment)
 
 
-harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, project="harvester")
+harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, service="harvester")
 harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, clean_data, import_dataset, deploy,
                                   index_dataset_version, dump_data, sync_harvest_content, promote_dataset_version,
                                   create_decompound_dictionary, push_decompound_dictionary, generate_previews,

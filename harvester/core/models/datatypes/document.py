@@ -1,6 +1,11 @@
+from copy import copy
+
 from django.db import models
 
 from datagrowth.datatypes import DocumentBase
+
+
+PRIVATE_PROPERTIES = ["pipeline", "from_youtube", "lowest_educational_level"]
 
 
 class Document(DocumentBase):
@@ -16,69 +21,25 @@ class Document(DocumentBase):
                     return language
         return "unk"
 
-    @staticmethod
-    def get_search_document_details(reference_id, url, title, text, mime_type, file_type, technical_type,
-                                    is_part_of=None, has_parts=None):
-        has_parts = has_parts or []
-        is_part_of = is_part_of or []
-        details = {
+    def get_search_document_extras(self, reference_id, title, text):
+        extras = {
             '_id': reference_id,
-            'title': title,
-            'url': url,
-            'file_type': file_type,
-            'technical_type': technical_type,
-            'mime_type': mime_type,
-            'has_parts': has_parts,
-            'is_part_of': is_part_of,
-            'suggest_completion': title.split(" ") if title else [],
-        }
-        if text:
-            details.update({
-                'text': text,
-                'suggest_phrase': text
-            })
-        return details
-
-    def get_search_document_base(self):
-        """
-        This method returns a partial upsert action.
-
-        :return: Elastic Search partial update
-        """
-        return {
             "language": self.get_language(),
-            'external_id': self.properties['external_id'],
-            'disciplines': self.properties['disciplines'],
-            'lom_educational_levels': self.properties['lom_educational_levels'],
-            'ideas': self.properties.get('ideas', []),
-            'files': self.properties['files'],
-            'authors': self.properties['authors'],
-            'publishers': self.properties['publishers'],
-            'description': self.properties['description'],
-            'publisher_date': self.properties['publisher_date'],
-            'copyright': self.properties['copyright'],
-            'copyright_description': self.properties['copyright_description'],
-            'aggregation_level': self.properties['aggregation_level'],
-            'preview_path': self.properties.get('preview_path', None),
-            'analysis_allowed': self.properties.get('analysis_allowed', False),
-            'keywords': self.properties.get('keywords', []),
+            'suggest_completion': title.split(" ") if title else [],
             'harvest_source': self.collection.name,
-            'doi': self.properties.get('doi', None),
-            'material_type': self.properties.get('material_type', None),
+            'suggest_phrase': text
         }
+        return extras
 
     def to_search(self):
-        elastic_base = self.get_search_document_base()
-        elastic_details = self.get_search_document_details(
+        elastic_base = copy(self.properties)
+        elastic_base.pop("language")
+        for private_property in PRIVATE_PROPERTIES:
+            elastic_base.pop(private_property, False)
+        elastic_details = self.get_search_document_extras(
             self.properties["external_id"],
-            self.properties["url"],
             self.properties["title"],
-            self.properties.get("text", None),
-            self.properties["mime_type"],
-            self.properties["file_type"],
-            self.properties["technical_type"],
-            is_part_of=self.properties.get("is_part_of", []),
-            has_parts=self.properties.get("has_parts", [])
+            self.properties.get("text", None)
         )
         elastic_details.update(elastic_base)
         yield elastic_details

@@ -169,6 +169,13 @@ class SharekitMetadataExtraction(object):
     def get_is_part_of(cls, node):
         return reach("$.attributes.partOf", node)
 
+    @classmethod
+    def get_research_themes(cls, node):
+        theme_value = node["attributes"]["themesResearchObject"]
+        if not theme_value:
+            return []
+        return theme_value if isinstance(theme_value, list) else [theme_value]
+
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
     "url": SharekitMetadataExtraction.get_url,
@@ -196,4 +203,6 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "is_part_of": SharekitMetadataExtraction.get_is_part_of,
     "has_parts": "$.attributes.hasParts",
     "doi": "$.attributes.doi",
+    "research_object_type": "$.attributes.typeResearchObject",
+    "research_themes": SharekitMetadataExtraction.get_research_themes,
 }

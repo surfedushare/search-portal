@@ -6,7 +6,7 @@ from time import sleep
 from invoke.tasks import task
 from invoke.exceptions import Exit
 
-from environments.surfpol import MODE
+from environments.project import MODE
 from commands import TARGETS
 from commands.aws.ecs import register_task_definition, build_default_container_variables, list_running_containers
 from commands.aws.utils import create_aws_session

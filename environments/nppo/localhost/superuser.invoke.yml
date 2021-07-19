@@ -1,0 +1,15 @@
+postgres:
+  user: "postgres"
+
+aws:
+  bastion: null
+  profile_name: null
+  private_subnet_id: null
+  default_security_group_id: null
+  rds_security_group_id: null
+  cluster_arn: null
+  task_role_arn: null
+  harvester_task_role_arn: null
+  superuser_task_role_arn: null
+  postgres_password_arn: null
+  flower_secret_arn: null

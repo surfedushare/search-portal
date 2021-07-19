@@ -7,7 +7,7 @@ from django.utils.timezone import make_aware
 from elasticsearch.helpers import streaming_bulk
 from rest_framework import serializers
 
-from surfpol.configuration import create_elastic_search_index_configuration
+from project.configuration import create_elastic_search_index_configuration
 from core.models import DatasetVersion
 from core.utils.elastic import get_es_client
 

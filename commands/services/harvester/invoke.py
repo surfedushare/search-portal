@@ -3,7 +3,7 @@ from invoke import task, Exit
 
 from commands import HARVESTER_DIR
 from commands.aws.ecs import run_task
-from environments.surfpol.configuration import create_configuration
+from environments.project.configuration import create_configuration
 
 
 def run_harvester_task(ctx, mode, command, **kwargs):
@@ -153,7 +153,7 @@ def sync_harvest_content(ctx, source, path="core"):
     Performs a sync between the harvest content buckets of two environments
     """
     local_directory = os.path.join("media", "harvester")
-    source_config = create_configuration(source, project="harvester", context="host")
+    source_config = create_configuration(source, service="harvester", context="host")
     source = source_config.aws.harvest_content_bucket
     if source is None:
         source = local_directory

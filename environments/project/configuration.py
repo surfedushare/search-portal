@@ -14,15 +14,22 @@ import json
 from invoke.config import Config
 import boto3
 import requests
+import importlib
+import sys
 
 
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
+PROJECT = os.environ.get("APPLICATION_PROJECT", "edusources")
 ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 
 PREFIX = "POL"
 ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+# Some dynamic configuration depends on the project and we load that module here
+sys.path.append(ENVIRONMENTS)
+project_configuration = importlib.import_module(f"{PROJECT}.configuration")
 
 # Now we'll delete any items that are POL variables, but with empty values
 # Use a value of "0" for a Boolean instead of an empty string
@@ -39,7 +46,7 @@ class POLConfig(Config):
     env_prefix = PREFIX
 
 
-def create_configuration(mode, project=None, context="container", config_class=POLConfig):
+def create_configuration(mode, service=None, context="container", config_class=POLConfig):
     """
     We're using invoke Config as base for our configuration:
     http://docs.pyinvoke.org/en/stable/concepts/configuration.html#config-hierarchy.
@@ -49,16 +56,16 @@ def create_configuration(mode, project=None, context="container", config_class=P
     Shell environment variables override all other configuration.
 
     :param mode: the mode you want a configuration for
-    :param project: the project you want a configuration for (service or harvester)
+    :param service: the service you want a configuration for (service or harvester)
     :param context: the context you want a configuration for (host or container)
     :param config_class: Which configuration class to use (default is POLConfig)
     :return: configuration
     """
-    mode_environment = os.path.join(ENVIRONMENTS, mode)
+    mode_environment = os.path.join(ENVIRONMENTS, PROJECT, mode)
     config = config_class(
         system_prefix=mode_environment + os.path.sep,
         runtime_path=os.path.join(mode_environment, "superuser.invoke.yml") if context == "host" else None,
-        project_location=os.path.join(mode_environment, project) if project else None,
+        project_location=os.path.join(mode_environment, service) if service else None,
         lazy=True
     )
     config.load_system()
@@ -88,19 +95,19 @@ def create_configuration(mode, project=None, context="container", config_class=P
     return config
 
 
-def create_configuration_and_session(use_aws_default_profile=True, config_class=POLConfig, project=None):
+def create_configuration_and_session(use_aws_default_profile=True, config_class=POLConfig, service=None):
     """
     Creates an environment holding all the configuration for current mode and creates an AWS session.
     The used profile for AWS session is either default or the configured profile_name for the environment
 
     :param use_aws_default_profile: Set to false when you want to load environment specific AWS profile
     :param config_class: Set to invoke.config.Config if you want to use Fabric
-    :param project: The name of the project to get the environment for
+    :param service: The name of the service to get the environment for
     :return: environment, session
     """
 
     # Now we use the customize invoke load as described above
-    environment = create_configuration(MODE, project=project, context=CONTEXT, config_class=config_class)
+    environment = create_configuration(MODE, service=service, context=CONTEXT, config_class=config_class)
 
     # Creating a AWS session based on configuration and context
     session = boto3.Session() if use_aws_default_profile else boto3.Session(profile_name=environment.aws.profile_name)
@@ -191,20 +198,6 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         }
                     }
                 },
-                'transcription': {
-                    'type': 'text',
-                    'fields': {
-                        'analyzed': {
-                            'type': 'text',
-                            'analyzer': analyzer,
-                            'search_analyzer': search_analyzer,
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
-                },
                 'description': {
                     'type': 'text',
                     'fields': {
@@ -250,12 +243,6 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'type': 'date',
                     'format': 'strict_date_optional_time||yyyy-MM||epoch_millis'
                 },
-                'aggregation_level': {
-                    'type': 'keyword'
-                },
-                'doi': {
-                    'type': 'keyword'
-                },
                 'keywords': {
                     'type': 'text',
                     'fields': {
@@ -275,37 +262,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 'technical_type': {
                     'type': 'keyword'
                 },
-                'material_type': {
-                    'type': 'keyword'
-                },
                 'id': {'type': 'text'},
                 'external_id': {
                     'type': 'keyword'
                 },
                 'harvest_source': {
                     'type': 'keyword'
-                },
-                'educational_levels': {
-                    'type': 'keyword'
-                },
-                'lom_educational_levels': {
-                    'type': 'keyword'
-                },
-                'disciplines': {
-                    'type': 'keyword'
-                },
-                'ideas': {
-                    'type': 'text',
-                    'fields': {
-                        'keyword': {
-                            'type': 'keyword',
-                            'ignore_above': 256
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
                 },
                 "suggest_completion": {
                     "type": "completion"
@@ -317,6 +279,9 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
             }
         }
     }
+
+    # Update the mapping properties with the project configuration
+    configuration["mappings"]["properties"].update(project_configuration.get_project_search_mapping_properties())
 
     # Then if our (AWS) environment supports it we add decompound settings
     if decompound_word_list:

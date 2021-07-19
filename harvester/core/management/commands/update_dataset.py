@@ -41,7 +41,7 @@ class Command(PipelineCommand):
                 "from_title": title_language
             },
             "url": url,
-            "text": text,
+            "text": text or None,
             "file_type": settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown"),
             "technical_type": meta.get("technical_type", None),
             "material_type": meta.get("material_type", None),
@@ -66,6 +66,8 @@ class Command(PipelineCommand):
             "has_parts": meta.get("has_parts", []),
             "ideas": meta.get("ideas", []),
             "doi": meta.get("doi", None),
+            "research_object_type": meta.get("research_object_type", None),
+            "research_themes": meta.get("research_themes", []),
         }
 
     def get_documents_from_zip(self, file_resource, tika_resource, metadata, pipeline):

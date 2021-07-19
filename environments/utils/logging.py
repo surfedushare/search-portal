@@ -29,24 +29,24 @@ def create_elasticsearch_handler(index_name, index_frequency, environment, sessi
     elastic_port = 443 if elastic_protocol == 'https' else 9200
     handler = {
         'level': 'DEBUG',
-        'class': 'surfpol.logging.POLElasticsearchHandler',
+        'class': 'utils.logging.ElasticsearchHandler',
         'hosts': [{'host': elastic_domain, 'port': elastic_port}],
         'es_index_name': index_name,
         'es_additional_fields': {'container_id': environment.container.id},
         'flush_frequency_in_sec': 5,
         'index_name_frequency': index_frequency,
-        'auth_type': POLElasticsearchHandler.AuthType.NO_AUTH,  # gets overridden for AWS
+        'auth_type': ElasticsearchHandler.AuthType.NO_AUTH,  # gets overridden for AWS
         'use_ssl': elastic_protocol == 'https',
     }
     if is_aws:
         handler.update({
-            'auth_type': POLElasticsearchHandler.AuthType.AWS_SIGNED_AUTH,
+            'auth_type': ElasticsearchHandler.AuthType.AWS_SIGNED_AUTH,
             'aws_session': session
         })
     return handler
 
 
-class POLElasticsearchHandler(logging.Handler):
+class ElasticsearchHandler(logging.Handler):
     """
     Elasticsearch log handler
 
@@ -161,12 +161,12 @@ class POLElasticsearchHandler(logging.Handler):
         :param hosts: The list of hosts that elasticsearch clients will connect. The list can be provided
                     in the format ```[{'host':'host1','port':9200}, {'host':'host2','port':9200}]``` to
                     make sure the client supports failover of one of the instertion nodes
-        :param auth_details: When ```POLElasticsearchHandler.AuthType.BASIC_AUTH``` is used this argument must contain
+        :param auth_details: When ```ElasticsearchHandler.AuthType.BASIC_AUTH``` is used this argument must contain
                     a tuple of string with the user and password that will be used to authenticate against
                     the Elasticsearch servers, for example```('User','Password')
-        :param aws_session: When ```POLElasticsearchHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must
+        :param aws_session: When ```ElasticsearchHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must
                     contain the AWS session object
-        :param auth_type: The authentication type to be used in the connection ```POLElasticsearchHandler.AuthType```
+        :param auth_type: The authentication type to be used in the connection ```ElasticsearchHandler.AuthType```
                     Currently, NO_AUTH, BASIC_AUTH, KERBEROS_AUTH are supported
         :param use_ssl: A boolean that defines if the communications should use SSL encrypted communication
         :param verify_ssl: A boolean that defines if the SSL certificates are validated or not
@@ -183,14 +183,14 @@ class POLElasticsearchHandler(logging.Handler):
                     to the logs, such the application, environment, etc.
         :param raise_on_indexing_exceptions: A boolean, True only for debugging purposes to raise exceptions
                     caused when
-        :return: A ready to be used POLElasticsearchHandler.
+        :return: A ready to be used ElasticsearchHandler.
         """
         logging.Handler.__init__(self)
         self._client = None
         self._buffer = []
         self._buffer_lock = Lock()
         self._timer = None
-        self._index_name_func = POLElasticsearchHandler._INDEX_FREQUENCY_FUNCION_DICT[index_name_frequency]
+        self._index_name_func = ElasticsearchHandler._INDEX_FREQUENCY_FUNCION_DICT[index_name_frequency]
 
         self.hosts = hosts
         self.auth_details = auth_details
@@ -224,7 +224,7 @@ class POLElasticsearchHandler(logging.Handler):
             self._timer.start()
 
     def __get_es_client(self):
-        if self.auth_type == POLElasticsearchHandler.AuthType.NO_AUTH:
+        if self.auth_type == ElasticsearchHandler.AuthType.NO_AUTH:
             if self._client is None:
                 self._client = Elasticsearch(hosts=self.hosts,
                                              use_ssl=self.use_ssl,
@@ -233,7 +233,7 @@ class POLElasticsearchHandler(logging.Handler):
                                              serializer=self.serializer)
             return self._client
 
-        if self.auth_type == POLElasticsearchHandler.AuthType.BASIC_AUTH:
+        if self.auth_type == ElasticsearchHandler.AuthType.BASIC_AUTH:
             if self._client is None:
                 return Elasticsearch(hosts=self.hosts,
                                      http_auth=self.auth_details,
@@ -243,7 +243,7 @@ class POLElasticsearchHandler(logging.Handler):
                                      serializer=self.serializer)
             return self._client
 
-        if self.auth_type == POLElasticsearchHandler.AuthType.AWS_SIGNED_AUTH:
+        if self.auth_type == ElasticsearchHandler.AuthType.AWS_SIGNED_AUTH:
             if self.aws_session is None:
                 raise ValueError("AWS signed authentication enabled, but session object is None")
             if self._client is None:
@@ -338,7 +338,7 @@ class POLElasticsearchHandler(logging.Handler):
 
         rec = self.es_additional_fields.copy()
         for key, value in record.__dict__.items():
-            if key not in POLElasticsearchHandler.__LOGGING_FILTER_FIELDS:
+            if key not in ElasticsearchHandler.__LOGGING_FILTER_FIELDS:
                 if key == "args":
                     value = tuple(str(arg) for arg in value)
                 rec[key] = "" if value is None else value
