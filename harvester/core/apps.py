@@ -27,3 +27,10 @@ class CoreConfig(AppConfig):
                 }
             }
         })
+        register_defaults("http_resource", {
+            "method": "get"
+        })
+        register_defaults("extract_processor", {
+            "extractor": "ExtractProcessor.extract_from_resource",
+            "to_property": None
+        })
