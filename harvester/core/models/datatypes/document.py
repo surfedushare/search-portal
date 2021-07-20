@@ -42,12 +42,7 @@ class Document(DocumentBase):
     # NB: Collection foreign key is added by the base class
 
     def get_language(self):
-        for field in ['metadata', 'from_text', 'from_title']:
-            if field in self.properties['language']:
-                language = self.properties['language'][field]
-                if language is not None:
-                    return language
-        return "unk"
+        return self.properties['language'].get("metadata", "unk")
 
     def get_search_document_extras(self, reference_id, title, text):
         extras = {
