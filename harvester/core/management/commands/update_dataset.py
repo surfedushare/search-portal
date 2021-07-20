@@ -70,23 +70,10 @@ class Command(PipelineCommand):
             "research_themes": meta.get("research_themes", []),
         }
 
-    def get_documents_from_zip(self, file_resource, tika_resource, metadata, pipeline):
-        tika_content_type, data = tika_resource.content
-        if data is None:
-            return []
-        text = data.get("X-TIKA:content", "")
-        return self._create_document(
-            text,
-            meta=metadata,
-            pipeline=pipeline
-        )
-
     def get_document(self, file_resource, tika_resource, metadata, pipeline):
         text = ""
         if tika_resource is None or not tika_resource.success:
             return self._create_document(text, meta=metadata, pipeline=pipeline)
-        if tika_resource.is_zip():
-            return self.get_documents_from_zip(file_resource, tika_resource, metadata, pipeline)
         tika_content_type, data = tika_resource.content
         if data is None:
             return self._create_document(text, meta=metadata, pipeline=pipeline)

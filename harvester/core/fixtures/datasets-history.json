@@ -28,7 +28,7 @@
             "modified_at": "2020-02-17T12:24:52.119Z",
             "name": "surfsharekit",
             "identifier": null,
-            "referee": "id",
+            "referee": "external_id",
             "dataset_version": 1
         }
     },

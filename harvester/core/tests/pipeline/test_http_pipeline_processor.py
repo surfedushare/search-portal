@@ -67,13 +67,13 @@ class TestHttpPipelineProcessor(TestCase):
             "asynchronous": True,
             "retrieve_data": {
                 "resource": resource,
-                "method": "post",
+                "method": "post",  # TODO: default?
                 "args": [],
                 "kwargs": {"url": "$.url"},
             },
             "contribute_data": {
-                "extractor": "ExtractProcessor.extract_from_resource",
-                "to_property": "text",
+                "extractor": "ExtractProcessor.extract_from_resource",  # TODO: default?
+                "to_property": None,  # TODO: default
                 "objective": {
                     "@": "$",
                     "text": "$.text"

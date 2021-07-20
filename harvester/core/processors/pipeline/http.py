@@ -63,6 +63,9 @@ class HttpPipelineProcessor(PipelineProcessor):
                 continue
             contribution = contributions.pop(0)
             # TODO: create docs here where necessary
-            process_result.document.properties[contribution_property] = contribution
+            if contribution_property is None:
+                process_result.document.properties.update(contribution)
+            else:
+                process_result.document.properties[contribution_property] = contribution
 
         self.Document.objects.bulk_update(documents, ["pipeline", "properties"])

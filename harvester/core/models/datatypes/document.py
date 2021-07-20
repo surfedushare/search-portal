@@ -1,3 +1,4 @@
+from mimetypes import guess_type
 from copy import copy
 
 from django.db import models
@@ -8,7 +9,32 @@ from datagrowth.datatypes import DocumentBase
 PRIVATE_PROPERTIES = ["pipeline", "from_youtube", "lowest_educational_level"]
 
 
+class DocumentManager(models.Manager):
+
+    def build_from_seed(self, seed, collection=None):
+        url = seed.get("url", None)
+        mime_type = seed.get("mime_type", None)  # TODO: mime type redundant?
+        if mime_type is None and url:
+            mime_type, encoding = guess_type(url)
+
+        properties = copy(seed)  # TODO: use setters that update the pipeline?
+        properties["mime_type"] = mime_type
+        properties["id"] = seed["external_id"]
+        properties["language"] = {
+            "metadata": seed.get("language", None)
+        }
+        properties["suggest"] = seed["title"]
+
+        document = Document(properties=properties, collection=collection)
+        if collection:
+            document.dataset_version = collection.dataset_version
+        document.clean()
+        return document
+
+
 class Document(DocumentBase):
+
+    objects = DocumentManager()
 
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     pipeline = models.JSONField(default=dict, blank=True)
