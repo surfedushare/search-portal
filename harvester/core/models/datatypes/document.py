@@ -1,4 +1,3 @@
-from mimetypes import guess_type
 from copy import copy
 
 from django.db import models
@@ -12,13 +11,7 @@ PRIVATE_PROPERTIES = ["pipeline", "from_youtube", "lowest_educational_level"]
 class DocumentManager(models.Manager):
 
     def build_from_seed(self, seed, collection=None, metadata_pipeline_key=None):
-        url = seed.get("url", None)
-        mime_type = seed.get("mime_type", None)  # TODO: mime type redundant?
-        if mime_type is None and url:
-            mime_type, encoding = guess_type(url)
-
         properties = copy(seed)  # TODO: use setters that update the pipeline?
-        properties["mime_type"] = mime_type
         properties["id"] = seed["external_id"]
         properties["language"] = {
             "metadata": seed.get("language", None)

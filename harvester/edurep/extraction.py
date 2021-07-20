@@ -135,18 +135,20 @@ class EdurepDataExtraction(object):
     @classmethod
     def get_mime_type(cls, soup, el):
         node = el.find('czp:format')
-        return node.text.strip() if node else None
+        if node:
+            return node.text.strip()
+        url = cls.get_url(soup, el)
+        if not url:
+            return
+        mime_type, encoding = guess_type(url)
+        return mime_type
 
     @classmethod
     def get_technical_type(cls, soup, el):
         mime_type = cls.get_mime_type(soup, el)
         if mime_type:
             return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
-        url = cls.get_url(soup, el)
-        if not url:
-            return
-        mime_type, encoding = guess_type(url)
-        return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
+        return
 
     @classmethod
     def get_material_type(cls, soup, el):
