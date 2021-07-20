@@ -34,7 +34,7 @@ class TestHttpPipelineProcessor(TestCase):
             },
             "contribute_data": {
                 "extractor": "ExtractProcessor.extract_from_resource",
-                "to_property": "text",
+                "to_property": None,
                 "objective": {
                     "@": "$",
                     "text": "$.text"

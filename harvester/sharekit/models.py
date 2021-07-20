@@ -30,7 +30,14 @@ class SharekitMetadataHarvestManager(models.Manager):
 
         results = []
         for harvest in queryset:
-            results += list(prc.extract_from_resource(harvest))
+            seed_resource = {
+                "resource": f"{harvest._meta.app_label}.{harvest._meta.model_name}",
+                "id": harvest.id,
+                "success": True
+            }
+            for seed in prc.extract_from_resource(harvest):
+                seed["seed_resource"] = seed_resource
+                results.append(seed)
         return results
 
 

@@ -69,7 +69,11 @@ class Command(PipelineCommand):
             inserts = []
             for seed in seeds:
                 self.logger.report_material(seed["external_id"], title=seed["title"], url=seed["url"])
-                document = Document.objects.build_from_seed(seed, collection=collection)
+                document = Document.objects.build_from_seed(
+                    seed,
+                    collection=collection,
+                    metadata_pipeline_key="seed_resource"
+                )
                 if document.reference in existing_documents:
                     document.id = existing_documents[document.reference]
                     document.modified_at = now()

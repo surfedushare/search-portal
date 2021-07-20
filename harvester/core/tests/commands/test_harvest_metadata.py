@@ -107,7 +107,6 @@ class TestMetadataHarvest(TestCase):
     @patch("core.management.base.PipelineCommand.logger", spec_set=HarvestLogger)
     def test_edurep_invalid_dataset(self, logger_mock):
         # Testing the case where a Dataset does not exist at all
-
         call_command("harvest_metadata", "--dataset=invalid", f"--repository={Repositories.EDUREP}")
         logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
         # Testing the case where a Dataset exists, but no harvest tasks are present
@@ -145,6 +144,10 @@ class TestMetadataHarvest(TestCase):
         self.assertEqual(collection.document_set.count(), documents_count)
         for document in collection.document_set.all():
             self.assertEqual(document.reference, document.properties["external_id"])
+            metadata_pipeline = document.pipeline["metadata"]
+            self.assertEqual(metadata_pipeline["resource"], "edurep.edurepoaipmh")
+            self.assertIsInstance(metadata_pipeline["id"], int)
+            self.assertTrue(metadata_pipeline["success"])
 
     def test_handle_deletion_seeds(self):
         dataset_version = DatasetVersion.objects.last()

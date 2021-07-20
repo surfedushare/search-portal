@@ -11,7 +11,7 @@ PRIVATE_PROPERTIES = ["pipeline", "from_youtube", "lowest_educational_level"]
 
 class DocumentManager(models.Manager):
 
-    def build_from_seed(self, seed, collection=None):
+    def build_from_seed(self, seed, collection=None, metadata_pipeline_key=None):
         url = seed.get("url", None)
         mime_type = seed.get("mime_type", None)  # TODO: mime type redundant?
         if mime_type is None and url:
@@ -25,7 +25,8 @@ class DocumentManager(models.Manager):
         }
         properties["suggest"] = seed["title"]
 
-        document = Document(properties=properties, collection=collection)
+        metadata_pipeline = properties.pop(metadata_pipeline_key, None)
+        document = Document(properties=properties, collection=collection, pipeline={"metadata": metadata_pipeline})
         if collection:
             document.dataset_version = collection.dataset_version
         document.clean()
