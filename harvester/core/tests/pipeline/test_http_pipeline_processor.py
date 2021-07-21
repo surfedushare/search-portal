@@ -5,6 +5,7 @@ from celery.canvas import Signature
 
 from core.models import Collection, Batch, ProcessResult
 from core.processors import HttpPipelineProcessor
+from core.tests.factories import DocumentFactory
 
 
 chord_mock_result = MagicMock()
@@ -17,6 +18,7 @@ class TestHttpPipelineProcessor(TestCase):
     def setUp(self):
         super().setUp()
         self.collection = Collection.objects.get(id=171)
+        self.ignored_document = DocumentFactory.create(collection=self.collection, pipeline={})
 
     @patch("core.models.resources.basic.HttpTikaResource._send")
     def test_synchronous_tika_pipeline(self, send_mock):
@@ -24,6 +26,7 @@ class TestHttpPipelineProcessor(TestCase):
         processor = HttpPipelineProcessor({
             "pipeline_app_label": "core",
             "pipeline_phase": "tika",
+            "pipeline_depends_on": "metadata",
             "batch_size": 5,
             "asynchronous": False,
             "retrieve_data": {
@@ -42,8 +45,12 @@ class TestHttpPipelineProcessor(TestCase):
         processor(self.collection.documents)
         self.assertEqual(Batch.objects.count(), 3)
         self.assertEqual(ProcessResult.objects.count(), 0)
-        self.assertEqual(self.collection.documents.count(), 11)
+        self.assertEqual(self.collection.documents.count(), 12)
         for document in self.collection.documents.all():
+            if "metadata" not in document.pipeline:
+                self.assertEqual(document.id, self.ignored_document.id,
+                                 "Expected documents without complete metadata phase to get ignored")
+                continue
             self.assertIn("tika", document.pipeline)
             tika_pipeline = document.pipeline["tika"]
             self.assertEqual(tika_pipeline["resource"], "core.httptikaresource")
@@ -61,6 +68,7 @@ class TestHttpPipelineProcessor(TestCase):
         processor = HttpPipelineProcessor({
             "pipeline_app_label": "core",
             "pipeline_phase": "tika",
+            "pipeline_depends_on": "metadata",
             "batch_size": 5,
             "asynchronous": True,
             "retrieve_data": {
