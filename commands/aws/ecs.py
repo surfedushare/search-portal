@@ -2,7 +2,7 @@ import os
 import json
 from invoke import Exit
 
-from environments.surfpol import MODE
+from environments.project import MODE
 from commands.aws.utils import create_aws_session
 from commands import TARGETS, REPOSITORY
 

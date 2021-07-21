@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.conf import settings
 
-from surfpol.configuration import create_elastic_search_index_configuration
+from project.configuration import create_elastic_search_index_configuration
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from e2e_tests.base import BaseElasticSearchTestCase
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material

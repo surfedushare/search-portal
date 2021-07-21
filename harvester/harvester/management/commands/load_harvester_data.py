@@ -9,7 +9,7 @@ from django.apps import apps
 from django.db import models, connection
 
 from datagrowth.utils import get_dumps_path, objects_from_disk
-from surfpol.configuration import create_configuration
+from project.configuration import create_configuration
 from harvester.settings import environment
 from core.models import Dataset, FileResource
 from core.models.resources.basic import file_resource_delete_handler
@@ -70,7 +70,7 @@ class Command(base.LabelCommand):
         harvest_source = options.get("harvest_source", None)
         assert harvest_source or environment.env != "localhost", \
             "Expected a harvest source argument for a localhost environment"
-        source_environment = create_configuration(harvest_source, project="harvester") \
+        source_environment = create_configuration(harvest_source, service="harvester") \
             if harvest_source else environment
 
         # Delete old datasets
