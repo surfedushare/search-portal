@@ -62,7 +62,8 @@ class Command(PipelineCommand):
             existing_documents = {
                 reference: identifier
                 for reference, identifier in Document.objects.filter(
-                    reference__in=[seed["external_id"] for seed in seeds if seed["external_id"]]
+                    reference__in=[seed["external_id"] for seed in seeds if seed["external_id"]],
+                    collection=collection
                 ).values_list("reference", "id")
             }
             updates = []
