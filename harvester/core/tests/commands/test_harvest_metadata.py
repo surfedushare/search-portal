@@ -7,7 +7,7 @@ from django.utils.timezone import make_aware
 
 from datagrowth.resources.http.tasks import send
 from core.management.commands.harvest_metadata import Command as DatasetCommand
-from core.models import DatasetVersion, Collection, Harvest, Document
+from core.models import DatasetVersion, Collection, Harvest
 from core.constants import HarvestStages, Repositories
 from core.logging import HarvestLogger
 from harvester.utils.extraction import get_harvest_seeds
