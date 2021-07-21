@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 
 from datagrowth.configuration import create_config
@@ -8,6 +9,12 @@ from core.processors.pipeline.base import PipelineProcessor
 
 
 class HttpPipelineProcessor(PipelineProcessor):
+
+    def filter_documents(self, queryset):
+        depends_on = self.config.pipeline_depends_on
+        pipeline_phase = self.config.pipeline_phase
+        filters = Q(**{f"pipeline__{depends_on}__success": True}) | Q(**{f"pipeline__{pipeline_phase}__success": False})
+        return queryset.filter(filters)
 
     def process_batch(self, batch):
 
