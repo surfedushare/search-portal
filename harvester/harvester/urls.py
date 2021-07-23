@@ -18,6 +18,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from core.views.health import health_check
+
 
 api_urlpatterns = [
     path('', include('core.urls')),
@@ -27,6 +29,7 @@ api_urlpatterns = [
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include((api_urlpatterns, "v1",))),
+    path('', health_check, name="health-check")
 ]
 
 

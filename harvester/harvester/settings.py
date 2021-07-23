@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 import sentry_sdk
+import requests
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.logging import ignore_logger
@@ -55,6 +56,14 @@ USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
+# Detect our own IP address
+try:
+    response = requests.get("https://api.ipify.org/?format=json")
+    IP = response.json()["ip"]
+except Exception:
+    IP = None
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,6 +74,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'datagrowth',
 
     'core',
