@@ -2,7 +2,7 @@ django:
   directory: "harvester"
   fixtures:
     - "core/fixtures/datasets-history.json"
-    - "core/fixtures/initial.json"
+    - "core/fixtures/initial-nppo.json"
   redis_host: "redis:6379"
   data_retention:
     purge_after:
