@@ -391,16 +391,20 @@ CELERY_BEAT_SCHEDULE = {
             minute=0
         ),
     },
-    'sync_sharekit_metadata': {
-        'task': 'sync_sharekit_metadata',
-        'schedule': 30,
-    },
-    'sync_indices': {
-        'task': 'sync_indices',
-        'schedule': 30,
-    },
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+
+if PROJECT == "edusources":
+    CELERY_BEAT_SCHEDULE.update({
+        'sync_sharekit_metadata': {
+            'task': 'sync_sharekit_metadata',
+            'schedule': 30,
+        },
+        'sync_indices': {
+            'task': 'sync_indices',
+            'schedule': 30,
+        }
+    })
 
 
 # Datagrowth
