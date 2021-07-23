@@ -21,7 +21,7 @@ from sentry_sdk.integrations.logging import ignore_logger
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from project import create_configuration_and_session, MODE, CONTEXT
+from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
 from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 
@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'surf.vendor.surfconext',
 
     'surf',
+    'surf.apps.core',
     'surf.apps.users',
     'surf.apps.filters',
     'surf.apps.materials',

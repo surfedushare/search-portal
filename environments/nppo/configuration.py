@@ -2,7 +2,7 @@
 
 def get_project_search_mapping_properties():
     return {
-        'themes': {
+        'research_themes': {
             'type': 'keyword'
         },
         'research_object_type': {
