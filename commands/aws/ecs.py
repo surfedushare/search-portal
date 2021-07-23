@@ -2,9 +2,9 @@ import os
 import json
 from invoke import Exit
 
-from environments.project import MODE
+from environments.project import MODE, REPOSITORY, PROJECT
 from commands.aws.utils import create_aws_session
-from commands import TARGETS, REPOSITORY
+from commands import TARGETS
 
 
 def register_task_definition(family, ecs_client, task_role_arn, container_variables, container_definition_path, cpu,
@@ -100,7 +100,8 @@ def build_default_container_variables(mode, version):
     return {
         "REPOSITORY": REPOSITORY,
         "mode": mode,
-        "version": version
+        "version": version,
+        "project": PROJECT
     }
 
 

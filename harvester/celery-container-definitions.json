@@ -7,7 +7,8 @@
     "command": ["celery", "-A", "harvester", "worker", "--concurrency=${concurrency}", "--loglevel=info", "-n=main-worker@%h"],
     "environment": [
       { "name" : "PYTHONUNBUFFERED", "value" : "1" },
-      { "name" : "APPLICATION_MODE", "value" : "${mode}" }
+      { "name" : "APPLICATION_MODE", "value" : "${mode}" },
+      { "name" : "APPLICATION_PROJECT", "value" : "${project}" }
     ],
     "logConfiguration": {
       "logDriver": "awslogs",

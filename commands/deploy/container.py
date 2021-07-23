@@ -6,7 +6,8 @@ from invoke.tasks import task
 from invoke.exceptions import Exit
 from git import Repo
 
-from commands import TARGETS, REPOSITORY
+from commands import TARGETS
+from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
 from environments.utils.packaging import get_package_info
 
 
@@ -89,7 +90,7 @@ def push(ctx, target, version=None):
 
     # Login with Docker to AWS
     ctx.run(
-        "AWS_PROFILE=pol-prod aws ecr get-login-password --region eu-central-1 | "
+        f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
         f"docker login --username AWS --password-stdin {REPOSITORY}",
         echo=True
     )
