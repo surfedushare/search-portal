@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
-from project import create_configuration_and_session, MODE, CONTEXT
+from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
 from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 # Then we read some variables from the (build) environment
@@ -274,7 +274,7 @@ LOGGING = {
     },
 }
 
-if not DEBUG:
+if not DEBUG and PROJECT == "edusources":
 
     def strip_sensitive_data(event, hint):
         user_agent = event.get('request', {}).get('headers', {}).get('User-Agent', None)
