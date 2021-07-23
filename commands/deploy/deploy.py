@@ -146,7 +146,7 @@ def deploy(ctx, mode, version=None):
     """
     Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
     """
-    target = ctx.config.project
+    target = ctx.config.service
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
 

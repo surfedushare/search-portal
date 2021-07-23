@@ -1,4 +1,4 @@
-project: "service"
+service: "service"
 
 django:
   directory: "service"
