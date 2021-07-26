@@ -26,6 +26,7 @@ schedule:
 
 aws:
   task_role_arn: "arn:aws:iam::000428825067:role/ecsHarvesterTaskExecutionRole"
+  scheduled_tasks: []
 
 secrets:
   postgres:

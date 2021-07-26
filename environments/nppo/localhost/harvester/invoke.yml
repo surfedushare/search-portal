@@ -27,6 +27,7 @@ schedule:
 
 aws:
   harvest_content_bucket: null
+  scheduled_tasks: []
 
 secrets:
   postgres:

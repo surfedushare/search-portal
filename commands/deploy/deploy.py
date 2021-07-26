@@ -33,14 +33,9 @@ def register_scheduled_tasks(ctx, aws_config, task_definition_arn):
         }
     }
     scheduled_tasks = [
-        ("clearlogins", '1', ["python", "manage.py", "clearlogins"]),
-        ("sync_category_filters", '2', ["python", "manage.py", "sync_category_filters"]),
-        ("sync_materials", '3', ["python", "manage.py", "sync_materials"]),
+        (task, str(ix+1), ["python", "manage.py", task])
+        for ix, task in enumerate(ctx.config.aws.scheduled_tasks)
     ]
-    if ctx.config.env == 'production':
-        scheduled_tasks.append(
-            ("monitor_uptime", '4', ["python", "manage.py", "monitor_uptime"])
-        )
     for rule, identifier, command in scheduled_tasks:
         events_client.put_targets(
             Rule=rule,
