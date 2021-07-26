@@ -33,7 +33,8 @@
             }
         ],
         "environment": [
-            { "name" : "APPLICATION_MODE", "value" : "${mode}" }
+            {"name" : "APPLICATION_MODE", "value" : "${mode}"},
+            {"name" : "APPLICATION_PROJECT", "value" : "${project}"}
         ],
         "logConfiguration": {
             "logDriver": "awslogs",
