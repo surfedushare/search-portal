@@ -1,9 +1,6 @@
 django:
   directory: "service"
-  fixtures:
-    - "surf/apps/locale/fixtures/locales.json"
-    - "surf/apps/filters/fixtures/filter-categories.json"
-    - "surf/vendor/surfconext/fixtures/privacy_statements.json"
+  fixtures: []
   motomo_id: null
   administrative_emails: true
 
