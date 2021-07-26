@@ -1,5 +1,5 @@
 service:
-  name: "harvester"
+  name: "service"
 
 django:
   directory: "service"
