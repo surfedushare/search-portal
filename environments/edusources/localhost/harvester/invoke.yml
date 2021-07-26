@@ -1,3 +1,6 @@
+service:
+  name: "harvester"
+
 django:
   directory: "harvester"
   fixtures:

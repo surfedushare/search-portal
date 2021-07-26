@@ -56,7 +56,7 @@ def setup_postgres_remote(conn):
         # Create generic superuser named supersurf
         admin_password = conn.config.secrets.django.admin_password
         insert_user = insert_django_user_statement(
-            "supersurf", admin_password, is_edushare=conn.config.postgres.database == "edushare"
+            "supersurf", admin_password, is_search_service=conn.config.service.name == "service"
         )
         conn.local(
             f'psql -h localhost -p 1111 -U {postgres_user} -d {conn.config.postgres.database} -W -c "{insert_user}"',

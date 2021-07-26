@@ -1,3 +1,6 @@
+service:
+  name: "service"
+
 django:
   directory: "service"
   fixtures:

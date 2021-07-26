@@ -26,7 +26,7 @@ def import_snapshot(ctx, snapshot_name=None):
     print("creating superuser")
     admin_password = ctx.config.secrets.django.admin_password
     insert_user = insert_django_user_statement(
-        "supersurf", admin_password, is_edushare=True
+        "supersurf", admin_password, is_search_service=True
     )
     ctx.run(
         f'psql -h localhost -U postgres -d edushare -W -c "{insert_user}"',
