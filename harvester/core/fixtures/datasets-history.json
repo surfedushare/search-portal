@@ -28,7 +28,7 @@
             "modified_at": "2020-02-17T12:24:52.119Z",
             "name": "surfsharekit",
             "identifier": null,
-            "referee": "id",
+            "referee": "external_id",
             "dataset_version": 1
         }
     },
@@ -89,6 +89,13 @@
             "collection": 171,
             "identity": null,
             "reference": "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -166,6 +173,13 @@
             "collection": 171,
             "identity": null,
             "reference": "surfsharekit:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -245,11 +259,18 @@
             "collection": 171,
             "identity": null,
             "reference": "surfsharekit:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
-                "url": "https://surfsharekit.nl/objectstore/88c687c8-fbc4-4d69-a27d-45d9f30d642b",
+                "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
                 "text": "\\n              \\n\\n  \\n    \\n    \\n      \\n        \\n                      \\n            \\n\\n                                Didactiek van macro-meso-micro denken bij scheikunde\\n\\n                  \\n\\n      \\n\\n    \\n  \\n\\n\\n\\n    \\n    \\n      \\n                  Didactiek van macro-meso-micro denken bij scheikunde\\n\\n                \\n          \\n            \\n\\n    Ga naar\\n\\n    \\n\\n        \\n        \\n                                                                                \\n                        \\n                            \\n                                Inleiding\\n                                                            \\n                        \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Leerdoelen\\n                                                            \\n                        \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Opdrachten\\n                                                                    \\n                                                            \\n                        \\n\\n                                                    \\n                                \\n                                    \\t\\n                                                \\n                                                    1: Studieopdracht conceptuele analyse\\n                                                \\n                                            \\n\\t\\n                                                \\n                                                    2. Onderzoeksopdracht Leerlingdenkbeelden\\n                                                \\n                                            \\n\\t\\n                                                \\n                                                    3: Schrijfopdacht instructiemateriaal mesostructuur\\n                                                \\n                                            \\n\\n\\n                                \\n\\n                            \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Bronnen\\n                                                            \\n                        \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Handleiding voor de opleider\\n                                                            \\n                        \\n\\n                                            \\n\\n                                        \\n                \\n                    \\n                        Colofon\\n                    \\n                \\n\\n            \\n\\n        \\n\\n                \\n            \\n                \\n            \\n            \\t\\n                                                                        PDF\\n                                                            \\n\\t\\n                                                                        E-book\\n                                                            \\n\\t\\n                                \\n                                    Voor elektronische leeromgeving\\n                                \\n                            \\n\\t\\n                        \\n                            Kopieer arrangement\\n                        \\n                    \\n\\n\\n        \\n\\n    \\n\\n\\n\\n          \\n\\n          \\n            \\n\\n\\n    \\n    \\n  \\n\\n\\n  \\n    \\n  \\n\\n\\n    \\n    \\n    \\n      Inleiding\\nBeste docent of docent-in-opleiding scheikunde,\\n\\n\\nDit arrangement bevat opdrachten op het gebied van de didactiek van macro-meso-micro-denken, een belangrijk nieuw onderwerp in de scheikunde in het voortgezet onderwijs.\\n\\n\\nHet is bedoeld voor zelfstudie of kan worden ingepast in het programma van de lerarenopleiding. De opdrachten bouwen op elkaar voort.\\n\\n\\nHet materiaal is ontwikkeld in het kader van het project online-bètadidactiek en kan vrij gebruikt worden voor opleidingsdoeleinden.\\n\\n\\nIn de onderstaande video wordt aangegeven wat het onderwerp macro-meso-micro inhoudt en waarom het van belang is in het voortgezet onderwijs:\\n\\n\\nhttps://drive.google.com/file/d/0B27or32IlB2bRTJXUERzbllxTmc/view?usp=sharing\\n\\n\\n \\n\\n\\nDit arrangement heeft drie onderdelen\\n\\n1. Studieopdracht gericht op conceptuele analyse\\n\\n2. Onderzoeksopdracht gericht op leerlingdenkbeelden\\n\\n3. Ontwerpopdracht gericht op instructiemateriaal\\n\\n\\n\\n\\nDit komt overeen met de hoekpunten van de zogenaamde vakdidactische driehoek: \\n\\n\\n\\n                                    Vakdidactische driehoek\\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\nDe opdrachten kosten circa 30 uur werk. Het is aan te raden een selectie te maken.\\n\\n\\n \\n\\n\\nVeel studieplezier,\\n\\n\\nRuud Kok, lerarenopleider scheikunde, Hogeschool van Amsterdam\\n\\n\\n​Hans Poorthuis, lerarenopleider natuurkunde Hogeschool Utrecht\\n\\n\\nAstrid Bulte, vakdidacticus scheikunde Universiteit Utrecht\\n\\n\\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n  \\n  \\n    Colofon\\n\\n\\n          \\n    \\n        \\n        Het arrangement Didactiek van macro-meso-micro denken bij scheikunde is gemaakt met\\n        Wikiwijs van\\n        Kennisnet. Wikiwijs is hét onderwijsplatform waar je leermiddelen zoekt,\\n        maakt en deelt.\\n    \\n\\n     \\n    \\tAuteurs\\n\\t\\n                    \\n               Ruud  Kok\\n            \\n                            ; \\n                Theo van den Bogaart\\n                            ; \\n                Astrid  Bulte\\n                            ; \\n                Hans Poorthuis\\n                          \\n\\tLaatst gewijzigd\\n\\t2017-09-27 14:27:55\\n\\tLicentie\\n\\t\\n          \\n          Dit lesmateriaal is gepubliceerd onder de Creative Commons Naamsvermelding-GelijkDelen 3.0 Nederland licentie. Dit houdt in dat je onder de voorwaarde van naamsvermelding en publicatie onder dezelfde licentie vrij bent om:\\n\\n\\thet werk te delen - te kopiëren, te verspreiden en door te geven via elk medium of bestandsformaat\\n\\thet werk te bewerken - te remixen, te veranderen en afgeleide werken te maken\\n\\tvoor alle doeleinden, inclusief commerciële doeleinden.\\n\\n\\n                        Meer informatie over de \\n               CC Naamsvermelding-GelijkDelen 3.0 Nederland licentie.\\n              \\n\\n                \\n\\n\\n  \\n\\n\\n    \\n\\n\\n\\n\\nAanvullende informatie over dit lesmateriaal\\n\\n\\n    \\n        \\n            Van dit lesmateriaal is de volgende aanvullende informatie beschikbaar:\\n        \\n\\n        \\n            \\tToelichting\\n\\tProfessionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\\n\\tLeerniveau\\n\\t\\n                                            WO - Bachelor;\\n                                            WO - Master;\\n                                            HBO - Master;\\n                                            HBO - Bachelor;\\n                                    \\n\\tLeerinhoud en doelen\\n\\t\\n                                            Scheikunde;\\n                                    \\n\\tEindgebruiker\\n\\tleerling/student\\n\\tMoeilijkheidsgraad\\n\\tmoeilijk\\n\\tStudiebelasting\\n\\t30 uur en 0 minuten\\n\\tTrefwoorden\\n\\tcorrespondentie, didactiek, eigenschappen, macro, macro-meso-micro, meso, micro, scheikunde, structuur\\n\\n\\n        \\n\\n    \\n\\n\\n\\n\\n\\n\\n\\n\\n    Didactiek van macro-meso-micro denken bij scheikunde\\n\\n    nl\\n\\n    Ruud Kok\\n\\n        2017-09-27 14:27:55\\n\\n    Professionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\\n\\n                        \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                WO - Bachelor\\n\\n                http://purl.edustandaard.nl/begrippenkader/18656a7c-95a5-4831-8085-020d3151aceb\\n\\n            \\n\\n                    \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                WO - Master\\n\\n                http://purl.edustandaard.nl/begrippenkader/2998f2e0-449d-4911-86a2-f4cbf1a20b56\\n\\n            \\n\\n                    \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                HBO - Master\\n\\n                http://purl.edustandaard.nl/begrippenkader/de952b8b-efa5-4395-92c0-193812130c67\\n\\n            \\n\\n                    \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                HBO - Bachelor\\n\\n                http://purl.edustandaard.nl/begrippenkader/f33b30ee-3c82-4ead-bc20-4255be9ece2d\\n\\n            \\n\\n                                    \\n                educationalSubject\\n\\n                OnderwijsBegrippenKader\\n\\n                Scheikunde\\n\\n                http://purl.edustandaard.nl/begrippenkader/3aab168a-9b24-4aca-b0f1-4bfb12e7c288\\n\\n            \\n\\n                        \\n            leerling/student\\n\\n        \\n\\n                PT30H\\n\\n                correspondentie, didactiek, eigenschappen, macro, macro-meso-micro, meso, micro, scheikunde, structuur\\n\\n    \\n\\n  \\n\\n\\n\\n          \\n\\n        \\n\\n      \\n\\n    \\n\\n\\n    \\n  \\n    \\n      \\n\\n      \\n        \\n          \\n\\n          \\n            \\n          \\n          \\n            \\n          \\n          \\n\\n      \\n\\n    \\n\\n    \\n\\n  \\n\\n\\n\\n  \\n\\n  \\n  \\n      \\n      \\n        Gemaakt met\\n        Wikiwijs\\n        van\\n        \\n          \\n        \\n      \\n\\n      \\t Disclaimer \\n\\t Privacy \\n\\t Cookies \\n\\t\\n          \\n            \\n              \\n            \\n          \\n\\n        \\n\\n\\n    \\n\\n  \\n\\n  \\n\\n\\n                            \\n                    \\n    \\n  \\n",
                 "files": [
                     [
@@ -341,6 +362,13 @@
         "fields": {
             "created_at": "2021-06-24T13:00:48.017Z",
             "modified_at": "2021-06-24T13:00:48.017Z",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -428,6 +456,13 @@
         "fields": {
             "created_at": "2021-06-24T13:00:48.017Z",
             "modified_at": "2021-06-24T13:00:48.017Z",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -509,6 +544,13 @@
         "fields": {
             "created_at": "2021-06-24T13:00:48.017Z",
             "modified_at": "2021-06-24T13:00:48.017Z",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -592,6 +634,13 @@
         "fields": {
             "created_at": "2021-06-24T13:00:48.017Z",
             "modified_at": "2021-06-24T13:00:48.017Z",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -677,6 +726,13 @@
             "collection": 171,
             "identity": null,
             "reference": "surfsharekit:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -752,6 +808,13 @@
             "collection": 171,
             "identity": null,
             "reference": "surfsharekit:oai:surfsharekit.nl:0937a9fa-e368-4227-aa9e-d36afdffdd72",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 2
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -834,6 +897,13 @@
             "collection": 171,
             "identity": null,
             "reference": "surfsharekit:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 2
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
@@ -921,6 +991,13 @@
         "fields": {
             "created_at": "2021-06-24T13:00:48.019Z",
             "modified_at": "2021-06-24T13:00:48.019Z",
+            "pipeline": {
+                "metadata": {
+                    "success": true,
+                    "resource": "core.edurepoaipmh",
+                    "id": 1
+                }
+            },
             "properties": {
                 "research_object_type": null,
                 "research_themes": [],
