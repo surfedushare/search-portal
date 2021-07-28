@@ -14,7 +14,7 @@
       <h1 class="not-found-title">
         {{ $t('Not-found-title') }}
       </h1>
-      <button class="button">{{ $t('Not-found-button') }}</button>
+      <router-link :to="localePath('index')" class="button">{{ $t('Not-found-button') }}</router-link>
     </div>
     <div v-show="false" class="main__materials">
       <div class="center_block">
@@ -108,13 +108,14 @@ export default {
 }
 
 .not-found-section {
+  display: flex;
+  flex-direction: column;
   h1 {
     text-align: center;
     margin: 100px 0 20px;
   }
 
   .button {
-    display: block;
     margin: 0 auto;
   }
 }
