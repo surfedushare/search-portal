@@ -407,6 +407,15 @@ CKEDITOR_CONFIGS = {
 }
 
 
+# Robots
+# https://pypi.org/project/django-x-robots-tag-middleware/
+
+X_ROBOTS_TAG = ['noindex', 'nofollow']
+
+if MODE != 'production':
+    MIDDLEWARE.append('x_robots_tag_middleware.middleware.XRobotsTagMiddleware')
+
+
 # Debug Toolbar
 # https://django-debug-toolbar.readthedocs.io/en/latest/
 
