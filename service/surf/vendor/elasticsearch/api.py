@@ -1,6 +1,5 @@
 import boto3
 from collections import defaultdict
-import sentry_sdk
 
 from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection

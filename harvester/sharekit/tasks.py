@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime
 
-from django.conf import settings
 from django.db.transaction import atomic, DatabaseError
 from django.utils.timezone import make_aware
 from celery import current_app as app
