@@ -17,7 +17,7 @@ class PipelineCommand(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('-d', '--dataset', type=str, required=True)
-        parser.add_argument('-b', '--batch-size', type=int, default=32)
+        parser.add_argument('-b', '--batch-size', type=int, default=100)
 
     def execute(self, *args, **options):
         self.batch_size = options["batch_size"]

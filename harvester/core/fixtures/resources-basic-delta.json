@@ -56,7 +56,7 @@
             "purge_at": "2021-07-30T08:30:16.924Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "5a7dce4d6efa96d3f2ac45c3eaedd7e9bc49b453",
+            "data_hash": "ca55f24ea928ab30e756ab7c12f2673b77df0898",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -65,10 +65,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623103408045217.48fac5c4-c846-48b3-9318-6b01e151a508.html"
+                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623103408045217.48fac5c4-c846-48b3-9318-6b01e151a508.html"
+                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
                 },
                 "method": "post",
                 "headers": {

@@ -33,8 +33,15 @@ class EdurepOAIPMHManager(models.Manager):
 
         results = []
         for harvest in queryset:
+            seed_resource = {
+                "resource": f"{harvest._meta.app_label}.{harvest._meta.model_name}",
+                "id": harvest.id,
+                "success": True
+            }
             try:
-                results += list(prc.extract_from_resource(harvest))
+                for seed in prc.extract_from_resource(harvest):
+                    seed["seed_resource"] = seed_resource
+                    results.append(seed)
             except ValueError as exc:
                 logger.warning("Invalid XML:", exc, harvest.uri)
         return results

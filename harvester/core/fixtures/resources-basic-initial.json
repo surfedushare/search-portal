@@ -18,6 +18,50 @@
         }
     },
     {
+        "model": "core.httptikaresource",
+        "pk": 52,
+        "fields": {
+            "uri": "localhost:9090/analyze",
+            "status": 404,
+            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2021-07-14T08:17:31.529Z",
+            "modified_at": "2021-07-14T08:17:31.529Z",
+            "purge_at": "2021-08-13T08:17:18.665Z",
+            "retainer_type": null,
+            "retainer_id": null,
+            "data_hash": "6328cda321c350ff1e3b63ecc94a0cc20e59d968",
+            "request": {
+                "url": "http://localhost:9090/analyze",
+                "args": [
+                    "http",
+                    "localhost:9090",
+                    "/analyze"
+                ],
+                "json": {
+                    "url": "http://online.codarts.nl/mod/page/view.php?id=313"
+                },
+                "kwargs": {
+                    "url": "http://online.codarts.nl/mod/page/view.php?id=313"
+                },
+                "method": "post",
+                "headers": {
+                    "Accept": "*/*",
+                    "Connection": "keep-alive",
+                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
+                    "Content-Type": "application/json",
+                    "Accept-Encoding": "gzip, deflate"
+                },
+                "backoff_delay": false
+            },
+            "head": {
+                "date": "Wed, 14 Jul 2021 08:17:18 GMT",
+                "content-type": "text/plain",
+                "transfer-encoding": "chunked"
+            },
+            "body": "Not Found"
+        }
+    },
+    {
         "model": "core.fileresource",
         "pk": 18246,
         "fields": {
@@ -74,7 +118,7 @@
             "purge_at": "2021-07-30T06:38:16.703Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "c0f5e20a8656e3fa75d87a709e0249e610fa8895",
+            "data_hash": "c261126adbdc9f51900e5c8e72771105bd7cb60d",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -83,10 +127,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623105329151552.182216be-31a2-43c3-b7de-e5dd355b09f7.html"
+                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623105329151552.182216be-31a2-43c3-b7de-e5dd355b09f7.html"
+                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
                 },
                 "method": "post",
                 "headers": {
@@ -177,7 +221,7 @@
             "purge_at": "2021-07-25T12:48:42.893Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "c2e909a893f079778165721d0b1d17e207dc404d",
+            "data_hash": "ff0452aafda4db627a86d6ab747a5236138bb009",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -186,10 +230,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093608080356.watch.html"
+                    "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093608080356.watch.html"
+                    "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M"
                 },
                 "method": "post",
                 "headers": {
@@ -273,7 +317,7 @@
             "purge_at": "2021-07-25T12:48:42.920Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "fd57ffa7c639c4a7943450ad47ca2792d6183ac3",
+            "data_hash": "066f30099235a8c0882ec8b17efccec10381e022",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -282,10 +326,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20201022123202360897.Macro_meso_micro"
+                    "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20201022123202360897.Macro_meso_micro"
+                    "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729"
                 },
                 "method": "post",
                 "headers": {
@@ -374,7 +418,7 @@
             "purge_at": "2021-07-30T07:35:32.295Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "0ab0e39358795114a18637ef79c2dd161ab17094",
+            "data_hash": "a73d8e845c1a084ab3f6b52104a2474e620814b9",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -383,10 +427,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210630073402819885.D6_p6y3dvXw.html"
+                    "url": "https://youtu.be/D6_p6y3dvXw"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210630073402819885.D6_p6y3dvXw.html"
+                    "url": "https://youtu.be/D6_p6y3dvXw"
                 },
                 "method": "post",
                 "headers": {
@@ -477,7 +521,7 @@
             "purge_at": "2021-07-25T12:48:42.841Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "f1f0f0acfd4f42a5485b00dd21eebee17d80ba8c",
+            "data_hash": "e1e2b7834e1b7dd8d690b3018d694ee969be0bbd",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -486,10 +530,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093519214847.watch.html"
+                    "url": "https://www.youtube.com/watch?v=wVxZDVriTZc"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093519214847.watch.html"
+                    "url": "https://www.youtube.com/watch?v=wVxZDVriTZc"
                 },
                 "method": "post",
                 "headers": {
@@ -578,7 +622,7 @@
             "purge_at": "2021-07-25T12:48:42.812Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "8815b62de32317b687124691ef9710fe13dd9320",
+            "data_hash": "2d7b29ff873f0c293523c77b7f5c2662a10ca176",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -587,10 +631,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093518936360.watch.html"
+                    "url": "https://www.youtube.com/watch?v=Hx0kUX7MZ7g"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093518936360.watch.html"
+                    "url": "https://www.youtube.com/watch?v=Hx0kUX7MZ7g"
                 },
                 "method": "post",
                 "headers": {
@@ -679,7 +723,7 @@
             "purge_at": "2021-07-25T12:48:42.323Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "9be88eac918d9f020b6a34e1f8e42bff4768b985",
+            "data_hash": "0e1b540cfb1458601c18ecfdbd8dee6f90f34973",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -688,10 +732,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093518719032.watch.html"
+                    "url": "https://www.youtube.com/watch?v=D4w-EClY664&t=8s"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093518719032.watch.html"
+                    "url": "https://www.youtube.com/watch?v=D4w-EClY664&t=8s"
                 },
                 "method": "post",
                 "headers": {
@@ -765,7 +809,7 @@
                 "Content-Security-Policy": "script-src 'nonce-Uo3gH8C6EKnGfKAqhxud3w' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/ConsentHttp/cspreport;worker-src 'self', require-trusted-types-for 'script';report-uri /_/ConsentHttp/cspreport",
                 "Cross-Origin-Resource-Policy": "same-site"
             },
-            "body": "core/downloads/2/4a/20210623093527344824.watch.html"
+            "body": "test/20210623093527344824.watch.html"
         }
     },
     {
@@ -780,7 +824,7 @@
             "purge_at": "2021-07-30T08:35:29.448Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "724ba2c1c64506128e5ba892a74e67745e85bde6",
+            "data_hash": "51174936484d0bd4fc7fa77bd7b8f56ff0501a8e",
             "request": {
                 "url": "http://localhost:9090/analyze",
                 "args": [
@@ -789,10 +833,10 @@
                     "/analyze"
                 ],
                 "json": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093527344824.watch.html"
+                    "url": "https://www.youtube.com/watch?v=21v9IYUcruI"
                 },
                 "kwargs": {
-                    "url": "http://harvester:8080/media/harvester/test/20210623093527344824.watch.html"
+                    "url": "https://www.youtube.com/watch?v=21v9IYUcruI"
                 },
                 "method": "post",
                 "headers": {
