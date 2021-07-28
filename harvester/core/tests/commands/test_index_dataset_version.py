@@ -30,7 +30,7 @@ class ElasticSearchClientTestCase(TestCase):
         # Here we check if documents have all required keys including _id
         expected_keys = {
             "title", "url", "external_id", "disciplines", "lom_educational_levels", "description", "publisher_date",
-            "copyright", "language", "keywords", "file_type", "mime_type", "suggest_completion", "_id",
+            "copyright", "language", "keywords", "mime_type", "suggest_completion", "_id",
             "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "is_part_of", "preview_path",
             "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_types",
             "text", "suggest_phrase", "research_object_type", "research_themes"

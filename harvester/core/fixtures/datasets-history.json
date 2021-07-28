@@ -138,7 +138,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-nc-40",
-                "file_type": "text",
                 "technical_type": "document",
                 "material_types": ["kennisoverdracht"],
                 "has_parts": [],
@@ -224,7 +223,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
-                "file_type": "text",
                 "technical_type": "website",
                 "material_types": [],
                 "has_parts": [],
@@ -330,7 +328,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-sa-40",
-                "file_type": "unknown",
                 "technical_type": "app",
                 "material_types": [],
                 "has_parts": [],
@@ -414,7 +411,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
-                "file_type": "text",
                 "has_parts": [
                     "a18cdda7-e9c7-40d7-a7ad-6e875d9015ce",
                     "8936d0a3-4157-45f4-9595-c26d4c029d97",
@@ -507,7 +503,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
-                "file_type": "text",
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",
@@ -597,7 +592,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
-                "file_type": "text",
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",
@@ -686,7 +680,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
-                "file_type": "text",
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",
@@ -773,7 +766,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-nc-40",
-                "file_type": "text",
                 "technical_type": "website",
                 "material_types": [],
                 "has_parts": [],
@@ -847,7 +839,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-sa-40",
-                "file_type": "unknown",
                 "technical_type": "unknown",
                 "material_types": [],
                 "has_parts": [
@@ -957,7 +948,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-sa-40",
-                "file_type": "pdf",
                 "technical_type": "document",
                 "material_types": [],
                 "has_parts": [],
@@ -1045,7 +1035,6 @@
                     "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
-                "file_type": "text",
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",

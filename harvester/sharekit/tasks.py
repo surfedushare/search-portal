@@ -60,10 +60,8 @@ def sync_sharekit_metadata():
             for seed in seeds_batch:
                 language = seed.pop("language")
                 title = seed["title"]
-                mime_type = seed["mime_type"]
                 seed["language"] = {"metadata": language}
                 seed["suggest"] = title
-                seed["file_type"] = settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown")
                 updates.append(seed)
             collection.update(updates, "external_id")
         # Last but not least we update the harvest update time to get a different delta later

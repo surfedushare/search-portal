@@ -19,7 +19,7 @@ class PdfPreviewTestCase(TestCase):
         pipeline = {
             "file": serialize_resource(file_resource)
         }
-        self.document = DocumentFactory.create(file_type="pdf", pipeline=pipeline)
+        self.document = DocumentFactory.create(mime_type="application/pdf", pipeline=pipeline)
         super().setUp()
 
     @patch('core.models.FileResource.content', new_callable=read_content_mock)

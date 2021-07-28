@@ -42,7 +42,6 @@ class Command(PipelineCommand):
             },
             "url": url,
             "text": text or None,
-            "file_type": settings.MIME_TYPE_TO_FILE_TYPE.get(mime_type, "unknown"),
             "technical_type": meta.get("technical_type", None),
             "material_types": meta.get("material_types", None),
             "mime_type": mime_type,

@@ -55,7 +55,7 @@
                         "keywords": {
                             "type": "keyword"
                         },
-                        "file_type": {
+                        "technical_type": {
                             "type": "keyword"
                         },
                         "id": {

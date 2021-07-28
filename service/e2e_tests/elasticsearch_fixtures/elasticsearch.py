@@ -22,7 +22,6 @@ NL_MATERIAL = {
         "keywords": ["nerds"],
         "authors": ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"],
         "publishers": ["Wikiwijs Maken"],
-        "file_type": "text",
         "disciplines": ["7afbb7a6-c29b-425c-9c59-6f79c845f5f0"],
         "harvest_source": "wikiwijsmaken",
         "has_parts": [],
@@ -57,7 +56,6 @@ NL_MATERIAL = {
         "keywords": [],
         "authors": ["Michel van Ast"],
         "publishers": ["Wikiwijs Maken"],
-        "file_type": "text",
         "disciplines": [],
         "harvest_source": "wikiwijsmaken",
         "has_parts": [],
@@ -72,14 +70,13 @@ NL_MATERIAL = {
 }
 
 
-def generate_nl_material(educational_levels=None, file_type=None, source=None, copyright=None, publisher_date=None,
+def generate_nl_material(educational_levels=None, technical_type=None, source=None, copyright=None, publisher_date=None,
                          disciplines=None, topic="math"):
     copy = NL_MATERIAL[topic].copy()
     if educational_levels:
         copy["lom_educational_levels"] = educational_levels
-    if file_type:
-        copy["technical_type"] = file_type
-        copy["file_type"] = file_type
+    if technical_type:
+        copy["technical_type"] = technical_type
     if source:
         copy["harvest_source"] = source
     if copyright:
