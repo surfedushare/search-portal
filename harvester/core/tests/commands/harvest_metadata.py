@@ -8,10 +8,9 @@ from django.utils.timezone import make_aware
 from datagrowth.resources.http.tasks import send
 from core.management.commands.harvest_metadata import Command as DatasetCommand
 from core.models import DatasetVersion, Collection, Harvest
-from core.constants import HarvestStages, Repositories
+from core.constants import HarvestStages
 from core.logging import HarvestLogger
 from harvester.utils.extraction import get_harvest_seeds
-from edurep.tests.factories import EdurepOAIPMHFactory
 
 
 GET_HARVEST_SEEDS_TARGET = "core.management.commands.harvest_metadata.get_harvest_seeds"
@@ -39,10 +38,8 @@ class TestMetadataHarvest(TestCase):
     """
 
     fixtures = ["datasets-new"]
-
-    def setUp(self):
-        EdurepOAIPMHFactory.create_common_edurep_responses()
-        super().setUp()
+    spec_set = None
+    repository = None
 
     def get_command_instance(self):
         command = DatasetCommand()
@@ -53,13 +50,13 @@ class TestMetadataHarvest(TestCase):
     @patch(GET_HARVEST_SEEDS_TARGET, return_value=DUMMY_SEEDS)
     @patch(HANDLE_UPSERT_SEEDS_TARGET, return_value=[0, 7, 14])
     @patch(HANDLE_DELETION_SEEDS_TARGET, return_value=[1, 3])
-    def test_edurep_surfsharekit(self, deletion_target, upsert_target, seeds_target):
+    def test_harvest_metadata(self, deletion_target, upsert_target, seeds_target):
         # Checking whether end result of the command returned by "handle" matches expectations.
         # We'd expect two OAI-PMH calls to be made which should be both a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
         with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
-            call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
+            call_command("harvest_metadata", "--dataset=test", f"--repository={self.repository}")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
@@ -68,10 +65,10 @@ class TestMetadataHarvest(TestCase):
         self.assertEqual(
             config.continuation_limit, 10000, "Expected very high continuation limit to assert complete sets"
         )
-        self.assertEqual(args, ("surfsharekit", "1970-01-01"), "Wrong arguments given to edurep.EdurepOAIPMH")
+        self.assertEqual(args, (self.spec_set, "1970-01-01"), "Wrong arguments given to edurep.EdurepOAIPMH")
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
         # Asserting usage of get_harvest_seeds
-        seeds_target.assert_called_once_with("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)),
+        seeds_target.assert_called_once_with(self.spec_set, make_aware(datetime(year=1970, month=1, day=1)),
                                              include_no_url=True)
         # Asserting usage of handle_upsert_seeds
         upsert_target.assert_called_once()
@@ -87,12 +84,12 @@ class TestMetadataHarvest(TestCase):
         # Only one set was eligible for a harvest
         self.assertEqual(Collection.objects.all().count(), 1)
         collection = Collection.objects.last()
-        self.assertEqual(collection.name, "surfsharekit")
+        self.assertEqual(collection.name, self.spec_set)
         self.assertEqual(collection.dataset_version.version, "0.0.1")
         self.assertEqual(collection.referee, "external_id")
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
+        surf_harvest = Harvest.objects.get(source__spec=self.spec_set)
         self.assertGreater(
             surf_harvest.harvested_at,
             make_aware(datetime(year=1970, month=1, day=1)),
@@ -107,20 +104,20 @@ class TestMetadataHarvest(TestCase):
     @patch("core.management.base.PipelineCommand.logger", spec_set=HarvestLogger)
     def test_edurep_invalid_dataset(self, logger_mock):
         # Testing the case where a Dataset does not exist at all
-        call_command("harvest_metadata", "--dataset=invalid", f"--repository={Repositories.EDUREP}")
+        call_command("harvest_metadata", "--dataset=invalid", f"--repository={self.repository}")
         logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
         # Testing the case where a Dataset exists, but no harvest tasks are present
         logger_mock.end.reset_mock()
-        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
+        surf_harvest = Harvest.objects.get(source__spec=self.spec_set)
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
-        call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
+        call_command("harvest_metadata", "--dataset=test", f"--repository={self.repository}")
         logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
 
     def test_edurep_down(self):
         with patch("core.management.commands.harvest_metadata.send", return_value=([], [100],)):
             try:
-                call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
+                call_command("harvest_metadata", "--dataset=test", f"--repository={self.repository}")
                 self.fail("harvest_metadata did not fail when Resource was returning errors")
             except CommandError:
                 pass
@@ -128,14 +125,14 @@ class TestMetadataHarvest(TestCase):
     def test_handle_upsert_seeds(self):
         dataset_version = DatasetVersion.objects.last()
         collection = Collection.objects.create(
-            name="surfsharekit",
+            name=self.spec_set,
             dataset_version=dataset_version,
             referee="external_id"
         )
         command = self.get_command_instance()
         upserts = [
             seed
-            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") == "active"
         ]
         documents_count = command.handle_upsert_seeds(collection, upserts)
@@ -151,11 +148,11 @@ class TestMetadataHarvest(TestCase):
 
     def test_handle_deletion_seeds(self):
         dataset_version = DatasetVersion.objects.last()
-        collection = Collection.objects.create(name="surfsharekit", dataset_version=dataset_version)
+        collection = Collection.objects.create(name=self.spec_set, dataset_version=dataset_version)
         command = self.get_command_instance()
         deletes = [
             seed
-            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") != "active"
         ]
         # Basically we're testing that deletion seeds are not triggering errors when their targets do not exist.
@@ -169,10 +166,8 @@ class TestMetadataHarvestWithHistory(TestCase):
     """
 
     fixtures = ["datasets-history"]
-
-    def setUp(self):
-        EdurepOAIPMHFactory.create_common_edurep_responses(include_delta=True)
-        super().setUp()
+    spec_set = None
+    repository = None
 
     def get_command_instance(self):
         command = DatasetCommand()
@@ -183,15 +178,15 @@ class TestMetadataHarvestWithHistory(TestCase):
     @patch(GET_HARVEST_SEEDS_TARGET, return_value=DUMMY_SEEDS)
     @patch(HANDLE_UPSERT_SEEDS_TARGET, return_value=[0, 7, 14])
     @patch(HANDLE_DELETION_SEEDS_TARGET, return_value=[1, 3])
-    def test_edurep_surfsharekit(self, deletion_target, upsert_target, seeds_target):
+    def test_harvest_metadata(self, deletion_target, upsert_target, seeds_target):
         # Checking whether end result of the command returned by "handle" matches expectations.
         # We'd expect one OAI-PMH calls to be made which should be a success.
         # Apart from the main results we want to check if Datagrowth was used for execution.
         # This makes sure that a lot of edge cases will be covered like HTTP errors.
-        test_harvest = Harvest.objects.get(source__spec="surfsharekit")
+        test_harvest = Harvest.objects.get(source__spec=self.spec_set)
         test_harvest.prepare()
         with patch("core.management.commands.harvest_metadata.send", wraps=send) as send_mock:
-            call_command("harvest_metadata", "--dataset=test", f"--repository={Repositories.EDUREP}")
+            call_command("harvest_metadata", "--dataset=test", f"--repository={self.repository}")
         # Asserting Datagrowth usage
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
@@ -200,13 +195,13 @@ class TestMetadataHarvestWithHistory(TestCase):
         self.assertEqual(
             config.continuation_limit, 10000, "Expected very high continuation limit to assert complete sets"
         )
-        self.assertEqual(args, ("surfsharekit", "2020-02-10"), "Wrong arguments given to edurep.EdurepOAIPMH")
+        self.assertEqual(args, (self.spec_set, "2020-02-10"), "Wrong arguments given to edurep.EdurepOAIPMH")
         self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
         # Asserting usage of get_harvest_seeds
         expected_since = make_aware(
             datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000)
         )
-        seeds_target.assert_called_once_with("surfsharekit", expected_since, include_no_url=True)
+        seeds_target.assert_called_once_with(self.spec_set, expected_since, include_no_url=True)
         # Asserting usage of handle_upsert_seeds
         upsert_target.assert_called_once()
         args, kwargs = upsert_target.call_args
@@ -219,7 +214,7 @@ class TestMetadataHarvestWithHistory(TestCase):
         self.assertEqual(args[1], DUMMY_SEEDS[-1:])
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
+        surf_harvest = Harvest.objects.get(source__spec=self.spec_set)
         self.assertGreater(
             surf_harvest.harvested_at,
             make_aware(datetime(year=2020, month=2, day=10)),
@@ -233,7 +228,7 @@ class TestMetadataHarvestWithHistory(TestCase):
 
     def test_handle_upsert_seeds(self):
         dataset_version = DatasetVersion.objects.last()
-        collection = Collection.objects.get(name="surfsharekit", dataset_version=dataset_version, referee="external_id")
+        collection = Collection.objects.get(name=self.spec_set, dataset_version=dataset_version, referee="external_id")
         command = self.get_command_instance()
         # Checking the state before the test
         document_count = collection.document_set.count()
@@ -245,7 +240,7 @@ class TestMetadataHarvestWithHistory(TestCase):
         # Perform the test
         upserts = [
             seed
-            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") == "active"
         ]
         command.handle_upsert_seeds(collection, upserts)
@@ -281,12 +276,12 @@ class TestMetadataHarvestWithHistory(TestCase):
 
     def test_handle_deletion_seeds(self):
         dataset_version = DatasetVersion.objects.last()
-        collection = Collection.objects.get(name="surfsharekit", dataset_version=dataset_version)
+        collection = Collection.objects.get(name=self.spec_set, dataset_version=dataset_version)
         command = self.get_command_instance()
         document_count = collection.document_set.count()
         deletes = [
             seed
-            for seed in get_harvest_seeds("surfsharekit", make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") != "active"
         ]
         document_deletes = command.handle_deletion_seeds(collection, deletes)
