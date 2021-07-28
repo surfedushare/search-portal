@@ -14,7 +14,9 @@
       <h1 class="not-found-title">
         {{ $t('Not-found-title') }}
       </h1>
-      <router-link :to="localePath('index')" class="button">{{ $t('Not-found-button') }}</router-link>
+      <router-link :to="localePath('index')" class="button">{{
+        $t('Not-found-button')
+      }}</router-link>
     </div>
     <div v-show="false" class="main__materials">
       <div class="center_block">
