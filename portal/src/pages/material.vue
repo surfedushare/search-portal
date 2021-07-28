@@ -10,6 +10,12 @@
         :collections="collections"
       />
     </div>
+    <div v-else-if="!material && materialLoaded" class="not-found-section">
+      <h1 class="not-found-title">
+        {{ $t('Not-found-title') }}
+      </h1>
+      <button class="button">{{ $t('Not-found-button') }}</button>
+    </div>
     <div v-show="false" class="main__materials">
       <div class="center_block">
         <h2 class="main__materials_title">
@@ -38,7 +44,8 @@ export default {
   },
   data() {
     return {
-      collections: []
+      collections: [],
+      materialLoaded: false
     }
   },
   computed: {
@@ -62,10 +69,14 @@ export default {
   },
   methods: {
     updateMaterial(externalId) {
-      this.$store.dispatch('getMaterial', {
-        id: externalId,
-        params: { count_view: true }
-      })
+      this.$store
+        .dispatch('getMaterial', {
+          id: externalId,
+          params: { count_view: true }
+        })
+        .finally(() => {
+          this.materialLoaded = true
+        })
       this.$store
         .dispatch('checkMaterialInCollection', externalId)
         .then(collections => {
@@ -94,5 +105,17 @@ export default {
 }
 .main__materials_title {
   margin: 0 0 32px;
+}
+
+.not-found-section {
+  h1 {
+    text-align: center;
+    margin: 100px 0 20px;
+  }
+
+  .button {
+    display: block;
+    margin: 0 auto;
+  }
 }
 </style>

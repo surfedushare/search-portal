@@ -276,11 +276,6 @@ class ElasticSearchApiClient:
         records = []
         for external_id in normalized_external_ids:
             if external_id not in materials:
-                if not settings.DEBUG:
-                    sentry_sdk.capture_message(
-                        f"Failed to find material with external_id: {external_id}",
-                        "warning"
-                    )
                 continue
             records.append(materials[external_id])
         results["recordcount"] = len(records)
