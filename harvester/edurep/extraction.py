@@ -151,7 +151,7 @@ class EdurepDataExtraction(object):
         return
 
     @classmethod
-    def get_material_type(cls, soup, el):
+    def get_material_types(cls, soup, el):
         material_types = el.find_all('czp:learningresourcetype')
         if not material_types:
             return []
@@ -323,7 +323,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "description": EdurepDataExtraction.get_description,
     "mime_type": EdurepDataExtraction.get_mime_type,
     "technical_type": EdurepDataExtraction.get_technical_type,
-    "material_type": EdurepDataExtraction.get_material_type,
+    "material_types": EdurepDataExtraction.get_material_types,
     "copyright": EdurepDataExtraction.get_copyright,
     "aggregation_level": EdurepDataExtraction.get_aggregation_level,
     "authors": EdurepDataExtraction.get_authors,

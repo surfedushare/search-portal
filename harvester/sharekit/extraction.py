@@ -67,7 +67,7 @@ class SharekitMetadataExtraction(object):
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
-    def get_material_type(cls, node):
+    def get_material_types(cls, node):
         material_type = node["attributes"]["typeLearningMaterial"]
         return [material_type] if material_type else []
 
@@ -186,7 +186,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "description": "$.attributes.abstract",
     "mime_type": SharekitMetadataExtraction.get_mime_type,
     "technical_type": SharekitMetadataExtraction.get_technical_type,
-    "material_type": SharekitMetadataExtraction.get_material_type,
+    "material_types": SharekitMetadataExtraction.get_material_types,
     "copyright": SharekitMetadataExtraction.get_copyright,
     "copyright_description": lambda node: None,
     "aggregation_level": "$.attributes.aggregationlevel",

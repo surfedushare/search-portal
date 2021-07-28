@@ -62,7 +62,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "analysis_allowed": o.analysis_allowed,
             "mime_type": o.mime_type,
             "technical_type": settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(o.mime_type, "unknown"),
-            "material_type": [],
+            "material_types": [],
             "files": [
                 [
                     o.mime_type,

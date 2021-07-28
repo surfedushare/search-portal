@@ -32,7 +32,7 @@ class ElasticSearchClientTestCase(TestCase):
             "title", "url", "external_id", "disciplines", "lom_educational_levels", "description", "publisher_date",
             "copyright", "language", "keywords", "file_type", "mime_type", "suggest_completion", "_id",
             "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "is_part_of", "preview_path",
-            "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_type",
+            "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_types",
             "text", "suggest_phrase", "research_object_type", "research_themes"
         }
         has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]

@@ -140,7 +140,7 @@
                 "copyright": "cc-by-nc-40",
                 "file_type": "text",
                 "technical_type": "document",
-                "material_type": ["kennisoverdracht"],
+                "material_types": ["kennisoverdracht"],
                 "has_parts": [],
                 "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "is_part_of": [],
@@ -226,7 +226,7 @@
                 "copyright": "cc-by-40",
                 "file_type": "text",
                 "technical_type": "website",
-                "material_type": [],
+                "material_types": [],
                 "has_parts": [],
                 "mime_type": "text/html",
                 "is_part_of": [],
@@ -332,7 +332,7 @@
                 "copyright": "cc-by-sa-40",
                 "file_type": "unknown",
                 "technical_type": "app",
-                "material_type": [],
+                "material_types": [],
                 "has_parts": [],
                 "mime_type": "application/x-zip",
                 "is_part_of": [],
@@ -423,7 +423,7 @@
                 ],
                 "mime_type": "text/html",
                 "technical_type": "website",
-                "material_type": [],
+                "material_types": [],
                 "is_part_of": [
                     "b5a91d32-66f4-4c12-8795-c427fe47ed97"
                 ],
@@ -511,7 +511,7 @@
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",
-                "material_type": [],
+                "material_types": [],
                 "is_part_of": [
                     "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
                 ],
@@ -601,7 +601,7 @@
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",
-                "material_type": [],
+                "material_types": [],
                 "is_part_of": [
                     "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
                 ],
@@ -690,7 +690,7 @@
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",
-                "material_type": [],
+                "material_types": [],
                 "is_part_of": [
                     "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
                 ],
@@ -775,7 +775,7 @@
                 "copyright": "cc-by-nc-40",
                 "file_type": "text",
                 "technical_type": "website",
-                "material_type": [],
+                "material_types": [],
                 "has_parts": [],
                 "mime_type": "text/html",
                 "is_part_of": [],
@@ -849,7 +849,7 @@
                 "copyright": "cc-by-sa-40",
                 "file_type": "unknown",
                 "technical_type": "unknown",
-                "material_type": [],
+                "material_types": [],
                 "has_parts": [
                     "ee1b6b3d-ac7a-4d1a-9bdf-a0173d3eb2b9",
                     "537a29cf-ab35-4d1d-9673-088d9cceff32",
@@ -959,7 +959,7 @@
                 "copyright": "cc-by-sa-40",
                 "file_type": "pdf",
                 "technical_type": "document",
-                "material_type": [],
+                "material_types": [],
                 "has_parts": [],
                 "mime_type": "application/pdf",
                 "is_part_of": [
@@ -1049,7 +1049,7 @@
                 "has_parts": [],
                 "mime_type": "text/html",
                 "technical_type": "website",
-                "material_type": [],
+                "material_types": [],
                 "is_part_of": [
                     "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"
                 ],
