@@ -29,7 +29,7 @@ class SharekitMetadataExtraction(object):
             for file in files if file["resourceMimeType"] and file["url"]
         ]
         output += [
-            ["text/html", link["url"], f"URL {ix+1}"]
+            ["text/html", link["url"], link["urlName"] or f"URL {ix+1}"]
             for ix, link in enumerate(links)
         ]
         return output
