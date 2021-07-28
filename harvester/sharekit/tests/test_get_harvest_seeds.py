@@ -154,7 +154,10 @@ class TestGetHarvestSeedsSharekit(TestCase):
     def test_get_material_types(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]["material_types"], [], "Expected material without a type to return empty list")
+        self.assertEqual(seeds[1]["material_types"], [], "Expected material with null as type to return empty list")
         self.assertEqual(seeds[3]["material_types"], ["kennisoverdracht"])
+        self.assertEqual(seeds[4]["material_types"], ["kennisoverdracht"],
+                         "Expected a single value to transform to a list")
 
 
 class TestGetHarvestSeedsSharekitRestricted(TestCase):

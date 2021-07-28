@@ -68,8 +68,13 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_material_types(cls, node):
-        material_type = node["attributes"]["typeLearningMaterial"]
-        return [material_type] if material_type else []
+        material_type = node["attributes"]["typesLearningMaterial"]
+        if not material_type:
+            return []
+        elif isinstance(material_type, list):
+            return material_type
+        else:
+            return [material_type]
 
     @classmethod
     def get_copyright(cls, node):
