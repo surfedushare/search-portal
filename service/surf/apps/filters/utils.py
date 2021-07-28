@@ -110,6 +110,8 @@ def _translate_mptt_filter_item(filter_item):
 
     if translations:
         _save_translations(filter_item, translations[0], translations[1])
+    else:
+        _save_translations(filter_item, filter_item.external_id, filter_item.external_id)
 
 
 def _fetch_eduterm_translations(external_id):
