@@ -48,8 +48,9 @@ def register_task_definition(family, ecs_client, task_role_arn, container_variab
     print("Setting up task definition")
     if extra_workers:
         print("Using more processors on larger machines")
-        cpu *= 2
-        memory *= 2
+        cpu_extra_workers = int(cpu)
+        cpu_extra_workers *= 2
+        cpu = str(cpu_extra_workers)
     response = ecs_client.register_task_definition(
         family=family,
         taskRoleArn=task_role_arn,
@@ -64,7 +65,8 @@ def register_task_definition(family, ecs_client, task_role_arn, container_variab
     return task_definition["taskDefinitionArn"]
 
 
-def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False):
+def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False,
+             is_harvester_command=False):
     """
     Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
     """
@@ -90,7 +92,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         })
 
     task_definition_arn = register_task_definition(
-        target_info["name"],
+        target_info["name"] if not is_harvester_command else "harvester-command",
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
         container_variables,

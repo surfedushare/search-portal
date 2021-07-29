@@ -1,4 +1,3 @@
-import os
 import json
 import boto3
 from time import sleep

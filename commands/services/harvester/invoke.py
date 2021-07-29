@@ -14,7 +14,7 @@ def run_harvester_task(ctx, mode, command, **kwargs):
         return
 
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester-command", mode, command, **kwargs)
+    run_task(ctx, "harvester", mode, command, is_harvester_command=True, **kwargs)
 
 
 @task(help={
