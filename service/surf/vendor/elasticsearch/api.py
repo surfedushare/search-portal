@@ -5,7 +5,7 @@ from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
-from surf.vendor.elasticsearch.serializers import SearchResultSerializer
+from surf.vendor.elasticsearch.serializers import SearchResultSerializer, RelationSerializer
 
 
 class ElasticSearchApiClient:
@@ -99,14 +99,24 @@ class ElasticSearchApiClient:
         :param hit: result from elasticsearch
         :return record: parsed record in elasticsearch format
         """
+        data = hit["_source"]
         field_mapping = {
             field.source: field_name
             for field_name, field in SearchResultSerializer().fields.items()
         }
         record = {
             field_mapping[field]: value
-            for field, value in hit["_source"].items() if field in field_mapping
+            for field, value in data.items() if field in field_mapping
         }
+        if "relations" in field_mapping:
+            record["relations"] = {
+                "authors": [{"name": author} for author in data["authors"]],
+                "parties": [{"name": publisher} for publisher in data["publishers"]],
+                "keywords": [{"label": keyword} for keyword in data["keywords"]],
+                "themes": [{"label": theme} for theme in data.get("themes", [])],
+                "parents": data["is_part_of"],
+                "children": data["has_parts"]
+            }
         return record
 
     def autocomplete(self, query):
