@@ -8,9 +8,9 @@ django:
   administrative_emails: true
 
 postgres:
-  database: "edushare"
-  user: "edushare"
-  application_user: "edushare"
+  database: "nppo"
+  user: "nppo"
+  application_user: "nppo"
 
 surfconext:
   oidc_endpoint: none
