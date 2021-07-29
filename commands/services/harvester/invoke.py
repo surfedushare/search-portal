@@ -14,7 +14,7 @@ def run_harvester_task(ctx, mode, command, **kwargs):
         return
 
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command, **kwargs)
+    run_task(ctx, "harvester-command", mode, command, **kwargs)
 
 
 @task(help={
@@ -51,7 +51,7 @@ def harvest(ctx, mode, reset=False, no_promote=False, version=None):
     if no_promote:
         command += ["--no-promote"]
 
-    run_harvester_task(ctx, mode, command, version=version, extra_workers=reset, concurrency=8)
+    run_harvester_task(ctx, mode, command, version=version, extra_workers=reset)
 
 
 @task(help={
@@ -63,7 +63,7 @@ def harvest(ctx, mode, reset=False, no_promote=False, version=None):
 def generate_previews(ctx, mode, dataset, version=None):
     command = ["python", "manage.py", "generate_previews", f"--dataset={dataset}"]
 
-    run_harvester_task(ctx, mode, command, version=version, extra_workers=True, concurrency=8)
+    run_harvester_task(ctx, mode, command, version=version, extra_workers=True)
 
 
 @task(help={

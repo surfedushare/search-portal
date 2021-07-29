@@ -73,7 +73,7 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
         ecs_client,
         task_role_arn,
         harvester_container_variables,
-        os.path.join("harvester", "aws-container-definitions.json"),
+        True,
         target_info["cpu"],
         target_info["memory"]
     )
@@ -95,7 +95,7 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
         ecs_client,
         task_role_arn,
         celery_container_variables,
-        os.path.join("harvester", "celery-container-definitions.json"),
+        False,
         target_info["celery_cpu"],
         target_info["celery_memory"]
     )
@@ -117,7 +117,7 @@ def deploy_service(ctx, mode, ecs_client, task_role_arn, version):
         ecs_client,
         task_role_arn,
         service_container_variables,
-        os.path.join("service", "aws-container-definitions.json"),
+        True,
         target_info["cpu"],
         target_info["memory"]
     )

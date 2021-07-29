@@ -1,4 +1,3 @@
-import os
 import json
 from invoke import Exit
 
@@ -7,18 +6,50 @@ from commands.aws.utils import create_aws_session
 from commands import TARGETS
 
 
-def register_task_definition(family, ecs_client, task_role_arn, container_variables, container_definition_path, cpu,
-                             memory):
-    # Read the service AWS container definition and replace some variables with actual values
+TASK_CONTAINERS_BY_FAMILY = {
+    "harvester": [
+        "harvester-container",
+        "celery-beat-container",
+        "flower-container",
+    ],
+    "harvester-command": [
+        "harvester-container",
+        "celery-worker-container",
+        "analyzer",
+    ],
+    "celery": [
+        "celery-worker-container",
+        "analyzer",
+    ],
+    "search-portal": [
+        "search-portal-container",
+    ]
+}
+
+
+def load_container_definitions(family, container_variables, is_public):
     print(f"Reading container definitions for: {family}")
-    with open(container_definition_path) as container_definitions_file:
+    with open("aws-container-definitions.json") as container_definitions_file:
         container_definitions_json = container_definitions_file.read()
         for name, value in container_variables.items():
-            container_definitions_json = container_definitions_json.replace(f"${{{name}}}", value)
+            container_definitions_json = container_definitions_json.replace(f"${{{name}}}", str(value))
         container_definitions = json.loads(container_definitions_json)
+    containers = [container_definitions[container] for container in TASK_CONTAINERS_BY_FAMILY[family]]
+    if is_public:
+        containers.append(container_definitions[f"{family}-nginx"])
+    return containers
 
+
+def register_task_definition(family, ecs_client, task_role_arn, container_variables, is_public, cpu,
+                             memory, extra_workers=False):
+    # Read the service AWS container definition and replace some variables with actual values
+    container_definitions = load_container_definitions(family, container_variables, is_public)
     # Now we push the task definition to AWS
     print("Setting up task definition")
+    if extra_workers:
+        print("Using more processors on larger machines")
+        cpu *= 2
+        memory *= 2
     response = ecs_client.register_task_definition(
         family=family,
         taskRoleArn=task_role_arn,
@@ -33,7 +64,7 @@ def register_task_definition(family, ecs_client, task_role_arn, container_variab
     return task_definition["taskDefinitionArn"]
 
 
-def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False, concurrency=4):
+def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False):
     """
     Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
     """
@@ -55,7 +86,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
 
     if extra_workers:
         container_variables.update({
-            "concurrency": f"{concurrency}"
+            "concurrency": 4
         })
 
     task_definition_arn = register_task_definition(
@@ -63,9 +94,10 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
         container_variables,
-        os.path.join(target, task_container_definitions(target, extra_workers)),
+        False,
         target_info["cpu"],
-        target_info["memory"]
+        target_info["memory"],
+        extra_workers
     )
 
     print(f"Target/mode/version: {target}/{mode}/{version}")
@@ -101,18 +133,9 @@ def build_default_container_variables(mode, version):
         "REPOSITORY": REPOSITORY,
         "mode": mode,
         "version": version,
-        "project": PROJECT
+        "project": PROJECT,
+        "concurrency": 2  # matches amount of default CPU's
     }
-
-
-def task_container_definitions(target, extra_workers):
-    if target == "service":
-        return "aws-container-definitions.json"
-
-    if extra_workers:
-        return "task-with-workers-container-definitions.json"
-
-    return "task-container-definitions.json"
 
 
 def list_running_containers(ecs, cluster, service):
