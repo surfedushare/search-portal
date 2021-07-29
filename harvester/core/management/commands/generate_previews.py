@@ -24,7 +24,7 @@ class Command(PipelineCommand):
         html_documents = Document.objects \
             .filter(
                 Q(properties__mime_type="text/html") |
-                Q(properties__file_type="pdf")
+                Q(properties__mime_type="application/pdf")
             ) \
             .filter(dataset_version=dataset_version) \
             .filter(properties__preview_path=None) \
@@ -56,10 +56,10 @@ class Command(PipelineCommand):
         )
 
     def determine_task_signature(self, document, total):
-        file_type = document.properties.get('file_type', None)
+        mime_type = document.properties.get('mime_type', None)
         from_youtube = document.properties.get('from_youtube', False)
 
-        if file_type == 'pdf':
+        if "pdf" in mime_type:
             return generate_pdf_preview.s(document.id, total)
 
         if from_youtube:

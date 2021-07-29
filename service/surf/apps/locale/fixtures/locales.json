@@ -553,9 +553,9 @@
     "model": "locale.locale",
     "pk": "29d13267-4d44-4b39-9500-69a0e83db818",
     "fields": {
-        "asset": "text",
-        "en": "Text",
-        "nl": "Tekst",
+        "asset": "document",
+        "en": "Document",
+        "nl": "Document",
         "is_fuzzy": false
     }
 },

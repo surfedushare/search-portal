@@ -29,8 +29,7 @@ class TestGeneratePreviews(TestCase):
         document_with_website = DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html")
         document_from_youtube = DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html",
                                                        from_youtube=True)
-        pdf_document = DocumentFactory.create(dataset_version=dataset_version, mime_type="application/pdf",
-                                              file_type="pdf")
+        pdf_document = DocumentFactory.create(dataset_version=dataset_version, mime_type="application/pdf")
         DocumentFactory.create(dataset_version=dataset_version, mime_type="foo/bar")
         DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html", preview_path="previews/8")
         DocumentFactory.create(dataset_version=dataset_version, mime_type="text/html", analysis_allowed=False)

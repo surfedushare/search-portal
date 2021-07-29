@@ -57,7 +57,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": null,
+        "typesLearningMaterial": [],
         "themesLearningMaterial": "kunst_cultuur",
         "hasParts": [],
         "partOf": [],
@@ -121,7 +121,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": null,
+        "typesLearningMaterial": null,
         "themesLearningMaterial": "aarde_milieu",
         "hasParts": [],
         "partOf": [],
@@ -236,7 +236,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": null,
+        "typesLearningMaterial": [],
         "themesLearningMaterial": "exact_informatica",
         "hasParts": [],
         "partOf": [],
@@ -302,7 +302,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": "kennisoverdracht",
+        "typesLearningMaterial": ["kennisoverdracht"],
         "themesLearningMaterial": "exact_informatica",
         "hasParts": [
           "a18cdda7-e9c7-40d7-a7ad-6e875d9015ce",
@@ -377,7 +377,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": "kennisoverdracht",
+        "typesLearningMaterial": "kennisoverdracht",
         "themesLearningMaterial": "exact_informatica",
         "hasParts": [],
         "partOf": [
@@ -457,7 +457,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": "kennisoverdracht",
+        "typesLearningMaterial": ["kennisoverdracht"],
         "themesLearningMaterial": "exact_informatica",
         "hasParts": [],
         "partOf": [
@@ -527,7 +527,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": "kennisoverdracht",
+        "typesLearningMaterial": ["kennisoverdracht"],
         "themesLearningMaterial": "exact_informatica",
         "hasParts": [],
         "partOf": [
@@ -605,7 +605,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": "kennisoverdracht",
+        "typesLearningMaterial": ["kennisoverdracht"],
         "themesLearningMaterial": "exact_informatica",
         "hasParts": [],
         "partOf": [

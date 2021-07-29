@@ -42,7 +42,6 @@ class DocumentFactory(factory.django.DjangoModelFactory):
 
     class Params:
         title = "Zorgwekkend gedrag"
-        file_type = "text"
         from_youtube = False
         analysis_allowed = True
         mime_type = "text/html"
@@ -57,12 +56,11 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         lambda o: {
             "external_id": o.reference,
             "title": o.title,
-            "file_type": o.file_type,
             "from_youtube": o.from_youtube,
             "analysis_allowed": o.analysis_allowed,
             "mime_type": o.mime_type,
             "technical_type": settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(o.mime_type, "unknown"),
-            "material_type": [],
+            "material_types": [],
             "files": [
                 [
                     o.mime_type,

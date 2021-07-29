@@ -21,13 +21,13 @@ def create_dataset_data(dataset):
     current_edusources = CollectionFactory.create(dataset_version=current_version, name="edusources")
     current_wikiwijs = CollectionFactory.create(dataset_version=current_version, name="wikiwijs")
     DocumentFactory.create(dataset_version=previous_version, collection=previous_edusources,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", file_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
     DocumentFactory.create(dataset_version=previous_version, collection=previous_wikiwijs,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", file_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
     DocumentFactory.create(dataset_version=current_version, collection=current_edusources,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", file_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
     DocumentFactory.create(dataset_version=current_version, collection=current_wikiwijs,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", file_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
 
 
 def create_dataset_harvests(dataset_type, dataset, sources, latest_update_at):
@@ -81,7 +81,7 @@ class TestSyncSharekitMetadata(TestCase):
                              "Wikiwijs sources should never gain documents through sync_sharekit_metadata")
             doc = collection.documents.last()
             self.assertEqual(
-                doc.properties["file_type"], "unknown",
+                doc.properties["technical_type"], "unknown",
                 "Wikiwijs sources should never get document updates from sync_sharekit_metadata"
             )
             self.assertEqual(doc.created_at.replace(microsecond=0), doc.modified_at.replace(microsecond=0))
@@ -90,7 +90,7 @@ class TestSyncSharekitMetadata(TestCase):
                              "Inactive datasets should never gain documents through sync_sharekit_metadata")
             doc = collection.documents.last()
             self.assertEqual(
-                doc.properties["file_type"], "unknown",
+                doc.properties["technical_type"], "unknown",
                 "Inactive datasets should never get document updates from sync_sharekit_metadata"
             )
             self.assertEqual(doc.created_at.replace(microsecond=0), doc.modified_at.replace(microsecond=0))
@@ -99,7 +99,7 @@ class TestSyncSharekitMetadata(TestCase):
                              "Non-current dataset versions should never gain documents through sync_sharekit_metadata")
             doc = collection.documents.last()
             self.assertEqual(
-                doc.properties["file_type"], "unknown",
+                doc.properties["technical_type"], "unknown",
                 "Non-current dataset versions should never get document updates from sync_sharekit_metadata"
             )
             self.assertEqual(doc.created_at.replace(microsecond=0), doc.modified_at.replace(microsecond=0))
@@ -109,7 +109,7 @@ class TestSyncSharekitMetadata(TestCase):
                 self.assertEqual(collection.documents.count(), 3,
                                  f"Did not add documents to collection inside dataset {dataset_name}")
                 doc = collection.documents.get(properties__external_id="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
-                self.assertEqual(doc.properties["file_type"], "text",
+                self.assertEqual(doc.properties["technical_type"], "website",
                                  f"Did not add documents to collection inside dataset {dataset_name}")
                 self.assertNotEqual(doc.created_at.replace(microsecond=0), doc.modified_at.replace(microsecond=0))
         # Checking harvest instance updates
@@ -142,7 +142,7 @@ class TestSyncSharekitMetadata(TestCase):
         for collection in Collection.objects.all():
             self.assertEqual(collection.documents.count(), 1)
             doc = collection.documents.last()
-            self.assertEqual(doc.properties["file_type"], "unknown")
+            self.assertEqual(doc.properties["technical_type"], "unknown")
             self.assertEqual(doc.created_at.replace(microsecond=0), doc.modified_at.replace(microsecond=0))
         for harvest in Harvest.objects.all():
             self.assertEqual(harvest.latest_update_at, self.latest_update_at)

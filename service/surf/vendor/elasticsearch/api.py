@@ -1,6 +1,5 @@
 import boto3
 from collections import defaultdict
-import sentry_sdk
 
 from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
@@ -276,11 +275,6 @@ class ElasticSearchApiClient:
         records = []
         for external_id in normalized_external_ids:
             if external_id not in materials:
-                if not settings.DEBUG:
-                    sentry_sdk.capture_message(
-                        f"Failed to find material with external_id: {external_id}",
-                        "warning"
-                    )
                 continue
             records.append(materials[external_id])
         results["recordcount"] = len(records)
@@ -400,7 +394,7 @@ class ElasticSearchApiClient:
     def translate_external_id_to_elastic_type(external_id):
         """ The external id's used in edurep need to be parsed to fields in elasticsearch. """
         if external_id == 'lom.technical.format':
-            return 'file_type'
+            return 'technical_type'
         elif external_id == 'about.repository':
             return 'harvest_source'
         elif external_id == 'lom.rights.copyrightandotherrestrictions':

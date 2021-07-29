@@ -52,7 +52,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": null,
+        "typesLearningMaterial": [],
         "themesLearningMaterial": "kunst_cultuur",
         "hasParts": [],
         "partOf": [],
@@ -129,7 +129,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typeLearningMaterial": null,
+        "typesLearningMaterial": [],
         "themesLearningMaterial": "economie_bedrijf",
         "hasParts": [],
         "partOf": [
