@@ -48,5 +48,10 @@ class SearchSchema(AutoSchema):
 
     def get_operation(self, path, method):
         operation = super().get_operation(path, method)
-        operation["tags"] = ["Full text search"] if path.startswith("/search") else ["default"]
+        if path.startswith("/search"):
+            operation["tags"] = ["Full text search"]
+        elif path.startswith("/indices"):
+            operation["tags"] = ["Document indices"]
+        else:
+            operation["tags"] = ["default"]
         return operation

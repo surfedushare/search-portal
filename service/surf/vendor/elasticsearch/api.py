@@ -291,6 +291,10 @@ class ElasticSearchApiClient:
         results["records"] = records
         return results
 
+    def stats(self):
+        stats = self.client.count(index=",".join([self.index_nl, self.index_en, self.index_unk]))
+        return stats.get("count", 0)
+
     @staticmethod
     def parse_filters(filters):
         """
