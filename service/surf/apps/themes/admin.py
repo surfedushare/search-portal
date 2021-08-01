@@ -41,7 +41,6 @@ class ThemeForm(forms.ModelForm):
                   'description_translations',)
 
 
-@admin.register(models.Theme)
 class ThemeAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Theme model.

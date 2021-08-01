@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django import forms
 
@@ -29,4 +30,5 @@ class PrivacyStatementAdmin(admin.ModelAdmin):
     inlines = (DataGoalAdminInline,)
 
 
-admin.site.register(PrivacyStatement, PrivacyStatementAdmin)
+if settings.PROJECT == "edusources":
+    admin.site.register(PrivacyStatement, PrivacyStatementAdmin)
