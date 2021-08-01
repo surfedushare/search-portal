@@ -3,7 +3,9 @@ service:
 
 django:
   directory: "service"
-  fixtures: []
+  fixtures:
+    - "surf/apps/locale/fixtures/locales-nppo.json"
+    - "surf/apps/filters/fixtures/filter-categories-nppo.json"
   motomo_id: null
   administrative_emails: true
 
