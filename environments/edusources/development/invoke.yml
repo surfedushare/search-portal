@@ -27,3 +27,4 @@ elastic_search:
 aws:
   is_aws: true
   harvest_content_bucket: "surfpol-harvester-content-dev"
+  search_content_bucket: "edushare-data"

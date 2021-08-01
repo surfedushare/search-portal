@@ -29,3 +29,4 @@ elastic_search:
 aws:
   is_aws: false
   harvest_content_bucket: null
+  search_content_bucket: "edushare-data"

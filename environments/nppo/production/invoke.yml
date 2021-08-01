@@ -26,3 +26,4 @@ elastic_search:
 aws:
   is_aws: true
   harvest_content_bucket: "nppo-harvester-content-prod"
+  search_content_bucket: "nppo-harvester-content-prod"
