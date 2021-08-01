@@ -5,7 +5,7 @@ from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
-from surf.vendor.elasticsearch.serializers import SearchResultSerializer, RelationSerializer
+from surf.vendor.elasticsearch.serializers import SearchResultSerializer
 
 
 class ElasticSearchApiClient:
