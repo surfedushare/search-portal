@@ -71,8 +71,8 @@ class SearchSchema(AutoSchema):
         operation = super().get_operation(path, method)
         if path.startswith("/search"):
             operation["tags"] = ["Full text search"]
-        elif path.startswith("/indices"):
-            operation["tags"] = ["Document indices"]
+        elif path.startswith("/documents"):
+            operation["tags"] = ["Documents"]
         elif path.startswith("/suggestions"):
             operation["tags"] = ["Suggestions"]
         else:

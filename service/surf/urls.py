@@ -61,7 +61,7 @@ public_api_patterns = [
     url(r'^search/filter-categories/', FilterCategoryView.as_view()),
     url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
     url(r'^search/', MaterialSearchAPIView.as_view()),
-    url(r'^indices/stats', StatsView.as_view()),
+    url(r'^documents/stats', StatsView.as_view()),
     url(r'^suggestions/similarity/', SimilarityAPIView.as_view()),
 ]
 schema_view = get_schema_view(
