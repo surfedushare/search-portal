@@ -113,7 +113,7 @@ class ElasticSearchApiClient:
                 "authors": [{"name": author} for author in data["authors"]],
                 "parties": [{"name": publisher} for publisher in data["publishers"]],
                 "keywords": [{"label": keyword} for keyword in data["keywords"]],
-                "themes": [{"label": theme} for theme in data.get("themes", [])],
+                "themes": [{"label": theme} for theme in data.get("research_themes", [])],
                 "parents": data["is_part_of"],
                 "children": data["has_parts"]
             }

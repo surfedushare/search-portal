@@ -104,7 +104,6 @@ class RelationSerializer(serializers.Serializer):
 class NPPOSearchResultSerializer(BaseSearchResultSerializer):
 
     published_at = serializers.CharField(source="publisher_date", allow_blank=True, allow_null=True)
-    themes = serializers.ListField(child=serializers.CharField(), source="research_themes")
     research_object_type = serializers.CharField()
     relations = RelationSerializer()
 
