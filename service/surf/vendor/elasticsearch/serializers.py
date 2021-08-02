@@ -78,7 +78,7 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
 class PersonSerializer(serializers.Serializer):
 
     name = serializers.CharField()
-    email = serializers.CharField()
+    email = serializers.CharField(required=False)
 
 
 class OrganisationSerializer(serializers.Serializer):

@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.viewsets import (
     ModelViewSet
 )
@@ -38,6 +38,7 @@ from surf.apps.materials.models import (
 from surf.apps.materials.serializers import (
     SearchSerializer,
     KeywordsRequestSerializer,
+    SimilaritySerializer,
     MaterialsRequestSerializer,
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
@@ -197,6 +198,30 @@ class KeywordsAPIView(ListAPIView):
 
         res = elastic.autocomplete(**data)
         return Response(res)
+
+
+class SimilarityAPIView(RetrieveAPIView):
+    """
+    This endpoint returns similar documents as the input document.
+    These similar documents can be offered as suggestions to look at for the user.
+    """
+
+    serializer_class = SimilaritySerializer
+    permission_classes = (AllowAny,)
+    schema = SearchSchema()
+    pagination_class = None
+    filter_backends = []
+
+    def get_object(self):
+        serializer = self.get_serializer(data=self.request.GET)
+        serializer.is_valid(raise_exception=True)
+        external_id = serializer.validated_data["external_id"]
+        language = serializer.validated_data["language"]
+        elastic = ElasticSearchApiClient()
+        result = elastic.more_like_this(external_id, language)
+        if settings.PROJECT == "edusources":
+            result["results"] = add_extra_parameters_to_materials(self.request.user, result["results"])
+        return result
 
 
 _MATERIALS_COUNT_IN_OVERVIEW = 4

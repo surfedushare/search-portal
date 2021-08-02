@@ -38,6 +38,10 @@ class ElasticSearchApiClient:
         self.index_nl = settings.ELASTICSEARCH_NL_INDEX
         self.index_en = settings.ELASTICSEARCH_EN_INDEX
         self.index_unk = settings.ELASTICSEARCH_UNK_INDEX
+        self.languages = {
+            "nl": self.index_nl,
+            "en": self.index_en
+        }
 
     @staticmethod
     def parse_elastic_result(search_result):
@@ -294,6 +298,36 @@ class ElasticSearchApiClient:
     def stats(self):
         stats = self.client.count(index=",".join([self.index_nl, self.index_en, self.index_unk]))
         return stats.get("count", 0)
+
+    def more_like_this(self, external_id, language):
+        index = self.languages.get(language, self.index_unk)
+        body = {
+            "query": {
+                "more_like_this": {
+                    "fields": ["title", "description"],
+                    "like": [
+                        {
+                            "_index": index,
+                            "_id": external_id
+                        }
+                    ],
+                    "min_term_freq": 1,
+                    "max_query_terms": 12
+                }
+            }
+        }
+        search_result = self.client.search(
+            index=index,
+            body=body
+        )
+        hits = search_result.pop("hits")
+        result = dict()
+        result["records_total"] = hits["total"]["value"]
+        result["results"] = [
+            ElasticSearchApiClient.parse_elastic_hit(hit)
+            for hit in hits["hits"]
+        ]
+        return result
 
     @staticmethod
     def parse_filters(filters):

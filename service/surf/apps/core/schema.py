@@ -44,6 +44,27 @@ class SearchSchema(AutoSchema):
                     }
                 }
             ]
+        if "similarity" in path:
+            return [
+                {
+                    "name": "external_id",
+                    "in": "query",
+                    "required": True,
+                    "description": "The external_id of the document you want similar documents for.",
+                    'schema': {
+                        'type': 'string',
+                    }
+                },
+                {
+                    "name": "language",
+                    "in": "query",
+                    "required": True,
+                    "description": "The language of the document you want similar documents for.",
+                    'schema': {
+                        'type': 'string',
+                    }
+                }
+            ]
         return super()._get_path_parameters(path, method)
 
     def get_operation(self, path, method):
@@ -52,6 +73,8 @@ class SearchSchema(AutoSchema):
             operation["tags"] = ["Full text search"]
         elif path.startswith("/indices"):
             operation["tags"] = ["Document indices"]
+        elif path.startswith("/suggestions"):
+            operation["tags"] = ["Suggestions"]
         else:
             operation["tags"] = ["default"]
         return operation
