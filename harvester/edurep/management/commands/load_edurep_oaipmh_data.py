@@ -32,7 +32,7 @@ class Command(PipelineCommand):
 
         force_download = options["force_download"]
         source = options["source"]
-        source_environment = create_configuration(source, project="harvester")
+        source_environment = create_configuration(source, service="harvester")
 
         # Look for resource files or download from AWS
         # Use AWS CLI to download because it handles a lot of cases that we don't want to manage ourselves
