@@ -12,12 +12,12 @@ class TestLocales(TestCase):
         results = response.json()
         selections = results["My-selections"]
         logout = results["logout"]
-        html = results["html-copyright-info"]
+        html = results["html-Footer-info-text"]
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(selections, "My selections")
         self.assertEqual(logout, "Log out")
-        self.assertEqual(html, "<p>Sharing is caring</p>")
+        self.assertTrue(html.startswith("<p>edusources is offered by SURF,"))
 
     def test_locales_nl(self):
         client = Client()
@@ -25,9 +25,9 @@ class TestLocales(TestCase):
         results = response.json()
         selections = results["My-selections"]
         logout = results["logout"]
-        html = results["html-copyright-info"]
+        html = results["html-Footer-info-text"]
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(selections, "Mijn selecties")
         self.assertEqual(logout, "Uitloggen")
-        self.assertEqual(html, "<p>Delen is lief</p>")
+        self.assertTrue(html.startswith("<p>edusources wordt aangeboden door SURF,"))
