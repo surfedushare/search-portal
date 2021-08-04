@@ -457,7 +457,7 @@
           }
         ],
         "typeResearchObject": null,
-        "typesLearningMaterial": ["kennisoverdracht"],
+        "typesLearningMaterial": ["kennisoverdracht", null],
         "themesLearningMaterial": "exact_informatica",
         "hasParts": [],
         "partOf": [

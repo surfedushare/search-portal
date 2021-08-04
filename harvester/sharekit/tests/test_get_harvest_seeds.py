@@ -158,6 +158,8 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertEqual(seeds[3]["material_types"], ["kennisoverdracht"])
         self.assertEqual(seeds[4]["material_types"], ["kennisoverdracht"],
                          "Expected a single value to transform to a list")
+        self.assertEqual(seeds[5]["material_types"], ["kennisoverdracht"],
+                         "Expected null values to get filtered from lists")
 
 
 class TestGetHarvestSeedsSharekitRestricted(TestCase):
