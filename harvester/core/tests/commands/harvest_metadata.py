@@ -61,12 +61,12 @@ class TestMetadataHarvest(TestCase):
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
         config = kwargs["config"]
-        self.assertEqual(config.resource, "edurep.EdurepOAIPMH", "Wrong resource used for OAI-PMH calls")
+        self.assertEqual(config.resource, self.repository, "Wrong resource used for metadata calls")
         self.assertEqual(
             config.continuation_limit, 10000, "Expected very high continuation limit to assert complete sets"
         )
-        self.assertEqual(args, (self.spec_set, "1970-01-01"), "Wrong arguments given to edurep.EdurepOAIPMH")
-        self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
+        self.assertEqual(args, (self.spec_set, "1970-01-01T00:00:00Z"), "Wrong arguments given to resource")
+        self.assertEqual(kwargs["method"], "get", "Resource is not using HTTP GET method")
         # Asserting usage of get_harvest_seeds
         seeds_target.assert_called_once_with(self.spec_set, make_aware(datetime(year=1970, month=1, day=1)),
                                              include_no_url=True)
@@ -102,19 +102,20 @@ class TestMetadataHarvest(TestCase):
         )
 
     @patch("core.management.base.PipelineCommand.logger", spec_set=HarvestLogger)
-    def test_edurep_invalid_dataset(self, logger_mock):
+    def test_invalid_dataset(self, logger_mock):
+        app_label, model_name = self.repository.split(".")
         # Testing the case where a Dataset does not exist at all
         call_command("harvest_metadata", "--dataset=invalid", f"--repository={self.repository}")
-        logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
+        logger_mock.end.assert_called_with(f"seeds.{app_label}", fail=0, success=0)
         # Testing the case where a Dataset exists, but no harvest tasks are present
         logger_mock.end.reset_mock()
         surf_harvest = Harvest.objects.get(source__spec=self.spec_set)
         surf_harvest.stage = HarvestStages.COMPLETE
         surf_harvest.save()
         call_command("harvest_metadata", "--dataset=test", f"--repository={self.repository}")
-        logger_mock.end.assert_called_with("seeds.edurep", fail=0, success=0)
+        logger_mock.end.assert_called_with(f"seeds.{app_label}", fail=0, success=0)
 
-    def test_edurep_down(self):
+    def test_server_down(self):
         with patch("core.management.commands.harvest_metadata.send", return_value=([], [100],)):
             try:
                 call_command("harvest_metadata", "--dataset=test", f"--repository={self.repository}")
@@ -142,7 +143,7 @@ class TestMetadataHarvest(TestCase):
         for document in collection.document_set.all():
             self.assertEqual(document.reference, document.properties["external_id"])
             metadata_pipeline = document.pipeline["metadata"]
-            self.assertEqual(metadata_pipeline["resource"], "edurep.edurepoaipmh")
+            self.assertEqual(metadata_pipeline["resource"], self.repository.lower())
             self.assertIsInstance(metadata_pipeline["id"], int)
             self.assertTrue(metadata_pipeline["success"])
 
@@ -191,12 +192,12 @@ class TestMetadataHarvestWithHistory(TestCase):
         self.assertEqual(send_mock.call_count, 1, "More than 1 call to send, was edurep_delen set not ignored?")
         args, kwargs = send_mock.call_args
         config = kwargs["config"]
-        self.assertEqual(config.resource, "edurep.EdurepOAIPMH", "Wrong resource used for OAI-PMH calls")
+        self.assertEqual(config.resource, self.repository, "Wrong resource used for metadata calls")
         self.assertEqual(
             config.continuation_limit, 10000, "Expected very high continuation limit to assert complete sets"
         )
-        self.assertEqual(args, (self.spec_set, "2020-02-10"), "Wrong arguments given to edurep.EdurepOAIPMH")
-        self.assertEqual(kwargs["method"], "get", "edurep.EdurepOAIPMH is not using HTTP GET method")
+        self.assertEqual(args, (self.spec_set, "2020-02-10T13:08:39Z"), "Wrong arguments given to resource")
+        self.assertEqual(kwargs["method"], "get", "Resource is not using HTTP GET method")
         # Asserting usage of get_harvest_seeds
         expected_since = make_aware(
             datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000)
@@ -212,12 +213,12 @@ class TestMetadataHarvestWithHistory(TestCase):
         args, kwargs = deletion_target.call_args
         self.assertIsInstance(args[0], Collection)
         self.assertEqual(args[1], DUMMY_SEEDS[-1:])
-        # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
+        # Last but not least we check that the correct Harvest objects have indeed progressed
         # to prevent repetitious harvests.
         surf_harvest = Harvest.objects.get(source__spec=self.spec_set)
         self.assertGreater(
             surf_harvest.harvested_at,
-            make_aware(datetime(year=2020, month=2, day=10)),
+            make_aware(datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000)),
             "surf set harvested_at should got updated to prevent re-harvest in the future"
         )
         edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
@@ -275,6 +276,8 @@ class TestMetadataHarvestWithHistory(TestCase):
             )
 
     def test_handle_deletion_seeds(self):
+        if self.spec_set == "edusources":
+            self.skipTest("Deletion not supported by Sharekit backend")
         dataset_version = DatasetVersion.objects.last()
         collection = Collection.objects.get(name=self.spec_set, dataset_version=dataset_version)
         command = self.get_command_instance()
