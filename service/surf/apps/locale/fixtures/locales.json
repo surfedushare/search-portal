@@ -553,9 +553,9 @@
     "model": "locale.locale",
     "pk": "29d13267-4d44-4b39-9500-69a0e83db818",
     "fields": {
-        "asset": "text",
-        "en": "Text",
-        "nl": "Tekst",
+        "asset": "document",
+        "en": "Document",
+        "nl": "Document",
         "is_fuzzy": false
     }
 },
@@ -4181,16 +4181,6 @@
 },
 {
     "model": "locale.localehtml",
-    "pk": "2745bea4-385c-4f50-a5b2-d6f7470e8ede",
-    "fields": {
-        "asset": "cookies-info",
-        "en": "<div class=\"indent-grid-space indent-one-col node-heading\">\r\n<div>\r\n<div class=\"clearfix field field--label-hidden field--name-field-description field--type-text-long field__item text-formatted\">\r\n<p>Our website downloads cookies to your computer. Cookes make the site work properly and give us information that we use to improve your user experience.</p>\r\n</div>\r\n</div>\r\n</div>\r\n\r\n<div class=\"indent-grid-space indent-one-col node-main-components\">\r\n<div class=\"field field--label-hidden field--name-field-components field--type-entity-reference-revisions\">\r\n<div class=\"paragraph paragraph--type--text paragraph--view-mode--main\">\r\n<div class=\"clearfix field field--label-hidden field--name-field-body field--type-text-long field__item text-formatted\">\r\n<h2>About cookies</h2>\r\n\r\n<p>On our website we use cookies: small files that are sent by an internet server and that are stored on your computer.</p>\r\n\r\n<h2>Allow cookies and delete cookies</h2>\r\n\r\n<p>When you first visit our website, you will see the message at the top of the window &quot;SURF places functional cookies to make this website work properly. We also place analytical cookies to improve the website. Where possible, the data is anonymised. We place these cookies without your explicit consent.</p>\r\n\r\n<p>You can delete the cookies via your browser settings. There you can also set the type of cookies that will be placed on your computer.&nbsp;Most cookies have an expiration date. This means that they expire automatically after a certain period of time and no longer record any information about your visit to the site. You can also choose to delete cookies manually via your browser settings.</p>\r\n</div>\r\n</div>\r\n</div>\r\n</div>",
-        "nl": "<div class=\"indent-grid-space indent-one-col node-heading\">\r\n<div>Onze website plaatst cookies op je computer. Cookies laten de site goed functioneren en bieden ons informatie waarmee we je gebruikservaring kunnen verbeteren.</div>\r\n</div>\r\n\r\n<div class=\"indent-grid-space indent-one-col node-main-components\">\r\n<div class=\"field field--label-hidden field--name-field-components field--type-entity-reference-revisions\">\r\n<div class=\"paragraph paragraph--type--text paragraph--view-mode--main\">\r\n<div class=\"clearfix field field--label-hidden field--name-field-body field--type-text-long field__item text-formatted\">\r\n<h2>Over cookies</h2>\r\n\r\n<p>Op onze website gebruiken wij cookies: kleine bestanden die verstuurd worden door een internetserver en die worden opgeslagen op je computer.</p>\r\n\r\n<h2>Toestemming geven voor cookies en cookies verwijderen</h2>\r\n\r\n<p>Wanneer je onze website voor het eerst bezoekt, zie je bovenin het venster de&nbsp;mededeling &quot;SURF plaatst functionele cookies om deze website goed te laten werken. Ook plaatsen we analytische cookies om de website te verbeteren. De data wordt waar mogelijk geanonimiseerd.&quot; Deze cookies plaatsen we zonder jouw uitdrukkelijke toestemming.</p>\r\n\r\n<p>Je kunt de cookies weer verwijderen via je browserinstellingen. Daar kun je ook instellen welk soort cookies op je computer geplaatst worden.&nbsp;De meeste cookies hebben een houdbaarheidsdatum. Dat betekent dat ze na een bepaalde periode automatisch verlopen en geen gegevens van uw site-bezoek meer registeren. Je kunt er ook voor kiezen de cookies handmatig te verwijderen via je browserinstellingen.</p>\r\n</div>\r\n</div>\r\n</div>\r\n</div>",
-        "is_fuzzy": true
-    }
-},
-{
-    "model": "locale.localehtml",
     "pk": "29b4e961-6127-40d9-b256-020ad09aed67",
     "fields": {
         "asset": "techniek-thema-beschrijving",
@@ -4301,16 +4291,6 @@
 },
 {
     "model": "locale.localehtml",
-    "pk": "a5a1bd49-1719-4948-b578-4f4053b68509",
-    "fields": {
-        "asset": "disclaimer-info",
-        "en": "<p>We&#39;ve got nothing to do with it</p>",
-        "nl": "<p>Wij hebben er niets mee te maken</p>",
-        "is_fuzzy": true
-    }
-},
-{
-    "model": "locale.localehtml",
     "pk": "a6f64f89-23ae-4bd2-9d14-30968ef5d77e",
     "fields": {
         "asset": "community-circulaire-economie-beschrijving",
@@ -4377,16 +4357,6 @@
         "en": "<p>Community&#39;s curate educational materials and publish collections on the Search Portal. Right now you&#39;re not a member of any community. Send us a message via <a href=\"mailto:info@edusources.nl.nl?subject=I%20want%20to%20join%20a%20community%20on%20the%20Search%20Portal\">info@edusources.nl</a> if you think this is incorrect or if you want to found a community.</p>",
         "nl": "<p>Community&#39;s cureren leermaterialen en publiceren collecties op het Zoekportaal. Op dit moment ben je geen lid van een community. Stuur ons een bericht via <a href=\"mailto:info@edusources.nl?subject=Ik%20wil%20een%20community%20opstarten\">info@edusources.nl</a> als je denkt dat dat niet klopt of als je een community op wilt richten.</p>",
         "is_fuzzy": false
-    }
-},
-{
-    "model": "locale.localehtml",
-    "pk": "f456e6d3-e8af-49f3-8083-18321779ae17",
-    "fields": {
-        "asset": "copyright-info",
-        "en": "<p>Sharing is caring</p>",
-        "nl": "<p>Delen is lief</p>",
-        "is_fuzzy": true
     }
 },
 {

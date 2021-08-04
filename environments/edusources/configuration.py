@@ -11,6 +11,9 @@ def get_project_search_mapping_properties():
         'material_type': {
             'type': 'keyword'
         },
+        'material_types': {
+            'type': 'keyword'
+        },
         'educational_levels': {
             'type': 'keyword'
         },

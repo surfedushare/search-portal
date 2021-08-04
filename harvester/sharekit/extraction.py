@@ -29,7 +29,7 @@ class SharekitMetadataExtraction(object):
             for file in files if file["resourceMimeType"] and file["url"]
         ]
         output += [
-            ["text/html", link["url"], f"URL {ix+1}"]
+            ["text/html", link["url"], link.get("urlName", None) or f"URL {ix+1}"]
             for ix, link in enumerate(links)
         ]
         return output
@@ -67,9 +67,14 @@ class SharekitMetadataExtraction(object):
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
-    def get_material_type(cls, node):
-        material_type = node["attributes"]["typeLearningMaterial"]
-        return [material_type] if material_type else []
+    def get_material_types(cls, node):
+        material_types = node["attributes"]["typesLearningMaterial"]
+        if not material_types:
+            return []
+        elif isinstance(material_types, list):
+            return [material_type for material_type in material_types if material_type]
+        else:
+            return [material_types]
 
     @classmethod
     def get_copyright(cls, node):
@@ -186,7 +191,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "description": "$.attributes.abstract",
     "mime_type": SharekitMetadataExtraction.get_mime_type,
     "technical_type": SharekitMetadataExtraction.get_technical_type,
-    "material_type": SharekitMetadataExtraction.get_material_type,
+    "material_types": SharekitMetadataExtraction.get_material_types,
     "copyright": SharekitMetadataExtraction.get_copyright,
     "copyright_description": lambda node: None,
     "aggregation_level": "$.attributes.aggregationlevel",

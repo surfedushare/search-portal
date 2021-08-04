@@ -151,10 +151,15 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertEqual(seeds[4]["technical_type"], "website", "Expected links to be a fallback if there are no files")
         self.assertEqual(seeds[5]["technical_type"], "unknown", "Expected 'unknown' for missing mime types")
 
-    def test_get_material_type(self):
+    def test_get_material_types(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[0]["material_type"], [], "Expected material without a type to return empty list")
-        self.assertEqual(seeds[3]["material_type"], ["kennisoverdracht"])
+        self.assertEqual(seeds[0]["material_types"], [], "Expected material without a type to return empty list")
+        self.assertEqual(seeds[1]["material_types"], [], "Expected material with null as type to return empty list")
+        self.assertEqual(seeds[3]["material_types"], ["kennisoverdracht"])
+        self.assertEqual(seeds[4]["material_types"], ["kennisoverdracht"],
+                         "Expected a single value to transform to a list")
+        self.assertEqual(seeds[5]["material_types"], ["kennisoverdracht"],
+                         "Expected null values to get filtered from lists")
 
 
 class TestGetHarvestSeedsSharekitRestricted(TestCase):

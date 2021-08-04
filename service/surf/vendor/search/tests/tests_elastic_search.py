@@ -29,24 +29,24 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         cls.instance = ElasticSearchApiClient()
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surfsharekit",
+            body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       disciplines=math_and_education_disciplines),
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="text", source="surfsharekit",
+            body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       copyright="cc-by-40", topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
                                       disciplines=biology_and_education_disciplines),
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="pdf", source="surfsharekit",
+            body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       topic="biology", publisher_date="2019-04-16T22:35:09+02:00",
                                       disciplines=biology_and_education_disciplines),
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], file_type="video", source="surfsharekit",
+            body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="surfsharekit",
                                       topic="biology", disciplines=biology_disciplines),
             refresh=True  # always put refresh on the last material
         )
@@ -92,26 +92,26 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
         self.assertTrue(search_biologie_video["records"])
         for record in search_biologie_video["records"]:
-            self.assertEqual(record["format"], "video")
-        search_biologie_video_and_pdf = self.instance.search(
+            self.assertEqual(record["technical_type"], "video")
+        search_biologie_video_and_docs = self.instance.search(
             "biologie",
-            filters=[{"external_id": "lom.technical.format", "items": ["video", "pdf"]}]
+            filters=[{"external_id": "lom.technical.format", "items": ["video", "document"]}]
         )
-        self.assertGreater(len(search_biologie_video_and_pdf["records"]), len(search_biologie_video["records"]))
-        for record in search_biologie_video_and_pdf["records"]:
-            self.assertIn(record["format"], ["video", "pdf"])
+        self.assertGreater(len(search_biologie_video_and_docs["records"]), len(search_biologie_video["records"]))
+        for record in search_biologie_video_and_docs["records"]:
+            self.assertIn(record["technical_type"], ["video", "document"])
 
         # search with multiple filters applied
         search_biologie_text_and_cc_by = self.instance.search(
             "biologie",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["text"]},
+                {"external_id": "lom.technical.format", "items": ["document"]},
                 {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
             ]
         )
         self.assertTrue(search_biologie_text_and_cc_by["records"])
         for record in search_biologie_text_and_cc_by["records"]:
-            self.assertEqual(record["format"], "text")
+            self.assertEqual(record["technical_type"], "document")
             self.assertEqual(record["copyright"], "cc-by-40")
 
         # AND search with multiple filters applied
@@ -119,7 +119,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_biologie_and_didactiek_with_filters = self.instance.search(
             "biologie didactiek",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["text"]},
+                {"external_id": "lom.technical.format", "items": ["document"]},
                 {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
             ])
 
@@ -327,7 +327,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             "0861c43d-1874-4788-b522-df8be575677f"  # onderwijskunde
         ])
         self.assertEqual(material['language'], 'nl')
-        self.assertEqual(material['format'], 'text')
+        self.assertEqual(material['technical_type'], 'document')
 
         # Sharekit (legacy id format)
         test_id = 'surfsharekit:oai:surfsharekit.nl:3522b79c-928c-4249-a7f7-d2bcb3077f10'
