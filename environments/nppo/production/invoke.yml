@@ -1,0 +1,28 @@
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses AWS Secret Manager to lookup any secrets at application bootstrap
+
+env: "production"
+
+django:
+  debug: true
+  protocol: "http"
+  logging:
+    level: "DEBUG"
+    is_elastic: true
+
+postgres:
+  host: "nppo.cewgqm9ngaxe.eu-central-1.rds.amazonaws.com"
+  port: 5432
+
+elastic_search:
+  username: null
+  host: "vpc-nppo-main-kik7e7hcp4lbsqwdcbrlx63uz4.eu-central-1.es.amazonaws.com"
+  protocol: "https"
+  verify_certs: true
+  enable_decompound_analyzers: false
+  decompound_word_lists:
+    dutch: null
+
+aws:
+  is_aws: true
+  harvest_content_bucket: "nppo-harvester-content-prod"

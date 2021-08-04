@@ -1,4 +1,3 @@
-import os
 import json
 import boto3
 from time import sleep
@@ -33,14 +32,9 @@ def register_scheduled_tasks(ctx, aws_config, task_definition_arn):
         }
     }
     scheduled_tasks = [
-        ("clearlogins", '1', ["python", "manage.py", "clearlogins"]),
-        ("sync_category_filters", '2', ["python", "manage.py", "sync_category_filters"]),
-        ("sync_materials", '3', ["python", "manage.py", "sync_materials"]),
+        (task, str(ix+1), ["python", "manage.py", task])
+        for ix, task in enumerate(ctx.config.aws.scheduled_tasks)
     ]
-    if ctx.config.env == 'production':
-        scheduled_tasks.append(
-            ("monitor_uptime", '4', ["python", "manage.py", "monitor_uptime"])
-        )
     for rule, identifier, command in scheduled_tasks:
         events_client.put_targets(
             Rule=rule,
@@ -78,7 +72,7 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
         ecs_client,
         task_role_arn,
         harvester_container_variables,
-        os.path.join("harvester", "aws-container-definitions.json"),
+        True,
         target_info["cpu"],
         target_info["memory"]
     )
@@ -100,7 +94,7 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
         ecs_client,
         task_role_arn,
         celery_container_variables,
-        os.path.join("harvester", "celery-container-definitions.json"),
+        False,
         target_info["celery_cpu"],
         target_info["celery_memory"]
     )
@@ -122,7 +116,7 @@ def deploy_service(ctx, mode, ecs_client, task_role_arn, version):
         ecs_client,
         task_role_arn,
         service_container_variables,
-        os.path.join("service", "aws-container-definitions.json"),
+        True,
         target_info["cpu"],
         target_info["memory"]
     )
@@ -146,7 +140,7 @@ def deploy(ctx, mode, version=None):
     """
     Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
     """
-    target = ctx.config.project
+    target = ctx.config.service.name
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
 

@@ -1,4 +1,5 @@
-project: "service"
+service:
+  name: "service"
 
 django:
   directory: "service"
@@ -25,6 +26,11 @@ edurep:
 aws:
   image_upload_bucket: "search-portal-media-uploads-prod"
   task_role_arn: "arn:aws:iam::017973353230:role/ecsTaskExecutionRole"
+  scheduled_tasks:
+    - "clearlogins"
+    - "sync_category_filters"
+    - "sync_materials"
+    - "monitor_uptime"
 
 secrets:
   postgres:

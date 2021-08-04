@@ -1,3 +1,6 @@
+service:
+  name: "service"
+
 django:
   directory: "service"
   fixtures:
@@ -22,6 +25,7 @@ edurep:
 
 aws:
   image_upload_bucket: null
+  scheduled_tasks: []
 
 secrets:
   postgres:

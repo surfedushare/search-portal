@@ -1,0 +1,40 @@
+service:
+  name: "harvester"
+
+django:
+  domain: "nppo-loadbalancer-prod-1839166129.eu-central-1.elb.amazonaws.com"
+  directory: "harvester"
+  fixtures:
+    - "core/fixtures/initial-nppo.json"
+  redis_host: "harvester.vkafto.0001.euc1.cache.amazonaws.com:6379"
+  data_retention:
+    purge_after:
+      days: 14
+    keep_versions: 3
+  repositories:
+    edurep: "https://wszoeken.edurep.kennisnet.nl"
+    sharekit: "https://api.surfsharekit.nl"
+
+postgres:
+  database: "harvester"
+  user: "harvester"
+  application_user: "harvester"
+
+schedule:
+  harvest:
+    hour: 6  # uses UTC
+    minute: 0
+
+aws:
+  task_role_arn: "arn:aws:iam::870512711545:role/ecsHarvesterTaskExecutionRole"
+  scheduled_tasks: []
+
+secrets:
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/postgres-application"
+    application_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/postgres-application"
+  django:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
+    admin_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
+  sharekit:
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/sharekit-credentials"

@@ -1,9 +1,10 @@
-project: "harvester"
+service:
+  name: "harvester"
 
 django:
   directory: "harvester"
   fixtures:
-    - "core/fixtures/initial.json"
+    - "core/fixtures/initial-edusources.json"
   redis_host: "harvester.2w7uxm.0001.euc1.cache.amazonaws.com:6379"
   data_retention:
     purge_after:
@@ -25,6 +26,7 @@ schedule:
 
 aws:
   task_role_arn: "arn:aws:iam::322480324822:role/ecsHarvesterTaskExecutionRole"
+  scheduled_tasks: []
 
 secrets:
   postgres:

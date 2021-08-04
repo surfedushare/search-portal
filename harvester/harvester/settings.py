@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 import sentry_sdk
+import requests
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.logging import ignore_logger
@@ -26,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # That way we can load the environments and re-use them in different contexts
 # Like maintenance tasks and harvesting tasks
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
-from project import create_configuration_and_session, MODE, CONTEXT
+from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
 from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
 # Then we read some variables from the (build) environment
@@ -55,6 +56,14 @@ USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
+# Detect our own IP address
+try:
+    response = requests.get("https://api.ipify.org/?format=json")
+    IP = response.json()["ip"]
+except Exception:
+    IP = None
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,6 +74,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'datagrowth',
 
     'core',
@@ -264,7 +274,7 @@ LOGGING = {
     },
 }
 
-if not DEBUG:
+if not DEBUG and PROJECT == "edusources":
 
     def strip_sensitive_data(event, hint):
         user_agent = event.get('request', {}).get('headers', {}).get('User-Agent', None)
@@ -381,16 +391,20 @@ CELERY_BEAT_SCHEDULE = {
             minute=0
         ),
     },
-    'sync_sharekit_metadata': {
-        'task': 'sync_sharekit_metadata',
-        'schedule': 30,
-    },
-    'sync_indices': {
-        'task': 'sync_indices',
-        'schedule': 30,
-    },
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+
+if PROJECT == "edusources":
+    CELERY_BEAT_SCHEDULE.update({
+        'sync_sharekit_metadata': {
+            'task': 'sync_sharekit_metadata',
+            'schedule': 30,
+        },
+        'sync_indices': {
+            'task': 'sync_indices',
+            'schedule': 30,
+        }
+    })
 
 
 # Datagrowth
