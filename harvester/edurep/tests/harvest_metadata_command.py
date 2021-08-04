@@ -9,8 +9,8 @@ class TestMetadataHarvestEdurep(TestMetadataHarvest):
     repository = Repositories.EDUREP
 
     def setUp(self):
-        EdurepOAIPMHFactory.create_common_edurep_responses()
         super().setUp()
+        EdurepOAIPMHFactory.create_common_edurep_responses()
 
 
 class TestMetadataHarvestWithHistoryEdurep(TestMetadataHarvestWithHistory):
@@ -19,5 +19,5 @@ class TestMetadataHarvestWithHistoryEdurep(TestMetadataHarvestWithHistory):
     repository = Repositories.EDUREP
 
     def setUp(self):
-        EdurepOAIPMHFactory.create_common_edurep_responses(include_delta=True)
         super().setUp()
+        EdurepOAIPMHFactory.create_common_edurep_responses(include_delta=True)

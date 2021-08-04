@@ -26,7 +26,11 @@ class Command(PipelineCommand):
         })
 
         set_specification = harvest.source.spec
-        scc, err = send(set_specification, f"{harvest.latest_update_at:%Y-%m-%d}", config=send_config, method="get")
+        scc, err = send(
+            set_specification,
+            f"{harvest.latest_update_at:%Y-%m-%dT%H:%M:%SZ}",
+            config=send_config, method="get"
+        )
 
         if len(err):
             raise CommandError(f"Failed to harvest seeds from {harvest.source.name}")
