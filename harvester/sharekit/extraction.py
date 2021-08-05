@@ -68,7 +68,8 @@ class SharekitMetadataExtraction(object):
 
     @classmethod
     def get_material_types(cls, node):
-        material_types = node["attributes"]["typesLearningMaterial"]
+        fallback_type = node["attributes"].get("typeLearningMaterial", None)  # fix as long as acc.sharekit.nl is behind
+        material_types = node["attributes"].get("typesLearningMaterial", fallback_type)
         if not material_types:
             return []
         elif isinstance(material_types, list):

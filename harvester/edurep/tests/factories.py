@@ -23,7 +23,7 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
     since = factory.Maybe(
         "is_initial",
         make_aware(datetime(year=1970, month=1, day=1)),
-        make_aware(datetime(year=2020, month=2, day=10))
+        make_aware(datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000))
     )
     set_specification = "surfsharekit"
     status = 200
@@ -33,7 +33,8 @@ class EdurepOAIPMHFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def uri(self):
-        identity = f"from={self.since.date()}&metadataPrefix=lom&set={self.set_specification}" \
+        from_param = f"from={self.since:%Y-%m-%dT%H:%M:%SZ}"
+        identity = quote(f"{from_param}&metadataPrefix=lom&set={self.set_specification}", safe="=&") \
             if not self.resumption else f"resumptionToken={quote(self.resumption)}"
         return f"staging.edurep.kennisnet.nl/edurep/oai?{identity}&verb=ListRecords"
 

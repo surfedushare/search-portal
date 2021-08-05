@@ -56,7 +56,9 @@ class TestSyncSharekitMetadata(TestCase):
 
     def setUp(self):
         super().setUp()
-        self.latest_update_at = make_aware(datetime(year=2020, month=2, day=11))
+        self.latest_update_at = make_aware(
+            datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000)
+        )
         sources = {
             "sharekit": HarvestSourceFactory(spec="edusources", repository=Repositories.SHAREKIT),
             "sharekit_private": HarvestSourceFactory(spec="edusourcesprivate", repository=Repositories.SHAREKIT),
@@ -106,7 +108,7 @@ class TestSyncSharekitMetadata(TestCase):
         for dataset_name in ["primary", "secondary"]:
             for collection in Collection.objects.filter(name="edusources", dataset_version__version="0.0.2",
                                                         dataset_version__dataset__name=dataset_name):
-                self.assertEqual(collection.documents.count(), 3,
+                self.assertEqual(collection.documents.count(), 4,
                                  f"Did not add documents to collection inside dataset {dataset_name}")
                 doc = collection.documents.get(properties__external_id="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
                 self.assertEqual(doc.properties["technical_type"], "website",

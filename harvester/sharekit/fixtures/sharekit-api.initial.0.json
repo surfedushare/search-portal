@@ -6,7 +6,7 @@
     "first": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
     "self": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1",
     "next": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2",
-    "last": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2240"
+    "last": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=2"
   },
   "data": [
     {
