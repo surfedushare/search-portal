@@ -3,14 +3,16 @@ service:
 
 django:
   directory: "service"
-  fixtures: []
+  fixtures:
+    - "surf/apps/locale/fixtures/locales-nppo.json"
+    - "surf/apps/filters/fixtures/filter-categories-nppo.json"
   motomo_id: null
   administrative_emails: true
 
 postgres:
-  database: "edushare"
-  user: "edushare"
-  application_user: "edushare"
+  database: "nppo"
+  user: "nppo"
+  application_user: "nppo"
 
 surfconext:
   oidc_endpoint: none

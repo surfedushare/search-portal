@@ -1,13 +1,14 @@
 from rest_framework.schemas.openapi import AutoSchema
 from rest_framework import serializers
 
+from surf.vendor.elasticsearch.serializers import RelationSerializer
 from surf.apps.materials.serializers import KeywordsRequestSerializer
 
 
 class SearchSchema(AutoSchema):
 
     def _map_field(self, field):
-        if field.field_name == "children":
+        if field.field_name == "children" and not isinstance(field.parent, RelationSerializer):
             return {
                 'type': 'array',
                 'items': {
@@ -47,5 +48,10 @@ class SearchSchema(AutoSchema):
 
     def get_operation(self, path, method):
         operation = super().get_operation(path, method)
-        operation["tags"] = ["Full text search"] if path.startswith("/search") else ["default"]
+        if path.startswith("/search"):
+            operation["tags"] = ["Full text search"]
+        elif path.startswith("/indices"):
+            operation["tags"] = ["Document indices"]
+        else:
+            operation["tags"] = ["default"]
         return operation

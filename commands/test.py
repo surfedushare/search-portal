@@ -17,7 +17,7 @@ def prepare_e2e(ctx):
 @task(prepare_e2e)
 def e2e(ctx):
     with ctx.cd("service"):
-        ctx.run("python manage.py test e2e_tests", echo=True, pty=True)
+        ctx.run("APPLICATION_PROJECT=edusources python manage.py test e2e_tests", echo=True, pty=True)
 
 
 @task

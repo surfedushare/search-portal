@@ -45,7 +45,7 @@ class BaseElasticSearchMixin(object):
 )
 class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 
-    fixtures = ['locales', 'filter-categories', 'privacy_statements']
+    fixtures = ['locales-edusources', 'filter-categories-edusources', 'privacy_statements']
 
     def setUp(self):
         super().setUp()
@@ -68,4 +68,4 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 )
 class BaseElasticSearchTestCase(BaseElasticSearchMixin, TestCase):
 
-    fixtures = ['locales', 'filter-categories', 'privacy_statements']
+    fixtures = ['locales-edusources', 'filter-categories-edusources', 'privacy_statements']

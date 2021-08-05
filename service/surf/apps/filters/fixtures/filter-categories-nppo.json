@@ -1,0 +1,2757 @@
+[
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "02f5df95-7ccc-4c34-b9bf-cd52e48f173a",
+    "fields": {
+        "name": "algemenewerken",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.524Z",
+        "updated_at": "2021-08-01T14:56:37.922Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "5d84df45-64a8-4e22-b415-10d009ff726f",
+        "external_id": "algemenewerken",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "056a6d65-aaec-4f7b-8933-619cde5d0343",
+    "fields": {
+        "name": "Marciano Braam",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.544Z",
+        "updated_at": "2021-08-01T14:56:37.750Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "b8db1f15-3864-4ccc-9703-ea02a194ac8c",
+        "external_id": "Marciano Braam",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 126,
+        "rght": 127,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "08be2d36-8885-4b57-b894-daf1321a9806",
+    "fields": {
+        "name": "cc-by-nc-sa-40",
+        "parent": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+        "created_at": "2021-08-01T13:22:10.806Z",
+        "updated_at": "2021-08-01T14:56:37.894Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "3500a482-afde-4efe-a486-38e43b9d50bf",
+        "external_id": "cc-by-nc-sa-40",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 8,
+        "rght": 9,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "09917020-9b21-4ebf-bf5e-95e28e6a894d",
+    "fields": {
+        "name": "Nynke Moens",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.345Z",
+        "updated_at": "2021-08-01T14:56:37.781Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "3a0dd746-1e63-4cec-9aa8-3a89fdc5c4da",
+        "external_id": "Nynke Moens",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 150,
+        "rght": 151,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "0e29c1ae-297e-4a18-b1e7-4c09805dc2b3",
+    "fields": {
+        "name": "Ilona Punt",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.470Z",
+        "updated_at": "2021-08-01T14:56:37.673Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "0910ac11-cb4c-427d-b0a7-f840b30a10ce",
+        "external_id": "Ilona Punt",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 68,
+        "rght": 69,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "0e7da6af-9743-456d-bd32-37dbbf3af9a8",
+    "fields": {
+        "name": "recreatie_beweging_sport",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.842Z",
+        "updated_at": "2021-08-01T14:56:37.947Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "216ee9fa-1084-4ea0-af60-2b2889ba4acc",
+        "external_id": "recreatie_beweging_sport",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 18,
+        "rght": 19,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "0e9adb15-6468-4845-80ba-d50a8f105bca",
+    "fields": {
+        "name": "Henk Brinksma",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.145Z",
+        "updated_at": "2021-08-01T14:56:37.656Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "97645486-4b5d-4c42-8a12-c96b63328828",
+        "external_id": "Henk Brinksma",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 58,
+        "rght": 59,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "11034956-a6b8-4a68-a128-86076cffee8f",
+    "fields": {
+        "name": "Type",
+        "parent": null,
+        "created_at": "2021-08-01T13:20:35.036Z",
+        "updated_at": "2021-08-01T14:56:37.982Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "39078a22-0d0f-410f-ad7d-c99117262656",
+        "external_id": "research_object_type",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 1,
+        "rght": 20,
+        "tree_id": 6,
+        "level": 0
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "114987a0-4735-45d2-9ef1-3335d190560e",
+    "fields": {
+        "name": "Ellen Sjoer",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.865Z",
+        "updated_at": "2021-08-01T14:56:37.618Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "4ef08012-93bc-4d39-b14f-7e4f972bcdbb",
+        "external_id": "Ellen Sjoer",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 28,
+        "rght": 29,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "13122170-ac8a-4246-aa66-d31f5882cc64",
+    "fields": {
+        "name": "Laurence Alpay",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.901Z",
+        "updated_at": "2021-08-01T14:56:37.726Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "8256a90b-9687-43e2-bd16-96ed04d02209",
+        "external_id": "Laurence Alpay",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 108,
+        "rght": 109,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "13351703-0182-4277-ac07-66ef916170fa",
+    "fields": {
+        "name": "Lilian Linders",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.309Z",
+        "updated_at": "2021-08-01T14:56:37.739Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "2ee1bafc-0194-4315-b985-43f452adb995",
+        "external_id": "Lilian Linders",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 118,
+        "rght": 119,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "139288b4-df7c-4ed2-9d89-3c88b2b305f2",
+    "fields": {
+        "name": "Bas Giskes",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.492Z",
+        "updated_at": "2021-08-01T14:56:37.596Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "2059c5f1-01fa-4794-aa3b-2b9ce9392aa6",
+        "external_id": "Bas Giskes",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 12,
+        "rght": 13,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "16120549-3d27-44e6-932d-66d8fb98b4f7",
+    "fields": {
+        "name": "Yasin Koç",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.380Z",
+        "updated_at": "2021-08-01T14:56:37.873Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "bd080e54-da17-4bc6-bda3-8171237a2e44",
+        "external_id": "Yasin Koç",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 216,
+        "rght": 217,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+    "fields": {
+        "name": "Copyright",
+        "parent": null,
+        "created_at": "2021-08-01T12:52:45.334Z",
+        "updated_at": "2021-08-01T14:56:37.904Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "530eb8d0-bea3-4acb-93f3-65ef66423f37",
+        "external_id": "copyright.keyword",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 1,
+        "rght": 16,
+        "tree_id": 2,
+        "level": 0
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "180637aa-5f0a-4d09-a5e0-ade74166d55e",
+    "fields": {
+        "name": "Pim van Heijst",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.576Z",
+        "updated_at": "2021-08-01T14:56:37.802Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "27fa6ea6-5593-4ca4-a7a9-6ee20a52cd89",
+        "external_id": "Pim van Heijst",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 166,
+        "rght": 167,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "18440a70-d1f9-4294-8e24-128dd7903a6c",
+    "fields": {
+        "name": "T. van der Ploeg",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.769Z",
+        "updated_at": "2021-08-01T14:56:37.858Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "8f61e9b7-b146-45e3-ab4d-8d39272aa645",
+        "external_id": "T. van der Ploeg",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 204,
+        "rght": 205,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "1a6b56bd-a86a-4fa8-89f3-581c9b98cc5e",
+    "fields": {
+        "name": "Laurie Bastemeijer",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.975Z",
+        "updated_at": "2021-08-01T14:56:37.729Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "7a2fbcc3-9ffb-4ab8-9fd2-7e0775959eac",
+        "external_id": "Laurie Bastemeijer",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 110,
+        "rght": 111,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "1af23cc5-5cb9-4b2f-8516-575f6e837029",
+    "fields": {
+        "name": "J. Tamboer",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.548Z",
+        "updated_at": "2021-08-01T14:56:37.713Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "20246f5f-81b0-47ba-bb77-c2a198457e84",
+        "external_id": "J. Tamboer",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 98,
+        "rght": 99,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "1c18ee41-4ec2-4907-9d0f-85b74b45c390",
+    "fields": {
+        "name": "Valence Frigge",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.033Z",
+        "updated_at": "2021-08-01T14:56:37.862Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "6678b7b2-61cd-4302-9a54-502c505c9c63",
+        "external_id": "Valence Frigge",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 208,
+        "rght": 209,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+    "fields": {
+        "name": "Authors",
+        "parent": null,
+        "created_at": "2021-08-01T12:50:07.320Z",
+        "updated_at": "2021-08-01T14:56:37.881Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "d78187bf-b30e-4b9e-929f-67d408f9943b",
+        "external_id": "authors.keyword",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 1,
+        "rght": 222,
+        "tree_id": 1,
+        "level": 0
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "20571340-b729-41ff-81d0-93049d9a1fcd",
+    "fields": {
+        "name": "Stijn Verdoodt",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.542Z",
+        "updated_at": "2021-08-01T14:56:37.842Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "e42a1bab-8362-4bf4-9e00-151e0ccb3c42",
+        "external_id": "Stijn Verdoodt",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 192,
+        "rght": 193,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "20d36108-c1b5-495e-87d6-ba2d703eedc4",
+    "fields": {
+        "name": "Wenckje Jongstra",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.231Z",
+        "updated_at": "2021-08-01T14:56:37.868Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "54be51a8-1634-416f-862d-8a899b6fa587",
+        "external_id": "Wenckje Jongstra",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 212,
+        "rght": 213,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "214148d7-a3e1-45b5-a1c9-fafddf9ba6e0",
+    "fields": {
+        "name": "Lezing",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.815Z",
+        "updated_at": "2021-08-01T14:56:37.974Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "0d05fba8-4df7-4605-ad32-3537a33b3f8d",
+        "external_id": "Lezing",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 14,
+        "rght": 15,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "2164f588-4e30-4106-8f72-77544ac72c54",
+    "fields": {
+        "name": "Navin Sewberath Misser",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.103Z",
+        "updated_at": "2021-08-01T14:56:37.773Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "a5af36ba-d000-43e0-ade2-f64b107f494f",
+        "external_id": "Navin Sewberath Misser",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 144,
+        "rght": 145,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "26204167-6acb-41c8-8ab8-b0dcf2f282c4",
+    "fields": {
+        "name": "Igor Mayer",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.393Z",
+        "updated_at": "2021-08-01T14:56:37.664Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "b5ae2126-4552-4240-b83c-41a67b415227",
+        "external_id": "Igor Mayer",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 64,
+        "rght": 65,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "263a0511-4e40-4a4d-b9d0-b08f03668991",
+    "fields": {
+        "name": "Ietje Pauw",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.308Z",
+        "updated_at": "2021-08-01T14:56:37.661Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9d7e617e-d97e-4d0e-a600-e40c32707892",
+        "external_id": "Ietje Pauw",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 62,
+        "rght": 63,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "299edb26-2960-40d7-a8d8-fc4b00cd75ea",
+    "fields": {
+        "name": "J.H.M.P. Jansen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.624Z",
+        "updated_at": "2021-08-01T14:56:37.697Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c6a8276b-bd69-48d0-afd2-5f8bd74da79c",
+        "external_id": "J.H.M.P. Jansen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 86,
+        "rght": 87,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "2e10740f-7e45-4416-a9a4-f192c1214f75",
+    "fields": {
+        "name": "I (Irene) Schrotenboer",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.231Z",
+        "updated_at": "2021-08-01T14:56:37.666Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "f39f8ba8-940f-4033-86c7-7488d2e4e69c",
+        "external_id": "I (Irene) Schrotenboer",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 66,
+        "rght": 67,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "2eb046c3-ef4a-42a8-bf60-d90d0bba0e4b",
+    "fields": {
+        "name": "opvoeding_onderwijs",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.419Z",
+        "updated_at": "2021-08-01T14:56:37.940Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c7738a28-2f0a-4d19-a7ea-740d4130d10f",
+        "external_id": "opvoeding_onderwijs",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 14,
+        "rght": 15,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "32813800-2d8e-4def-b8ec-2cb23b05acd8",
+    "fields": {
+        "name": "R.J.J. Gobbens",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.948Z",
+        "updated_at": "2021-08-01T14:56:37.819Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ec344fba-05ad-4cad-9105-460b63b6872e",
+        "external_id": "R.J.J. Gobbens",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 176,
+        "rght": 177,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "32fefe8f-cac0-4d94-9bbf-eefa21750271",
+    "fields": {
+        "name": "Bijdrage aan periodiek",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.428Z",
+        "updated_at": "2021-08-01T14:56:37.964Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "1752b252-5783-40ff-bd39-1e7bab96c428",
+        "external_id": "Bijdrage aan periodiek",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "330d8c0f-8b1d-445a-abfd-09c45c53c9bc",
+    "fields": {
+        "name": "Petra Biemans",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.501Z",
+        "updated_at": "2021-08-01T14:56:37.797Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "3f21a080-7486-477b-b929-aff1bef1fa6d",
+        "external_id": "Petra Biemans",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 162,
+        "rght": 163,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "34ab3edb-754f-409d-8cc9-d2645e2ad512",
+    "fields": {
+        "name": "Gène Bertrand",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.690Z",
+        "updated_at": "2021-08-01T14:56:37.638Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "2795184c-ed4e-44e7-9dfb-b0e2ee6ebd51",
+        "external_id": "Gène Bertrand",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 44,
+        "rght": 45,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "350ee32c-c62a-42c5-a6d0-d66272df8f76",
+    "fields": {
+        "name": "Conferentiebijdrage",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.737Z",
+        "updated_at": "2021-08-01T14:56:37.971Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "f4498eec-8915-4345-b82e-96fb56709b50",
+        "external_id": "Conferentiebijdrage",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 12,
+        "rght": 13,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "3598000b-6922-442c-99e1-70a15604c752",
+    "fields": {
+        "name": "Gwen Weeldenburg",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.608Z",
+        "updated_at": "2021-08-01T14:56:37.648Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "be900f22-90d0-4495-8fc7-0bfb99073436",
+        "external_id": "Gwen Weeldenburg",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 52,
+        "rght": 53,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "3613a45e-57e1-44cc-bc63-bc9f7e7f5772",
+    "fields": {
+        "name": "Daan Andriessen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.809Z",
+        "updated_at": "2021-08-01T14:56:37.610Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "5e7d5c82-a763-4568-ba15-6bd8422b96a6",
+        "external_id": "Daan Andriessen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 22,
+        "rght": 23,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "378ee6b7-ec92-4a18-8190-caa7d2da53e1",
+    "fields": {
+        "name": "Bart Visser",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.391Z",
+        "updated_at": "2021-08-01T14:56:37.593Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c208ac20-3a87-4cbe-acc0-d1e2896ad9f6",
+        "external_id": "Bart Visser",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 10,
+        "rght": 11,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "3cd7d9f4-d19b-4e38-b669-c4dca83bd556",
+    "fields": {
+        "name": "Piet Verstegen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.873Z",
+        "updated_at": "2021-08-01T14:56:37.800Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "71ff5ba6-a49d-41da-a773-3d4279386c2b",
+        "external_id": "Piet Verstegen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 164,
+        "rght": 165,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "3d8a88e8-231d-4e3b-9305-9ad252f69fce",
+    "fields": {
+        "name": "Marco Stout",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.620Z",
+        "updated_at": "2021-08-01T14:56:37.753Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "1dbba11d-4e0f-4c84-9432-8bd8b5bf4ba4",
+        "external_id": "Marco Stout",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 128,
+        "rght": 129,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "40368474-8127-4ff4-a91b-fef534c034ce",
+    "fields": {
+        "name": "Stijn Verhagen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.617Z",
+        "updated_at": "2021-08-01T14:56:37.845Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "2a95a3f4-ab5a-4115-ba69-d1032afe1352",
+        "external_id": "Stijn Verhagen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 194,
+        "rght": 195,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "403d7134-d8ed-41bb-8629-21fb90e55750",
+    "fields": {
+        "name": "Claudio Milano",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.654Z",
+        "updated_at": "2021-08-01T14:56:37.604Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "7978ea4f-c44b-4f35-a7cf-47fc474eeabd",
+        "external_id": "Claudio Milano",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 18,
+        "rght": 19,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "41c52b54-29c4-4045-9f55-d0e1590ab533",
+    "fields": {
+        "name": "Nico L.U. van Meeteren",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.221Z",
+        "updated_at": "2021-08-01T14:56:37.779Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c0b9d400-eefe-4e1d-ba09-a2bba72abde7",
+        "external_id": "Nico L.U. van Meeteren",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 148,
+        "rght": 149,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "41fb4afa-649f-4684-b0e0-91d8239591b4",
+    "fields": {
+        "name": "cc-by-nc-nd-40",
+        "parent": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+        "created_at": "2021-08-01T13:22:11.052Z",
+        "updated_at": "2021-08-01T14:56:37.891Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ae1371de-514a-4fb2-96a5-3def77ce3486",
+        "external_id": "cc-by-nc-nd-40",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "46c49b94-45de-4b12-9dc2-1a788b43a35e",
+    "fields": {
+        "name": "Nico de Vos",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.556Z",
+        "updated_at": "2021-08-01T14:56:37.776Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "db931d88-2983-4b29-bee8-78e6ec25fca3",
+        "external_id": "Nico de Vos",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 146,
+        "rght": 147,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "46f94b2f-e84e-4170-97ab-b3d575ffd681",
+    "fields": {
+        "name": "Linda Adrichem",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.480Z",
+        "updated_at": "2021-08-01T14:56:37.743Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ccc3f83f-a867-4644-8a07-9153800725c3",
+        "external_id": "Linda Adrichem",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 120,
+        "rght": 121,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "46fe5175-15fc-4e33-9676-a01dad9b2bb7",
+    "fields": {
+        "name": "Jessica van Bragt",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.935Z",
+        "updated_at": "2021-08-01T14:56:37.691Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "d593f7a8-25fd-4424-94c4-80f5020ef115",
+        "external_id": "Jessica van Bragt",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 82,
+        "rght": 83,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "4a81ff7c-e385-402e-be37-06f3b380e35c",
+    "fields": {
+        "name": "economie_management",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:17.004Z",
+        "updated_at": "2021-08-01T14:56:37.928Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "68c6c660-804d-4480-93af-c9aa521131a2",
+        "external_id": "economie_management",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "4c479d90-440a-438d-89b0-822ca40204f4",
+    "fields": {
+        "name": "P. Beeks",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.423Z",
+        "updated_at": "2021-08-01T14:56:37.790Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "45cbb9cd-ee38-4604-ac2f-de081fef60b8",
+        "external_id": "P. Beeks",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 156,
+        "rght": 157,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "4ca9559b-c81c-4ba9-9059-c12e67900aef",
+    "fields": {
+        "name": "Wina Smeenk",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.305Z",
+        "updated_at": "2021-08-01T14:56:37.870Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ae424f08-36d8-4d39-b3a7-650f2db752e9",
+        "external_id": "Wina Smeenk",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 214,
+        "rght": 215,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "54000c32-9f68-4dfb-932f-73b0340ecf3d",
+    "fields": {
+        "name": "ict_media",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.764Z",
+        "updated_at": "2021-08-01T14:56:37.934Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "25184483-a57a-4ec6-90d9-56c8977b4a2b",
+        "external_id": "ict_media",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 10,
+        "rght": 11,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "57a13414-cdcb-4b6a-baad-49b314bbe122",
+    "fields": {
+        "name": "en",
+        "parent": "99eb8ea1-a6c2-4e71-be68-314bbcd7d041",
+        "created_at": "2021-08-01T13:22:11.497Z",
+        "updated_at": "2021-08-01T14:56:37.910Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "97fa05c2-a6f9-4ea3-b89b-a52c8e2f2749",
+        "external_id": "en",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 3,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "599e240a-1e25-469b-a165-87486a121e1f",
+    "fields": {
+        "name": "Gerbert Sipman",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.087Z",
+        "updated_at": "2021-08-01T14:56:37.641Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "b88d5f9b-da12-4134-894f-5bd647595037",
+        "external_id": "Gerbert Sipman",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 46,
+        "rght": 47,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "5b323410-af6f-4881-8e71-1a05470b16d9",
+    "fields": {
+        "name": "cc-by-sa-40",
+        "parent": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+        "created_at": "2021-08-01T13:22:10.886Z",
+        "updated_at": "2021-08-01T14:56:37.899Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "2c3f75ea-76a1-448b-b118-7d2e735448e4",
+        "external_id": "cc-by-sa-40",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 12,
+        "rght": 13,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "5c18d45b-a21b-446f-963d-ce7bfba2ebd0",
+    "fields": {
+        "name": "Giovanni Douven",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.515Z",
+        "updated_at": "2021-08-01T14:56:37.643Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "6ca75824-89eb-4c7e-8c58-d8489fb4dd71",
+        "external_id": "Giovanni Douven",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 48,
+        "rght": 49,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "5db2c276-faac-487b-b304-8ee5adcc7aa6",
+    "fields": {
+        "name": "F. Groen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.204Z",
+        "updated_at": "2021-08-01T14:56:37.628Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9f275245-84f4-4a59-84f4-2d55c82e5e57",
+        "external_id": "F. Groen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 36,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "60b12600-b8b7-460b-8726-9a713489c449",
+    "fields": {
+        "name": "Boek",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.658Z",
+        "updated_at": "2021-08-01T14:56:37.966Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "3c1f0e72-4aa0-4600-92b9-608b14cf271c",
+        "external_id": "Boek",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 8,
+        "rght": 9,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "61f43e3c-0689-40ae-8df5-a54e9a585bc3",
+    "fields": {
+        "name": "Ümmü Kizilhan",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.607Z",
+        "updated_at": "2021-08-01T14:56:37.860Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "381d9293-2f85-4c9f-96f8-f27f4c19ac86",
+        "external_id": "Ümmü Kizilhan",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 206,
+        "rght": 207,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "62303184-450c-41c8-a75a-be5c9750661f",
+    "fields": {
+        "name": "Ko Koens",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.788Z",
+        "updated_at": "2021-08-01T14:56:37.720Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "e2000159-bef8-4e80-a1ed-faf082ce9dd5",
+        "external_id": "Ko Koens",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 104,
+        "rght": 105,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "62c55bf7-a354-44eb-8e11-a30716238511",
+    "fields": {
+        "name": "Fred Van der Burgh",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.436Z",
+        "updated_at": "2021-08-01T14:56:37.636Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "4d738df4-14da-49ce-bf6b-4c08b99bc6f4",
+        "external_id": "Fred Van der Burgh",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 42,
+        "rght": 43,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "653fa409-9567-4679-9d36-73863588c213",
+    "fields": {
+        "name": "Rapport",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.501Z",
+        "updated_at": "2021-08-01T14:56:37.976Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "fc1fe9f6-f471-4c19-824f-1dcf96b9555c",
+        "external_id": "Rapport",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 16,
+        "rght": 17,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "65a7470e-69d2-492e-bf60-48c896859e4d",
+    "fields": {
+        "name": "Erik H.J. Hulzebos",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.048Z",
+        "updated_at": "2021-08-01T14:56:37.621Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "daa72eba-9659-4728-9e70-1adf1979084d",
+        "external_id": "Erik H.J. Hulzebos",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 30,
+        "rght": 31,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "6c88477f-17c3-4fbc-8afb-52a1d597f313",
+    "fields": {
+        "name": "Katja Braam",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.660Z",
+        "updated_at": "2021-08-01T14:56:37.718Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "92a7484d-248c-484c-bda8-9076c17db8a9",
+        "external_id": "Katja Braam",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 102,
+        "rght": 103,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "6ce5356a-284f-44fb-93bd-090b6786b4e3",
+    "fields": {
+        "name": "Recensie",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.893Z",
+        "updated_at": "2021-08-01T14:56:37.980Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ea42901e-5284-4891-8ba7-320de3ee3cb8",
+        "external_id": "Recensie",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 18,
+        "rght": 19,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "6d666da3-dff2-437d-98f2-d9b0a264b599",
+    "fields": {
+        "name": "B (Barrie) Dams",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.184Z",
+        "updated_at": "2021-08-01T14:56:37.601Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "3d6b84fb-e6ad-4a25-82f2-509fd4d054bc",
+        "external_id": "B (Barrie) Dams",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 16,
+        "rght": 17,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "6e5232e5-4e53-4fa6-85de-53c7a1e218e0",
+    "fields": {
+        "name": "Marette Ebert",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.695Z",
+        "updated_at": "2021-08-01T14:56:37.758Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "37323a20-2880-4571-8df7-d020eb09fd85",
+        "external_id": "Marette Ebert",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 132,
+        "rght": 133,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "6ecc3377-8ac2-4d6e-8304-b59e12999f2d",
+    "fields": {
+        "name": "Pauline Naber",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.723Z",
+        "updated_at": "2021-08-01T14:56:37.787Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "7b9ff61a-ed8d-4a76-b6a3-254dfb604e8f",
+        "external_id": "Pauline Naber",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 154,
+        "rght": 155,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "6f7bfa75-67f1-4e7e-9707-21e3cadc646b",
+    "fields": {
+        "name": "P. Troxler",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.572Z",
+        "updated_at": "2021-08-01T14:56:37.807Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "5ea4b570-f7dc-4c22-9044-c4e7043a56b3",
+        "external_id": "P. Troxler",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 170,
+        "rght": 171,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "70f60dd9-bb38-4b31-af97-885217f26f51",
+    "fields": {
+        "name": "gezondheid",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.684Z",
+        "updated_at": "2021-08-01T14:56:37.931Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "98648b09-f7ad-4a51-be71-9200a889cf03",
+        "external_id": "gezondheid",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 8,
+        "rght": 9,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "71af13cd-c561-4124-a298-dc47aa981122",
+    "fields": {
+        "name": "Kristina Goodnight",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.739Z",
+        "updated_at": "2021-08-01T14:56:37.723Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "84ea9328-34d8-4ab8-86b1-cedd65c0688c",
+        "external_id": "Kristina Goodnight",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 106,
+        "rght": 107,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "7264931b-e3d5-4e3b-a760-f768eb4f4f73",
+    "fields": {
+        "name": "Alexis Versele",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.901Z",
+        "updated_at": "2021-08-01T14:56:37.582Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "b7b7aeab-d2ff-4bd2-a680-314b9e7bd68a",
+        "external_id": "Alexis Versele",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "72ce7d28-162d-4def-a8af-038cf0bd74d2",
+    "fields": {
+        "name": "Frans Melissen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.359Z",
+        "updated_at": "2021-08-01T14:56:37.633Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "3b28d4be-500e-48a3-9425-087763b6a8c5",
+        "external_id": "Frans Melissen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 40,
+        "rght": 41,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "73354065-7623-4576-957f-94f872f24f70",
+    "fields": {
+        "name": "nl",
+        "parent": "99eb8ea1-a6c2-4e71-be68-314bbcd7d041",
+        "created_at": "2021-08-01T13:22:11.333Z",
+        "updated_at": "2021-08-01T14:56:37.915Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "61b34350-ab0f-4e6e-bbe2-65639b2b0cca",
+        "external_id": "nl",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 3,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "74c83779-ff9f-47b4-a0b2-aefd1581a7e2",
+    "fields": {
+        "name": "Anja Köppchen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.980Z",
+        "updated_at": "2021-08-01T14:56:37.585Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "d377de70-22b5-4be3-80e9-35f05b7cafe3",
+        "external_id": "Anja Köppchen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "7507fb8d-e552-4ab7-819d-1bb32ee72da4",
+    "fields": {
+        "name": "Roel van der Most",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.185Z",
+        "updated_at": "2021-08-01T14:56:37.824Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9142e908-3bc3-4c60-a7b1-d4e1be7042bb",
+        "external_id": "Roel van der Most",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 180,
+        "rght": 181,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "7701a499-724b-4667-b23c-c24c0882947b",
+    "fields": {
+        "name": "taal_cultuur_kunsten",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.605Z",
+        "updated_at": "2021-08-01T14:56:37.949Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "de87445e-0487-4764-8333-36b91d300dc3",
+        "external_id": "taal_cultuur_kunsten",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 20,
+        "rght": 21,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "7b59c317-ba1e-4530-80ab-be3bfd7cb551",
+    "fields": {
+        "name": "Anouk Didden",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.089Z",
+        "updated_at": "2021-08-01T14:56:37.588Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9a5a33fa-1ef1-456c-9c77-359475146a22",
+        "external_id": "Anouk Didden",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "7d993eee-f87d-4e6f-8dfd-ec7c42bbdc41",
+    "fields": {
+        "name": "Joke Hermes",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.710Z",
+        "updated_at": "2021-08-01T14:56:37.708Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "619a8270-0ee2-423d-94d7-f6def6ba31de",
+        "external_id": "Joke Hermes",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 94,
+        "rght": 95,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "7e739c83-aaca-41d9-9376-04e6b93a1323",
+    "fields": {
+        "name": "M (Myron) Koster",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.390Z",
+        "updated_at": "2021-08-01T14:56:37.771Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "b29aeae3-a17a-446a-8f59-5534bab72f23",
+        "external_id": "M (Myron) Koster",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 142,
+        "rght": 143,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "7f974bcb-7dba-40b4-9a55-0301f7861ed1",
+    "fields": {
+        "name": "cc-by-nd",
+        "parent": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+        "created_at": "2021-08-01T13:22:11.131Z",
+        "updated_at": "2021-08-01T14:56:37.896Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "f20b4742-3e13-4858-a772-abe1e0699113",
+        "external_id": "cc-by-nd",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 10,
+        "rght": 11,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "818e7329-3115-4c90-ab37-5c6893df4978",
+    "fields": {
+        "name": "Johan Versendaal",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.390Z",
+        "updated_at": "2021-08-01T14:56:37.705Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "aba1dc02-66ee-4aa3-b1a1-653fa5ab830b",
+        "external_id": "Johan Versendaal",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 92,
+        "rght": 93,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "87c7a777-211d-4b02-9ebb-8637277e9676",
+    "fields": {
+        "name": "Joris E. N. Jaspers",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.480Z",
+        "updated_at": "2021-08-01T14:56:37.710Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "4bbad7f8-c890-4d89-87d3-225a824167f2",
+        "external_id": "Joris E. N. Jaspers",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 96,
+        "rght": 97,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "8ec6efeb-09fe-4357-b170-c4a478db3087",
+    "fields": {
+        "name": "Jaap Dronkers",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.700Z",
+        "updated_at": "2021-08-01T14:56:37.678Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "0526622a-643d-470e-8bb3-8145b2d27541",
+        "external_id": "Jaap Dronkers",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 72,
+        "rght": 73,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "8fcdb21e-4cd2-44ae-888d-0dd0c36682eb",
+    "fields": {
+        "name": "Rutger Kappe",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.404Z",
+        "updated_at": "2021-08-01T14:56:37.827Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "97717912-fada-4eee-84f3-05ce5e1197e5",
+        "external_id": "Rutger Kappe",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 182,
+        "rght": 183,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "9108a4a4-e68c-4e84-86a3-3e730078f3fa",
+    "fields": {
+        "name": "Bart C. Bongers",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.292Z",
+        "updated_at": "2021-08-01T14:56:37.590Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "de6c08c1-123d-403b-8e55-a208e0e9fc7e",
+        "external_id": "Bart C. Bongers",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 8,
+        "rght": 9,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "9253c209-01d2-49f4-a5ba-d3432d5679ee",
+    "fields": {
+        "name": "Jacqueline Meijer",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.259Z",
+        "updated_at": "2021-08-01T14:56:37.681Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9fbdfe36-677f-48fd-9136-aae5ef5b2123",
+        "external_id": "Jacqueline Meijer",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 74,
+        "rght": 75,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "931003c6-3d6a-4491-b6c4-ad19a2a59f6c",
+    "fields": {
+        "name": "Margot Koeneman",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.771Z",
+        "updated_at": "2021-08-01T14:56:37.761Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c76d92d1-92d6-461e-8252-79174268adf2",
+        "external_id": "Margot Koeneman",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 134,
+        "rght": 135,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "9397bc43-9bb0-4cda-a3a2-58350f2b86a5",
+    "fields": {
+        "name": "mens_maatschappij",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.339Z",
+        "updated_at": "2021-08-01T14:56:37.937Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "5a0dc1fc-d55b-4e2b-95ca-63366ce60ad2",
+        "external_id": "mens_maatschappij",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 12,
+        "rght": 13,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "956fbbae-046e-4252-9c69-394ef967132f",
+    "fields": {
+        "name": "Ineke van den Berg",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.180Z",
+        "updated_at": "2021-08-01T14:56:37.675Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "d8afe2b2-de5c-4107-83d4-156aad238072",
+        "external_id": "Ineke van den Berg",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 70,
+        "rght": 71,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "99b6c3a2-ee62-44a3-937c-cee0ba6aee5d",
+    "fields": {
+        "name": "Boekdeel",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.579Z",
+        "updated_at": "2021-08-01T14:56:37.969Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "6e29d9b0-82b9-4558-9288-279a04dd4cbf",
+        "external_id": "Boekdeel",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 10,
+        "rght": 11,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "99eb8ea1-a6c2-4e71-be68-314bbcd7d041",
+    "fields": {
+        "name": "Language",
+        "parent": null,
+        "created_at": "2021-08-01T12:56:45.795Z",
+        "updated_at": "2021-08-01T14:56:50.652Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "b4780047-4e29-49ac-8502-1f79c65a0b05",
+        "external_id": "language.keyword",
+        "is_manual": true,
+        "is_hidden": false,
+        "lft": 1,
+        "rght": 6,
+        "tree_id": 3,
+        "level": 0
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "9c3430c2-0c40-4ea8-a2e7-bf1a032b03de",
+    "fields": {
+        "name": "Donald Ropes",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.970Z",
+        "updated_at": "2021-08-01T14:56:37.615Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "8ce22593-9a07-4de3-9b94-d6fd29c260eb",
+        "external_id": "Donald Ropes",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 26,
+        "rght": 27,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "9d8537ce-5d93-4282-a089-4e65ebc49592",
+    "fields": {
+        "name": "Tanja Enninga",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.927Z",
+        "updated_at": "2021-08-01T14:56:37.853Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "f376f407-e9c8-40c0-8c9d-ff03bd4c6f6b",
+        "external_id": "Tanja Enninga",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 200,
+        "rght": 201,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "9f3f9a5d-07ce-4b2e-b7e3-e84b672ee21f",
+    "fields": {
+        "name": "Peter van den Heuvel",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.797Z",
+        "updated_at": "2021-08-01T14:56:37.795Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "e2aa3347-e57f-4990-b9e6-13547b82be49",
+        "external_id": "Peter van den Heuvel",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 160,
+        "rght": 161,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a09ede1e-1d97-4c4f-b95e-f83e74bcdfe6",
+    "fields": {
+        "name": "Sandra Geelhoed",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.336Z",
+        "updated_at": "2021-08-01T14:56:37.834Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "065e28fd-2ab4-4779-bd1b-4f6a494fafd4",
+        "external_id": "Sandra Geelhoed",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 186,
+        "rght": 187,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a0e99d79-3c93-4a59-b27c-639ca7bb1e89",
+    "fields": {
+        "name": "Hein Gooszen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.043Z",
+        "updated_at": "2021-08-01T14:56:37.653Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "dbf524ef-e069-45eb-a2b3-b6e5c097f93d",
+        "external_id": "Hein Gooszen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 56,
+        "rght": 57,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a3099bc4-bbf6-43a5-a5a0-91bbc7279095",
+    "fields": {
+        "name": "Jessika Weber-Sabil",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.108Z",
+        "updated_at": "2021-08-01T14:56:37.694Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "245c9c9b-fe37-42e5-9398-6485fa355018",
+        "external_id": "Jessika Weber-Sabil",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 84,
+        "rght": 85,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a533dc79-c942-4977-96de-d8119a831a36",
+    "fields": {
+        "name": "Jeany van Beelen-Slijper",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.783Z",
+        "updated_at": "2021-08-01T14:56:37.686Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c34da1b1-26b2-43bd-8638-c142b8e33eb0",
+        "external_id": "Jeany van Beelen-Slijper",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 78,
+        "rght": 79,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a6a3732c-54ad-4a3a-a7b4-5c6dce90eb1b",
+    "fields": {
+        "name": "bouw_logistiek",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:16.922Z",
+        "updated_at": "2021-08-01T14:56:37.924Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "11682c7a-e955-4f53-b21e-6d369739b77f",
+        "external_id": "bouw_logistiek",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a6f1f5a3-5ab2-45c5-a561-13a097de0de2",
+    "fields": {
+        "name": "cc-by-nc-40",
+        "parent": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+        "created_at": "2021-08-01T13:22:10.964Z",
+        "updated_at": "2021-08-01T14:56:37.888Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "562dd734-eb17-4219-9301-868f78a187ec",
+        "external_id": "cc-by-nc-40",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a7541875-0d47-4b59-a5ab-9171e04ab4e1",
+    "fields": {
+        "name": "T. Akse",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.694Z",
+        "updated_at": "2021-08-01T14:56:37.850Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "8948a669-618d-4426-870d-b9cfde61e50a",
+        "external_id": "T. Akse",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 198,
+        "rght": 199,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "a7b2ee02-7b7c-4a93-93dd-ee91544f6466",
+    "fields": {
+        "name": "Gürkan Çelik",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.786Z",
+        "updated_at": "2021-08-01T14:56:37.646Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "1ae18c09-677d-472d-bfb4-bf3c02a6de92",
+        "external_id": "Gürkan Çelik",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 50,
+        "rght": 51,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "aa290fef-fa98-453a-bf4e-36b36d3bf8f2",
+    "fields": {
+        "name": "Published at",
+        "parent": null,
+        "created_at": "2021-08-01T12:55:56.798Z",
+        "updated_at": "2021-08-01T13:25:29.465Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "51059f87-a75c-440e-bf0d-6ecb78cc772c",
+        "external_id": "publisher_date",
+        "is_manual": true,
+        "is_hidden": false,
+        "lft": 1,
+        "rght": 2,
+        "tree_id": 4,
+        "level": 0
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "ab075655-027d-4e43-bada-fc02e8e51316",
+    "fields": {
+        "name": "Andersoortig materiaal",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.271Z",
+        "updated_at": "2021-08-01T14:56:37.959Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "a47fc87e-2fdc-49b2-a7e6-0b8252b2aca5",
+        "external_id": "Andersoortig materiaal",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "abe8a348-bca3-4ceb-8dfb-abf481649ee0",
+    "fields": {
+        "name": "Artikel",
+        "parent": "11034956-a6b8-4a68-a128-86076cffee8f",
+        "created_at": "2021-08-01T13:22:17.347Z",
+        "updated_at": "2021-08-01T14:56:37.961Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c1067c59-31b8-426a-89ca-d47275b6a414",
+        "external_id": "Artikel",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 6,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "ae3c79e0-14ce-4ba3-999a-6e975f830567",
+    "fields": {
+        "name": "P.T. Bartone",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.649Z",
+        "updated_at": "2021-08-01T14:56:37.805Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "a223eaf3-8e8f-466a-9773-e0c3a5f378ac",
+        "external_id": "P.T. Bartone",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 168,
+        "rght": 169,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "aef4631c-a93a-4b07-8237-fc12489ea5fd",
+    "fields": {
+        "name": "H. Monsuur",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.872Z",
+        "updated_at": "2021-08-01T14:56:37.659Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "2e7a7f1d-f405-4931-a098-cbef16744e46",
+        "external_id": "H. Monsuur",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 60,
+        "rght": 61,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "b29c014a-adb2-4231-af27-42790be898ae",
+    "fields": {
+        "name": "Sander Toby",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.261Z",
+        "updated_at": "2021-08-01T14:56:37.829Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "41461e4f-5005-47d5-bded-8f53b4363a2f",
+        "external_id": "Sander Toby",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 184,
+        "rght": 185,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "b4a178f1-4122-46b4-b7d0-1df06b665c1e",
+    "fields": {
+        "name": "F. Cramer",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.946Z",
+        "updated_at": "2021-08-01T14:56:37.625Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "2255422a-d8e5-4a4c-9020-dd8b4604e4db",
+        "external_id": "F. Cramer",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 34,
+        "rght": 35,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "b546dcc1-f899-4fd7-8d7e-a2e264738766",
+    "fields": {
+        "name": "techniek",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:17.163Z",
+        "updated_at": "2021-08-01T14:56:37.952Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "1583d593-77f1-4d91-9a13-b27a36c771be",
+        "external_id": "techniek",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 22,
+        "rght": 23,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "b7162050-9c02-43ed-a648-eeefb58868f3",
+    "fields": {
+        "name": "Lieke van Hemert",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.132Z",
+        "updated_at": "2021-08-01T14:56:37.734Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "30b2849d-db81-44cb-a0c8-33840e4a2c23",
+        "external_id": "Lieke van Hemert",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 114,
+        "rght": 115,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "b8415b2d-7162-4eba-8c70-f62d14ecd418",
+    "fields": {
+        "name": "Susan McKenney",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.820Z",
+        "updated_at": "2021-08-01T14:56:37.848Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "25ed78e4-de1b-40e6-91c5-12fc8d319a7b",
+        "external_id": "Susan McKenney",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 196,
+        "rght": 197,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "b8a9c639-7855-4a4b-9cf1-cfe59b66a859",
+    "fields": {
+        "name": "Ybranda Koster",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.458Z",
+        "updated_at": "2021-08-01T14:56:37.876Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "d222b5e1-c19a-4765-ba6d-b3f1ae0ae8cd",
+        "external_id": "Ybranda Koster",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 218,
+        "rght": 219,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "b90b4361-b97f-4390-9033-093c50b5773a",
+    "fields": {
+        "name": "Daphne Weij",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.888Z",
+        "updated_at": "2021-08-01T14:56:37.612Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "66d63386-dc04-4e43-823e-911d2099c79a",
+        "external_id": "Daphne Weij",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 24,
+        "rght": 25,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "bc360d7a-f9dd-43d4-8500-9abafe71f847",
+    "fields": {
+        "name": "Jeroen Klijs",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:05.859Z",
+        "updated_at": "2021-08-01T14:56:37.688Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "09930f77-c0c7-4979-bff2-346bacdb12ee",
+        "external_id": "Jeroen Klijs",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 80,
+        "rght": 81,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "bd0432f4-ec7e-46f2-b585-1aba97f1bed4",
+    "fields": {
+        "name": "T.M. Hupkens",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.844Z",
+        "updated_at": "2021-08-01T14:56:37.855Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "e86661a9-4e4b-4363-ae8d-0e912ae2c834",
+        "external_id": "T.M. Hupkens",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 202,
+        "rght": 203,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "bedf96d6-7f52-4b93-89f7-675b58f5c830",
+    "fields": {
+        "name": "Veerle Knippels",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.144Z",
+        "updated_at": "2021-08-01T14:56:37.865Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "6b1f6633-605c-4949-9e6f-777364692071",
+        "external_id": "Veerle Knippels",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 210,
+        "rght": 211,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "bfdc1577-3c70-4a4d-a592-cb903c595cef",
+    "fields": {
+        "name": "Sanne Bolander",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.423Z",
+        "updated_at": "2021-08-01T14:56:37.838Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "3dc41516-684c-486a-9fe6-b0a9af15ea6e",
+        "external_id": "Sanne Bolander",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 188,
+        "rght": 189,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "c1834ce1-1f31-4bf1-ac35-8e5f852a2860",
+    "fields": {
+        "name": "Eva van Aerde",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.125Z",
+        "updated_at": "2021-08-01T14:56:37.623Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "85431d51-f6c6-44f7-ac40-3f2697d1d7c3",
+        "external_id": "Eva van Aerde",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 32,
+        "rght": 33,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "c1a2ac3c-7c17-45a5-83bf-49481f747d21",
+    "fields": {
+        "name": "L. (Lidwien) Jacobs",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.815Z",
+        "updated_at": "2021-08-01T14:56:37.745Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "7819075a-1df6-47a1-8cdc-dc17a2975b30",
+        "external_id": "L. (Lidwien) Jacobs",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 122,
+        "rght": 123,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "c26e0727-9309-49a9-b5f7-d6041401bd76",
+    "fields": {
+        "name": "Machteld de Jong",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.264Z",
+        "updated_at": "2021-08-01T14:56:37.748Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ac756d39-dbcd-449a-a6a8-4dedf1083dbf",
+        "external_id": "Machteld de Jong",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 124,
+        "rght": 125,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "c3fe3444-c732-48f6-ba43-23f7fff58db4",
+    "fields": {
+        "name": "Rob Martens",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.653Z",
+        "updated_at": "2021-08-01T14:56:37.822Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9b802b74-f5a0-4a50-84ff-caff18a0ae23",
+        "external_id": "Rob Martens",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 178,
+        "rght": 179,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "cad6cd55-36f5-43e9-b9c2-d61b26002ea9",
+    "fields": {
+        "name": "Cyrille Krul",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.731Z",
+        "updated_at": "2021-08-01T14:56:37.607Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "d326f62e-53e1-46ae-a708-c29cf5efefd9",
+        "external_id": "Cyrille Krul",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 20,
+        "rght": 21,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "cbc154a6-1be7-4643-8a65-70a9fed73d28",
+    "fields": {
+        "name": "recht",
+        "parent": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+        "created_at": "2021-08-01T13:22:17.083Z",
+        "updated_at": "2021-08-01T14:56:37.943Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "02a45b2d-e551-4a89-9afb-838e4b99312c",
+        "external_id": "recht",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 16,
+        "rght": 17,
+        "tree_id": 5,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "cf967152-c6f2-4b58-aa9f-87187eecf138",
+    "fields": {
+        "name": "cc-by-40",
+        "parent": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+        "created_at": "2021-08-01T13:22:10.724Z",
+        "updated_at": "2021-08-01T14:56:37.886Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "bb13cde0-9d19-4009-a38b-b2a2c9399b62",
+        "external_id": "cc-by-40",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "d1069b6f-920f-48e1-88da-28d14fcfad8a",
+    "fields": {
+        "name": "P. Donker",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.497Z",
+        "updated_at": "2021-08-01T14:56:37.792Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ad0cd79d-0155-4d9d-947b-ddc2871fea66",
+        "external_id": "P. Donker",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 158,
+        "rght": 159,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "d2b64daf-1832-44b4-9bd2-a577f1c30891",
+    "fields": {
+        "name": "Janet van de Bunt",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:01.633Z",
+        "updated_at": "2021-08-01T14:56:37.683Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "f06ee459-f9c7-4884-8e8c-c5871c01524a",
+        "external_id": "Janet van de Bunt",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 76,
+        "rght": 77,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "d79bdab4-bb12-4d12-be7c-80156f5b0cee",
+    "fields": {
+        "name": "Zuke van Ingen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:10.533Z",
+        "updated_at": "2021-08-01T14:56:37.878Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9cee0c12-221e-41c5-bcae-3c817ab94271",
+        "external_id": "Zuke van Ingen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 220,
+        "rght": 221,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "d93c172c-4bae-403e-b090-f611961f10de",
+    "fields": {
+        "name": "Sjaak Toonen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.738Z",
+        "updated_at": "2021-08-01T14:56:37.840Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "351b73b1-b6ff-4d55-a866-a434c6e6b858",
+        "external_id": "Sjaak Toonen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 190,
+        "rght": 191,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "db13b1f7-0a6c-4854-9b6a-d7dd2689125e",
+    "fields": {
+        "name": "Johan Steenbergen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.310Z",
+        "updated_at": "2021-08-01T14:56:37.702Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "7ba65ba5-c668-42b8-b88e-21242928859b",
+        "external_id": "Johan Steenbergen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 90,
+        "rght": 91,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "db40fe73-eec9-4c41-b3f2-df6d462e4ffa",
+    "fields": {
+        "name": "Frank Makker",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.281Z",
+        "updated_at": "2021-08-01T14:56:37.631Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "89974388-b6bb-40a3-8ed0-3856db76383c",
+        "external_id": "Frank Makker",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 38,
+        "rght": 39,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "dee5c117-1a02-4fd1-9a3c-ae08a7be07a8",
+    "fields": {
+        "name": "Paula Smith",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.419Z",
+        "updated_at": "2021-08-01T14:56:37.784Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "ec52cc5a-bbb6-4e09-b883-8f4c4b364ae3",
+        "external_id": "Paula Smith",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 152,
+        "rght": 153,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "e1fc18c9-b414-412f-9180-8cf8dd36446f",
+    "fields": {
+        "name": "Joan Dallinga",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:06.215Z",
+        "updated_at": "2021-08-01T14:56:37.699Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "dd6ff43a-a8a7-43e7-8967-96d5fc92b057",
+        "external_id": "Joan Dallinga",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 88,
+        "rght": 89,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "e62e76dd-99c1-4626-bdcc-e072e832235a",
+    "fields": {
+        "name": "Richard de Jong",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.105Z",
+        "updated_at": "2021-08-01T14:56:37.814Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "7c38001d-0bda-486b-84c4-417aed403b2d",
+        "external_id": "Richard de Jong",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 174,
+        "rght": 175,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "e69d4cb6-6dc4-4677-80e7-32aaddda4bcb",
+    "fields": {
+        "name": "Jürg Thölke",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:02.338Z",
+        "updated_at": "2021-08-01T14:56:37.715Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "c65d5bb4-c998-4325-8f5c-653662d8b8f0",
+        "external_id": "Jürg Thölke",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 100,
+        "rght": 101,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "e7ea58d9-f2d1-4636-a9fc-51eb13996655",
+    "fields": {
+        "name": "Han van Kleef",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:04.950Z",
+        "updated_at": "2021-08-01T14:56:37.651Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "f5d5eb74-7f40-499f-8d03-1eb09911963e",
+        "external_id": "Han van Kleef",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 54,
+        "rght": 55,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "eacff5d9-891b-4341-87e1-a9d1b9aa16eb",
+    "fields": {
+        "name": "Bas van Zaane",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:03.573Z",
+        "updated_at": "2021-08-01T14:56:37.598Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "77697343-0003-4b4d-b42e-8a8988e1acec",
+        "external_id": "Bas van Zaane",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 14,
+        "rght": 15,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "ee0a1f8a-eb81-49fb-81e6-3f31baa7a987",
+    "fields": {
+        "name": "Rachelle van Harn",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:09.026Z",
+        "updated_at": "2021-08-01T14:56:37.810Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "4129e658-c134-48ab-b7f8-3c68b7abe53f",
+        "external_id": "Rachelle van Harn",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 172,
+        "rght": 173,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "f0fb65db-8709-484d-8927-6e6f8659fefa",
+    "fields": {
+        "name": "Themes",
+        "parent": null,
+        "created_at": "2021-08-01T12:50:45.948Z",
+        "updated_at": "2021-08-01T14:56:37.955Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "9b896050-1b02-4314-acf9-af0350cbb1bb",
+        "external_id": "research_themes",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 1,
+        "rght": 24,
+        "tree_id": 5,
+        "level": 0
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "f3d20f9c-9d89-4f36-940a-381ff75a6f4c",
+    "fields": {
+        "name": "Liesbeth Neven",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.231Z",
+        "updated_at": "2021-08-01T14:56:37.736Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "da6950eb-ad56-4591-9680-ac530db3ce6e",
+        "external_id": "Liesbeth Neven",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 116,
+        "rght": 117,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "f44ec3ca-8b75-42ab-afaf-b9e9767af76d",
+    "fields": {
+        "name": "Marloes van Zeist",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.953Z",
+        "updated_at": "2021-08-01T14:56:37.766Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "989172c4-03d5-4e3a-be6b-02d0185d7a51",
+        "external_id": "Marloes van Zeist",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 138,
+        "rght": 139,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "f5a0d000-1548-42d5-8902-d3399525eb9f",
+    "fields": {
+        "name": "Marleen Verstege",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.846Z",
+        "updated_at": "2021-08-01T14:56:37.763Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "1ed60603-ba42-4792-ac75-9595b75c7ab6",
+        "external_id": "Marleen Verstege",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 136,
+        "rght": 137,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "f8864d41-f1d1-411a-8e23-a5dca8016450",
+    "fields": {
+        "name": "Martijn Rietbergen",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:08.028Z",
+        "updated_at": "2021-08-01T14:56:37.768Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "0c69cef9-ef8a-405d-bce4-d6f1458bf5c3",
+        "external_id": "Martijn Rietbergen",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 140,
+        "rght": 141,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "f8d35800-adc7-4d2f-aaa6-5668c6f65fe1",
+    "fields": {
+        "name": "Marc Teunis",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.469Z",
+        "updated_at": "2021-08-01T14:56:37.756Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "a75781ba-229a-4a94-9c33-19d5138b68b3",
+        "external_id": "Marc Teunis",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 130,
+        "rght": 131,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "f9ef833b-fd01-4baf-9909-759224f9d1a6",
+    "fields": {
+        "name": "Lidija Lalicic",
+        "parent": "1f8d8a5e-f835-43e1-8f8b-61b2c3168f02",
+        "created_at": "2021-08-01T13:22:07.054Z",
+        "updated_at": "2021-08-01T14:56:37.731Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "8876a035-19cd-4b4b-b0e3-c8ff8428b80a",
+        "external_id": "Lidija Lalicic",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 112,
+        "rght": 113,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "filters.mpttfilteritem",
+    "pk": "fbcca978-d071-4fcb-a251-2208318dd69a",
+    "fields": {
+        "name": "pdm-10",
+        "parent": "1801bdc9-1b9c-4287-aa64-b4daef9c19c3",
+        "created_at": "2021-08-01T13:22:11.210Z",
+        "updated_at": "2021-08-01T14:56:37.901Z",
+        "deleted_from_edurep_at": null,
+        "title_translations": "aab9b49f-6b7d-4da3-acb2-e6d3859ddfa5",
+        "external_id": "pdm-10",
+        "is_manual": false,
+        "is_hidden": false,
+        "lft": 14,
+        "rght": 15,
+        "tree_id": 2,
+        "level": 1
+    }
+}
+]

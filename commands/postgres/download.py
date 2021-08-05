@@ -4,12 +4,11 @@ import boto3
 from commands import ROOT_DIR
 
 
-def download_snapshot(snapshot_name):
+def download_snapshot(snapshot_name, bucket_name, profile_name):
 
     print("Preparing download")
-    session = boto3.Session(profile_name="pol-dev")
+    session = boto3.Session(profile_name=profile_name)
     s3 = session.client("s3")
-    bucket_name = "edushare-data"
     # Figure out the snapshot S3 key
     # Listing all snapshots and taking the latest if none are specified
     if snapshot_name:

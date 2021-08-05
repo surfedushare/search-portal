@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.test import SimpleTestCase, Client
+from unittest import skipIf
 from unittest.mock import patch
 
 import surf.apps.materials.views as views
@@ -15,8 +17,10 @@ def patched_version_without_material(a, b):
     return []
 
 
+@skipIf(settings.PROJECT == "nppo", "Frontend not enabled for NPPO")
 @patch('webpack_loader.loader.WebpackLoader.get_bundle')
 class TestMaterialMetaTags(SimpleTestCase):
+
     def setUp(self):
         self.original = views._get_material_by_external_id
         self.client = Client()

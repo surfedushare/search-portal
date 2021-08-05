@@ -41,7 +41,7 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
     def uri(self):
         base = f"api.acc.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems?"
         modified_parameter = quote(f"filter[modified][GE]={self.since:%Y-%m-%dT%H:%M:%SZ}", safe="=")
-        page_size_parameter = quote("page[size]=10", safe="=")
+        page_size_parameter = quote("page[size]=25", safe="=")
         page_number_parameter = quote(f"page[number]={self.number+1}", safe="=")
         if self.is_initial and self.number > 0:
             params = [modified_parameter, page_number_parameter, page_size_parameter]

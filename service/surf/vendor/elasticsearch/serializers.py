@@ -38,16 +38,10 @@ class BaseSearchResultSerializer(serializers.Serializer):
     external_id = serializers.CharField()
     doi = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     url = serializers.URLField()
-    technical_type = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     title = serializers.CharField()
     description = serializers.CharField()
-    keywords = serializers.ListField(child=serializers.CharField())
     language = serializers.CharField()
-    publishers = serializers.ListField(child=serializers.CharField())
-    authors = serializers.ListField(child=serializers.CharField())
     copyright = serializers.CharField()
-    has_parts = serializers.ListField(child=serializers.CharField())
-    is_part_of = serializers.ListField(child=serializers.CharField())
 
 
 class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
@@ -63,6 +57,12 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
     themes = serializers.ListField(child=serializers.CharField(), default=[])
     source = serializers.CharField(source="harvest_source")
     ideas = serializers.ListField(child=serializers.CharField())
+    technical_type = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    keywords = serializers.ListField(child=serializers.CharField())
+    publishers = serializers.ListField(child=serializers.CharField())
+    authors = serializers.ListField(child=serializers.CharField())
+    has_parts = serializers.ListField(child=serializers.CharField())
+    is_part_of = serializers.ListField(child=serializers.CharField())
 
     preview_path = serializers.CharField(default=None, allow_blank=True, allow_null=True)
     preview_thumbnail_url = serializers.SerializerMethodField()
@@ -75,11 +75,38 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
         return get_preview_absolute_uri(obj["preview_path"], PREVIEW_ORIGINAL)
 
 
+class PersonSerializer(serializers.Serializer):
+
+    name = serializers.CharField()
+    email = serializers.CharField()
+
+
+class OrganisationSerializer(serializers.Serializer):
+
+    name = serializers.CharField()
+
+
+class LabelSerializer(serializers.Serializer):
+
+    label = serializers.CharField()
+
+
+class RelationSerializer(serializers.Serializer):
+
+    authors = PersonSerializer(many=True)
+    keywords = LabelSerializer(many=True)
+    parties = OrganisationSerializer(many=True)
+    themes = LabelSerializer(many=True)
+    children = serializers.ListField(child=serializers.CharField())
+    parents = serializers.ListField(child=serializers.CharField())
+
+
 class NPPOSearchResultSerializer(BaseSearchResultSerializer):
 
-    publisher_date = serializers.CharField()
-    themes = serializers.ListField(child=serializers.CharField(), source="research_themes")
+    type = serializers.CharField(source="technical_type")
+    published_at = serializers.CharField(source="publisher_date", allow_blank=True, allow_null=True)
     research_object_type = serializers.CharField()
+    relations = RelationSerializer()
 
 
 SearchResultSerializer = None

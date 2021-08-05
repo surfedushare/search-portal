@@ -1,7 +1,4 @@
-"""
-This module provides django admin functionality for materials app.
-"""
-
+from django.conf import settings
 from django.contrib import admin
 
 from surf.apps.materials import models
@@ -52,7 +49,6 @@ class CollectionMaterialInline(admin.TabularInline):
     extra = 0
 
 
-@admin.register(models.Material)
 class MaterialAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Material model.
@@ -89,7 +85,6 @@ class MaterialAdmin(admin.ModelAdmin):
         return actions
 
 
-@admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Collection model.
@@ -115,3 +110,8 @@ class CollectionAdmin(admin.ModelAdmin):
             del actions["delete_selected"]
             del actions["restore_nodes"]
         return actions
+
+
+if settings.PROJECT == "edusources":
+    admin.register(models.Material, MaterialAdmin)
+    admin.register(models.Collection, CollectionAdmin)

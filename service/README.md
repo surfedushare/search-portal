@@ -29,7 +29,7 @@ APPLICATION_MODE=production fab -H bastion.prod.surfedushare.nl srv.create-snaps
 The output of this command will include a SQL file name. You can then use that name to import the dump locally:
 
 ```bash
-invoke srv.import-snapshot <sql-file-name>
+invoke srv.import-snapshot -s pol-dev <sql-file-name>
 ```
 
 
@@ -139,7 +139,7 @@ APPLICATION_MODE=<environment> fab -H <bastion-host-domain> srv.setup-postgres
 To load snapshot data into the database on an AWS environment run:
 
 ```bash
-APPLICATION_MODE=<environment> fab -H <bastion-host-domain> srv.restore-snapshot <sql-file-name>
+APPLICATION_MODE=<environment> fab -H <bastion-host-domain> srv.restore-snapshot -s pol-dev <sql-file-name>
 ```
 
 The SQL file name is the file name as printed by [the create snapshot](README.md#installation) command described above
