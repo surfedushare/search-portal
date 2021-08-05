@@ -25,7 +25,7 @@ class TestSharekitMetadataHarvest(TestCase):
         self.assertEqual(handle_errors_mock.call_count, 1)
         self.assertEqual(
             unquote(self.instance.uri),
-            self.base_url + "filter[modified][GE]=1970-01-01T00:00:00Z&page[size]=10"
+            self.base_url + "filter[modified][GE]=1970-01-01T00:00:00Z&page[size]=25"
         )
         self.assertEqual(self.instance.since, make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(self.instance.set_specification, "edusources")
@@ -38,7 +38,7 @@ class TestSharekitMetadataHarvest(TestCase):
         self.assertEqual(handle_errors_mock.call_count, 1)
         self.assertEqual(
             unquote(self.instance.uri),
-            self.base_url + "filter[modified][GE]=2021-01-01T01:00:00Z&page[size]=10"
+            self.base_url + "filter[modified][GE]=2021-01-01T01:00:00Z&page[size]=25"
         )
         self.assertEqual(self.instance.since, make_aware(datetime(year=2021, month=1, day=1, hour=1)))
         self.assertEqual(self.instance.set_specification, "edusources")
@@ -51,7 +51,7 @@ class TestSharekitMetadataHarvest(TestCase):
         self.assertEqual(handle_errors_mock.call_count, 1)
         self.assertEqual(
             unquote(self.instance.uri),
-            self.base_url + "filter[modified][GE]=2021-01-01&page[size]=10"
+            self.base_url + "filter[modified][GE]=2021-01-01&page[size]=25"
         )
         self.assertEqual(self.instance.since, make_aware(datetime(year=2021, month=1, day=1)))
         self.assertEqual(self.instance.set_specification, "edusources")
@@ -73,7 +73,7 @@ class TestSharekitMetadataHarvest(TestCase):
         next_request = previous.create_next_request()
         self.assertEqual(
             unquote(next_request["url"]),
-            f"https://{self.base_url}filter[modified][GE]=1970-01-01T00:00:00Z&page[size]=10&page[number]=2"
+            f"https://{self.base_url}filter[modified][GE]=1970-01-01T00:00:00Z&page[size]=25&page[number]=2"
         )
 
     def test_handle_no_content(self):

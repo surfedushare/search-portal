@@ -3,7 +3,7 @@
         "totalCount": 3
     },
     "links": {
-        "self": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=10&page[number]=1"
+        "self": "/api/jsonapi/channel/v1/edusources/repoItems?page[size]=25&page[number]=1"
     },
     "data": [
         {
