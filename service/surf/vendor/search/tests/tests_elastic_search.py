@@ -391,7 +391,11 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
         self.assertEqual(material['external_id'], "3522b79c-928c-4249-a7f7-d2bcb3077f10")
         self.assert_value_from_record(material, 'publishers', ["Wikiwijs Maken"])
-        self.assert_value_from_record(material, 'publish_datetime', datetime(year=2017, month=4, day=16, hour=22, minute=35, second=9))
+        self.assert_value_from_record(
+            material,
+            'publish_datetime',
+            datetime(year=2017, month=4, day=16, hour=22, minute=35, second=9)
+        )
         self.assert_value_from_record(material, 'authors', ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"])
         self.assert_value_from_record(material, 'keywords', ["nerds"])
         self.assert_value_from_record(material, 'disciplines', [
