@@ -53,9 +53,9 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
 
     def get_value_from_record(self, record, key):
-        if settings == "edusources" and key != "publisher_data":
+        if settings.PROJECT == "edusources" and key != "publish_datetime":
             value = record[key]
-        elif settings == "edusources" and key != "publisher_data":
+        elif settings.PROJECT == "edusources" and key == "publish_datetime":
             value = parse(record[key], ignoretz=True)
         elif key == "authors":
             value = record["relations"]["authors"]
@@ -73,7 +73,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
 
     def assert_value_from_record(self, record, key, expectation, assertion=None, message=None):
         assertion = assertion or self.assertEqual
-        if settings == "edusources":
+        if settings.PROJECT == "edusources":
             pass
         elif key == "authors":
             expectation = [
@@ -185,7 +185,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assert_value_from_record(
                 record,
                 "publish_datetime",
-                datetime.strptime("2018-12-31", "%Y-%m-%d"),
+                datetime(year=2018, month=12, day=31),
                 self.assertLessEqual
             )
         search_biologie_lower_date = self.instance.search("biologie", filters=[
