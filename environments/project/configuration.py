@@ -217,15 +217,23 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 },
                 'url': {'type': 'text'},
                 'authors': {
-                    'type': 'text',
-                    'fields': {
-                        'keyword': {
-                            'type': 'keyword',
-                            'ignore_above': 256
-                        },
-                        'folded': {
+                    'type': 'object',
+                    'properties': {
+                        'name': {
                             'type': 'text',
-                            'analyzer': 'folding'
+                            'fields': {
+                                'keyword': {
+                                    'type': 'keyword',
+                                    'ignore_above': 256
+                                },
+                                'folded': {
+                                    'type': 'text',
+                                    'analyzer': 'folding'
+                                }
+                            }
+                        },
+                        'email': {
+                            'type': 'keyword'
                         }
                     }
                 },

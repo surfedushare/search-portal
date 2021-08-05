@@ -61,7 +61,11 @@ class TestGetHarvestSeedsSharekit(TestCase):
 
     def test_authors_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(seeds[2]['authors'], ['Ruud Kok', 'Astrid Bulte', 'Hans Poorthuis'])
+        self.assertEqual(seeds[2]['authors'], [
+            {'name': 'Ruud Kok', 'email': 'Ruud Kok'},
+            {'name': 'Astrid Bulte', 'email': 'Astrid Bulte'},
+            {'name': 'Hans Poorthuis', 'email': 'Hans Poorthuis'},
+        ])
 
     def test_publishers_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))

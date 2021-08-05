@@ -191,7 +191,10 @@ class EdurepDataExtraction(object):
         for node in nodes:
             author = cls.parse_vcard_element(node)
             if hasattr(author, "fn"):
-                authors.append(author.fn.value)
+                authors.append({
+                    "name": author.fn.value,
+                    "email": None
+                })
         return authors
 
     @classmethod

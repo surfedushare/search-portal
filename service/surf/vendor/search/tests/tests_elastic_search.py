@@ -421,7 +421,6 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         material = result['records'][0]
         self.assertEqual(material['external_id'], "wikiwijs:123")
 
-    @skipIf(settings.PROJECT == "nppo", "Temporarily skipped until Edusources uses objects for authors")
     def test_search_by_author(self):
         author = "Michel van Ast"
         expected_record_count = 4
@@ -437,7 +436,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             filters=[{"external_id": "lom.lifecycle.contribute.author", "items": [author]}]
         )
         for record in search_author['records']:
-            self.assertIn(author, record['authors'])
+            authors = [author["name"] for author in self.get_value_from_record(record, 'authors')]
+            self.assertIn(author, authors)
         self.assertEqual(search_author['recordcount'], expected_record_count)
 
     def test_search_did_you_mean(self):

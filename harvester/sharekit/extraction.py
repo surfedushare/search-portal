@@ -91,7 +91,10 @@ class SharekitMetadataExtraction(object):
     def get_authors(cls, node):
         authors = node["attributes"]["authors"] or []
         return [
-            author["person"]["name"]
+            {
+               "name": author["person"]["name"],
+               "email": author["person"]["email"]
+            }
             for author in authors
         ]
 

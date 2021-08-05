@@ -114,7 +114,7 @@ class ElasticSearchApiClient:
         }
         if "relations" in field_mapping:
             record["relations"] = {
-                "authors": [{"name": author} for author in data["authors"]],
+                "authors": data["authors"],
                 "parties": [{"name": publisher} for publisher in data["publishers"]],
                 "keywords": [{"label": keyword} for keyword in data["keywords"]],
                 "themes": [{"label": theme} for theme in data.get("research_themes", [])],
@@ -198,7 +198,7 @@ class ElasticSearchApiClient:
                         "text", "text.analyzed", "text.folded",
                         "description", "description.analyzed", "description.folded",
                         "keywords", "keywords.folded",
-                        "authors", "authors.folded",
+                        "authors", "authors.name.folded",
                         "publishers", "publishers.folded",
                         "ideas", "ideas.folded"
                     ],
@@ -454,7 +454,7 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.classification.obk.discipline.id':
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
-            return 'authors.keyword'
+            return 'authors.name.keyword'
         elif external_id == 'lom.general.language':
             return 'language.keyword'
         elif external_id == 'lom.general.aggregationlevel':
