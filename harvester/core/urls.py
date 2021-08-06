@@ -12,4 +12,6 @@ urlpatterns = [
     path('dataset/<int:pk>/content/', views.DatasetContentView.as_view(), name="dataset-content"),
     path('dataset/<int:pk>/', views.DatasetDetailView.as_view(), name="dataset-detail"),
     path('datasets/', views.DatasetListView.as_view(), name="datasets"),
+    path('extension/<str:pk>/', views.ExtensionDetailView.as_view(), name="extension-detail"),
+    path('extension/', views.ExtensionListView.as_view(), name="extensions"),
 ]

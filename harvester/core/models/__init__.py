@@ -10,6 +10,7 @@ from .datatypes.dataset import Dataset, DatasetVersion
 from .datatypes.collection import Collection
 from .datatypes.document import Document
 from .datatypes.pipeline import Batch, ProcessResult
+from .datatypes.extension import Extension
 
 from .harvest import Harvest, HarvestSource
 
