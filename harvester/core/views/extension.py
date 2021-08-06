@@ -74,11 +74,9 @@ class ExtensionSerializer(DocumentBaseSerializer):
 
     def create(self, validated_data):
         external_id = validated_data["external_id"]
-        is_parent = validated_data.pop("is_parent")
         return super().create({
             "id": external_id,
             "reference": external_id,
-            "is_parent": is_parent,
             "properties": validated_data
         })
 
