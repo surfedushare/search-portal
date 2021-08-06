@@ -376,6 +376,13 @@ MIME_TYPE_TO_TECHNICAL_TYPE = {
     'application/x-java': 'app',
 }
 
+COPYRIGHT_VALUES = [
+    "cc-by-40",
+    "cc-by-30",
+    "pdm-10",
+    "cc0-10"
+]
+
 
 # Celery
 # https://docs.celeryproject.org/en/v4.1.0/

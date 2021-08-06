@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -13,12 +14,21 @@ class ExtensionSerializer(DocumentBaseSerializer):
     id = serializers.CharField(read_only=True)
     external_id = serializers.CharField(write_only=True)
 
-    authors = PersonSerializer(many=True, write_only=True)
-    parties = OrganisationSerializer(many=True, write_only=True)
-    projects = ProjectSerializer(many=True, write_only=True)
+    title = serializers.CharField(write_only=True, required=False)
+    description = serializers.CharField(write_only=True, required=False)
+    language = serializers.CharField(write_only=True, required=False, max_length=2)
+    published_at = serializers.DateField(write_only=True, required=False)
+    copyright = serializers.ChoiceField(write_only=True, required=False, choices=settings.COPYRIGHT_VALUES)
 
-    parents = serializers.ListField(child=serializers.CharField(), write_only=True)
-    children = serializers.ListField(child=serializers.CharField(), write_only=True)
+    authors = PersonSerializer(many=True, write_only=True, required=False)
+    parties = OrganisationSerializer(many=True, write_only=True, required=False)
+    projects = ProjectSerializer(many=True, write_only=True, required=False)
+
+    parents = serializers.ListField(child=serializers.CharField(), write_only=True, required=False)
+    children = serializers.ListField(child=serializers.CharField(), write_only=True, required=False)
+
+    def validate_published_at(self, published_at):
+        return published_at.strftime("%Y-%m-%d")
 
     def validate_relation_ids(self, ids):
         if not len(ids):
@@ -49,6 +59,12 @@ class ExtensionSerializer(DocumentBaseSerializer):
                 raise ValidationError(
                     f"Could not find Document with external_id '{external_id}'. Did you mean to create a parent?"
                 )
+            parental_properties = ["title", "description", "language", "published_at", "copyright"]
+            for prop in parental_properties:
+                if prop in attrs:
+                    raise ValidationError(
+                        f"Can't set {prop} property for anything but a parent extension."
+                    )
         if self.context["request"].method == "POST":
             if Extension.objects.filter(id=external_id).exists():
                 raise ValidationError(
@@ -75,8 +91,9 @@ class ExtensionSerializer(DocumentBaseSerializer):
 
     class Meta:
         model = Extension
-        fields = ("id", "created_at", "modified_at", "properties", "is_parent", "external_id", "authors", "parties",
-                  "projects", "parents", "children")
+        fields = ("id", "created_at", "modified_at", "properties", "is_parent", "external_id",
+                  "title", "description", "language", "published_at", "copyright",
+                  "authors", "parties", "projects", "parents", "children")
 
 
 class ExtensionListView(generics.ListCreateAPIView):
