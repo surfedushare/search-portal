@@ -32,6 +32,7 @@ class Document(DocumentBase):
 
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     pipeline = models.JSONField(default=dict, blank=True)
+    extension = models.ForeignKey("core.Extension", null=True, on_delete=models.SET_NULL)
     # NB: Collection foreign key is added by the base class
 
     def get_language(self):
