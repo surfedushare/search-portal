@@ -290,9 +290,9 @@
                 "ideas": [],
                 "title": "Didactiek van macro-meso-micro denken bij scheikunde",
                 "authors": [
-                    "Ruud Kok",
-                    "Astrid Bulte",
-                    "Hans Poorthuis"
+                    {"name": "Ruud Kok"},
+                    {"name": "Astrid Bulte"},
+                    {"name": "Hans Poorthuis"}
                 ],
                 "keywords": [
                     "correspondentie",
@@ -382,7 +382,7 @@
                 "ideas": [],
                 "title": "1. A first exploration of big history",
                 "authors": [
-                    "Esther Quaedackers"
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "mooc",
@@ -475,7 +475,7 @@
                 "ideas": [],
                 "title": "01. How can we summarize 13.8 billion years in one brief course?",
                 "authors": [
-                    "Esther Quaedackers"
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "mooc"
@@ -562,8 +562,8 @@
                 "ideas": [],
                 "title": "02. How big is big history?",
                 "authors": [
-                    "Esther Quaedackers",
-                    "Robbert Dijkgraaf"
+                    {"name": "Esther Quaedackers"},
+                    {"name": "Robbert Dijkgraaf"}
                 ],
                 "keywords": [
                     "mooc",
@@ -651,7 +651,7 @@
                 "ideas": [],
                 "title": "03. What are little big histories?",
                 "authors": [
-                    "Esther Quaedackers"
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "mooc",
@@ -817,7 +817,7 @@
                 "ideas": [],
                 "title": "4. Macro: Economic Performance & Employment",
                 "authors": [
-                    "Ning Ding"
+                    {"name": "Ning Ding"}
                 ],
                 "keywords": [
                     "macroeconomics"
@@ -916,7 +916,7 @@
                 "ideas": [],
                 "title": "09 Changes in the Labour Market",
                 "authors": [
-                    "Ning Ding"
+                    {"name": "Ning Ding"}
                 ],
                 "keywords": [
                     "economics",
@@ -1004,8 +1004,8 @@
                 "ideas": [],
                 "title": "04. Can big history reunify all our knowledge?",
                 "authors": [
-                    "Fred Spier",
-                    "Esther Quaedackers"
+                    {"name": "Fred Spier"},
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "Video",
