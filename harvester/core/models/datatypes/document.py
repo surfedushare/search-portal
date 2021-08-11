@@ -37,13 +37,14 @@ class Document(DocumentBase):
     def get_language(self):
         return self.properties['language'].get("metadata", "unk")
 
-    def get_search_document_extras(self, reference_id, title, text):
+    def get_search_document_extras(self, reference_id, title, text, material_type):
         extras = {
             '_id': reference_id,
             "language": self.get_language(),
             'suggest_completion': title.split(" ") if title else [],
             'harvest_source': self.collection.name,
-            'suggest_phrase': text
+            'suggest_phrase': text,
+            'material_type': material_type
         }
         return extras
 
@@ -52,10 +53,12 @@ class Document(DocumentBase):
         elastic_base.pop("language")
         for private_property in PRIVATE_PROPERTIES:
             elastic_base.pop(private_property, False)
+        material_type = elastic_base.pop("material_type", None) or "unknown"
         elastic_details = self.get_search_document_extras(
             self.properties["external_id"],
             self.properties["title"],
-            self.properties.get("text", None)
+            self.properties.get("text", None),
+            material_type=material_type
         )
         elastic_details.update(elastic_base)
         yield elastic_details
