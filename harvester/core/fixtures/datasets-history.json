@@ -26,7 +26,7 @@
         "fields": {
             "created_at": "2020-02-17T12:24:52.113Z",
             "modified_at": "2020-02-17T12:24:52.119Z",
-            "name": "surfsharekit",
+            "name": "edusources",
             "identifier": null,
             "referee": "external_id",
             "dataset_version": 1
@@ -37,8 +37,8 @@
         "pk": 1,
         "fields": {
             "name": "SURF Sharekit",
-            "repository": "edurep.EdurepOAIPMH",
-            "spec": "surfsharekit",
+            "repository": "sharekit.SharekitMetadataHarvest",
+            "spec": "edusources",
             "created_at": "2020-02-06T17:13:15.417Z",
             "modified_at": "2020-02-06T17:13:15.417Z"
         }
@@ -48,7 +48,7 @@
         "pk": 2,
         "fields": {
             "name": "Edurep Delen",
-            "repository": "edurep.EdurepOAIPMH",
+            "repository": "sharekit.SharekitMetadataHarvest",
             "spec": "edurep_delen",
             "created_at": "2019-12-06T10:58:40.757Z",
             "modified_at": "2019-12-19T15:00:18.560Z"
@@ -88,7 +88,7 @@
             "modified_at": "2020-02-17T10:53:24.387Z",
             "collection": 171,
             "identity": null,
-            "reference": "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+            "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
             "pipeline": {
                 "metadata": {
                     "success": true,
@@ -148,7 +148,7 @@
                 ],
                 "description": "Fifth exercises of the course",
                 "disciplines": [],
-                "external_id": "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+                "external_id": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
                 "from_youtube": false,
                 "preview_path": null,
                 "publisher_date": "2019",
@@ -171,7 +171,7 @@
             "modified_at": "2020-02-17T10:53:24.388Z",
             "collection": 171,
             "identity": null,
-            "reference": "surfsharekit:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
+            "reference": "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
             "pipeline": {
                 "metadata": {
                     "success": true,
@@ -233,7 +233,7 @@
                 ],
                 "description": "Instruction on how to use a Vortex mixer",
                 "disciplines": [],
-                "external_id": "surfsharekit:oai:surfsharekit.nl:5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
+                "external_id": "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
                 "from_youtube": true,
                 "preview_path": null,
                 "publisher_date": "2016-09-02",
@@ -256,7 +256,7 @@
             "modified_at": "2020-02-17T10:53:24.388Z",
             "collection": 171,
             "identity": null,
-            "reference": "surfsharekit:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
+            "reference": "63903863-6c93-4bda-b850-277f3c9ec00e",
             "pipeline": {
                 "metadata": {
                     "success": true,
@@ -338,7 +338,7 @@
                 ],
                 "description": "Geen samenvatting",
                 "disciplines": [],
-                "external_id": "surfsharekit:oai:surfsharekit.nl:63903863-6c93-4bda-b850-277f3c9ec00e",
+                "external_id": "63903863-6c93-4bda-b850-277f3c9ec00e",
                 "from_youtube": false,
                 "preview_path": null,
                 "publisher_date": "2017-09-27",
@@ -718,7 +718,7 @@
             "modified_at": "2020-06-22T10:53:24.551Z",
             "collection": 171,
             "identity": null,
-            "reference": "surfsharekit:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd",
+            "reference": "b35875c5-678b-4d58-af85-4111c321c5cd",
             "pipeline": {
                 "metadata": {
                     "success": true,
@@ -776,7 +776,7 @@
                 ],
                 "description": "Als we op een computer met muziek werken, komen we in aanraking met Audio, MIDI of een combinatie van beide. In deze les ligt de nadruk op MIDI. \r\n\r\nAan de orde komen:\r\nWat is het en wat kun je ermee? \r\nHoe kun je binnen Sibelius software gebruik maken van MIDI (play, record, mixer, sounds, export audio) \r\nHet verschijnsel Latency",
                 "disciplines": [],
-                "external_id": "surfsharekit:oai:surfsharekit.nl:b35875c5-678b-4d58-af85-4111c321c5cd",
+                "external_id": "b35875c5-678b-4d58-af85-4111c321c5cd",
                 "from_youtube": false,
                 "preview_path": null,
                 "publisher_date": "2017",
@@ -799,7 +799,7 @@
             "modified_at": "2020-06-22T10:53:24.551Z",
             "collection": 171,
             "identity": null,
-            "reference": "surfsharekit:oai:surfsharekit.nl:0937a9fa-e368-4227-aa9e-d36afdffdd72",
+            "reference": "0937a9fa-e368-4227-aa9e-d36afdffdd72",
             "pipeline": {
                 "metadata": {
                     "success": true,
@@ -864,7 +864,7 @@
                 ],
                 "description": "Learn about some basic theories of Macroeconomics.  We focus on how you can use these theories in daily business operation and understand the business world better. \n\n",
                 "disciplines": [],
-                "external_id": "surfsharekit:oai:surfsharekit.nl:0937a9fa-e368-4227-aa9e-d36afdffdd72",
+                "external_id": "0937a9fa-e368-4227-aa9e-d36afdffdd72",
                 "from_youtube": false,
                 "preview_path": null,
                 "publisher_date": "2019-04-01",
@@ -887,7 +887,7 @@
             "modified_at": "2020-06-22T10:53:26.801Z",
             "collection": 171,
             "identity": null,
-            "reference": "surfsharekit:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
+            "reference": "b500d389-2fda-4696-ae51-9cd0603a48af",
             "pipeline": {
                 "metadata": {
                     "success": true,
@@ -960,7 +960,7 @@
                 ],
                 "description": "Learning objective:\r\n- Explain the effect of changes in the labour market on the real wage rate and quantity of labour in hours.",
                 "disciplines": [],
-                "external_id": "surfsharekit:oai:surfsharekit.nl:b500d389-2fda-4696-ae51-9cd0603a48af",
+                "external_id": "b500d389-2fda-4696-ae51-9cd0603a48af",
                 "from_youtube": false,
                 "preview_path": null,
                 "publisher_date": "2019-04-01",
