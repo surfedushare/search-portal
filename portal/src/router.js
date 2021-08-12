@@ -83,6 +83,16 @@ export default new Router({
       name: 'communities-search___nl'
     },
     {
+      path: '/en/themes/:filterId/search',
+      component: Search,
+      name: 'themes-search___en'
+    },
+    {
+      path: '/themas/:filterId/zoeken',
+      component: Search,
+      name: 'themes-search___nl'
+    },
+    {
       path: '/en/my/collection/:id',
       component: Collection,
       name: 'my-collection___en',
