@@ -1,10 +1,13 @@
 import i18n from '~/i18n'
+import { isEmpty } from 'lodash'
 
 export const generateSearchMaterialsQuery = function(
   data = { filters: {}, search_text: '' },
   name = 'materials-search'
 ) {
-  name += '___' + i18n.locale
+  if (name.indexOf('___') < 0) {
+    name += '___' + i18n.locale
+  }
 
   return {
     name: name,
@@ -65,4 +68,15 @@ export const validateHREF = function(href) {
   return href.search(process.env.frontendUrl) === 0
     ? href
     : process.env.frontendUrl
+}
+
+export const addFilter = function(search, category, filterId) {
+  if (isEmpty(search.filters[category])) {
+    search.filters[category] = [filterId]
+    return search
+  } else if (search.filters[category].indexOf(filterId) >= 0) {
+    return search
+  }
+  search.filters[category].push(filterId)
+  return search
 }

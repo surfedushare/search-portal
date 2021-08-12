@@ -24,7 +24,7 @@
                 <button
                   v-if="!isLoading && community_info.search_query"
                   class="button"
-                  @click="goToCommunitySearch(community_info.search_query)"
+                  @click="goToCommunitySearch()"
                 >
                   {{ $t('Search-in-community-materials') }}
                 </button>
@@ -124,10 +124,14 @@ export default {
     this.$store.dispatch('getCommunityCollections', community)
   },
   methods: {
-    goToCommunitySearch(searchQuery) {
-      const searchRoute = localePath('materials-search')
+    goToCommunitySearch() {
+      const searchRoute = localePath('communities-search')
       const searchLocation = this.$router.resolve(searchRoute)
-      this.$router.push(searchLocation.href + searchQuery)
+      // TODO: don't use search_query, but a dedicated field
+      this.$router.push({
+        name: searchLocation.location.name,
+        params: { filterId: this.community_info.search_query }
+      })
     }
   }
 }

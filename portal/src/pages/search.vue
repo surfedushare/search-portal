@@ -4,6 +4,15 @@
       <div class="search__info">
         <div class="center_block center-header">
           <div class="search__info_top">
+            <div v-if="$route.params.filterId">
+              <h4>{{ $t('Search-in') }}:</h4>
+              <p>
+                <router-link to="localePath('materials-search')">{{
+                  $t('Everything')
+                }}</router-link>
+                > {{ defaultFilterTitle }}
+              </p>
+            </div>
             <h2 v-if="materials && !materials_loading">
               {{ $t('Search-results') }} {{ `(${materials.records_total})` }}
             </h2>
@@ -20,7 +29,7 @@
             v-if="search"
             v-model="search.search_text"
             class="search__info_search"
-            @onSearch="searchMaterials"
+            @onSearch="onSearch"
           />
         </div>
       </div>
@@ -64,8 +73,8 @@
           <div class="search__filter_content">
             <FilterCategories
               v-model="search"
-              :filter-categories="getFilterCategories() || []"
               :selected-filters="search.filters"
+              :default-filter="$route.params.filterId"
               :materials="materials"
             />
           </div>
@@ -92,7 +101,8 @@ import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
 import {
   generateSearchMaterialsQuery,
-  parseSearchMaterialsQuery
+  parseSearchMaterialsQuery,
+  addFilter
 } from '~/components/_helpers'
 
 export default {
@@ -123,28 +133,60 @@ export default {
       'materials_loading',
       'materials_in_line',
       'did_you_mean'
-    ])
+    ]),
+    defaultFilterTitle() {
+      if (!this.$route.params.filterId) {
+        return
+      }
+      const defaultFilter = this.$store.getters.getCategoryById(
+        this.$route.params.filterId
+      )
+      return defaultFilter
+        ? defaultFilter.title_translations[this.$i18n.locale]
+        : null
+    }
   },
   watch: {
     search(search) {
       if (search && !this.materials_loading) {
-        this.$store.dispatch('searchMaterials', search)
+        this.executeSearch()
       }
     }
   },
   mounted() {
-    this.$store.dispatch('searchMaterials', this.search)
+    this.loadFilterCategories().finally(() => {
+      this.executeSearch()
+    })
   },
   methods: {
-    searchMaterials() {
+    executeSearch(updateUrl) {
+      if (this.$route.params.filterId) {
+        const category = this.$store.getters.getCategoryById(
+          this.$route.params.filterId
+        )
+        if (category) {
+          this.search = addFilter(
+            this.search,
+            category.searchId,
+            this.$route.params.filterId
+          )
+        }
+      }
+      this.$store.dispatch('searchMaterials', this.search)
+      if (updateUrl) {
+        this.$router.push(
+          generateSearchMaterialsQuery(this.search, this.$route.name)
+        )
+      }
+    },
+    onSearch() {
       this.search = {
         search_text: this.search.search_text,
         filters: {},
         page_size: 10,
         page: 1
       }
-      this.$store.dispatch('searchMaterials', this.search)
-      this.$router.push(generateSearchMaterialsQuery(this.search))
+      this.executeSearch(true)
     },
     loadMore() {
       const { search, materials } = this
@@ -182,11 +224,13 @@ export default {
         this.search.ordering = ''
       }
       this.search.page = 1
-      this.$store.dispatch('searchMaterials', Object.assign({}, this.search))
-      this.$router.push(generateSearchMaterialsQuery(this.search))
+      this.executeSearch(true)
     },
-    getFilterCategories() {
-      return this.materials ? this.materials.filter_categories : []
+    loadFilterCategories() {
+      if (this.$route.name.startsWith('mat')) {
+        return Promise.resolve(null)
+      }
+      return this.$store.dispatch('getFilterCategories')
     }
   }
 }

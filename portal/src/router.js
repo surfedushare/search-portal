@@ -73,6 +73,16 @@ export default new Router({
       name: 'materials-search___nl'
     },
     {
+      path: '/en/communities/:filterId/search',
+      component: Search,
+      name: 'communities-search___en'
+    },
+    {
+      path: '/communities/:filterId/zoeken',
+      component: Search,
+      name: 'communities-search___nl'
+    },
+    {
       path: '/en/my/collection/:id',
       component: Collection,
       name: 'my-collection___en',
