@@ -113,5 +113,5 @@ class CollectionAdmin(admin.ModelAdmin):
 
 
 if settings.PROJECT == "edusources":
-    admin.register(models.Material, MaterialAdmin)
-    admin.register(models.Collection, CollectionAdmin)
+    admin.site.register(models.Material, MaterialAdmin)
+    admin.site.register(models.Collection, CollectionAdmin)

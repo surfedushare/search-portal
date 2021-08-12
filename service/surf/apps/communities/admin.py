@@ -115,4 +115,4 @@ class CommunityAdmin(admin.ModelAdmin):
 
 
 if settings.PROJECT == "edusources":
-    admin.register(models.Community, CommunityAdmin)
+    admin.site.register(models.Community, CommunityAdmin)
