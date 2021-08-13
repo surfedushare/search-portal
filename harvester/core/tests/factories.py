@@ -90,6 +90,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "keywords": [],
             "research_object_type": None,
             "research_themes": [],
+            "parties": []
         })
 
 

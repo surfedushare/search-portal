@@ -213,4 +213,5 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "doi": "$.attributes.doi",
     "research_object_type": "$.attributes.typeResearchObject",
     "research_themes": SharekitMetadataExtraction.get_research_themes,
+    "parties": lambda node: [],
 }

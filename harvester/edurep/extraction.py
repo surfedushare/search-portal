@@ -345,4 +345,5 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "doi": lambda soup, el: None,
     "research_object_type": lambda soup, el: None,
     "research_themes": lambda soup, el: None,
+    "parties": lambda soup, el: [],
 }

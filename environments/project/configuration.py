@@ -284,6 +284,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     "type": "text",
                     "analyzer": "trigram"
                 },
+                'is_part_of': {
+                    'type': 'keyword'
+                },
+                'has_parts': {
+                    'type': 'keyword'
+                }
             }
         }
     }

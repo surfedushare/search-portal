@@ -49,11 +49,33 @@ class Document(DocumentBase):
         }
         return extras
 
+    def get_extension_extras(self):
+        extension_data = copy(self.extension.properties)
+        if "keywords" in extension_data:
+            extension_data["keywords"] = [entry["label"] for entry in extension_data["keywords"]]
+        themes = extension_data.pop("themes", None)
+        if themes:
+            extension_data["research_themes"] = [entry["label"] for entry in themes]
+        parents = extension_data.pop("parents", None)
+        if parents:
+            is_part_of = self.properties.get("is_part_of", [])
+            is_part_of += parents
+            is_part_of = list(set(is_part_of))
+            extension_data["is_part_of"] = is_part_of
+        children = extension_data.pop("children", None)
+        if children:
+            has_parts = self.properties.get("has_parts", [])
+            has_parts += children
+            has_parts = list(set(has_parts))
+            extension_data["has_parts"] = has_parts
+        return extension_data
+
     def to_search(self):
         elastic_base = copy(self.properties)
         elastic_base.pop("language")
         if self.extension:
-            elastic_base.update(self.extension.properties)
+            extension_details = self.get_extension_extras()
+            elastic_base.update(extension_details)
         for private_property in PRIVATE_PROPERTIES:
             elastic_base.pop(private_property, False)
         material_types = elastic_base.pop("material_types", None) or ["unknown"]

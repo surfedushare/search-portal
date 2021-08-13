@@ -90,9 +90,26 @@
             "identity": null,
             "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
             "properties": {
-                "authors": [{
-                    "name": "The Extension Man"
-                }]
+                "authors": [
+                    {"name": "The Extension Man"}],
+                "keywords": [
+                    {"label": "exercise"},
+                    {"label": "extended"}
+                ],
+                "themes": [
+                    {"label": "theme"},
+                    {"label": "extended"}
+                ],
+                "children": [
+                    "part",
+                    "child"
+                ],
+                "parents": [
+                    "parent"
+                ],
+                "parties": [
+                    {"name": "The Extension Party"}
+                ]
             }
         }
     },
@@ -115,7 +132,7 @@
             },
             "properties": {
                 "research_object_type": null,
-                "research_themes": [],
+                "research_themes": ["research"],
                 "doi": null,
                 "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7",
                 "text": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEXERCISES 5\n· Sing both these pentatonic scales on the same beginning tone;\n· Figure out how to write both these pentatonic scales, beginning on the other 6 basic tones.\n\n",
@@ -157,9 +174,13 @@
                 "copyright": "cc-by-nc-40",
                 "technical_type": "document",
                 "material_types": ["kennisoverdracht"],
-                "has_parts": [],
+                "has_parts": [
+                    "part"
+                ],
                 "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "is_part_of": [],
+                "is_part_of": [
+                    "part"
+                ],
                 "publishers": [
                     "SURFnet"
                 ],
@@ -198,7 +219,7 @@
             },
             "properties": {
                 "research_object_type": null,
-                "research_themes": [],
+                "research_themes": ["research"],
                 "doi": null,
                 "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
                 "text": null,
@@ -242,9 +263,13 @@
                 "copyright": "cc-by-40",
                 "technical_type": "website",
                 "material_types": [],
-                "has_parts": [],
+                "has_parts": [
+                    "part"
+                ],
                 "mime_type": "text/html",
-                "is_part_of": [],
+                "is_part_of": [
+                    "part"
+                ],
                 "publishers": [
                     "SURFnet"
                 ],
@@ -260,7 +285,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -365,7 +391,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -455,7 +482,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -542,7 +570,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -631,7 +660,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -719,7 +749,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -803,7 +834,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -891,7 +923,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -987,7 +1020,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -1074,7 +1108,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
