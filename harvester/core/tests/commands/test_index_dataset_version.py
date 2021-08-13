@@ -165,6 +165,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
@@ -214,6 +217,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "002")
         # Index the previous version and check we only get the modified documents
@@ -228,6 +234,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
                 self.assertEqual(len(docs), 1)
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
         self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
@@ -277,6 +286,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 

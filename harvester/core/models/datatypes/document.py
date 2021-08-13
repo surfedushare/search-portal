@@ -52,6 +52,8 @@ class Document(DocumentBase):
     def to_search(self):
         elastic_base = copy(self.properties)
         elastic_base.pop("language")
+        if self.extension:
+            elastic_base.update(self.extension.properties)
         for private_property in PRIVATE_PROPERTIES:
             elastic_base.pop(private_property, False)
         material_types = elastic_base.pop("material_types", None) or ["unknown"]
