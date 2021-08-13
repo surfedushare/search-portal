@@ -7,7 +7,7 @@ from datagrowth.configuration import create_config
 
 from core.management.base import PipelineCommand
 from core.constants import HarvestStages
-from core.models import Harvest, DatasetVersion, Collection, Document
+from core.models import Harvest, DatasetVersion, Collection, Document, Extension
 from harvester.utils.extraction import get_harvest_seeds
 
 
@@ -70,6 +70,12 @@ class Command(PipelineCommand):
                     collection=collection
                 ).values_list("reference", "id")
             }
+            existing_extensions = {
+                identifier
+                for identifier in Extension.objects.filter(
+                    id__in=[seed["external_id"] for seed in seeds if seed["external_id"]]
+                ).values_list("id", flat=True)
+            }
             updates = []
             inserts = []
             for seed in seeds:
@@ -79,6 +85,8 @@ class Command(PipelineCommand):
                     collection=collection,
                     metadata_pipeline_key="seed_resource"
                 )
+                if not document.extension and document.reference in existing_extensions:
+                    document.extension_id = document.reference
                 if document.reference in existing_documents:
                     document.id = existing_documents[document.reference]
                     document.modified_at = now()
@@ -86,7 +94,7 @@ class Command(PipelineCommand):
                 else:
                     inserts.append(document)
             Document.objects.bulk_create(inserts)
-            Document.objects.bulk_update(updates, ["properties", "modified_at"])
+            Document.objects.bulk_update(updates, ["properties", "modified_at", "extension"])
             documents_count += len(updates)
             documents_count += len(inserts)
 

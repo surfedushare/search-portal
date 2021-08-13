@@ -81,6 +81,22 @@
         }
     },
     {
+        "model": "core.extension",
+        "pk": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+        "fields": {
+            "created_at": "2021-02-17T10:53:24.387Z",
+            "modified_at": "2021-02-17T10:53:24.387Z",
+            "collection": null,
+            "identity": null,
+            "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+            "properties": {
+                "authors": [{
+                    "name": "The Extension Man"
+                }]
+            }
+        }
+    },
+    {
         "model": "core.document",
         "pk": 222317,
         "fields": {
@@ -89,6 +105,7 @@
             "collection": 171,
             "identity": null,
             "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+            "extension": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
             "pipeline": {
                 "metadata": {
                     "success": true,
