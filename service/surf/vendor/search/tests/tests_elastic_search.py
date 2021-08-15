@@ -396,7 +396,11 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             'publish_datetime',
             datetime(year=2017, month=4, day=16, hour=22, minute=35, second=9)
         )
-        self.assert_value_from_record(material, 'authors', ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"])
+        self.assert_value_from_record(material, 'authors', [
+            {"name": "Michel van Ast"},
+            {"name": "Theo van den Bogaart"},
+            {"name": "Marc de Graaf"},
+        ])
         self.assert_value_from_record(material, 'keywords', ["nerds"])
         self.assert_value_from_record(material, 'disciplines', [
             "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",  # math
