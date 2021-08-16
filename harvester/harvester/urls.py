@@ -25,11 +25,10 @@ api_urlpatterns = [
     path('', include('core.urls')),
 ]
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include((api_urlpatterns, "v1",))),
-    path('', health_check, name="health-check")
+    path('', core_views.health_check, name="health-check")
 ]
 
 

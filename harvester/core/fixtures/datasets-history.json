@@ -91,6 +91,7 @@
             "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
             "is_parent": false,
             "properties": {
+                "external_id": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
                 "authors": [
                     {"name": "The Extension Man"}],
                 "keywords": [
