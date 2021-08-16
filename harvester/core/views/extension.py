@@ -6,13 +6,14 @@ from rest_framework.exceptions import ValidationError
 from datagrowth.datatypes.views import DocumentBaseSerializer
 from core.models import Extension, Document
 
-from project.serializers import PersonSerializer, OrganisationSerializer, ProjectSerializer
+from project.serializers import PersonSerializer, OrganisationSerializer, ProjectSerializer, LabelSerializer
 
 
 class ExtensionSerializer(DocumentBaseSerializer):
 
     id = serializers.CharField(read_only=True)
     external_id = serializers.CharField(write_only=True)
+    is_parent = serializers.BooleanField(required=False, default=False)
 
     title = serializers.CharField(write_only=True, required=False)
     description = serializers.CharField(write_only=True, required=False)
@@ -23,9 +24,17 @@ class ExtensionSerializer(DocumentBaseSerializer):
     authors = PersonSerializer(many=True, write_only=True, required=False)
     parties = OrganisationSerializer(many=True, write_only=True, required=False)
     projects = ProjectSerializer(many=True, write_only=True, required=False)
+    themes = LabelSerializer(many=True, write_only=True, required=False)
+    keywords = LabelSerializer(many=True, write_only=True, required=False)
 
     parents = serializers.ListField(child=serializers.CharField(), write_only=True, required=False)
     children = serializers.ListField(child=serializers.CharField(), write_only=True, required=False)
+
+    def validate_external_id(self, external_id):
+        path_external_id = self.context["view"].kwargs.get("pk")
+        if path_external_id and path_external_id != external_id:
+            raise ValidationError("External id in path and body do not match.")
+        return external_id
 
     def validate_published_at(self, published_at):
         return published_at.strftime("%Y-%m-%d")
@@ -74,14 +83,15 @@ class ExtensionSerializer(DocumentBaseSerializer):
 
     def create(self, validated_data):
         external_id = validated_data["external_id"]
+        is_parent = validated_data.pop("is_parent")
         return super().create({
             "id": external_id,
+            "is_parent": is_parent,
             "reference": external_id,
             "properties": validated_data
         })
 
     def update(self, instance, validated_data):
-        validated_data.pop("external_id")
         validated_data.pop("is_parent", None)
         instance.properties.update(validated_data)
         instance.save()
@@ -91,7 +101,7 @@ class ExtensionSerializer(DocumentBaseSerializer):
         model = Extension
         fields = ("id", "created_at", "modified_at", "properties", "is_parent", "external_id",
                   "title", "description", "language", "published_at", "copyright",
-                  "authors", "parties", "projects", "parents", "children")
+                  "authors", "parties", "projects", "themes", "keywords", "parents", "children")
 
 
 class ExtensionListView(generics.ListCreateAPIView):
