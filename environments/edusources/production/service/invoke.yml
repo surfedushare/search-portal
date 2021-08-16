@@ -1,10 +1,11 @@
-project: "service"
+service:
+  name: "service"
 
 django:
   directory: "service"
   fixtures:
-    - "surf/apps/locale/fixtures/locales.json"
-    - "surf/apps/filters/fixtures/filter-categories.json"
+    - "surf/apps/locale/fixtures/locales-edusources.json"
+    - "surf/apps/filters/fixtures/filter-categories-edusources.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   motomo_id: 64
   administrative_emails: true
@@ -25,6 +26,11 @@ edurep:
 aws:
   image_upload_bucket: "search-portal-media-uploads-prod"
   task_role_arn: "arn:aws:iam::017973353230:role/ecsTaskExecutionRole"
+  scheduled_tasks:
+    - "clearlogins"
+    - "sync_category_filters"
+    - "sync_materials"
+    - "monitor_uptime"
 
 secrets:
   postgres:

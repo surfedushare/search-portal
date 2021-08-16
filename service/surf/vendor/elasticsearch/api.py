@@ -38,6 +38,10 @@ class ElasticSearchApiClient:
         self.index_nl = settings.ELASTICSEARCH_NL_INDEX
         self.index_en = settings.ELASTICSEARCH_EN_INDEX
         self.index_unk = settings.ELASTICSEARCH_UNK_INDEX
+        self.languages = {
+            "nl": self.index_nl,
+            "en": self.index_en
+        }
 
     @staticmethod
     def parse_elastic_result(search_result):
@@ -99,14 +103,24 @@ class ElasticSearchApiClient:
         :param hit: result from elasticsearch
         :return record: parsed record in elasticsearch format
         """
+        data = hit["_source"]
         field_mapping = {
             field.source: field_name
             for field_name, field in SearchResultSerializer().fields.items()
         }
         record = {
             field_mapping[field]: value
-            for field, value in hit["_source"].items() if field in field_mapping
+            for field, value in data.items() if field in field_mapping
         }
+        if "relations" in field_mapping:
+            record["relations"] = {
+                "authors": [{"name": author} for author in data["authors"]],
+                "parties": [{"name": publisher} for publisher in data["publishers"]],
+                "keywords": [{"label": keyword} for keyword in data["keywords"]],
+                "themes": [{"label": theme} for theme in data.get("research_themes", [])],
+                "parents": data["is_part_of"],
+                "children": data["has_parts"]
+            }
         return record
 
     def autocomplete(self, query):
@@ -280,6 +294,40 @@ class ElasticSearchApiClient:
         results["recordcount"] = len(records)
         results["records"] = records
         return results
+
+    def stats(self):
+        stats = self.client.count(index=",".join([self.index_nl, self.index_en, self.index_unk]))
+        return stats.get("count", 0)
+
+    def more_like_this(self, external_id, language):
+        index = self.languages.get(language, self.index_unk)
+        body = {
+            "query": {
+                "more_like_this": {
+                    "fields": ["title", "description"],
+                    "like": [
+                        {
+                            "_index": index,
+                            "_id": external_id
+                        }
+                    ],
+                    "min_term_freq": 1,
+                    "max_query_terms": 12
+                }
+            }
+        }
+        search_result = self.client.search(
+            index=index,
+            body=body
+        )
+        hits = search_result.pop("hits")
+        result = dict()
+        result["records_total"] = hits["total"]["value"]
+        result["results"] = [
+            ElasticSearchApiClient.parse_elastic_hit(hit)
+            for hit in hits["hits"]
+        ]
+        return result
 
     @staticmethod
     def parse_filters(filters):

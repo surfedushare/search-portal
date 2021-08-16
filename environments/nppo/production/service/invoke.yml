@@ -1,0 +1,45 @@
+service:
+  name: "service"
+
+django:
+  domain: "fakoberkers.nl"
+  directory: "service"
+  fixtures:
+    - "surf/apps/locale/fixtures/locales-nppo.json"
+    - "surf/apps/filters/fixtures/filter-categories-nppo.json"
+  motomo_id: null
+  administrative_emails: false
+
+postgres:
+  database: "nppo"
+  user: "nppo"
+  application_user: "nppo"
+
+surfconext:
+  oidc_endpoint: "https://connect.test.surfconext.nl"
+  voot_api_endpoint: "https://voot.test.surfconext.nl"
+  client_id: null
+
+edurep:
+  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
+
+aws:
+  image_upload_bucket: null
+  task_role_arn: "arn:aws:iam::870512711545:role/ecsTaskExecutionRole"
+  scheduled_tasks:
+    - "clearlogins"
+    - "sync_category_filters"
+
+secrets:
+  postgres:
+    password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:search-portal/postgres-application"
+    application_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:search-portal/postgres-application"
+  django:
+    secret_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:search-portal/django"
+    admin_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:search-portal/django"
+  surfconext:
+    secret_key: null
+  eduterm:
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:eduterm"
+  deepl:
+    api_key: null

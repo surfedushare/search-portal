@@ -26,7 +26,8 @@ class Command(base.LabelCommand):
     resources = [
         "core.FileResource",
         "core.HttpTikaResource",
-        "edurep.EdurepOAIPMH"
+        "edurep.EdurepOAIPMH",
+        "sharekit.SharekitMetadataHarvest"
     ]
 
     def add_arguments(self, parser):

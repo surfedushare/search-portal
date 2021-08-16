@@ -31,6 +31,7 @@ from surf.apps.materials.views import (
     MaterialSearchAPIView,
     MaterialSetAPIView,
     KeywordsAPIView,
+    SimilarityAPIView,
     MaterialAPIView,
     MaterialRatingAPIView,
     MaterialApplaudAPIView,
@@ -46,7 +47,7 @@ from surf.apps.users.views import (
 from surf.apps.core.views import health_check
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
-from surf.apps.stats.views import StatsView
+from surf.apps.stats.views import StatsViewSet, StatsView
 from surf.apps.locale.views import get_localisation_strings
 from surf.apps.feedback.views import FeedbackAPIView
 
@@ -60,6 +61,8 @@ public_api_patterns = [
     url(r'^search/filter-categories/', FilterCategoryView.as_view()),
     url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
     url(r'^search/', MaterialSearchAPIView.as_view()),
+    url(r'^documents/stats', StatsView.as_view()),
+    url(r'^suggestions/similarity/', SimilarityAPIView.as_view()),
 ]
 schema_view = get_schema_view(
     title="Search API",
@@ -78,7 +81,7 @@ router = CustomRouter()
 router.register(r'collections', CollectionViewSet)
 router.register(r'communities', CommunityViewSet)
 router.register(r'themes', ThemeViewSet)
-router.register(r'stats', StatsView, basename="stats")
+router.register(r'stats', StatsViewSet, basename="stats")
 
 
 apipatterns = public_api_patterns + router.urls + [
@@ -116,13 +119,20 @@ urlpatterns = [
     # API and other data
     url(r'^api/v1/', include(apipatterns)),
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
-
-    # Frontend
-    url(r'^materialen/(?P<external_id>.+)/', portal_material),
-    url(r'^en/materials/(?P<external_id>.+)/', portal_material),
-    url(r'^$', portal_single_page_application, name="portal-spa"),
-    url(r'^.*/$', portal_single_page_application),
 ]
+
+if settings.PROJECT == "edusources":
+    urlpatterns += [
+        # Frontend
+        url(r'^materialen/(?P<external_id>.+)/', portal_material),
+        url(r'^en/materials/(?P<external_id>.+)/', portal_material),
+        url(r'^$', portal_single_page_application, name="portal-spa"),
+        url(r'^.*/$', portal_single_page_application),
+    ]
+else:
+    urlpatterns += [
+        url(r'^$', health_check),
+    ]
 
 
 if settings.MODE == 'localhost':

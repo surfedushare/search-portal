@@ -1,3 +1,4 @@
+from unittest import skipIf
 from dateutil.parser import parse
 from datetime import datetime
 
@@ -51,6 +52,49 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             refresh=True  # always put refresh on the last material
         )
 
+    def get_value_from_record(self, record, key):
+        if settings.PROJECT == "edusources" and key != "publish_datetime":
+            value = record[key]
+        elif settings.PROJECT == "edusources" and key == "publish_datetime":
+            value = parse(record[key], ignoretz=True)
+        elif key == "authors":
+            value = record["relations"]["authors"]
+        elif key == "publishers":
+            value = record["relations"]["parties"]
+        elif key == "keywords":
+            value = record["relations"]["keywords"]
+        elif key == "technical_type":
+            value = record["type"]
+        elif key == "publish_datetime":
+            value = parse(record["published_at"], ignoretz=True)
+        else:
+            raise ValueError(f"No translation for key '{key}' in NPPO project")
+        return value
+
+    def assert_value_from_record(self, record, key, expectation, assertion=None, message=None):
+        assertion = assertion or self.assertEqual
+        if settings.PROJECT == "edusources":
+            pass
+        elif key == "authors":
+            expectation = [
+                {"name": name}
+                for name in expectation
+            ]
+        elif key == "publishers":
+            expectation = [
+                {"name": name}
+                for name in expectation
+            ]
+        elif key == "keywords":
+            expectation = [
+                {"label": label}
+                for label in expectation
+            ]
+        elif key == "disciplines":
+            return  # silently skipping this assertion, because NPPO doesn't support disciplines
+        value = self.get_value_from_record(record, key)
+        assertion(value, expectation, message)
+
     def test_basic_search(self):
         search_result = self.instance.search('')
         search_result_filter = self.instance.search(
@@ -92,14 +136,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
         self.assertTrue(search_biologie_video["records"])
         for record in search_biologie_video["records"]:
-            self.assertEqual(record["technical_type"], "video")
+            self.assert_value_from_record(record, "technical_type", "video")
         search_biologie_video_and_docs = self.instance.search(
             "biologie",
             filters=[{"external_id": "lom.technical.format", "items": ["video", "document"]}]
         )
         self.assertGreater(len(search_biologie_video_and_docs["records"]), len(search_biologie_video["records"]))
         for record in search_biologie_video_and_docs["records"]:
-            self.assertIn(record["technical_type"], ["video", "document"])
+            self.assert_value_from_record(record, "technical_type", ["video", "document"], self.assertIn)
 
         # search with multiple filters applied
         search_biologie_text_and_cc_by = self.instance.search(
@@ -111,7 +155,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
         self.assertTrue(search_biologie_text_and_cc_by["records"])
         for record in search_biologie_text_and_cc_by["records"]:
-            self.assertEqual(record["technical_type"], "document")
+            self.assert_value_from_record(record, "technical_type", "document")
             self.assertEqual(record["copyright"], "cc-by-40")
 
         # AND search with multiple filters applied
@@ -138,23 +182,40 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         ])
         self.assertTrue(search_biologie_upper_date["records"])
         for record in search_biologie_upper_date["records"]:
-            publish_date = parse(record["publish_datetime"], ignoretz=True)
-            self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
+            self.assert_value_from_record(
+                record,
+                "publish_datetime",
+                datetime(year=2018, month=12, day=31),
+                self.assertLessEqual
+            )
         search_biologie_lower_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", None]}
         ])
         self.assertTrue(search_biologie_lower_date["records"])
         for record in search_biologie_lower_date["records"]:
-            publish_date = parse(record["publish_datetime"], ignoretz=True)
-            self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
+            self.assert_value_from_record(
+                record,
+                "publish_datetime",
+                datetime.strptime("2018-01-01", "%Y-%m-%d"),
+                self.assertGreaterEqual
+            )
         search_biologie_between_date = self.instance.search("biologie", filters=[
             {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", "2018-12-31"]}
         ])
         self.assertTrue(search_biologie_between_date["records"])
         for record in search_biologie_between_date["records"]:
-            publish_date = parse(record["publish_datetime"], ignoretz=True)
-            self.assertLessEqual(publish_date, datetime.strptime("2018-12-31", "%Y-%m-%d"))
-            self.assertGreaterEqual(publish_date, datetime.strptime("2018-01-01", "%Y-%m-%d"))
+            self.assert_value_from_record(
+                record,
+                "publish_datetime",
+                datetime.strptime("2018-12-31", "%Y-%m-%d"),
+                self.assertLessEqual
+            )
+            self.assert_value_from_record(
+                record,
+                "publish_datetime",
+                datetime.strptime("2018-01-01", "%Y-%m-%d"),
+                self.assertGreaterEqual
+            )
 
         # search with None, None as date filter. This search should give the same result as not filtering at all.
         search_biologie_none_date = self.instance.search("biologie", filters=[
@@ -163,6 +224,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_biologie = self.instance.search("biologie")
         self.assertEqual(search_biologie_none_date, search_biologie)
 
+    @skipIf(settings.PROJECT == "nppo", "Disciplines not supported by NPPO")
     def test_search_disciplines(self):
         search_result = self.instance.search('')
         search_result_filter_1 = self.instance.search(
@@ -208,6 +270,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
+    @skipIf(settings.PROJECT == "nppo", "Disciplines not supported by NPPO")
+    def test_drilldown_search_disciplines(self):
         search_with_theme_drilldown = self.instance.search(
             '',
             drilldown_names=["lom.classification.obk.discipline.id"]
@@ -230,7 +294,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]}
             ],
-            drilldown_names=['about.repository', 'lom.educational.context', 'lom.technical.format']
+            drilldown_names=['about.repository', 'lom.technical.format']
         )
 
         drilldowns = search['drilldowns']
@@ -249,15 +313,24 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_biologie = self.instance.search("biologie")
         self.assertIsNotNone(search_biologie)
         self.assertTrue(search_biologie["records"])
-        search_biologie_dates = [record["publish_datetime"] for record in search_biologie["records"]]
+        search_biologie_dates = [
+            self.get_value_from_record(record, "publish_datetime")
+            for record in search_biologie["records"]
+        ]
         search_biologie_asc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
         self.assertIsNotNone(search_biologie_asc)
         self.assertTrue(search_biologie_asc["records"])
-        search_biologie_asc_dates = [record["publish_datetime"] for record in search_biologie_asc["records"]]
+        search_biologie_asc_dates = [
+            self.get_value_from_record(record, "publish_datetime")
+            for record in search_biologie_asc["records"]
+        ]
         search_biologie_desc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
         self.assertIsNotNone(search_biologie_desc)
         self.assertTrue(search_biologie_asc["records"])
-        search_biologie_desc_dates = [record["publish_datetime"] for record in search_biologie_desc["records"]]
+        search_biologie_desc_dates = [
+            self.get_value_from_record(record, "publish_datetime")
+            for record in search_biologie_desc["records"]
+        ]
         # make sure that a default ordering is different than a date ordering
         self.assertNotEqual(search_biologie_dates, search_biologie_asc_dates)
         self.assertNotEqual(search_biologie_dates, search_biologie_desc_dates)
@@ -304,7 +377,6 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 self.assertIsNotNone(item['count'])
 
     def test_get_materials_by_id(self):
-
         # Sharekit material
         test_id = '3522b79c-928c-4249-a7f7-d2bcb3077f10'
         result = self.instance.get_materials_by_id(external_ids=[test_id])
@@ -318,16 +390,20 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT"
         )
         self.assertEqual(material['external_id'], "3522b79c-928c-4249-a7f7-d2bcb3077f10")
-        self.assertEqual(material['publishers'], ["Wikiwijs Maken"])
-        self.assertEqual(material['publish_datetime'], "2017-04-16T22:35:09+02:00")
-        self.assertEqual(material['authors'], ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"])
-        self.assertEqual(material['keywords'], ["nerds"])
-        self.assertEqual(material['disciplines'], [
+        self.assert_value_from_record(material, 'publishers', ["Wikiwijs Maken"])
+        self.assert_value_from_record(
+            material,
+            'publish_datetime',
+            datetime(year=2017, month=4, day=16, hour=22, minute=35, second=9)
+        )
+        self.assert_value_from_record(material, 'authors', ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"])
+        self.assert_value_from_record(material, 'keywords', ["nerds"])
+        self.assert_value_from_record(material, 'disciplines', [
             "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",  # math
             "0861c43d-1874-4788-b522-df8be575677f"  # onderwijskunde
         ])
         self.assertEqual(material['language'], 'nl')
-        self.assertEqual(material['technical_type'], 'document')
+        self.assert_value_from_record(material, 'technical_type', 'document')
 
         # Sharekit (legacy id format)
         test_id = 'surfsharekit:oai:surfsharekit.nl:3522b79c-928c-4249-a7f7-d2bcb3077f10'
@@ -345,6 +421,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         material = result['records'][0]
         self.assertEqual(material['external_id'], "wikiwijs:123")
 
+    @skipIf(settings.PROJECT == "nppo", "Temporarily skipped until Edusources uses objects for authors")
     def test_search_by_author(self):
         author = "Michel van Ast"
         expected_record_count = 4

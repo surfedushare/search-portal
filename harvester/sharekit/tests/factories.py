@@ -25,7 +25,7 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
     since = factory.Maybe(
         "is_initial",
         make_aware(datetime(year=1970, month=1, day=1)),
-        make_aware(datetime(year=2020, month=2, day=11))
+        make_aware(datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000))
     )
     set_specification = "edusources"
     status = 200
@@ -39,8 +39,15 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
 
     @factory.lazy_attribute
     def uri(self):
-        return f"api.acc.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems?" + \
-                          quote(f"filter[modified][GE]={self.since:%Y-%m-%dT%H:%M:%SZ}&page[size]=10", safe="=&")
+        base = f"api.acc.surfsharekit.nl/api/jsonapi/channel/v1/{self.set_specification}/repoItems?"
+        modified_parameter = quote(f"filter[modified][GE]={self.since:%Y-%m-%dT%H:%M:%SZ}", safe="=")
+        page_size_parameter = quote("page[size]=25", safe="=")
+        page_number_parameter = quote(f"page[number]={self.number+1}", safe="=")
+        if self.is_initial and self.number > 0:
+            params = [modified_parameter, page_number_parameter, page_size_parameter]
+        else:
+            params = [modified_parameter, page_size_parameter]
+        return base + "&".join(params)
 
     @factory.lazy_attribute
     def request(self):

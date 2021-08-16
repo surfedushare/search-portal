@@ -64,6 +64,18 @@ class KeywordsRequestSerializer(serializers.Serializer):
     query = serializers.CharField(write_only=True)
 
 
+class SimilaritySerializer(serializers.Serializer):
+    """
+    Serializer for similarity request
+    """
+
+    external_id = serializers.CharField(write_only=True, required=True)
+    language = serializers.CharField(write_only=True, required=True)
+
+    results = SearchResultSerializer(many=True, read_only=True)
+    records_total = serializers.IntegerField(read_only=True)
+
+
 class MaterialsRequestSerializer(serializers.Serializer):
     """
     Serializer for materials request

@@ -21,7 +21,7 @@ class TestBasicHarvest(TestCase):
 
     def setUp(self):
         EdurepOAIPMHFactory.create_common_edurep_responses()
-        Harvest.objects.filter(source__spec="surfsharekit").update(stage=HarvestStages.NEW)
+        Harvest.objects.filter(source__spec="edusources").update(stage=HarvestStages.NEW)
         self.collection = Collection.objects.last()
         super().setUp()
 
@@ -64,11 +64,11 @@ class TestBasicHarvest(TestCase):
         self.assertIs(document_queryset.model, Document)
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
-        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
+        surf_harvest = Harvest.objects.get(source__spec="edusources")
         self.assertEqual(
             surf_harvest.stage,
             HarvestStages.BASIC,
-            "surfsharekit set harvest should got updated to stage BASIC to prevent re-harvest in the future"
+            "edusources set harvest should got updated to stage BASIC to prevent re-harvest in the future"
         )
         edurep_delen_harvest = Harvest.objects.get(source__spec="edurep_delen")
         self.assertEqual(
@@ -85,7 +85,7 @@ class TestBasicHarvest(TestCase):
         except Harvest.DoesNotExist:
             pass
         # Testing the case where a Dataset exists, but no harvest tasks are present
-        surf_harvest = Harvest.objects.get(source__spec="surfsharekit")
+        surf_harvest = Harvest.objects.get(source__spec="edusources")
         surf_harvest.stage = HarvestStages.BASIC
         surf_harvest.save()
         try:

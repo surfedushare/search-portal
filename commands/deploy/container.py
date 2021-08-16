@@ -6,7 +6,8 @@ from invoke.tasks import task
 from invoke.exceptions import Exit
 from git import Repo
 
-from commands import TARGETS, REPOSITORY
+from commands import TARGETS
+from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
 from environments.utils.packaging import get_package_info
 
 
@@ -61,13 +62,11 @@ def build(ctx, target, version):
         pty=True,
         echo=True
     )
-
-    if target == 'service':
-        ctx.run(
-            f"docker build -f {target}/Dockerfile-nginx -t {target_info['name']}-nginx:{version} .",
-            pty=True,
-            echo=True
-        )
+    ctx.run(
+        f"docker build -f nginx/Dockerfile-nginx -t {target_info['name']}-nginx:{version} .",
+        pty=True,
+        echo=True
+    )
 
 
 @task(help={
@@ -89,18 +88,16 @@ def push(ctx, target, version=None):
 
     # Login with Docker to AWS
     ctx.run(
-        "AWS_PROFILE=pol-prod aws ecr get-login-password --region eu-central-1 | "
+        f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
         f"docker login --username AWS --password-stdin {REPOSITORY}",
         echo=True
     )
-    # Tag the image we want to push for AWS
+    # Tag the main image and push
     ctx.run(f"docker tag {name}:{version} {REPOSITORY}/{name}:{version}", echo=True)
-    # Push to AWS ECR
     ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
-
-    if target == 'service':
-        ctx.run(f"docker tag {name}-nginx:{version} {REPOSITORY}/{name}-nginx:{version}", echo=True)
-        ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{version}", echo=True, pty=True)
+    # Tag Nginx and push
+    ctx.run(f"docker tag {name}-nginx:{version} {REPOSITORY}/{name}-nginx:{version}", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{version}", echo=True, pty=True)
 
 
 @task(help={

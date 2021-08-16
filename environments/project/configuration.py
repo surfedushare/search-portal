@@ -30,6 +30,9 @@ ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Some dynamic configuration depends on the project and we load that module here
 sys.path.append(ENVIRONMENTS)
 project_configuration = importlib.import_module(f"{PROJECT}.configuration")
+REPOSITORY = project_configuration.REPOSITORY
+REPOSITORY_AWS_PROFILE = project_configuration.REPOSITORY_AWS_PROFILE
+
 
 # Now we'll delete any items that are POL variables, but with empty values
 # Use a value of "0" for a Boolean instead of an empty string

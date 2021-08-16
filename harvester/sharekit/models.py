@@ -47,7 +47,7 @@ class SharekitMetadataHarvest(HarvestHttpResource):
 
     URI_TEMPLATE = settings.SHAREKIT_BASE_URL + "/api/jsonapi/channel/v1/{}/repoItems?filter[modified][GE]={}"
     PARAMETERS = {
-        "page[size]": 10
+        "page[size]": 25
     }
 
     def auth_headers(self):

@@ -1,6 +1,4 @@
-"""
-This module provides django admin functionality for communities app.
-"""
+from django.conf import settings
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
@@ -84,7 +82,6 @@ class CommunityDetailInline(admin.StackedInline):
     extra = 0
 
 
-@admin.register(models.Community)
 class CommunityAdmin(admin.ModelAdmin):
     """
     Provides admin options and functionality for Community model.
@@ -115,3 +112,7 @@ class CommunityAdmin(admin.ModelAdmin):
             del actions["delete_selected"]
             del actions["restore_nodes"]
         return actions
+
+
+if settings.PROJECT == "edusources":
+    admin.site.register(models.Community, CommunityAdmin)

@@ -1,8 +1,11 @@
+service:
+  name: "service"
+
 django:
   directory: "service"
   fixtures:
-    - "surf/apps/locale/fixtures/locales.json"
-    - "surf/apps/filters/fixtures/filter-categories.json"
+    - "surf/apps/locale/fixtures/locales-edusources.json"
+    - "surf/apps/filters/fixtures/filter-categories-edusources.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   motomo_id: null
   administrative_emails: true
@@ -22,6 +25,7 @@ edurep:
 
 aws:
   image_upload_bucket: null
+  scheduled_tasks: []
 
 secrets:
   postgres:

@@ -1,16 +1,18 @@
+service:
+  name: "service"
+
 django:
   directory: "service"
   fixtures:
-    - "surf/apps/locale/fixtures/locales.json"
-    - "surf/apps/filters/fixtures/filter-categories.json"
-    - "surf/vendor/surfconext/fixtures/privacy_statements.json"
+    - "surf/apps/locale/fixtures/locales-nppo.json"
+    - "surf/apps/filters/fixtures/filter-categories-nppo.json"
   motomo_id: null
   administrative_emails: true
 
 postgres:
-  database: "edushare"
-  user: "edushare"
-  application_user: "edushare"
+  database: "nppo"
+  user: "nppo"
+  application_user: "nppo"
 
 surfconext:
   oidc_endpoint: none
@@ -22,6 +24,7 @@ edurep:
 
 aws:
   image_upload_bucket: null
+  scheduled_tasks: []
 
 secrets:
   postgres:

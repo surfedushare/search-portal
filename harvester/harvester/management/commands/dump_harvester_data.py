@@ -20,6 +20,7 @@ class Command(base.LabelCommand):
         call_command("dump_resource", "core.FileResource")
         call_command("dump_resource", "core.HttpTikaResource")
         call_command("dump_resource", "edurep.EdurepOAIPMH")
+        call_command("dump_resource", "sharekit.SharekitMetadataHarvest")
         return [
             os.path.join(get_dumps_path(FileResource), f"{FileResource.get_name()}.dump.json"),
             os.path.join(get_dumps_path(HttpTikaResource), f"{HttpTikaResource.get_name()}.dump.json"),

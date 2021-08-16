@@ -152,9 +152,13 @@ export default {
   },
   mutations: {
     SET_FILTER_CATEGORIES(state, payload) {
+      if (_.isNil(payload)) {
+        return
+      }
+
       state.filter_categories = payload
 
-      const disciplines = payload.results.find(
+      const disciplines = payload.find(
         child => child.external_id.search('discipline.id') !== -1
       )
       state.disciplines = _.reduce(
@@ -173,7 +177,7 @@ export default {
           setCategoryIds(item.children)
         })
       }
-      setCategoryIds(payload.results)
+      setCategoryIds(payload)
     },
     SET_FILTER_CATEGORIES_LOADING(state, payload) {
       state.filter_categories_loading = payload

@@ -1,0 +1,257 @@
+{
+    "search-portal-nginx": {
+        "name": "search-portal-nginx",
+        "image": "${REPOSITORY}/search-portal-nginx:${version}",
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 80,
+                "protocol": "tcp",
+                "containerPort": 80
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/search-portal",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    },
+    "harvester-nginx": {
+        "name": "harvester-nginx",
+        "image": "${REPOSITORY}/harvester-nginx:${version}",
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 80,
+                "protocol": "tcp",
+                "containerPort": 80
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/harvester",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}-nginx",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    },
+    "search-portal-container": {
+        "name": "search-portal-container",
+        "image": "${REPOSITORY}/search-portal:${version}",
+        "cpu": 0,
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 8080,
+                "protocol": "tcp",
+                "containerPort": 8080
+            }
+        ],
+        "environment": [
+            {
+                "name": "APPLICATION_MODE",
+                "value": "${mode}"
+            },
+            {
+                "name": "APPLICATION_PROJECT",
+                "value": "${project}"
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/search-portal",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    },
+    "harvester-container": {
+        "name": "harvester-container",
+        "image": "${REPOSITORY}/harvester:${version}",
+        "cpu": 0,
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 8080,
+                "protocol": "tcp",
+                "containerPort": 8080
+            }
+        ],
+        "environment": [
+            {
+                "name": "PYTHONUNBUFFERED",
+                "value": "1"
+            },
+            {
+                "name": "APPLICATION_MODE",
+                "value": "${mode}"
+            },
+            {
+                "name": "APPLICATION_PROJECT",
+                "value": "${project}"
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/harvester",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    },
+    "celery-worker-container": {
+        "name": "celery-worker-container",
+        "image": "${REPOSITORY}/harvester:${version}",
+        "cpu": 0,
+        "essential": true,
+        "command": [
+            "celery",
+            "-A",
+            "harvester",
+            "worker",
+            "--concurrency=${concurrency}",
+            "--loglevel=info",
+            "-n=main-worker@%h"
+        ],
+        "environment": [
+            {
+                "name": "PYTHONUNBUFFERED",
+                "value": "1"
+            },
+            {
+                "name": "APPLICATION_MODE",
+                "value": "${mode}"
+            },
+            {
+                "name": "APPLICATION_PROJECT",
+                "value": "${project}"
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/harvester",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    },
+    "celery-beat-container": {
+        "name": "celery-beat-container",
+        "image": "${REPOSITORY}/harvester:${version}",
+        "cpu": 512,
+        "essential": true,
+        "command": [
+            "celery",
+            "-A",
+            "harvester",
+            "beat",
+            "-s",
+            "/tmp/celerybeat-schedule"
+        ],
+        "environment": [
+            {
+                "name": "PYTHONUNBUFFERED",
+                "value": "1"
+            },
+            {
+                "name": "APPLICATION_MODE",
+                "value": "${mode}"
+            },
+            {
+                "name": "APPLICATION_PROJECT",
+                "value": "${project}"
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/harvester",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    },
+    "flower-container": {
+        "name": "flower-container",
+        "image": "${REPOSITORY}/harvester:${version}",
+        "cpu": 0,
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 5555,
+                "protocol": "tcp",
+                "containerPort": 5555
+            }
+        ],
+        "command": [
+            "celery",
+            "-A",
+            "harvester",
+            "flower",
+            "--url_prefix=flower"
+        ],
+        "environment": [
+            {
+                "name": "PYTHONUNBUFFERED",
+                "value": "1"
+            },
+            {
+                "name": "APPLICATION_MODE",
+                "value": "${mode}"
+            },
+            {
+                "name": "APPLICATION_PROJECT",
+                "value": "${project}"
+            }
+        ],
+        "secrets": [
+            {
+                "name": "FLOWER_BASIC_AUTH",
+                "valueFrom": "${flower_secret_arn}"
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/harvester",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "${version}",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    },
+    "analyzer": {
+        "name": "analyzer",
+        "image": "${REPOSITORY}/analyzer:latest",
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 9090,
+                "protocol": "tcp",
+                "containerPort": 9090
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/harvester",
+                "awslogs-region": "eu-central-1",
+                "awslogs-stream-prefix": "analyzer",
+                "awslogs-multiline-pattern": "^\\[?\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"
+            }
+        }
+    }
+}

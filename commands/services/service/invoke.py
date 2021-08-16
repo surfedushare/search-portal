@@ -10,9 +10,10 @@ from commands.aws.ecs import run_task
 @task(name="import_snapshot", help={
     "snapshot_name": "The file name of the snapshot you want to restore. Defaults to last updated snapshot"
 })
-def import_snapshot(ctx, snapshot_name=None):
+def import_snapshot(ctx, source_profile, snapshot_name=None):
 
-    snapshot_file_path = download_snapshot(snapshot_name)
+    snapshot_file_path = download_snapshot(snapshot_name, ctx.config.aws.search_content_bucket, source_profile)
+    database = ctx.config.postgres.database
 
     # Setup auto-responser.
     # Administrative postgres user on localhost will always be postgres (depends on POSTGRES_USER environment variable)
@@ -20,16 +21,16 @@ def import_snapshot(ctx, snapshot_name=None):
     postgres_password_responder = Responder(pattern="Password", response=postgres_password + "\n")
 
     print("Importing snapshot")
-    ctx.run(f"psql -h localhost -U postgres -d edushare -f {snapshot_file_path}",
+    ctx.run(f"psql -h localhost -U postgres -d {database} -f {snapshot_file_path}",
             pty=True, watchers=[postgres_password_responder])
 
     print("creating superuser")
     admin_password = ctx.config.secrets.django.admin_password
     insert_user = insert_django_user_statement(
-        "supersurf", admin_password, is_edushare=True
+        "supersurf", admin_password, is_search_service=True
     )
     ctx.run(
-        f'psql -h localhost -U postgres -d edushare -W -c "{insert_user}"',
+        f'psql -h localhost -U postgres -d {database} -W -c "{insert_user}"',
         echo=True,
         pty=True,
         warn=True,

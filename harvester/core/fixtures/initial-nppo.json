@@ -1,0 +1,42 @@
+[
+{
+    "model": "core.dataset",
+    "pk": 24,
+    "fields": {
+        "created_at": "2021-04-14T13:54:20.740Z",
+        "modified_at": "2021-04-14T14:13:24.052Z",
+        "name": "alpha",
+        "identifier": null,
+        "referee": null,
+        "is_active": true
+    }
+},
+
+{
+    "model": "core.harvestsource",
+    "pk": 1,
+    "fields": {
+        "name": "Sharekit",
+        "repository": "sharekit.SharekitMetadataHarvest",
+        "spec": "nppo",
+        "delete_policy": "no",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2021-04-14T13:54:20.742Z",
+        "modified_at": "2021-04-14T14:13:21.119Z"
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 1,
+    "fields": {
+        "source": 1,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": null,
+        "purge_after": null,
+        "stage": "New"
+    }
+}
+]

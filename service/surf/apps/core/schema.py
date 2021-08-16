@@ -1,13 +1,14 @@
 from rest_framework.schemas.openapi import AutoSchema
 from rest_framework import serializers
 
+from surf.vendor.elasticsearch.serializers import RelationSerializer
 from surf.apps.materials.serializers import KeywordsRequestSerializer
 
 
 class SearchSchema(AutoSchema):
 
     def _map_field(self, field):
-        if field.field_name == "children":
+        if field.field_name == "children" and not isinstance(field.parent, RelationSerializer):
             return {
                 'type': 'array',
                 'items': {
@@ -43,9 +44,37 @@ class SearchSchema(AutoSchema):
                     }
                 }
             ]
+        if "similarity" in path:
+            return [
+                {
+                    "name": "external_id",
+                    "in": "query",
+                    "required": True,
+                    "description": "The external_id of the document you want similar documents for.",
+                    'schema': {
+                        'type': 'string',
+                    }
+                },
+                {
+                    "name": "language",
+                    "in": "query",
+                    "required": True,
+                    "description": "The language of the document you want similar documents for.",
+                    'schema': {
+                        'type': 'string',
+                    }
+                }
+            ]
         return super()._get_path_parameters(path, method)
 
     def get_operation(self, path, method):
         operation = super().get_operation(path, method)
-        operation["tags"] = ["Full text search"] if path.startswith("/search") else ["default"]
+        if path.startswith("/search"):
+            operation["tags"] = ["Full text search"]
+        elif path.startswith("/documents"):
+            operation["tags"] = ["Documents"]
+        elif path.startswith("/suggestions"):
+            operation["tags"] = ["Suggestions"]
+        else:
+            operation["tags"] = ["default"]
         return operation

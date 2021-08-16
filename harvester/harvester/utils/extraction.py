@@ -1,5 +1,7 @@
 import logging
 
+from django.conf import settings
+
 from edurep.models import EdurepOAIPMH
 from sharekit.models import SharekitMetadataHarvest
 
@@ -30,7 +32,7 @@ def get_harvest_seeds(set_specification, latest_update, include_deleted=True, in
     for seed in seeds:
         if not seed["copyright"] or seed["copyright"] == "yes":
             seed["state"] = "deleted"
-        if seed["lowest_educational_level"] < 2:  # lower level than HBO
+        if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
             seed["state"] = "deleted"
         if seed.get("is_restricted", False):
             seed["analysis_allowed"] = False

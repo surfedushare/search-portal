@@ -45,19 +45,19 @@ class TestGetHarvestSeedsSharekit(TestCase):
 
     def test_get_complete_set(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 13)
-        self.check_seed_integrity(seeds)
+        self.assertEqual(len(seeds), 14)
+        self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=2020, month=2, day=10, hour=22, minute=22)))
-        self.assertEqual(len(seeds), 3)
-        self.check_seed_integrity(seeds)
+        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=2020, month=2, day=9, hour=22, minute=22)))
+        self.assertEqual(len(seeds), 4)
+        self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_from_youtube_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 13)
+        self.assertEqual(len(seeds), 14)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
-        self.assertEqual(len(youtube_seeds), 8)
+        self.assertEqual(len(youtube_seeds), 9)
 
     def test_authors_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
