@@ -2,7 +2,7 @@ from collections import Generator
 
 from django.test import TestCase
 
-from core.models import Document
+from core.models import Collection, Document, Extension
 
 
 class TestDocument(TestCase):
@@ -35,3 +35,24 @@ class TestDocument(TestCase):
         self.assertEqual(sorted(extended_search_document["has_parts"]), ["child", "part"])
         self.assertEqual(extended_search_document["parties"], [{"name": "The Extension Party"}])
         self.assertEqual(extended_search_document["research_themes"], ["theme", "extended"])
+
+    def test_to_search_preexisting_extension(self):
+        extension_id = "custom-extension"
+        document = Document.objects.create(
+            collection=Collection.objects.last(),
+            extension=Extension.objects.get(id=extension_id),
+            reference=extension_id,
+            properties={
+                "external_id": extension_id,
+                "language": {"metadata": "en"},
+                "title": "will get overridden",
+                "description": "test description"
+            }
+        )
+        search_document_generator = document.to_search()
+        self.assertIsInstance(search_document_generator, Generator)
+        search_document = list(search_document_generator)[0]
+        self.assertEqual(search_document["title"], "New! New! New! Extended titles!",
+                         "Expected title to be taken from Extension")
+        self.assertEqual(search_document["description"], "test description",
+                         "Expected description to be taken from Document")
