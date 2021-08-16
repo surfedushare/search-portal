@@ -89,7 +89,44 @@
             "collection": null,
             "identity": null,
             "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+            "is_parent": false,
             "properties": {
+                "authors": [
+                    {"name": "The Extension Man"}],
+                "keywords": [
+                    {"label": "exercise"},
+                    {"label": "extended"}
+                ],
+                "themes": [
+                    {"label": "theme"},
+                    {"label": "extended"}
+                ],
+                "children": [
+                    "part",
+                    "child"
+                ],
+                "parents": [
+                    "parent"
+                ],
+                "parties": [
+                    {"name": "The Extension Party"}
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.extension",
+        "pk": "custom-extension",
+        "fields": {
+            "created_at": "2021-02-17T10:53:24.387Z",
+            "modified_at": "2021-02-17T10:53:24.387Z",
+            "collection": null,
+            "identity": null,
+            "reference": "custom-extension",
+            "is_parent": true,
+            "properties": {
+                "external_id": "custom-extension",
+                "title": "New! New! New! Extended titles!",
                 "authors": [
                     {"name": "The Extension Man"}],
                 "keywords": [
