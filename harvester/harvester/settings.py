@@ -379,6 +379,20 @@ MIME_TYPE_TO_TECHNICAL_TYPE = {
 COPYRIGHT_VALUES = [
     "cc-by-40",
     "cc-by-30",
+    "cc-by-nc-40",
+    "cc-by-nc-30",
+    "cc-by-nc-nd-40",
+    "cc-by-nc-nd-30",
+    "cc-by-nc-nd-sa-40",
+    "cc-by-nc-nd-sa-30",
+    "cc-by-nc-sa-40",
+    "cc-by-nc-sa-30",
+    "cc-by-nd-40",
+    "cc-by-nd-30",
+    "cc-by-nd-sa-40",
+    "cc-by-nd-sa-30",
+    "cc-by-sa-40",
+    "cc-by-sa-30",
     "pdm-10",
     "cc0-10"
 ]
