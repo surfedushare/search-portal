@@ -64,7 +64,7 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -137,7 +137,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -207,7 +207,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         # Index normally and check that the new version still holds all documents
         call_command("index_dataset_version", "--dataset=test")
@@ -230,7 +230,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")
-            if language == "nl":
+            if language != "en":
                 self.assertEqual(len(docs), 1)
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -258,7 +258,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),

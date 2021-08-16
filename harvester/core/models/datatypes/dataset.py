@@ -6,6 +6,8 @@ from django.db import models
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
 
+from core.models.datatypes.extension import Extension
+
 
 class Dataset(DocumentCollectionMixin, CollectionBase):
     """
@@ -95,6 +97,11 @@ class DatasetVersion(models.Model):
             if language not in settings.ELASTICSEARCH_ANALYSERS:
                 language = "unk"
             by_language[language] += list(document.to_search())
+        for extension in Extension.objects.filter(is_parent=True):
+            language = extension.get_language()
+            if language not in settings.ELASTICSEARCH_ANALYSERS:
+                language = "unk"
+            by_language[language] += list(extension.to_search())
         return by_language
 
     class Meta:
