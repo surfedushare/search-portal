@@ -220,7 +220,7 @@ class TestExtensionAPI(TestCase):
             "is_parent": False,
             **self.extension_properties,
         }
-        response = self.client.post(f"/api/v1/extension/", body, content_type="application/json")
+        response = self.client.post("/api/v1/extension/", body, content_type="application/json")
         self.assertEqual(response.status_code, 400)
         # It should be impossible to update an Extension when external_id in path and body mismatch
         external_id = "custom-extension"
@@ -322,5 +322,5 @@ class TestExtensionAPI(TestCase):
             "external_id": external_id,
             **self.extension_properties
         }
-        response = self.client.post(f"/api/v1/extension/", body, content_type="application/json")
+        response = self.client.post("/api/v1/extension/", body, content_type="application/json")
         self.assertEqual(response.status_code, 400)
