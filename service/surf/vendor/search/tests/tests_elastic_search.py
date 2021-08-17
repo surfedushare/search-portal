@@ -75,11 +75,6 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         assertion = assertion or self.assertEqual
         if settings.PROJECT == "edusources":
             pass
-        elif key == "authors":
-            expectation = [
-                {"name": name}
-                for name in expectation
-            ]
         elif key == "publishers":
             expectation = [
                 {"name": name}
