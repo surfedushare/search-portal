@@ -136,14 +136,14 @@ class TestGetHarvestSeedsSharekit(TestCase):
     def test_get_files(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(len(seeds[0]["files"]), 1)
-        mime_type, link, name = seeds[0]["files"][0]
-        self.assertEqual(mime_type, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        self.assertEqual(link, "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7")
-        self.assertEqual(name, "40. Exercises 5.docx")
-        for mime_type, link, name in seeds[2]["files"]:
-            self.assertTrue(mime_type, "Mimetype should never be falsy")
-            self.assertTrue(link, "Links should never be falsy")
-            self.assertTrue(name, "Names should never be falsy")
+        file = seeds[0]["files"][0]
+        self.assertEqual(file["mime_type"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        self.assertEqual(file["url"], "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7")
+        self.assertEqual(file["title"], "40. Exercises 5.docx")
+        for file in seeds[2]["files"]:
+            self.assertTrue(file["mime_type"], "Mimetype should never be falsy")
+            self.assertTrue(file["url"], "Links should never be falsy")
+            self.assertTrue(file["title"], "Names should never be falsy")
 
     def test_get_technical_type(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))

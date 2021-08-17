@@ -76,13 +76,18 @@ class EdurepDataExtraction(object):
     def get_files(cls, soup, el):
         mime_types = el.find_all('czp:format')
         urls = el.find_all('czp:location')
-        return list(
-            zip(
+        return [
+            {
+                "mime_type": mime_type,
+                "url": url,
+                "title": title
+            }
+            for mime_type, url, title in zip(
                 [mime_node.text.strip() for mime_node in mime_types],
                 [url_node.text.strip() for url_node in urls],
                 [f"URL {ix+1}" for ix, mime_node in enumerate(mime_types)],
             )
-        )
+        ]
 
     @classmethod
     def get_url(cls, soup, el):
@@ -91,8 +96,8 @@ class EdurepDataExtraction(object):
             return
         # Takes the first html file to be the main file and otherwise the first file
         main_url = next(
-            (url for mime_type, url, name in files if mime_type == "text/html"),
-            files[0][1]
+            (file["url"] for file in files if file["mime_type"] == "text/html"),
+            files[0]["url"]
         )
         return main_url.strip()
 

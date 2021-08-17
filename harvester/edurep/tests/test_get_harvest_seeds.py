@@ -130,10 +130,10 @@ class TestGetHarvestSeedsEdurep(TestCase):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]["files"], [], "Expected deleted material to have no files")
         self.assertEqual(len(seeds[1]["files"]), 1)
-        mime_type, link, name = seeds[1]["files"][0]
-        self.assertEqual(mime_type, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        self.assertEqual(link, "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7")
-        self.assertEqual(name, "URL 1")
+        file = seeds[1]["files"][0]
+        self.assertEqual(file["mime_type"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        self.assertEqual(file["url"], "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7")
+        self.assertEqual(file["title"], "URL 1")
 
     def test_parse_copyright_description(self):
         descriptions = {
