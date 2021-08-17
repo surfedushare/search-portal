@@ -24,9 +24,15 @@ from core import views as core_views
 from core.urls import public_api_patterns as core_public
 
 
+api_description = """
+An API that allows downloading all data from a dataset as well as extending data with custom values.
+
+To authenticate with the API you either need to login to the admin (useful to use this interactive documentation).
+Or you have to send an Authorization header with a value of "Token <your-api-token>" (recommended).
+"""
 schema_view = get_schema_view(
     title="Harvester API",
-    description="An API that allows downloading all data from a dataset as well as extending data with custom values.",
+    description=api_description,
     patterns=core_public,
     url="/api/v1/"
 )
