@@ -32,6 +32,7 @@ sys.path.append(ENVIRONMENTS)
 project_configuration = importlib.import_module(f"{PROJECT}.configuration")
 REPOSITORY = project_configuration.REPOSITORY
 REPOSITORY_AWS_PROFILE = project_configuration.REPOSITORY_AWS_PROFILE
+SEARCH_FIELDS = project_configuration.SEARCH_FIELDS
 
 
 # Now we'll delete any items that are POL variables, but with empty values

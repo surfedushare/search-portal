@@ -5,6 +5,7 @@ from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
+from project.configuration import SEARCH_FIELDS
 from surf.vendor.elasticsearch.serializers import SearchResultSerializer
 
 
@@ -193,15 +194,7 @@ class ElasticSearchApiClient:
         if search_text:
             query_string = {
                 "simple_query_string": {
-                    "fields": [
-                        "title^2", "title.analyzed^2", "title.folded^2",
-                        "text", "text.analyzed", "text.folded",
-                        "description", "description.analyzed", "description.folded",
-                        "keywords", "keywords.folded",
-                        "authors", "authors.name.folded",
-                        "publishers", "publishers.folded",
-                        "ideas", "ideas.folded"
-                    ],
+                    "fields": SEARCH_FIELDS,
                     "query": search_text,
                     "default_operator": "and"
                 }
