@@ -35,7 +35,7 @@ def harvest(reset=False, no_promote=False):
         Harvest.objects.filter(stage=HarvestStages.BASIC).update(stage=HarvestStages.COMPLETE)
         # Based on the dataset we push to Elastic Search
         index_command = ["index_dataset_version", f"--dataset={dataset.name}"]
-        if no_promote:
+        if no_promote or not dataset.is_latest:
             index_command += ["--no-promote"]
         call_command(*index_command)
 

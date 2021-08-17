@@ -17,6 +17,7 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
     """
 
     is_active = models.BooleanField(default=False)
+    is_latest = models.BooleanField(default=False)
 
     def init_document(self, data, collection=None):
         doc = super().init_document(data, collection=collection)
