@@ -29,7 +29,7 @@ class Command(PipelineCommand):
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
-        for lang, docs in lang_doc_dict.items():
+        for lang in ["nl", "en", "unk"]:
 
             self.logger.start(f"index.{lang}")
 
@@ -43,8 +43,8 @@ class Command(PipelineCommand):
             )
             index.configuration = None  # gets recreated by the clean method below
             index.clean()
-            index.push(docs, recreate=True)
             index.save()
+            index.push(lang_doc_dict[lang], recreate=True)
             if should_promote:
                 self.logger.info(f"Promoting index { index.remote_name } to latest")
                 index.promote_to_latest()
