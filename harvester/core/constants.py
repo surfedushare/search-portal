@@ -1,6 +1,7 @@
 class Repositories:
     EDUREP = "edurep.EdurepOAIPMH"
     SHAREKIT = "sharekit.SharekitMetadataHarvest"
+    ANATOMY_TOOL = "anatomy_tool.AnatomyToolOAIPMH"
 
 
 REPOSITORY_CHOICES = [

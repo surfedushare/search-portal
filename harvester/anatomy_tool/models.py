@@ -1,27 +1,54 @@
-from urlobject import URLObject
-from dateutil.parser import parse as parse_date_string
+import logging
 
-from django.utils.timezone import make_aware
 from django.db import models
-from datagrowth.resources import HttpResource
+from urlobject import URLObject
+
+from datagrowth.configuration import create_config
+from datagrowth.processors import ExtractProcessor
+
+from core.models import HarvestHttpResource
+from anatomy_tool.extraction import AnatomyToolExtraction, ANATOMY_TOOL_EXTRACTION_OBJECTIVE
 
 
-class AnatomyToolOAIPMH(HttpResource):  # TODO: refactor with EdurepOAIPMH
+logger = logging.getLogger("harvester")
 
-    GET_SCHEMA = {
-        "args": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "string",
-                    "pattern": r"^\d{4}-\d{2}-\d{2}(T\d{2}\:\d{2}\:\d{2}Z)?$"
-                }
-            ],
-            "additionalItems": False
+
+class AnatomyToolOAIPMHManager(models.Manager):
+
+    def extract_seeds(self, set_specification, latest_update):
+        queryset = self.get_queryset() \
+            .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
+
+        oaipmh_objective = {
+            "@": AnatomyToolExtraction.get_oaipmh_records,
+            "external_id": AnatomyToolExtraction.get_oaipmh_external_id,
+            "state": AnatomyToolExtraction.get_oaipmh_record_state
         }
-    }
+        oaipmh_objective.update(ANATOMY_TOOL_EXTRACTION_OBJECTIVE)
+        extract_config = create_config("extract_processor", {
+            "objective": oaipmh_objective
+        })
+        prc = ExtractProcessor(config=extract_config)
 
-    since = models.DateTimeField()
+        results = []
+        for harvest in queryset:
+            seed_resource = {
+                "resource": f"{harvest._meta.app_label}.{harvest._meta.model_name}",
+                "id": harvest.id,
+                "success": True
+            }
+            try:
+                for seed in prc.extract_from_resource(harvest):
+                    seed["seed_resource"] = seed_resource
+                    results.append(seed)
+            except ValueError as exc:
+                logger.warning("Invalid XML:", exc, harvest.uri)
+        return results
+
+
+class AnatomyToolOAIPMH(HarvestHttpResource):
+
+    objects = AnatomyToolOAIPMHManager()
 
     URI_TEMPLATE = "https://anatomytool.org/oai-pmh?from={}"
     PARAMETERS = {
@@ -47,34 +74,6 @@ class AnatomyToolOAIPMH(HttpResource):  # TODO: refactor with EdurepOAIPMH
         url = url.without_query().set_query_params(**self.next_parameters())
         next_request["url"] = str(url)
         return next_request
-
-    def variables(self, *args):
-        vars = super().variables(*args)
-        since_time = None
-        if len(vars["url"]) >= 1:
-            since_time = vars["url"][0]
-            if isinstance(since_time, str):
-                since_time = parse_date_string(since_time)
-        vars["since"] = make_aware(since_time)
-        return vars
-
-    def clean(self):
-        super().clean()
-        variables = self.variables()
-        if not self.since:
-            self.since = variables.get("since", None)
-
-    def send(self, method, *args, **kwargs):
-        # We're sending along a default "from" parameter in a distant past to get all materials
-        # if a set has been specified, but no start date.
-        if len(args) == 0:
-            args = ("1970-01-01",)
-        return super().send(method, *args, **kwargs)
-
-    def validate_request(self, request, validate_input=True):
-        # Casting datetime to string, because we need strings to pass validation
-        request["args"] = (str(request["args"][0]),)
-        return super().validate_request(request, validate_input=validate_input)
 
     class Meta:
         verbose_name = "Anatomy tool OAIPMH harvest"
