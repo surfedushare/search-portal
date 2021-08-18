@@ -7,7 +7,7 @@
             <div v-if="$route.params.filterId">
               <h4>{{ $t('Search-in') }}:</h4>
               <p>
-                <router-link to="localePath('materials-search')">{{
+                <router-link :to="localePath('materials-search')">{{
                   $t('Everything')
                 }}</router-link>
                 > {{ defaultFilterTitle }}
