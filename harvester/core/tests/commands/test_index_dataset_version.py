@@ -220,18 +220,19 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         get_es_client.reset_mock()
         streaming_bulk.reset_mock()
         call_command("index_dataset_version", "--dataset=test", "--harvester-version=0.0.1")
-        self.assertEqual(streaming_bulk.call_count, 1)
-        args, kwargs = streaming_bulk.call_args_list[0]
-        client, docs = args
-        index_name, version, version_id, language = kwargs["index"].split("-")
-        self.assertEqual(len(docs), 1)
-        for doc in docs:
-            self.assert_document_structure(doc)
-        self.assertEqual(index_name, "test")
-        self.assertEqual(version, "001")
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 1)
-        self.assertEqual(self.elastic_client.indices.create.call_count, 1)
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 1,
+        self.assertEqual(streaming_bulk.call_count, 3)
+        for args, kwargs in streaming_bulk.call_args_list:
+            client, docs = args
+            index_name, version, version_id, language = kwargs["index"].split("-")
+            if language == "nl":
+                self.assertEqual(len(docs), 1)
+            for doc in docs:
+                self.assert_document_structure(doc)
+            self.assertEqual(index_name, "test")
+            self.assertEqual(version, "001")
+        self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
+        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
+        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 3,
                          "Expected an Elastic Search alias creation for each language")
         for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
