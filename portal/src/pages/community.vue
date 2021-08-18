@@ -22,7 +22,7 @@
               <template slot="header-info">
                 <h2>{{ $t('Collections-2') }}</h2>
                 <button
-                  v-if="!isLoading && community_info.search_query"
+                  v-if="!isLoading && community_info.publisher"
                   class="button"
                   @click="goToCommunitySearch()"
                 >
@@ -127,10 +127,9 @@ export default {
     goToCommunitySearch() {
       const searchRoute = localePath('communities-search')
       const searchLocation = this.$router.resolve(searchRoute)
-      // TODO: don't use search_query, but a dedicated field
       this.$router.push({
         name: searchLocation.location.name,
-        params: { filterId: this.community_info.search_query }
+        params: { filterId: this.community_info.publisher }
       })
     }
   }
