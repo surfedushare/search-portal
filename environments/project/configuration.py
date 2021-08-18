@@ -32,6 +32,7 @@ sys.path.append(ENVIRONMENTS)
 project_configuration = importlib.import_module(f"{PROJECT}.configuration")
 REPOSITORY = project_configuration.REPOSITORY
 REPOSITORY_AWS_PROFILE = project_configuration.REPOSITORY_AWS_PROFILE
+SEARCH_FIELDS = project_configuration.SEARCH_FIELDS
 
 
 # Now we'll delete any items that are POL variables, but with empty values
@@ -217,15 +218,23 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                 },
                 'url': {'type': 'text'},
                 'authors': {
-                    'type': 'text',
-                    'fields': {
-                        'keyword': {
-                            'type': 'keyword',
-                            'ignore_above': 256
-                        },
-                        'folded': {
+                    'type': 'object',
+                    'properties': {
+                        'name': {
                             'type': 'text',
-                            'analyzer': 'folding'
+                            'fields': {
+                                'keyword': {
+                                    'type': 'keyword',
+                                    'ignore_above': 256
+                                },
+                                'folded': {
+                                    'type': 'text',
+                                    'analyzer': 'folding'
+                                }
+                            }
+                        },
+                        'email': {
+                            'type': 'keyword'
                         }
                     }
                 },
@@ -276,6 +285,12 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     "type": "text",
                     "analyzer": "trigram"
                 },
+                'is_part_of': {
+                    'type': 'keyword'
+                },
+                'has_parts': {
+                    'type': 'keyword'
+                }
             }
         }
     }

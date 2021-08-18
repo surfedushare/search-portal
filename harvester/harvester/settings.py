@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'datagrowth',
 
     'core',
@@ -97,6 +98,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'harvester.urls'
 
 TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "harvester.jinja2.environment",
+            "extensions": []
+        }
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -193,7 +202,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication'
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ]
 }
 
@@ -375,6 +385,27 @@ MIME_TYPE_TO_TECHNICAL_TYPE = {
     'application/vnd.google-earth.kmz': 'app',
     'application/x-java': 'app',
 }
+
+COPYRIGHT_VALUES = [
+    "cc-by-40",
+    "cc-by-30",
+    "cc-by-nc-40",
+    "cc-by-nc-30",
+    "cc-by-nc-nd-40",
+    "cc-by-nc-nd-30",
+    "cc-by-nc-nd-sa-40",
+    "cc-by-nc-nd-sa-30",
+    "cc-by-nc-sa-40",
+    "cc-by-nc-sa-30",
+    "cc-by-nd-40",
+    "cc-by-nd-30",
+    "cc-by-nd-sa-40",
+    "cc-by-nd-sa-30",
+    "cc-by-sa-40",
+    "cc-by-sa-30",
+    "pdm-10",
+    "cc0-10"
+]
 
 
 # Celery

@@ -83,7 +83,8 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
     ecs_client = session.client('ecs')
     container_variables = build_default_container_variables(mode, version)
     container_variables.update({
-        "harvester_bucket": ctx.config.aws.harvest_content_bucket
+        "flower_secret_arn": ctx.config.aws.flower_secret_arn,
+        "harvester_bucket": ctx.config.aws.harvest_content_bucket,
     })
 
     if extra_workers:

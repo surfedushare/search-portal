@@ -146,6 +146,10 @@ class TestMetadataHarvest(TestCase):
             self.assertEqual(metadata_pipeline["resource"], self.repository.lower())
             self.assertIsInstance(metadata_pipeline["id"], int)
             self.assertTrue(metadata_pipeline["success"])
+            if "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751" in document.reference:
+                self.assertIsNotNone(document.extension)
+            else:
+                self.assertIsNone(document.extension)
 
     def test_handle_deletion_seeds(self):
         dataset_version = DatasetVersion.objects.last()

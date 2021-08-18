@@ -11,12 +11,12 @@ class DocumentSerializer(DocumentBaseSerializer):
         fields = DocumentBaseSerializer.default_fields
 
 
-class DocumentView(generics.RetrieveUpdateDestroyAPIView):
+class DocumentView(generics.RetrieveAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
 
 
-class DocumentContentView(ContentView, generics.UpdateAPIView):
+class DocumentContentView(ContentView):
     queryset = Document.objects.all()
     serializer_class = ContentSerializer
     content_class = Document

@@ -1,6 +1,6 @@
 from core.tests.commands.harvest_metadata import TestMetadataHarvest, TestMetadataHarvestWithHistory
 from core.constants import Repositories
-from core.models import HarvestSource, Collection
+from core.models import HarvestSource, Collection, Extension
 from edurep.tests.factories import EdurepOAIPMHFactory
 
 
@@ -20,6 +20,9 @@ class TestMetadataHarvestEdurep(TestMetadataHarvest):
         other = HarvestSource.objects.get(id=2)
         other.repository = cls.repository
         other.save()
+        extension = Extension.objects.get(id="5af0e26f-c4d2-4ddd-94ab-7dd0bd531751")
+        extension.id = extension.reference = "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
+        extension.save()
 
 
 class TestMetadataHarvestWithHistoryEdurep(TestMetadataHarvestWithHistory):
