@@ -6,7 +6,8 @@ SEARCH_FIELDS = [
     "description", "description.analyzed", "description.folded",
     "keywords", "keywords.folded",
     "authors.name.folded",
-    "parties.name.folded"
+    "parties.name.folded",
+    "projects.name.folded",
 ]
 
 
@@ -19,6 +20,24 @@ def get_project_search_mapping_properties():
             'type': 'keyword'
         },
         'parties': {
+            'type': 'object',
+            'properties': {
+                'name': {
+                    'type': 'text',
+                    'fields': {
+                        'keyword': {
+                            'type': 'keyword',
+                            'ignore_above': 256
+                        },
+                        'folded': {
+                            'type': 'text',
+                            'analyzer': 'folding'
+                        }
+                    }
+                }
+            }
+        },
+        'projects': {
             'type': 'object',
             'properties': {
                 'name': {
