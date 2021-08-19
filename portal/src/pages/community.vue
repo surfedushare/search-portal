@@ -125,12 +125,11 @@ export default {
   },
   methods: {
     goToCommunitySearch() {
-      const searchRoute = localePath('communities-search')
-      const searchLocation = this.$router.resolve(searchRoute)
-      this.$router.push({
-        name: searchLocation.location.name,
+      const searchRoute = localePath({
+        name: 'communities-search',
         params: { filterId: this.community_info.publisher }
       })
+      this.$router.push(searchRoute)
     }
   }
 }
