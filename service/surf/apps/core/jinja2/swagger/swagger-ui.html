@@ -27,7 +27,9 @@
             const endpointOrder = {
                 '/api/v1/search/': '0',
                 '/api/v1/search/filter-categories/': '1',
-                '/api/v1/search/autocomplete/': '2'
+                '/api/v1/search/autocomplete/': '2',
+                '/api/v1/suggestions/similarity/': '1',
+                '/api/v1/suggestions/author/': '2',
             }
             if (first.get('path') === second.get('path')) {
                 return methodOrder[first.get('method')].localeCompare(methodOrder[second.get('method')])

@@ -39,6 +39,7 @@ from surf.apps.materials.serializers import (
     SearchSerializer,
     KeywordsRequestSerializer,
     SimilaritySerializer,
+    AuthorSuggestionSerializer,
     MaterialsRequestSerializer,
     CollectionSerializer,
     CollectionMaterialsRequestSerializer,
@@ -219,6 +220,30 @@ class SimilarityAPIView(RetrieveAPIView):
         language = serializer.validated_data["language"]
         elastic = ElasticSearchApiClient()
         result = elastic.more_like_this(external_id, language)
+        if settings.PROJECT == "edusources":
+            result["results"] = add_extra_parameters_to_materials(self.request.user, result["results"])
+        return result
+
+
+class AuthorSuggestionsAPIView(RetrieveAPIView):
+    """
+    This endpoint returns documents where the name of the author appears in the text or metadata,
+    but is not set as author in the authors field.
+    These documents can be offered to authors as suggestions for more content from their hand.
+    """
+
+    serializer_class = AuthorSuggestionSerializer
+    permission_classes = (AllowAny,)
+    schema = SearchSchema()
+    pagination_class = None
+    filter_backends = []
+
+    def get_object(self):
+        serializer = self.get_serializer(data=self.request.GET)
+        serializer.is_valid(raise_exception=True)
+        author_name = serializer.validated_data["author_name"]
+        elastic = ElasticSearchApiClient()
+        result = elastic.author_suggestions(author_name)
         if settings.PROJECT == "edusources":
             result["results"] = add_extra_parameters_to_materials(self.request.user, result["results"])
         return result
