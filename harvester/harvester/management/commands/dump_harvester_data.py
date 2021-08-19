@@ -9,6 +9,7 @@ from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 from harvester.settings import environment
 from core.models import Dataset, FileResource, HttpTikaResource
 from edurep.models import EdurepOAIPMH
+from sharekit.models import SharekitMetadataHarvest
 
 
 logger = logging.getLogger("harvester")
@@ -24,7 +25,8 @@ class Command(base.LabelCommand):
         return [
             os.path.join(get_dumps_path(FileResource), f"{FileResource.get_name()}.dump.json"),
             os.path.join(get_dumps_path(HttpTikaResource), f"{HttpTikaResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json")
+            os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json"),
+            os.path.join(get_dumps_path(SharekitMetadataHarvest), f"{SharekitMetadataHarvest.get_name()}.dump.json")
         ]
 
     def handle_label(self, dataset_label, **options):
