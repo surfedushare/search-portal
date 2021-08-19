@@ -22,6 +22,7 @@ elastic_search:
   enable_decompound_analyzers: false
   decompound_word_lists:
     dutch: null
+  domain_name: "nppo-main"
 
 aws:
   is_aws: true

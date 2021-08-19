@@ -23,6 +23,7 @@ elastic_search:
   enable_decompound_analyzers: true
   decompound_word_lists:
     dutch: "analyzers/F131123737"
+  domain_name: "surfpol-main"
 
 aws:
   is_aws: true
