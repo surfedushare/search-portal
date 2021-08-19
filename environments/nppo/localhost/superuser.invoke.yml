@@ -1,3 +1,6 @@
+project:
+  prefix: "nppo"
+
 postgres:
   user: "postgres"
 
