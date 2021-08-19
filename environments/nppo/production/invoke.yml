@@ -21,7 +21,7 @@ elastic_search:
   verify_certs: true
   enable_decompound_analyzers: false
   decompound_word_lists:
-    dutch: null
+    dutch: "analyzers/F151030002"
   domain_name: "nppo-main"
 
 aws:
