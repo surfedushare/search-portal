@@ -1,4 +1,5 @@
 from unittest import skipIf
+from unittest.mock import patch
 from dateutil.parser import parse
 from datetime import datetime
 
@@ -6,6 +7,7 @@ from django.conf import settings
 
 from project.configuration import create_elastic_search_index_configuration
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from surf.vendor.elasticsearch.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
 from e2e_tests.base import BaseElasticSearchTestCase
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
@@ -501,3 +503,41 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             author_names = [author["name"] for author in self.get_value_from_record(result, "authors")]
             self.assertNotIn(author_expectation, author_names)
             self.assertIn(author_expectation, result["description"])
+
+    def test_parse_elastic_hit(self):
+        authors = [{"name": "author"}]
+        themes = ["theme"]
+        hit = {
+            "_source": {
+                "title": "title",
+                "description": "description",
+                "authors": authors,
+                "themes": themes,
+                "research_themes": themes
+            }
+        }
+        with patch("surf.vendor.elasticsearch.api.SearchResultSerializer", EdusourcesSearchResultSerializer):
+            record = self.instance.parse_elastic_hit(hit)
+            self.assertIn("authors", record, "Expected authors to be part of main record for Edusources")
+            self.assertIn("themes", record, "Expected themes to be part of main record for Edusources")
+            self.assertEqual(record["title"], "title")
+            self.assertEqual(record["description"], "description")
+            self.assertEqual(record["authors"], authors)
+            self.assertEqual(record["themes"], themes)
+            self.assertNotIn("keywords", record, "Expected data not given in Edusources to not be included")
+            self.assertNotIn("is_part_of", record, "Expected data not given in Edusources to not be included")
+            self.assertNotIn("has_parts", record, "Expected data not given in Edusources to not be included")
+        with patch("surf.vendor.elasticsearch.api.SearchResultSerializer", NPPOSearchResultSerializer):
+            record = self.instance.parse_elastic_hit(hit)
+            self.assertIn("relations", record, "Expected NPPO record to have a relations key")
+            self.assertNotIn("authors", record, "Expected authors to be absent in main record for NPPO")
+            self.assertNotIn("themes", record, "Expected themes to be absent in main record for NPPO")
+            self.assertIn("authors", record["relations"], "Expected authors to be part of relations for NPPO")
+            self.assertIn("themes", record["relations"], "Expected themes to be part of relations for NPPO")
+            self.assertEqual(record["title"], "title")
+            self.assertEqual(record["description"], "description")
+            self.assertEqual(record["relations"]["authors"], authors)
+            self.assertEqual(record["relations"]["themes"], [{"label": "theme"}])
+            self.assertEqual(record["relations"]["keywords"], [], "Expected data not given in NPPO to have a default")
+            self.assertEqual(record["relations"]["parents"], [], "Expected data not given in NPPO to have a default")
+            self.assertEqual(record["relations"]["children"], [], "Expected data not given in NPPO to have a default")
