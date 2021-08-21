@@ -74,8 +74,8 @@ class Document(DocumentBase):
     def to_search(self):
         elastic_base = copy(self.properties)
         elastic_base.pop("language")
-        text = elastic_base.pop("text")
-        if len(text) >= 1000000:
+        text = elastic_base.pop("text", None)
+        if text and len(text) >= 1000000:
             text = " ".join(text.split(" ")[:10000])
         if self.extension:
             extension_details = self.get_extension_extras()
