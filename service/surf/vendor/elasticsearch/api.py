@@ -322,6 +322,35 @@ class ElasticSearchApiClient:
         ]
         return result
 
+    def author_suggestions(self, author_name):
+        body = {
+            "query": {
+                "bool": {
+                    "must": {
+                        "multi_match": {
+                            "fields": [field for field in SEARCH_FIELDS if "authors" not in field],
+                            "query": author_name,
+                        },
+                    },
+                    "must_not": {
+                        "match": {"authors.name.folded": author_name}
+                    }
+                }
+            }
+        }
+        search_result = self.client.search(
+            index=[self.index_nl, self.index_en, self.index_unk],
+            body=body
+        )
+        hits = search_result.pop("hits")
+        result = dict()
+        result["records_total"] = hits["total"]["value"]
+        result["results"] = [
+            ElasticSearchApiClient.parse_elastic_hit(hit)
+            for hit in hits["hits"]
+        ]
+        return result
+
     @staticmethod
     def parse_filters(filters):
         """

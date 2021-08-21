@@ -492,3 +492,12 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 english_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
                 "english"
             )
+
+    def test_author_suggestions(self):
+        suggestions = self.instance.author_suggestions("Theo")
+        author_expectation = "Theo van den Bogaart"
+        self.assertEqual(suggestions["records_total"], 3)
+        for result in suggestions["results"]:
+            author_names = [author["name"] for author in self.get_value_from_record(result, "authors")]
+            self.assertNotIn(author_expectation, author_names)
+            self.assertIn(author_expectation, result["description"])

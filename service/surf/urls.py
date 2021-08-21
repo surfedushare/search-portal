@@ -32,6 +32,7 @@ from surf.apps.materials.views import (
     MaterialSetAPIView,
     KeywordsAPIView,
     SimilarityAPIView,
+    AuthorSuggestionsAPIView,
     MaterialAPIView,
     MaterialRatingAPIView,
     MaterialApplaudAPIView,
@@ -63,6 +64,7 @@ public_api_patterns = [
     url(r'^search/', MaterialSearchAPIView.as_view()),
     url(r'^documents/stats', StatsView.as_view()),
     url(r'^suggestions/similarity/', SimilarityAPIView.as_view()),
+    url(r'^suggestions/author/', AuthorSuggestionsAPIView.as_view()),
 ]
 schema_view = get_schema_view(
     title="Search API",

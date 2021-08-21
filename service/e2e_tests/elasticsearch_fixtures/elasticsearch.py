@@ -11,7 +11,8 @@ NL_MATERIAL = {
             }]
         ],
         "description":
-        "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op wiskundedidactiek en ICT",
+        "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op wiskundedidactiek en ICT "
+        "met Theo van den Bogaart",
         "language": "nl",
         "title_plain": "Wiskunde en Didactiek",
         "text_plain": "Leermateriaal over wiskunde en didactiek op de universiteit.",
@@ -45,7 +46,8 @@ NL_MATERIAL = {
             }]
         ],
         "description":
-            "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op biologiedidactiek en ICT",
+            "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op biologiedidactiek en ICT "
+            "met Theo van den Bogaart",
         "language": "nl",
         "title_plain": "Biologie en Didactiek",
         "text_plain": "Leermateriaal over biologie en didactiek op de universiteit.",
