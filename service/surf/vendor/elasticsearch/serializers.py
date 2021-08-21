@@ -5,7 +5,7 @@ import os
 from django.conf import settings
 from rest_framework import serializers
 
-from project.serializers import PersonSerializer, OrganisationSerializer, LabelSerializer
+from project.serializers import PersonSerializer, OrganisationSerializer, LabelSerializer, ProjectSerializer
 
 
 PREVIEW_SMALL = "preview-200x150.png"
@@ -83,6 +83,7 @@ class RelationSerializer(serializers.Serializer):
     keywords = LabelSerializer(many=True)
     parties = OrganisationSerializer(many=True)
     themes = LabelSerializer(many=True)
+    projects = ProjectSerializer(many=True)
     children = serializers.ListField(child=serializers.CharField())
     parents = serializers.ListField(child=serializers.CharField())
 
