@@ -97,7 +97,7 @@ class ElasticSearchApiClient:
         return result
 
     @staticmethod
-    def parse_elastic_hit(hit):
+    def parse_elastic_hit(hit, transform=True):
         """
         Parses the elasticsearch search hit into the format that is also used by the edurep endpoint.
         It's mostly just mapping the variables we need into the places that we expect them to be.
@@ -106,7 +106,7 @@ class ElasticSearchApiClient:
         """
         data = hit["_source"]
         field_mapping = {
-            field.source: field_name
+            field.source: field_name if transform else field.source
             for field_name, field in SearchResultSerializer().fields.items()
         }
         record = {
@@ -319,7 +319,7 @@ class ElasticSearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            ElasticSearchApiClient.parse_elastic_hit(hit)
+            ElasticSearchApiClient.parse_elastic_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result
@@ -348,7 +348,7 @@ class ElasticSearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            ElasticSearchApiClient.parse_elastic_hit(hit)
+            ElasticSearchApiClient.parse_elastic_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result
