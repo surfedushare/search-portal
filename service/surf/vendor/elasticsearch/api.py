@@ -114,9 +114,11 @@ class ElasticSearchApiClient:
             for field, value in data.items() if field in field_mapping
         }
         if "relations" in field_mapping:
+            publishers = [{"name": publisher} for publisher in data.get("publishers", [])]
             record["relations"] = {
                 "authors": data.get("authors", []),
-                "parties": [{"name": publisher} for publisher in data.get("publishers", [])],
+                "parties": data.get("parties", publishers),
+                "projects": data.get("projects", []),
                 "keywords": [{"label": keyword} for keyword in data.get("keywords", [])],
                 "themes": [{"label": theme} for theme in data.get("research_themes", [])],
                 "parents": data.get("is_part_of", []),
