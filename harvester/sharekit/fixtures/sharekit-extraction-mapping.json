@@ -1,0 +1,696 @@
+[
+{
+    "model": "core.extractionmapping",
+    "pk": 1,
+    "fields": {
+        "name": "Sharekit",
+        "repository": "sharekit.SharekitMetadataHarvest",
+        "root": "$.data"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 1,
+    "fields": {
+        "method": "get_record_state",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 2,
+    "fields": {
+        "method": "get_url",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 3,
+    "fields": {
+        "method": "get_files",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 4,
+    "fields": {
+        "method": "get_mime_type",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 5,
+    "fields": {
+        "method": "get_technical_type",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 6,
+    "fields": {
+        "method": "get_material_types",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 7,
+    "fields": {
+        "method": "get_copyright",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 8,
+    "fields": {
+        "method": "get_none",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 9,
+    "fields": {
+        "method": "get_authors",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 10,
+    "fields": {
+        "method": "get_publishers",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 11,
+    "fields": {
+        "method": "get_lom_educational_levels",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 12,
+    "fields": {
+        "method": "get_lowest_educational_level",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 13,
+    "fields": {
+        "method": "get_empty_list",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 14,
+    "fields": {
+        "method": "get_ideas",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 15,
+    "fields": {
+        "method": "get_from_youtube",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 16,
+    "fields": {
+        "method": "get_is_restricted",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 17,
+    "fields": {
+        "method": "get_analysis_allowed",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 18,
+    "fields": {
+        "method": "get_is_part_of",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 19,
+    "fields": {
+        "method": "get_research_themes",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 1,
+    "fields": {
+        "method": 1
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 2,
+    "fields": {
+        "method": 2
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 3,
+    "fields": {
+        "method": 3
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 4,
+    "fields": {
+        "method": 4
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 5,
+    "fields": {
+        "method": 5
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 6,
+    "fields": {
+        "method": 6
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 7,
+    "fields": {
+        "method": 7
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 8,
+    "fields": {
+        "method": 8
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 9,
+    "fields": {
+        "method": 9
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 10,
+    "fields": {
+        "method": 10
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 11,
+    "fields": {
+        "method": 11
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 12,
+    "fields": {
+        "method": 12
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 13,
+    "fields": {
+        "method": 13
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 14,
+    "fields": {
+        "method": 14
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 15,
+    "fields": {
+        "method": 15
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 16,
+    "fields": {
+        "method": 16
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 17,
+    "fields": {
+        "method": 17
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 18,
+    "fields": {
+        "method": 18
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 19,
+    "fields": {
+        "method": 19
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 1,
+    "fields": {
+        "path": "$.id"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 2,
+    "fields": {
+        "path": "$.attributes.title"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 3,
+    "fields": {
+        "path": "$.attributes.language"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 4,
+    "fields": {
+        "path": "$.attributes.keywords"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 5,
+    "fields": {
+        "path": "$.attributes.abstract"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 6,
+    "fields": {
+        "path": "$.attributes.aggregationlevel"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 7,
+    "fields": {
+        "path": "$.attributes.publishedAt"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 8,
+    "fields": {
+        "path": "$.attributes.hasParts"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 9,
+    "fields": {
+        "path": "$.attributes.doi"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 10,
+    "fields": {
+        "path": "$.attributes.typeResearchObject"
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 1,
+    "fields": {
+        "mapping": 1,
+        "json_field": 1,
+        "method_field": null,
+        "property": "external_id",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 2,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 1,
+        "property": "state",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 3,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 2,
+        "property": "url",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 4,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 3,
+        "property": "files",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 5,
+    "fields": {
+        "mapping": 1,
+        "json_field": 2,
+        "method_field": null,
+        "property": "title",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 6,
+    "fields": {
+        "mapping": 1,
+        "json_field": 3,
+        "method_field": null,
+        "property": "language",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 7,
+    "fields": {
+        "mapping": 1,
+        "json_field": 4,
+        "method_field": null,
+        "property": "keywords",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 8,
+    "fields": {
+        "mapping": 1,
+        "json_field": 5,
+        "method_field": null,
+        "property": "description",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 9,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 4,
+        "property": "mime_type",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 10,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 5,
+        "property": "technical_type",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 11,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 6,
+        "property": "material_types",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 12,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 7,
+        "property": "copyright",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 13,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 8,
+        "property": "copyright_description",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 14,
+    "fields": {
+        "mapping": 1,
+        "json_field": 6,
+        "method_field": null,
+        "property": "aggregation_level",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 15,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 9,
+        "property": "authors",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 16,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 10,
+        "property": "publishers",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 17,
+    "fields": {
+        "mapping": 1,
+        "json_field": 7,
+        "method_field": null,
+        "property": "publisher_date",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 18,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 11,
+        "property": "lom_educational_levels",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 19,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 12,
+        "property": "lowest_educational_level",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 20,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 13,
+        "property": "disciplines",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 21,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 14,
+        "property": "ideas",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 22,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 15,
+        "property": "from_youtube",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 23,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 16,
+        "property": "is_restricted",
+        "is_context": true
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 24,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 17,
+        "property": "analysis_allowed",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 25,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 18,
+        "property": "is_part_of",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 26,
+    "fields": {
+        "mapping": 1,
+        "json_field": 8,
+        "method_field": null,
+        "property": "has_parts",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 27,
+    "fields": {
+        "mapping": 1,
+        "json_field": 9,
+        "method_field": null,
+        "property": "doi",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 28,
+    "fields": {
+        "mapping": 1,
+        "json_field": 10,
+        "method_field": null,
+        "property": "research_object_type",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 29,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 19,
+        "property": "research_themes",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 30,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 13,
+        "property": "parties",
+        "is_context": false
+    }
+}
+]
