@@ -9,8 +9,8 @@ django:
   redis_host: "harvester.vkafto.0001.euc1.cache.amazonaws.com:6379"
   data_retention:
     purge_after:
-      days: 14
-    keep_versions: 3
+      days: 5
+    keep_versions: 2
   repositories:
     edurep: "https://wszoeken.edurep.kennisnet.nl"
     sharekit: "https://api.surfsharekit.nl"
@@ -22,7 +22,7 @@ postgres:
 
 schedule:
   harvest:
-    hour: 6  # uses UTC
+    hour: 4  # uses UTC
     minute: 0
 
 aws:
