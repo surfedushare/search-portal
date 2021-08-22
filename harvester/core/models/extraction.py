@@ -1,5 +1,7 @@
 from django.db import models
 
+from datagrowth.processors import Processor
+
 from core.constants import REPOSITORY_CHOICES
 
 
@@ -55,14 +57,17 @@ class ExtractionMapping(models.Model):
     json_fields = models.ManyToManyField(JSONExtractionField, related_name="+", through=ObjectiveProperty)
 
     def to_objective(self):
-        methods = {
-            objective_property.property: str(objective_property.method_field)
-            for objective_property in ObjectiveProperty.objects.filter(mapping=self, method_field__isnull=False)
-        }
-        paths = {
-            objective_property.property: objective_property.json_field.path
-            for objective_property in ObjectiveProperty.objects.filter(mapping=self, json_field__isnull=False)
-        }
+        methods = {}
+        for objective_property in ObjectiveProperty.objects.filter(mapping=self, method_field__isnull=False):
+            processor = Processor.create_processor(objective_property.method_field.method.processor, {})
+            method, args_type = processor.get_processor_method(objective_property.method_field.method.method)
+            key = objective_property.property if not objective_property.is_context else \
+                f"#{objective_property.property}"
+            methods[key] = method
+        paths = {}
+        for objective_property in ObjectiveProperty.objects.filter(mapping=self, json_field__isnull=False):
+            key = objective_property.property if not objective_property.is_context else f"#{objective_property}"
+            paths[key] = objective_property.json_field.path
         return {
             "@": self.root,
             **methods,

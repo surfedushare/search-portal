@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 
 from datagrowth.configuration import create_config
-from datagrowth.processors import ExtractProcessor
 
 from core.models import HarvestHttpResource
 from sharekit.extraction import SharekitMetadataExtraction, SHAREKIT_EXTRACTION_OBJECTIVE
@@ -26,7 +25,7 @@ class SharekitMetadataHarvestManager(models.Manager):
         extract_config = create_config("extract_processor", {
             "objective": objective
         })
-        prc = ExtractProcessor(config=extract_config)
+        prc = SharekitMetadataExtraction(config=extract_config)
 
         results = []
         for harvest in queryset:

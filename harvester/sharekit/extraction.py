@@ -3,12 +3,13 @@ from mimetypes import guess_type
 
 from django.conf import settings
 
+from datagrowth.processors import ExtractProcessor
 from datagrowth.utils import reach
 
 from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
-class SharekitMetadataExtraction(object):
+class SharekitMetadataExtraction(ExtractProcessor):
 
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
