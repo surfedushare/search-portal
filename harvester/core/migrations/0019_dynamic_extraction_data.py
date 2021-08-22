@@ -13,15 +13,14 @@ def migrate_objective_to_extraction_mapping(apps, schema_editor):
     JSONExtractionField = apps.get_model("core.JSONExtractionField")
     ObjectiveProperty = apps.get_model("core.ObjectiveProperty")
 
-    mapping = ExtractionMapping.objects.create(name="Sharekit", repository=Repositories.SHAREKIT)
+    mapping = ExtractionMapping.objects.create(name="Sharekit", repository=Repositories.SHAREKIT, root="$.data")
     sharekit_objective = {
-        "@": "$.data",
         "external_id": "$.id",
         "state": SharekitMetadataExtraction.get_record_state
     }
     sharekit_objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
 
-    for key, value in SHAREKIT_EXTRACTION_OBJECTIVE.items():
+    for key, value in sharekit_objective.items():
         if isinstance(value, str):
             json_field, created = JSONExtractionField.objects.get_or_create(path=value)
             ObjectiveProperty.objects.create(
