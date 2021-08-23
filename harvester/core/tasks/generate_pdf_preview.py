@@ -47,7 +47,7 @@ def convert_pdf_file_to_image(path_to_pdf, destination):
 
 
 def get_file_resource(properties):
-    file_resource_id = properties.get('pipeline', {}).get('file', {}).get('resource', [])[1]
+    file_resource_id = properties.get('pipeline', {}).get('file', {}).get('id', None)
 
     if file_resource_id:
         return FileResource.objects.get(id=file_resource_id)

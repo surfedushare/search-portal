@@ -7,12 +7,14 @@ def serialize_resource(resource=None):
     if resource is None:
         return {
             "success": False,
-            "resource": None
+            "resource": None,
+            "id": None
         }
 
     return {
         "success": resource.success,
-        "resource": ["{}.{}".format(resource._meta.app_label, resource._meta.model_name), resource.id]
+        "resource": "{}.{}".format(resource._meta.app_label, resource._meta.model_name),
+        "id": resource.id
     }
 
 

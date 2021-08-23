@@ -94,6 +94,8 @@ def add_extra_parameters_to_materials(user, materials):
             else {"nl": d.name, "en": d.name}
         ) for d in disciplines]
 
+        m["authors"] = [author["name"] for author in m["authors"]]
+
     return materials
 
 

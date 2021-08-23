@@ -54,7 +54,7 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     )
     # And last but not least we associate the package with the ES domain
     ctx.run(
-        f"aws es associate-package --package-id={package_id} --domain-name=surfpol-main",
+        f"aws es associate-package --package-id={package_id} --domain-name={ctx.config.elastic_search.domain_name}",
         echo=True, pty=True
     )
     print("AWS ES dictionary package processed.")

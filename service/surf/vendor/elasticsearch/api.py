@@ -5,6 +5,7 @@ from django.conf import settings
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
+from project.configuration import SEARCH_FIELDS
 from surf.vendor.elasticsearch.serializers import SearchResultSerializer
 
 
@@ -114,7 +115,7 @@ class ElasticSearchApiClient:
         }
         if "relations" in field_mapping:
             record["relations"] = {
-                "authors": [{"name": author} for author in data["authors"]],
+                "authors": data["authors"],
                 "parties": [{"name": publisher} for publisher in data["publishers"]],
                 "keywords": [{"label": keyword} for keyword in data["keywords"]],
                 "themes": [{"label": theme} for theme in data.get("research_themes", [])],
@@ -193,15 +194,7 @@ class ElasticSearchApiClient:
         if search_text:
             query_string = {
                 "simple_query_string": {
-                    "fields": [
-                        "title^2", "title.analyzed^2", "title.folded^2",
-                        "text", "text.analyzed", "text.folded",
-                        "description", "description.analyzed", "description.folded",
-                        "keywords", "keywords.folded",
-                        "authors", "authors.folded",
-                        "publishers", "publishers.folded",
-                        "ideas", "ideas.folded"
-                    ],
+                    "fields": SEARCH_FIELDS,
                     "query": search_text,
                     "default_operator": "and"
                 }
@@ -318,6 +311,35 @@ class ElasticSearchApiClient:
         }
         search_result = self.client.search(
             index=index,
+            body=body
+        )
+        hits = search_result.pop("hits")
+        result = dict()
+        result["records_total"] = hits["total"]["value"]
+        result["results"] = [
+            ElasticSearchApiClient.parse_elastic_hit(hit)
+            for hit in hits["hits"]
+        ]
+        return result
+
+    def author_suggestions(self, author_name):
+        body = {
+            "query": {
+                "bool": {
+                    "must": {
+                        "multi_match": {
+                            "fields": [field for field in SEARCH_FIELDS if "authors" not in field],
+                            "query": author_name,
+                        },
+                    },
+                    "must_not": {
+                        "match": {"authors.name.folded": author_name}
+                    }
+                }
+            }
+        }
+        search_result = self.client.search(
+            index=[self.index_nl, self.index_en, self.index_unk],
             body=body
         )
         hits = search_result.pop("hits")
@@ -454,7 +476,7 @@ class ElasticSearchApiClient:
         elif external_id == 'lom.classification.obk.discipline.id':
             return 'disciplines'
         elif external_id == 'lom.lifecycle.contribute.author':
-            return 'authors.keyword'
+            return 'authors.name.keyword'
         elif external_id == 'lom.general.language':
             return 'language.keyword'
         elif external_id == 'lom.general.aggregationlevel':

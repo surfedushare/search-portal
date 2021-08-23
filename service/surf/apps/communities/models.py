@@ -41,6 +41,10 @@ class Community(UUIDModel):
     external_id = django_models.CharField(max_length=255, verbose_name="SurfConext group id", null=True, blank=True)
     # search query that finds most materials in this Community
     search_query = django_models.CharField(max_length=255, null=True, blank=True)
+    publisher = django_models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text="Publisher name that published most materials in this community. Powers community search."
+    )
 
     class Meta:
         ordering = ['name']

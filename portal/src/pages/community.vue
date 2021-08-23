@@ -22,9 +22,9 @@
               <template slot="header-info">
                 <h2>{{ $t('Collections-2') }}</h2>
                 <button
-                  v-if="!isLoading && community_info.search_query"
+                  v-if="!isLoading && community_info.publisher"
                   class="button"
-                  @click="goToCommunitySearch(community_info.search_query)"
+                  @click="goToCommunitySearch()"
                 >
                   {{ $t('Search-in-community-materials') }}
                 </button>
@@ -124,10 +124,12 @@ export default {
     this.$store.dispatch('getCommunityCollections', community)
   },
   methods: {
-    goToCommunitySearch(searchQuery) {
-      const searchRoute = localePath('materials-search')
-      const searchLocation = this.$router.resolve(searchRoute)
-      this.$router.push(searchLocation.href + searchQuery)
+    goToCommunitySearch() {
+      const searchRoute = localePath({
+        name: 'communities-search',
+        params: { filterId: this.community_info.publisher }
+      })
+      this.$router.push(searchRoute)
     }
   }
 }

@@ -65,6 +65,18 @@ class SearchSchema(AutoSchema):
                     }
                 }
             ]
+        if "author" in path:
+            return [
+                {
+                    "name": "author_name",
+                    "in": "query",
+                    "required": True,
+                    "description": "The name of the author you want documents for.",
+                    'schema': {
+                        'type': 'string',
+                    }
+                }
+            ]
         return super()._get_path_parameters(path, method)
 
     def get_operation(self, path, method):

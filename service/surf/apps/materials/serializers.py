@@ -76,6 +76,17 @@ class SimilaritySerializer(serializers.Serializer):
     records_total = serializers.IntegerField(read_only=True)
 
 
+class AuthorSuggestionSerializer(serializers.Serializer):
+    """
+    Serializer for author suggestions request
+    """
+
+    author_name = serializers.CharField(write_only=True, required=True)
+
+    results = SearchResultSerializer(many=True, read_only=True)
+    records_total = serializers.IntegerField(read_only=True)
+
+
 class MaterialsRequestSerializer(serializers.Serializer):
     """
     Serializer for materials request

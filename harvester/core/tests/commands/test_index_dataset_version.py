@@ -33,7 +33,7 @@ class ElasticSearchClientTestCase(TestCase):
             "copyright", "language", "keywords", "mime_type", "suggest_completion", "_id",
             "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "is_part_of", "preview_path",
             "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_types",
-            "text", "suggest_phrase", "research_object_type", "research_themes"
+            "text", "suggest_phrase", "research_object_type", "research_themes", "parties"
         }
         has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]
         if not has_text:
@@ -64,7 +64,7 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -137,7 +137,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -165,6 +165,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
@@ -204,7 +207,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         # Index normally and check that the new version still holds all documents
         call_command("index_dataset_version", "--dataset=test")
@@ -214,6 +217,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "002")
         # Index the previous version and check we only get the modified documents
@@ -224,10 +230,13 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")
-            if language == "nl":
+            if language != "en":
                 self.assertEqual(len(docs), 1)
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
         self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
@@ -249,7 +258,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         expected_doc_count = {
             "en": 7,
             "nl": 2,
-            "unk": 2
+            "unk": 3
         }
         expected_index_configuration = {
             "en": ElasticIndex.get_index_config("en"),
@@ -277,6 +286,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
+                if doc["_id"] == "surfsharekit:oai:surfsharekit.nl:5af0e26f-c4d2-4ddd-94ab-7dd0bd531751":
+                    self.assertEqual(doc["authors"], [{"name": "The Extension Man"}],
+                                     "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 

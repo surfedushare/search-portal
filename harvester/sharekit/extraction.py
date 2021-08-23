@@ -25,11 +25,19 @@ class SharekitMetadataExtraction(object):
         files = node["attributes"]["files"] or []
         links = node["attributes"]["links"] or []
         output = [
-            [file["resourceMimeType"], file["url"], file["fileName"]]
+            {
+                "mime_type": file["resourceMimeType"],
+                "url": file["url"],
+                "title": file["fileName"]
+            }
             for file in files if file["resourceMimeType"] and file["url"]
         ]
         output += [
-            ["text/html", link["url"], link.get("urlName", None) or f"URL {ix+1}"]
+            {
+                "mime_type": "text/html",
+                "url": link["url"],
+                "title": link.get("urlName", None) or f"URL {ix+1}"
+            }
             for ix, link in enumerate(links)
         ]
         return output
@@ -39,15 +47,14 @@ class SharekitMetadataExtraction(object):
         files = cls.get_files(node)
         if not files:
             return
-        url = files[0][1]
-        return url.strip()
+        return files[0]["url"].strip()
 
     @classmethod
     def get_mime_type(cls, node):
         files = cls.get_files(node)
         if not files:
             return
-        return files[0][0]
+        return files[0]["mime_type"]
 
     @classmethod
     def get_technical_type(cls, node):
@@ -57,10 +64,10 @@ class SharekitMetadataExtraction(object):
         files = cls.get_files(node)
         if not files:
             return
-        technical_type = settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(files[0][0], None)
+        technical_type = settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(files[0]["mime_type"], None)
         if technical_type:
             return technical_type
-        file_url = files[0][1]
+        file_url = files[0]["url"]
         if not file_url:
             return
         mime_type, encoding = guess_type(file_url)
@@ -91,7 +98,10 @@ class SharekitMetadataExtraction(object):
     def get_authors(cls, node):
         authors = node["attributes"]["authors"] or []
         return [
-            author["person"]["name"]
+            {
+               "name": author["person"]["name"],
+               "email": author["person"]["email"]
+            }
             for author in authors
         ]
 
@@ -210,4 +220,5 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "doi": "$.attributes.doi",
     "research_object_type": "$.attributes.typeResearchObject",
     "research_themes": SharekitMetadataExtraction.get_research_themes,
+    "parties": lambda node: [],
 }

@@ -1,3 +1,6 @@
+project:
+  prefix: "pol"
+
 secrets:
   postgres:
     password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:postgres"

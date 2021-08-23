@@ -113,12 +113,13 @@ def print_available_images(ctx, target):
     name = target_info["name"]
 
     # Start boto
-    session = boto3.Session(profile_name="pol-prod")
+    session = boto3.Session(profile_name=f"{ctx.config.project.prefix}-prod")
     ecr = session.client("ecr")
 
     # List images
+    production_account = "017973353230" if ctx.config.project.prefix != "nppo" else "870512711545"
     response = ecr.list_images(
-        registryId="017973353230",
+        registryId=production_account,
         repositoryName=name,
     )
 

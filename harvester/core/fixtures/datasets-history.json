@@ -81,6 +81,77 @@
         }
     },
     {
+        "model": "core.extension",
+        "pk": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+        "fields": {
+            "created_at": "2021-02-17T10:53:24.387Z",
+            "modified_at": "2021-02-17T10:53:24.387Z",
+            "collection": null,
+            "identity": null,
+            "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+            "is_parent": false,
+            "properties": {
+                "external_id": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+                "authors": [
+                    {"name": "The Extension Man"}],
+                "keywords": [
+                    {"label": "exercise"},
+                    {"label": "extended"}
+                ],
+                "themes": [
+                    {"label": "theme"},
+                    {"label": "extended"}
+                ],
+                "children": [
+                    "part",
+                    "child"
+                ],
+                "parents": [
+                    "parent"
+                ],
+                "parties": [
+                    {"name": "The Extension Party"}
+                ]
+            }
+        }
+    },
+    {
+        "model": "core.extension",
+        "pk": "custom-extension",
+        "fields": {
+            "created_at": "2021-02-17T10:53:24.387Z",
+            "modified_at": "2021-02-17T10:53:24.387Z",
+            "collection": null,
+            "identity": null,
+            "reference": "custom-extension",
+            "is_parent": true,
+            "properties": {
+                "external_id": "custom-extension",
+                "title": "New! New! New! Extended titles!",
+                "authors": [
+                    {"name": "The Extension Man"}],
+                "keywords": [
+                    {"label": "exercise"},
+                    {"label": "extended"}
+                ],
+                "themes": [
+                    {"label": "theme"},
+                    {"label": "extended"}
+                ],
+                "children": [
+                    "part",
+                    "child"
+                ],
+                "parents": [
+                    "parent"
+                ],
+                "parties": [
+                    {"name": "The Extension Party"}
+                ]
+            }
+        }
+    },
+    {
         "model": "core.document",
         "pk": 222317,
         "fields": {
@@ -89,6 +160,7 @@
             "collection": 171,
             "identity": null,
             "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
+            "extension": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
             "pipeline": {
                 "metadata": {
                     "success": true,
@@ -98,7 +170,7 @@
             },
             "properties": {
                 "research_object_type": null,
-                "research_themes": [],
+                "research_themes": ["research"],
                 "doi": null,
                 "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7",
                 "text": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEXERCISES 5\n· Sing both these pentatonic scales on the same beginning tone;\n· Figure out how to write both these pentatonic scales, beginning on the other 6 basic tones.\n\n",
@@ -140,9 +212,13 @@
                 "copyright": "cc-by-nc-40",
                 "technical_type": "document",
                 "material_types": ["kennisoverdracht"],
-                "has_parts": [],
+                "has_parts": [
+                    "part"
+                ],
                 "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "is_part_of": [],
+                "is_part_of": [
+                    "part"
+                ],
                 "publishers": [
                     "SURFnet"
                 ],
@@ -181,7 +257,7 @@
             },
             "properties": {
                 "research_object_type": null,
-                "research_themes": [],
+                "research_themes": ["research"],
                 "doi": null,
                 "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
                 "text": null,
@@ -225,9 +301,13 @@
                 "copyright": "cc-by-40",
                 "technical_type": "website",
                 "material_types": [],
-                "has_parts": [],
+                "has_parts": [
+                    "part"
+                ],
                 "mime_type": "text/html",
-                "is_part_of": [],
+                "is_part_of": [
+                    "part"
+                ],
                 "publishers": [
                     "SURFnet"
                 ],
@@ -243,7 +323,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -290,9 +371,9 @@
                 "ideas": [],
                 "title": "Didactiek van macro-meso-micro denken bij scheikunde",
                 "authors": [
-                    "Ruud Kok",
-                    "Astrid Bulte",
-                    "Hans Poorthuis"
+                    {"name": "Ruud Kok"},
+                    {"name": "Astrid Bulte"},
+                    {"name": "Hans Poorthuis"}
                 ],
                 "keywords": [
                     "correspondentie",
@@ -348,7 +429,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -382,7 +464,7 @@
                 "ideas": [],
                 "title": "1. A first exploration of big history",
                 "authors": [
-                    "Esther Quaedackers"
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "mooc",
@@ -438,7 +520,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -475,7 +558,7 @@
                 "ideas": [],
                 "title": "01. How can we summarize 13.8 billion years in one brief course?",
                 "authors": [
-                    "Esther Quaedackers"
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "mooc"
@@ -525,7 +608,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -562,8 +646,8 @@
                 "ideas": [],
                 "title": "02. How big is big history?",
                 "authors": [
-                    "Esther Quaedackers",
-                    "Robbert Dijkgraaf"
+                    {"name": "Esther Quaedackers"},
+                    {"name": "Robbert Dijkgraaf"}
                 ],
                 "keywords": [
                     "mooc",
@@ -614,7 +698,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -651,7 +736,7 @@
                 "ideas": [],
                 "title": "03. What are little big histories?",
                 "authors": [
-                    "Esther Quaedackers"
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "mooc",
@@ -702,7 +787,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,
@@ -786,7 +872,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -817,7 +904,7 @@
                 "ideas": [],
                 "title": "4. Macro: Economic Performance & Employment",
                 "authors": [
-                    "Ning Ding"
+                    {"name": "Ning Ding"}
                 ],
                 "keywords": [
                     "macroeconomics"
@@ -874,7 +961,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -916,7 +1004,7 @@
                 "ideas": [],
                 "title": "09 Changes in the Labour Market",
                 "authors": [
-                    "Ning Ding"
+                    {"name": "Ning Ding"}
                 ],
                 "keywords": [
                     "economics",
@@ -970,7 +1058,8 @@
                 "lom_educational_levels": [
                     "HBO"
                 ],
-                "lowest_educational_level": 2
+                "lowest_educational_level": 2,
+                "parties": []
             },
             "dataset_version": 1
         }
@@ -1004,8 +1093,8 @@
                 "ideas": [],
                 "title": "04. Can big history reunify all our knowledge?",
                 "authors": [
-                    "Fred Spier",
-                    "Esther Quaedackers"
+                    {"name": "Fred Spier"},
+                    {"name": "Esther Quaedackers"}
                 ],
                 "keywords": [
                     "Video",
@@ -1057,7 +1146,8 @@
                 "lom_educational_levels": [
                     "WO"
                 ],
-                "lowest_educational_level": 3
+                "lowest_educational_level": 3,
+                "parties": []
             },
             "collection": 171,
             "identity": null,

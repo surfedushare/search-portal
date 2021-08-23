@@ -75,11 +75,6 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         assertion = assertion or self.assertEqual
         if settings.PROJECT == "edusources":
             pass
-        elif key == "authors":
-            expectation = [
-                {"name": name}
-                for name in expectation
-            ]
         elif key == "publishers":
             expectation = [
                 {"name": name}
@@ -396,7 +391,11 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             'publish_datetime',
             datetime(year=2017, month=4, day=16, hour=22, minute=35, second=9)
         )
-        self.assert_value_from_record(material, 'authors', ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"])
+        self.assert_value_from_record(material, 'authors', [
+            {"name": "Michel van Ast"},
+            {"name": "Theo van den Bogaart"},
+            {"name": "Marc de Graaf"},
+        ])
         self.assert_value_from_record(material, 'keywords', ["nerds"])
         self.assert_value_from_record(material, 'disciplines', [
             "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",  # math
@@ -421,7 +420,6 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         material = result['records'][0]
         self.assertEqual(material['external_id'], "wikiwijs:123")
 
-    @skipIf(settings.PROJECT == "nppo", "Temporarily skipped until Edusources uses objects for authors")
     def test_search_by_author(self):
         author = "Michel van Ast"
         expected_record_count = 4
@@ -437,7 +435,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             filters=[{"external_id": "lom.lifecycle.contribute.author", "items": [author]}]
         )
         for record in search_author['records']:
-            self.assertIn(author, record['authors'])
+            authors = [author["name"] for author in self.get_value_from_record(record, 'authors')]
+            self.assertIn(author, authors)
         self.assertEqual(search_author['recordcount'], expected_record_count)
 
     def test_search_did_you_mean(self):
@@ -493,3 +492,12 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 english_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
                 "english"
             )
+
+    def test_author_suggestions(self):
+        suggestions = self.instance.author_suggestions("Theo")
+        author_expectation = "Theo van den Bogaart"
+        self.assertEqual(suggestions["records_total"], 3)
+        for result in suggestions["results"]:
+            author_names = [author["name"] for author in self.get_value_from_record(result, "authors")]
+            self.assertNotIn(author_expectation, author_names)
+            self.assertIn(author_expectation, result["description"])

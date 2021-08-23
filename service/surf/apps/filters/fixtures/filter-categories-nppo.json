@@ -370,7 +370,7 @@
         "updated_at": "2021-08-01T14:56:37.881Z",
         "deleted_from_edurep_at": null,
         "title_translations": "d78187bf-b30e-4b9e-929f-67d408f9943b",
-        "external_id": "authors.keyword",
+        "external_id": "authors.name.keyword",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,

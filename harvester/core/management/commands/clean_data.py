@@ -36,8 +36,8 @@ class Command(BaseCommand):
             model = apps.get_model(resource_model)
             for resource in model.objects.filter(purge_at__lte=purge_time):
                 document_filter = {
-                    f"properties__pipeline__{pipeline_phase}__resource__0": resource_model.lower(),
-                    f"properties__pipeline__{pipeline_phase}__resource__1": resource.id
+                    f"properties__pipeline__{pipeline_phase}__resource": resource_model.lower(),
+                    f"properties__pipeline__{pipeline_phase}__id": resource.id
                 }
                 if not Document.objects.filter(**document_filter).exists():
                     resource.delete()

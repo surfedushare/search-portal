@@ -4,14 +4,15 @@ NL_MATERIAL = {
         "text": "Leermateriaal over wiskunde en didactiek op de universiteit.",
         "url": "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT",
         "files": [
-            [
-                "application/x-zip",
-                "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT",
-                "Wiskundedidactiek_en_ICT"
-            ]
+            [{
+                "mime_type": "application/x-zip",
+                "url": "https://maken.wikiwijs.nl/91192/Wiskundedidactiek_en_ICT",
+                "title": "Wiskundedidactiek_en_ICT"
+            }]
         ],
         "description":
-        "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op wiskundedidactiek en ICT",
+        "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op wiskundedidactiek en ICT "
+        "met Theo van den Bogaart",
         "language": "nl",
         "title_plain": "Wiskunde en Didactiek",
         "text_plain": "Leermateriaal over wiskunde en didactiek op de universiteit.",
@@ -20,7 +21,7 @@ NL_MATERIAL = {
         "lom_educational_levels": ["HBO"],
         "publisher_date": "2017-04-16T22:35:09+02:00",
         "keywords": ["nerds"],
-        "authors": ["Michel van Ast", "Theo van den Bogaart", "Marc de Graaf"],
+        "authors": [{"name": "Michel van Ast"}, {"name": "Theo van den Bogaart"}, {"name": "Marc de Graaf"}],
         "publishers": ["Wikiwijs Maken"],
         "disciplines": ["7afbb7a6-c29b-425c-9c59-6f79c845f5f0"],
         "harvest_source": "wikiwijsmaken",
@@ -38,14 +39,15 @@ NL_MATERIAL = {
         "text": "Leermateriaal over biologie en didactiek op de universiteit.",
         "url": "https://maken.wikiwijs.nl/91192/Biologiedidactiek_en_ICT",
         "files": [
-            [
-                "application/x-zip",
-                "https://maken.wikiwijs.nl/91192/Biologiedidactiek_en_ICT",
-                "Biologiedidactiek_en_ICT"
-            ]
+            [{
+                "mime_type": "application/x-zip",
+                "url": "https://maken.wikiwijs.nl/91192/Biologiedidactiek_en_ICT",
+                "title": "Biologiedidactiek_en_ICT"
+            }]
         ],
         "description":
-            "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op biologiedidactiek en ICT",
+            "Materiaal voor lerarenopleidingen en professionaliseringstrajecten gericht op biologiedidactiek en ICT "
+            "met Theo van den Bogaart",
         "language": "nl",
         "title_plain": "Biologie en Didactiek",
         "text_plain": "Leermateriaal over biologie en didactiek op de universiteit.",
@@ -54,7 +56,7 @@ NL_MATERIAL = {
         "lom_educational_levels": ["HBO"],
         "publisher_date": "2017-04-16T22:35:09+02:00",
         "keywords": [],
-        "authors": ["Michel van Ast"],
+        "authors": [{"name": "Michel van Ast"}],
         "publishers": ["Wikiwijs Maken"],
         "disciplines": [],
         "harvest_source": "wikiwijsmaken",

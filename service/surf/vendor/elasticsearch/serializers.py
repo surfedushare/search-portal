@@ -5,6 +5,8 @@ import os
 from django.conf import settings
 from rest_framework import serializers
 
+from project.serializers import PersonSerializer, OrganisationSerializer, LabelSerializer
+
 
 PREVIEW_SMALL = "preview-200x150.png"
 PREVIEW_ORIGINAL = "preview.png"
@@ -73,22 +75,6 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
 
     def get_preview_url(self, obj):
         return get_preview_absolute_uri(obj["preview_path"], PREVIEW_ORIGINAL)
-
-
-class PersonSerializer(serializers.Serializer):
-
-    name = serializers.CharField()
-    email = serializers.CharField(required=False)
-
-
-class OrganisationSerializer(serializers.Serializer):
-
-    name = serializers.CharField()
-
-
-class LabelSerializer(serializers.Serializer):
-
-    label = serializers.CharField()
 
 
 class RelationSerializer(serializers.Serializer):

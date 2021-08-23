@@ -18,10 +18,11 @@
             {{ getTitleTranslation(theme, $i18n.locale) }}
           </h2>
           <Search
-            v-model="search"
+            v-if="search"
+            v-model="search.search_text"
             class="theme__info_search"
             :placeholder="$t('Search-in-theme')"
-            active-category-external-id="lom.technical.format"
+            @onSearch="onSearch"
           />
         </div>
       </div>
@@ -96,6 +97,7 @@ import Materials from '~/components/Materials'
 import Disciplines from '~/components/Disciplines'
 import Collections from '~/components/Collections'
 import Error from '~/components/error'
+import { generateSearchMaterialsQuery } from '@/components/_helpers'
 
 export default {
   name: 'Theme',
@@ -142,8 +144,6 @@ export default {
             theme.external_id
           )
           themeCategory.selected = true
-
-          this.theme = theme
           this.$store.dispatch('searchMaterials', {
             page_size: 4,
             search_text: '',
@@ -168,6 +168,21 @@ export default {
     this.$store.dispatch('getThemeCollections', themeId)
   },
   methods: {
+    onSearch() {
+      this.search = {
+        search_text: this.search.search_text,
+        filters: { 'custom_theme.id': [this.theme.external_id] },
+        page_size: 10,
+        page: 1
+      }
+      this.$store.dispatch('searchMaterials', this.search)
+      const location = generateSearchMaterialsQuery(
+        this.search,
+        'themes-search'
+      )
+      location.params = { filterId: this.theme.external_id }
+      this.$router.push(location)
+    },
     getTitleTranslation(theme, language) {
       if (
         !_.isNil(theme.title_translations) &&

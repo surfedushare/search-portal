@@ -168,7 +168,8 @@ class CommunitySerializer(serializers.ModelSerializer):
         fields = ('id', 'external_id', 'members_count',
                   'collections_count', 'materials_count', 'publish_status',
                   'community_details', 'community_details_update',
-                  'logo_nl', 'logo_en', 'featured_image_nl', 'featured_image_en', 'deleted_logos', 'search_query',)
+                  'logo_nl', 'logo_en', 'featured_image_nl', 'featured_image_en', 'deleted_logos', 'search_query',
+                  'publisher')
 
 
 class CommunityDisciplineSerializer(MpttFilterItemSerializer):
