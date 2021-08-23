@@ -6,6 +6,8 @@ from sharekit.extraction import SHAREKIT_EXTRACTION_OBJECTIVE, SharekitMetadataE
 
 
 def migrate_objective_to_extraction_mapping(apps, schema_editor):
+    if settings.PROJECT != "nppo":
+        return
     ExtractionMapping = apps.get_model("core.ExtractionMapping")
     ExtractionMethod = apps.get_model("core.ExtractionMethod")
     MethodExtractionField = apps.get_model("core.MethodExtractionField")
