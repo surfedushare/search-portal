@@ -76,6 +76,7 @@
               :selected-filters="search.filters"
               :default-filter="$route.params.filterId"
               :materials="materials"
+              @reset="onSearch"
             />
           </div>
         </div>

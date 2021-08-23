@@ -78,18 +78,7 @@ export default {
       this.$emit('input', searchRequest) // actual search is done by the parent page
     },
     resetFilter() {
-      this.$router.push(
-        this.generateSearchMaterialsQuery({
-          filters: [],
-          search_text: this.materials.search_text
-        }),
-        () => {
-          location.reload()
-        },
-        () => {
-          location.reload()
-        }
-      )
+      this.$emit('reset')
     },
     datesRangeFilter() {
       return this.selectedFilters[this.publisherDateExternalId] || [null, null]
