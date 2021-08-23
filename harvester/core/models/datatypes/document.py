@@ -44,6 +44,7 @@ class Document(DocumentBase):
             "language": self.get_language(),
             'suggest_completion': title.split(" ") if title else [],
             'harvest_source': self.collection.name,
+            'text': text,
             'suggest_phrase': text,
             'material_types': material_types
         }
@@ -73,6 +74,9 @@ class Document(DocumentBase):
     def to_search(self):
         elastic_base = copy(self.properties)
         elastic_base.pop("language")
+        text = elastic_base.pop("text", None)
+        if text and len(text) >= 1000000:
+            text = " ".join(text.split(" ")[:10000])
         if self.extension:
             extension_details = self.get_extension_extras()
             elastic_base.update(extension_details)
@@ -82,7 +86,7 @@ class Document(DocumentBase):
         elastic_details = self.get_search_document_extras(
             self.properties["external_id"],
             self.properties["title"],
-            self.properties.get("text", None),
+            text,
             material_types=material_types
         )
         elastic_details.update(elastic_base)
