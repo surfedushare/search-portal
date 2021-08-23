@@ -52,6 +52,7 @@ class ExtractionMapping(models.Model):
     name = models.CharField(max_length=100, default="develop")
     repository = models.CharField(max_length=50, choices=REPOSITORY_CHOICES)
     root = models.CharField(max_length=256, default="$")
+    is_active = models.BooleanField(default=True)
 
     method_fields = models.ManyToManyField(MethodExtractionField, related_name="+", through=ObjectiveProperty)
     json_fields = models.ManyToManyField(JSONExtractionField, related_name="+", through=ObjectiveProperty)
