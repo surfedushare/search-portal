@@ -18,12 +18,12 @@
         $t('Not-found-button')
       }}</router-link>
     </div>
-    <div v-show="false" class="main__materials">
+    <div v-if="materials.records.length" class="main__materials">
       <div class="center_block">
         <h2 class="main__materials_title">
           {{ $t('Also-interesting-for-you') }}
         </h2>
-        <Materials v-if="materials" :materials="materials" :items-length="4" />
+        <Materials :materials="materials" :items-length="4" />
       </div>
     </div>
   </section>
@@ -47,11 +47,14 @@ export default {
   data() {
     return {
       collections: [],
+      materials: {
+        records: []
+      },
       materialLoaded: false
     }
   },
   computed: {
-    ...mapGetters(['material', 'materials']),
+    ...mapGetters(['material']),
     communities() {
       // Get communities from collections
       const communities = this.collections
@@ -75,6 +78,19 @@ export default {
         .dispatch('getMaterial', {
           id: externalId,
           params: { count_view: true }
+        })
+        .then(material => {
+          const payload = {
+            external_id: this.$route.params.id,
+            language: material.language
+          }
+          this.$store
+            .dispatch('getSimilarMaterials', payload)
+            .then(materials => {
+              materials.records = materials.results
+              this.materials = materials
+            })
+          return material
         })
         .finally(() => {
           this.materialLoaded = true
@@ -104,6 +120,9 @@ export default {
       flex-direction: column-reverse;
     }
   }
+}
+.main__materials {
+  margin: 60px 0 0;
 }
 .main__materials_title {
   margin: 0 0 32px;
