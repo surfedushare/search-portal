@@ -122,6 +122,7 @@ export default {
       if (validateID(id)) {
         const { data: communityInfo } = await axios.get(`communities/${id}/`)
         commit('SET_COMMUNITY', communityInfo)
+        return communityInfo
       } else {
         $log.error('Validate error: ', id)
       }

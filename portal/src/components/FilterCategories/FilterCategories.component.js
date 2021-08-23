@@ -15,7 +15,7 @@ export default {
       }
     }
   },
-  props: ['filterCategories', 'materials', 'selectedFilters'],
+  props: ['materials', 'defaultFilter', 'selectedFilters'],
   methods: {
     generateSearchMaterialsQuery,
     hasVisibleChildren(category) {
@@ -27,7 +27,7 @@ export default {
       })
     },
     childExternalIds(categoryId, itemId) {
-      const category = this.filterCategories.find(
+      const category = this.materials.filter_categories.find(
         category => category.external_id === categoryId
       )
       const item = category.children.find(item => item.external_id === itemId)
@@ -72,22 +72,13 @@ export default {
         filters: { ...filters }
       }
       // Execute search
-      this.$router.push(this.generateSearchMaterialsQuery(searchRequest))
+      this.$router.push(
+        this.generateSearchMaterialsQuery(searchRequest, this.$route.name)
+      )
       this.$emit('input', searchRequest) // actual search is done by the parent page
     },
     resetFilter() {
-      this.$router.push(
-        this.generateSearchMaterialsQuery({
-          filters: [],
-          search_text: this.materials.search_text
-        }),
-        () => {
-          location.reload()
-        },
-        () => {
-          location.reload()
-        }
-      )
+      this.$emit('reset')
     },
     datesRangeFilter() {
       return this.selectedFilters[this.publisherDateExternalId] || [null, null]
@@ -98,8 +89,20 @@ export default {
   },
   computed: {
     filterableCategories() {
-      const visibleCategories = this.filterCategories.filter(
-        category => !category.is_hidden
+      if (!this.materials || !this.materials.filter_categories) {
+        return []
+      }
+
+      // remove all filters that should not be shown to the users
+      let defaultFilterItem = {}
+      if (this.defaultFilter) {
+        defaultFilterItem =
+          this.$store.getters.getCategoryById(this.defaultFilter) || {}
+      }
+      const visibleCategories = this.materials.filter_categories.filter(
+        category =>
+          !category.is_hidden &&
+          category.external_id !== defaultFilterItem.searchId
       )
 
       // aggregate counts to the highest level
