@@ -21,19 +21,7 @@
         requestInterceptor: (request) => {
             request.headers['X-CSRFToken'] = "{{ csrf_token }}"
             return request;
-        }//,
-        {#operationsSorter: (first, second) => {#}
-        {#    const methodOrder = {'get': '0', 'post': '1', 'patch': '2', 'put': '3', 'delete': '4'};#}
-        {#    const endpointOrder = {#}
-        {#        '/api/v1/search/': '0',#}
-        {#        '/api/v1/search/filter-categories/': '1',#}
-        {#        '/api/v1/search/autocomplete/': '2'#}
-        {#    }#}
-        {#    if (first.get('path') === second.get('path')) {#}
-        {#        return methodOrder[first.get('method')].localeCompare(methodOrder[second.get('method')])#}
-        {#    }#}
-        {#    return endpointOrder[first.get('path')].localeCompare(endpointOrder[second.get('path')])#}
-        {#}#}
+        }
     })
 </script>
 </body>
