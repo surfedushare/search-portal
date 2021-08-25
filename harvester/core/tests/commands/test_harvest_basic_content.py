@@ -36,7 +36,7 @@ class TestBasicHarvest(TestCase):
         # Checking whether end result of the command returned by "handle" matches expectations.
         # The heavy lifting is done by the HttpPipelineProcessor and we check its usage.
         call_command("harvest_basic_content", "--dataset=test")
-        pipeline_processor_target.assert_called_once_with(
+        pipeline_processor_target.assert_any_call(
             {
                 "pipeline_app_label": "core",
                 "pipeline_phase": "tika",
@@ -57,11 +57,39 @@ class TestBasicHarvest(TestCase):
                 }
             }
         )
-        self.assertEqual(processor_mock_result.call_count, 1)
-        args, kwargs = processor_mock_result.call_args
-        document_queryset = args[0]
-        self.assertEqual(document_queryset.count(), self.collection.documents.count())
-        self.assertIs(document_queryset.model, Document)
+        pipeline_processor_target.assert_any_call(
+            {
+                "pipeline_app_label": "core",
+                "pipeline_phase": "extruct",
+                "pipeline_depends_on": "metadata",
+                "batch_size": 100,
+                "asynchronous": False,
+                "retrieve_data": {
+                    "resource": "core.extructresource",
+                    "method": "get",
+                    "args": ["$.url"],
+                    "kwargs": {},
+                },
+                "contribute_data": {
+                    "to_property": "video",
+                    "objective": {
+                        "@": "$.microdata",
+                        "duration": "$.properties.duration",
+                        "embed_url": "$.properties.embedUrl"
+                    }
+                }
+            }
+        )
+        self.assertEqual(processor_mock_result.call_count, 2)
+        document_count_expectations = (
+            self.collection.documents.count(),
+            self.collection.documents.filter(properties__from_youtube=True).count(),
+        )
+        for arguments, expectation in zip(processor_mock_result.call_args_list, document_count_expectations):
+            args, kwargs = arguments
+            document_queryset = args[0]
+            self.assertEqual(document_queryset.count(), expectation)
+            self.assertIs(document_queryset.model, Document)
         # Last but not least we check that the correct EdurepHarvest objects have indeed progressed
         # to prevent repetitious harvests.
         surf_harvest = Harvest.objects.get(source__spec="edusources")
