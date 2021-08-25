@@ -88,7 +88,10 @@ export default {
       } finally {
         this.materialLoaded = true
       }
-      const collections = await this.$store.dispatch('checkMaterialInCollection', externalId)
+      const collections = await this.$store.dispatch(
+        'checkMaterialInCollection',
+        externalId
+      )
       this.collections = collections.results
     }
   }
