@@ -31,13 +31,15 @@ class Command(PipelineCommand):
         self.logger.start("basic")
 
         # Process files with Tika to extract data from content
-        self.logger.start("basic.tika")
+        self.logger.start("basic.tika+extruct")
         dataset_version = DatasetVersion.objects.get_latest_version(dataset_name=dataset_name)
+        results = []
         for harvest in harvest_queryset:
             collection = dataset_version.collection_set.filter(name=harvest.source.spec).last()
             if not collection:
                 continue
-            processor = HttpPipelineProcessor({
+
+            tika_processor = HttpPipelineProcessor({
                 "pipeline_app_label": "core",
                 "pipeline_phase": "tika",
                 "pipeline_depends_on": "metadata",
@@ -56,12 +58,36 @@ class Command(PipelineCommand):
                     }
                 }
             })
-            result = processor(collection.documents.all())
-            if asynchronous and result is not None:
-                while not result.ready():
-                    time.sleep(10)
+            results.append(tika_processor(collection.documents.all()))
 
-        self.logger.end("basic.tika")
+            extruct_processor = HttpPipelineProcessor({
+                "pipeline_app_label": "core",
+                "pipeline_phase": "extruct",
+                "pipeline_depends_on": "metadata",
+                "batch_size": options["batch_size"],
+                "asynchronous": asynchronous,
+                "retrieve_data": {
+                    "resource": "core.extructresource",
+                    "method": "get",
+                    "args": ["$.url"],
+                    "kwargs": {},
+                },
+                "contribute_data": {
+                    "to_property": "video",
+                    "objective": {
+                        "@": "$.microdata",
+                        "duration": "$.properties.duration",
+                        "embed_url": "$.properties.embedUrl"
+                    }
+                }
+            })
+            results.append(extruct_processor(collection.documents.filter(properties__from_youtube=True)))
+
+        if asynchronous and len(results):
+            while not all([result.ready() for result in results if result]):
+                time.sleep(10)
+
+        self.logger.end("basic.tika+extruct")
 
         harvest_queryset.update(stage=HarvestStages.BASIC)
 
