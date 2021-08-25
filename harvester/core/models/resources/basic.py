@@ -6,6 +6,7 @@ from botocore.exceptions import ClientError
 from urlobject import URLObject
 import logging
 import extruct
+from json import JSONDecodeError
 
 from django.conf import settings
 from django.db import models
@@ -124,13 +125,22 @@ class HttpTikaResource(MicroServiceResource):
 class ExtructResource(URLResource):
 
     @property
+    def success(self):
+        success = super().success
+        content_type, data = self.content
+        return success and bool(data)
+
+    @property
     def content(self):
-        if self.success:
+        if super().success:
             content_type = self.head.get("content-type", "unknown/unknown").split(';')[0]
             if content_type != "text/html":
                 return None, None
-            result = extruct.extract(self.body)
-            return "application/json", result  # TODO: support microdata/html
+            try:
+                result = extruct.extract(self.body)
+                return "application/json", result
+            except JSONDecodeError:
+                pass
         return None, None
 
 
