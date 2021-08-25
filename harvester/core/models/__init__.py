@@ -1,7 +1,7 @@
 from .ims import CommonCartridge
 
 from .resources.harvest import HarvestHttpResource
-from .resources.basic import FileResource, TikaResource, HttpTikaResource
+from .resources.basic import FileResource, TikaResource, HttpTikaResource, ExtructResource
 from .resources.youtube_dl import YouTubeDLResource
 from .resources.chrome_screenshot import ChromeScreenshotResource
 from .resources.youtube_thumbnail import YoutubeThumbnailResource
