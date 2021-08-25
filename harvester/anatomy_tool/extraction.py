@@ -6,8 +6,6 @@ from mimetypes import guess_type
 from django.conf import settings
 from django.utils.text import slugify
 
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
-
 
 class AnatomyToolExtraction(object):
 
