@@ -69,6 +69,7 @@ export default {
         decodeAuthor(material)
         commit('SET_MATERIAL', material)
         commit('SET_MATERIAL_LOADING', false)
+        return material
       } else {
         return await axios.get('materials/', { params }).then(res => res.data)
       }
@@ -177,6 +178,19 @@ export default {
             }
           })
           .then(res => res.data)
+      } else {
+        $log.error('Validate error: ', external_id)
+      }
+    },
+    async getSimilarMaterials(context, { external_id, language }) {
+      if (validateIDString(external_id)) {
+        const response = await axios.get('suggestions/similarity/', {
+          params: {
+            external_id: external_id,
+            language: language
+          }
+        })
+        return response.data
       } else {
         $log.error('Validate error: ', external_id)
       }
