@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { Duration } from 'luxon'
 import { mapGetters } from 'vuex'
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection'
 import AddCollection from './../../Popup/AddCollection'
@@ -302,6 +303,9 @@ export default {
       // Dealing with a multi file scenario. We'll open the modal instead of navigating away.
       event.preventDefault()
       this.showDownloadPopup = true
+    },
+    parseVideoDuration(duration) {
+      return Duration.fromISO(duration).toFormat('h:mm:ss').padStart(8, '0')
     }
   },
   computed: {
