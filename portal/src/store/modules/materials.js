@@ -184,14 +184,13 @@ export default {
     },
     async getSimilarMaterials(context, { external_id, language }) {
       if (validateIDString(external_id)) {
-        return await axios
-          .get('suggestions/similarity/', {
-            params: {
-              external_id: external_id,
-              language: language
-            }
-          })
-          .then(res => res.data)
+        const response = await axios.get('suggestions/similarity/', {
+          params: {
+            external_id: external_id,
+            language: language
+          }
+        })
+        return response.data
       } else {
         $log.error('Validate error: ', external_id)
       }

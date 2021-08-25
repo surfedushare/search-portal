@@ -73,33 +73,23 @@ export default {
     next()
   },
   methods: {
-    updateMaterial(externalId) {
-      this.$store
-        .dispatch('getMaterial', {
+    async updateMaterial(externalId) {
+      try {
+        const material = await this.$store.dispatch('getMaterial', {
           id: externalId,
           params: { count_view: true }
         })
-        .then(material => {
-          const payload = {
-            external_id: this.$route.params.id,
-            language: material.language
-          }
-          this.$store
-            .dispatch('getSimilarMaterials', payload)
-            .then(materials => {
-              materials.records = materials.results
-              this.materials = materials
-            })
-          return material
+        const materials = await this.$store.dispatch('getSimilarMaterials', {
+          external_id: this.$route.params.id,
+          language: material.language
         })
-        .finally(() => {
-          this.materialLoaded = true
-        })
-      this.$store
-        .dispatch('checkMaterialInCollection', externalId)
-        .then(collections => {
-          this.collections = collections.results
-        })
+        materials.records = materials.results
+        this.materials = materials
+      } finally {
+        this.materialLoaded = true
+      }
+      const collections = await this.$store.dispatch('checkMaterialInCollection', externalId)
+      this.collections = collections.results
     }
   }
 }
