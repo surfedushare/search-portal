@@ -305,7 +305,9 @@ export default {
       this.showDownloadPopup = true
     },
     parseVideoDuration(duration) {
-      return Duration.fromISO(duration).toFormat('h:mm:ss').padStart(8, '0')
+      return Duration.fromISO(duration)
+        .toFormat('h:mm:ss')
+        .padStart(8, '0')
     }
   },
   computed: {
