@@ -13,7 +13,7 @@
 },
 {
     "model": "core.harvestsource",
-    "pk": 8,
+    "pk": 1,
     "fields": {
         "name": "Edurep Delen",
         "repository": "edurep.EdurepOAIPMH",
@@ -28,7 +28,7 @@
 },
 {
     "model": "core.harvestsource",
-    "pk": 9,
+    "pk": 2,
     "fields": {
         "name": "Library 4 Learning",
         "repository": "edurep.EdurepOAIPMH",
@@ -43,7 +43,7 @@
 },
 {
     "model": "core.harvestsource",
-    "pk": 19,
+    "pk": 3,
     "fields": {
         "name": "Wikiwijs Maken",
         "repository": "edurep.EdurepOAIPMH",
@@ -58,7 +58,7 @@
 },
 {
     "model": "core.harvestsource",
-    "pk": 34,
+    "pk": 4,
     "fields": {
         "name": "Sharekit",
         "repository": "sharekit.SharekitMetadataHarvest",
@@ -73,7 +73,7 @@
 },
 {
     "model": "core.harvestsource",
-    "pk": 35,
+    "pk": 5,
     "fields": {
         "name": "Sharekit (restricted)",
         "repository": "sharekit.SharekitMetadataHarvest",
@@ -90,7 +90,7 @@
     "model": "core.harvest",
     "pk": 42,
     "fields": {
-        "source": 8,
+        "source": 1,
         "dataset": 24,
         "latest_update_at": "1970-01-01T00:00:00Z",
         "harvested_at": null,
@@ -102,7 +102,7 @@
     "model": "core.harvest",
     "pk": 46,
     "fields": {
-        "source": 9,
+        "source": 2,
         "dataset": 24,
         "latest_update_at": "1970-01-01T00:00:00Z",
         "harvested_at": null,
@@ -114,7 +114,7 @@
     "model": "core.harvest",
     "pk": 90,
     "fields": {
-        "source": 19,
+        "source": 3,
         "dataset": 24,
         "latest_update_at": "1970-01-01T00:00:00Z",
         "harvested_at": null,
@@ -126,7 +126,7 @@
     "model": "core.harvest",
     "pk": 91,
     "fields": {
-        "source": 34,
+        "source": 4,
         "dataset": 24,
         "latest_update_at": "1970-01-01T00:00:00Z",
         "harvested_at": null,
@@ -138,7 +138,7 @@
     "model": "core.harvest",
     "pk": 92,
     "fields": {
-        "source": 35,
+        "source": 5,
         "dataset": 24,
         "latest_update_at": "1970-01-01T00:00:00Z",
         "harvested_at": null,
