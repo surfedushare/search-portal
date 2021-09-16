@@ -7,7 +7,7 @@ from commands.deploy import (prepare_builds, build, push, deploy, migrate, print
                              print_running_containers)
 from commands.test import test_collection
 from commands.services.service.invoke import import_snapshot, sync_upload_media, sync_category_filters
-from commands.services.harvester.invoke import (import_dataset, harvest, clean_data, index_dataset_version,
+from commands.services.harvester.invoke import (load_data, harvest, clean_data, index_dataset_version,
                                                 dump_data, sync_harvest_content, generate_previews,
                                                 promote_dataset_version, extend_resource_cache)
 
@@ -21,7 +21,7 @@ aws_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, service="harvester")
-harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, clean_data, import_dataset, deploy,
+harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, clean_data, load_data, deploy,
                                   index_dataset_version, dump_data, sync_harvest_content, promote_dataset_version,
                                   create_decompound_dictionary, push_decompound_dictionary, generate_previews,
                                   extend_resource_cache)
