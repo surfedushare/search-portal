@@ -16,6 +16,9 @@
           />
         </h2>
         <p class="collection__info_subttl">
+          <a :href="communityLink">{{ communityTitle }}</a> > {{ collectionTitle }}
+        </p>
+        <p class="collection__info_subttl">
           {{ $tc('learning-materials', collection.materials_count) }}
         </p>
       </div>
