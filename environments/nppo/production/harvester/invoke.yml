@@ -2,7 +2,7 @@ service:
   name: "harvester"
 
 django:
-  domain: "nppo-loadbalancer-prod-1839166129.eu-central-1.elb.amazonaws.com"
+  domain: "harvester.publinova.nl"
   directory: "harvester"
   fixtures:
     - "core/fixtures/initial-nppo.json"
