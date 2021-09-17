@@ -15,7 +15,7 @@
             :onSubmit="onSubmit"
           />
         </h2>
-        <p class="collection__info_subttl">
+        <p v-if="communityTitle" class="collection__info_subttl">
           <a :href="communityLink">{{ communityTitle }}</a> > {{ collectionTitle }}
         </p>
         <p class="collection__info_subttl">
