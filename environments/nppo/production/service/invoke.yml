@@ -2,7 +2,7 @@ service:
   name: "service"
 
 django:
-  domain: "fakoberkers.nl"
+  domain: "search.publinova.nl"
   directory: "service"
   fixtures:
     - "surf/apps/locale/fixtures/locales-nppo.json"
