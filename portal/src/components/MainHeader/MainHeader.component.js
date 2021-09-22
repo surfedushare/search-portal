@@ -41,6 +41,9 @@ export default {
       'getMessageLevels',
       'getLevelIcon',
       'getMessagesContent'
-    ])
+    ]),
+    supportLink() {
+      return 'https://wiki.surfnet.nl/pages/viewpage.action?spaceKey=EDS&title=edusources+Home'
+    }
   }
 }
