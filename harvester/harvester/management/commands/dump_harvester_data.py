@@ -7,7 +7,7 @@ from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.models import Dataset, FileResource, HttpTikaResource
+from core.models import Dataset, FileResource, HttpTikaResource, Extension
 from edurep.models import EdurepOAIPMH
 from sharekit.models import SharekitMetadataHarvest
 
@@ -46,6 +46,7 @@ class Command(base.LabelCommand):
                 queryset_to_disk(version.indices, json_file)
                 queryset_to_disk(version.collection_set, json_file)
                 queryset_to_disk(version.document_set, json_file)
+            queryset_to_disk(Extension.objects.all(), json_file)
 
         resource_files = self.dump_resources()
 

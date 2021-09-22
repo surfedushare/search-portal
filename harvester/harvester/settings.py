@@ -462,3 +462,10 @@ SHAREKIT_BASE_URL = environment.django.repositories.sharekit
 # Edurep
 
 EDUREP_BASE_URL = environment.django.repositories.edurep
+
+
+# Robots
+# https://pypi.org/project/django-x-robots-tag-middleware/
+
+X_ROBOTS_TAG = ['noindex', 'nofollow']
+MIDDLEWARE.append('x_robots_tag_middleware.middleware.XRobotsTagMiddleware')

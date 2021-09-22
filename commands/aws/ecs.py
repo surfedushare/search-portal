@@ -9,7 +9,6 @@ from commands import TARGETS
 TASK_CONTAINERS_BY_FAMILY = {
     "harvester": [
         "harvester-container",
-        "celery-beat-container",
         "flower-container",
     ],
     "harvester-command": [
@@ -19,6 +18,7 @@ TASK_CONTAINERS_BY_FAMILY = {
     ],
     "celery": [
         "celery-worker-container",
+        "celery-beat-container",
         "analyzer",
     ],
     "search-portal": [

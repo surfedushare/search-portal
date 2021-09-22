@@ -38,13 +38,15 @@ class Document(DocumentBase):
     def get_language(self):
         return self.properties['language'].get("metadata", "unk")
 
-    def get_search_document_extras(self, reference_id, title, text, material_types):
+    def get_search_document_extras(self, reference_id, title, text, video, material_types):
         extras = {
             '_id': reference_id,
             "language": self.get_language(),
             'suggest_completion': title.split(" ") if title else [],
             'harvest_source': self.collection.name,
+            'text': text,
             'suggest_phrase': text,
+            'video': video,
             'material_types': material_types
         }
         return extras
@@ -73,16 +75,21 @@ class Document(DocumentBase):
     def to_search(self):
         elastic_base = copy(self.properties)
         elastic_base.pop("language")
+        text = elastic_base.pop("text", None)
+        if text and len(text) >= 1000000:
+            text = " ".join(text.split(" ")[:10000])
         if self.extension:
             extension_details = self.get_extension_extras()
             elastic_base.update(extension_details)
         for private_property in PRIVATE_PROPERTIES:
             elastic_base.pop(private_property, False)
+        video = elastic_base.pop("video", None)
         material_types = elastic_base.pop("material_types", None) or ["unknown"]
         elastic_details = self.get_search_document_extras(
             self.properties["external_id"],
             self.properties["title"],
-            self.properties.get("text", None),
+            text,
+            video,
             material_types=material_types
         )
         elastic_details.update(elastic_base)

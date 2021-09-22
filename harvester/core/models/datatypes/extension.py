@@ -26,6 +26,7 @@ class Extension(DocumentBase):
             'suggest_phrase': None,
             'title': None,
             'text': None,
+            'video': None,
             'ideas': [],
             'material_types': [],
             'copyright_description': None,

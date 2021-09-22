@@ -97,7 +97,7 @@ class ElasticSearchApiClient:
         return result
 
     @staticmethod
-    def parse_elastic_hit(hit):
+    def parse_elastic_hit(hit, transform=True):
         """
         Parses the elasticsearch search hit into the format that is also used by the edurep endpoint.
         It's mostly just mapping the variables we need into the places that we expect them to be.
@@ -106,7 +106,7 @@ class ElasticSearchApiClient:
         """
         data = hit["_source"]
         field_mapping = {
-            field.source: field_name
+            field.source: field_name if transform else field.source
             for field_name, field in SearchResultSerializer().fields.items()
         }
         record = {
@@ -114,13 +114,15 @@ class ElasticSearchApiClient:
             for field, value in data.items() if field in field_mapping
         }
         if "relations" in field_mapping:
+            publishers = [{"name": publisher} for publisher in data.get("publishers", [])]
             record["relations"] = {
-                "authors": data["authors"],
-                "parties": [{"name": publisher} for publisher in data["publishers"]],
-                "keywords": [{"label": keyword} for keyword in data["keywords"]],
+                "authors": data.get("authors", []),
+                "parties": data.get("parties", publishers),
+                "projects": data.get("projects", []),
+                "keywords": [{"label": keyword} for keyword in data.get("keywords", [])],
                 "themes": [{"label": theme} for theme in data.get("research_themes", [])],
-                "parents": data["is_part_of"],
-                "children": data["has_parts"]
+                "parents": data.get("is_part_of", []),
+                "children": data.get("has_parts", [])
             }
         return record
 
@@ -317,7 +319,7 @@ class ElasticSearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            ElasticSearchApiClient.parse_elastic_hit(hit)
+            ElasticSearchApiClient.parse_elastic_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result
@@ -346,7 +348,7 @@ class ElasticSearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            ElasticSearchApiClient.parse_elastic_hit(hit)
+            ElasticSearchApiClient.parse_elastic_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result
