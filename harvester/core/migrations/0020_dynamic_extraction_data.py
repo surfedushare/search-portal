@@ -45,7 +45,7 @@ def migrate_objective_to_extraction_mapping(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0018_dynamic_extraction'),
+        ('core', '0019_dynamic_extraction'),
     ]
 
     operations = [
