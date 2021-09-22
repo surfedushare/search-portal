@@ -44,6 +44,7 @@ class BaseSearchResultSerializer(serializers.Serializer):
     description = serializers.CharField()
     language = serializers.CharField()
     copyright = serializers.CharField()
+    video = serializers.DictField()
 
 
 class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):

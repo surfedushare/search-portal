@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
+from django.db import transaction
 
 from datagrowth.configuration import create_config
 from datagrowth.resources.http.tasks import send
@@ -50,29 +51,38 @@ class HttpPipelineProcessor(PipelineProcessor):
         contribution_processor = config.extractor
         contribution_property = config.to_property
 
-        documents = []
-        for process_result in batch.processresult_set.filter(result_id__isnull=False):
-            result = process_result.result
-            # Write results to the pipeline
-            process_result.document.pipeline[pipeline_phase] = {
-                "success": result.success,
-                "resource": f"{result._meta.app_label}.{result._meta.model_name}",
-                "id": result.id
-            }
-            documents.append(process_result.document)
-            # Write data to the Document
-            extractor_name, method_name = Processor.get_processor_components(contribution_processor)
-            extractor_class = Processor.get_processor_class(extractor_name)
-            extractor = extractor_class(config)
-            extractor_method = getattr(extractor, method_name)
-            contributions = list(extractor_method(result))
-            if not len(contributions):
-                continue
-            contribution = contributions.pop(0)
-            # TODO: create docs here where necessary
-            if contribution_property is None:
-                process_result.document.properties.update(contribution)
-            else:
-                process_result.document.properties[contribution_property] = contribution
+        while True:
 
-        self.Document.objects.bulk_update(documents, ["pipeline", "properties"])
+            documents = []
+            for process_result in batch.processresult_set.filter(result_id__isnull=False):
+                result = process_result.result
+                # Write results to the pipeline
+                process_result.document.pipeline[pipeline_phase] = {
+                    "success": result.success,
+                    "resource": f"{result._meta.app_label}.{result._meta.model_name}",
+                    "id": result.id
+                }
+                documents.append(process_result.document)
+                # Write data to the Document
+                extractor_name, method_name = Processor.get_processor_components(contribution_processor)
+                extractor_class = Processor.get_processor_class(extractor_name)
+                extractor = extractor_class(config)
+                extractor_method = getattr(extractor, method_name)
+                contributions = list(extractor_method(result))
+                if not len(contributions):
+                    continue
+                contribution = contributions.pop(0)
+                # TODO: create docs here where necessary
+                if contribution_property is None:
+                    process_result.document.properties.update(contribution)
+                else:
+                    process_result.document.properties[contribution_property] = contribution
+
+            # We'll be locking the Documents for update to prevent accidental overwrite of parallel results
+            with transaction.atomic():
+                try:
+                    list(self.Document.objects.filter(id__in=[doc.id for doc in documents]).select_for_update())
+                except transaction.DatabaseError:
+                    continue
+                self.Document.objects.bulk_update(documents, ["pipeline", "properties"])
+                break
