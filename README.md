@@ -204,7 +204,7 @@ Provisioning
 
 There are a few commands that can help to provision things like the database on AWS.
 We're using Fabric for provisioning.
-You can run ``fab -h <command>`` to learn more about a particular Fabric command
+You can run ``fab -h <command>`` to learn more about a particular Fabric command.
 
 For more details on how to provision things on AWS see [provisioning the service](service/README.md#provisioning) and
 [provisioning the harvester](harvester/README.md#provisioning)

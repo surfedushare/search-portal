@@ -157,10 +157,17 @@ To setup the database on an AWS environment run:
 APPLICATION_MODE=<environment> fab -H <bastion-host-domain> hrv.setup-postgres
 ```
 
-To load the latest data into the database and push that data to Elastic Search on an AWS environment run:
+To load the latest production data into the database and push that data to Elastic Search on an AWS environment run:
 
 ```bash
-APPLICATION_MODE=<environment> invoke import-dataset <dataset-name> -m <environment>
+APPLICATION_MODE=<environment> invoke import-dataset <environment> -s production -d <dataset-name>
+```
+
+To load data for localhost you have to use a slightly different command,
+because your profile will need access to the source.
+
+```bash
+AWS_PROFILE=pol-prod invoke import-dataset localhost -s production -d <dataset-name>
 ```
 
 The harvester keeps its harvest results in the database. It may be required to clean these results to start fresh.
