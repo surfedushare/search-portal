@@ -32,6 +32,9 @@
         </router-link>
         <Menu class="main-header__menu" />
         <div class="main-header__actions">
+          <div class="main-header__support">
+            <a class="button" :href="supportLink">Support</a>
+          </div>
           <div class="main-header__user" v-if="isAuthenticated">
             <div class="main-header__user_name arrow-link"><span class="link">{{ $t('Menu') }}</span></div>
             <nav class="main-header__user_menu">
@@ -109,7 +112,12 @@
           </ul>
         </div>
       </div>
-      <LanguageSwitch />
+      <div class="main-header__actions">
+        <div class="main-header__support">
+          <a class="button" :href="supportLink">Support</a>
+        </div>
+        <LanguageSwitch />
+      </div>
     </div>
 
     <Feedback />

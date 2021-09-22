@@ -21,6 +21,10 @@
       {{ material.date || '-' }}
       <h4>{{ $t('Language') }}</h4>
       {{ $t(material.language) }}
+      <div  v-if="material.video && material.video.duration">
+        <h4>{{ $t('duration') }}</h4>
+        {{ parseVideoDuration(material.video.duration) }}
+      </div>
       <h4>{{ $t('Rights-of-use') }}</h4>
       <a
         class="material__grey_block-copyright"

@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.contrib.contenttypes.models import ContentType
 from celery import current_app as app, chord
 
 from datagrowth.configuration import load_config
@@ -72,6 +73,8 @@ class PipelineProcessor(Processor):
         app_label = self.config.pipeline_app_label
         models = self.config.pipeline_models
         self.Batch, self.Document, self.ProcessResult = load_pipeline_models(app_label, models)
+        resource_app_label, resource_model = self.config.retrieve_data["resource"].split(".")
+        self.result_type = ContentType.objects.get_by_natural_key(resource_app_label, resource_model)
 
     def __call__(self, queryset):
         # Prepare some values for serialization
@@ -80,7 +83,7 @@ class PipelineProcessor(Processor):
         # Allow derived classes to filter the target Documents
         queryset = self.filter_documents(queryset)
         # Only target Documents that have no ProcessResult associated
-        queryset = queryset.filter(processresult__isnull=True)
+        queryset = queryset.exclude(processresult__result_type=self.result_type)
         # Create batches of documents with no processing results
         batches = []
         for document_batch in ibatch(queryset, batch_size=self.config.batch_size):
