@@ -43,7 +43,9 @@ export default {
       'getMessagesContent'
     ]),
     supportLink() {
-      return 'https://wiki.surfnet.nl/pages/viewpage.action?spaceKey=EDS&title=edusources+Home'
+      return this.$i18n.locale === 'nl'
+        ? 'https://wiki.surfnet.nl/pages/viewpage.action?spaceKey=EDS&title=edusources+Home'
+        : 'https://wiki.surfnet.nl/pages/viewpage.action?pageId=55345575'
     }
   }
 }
