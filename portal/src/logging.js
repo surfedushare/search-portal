@@ -45,12 +45,12 @@ injector.decorator('$log', function($log) {
    ***************************/
 
   // In non-production we do nothing special after adding custom methods
-  if (!window.MOTOMO_ID) {
+  if (!window.MATOMO_ID) {
     return $log
   }
 
   /***************************
-   * MOTOMO
+   * MATOMO
    ***************************/
 
   $log._pageView = $log.pageView
