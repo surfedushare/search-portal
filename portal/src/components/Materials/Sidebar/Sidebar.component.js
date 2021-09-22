@@ -123,53 +123,56 @@ export default {
 
       switch (copyright) {
         case 'cc-by-30':
-          str = 'https://creativecommons.org/licenses/by/3.0/legalcode'
+          str = `https://creativecommons.org/licenses/by/3.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by':
         case 'cc-by-40':
-          str = 'https://creativecommons.org/licenses/by/4.0/legalcode'
+          str = `https://creativecommons.org/licenses/by/4.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-nc':
         case 'cc-by-nc-40':
-          str = 'https://creativecommons.org/licenses/by-nc/4.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nc/4.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-nc-30':
-          str = 'https://creativecommons.org/licenses/by-nc/3.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nc/3.0/deed.${this.$i18n.locale}`
           break
         case 'yes':
         case 'cc-by-nc-nd':
         case 'cc-by-nc-nd-40':
-          str = 'https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nc-nd/4.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-nc-nd-30':
-          str = 'https://creativecommons.org/licenses/by-nc-nd/3.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nc-nd/3.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-nc-sa':
         case 'cc-by-nc-sa-40':
-          str = 'https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nc-sa/4.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-nc-sa-30':
-          str = 'https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nc-sa/3.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-nd':
         case 'cc-by-nd-40':
-          str = 'https://creativecommons.org/licenses/by-nd/4.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nd/4.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-nd-30':
-          str = 'https://creativecommons.org/licenses/by-nd/3.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-nd/3.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-sa':
         case 'cc-by-sa-40':
-          str = 'https://creativecommons.org/licenses/by-sa/4.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-sa/4.0/deed.${this.$i18n.locale}`
           break
         case 'cc-by-sa-30':
-          str = 'https://creativecommons.org/licenses/by-sa/3.0/legalcode'
+          str = `https://creativecommons.org/licenses/by-sa/3.0/deed.${this.$i18n.locale}`
           break
         case 'cc0-10':
-          str = 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
+          str = `https://creativecommons.org/publicdomain/zero/1.0/deed.${this.$i18n.locale}`
           break
         case 'pdm-10':
-          str = 'https://creativecommons.org/share-your-work/public-domain/pdm/'
+          str =
+            this.$i18n.locale === 'nl'
+              ? 'https://creativecommons.nl/publiek-domein/'
+              : 'https://creativecommons.org/share-your-work/public-domain/pdm/'
           break
         default:
           str = 'https://creativecommons.org/licenses/'
