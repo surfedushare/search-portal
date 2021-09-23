@@ -32,11 +32,16 @@ injector.decorator('$log', function($log) {
     $log.info('Visiting: ' + page)
   }
 
-  $log.customEvent = function(category, action, label) {
-    if (!label) {
+  $log.customEvent = function(category, action, label, value, dimensions) {
+    if (!label && !value) {
       $log.info('Trigger: ' + category + ' => ' + action)
-    } else {
+    } else if (label) {
       $log.info('Trigger: ' + category + ' (' + label + ') => ' + action)
+    } else if (value) {
+      $log.info('Trigger: ' + category + ' (' + value + ') => ' + action)
+    }
+    if (dimensions) {
+      $log.info('Custom dimensions:', dimensions)
     }
 
   }
