@@ -141,7 +141,8 @@ export default {
         .dispatch('getTheme', themeId)
         .then(theme => {
           let themeCategory = this.$store.getters.getCategoryById(
-            theme.external_id
+            theme.external_id,
+            '8a422e6d-1c35-4961-a50a-51fcff7cc20c'
           )
           themeCategory.selected = true
           this.$store.dispatch('searchMaterials', {

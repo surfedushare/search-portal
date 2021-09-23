@@ -97,7 +97,10 @@ export default {
       let defaultFilterItem = {}
       if (this.defaultFilter) {
         defaultFilterItem =
-          this.$store.getters.getCategoryById(this.defaultFilter) || {}
+          this.$store.getters.getCategoryById(
+            this.defaultFilter,
+            this.$route.meta.filterRoot
+          ) || {}
       }
       const visibleCategories = this.materials.filter_categories.filter(
         category =>
