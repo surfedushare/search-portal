@@ -43,7 +43,6 @@ injector.decorator('$log', function($log) {
     if (dimensions) {
       $log.info('Custom dimensions:', dimensions)
     }
-
   }
   $log.setIsStaff = function(value) {
     $log.info('Set is_staff: ', value)
