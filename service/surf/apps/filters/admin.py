@@ -24,7 +24,7 @@ unhide_filters.short_description = "Unhide all selected filters and its descende
 class MpttFilterItemAdmin(DraggableMPTTAdmin):
 
     search_fields = ('name', 'external_id',)
-    raw_id_fields = ("title_translations",)
+    raw_id_fields = ("title_translations", "parent",)
     list_display = ('tree_actions', 'indented_title', 'is_hidden', 'is_manual',)
     list_display_links = ('indented_title',)
     list_filter = ('is_hidden',)
