@@ -1,3 +1,4 @@
+import { isEmpty, flatMap } from 'lodash'
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
 import FilterCategory from './FilterCategory/FilterCategory'
@@ -88,6 +89,32 @@ export default {
     }
   },
   computed: {
+    hasSelection() {
+      return !isEmpty(this.selectedFilters)
+    },
+    selectionFilterItems() {
+      if (
+        !this.materials ||
+        !this.materials.filter_categories ||
+        !this.selectedFilters
+      ) {
+        return []
+      }
+      return flatMap(this.selectedFilters, (items, categoryId) => {
+        const category = this.materials.filter_categories.find(category => {
+          return category.external_id === categoryId
+        })
+        const results = items.map(item => {
+          return category.children.find(child => {
+            child.parent = category
+            return child.external_id === item
+          })
+        })
+        return results.filter(rsl => {
+          return rsl
+        })
+      })
+    },
     filterableCategories() {
       if (!this.materials || !this.materials.filter_categories) {
         return []
@@ -118,7 +145,6 @@ export default {
                 0
               )
             }
-
             return child
           })
         }

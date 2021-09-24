@@ -165,7 +165,7 @@ export default {
       next()
       return
     }
-    this.search.filters = []
+    this.search.filters = {}
     this.$store.dispatch('searchMaterials', this.search).finally(next)
   },
   methods: {
