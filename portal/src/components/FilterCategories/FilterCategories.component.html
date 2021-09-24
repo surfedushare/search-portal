@@ -1,7 +1,7 @@
 <section class="filter-categories">
   <h3 class="filter-categories__title">{{ $t('Filter') }}</h3>
 
-  <div v-if="hasSelection && materials && materials.filter_categories.length" class="filter-categories__links">
+  <div v-if="selectionFilterItems.length" class="filter-categories__links">
     <p class="filter-categories__reset">Je gekozen filters</p>
     <a
       href="/materials/search/"

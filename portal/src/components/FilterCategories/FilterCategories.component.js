@@ -1,4 +1,4 @@
-import { isEmpty, flatMap } from 'lodash'
+import { flatMap } from 'lodash'
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
 import FilterCategory from './FilterCategory/FilterCategory'
@@ -59,13 +59,17 @@ export default {
       if (this.selectedFilters[categoryId].length === 0) {
         this.$delete(this.selectedFilters, categoryId)
       }
+      if (itemId === this.$route.params.filterId) {
+        return this.executeSearch(this.selectedFilters, 'materials-search')
+      }
       return this.executeSearch(this.selectedFilters)
     },
     onDateChange(dates) {
       this.selectedFilters[this.publisherDateExternalId] = dates
       this.executeSearch(this.selectedFilters)
     },
-    executeSearch(filters = {}) {
+    async executeSearch(filters = {}, name = null) {
+      name = name || this.$route.name
       const { ordering, search_text } = this.materials
       const searchRequest = {
         search_text,
@@ -73,8 +77,8 @@ export default {
         filters: { ...filters }
       }
       // Execute search
-      this.$router.push(
-        this.generateSearchMaterialsQuery(searchRequest, this.$route.name)
+      await this.$router.push(
+        this.generateSearchMaterialsQuery(searchRequest, name)
       )
       this.$emit('input', searchRequest) // actual search is done by the parent page
     },
@@ -89,9 +93,6 @@ export default {
     }
   },
   computed: {
-    hasSelection() {
-      return !isEmpty(this.selectedFilters)
-    },
     selectionFilterItems() {
       if (
         !this.materials ||
