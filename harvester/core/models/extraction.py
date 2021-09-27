@@ -5,11 +5,12 @@ from datagrowth.processors import Processor
 from core.constants import REPOSITORY_CHOICES
 
 
-OBJECTIVE_PROPERTIES = SHAREKIT_EXTRACTION_OBJECTIVE = {
+OBJECTIVE_PROPERTIES = {
     "url", "files", "title", "language", "keywords", "description", "mime_type", "technical_type", "material_types",
     "copyright", "copyright_description", "aggregation_level", "authors", "publishers", "publisher_date",
     "lom_educational_levels", "lowest_educational_level", "disciplines", "ideas", "from_youtube", "is_restricted",
     "analysis_allowed", "is_part_of", "has_parts", "doi", "research_object_type", "research_themes", "parties",
+    "external_id", "state"
 }
 
 
@@ -38,10 +39,15 @@ class JSONExtractionField(models.Model):
 class ObjectiveProperty(models.Model):
 
     mapping = models.ForeignKey("ExtractionMapping", on_delete=models.CASCADE)
-    json_field = models.ForeignKey(JSONExtractionField, on_delete=models.CASCADE, null=True, blank=True)
-    method_field = models.ForeignKey(MethodExtractionField, on_delete=models.CASCADE, null=True, blank=True)
+    json_field = models.ForeignKey(JSONExtractionField, on_delete=models.PROTECT, null=True, blank=True)
+    method_field = models.ForeignKey(MethodExtractionField, on_delete=models.PROTECT, null=True, blank=True)
     property = models.CharField(choices=[(prop, prop,) for prop in OBJECTIVE_PROPERTIES], max_length=50)
     is_context = models.BooleanField(default=False)
+    is_protected = models.BooleanField(default=False)
+
+    def __str__(self):
+        field_name = self.json_field if self.json_field else self.method_field
+        return f"{self.mapping} > {field_name}"
 
     class Meta:
         verbose_name_plural = "objective properties"
