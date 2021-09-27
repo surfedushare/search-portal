@@ -39,7 +39,6 @@ export default {
 .lang {
   border: none;
   height: 20px;
-  margin: 0 0 0 46px;
   padding: 0;
   font-family: @second-font;
   font-size: 16px;

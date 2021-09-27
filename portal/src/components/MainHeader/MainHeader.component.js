@@ -41,6 +41,11 @@ export default {
       'getMessageLevels',
       'getLevelIcon',
       'getMessagesContent'
-    ])
+    ]),
+    supportLink() {
+      return this.$i18n.locale === 'nl'
+        ? 'https://wiki.surfnet.nl/display/EDS/edusources'
+        : 'https://wiki.surfnet.nl/pages/viewpage.action?pageId=55345575'
+    }
   }
 }

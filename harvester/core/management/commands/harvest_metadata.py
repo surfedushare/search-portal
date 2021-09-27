@@ -94,7 +94,7 @@ class Command(PipelineCommand):
                 else:
                     inserts.append(document)
             Document.objects.bulk_create(inserts)
-            Document.objects.bulk_update(updates, ["properties", "modified_at", "extension"])
+            Document.objects.bulk_update(updates, ["properties", "pipeline", "modified_at", "extension"])
             documents_count += len(updates)
             documents_count += len(inserts)
 

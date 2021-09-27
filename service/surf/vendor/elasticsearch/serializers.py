@@ -44,6 +44,7 @@ class BaseSearchResultSerializer(serializers.Serializer):
     description = serializers.CharField()
     language = serializers.CharField()
     copyright = serializers.CharField()
+    video = serializers.DictField()
 
 
 class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
@@ -55,7 +56,7 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
     )
     publish_datetime = serializers.CharField(source="publisher_date", allow_blank=True, allow_null=True)
     educationallevels = serializers.ListField(child=serializers.CharField(), source="lom_educational_levels")
-    disciplines = serializers.ListField(child=serializers.CharField())
+    disciplines = serializers.ListField(child=serializers.DictField())
     themes = serializers.ListField(child=serializers.CharField(), default=[])
     source = serializers.CharField(source="harvest_source")
     ideas = serializers.ListField(child=serializers.CharField())
@@ -66,15 +67,23 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
     has_parts = serializers.ListField(child=serializers.CharField())
     is_part_of = serializers.ListField(child=serializers.CharField())
 
-    preview_path = serializers.CharField(default=None, allow_blank=True, allow_null=True)
+    preview_path = serializers.SerializerMethodField()
     preview_thumbnail_url = serializers.SerializerMethodField()
     preview_url = serializers.SerializerMethodField()
 
+    view_count = serializers.IntegerField()
+    applaud_count = serializers.IntegerField()
+    avg_star_rating = serializers.IntegerField()
+    count_star_rating = serializers.IntegerField()
+
+    def get_preview_path(self, obj):
+        return obj.get("preview_path", None)
+
     def get_preview_thumbnail_url(self, obj):
-        return get_preview_absolute_uri(obj["preview_path"], PREVIEW_SMALL)
+        return get_preview_absolute_uri(self.get_preview_path(obj), PREVIEW_SMALL)
 
     def get_preview_url(self, obj):
-        return get_preview_absolute_uri(obj["preview_path"], PREVIEW_ORIGINAL)
+        return get_preview_absolute_uri(self.get_preview_path(obj), PREVIEW_ORIGINAL)
 
 
 class RelationSerializer(serializers.Serializer):

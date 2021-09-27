@@ -5,11 +5,13 @@ import boto3
 from botocore.exceptions import ClientError
 from urlobject import URLObject
 import logging
+import extruct
+from json import JSONDecodeError
 
 from django.conf import settings
 from django.db import models
 from datagrowth.resources import (MicroServiceResource, HttpFileResource, TikaResource as DGTikaResource,
-                                  file_resource_delete_handler)
+                                  URLResource, file_resource_delete_handler)
 
 
 s3_client = boto3.client("s3")
@@ -118,6 +120,28 @@ class HttpTikaResource(MicroServiceResource):
         unsigned_data = copy(data)
         unsigned_data["url"] = unsigned_url
         return MicroServiceResource.hash_from_data(unsigned_data)
+
+
+class ExtructResource(URLResource):
+
+    @property
+    def success(self):
+        success = super().success
+        content_type, data = self.content
+        return success and bool(data)
+
+    @property
+    def content(self):
+        if super().success:
+            content_type = self.head.get("content-type", "unknown/unknown").split(';')[0]
+            if content_type != "text/html":
+                return None, None
+            try:
+                result = extruct.extract(self.body)
+                return "application/json", result
+            except JSONDecodeError:
+                pass
+        return None, None
 
 
 models.signals.post_delete.connect(

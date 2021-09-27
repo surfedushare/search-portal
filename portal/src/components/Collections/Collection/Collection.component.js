@@ -3,6 +3,7 @@ import { validateHREF } from '~/components/_helpers'
 import SwitchInput from '~/components/switch-input'
 import InputWithCounter from '~/components/InputWithCounter'
 import { PublishStatus } from '~/utils'
+import { localePath } from '@/i18n/plugin.routing'
 
 export default {
   name: 'collection',
@@ -54,6 +55,28 @@ export default {
           ? PublishStatus.PUBLISHED
           : PublishStatus.DRAFT
       }
+    },
+    communityTitle() {
+      if (!this.collection || !this.collection.communities[0]) {
+        return
+      }
+      const communityDetails = this.collection.communities[0].community_details.find(
+        details => {
+          return details.language_code.toLowerCase() === this.$i18n.locale
+        }
+      )
+      return communityDetails.title
+    },
+    communityLink() {
+      if (!this.collection || !this.collection.communities[0]) {
+        return
+      }
+      const path = localePath({
+        name: 'communities-community',
+        params: { community: this.collection.communities[0].id }
+      })
+      const route = this.$router.resolve(path)
+      return route.href
     }
   },
   methods: {

@@ -3,12 +3,13 @@ from mimetypes import guess_type
 
 from django.conf import settings
 
+from datagrowth.processors import ExtractProcessor
 from datagrowth.utils import reach
 
 from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
-class SharekitMetadataExtraction(object):
+class SharekitMetadataExtraction(ExtractProcessor):
 
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
@@ -152,10 +153,6 @@ class SharekitMetadataExtraction(object):
         return current_numeric_level
 
     @classmethod
-    def get_disciplines(cls, node):
-        return []
-
-    @classmethod
     def get_ideas(cls, node):
         compound_ideas = [vocabulary["value"] for vocabulary in node["attributes"]["vocabularies"]]
         if not compound_ideas:
@@ -191,6 +188,14 @@ class SharekitMetadataExtraction(object):
             return []
         return theme_value if isinstance(theme_value, list) else [theme_value]
 
+    @classmethod
+    def get_empty_list(cls, node):
+        return []
+
+    @classmethod
+    def get_none(cls, node):
+        return None
+
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
     "url": SharekitMetadataExtraction.get_url,
@@ -203,14 +208,14 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "technical_type": SharekitMetadataExtraction.get_technical_type,
     "material_types": SharekitMetadataExtraction.get_material_types,
     "copyright": SharekitMetadataExtraction.get_copyright,
-    "copyright_description": lambda node: None,
+    "copyright_description": SharekitMetadataExtraction.get_none,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
     "publishers": SharekitMetadataExtraction.get_publishers,
     "publisher_date": "$.attributes.publishedAt",
     "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
-    "disciplines": SharekitMetadataExtraction.get_disciplines,
+    "disciplines": SharekitMetadataExtraction.get_empty_list,
     "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "#is_restricted": SharekitMetadataExtraction.get_is_restricted,
@@ -220,5 +225,5 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "doi": "$.attributes.doi",
     "research_object_type": "$.attributes.typeResearchObject",
     "research_themes": SharekitMetadataExtraction.get_research_themes,
-    "parties": lambda node: [],
+    "parties": SharekitMetadataExtraction.get_empty_list,
 }

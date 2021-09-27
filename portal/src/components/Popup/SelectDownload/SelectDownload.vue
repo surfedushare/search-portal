@@ -12,10 +12,10 @@
           <a
             v-for="(file, ix) in material.files"
             :key="ix"
-            :href="file[1]"
+            :href="file.url"
             class="button button--full-width material__grey_block-btn"
             target="_blank"
-            >{{ file[2] }}</a
+            >{{ file.title }}</a
           >
         </div>
       </slot>

@@ -18,21 +18,25 @@ def run_harvester_task(ctx, mode, command, **kwargs):
 
 
 @task(help={
+    "mode": "Mode you want to load data for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE",
     "source": "Source you want to import from: development, acceptance or production.",
     "dataset": "The name of the greek letter that represents the dataset you want to import"
 })
-def import_dataset(ctx, source, dataset):
+def load_data(ctx, mode, source, dataset):
     """
     Loads the production database and sets up Elastic data on localhost or an AWS cluster
     """
+    if ctx.config.env == "production":
+        raise Exit("Cowardly refusing to use production as a destination environment")
 
-    command = ["python", "manage.py", "import_dataset", dataset, f"--harvest-source={source}"]
+    command = ["python", "manage.py", "load_harvester_data", dataset, f"--harvest-source={source}", "--index"]
 
     if source == "localhost":
         print(f"Will try to import {dataset} using pre-downloaded files")
         command += ["--skip-download"]
 
-    run_harvester_task(ctx, source, command)
+    run_harvester_task(ctx, mode, command)
 
 
 @task(help={

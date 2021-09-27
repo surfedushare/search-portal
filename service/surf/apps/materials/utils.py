@@ -42,8 +42,10 @@ def add_extra_parameters_to_materials(user, materials):
 
     educational_level_filters = {
         filter_item.external_id: filter_item
-        for filter_item in MpttFilterItem.objects.filter(
-            name__in=(level for material in materials for level in material["educationallevels"])
+        for filter_item in MpttFilterItem.objects.filter(name__in=(
+                level for material in materials
+                for level in material.get("educationallevels", material.get("lom_educational_levels", []))
+            )
         ).distinct().select_related("title_translations")
     }
 
@@ -68,7 +70,10 @@ def add_extra_parameters_to_materials(user, materials):
 
         educational_levels = filter(
             None,
-            [educational_level_filters.get(external_id, None) for external_id in m["educationallevels"]]
+            [
+                educational_level_filters.get(external_id, None)
+                for external_id in m.get("educationallevels", m.get("lom_educational_levels", []))
+            ]
         )
         m["educationallevels"] = [
             {
