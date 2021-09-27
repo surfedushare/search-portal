@@ -71,8 +71,8 @@ injector.decorator('$log', function($log) {
   }
 
   $log.customEvent = function(category, action, label, value, dimensions) {
-    window._paq.push(['trackEvent', category, action, label, value, dimensions])
     $log._customEvent(category, action, label, value, dimensions)
+    window._paq.push(['trackEvent', category, action, label, value, dimensions]) // NB: this modifies dimensions!
   }
 
   $log.setIsStaff = function(value) {
