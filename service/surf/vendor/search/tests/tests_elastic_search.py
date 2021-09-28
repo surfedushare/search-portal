@@ -36,6 +36,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                                       disciplines=math_and_education_disciplines),
         )
         cls.elastic.index(
+            id="abc",
             index=settings.ELASTICSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       disciplines=math_and_education_disciplines, external_id="abc",
@@ -500,6 +501,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 english_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
                 "english"
             )
+
+    def test_more_like_this(self):
+        more_like_this = self.instance.more_like_this("abc", "nl")
+        self.assertEqual(more_like_this["records_total"], 4)
+        self.assertEqual(more_like_this["results"][0]["title"], "Didactiek van wiskundig denken")
+        none_like_this = self.instance.more_like_this("does-not-exist", "nl")
+        self.assertEqual(none_like_this["records_total"], 0)
+        self.assertEqual(none_like_this["results"], [])
 
     def test_author_suggestions(self):
         suggestions = self.instance.author_suggestions("Theo")
