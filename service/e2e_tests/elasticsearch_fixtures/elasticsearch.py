@@ -72,9 +72,15 @@ NL_MATERIAL = {
 }
 
 
-def generate_nl_material(educational_levels=None, technical_type=None, source=None, copyright=None, publisher_date=None,
-                         disciplines=None, topic="math"):
+def generate_nl_material(educational_levels=None, title=None, description=None, technical_type=None, source=None,
+                         copyright=None, publisher_date=None, disciplines=None, topic="math", external_id=None):
     copy = NL_MATERIAL[topic].copy()
+    if title:
+        copy["title"] = title
+    if description:
+        copy["description"] = description
+    if external_id:
+        copy["external_id"] = external_id
     if educational_levels:
         copy["lom_educational_levels"] = educational_levels
     if technical_type:

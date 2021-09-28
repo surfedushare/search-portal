@@ -38,6 +38,12 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
+                                      disciplines=math_and_education_disciplines, external_id="abc",
+                                      title="De wiskunde van Jezus", description="Groots zijn zijn getallen")
+        )
+        cls.elastic.index(
+            index=settings.ELASTICSEARCH_NL_INDEX,
+            body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       copyright="cc-by-40", topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
                                       disciplines=biology_and_education_disciplines),
         )
@@ -424,11 +430,11 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
 
     def test_search_by_author(self):
         author = "Michel van Ast"
-        expected_record_count = 4
+        expected_record_count = 5
         self.check_author_search(author, expected_record_count)
 
         author2 = "Theo van den Bogaart"
-        expected_record_count2 = 1
+        expected_record_count2 = 2
         self.check_author_search(author2, expected_record_count2)
 
     def check_author_search(self, author, expected_record_count):
