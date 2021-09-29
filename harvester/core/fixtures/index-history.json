@@ -72,9 +72,6 @@
                         },
                         "disciplines": {
                             "type": "keyword"
-                        },
-                        "suggest": {
-                            "type": "completion"
                         }
                     }
                 },
@@ -160,9 +157,6 @@
                         },
                         "disciplines": {
                             "type": "keyword"
-                        },
-                        "suggest": {
-                            "type": "completion"
                         }
                     }
                 },
