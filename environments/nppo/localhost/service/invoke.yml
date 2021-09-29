@@ -6,7 +6,7 @@ django:
   fixtures:
     - "surf/apps/locale/fixtures/locales-nppo.json"
     - "surf/apps/filters/fixtures/filter-categories-nppo.json"
-  motomo_id: null
+  matomo_id: null
   administrative_emails: true
 
 postgres:

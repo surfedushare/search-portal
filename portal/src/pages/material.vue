@@ -23,7 +23,11 @@
         <h2 class="main__materials_title">
           {{ $t('Also-interesting-for-you') }}
         </h2>
-        <Materials :materials="materials" :items-length="4" />
+        <Materials
+          :materials="materials"
+          :items-length="4"
+          @click="onMoreLikeThisClick"
+        />
       </div>
     </div>
   </section>
@@ -44,6 +48,7 @@ export default {
     MaterialInfo,
     Navigation
   },
+  dependencies: ['$log'],
   data() {
     return {
       collections: [],
@@ -93,6 +98,11 @@ export default {
         externalId
       )
       this.collections = collections.results
+    },
+    onMoreLikeThisClick(material) {
+      this.$log.customEvent('Waypoint', 'Click', material.external_id, null, {
+        dimension2: 'more_like_this'
+      })
     }
   }
 }

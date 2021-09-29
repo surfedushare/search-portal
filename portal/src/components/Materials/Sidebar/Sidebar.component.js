@@ -299,7 +299,16 @@ export default {
       return item.name
     },
     downloadOnClick(event, material) {
-      this.$log.customEvent('Goal', 'Download', event.currentTarget.href)
+      const dimensions = material.publishers.length
+        ? { dimension3: material.publishers.join(' - ') }
+        : {}
+      this.$log.customEvent(
+        'Goal',
+        'Download',
+        event.currentTarget.href,
+        null,
+        dimensions
+      )
       if (!material.files || material.files.length <= 1) {
         return
       }
