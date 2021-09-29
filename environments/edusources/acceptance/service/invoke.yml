@@ -7,7 +7,7 @@ django:
     - "surf/apps/locale/fixtures/locales-edusources.json"
     - "surf/apps/filters/fixtures/filter-categories-edusources.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
-  motomo_id: 63
+  matomo_id: 63
   administrative_emails: false
 
 postgres:

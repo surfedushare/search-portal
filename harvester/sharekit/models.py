@@ -4,29 +4,36 @@ from django.conf import settings
 from django.db import models
 
 from datagrowth.configuration import create_config
-from datagrowth.processors import ExtractProcessor
 
-from core.models import HarvestHttpResource
+from core.constants import Repositories
+from core.models import HarvestHttpResource, ExtractionMapping
 from sharekit.extraction import SharekitMetadataExtraction, SHAREKIT_EXTRACTION_OBJECTIVE
 
 
 class SharekitMetadataHarvestManager(models.Manager):
 
-    def extract_seeds(self, set_specification, latest_update):
-        latest_update = latest_update.replace(microsecond=0)
-        queryset = self.get_queryset() \
-            .filter(set_specification=set_specification, since__gte=latest_update, status=200)
-
+    def _create_objective(self):
+        extraction_mapping_queryset = ExtractionMapping.objects.filter(is_active=True, repository=Repositories.SHAREKIT)
+        if extraction_mapping_queryset.exists():
+            extraction_mapping = extraction_mapping_queryset.last()
+            return extraction_mapping.to_objective()
         objective = {
             "@": "$.data",
             "external_id": "$.id",
             "state": SharekitMetadataExtraction.get_record_state
         }
         objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
+        return objective
+
+    def extract_seeds(self, set_specification, latest_update):
+        latest_update = latest_update.replace(microsecond=0)
+        queryset = self.get_queryset() \
+            .filter(set_specification=set_specification, since__gte=latest_update, status=200)
+
         extract_config = create_config("extract_processor", {
-            "objective": objective
+            "objective": self._create_objective()
         })
-        prc = ExtractProcessor(config=extract_config)
+        prc = SharekitMetadataExtraction(config=extract_config)
 
         results = []
         for harvest in queryset:

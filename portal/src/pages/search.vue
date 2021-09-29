@@ -140,7 +140,8 @@ export default {
         return
       }
       const defaultFilter = this.$store.getters.getCategoryById(
-        this.$route.params.filterId
+        this.$route.params.filterId,
+        this.$route.meta.filterRoot
       )
       return defaultFilter
         ? defaultFilter.title_translations[this.$i18n.locale]
@@ -164,14 +165,15 @@ export default {
       next()
       return
     }
-    this.search.filters = []
+    this.search.filters = {}
     this.$store.dispatch('searchMaterials', this.search).finally(next)
   },
   methods: {
     executeSearch(updateUrl) {
       if (this.$route.params.filterId) {
         const category = this.$store.getters.getCategoryById(
-          this.$route.params.filterId
+          this.$route.params.filterId,
+          this.$route.meta.filterRoot
         )
         if (category) {
           this.search = addFilter(

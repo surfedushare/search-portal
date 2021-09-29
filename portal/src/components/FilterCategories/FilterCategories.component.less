@@ -14,10 +14,11 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    a {
+    p {
       font-family: @second-font;
       font-size: 16px;
       font-weight: bold;
+      color: @green
     }
   }
 
@@ -31,6 +32,22 @@
       background: url('/images/filters.svg') 50% 50% no-repeat;
       background-size: contain;
       margin: -3px 4px 0 0;
+    }
+  }
+  .selected-filters {
+    padding-left: 0;
+    margin-bottom: 17px;
+  }
+  .selected-filters li {
+    display: flex;
+    justify-content: space-between;
+    .remove-icon {
+      width: 23px;
+      height: 23px;
+      margin-right: 3px;
+      border: none;
+      background: url(/images/close-black.svg) 50% 50% no-repeat;
+      background-size: 23px 23px;
     }
   }
 

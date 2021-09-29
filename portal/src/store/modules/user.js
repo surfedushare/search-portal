@@ -71,6 +71,7 @@ export default {
       const { data: user } = await axios.get('users/me/')
       commit('SET_USER', user)
       commit('USER_LOADING', false)
+      $log.setIsStaff(user.is_staff)
     },
     async postUser({ commit, state }) {
       commit('USER_LOADING', true)
@@ -97,6 +98,7 @@ export default {
       delete axios.defaults.headers.common['Authorization']
       commit('SET_USER', null)
       commit('AUTHENTICATE', false)
+      $log.setIsStaff(null)
       if (payload && payload.fully) {
         window.location = '/logout'
       }

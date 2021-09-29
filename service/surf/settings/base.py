@@ -268,7 +268,7 @@ WEBPACK_LOADER = {
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
 
-MOTOMO_ID = environment.django.motomo_id
+MATOMO_ID = environment.django.matomo_id
 
 _logging_enabled = sys.argv[1:2] != ['test']
 _log_level = environment.django.logging.level if _logging_enabled else 'CRITICAL'

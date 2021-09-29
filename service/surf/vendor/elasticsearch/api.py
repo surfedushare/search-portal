@@ -138,7 +138,8 @@ class ElasticSearchApiClient:
                 "autocomplete": {
                     'text': query,
                     "completion": {
-                        "field": "suggest_completion"
+                        "field": "suggest_completion",
+                        "size": 100
                     }
                 }
             }

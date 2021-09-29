@@ -11,7 +11,7 @@ from django.db import models, connection
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from project.configuration import create_configuration
 from harvester.settings import environment
-from core.models import Dataset, FileResource
+from core.models import Dataset, DatasetVersion, FileResource
 from core.models.resources.basic import file_resource_delete_handler
 
 
@@ -34,6 +34,7 @@ class Command(base.LabelCommand):
         super().add_arguments(parser)
         parser.add_argument('-s', '--skip-download', action="store_true")
         parser.add_argument('-hs', '--harvest-source', type=str)
+        parser.add_argument('-i', '--index', action="store_true", default=True)
 
     def load_resources(self):
         models.signals.post_delete.disconnect(
@@ -69,6 +70,8 @@ class Command(base.LabelCommand):
 
         skip_download = options["skip_download"]
         harvest_source = options.get("harvest_source", None)
+        should_index = options.get("index")
+
         assert harvest_source or environment.env != "localhost", \
             "Expected a harvest source argument for a localhost environment"
         source_environment = create_configuration(harvest_source, service="harvester") \
@@ -102,3 +105,12 @@ class Command(base.LabelCommand):
         # Load resources
         self.load_resources()
         self.reset_postgres_sequences()
+
+        # Index data
+        if should_index:
+            latest_dataset_version = DatasetVersion.objects.get_latest_version()
+            call_command(
+                "index_dataset_version",
+                dataset=latest_dataset_version.dataset.name,
+                harvester_version=latest_dataset_version.version
+            )

@@ -97,6 +97,7 @@ import Materials from '~/components/Materials'
 import Disciplines from '~/components/Disciplines'
 import Collections from '~/components/Collections'
 import Error from '~/components/error'
+import { THEME_CATEGORY_FILTER_ID } from '~/constants'
 import { generateSearchMaterialsQuery } from '@/components/_helpers'
 
 export default {
@@ -141,7 +142,8 @@ export default {
         .dispatch('getTheme', themeId)
         .then(theme => {
           let themeCategory = this.$store.getters.getCategoryById(
-            theme.external_id
+            theme.external_id,
+            THEME_CATEGORY_FILTER_ID
           )
           themeCategory.selected = true
           this.$store.dispatch('searchMaterials', {

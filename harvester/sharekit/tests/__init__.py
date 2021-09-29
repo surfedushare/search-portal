@@ -1,1 +1,2 @@
 from .harvest_metadata_command import TestMetadataHarvestSharekit, TestMetadataHarvestWithHistorySharekit
+from .extract_seeds import TestExtractSeeds, TestExtractSeedsUsingMapping

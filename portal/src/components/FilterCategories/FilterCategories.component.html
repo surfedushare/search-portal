@@ -1,13 +1,21 @@
 <section class="filter-categories">
   <h3 class="filter-categories__title">{{ $t('Filter') }}</h3>
 
-  <div class="filter-categories__links">
+  <div v-if="selectionFilterItems.length" class="filter-categories__links">
+    <p class="filter-categories__reset">Je gekozen filters</p>
     <a
       href="/materials/search/"
       @click.prevent="resetFilter"
-      class="filter-categories__reset"
-    >{{ $t('Reset-filters') }}</a>
+    >({{ $t('Reset-filters') }})</a>
   </div>
+  <ul class="selected-filters">
+    <li v-for="filter in selectionFilterItems">
+      <span>
+        {{ filter.parent.title_translations[$i18n.locale] }}:&nbsp;<b>{{ filter.title_translations[$i18n.locale] }}</b>
+      </span>
+      <button @click="onUncheck(filter.parent.external_id, filter.external_id)" class="remove-icon"></button>
+    </li>
+  </ul>
 
   <div class="filter-categories__items">
     <ul v-if="filterableCategories.length" class="filter-categories__items_wrapper">
