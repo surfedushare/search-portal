@@ -13,7 +13,7 @@
       <span>
         {{ filter.parent.title_translations[$i18n.locale] }}:&nbsp;<b>{{ filter.title_translations[$i18n.locale] }}</b>
       </span>
-      <span @click="onUncheck(filter.parent.external_id, filter.external_id)" class="remove-icon"></span>
+      <button @click="onUncheck(filter.parent.external_id, filter.external_id)" class="remove-icon"></button>
     </li>
   </ul>
 
