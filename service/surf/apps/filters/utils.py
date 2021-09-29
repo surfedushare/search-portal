@@ -72,6 +72,7 @@ def _update_mptt_filter_category(filter_category, api_client):
     for external_id, count in filters.items():
         is_new = False
         filter_item, created = MpttFilterItem.objects.get_or_create(
+            parent=filter_category,
             external_id=external_id,
             defaults={
                 "name": external_id,

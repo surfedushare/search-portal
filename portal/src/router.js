@@ -75,22 +75,34 @@ export default new Router({
     {
       path: '/en/communities/:filterId/search',
       component: Search,
-      name: 'communities-search___en'
+      name: 'communities-search___en',
+      meta: {
+        filterRoot: '79d35be3-5865-4aaa-af1f-a58b3921f0e3' // this is the publisher category
+      }
     },
     {
       path: '/communities/:filterId/zoeken',
       component: Search,
-      name: 'communities-search___nl'
+      name: 'communities-search___nl',
+      meta: {
+        filterRoot: '79d35be3-5865-4aaa-af1f-a58b3921f0e3' // this is the publisher category
+      }
     },
     {
       path: '/en/themes/:filterId/search',
       component: Search,
-      name: 'themes-search___en'
+      name: 'themes-search___en',
+      meta: {
+        filterRoot: '8a422e6d-1c35-4961-a50a-51fcff7cc20c'
+      }
     },
     {
       path: '/themas/:filterId/zoeken',
       component: Search,
-      name: 'themes-search___nl'
+      name: 'themes-search___nl',
+      meta: {
+        filterRoot: '8a422e6d-1c35-4961-a50a-51fcff7cc20c'
+      }
     },
     {
       path: '/en/my/collection/:id',
