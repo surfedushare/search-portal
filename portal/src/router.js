@@ -16,6 +16,10 @@ import InfoPage from '~/pages/info'
 import { isEqual } from 'lodash'
 import axios from '~/axios'
 import store from '~/store'
+import {
+  THEME_CATEGORY_FILTER_ID,
+  PUBLISHER_CATEGORY_FILTER_ID
+} from '~/constants'
 import { localePath } from '~/i18n/plugin.routing'
 
 const $log = injector.get('$log')
@@ -77,7 +81,7 @@ export default new Router({
       component: Search,
       name: 'communities-search___en',
       meta: {
-        filterRoot: '79d35be3-5865-4aaa-af1f-a58b3921f0e3' // this is the publisher category
+        filterRoot: PUBLISHER_CATEGORY_FILTER_ID
       }
     },
     {
@@ -85,7 +89,7 @@ export default new Router({
       component: Search,
       name: 'communities-search___nl',
       meta: {
-        filterRoot: '79d35be3-5865-4aaa-af1f-a58b3921f0e3' // this is the publisher category
+        filterRoot: PUBLISHER_CATEGORY_FILTER_ID
       }
     },
     {
@@ -93,7 +97,7 @@ export default new Router({
       component: Search,
       name: 'themes-search___en',
       meta: {
-        filterRoot: '8a422e6d-1c35-4961-a50a-51fcff7cc20c'
+        filterRoot: THEME_CATEGORY_FILTER_ID
       }
     },
     {
@@ -101,7 +105,7 @@ export default new Router({
       component: Search,
       name: 'themes-search___nl',
       meta: {
-        filterRoot: '8a422e6d-1c35-4961-a50a-51fcff7cc20c'
+        filterRoot: THEME_CATEGORY_FILTER_ID
       }
     },
     {
