@@ -6,6 +6,7 @@ django:
   fixtures:
     - "core/fixtures/datasets-history.json"
     - "core/fixtures/initial-nppo.json"
+    - "core/fixtures/initial-nppo-admin.json"
   redis_host: "redis:6379"
   data_retention:
     purge_after:
