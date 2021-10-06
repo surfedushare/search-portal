@@ -19,19 +19,6 @@ class TestSharekitMetadataHarvest(TestCase):
 
     @patch("sharekit.models.SharekitMetadataHarvest.handle_errors")
     @patch("sharekit.models.SharekitMetadataHarvest._send")
-    def test_get_defaults(self, send_mock, handle_errors_mock):
-        self.instance.get("edusources")
-        self.assertEqual(send_mock.call_count, 1)
-        self.assertEqual(handle_errors_mock.call_count, 1)
-        self.assertEqual(
-            unquote(self.instance.uri),
-            self.base_url + "filter[modified][GE]=1970-01-01T00:00:00Z&page[size]=25"
-        )
-        self.assertEqual(self.instance.since, make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(self.instance.set_specification, "edusources")
-
-    @patch("sharekit.models.SharekitMetadataHarvest.handle_errors")
-    @patch("sharekit.models.SharekitMetadataHarvest._send")
     def test_get_since_time(self, send_mock, handle_errors_mock):
         self.instance.get("edusources", "2021-01-01T01:00:00Z")
         self.assertEqual(send_mock.call_count, 1)

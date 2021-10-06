@@ -25,7 +25,7 @@ class AnatomyToolOAIPMHFactory(factory.django.DjangoModelFactory):
         make_aware(datetime(year=1970, month=1, day=1)),
         make_aware(datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000))
     )
-    set_specification = "surfsharekit"
+    set_specification = "anatomy_tool"
     status = 200
     head = {
         "content-type": "text/xml"
@@ -34,7 +34,7 @@ class AnatomyToolOAIPMHFactory(factory.django.DjangoModelFactory):
     @factory.lazy_attribute
     def uri(self):
         from_param = f"from={self.since:%Y-%m-%dT%H:%M:%SZ}"
-        identity = quote(f"{from_param}&metadataPrefix=lom&set={self.set_specification}", safe="=&") \
+        identity = quote(f"{from_param}&metadataPrefix=lom", safe="=&") \
             if not self.resumption else f"resumptionToken={quote(self.resumption)}"
         return f"staging.edurep.kennisnet.nl/edurep/oai?{identity}&verb=ListRecords"
 

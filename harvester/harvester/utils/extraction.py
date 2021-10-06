@@ -19,7 +19,7 @@ def get_harvest_seeds(set_specification, latest_update, include_deleted=True, in
     """
     results = EdurepOAIPMH.objects.extract_seeds(set_specification, latest_update)
     results += SharekitMetadataHarvest.objects.extract_seeds(set_specification, latest_update)
-    results += AnatomyToolOAIPMH.objects.extract_seeds(set_specification, latest_update)
+    results += AnatomyToolOAIPMH.objects.extract_seeds(latest_update)
 
     seeds = []
     for seed in results:

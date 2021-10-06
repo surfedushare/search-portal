@@ -15,9 +15,9 @@ logger = logging.getLogger("harvester")
 
 class AnatomyToolOAIPMHManager(models.Manager):
 
-    def extract_seeds(self, set_specification, latest_update):
+    def extract_seeds(self, latest_update):
         queryset = self.get_queryset() \
-            .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
+            .filter(since__date__gte=latest_update.date(), status=200)
 
         oaipmh_objective = {
             "@": AnatomyToolExtraction.get_oaipmh_records,
@@ -50,11 +50,17 @@ class AnatomyToolOAIPMH(HarvestHttpResource):
 
     objects = AnatomyToolOAIPMHManager()
 
+    set_specification = models.CharField(max_length=255, blank=True, null=False, default="anatomy_tool")
+
     URI_TEMPLATE = "https://anatomytool.org/oai-pmh?from={}"
     PARAMETERS = {
         "verb": "ListRecords",
-        "metadataPrefix": "oai_lom"
+        "metadataPrefix": "nl_lom"
     }
+
+    def send(self, method, *args, **kwargs):
+        args = (args[1],)  # ignores set_specification input, we'll always use the default
+        return super().send(method, *args, **kwargs)
 
     def next_parameters(self):
         content_type, soup = self.content

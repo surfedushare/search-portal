@@ -30,33 +30,31 @@ class HarvestHttpResource(HttpResource):
     def variables(self, *args):
         vars = super().variables(*args)
         since_time = None
-        if len(vars["url"]) >= 2:
+        if len(vars["url"]) == 2:
             since_time = vars["url"][1]
-            if isinstance(since_time, str):
-                since_time = parse_date_string(since_time)
-                if not is_aware(since_time):
-                    since_time = make_aware(since_time)
+        elif len(vars["url"]) == 1:
+            since_time = vars["url"][0]
+        if isinstance(since_time, str):
+            since_time = parse_date_string(since_time)
+            if not is_aware(since_time):
+                since_time = make_aware(since_time)
         vars["since"] = since_time
         return vars
 
     def clean(self):
         super().clean()
         variables = self.variables()
-        if not self.set_specification and len(variables["url"]):
+        if not self.set_specification and len(variables["url"]) == 2:
             self.set_specification = variables["url"][0]
         if not self.since:
             self.since = variables.get("since", None)
 
-    def send(self, method, *args, **kwargs):
-        # We're sending along a default "from" parameter in a distant past to get all materials
-        # if a set has been specified, but no start date.
-        if len(args) == 1:
-            args = (args[0], "1970-01-01T00:00:00Z")
-        return super().send(method, *args, **kwargs)
-
     def validate_request(self, request, validate_input=True):
         # Casting datetime to string, because we need strings to pass validation
-        request["args"] = (request["args"][0], str(request["args"][1]))
+        request["args"] = tuple([
+            arg if isinstance(arg, str) else str(arg)
+            for arg in request["args"]
+        ])
         return super().validate_request(request, validate_input=validate_input)
 
     class Meta:

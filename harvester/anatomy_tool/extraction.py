@@ -38,7 +38,7 @@ class AnatomyToolExtraction(object):
     @staticmethod
     def parse_vcard_element(el):
         card = unescape(el.text.strip())
-        card = "\n".join(field.strip() for field in card.split(" - "))
+        card = "\n".join(field.strip() for field in card.split("\n"))
         return vobject.readOne(card)
 
     @classmethod
@@ -155,11 +155,7 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_copyright(cls, soup, el):
-        node = el.find('copyrightandotherrestrictions')
-        if node is None:
-            return
-        copyright = cls.parse_copyright_description(cls.get_copyright_description(soup, el))
-        return copyright
+        return cls.parse_copyright_description(cls.get_copyright_description(soup, el))
 
     @classmethod
     def get_aggregation_level(cls, soup, el):
@@ -204,17 +200,7 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_lom_educational_levels(cls, soup, el):
-        educational = el.find('educational')
-        if not educational:
-            return []
-        contexts = educational.find_all('context')
-        if not contexts:
-            return []
-        educational_levels = [
-            edu.find('value').text.strip()
-            for edu in contexts
-        ]
-        return list(set(educational_levels))
+        return ["HBO", "WO"]
 
     @classmethod
     def get_lowest_educational_level(cls, soup, el):
