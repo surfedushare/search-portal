@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0020_dynamic_extraction_data'),
+        ('core', '0021_secure_dynamic_extraction'),
     ]
 
     operations = [
