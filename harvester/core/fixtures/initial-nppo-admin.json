@@ -1,0 +1,2249 @@
+[
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add permission",
+        "content_type": [
+            "auth",
+            "permission"
+        ],
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change permission",
+        "content_type": [
+            "auth",
+            "permission"
+        ],
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": [
+            "auth",
+            "permission"
+        ],
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view permission",
+        "content_type": [
+            "auth",
+            "permission"
+        ],
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add group",
+        "content_type": [
+            "auth",
+            "group"
+        ],
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change group",
+        "content_type": [
+            "auth",
+            "group"
+        ],
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete group",
+        "content_type": [
+            "auth",
+            "group"
+        ],
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view group",
+        "content_type": [
+            "auth",
+            "group"
+        ],
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add user",
+        "content_type": [
+            "auth",
+            "user"
+        ],
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change user",
+        "content_type": [
+            "auth",
+            "user"
+        ],
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete user",
+        "content_type": [
+            "auth",
+            "user"
+        ],
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view user",
+        "content_type": [
+            "auth",
+            "user"
+        ],
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add content type",
+        "content_type": [
+            "contenttypes",
+            "contenttype"
+        ],
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change content type",
+        "content_type": [
+            "contenttypes",
+            "contenttype"
+        ],
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": [
+            "contenttypes",
+            "contenttype"
+        ],
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view content type",
+        "content_type": [
+            "contenttypes",
+            "contenttype"
+        ],
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add session",
+        "content_type": [
+            "sessions",
+            "session"
+        ],
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change session",
+        "content_type": [
+            "sessions",
+            "session"
+        ],
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete session",
+        "content_type": [
+            "sessions",
+            "session"
+        ],
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view session",
+        "content_type": [
+            "sessions",
+            "session"
+        ],
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add Token",
+        "content_type": [
+            "authtoken",
+            "token"
+        ],
+        "codename": "add_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change Token",
+        "content_type": [
+            "authtoken",
+            "token"
+        ],
+        "codename": "change_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete Token",
+        "content_type": [
+            "authtoken",
+            "token"
+        ],
+        "codename": "delete_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view Token",
+        "content_type": [
+            "authtoken",
+            "token"
+        ],
+        "codename": "view_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add collection",
+        "content_type": [
+            "core",
+            "collection"
+        ],
+        "codename": "add_collection"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change collection",
+        "content_type": [
+            "core",
+            "collection"
+        ],
+        "codename": "change_collection"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete collection",
+        "content_type": [
+            "core",
+            "collection"
+        ],
+        "codename": "delete_collection"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view collection",
+        "content_type": [
+            "core",
+            "collection"
+        ],
+        "codename": "view_collection"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add common cartridge",
+        "content_type": [
+            "core",
+            "commoncartridge"
+        ],
+        "codename": "add_commoncartridge"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change common cartridge",
+        "content_type": [
+            "core",
+            "commoncartridge"
+        ],
+        "codename": "change_commoncartridge"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete common cartridge",
+        "content_type": [
+            "core",
+            "commoncartridge"
+        ],
+        "codename": "delete_commoncartridge"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view common cartridge",
+        "content_type": [
+            "core",
+            "commoncartridge"
+        ],
+        "codename": "view_commoncartridge"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add dataset",
+        "content_type": [
+            "core",
+            "dataset"
+        ],
+        "codename": "add_dataset"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change dataset",
+        "content_type": [
+            "core",
+            "dataset"
+        ],
+        "codename": "change_dataset"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete dataset",
+        "content_type": [
+            "core",
+            "dataset"
+        ],
+        "codename": "delete_dataset"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view dataset",
+        "content_type": [
+            "core",
+            "dataset"
+        ],
+        "codename": "view_dataset"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add elastic index",
+        "content_type": [
+            "core",
+            "elasticindex"
+        ],
+        "codename": "add_elasticindex"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change elastic index",
+        "content_type": [
+            "core",
+            "elasticindex"
+        ],
+        "codename": "change_elasticindex"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete elastic index",
+        "content_type": [
+            "core",
+            "elasticindex"
+        ],
+        "codename": "delete_elasticindex"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view elastic index",
+        "content_type": [
+            "core",
+            "elasticindex"
+        ],
+        "codename": "view_elasticindex"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add document",
+        "content_type": [
+            "core",
+            "document"
+        ],
+        "codename": "add_document"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change document",
+        "content_type": [
+            "core",
+            "document"
+        ],
+        "codename": "change_document"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete document",
+        "content_type": [
+            "core",
+            "document"
+        ],
+        "codename": "delete_document"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view document",
+        "content_type": [
+            "core",
+            "document"
+        ],
+        "codename": "view_document"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add you tube dl resource",
+        "content_type": [
+            "core",
+            "youtubedlresource"
+        ],
+        "codename": "add_youtubedlresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change you tube dl resource",
+        "content_type": [
+            "core",
+            "youtubedlresource"
+        ],
+        "codename": "change_youtubedlresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete you tube dl resource",
+        "content_type": [
+            "core",
+            "youtubedlresource"
+        ],
+        "codename": "delete_youtubedlresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view you tube dl resource",
+        "content_type": [
+            "core",
+            "youtubedlresource"
+        ],
+        "codename": "view_youtubedlresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add tika resource",
+        "content_type": [
+            "core",
+            "tikaresource"
+        ],
+        "codename": "add_tikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change tika resource",
+        "content_type": [
+            "core",
+            "tikaresource"
+        ],
+        "codename": "change_tikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete tika resource",
+        "content_type": [
+            "core",
+            "tikaresource"
+        ],
+        "codename": "delete_tikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view tika resource",
+        "content_type": [
+            "core",
+            "tikaresource"
+        ],
+        "codename": "view_tikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add file resource",
+        "content_type": [
+            "core",
+            "fileresource"
+        ],
+        "codename": "add_fileresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change file resource",
+        "content_type": [
+            "core",
+            "fileresource"
+        ],
+        "codename": "change_fileresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete file resource",
+        "content_type": [
+            "core",
+            "fileresource"
+        ],
+        "codename": "delete_fileresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view file resource",
+        "content_type": [
+            "core",
+            "fileresource"
+        ],
+        "codename": "view_fileresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add chrome screenshot resource",
+        "content_type": [
+            "core",
+            "chromescreenshotresource"
+        ],
+        "codename": "add_chromescreenshotresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change chrome screenshot resource",
+        "content_type": [
+            "core",
+            "chromescreenshotresource"
+        ],
+        "codename": "change_chromescreenshotresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete chrome screenshot resource",
+        "content_type": [
+            "core",
+            "chromescreenshotresource"
+        ],
+        "codename": "delete_chromescreenshotresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view chrome screenshot resource",
+        "content_type": [
+            "core",
+            "chromescreenshotresource"
+        ],
+        "codename": "view_chromescreenshotresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add youtube thumbnail resource",
+        "content_type": [
+            "core",
+            "youtubethumbnailresource"
+        ],
+        "codename": "add_youtubethumbnailresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change youtube thumbnail resource",
+        "content_type": [
+            "core",
+            "youtubethumbnailresource"
+        ],
+        "codename": "change_youtubethumbnailresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete youtube thumbnail resource",
+        "content_type": [
+            "core",
+            "youtubethumbnailresource"
+        ],
+        "codename": "delete_youtubethumbnailresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view youtube thumbnail resource",
+        "content_type": [
+            "core",
+            "youtubethumbnailresource"
+        ],
+        "codename": "view_youtubethumbnailresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add harvest source",
+        "content_type": [
+            "core",
+            "harvestsource"
+        ],
+        "codename": "add_harvestsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change harvest source",
+        "content_type": [
+            "core",
+            "harvestsource"
+        ],
+        "codename": "change_harvestsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete harvest source",
+        "content_type": [
+            "core",
+            "harvestsource"
+        ],
+        "codename": "delete_harvestsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view harvest source",
+        "content_type": [
+            "core",
+            "harvestsource"
+        ],
+        "codename": "view_harvestsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add harvest",
+        "content_type": [
+            "core",
+            "harvest"
+        ],
+        "codename": "add_harvest"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change harvest",
+        "content_type": [
+            "core",
+            "harvest"
+        ],
+        "codename": "change_harvest"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete harvest",
+        "content_type": [
+            "core",
+            "harvest"
+        ],
+        "codename": "delete_harvest"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view harvest",
+        "content_type": [
+            "core",
+            "harvest"
+        ],
+        "codename": "view_harvest"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add dataset version",
+        "content_type": [
+            "core",
+            "datasetversion"
+        ],
+        "codename": "add_datasetversion"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change dataset version",
+        "content_type": [
+            "core",
+            "datasetversion"
+        ],
+        "codename": "change_datasetversion"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete dataset version",
+        "content_type": [
+            "core",
+            "datasetversion"
+        ],
+        "codename": "delete_datasetversion"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view dataset version",
+        "content_type": [
+            "core",
+            "datasetversion"
+        ],
+        "codename": "view_datasetversion"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add http tika resource",
+        "content_type": [
+            "core",
+            "httptikaresource"
+        ],
+        "codename": "add_httptikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change http tika resource",
+        "content_type": [
+            "core",
+            "httptikaresource"
+        ],
+        "codename": "change_httptikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete http tika resource",
+        "content_type": [
+            "core",
+            "httptikaresource"
+        ],
+        "codename": "delete_httptikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view http tika resource",
+        "content_type": [
+            "core",
+            "httptikaresource"
+        ],
+        "codename": "view_httptikaresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add batch",
+        "content_type": [
+            "core",
+            "batch"
+        ],
+        "codename": "add_batch"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change batch",
+        "content_type": [
+            "core",
+            "batch"
+        ],
+        "codename": "change_batch"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete batch",
+        "content_type": [
+            "core",
+            "batch"
+        ],
+        "codename": "delete_batch"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view batch",
+        "content_type": [
+            "core",
+            "batch"
+        ],
+        "codename": "view_batch"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add process result",
+        "content_type": [
+            "core",
+            "processresult"
+        ],
+        "codename": "add_processresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change process result",
+        "content_type": [
+            "core",
+            "processresult"
+        ],
+        "codename": "change_processresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete process result",
+        "content_type": [
+            "core",
+            "processresult"
+        ],
+        "codename": "delete_processresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view process result",
+        "content_type": [
+            "core",
+            "processresult"
+        ],
+        "codename": "view_processresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add extension",
+        "content_type": [
+            "core",
+            "extension"
+        ],
+        "codename": "add_extension"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change extension",
+        "content_type": [
+            "core",
+            "extension"
+        ],
+        "codename": "change_extension"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete extension",
+        "content_type": [
+            "core",
+            "extension"
+        ],
+        "codename": "delete_extension"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view extension",
+        "content_type": [
+            "core",
+            "extension"
+        ],
+        "codename": "view_extension"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add extruct resource",
+        "content_type": [
+            "core",
+            "extructresource"
+        ],
+        "codename": "add_extructresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change extruct resource",
+        "content_type": [
+            "core",
+            "extructresource"
+        ],
+        "codename": "change_extructresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete extruct resource",
+        "content_type": [
+            "core",
+            "extructresource"
+        ],
+        "codename": "delete_extructresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view extruct resource",
+        "content_type": [
+            "core",
+            "extructresource"
+        ],
+        "codename": "view_extructresource"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add extraction mapping",
+        "content_type": [
+            "core",
+            "extractionmapping"
+        ],
+        "codename": "add_extractionmapping"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change extraction mapping",
+        "content_type": [
+            "core",
+            "extractionmapping"
+        ],
+        "codename": "change_extractionmapping"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete extraction mapping",
+        "content_type": [
+            "core",
+            "extractionmapping"
+        ],
+        "codename": "delete_extractionmapping"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view extraction mapping",
+        "content_type": [
+            "core",
+            "extractionmapping"
+        ],
+        "codename": "view_extractionmapping"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add extraction method",
+        "content_type": [
+            "core",
+            "extractionmethod"
+        ],
+        "codename": "add_extractionmethod"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change extraction method",
+        "content_type": [
+            "core",
+            "extractionmethod"
+        ],
+        "codename": "change_extractionmethod"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete extraction method",
+        "content_type": [
+            "core",
+            "extractionmethod"
+        ],
+        "codename": "delete_extractionmethod"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view extraction method",
+        "content_type": [
+            "core",
+            "extractionmethod"
+        ],
+        "codename": "view_extractionmethod"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add json extraction field",
+        "content_type": [
+            "core",
+            "jsonextractionfield"
+        ],
+        "codename": "add_jsonextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change json extraction field",
+        "content_type": [
+            "core",
+            "jsonextractionfield"
+        ],
+        "codename": "change_jsonextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete json extraction field",
+        "content_type": [
+            "core",
+            "jsonextractionfield"
+        ],
+        "codename": "delete_jsonextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view json extraction field",
+        "content_type": [
+            "core",
+            "jsonextractionfield"
+        ],
+        "codename": "view_jsonextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add method extraction field",
+        "content_type": [
+            "core",
+            "methodextractionfield"
+        ],
+        "codename": "add_methodextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change method extraction field",
+        "content_type": [
+            "core",
+            "methodextractionfield"
+        ],
+        "codename": "change_methodextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete method extraction field",
+        "content_type": [
+            "core",
+            "methodextractionfield"
+        ],
+        "codename": "delete_methodextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view method extraction field",
+        "content_type": [
+            "core",
+            "methodextractionfield"
+        ],
+        "codename": "view_methodextractionfield"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add objective property",
+        "content_type": [
+            "core",
+            "objectiveproperty"
+        ],
+        "codename": "add_objectiveproperty"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change objective property",
+        "content_type": [
+            "core",
+            "objectiveproperty"
+        ],
+        "codename": "change_objectiveproperty"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete objective property",
+        "content_type": [
+            "core",
+            "objectiveproperty"
+        ],
+        "codename": "delete_objectiveproperty"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view objective property",
+        "content_type": [
+            "core",
+            "objectiveproperty"
+        ],
+        "codename": "view_objectiveproperty"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add Edurep OAIPMH harvest",
+        "content_type": [
+            "edurep",
+            "edurepoaipmh"
+        ],
+        "codename": "add_edurepoaipmh"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change Edurep OAIPMH harvest",
+        "content_type": [
+            "edurep",
+            "edurepoaipmh"
+        ],
+        "codename": "change_edurepoaipmh"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete Edurep OAIPMH harvest",
+        "content_type": [
+            "edurep",
+            "edurepoaipmh"
+        ],
+        "codename": "delete_edurepoaipmh"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view Edurep OAIPMH harvest",
+        "content_type": [
+            "edurep",
+            "edurepoaipmh"
+        ],
+        "codename": "view_edurepoaipmh"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add Sharekit metadata harvest",
+        "content_type": [
+            "sharekit",
+            "sharekitmetadataharvest"
+        ],
+        "codename": "add_sharekitmetadataharvest"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change Sharekit metadata harvest",
+        "content_type": [
+            "sharekit",
+            "sharekitmetadataharvest"
+        ],
+        "codename": "change_sharekitmetadataharvest"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete Sharekit metadata harvest",
+        "content_type": [
+            "sharekit",
+            "sharekitmetadataharvest"
+        ],
+        "codename": "delete_sharekitmetadataharvest"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view Sharekit metadata harvest",
+        "content_type": [
+            "sharekit",
+            "sharekitmetadataharvest"
+        ],
+        "codename": "view_sharekitmetadataharvest"
+    }
+},
+{
+    "model": "auth.group",
+    "fields": {
+        "name": "repository admin",
+        "permissions": [
+            [
+                "view_dataset",
+                "core",
+                "dataset"
+            ],
+            [
+                "change_extractionmapping",
+                "core",
+                "extractionmapping"
+            ],
+            [
+                "add_extractionmethod",
+                "core",
+                "extractionmethod"
+            ],
+            [
+                "delete_extractionmethod",
+                "core",
+                "extractionmethod"
+            ],
+            [
+                "view_extractionmethod",
+                "core",
+                "extractionmethod"
+            ],
+            [
+                "view_harvest",
+                "core",
+                "harvest"
+            ],
+            [
+                "view_harvestsource",
+                "core",
+                "harvestsource"
+            ],
+            [
+                "add_jsonextractionfield",
+                "core",
+                "jsonextractionfield"
+            ],
+            [
+                "delete_jsonextractionfield",
+                "core",
+                "jsonextractionfield"
+            ],
+            [
+                "view_jsonextractionfield",
+                "core",
+                "jsonextractionfield"
+            ],
+            [
+                "add_methodextractionfield",
+                "core",
+                "methodextractionfield"
+            ],
+            [
+                "delete_methodextractionfield",
+                "core",
+                "methodextractionfield"
+            ],
+            [
+                "view_methodextractionfield",
+                "core",
+                "methodextractionfield"
+            ],
+            [
+                "add_objectiveproperty",
+                "core",
+                "objectiveproperty"
+            ],
+            [
+                "change_objectiveproperty",
+                "core",
+                "objectiveproperty"
+            ],
+            [
+                "delete_objectiveproperty",
+                "core",
+                "objectiveproperty"
+            ],
+            [
+                "view_objectiveproperty",
+                "core",
+                "objectiveproperty"
+            ],
+            [
+                "add_edurepoaipmh",
+                "edurep",
+                "edurepoaipmh"
+            ],
+            [
+                "change_edurepoaipmh",
+                "edurep",
+                "edurepoaipmh"
+            ],
+            [
+                "delete_edurepoaipmh",
+                "edurep",
+                "edurepoaipmh"
+            ],
+            [
+                "view_edurepoaipmh",
+                "edurep",
+                "edurepoaipmh"
+            ]
+        ]
+    }
+},
+
+{
+    "model": "core.extractionmapping",
+    "pk": 1,
+    "fields": {
+        "name": "Sharekit",
+        "repository": "sharekit.SharekitMetadataHarvest",
+        "root": "$.data",
+        "is_active": true
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 1,
+    "fields": {
+        "method": "get_record_state",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 2,
+    "fields": {
+        "method": "get_url",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 3,
+    "fields": {
+        "method": "get_files",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 4,
+    "fields": {
+        "method": "get_mime_type",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 5,
+    "fields": {
+        "method": "get_technical_type",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 6,
+    "fields": {
+        "method": "get_material_types",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 7,
+    "fields": {
+        "method": "get_copyright",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 8,
+    "fields": {
+        "method": "get_none",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 9,
+    "fields": {
+        "method": "get_authors",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 10,
+    "fields": {
+        "method": "get_publishers",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 11,
+    "fields": {
+        "method": "get_lom_educational_levels",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 12,
+    "fields": {
+        "method": "get_lowest_educational_level",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 13,
+    "fields": {
+        "method": "get_empty_list",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 14,
+    "fields": {
+        "method": "get_ideas",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 15,
+    "fields": {
+        "method": "get_from_youtube",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 16,
+    "fields": {
+        "method": "get_is_restricted",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 17,
+    "fields": {
+        "method": "get_analysis_allowed",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 18,
+    "fields": {
+        "method": "get_is_part_of",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.extractionmethod",
+    "pk": 19,
+    "fields": {
+        "method": "get_research_themes",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 1,
+    "fields": {
+        "path": "$.id"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 2,
+    "fields": {
+        "path": "$.attributes.title"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 3,
+    "fields": {
+        "path": "$.attributes.language"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 4,
+    "fields": {
+        "path": "$.attributes.keywords"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 5,
+    "fields": {
+        "path": "$.attributes.abstract"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 6,
+    "fields": {
+        "path": "$.attributes.aggregationlevel"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 7,
+    "fields": {
+        "path": "$.attributes.publishedAt"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 8,
+    "fields": {
+        "path": "$.attributes.hasParts"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 9,
+    "fields": {
+        "path": "$.attributes.doi"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 10,
+    "fields": {
+        "path": "$.attributes.typeResearchObject"
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 1,
+    "fields": {
+        "method": 1
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 2,
+    "fields": {
+        "method": 2
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 3,
+    "fields": {
+        "method": 3
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 4,
+    "fields": {
+        "method": 4
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 5,
+    "fields": {
+        "method": 5
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 6,
+    "fields": {
+        "method": 6
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 7,
+    "fields": {
+        "method": 7
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 8,
+    "fields": {
+        "method": 8
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 9,
+    "fields": {
+        "method": 9
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 10,
+    "fields": {
+        "method": 10
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 11,
+    "fields": {
+        "method": 11
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 12,
+    "fields": {
+        "method": 12
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 13,
+    "fields": {
+        "method": 13
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 14,
+    "fields": {
+        "method": 14
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 15,
+    "fields": {
+        "method": 15
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 16,
+    "fields": {
+        "method": 16
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 17,
+    "fields": {
+        "method": 17
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 18,
+    "fields": {
+        "method": 18
+    }
+},
+{
+    "model": "core.methodextractionfield",
+    "pk": 19,
+    "fields": {
+        "method": 19
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 1,
+    "fields": {
+        "mapping": 1,
+        "json_field": 1,
+        "method_field": null,
+        "property": "external_id",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 2,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 1,
+        "property": "state",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 3,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 2,
+        "property": "url",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 4,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 3,
+        "property": "files",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 5,
+    "fields": {
+        "mapping": 1,
+        "json_field": 2,
+        "method_field": null,
+        "property": "title",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 6,
+    "fields": {
+        "mapping": 1,
+        "json_field": 3,
+        "method_field": null,
+        "property": "language",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 7,
+    "fields": {
+        "mapping": 1,
+        "json_field": 4,
+        "method_field": null,
+        "property": "keywords",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 8,
+    "fields": {
+        "mapping": 1,
+        "json_field": 5,
+        "method_field": null,
+        "property": "description",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 9,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 4,
+        "property": "mime_type",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 10,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 5,
+        "property": "technical_type",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 11,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 6,
+        "property": "material_types",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 12,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 7,
+        "property": "copyright",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 13,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 8,
+        "property": "copyright_description",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 14,
+    "fields": {
+        "mapping": 1,
+        "json_field": 6,
+        "method_field": null,
+        "property": "aggregation_level",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 15,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 9,
+        "property": "authors",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 16,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 10,
+        "property": "publishers",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 17,
+    "fields": {
+        "mapping": 1,
+        "json_field": 7,
+        "method_field": null,
+        "property": "publisher_date",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 18,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 11,
+        "property": "lom_educational_levels",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 19,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 12,
+        "property": "lowest_educational_level",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 20,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 13,
+        "property": "disciplines",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 21,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 14,
+        "property": "ideas",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 22,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 15,
+        "property": "from_youtube",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 23,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 16,
+        "property": "is_restricted",
+        "is_context": true,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 24,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 17,
+        "property": "analysis_allowed",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 25,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 18,
+        "property": "is_part_of",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 26,
+    "fields": {
+        "mapping": 1,
+        "json_field": 8,
+        "method_field": null,
+        "property": "has_parts",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 27,
+    "fields": {
+        "mapping": 1,
+        "json_field": 9,
+        "method_field": null,
+        "property": "doi",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 28,
+    "fields": {
+        "mapping": 1,
+        "json_field": 10,
+        "method_field": null,
+        "property": "research_object_type",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 29,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 19,
+        "property": "research_themes",
+        "is_context": false,
+        "is_protected": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 30,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 13,
+        "property": "parties",
+        "is_context": false,
+        "is_protected": false
+    }
+}
+]

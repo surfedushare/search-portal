@@ -2,7 +2,7 @@
   <h3 class="filter-categories__title">{{ $t('Filter') }}</h3>
 
   <div v-if="selectionFilterItems.length" class="filter-categories__links">
-    <p class="filter-categories__reset">Je gekozen filters</p>
+    <p class="filter-categories__reset">{{ $t('Selected-filters') }}</p>
     <a
       href="/materials/search/"
       @click.prevent="resetFilter"

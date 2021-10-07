@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
 
 from datagrowth.datatypes import CollectionBase, DocumentCollectionMixin
 from datagrowth.utils import ibatch
@@ -31,6 +31,7 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
     def get_name(cls):  # adheres to Datagrowth protocol for easy data loads
         return "dataset"
 
+    @transaction.atomic
     def create_new_version(self, excluded_specs=None):
         excluded_specs = excluded_specs or []
         current_version = self.versions.filter(is_current=True).last()
