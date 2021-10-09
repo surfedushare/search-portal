@@ -44,40 +44,40 @@ class TestGetHarvestSeedsAnatomyTool(TestCase):
             self.assertEqual(seed_types["deleted"]["state"], "deleted")
 
     def test_get_complete_set(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(len(seeds), 10)
         self.check_seed_integrity(seeds)
 
     def test_get_complete_set_without_deletes(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)),
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)),
                                   include_deleted=False)
         self.assertEqual(len(seeds), 8)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_from_youtube_property(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(len(seeds), 10)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
         self.assertEqual(len(youtube_seeds), 0)
 
     def test_authors_property(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['authors'], [
             {'name': 'O. Paul Gobée', 'email': None},
             {'name': 'Prof. X. Test', 'email': None}
         ])
 
     def test_analysis_allowed_property(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['analysis_allowed'], True, "Expected standard material to allow analysis")
         self.assertEqual(seeds[6]['analysis_allowed'], False, "Expected restricted material to disallow analysis")
 
     def test_lom_educational_level(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]["lom_educational_levels"], ["HBO", "WO"])
 
     def test_get_files(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(len(seeds[0]["files"]), 1)
         file = seeds[0]["files"][0]
         self.assertEqual(file["mime_type"], "image/png")
@@ -105,10 +105,10 @@ class TestGetHarvestSeedsAnatomyTool(TestCase):
             self.assertEqual(AnatomyToolExtraction.parse_copyright_description(description), license)
 
     def test_get_copyright(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(len(seeds), 10, "Expected get_harvest_seeds to filter differently based on copyright")
         self.assertEqual(seeds[0]["copyright"], "cc-by-nc-sa-40")
 
     def test_get_technical_type(self):
-        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]["technical_type"], "image")
