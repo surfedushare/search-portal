@@ -22,6 +22,8 @@ class AnatomyToolExtraction(object):
     def parse_copyright_description(cls, description):
         if description is None:
             return
+        elif description == "Public Domain":
+            return "pdm-10"
         url_match = cls.cc_url_regex.match(description)
         if url_match is None:
             code_match = cls.cc_code_regex.match(description)
