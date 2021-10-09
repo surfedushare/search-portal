@@ -109,6 +109,8 @@ class SharekitMetadataExtraction(ExtractProcessor):
     @classmethod
     def get_publishers(cls, node):
         publishers = node["attributes"].get("publishers", []) or []
+        if isinstance(publishers, str):
+            publishers = [publishers]
         keywords = node["attributes"].get("keywords", []) or []
         # Check HBOVPK tags
         hbovpk_keywords = [keyword for keyword in keywords if keyword and "hbovpk" in keyword.lower()]
