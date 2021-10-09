@@ -66,6 +66,15 @@
             }
         },
         {
+            "attributes": {},
+            "type": "repoItem",
+            "meta": {
+                "status": "deleted",
+                "deletedAt": "2021-10-07T09:16:44Z"
+            },
+            "id": "3903863-6c93-4bda-b850-277f3c9ec00e"
+        },
+        {
             "type": "repoItem",
             "id": "3e45b9e3-ba76-4200-a927-2902177f1f6c",
             "attributes": {

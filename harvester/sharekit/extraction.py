@@ -15,7 +15,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_record_state(cls, node):
-        return "active"
+        return node.get("meta", {}).get("status", "active")
 
     #############################
     # GENERIC
@@ -23,8 +23,8 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_files(cls, node):
-        files = node["attributes"]["files"] or []
-        links = node["attributes"]["links"] or []
+        files = node["attributes"].get("files", []) or []
+        links = node["attributes"].get("links", []) or []
         output = [
             {
                 "mime_type": file["resourceMimeType"],
@@ -59,7 +59,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_technical_type(cls, node):
-        technical_type = node["attributes"]["technicalFormat"]
+        technical_type = node["attributes"].get("technicalFormat", None)
         if technical_type:
             return technical_type
         files = cls.get_files(node)
@@ -76,7 +76,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_material_types(cls, node):
-        material_types = node["attributes"]["typesLearningMaterial"]
+        material_types = node["attributes"].get("typesLearningMaterial", [])
         if not material_types:
             return []
         elif isinstance(material_types, list):
@@ -86,7 +86,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        return node["attributes"]["termsOfUse"]
+        return node["attributes"].get("termsOfUse", None)
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -97,7 +97,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_authors(cls, node):
-        authors = node["attributes"]["authors"] or []
+        authors = node["attributes"].get("authors", []) or []
         return [
             {
                "name": author["person"]["name"],
@@ -108,22 +108,17 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_publishers(cls, node):
-        publishers = []
-        publisher = node["attributes"]["publishers"]
-        keywords = node["attributes"]["keywords"] or []
+        publishers = node["attributes"].get("publishers", []) or []
+        keywords = node["attributes"].get("keywords", []) or []
         # Check HBOVPK tags
         hbovpk_keywords = [keyword for keyword in keywords if keyword and "hbovpk" in keyword.lower()]
         if hbovpk_keywords:
             publishers.append("HBO Verpleegkunde")
-        # Check normal publishers
-        if not publisher:
-            return publishers
-        publishers.append(publisher)
         return publishers
 
     @classmethod
     def get_lom_educational_levels(cls, node):
-        educational_levels = node["attributes"]["educationalLevels"]
+        educational_levels = node["attributes"].get("educationalLevels", [])
         if not educational_levels:
             return []
         return list(set([
@@ -154,7 +149,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_ideas(cls, node):
-        compound_ideas = [vocabulary["value"] for vocabulary in node["attributes"]["vocabularies"]]
+        compound_ideas = [vocabulary["value"] for vocabulary in node["attributes"].get("vocabularies", [])]
         if not compound_ideas:
             return []
         ideas = []
@@ -183,7 +178,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_research_themes(cls, node):
-        theme_value = node["attributes"]["themesResearchObject"]
+        theme_value = node["attributes"].get("themesResearchObject", [])
         if not theme_value:
             return []
         return theme_value if isinstance(theme_value, list) else [theme_value]
