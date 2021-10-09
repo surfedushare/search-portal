@@ -621,6 +621,15 @@
         "publishedIn": null,
         "conference": null
       }
+    },
+    {
+      "attributes": {},
+      "type": "repoItem",
+      "meta": {
+        "status": "deleted",
+        "deletedAt": "2021-10-07T09:16:44Z"
+      },
+      "id": "9887d1e7-f5aa-45e8-8e92-a9772a0663ad"
     }
   ]
 }
