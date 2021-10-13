@@ -275,4 +275,5 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "research_themes": lambda soup, el: None,
     "parties": lambda soup, el: [],
     "learning_material_themes": lambda soup, el: [],
+    "consortium": lambda soup, el: None,
 }

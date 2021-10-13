@@ -230,5 +230,6 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "research_object_type": "$.attributes.typeResearchObject",
     "research_themes": SharekitMetadataExtraction.get_research_themes,
     "parties": SharekitMetadataExtraction.get_empty_list,
-    "learning_material_themes": SharekitMetadataExtraction.get_learning_material_themes
+    "learning_material_themes": SharekitMetadataExtraction.get_learning_material_themes,
+    "consortium": "$.attributes.consortium"
 }
