@@ -3,7 +3,7 @@ import os.path
 from io import BytesIO
 import requests
 from requests.status_codes import codes
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 from django.core.files import File
 from django.db import models
@@ -60,11 +60,15 @@ class YoutubeThumbnailResource(ShellResource):
     @property
     def content(self):
         if self.success:
-            return "application/json", build_versatileimagefield_url_set(self.preview, [
+            signed_urls = build_versatileimagefield_url_set(self.preview, [
                 ('full_size', 'url'),
                 ('preview', 'thumbnail__400x300'),
                 ('preview_small', 'thumbnail__200x150'),
             ])
+            return "application/json", {
+                image_key: urljoin(url, urlparse(url).path)
+                for image_key, url in signed_urls.items()
+            }
         return None, None
 
     def handle_errors(self):

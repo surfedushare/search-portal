@@ -1,6 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
-import os
+from urllib.parse import urlparse
 
 from django.conf import settings
 from rest_framework import serializers
@@ -13,21 +13,22 @@ PREVIEW_ORIGINAL = "preview.png"
 s3_client = boto3.client("s3")
 
 
-def get_preview_absolute_uri(preview_path, preview_type, duration=7200):
+def get_preview_absolute_uri(url, duration=7200):
     """
     Generate a presigned URL to share the S3 object where this resource is stored.
     If the application is not connected to S3 it simply returns a local path.
     """
-    if preview_path is None:
+    if url is None:
         return None
 
     if settings.AWS_HARVESTER_BUCKET_NAME is None:
-        return os.path.join(settings.MEDIA_URL, "harvester", preview_path, preview_type)
+        return url
 
     # Generate a presigned URL for the S3 object
+    urlparse(url)
     lookup_params = {
         "Bucket": settings.AWS_HARVESTER_BUCKET_NAME,
-        "Key": f"{preview_path}/{preview_type}"
+        "Key": urlparse(url).path
     }
     try:
         return s3_client.generate_presigned_url("get_object", Params=lookup_params, ExpiresIn=duration)
@@ -67,23 +68,19 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
     has_parts = serializers.ListField(child=serializers.CharField())
     is_part_of = serializers.ListField(child=serializers.CharField())
 
-    preview_path = serializers.SerializerMethodField()
-    preview_thumbnail_url = serializers.SerializerMethodField()
-    preview_url = serializers.SerializerMethodField()
+    previews = serializers.SerializerMethodField()
 
     view_count = serializers.IntegerField()
     applaud_count = serializers.IntegerField()
     avg_star_rating = serializers.IntegerField()
     count_star_rating = serializers.IntegerField()
 
-    def get_preview_path(self, obj):
-        return obj.get("preview_path", None)
-
-    def get_preview_thumbnail_url(self, obj):
-        return get_preview_absolute_uri(self.get_preview_path(obj), PREVIEW_SMALL)
-
-    def get_preview_url(self, obj):
-        return get_preview_absolute_uri(self.get_preview_path(obj), PREVIEW_ORIGINAL)
+    def get_previews(self, obj):
+        previews = obj.get("previews", {})
+        return {
+            image_key: get_preview_absolute_uri(url)
+            for image_key, url in previews.items()
+        }
 
 
 class RelationSerializer(serializers.Serializer):
