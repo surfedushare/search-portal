@@ -7,7 +7,7 @@ import versatileimagefield.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0021_secure_dynamic_extraction'),
+        ('core', '0022_anatomy_tool'),
     ]
 
     operations = [
