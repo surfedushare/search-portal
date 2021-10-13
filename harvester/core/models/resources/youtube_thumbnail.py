@@ -26,13 +26,13 @@ class YoutubeThumbnailResource(ShellResource):
     ]
 
     @staticmethod
-    def get_youtube_id(url):
-        youtube_url = urlparse(url)
-        if not youtube_url.query:
-            return youtube_url.path[1:]
-        youtube_query = parse_qs(youtube_url.query)
-        youtube_id = youtube_query["v"]
-        return youtube_id
+    def get_preview_filename(thumbnail_url):
+        youtube_url = urlparse(thumbnail_url)
+        youtube_path = youtube_url.path
+        remainder, filename = os.path.split(youtube_path)
+        name, ext = os.path.splitext(filename)
+        remainder, youtube_id = os.path.split(remainder)
+        return f"{youtube_id}{ext}"
 
     def run(self, *args, **kwargs):
         resource = super().run(*args, **kwargs)
@@ -48,11 +48,8 @@ class YoutubeThumbnailResource(ShellResource):
             return resource
         fp = BytesIO()
         fp.write(response.content)
-        path, file_name = os.path.split(thumbnail_url)
-        name, ext = os.path.splitext(file_name)
-        ext = ext[:10]
-        youtube_id = self.get_youtube_id(args[0])
-        resource.preview.save(f"{youtube_id}{ext}", File(fp))
+        filename = self.get_preview_filename(thumbnail_url)
+        resource.preview.save(filename, File(fp))
         return resource
 
     @property
