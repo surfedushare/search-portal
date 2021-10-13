@@ -193,6 +193,13 @@ class SharekitMetadataExtraction(ExtractProcessor):
     def get_none(cls, node):
         return None
 
+    @classmethod
+    def get_learning_material_themes(cls, node):
+        theme_value = node["attributes"].get("themesLearningMaterial", [])
+        if not theme_value:
+            return []
+        return theme_value if isinstance(theme_value, list) else [theme_value]
+
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
     "url": SharekitMetadataExtraction.get_url,
@@ -223,4 +230,5 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "research_object_type": "$.attributes.typeResearchObject",
     "research_themes": SharekitMetadataExtraction.get_research_themes,
     "parties": SharekitMetadataExtraction.get_empty_list,
+    "learning_material_themes": SharekitMetadataExtraction.get_learning_material_themes
 }
