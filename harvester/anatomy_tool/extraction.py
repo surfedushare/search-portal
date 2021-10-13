@@ -168,7 +168,6 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_authors(cls, soup, el):
-        return []  # TODO: temporary change for testing
         lifecycle = el.find('lifecycle')
         if not lifecycle:
             return []
