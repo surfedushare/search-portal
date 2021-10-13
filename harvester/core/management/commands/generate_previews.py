@@ -1,13 +1,10 @@
 import time
 
 from core.management.base import PipelineCommand
-from celery import group
-from django.db.models import Q
 
 from core.constants import HarvestStages
 from core.models import DatasetVersion, Document, Harvest
 from core.processors import ShellPipelineProcessor
-from core.tasks import generate_browser_preview, generate_pdf_preview, generate_youtube_preview
 
 
 class Command(PipelineCommand):
