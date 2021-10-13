@@ -3,10 +3,11 @@ import os.path
 from io import BytesIO
 import requests
 from requests.status_codes import codes
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse
 
 from django.core.files import File
-from django.db.utils import DataError
+from django.db import models
+from django.dispatch import receiver
 
 from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.utils import build_versatileimagefield_url_set
@@ -76,3 +77,12 @@ class YoutubeThumbnailResource(ShellResource):
             metadata = json.loads(self.stdout)
             extension = os.path.splitext(metadata["thumbnail"])[1]
             return extension.split("?")[0]
+
+
+@receiver(models.signals.post_delete, sender=YoutubeThumbnailResource)
+def delete_youtube_thumbnail_images(sender, instance, **kwargs):
+    if instance.preview:
+        # Deletes images from VersatileImageField
+        instance.preview.delete_all_created_images()
+        # Deletes original image
+        instance.preview.delete(save=False)
