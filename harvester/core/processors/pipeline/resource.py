@@ -33,7 +33,7 @@ class ResourcePipelineProcessor(PipelineProcessor):
         creates = []
         for process_result in batch.processresult_set.all():
             args, kwargs = process_result.document.output(config.args, config.kwargs)
-            successes, fails = self.dispatch_resource(config=config, *args, **kwargs)
+            successes, fails = self.dispatch_resource(config, *args, **kwargs)
             results = successes + fails
             if not len(results):
                 continue
