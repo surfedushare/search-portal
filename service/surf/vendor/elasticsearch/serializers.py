@@ -28,7 +28,7 @@ def get_preview_absolute_uri(url, duration=7200):
     urlparse(url)
     lookup_params = {
         "Bucket": settings.AWS_HARVESTER_BUCKET_NAME,
-        "Key": urlparse(url).path
+        "Key": urlparse(url).path.strip("/")
     }
     try:
         return s3_client.generate_presigned_url("get_object", Params=lookup_params, ExpiresIn=duration)
