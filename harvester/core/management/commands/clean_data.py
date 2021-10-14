@@ -16,7 +16,8 @@ class Command(BaseCommand):
     resources = {
         "core.FileResource": "file",
         "core.HttpTikaResource": "tika",
-        "core.YoutubeThumbnailResource": "preview"
+        "core.ExtructResource": "extruct",
+        "core.YoutubeThumbnailResource": "youtube_preview",
     }
 
     def handle(self, **options):

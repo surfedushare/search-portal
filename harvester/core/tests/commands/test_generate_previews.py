@@ -33,7 +33,7 @@ class TestGeneratePreviews(TestCase):
         pipeline_processor_target.assert_any_call(
             {
                 "pipeline_app_label": "core",
-                "pipeline_phase": "preview",
+                "pipeline_phase": "youtube_preview",
                 "pipeline_depends_on": "metadata",
                 "batch_size": 100,
                 "asynchronous": False,

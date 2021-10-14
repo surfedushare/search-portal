@@ -26,6 +26,8 @@ class Command(base.LabelCommand):
     resources = [
         "core.FileResource",
         "core.HttpTikaResource",
+        "core.ExtructResource",
+        "core.YoutubeThumbnailResource",
         "edurep.EdurepOAIPMH",
         "sharekit.SharekitMetadataHarvest"
     ]

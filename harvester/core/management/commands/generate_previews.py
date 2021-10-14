@@ -28,7 +28,7 @@ class Command(PipelineCommand):
         )
         youtube_processor = ShellPipelineProcessor({
             "pipeline_app_label": "core",
-            "pipeline_phase": "preview",
+            "pipeline_phase": "youtube_preview",
             "pipeline_depends_on": "metadata",
             "batch_size": options["batch_size"],
             "asynchronous": asynchronous,
