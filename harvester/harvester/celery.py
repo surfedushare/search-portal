@@ -2,7 +2,8 @@ import os
 
 from django.apps import apps
 from django.core.wsgi import get_wsgi_application
-from celery import Celery
+from django.db import connection
+from celery import Celery, Task
 
 
 app = Celery('harvester')
