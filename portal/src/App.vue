@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     isDemoEnvironment() {
-      if (this.$window.location.hostname.indexOf('acceptance') >= 0) {
+      if (this.$window.location.hostname.indexOf('acc.') >= 0) {
         return true
       } else if (
         new URLSearchParams(this.$window.location.search).get('demo')
