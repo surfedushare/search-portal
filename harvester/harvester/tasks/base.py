@@ -1,5 +1,5 @@
 from django.db import connection
-from celery import Celery, Task
+from celery import Task
 
 
 class DatabaseConnectionResetTask(Task):
