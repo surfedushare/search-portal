@@ -1,3 +1,4 @@
+import os
 import boto3
 from botocore.exceptions import ClientError
 from urllib.parse import urlparse
@@ -22,10 +23,11 @@ def get_preview_absolute_uri(url, duration=7200):
         return None
 
     if settings.AWS_HARVESTER_BUCKET_NAME is None:
-        return url
+        if "s3.amazonaws.com" not in url:
+            return url
+        return "http://localhost:8000/" + os.path.join("media", "harvester", urlparse(url).path.strip("/"))
 
     # Generate a presigned URL for the S3 object
-    urlparse(url)
     lookup_params = {
         "Bucket": settings.AWS_HARVESTER_BUCKET_NAME,
         "Key": urlparse(url).path.strip("/")
