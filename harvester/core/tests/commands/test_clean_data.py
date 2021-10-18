@@ -112,10 +112,10 @@ class TestCleanData(TestCase):
         new_file_ids = []
         new_tika_ids = []
         for old_doc, new_doc in zip(oldest_version.document_set.all(), newest_version.document_set.all()):
-            old_file_ids.append(old_doc.properties["pipeline"]["file"]["id"])
-            old_tika_ids.append(old_doc.properties["pipeline"]["tika"]["id"])
-            new_file_ids.append(new_doc.properties["pipeline"]["file"]["id"])
-            new_tika_ids.append(new_doc.properties["pipeline"]["tika"]["id"])
+            old_file_ids.append(old_doc.pipeline["file"]["id"])
+            old_tika_ids.append(old_doc.pipeline["tika"]["id"])
+            new_file_ids.append(new_doc.pipeline["file"]["id"])
+            new_tika_ids.append(new_doc.pipeline["tika"]["id"])
             new_doc.properties = old_doc.properties
             new_doc.save()
         self.assertEqual(FileResource.objects.filter(id__in=old_file_ids).count(), len(old_file_ids),

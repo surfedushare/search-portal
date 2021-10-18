@@ -45,7 +45,6 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         from_youtube = False
         analysis_allowed = True
         mime_type = "text/html"
-        pipeline = {}
         preview_path = None
         url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
         language = "nl"
@@ -68,7 +67,6 @@ class DocumentFactory(factory.django.DjangoModelFactory):
                     "URL 1"
                 ]
             ],
-            "pipeline": o.pipeline,
             "preview_path": o.preview_path,
             "url": o.url,
             "language": {"metadata": o.language},
