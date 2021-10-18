@@ -26,7 +26,7 @@ import MainFooter from '~/components/MainFooter'
 import { setLanguage } from '~/axios'
 
 export default {
-  dependencies: ['$log'],
+  dependencies: ['$window', '$log'],
   components: {
     MainHeader,
     MainFooter
@@ -43,6 +43,18 @@ export default {
       this.$log.pageView(to.path)
       next()
     })
+  },
+  methods: {
+    isDemoEnvironment() {
+      if (this.$window.location.hostname.indexOf('acceptance') >= 0) {
+        return true
+      } else if (
+        new URLSearchParams(this.$window.location.search).get('demo')
+      ) {
+        return true
+      }
+      return false
+    }
   }
 }
 </script>
