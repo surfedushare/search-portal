@@ -161,6 +161,14 @@
     }
 },
 {
+    "model": "core.extractionmethod",
+    "pk": 20,
+    "fields": {
+        "method": "get_learning_material_themes",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
     "model": "core.methodextractionfield",
     "pk": 1,
     "fields": {
@@ -294,6 +302,13 @@
     }
 },
 {
+    "model": "core.methodextractionfield",
+    "pk": 20,
+    "fields": {
+        "method": 20
+    }
+},
+{
     "model": "core.jsonextractionfield",
     "pk": 1,
     "fields": {
@@ -361,6 +376,13 @@
     "pk": 10,
     "fields": {
         "path": "$.attributes.typeResearchObject"
+    }
+},
+{
+    "model": "core.jsonextractionfield",
+    "pk": 11,
+    "fields": {
+        "path": "$.attributes.consortium"
     }
 },
 {
@@ -690,6 +712,28 @@
         "json_field": null,
         "method_field": 13,
         "property": "parties",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 31,
+    "fields": {
+        "mapping": 1,
+        "json_field": null,
+        "method_field": 20,
+        "property": "learning_material_themes",
+        "is_context": false
+    }
+},
+{
+    "model": "core.objectiveproperty",
+    "pk": 32,
+    "fields": {
+        "mapping": 1,
+        "json_field": 11,
+        "method_field": null,
+        "property": "consortium",
         "is_context": false
     }
 }

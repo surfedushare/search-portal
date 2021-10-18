@@ -45,17 +45,29 @@ class TestGetHarvestSeedsSharekit(TestCase):
 
     def test_get_complete_set(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 14)
-        self.check_seed_integrity(seeds, include_deleted=False)
+        self.assertEqual(len(seeds), 16)
+        self.check_seed_integrity(seeds)
 
     def test_get_partial_set(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=2020, month=2, day=9, hour=22, minute=22)))
+        self.assertEqual(len(seeds), 5)
+        self.check_seed_integrity(seeds)
+
+    def test_get_complete_set_without_deletes(self):
+        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)),
+                                  include_deleted=False)
+        self.assertEqual(len(seeds), 14)
+        self.check_seed_integrity(seeds, include_deleted=False)
+
+    def test_get_partial_set_without_deletes(self):
+        seeds = get_harvest_seeds("edusources", make_aware(
+            datetime(year=2020, month=2, day=9, hour=22, minute=22)), include_deleted=False)
         self.assertEqual(len(seeds), 4)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_from_youtube_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(len(seeds), 14)
+        self.assertEqual(len(seeds), 16)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
         self.assertEqual(len(youtube_seeds), 9)
 
@@ -80,8 +92,8 @@ class TestGetHarvestSeedsSharekit(TestCase):
     def test_analysis_allowed_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['analysis_allowed'], True, "Expected standard material to allow analysis")
-        self.assertEqual(seeds[11]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
-        self.assertEqual(seeds[12]['analysis_allowed'], False, "Expexted yes copyright material to disallow analysis")
+        self.assertEqual(seeds[12]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
+        self.assertEqual(seeds[13]['analysis_allowed'], False, "Expexted yes copyright material to disallow analysis")
 
     def test_is_part_of_property(self):
         seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))

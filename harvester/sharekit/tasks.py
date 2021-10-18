@@ -9,6 +9,7 @@ from datagrowth.configuration import create_config
 from datagrowth.resources.http.tasks import send
 from datagrowth.utils.iterators import ibatch
 
+from harvester.tasks.base import DatabaseConnectionResetTask
 from core.constants import Repositories, HarvestStages
 from core.models import Harvest, DatasetVersion
 from sharekit.models import SharekitMetadataHarvest
@@ -17,7 +18,7 @@ from sharekit.models import SharekitMetadataHarvest
 logger = logging.getLogger("harvester")
 
 
-@app.task(name="sync_sharekit_metadata")
+@app.task(name="sync_sharekit_metadata", base=DatabaseConnectionResetTask)
 def sync_sharekit_metadata():
     harvest_queryset = Harvest.objects.filter(
         dataset__is_active=True,
@@ -57,6 +58,8 @@ def sync_sharekit_metadata():
         for seeds_batch in ibatch(seeds, batch_size=32):
             updates = []
             for seed in seeds_batch:
+                if seed["state"] != "active":
+                    continue
                 language = seed.pop("language")
                 seed["language"] = {"metadata": language}
                 updates.append(seed)

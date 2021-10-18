@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'core',
     'edurep',
     'sharekit',
+    'anatomy_tool',
 ]
 
 MIDDLEWARE = [
