@@ -170,13 +170,20 @@ export default {
   },
   methods: {
     onSearch() {
-      const category = this.$store.getters.getCategoryById(this.theme.filter_category, THEME_CATEGORY_FILTER_ID)
+      const category = this.$store.getters.getCategoryById(
+        this.theme.filter_category,
+        THEME_CATEGORY_FILTER_ID
+      )
       const filterIds = category
-        ? category.children.map((child) => { return child.external_id})
+        ? category.children.map(child => {
+            return child.external_id
+          })
         : []
       this.search = {
         search_text: this.search.search_text,
-        filters: { 'learning_material_themes': [this.theme.filter_category, ...filterIds] },
+        filters: {
+          learning_material_themes: [this.theme.filter_category, ...filterIds]
+        },
         page_size: 10,
         page: 1
       }
