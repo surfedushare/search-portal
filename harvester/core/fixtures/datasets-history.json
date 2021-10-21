@@ -126,6 +126,7 @@
             "reference": "custom-extension",
             "is_parent": true,
             "properties": {
+                "state": "active",
                 "external_id": "custom-extension",
                 "title": "New! New! New! Extended titles!",
                 "authors": [
@@ -169,6 +170,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": ["research"],
                 "doi": null,
@@ -256,6 +258,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": ["research"],
                 "doi": null,
@@ -346,6 +349,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -449,6 +453,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -543,6 +548,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -631,6 +637,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -721,6 +728,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -813,6 +821,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -895,6 +904,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -984,6 +994,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -1078,6 +1089,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
