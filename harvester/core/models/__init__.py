@@ -5,6 +5,7 @@ from .resources.basic import FileResource, TikaResource, HttpTikaResource, Extru
 from .resources.youtube_dl import YouTubeDLResource
 from .resources.chrome_screenshot import ChromeScreenshotResource
 from .resources.youtube_thumbnail import YoutubeThumbnailResource
+from .resources.pdf_thumbnail import PdfThumbnailResource
 
 from .datatypes.dataset import Dataset, DatasetVersion
 from .datatypes.collection import Collection
