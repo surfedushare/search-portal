@@ -4,7 +4,7 @@ from core.management.base import PipelineCommand
 
 from core.constants import HarvestStages
 from core.models import DatasetVersion, Document, Harvest
-from core.processors import ShellPipelineProcessor
+from core.processors import ShellPipelineProcessor, HttpPipelineProcessor
 
 
 class Command(PipelineCommand):
@@ -48,6 +48,35 @@ class Command(PipelineCommand):
             }
         })
         results.append(youtube_processor(youtube_documents))
+
+        pdf_documents = Document.objects.filter(
+            dataset_version=dataset_version,
+            properties__mime_type="application/pdf",
+            properties__analysis_allowed=True
+        )
+        pdf_processor = HttpPipelineProcessor({
+            "pipeline_app_label": "core",
+            "pipeline_phase": "pdf_preview",
+            "pipeline_depends_on": "metadata",
+            "batch_size": options["batch_size"],
+            "asynchronous": asynchronous,
+            "retrieve_data": {
+                "resource": "core.pdfthumbnailresource",
+                "method": "get",
+                "args": ["$.url"],
+                "kwargs": {},
+            },
+            "contribute_data": {
+                "to_property": "previews",
+                "objective": {
+                    "@": "$",
+                    "full_size": "$.full_size",
+                    "preview": "$.preview",
+                    "preview_small": "$.preview_small",
+                }
+            }
+        })
+        results.append(pdf_processor(pdf_documents))
 
         self.logger.start("previews")
         if asynchronous and len(results):
