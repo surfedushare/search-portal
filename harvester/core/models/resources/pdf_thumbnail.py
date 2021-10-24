@@ -16,6 +16,9 @@ class PdfThumbnailResource(HttpFileResource):
     preview = VersatileImageField(upload_to=os.path.join("core", "previews", "pdf"), null=True, blank=True)
 
     def _update_from_results(self, response):
+        # Save the metadata
+        self.head = dict(response.headers.lower_items())
+        self.status = response.status_code
         # Get the image file we want to save
         file = BytesIO(response.content)
         try:
