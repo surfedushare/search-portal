@@ -3,6 +3,9 @@ from io import BytesIO
 from urllib.parse import urlparse, urljoin
 from datetime import datetime
 
+from django.dispatch import receiver
+from django.db import models
+
 import pdf2image
 from pdf2image.exceptions import PDFPageCountError
 from versatileimagefield.fields import VersatileImageField
@@ -52,3 +55,12 @@ class PdfThumbnailResource(HttpFileResource):
                 for image_key, url in signed_urls.items()
             }
         return None, None
+
+
+@receiver(models.signals.post_delete, sender=PdfThumbnailResource)
+def delete_pdf_thumbnail_images(sender, instance, **kwargs):
+    if instance.preview:
+        # Deletes images from VersatileImageField
+        instance.preview.delete_all_created_images()
+        # Deletes original image
+        instance.preview.delete(save=False)
