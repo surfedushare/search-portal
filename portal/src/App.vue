@@ -46,14 +46,10 @@ export default {
   },
   methods: {
     isDemoEnvironment() {
-      if (this.$window.location.hostname.indexOf('acc.') >= 0) {
-        return true
-      } else if (
+      return (
+        this.$window.location.hostname.indexOf('acc.') >= 0 ||
         new URLSearchParams(this.$window.location.search).get('demo')
-      ) {
-        return true
-      }
-      return false
+      )
     }
   }
 }
