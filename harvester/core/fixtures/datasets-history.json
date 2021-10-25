@@ -194,23 +194,6 @@
                     "from_text": "en",
                     "from_title": "en"
                 },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            18246
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            48
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
-                },
                 "copyright": "cc-by-nc-40",
                 "technical_type": "document",
                 "material_types": ["kennisoverdracht"],
@@ -283,23 +266,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "nl"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15303
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.httptikaresource",
-                            45
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "technical_type": "website",
@@ -395,23 +361,6 @@
                     "from_text": null,
                     "from_title": "nl"
                 },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            18335
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            46
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
-                },
                 "copyright": "cc-by-sa-40",
                 "technical_type": "app",
                 "material_types": [],
@@ -479,23 +428,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15101
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            49
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [
@@ -574,23 +506,6 @@
                     "from_text": null,
                     "from_title": "en"
                 },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15100
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            43
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
-                },
                 "copyright": "cc-by-40",
                 "has_parts": [],
                 "mime_type": "text/html",
@@ -665,23 +580,6 @@
                     "from_text": null,
                     "from_title": "en"
                 },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15099
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.httptikaresource",
-                            42
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
-                },
                 "copyright": "cc-by-40",
                 "has_parts": [],
                 "mime_type": "text/html",
@@ -754,23 +652,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15098
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.httptikaresource",
-                            41
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [],
@@ -845,20 +726,6 @@
                     "metadata": "nl",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": false,
-                        "resource": [
-                            "core.fileresource",
-                            12030
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-nc-40",
                 "technical_type": "website",
