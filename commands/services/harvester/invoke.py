@@ -70,6 +70,30 @@ def generate_previews(ctx, mode, dataset, version=None):
     run_harvester_task(ctx, mode, command, version=version, extra_workers=True)
 
 
+@task(name="sync_preview_media", help={
+    "source": "The source you want to sync preview media from"
+})
+def sync_preview_media(ctx, source="production"):
+    """
+    Performs a sync between the preview media buckets of two environments.
+    APPLICATION_MODE determines the destination environment.
+    """
+    if ctx.config.env == "production":
+        raise Exit("Cowardly refusing to use production as a destination environment")
+
+    local_directory = os.path.join("media", "harvester")
+    source_config = create_configuration(source, service="service", context="host")
+    source = source_config.aws.harvest_content_bucket
+    source = "s3://" + source if source is not None else local_directory
+    destination = ctx.config.aws.harvest_content_bucket
+    destination = "s3://" + destination if destination is not None else local_directory
+    profile_name = ctx.config.aws.profile_name if not ctx.config.env == "localhost" else source_config.aws.profile_name
+    for path in ["thumbnails", os.path.join("core", "previews")]:
+        source_path = os.path.join(source, path)
+        destination_path = os.path.join(destination, path)
+        ctx.run(f"AWS_PROFILE={profile_name} aws s3 sync {source_path} {destination_path}", echo=True)
+
+
 @task(help={
     "mode": "Mode you want to clean data for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE"

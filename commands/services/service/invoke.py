@@ -62,7 +62,8 @@ def sync_upload_media(ctx, source="production", path="communities"):
 
     source_path = os.path.join(source, path)
     destination_path = os.path.join(destination, path)
-    ctx.run(f"AWS_PROFILE={ctx.config.aws.profile_name} aws s3 sync {source_path} {destination_path}", echo=True)
+    profile_name = ctx.config.aws.profile_name or "pol-prod"
+    ctx.run(f"AWS_PROFILE={profile_name} aws s3 sync {source_path} {destination_path}", echo=True)
 
 
 @task(name="sync_category_filters", help={

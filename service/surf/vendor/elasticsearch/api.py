@@ -105,14 +105,17 @@ class ElasticSearchApiClient:
         :return record: parsed record in elasticsearch format
         """
         data = hit["_source"]
+        serializer = SearchResultSerializer()
+        # Basic mapping between field and data (excluding any method fields with a source of "*")
         field_mapping = {
             field.source: field_name if transform else field.source
-            for field_name, field in SearchResultSerializer().fields.items()
+            for field_name, field in serializer.fields.items() if field.source != "*"
         }
         record = {
             field_mapping[field]: value
             for field, value in data.items() if field in field_mapping
         }
+        # Reformatting some fields if a relations field is desired
         if "relations" in field_mapping:
             publishers = [{"name": publisher} for publisher in data.get("publishers", [])]
             record["relations"] = {
@@ -124,6 +127,11 @@ class ElasticSearchApiClient:
                 "parents": data.get("is_part_of", []),
                 "children": data.get("has_parts", [])
             }
+        # Calling methods on serializers to set data for method fields
+        for field_name, field in serializer.fields.items():
+            if field.source != "*":
+                continue
+            record[field_name] = getattr(serializer, field.method_name)(data)
         return record
 
     def autocomplete(self, query):

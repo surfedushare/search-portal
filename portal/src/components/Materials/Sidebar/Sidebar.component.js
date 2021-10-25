@@ -320,6 +320,9 @@ export default {
       return Duration.fromISO(duration)
         .toFormat('h:mm:ss')
         .padStart(8, '0')
+    },
+    shouldShowPreviews() {
+      return !_.isEmpty(this.material.previews)
     }
   },
   computed: {

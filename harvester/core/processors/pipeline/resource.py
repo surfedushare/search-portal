@@ -4,12 +4,18 @@ from django.db import transaction
 
 from datagrowth.configuration import create_config
 from datagrowth.resources.http.tasks import send
+from datagrowth.resources.shell.tasks import run
 from datagrowth.processors import Processor
 
 from core.processors.pipeline.base import PipelineProcessor
 
 
-class HttpPipelineProcessor(PipelineProcessor):
+class ResourcePipelineProcessor(PipelineProcessor):
+
+    resource_type = None
+
+    def dispatch_resource(self, config, *args, **kwargs):
+        return [], []
 
     def filter_documents(self, queryset):
         depends_on = self.config.pipeline_depends_on
@@ -19,7 +25,7 @@ class HttpPipelineProcessor(PipelineProcessor):
 
     def process_batch(self, batch):
 
-        config = create_config("http_resource", self.config.retrieve_data)
+        config = create_config(self.resource_type, self.config.retrieve_data)
         app_label, resource_model = config.resource.split(".")
         resource_type = ContentType.objects.get_by_natural_key(app_label, resource_model)
 
@@ -27,7 +33,7 @@ class HttpPipelineProcessor(PipelineProcessor):
         creates = []
         for process_result in batch.processresult_set.all():
             args, kwargs = process_result.document.output(config.args, config.kwargs)
-            successes, fails = send(*args, **kwargs, config=config, method=config.method)
+            successes, fails = self.dispatch_resource(config, *args, **kwargs)
             results = successes + fails
             if not len(results):
                 continue
@@ -86,3 +92,19 @@ class HttpPipelineProcessor(PipelineProcessor):
                     continue
                 self.Document.objects.bulk_update(documents, ["pipeline", "properties"])
                 break
+
+
+class HttpPipelineProcessor(ResourcePipelineProcessor):
+
+    resource_type = "http_resource"
+
+    def dispatch_resource(self, config, *args, **kwargs):
+        return send(*args, **kwargs, config=config, method=config.method)
+
+
+class ShellPipelineProcessor(ResourcePipelineProcessor):
+
+    resource_type = "shell_resource"
+
+    def dispatch_resource(self, config, *args, **kwargs):
+        return run(*args, **kwargs, config=config)

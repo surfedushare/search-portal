@@ -42,6 +42,10 @@
         v-if="material.copyright === 'yes'">{{ $t('cc-by-nc-nd') }}</a>
       <h4 v-if="material.doi">{{ $t('DOI') }}</h4>
       <span v-if="material.doi">{{ $t(material.doi) }}</span>
+      <div  v-if="shouldShowPreviews()">
+        <h4>{{ $t('Preview') }}</h4>
+        <img class="preview-image" :src="material.previews.preview">
+      </div>
       <a @click="downloadOnClick($event, material)"
         v-if="material.url"
         :href="material.url"
