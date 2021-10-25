@@ -18,6 +18,7 @@ class Command(BaseCommand):
         "core.HttpTikaResource": "tika",
         "core.ExtructResource": "extruct",
         "core.YoutubeThumbnailResource": "youtube_preview",
+        "core.PdfThumbnailResource": "pdf_preview",
     }
 
     def handle(self, **options):
