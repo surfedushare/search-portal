@@ -322,9 +322,7 @@ export default {
         .padStart(8, '0')
     },
     shouldShowPreviews() {
-      return (
-        this.$root.isDemoEnvironment() && !_.isEmpty(this.material.previews)
-      )
+      return !_.isEmpty(this.material.previews)
     }
   },
   computed: {
