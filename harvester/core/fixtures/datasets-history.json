@@ -1029,23 +1029,6 @@
                     "from_text": "de",
                     "from_title": "de"
                 },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            16942
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.tikaresource",
-                            24827
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
-                },
                 "copyright": "cc-by-sa-40",
                 "technical_type": "document",
                 "material_types": [],
@@ -1117,23 +1100,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15137
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.tikaresource",
-                            25779
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [],
