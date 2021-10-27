@@ -20,6 +20,8 @@ class Command(base.LabelCommand):
     def dump_resources(self):
         call_command("dump_resource", "core.FileResource")
         call_command("dump_resource", "core.HttpTikaResource")
+        call_command("dump_resource", "core.ExtructResource")
+        call_command("dump_resource", "core.YoutubeThumbnailResource")
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         call_command("dump_resource", "sharekit.SharekitMetadataHarvest")
         return [

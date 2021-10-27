@@ -56,7 +56,8 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
             "kwargs": {},
             "method": "get",
             "url": "https://" + self.uri,
-            "headers": {}
+            "headers": {},
+            "data": {}
         }
 
     @factory.lazy_attribute

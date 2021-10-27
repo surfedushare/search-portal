@@ -1,7 +1,4 @@
 @import './../../../variables';
-.preview-image {
-  margin-top: 10px;
-}
 .material {
   &__left {
     width: 282px;
@@ -56,6 +53,7 @@
       position: sticky;
       top: 120px;
       left: 0;
+      z-index: 100;
     }
 
     &_select {
@@ -170,5 +168,11 @@
     .title-social {
       display: none;
     }
+  }
+}
+
+.enlargeable-image {
+  /deep/ .full.enlarged, /deep/ .full.enlarging, /deep/ .full.delarging {
+    top: 82px !important;
   }
 }

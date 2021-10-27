@@ -108,12 +108,17 @@ class TestSyncSharekitMetadata(TestCase):
         for dataset_name in ["primary", "secondary"]:
             for collection in Collection.objects.filter(name="edusources", dataset_version__version="0.0.2",
                                                         dataset_version__dataset__name=dataset_name):
-                self.assertEqual(collection.documents.count(), 4,
+                self.assertEqual(collection.documents.count(), 5,
                                  f"Did not add documents to collection inside dataset {dataset_name}")
-                doc = collection.documents.get(properties__external_id="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
-                self.assertEqual(doc.properties["technical_type"], "website",
+                update_doc = collection.documents.get(properties__external_id="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
+                self.assertEqual(update_doc.properties["technical_type"], "website",
                                  f"Did not add documents to collection inside dataset {dataset_name}")
-                self.assertNotEqual(doc.created_at.replace(microsecond=0), doc.modified_at.replace(microsecond=0))
+                self.assertNotEqual(
+                    update_doc.created_at.replace(microsecond=0),
+                    update_doc.modified_at.replace(microsecond=0)
+                )
+                delete_doc = collection.documents.get(properties__external_id="3903863-6c93-4bda-b850-277f3c9ec00e")
+                self.assertEqual(delete_doc.properties["state"], "deleted")
         # Checking harvest instance updates
         for harvest in Harvest.objects.filter(source__spec="wikiwijs"):
             self.assertEqual(

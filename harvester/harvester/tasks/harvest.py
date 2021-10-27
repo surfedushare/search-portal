@@ -30,10 +30,14 @@ def harvest(reset=False, no_promote=False):
         call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.ANATOMY_TOOL}")
         # After getting all the metadata we'll download content
         call_command("harvest_basic_content", f"--dataset={dataset.name}", "--async")
-        # We skip any video downloading/processing and thumbnails for now
+        # We skip any video downloading/processing for now
         # Later we want YoutubeDL to download the videos and Amber to process them
-        # Thumbnails may get generated through the generate_previews command
-        Harvest.objects.filter(stage=HarvestStages.BASIC).update(stage=HarvestStages.COMPLETE)
+        # Thumbnails are only enabled for Edusources not NPPO
+        if settings.PROJECT == "edusources":
+            Harvest.objects.filter(stage=HarvestStages.BASIC).update(stage=HarvestStages.PREVIEW)
+            call_command("generate_previews", f"--dataset={dataset.name}", "--async")
+        else:
+            Harvest.objects.filter(stage=HarvestStages.BASIC).update(stage=HarvestStages.COMPLETE)
         # Based on the dataset we push to Elastic Search
         index_command = ["index_dataset_version", f"--dataset={dataset.name}"]
         if no_promote or not dataset.is_latest:

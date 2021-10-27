@@ -1,1 +1,1 @@
-from .pipeline.http import HttpPipelineProcessor
+from .pipeline.resource import HttpPipelineProcessor, ShellPipelineProcessor
