@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { Duration } from 'luxon'
 import { mapGetters } from 'vuex'
+import EnlargeableImage from '@diracleo/vue-enlargeable-image'
 import SaveMaterialInCollection from './../../Popup/SaveMaterialInCollection'
 import AddCollection from './../../Popup/AddCollection'
 import ShareMaterial from '~/components/Popup/ShareMaterial'
@@ -27,7 +28,8 @@ export default {
     AddCollection,
     ShareMaterial,
     Multiselect,
-    SelectDownloadPopup
+    SelectDownloadPopup,
+    EnlargeableImage
   },
   mounted() {
     this.setSocialCounters()
@@ -322,7 +324,9 @@ export default {
         .padStart(8, '0')
     },
     shouldShowPreviews() {
-      return !_.isEmpty(this.material.previews)
+      return (
+        this.$root.isDemoEnvironment() && !_.isEmpty(this.material.previews)
+      )
     }
   },
   computed: {
