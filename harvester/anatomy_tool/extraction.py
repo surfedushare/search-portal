@@ -126,7 +126,7 @@ class AnatomyToolExtraction(object):
         nodes = el.find_all('keyword')
         return [
             unescape(node.find('string').text.strip())
-            for node in nodes
+            for node in nodes if node.find('string').text
         ]
 
     @classmethod
