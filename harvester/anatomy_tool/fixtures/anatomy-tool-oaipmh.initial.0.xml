@@ -26,7 +26,7 @@ no labels</string>
                             </string>
                         </description>
                         <keyword>
-                            <string language="x-none">x-none</string>
+                            <string language="x-none"/>
                         </keyword>
                         <aggregationLevel>
                             <source>LOMv1.0</source>
