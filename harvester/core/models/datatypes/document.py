@@ -36,7 +36,10 @@ class Document(DocumentBase):
     # NB: Collection foreign key is added by the base class
 
     def get_language(self):
-        return self.properties['language'].get("metadata", "unk")
+        language = self.properties.get('language', None)
+        if language is None:
+            return
+        return language.get("metadata", "unk")
 
     def get_search_document_extras(self, reference_id, title, text, video, material_types):
         suggest_completion = []
@@ -83,6 +86,12 @@ class Document(DocumentBase):
         return extension_data
 
     def to_search(self):
+        if self.properties["state"] != "active":
+            yield {
+                "_id": self.properties["external_id"],
+                "_op_type": "delete"
+            }
+            return
         elastic_base = copy(self.properties)
         elastic_base.pop("language")
         text = elastic_base.pop("text", None)

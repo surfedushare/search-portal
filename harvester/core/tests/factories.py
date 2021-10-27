@@ -53,6 +53,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
     reference = factory.Sequence(lambda n: "surfsharekit:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
+            "state": "active",
             "external_id": o.reference,
             "title": o.title,
             "from_youtube": o.from_youtube,

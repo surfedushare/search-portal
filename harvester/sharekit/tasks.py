@@ -58,10 +58,9 @@ def sync_sharekit_metadata():
         for seeds_batch in ibatch(seeds, batch_size=32):
             updates = []
             for seed in seeds_batch:
-                if seed["state"] != "active":
-                    continue
-                language = seed.pop("language")
-                seed["language"] = {"metadata": language}
+                language = seed.pop("language", None)
+                if language:
+                    seed["language"] = {"metadata": language}
                 updates.append(seed)
             collection.update(updates, "external_id")
         # Last but not least we update the harvest update time to get a different delta later
