@@ -1,23 +1,5 @@
 [
     {
-        "model": "core.fileresource",
-        "pk": 12030,
-        "fields": {
-            "uri": "online.codarts.nl/mod/page/view.php?id=313",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\"}",
-            "created_at": "2020-02-13T17:36:46.292Z",
-            "modified_at": "2020-02-17T09:13:29.311Z",
-            "purge_at": null,
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {"args": ["http://online.codarts.nl/mod/page/view.php?id=313"], "kwargs": {}, "method": "get", "url": "http://online.codarts.nl/mod/page/view.php?id=313", "headers": {"User-Agent": "DataGrowth (v0.16.0); python-requests/2.20.0", "Accept-Encoding": "gzip, deflate", "Accept": "*/*", "Connection": "keep-alive"}, "data": null, "cancel": false},
-            "head": {"Date": "Thu, 13 Feb 2020 17:36:46 GMT", "Server": "Apache", "Expires": "", "Cache-Control": "private, pre-check=0, post-check=0, max-age=0, no-transform", "Pragma": "no-cache", "Content-Language": "en", "Content-Script-Type": "text/javascript", "Content-Style-Type": "text/css", "X-UA-Compatible": "IE=edge", "Accept-Ranges": "none", "X-Frame-Options": "sameorigin", "Vary": "Accept-Encoding", "Content-Encoding": "gzip", "Content-Length": "6999", "Content-Type": "text/html; charset=utf-8"},
-            "body": "test/20200213173646291110.view.php#does-not-exist"
-        }
-    },
-    {
         "model": "core.httptikaresource",
         "pk": 52,
         "fields": {
@@ -59,51 +41,6 @@
                 "transfer-encoding": "chunked"
             },
             "body": "Not Found"
-        }
-    },
-    {
-        "model": "core.fileresource",
-        "pk": 18246,
-        "fields": {
-            "uri": "surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-24T13:00:54.192Z",
-            "modified_at": "2021-06-24T13:00:54.192Z",
-            "purge_at": "2021-07-23T10:53:28.753Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7",
-                "args": [
-                    "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.1); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Wed, 23 Jun 2021 10:53:28 GMT",
-                "Server": "Apache/2.4.37 (centos) OpenSSL/1.1.1g",
-                "Connection": "Keep-Alive",
-                "Keep-Alive": "timeout=5, max=71",
-                "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "X-Powered-By": "PHP/7.2.24",
-                "Accept-Ranges": "none",
-                "Last-Modified": "Thu, 01 Jan 1970 00:00:00 GMT",
-                "Content-Length": "13562",
-                "Content-Disposition": "attachment; filename=file/182216be-31a2-43c3-b7de-e5dd355b09f7/40.-Exercises-5.docx"
-            },
-            "body": "test/20210623105329151552.182216be-31a2-43c3-b7de-e5dd355b09f7.html"
         }
     },
     {
@@ -158,58 +95,6 @@
         }
     },
     {
-        "model": "core.fileresource",
-        "pk": 15303,
-        "fields": {
-            "uri": "www.youtube.com/watch?v=Zl59P5ZNX3M",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-24T13:00:54.193Z",
-            "modified_at": "2021-06-25T13:16:18.880Z",
-            "purge_at": "2021-07-23T09:36:07.890Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M",
-                "args": [
-                    "https://www.youtube.com/watch?v=Zl59P5ZNX3M"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.1); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Wed, 23 Jun 2021 09:36:08 GMT",
-                "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
-                "Pragma": "no-cache",
-                "Server": "ESF",
-                "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"",
-                "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
-                "Report-To": "{\"group\":\"ConsentHttp\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/ConsentHttp/external\"}]}",
-                "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
-                "X-Frame-Options": "SAMEORIGIN",
-                "Content-Encoding": "gzip",
-                "X-XSS-Protection": "0",
-                "Transfer-Encoding": "chunked",
-                "X-Content-Type-Options": "nosniff",
-                "Content-Security-Policy": "script-src 'nonce-uRk66yJnJzEPhDCprFFViw' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/ConsentHttp/cspreport;worker-src 'self', require-trusted-types-for 'script';report-uri /_/ConsentHttp/cspreport",
-                "Cross-Origin-Resource-Policy": "same-site",
-                "Cross-Origin-Opener-Policy-Report-Only": "unsafe-none; report-to=\"ConsentHttp\""
-            },
-            "body": "test/20210623093608080356.watch.html"
-        }
-    },
-    {
         "model": "core.httptikaresource",
         "pk": 45,
         "fields": {
@@ -258,51 +143,6 @@
                 "x-permitted-cross-domain-policies": "none"
             },
             "body": "{\"content-language\":[\"de\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Bevor Sie zu YouTube weitergehen\"],\"title\":[\"Bevor Sie zu YouTube weitergehen\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Anmelden\\n ein Google-Unternehmen\\nBevor Sie zu YouTube weitergehen\\nGoogle verwendet Cookies und Daten für Folgendes:\\tDienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen\\n\\tDaten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden\\n\\nWenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:\\tQualität unserer Dienste verbessern und neue Dienste entwickeln\\n\\tWerbung ausliefern und die Effektivität von Werbung messen\\n\\tPersonalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen\\n\\tPersonalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen\\n\\nDie Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist.Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools.\\n\\nAnpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nDatenschutzerklärung Nutzungsbedingungen\\n\"}"
-        }
-    },
-    {
-        "model": "core.fileresource",
-        "pk": 18335,
-        "fields": {
-            "uri": "maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-25T11:54:10.669Z",
-            "modified_at": "2021-06-25T13:16:49.297Z",
-            "purge_at": "2021-07-25T11:54:10.550Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729",
-                "args": [
-                    "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Fri, 25 Jun 2021 11:54:10 GMT",
-                "Vary": "Accept-Encoding",
-                "Server": "Apache",
-                "Set-Cookie": "WWM-LEGACY=dmnpgnn99jtuiqobv019drvlk5; path=/",
-                "Content-Type": "text/html; charset=UTF-8",
-                "Cache-Control": "no-cache",
-                "Content-Length": "9729",
-                "Content-Encoding": "gzip",
-                "X-XSS-Protection": "1",
-                "X-Content-Type-Options": "nosniff"
-            },
-            "body": "test/20201022123202360897.Macro_meso_micro"
         }
     },
     {
@@ -357,56 +197,6 @@
         }
     },
     {
-        "model": "core.fileresource",
-        "pk": 15101,
-        "fields": {
-            "uri": "youtu.be/D6_p6y3dvXw",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-24T13:00:54.145Z",
-            "modified_at": "2021-06-25T13:16:18.892Z",
-            "purge_at": "2021-07-23T09:35:19.278Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://youtu.be/D6_p6y3dvXw",
-                "args": [
-                    "https://youtu.be/D6_p6y3dvXw"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.1); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Wed, 23 Jun 2021 09:35:19 GMT",
-                "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
-                "Pragma": "no-cache",
-                "Server": "ESF",
-                "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"",
-                "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
-                "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
-                "X-Frame-Options": "SAMEORIGIN",
-                "Content-Encoding": "gzip",
-                "X-XSS-Protection": "0",
-                "Transfer-Encoding": "chunked",
-                "X-Content-Type-Options": "nosniff",
-                "Content-Security-Policy": "script-src 'nonce-tuDdmVmdxyWG7sQ4md459g' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/ConsentHttp/cspreport;worker-src 'self', require-trusted-types-for 'script';report-uri /_/ConsentHttp/cspreport",
-                "Cross-Origin-Resource-Policy": "same-site"
-            },
-            "body": "test/20210623093519523091.D6_p6y3dvXw.html"
-        }
-    },
-    {
         "model": "core.httptikaresource",
         "pk": 49,
         "fields": {
@@ -455,58 +245,6 @@
                 "x-permitted-cross-domain-policies": "none"
             },
             "body": "{\"content-language\":[\"nl\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Voordat je verdergaat naar YouTube\"],\"title\":[\"Voordat je verdergaat naar YouTube\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Inloggen\\n een bedrijf van Google\\nVoordat je verdergaat naar YouTube\\nGoogle gebruikt cookies en gegevens voor het volgende:\\tServices leveren en onderhouden (zoals uitval bijhouden en beschermen tegen spam, fraude en misbruik).\\n\\tBetrokkenheid van doelgroepen en sitestatistieken meten om inzicht te krijgen in hoe onze services worden gebruikt.\\n\\nAls je akkoord gaat, gebruiken we cookies en gegevens ook voor het volgende:\\tDe kwaliteit van onze services verbeteren en nieuwe services ontwikkelen.\\n\\tAdvertenties laten zien en de effectiviteit ervan meten.\\n\\tGepersonaliseerde content laten zien (afhankelijk van je instellingen).\\n\\tGepersonaliseerde of algemene advertenties laten zien (afhankelijk van je instellingen) op Google en het web.\\n\\nVoor niet-gepersonaliseerde content en advertenties kan wat je te zien krijgt, worden beïnvloed door factoren zoals de content die je op dat moment bekijkt en je locatie (voor advertenties wordt je algemene locatie gebruikt). Gepersonaliseerde content en advertenties kunnen ook worden gebaseerd op die factoren maar ook op je activiteit zoals Google-zoekopdrachten en de video's die je bekijkt op YouTube. Gepersonaliseerde content en advertenties zijn bijvoorbeeld relevantere resultaten en aanbevelingen, een aangepaste YouTube-homepage en advertenties die op je interesses zijn afgestemd.Klik op Aanpassen om de opties te bekijken, waaronder beheermogelijkheden om het gebruik van cookies voor personalisatie te weigeren, en informatie over browseropties waarmee je sommige of alle cookies kunt weigeren voor ander gebruik. Je kunt ook op elk moment naar g.co/privacytools gaan.\\n\\nAanpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nPrivacybeleid Servicevoorwaarden\\n\"}"
-        }
-    },
-    {
-        "model": "core.fileresource",
-        "pk": 15100,
-        "fields": {
-            "uri": "www.youtube.com/watch?v=wVxZDVriTZc",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-24T13:00:54.891Z",
-            "modified_at": "2021-06-25T13:16:18.896Z",
-            "purge_at": "2021-07-23T09:35:19.032Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://www.youtube.com/watch?v=wVxZDVriTZc",
-                "args": [
-                    "https://www.youtube.com/watch?v=wVxZDVriTZc"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.1); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Wed, 23 Jun 2021 09:35:19 GMT",
-                "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
-                "Pragma": "no-cache",
-                "Server": "ESF",
-                "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"",
-                "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
-                "Report-To": "{\"group\":\"ConsentHttp\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/ConsentHttp/external\"}]}",
-                "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
-                "X-Frame-Options": "SAMEORIGIN",
-                "Content-Encoding": "gzip",
-                "X-XSS-Protection": "0",
-                "Transfer-Encoding": "chunked",
-                "X-Content-Type-Options": "nosniff",
-                "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/ConsentHttp/cspreport, script-src 'nonce-XTAQuipYPYHMeE8i1ku3lA' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/ConsentHttp/cspreport;worker-src 'self'",
-                "Cross-Origin-Resource-Policy": "same-site",
-                "Cross-Origin-Opener-Policy-Report-Only": "unsafe-none; report-to=\"ConsentHttp\""
-            },
-            "body": "test/20210623093519214847.watch.html"
         }
     },
     {
@@ -561,56 +299,6 @@
         }
     },
     {
-        "model": "core.fileresource",
-        "pk": 15099,
-        "fields": {
-            "uri": "www.youtube.com/watch?v=Hx0kUX7MZ7g",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-24T13:00:54.144Z",
-            "modified_at": "2021-06-25T13:16:18.900Z",
-            "purge_at": "2021-07-23T09:35:18.755Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://www.youtube.com/watch?v=Hx0kUX7MZ7g",
-                "args": [
-                    "https://www.youtube.com/watch?v=Hx0kUX7MZ7g"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.1); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Wed, 23 Jun 2021 09:35:18 GMT",
-                "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
-                "Pragma": "no-cache",
-                "Server": "ESF",
-                "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"",
-                "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
-                "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
-                "X-Frame-Options": "SAMEORIGIN",
-                "Content-Encoding": "gzip",
-                "X-XSS-Protection": "0",
-                "Transfer-Encoding": "chunked",
-                "X-Content-Type-Options": "nosniff",
-                "Content-Security-Policy": "script-src 'nonce-qrsV0oPF6DWQU2rONNNA9g' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/ConsentHttp/cspreport;worker-src 'self', require-trusted-types-for 'script';report-uri /_/ConsentHttp/cspreport",
-                "Cross-Origin-Resource-Policy": "same-site"
-            },
-            "body": "test/20210623093518936360.watch.html"
-        }
-    },
-    {
         "model": "core.httptikaresource",
         "pk": 42,
         "fields": {
@@ -662,56 +350,6 @@
         }
     },
     {
-        "model": "core.fileresource",
-        "pk": 15098,
-        "fields": {
-            "uri": "www.youtube.com/watch?t=8s&v=D4w-EClY664",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-24T13:00:54.144Z",
-            "modified_at": "2021-06-25T13:16:18.903Z",
-            "purge_at": "2021-07-23T09:35:18.536Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://www.youtube.com/watch?v=D4w-EClY664&t=8s",
-                "args": [
-                    "https://www.youtube.com/watch?v=D4w-EClY664&t=8s"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.1); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Wed, 23 Jun 2021 09:35:18 GMT",
-                "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
-                "Pragma": "no-cache",
-                "Server": "ESF",
-                "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"",
-                "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
-                "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
-                "X-Frame-Options": "SAMEORIGIN",
-                "Content-Encoding": "gzip",
-                "X-XSS-Protection": "0",
-                "Transfer-Encoding": "chunked",
-                "X-Content-Type-Options": "nosniff",
-                "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/ConsentHttp/cspreport, script-src 'nonce-4FUBf9ByLapLzcJDmvEJqQ' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/ConsentHttp/cspreport;worker-src 'self'",
-                "Cross-Origin-Resource-Policy": "same-site"
-            },
-            "body": "test/20210623093518719032.watch.html"
-        }
-    },
-    {
         "model": "core.httptikaresource",
         "pk": 41,
         "fields": {
@@ -760,56 +398,6 @@
                 "x-permitted-cross-domain-policies": "none"
             },
             "body": "{\"content-language\":[\"de\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Bevor Sie zu YouTube weitergehen\"],\"title\":[\"Bevor Sie zu YouTube weitergehen\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Anmelden\\n ein Google-Unternehmen\\nBevor Sie zu YouTube weitergehen\\nGoogle verwendet Cookies und Daten für Folgendes:\\tDienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen\\n\\tDaten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden\\n\\nWenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:\\tQualität unserer Dienste verbessern und neue Dienste entwickeln\\n\\tWerbung ausliefern und die Effektivität von Werbung messen\\n\\tPersonalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen\\n\\tPersonalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen\\n\\nDie Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist.Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools.\\n\\nAnpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nDatenschutzerklärung Nutzungsbedingungen\\n\"}"
-        }
-    },
-    {
-        "model": "core.fileresource",
-        "pk": 15137,
-        "fields": {
-            "uri": "www.youtube.com/watch?v=21v9IYUcruI",
-            "status": 200,
-            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.FileResource\", \"backoff_delays\": [2, 4, 8, 16]}",
-            "created_at": "2021-06-24T13:00:54.146Z",
-            "modified_at": "2021-06-24T13:00:54.146Z",
-            "purge_at": "2021-07-23T09:35:27.202Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "",
-            "request": {
-                "url": "https://www.youtube.com/watch?v=21v9IYUcruI",
-                "args": [
-                    "https://www.youtube.com/watch?v=21v9IYUcruI"
-                ],
-                "data": null,
-                "cancel": false,
-                "kwargs": {},
-                "method": "get",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.1); python-requests/2.24.0",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "Date": "Wed, 23 Jun 2021 09:35:27 GMT",
-                "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
-                "Pragma": "no-cache",
-                "Server": "ESF",
-                "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"",
-                "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
-                "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
-                "X-Frame-Options": "SAMEORIGIN",
-                "Content-Encoding": "gzip",
-                "X-XSS-Protection": "0",
-                "Transfer-Encoding": "chunked",
-                "X-Content-Type-Options": "nosniff",
-                "Content-Security-Policy": "script-src 'nonce-Uo3gH8C6EKnGfKAqhxud3w' 'unsafe-inline';object-src 'none';base-uri 'self';report-uri /_/ConsentHttp/cspreport;worker-src 'self', require-trusted-types-for 'script';report-uri /_/ConsentHttp/cspreport",
-                "Cross-Origin-Resource-Policy": "same-site"
-            },
-            "body": "test/20210623093527344824.watch.html"
         }
     },
     {
