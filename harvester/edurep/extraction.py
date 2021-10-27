@@ -203,13 +203,14 @@ class EdurepDataExtraction(object):
         return authors
 
     @classmethod
-    def get_publishers(cls, soup, el):
-        publishers = []
-        # Check HBOVPK tags
+    def get_consortium(cls, soup, el):
         hbovpk_keywords = [keyword for keyword in cls.get_keywords(soup, el) if "hbovpk" in keyword.lower()]
         if hbovpk_keywords:
-            publishers.append("HBO Verpleegkunde")
-        # Look at actual publishers
+            return "HBO Verpleegkunde"
+
+    @classmethod
+    def get_publishers(cls, soup, el):
+        publishers = []
         publisher_element = el.find(string='publisher')
         if not publisher_element:
             return publishers
@@ -221,7 +222,6 @@ class EdurepDataExtraction(object):
             publisher = cls.parse_vcard_element(node)
             if hasattr(publisher, "fn"):
                 publishers.append(publisher.fn.value)
-
         return publishers
 
     @classmethod
@@ -352,5 +352,5 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "research_themes": lambda soup, el: None,
     "parties": lambda soup, el: [],
     "learning_material_themes": EdurepDataExtraction.get_disciplines,
-    "consortium": lambda soup, el: None,
+    "consortium": EdurepDataExtraction.get_consortium,
 }
