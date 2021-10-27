@@ -7,7 +7,8 @@ from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.models import Dataset, FileResource, HttpTikaResource, Extension
+from core.models import (Dataset, FileResource, HttpTikaResource, Extension, ExtructResource, YoutubeThumbnailResource,
+                         PdfThumbnailResource)
 from edurep.models import EdurepOAIPMH
 from sharekit.models import SharekitMetadataHarvest
 
@@ -22,13 +23,17 @@ class Command(base.LabelCommand):
         call_command("dump_resource", "core.HttpTikaResource")
         call_command("dump_resource", "core.ExtructResource")
         call_command("dump_resource", "core.YoutubeThumbnailResource")
+        call_command("dump_resource", "core.PdfThumbnailResource")
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         call_command("dump_resource", "sharekit.SharekitMetadataHarvest")
         return [
             os.path.join(get_dumps_path(FileResource), f"{FileResource.get_name()}.dump.json"),
             os.path.join(get_dumps_path(HttpTikaResource), f"{HttpTikaResource.get_name()}.dump.json"),
             os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(SharekitMetadataHarvest), f"{SharekitMetadataHarvest.get_name()}.dump.json")
+            os.path.join(get_dumps_path(SharekitMetadataHarvest), f"{SharekitMetadataHarvest.get_name()}.dump.json"),
+            os.path.join(get_dumps_path(ExtructResource), f"{ExtructResource.get_name()}.dump.json"),
+            os.path.join(get_dumps_path(YoutubeThumbnailResource), f"{YoutubeThumbnailResource.get_name()}.dump.json"),
+            os.path.join(get_dumps_path(PdfThumbnailResource), f"{PdfThumbnailResource.get_name()}.dump.json"),
         ]
 
     def handle_label(self, dataset_label, **options):

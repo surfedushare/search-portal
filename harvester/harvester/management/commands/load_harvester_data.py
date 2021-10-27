@@ -28,6 +28,7 @@ class Command(base.LabelCommand):
         "core.HttpTikaResource",
         "core.ExtructResource",
         "core.YoutubeThumbnailResource",
+        "core.PdfThumbnailResource",
         "edurep.EdurepOAIPMH",
         "sharekit.SharekitMetadataHarvest"
     ]
