@@ -181,6 +181,9 @@ export default {
             category.searchId,
             this.$route.params.filterId
           )
+          this.search = category.children.reduce((search, child) => {
+            return addFilter(search, child.searchId, child.external_id)
+          }, this.search)
         }
       }
       this.$store.dispatch('searchMaterials', this.search)

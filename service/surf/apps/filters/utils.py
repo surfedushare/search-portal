@@ -69,17 +69,23 @@ def _update_mptt_filter_category(filter_category, api_client):
         item["external_id"]: item["count"]
         for item in response["drilldowns"][0]["items"]
     }
+    descendants = {
+        descendant.external_id: descendant
+        for descendant in filter_category.get_descendants()
+    }
     for external_id, count in filters.items():
         is_new = False
-        filter_item, created = MpttFilterItem.objects.get_or_create(
-            parent=filter_category,
-            external_id=external_id,
-            defaults={
-                "name": external_id,
-                "parent": filter_category,
-                "is_hidden": True
-            }
-        )
+        if external_id in descendants:
+            created = False
+            filter_item = descendants[external_id]
+        else:
+            created = True
+            filter_item = MpttFilterItem.objects.create(
+                parent=filter_category,
+                external_id=external_id,
+                name=external_id,
+                is_hidden=True
+            )
 
         if created or filter_item.title_translations is None:
             is_new = True

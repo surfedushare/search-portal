@@ -142,7 +142,7 @@ export default {
         .dispatch('getTheme', themeId)
         .then(theme => {
           let themeCategory = this.$store.getters.getCategoryById(
-            theme.external_id,
+            theme.filter_category,
             THEME_CATEGORY_FILTER_ID
           )
           themeCategory.selected = true
@@ -161,7 +161,6 @@ export default {
 
     // TODO: all data fetched below is also in the getFilterCategories above
     // We should remove these calls and use the getFilterCategories
-    // That means switching from theme.id to theme.external_id
     this.$store.dispatch('getThemeDisciplines', themeId)
     this.$store.dispatch('getThemeCommunities', {
       id: this.$route.params.id,
@@ -171,9 +170,20 @@ export default {
   },
   methods: {
     onSearch() {
+      const category = this.$store.getters.getCategoryById(
+        this.theme.filter_category,
+        THEME_CATEGORY_FILTER_ID
+      )
+      const filterIds = category
+        ? category.children.map(child => {
+            return child.external_id
+          })
+        : []
       this.search = {
         search_text: this.search.search_text,
-        filters: { 'custom_theme.id': [this.theme.external_id] },
+        filters: {
+          learning_material_themes: [this.theme.filter_category, ...filterIds]
+        },
         page_size: 10,
         page: 1
       }
@@ -182,7 +192,7 @@ export default {
         this.search,
         'themes-search'
       )
-      location.params = { filterId: this.theme.external_id }
+      location.params = { filterId: this.theme.filter_category }
       this.$router.push(location)
     },
     getTitleTranslation(theme, language) {
