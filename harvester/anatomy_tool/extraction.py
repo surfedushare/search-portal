@@ -41,6 +41,7 @@ class AnatomyToolExtraction(object):
     def parse_vcard_element(el):
         card = unescape(el.text.strip())
         card = "\n".join(field.strip() for field in card.split("\n"))
+        card = card.replace("BEGIN:VCARD - VERSION:3.0 -", "BEGIN:VCARD\nVERSION:3.0")
         return vobject.readOne(card)
 
     @classmethod
