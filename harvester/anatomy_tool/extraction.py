@@ -124,7 +124,10 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_keywords(cls, soup, el):
-        nodes = el.find_all('keyword')
+        general = el.find('general')
+        if not general:
+            return []
+        nodes = general.find_all('keyword')
         return [
             unescape(node.find('string').text.strip())
             for node in nodes if node.find('string').text
