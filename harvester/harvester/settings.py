@@ -415,35 +415,8 @@ COPYRIGHT_VALUES = [
 
 CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'
 CELERY_RESULT_BACKEND = f'redis://{environment.django.redis_host}/0'
-CELERY_BEAT_SCHEDULE = {
-    'harvest': {
-        'task': 'harvest',
-        'schedule': crontab(
-            hour=environment.schedule.harvest.hour,
-            minute=environment.schedule.harvest.minute,
-        )
-    },
-    'clean_data': {
-        'task': 'clean_data',
-        'schedule': crontab(
-            hour=0,
-            minute=0
-        ),
-    },
-}
+CELERY_BEAT_SCHEDULE = {}
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
-
-if PROJECT == "edusources":
-    CELERY_BEAT_SCHEDULE.update({
-        'sync_sharekit_metadata': {
-            'task': 'sync_sharekit_metadata',
-            'schedule': 30,
-        },
-        'sync_indices': {
-            'task': 'sync_indices',
-            'schedule': 30,
-        }
-    })
 
 
 # Datagrowth
