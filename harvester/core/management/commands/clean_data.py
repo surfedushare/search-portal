@@ -14,7 +14,6 @@ class Command(BaseCommand):
     """
 
     resources = {
-        "core.FileResource": "file",
         "core.HttpTikaResource": "tika",
         "core.ExtructResource": "extruct",
         "core.YoutubeThumbnailResource": "youtube_preview",

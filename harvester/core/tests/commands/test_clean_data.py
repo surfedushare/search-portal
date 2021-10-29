@@ -5,11 +5,25 @@ from django.test import TestCase
 from django.core.management import call_command
 from django.utils.timezone import make_aware
 
-from core.models import Document, FileResource, HttpTikaResource, DatasetVersion, Collection, Dataset, ElasticIndex
-from core.utils.resources import serialize_resource
+from core.models import Document, HttpTikaResource, DatasetVersion, Collection, Dataset, ElasticIndex
 from core.tests.mocks import get_elastic_client_mock
 from core.tests.factories import (DatasetFactory, DatasetVersionFactory, CollectionFactory, DocumentFactory,
-                                  ElasticIndexFactory, FileResourceFactory, HttpTikaResourceFactory)
+                                  ElasticIndexFactory, HttpTikaResourceFactory)
+
+
+def serialize_resource(resource=None):
+    if resource is None:
+        return {
+            "success": False,
+            "resource": None,
+            "id": None
+        }
+
+    return {
+        "success": resource.success,
+        "resource": "{}.{}".format(resource._meta.app_label, resource._meta.model_name),
+        "id": resource.id
+    }
 
 
 def create_dataset_version(dataset, version, created_at, copies=3):
@@ -39,18 +53,12 @@ def create_dataset_version(dataset, version, created_at, copies=3):
                 configuration={}
             )
         for ixx in range(0, 5):
-            file_download = FileResourceFactory.create(
-                created_at=created_at,
-                modified_at=created_at,
-                purge_at=created_at
-            )
             tika_resource = HttpTikaResourceFactory.create(
                 created_at=created_at,
                 modified_at=created_at,
                 purge_at=created_at
             )
             pipeline = {
-                "file": serialize_resource(file_download),
                 "tika": serialize_resource(tika_resource)
             }
             DocumentFactory.create(
@@ -96,7 +104,6 @@ class TestCleanData(TestCase):
         self.assertEqual(ElasticIndex.objects.count(), 16, "Expected two indices per dataset version")
         self.assertEqual(Collection.objects.count(), 8, "Expected one collection per dataset version")
         self.assertEqual(Document.objects.count(), 40, "Expected five documents per collection")
-        self.assertEqual(FileResource.objects.count(), 40, "Expected one FileResource per Document")
         self.assertEqual(HttpTikaResource.objects.count(), 40, "Expected one HttpTikaResource per Document")
         # Check if Elastic indices were removed properly as well
         self.assertEqual(get_es_client.call_count, 76, "Not sure why there are two calls per removed ElasticIndex")
@@ -107,30 +114,21 @@ class TestCleanData(TestCase):
         # We'll add old Resources to new Documents and make sure these resources do not get deleted
         oldest_version = DatasetVersion.objects.last()  # will get removed
         newest_version = DatasetVersion.objects.first()  # will remain
-        old_file_ids = []
         old_tika_ids = []
-        new_file_ids = []
         new_tika_ids = []
         for old_doc, new_doc in zip(oldest_version.document_set.all(), newest_version.document_set.all()):
-            old_file_ids.append(old_doc.pipeline["file"]["id"])
             old_tika_ids.append(old_doc.pipeline["tika"]["id"])
-            new_file_ids.append(new_doc.pipeline["file"]["id"])
             new_tika_ids.append(new_doc.pipeline["tika"]["id"])
             new_doc.properties = old_doc.properties
             new_doc.save()
-        self.assertEqual(FileResource.objects.filter(id__in=old_file_ids).count(), len(old_file_ids),
-                         "Old FileResource should remain, because new Documents use them")
         self.assertEqual(HttpTikaResource.objects.filter(id__in=old_tika_ids).count(), len(old_tika_ids),
                          "Old HttpTikaResource should remain, because new Documents use them")
-        self.assertEqual(FileResource.objects.filter(id__in=new_file_ids).count(), len(new_file_ids),
-                         "New FileResource without Document should remain, because they are new")
         self.assertEqual(HttpTikaResource.objects.filter(id__in=new_tika_ids).count(), len(new_tika_ids),
                          "New HttpTikaResource without Document should remain, because they are new")
 
     @patch("core.models.search.get_es_client", return_value=elastic_client)
     def test_clean_data_missing_resources(self, get_es_client):
         # We'll remove all resources. This should not interfere with deletion of other data
-        FileResource.objects.all().delete()
         HttpTikaResource.objects.all().delete()
         get_es_client.reset_mock()
         call_command("clean_data")
@@ -146,7 +144,6 @@ class TestCleanData(TestCase):
         self.assertEqual(ElasticIndex.objects.count(), 16, "Expected two indices per dataset version")
         self.assertEqual(Collection.objects.count(), 8, "Expected one collection per dataset version")
         self.assertEqual(Document.objects.count(), 40, "Expected five documents per collection")
-        self.assertEqual(FileResource.objects.count(), 0)
         self.assertEqual(HttpTikaResource.objects.count(), 0)
         # Check if Elastic indices were removed properly as well
         self.assertEqual(get_es_client.call_count, 76, "Not sure why there are two calls per removed ElasticIndex")

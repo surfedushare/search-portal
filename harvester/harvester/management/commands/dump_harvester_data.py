@@ -7,7 +7,7 @@ from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.models import (Dataset, FileResource, HttpTikaResource, Extension, ExtructResource, YoutubeThumbnailResource,
+from core.models import (Dataset, HttpTikaResource, Extension, ExtructResource, YoutubeThumbnailResource,
                          PdfThumbnailResource)
 from edurep.models import EdurepOAIPMH
 from sharekit.models import SharekitMetadataHarvest
@@ -19,7 +19,6 @@ logger = logging.getLogger("harvester")
 class Command(base.LabelCommand):
 
     def dump_resources(self):
-        call_command("dump_resource", "core.FileResource")
         call_command("dump_resource", "core.HttpTikaResource")
         call_command("dump_resource", "core.ExtructResource")
         call_command("dump_resource", "core.YoutubeThumbnailResource")
@@ -27,7 +26,6 @@ class Command(base.LabelCommand):
         call_command("dump_resource", "edurep.EdurepOAIPMH")
         call_command("dump_resource", "sharekit.SharekitMetadataHarvest")
         return [
-            os.path.join(get_dumps_path(FileResource), f"{FileResource.get_name()}.dump.json"),
             os.path.join(get_dumps_path(HttpTikaResource), f"{HttpTikaResource.get_name()}.dump.json"),
             os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json"),
             os.path.join(get_dumps_path(SharekitMetadataHarvest), f"{SharekitMetadataHarvest.get_name()}.dump.json"),
