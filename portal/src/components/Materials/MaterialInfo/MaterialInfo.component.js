@@ -85,7 +85,7 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            'consortium': [consortium]
+            consortium: [consortium]
           }
         })
       }
