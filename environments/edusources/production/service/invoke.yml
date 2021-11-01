@@ -47,3 +47,5 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:eduterm"
   deepl:
     api_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/deepl"
+  harvester:
+    api_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:harvester/api-key"

@@ -40,3 +40,5 @@ secrets:
     api_key: null
   deepl:
     api_key: null
+  harvester:
+    api_key: "123abc"

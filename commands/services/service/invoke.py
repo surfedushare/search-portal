@@ -26,8 +26,9 @@ def import_snapshot(ctx, source_profile, snapshot_name=None):
 
     print("creating superuser")
     admin_password = ctx.config.secrets.django.admin_password
+    harvester_key = ctx.config.secrets.harvester.api_key
     insert_user = insert_django_user_statement(
-        "supersurf", admin_password, is_search_service=True
+        "supersurf", admin_password, harvester_key, is_search_service=True
     )
     ctx.run(
         f'psql -h localhost -U postgres -d {database} -W -c "{insert_user}"',
