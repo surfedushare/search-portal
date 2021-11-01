@@ -9,6 +9,7 @@ django:
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   matomo_id: null
   administrative_emails: false
+  harvester_api: "http://harvester.pol/api/v1/"
 
 postgres:
   database: "edushare"

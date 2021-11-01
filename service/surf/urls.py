@@ -17,6 +17,7 @@ import os
 
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.sitemaps import views
 from django.conf.urls import url, include
 from django.urls import path
 from django.conf.urls.static import static
@@ -24,6 +25,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
+from surf.sitemap import MainSitemap, MaterialsSitemap
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
     portal_material,
@@ -105,6 +107,11 @@ apipatterns = public_api_patterns + router.urls + [
     url(r'^feedback/', FeedbackAPIView.as_view())
 ]
 
+sitemaps = {
+    "main": MainSitemap,
+    "materials": MaterialsSitemap
+}
+
 urlpatterns = [
     # System
     url(r'^health/?$', health_check, name="health-check"),
@@ -121,6 +128,11 @@ urlpatterns = [
     # API and other data
     url(r'^api/v1/', include(apipatterns)),
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
+
+    # Sitemaps
+    path('sitemap.xml', views.index, {'sitemaps': sitemaps}),
+    path('sitemap-<section>.xml', views.sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 if settings.PROJECT == "edusources":
