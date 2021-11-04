@@ -44,7 +44,7 @@ WORKDIR /usr/src/app
 # The -r options make it a system user and group.
 # The -m option forces a home folder (which Python tools rely upon rather heavily)
 # We also add default Python user path to PATH so installed binaries get found
-RUN groupadd -r app -g 1001 && useradd app -u 1001 -r -m -g app
+RUN groupadd -r app -g 1000 && useradd app -u 1000 -r -m -g app
 ENV PATH="/home/app/.local/bin:${PATH}"
 ENV PYTHONPATH="/usr/src/app"
 # Give access to app user
@@ -63,7 +63,7 @@ RUN pip install --no-cache-dir --user uwsgi==2.0.18
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Copy application and frontend build
-COPY service /usr/src/app
+COPY --chown=app service /usr/src/app
 COPY --from=builder /usr/src/service/surf /usr/src/app/surf
 # Copy environment configurations
 # The default environment mode is production, but during image build we use the localhost mode
