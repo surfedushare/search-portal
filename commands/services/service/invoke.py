@@ -75,3 +75,16 @@ def sync_category_filters(ctx, mode):
     Syncs the list of category filters with Elastic Search
     """
     run_task(ctx, "service", mode, ["python", "manage.py", "sync_category_filters"])
+
+
+@task(name="make_translations")
+def make_translations(ctx):
+    """
+    Scans the code for translatable messages and aggregates them in a .po file
+    """
+    with ctx.cd("service"):
+        ctx.run(
+            "python manage.py makemessages -l en "
+            "--settings=surf.settings.service "
+            "--ignore 'surf/vendor/*' --ignore 'surf/apps/*'"
+        )

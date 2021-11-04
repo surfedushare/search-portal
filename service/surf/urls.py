@@ -21,6 +21,8 @@ from django.contrib.sitemaps import views
 from django.conf.urls import url, include
 from django.urls import path
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
@@ -136,13 +138,13 @@ urlpatterns = [
 ]
 
 if settings.PROJECT == "edusources":
-    urlpatterns += [
-        # Frontend
-        url(r'^materialen/(?P<external_id>.+)/', portal_material),
-        url(r'^en/materials/(?P<external_id>.+)/', portal_material),
+    # Translated frontend patterns
+    urlpatterns += i18n_patterns(
+        url(_(r'^materialen/(?P<external_id>.+)/'), portal_material),
         url(r'^$', portal_single_page_application, name="portal-spa"),
         url(r'^.*/$', portal_single_page_application),
-    ]
+        prefix_default_language=False
+    )
 else:
     urlpatterns += [
         url(r'^$', health_check),
