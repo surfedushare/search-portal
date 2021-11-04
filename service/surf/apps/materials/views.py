@@ -9,8 +9,7 @@ from django.conf import settings
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count, F, Q, QuerySet
-from django.http import Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, Http404
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
 from rest_framework.response import Response
@@ -54,6 +53,7 @@ from surf.apps.materials.utils import (
     add_material_disciplines,
     add_search_query_to_elastic_index
 )
+from surf.apps.locale.models import Locale
 from surf.apps.core.schema import SearchSchema
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
@@ -63,20 +63,21 @@ logger = logging.getLogger(__name__)
 
 def portal_material(request, *args, **kwargs):
     material = _get_material_by_external_id(request, kwargs["external_id"])
-    if material:
-        return render(request, "portal/index.html", {
-            'meta_og_title': material[0]["title"],
-            'meta_og_description': material[0]["description"],
-            'matomo_id': settings.MATOMO_ID
-        })
-
-    return portal_single_page_application(request, args)
+    if not material:
+        raise Http404(f"Material not found: {kwargs['external_id']}")
+    return render(request, "portal/index.html", {
+        'meta_title': f"{material[0]['title']} | Edusources",
+        'meta_description': material[0]["description"],
+        'matomo_id': settings.MATOMO_ID
+    })
 
 
 def portal_single_page_application(request, *args):
+    site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
+    site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
     return render(request, "portal/index.html", {
-        'meta_og_title': "SURF | edusources",
-        'meta_og_description': "Edusources",
+        'meta_title': "Edusources",
+        'meta_description': site_description,
         'matomo_id': settings.MATOMO_ID
     })
 
