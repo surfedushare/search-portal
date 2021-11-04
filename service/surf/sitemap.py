@@ -77,7 +77,7 @@ class MaterialsSitemap(Sitemap):
     protocol = "https"
 
     def location(self, obj):
-        prefix = "materialen/" if obj["language"] == "nl" else f"en/materials/"
+        prefix = "materialen/" if obj["language"] == "nl" else "en/materials/"
         encoded_id = quote(
             obj['reference'],
             safe=";,:@&+$-_.!~*'()#"  # encodeURI minus /, = and & (vue-router "pretty" mode)
