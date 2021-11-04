@@ -80,6 +80,16 @@ export default {
         })
       }
     },
+    consortiumUrl(consortium) {
+      if (this.material) {
+        return this.generateSearchMaterialsQuery({
+          ...this.formData,
+          filters: {
+            consortium: [consortium]
+          }
+        })
+      }
+    },
     generateSearchMaterialsQuery,
     /**
      * Show the popup "Save rating"

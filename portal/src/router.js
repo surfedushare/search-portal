@@ -18,7 +18,7 @@ import axios from '~/axios'
 import store from '~/store'
 import {
   THEME_CATEGORY_FILTER_ID,
-  PUBLISHER_CATEGORY_FILTER_ID
+  CONSORTIUM_CATEGORY_FILTER_ID
 } from '~/constants'
 import { localePath } from '~/i18n/plugin.routing'
 
@@ -81,7 +81,7 @@ export default new Router({
       component: Search,
       name: 'communities-search___en',
       meta: {
-        filterRoot: PUBLISHER_CATEGORY_FILTER_ID
+        filterRoot: CONSORTIUM_CATEGORY_FILTER_ID
       }
     },
     {
@@ -89,7 +89,7 @@ export default new Router({
       component: Search,
       name: 'communities-search___nl',
       meta: {
-        filterRoot: PUBLISHER_CATEGORY_FILTER_ID
+        filterRoot: CONSORTIUM_CATEGORY_FILTER_ID
       }
     },
     {
