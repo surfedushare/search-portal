@@ -59,6 +59,8 @@ class DatasetDocumentsView(generics.ListAPIView):
             if kwargs["pk"] is not None:
                 raise Http404("Not found")
             dataset = Dataset.objects.filter(is_latest=True).last()
+        if dataset is None:
+            raise Http404("No content found")
 
         dataset_version = dataset.versions.get_latest_version()
         page = self.paginate_queryset(dataset_version.document_set.all())
