@@ -28,6 +28,12 @@ no labels</string>
                         <keyword>
                             <string language="x-none"/>
                         </keyword>
+                        <keyword>
+                            <string language="la">A05.6.02.001 Duodenum</string>
+                        </keyword>
+                        <keyword>
+                            <string language="la">A05.9.01.001 Pancreas</string>
+                        </keyword>
                         <aggregationLevel>
                             <source>LOMv1.0</source>
                             <value>1</value>
@@ -205,14 +211,6 @@ Latin labels</string>
                         <description>
                             <string language="en">Anatomy Open Educational Resource</string>
                         </description>
-                        <keyword>
-                            <string language="la">A05.6.02.001 Duodenum</string>
-                        </keyword>
-                    </classification>
-                    <classification>
-                        <keyword>
-                            <string language="la">A05.9.01.001 Pancreas</string>
-                        </keyword>
                     </classification>
                 </lom:lom>
             </metadata>

@@ -41,6 +41,7 @@ class AnatomyToolExtraction(object):
     def parse_vcard_element(el):
         card = unescape(el.text.strip())
         card = "\n".join(field.strip() for field in card.split("\n"))
+        card = card.replace("BEGIN:VCARD - VERSION:3.0 -", "BEGIN:VCARD\nVERSION:3.0")
         return vobject.readOne(card)
 
     @classmethod
@@ -123,7 +124,10 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_keywords(cls, soup, el):
-        nodes = el.find_all('keyword')
+        general = el.find('general')
+        if not general:
+            return []
+        nodes = general.find_all('keyword')
         return [
             unescape(node.find('string').text.strip())
             for node in nodes if node.find('string').text
