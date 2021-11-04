@@ -49,7 +49,7 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
-from surf.apps.core.views import health_check
+from surf.apps.core.views import health_check, robots_txt
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsViewSet, StatsView
@@ -131,10 +131,11 @@ urlpatterns = [
     url(r'^api/v1/', include(apipatterns)),
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 
-    # Sitemaps
+    # For crawlers
     path('sitemap.xml', views.index, {'sitemaps': sitemaps}),
     path('sitemap-<section>.xml', views.sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', robots_txt)
 ]
 
 if settings.PROJECT == "edusources":
