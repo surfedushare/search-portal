@@ -27,6 +27,16 @@
         <span v-if="index + 1 < material.publishers.length">, </span>
       </span>
     </div>
+    <div class="material__info_consortium" v-if="material.consortium">
+      <h3 class="material__info_subttl">{{ $t('Consortium') }}</h3>
+      <span>
+        <router-link
+          :to="consortiumUrl(material.consortium)"
+        >
+          <span>{{ material.consortium }}</span>
+        </router-link>
+      </span>
+    </div>
   </div>
   <div class="material__info_quality_preview">
     <div class="material__info_preview" v-if="material.previews && material.previews.preview && false">

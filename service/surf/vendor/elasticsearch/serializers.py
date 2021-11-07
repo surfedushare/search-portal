@@ -69,6 +69,7 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
     authors = serializers.ListField(child=serializers.CharField())
     has_parts = serializers.ListField(child=serializers.CharField())
     is_part_of = serializers.ListField(child=serializers.CharField())
+    consortium = serializers.CharField(allow_blank=True, allow_null=True)
 
     previews = serializers.SerializerMethodField()
 
