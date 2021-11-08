@@ -22,9 +22,12 @@ class ThemeSerializer(serializers.ModelSerializer):
     title_translations = LocaleSerializer()
     description_translations = LocaleHTMLSerializer()
 
+    filter_category = serializers.CharField(source="filter_category_item.external_id")
+
     class Meta:
         model = Theme
-        fields = ('id', 'external_id', 'title', 'description', 'title_translations', 'description_translations',)
+        fields = ('id', 'filter_category', 'title', 'description', 'title_translations',
+                  'description_translations',)
 
 
 class ThemeDisciplineSerializer(MpttFilterItemSerializer):

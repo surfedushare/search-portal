@@ -76,11 +76,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'versatileimagefield',
     'datagrowth',
 
     'core',
     'edurep',
     'sharekit',
+    'anatomy_tool',
 ]
 
 MIDDLEWARE = [
@@ -469,3 +471,11 @@ EDUREP_BASE_URL = environment.django.repositories.edurep
 
 X_ROBOTS_TAG = ['noindex', 'nofollow']
 MIDDLEWARE.append('x_robots_tag_middleware.middleware.XRobotsTagMiddleware')
+
+
+# Versatile Image Field
+# https://django-versatileimagefield.readthedocs.io/en/latest/installation.html
+
+VERSATILEIMAGEFIELD_SETTINGS = {
+    'sized_directory_name': 'thumbnails',
+}

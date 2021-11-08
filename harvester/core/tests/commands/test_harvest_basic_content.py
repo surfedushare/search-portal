@@ -5,9 +5,6 @@ from django.core.management import call_command
 
 from core.constants import HarvestStages
 from core.models import Harvest, Collection, Document
-from core.management.commands.harvest_basic_content import Command as BasicHarvestCommand
-from core.logging import HarvestLogger
-from edurep.tests.factories import EdurepOAIPMHFactory
 
 
 PIPELINE_PROCESSOR_TARGET = "core.management.commands.harvest_basic_content.HttpPipelineProcessor"
@@ -20,16 +17,9 @@ class TestBasicHarvest(TestCase):
     fixtures = ["datasets-history"]
 
     def setUp(self):
-        EdurepOAIPMHFactory.create_common_edurep_responses()
         Harvest.objects.filter(source__spec="edusources").update(stage=HarvestStages.NEW)
         self.collection = Collection.objects.last()
         super().setUp()
-
-    def get_command_instance(self):
-        command = BasicHarvestCommand()
-        command.logger = HarvestLogger("test", "harvest_basic_content", {})
-        command.batch_size = 32
-        return command
 
     @patch(PIPELINE_PROCESSOR_TARGET, return_value=processor_mock_result)
     def test_basic_surf(self, pipeline_processor_target):

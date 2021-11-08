@@ -4,7 +4,7 @@ from datetime import datetime
 from django.conf import settings
 
 from core.models import (Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, ElasticIndex,
-                         FileResource, HttpTikaResource)
+                         HttpTikaResource)
 from core.constants import HarvestStages, Repositories, DeletePolicies
 
 
@@ -45,7 +45,6 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         from_youtube = False
         analysis_allowed = True
         mime_type = "text/html"
-        pipeline = {}
         preview_path = None
         url = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
         language = "nl"
@@ -54,6 +53,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
     reference = factory.Sequence(lambda n: "surfsharekit:oai:sufsharekit.nl:{}".format(n))
     properties = factory.LazyAttribute(
         lambda o: {
+            "state": "active",
             "external_id": o.reference,
             "title": o.title,
             "from_youtube": o.from_youtube,
@@ -68,7 +68,6 @@ class DocumentFactory(factory.django.DjangoModelFactory):
                     "URL 1"
                 ]
             ],
-            "pipeline": o.pipeline,
             "preview_path": o.preview_path,
             "url": o.url,
             "language": {"metadata": o.language},
@@ -111,13 +110,6 @@ class HarvestFactory(factory.django.DjangoModelFactory):
     dataset = factory.SubFactory(DatasetFactory)
     source = factory.SubFactory(HarvestSourceFactory)
     stage = HarvestStages.NEW
-
-
-class FileResourceFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = FileResource
-
-    uri = "https://maken.wikiwijs.nl/124977/Zorgwekkend_gedrag___kopie_1"
 
 
 class HttpTikaResourceFactory(factory.django.DjangoModelFactory):

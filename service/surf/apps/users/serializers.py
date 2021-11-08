@@ -16,7 +16,6 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     """
 
     full_name = serializers.CharField(source="email")
-    is_admin = serializers.SerializerMethodField()
     communities = serializers.SerializerMethodField()
     collections = serializers.SerializerMethodField()
 
@@ -31,10 +30,6 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         qs = Collection.objects.filter(communities__team__user=obj).order_by("title_nl")
         return CollectionShortSerializer(qs, many=True).data
 
-    @staticmethod
-    def get_is_admin(obj):
-        return Community.objects.filter(team__user=obj).exists()
-
     class Meta:
         model = User
-        fields = ('id', 'full_name', 'is_admin', 'communities', 'collections')
+        fields = ('id', 'full_name', 'is_staff', 'communities', 'collections')

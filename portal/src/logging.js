@@ -32,12 +32,20 @@ injector.decorator('$log', function($log) {
     $log.info('Visiting: ' + page)
   }
 
-  $log.customEvent = function(category, action, label) {
-    if (!label) {
+  $log.customEvent = function(category, action, label, value, dimensions) {
+    if (!label && !value) {
       $log.info('Trigger: ' + category + ' => ' + action)
-    } else {
+    } else if (label) {
       $log.info('Trigger: ' + category + ' (' + label + ') => ' + action)
+    } else if (value) {
+      $log.info('Trigger: ' + category + ' (' + value + ') => ' + action)
     }
+    if (dimensions) {
+      $log.info('Custom dimensions:', dimensions)
+    }
+  }
+  $log.setIsStaff = function(value) {
+    $log.info('Set is_staff: ', value)
   }
 
   /***************************
@@ -45,25 +53,35 @@ injector.decorator('$log', function($log) {
    ***************************/
 
   // In non-production we do nothing special after adding custom methods
-  if (!window.MOTOMO_ID) {
+  if (!window.MATOMO_ID) {
     return $log
   }
 
   /***************************
-   * MOTOMO
+   * MATOMO
    ***************************/
 
   $log._pageView = $log.pageView
   $log._customEvent = $log.customEvent
+  $log._setIsStaff = $log.setIsStaff
 
   $log.pageView = function(page) {
     window._paq.push(['trackPageView'])
     $log._pageView(page)
   }
 
-  $log.customEvent = function(category, action, label) {
-    window._paq.push(['trackEvent', category, action, label])
-    $log._customEvent(category, action, label)
+  $log.customEvent = function(category, action, label, value, dimensions) {
+    $log._customEvent(category, action, label, value, dimensions)
+    window._paq.push(['trackEvent', category, action, label, value, dimensions]) // NB: this modifies dimensions!
+  }
+
+  $log.setIsStaff = function(value) {
+    if (value) {
+      window._paq.push(['setCustomDimension', 1, value])
+    } else {
+      window._paq.push(['deleteCustomDimension', 1])
+    }
+    $log._setIsStaff(value)
   }
 
   /***************************

@@ -47,4 +47,10 @@ def get_project_search_mapping_properties():
                 }
             }
         },
+        'learning_material_themes': {
+            'type': 'keyword'
+        },
+        'consortium': {
+            'type': 'keyword'
+        },
     }

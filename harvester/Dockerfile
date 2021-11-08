@@ -21,7 +21,7 @@ WORKDIR /usr/src/app
 # The -r options make it a system user and group.
 # The -m option forces a home folder (which Python tools rely upon rather heavily)
 # We also add default Python user path to PATH so installed binaries get found
-RUN groupadd -r app -g 1001 && useradd app -u 1001 -r -m -g app
+RUN groupadd -r app -g 1000 && useradd app -u 1000 -r -m -g app
 ENV PATH="/home/app/.local/bin:${PATH}"
 ENV PYTHONPATH="/usr/src/app"
 # Give access to app user

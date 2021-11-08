@@ -12,7 +12,7 @@ django:
     keep_versions: 3
   repositories:
     edurep: "https://wszoeken.edurep.kennisnet.nl"
-    sharekit: "https://api.surfsharekit.nl"
+    sharekit: "https://api.acc.surfsharekit.nl"
 
 postgres:
   database: "harvester"

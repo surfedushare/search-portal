@@ -126,6 +126,7 @@
             "reference": "custom-extension",
             "is_parent": true,
             "properties": {
+                "state": "active",
                 "external_id": "custom-extension",
                 "title": "New! New! New! Extended titles!",
                 "authors": [
@@ -169,6 +170,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": ["research"],
                 "doi": null,
@@ -191,23 +193,6 @@
                     "metadata": "en",
                     "from_text": "en",
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            18246
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            48
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-nc-40",
                 "technical_type": "document",
@@ -256,6 +241,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": ["research"],
                 "doi": null,
@@ -280,23 +266,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "nl"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15303
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.httptikaresource",
-                            45
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "technical_type": "website",
@@ -346,6 +315,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -391,23 +361,6 @@
                     "from_text": null,
                     "from_title": "nl"
                 },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            18335
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            46
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
-                },
                 "copyright": "cc-by-sa-40",
                 "technical_type": "app",
                 "material_types": [],
@@ -449,6 +402,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -474,23 +428,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15101
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            49
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [
@@ -543,6 +480,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -567,23 +505,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15100
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.httptikaresource",
-                            43
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [],
@@ -631,6 +552,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -657,23 +579,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15099
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.httptikaresource",
-                            42
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [],
@@ -721,6 +626,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -746,23 +652,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15098
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.httptikaresource",
-                            41
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [],
@@ -813,6 +702,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -836,20 +726,6 @@
                     "metadata": "nl",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": false,
-                        "resource": [
-                            "core.fileresource",
-                            12030
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-nc-40",
                 "technical_type": "website",
@@ -895,6 +771,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -984,6 +861,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -1017,23 +895,6 @@
                     "metadata": "de",
                     "from_text": "de",
                     "from_title": "de"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            16942
-                        ]
-                    },
-                    "tika": {
-                        "success": true,
-                        "resource": [
-                            "core.tikaresource",
-                            24827
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-sa-40",
                 "technical_type": "document",
@@ -1078,6 +939,7 @@
                 }
             },
             "properties": {
+                "state": "active",
                 "research_object_type": null,
                 "research_themes": [],
                 "doi": null,
@@ -1105,23 +967,6 @@
                     "metadata": "en",
                     "from_text": null,
                     "from_title": "en"
-                },
-                "pipeline": {
-                    "file": {
-                        "success": true,
-                        "resource": [
-                            "core.fileresource",
-                            15137
-                        ]
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": [
-                            "core.tikaresource",
-                            25779
-                        ]
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-40",
                 "has_parts": [],

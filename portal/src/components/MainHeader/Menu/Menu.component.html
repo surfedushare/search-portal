@@ -2,7 +2,7 @@
 <section class="menu">
   <nav>
     <ul class="menu__list">
-      <li class="menu__list_item" v-click-outside="closeSubMenu" v-show="false">
+      <li v-if="$root.isDemoEnvironment()" class="menu__list_item" v-click-outside="closeSubMenu">
         <a
           href="/themes/"
           @click.prevent="toggleSubMenu"

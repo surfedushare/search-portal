@@ -48,7 +48,7 @@ export default {
       this.$emit('input', query)
     },
     searchSuggestions: debounce(async function(search) {
-      if (!search) {
+      if (!search || search.length <= 2) {
         this.suggestions = []
         return
       }

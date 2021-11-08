@@ -10,9 +10,6 @@
     <h3 class="name">
       {{ communityDetails.title }}
     </h3>
-    <div class="count">
-      {{ $tc('learning-materials', community.materials_count) }}
-    </div>
     <div class="actions">
       <span>
         {{ $t('See') }}

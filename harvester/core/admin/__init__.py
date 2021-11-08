@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
 
-from datagrowth.admin import DataStorageAdmin, HttpResourceAdmin
+from datagrowth.admin import DataStorageAdmin, HttpResourceAdmin, ShellResourceAdmin
 
 from core.models import (Dataset, DatasetVersion, Collection, Document, HarvestSource, HttpTikaResource, ElasticIndex,
-                         ExtractionMapping, ExtractionMethod, JSONExtractionField, MethodExtractionField)
+                         ExtructResource, YoutubeThumbnailResource, ExtractionMapping, ExtractionMethod,
+                         JSONExtractionField, MethodExtractionField, PdfThumbnailResource)
 from core.admin.datatypes import DatasetAdmin, DatasetVersionAdmin, ExtendedDocumentAdmin
 from core.admin.harvest import HarvestSourceAdmin
 from core.admin.search import ElasticIndexAdmin
@@ -18,6 +19,9 @@ admin.site.register(DatasetVersion, DatasetVersionAdmin)
 admin.site.register(Collection, DataStorageAdmin)
 admin.site.register(Document, ExtendedDocumentAdmin)
 admin.site.register(ElasticIndex, ElasticIndexAdmin)
+admin.site.register(ExtructResource, HttpResourceAdmin)
+admin.site.register(YoutubeThumbnailResource, ShellResourceAdmin)
+admin.site.register(PdfThumbnailResource, HttpResourceAdmin)
 
 if settings.PROJECT == "nppo":
     admin.site.register(ExtractionMapping, ExtractionMappingAdmin)

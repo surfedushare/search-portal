@@ -13,8 +13,10 @@ class Command(BaseCommand):
     """
 
     resources = [
-        "core.FileResource",
         "core.HttpTikaResource",
+        "core.ExtructResource",
+        "core.YoutubeThumbnailResource",
+        "core.PdfThumbnailResource",
     ]
 
     def handle(self, **options):

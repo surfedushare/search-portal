@@ -14,8 +14,10 @@ class Command(BaseCommand):
     """
 
     resources = {
-        "core.FileResource": "file",
-        "core.HttpTikaResource": "tika"
+        "core.HttpTikaResource": "tika",
+        "core.ExtructResource": "extruct",
+        "core.YoutubeThumbnailResource": "youtube_preview",
+        "core.PdfThumbnailResource": "pdf_preview",
     }
 
     def handle(self, **options):
@@ -36,8 +38,8 @@ class Command(BaseCommand):
             model = apps.get_model(resource_model)
             for resource in model.objects.filter(purge_at__lte=purge_time):
                 document_filter = {
-                    f"properties__pipeline__{pipeline_phase}__resource": resource_model.lower(),
-                    f"properties__pipeline__{pipeline_phase}__id": resource.id
+                    f"pipeline__{pipeline_phase}__resource": resource_model.lower(),
+                    f"pipeline__{pipeline_phase}__id": resource.id
                 }
                 if not Document.objects.filter(**document_filter).exists():
                     resource.delete()

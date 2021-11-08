@@ -64,6 +64,7 @@ export default {
           })
         )
       }
+      this.$emit('click', material)
     },
     selectMaterial(material) {
       if (this.selectFor === 'delete') {

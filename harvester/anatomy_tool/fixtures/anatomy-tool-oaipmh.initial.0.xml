@@ -1,0 +1,1687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/   http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+    <responseDate>2021-10-06T09:01:03Z</responseDate>
+    <request verb="ListRecords" metadataPrefix="nl_lom" from="1970-01-01">https://anatomytool.org/oai-pmh</request>
+    <ListRecords>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56055</identifier>
+                <datestamp>2020-10-28T02:39:34Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56055</entry>
+                        </identifier>
+                        <title>
+                            <string language="x-none">Leiden
+Photo Duodenum and pancreas dissection specimen
+no labels</string>
+                        </title>
+                        <language>x-none</language>
+                        <description>
+                            <string language="x-none">Duodenum and pancreas dissection specimen. Probe in bile duct.
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="x-none"/>
+                        </keyword>
+                        <keyword>
+                            <string language="la">A05.6.02.001 Duodenum</string>
+                        </keyword>
+                        <keyword>
+                            <string language="la">A05.9.01.001 Pancreas</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>1</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2020-10-28T03:39:34+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Gobée;O. Paul;;;MD
+FN: O. Paul Gobée, MD
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:anatomist
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-06-05T23:30:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Prof. X Test;;;MD
+FN: Prof. X. Test
+ORG:Netherlands, Leiden - Leiden University Medical Center, Leiden University
+TITLE:anatomist
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-06-05T23:30:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Gobée;O. Paul;;;
+FN: O. Paul Gobée,
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:anatomist, senior lecturer, developer anatomy e-learning
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-06-05T23:30:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>image/png</format>
+                        <size>3758463</size>
+                        <location>https://anatomytool.org/node/56055</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>https://purl.edustandaard.nl/vdex_learningresourcetype_lomv1p0_20060628.xml</source>
+                            <value>figure</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <intendedEndUserRole>
+                            <value>teacher</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>higher education</value>
+                        </context>
+                        <context>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution-NonCommercial-ShareAlike 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by-nc-sa/4.0/</string>
+                        </description>
+                    </rights>
+                    <relation>
+                        <kind>
+                            <source>LOMv1.0</source>
+                            <value>references</value>
+                        </kind>
+                        <resource>
+                            <identifier>
+                                <catalog>URL</catalog>
+                                <entry>https://anatomytool.org/node/56878</entry>
+                            </identifier>
+                            <description>
+                                <string language="en">Leiden
+Drawing Parts of the pancreas
+Latin labels </string>
+                            </description>
+                        </resource>
+                    </relation>
+                    <relation>
+                        <kind>
+                            <source>LOMv1.0</source>
+                            <value>references</value>
+                        </kind>
+                        <resource>
+                            <identifier>
+                                <catalog>URL</catalog>
+                                <entry>https://anatomytool.org/node/56876</entry>
+                            </identifier>
+                            <description>
+                                <string language="en">Leiden
+Drawing Parts of the duodenum
+Latin labels</string>
+                            </description>
+                        </resource>
+                    </relation>
+                    <annotation>
+                        <entity/>
+                        <date>
+                            <datetime/>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string/>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56096</identifier>
+                <datestamp>2021-04-30T17:54:29Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56096</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">Microscopy tutorial duodenum</string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">A one page tutorial giving virtual microscopic views of histological features of the duodenum.
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>2</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2021-04-30T19:54:29+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Gobée;O. Paul;;;MD
+FN: O. Paul Gobée, MD
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:anatomist
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-06T12:41:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:LUMCTest;n.a.;;;
+FN: n.a. LUMCTest, 
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:test-account
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-06T12:41:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56096</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml</source>
+                            <value>information resource</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution-NonCommercial-ShareAlike 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by-nc-sa/4.0/</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity/>
+                        <date>
+                            <datetime/>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string/>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A05.6.02.017 Glandulae duodenales</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.6.02.001 Duodenum</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.6.02.017 Glandulae duodenales</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.6.02.017 Glandulae duodenales</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.6.01.007 Plicae circulares intestini tenuis</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56125</identifier>
+                <datestamp>2020-10-28T00:47:22Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56125</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">Endoscopy videos atlas</string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">A collection of 250 gastroenterology endoscopy videos by the dept. of Internal Medicine of Albertinen-Krankenhaus Hamburg. Both the normal aspects and several pathologies are shown. NOTE: These video's are NOT under an open license.
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>1</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2020-10-28T01:47:22+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Dept. Innere Medizin, Albertinen-Krankenhaus Hamburg ;;;;
+FN:  Dept. Innere Medizin, Albertinen-Krankenhaus Hamburg , 
+ORG:
+TITLE:
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-16T02:53:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Gobée;O. Paul;;;
+FN: O. Paul Gobée, 
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:anatomist, senior lecturer, developer anatomy e-learning
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-16T02:53:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56125</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml</source>
+                            <value>information resource</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <intendedEndUserRole>
+                            <value>teacher</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>other</value>
+                        </context>
+                        <context>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>unknown</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://anatomytool.org/license/item-external-site-license-stated-site-holds</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity/>
+                        <date>
+                            <datetime/>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string/>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A05.6.02.001 Duodenum</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.7.03.001 Colon</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.5.01.001 Ventriculus</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.7.04.001 Rectum</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.4.01.001 Oesophagus</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.6.01.001 Intestinum tenue</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.7.01.001 Intestinum crassum</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.6.03.001 Jejunum</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A05.6.04.001 Ileum</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56126</identifier>
+                <datestamp>2020-10-28T00:49:05Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56126</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">Radiopaedia</string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">The leading open licensed radiology website, containing imaging from over 35,000 cases.
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>2</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2020-10-28T01:49:05+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Radiopaedia, diverse contributors;;;;
+FN:  Radiopaedia, diverse contributors, 
+ORG:
+TITLE:
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-16T03:12:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Gobée;O. Paul;;;
+FN: O. Paul Gobée, 
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:anatomist, senior lecturer, developer anatomy e-learning
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-16T03:12:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56126</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml</source>
+                            <value>information resource</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <intendedEndUserRole>
+                            <value>teacher</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>higher education</value>
+                        </context>
+                        <context>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution-NonCommercial-ShareAlike 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by-nc-sa/4.0/</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity/>
+                        <date>
+                            <datetime/>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string/>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A01.1.00.014 Thorax</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.016 Abdomen</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.001 Caput</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.019 Membrum superius</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.031 Membrum inferius</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56128</identifier>
+                <datestamp>2020-03-16T00:34:25Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56128</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">OpenStax
+Book Anatomy &amp;amp; Physiology</string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">The OpenStax Open Textbook of Anatomy and Physiology. The leading Open Textbook of Anatomy and Physiology. 1420 pages. It covers the complete anatomy and physiology at an undergraduate student level. It can be viewed online, downloaded, or ordered in print. All images from this textbook are included individually on AnatomyTOOL. The pdf is here.
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">open textbook</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>2</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2020-03-16T01:34:25+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:OpenStax;;;;
+FN:  OpenStax, 
+ORG:
+TITLE:
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-16T03:40:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Gobée;O. Paul;;;
+FN: O. Paul Gobée, 
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:anatomist, senior lecturer, developer anatomy e-learning
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-16T03:40:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56128</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml</source>
+                            <value>information resource</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <intendedEndUserRole>
+                            <value>teacher</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>other</value>
+                        </context>
+                        <context>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by/4.0/</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity/>
+                        <date>
+                            <datetime/>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string/>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A01.1.00.014 Thorax</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.016 Abdomen</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.019 Membrum superius</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.031 Membrum inferius</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.001 Caput</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A01.1.00.012 Collum</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56129</identifier>
+                <datestamp>2019-12-12T23:31:08Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56129</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">Microscopic slide: mesentery cat</string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">Microscopic slide: mesentery cat
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>1</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2019-12-13T00:31:08+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <date>
+                                <datetime>2016-09-23T15:05:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Admin;admin;;;
+FN: admin Admin, 
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:AnatomyTOOL admin
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-09-23T15:05:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56129</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>https://purl.edustandaard.nl/vdex_learningresourcetype_lomv1p0_20060628.xml</source>
+                            <value>figure</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>other</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution-ShareAlike 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by-sa/4.0/</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity/>
+                        <date>
+                            <datetime/>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string/>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A01.1.00.016 Abdomen</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56176</identifier>
+                <datestamp>2016-12-22T12:53:53Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56176</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">Aorta aneurysm x-ray</string>
+                        </title>
+                        <language>en</language>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>1</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2016-12-22T13:53:53+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <date>
+                                <datetime>2016-11-25T03:18:45+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:LUMCTest;n.a.;;;
+FN: n.a. LUMCTest, 
+ORG:Netherlands, Leiden – Leiden University Medical Center, Leiden University
+TITLE:test-account
+END:VCARD</entity>
+                            <date>
+                                <datetime>2016-11-25T03:18:45+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>image/jpeg</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56176</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>https://purl.edustandaard.nl/vdex_learningresourcetype_lomv1p0_20060628.xml</source>
+                            <value>figure</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value/>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>other</value>
+                        </context>
+                        <context>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>yes</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="en">Copyrighted</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity/>
+                        <date>
+                            <datetime/>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string/>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A12.2.02.001 Aorta</string>
+                        </keyword>
+                    </classification>
+                    <classification>
+                        <keyword>
+                            <string language="la">A12.2.12.001 Aorta abdominalis</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56699</identifier>
+                <datestamp>2020-10-28T01:12:44Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56699</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">aorta dog 20x</string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">aorta 20x doghttp://fhmloisrv1501.unimaas.nl/anatomie/tool/microscopy/leafletviewer.html?id=aorta_dog_thionine_20x_um_nl&amp;amp;src=2
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>1</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2020-10-28T02:12:44+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Herrler;Andreas;;;DVM, PhD
+FN: Andreas Herrler, DVM, PhD
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:anatomist, associate professor
+END:VCARD</entity>
+                            <date>
+                                <datetime>2017-08-18T10:49:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Herrler;Andreas;;;
+FN: Andreas Herrler, 
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:anatomist, associate professor
+END:VCARD</entity>
+                            <date>
+                                <datetime>2017-08-18T10:49:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56699</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml</source>
+                            <value>exploratory and research material</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <intendedEndUserRole>
+                            <value>teacher</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution-NonCommercial-ShareAlike 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by-nc-sa/4.0/</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity>BEGIN:VCARD
+VERSION:3.0
+N:Compeer;Thijs;;;
+FN: Thijs Compeer, 
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:
+END:VCARD</entity>
+                        <date>
+                            <datetime>2019-02-28 11:43:05+02:00</datetime>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string>Anatomical correctness: 10/10; Educational quality: 10/10; Aesthetic quality: 10/10; </string>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A12.2.02.001 Aorta</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56707</identifier>
+                <datestamp>2020-10-28T01:21:29Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56707</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">aorta human 20x</string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">aorta human 20xhttp://fhmloisrv1501.unimaas.nl/anatomie/tool/microscopy/leafletviewer.html?id=aorta_human_tb_20x_um_nl&amp;amp;src=2
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>1</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2020-10-28T02:21:29+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Herrler;Andreas;;;DVM, PhD
+FN: Andreas Herrler, DVM, PhD
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:anatomist, associate professor
+END:VCARD</entity>
+                            <date>
+                                <datetime>2017-08-22T10:53:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Herrler;Andreas;;;
+FN: Andreas Herrler, 
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:anatomist, associate professor
+END:VCARD</entity>
+                            <date>
+                                <datetime>2017-08-22T10:53:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56707</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml</source>
+                            <value>exploratory and research material</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution-NonCommercial-ShareAlike 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by-nc-sa/4.0/</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity>BEGIN:VCARD
+VERSION:3.0
+N:Compeer;Thijs;;;
+FN: Thijs Compeer, 
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:
+END:VCARD</entity>
+                        <date>
+                            <datetime>2019-02-28 11:44:10+02:00</datetime>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string>Anatomical correctness: 10/10; Educational quality: 10/10; Aesthetic quality: 10/10; </string>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A12.2.02.001 Aorta</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <record>
+            <header>
+                <identifier>oai:anatomytool.org:56708</identifier>
+                <datestamp>2020-10-28T01:25:03Z</datestamp>
+            </header>
+            <metadata>
+                <lom:lom xmlns:lom="http://ltsc.ieee.org/xsd/LOM">
+                    <general>
+                        <identifier>
+                            <catalog>URL</catalog>
+                            <entry>https://anatomytool.org/node/56708</entry>
+                        </identifier>
+                        <title>
+                            <string language="en">aorta rat 40x </string>
+                        </title>
+                        <language>en</language>
+                        <description>
+                            <string language="en">elastine stain, aorta, rat, 40x
+                            </string>
+                        </description>
+                        <keyword>
+                            <string language="en">x-none</string>
+                        </keyword>
+                        <aggregationLevel>
+                            <source>LOMv1.0</source>
+                            <value>1</value>
+                        </aggregationLevel>
+                    </general>
+                    <lifecycle>
+                        <version>
+                            <string language="x-none">2020-10-28T02:25:03+02:00</string>
+                        </version>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>author</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Herrler;Andreas;;;DVM, PhD
+FN: Andreas Herrler, DVM, PhD
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:anatomist, associate professor
+END:VCARD</entity>
+                            <date>
+                                <datetime>2017-08-22T10:59:00+02:00</datetime>
+                                <description>
+                                    <string language="en">Created</string>
+                                </description>
+                            </date>
+                        </contribute>
+                    </lifecycle>
+                    <metaMetadata>
+                        <contribute>
+                            <role>
+                                <source>LOMv1.0</source>
+                                <value>creator</value>
+                            </role>
+                            <entity>BEGIN:VCARD
+VERSION:3.0
+N:Herrler;Andreas;;;
+FN: Andreas Herrler, 
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:anatomist, associate professor
+END:VCARD</entity>
+                            <date>
+                                <datetime>2017-08-22T10:59:00+02:00</datetime>
+                                <description>
+                                    <string language="en">DateTime that item was uploaded and its metadata were set</string>
+                                </description>
+                            </date>
+                        </contribute>
+                        <metadataSchema>LOMv1.0</metadataSchema>
+                        <metadataSchema>nl_lom_v1p0</metadataSchema>
+                    </metaMetadata>
+                    <technical>
+                        <format>text/html</format>
+                        <size/>
+                        <location>https://anatomytool.org/node/56708</location>
+                    </technical>
+                    <educational>
+                        <learningResourceType>
+                            <source>http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml</source>
+                            <value>exploratory and research material</value>
+                        </learningResourceType>
+                        <intendedEndUserRole>
+                            <source>LOMv1.0</source>
+                            <value>learner</value>
+                        </intendedEndUserRole>
+                        <context>
+                            <source>https://purl.edustandaard.nl/vdex_context_lomv1p0_20060628.xml</source>
+                            <value>higher education</value>
+                        </context>
+                        <typicalAgeRange>
+                            <string language="x-none">16+</string>
+                        </typicalAgeRange>
+                    </educational>
+                    <rights>
+                        <cost>
+                            <source>LOMv1.0</source>
+                            <value>no</value>
+                        </cost>
+                        <copyrightAndOtherRestrictions>
+                            <source>LOMv1.0</source>
+                            <value>CC Attribution-NonCommercial-ShareAlike 4.0 International license</value>
+                        </copyrightAndOtherRestrictions>
+                        <description>
+                            <string language="x-none">https://creativecommons.org/licenses/by-nc-sa/4.0/</string>
+                        </description>
+                    </rights>
+                    <annotation>
+                        <entity>BEGIN:VCARD
+VERSION:3.0
+N:Compeer;Thijs;;;
+FN: Thijs Compeer, 
+ORG:Netherlands, Maastricht | Maastricht University Medical Center+, Maastricht University
+TITLE:
+END:VCARD</entity>
+                        <date>
+                            <datetime>2019-02-28 11:44:51+02:00</datetime>
+                            <description>
+                                <string language="en">Review date</string>
+                            </description>
+                        </date>
+                        <description>
+                            <string>Anatomical correctness: 10/10; Educational quality: 10/10; Aesthetic quality: 10/10; </string>
+                        </description>
+                    </annotation>
+                    <classification>
+                        <purpose>
+                            <source>LOMv1.0</source>
+                            <value>discipline</value>
+                        </purpose>
+                        <taxonPath>
+                            <source>
+                                <string language="x-none">https://vdex.kennisnet.nl/kennisnetset/2015.01/ho_vakken-knset.xml</string>
+                            </source>
+                            <taxon>
+                                <id>5c98610c-3f7d-4521-b231-d0932b4ca799</id>
+                                <entry>
+                                    <string language="x-none">Geneeskunde</string>
+                                </entry>
+                            </taxon>
+                        </taxonPath>
+                        <description>
+                            <string language="en">Anatomy Open Educational Resource</string>
+                        </description>
+                        <keyword>
+                            <string language="la">A12.2.02.001 Aorta</string>
+                        </keyword>
+                    </classification>
+                </lom:lom>
+            </metadata>
+        </record>
+        <resumptionToken completeListSize="3712" cursor="0" expirationDate="2021-10-07T09:01:03Z">63dee2213b993cf13abbb33de8d842c0</resumptionToken>
+    </ListRecords>
+</OAI-PMH>

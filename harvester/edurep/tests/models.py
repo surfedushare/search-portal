@@ -19,18 +19,6 @@ class TestEdurepOAIPMH(TestCase):
 
     @patch("edurep.models.EdurepOAIPMH.handle_errors")
     @patch("edurep.models.EdurepOAIPMH._send")
-    def test_get_defaults(self, send_mock, handle_errors_mock):
-        self.instance.get("surfsharekit")
-        self.assertEqual(send_mock.call_count, 1)
-        self.assertEqual(handle_errors_mock.call_count, 1)
-        self.assertEqual(self.instance.uri,
-                         "staging.edurep.kennisnet.nl/edurep/oai?"
-                         "from=1970-01-01T00%3A00%3A00Z&metadataPrefix=lom&set=surfsharekit&verb=ListRecords")
-        self.assertEqual(self.instance.since, make_aware(datetime(year=1970, month=1, day=1)))
-        self.assertEqual(self.instance.set_specification, "surfsharekit")
-
-    @patch("edurep.models.EdurepOAIPMH.handle_errors")
-    @patch("edurep.models.EdurepOAIPMH._send")
     def test_get_since_time(self, send_mock, handle_errors_mock):
         self.instance.get("surfsharekit", "2021-01-01T01:00:00Z")
         self.assertEqual(send_mock.call_count, 1)

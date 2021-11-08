@@ -51,6 +51,7 @@ To finish the general setup you can run these commands to build all containers:
 
 ```bash
 invoke prepare-builds
+aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 017973353230.dkr.ecr.eu-central-1.amazonaws.com
 docker-compose -f docker-compose.yml up --build
 ```
 

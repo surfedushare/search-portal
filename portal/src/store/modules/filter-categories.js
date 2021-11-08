@@ -102,8 +102,8 @@ export default {
       return state.disciplines
     },
     getCategoryById(state) {
-      return itemId => {
-        return state.byCategoryId[itemId]
+      return (itemId, rootId) => {
+        return state.byCategoryId[`${rootId}-${itemId}`]
       }
     },
     search_filters(state) {
@@ -173,7 +173,10 @@ export default {
       state.byCategoryId = {}
       function setCategoryIds(items) {
         _.forEach(items, item => {
-          state.byCategoryId[item.external_id] = item
+          const key = _.isNull(item.parent)
+            ? item.external_id
+            : `${item.parent}-${item.external_id}`
+          state.byCategoryId[key] = item
           setCategoryIds(item.children)
         })
       }
