@@ -141,6 +141,7 @@ urlpatterns = [
 if settings.PROJECT == "edusources":
     # Translated frontend patterns
     urlpatterns += i18n_patterns(
+        url(_(r'^materialen/zoeken/?'), portal_single_page_application, name="portal-search"),
         url(_(r'^materialen/(?P<external_id>.+)/'), portal_material),
         url(r'^$', portal_single_page_application, name="portal-spa"),
         url(r'^.*/$', portal_single_page_application),
