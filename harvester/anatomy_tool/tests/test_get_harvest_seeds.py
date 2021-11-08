@@ -82,6 +82,7 @@ class TestGetHarvestSeedsAnatomyTool(TestCase):
         file = seeds[0]["files"][0]
         self.assertEqual(file["mime_type"], "image/png")
         self.assertEqual(file["url"], "https://anatomytool.org/node/56055")
+        self.assertEqual(file["hash"], "2d49dee36ce2965cd9e03d91dbd4f9ac54de770a")
         self.assertEqual(file["title"], "URL 1")
 
     def test_parse_copyright_description(self):
