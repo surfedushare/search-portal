@@ -13,6 +13,7 @@ from project.serializers import PersonSerializer, OrganisationSerializer, Projec
 class ExtensionPropertiesSerializer(serializers.Serializer):
 
     external_id = serializers.CharField()
+    state = serializers.ChoiceField(required=False, choices=Document.States.choices)
     title = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     language = serializers.CharField(required=False, max_length=2)
@@ -36,6 +37,7 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
     properties = ExtensionPropertiesSerializer(read_only=True)
 
     external_id = serializers.CharField(write_only=True)
+    state = serializers.CharField(write_only=True, required=False)
     title = serializers.CharField(write_only=True, required=False)
     description = serializers.CharField(write_only=True, required=False)
     language = serializers.CharField(write_only=True, required=False, max_length=2)
@@ -120,7 +122,7 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
 
     class Meta:
         model = Extension
-        fields = ("id", "created_at", "modified_at", "properties", "is_parent", "external_id",
+        fields = ("id", "created_at", "modified_at", "properties", "is_parent", "external_id", "state",
                   "title", "description", "language", "published_at", "copyright",
                   "authors", "parties", "projects", "themes", "keywords", "parents", "children")
 

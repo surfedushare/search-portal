@@ -28,6 +28,11 @@ class DocumentManager(models.Manager):
 
 class Document(DocumentBase):
 
+    class States(models.TextChoices):
+        ACTIVE = "active", "Active"
+        DELETED = "deleted", "Deleted"
+        INACTIVE = "inactive", "In-active"
+
     objects = DocumentManager()
 
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
@@ -86,20 +91,23 @@ class Document(DocumentBase):
         return extension_data
 
     def to_search(self):
-        if self.properties["state"] != "active":
+        # Get the basic document information including from document extensions
+        elastic_base = copy(self.properties)
+        if self.extension:
+            extension_details = self.get_extension_extras()
+            elastic_base.update(extension_details)
+        # Decide whether to delete or not from the index
+        if elastic_base["state"] != "active":
             yield {
                 "_id": self.properties["external_id"],
                 "_op_type": "delete"
             }
             return
-        elastic_base = copy(self.properties)
+        # Transform the data to the structure we actually want in Elastic Search
         elastic_base.pop("language")
         text = elastic_base.pop("text", None)
         if text and len(text) >= 1000000:
             text = " ".join(text.split(" ")[:10000])
-        if self.extension:
-            extension_details = self.get_extension_extras()
-            elastic_base.update(extension_details)
         for private_property in PRIVATE_PROPERTIES:
             elastic_base.pop(private_property, False)
         video = elastic_base.pop("video", None)
