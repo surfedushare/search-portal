@@ -21,6 +21,7 @@ class YoutubeThumbnailResource(ShellResource):
 
     CMD_TEMPLATE = [
         "youtube-dl",
+        "--sleep-interval", "2",
         "--skip-download",
         "--get-thumbnail",
         "{}"
