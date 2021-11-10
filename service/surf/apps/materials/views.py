@@ -82,6 +82,21 @@ def portal_single_page_application(request, *args):
     })
 
 
+def portal_page_not_found(request, exception, template_name=None):
+    site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
+    site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
+    return render(
+        request,
+        "portal/index.html",
+        context={
+            'meta_title': "Edusources",
+            'meta_description': site_description,
+            'matomo_id': settings.MATOMO_ID
+        },
+        status=404
+    )
+
+
 class MaterialSearchAPIView(CreateAPIView):
     """
     The main search endpoint.

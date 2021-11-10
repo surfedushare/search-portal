@@ -163,3 +163,6 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+
+handler404 = 'surf.apps.materials.views.portal_page_not_found'
