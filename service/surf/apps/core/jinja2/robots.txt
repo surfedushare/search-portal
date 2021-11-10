@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: {{ request.build_absolute_uri(url('sitemap')) }}

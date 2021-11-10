@@ -17,7 +17,7 @@ import os
 
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.sitemaps import views
+from django.contrib.sitemaps import views as sitemap_views
 from django.conf.urls import url, include
 from django.urls import path
 from django.conf.urls.static import static
@@ -132,9 +132,8 @@ urlpatterns = [
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 
     # For crawlers
-    path('sitemap.xml', views.index, {'sitemaps': sitemaps}),
-    path('sitemap-<section>.xml', views.sitemap, {'sitemaps': sitemaps},
-         name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name="sitemap"),
+    path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps}),
     path('robots.txt', robots_txt)
 ]
 
