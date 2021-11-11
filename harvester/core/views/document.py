@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework import serializers
 
 from datagrowth.datatypes.views import ContentView, ContentSerializer, DocumentBaseSerializer
 from core.models import Document
@@ -9,6 +10,15 @@ class DocumentSerializer(DocumentBaseSerializer):
     class Meta:
         model = Document
         fields = DocumentBaseSerializer.default_fields
+
+
+class MetadataDocumentSerializer(DocumentBaseSerializer):
+
+    language = serializers.CharField(source="properties.language.metadata")
+
+    class Meta:
+        model = Document
+        fields = ("id", "reference", "language", "created_at", "modified_at")
 
 
 class DocumentView(generics.RetrieveAPIView):

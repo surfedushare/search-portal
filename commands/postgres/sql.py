@@ -2,15 +2,27 @@ from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
 
-def insert_django_user_statement(username, raw_password, is_search_service=False):
+def insert_django_user_statement(username, raw_password, harvester_key, is_search_service=False):
     settings.configure()
     hash_password = make_password(raw_password)
     escaped_password = hash_password.replace("$", r"\$")
     user_table = "users_user" if is_search_service else "auth_user"
+    user_insert = (
+        f"INSERT INTO {user_table} "
+        "(password, is_superuser, is_staff, is_active, username, first_name, last_name, email, date_joined) "
+        f"VALUES ('{escaped_password}', true, true, true, '{username}', '', '', '', NOW())"
+    )
+    if is_search_service:
+        return user_insert
     return (
-        f'INSERT INTO {user_table} '
-        f'(password, is_superuser, is_staff, is_active, username, first_name, last_name, email, date_joined) '
-        f'VALUES (\'{escaped_password}\', true, true, true, \'{username}\', \'\', \'\', \'\', NOW())'
+        "WITH user_insert AS ("
+        f"  {user_insert}"
+        "   RETURNING id"
+        ")"
+        f"INSERT INTO authtoken_token "
+        " (key, created, user_id) "
+        f"VALUES ('{harvester_key}', NOW(), (SELECT id FROM user_insert))"
+
     )
 
 

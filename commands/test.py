@@ -23,6 +23,7 @@ def e2e(ctx):
 @task
 def service(ctx):
     with ctx.cd("service"):
+        ctx.run("python manage.py compilemessages", echo=True, pty=True)
         ctx.run("python manage.py test", echo=True, pty=True)
 
 
