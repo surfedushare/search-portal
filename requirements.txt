@@ -33,6 +33,7 @@ sentry-sdk==1.0.0
 selenium==3.141.0
 factory-boy==3.2.0
 wheel==0.36.2
+beautifulsoup4==4.9.1
 
 -r service/dependencies.txt
 -r harvester/dependencies.txt

@@ -41,7 +41,7 @@ class ObjectiveProperty(models.Model):
     mapping = models.ForeignKey("ExtractionMapping", on_delete=models.CASCADE)
     json_field = models.ForeignKey(JSONExtractionField, on_delete=models.PROTECT, null=True, blank=True)
     method_field = models.ForeignKey(MethodExtractionField, on_delete=models.PROTECT, null=True, blank=True)
-    property = models.CharField(choices=[(prop, prop,) for prop in OBJECTIVE_PROPERTIES], max_length=50)
+    property = models.CharField(choices=sorted([(prop, prop,) for prop in OBJECTIVE_PROPERTIES]), max_length=50)
     is_context = models.BooleanField(default=False)
     is_protected = models.BooleanField(default=False)
 

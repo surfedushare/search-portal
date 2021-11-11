@@ -9,6 +9,7 @@ django:
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   matomo_id: 64
   administrative_emails: true
+  harvester_api: "http://harvester.pol/api/v1/"
 
 postgres:
   database: "edushare"
@@ -47,3 +48,5 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:eduterm"
   deepl:
     api_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:search-portal/deepl"
+  harvester:
+    api_key: "arn:aws:secretsmanager:eu-central-1:017973353230:secret:harvester/api-key"

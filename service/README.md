@@ -104,6 +104,17 @@ python manage.py migrate
 ```
 
 
+#### Translations
+
+There are very few Django translations as yet.
+Keep in mind that the default language is NL and that translatable strings in code should be Dutch.
+To gather all translations and aggregate them into a file run:
+
+```
+invoke srv.make-translations
+```
+
+
 Tests
 -----
 

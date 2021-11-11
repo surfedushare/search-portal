@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
 
     'ckeditor',
     'mptt',
@@ -212,7 +213,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nl'
 
 TIME_ZONE = 'UTC'
 
@@ -446,3 +447,5 @@ if DEBUG:
 
 EDUTERM_API_KEY = environment.secrets.eduterm.api_key
 DEEPL_API_KEY = environment.secrets.deepl.api_key
+HARVESTER_API = environment.django.harvester_api
+HARVESTER_API_KEY = environment.secrets.harvester.api_key

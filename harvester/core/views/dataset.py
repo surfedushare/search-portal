@@ -6,7 +6,7 @@ from datagrowth.datatypes.views import CollectionBaseSerializer
 from harvester.pagination import HarvesterPageNumberPagination
 from harvester.schema import HarvesterSchema
 from core.models import Dataset
-from core.views.document import DocumentSerializer
+from core.views.document import DocumentSerializer, MetadataDocumentSerializer
 
 
 class DatasetDetailSerializer(CollectionBaseSerializer):
@@ -56,7 +56,11 @@ class DatasetDocumentsView(generics.ListAPIView):
         try:
             dataset = self.get_object()
         except Http404:
-            raise Http404("Not found")
+            if kwargs["pk"] is not None:
+                raise Http404("Not found")
+            dataset = Dataset.objects.filter(is_latest=True).last()
+        if dataset is None:
+            raise Http404("No content found")
 
         dataset_version = dataset.versions.get_latest_version()
         page = self.paginate_queryset(dataset_version.document_set.all())
@@ -71,3 +75,7 @@ class DatasetDocumentsView(generics.ListAPIView):
             "previous": None,
             "results": serializer.data
         })
+
+
+class DatasetMetadataDocumentsView(DatasetDocumentsView):
+    serializer_class = MetadataDocumentSerializer
