@@ -138,6 +138,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
         file = seeds[1]["files"][0]
         self.assertEqual(file["mime_type"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
         self.assertEqual(file["url"], "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7")
+        self.assertEqual(file["hash"], "0ed38cdc914e5e8a6aa1248438a1e2032a14b0de")
         self.assertEqual(file["title"], "URL 1")
 
     def test_parse_copyright_description(self):

@@ -8,6 +8,7 @@ django:
     - "surf/apps/filters/fixtures/filter-categories-nppo.json"
   matomo_id: null
   administrative_emails: true
+  harvester_api: null
 
 postgres:
   database: "nppo"
@@ -38,4 +39,6 @@ secrets:
   eduterm:
     api_key: null
   deepl:
+    api_key: null
+  harvester:
     api_key: null
