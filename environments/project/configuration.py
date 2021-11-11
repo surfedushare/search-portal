@@ -141,6 +141,10 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
         search_analyzer = "dutch_dictionary_decompound"
     # We first create a basic configuration without decompound dictionaries
     # Once AWS fixes problems with decompound dictionaries these can be included always
+    language_analyzers = {
+        'dutch': 'custom_dutch',
+        'english': 'english'
+    }
     configuration = {
         "settings": {
             "index": {
@@ -157,7 +161,17 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     "folding": {
                         "tokenizer": "standard",
                         "filter":  ["lowercase", "asciifolding"]
-                    }
+                    },
+                    "custom_dutch": {
+                        "tokenizer":  "standard",
+                        "filter": [
+                            "lowercase",
+                            "dutch_stop",
+                            "dutch_keywords",
+                            "dutch_override",
+                            "dutch_stemmer",
+                        ]
+                    },
                 },
                 "filter": {
                     "dutch_stop": {
@@ -168,6 +182,24 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         "type": "shingle",
                         "min_shingle_size": 2,
                         "max_shingle_size": 3
+                    },
+                    "dutch_keywords": {
+                        "type":       "keyword_marker",
+                        "keywords":   ["palliatieve"]
+                    },
+                    "dutch_stemmer": {
+                        "type":       "stemmer",
+                        "language":   "dutch"
+                    },
+                    "dutch_override": {
+                        "type":       "stemmer_override",
+                        "rules": []
+                    },
+                    "dutch_synonym": {
+                        "type": "synonym_graph",
+                        "synonyms": [
+                            "palliatie, palliatieve"
+                        ]
                     }
                 }
             }
@@ -179,7 +211,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'fields': {
                         'analyzed': {
                             'type': 'text',
-                            'analyzer': analyzer,
+                            'analyzer': language_analyzers.get(analyzer, "standard"),
                             'search_analyzer': search_analyzer,
                         },
                         'folded': {
@@ -193,7 +225,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'fields': {
                         'analyzed': {
                             'type': 'text',
-                            'analyzer': analyzer,
+                            'analyzer': language_analyzers.get(analyzer, "standard"),
                             'search_analyzer': search_analyzer,
                         },
                         'folded': {
@@ -207,7 +239,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'fields': {
                         'analyzed': {
                             'type': 'text',
-                            'analyzer': analyzer,
+                            'analyzer': language_analyzers.get(analyzer, "standard"),
                             'search_analyzer': search_analyzer,
                         },
                         'folded': {
@@ -303,7 +335,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
         configuration["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"] = {
             "type": "custom",
             "tokenizer": "standard",
-            "filter": ["lowercase", "dutch_stop", "dictionary_decompound"]
+            "filter": ["lowercase", "dutch_stop", "dutch_synonym", "dictionary_decompound"]
         }
         configuration["settings"]["analysis"]["filter"]["dictionary_decompound"] = {
             "type": "dictionary_decompounder",
