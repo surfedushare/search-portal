@@ -132,8 +132,9 @@ urlpatterns = [
     url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
 
     # For crawlers
-    path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name="sitemap"),
-    path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps}),
+    path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name="sitemap-index"),
+    path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps},
+         name="django.contrib.sitemaps.views.sitemap"),
     path('robots.txt', robots_txt)
 ]
 
