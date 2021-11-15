@@ -231,6 +231,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '..', '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
+WHITENOISE_IMMUTABLE_FILE_TEST = r'^.+\.[0-9a-f]{8}\..+$'  # targets filenames with 8 hexadecimal hashes
 STATICFILES_DIRS = []
 
 
