@@ -292,9 +292,7 @@ export default {
         })
     },
     getTitleTranslation(item, language) {
-      if (
-        !isEmpty(item.title_translations)
-      ) {
+      if (!isEmpty(item.title_translations)) {
         return item.title_translations[language]
       }
       return item.name
@@ -323,9 +321,7 @@ export default {
         .padStart(8, '0')
     },
     shouldShowPreviews() {
-      return (
-        this.$root.isDemoEnvironment() && !isEmpty(this.material.previews)
-      )
+      return this.$root.isDemoEnvironment() && !isEmpty(this.material.previews)
     }
   },
   computed: {

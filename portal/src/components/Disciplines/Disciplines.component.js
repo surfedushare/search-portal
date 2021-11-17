@@ -6,9 +6,7 @@ export default {
   props: ['disciplines', 'theme'],
   methods: {
     getTitleTranslation(discipline, language) {
-      if (
-        !isEmpty(discipline.title_translations)
-      ) {
+      if (!isEmpty(discipline.title_translations)) {
         return discipline.title_translations[language]
       }
       return discipline.name

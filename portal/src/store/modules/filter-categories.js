@@ -6,41 +6,36 @@ import router from '~/router'
 const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate'
 
 function getFiltersForSearch(items) {
-  return items.reduce(
-    (results, item) => {
-      // Recursively find selected filters for the children
-      if (item.children.length) {
-        results = results.concat(getFiltersForSearch(item.children))
-      }
-      // Add this filter if it is selected
-      if (item.selected && !isNull(item.parent)) {
-        results.push(item)
-      }
-      // Also add this filter if a date has been selected
-      if (
-        item.external_id === PUBLISHER_DATE_ID &&
-        (item.dates.start_date || item.dates.end_date)
-      ) {
-        results.push(item)
-      }
-      return results
-    },
-    []
-  )
+  return items.reduce((results, item) => {
+    // Recursively find selected filters for the children
+    if (item.children.length) {
+      results = results.concat(getFiltersForSearch(item.children))
+    }
+    // Add this filter if it is selected
+    if (item.selected && !isNull(item.parent)) {
+      results.push(item)
+    }
+    // Also add this filter if a date has been selected
+    if (
+      item.external_id === PUBLISHER_DATE_ID &&
+      (item.dates.start_date || item.dates.end_date)
+    ) {
+      results.push(item)
+    }
+    return results
+  }, [])
 }
 
 function getFiltersFromQuery(query) {
   let querySearch = parseSearchMaterialsQuery(query)
   let selected = {}
   if (!isEmpty(querySearch.search)) {
-    forEach(querySearch.search.filters, filter => {  // filters is an object, not an array
-      filter.items.reduce(
-        (obj, item) => {
-          obj[item] = true
-          return obj
-        },
-        selected
-      )
+    forEach(querySearch.search.filters, filter => {
+      // filters is an object, not an array
+      filter.items.reduce((obj, item) => {
+        obj[item] = true
+        return obj
+      }, selected)
     })
   }
   return { selected, dateRange: querySearch.dateRange }
@@ -159,13 +154,10 @@ export default {
       const disciplines = payload.find(
         child => child.external_id.search('discipline.id') !== -1
       )
-      state.disciplines = disciplines.children.reduce(
-        (obj, value) => {
-          obj[value.external_id] = value
-          return obj
-        },
-        {}
-      )
+      state.disciplines = disciplines.children.reduce((obj, value) => {
+        obj[value.external_id] = value
+        return obj
+      }, {})
 
       state.byCategoryId = {}
       function setCategoryIds(items) {
