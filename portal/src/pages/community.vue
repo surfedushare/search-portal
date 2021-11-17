@@ -58,7 +58,7 @@ import Disciplines from '~/components/Disciplines'
 import Collections from '~/components/Collections'
 import Spinner from '~/components/Spinner'
 import Error from '~/components/error'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import { localePath } from '~/i18n/plugin.routing'
 
 export default {
@@ -90,13 +90,13 @@ export default {
       let communityCollections = this.$store.getters.getPublicCollections(
         this.user
       )
-      return this.isLoading || !_.isEmpty(communityCollections)
+      return this.isLoading || !isEmpty(communityCollections)
         ? communityCollections
         : null
     },
     community_info() {
       let communityInfo = this.$store.getters.getCommunityInfo(this.user)
-      return this.isLoading || !_.isEmpty(communityInfo) ? communityInfo : null
+      return this.isLoading || !isEmpty(communityInfo) ? communityInfo : null
     },
     community_details() {
       // Retrieve the details and exit when invalid or loading
@@ -104,7 +104,7 @@ export default {
         this.user,
         this.$i18n.locale
       )
-      if (_.isEmpty(communityDetails)) {
+      if (isEmpty(communityDetails)) {
         return this.isLoading ? communityDetails || {} : null
       }
       // Fill some defaults for the details

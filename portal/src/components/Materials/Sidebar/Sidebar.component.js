@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isNil, isEmpty, isError } from 'lodash'
 import { Duration } from 'luxon'
 import { mapGetters } from 'vuex'
 import EnlargeableImage from '@diracleo/vue-enlargeable-image'
@@ -293,8 +293,7 @@ export default {
     },
     getTitleTranslation(item, language) {
       if (
-        !_.isNil(item.title_translations) &&
-        !_.isEmpty(item.title_translations)
+        !isEmpty(item.title_translations)
       ) {
         return item.title_translations[language]
       }
@@ -325,7 +324,7 @@ export default {
     },
     shouldShowPreviews() {
       return (
-        this.$root.isDemoEnvironment() && !_.isEmpty(this.material.previews)
+        this.$root.isDemoEnvironment() && !isEmpty(this.material.previews)
       )
     }
   },
@@ -350,15 +349,15 @@ export default {
       const { material, disciplines } = this
       let self = this
 
-      if (_.isNil(material) || _.isError(material)) {
+      if (isNil(material) || isError(material)) {
         return material
       }
 
-      if (!_.isNil(disciplines)) {
+      if (!isNil(disciplines)) {
         // TODO: material.disciplines is sometimes an Array with Object and sometimes with external_id
         // We should make the type consistent
-        let disciplineTitles = _.map(material.disciplines, discipline => {
-          let disciplineObj = _.isObject(discipline)
+        let disciplineTitles = material.disciplines.map(discipline => {
+          let disciplineObj = isObject(discipline)
             ? discipline
             : disciplines[discipline]
           return this.getTitleTranslation(disciplineObj, self.$i18n.locale)

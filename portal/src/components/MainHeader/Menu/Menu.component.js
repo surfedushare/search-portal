@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
 import ClickOutside from 'vue-click-outside'
 
@@ -36,8 +36,7 @@ export default {
     },
     getThemeTitleTranslation(theme, language) {
       if (
-        !_.isNil(theme.title_translations) &&
-        !_.isEmpty(theme.title_translations)
+        isEmpty(theme.title_translations)
       ) {
         return theme.title_translations[language]
       }

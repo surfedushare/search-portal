@@ -90,7 +90,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import Search from '~/components/Search'
 import PopularList from '~/components/Communities/PopularList'
 import Materials from '~/components/Materials'
@@ -197,8 +197,7 @@ export default {
     },
     getTitleTranslation(theme, language) {
       if (
-        !_.isNil(theme.title_translations) &&
-        !_.isEmpty(theme.title_translations)
+        !isEmpty(theme.title_translations)
       ) {
         return theme.title_translations[language]
       }
@@ -206,8 +205,7 @@ export default {
     },
     getDescriptionTranslation(theme, language) {
       if (
-        !_.isNil(theme.description_translations) &&
-        !_.isEmpty(theme.description_translations)
+        !isEmpty(theme.description_translations)
       ) {
         return theme.description_translations[language]
       }
