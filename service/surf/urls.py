@@ -65,7 +65,6 @@ admin.site.index_title = 'Surf'
 
 public_api_patterns = [
     url(r'^search/filter-categories/', gzip_page(FilterCategoryView.as_view())),
-    url(r'^search/filter-categories/', gzip_page(FilterCategoryView.as_view())),
     url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
     url(r'^search/', MaterialSearchAPIView.as_view()),
     url(r'^documents/stats', StatsView.as_view()),
