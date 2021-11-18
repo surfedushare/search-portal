@@ -33,7 +33,7 @@ class ExtensionPropertiesSerializer(serializers.Serializer):
 class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer):
 
     id = serializers.CharField(read_only=True)
-    is_parent = serializers.BooleanField(required=False, default=False)
+    is_addition = serializers.BooleanField(required=False, default=False)
     properties = ExtensionPropertiesSerializer(read_only=True)
 
     external_id = serializers.CharField(write_only=True)
@@ -86,10 +86,10 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
 
     def validate(self, attrs):
         external_id = attrs["external_id"]
-        if not attrs.get("is_parent", False):
+        if not attrs.get("is_addition", False):
             if not Document.objects.filter(reference=external_id).exists():
                 raise ValidationError(
-                    f"Could not find Document with external_id '{external_id}'. Did you mean to create a parent?"
+                    f"Could not find Document with external_id '{external_id}'. Did you mean to create an addition?"
                 )
             parental_properties = ["title", "description", "language", "published_at", "copyright"]
             for prop in parental_properties:
@@ -106,23 +106,23 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
 
     def create(self, validated_data):
         external_id = validated_data["external_id"]
-        is_parent = validated_data.pop("is_parent")
+        is_addition = validated_data.pop("is_addition")
         return super().create({
             "id": external_id,
-            "is_parent": is_parent,
+            "is_addition": is_addition,
             "reference": external_id,
             "properties": validated_data
         })
 
     def update(self, instance, validated_data):
-        validated_data.pop("is_parent", None)
+        validated_data.pop("is_addition", None)
         instance.properties.update(validated_data)
         instance.save()
         return super().update(instance, validated_data)
 
     class Meta:
         model = Extension
-        fields = ("id", "created_at", "modified_at", "properties", "is_parent", "external_id", "state",
+        fields = ("id", "created_at", "modified_at", "properties", "is_addition", "external_id", "state",
                   "title", "description", "language", "published_at", "copyright",
                   "authors", "parties", "projects", "themes", "keywords", "parents", "children")
 
@@ -145,14 +145,14 @@ class ExtensionListView(generics.ListCreateAPIView):
 
     **external_id**: The identifier of the document that this extension extends.
     These identifiers are provided by the repository that provided the metadata.
-    When is_parent is true you must provide your own unique identifier.
+    When is_addition is true you must provide your own unique identifier.
 
-    **is_parent**: Sometimes an extension only acts as a parent to bind certain documents together.
-    is_parent should be true if you want to create such an extension.
+    **is_addition**: Sometimes a document does not exist in any source system.
+    is_addition should be true if you want to create an extension that doesn't refer to any document in source systems.
     Since there exists no repository document for this type of extension,
     the external_id must be set by its creator upon a POST.
     The values of the title, description, language, published_at and copyright properties (if given)
-    will be used as data to search through instead of the values from an underlying document.
+    will be used as data to search through.
 
     **authors**: (optional) The list of authors that this extension should overwrite.
     An author consists of a name and email address.
@@ -200,14 +200,13 @@ class ExtensionDetailView(generics.RetrieveUpdateDestroyAPIView):
     When performing a GET the same properties can be read.
 
     **external_id**: The identifier of the document that this extension extends.
-    These identifiers are provided by the repository that provided the metadata or when is_parent is true
+    These identifiers are provided by the repository that provided the metadata or when is_addition is true
     by the creator of the extension.
 
-    **is_parent**: Sometimes an extension only acts as a parent to bind certain documents together.
-    is_parent will be true for such an extension. It is not possible to alter the is_parent property after creation.
+    **is_addition**: Sometimes a document does not exist in any source system and gets added through an extension.
+    is_addition will be true for such an extension. It is not possible to alter the is_addition property after creation.
     The values of the title, description, language, published_at and copyright properties (if given)
-    will be used as data to search through instead of the values from an underlying document.
-    You can update these properties.
+    will be used as data to search through. You can update these properties.
 
     **authors**: (optional) The list of authors that this extension should overwrite.
     An author consists of a name and email address.
