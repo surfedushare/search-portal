@@ -6,6 +6,9 @@ import router from '~/router'
 const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate'
 
 function getFiltersForSearch(items) {
+  if (isNil(items)) {
+    return []
+  }
   return items.reduce((results, item) => {
     // Recursively find selected filters for the children
     if (item.children.length) {

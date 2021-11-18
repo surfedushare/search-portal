@@ -25,7 +25,6 @@ from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
-from django.views.decorators.gzip import gzip_page
 from rest_framework.schemas import get_schema_view
 
 from surf.sitemap import MainSitemap, MaterialsSitemap
@@ -64,7 +63,7 @@ admin.site.index_title = 'Surf'
 
 
 public_api_patterns = [
-    url(r'^search/filter-categories/', gzip_page(FilterCategoryView.as_view())),
+    url(r'^search/filter-categories/', FilterCategoryView.as_view()),
     url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
     url(r'^search/', MaterialSearchAPIView.as_view()),
     url(r'^documents/stats', StatsView.as_view()),
@@ -101,7 +100,7 @@ apipatterns = public_api_patterns + router.urls + [
     url(r'^applaud_material/', MaterialApplaudAPIView.as_view()),
     url(r'^materials/set/', MaterialSetAPIView.as_view()),
     url(r'^materials/search/', MaterialSearchAPIView.as_view()),
-    url(r'^filter-categories/', gzip_page(FilterCategoryView.as_view())),
+    url(r'^filter-categories/', FilterCategoryView.as_view()),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
     url(r'^materials/', MaterialAPIView.as_view()),
