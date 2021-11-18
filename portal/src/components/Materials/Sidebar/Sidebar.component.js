@@ -1,4 +1,4 @@
-import { isNil, isEmpty, isError } from 'lodash'
+import { isNil, isEmpty, isError, isObject } from 'lodash'
 import { Duration } from 'luxon'
 import { mapGetters } from 'vuex'
 import EnlargeableImage from '@diracleo/vue-enlargeable-image'
