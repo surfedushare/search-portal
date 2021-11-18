@@ -200,7 +200,10 @@ class EdurepDataExtraction(object):
             if hasattr(author, "fn"):
                 authors.append({
                     "name": author.fn.value,
-                    "email": None
+                    "email": None,
+                    "external_id": None,
+                    "dai": None,
+                    "orcid": None,
                 })
         return authors
 
