@@ -100,6 +100,7 @@ apipatterns = public_api_patterns + router.urls + [
     url(r'^rate_material/', MaterialRatingAPIView.as_view()),
     url(r'^applaud_material/', MaterialApplaudAPIView.as_view()),
     url(r'^materials/set/', MaterialSetAPIView.as_view()),
+    url(r'^materials/search/', MaterialSearchAPIView.as_view()),
     url(r'^filter-categories/', gzip_page(FilterCategoryView.as_view())),
     url(r'^keywords/', KeywordsAPIView.as_view()),
     url(r'^materials/(?P<external_id>.+)/', MaterialAPIView.as_view()),
