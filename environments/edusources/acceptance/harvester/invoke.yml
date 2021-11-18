@@ -41,3 +41,5 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/sharekit-credentials"
   harvester:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/api-key"
+  matomo:
+    api_key: null
