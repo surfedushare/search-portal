@@ -59,9 +59,10 @@ class TestGeneratePreviews(TestCase):
                 }
             }
         )
-        self.assertEqual(shell_mock_result.call_count, 1)
+        self.assertEqual(shell_mock_result.call_count, 2)
         document_count_expectations = (
             Document.objects.filter(properties__from_youtube=True, properties__analysis_allowed=True).count(),
+            0  # No Vimeo Documents in the test set
         )
         for arguments, expectation in zip(shell_mock_result.call_args_list, document_count_expectations):
             args, kwargs = arguments
