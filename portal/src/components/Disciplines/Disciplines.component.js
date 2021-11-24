@@ -1,15 +1,12 @@
 import { generateSearchMaterialsQuery } from '../_helpers'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 
 export default {
   name: 'disciplines',
   props: ['disciplines', 'theme'],
   methods: {
     getTitleTranslation(discipline, language) {
-      if (
-        !_.isNil(discipline.title_translations) &&
-        !_.isEmpty(discipline.title_translations)
-      ) {
+      if (!isEmpty(discipline.title_translations)) {
         return discipline.title_translations[language]
       }
       return discipline.name

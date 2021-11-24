@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { forEach, isNil, isNull, isEmpty, cloneDeep, groupBy } from 'lodash'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
@@ -6,43 +6,39 @@ import router from '~/router'
 const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate'
 
 function getFiltersForSearch(items) {
-  return _.reduce(
-    items,
-    (results, item) => {
-      // Recursively find selected filters for the children
-      if (item.children.length) {
-        results = results.concat(getFiltersForSearch(item.children))
-      }
-      // Add this filter if it is selected
-      if (item.selected && !_.isNull(item.parent)) {
-        results.push(item)
-      }
-      // Also add this filter if a date has been selected
-      if (
-        item.external_id === PUBLISHER_DATE_ID &&
-        (item.dates.start_date || item.dates.end_date)
-      ) {
-        results.push(item)
-      }
-      return results
-    },
-    []
-  )
+  if (isNil(items)) {
+    return []
+  }
+  return items.reduce((results, item) => {
+    // Recursively find selected filters for the children
+    if (item.children.length) {
+      results = results.concat(getFiltersForSearch(item.children))
+    }
+    // Add this filter if it is selected
+    if (item.selected && !isNull(item.parent)) {
+      results.push(item)
+    }
+    // Also add this filter if a date has been selected
+    if (
+      item.external_id === PUBLISHER_DATE_ID &&
+      (item.dates.start_date || item.dates.end_date)
+    ) {
+      results.push(item)
+    }
+    return results
+  }, [])
 }
 
 function getFiltersFromQuery(query) {
   let querySearch = parseSearchMaterialsQuery(query)
   let selected = {}
-  if (!_.isEmpty(querySearch.search)) {
-    _.forEach(querySearch.search.filters, filter => {
-      _.reduce(
-        filter.items,
-        (obj, item) => {
-          obj[item] = true
-          return obj
-        },
-        selected
-      )
+  if (!isEmpty(querySearch.search)) {
+    forEach(querySearch.search.filters, filter => {
+      // filters is an object, not an array
+      filter.items.reduce((obj, item) => {
+        obj[item] = true
+        return obj
+      }, selected)
     })
   }
   return { selected, dateRange: querySearch.dateRange }
@@ -50,12 +46,12 @@ function getFiltersFromQuery(query) {
 
 function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
   selected = selected || {}
-  dates = _.isEmpty(dates) ? { start_date: null, end_date: null } : dates
+  dates = isEmpty(dates) ? { start_date: null, end_date: null } : dates
   opened = opened || []
   showAlls = showAlls || []
-  let searchId = _.isNil(parent) ? null : parent.searchId
+  let searchId = isNil(parent) ? null : parent.searchId
 
-  _.forEach(items, item => {
+  items.forEach(item => {
     // Set values that might be relevant when loading children
     item.searchId = searchId || item.external_id
     item.selected = selected[item.external_id] || false
@@ -78,7 +74,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
       opened.indexOf(item.id) >= 0 || item.selected || hasSelectedChildren
     item.showAll = showAlls.indexOf(item.id) >= 0
   })
-  return _.some(items, item => {
+  return items.some(item => {
     return item.selected
   })
 }
@@ -107,11 +103,11 @@ export default {
       }
     },
     search_filters(state) {
-      if (_.isNil(state.filter_categories)) {
+      if (isNil(state.filter_categories)) {
         return []
       }
       let selected = getFiltersForSearch(state.filter_categories.results)
-      let selectedGroups = _.groupBy(selected, 'searchId')
+      let selectedGroups = groupBy(selected, 'searchId')
 
       const filterMap = {}
       for (const group in selectedGroups) {
@@ -129,12 +125,12 @@ export default {
   actions: {
     async getFilterCategories({ state, commit }) {
       if (
-        _.isNil(state.filter_categories_loading) &&
-        _.isEmpty(state.filter_categories)
+        isNil(state.filter_categories_loading) &&
+        isEmpty(state.filter_categories)
       ) {
         const promise = axios.get('filter-categories/').then(({ data }) => {
           // Preprocess the filters
-          data.defaults = _.cloneDeep(data)
+          data.defaults = cloneDeep(data)
           let filters = getFiltersFromQuery(router.currentRoute.query)
           loadCategoryFilters(data, filters.selected, filters.dateRange)
 
@@ -145,14 +141,14 @@ export default {
         commit('SET_FILTER_CATEGORIES_LOADING', promise)
       }
 
-      return _.isNil(state.filter_categories_loading)
+      return isNil(state.filter_categories_loading)
         ? state.filter_categories
         : state.filter_categories_loading
     }
   },
   mutations: {
     SET_FILTER_CATEGORIES(state, payload) {
-      if (_.isNil(payload)) {
+      if (isNil(payload)) {
         return
       }
 
@@ -161,19 +157,15 @@ export default {
       const disciplines = payload.find(
         child => child.external_id.search('discipline.id') !== -1
       )
-      state.disciplines = _.reduce(
-        disciplines.children,
-        (obj, value) => {
-          obj[value.external_id] = value
-          return obj
-        },
-        {}
-      )
+      state.disciplines = disciplines.children.reduce((obj, value) => {
+        obj[value.external_id] = value
+        return obj
+      }, {})
 
       state.byCategoryId = {}
       function setCategoryIds(items) {
-        _.forEach(items, item => {
-          const key = _.isNull(item.parent)
+        items.forEach(item => {
+          const key = isNull(item.parent)
             ? item.external_id
             : `${item.parent}-${item.external_id}`
           state.byCategoryId[key] = item

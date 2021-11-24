@@ -2,6 +2,8 @@
 This module contains implementation of REST API views for filters app.
 """
 
+from django.views.decorators.gzip import gzip_page
+from django.utils.decorators import method_decorator
 from rest_framework import generics
 
 from surf.apps.core.schema import SearchSchema
@@ -9,6 +11,7 @@ from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 
 
+@method_decorator(gzip_page, name="dispatch")
 class FilterCategoryView(generics.ListAPIView):
     """
     Filter categories are used for filtering in the search endpoint (see the search endpoint above).

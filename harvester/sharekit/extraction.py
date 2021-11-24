@@ -1,5 +1,6 @@
 import re
 from mimetypes import guess_type
+from hashlib import sha1
 
 from django.conf import settings
 
@@ -29,6 +30,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
             {
                 "mime_type": file["resourceMimeType"],
                 "url": file["url"],
+                "hash": sha1(file["url"].encode("utf-8")).hexdigest(),
                 "title": file["fileName"]
             }
             for file in files if file["resourceMimeType"] and file["url"]
@@ -37,6 +39,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
             {
                 "mime_type": "text/html",
                 "url": link["url"],
+                "hash": sha1(link["url"].encode("utf-8")).hexdigest(),
                 "title": link.get("urlName", None) or f"URL {ix+1}"
             }
             for ix, link in enumerate(links)

@@ -10,6 +10,7 @@ from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count, F, Q, QuerySet
 from django.shortcuts import get_object_or_404, render, Http404
+from django.views.decorators.gzip import gzip_page
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
 from rest_framework.response import Response
@@ -61,6 +62,7 @@ from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 logger = logging.getLogger(__name__)
 
 
+@gzip_page
 def portal_material(request, *args, **kwargs):
     material = _get_material_by_external_id(request, kwargs["external_id"])
     if not material:
@@ -72,6 +74,7 @@ def portal_material(request, *args, **kwargs):
     })
 
 
+@gzip_page
 def portal_single_page_application(request, *args):
     site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
     site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
@@ -82,6 +85,7 @@ def portal_single_page_application(request, *args):
     })
 
 
+@gzip_page
 def portal_page_not_found(request, exception, template_name=None):
     site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
     site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
