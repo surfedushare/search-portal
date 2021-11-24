@@ -27,7 +27,7 @@ class QueryRanking(models.Model):
             }
             for key, value in self.ranking.items()
         ]
-        return ratings if not as_dict else {rating["_id"]:rating["rating"] for rating in ratings}
+        return ratings if not as_dict else {rating["_id"]: rating["rating"] for rating in ratings}
 
 
 class ListFromUserSerializer(serializers.ListSerializer):

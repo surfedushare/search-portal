@@ -67,8 +67,8 @@ class TestSyncIndices(TestCase):
                 self.pushed_ats[dataset_version.id] = pushed_at
         sleep(3)
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
-    @patch("core.models.search.streaming_bulk")
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.streaming_bulk")
     def test_sync_indices(self, streaming_bulk_mock, get_es_client_mock):
         sync_indices()
         # Check if data was send to Elastic
@@ -88,8 +88,8 @@ class TestSyncIndices(TestCase):
             self.assertEqual(index.pushed_at, self.pushed_ats[index.dataset_version_id],
                              "Only the latest DatasetVersions of the newest Dataset should get pushed")
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
-    @patch("core.models.search.streaming_bulk")
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.streaming_bulk")
     def test_sync_indices_new(self, streaming_bulk_mock, get_es_client_mock):
         ElasticIndex.objects.update(pushed_at=None)  # this makes all indices look like they're just created
         sync_indices()
