@@ -1,1 +1,2 @@
-from core.models.search.index import ElasticIndex, ElasticIndexSerializer
+from .index import ElasticIndex, ElasticIndexSerializer
+from .query import Query, QueryRanking, QuerySerializer
