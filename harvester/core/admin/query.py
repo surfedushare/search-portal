@@ -5,7 +5,8 @@ from core.models.search import Query
 
 class QueryRankingAdminInline(admin.TabularInline):
     model = Query.users.through
-    list_display = ("subquery", "is_approved", "created_at", "modified_at")
+    list_display = ("subquery", "is_approved", "version", "created_at", "modified_at")
+    readonly_fields = ("version", "created_at", "modified_at")
     extra = 0
 
 

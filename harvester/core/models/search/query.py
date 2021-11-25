@@ -12,6 +12,7 @@ class QueryRanking(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
 
     subquery = models.CharField(max_length=255, db_index=True)
+    version = models.CharField(max_length=50, default=settings.VERSION, editable=False)
     ranking = models.JSONField(default=dict)
     is_approved = models.BooleanField(null=True)
 
@@ -103,6 +104,9 @@ class Query(models.Model):
             },
             "ratings": ratings
         }
+
+    def __str__(self):
+        return self.query
 
     class Meta:
         verbose_name_plural = "queries"
