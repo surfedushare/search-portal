@@ -48,9 +48,9 @@ class UserQueryRankingSerializer(serializers.ModelSerializer):
 
 class QueryManager(models.Manager):
 
-    def get_query_rankings(self, freeze, user):
+    def get_query_rankings(self, user):
         rankings = defaultdict(dict)
-        for ranking in QueryRanking.objects.filter(freeze=freeze, user=user):
+        for ranking in QueryRanking.objects.filter(user=user):
             rankings[ranking.query].update(ranking.get_elastic_ratings(as_dict=True))
         return rankings
 
@@ -92,9 +92,9 @@ class Query(models.Model):
             }
         }
 
-    def get_elastic_ranking_request(self, freeze, user, fields):
+    def get_elastic_ranking_request(self, user, fields):
         ratings = []
-        for ranking in self.queryranking_set.filter(freeze=freeze, user=user):
+        for ranking in self.queryranking_set.filter(user=user):
             ratings += ranking.get_elastic_ratings()
         return {
             "id": slugify(self.query),
