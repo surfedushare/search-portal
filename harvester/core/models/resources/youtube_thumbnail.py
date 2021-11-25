@@ -4,6 +4,7 @@ from io import BytesIO
 import requests
 from requests.status_codes import codes
 from urllib.parse import urlparse, urljoin
+from urlobject import URLObject
 
 from django.core.files import File
 from django.db import models
@@ -29,9 +30,13 @@ class YoutubeThumbnailResource(ShellResource):
 
     @staticmethod
     def get_preview_filename(thumbnail_url):
-        youtube_url = urlparse(thumbnail_url)
-        youtube_path = youtube_url.path
-        remainder, filename = os.path.split(youtube_path)
+        # Normalize source urls
+        if "vimeocdn" in thumbnail_url:
+            vimeo_url = URLObject(thumbnail_url)
+            thumbnail_url = vimeo_url.query_dict["src0"]
+        url = urlparse(thumbnail_url)
+        path = url.path
+        remainder, filename = os.path.split(path)
         name, ext = os.path.splitext(filename)
         remainder, youtube_id = os.path.split(remainder)
         return f"{youtube_id}{ext}"
