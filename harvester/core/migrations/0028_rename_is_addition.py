@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0026_alter_objectiveproperty_property'),
+        ('core', '0027_query_annotations'),
     ]
 
     operations = [
