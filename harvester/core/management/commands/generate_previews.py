@@ -23,10 +23,15 @@ class Command(PipelineCommand):
 
         youtube_documents = Document.objects.filter(
             dataset_version=dataset_version,
-            properties__from_youtube=True,
-            properties__analysis_allowed=True
+            properties__analysis_allowed=True,
+            properties__from_youtube=True
         )
-        youtube_processor = ShellPipelineProcessor({
+        vimeo_documents = Document.objects.filter(
+            dataset_version=dataset_version,
+            properties__analysis_allowed=True,
+            properties__url__startswith="https://vimeo.com"
+        )
+        youtube_dl_processor = ShellPipelineProcessor({
             "pipeline_app_label": "core",
             "pipeline_phase": "youtube_preview",
             "pipeline_depends_on": "metadata",
@@ -47,7 +52,8 @@ class Command(PipelineCommand):
                 }
             }
         })
-        results.append(youtube_processor(youtube_documents))
+        results.append(youtube_dl_processor(youtube_documents))
+        results.append(youtube_dl_processor(vimeo_documents))
 
         pdf_documents = Document.objects.filter(
             dataset_version=dataset_version,
