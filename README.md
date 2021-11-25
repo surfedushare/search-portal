@@ -37,6 +37,8 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+When using macOS make sure you have `libmagic` installed. It can be installed using `brew install libmagic`.
+
 Then copy the ``.env.example`` file to ``.env`` and update the variable values to fit your system.
 For a start the default values will do.
 
