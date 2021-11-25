@@ -12,7 +12,7 @@ django:
     keep_versions: 3
   repositories:
     edurep: "https://wszoeken.edurep.kennisnet.nl"
-    sharekit: "https://api.acc.surfsharekit.nl"
+    sharekit: "https://api.surfsharekit.nl"
 
 postgres:
   database: "harvester"
@@ -37,3 +37,5 @@ secrets:
     admin_password: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/django"
   sharekit:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/sharekit-credentials"
+  harvester:
+    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/api-key"

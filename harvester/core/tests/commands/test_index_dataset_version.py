@@ -55,8 +55,8 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
     fixtures = ["datasets-history"]
     elastic_client = get_elastic_client_mock()
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
-    @patch("core.models.search.streaming_bulk")
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     def test_index(self, info_logger, streaming_bulk, get_es_client):
 
@@ -128,8 +128,8 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
     fixtures = ["datasets-history", "index-history"]
     elastic_client = get_elastic_client_mock(has_history=True)
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
-    @patch("core.models.search.streaming_bulk")
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     def test_index(self, info_logger, streaming_bulk, get_es_client):
 
@@ -191,8 +191,8 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
-    @patch("core.models.search.streaming_bulk")
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.streaming_bulk")
     @override_settings(VERSION="0.0.2")
     def test_index_specific_version(self, streaming_bulk, get_es_client):
         # Setup a new version and modify the old version to a single document version
@@ -249,8 +249,8 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
-    @patch("core.models.search.streaming_bulk")
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     def test_index_no_promote(self, info_logger, streaming_bulk, get_es_client):
 

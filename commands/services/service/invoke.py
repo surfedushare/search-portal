@@ -26,8 +26,9 @@ def import_snapshot(ctx, source_profile, snapshot_name=None):
 
     print("creating superuser")
     admin_password = ctx.config.secrets.django.admin_password
+    harvester_key = ctx.config.secrets.harvester.api_key
     insert_user = insert_django_user_statement(
-        "supersurf", admin_password, is_search_service=True
+        "supersurf", admin_password, harvester_key, is_search_service=True
     )
     ctx.run(
         f'psql -h localhost -U postgres -d {database} -W -c "{insert_user}"',
@@ -74,3 +75,16 @@ def sync_category_filters(ctx, mode):
     Syncs the list of category filters with Elastic Search
     """
     run_task(ctx, "service", mode, ["python", "manage.py", "sync_category_filters"])
+
+
+@task(name="make_translations")
+def make_translations(ctx):
+    """
+    Scans the code for translatable messages and aggregates them in a .po file
+    """
+    with ctx.cd("service"):
+        ctx.run(
+            "python manage.py makemessages -l en "
+            "--settings=surf.settings.service "
+            "--ignore 'surf/vendor/*' --ignore 'surf/apps/*'"
+        )

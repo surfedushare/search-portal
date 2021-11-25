@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
 
     'ckeditor',
     'mptt',
@@ -212,7 +213,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nl'
 
 TIME_ZONE = 'UTC'
 
@@ -230,6 +231,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '..', '..', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_ALLOW_ALL_ORIGINS = True
+WHITENOISE_IMMUTABLE_FILE_TEST = r'^.+\.[0-9a-f]{8}\..+$'  # targets filenames with 8 hexadecimal hashes
 STATICFILES_DIRS = []
 
 
@@ -446,3 +448,5 @@ if DEBUG:
 
 EDUTERM_API_KEY = environment.secrets.eduterm.api_key
 DEEPL_API_KEY = environment.secrets.deepl.api_key
+HARVESTER_API = environment.django.harvester_api
+HARVESTER_API_KEY = environment.secrets.harvester.api_key

@@ -47,8 +47,9 @@ def setup_postgres_localhost(ctx):
     )
     # Create generic superuser named supersurf
     admin_password = ctx.config.secrets.django.admin_password
+    harvester_key = ctx.config.secrets.harvester.api_key
     insert_user = insert_django_user_statement(
-        "supersurf", admin_password, is_search_service=ctx.config.service.name == "service"
+        "supersurf", admin_password, harvester_key, is_search_service=ctx.config.service.name == "service"
     )
     ctx.run(
         f'psql -h localhost -U {postgres_user} -d {ctx.config.postgres.database} -W -c "{insert_user}"',

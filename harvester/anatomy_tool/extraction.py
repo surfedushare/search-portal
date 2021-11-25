@@ -2,6 +2,7 @@ import re
 import vobject
 from html import unescape
 from mimetypes import guess_type
+from hashlib import sha1
 
 from django.conf import settings
 from django.utils.text import slugify
@@ -81,6 +82,7 @@ class AnatomyToolExtraction(object):
             {
                 "mime_type": mime_type,
                 "url": url,
+                "hash": sha1(url.encode("utf-8")).hexdigest(),
                 "title": title
             }
             for mime_type, url, title in zip(

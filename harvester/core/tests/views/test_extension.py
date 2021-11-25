@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
+from core.models import Document
+
 
 class TestExtensionAPI(TestCase):
 
@@ -172,6 +174,46 @@ class TestExtensionAPI(TestCase):
         self.assertFalse(response_data["is_parent"])
         self.assertEqual(response_data["properties"].pop("children"), children)
         self.assert_properties(response_data["properties"], is_parent=False, external_id=external_id)
+
+    def test_state_parent(self):
+        external_id = "custom-extension"
+        body = {
+            "external_id": external_id,
+            "is_parent": True,
+            "state": Document.States.INACTIVE,
+        }
+        response = self.client.put(f"/api/v1/extension/{external_id}/", body, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json()
+        self.assertIsInstance(response_data, dict)
+        self.assertTrue(response_data["is_parent"])
+        self.assertEqual(response_data["properties"]["state"], Document.States.INACTIVE.value)
+        body["state"] = Document.States.ACTIVE
+        response = self.client.put(f"/api/v1/extension/{external_id}/", body, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json()
+        self.assertIsInstance(response_data, dict)
+        self.assertEqual(response_data["properties"]["state"], Document.States.ACTIVE.value)
+
+    def test_deactivate_no_parent(self):
+        external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
+        body = {
+            "external_id": external_id,
+            "is_parent": False,
+            "state": Document.States.INACTIVE,
+        }
+        response = self.client.put(f"/api/v1/extension/{external_id}/", body, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json()
+        self.assertIsInstance(response_data, dict)
+        self.assertFalse(response_data["is_parent"])
+        self.assertEqual(response_data["properties"]["state"], Document.States.INACTIVE.value)
+        body["state"] = Document.States.ACTIVE
+        response = self.client.put(f"/api/v1/extension/{external_id}/", body, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json()
+        self.assertIsInstance(response_data, dict)
+        self.assertEqual(response_data["properties"]["state"], Document.States.ACTIVE.value)
 
     def test_invalid_update_parent(self):
         """

@@ -38,3 +38,5 @@ secrets:
     admin_password: "qwerty"
   sharekit:
     api_key: null
+  harvester:
+    api_key: "123abc"

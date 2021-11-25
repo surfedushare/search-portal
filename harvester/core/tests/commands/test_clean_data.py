@@ -7,68 +7,7 @@ from django.utils.timezone import make_aware
 
 from core.models import Document, HttpTikaResource, DatasetVersion, Collection, Dataset, ElasticIndex
 from core.tests.mocks import get_elastic_client_mock
-from core.tests.factories import (DatasetFactory, DatasetVersionFactory, CollectionFactory, DocumentFactory,
-                                  ElasticIndexFactory, HttpTikaResourceFactory)
-
-
-def serialize_resource(resource=None):
-    if resource is None:
-        return {
-            "success": False,
-            "resource": None,
-            "id": None
-        }
-
-    return {
-        "success": resource.success,
-        "resource": "{}.{}".format(resource._meta.app_label, resource._meta.model_name),
-        "id": resource.id
-    }
-
-
-def create_dataset_version(dataset, version, created_at, copies=3):
-    current_dataset_version = None
-    for ix in range(0, copies):
-        is_current = ix == copies - 1
-        dataset_version = DatasetVersionFactory.create(
-            dataset=dataset,
-            version=version,
-            is_current=is_current,
-        )
-        dataset_version.created_at = created_at  # only possible to overwrite after creation
-        dataset_version.save()
-        if is_current:
-            current_dataset_version = dataset_version
-        collection = CollectionFactory.create(
-            name=dataset.name,
-            dataset_version=dataset_version,
-            created_at=created_at,
-            modified_at=created_at
-        )
-        for language in ["nl", "en"]:
-            ElasticIndexFactory.create(
-                dataset_version=dataset_version,
-                name=f"{dataset.name}-{dataset_version.version}",
-                language=language,
-                configuration={}
-            )
-        for ixx in range(0, 5):
-            tika_resource = HttpTikaResourceFactory.create(
-                created_at=created_at,
-                modified_at=created_at,
-                purge_at=created_at
-            )
-            pipeline = {
-                "tika": serialize_resource(tika_resource)
-            }
-            DocumentFactory.create(
-                dataset_version=dataset_version,
-                collection=collection,
-                created_at=created_at,
-                modified_at=created_at,
-                pipeline=pipeline
-            )
-    return current_dataset_version
+from core.tests.factories import DatasetFactory, create_dataset_version
 
 
 class TestCleanData(TestCase):
@@ -88,7 +27,7 @@ class TestCleanData(TestCase):
             created_time -= timedelta(days=version_number)
             create_dataset_version(self.inactive_dataset, f"0.0.{42 - version_number}", created_time)
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     def test_clean_data(self, get_es_client):
         get_es_client.reset_mock()
         call_command("clean_data")
@@ -126,7 +65,7 @@ class TestCleanData(TestCase):
         self.assertEqual(HttpTikaResource.objects.filter(id__in=new_tika_ids).count(), len(new_tika_ids),
                          "New HttpTikaResource without Document should remain, because they are new")
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     def test_clean_data_missing_resources(self, get_es_client):
         # We'll remove all resources. This should not interfere with deletion of other data
         HttpTikaResource.objects.all().delete()

@@ -14,6 +14,23 @@ class TestDocument(TestCase):
         self.document = Document.objects.get(id=222318)
         self.extended_document = Document.objects.get(id=222317)
 
+    def create_extended_document(self):
+        extension_id = "custom-extension"
+        extension = Extension.objects.get(id=extension_id)
+        document = Document.objects.create(
+            collection=Collection.objects.last(),
+            extension=extension,
+            reference=extension_id,
+            properties={
+                "state": "active",
+                "external_id": extension_id,
+                "language": {"metadata": "en"},
+                "title": "will get overridden",
+                "description": "test description"
+            }
+        )
+        return document, extension
+
     def test_to_search(self):
         search_document_generator = self.document.to_search()
         self.assertIsInstance(search_document_generator, Generator)
@@ -46,19 +63,7 @@ class TestDocument(TestCase):
         self.assertEqual(search_document["_op_type"], "delete")
 
     def test_to_search_preexisting_extension(self):
-        extension_id = "custom-extension"
-        document = Document.objects.create(
-            collection=Collection.objects.last(),
-            extension=Extension.objects.get(id=extension_id),
-            reference=extension_id,
-            properties={
-                "state": "active",
-                "external_id": extension_id,
-                "language": {"metadata": "en"},
-                "title": "will get overridden",
-                "description": "test description"
-            }
-        )
+        document, _ = self.create_extended_document()
         search_document_generator = document.to_search()
         self.assertIsInstance(search_document_generator, Generator)
         search_document = list(search_document_generator)[0]
@@ -66,3 +71,13 @@ class TestDocument(TestCase):
                          "Expected title to be taken from Extension")
         self.assertEqual(search_document["description"], "test description",
                          "Expected description to be taken from Document")
+
+    def test_to_search_inactive_extension(self):
+        document, extension = self.create_extended_document()
+        extension.properties["state"] = Document.States.INACTIVE
+        extension.save()
+        search_document_generator = document.to_search()
+        self.assertIsInstance(search_document_generator, Generator)
+        search_document = list(search_document_generator)[0]
+        self.assertEqual(search_document["_id"], "custom-extension")
+        self.assertEqual(search_document["_op_type"], "delete")

@@ -17,13 +17,17 @@ import os
 
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.sitemaps import views as sitemap_views
 from django.conf.urls import url, include
 from django.urls import path
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
+from surf.sitemap import MainSitemap, MaterialsSitemap
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
     portal_material,
@@ -45,7 +49,7 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
-from surf.apps.core.views import health_check
+from surf.apps.core.views import health_check, robots_txt
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsViewSet, StatsView
@@ -105,6 +109,11 @@ apipatterns = public_api_patterns + router.urls + [
     url(r'^feedback/', FeedbackAPIView.as_view())
 ]
 
+sitemaps = {
+    "main": MainSitemap,
+    "materials": MaterialsSitemap
+}
+
 urlpatterns = [
     # System
     url(r'^health/?$', health_check, name="health-check"),
@@ -120,17 +129,25 @@ urlpatterns = [
 
     # API and other data
     url(r'^api/v1/', include(apipatterns)),
-    url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings),
+    url(r'^locales/(?P<locale>en|nl)/?$', get_localisation_strings)
 ]
 
 if settings.PROJECT == "edusources":
     urlpatterns += [
-        # Frontend
-        url(r'^materialen/(?P<external_id>.+)/', portal_material),
-        url(r'^en/materials/(?P<external_id>.+)/', portal_material),
+        # For crawlers
+        path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name="sitemap-index"),
+        path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps},
+             name="django.contrib.sitemaps.views.sitemap"),
+        path('robots.txt', robots_txt)
+    ]
+    # Translated frontend patterns
+    urlpatterns += i18n_patterns(
+        url(_(r'^materialen/zoeken/?'), portal_single_page_application, name="portal-search"),
+        url(_(r'^materialen/(?P<external_id>.+)/'), portal_material),
         url(r'^$', portal_single_page_application, name="portal-spa"),
         url(r'^.*/$', portal_single_page_application),
-    ]
+        prefix_default_language=False
+    )
 else:
     urlpatterns += [
         url(r'^$', health_check),
@@ -147,3 +164,6 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+
+handler404 = 'surf.apps.materials.views.portal_page_not_found'

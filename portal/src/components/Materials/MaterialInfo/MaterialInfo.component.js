@@ -1,5 +1,5 @@
 import { mapGetters } from 'vuex'
-import _ from 'lodash'
+import { isNil } from 'lodash'
 import StarRating from '~/components/StarRating'
 import PopularList from '~/components/Communities/PopularList'
 import numeral from 'numeral'
@@ -172,7 +172,7 @@ export default {
      */
     material: function() {
       const { material } = this
-      if (!_.isNil(material)) {
+      if (!isNil(material)) {
         this.rating_given = this.isMaterialRated(material.external_id)
       }
     }
