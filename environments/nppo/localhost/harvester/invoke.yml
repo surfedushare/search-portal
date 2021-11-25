@@ -15,6 +15,8 @@ django:
   repositories:
     edurep: "https://staging.edurep.kennisnet.nl"
     sharekit: "https://api.acc.surfsharekit.nl"
+  sentry:
+    dsn: null
 
 postgres:
   database: "harvester"

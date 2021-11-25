@@ -10,6 +10,8 @@ django:
   matomo_id: 63
   administrative_emails: false
   harvester_api: "http://harvester.pol/api/v1/"
+  sentry:
+    dsn: "https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956"
 
 postgres:
   database: "edushare"

@@ -292,7 +292,7 @@ LOGGING = {
     },
 }
 
-if not DEBUG and PROJECT == "edusources":
+if not DEBUG:
 
     def strip_sensitive_data(event, hint):
         user_agent = event.get('request', {}).get('headers', {}).get('User-Agent', None)
@@ -304,7 +304,7 @@ if not DEBUG and PROJECT == "edusources":
 
     sentry_sdk.init(
         before_send=strip_sensitive_data,
-        dsn="https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021",
+        dsn=environment.django.sentry.dsn,
         environment=environment.env,
         integrations=[DjangoIntegration(), CeleryIntegration()],
         send_default_pii=False  # GDPR requirement
