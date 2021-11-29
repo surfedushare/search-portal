@@ -13,6 +13,7 @@ import Material from '~/pages/material'
 import Collection from '~/pages/collection'
 import Community from '~/pages/community'
 import InfoPage from '~/pages/info'
+import RankingTool from '~/pages/rankingtool'
 import { isEqual } from 'lodash'
 import axios from '~/axios'
 import store from '~/store'
@@ -266,6 +267,10 @@ export default new Router({
       path: '/en/',
       component: Home,
       name: 'index___en'
+    },
+    {
+      path: '/rankingtool',
+      component: RankingTool
     },
     {
       path: '/',
