@@ -103,8 +103,11 @@ class SharekitMetadataExtraction(ExtractProcessor):
         authors = node["attributes"].get("authors", []) or []
         return [
             {
-               "name": author["person"]["name"],
-               "email": author["person"]["email"]
+                "name": author["person"]["name"],
+                "email": author["person"]["email"],
+                "external_id": author["person"]["id"],
+                "dai": author["person"]["dai"],
+                "orcid": author["person"]["orcid"],
             }
             for author in authors
         ]

@@ -9,6 +9,8 @@ django:
   matomo_id: null
   administrative_emails: true
   harvester_api: null
+  sentry:
+    dsn: null
 
 postgres:
   database: "nppo"

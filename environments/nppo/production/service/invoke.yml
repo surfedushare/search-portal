@@ -10,6 +10,8 @@ django:
   matomo_id: null
   administrative_emails: false
   harvester_api: null
+  sentry:
+    dsn: "https://84bb029bea9643399833826dfa1512d4@o356528.ingest.sentry.io/6080811"
 
 postgres:
   database: "nppo"

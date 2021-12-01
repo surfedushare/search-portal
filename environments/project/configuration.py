@@ -267,6 +267,15 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         },
                         'email': {
                             'type': 'keyword'
+                        },
+                        'external_id': {
+                            'type': 'keyword'
+                        },
+                        'dai': {
+                            'type': 'keyword'
+                        },
+                        'orcid': {
+                            'type': 'keyword'
                         }
                     }
                 },
