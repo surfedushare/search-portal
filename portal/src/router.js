@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueMeta from 'vue-meta'
 import injector from 'vue-inject'
 
 import Home from '~/pages/index'
@@ -25,6 +26,7 @@ import { localePath } from '~/i18n/plugin.routing'
 const $log = injector.get('$log')
 
 Vue.use(Router)
+Vue.use(VueMeta)
 
 const scrollBehavior = function(to, from, savedPosition) {
   if (savedPosition) {
