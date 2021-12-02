@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('contenttypes', '0002_remove_content_type_name'),
-        ('core', '0026_alter_objectiveproperty_property'),
+        ('core', '0028_rename_is_addition'),
     ]
 
     operations = [
