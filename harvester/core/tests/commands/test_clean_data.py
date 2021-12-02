@@ -27,7 +27,7 @@ class TestCleanData(TestCase):
             created_time -= timedelta(days=version_number)
             create_dataset_version(self.inactive_dataset, f"0.0.{42 - version_number}", created_time)
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     def test_clean_data(self, get_es_client):
         get_es_client.reset_mock()
         call_command("clean_data")
@@ -65,7 +65,7 @@ class TestCleanData(TestCase):
         self.assertEqual(HttpTikaResource.objects.filter(id__in=new_tika_ids).count(), len(new_tika_ids),
                          "New HttpTikaResource without Document should remain, because they are new")
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     def test_clean_data_missing_resources(self, get_es_client):
         # We'll remove all resources. This should not interfere with deletion of other data
         HttpTikaResource.objects.all().delete()

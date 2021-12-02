@@ -473,6 +473,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             'filter': [
                 'lowercase',
                 'dutch_stop',
+                'dutch_synonym',
                 'dictionary_decompound'
             ]
         })
@@ -485,7 +486,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         })
         for text_field in ["title", "text", "description"]:
             self.assertEqual(dutch_index["mappings"]["properties"][text_field]['fields']['analyzed']["analyzer"],
-                             "dutch")
+                             "custom_dutch")
             self.assertEqual(dutch_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
                              "dutch_dictionary_decompound")
 

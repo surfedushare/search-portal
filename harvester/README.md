@@ -174,5 +174,5 @@ The harvester keeps its harvest results in the database. It may be required to c
 You can force deletion of previous results with:
 
 ```bash
-APPLICATION_MODE=<environment> invoke hrv.cleanup <environment>
+APPLICATION_MODE=<environment> invoke hrv.clean-data <environment>
 ```

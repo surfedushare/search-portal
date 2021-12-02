@@ -30,7 +30,7 @@ class TestPromoteDatasetVersion(TestCase):
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
 
     @override_settings(VERSION="0.0.1")
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     def test_promote_dataset(self, get_es_client):
         get_es_client.reset_mock()
         call_command("promote_dataset_version", "--dataset=test")
@@ -40,7 +40,7 @@ class TestPromoteDatasetVersion(TestCase):
         call_command("promote_dataset_version", "--dataset=test", "--harvester-version=0.0.1")
         self.assert_index_promoted()
 
-    @patch("core.models.search.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     def test_promote_dataset_version(self, get_es_client):
         get_es_client.reset_mock()
         call_command("promote_dataset_version", "--dataset-version=1")

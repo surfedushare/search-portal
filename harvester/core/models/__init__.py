@@ -15,6 +15,6 @@ from .datatypes.extension import Extension
 
 from .harvest import Harvest, HarvestSource
 
-from .search import ElasticIndex, ElasticIndexSerializer
+from .search import ElasticIndex, ElasticIndexSerializer, Query
 
 from .extraction import ExtractionMapping, ExtractionMethod, MethodExtractionField, JSONExtractionField
