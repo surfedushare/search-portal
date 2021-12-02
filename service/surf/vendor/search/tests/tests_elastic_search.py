@@ -182,7 +182,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
 
         # search with publish date filter applied
         search_biologie_upper_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, "2018-12-31"]}
+            {"external_id": "publisher_date", "items": [None, "2018-12-31"]}
         ])
         self.assertTrue(search_biologie_upper_date["records"])
         for record in search_biologie_upper_date["records"]:
@@ -193,7 +193,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 self.assertLessEqual
             )
         search_biologie_lower_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", None]}
+            {"external_id": "publisher_date", "items": ["2018-01-01", None]}
         ])
         self.assertTrue(search_biologie_lower_date["records"])
         for record in search_biologie_lower_date["records"]:
@@ -204,7 +204,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 self.assertGreaterEqual
             )
         search_biologie_between_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", "2018-12-31"]}
+            {"external_id": "publisher_date", "items": ["2018-01-01", "2018-12-31"]}
         ])
         self.assertTrue(search_biologie_between_date["records"])
         for record in search_biologie_between_date["records"]:
@@ -223,7 +223,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
 
         # search with None, None as date filter. This search should give the same result as not filtering at all.
         search_biologie_none_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, None]}
+            {"external_id": "publisher_date", "items": [None, None]}
         ])
         search_biologie = self.instance.search("biologie")
         self.assertEqual(search_biologie_none_date, search_biologie)
@@ -321,14 +321,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.get_value_from_record(record, "publish_datetime")
             for record in search_biologie["records"]
         ]
-        search_biologie_asc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
+        search_biologie_asc = self.instance.search("biologie", ordering="publisher_date")
         self.assertIsNotNone(search_biologie_asc)
         self.assertTrue(search_biologie_asc["records"])
         search_biologie_asc_dates = [
             self.get_value_from_record(record, "publish_datetime")
             for record in search_biologie_asc["records"]
         ]
-        search_biologie_desc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
+        search_biologie_desc = self.instance.search("biologie", ordering="publisher_date")
         self.assertIsNotNone(search_biologie_desc)
         self.assertTrue(search_biologie_asc["records"])
         search_biologie_desc_dates = [

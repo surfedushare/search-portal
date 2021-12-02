@@ -1795,7 +1795,7 @@
         "updated_at": "2021-03-24T09:12:13.212Z",
         "deleted_from_edurep_at": null,
         "title_translations": "c025a9f9-cdf9-4eff-80a2-f6d0fabc1c44",
-        "external_id": "lom.lifecycle.contribute.publisherdate",
+        "external_id": "publisher_date",
         "is_manual": true,
         "is_hidden": false,
         "lft": 1,

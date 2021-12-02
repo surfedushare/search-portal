@@ -31,7 +31,7 @@ export const parseSearchMaterialsQuery = function(query) {
   }
 
   const dateRangeItems =
-    search.filters['lom.lifecycle.contribute.publisherdate'] || []
+    search.filters['publisher_date'] || []
   const dateRange = {
     start_date: dateRangeItems[0],
     end_date: dateRangeItems[1]
