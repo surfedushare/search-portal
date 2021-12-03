@@ -1434,7 +1434,7 @@
         "updated_at": "2021-03-24T09:10:38.556Z",
         "deleted_from_edurep_at": null,
         "title_translations": "977ade4a-e4b5-4d70-a7eb-02b9a4f322ec",
-        "external_id": "lom.general.language",
+        "external_id": "language.keyword",
         "is_manual": true,
         "is_hidden": false,
         "lft": 1,
