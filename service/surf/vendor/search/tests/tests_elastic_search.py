@@ -298,12 +298,12 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             filters=[
                 {"external_id": "lom.technical.format", "items": ["text"]}
             ],
-            drilldown_names=['about.repository', 'lom.technical.format']
+            drilldown_names=['harvest_source', 'lom.technical.format']
         )
 
         drilldowns = search['drilldowns']
         drilldowns_for_format = next((d for d in drilldowns if d['external_id'] == 'lom.technical.format'), None)
-        drilldowns_for_repo = next((d for d in drilldowns if d['external_id'] == 'about.repository'), None)
+        drilldowns_for_repo = next((d for d in drilldowns if d['external_id'] == 'harvest_source'), None)
 
         total_for_format = sum(item['count'] for item in drilldowns_for_format['items'])
         total_for_repo = sum(item['count'] for item in drilldowns_for_repo['items'])
@@ -365,14 +365,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         self.assertFalse(biologie_drilldowns['records'])
         self.assertFalse(biologie_drilldowns['drilldowns'])
 
-        repo_drilldowns = self.instance.drilldowns(['about.repository'])
+        repo_drilldowns = self.instance.drilldowns(['harvest_source'])
         self.assertTrue(repo_drilldowns['drilldowns'])
         self.assertTrue(repo_drilldowns['drilldowns'][0]['items'])
         for item in repo_drilldowns['drilldowns'][0]['items']:
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
-        repo_and_format_drilldowns = self.instance.drilldowns(['about.repository', 'lom.technical.format'])
+        repo_and_format_drilldowns = self.instance.drilldowns(['harvest_source', 'lom.technical.format'])
         self.assertTrue(repo_and_format_drilldowns['drilldowns'])
         for drilldown in repo_and_format_drilldowns['drilldowns']:
             self.assertTrue(drilldown['items'])

@@ -2574,7 +2574,7 @@
         "updated_at": "2019-09-13T08:51:31.804Z",
         "deleted_from_edurep_at": null,
         "title_translations": "bfac1e99-6c92-4b55-b50d-1c9be36c3bc1",
-        "external_id": "about.repository",
+        "external_id": "harvest_source",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,
