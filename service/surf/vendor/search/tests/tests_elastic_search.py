@@ -441,7 +441,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def check_author_search(self, author, expected_record_count):
         search_author = self.instance.search(
             '',
-            filters=[{"external_id": "lom.lifecycle.contribute.author", "items": [author]}]
+            filters=[{"external_id": "authors.name.keyword", "items": [author]}]
         )
         for record in search_author['records']:
             authors = [author["name"] for author in self.get_value_from_record(record, 'authors')]

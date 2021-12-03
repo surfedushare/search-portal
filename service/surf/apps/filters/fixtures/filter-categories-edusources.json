@@ -1358,7 +1358,7 @@
         "updated_at": "2021-01-28T10:57:53.298Z",
         "deleted_from_edurep_at": null,
         "title_translations": "0a854447-df05-41df-b98b-15651f5104fc",
-        "external_id": "lom.lifecycle.contribute.publisher",
+        "external_id": "publishers.keyword",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,
