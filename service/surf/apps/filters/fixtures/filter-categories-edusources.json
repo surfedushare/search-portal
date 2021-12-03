@@ -2213,7 +2213,7 @@
         "updated_at": "2019-09-13T19:59:58.124Z",
         "deleted_from_edurep_at": null,
         "title_translations": "42346e00-032b-4554-abff-6b86fdcd88f1",
-        "external_id": "lom.general.aggregationlevel",
+        "external_id": "aggregation_level",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,
