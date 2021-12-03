@@ -102,7 +102,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def test_basic_search(self):
         search_result = self.instance.search('')
         search_result_filter = self.instance.search(
-            '', filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
+            '', filters=[{"external_id": "technical_type", "items": ["video"]}])
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
         self.assertIsNotNone(search_result_filter)
@@ -136,14 +136,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         # search with single filter applied
         search_biologie_video = self.instance.search(
             "biologie",
-            filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
+            filters=[{"external_id": "technical_type", "items": ["video"]}]
         )
         self.assertTrue(search_biologie_video["records"])
         for record in search_biologie_video["records"]:
             self.assert_value_from_record(record, "technical_type", "video")
         search_biologie_video_and_docs = self.instance.search(
             "biologie",
-            filters=[{"external_id": "lom.technical.format", "items": ["video", "document"]}]
+            filters=[{"external_id": "technical_type", "items": ["video", "document"]}]
         )
         self.assertGreater(len(search_biologie_video_and_docs["records"]), len(search_biologie_video["records"]))
         for record in search_biologie_video_and_docs["records"]:
@@ -153,8 +153,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_biologie_text_and_cc_by = self.instance.search(
             "biologie",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["document"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
+                {"external_id": "technical_type", "items": ["document"]},
+                {"external_id": "copyright.keyword", "items": ["cc-by-40"]}
             ]
         )
         self.assertTrue(search_biologie_text_and_cc_by["records"])
@@ -167,8 +167,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_biologie_and_didactiek_with_filters = self.instance.search(
             "biologie didactiek",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["document"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
+                {"external_id": "technical_type", "items": ["document"]},
+                {"external_id": "copyright.keyword", "items": ["cc-by-40"]}
             ])
 
         self.assertIsNotNone(search_biologie_and_didactiek)
@@ -266,7 +266,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
 
     def test_drilldown_search(self):
-        search_biologie = self.instance.search("biologie", drilldown_names=["lom.technical.format"])
+        search_biologie = self.instance.search("biologie", drilldown_names=["technical_type"])
         self.assertIsNotNone(search_biologie)
         self.assertTrue(search_biologie['drilldowns'])
         self.assertTrue(search_biologie['drilldowns'][0]['items'])
@@ -296,13 +296,13 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search = self.instance.search(
             "biologie",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["text"]}
+                {"external_id": "technical_type", "items": ["text"]}
             ],
-            drilldown_names=['harvest_source', 'lom.technical.format']
+            drilldown_names=['harvest_source', 'technical_type']
         )
 
         drilldowns = search['drilldowns']
-        drilldowns_for_format = next((d for d in drilldowns if d['external_id'] == 'lom.technical.format'), None)
+        drilldowns_for_format = next((d for d in drilldowns if d['external_id'] == 'technical_type'), None)
         drilldowns_for_repo = next((d for d in drilldowns if d['external_id'] == 'harvest_source'), None)
 
         total_for_format = sum(item['count'] for item in drilldowns_for_format['items'])
@@ -372,7 +372,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
-        repo_and_format_drilldowns = self.instance.drilldowns(['harvest_source', 'lom.technical.format'])
+        repo_and_format_drilldowns = self.instance.drilldowns(['harvest_source', 'technical_type'])
         self.assertTrue(repo_and_format_drilldowns['drilldowns'])
         for drilldown in repo_and_format_drilldowns['drilldowns']:
             self.assertTrue(drilldown['items'])

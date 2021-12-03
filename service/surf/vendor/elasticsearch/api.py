@@ -474,7 +474,7 @@ class ElasticSearchApiClient:
     @staticmethod
     def translate_external_id_to_elastic_type(external_id):
         """ The external id's used in edurep need to be parsed to fields in elasticsearch. """
-        if external_id == 'lom.technical.format':
+        if external_id == 'technical_type':
             return 'technical_type'
         elif external_id == 'about.repository':
             return 'harvest_source'

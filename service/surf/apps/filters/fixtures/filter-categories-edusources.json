@@ -1966,7 +1966,7 @@
         "updated_at": "2019-09-13T08:51:31.773Z",
         "deleted_from_edurep_at": null,
         "title_translations": "6e4b037a-9f0c-4c0c-bcf0-346f5abdaee1",
-        "external_id": "lom.technical.format",
+        "external_id": "technical_type",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,

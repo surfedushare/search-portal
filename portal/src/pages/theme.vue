@@ -117,7 +117,7 @@ export default {
       search: {
         filters: [
           {
-            external_id: 'lom.technical.format',
+            external_id: 'technical_type',
             items: []
           }
         ]
