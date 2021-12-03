@@ -234,21 +234,21 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_result_filter_1 = self.instance.search(
             '',
             filters=[{
-                "external_id": "lom.classification.obk.discipline.id",
+                "external_id": "disciplines",
                 "items": ['0861c43d-1874-4788-b522-df8be575677f']
             }]
         )
         search_result_filter_2 = self.instance.search(
             '',
             filters=[{
-                "external_id": "lom.classification.obk.discipline.id",
+                "external_id": "disciplines",
                 "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
         search_result_filter_3 = self.instance.search(
             '',
             filters=[{
-                "external_id": "lom.classification.obk.discipline.id",
+                "external_id": "disciplines",
                 "items": ['0861c43d-1874-4788-b522-df8be575677f', '2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
@@ -278,13 +278,13 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def test_drilldown_search_disciplines(self):
         search_with_theme_drilldown = self.instance.search(
             '',
-            drilldown_names=["lom.classification.obk.discipline.id"]
+            drilldown_names=["disciplines"]
         )
         self.assertIsNotNone(search_with_theme_drilldown)
         self.assertTrue(search_with_theme_drilldown['drilldowns'])
         self.assertEqual(
             [drilldown["external_id"] for drilldown in search_with_theme_drilldown['drilldowns']],
-            ["lom.classification.obk.discipline.id"]
+            ["disciplines"]
         )
         for drilldown in search_with_theme_drilldown['drilldowns']:
             self.assertTrue(drilldown["items"])

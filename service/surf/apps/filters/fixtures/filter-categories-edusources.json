@@ -2118,7 +2118,7 @@
         "updated_at": "2021-01-28T07:11:18.455Z",
         "deleted_from_edurep_at": null,
         "title_translations": "347095a6-389d-424f-a2c4-43f392f54d98",
-        "external_id": "lom.classification.obk.discipline.id",
+        "external_id": "disciplines",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,

@@ -155,7 +155,7 @@ export default {
       state.filter_categories = payload
 
       const disciplines = payload.find(
-        child => child.external_id.search('discipline.id') !== -1
+        child => child.external_id.search('discipline') !== -1
       )
       state.disciplines = disciplines.children.reduce((obj, value) => {
         obj[value.external_id] = value

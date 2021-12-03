@@ -8,11 +8,6 @@ from django.contrib import admin
 from surf.apps.themes import models
 from surf.apps.filters.models import MpttFilterItem
 
-from surf.vendor.search.choices import (
-    CUSTOM_THEME_FIELD_ID,
-    DISCIPLINE_FIELD_ID
-)
-
 
 class ThemeForm(forms.ModelForm):
     """
@@ -26,11 +21,11 @@ class ThemeForm(forms.ModelForm):
             qs = MpttFilterItem.objects
 
             # choose only Theme filter category items
-            t_qs = qs.filter(parent__external_id=CUSTOM_THEME_FIELD_ID)
+            t_qs = qs.filter(parent__external_id="themes")
             self.fields['filter_category_item'].queryset = t_qs.all()
 
             # choose only Discipline filter category items
-            d_qs = qs.filter(parent__external_id=DISCIPLINE_FIELD_ID)
+            d_qs = qs.filter(parent__external_id="disciplines")
             self.fields['disciplines'].queryset = d_qs.all()
         except AttributeError:
             pass
