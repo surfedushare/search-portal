@@ -11,12 +11,20 @@
 </template>
 
 <script>
+import PageMixin from '~/pages/page-mixin'
+
 export default {
   components: {},
+  mixins: [PageMixin],
   data() {
     return {
       titleKey: this.$route.meta.title_translation_key,
       htmlKey: this.$route.meta.html_translation_key
+    }
+  },
+  metaInfo() {
+    return {
+      title: this.$i18n.t(this.$route.meta.title_translation_key)
     }
   }
 }
