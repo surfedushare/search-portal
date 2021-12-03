@@ -2422,7 +2422,7 @@
         "updated_at": "2019-09-13T09:22:07.574Z",
         "deleted_from_edurep_at": null,
         "title_translations": "6d681aee-2481-4d23-9a1f-7a91094bd24f",
-        "external_id": "lom.rights.copyrightandotherrestrictions",
+        "external_id": "copyright.keyword",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,

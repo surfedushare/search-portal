@@ -478,7 +478,7 @@ class ElasticSearchApiClient:
             return 'technical_type'
         elif external_id == 'about.repository':
             return 'harvest_source'
-        elif external_id == 'lom.rights.copyrightandotherrestrictions':
+        elif external_id == 'copyright.keyword':
             return 'copyright.keyword'
         elif external_id == 'lom.educational.context':
             return 'lom_educational_levels'
