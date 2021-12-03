@@ -1529,7 +1529,7 @@
         "updated_at": "2021-03-24T09:10:51.579Z",
         "deleted_from_edurep_at": null,
         "title_translations": "e48553cc-6002-4800-b57c-e7dd93903bf2",
-        "external_id": "custom_theme.id",
+        "external_id": "learning_material_themes",
         "is_manual": true,
         "is_hidden": true,
         "lft": 1,

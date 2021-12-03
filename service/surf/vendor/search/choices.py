@@ -1,5 +1,4 @@
 TECH_FORMAT_FIELD_ID = "lom.technical.format"
-CUSTOM_THEME_FIELD_ID = "custom_theme.id"
 COPYRIGHT_FIELD_ID = "lom.rights.copyrightandotherrestrictions"
 LANGUAGE_FIELD_ID = "lom.general.language"
 EDUCATIONAL_LEVEL_FIELD_ID = "lom.classification.obk.educationallevel.id"

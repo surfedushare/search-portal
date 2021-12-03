@@ -21,7 +21,7 @@ class ThemeForm(forms.ModelForm):
             qs = MpttFilterItem.objects
 
             # choose only Theme filter category items
-            t_qs = qs.filter(parent__external_id="themes")
+            t_qs = qs.filter(parent__external_id="learning_material_themes")
             self.fields['filter_category_item'].queryset = t_qs.all()
 
             # choose only Discipline filter category items
