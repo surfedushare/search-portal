@@ -71,26 +71,25 @@ export default {
       return uniqBy(communities, 'id')
     }
   },
-  metaInfo () {
+  metaInfo() {
     const defaultTitle = this.$root.$meta().title
     return {
-      title: (this.material) ? this.material.title || defaultTitle : defaultTitle
+      title: this.material ? this.material.title || defaultTitle : defaultTitle
     }
   },
   created() {
-    this.pageLoad = new Promise((resolve) => {
+    this.pageLoad = new Promise(resolve => {
       this.updateMaterial(this.$route.params.id).then(resolve)
     })
   },
   beforeRouteUpdate(to, from, next) {
-    this.pageLoad = new Promise((resolve) => {
+    this.pageLoad = new Promise(resolve => {
       this.updateMaterial(to.params.id).then(resolve)
     })
     next()
   },
   methods: {
     async updateMaterial(externalId) {
-
       const materialLoad = this.$store.dispatch('getMaterial', {
         id: externalId,
         params: { count_view: true }

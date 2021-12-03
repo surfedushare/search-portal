@@ -24,10 +24,7 @@
 import MainHeader from '~/components/MainHeader'
 import MainFooter from '~/components/MainFooter'
 import { setLanguage } from '~/axios'
-import injector from 'vue-inject'
 
-const $window = injector.get('$window')
-const $log = injector.get('$log')
 const DEFAULT_TITLE = 'Edusources'
 
 export default {
@@ -42,7 +39,6 @@ export default {
     }
   },
   mounted() {
-    this.$log.pageView(this.$route.path)
     this.$store.dispatch('getThemes')
   },
   methods: {
@@ -55,9 +51,11 @@ export default {
   },
   metaInfo: {
     title: DEFAULT_TITLE,
-    titleTemplate: (titleChunk) => {
-      return titleChunk && titleChunk !== DEFAULT_TITLE ? `${titleChunk} | ${DEFAULT_TITLE}` : DEFAULT_TITLE
+    titleTemplate: titleChunk => {
+      return titleChunk && titleChunk !== DEFAULT_TITLE
+        ? `${titleChunk} | ${DEFAULT_TITLE}`
+        : DEFAULT_TITLE
     }
-  },
+  }
 }
 </script>

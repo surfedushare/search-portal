@@ -96,6 +96,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
 import FilterCategories from '~/components/FilterCategories'
 import Materials from '~/components/Materials'
@@ -113,6 +114,7 @@ export default {
     Materials,
     Spinner
   },
+  mixins: [PageMixin],
   data() {
     const urlInfo = parseSearchMaterialsQuery(this.$route.query)
     return {
