@@ -3,7 +3,7 @@ import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
 
-const PUBLISHER_DATE_IDS = ['lom.lifecycle.contribute.publisherdate', 'publisher_date']
+const PUBLISHER_DATE_ID = 'publisher_date'
 
 function getFiltersForSearch(items) {
   if (isNil(items)) {
@@ -20,7 +20,7 @@ function getFiltersForSearch(items) {
     }
     // Also add this filter if a date has been selected
     if (
-      PUBLISHER_DATE_IDS.indexOf(item.external_id) >= 0 &&
+      item.external_id === PUBLISHER_DATE_ID &&
       (item.dates.start_date || item.dates.end_date)
     ) {
       results.push(item)
