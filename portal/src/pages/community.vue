@@ -22,7 +22,7 @@
               <template slot="header-info">
                 <h2>{{ $t('Collections-2') }}</h2>
                 <button
-                  v-if="!isLoading && community_info.publisher"
+                  v-if="!isReady && community_info.publisher"
                   class="button"
                   @click="goToCommunitySearch()"
                 >
@@ -52,6 +52,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import InfoBlock from '~/components/InfoBlock'
 import Themes from '~/components/Themes'
 import Disciplines from '~/components/Disciplines'
@@ -71,12 +72,18 @@ export default {
     Spinner,
     InfoBlock
   },
+  mixins: [PageMixin],
   props: [],
   data() {
     return {
-      isLoading: true,
       isSearch: false,
       search: false
+    }
+  },
+  metaInfo() {
+    const defaultTitle = this.$root.$meta().title
+    return {
+      title: this.community_details ? this.community_details.title || defaultTitle : defaultTitle
     }
   },
   computed: {
@@ -90,13 +97,13 @@ export default {
       let communityCollections = this.$store.getters.getPublicCollections(
         this.user
       )
-      return this.isLoading || !isEmpty(communityCollections)
+      return this.isReady || !isEmpty(communityCollections)
         ? communityCollections
         : null
     },
     community_info() {
       let communityInfo = this.$store.getters.getCommunityInfo(this.user)
-      return this.isLoading || !isEmpty(communityInfo) ? communityInfo : null
+      return this.isReady || !isEmpty(communityInfo) ? communityInfo : null
     },
     community_details() {
       // Retrieve the details and exit when invalid or loading
@@ -105,7 +112,7 @@ export default {
         this.$i18n.locale
       )
       if (isEmpty(communityDetails)) {
-        return this.isLoading ? communityDetails || {} : null
+        return this.isReady ? communityDetails || {} : null
       }
       // Fill some defaults for the details
       communityDetails.featured_image =
@@ -114,11 +121,9 @@ export default {
       return communityDetails
     }
   },
-  mounted() {
+  created() {
     const { community } = this.$route.params
-    this.$store.dispatch('getCommunity', community).finally(() => {
-      this.isLoading = false
-    })
+    this.pageLoad = this.$store.dispatch('getCommunity', community)
     this.$store.dispatch('getCommunityThemes', community)
     this.$store.dispatch('getCommunityDisciplines', community)
     this.$store.dispatch('getCommunityCollections', community)
