@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 from core.models import Document
 
@@ -103,6 +104,7 @@ class TestExtensionAPI(TestCase):
         """
         It should be possible to add children to a Document through extending it, or giving a Document a parent.
         """
+        datetime_begin_test = now()
         external_id = "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257"
         children = [
             "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
@@ -124,6 +126,9 @@ class TestExtensionAPI(TestCase):
         self.assertEqual(response_data["properties"].pop("children"), children)
         self.assertEqual(response_data["properties"].pop("parents"), parents)
         self.assert_properties(response_data.pop("properties"), is_addition=False, external_id=external_id)
+        document = Document.objects.get(reference=external_id)
+        self. assertGreater(document.modified_at, datetime_begin_test,
+                            "Expected modified_at of document to get updated")
 
     def test_update_addition(self):
         """
@@ -155,6 +160,7 @@ class TestExtensionAPI(TestCase):
         Updating an existing Extension means that all properties will get overridden.
         There is no merging done for properties.
         """
+        datetime_begin_test = now()
         external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
         children = [
             "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257"
@@ -172,6 +178,9 @@ class TestExtensionAPI(TestCase):
         self.assertFalse(response_data["is_addition"])
         self.assertEqual(response_data["properties"].pop("children"), children)
         self.assert_properties(response_data["properties"], is_addition=False, external_id=external_id)
+        document = Document.objects.get(reference=external_id)
+        self. assertGreater(document.modified_at, datetime_begin_test,
+                            "Expected modified_at of document to get updated")
 
     def test_state_addition(self):
         external_id = "custom-extension"
@@ -194,6 +203,7 @@ class TestExtensionAPI(TestCase):
         self.assertEqual(response_data["properties"]["state"], Document.States.ACTIVE.value)
 
     def test_deactivate(self):
+        datetime_begin_test = now()
         external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
         body = {
             "external_id": external_id,
@@ -212,12 +222,14 @@ class TestExtensionAPI(TestCase):
         response_data = response.json()
         self.assertIsInstance(response_data, dict)
         self.assertEqual(response_data["properties"]["state"], Document.States.ACTIVE.value)
+        document = Document.objects.get(reference=external_id)
+        self. assertGreater(document.modified_at, datetime_begin_test,
+                            "Expected modified_at of document to get updated")
 
-    def test_invalid_update_parent(self):
+    def test_invalid_update_addition(self):
         """
-        Once an Extension is created as parent we can't go back. It is however possible to remove the children.
-        This effectively tells Elastic to keep using the Extension as a source for data.
-        It's expected that at a later time new children get added.
+        Once an Extension is created as addition we can't go back.
+        It is however possible to edit other properties like the children.
         """
         external_id = "custom-extension"
         body = {
@@ -242,12 +254,16 @@ class TestExtensionAPI(TestCase):
         self.assertEqual(response_data["properties"]["children"], [])
 
     def test_delete(self):
+        datetime_begin_test = now()
         external_id = "custom-extension"
         response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
         self.assertEqual(response.status_code, 204)
         external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
         response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
         self.assertEqual(response.status_code, 204)
+        document = Document.objects.get(reference=external_id)
+        self. assertGreater(document.modified_at, datetime_begin_test,
+                            "Expected modified_at of document to get updated")
         external_id = "does-not-exist"
         response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
         self.assertEqual(response.status_code, 404)
@@ -273,6 +289,7 @@ class TestExtensionAPI(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_invalid_parents(self):
+        datetime_begin_test = now()
         external_id = "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257"
         children = [
             "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
@@ -288,6 +305,9 @@ class TestExtensionAPI(TestCase):
         }
         response = self.client.post("/api/v1/extension/", body, content_type="application/json")
         self.assertEqual(response.status_code, 400)
+        document = Document.objects.get(reference=external_id)
+        self.assertLess(document.modified_at, datetime_begin_test,
+                        "Expected modified_at of document to remain the same")
 
         external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
         body = {
@@ -298,8 +318,12 @@ class TestExtensionAPI(TestCase):
         }
         response = self.client.put(f"/api/v1/extension/{external_id}/", body, content_type="application/json")
         self.assertEqual(response.status_code, 400)
+        document = Document.objects.get(reference=external_id)
+        self.assertLess(document.modified_at, datetime_begin_test,
+                        "Expected modified_at of document to remain the same")
 
     def test_invalid_children(self):
+        datetime_begin_test = now()
         external_id = "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257"
         children = [
             "does-not-exist"
@@ -315,6 +339,9 @@ class TestExtensionAPI(TestCase):
         }
         response = self.client.post("/api/v1/extension/", body, content_type="application/json")
         self.assertEqual(response.status_code, 400)
+        document = Document.objects.get(reference=external_id)
+        self.assertLess(document.modified_at, datetime_begin_test,
+                        "Expected modified_at of document to remain the same")
 
         external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
         body = {
@@ -325,8 +352,11 @@ class TestExtensionAPI(TestCase):
         }
         response = self.client.put(f"/api/v1/extension/{external_id}/", body, content_type="application/json")
         self.assertEqual(response.status_code, 400)
+        document = Document.objects.get(reference=external_id)
+        self.assertLess(document.modified_at, datetime_begin_test,
+                        "Expected modified_at of document to remain the same")
 
-    def test_invalid_properties_non_parent(self):
+    def test_invalid_properties_non_addition(self):  # TODO: this test should work differently
         children = [
             "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
             "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257"
@@ -356,7 +386,7 @@ class TestExtensionAPI(TestCase):
         response = self.client.put(f"/api/v1/extension/{external_id}/", body, content_type="application/json")
         self.assertEqual(response.status_code, 400)
 
-    def test_duplicate_parent(self):
+    def test_duplicate(self):
         external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
         body = {
             "external_id": external_id,
