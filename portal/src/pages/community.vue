@@ -80,12 +80,6 @@ export default {
       search: false
     }
   },
-  metaInfo() {
-    const defaultTitle = this.$root.$meta().title
-    return {
-      title: this.community_details ? this.community_details.title || defaultTitle : defaultTitle
-    }
-  },
   computed: {
     ...mapGetters([
       'community_disciplines',
@@ -127,6 +121,12 @@ export default {
     this.$store.dispatch('getCommunityThemes', community)
     this.$store.dispatch('getCommunityDisciplines', community)
     this.$store.dispatch('getCommunityCollections', community)
+  },
+  metaInfo() {
+    const defaultTitle = this.$root.$meta().title
+    return {
+      title: this.community_details ? this.community_details.title || defaultTitle : defaultTitle
+    }
   },
   methods: {
     goToCommunitySearch() {
