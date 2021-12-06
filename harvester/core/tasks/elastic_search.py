@@ -26,7 +26,8 @@ def sync_indices():
                     docs = [doc.to_search() for doc in doc_batch if doc.get_language() == index.language]
                     index.push(chain(*docs), recreate=False)
                 extensions_queryset = Extension.objects.filter(
-                    modified_at__gte=index.pushed_at
+                    modified_at__gte=index.pushed_at,
+                    is_addition=True
                 )
                 for ext_batch in ibatch(extensions_queryset, batch_size=32):
                     exts = [ext.to_search() for ext in ext_batch if ext.get_language() == index.language]
