@@ -127,8 +127,8 @@ class TestExtensionAPI(TestCase):
         self.assertEqual(response_data["properties"].pop("parents"), parents)
         self.assert_properties(response_data.pop("properties"), is_addition=False, external_id=external_id)
         document = Document.objects.get(reference=external_id)
-        self. assertGreater(document.modified_at, datetime_begin_test,
-                            "Expected modified_at of document to get updated")
+        self.assertGreater(document.modified_at, datetime_begin_test,
+                           "Expected modified_at of document to get updated")
 
     def test_update_addition(self):
         """
@@ -179,8 +179,8 @@ class TestExtensionAPI(TestCase):
         self.assertEqual(response_data["properties"].pop("children"), children)
         self.assert_properties(response_data["properties"], is_addition=False, external_id=external_id)
         document = Document.objects.get(reference=external_id)
-        self. assertGreater(document.modified_at, datetime_begin_test,
-                            "Expected modified_at of document to get updated")
+        self.assertGreater(document.modified_at, datetime_begin_test,
+                           "Expected modified_at of document to get updated")
 
     def test_state_addition(self):
         external_id = "custom-extension"
@@ -223,8 +223,8 @@ class TestExtensionAPI(TestCase):
         self.assertIsInstance(response_data, dict)
         self.assertEqual(response_data["properties"]["state"], Document.States.ACTIVE.value)
         document = Document.objects.get(reference=external_id)
-        self. assertGreater(document.modified_at, datetime_begin_test,
-                            "Expected modified_at of document to get updated")
+        self.assertGreater(document.modified_at, datetime_begin_test,
+                           "Expected modified_at of document to get updated")
 
     def test_invalid_update_addition(self):
         """
@@ -262,8 +262,8 @@ class TestExtensionAPI(TestCase):
         response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
         self.assertEqual(response.status_code, 204)
         document = Document.objects.get(reference=external_id)
-        self. assertGreater(document.modified_at, datetime_begin_test,
-                            "Expected modified_at of document to get updated")
+        self.assertGreater(document.modified_at, datetime_begin_test,
+                           "Expected modified_at of document to get updated")
         external_id = "does-not-exist"
         response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
         self.assertEqual(response.status_code, 404)

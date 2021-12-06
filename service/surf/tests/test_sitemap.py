@@ -1,6 +1,8 @@
+from unittest import skipIf
 from unittest.mock import patch, MagicMock
 from bs4 import BeautifulSoup
 
+from django.conf import settings
 from django.test import TestCase
 
 
@@ -40,6 +42,7 @@ MOCK_RESPONSE = MagicMock(
 
 
 @patch("surf.sitemap.requests.get", return_value=MOCK_RESPONSE)
+@skipIf(settings.PROJECT == "nppo", "Site maps not supported by NPPO")
 class TestSitemaps(TestCase):
 
     def test_index(self, request_get):
