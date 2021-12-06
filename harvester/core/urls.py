@@ -9,7 +9,7 @@ router.register("query", views.QueryViewSet)
 
 
 app_name = 'core'
-urlpatterns = public_api_patterns = [
+public_api_patterns = [
     path('dataset/metadata-documents/', views.DatasetMetadataDocumentsView.as_view(), name="dataset-metadata-documents",
          kwargs={"pk": None}),
     path('dataset/<int:pk>/documents/', views.DatasetDocumentsView.as_view(), name="dataset-documents"),
@@ -18,4 +18,4 @@ urlpatterns = public_api_patterns = [
     path('extension/<str:external_id>/', views.ExtensionDetailView.as_view(), name="extension-detail"),
     path('extension/', views.ExtensionListView.as_view(), name="extensions"),
 ]
-urlpatterns += router.urls
+urlpatterns = public_api_patterns + router.urls
