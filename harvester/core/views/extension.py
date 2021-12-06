@@ -92,11 +92,11 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
                 raise ValidationError(
                     f"Could not find Document with external_id '{external_id}'. Did you mean to create an addition?"
                 )
-            parental_properties = ["title", "description", "language", "published_at", "copyright"]
-            for prop in parental_properties:
+            addition_properties = ["language", "published_at", "copyright"]
+            for prop in addition_properties:
                 if prop in attrs:
                     raise ValidationError(
-                        f"Can't set {prop} property for anything but a parent extension."
+                        f"Can't set {prop} property for anything but an addition extension."
                     )
         if self.context["request"].method == "POST":
             if Extension.objects.filter(id=external_id).exists():

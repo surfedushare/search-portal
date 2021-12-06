@@ -14,12 +14,12 @@ class TestExtensionAPI(TestCase):
         super().setUpClass()
         cls.user = User.objects.create(username="supersurf")
         cls.addition_properties = {
-            "title": "title",
-            "description": "description",
             "language": "nl",
             "copyright": "cc-by-40"
         }
         cls.extension_properties = {
+            "title": "title",
+            "description": "description",
             "authors": [
                 {"name": "Monty Python"}
             ],
@@ -356,7 +356,7 @@ class TestExtensionAPI(TestCase):
         self.assertLess(document.modified_at, datetime_begin_test,
                         "Expected modified_at of document to remain the same")
 
-    def test_invalid_properties_non_addition(self):  # TODO: this test should work differently
+    def test_invalid_properties_non_addition(self):
         children = [
             "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
             "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257"
