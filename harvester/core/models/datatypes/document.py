@@ -6,7 +6,7 @@ from django.db import models
 from datagrowth.datatypes import DocumentBase
 
 
-PRIVATE_PROPERTIES = ["pipeline", "from_youtube", "lowest_educational_level"]
+PRIVATE_PROPERTIES = ["from_youtube", "lowest_educational_level"]
 
 
 class DocumentManager(models.Manager):
@@ -71,6 +71,10 @@ class Document(DocumentBase):
 
     def get_extension_extras(self):
         extension_data = copy(self.extension.properties)
+        extension_data["extension"] = {
+            "id": self.extension.id,
+            "is_addition": self.extension.is_addition
+        }
         if "keywords" in extension_data:
             extension_data["keywords"] = [entry["label"] for entry in extension_data["keywords"]]
         themes = extension_data.pop("themes", None)
@@ -96,6 +100,8 @@ class Document(DocumentBase):
         if self.extension:
             extension_details = self.get_extension_extras()
             elastic_base.update(extension_details)
+        else:
+            elastic_base["extension"] = None
         # Decide whether to delete or not from the index
         if elastic_base["state"] != "active":
             yield {
