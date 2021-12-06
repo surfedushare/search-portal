@@ -5,7 +5,7 @@ from datagrowth.admin import DataStorageAdmin, HttpResourceAdmin, ShellResourceA
 
 from core.models import (Dataset, DatasetVersion, Collection, Document, HarvestSource, HttpTikaResource, ElasticIndex,
                          ExtructResource, YoutubeThumbnailResource, ExtractionMapping, ExtractionMethod,
-                         JSONExtractionField, MethodExtractionField, PdfThumbnailResource, Query)
+                         JSONExtractionField, MethodExtractionField, PdfThumbnailResource, Query, Extension)
 from core.admin.datatypes import DatasetAdmin, DatasetVersionAdmin, ExtendedDocumentAdmin
 from core.admin.harvest import HarvestSourceAdmin
 from core.admin.search import ElasticIndexAdmin
@@ -21,12 +21,14 @@ admin.site.register(Collection, DataStorageAdmin)
 admin.site.register(Document, ExtendedDocumentAdmin)
 admin.site.register(ElasticIndex, ElasticIndexAdmin)
 admin.site.register(ExtructResource, HttpResourceAdmin)
-admin.site.register(YoutubeThumbnailResource, ShellResourceAdmin)
-admin.site.register(PdfThumbnailResource, HttpResourceAdmin)
-admin.site.register(Query, QueryAdmin)
 
 if settings.PROJECT == "nppo":
     admin.site.register(ExtractionMapping, ExtractionMappingAdmin)
     admin.site.register(ExtractionMethod, ExtractionMethodAdmin)
     admin.site.register(JSONExtractionField, admin.ModelAdmin)
     admin.site.register(MethodExtractionField, admin.ModelAdmin)
+    admin.site.register(Extension, ExtendedDocumentAdmin)
+else:
+    admin.site.register(YoutubeThumbnailResource, ShellResourceAdmin)
+    admin.site.register(PdfThumbnailResource, HttpResourceAdmin)
+    admin.site.register(Query, QueryAdmin)
