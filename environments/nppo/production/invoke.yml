@@ -4,7 +4,7 @@
 env: "production"
 
 django:
-  debug: true
+  debug: false
   protocol: "http"
   logging:
     level: "DEBUG"

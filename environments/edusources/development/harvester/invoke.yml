@@ -13,6 +13,8 @@ django:
   repositories:
     edurep: "https://staging.edurep.kennisnet.nl"
     sharekit: "https://api.acc.surfsharekit.nl"
+  sentry:
+    dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
 
 postgres:
   database: "harvester"

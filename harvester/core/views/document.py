@@ -7,9 +7,11 @@ from core.models import Document
 
 class DocumentSerializer(DocumentBaseSerializer):
 
+    source = serializers.CharField(source="collection.name")
+
     class Meta:
         model = Document
-        fields = DocumentBaseSerializer.default_fields
+        fields = DocumentBaseSerializer.default_fields + ("source",)
 
 
 class MetadataDocumentSerializer(DocumentBaseSerializer):

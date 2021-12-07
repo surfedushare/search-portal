@@ -99,7 +99,9 @@
             "person": {
               "id": "94615399-6453-4246-8fa3-29ac42e9af5b",
               "name": "Ning Ding",
-              "email": "Ning Ding"
+              "email": "Ning Ding",
+              "dai": null,
+              "orcid": null
             },
             "role": null
           }

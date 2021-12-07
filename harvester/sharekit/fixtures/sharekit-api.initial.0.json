@@ -172,7 +172,9 @@
             "person": {
               "id": "83e7c163-075e-4eb2-8247-d975cf047dba",
               "name": "Ruud Kok",
-              "email": "Ruud Kok"
+              "email": "Ruud Kok",
+              "dai": null,
+              "orcid": null
             },
             "role": "Docent"
           },
@@ -180,7 +182,9 @@
             "person": {
               "id": "1174c1b9-f010-4a0a-98c0-2ceeefd0b506",
               "name": "Astrid Bulte",
-              "email": "Astrid Bulte"
+              "email": "Astrid Bulte",
+              "dai": null,
+              "orcid": null
             },
             "role": "Docent"
           },
@@ -188,7 +192,9 @@
             "person": {
               "id": "c0ab267a-ad56-480c-a13a-90b325f45b5d",
               "name": "Hans Poorthuis",
-              "email": "Hans Poorthuis"
+              "email": "Hans Poorthuis",
+              "dai": null,
+              "orcid": null
             },
             "role": "Docent"
           }
@@ -279,7 +285,9 @@
             "person": {
               "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
               "name": "Esther Quaedackers",
-              "email": "Esther Quaedackers"
+              "email": "Esther Quaedackers",
+              "dai": null,
+              "orcid": null
             },
             "role": "Overig"
           }
@@ -354,7 +362,9 @@
             "person": {
               "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
               "name": "Esther Quaedackers",
-              "email": "Esther Quaedackers"
+              "email": "Esther Quaedackers",
+              "dai": null,
+              "orcid": null
             },
             "role": null
           }
@@ -424,7 +434,9 @@
             "person": {
               "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
               "name": "Esther Quaedackers",
-              "email": "Esther Quaedackers"
+              "email": "Esther Quaedackers",
+              "dai": null,
+              "orcid": null
             },
             "role": null
           },
@@ -432,7 +444,9 @@
             "person": {
               "id": "1ac508bb-0e9c-48d9-9497-d7393e533e7c",
               "name": "Robbert Dijkgraaf",
-              "email": "Robbert Dijkgraaf"
+              "email": "Robbert Dijkgraaf",
+              "dai": null,
+              "orcid": null
             },
             "role": null
           }
@@ -504,7 +518,9 @@
             "person": {
               "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
               "name": "Esther Quaedackers",
-              "email": "Esther Quaedackers"
+              "email": "Esther Quaedackers",
+              "dai": null,
+              "orcid": null
             },
             "role": null
           }
@@ -574,7 +590,9 @@
             "person": {
               "id": "5e9b6265-2c2d-4802-950e-f9a30c328990",
               "name": "Fred Spier",
-              "email": "Fred Spier"
+              "email": "Fred Spier",
+              "dai": null,
+              "orcid": null
             },
             "role": null
           },
@@ -582,7 +600,9 @@
             "person": {
               "id": "ceecade2-3e57-4d09-bf63-806420ab25c4",
               "name": "Esther Quaedackers",
-              "email": "Esther Quaedackers"
+              "email": "Esther Quaedackers",
+              "dai": null,
+              "orcid": null
             },
             "role": null
           }

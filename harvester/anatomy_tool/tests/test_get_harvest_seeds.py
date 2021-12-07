@@ -63,8 +63,8 @@ class TestGetHarvestSeedsAnatomyTool(TestCase):
     def test_authors_property(self):
         seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]['authors'], [
-            {'name': 'O. Paul Gobée', 'email': None},
-            {'name': 'Prof. X. Test', 'email': None}
+            {'name': 'O. Paul Gobée', 'email': None, 'external_id': None, 'dai': None, 'orcid': None},
+            {'name': 'Prof. X. Test', 'email': None, 'external_id': None, 'dai': None, 'orcid': None}
         ])
 
     def test_analysis_allowed_property(self):

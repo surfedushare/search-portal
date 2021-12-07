@@ -185,7 +185,10 @@ class AnatomyToolExtraction(object):
             if hasattr(author, "fn"):
                 authors.append({
                     "name": author.fn.value.strip(),
-                    "email": None
+                    "email": None,
+                    "external_id": None,
+                    "dai": None,
+                    "orcid": None,
                 })
         return authors
 

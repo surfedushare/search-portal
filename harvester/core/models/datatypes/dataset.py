@@ -99,7 +99,7 @@ class DatasetVersion(models.Model):
             if language not in settings.ELASTICSEARCH_ANALYSERS:
                 language = "unk"
             by_language[language] += list(document.to_search())
-        for extension in Extension.objects.filter(is_parent=True):
+        for extension in Extension.objects.filter(is_addition=True):
             language = extension.get_language()
             if language not in settings.ELASTICSEARCH_ANALYSERS:
                 language = "unk"
