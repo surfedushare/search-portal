@@ -89,7 +89,7 @@
             "collection": null,
             "identity": null,
             "reference": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
-            "is_parent": false,
+            "is_addition": false,
             "properties": {
                 "external_id": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
                 "authors": [
@@ -124,7 +124,7 @@
             "collection": null,
             "identity": null,
             "reference": "custom-extension",
-            "is_parent": true,
+            "is_addition": true,
             "properties": {
                 "state": "active",
                 "external_id": "custom-extension",
@@ -790,17 +790,6 @@
                     "metadata": null,
                     "from_text": null,
                     "from_title": null
-                },
-                "pipeline": {
-                    "file": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
                 },
                 "copyright": "cc-by-sa-40",
                 "technical_type": "unknown",

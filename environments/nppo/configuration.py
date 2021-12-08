@@ -55,4 +55,15 @@ def get_project_search_mapping_properties():
                 }
             }
         },
+        'extension': {
+            'type': 'object',
+            'properties': {
+                'id': {
+                    'type': 'text',
+                },
+                'is_addition': {
+                    'type': 'boolean'
+                }
+            }
+        },
     }

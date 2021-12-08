@@ -102,6 +102,7 @@ class NPPOSearchResultSerializer(BaseSearchResultSerializer):
     type = serializers.CharField(source="technical_type")
     published_at = serializers.CharField(source="publisher_date", allow_blank=True, allow_null=True)
     research_object_type = serializers.CharField()
+    extension = serializers.DictField()
     relations = RelationSerializer()
 
 

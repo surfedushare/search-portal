@@ -10,7 +10,7 @@ class Extension(DocumentBase):
     id = models.CharField(primary_key=True, max_length=100)
     dataset_version = models.ForeignKey("DatasetVersion", blank=True, null=True, on_delete=models.CASCADE)
     # NB: Collection foreign key is added by the base class
-    is_parent = models.BooleanField(default=False)
+    is_addition = models.BooleanField(default=False)
 
     def get_language(self):
         return self.properties.get("language", "unk")
@@ -20,6 +20,10 @@ class Extension(DocumentBase):
         title = elastic_base.get("title", None)
         elastic_defaults = {
             '_id': self.id,
+            "extension": {
+                "id": self.id,
+                "is_addition": self.is_addition
+            },
             "language": self.get_language(),
             'suggest_completion': title.split(" ") if title else [],
             'harvest_source': "nppo",
