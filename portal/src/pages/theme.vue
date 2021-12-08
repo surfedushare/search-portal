@@ -1,9 +1,9 @@
 <template>
   <section class="container main themes">
-    <div v-if="!theme && !isLoading">
+    <div v-if="!theme && !isReady">
       <error status-code="404" message-key="theme-not-found" />
     </div>
-    <div v-else-if="theme && !isLoading" class="theme">
+    <div v-else-if="theme && !isReady" class="theme">
       <div class="center_block center-header">
         <div class="theme__info ">
           <img
@@ -91,6 +91,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { isEmpty } from 'lodash'
+import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
 import PopularList from '~/components/Communities/PopularList'
 import Materials from '~/components/Materials'
@@ -110,10 +111,10 @@ export default {
     Collections,
     Error
   },
+  mixins: [PageMixin],
   props: [],
   data() {
     return {
-      isLoading: true,
       search: {}
     }
   },
@@ -127,10 +128,10 @@ export default {
       'filter'
     ])
   },
-  mounted() {
+  created() {
     let themeId = this.$route.params.id
 
-    this.$store.dispatch('getFilterCategories').then(() => {
+    this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
       this.$store
         .dispatch('getTheme', themeId)
         .then(theme => {
@@ -147,9 +148,6 @@ export default {
             return_filters: false
           })
         })
-        .finally(() => {
-          this.isLoading = false
-        })
     })
 
     // TODO: all data fetched below is also in the getFilterCategories above
@@ -160,6 +158,12 @@ export default {
       params: { page_size: 2 }
     })
     this.$store.dispatch('getThemeCollections', themeId)
+  },
+  metaInfo() {
+    const defaultTitle = this.$root.$meta().title
+    return {
+      title: this.theme ? this.theme.title_translations[this.$i18n.locale] || defaultTitle : defaultTitle
+    }
   },
   methods: {
     onSearch() {
