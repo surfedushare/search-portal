@@ -78,13 +78,17 @@ export default {
     }
   },
   created() {
-    this.pageLoad = new Promise(resolve => {
-      this.updateMaterial(this.$route.params.id).then(resolve)
+    this.pageLoad = new Promise((resolve, reject) => {
+      this.updateMaterial(this.$route.params.id)
+        .then(resolve)
+        .catch(reject)
     })
   },
   beforeRouteUpdate(to, from, next) {
-    this.pageLoad = new Promise(resolve => {
-      this.updateMaterial(to.params.id).then(resolve)
+    this.pageLoad = new Promise((resolve, reject) => {
+      this.updateMaterial(to.params.id)
+        .then(resolve)
+        .catch(reject)
     })
     next()
   },
