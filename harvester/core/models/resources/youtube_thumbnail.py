@@ -23,6 +23,7 @@ class YoutubeThumbnailResource(ShellResource):
     CMD_TEMPLATE = [
         "youtube-dl",
         "--sleep-interval", "2",
+        "--max-sleep-interval", "5",
         "--skip-download",
         "--get-thumbnail",
         "{}"
@@ -32,8 +33,16 @@ class YoutubeThumbnailResource(ShellResource):
     def get_preview_filename(thumbnail_url):
         # Normalize source urls
         if "vimeocdn" in thumbnail_url:
+            # Vimeo can either have a direct thumbnail
+            # or a thumbnail inside a parameter "src0" in the returned URL
             vimeo_url = URLObject(thumbnail_url)
+            if "src0" not in vimeo_url.query_dict:
+                remainder, filename = os.path.split(vimeo_url.path)
+                return filename
             thumbnail_url = vimeo_url.query_dict["src0"]
+            remainder, filename = os.path.split(thumbnail_url)
+            return filename
+        # Default is Youtube URL's
         url = urlparse(thumbnail_url)
         path = url.path
         remainder, filename = os.path.split(path)
