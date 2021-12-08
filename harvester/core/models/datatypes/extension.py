@@ -20,6 +20,10 @@ class Extension(DocumentBase):
         title = elastic_base.get("title", None)
         elastic_defaults = {
             '_id': self.id,
+            "extension": {
+                "id": self.id,
+                "is_addition": self.is_addition
+            },
             "language": self.get_language(),
             'suggest_completion': title.split(" ") if title else [],
             'harvest_source': "nppo",

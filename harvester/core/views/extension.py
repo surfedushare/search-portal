@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.timezone import now
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -91,11 +92,11 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
                 raise ValidationError(
                     f"Could not find Document with external_id '{external_id}'. Did you mean to create an addition?"
                 )
-            parental_properties = ["title", "description", "language", "published_at", "copyright"]
-            for prop in parental_properties:
+            addition_properties = ["language", "published_at", "copyright"]
+            for prop in addition_properties:
                 if prop in attrs:
                     raise ValidationError(
-                        f"Can't set {prop} property for anything but a parent extension."
+                        f"Can't set {prop} property for anything but an addition extension."
                     )
         if self.context["request"].method == "POST":
             if Extension.objects.filter(id=external_id).exists():
@@ -107,6 +108,8 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
     def create(self, validated_data):
         external_id = validated_data["external_id"]
         is_addition = validated_data.pop("is_addition")
+        if not is_addition:
+            Document.objects.filter(reference=external_id).update(modified_at=now())
         return super().create({
             "id": external_id,
             "is_addition": is_addition,
@@ -115,7 +118,9 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
         })
 
     def update(self, instance, validated_data):
-        validated_data.pop("is_addition", None)
+        is_addition = validated_data.pop("is_addition", None)
+        if not is_addition:
+            Document.objects.filter(reference=validated_data["external_id"]).update(modified_at=now())
         instance.properties.update(validated_data)
         instance.save()
         return super().update(instance, validated_data)
@@ -236,3 +241,7 @@ class ExtensionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ExtensionSerializer
     lookup_url_kwarg = "external_id"
     schema = HarvesterSchema()
+
+    def destroy(self, request, *args, **kwargs):
+        Document.objects.filter(reference=kwargs["external_id"]).update(modified_at=now())
+        return super().destroy(request, *args, **kwargs)

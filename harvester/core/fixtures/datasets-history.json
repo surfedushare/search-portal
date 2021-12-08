@@ -791,17 +791,6 @@
                     "from_text": null,
                     "from_title": null
                 },
-                "pipeline": {
-                    "file": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "tika": {
-                        "success": false,
-                        "resource": null
-                    },
-                    "harvest": "cf6850e662d8a587fae95c4b32dadcd98cccbd3c"
-                },
                 "copyright": "cc-by-sa-40",
                 "technical_type": "unknown",
                 "material_types": [],
