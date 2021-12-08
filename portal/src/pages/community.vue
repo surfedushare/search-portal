@@ -1,7 +1,7 @@
 <template>
   <section class="container main">
     <section class="community">
-      <div v-if="!community_details">
+      <div v-if="!community_details && isReady">
         <error status-code="404" message-key="community-not-found" />
       </div>
       <div v-else>
@@ -88,16 +88,12 @@ export default {
       'user'
     ]),
     community_collections() {
-      let communityCollections = this.$store.getters.getPublicCollections(
+      return this.$store.getters.getPublicCollections(
         this.user
       )
-      return this.isReady || !isEmpty(communityCollections)
-        ? communityCollections
-        : null
     },
     community_info() {
-      let communityInfo = this.$store.getters.getCommunityInfo(this.user)
-      return this.isReady || !isEmpty(communityInfo) ? communityInfo : null
+      return this.$store.getters.getCommunityInfo(this.user) || null
     },
     community_details() {
       // Retrieve the details and exit when invalid or loading
@@ -106,7 +102,7 @@ export default {
         this.$i18n.locale
       )
       if (isEmpty(communityDetails)) {
-        return this.isReady ? communityDetails || {} : null
+        return communityDetails || null
       }
       // Fill some defaults for the details
       communityDetails.featured_image =
