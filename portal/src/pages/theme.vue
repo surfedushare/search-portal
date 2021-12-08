@@ -114,14 +114,7 @@ export default {
   data() {
     return {
       isLoading: true,
-      search: {
-        filters: [
-          {
-            external_id: 'technical_type',
-            items: []
-          }
-        ]
-      }
+      search: {}
     }
   },
   computed: {
