@@ -1,9 +1,9 @@
 <template>
   <section class="container main themes">
-    <div v-if="!theme && !isReady">
+    <div v-if="!theme && isReady">
       <error status-code="404" message-key="theme-not-found" />
     </div>
-    <div v-else-if="theme && !isReady" class="theme">
+    <div v-else-if="theme && isReady" class="theme">
       <div class="center_block center-header">
         <div class="theme__info ">
           <img
