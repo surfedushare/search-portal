@@ -125,7 +125,9 @@ export default {
   metaInfo() {
     const defaultTitle = this.$root.$meta().title
     return {
-      title: this.community_details ? this.community_details.title || defaultTitle : defaultTitle
+      title: this.community_details
+        ? this.community_details.title || defaultTitle
+        : defaultTitle
     }
   },
   methods: {

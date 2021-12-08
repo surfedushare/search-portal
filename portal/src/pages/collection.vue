@@ -129,7 +129,9 @@ export default {
   metaInfo() {
     const defaultTitle = this.$root.$meta().title
     return {
-      title: this.collectionInfo ? this.collectionInfo[`title_${this.$i18n.locale}`] || defaultTitle : defaultTitle
+      title: this.collectionInfo
+        ? this.collectionInfo[`title_${this.$i18n.locale}`] || defaultTitle
+        : defaultTitle
     }
   },
   methods: {

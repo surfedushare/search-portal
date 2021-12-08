@@ -132,22 +132,20 @@ export default {
     let themeId = this.$route.params.id
 
     this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
-      this.$store
-        .dispatch('getTheme', themeId)
-        .then(theme => {
-          let themeCategory = this.$store.getters.getCategoryById(
-            theme.filter_category,
-            THEME_CATEGORY_FILTER_ID
-          )
-          themeCategory.selected = true
-          this.$store.dispatch('searchMaterials', {
-            page_size: 4,
-            search_text: '',
-            ordering: '-publisher_date',
-            filters: this.$store.getters.search_filters,
-            return_filters: false
-          })
+      this.$store.dispatch('getTheme', themeId).then(theme => {
+        let themeCategory = this.$store.getters.getCategoryById(
+          theme.filter_category,
+          THEME_CATEGORY_FILTER_ID
+        )
+        themeCategory.selected = true
+        this.$store.dispatch('searchMaterials', {
+          page_size: 4,
+          search_text: '',
+          ordering: '-publisher_date',
+          filters: this.$store.getters.search_filters,
+          return_filters: false
         })
+      })
     })
 
     // TODO: all data fetched below is also in the getFilterCategories above
@@ -162,7 +160,9 @@ export default {
   metaInfo() {
     const defaultTitle = this.$root.$meta().title
     return {
-      title: this.theme ? this.theme.title_translations[this.$i18n.locale] || defaultTitle : defaultTitle
+      title: this.theme
+        ? this.theme.title_translations[this.$i18n.locale] || defaultTitle
+        : defaultTitle
     }
   },
   methods: {
