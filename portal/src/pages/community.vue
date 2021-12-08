@@ -22,7 +22,7 @@
               <template slot="header-info">
                 <h2>{{ $t('Collections-2') }}</h2>
                 <button
-                  v-if="!isReady && community_info.publisher"
+                  v-if="isReady && community_info.publisher"
                   class="button"
                   @click="goToCommunitySearch()"
                 >
