@@ -7,8 +7,7 @@ import Home from '~/pages/index'
 import Search from '~/pages/search'
 import HowDoesItWork from '~/pages/how-does-it-work'
 import Communities from '~/pages/communities'
-import MyCommunity from '~/pages/my/community'
-import MyPrivacy from '~/pages/my/privacy'
+import MyPrivacy from '~/pages/privacy'
 import Theme from '~/pages/theme'
 import Material from '~/pages/material'
 import Collection from '~/pages/collection'
@@ -125,16 +124,6 @@ export default new Router({
       meta: {
         editable: true
       }
-    },
-    {
-      path: '/en/my/community/:community',
-      component: MyCommunity,
-      name: 'my-community___en'
-    },
-    {
-      path: '/mijn/community/:community',
-      component: MyCommunity,
-      name: 'my-community___nl'
     },
     {
       path: '/en/my/privacy',
