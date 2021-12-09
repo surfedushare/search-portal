@@ -65,7 +65,7 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            'lom.lifecycle.contribute.author': [author]
+            'authors.name.keyword': [author]
           }
         })
       }
@@ -75,7 +75,7 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            'lom.lifecycle.contribute.publisher': [publisher]
+            'publishers.keyword': [publisher]
           }
         })
       }
