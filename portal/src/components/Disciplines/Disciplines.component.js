@@ -19,7 +19,7 @@ export default {
      */
     generateLink(discipline) {
       const filters = {
-        'lom.classification.obk.discipline.id': [discipline.external_id]
+        disciplines: [discipline.external_id]
       }
       return this.generateSearchMaterialsQuery({
         page: 1,

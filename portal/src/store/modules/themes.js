@@ -73,7 +73,7 @@ export default {
             params
           }
         )
-        commit('SET_COMMUNITIES', themeCommunities)
+        commit('SET_COMMUNITIES', themeCommunities.results)
       }
     },
     async getThemeCollections({ commit }, id) {

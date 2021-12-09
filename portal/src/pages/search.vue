@@ -231,9 +231,9 @@ export default {
     changeOrdering() {
       const { sort_order } = this
       if (sort_order === 'date_descending') {
-        this.search.ordering = '-lom.lifecycle.contribute.publisherdate'
+        this.search.ordering = '-publisher_date'
       } else if (sort_order === 'date_ascending') {
-        this.search.ordering = 'lom.lifecycle.contribute.publisherdate'
+        this.search.ordering = 'publisher_date'
       } else {
         this.search.ordering = ''
       }

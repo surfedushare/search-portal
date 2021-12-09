@@ -306,7 +306,7 @@ class MaterialAPIView(APIView):
 
             res = elastic.search('',
                                  # sort by newest items first
-                                 ordering="-lom.lifecycle.contribute.publisherdate",
+                                 ordering="-publisher_date",
                                  page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
             res = add_extra_parameters_to_materials(request.user,

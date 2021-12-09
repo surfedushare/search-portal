@@ -7,7 +7,7 @@ export default {
   name: 'filter-categories',
   components: { DatesRange, FilterCategory },
   data() {
-    const publisherDateExternalId = 'lom.lifecycle.contribute.publisherdate'
+    const publisherDateExternalId = 'publisher_date'
     return {
       publisherDateExternalId,
       data: {

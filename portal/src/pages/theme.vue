@@ -114,14 +114,7 @@ export default {
   data() {
     return {
       isLoading: true,
-      search: {
-        filters: [
-          {
-            external_id: 'lom.technical.format',
-            items: []
-          }
-        ]
-      }
+      search: {}
     }
   },
   computed: {
@@ -149,7 +142,7 @@ export default {
           this.$store.dispatch('searchMaterials', {
             page_size: 4,
             search_text: '',
-            ordering: '-lom.lifecycle.contribute.publisherdate',
+            ordering: '-publisher_date',
             filters: this.$store.getters.search_filters,
             return_filters: false
           })

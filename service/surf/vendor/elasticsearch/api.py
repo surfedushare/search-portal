@@ -376,7 +376,7 @@ class ElasticSearchApiClient:
         for filter_item in filters:
             # skip filter_items that are empty
             # and the language filter item (it's handled by telling elastic in what index to search).
-            if not filter_item['items'] or 'lom.general.language' in filter_item['external_id']:
+            if not filter_item['items'] or 'language.keyword' in filter_item['external_id']:
                 continue
             elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(filter_item['external_id'])
             # date range query
@@ -465,7 +465,7 @@ class ElasticSearchApiClient:
         indices = [self.index_nl, self.index_en, self.index_unk]
         if not filters:
             return indices
-        language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'lom.general.language']
+        language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'language.keyword']
         if not language_item:
             return indices
         language_indices = [f"latest-{language}" for language in language_item[0]['items']]

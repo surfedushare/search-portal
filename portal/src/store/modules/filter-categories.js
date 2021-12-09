@@ -3,7 +3,7 @@ import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
 
-const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate'
+const PUBLISHER_DATE_ID = 'publisher_date'
 
 function getFiltersForSearch(items) {
   if (isNil(items)) {
@@ -155,7 +155,7 @@ export default {
       state.filter_categories = payload
 
       const disciplines = payload.find(
-        child => child.external_id.search('discipline.id') !== -1
+        child => child.external_id.search('discipline') !== -1
       )
       state.disciplines = disciplines.children.reduce((obj, value) => {
         obj[value.external_id] = value
