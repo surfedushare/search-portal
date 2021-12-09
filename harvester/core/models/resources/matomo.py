@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from urllib.parse import urlparse, parse_qs
 
 from django.conf import settings
@@ -7,7 +7,39 @@ from django.db import models
 from datagrowth.resources import HttpResource
 
 
+class MatomoVisitsResourceManager(models.Manager):
+
+    def iterate_visits(self, latest_update=None, include_staff=False, min_actions=None, filter_custom_events=None):
+        if latest_update is None:
+            latest_update = datetime.strptime(MatomoVisitsResource.DEFAULT_START_DATE, "%Y-%m-%d")
+        queryset = self.get_queryset() \
+            .filter(since__date__gte=latest_update.date(), status=200)
+        for resource in queryset:
+            content_type, data = resource.content
+            for visit in data:
+                if not include_staff and visit["dimension1"] == "true":
+                    continue
+                if min_actions and int(visit["actions"]) < min_actions:
+                    continue
+                if filter_custom_events:
+                    custom_events = {
+                        event_key: False
+                        for event_key in filter_custom_events.keys()
+                    }
+                    for action in visit["actionDetails"]:
+                        actual_category = action.get("eventCategory", None)
+                        actual_action = action.get("eventAction", None)
+                        event_key = f"{actual_category}.{actual_action}"
+                        if event_key in filter_custom_events:
+                            custom_events[event_key] = True
+                    if custom_events != filter_custom_events:
+                        continue
+                yield visit
+
+
 class MatomoVisitsResource(HttpResource):
+
+    objects = MatomoVisitsResourceManager()
 
     URI_TEMPLATE = "https://webstats.surf.nl/?date={}"
     PARAMETERS = {
