@@ -88,9 +88,7 @@ export default {
       'user'
     ]),
     community_collections() {
-      return this.$store.getters.getPublicCollections(
-        this.user
-      )
+      return this.$store.getters.getPublicCollections(this.user)
     },
     community_info() {
       return this.$store.getters.getCommunityInfo(this.user) || null
