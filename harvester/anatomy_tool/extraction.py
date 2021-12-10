@@ -194,7 +194,7 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_publishers(cls, soup, el):
-        return ["Anatomy Tool"]
+        return ["AnatomyTOOL"]
 
     @classmethod
     def get_publisher_date(cls, soup, el):
