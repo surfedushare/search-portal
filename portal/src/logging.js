@@ -66,6 +66,8 @@ injector.decorator('$log', function($log) {
   $log._setIsStaff = $log.setIsStaff
 
   $log.pageView = function(page) {
+    window._paq.push(['setDocumentTitle', window.document.title])
+    window._paq.push(['setCustomUrl', window.location.href])
     window._paq.push(['trackPageView'])
     $log._pageView(page)
   }

@@ -72,6 +72,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import CommunityItem from '~/components/CommunityItem'
 import HeaderBlock from '~/components/HeaderBlock'
 import SwitchInput from '~/components/switch-input'
@@ -88,6 +89,7 @@ export default {
     Tab,
     Tabs
   },
+  mixins: [PageMixin],
   data() {
     return {
       activeTab: this.$route.query.tab || 'all-communities',
@@ -117,6 +119,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getCommunities')
+  },
+  metaInfo() {
+    return {
+      title: this.$i18n.t('Communities')
+    }
   },
   methods: {
     editable(community) {

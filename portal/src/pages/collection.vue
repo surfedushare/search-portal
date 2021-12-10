@@ -1,6 +1,6 @@
 <template>
   <section class="container main collection">
-    <div v-if="!collectionInfo && !isLoading">
+    <div v-if="!collectionInfo && isReady">
       <error status-code="404" message-key="collection-not-found" />
     </div>
     <div v-else class="center_block">
@@ -57,6 +57,7 @@
 <script>
 import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import Spinner from '~/components/Spinner'
 import Collection from '~/components/Collections/Collection'
 import AddMaterialPopup from '~/components/Collections/AddMaterialPopup'
@@ -76,6 +77,7 @@ export default {
     Error,
     AddMaterialPopup
   },
+  mixins: [PageMixin],
   data() {
     return {
       contenteditable: this.$route.meta.editable,
@@ -89,7 +91,6 @@ export default {
         filters: [],
         search_text: ''
       },
-      isLoading: true,
       isShowAddMaterial: false
     }
   },
@@ -117,13 +118,21 @@ export default {
       return null
     }
   },
-  mounted() {
+  created() {
     const { id } = this.$route.params
     this.$store.dispatch('getCollectionMaterials', id)
-    Promise.all([
+    this.pageLoad = Promise.all([
       this.$store.dispatch('getCollection', id),
       this.$store.dispatch('getUser')
-    ]).finally(() => (this.isLoading = false))
+    ])
+  },
+  metaInfo() {
+    const defaultTitle = this.$root.$meta().title
+    return {
+      title: this.collectionInfo
+        ? this.collectionInfo[`title_${this.$i18n.locale}`] || defaultTitle
+        : defaultTitle
+    }
   },
   methods: {
     showAddMaterial() {
@@ -135,12 +144,12 @@ export default {
     },
     saveMaterials() {
       const { id } = this.$route.params
-      this.isLoading = true
+      this.isReady = false
       Promise.all([
         this.$store.dispatch('getCollectionMaterials', id),
         this.$store.dispatch('getCollection', id)
       ]).finally(() => {
-        this.isLoading = false
+        this.isReady = true
       })
     },
     deleteCollectionPopup() {

@@ -25,6 +25,8 @@ import MainHeader from '~/components/MainHeader'
 import MainFooter from '~/components/MainFooter'
 import { setLanguage } from '~/axios'
 
+const DEFAULT_TITLE = 'Edusources'
+
 export default {
   dependencies: ['$window', '$log'],
   components: {
@@ -37,12 +39,7 @@ export default {
     }
   },
   mounted() {
-    this.$log.pageView(this.$route.path)
     this.$store.dispatch('getThemes')
-    this.$router.beforeEach((to, from, next) => {
-      this.$log.pageView(to.path)
-      next()
-    })
   },
   methods: {
     isDemoEnvironment() {
@@ -50,6 +47,14 @@ export default {
         this.$window.location.hostname.indexOf('acc.') >= 0 ||
         new URLSearchParams(this.$window.location.search).get('demo')
       )
+    }
+  },
+  metaInfo: {
+    title: DEFAULT_TITLE,
+    titleTemplate: titleChunk => {
+      return titleChunk && titleChunk !== DEFAULT_TITLE
+        ? `${titleChunk} | ${DEFAULT_TITLE}`
+        : DEFAULT_TITLE
     }
   }
 }
