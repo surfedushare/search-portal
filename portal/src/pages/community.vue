@@ -4,7 +4,7 @@
       <div v-if="!community_details && isReady">
         <error status-code="404" message-key="community-not-found" />
       </div>
-      <div v-else>
+      <div v-else-if="community_details">
         <div class="center_block">
           <InfoBlock
             :title="community_details.title"
