@@ -42,3 +42,5 @@ secrets:
     api_key: null
   harvester:
     api_key: "123abc"
+  matomo:
+    api_key: null

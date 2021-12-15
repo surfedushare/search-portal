@@ -86,6 +86,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
@@ -100,6 +101,7 @@ export default {
     PopularList,
     Materials
   },
+  mixins: [PageMixin],
   data() {
     return {
       searchText: '',
