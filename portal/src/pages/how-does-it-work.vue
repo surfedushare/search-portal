@@ -25,20 +25,20 @@ export default {
   components: {
     HeaderBlock,
     Materials,
-    InfoBlock
+    InfoBlock,
   },
   mixins: [PageMixin],
   computed: {
-    ...mapGetters(['materials'])
+    ...mapGetters(['materials']),
   },
   mounted() {
     this.$store.dispatch('getMaterials', { page_size: 4 })
   },
   metaInfo() {
     return {
-      title: this.$i18n.t('How-does-it-work')
+      title: this.$i18n.t('How-does-it-work'),
     }
-  }
+  },
 }
 </script>
 

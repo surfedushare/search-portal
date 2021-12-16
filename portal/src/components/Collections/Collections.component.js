@@ -6,15 +6,15 @@ export default {
   components: { Spinner, CollectionCard },
   props: {
     collections: {
-      default: false
+      default: false,
     },
     'items-in-line': {
       type: Number,
-      default: 4
+      default: 4,
     },
     loading: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }

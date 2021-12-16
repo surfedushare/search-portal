@@ -6,5 +6,5 @@ export default {
     return {}
   },
   methods: {},
-  computed: {}
+  computed: {},
 }

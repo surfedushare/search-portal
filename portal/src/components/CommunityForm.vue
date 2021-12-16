@@ -177,17 +177,17 @@ export default {
     InputFile,
     InputLanguageWrapper,
     InputWithCounter,
-    RichTextInput
+    RichTextInput,
   },
   props: {
     value: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     errors: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   methods: {
     getFieldErrors(fieldName) {
@@ -217,11 +217,10 @@ export default {
         this.value['website_url_' + oppositeLanguage]
       )
       if (hasValue && !hasOppositeValue) {
-        this.value['website_url_' + oppositeLanguage] = this.value[
-          'website_url_' + language
-        ]
+        this.value['website_url_' + oppositeLanguage] =
+          this.value['website_url_' + language]
       }
-    }
-  }
+    },
+  },
 }
 </script>

@@ -45,19 +45,19 @@ export default {
     setMaterials: {
       type: Array,
       default: () => [],
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     onMaterialClick(material) {
       this.$router.push(
         this.localePath({
           name: 'materials-id',
-          params: { id: material.external_id }
+          params: { id: material.external_id },
         })
       )
-    }
-  }
+    },
+  },
 }
 </script>
 

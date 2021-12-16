@@ -18,10 +18,10 @@ export const formatDate = (str, format) => {
     const mapObj = {
       DD: curr_date,
       MM: curr_month,
-      YYYY: curr_year
+      YYYY: curr_year,
     }
 
-    return format.replace(/DD|MM|YYYY/gi, matched => {
+    return format.replace(/DD|MM|YYYY/gi, (matched) => {
       return mapObj[matched]
     })
   }
@@ -34,7 +34,7 @@ export const formatDate = (str, format) => {
  * @param str
  * @returns {Boolean}
  */
-export const validateID = str => {
+export const validateID = (str) => {
   return validate(str, 4) || validateBASE64(str)
 }
 
@@ -43,7 +43,7 @@ export const validateID = str => {
  * @param str
  * @returns {Boolean}
  */
-export const validateIDString = str => {
+export const validateIDString = (str) => {
   return str && typeof str === 'string'
 }
 
@@ -52,7 +52,7 @@ export const validateIDString = str => {
  * @param str
  * @returns {boolean}
  */
-export const validateBASE64 = str => {
+export const validateBASE64 = (str) => {
   try {
     window.atob(str)
 
@@ -72,7 +72,7 @@ export const validateBASE64 = str => {
  * @param obj
  * @returns {*|boolean}
  */
-export const validateSearch = obj => {
+export const validateSearch = (obj) => {
   return obj && typeof obj === 'object'
 }
 
@@ -81,7 +81,7 @@ export const validateSearch = obj => {
  * @param obj
  * @returns {*|boolean}
  */
-export const validateParams = obj => {
+export const validateParams = (obj) => {
   return obj && typeof obj === 'object'
 }
 

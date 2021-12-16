@@ -60,26 +60,26 @@ export default {
     category: {
       type: Object,
       default: () => ({
-        children: []
-      })
+        children: [],
+      }),
     },
     change: {
       type: Function,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
-    const isOpen = this.category.children.some(child => child.selected)
+    const isOpen = this.category.children.some((child) => child.selected)
 
     return {
       isOpen,
       showAll: false,
-      visibleItems: 5
+      visibleItems: 5,
     }
   },
   computed: {
     visible() {
-      return this.category.children.some(child => !child.is_hidden)
+      return this.category.children.some((child) => !child.is_hidden)
     },
     sortedChildren() {
       return [...this.category.children].sort((a, b) => {
@@ -89,7 +89,7 @@ export default {
     numberOfVisibleItems() {
       // Display all selected items or max visibleItems
       return Math.max(
-        this.category.children.filter(c => c.selected).length,
+        this.category.children.filter((c) => c.selected).length,
         this.visibleItems
       )
     },
@@ -99,7 +99,7 @@ export default {
       }
 
       return this.sortedChildren.slice(0, this.numberOfVisibleItems)
-    }
+    },
   },
   methods: {
     toggle() {
@@ -116,7 +116,7 @@ export default {
       } else {
         this.$emit('uncheck', categoryId, itemId)
       }
-    }
-  }
+    },
+  },
 }
 </script>

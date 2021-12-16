@@ -4,31 +4,31 @@ export default {
   name: 'input-file',
   props: {
     imagesrc: {
-      default: false
+      default: false,
     },
     title: {
-      default: ''
+      default: '',
     },
     refinput: {
-      default: 'file'
+      default: 'file',
     },
     width: {
       type: Number,
-      default: 100
+      default: 100,
     },
     height: {
       type: Number,
-      default: 50
-    }
+      default: 50,
+    },
   },
   components: {
-    ImageCropPopup
+    ImageCropPopup,
   },
   data() {
     return {
       image: null,
       accept: 'image/jpeg,image/gif,image/png',
-      showPopup: false
+      showPopup: false,
     }
   },
   methods: {
@@ -40,14 +40,14 @@ export default {
     openModal(file) {
       const reader = new FileReader()
 
-      reader.onload = e => {
+      reader.onload = (e) => {
         this.originalImage = e.target.result
         this.name = file.name
         this.showPopup = true
       }
       reader.readAsDataURL(file)
     },
-    removeImage: function() {
+    removeImage: function () {
       this.$emit('remove_image')
       this.image = null
       this.$refs.file.value = null
@@ -63,11 +63,11 @@ export default {
     closePopup() {
       this.$refs.file.value = null
       this.showPopup = false
-    }
+    },
   },
   computed: {
     imagePath() {
       return this.image !== null ? this.image : this.imagesrc
-    }
-  }
+    },
+  },
 }

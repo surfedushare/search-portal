@@ -34,21 +34,21 @@ import Popup from '~/components/Popup'
 export default {
   name: 'FeedbackPopup',
   components: {
-    Popup
+    Popup,
   },
   props: {
     showPopup: {
       type: Boolean,
-      default: false
+      default: false,
     },
     close: {
       type: Function,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
-      message: null
+      message: null,
     }
   },
   methods: {
@@ -57,12 +57,12 @@ export default {
         const currentUrl = window.location.pathname
         await axios.post('feedback/', {
           feedback: this.message,
-          current_url: currentUrl
+          current_url: currentUrl,
         })
       }
       this.close()
-    }
-  }
+    },
+  },
 }
 </script>
 <style

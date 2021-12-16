@@ -6,7 +6,7 @@ const $timeout = injector.get('$timeout')
 
 const DEFAULT_MESSAGES = {
   info: [],
-  error: []
+  error: [],
 }
 
 function assertMessageLevel(level) {
@@ -18,20 +18,20 @@ function assertMessageLevel(level) {
 export default {
   state: {
     messages: DEFAULT_MESSAGES,
-    timeout: null
+    timeout: null,
   },
   getters: {
     getMessagesContent(state) {
       // We load the Nuxt app, because we'll need the i18n object to translate messages
-      return level => {
+      return (level) => {
         assertMessageLevel(level)
-        return map(state.messages[level], msg => {
+        return map(state.messages[level], (msg) => {
           return i18n.t(msg)
         }).join(' ')
       }
     },
     getLevelIcon() {
-      return level => {
+      return (level) => {
         assertMessageLevel(level)
         return level === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'
       }
@@ -40,11 +40,11 @@ export default {
       return keys(state.messages)
     },
     hasMessages(state) {
-      return level => {
+      return (level) => {
         assertMessageLevel(level)
         return !isEmpty(state.messages[level])
       }
-    }
+    },
   },
   mutations: {
     ADD_MESSAGE(state, { level, message, sticky }) {
@@ -75,6 +75,6 @@ export default {
     CLEAR_MESSAGES(state, level) {
       assertMessageLevel(level)
       state.messages[level] = []
-    }
-  }
+    },
+  },
 }

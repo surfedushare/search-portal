@@ -8,25 +8,25 @@ export default {
   components: { draggable, Spinner, DeleteCollection, CollectionCard },
   props: {
     collections: {
-      default: false
+      default: false,
     },
     'items-in-line': {
       type: Number,
-      default: 4
+      default: 4,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     editableContent: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       selectedCollectionId: '',
-      isShowDeleteCollection: false
+      isShowDeleteCollection: false,
     }
   },
   methods: {
@@ -46,7 +46,7 @@ export default {
       const { community } = this.$route.params
       this.$store.dispatch('getCommunityCollections', community)
       this.isShowDeleteCollection = false
-    }
+    },
   },
   computed: {
     myCollections: {
@@ -64,14 +64,14 @@ export default {
             id: collection.id,
             title_nl: collection.title_nl,
             title_en: collection.title_en,
-            position: index
+            position: index,
           }
         })
         this.$store.dispatch('updateCommunityCollections', {
           id: this.$route.params.community,
-          data: collections
+          data: collections,
         })
-      }
-    }
-  }
+      },
+    },
+  },
 }

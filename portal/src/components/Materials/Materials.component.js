@@ -9,47 +9,47 @@ export default {
   props: {
     materials: {
       type: Object,
-      default: null
+      default: null,
     },
     didYouMean: {
       type: Object,
       default: () => {
         return {}
-      }
+      },
     },
     'items-in-line': {
       type: Number,
-      default: 4
+      default: 4,
     },
     'items-length': {
       type: [Number, String],
-      default: 'auto'
+      default: 'auto',
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     contenteditable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     selectFor: {
       type: String,
-      default: 'delete'
+      default: 'delete',
     },
     value: {
       required: false,
       type: Array,
-      default: null
-    }
+      default: null,
+    },
   },
   components: {
     StarRating,
-    Material
+    Material,
   },
   data() {
     return {
-      selected_materials: this.value || []
+      selected_materials: this.value || [],
     }
   },
   methods: {
@@ -60,7 +60,7 @@ export default {
         this.$router.push(
           this.localePath({
             name: 'materials-id',
-            params: { id: material.external_id }
+            params: { id: material.external_id },
           })
         )
       }
@@ -78,12 +78,12 @@ export default {
       this.$store
         .dispatch('removeMaterialFromCollection', {
           collection_id: id,
-          data: [{ external_id: material.external_id }]
+          data: [{ external_id: material.external_id }],
         })
         .then(() => {
           Promise.all([
             this.$store.dispatch('getCollectionMaterials', id),
-            this.$store.dispatch('getCollection', id)
+            this.$store.dispatch('getCollection', id),
           ]).then(() => null)
         })
     },
@@ -94,16 +94,16 @@ export default {
         selected_materials.push(material.external_id)
       } else {
         selected_materials = selected_materials.filter(
-          item => item !== material.external_id
+          (item) => item !== material.external_id
         )
       }
       return selected_materials
-    }
+    },
   },
   watch: {
     value(value) {
       this.selected_materials = value
-    }
+    },
   },
   computed: {
     ...mapGetters(['materials_loading']),
@@ -118,7 +118,7 @@ export default {
       if (materials) {
         const arrMaterials = materials.records ? materials.records : materials
 
-        return arrMaterials.map(material => {
+        return arrMaterials.map((material) => {
           const description =
             material.description && material.description.length > 200
               ? material.description.slice(0, 200) + '...'
@@ -127,7 +127,7 @@ export default {
           return {
             ...material,
             selected: selected_materials.indexOf(material.external_id) !== -1,
-            description
+            description,
           }
         })
       }
@@ -142,9 +142,9 @@ export default {
         search_text: this.didYouMean.suggestion,
         filters: this.materials.search_filters,
         page_size: 10,
-        page: 1
+        page: 1,
       })
       return this.$router.resolve(searchQuery).href
-    }
-  }
+    },
+  },
 }

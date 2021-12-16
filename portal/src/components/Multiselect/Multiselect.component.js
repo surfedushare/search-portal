@@ -5,11 +5,11 @@ export default {
   props: ['value', 'placeholder', 'items', 'disabled', 'select', 'deselect'],
   data() {
     return {
-      opened: false
+      opened: false,
     }
   },
   directives: {
-    ClickOutside
+    ClickOutside,
   },
   computed: {
     orderedItems() {
@@ -24,11 +24,11 @@ export default {
 
         return a.title.localeCompare(b.title)
       })
-    }
+    },
   },
   methods: {
     isSelected(item) {
-      return this.value.some(id => id === item.id)
+      return this.value.some((id) => id === item.id)
     },
     toggle() {
       this.opened = !this.opened
@@ -43,6 +43,6 @@ export default {
       } else {
         this.$emit('deselect', item.id)
       }
-    }
-  }
+    },
+  },
 }

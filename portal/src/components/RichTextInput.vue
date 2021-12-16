@@ -101,7 +101,7 @@ import {
   ListItem,
   Placeholder,
   Underline,
-  Link
+  Link,
 } from 'tiptap-extensions'
 import InputLanguageWrapper from '~/components/InputLanguageWrapper'
 import Popup from '~/components/Popup'
@@ -112,33 +112,33 @@ export default {
     EditorContent,
     EditorMenuBar,
     InputLanguageWrapper,
-    Popup
+    Popup,
   },
   props: {
     title: {
       type: String,
-      default: null
+      default: null,
     },
     language: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
       type: String,
-      default: ''
+      default: '',
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     update: {
       type: Function,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -153,7 +153,7 @@ export default {
             emptyNodeClass: 'is-empty',
             emptyNodeText: this.placeholder,
             showOnlyWhenEditable: true,
-            showOnlyCurrent: true
+            showOnlyCurrent: true,
           }),
           new Bold(),
           new Italic(),
@@ -163,9 +163,9 @@ export default {
           new BulletList(),
           new ListItem(),
           new History(),
-          new Link({ openOnClick: false, target: '_blank' })
-        ]
-      })
+          new Link({ openOnClick: false, target: '_blank' }),
+        ],
+      }),
     }
   },
   watch: {
@@ -175,7 +175,7 @@ export default {
         return
       }
       this.editor.setContent(value)
-    }
+    },
   },
   beforeDestroy() {
     this.editor.destroy()
@@ -211,8 +211,8 @@ export default {
       }
       this.editor.commands.link({ href: this.url })
       this.showLinkPopup = false
-    }
-  }
+    },
+  },
 }
 </script>
 <style>

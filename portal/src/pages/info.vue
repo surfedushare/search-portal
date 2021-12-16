@@ -19,14 +19,14 @@ export default {
   data() {
     return {
       titleKey: this.$route.meta.title_translation_key,
-      htmlKey: this.$route.meta.html_translation_key
+      htmlKey: this.$route.meta.html_translation_key,
     }
   },
   metaInfo() {
     return {
-      title: this.$i18n.t(this.$route.meta.title_translation_key)
+      title: this.$i18n.t(this.$route.meta.title_translation_key),
     }
-  }
+  },
 }
 </script>
 

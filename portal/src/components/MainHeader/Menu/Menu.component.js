@@ -8,7 +8,7 @@ export default {
   mounted() {},
   data() {
     return {
-      isShowSubMenu: false
+      isShowSubMenu: false,
     }
   },
   methods: {
@@ -39,7 +39,7 @@ export default {
         return theme.title_translations[language]
       }
       return theme.title
-    }
+    },
   },
   watch: {
     /**
@@ -55,13 +55,13 @@ export default {
      */
     $route() {
       this.closeSubMenu()
-    }
+    },
   },
   computed: {
-    ...mapGetters(['sortedThemes', 'show_header_menu', 'show_sub_menu'])
+    ...mapGetters(['sortedThemes', 'show_header_menu', 'show_sub_menu']),
   },
 
   directives: {
-    ClickOutside
-  }
+    ClickOutside,
+  },
 }

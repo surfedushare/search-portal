@@ -3,7 +3,7 @@ import {
   validateSearch,
   validateParams,
   validateIDString,
-  decodeAuthor
+  decodeAuthor,
 } from './_helpers'
 import injector from 'vue-inject'
 import axios from '~/axios'
@@ -12,13 +12,13 @@ const $log = injector.get('$log')
 
 function generateSearchParams(search) {
   const { filters = {} } = search
-  const filterArray = Object.keys(filters).map(key => {
+  const filterArray = Object.keys(filters).map((key) => {
     return { external_id: key, items: filters[key] }
   })
 
   return {
     ...search,
-    filters: filterArray
+    filters: filterArray,
   }
 }
 
@@ -31,7 +31,7 @@ export default {
     material_communities: null,
     materials_keywords: null,
     materials_loading: false,
-    materials_in_line: 1
+    materials_in_line: 1,
   },
   getters: {
     materials(state) {
@@ -57,21 +57,21 @@ export default {
     },
     materials_in_line(state) {
       return state.materials_in_line
-    }
+    },
   },
   actions: {
     async getMaterial({ commit }, { id, params }) {
       if (validateIDString(id)) {
         commit('SET_MATERIAL_LOADING', true)
         const { data: material } = await axios.get(`materials/${id}/`, {
-          params
+          params,
         })
         decodeAuthor(material)
         commit('SET_MATERIAL', material)
         commit('SET_MATERIAL_LOADING', false)
         return material
       } else {
-        return await axios.get('materials/', { params }).then(res => res.data)
+        return await axios.get('materials/', { params }).then((res) => res.data)
       }
     },
     async setMaterialSocial({ commit }, { id, params }) {
@@ -79,7 +79,7 @@ export default {
         // commit('SET_MATERIAL', null);
         commit('SET_MATERIAL_LOADING', true)
         const { data: material } = await axios.get(`materials/${id}/`, {
-          params
+          params,
         })
         commit('SET_MATERIAL', material)
         commit('SET_MATERIAL_LOADING', false)
@@ -104,7 +104,7 @@ export default {
     async getMaterialCommunities({ commit }, { params }) {
       if (validateParams(params)) {
         const { data: communities } = await axios.get('communities/', {
-          params
+          params,
         })
         commit('SET_MATERIAL_COMMUNITIES', communities)
       } else {
@@ -113,15 +113,15 @@ export default {
     },
     async setMaterialRating(context, params) {
       return await axios.post('rate_material/', {
-        params
+        params,
       })
     },
     async setApplaudMaterial(context, { external_id }) {
       if (validateIDString(external_id)) {
         return await axios.post('applaud_material/', {
           params: {
-            external_id: external_id
-          }
+            external_id: external_id,
+          },
         })
       } else {
         $log.error('Validate error: ', external_id)
@@ -174,10 +174,10 @@ export default {
         return await axios
           .get('materials/set/', {
             params: {
-              external_id: external_id
-            }
+              external_id: external_id,
+            },
           })
-          .then(res => res.data)
+          .then((res) => res.data)
       } else {
         $log.error('Validate error: ', external_id)
       }
@@ -187,29 +187,29 @@ export default {
         const response = await axios.get('suggestions/similarity/', {
           params: {
             external_id: external_id,
-            language: language
-          }
+            language: language,
+          },
         })
         return response.data
       } else {
         $log.error('Validate error: ', external_id)
       }
-    }
+    },
   },
   mutations: {
     SET_MATERIALS(state, payload) {
       const records = payload.records || payload
-      records.forEach(record => {
+      records.forEach((record) => {
         record.date = formatDate(record.publish_datetime)
         decodeAuthor(record)
       })
       state.materials = Object.assign({}, payload, {
-        records: records.map(record => {
+        records: records.map((record) => {
           return Object.assign(
             { date: formatDate(record.publish_datetime) },
             record
           )
-        })
+        }),
       })
     },
     SET_NEXT_PAGE_MATERIALS(state, payload) {
@@ -217,13 +217,13 @@ export default {
       state.materials = Object.assign({}, state.materials, payload, {
         records: [
           ...records,
-          ...payload.records.map(record => {
+          ...payload.records.map((record) => {
             return Object.assign(
               { date: formatDate(record.publish_datetime) },
               record
             )
-          })
-        ]
+          }),
+        ],
       })
     },
     SET_MATERIAL(state, payload) {
@@ -246,6 +246,6 @@ export default {
     },
     SET_MATERIALS_IN_LINE(state, payload) {
       state.materials_in_line = payload
-    }
-  }
+    },
+  },
 }

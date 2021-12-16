@@ -21,12 +21,12 @@ export default {
     parentId: {
       type: String,
       default: null,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      material: null
+      material: null,
     }
   },
   mounted() {
@@ -37,7 +37,7 @@ export default {
       this.$router.push(
         this.localePath({
           name: 'materials-id',
-          params: { id: this.parentId }
+          params: { id: this.parentId },
         })
       )
     },
@@ -47,13 +47,13 @@ export default {
       }
       this.$store
         .dispatch('getMaterial', {
-          params: { external_id: this.parentId }
+          params: { external_id: this.parentId },
         })
-        .then(result => {
+        .then((result) => {
           return (this.material = result[0])
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

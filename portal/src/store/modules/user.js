@@ -10,7 +10,7 @@ export default {
     user_loading: null,
     is_authenticated: false,
     auth_flow_token: null,
-    api_token: null
+    api_token: null,
   },
   getters: {
     user(state) {
@@ -29,7 +29,7 @@ export default {
       if (isNil(state.user)) {
         return []
       }
-      return state.user.permissions.filter(permission => {
+      return state.user.permissions.filter((permission) => {
         return permission.is_notification_only && isNil(permission.is_allowed)
       })
     },
@@ -45,7 +45,7 @@ export default {
       return state.api_token
     },
     getLoginLink() {
-      return route => {
+      return (route) => {
         let currentUrl = route.path + window.location.search
         if (process.env.VUE_APP_SURFCONEXT_BYPASS) {
           return '/' + 'login/success?continue=' + currentUrl
@@ -61,9 +61,10 @@ export default {
         return false
       }
       return state.user.permissions.some(
-        permission => permission.type === 'Communities' && permission.is_allowed
+        (permission) =>
+          permission.type === 'Communities' && permission.is_allowed
       )
-    }
+    },
   },
   actions: {
     async getUser({ commit }) {
@@ -102,7 +103,7 @@ export default {
       if (payload && payload.fully) {
         window.location = '/logout'
       }
-    }
+    },
   },
   mutations: {
     SET_USER(state, payload) {
@@ -124,6 +125,6 @@ export default {
       } catch (error) {
         $log.info('Unable to use localStorage: ' + error)
       }
-    }
-  }
+    },
+  },
 }

@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       show: this.isShow,
-      width_auto: this.auto_width ? 'auto' : 'fixed'
+      width_auto: this.auto_width ? 'auto' : 'fixed',
     }
   },
   methods: {
@@ -32,7 +32,7 @@ export default {
         }
         document.body.removeEventListener('keyup', this.closeOnEsc)
       }
-    }
+    },
   },
   computed: {},
   watch: {
@@ -49,6 +49,6 @@ export default {
      */
     auto_width(auto_width) {
       this.width_auto = auto_width ? 'auto' : 'fixed'
-    }
-  }
+    },
+  },
 }

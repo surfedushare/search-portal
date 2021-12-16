@@ -8,7 +8,7 @@ export default {
   state: {
     collection: null,
     collection_materials: null,
-    collection_materials_loading: false
+    collection_materials_loading: false,
   },
   getters: {
     collection(state) {
@@ -19,7 +19,7 @@ export default {
     },
     collection_materials_loading(state) {
       return state.collection_materials_loading
-    }
+    },
   },
   actions: {
     async getCollection({ commit }, id) {
@@ -34,7 +34,7 @@ export default {
     async setCollectionSocial({ commit }, { id, params }) {
       if (validateID(id) && validateParams(params)) {
         const { data: collection } = await axios.get(`collections/${id}/`, {
-          params
+          params,
         })
         commit('SET_COLLECTION', collection)
         return collection
@@ -59,24 +59,24 @@ export default {
         return await axios
           .get('collections/', {
             params: {
-              material_id: id
-            }
+              material_id: id,
+            },
           })
-          .then(res => res.data)
+          .then((res) => res.data)
       } else {
         $log.error('Validate error: ', id)
       }
     },
     async deleteMyCollection(context, id) {
       if (validateID(id)) {
-        return await axios.delete(`collections/${id}/`).then(res => res.data)
+        return await axios.delete(`collections/${id}/`).then((res) => res.data)
       } else {
         $log.error('Validate error: ', id)
       }
     },
     async createCollection(context, data) {
       if (validateParams(data)) {
-        return await axios.post(`collections/`, data).then(res => res.data)
+        return await axios.post(`collections/`, data).then((res) => res.data)
       } else {
         $log.error('Validate error: ', data)
       }
@@ -85,7 +85,7 @@ export default {
       if (validateID(collection_id) && validateParams(data)) {
         return await axios
           .post(`collections/${collection_id}/materials/`, data)
-          .then(res => res.data)
+          .then((res) => res.data)
       } else {
         $log.error('Validate error: ', { collection_id, data })
       }
@@ -94,9 +94,9 @@ export default {
       if (validateID(collection_id) && validateParams(data)) {
         return axios
           .delete(`collections/${collection_id}/materials/`, {
-            data
+            data,
           })
-          .then(res => res.data)
+          .then((res) => res.data)
       } else {
         $log.error('Validate error: ', { collection_id, data })
       }
@@ -108,8 +108,8 @@ export default {
           `collections/${id}/materials/`,
           {
             params: {
-              timestamp: Date.now()
-            }
+              timestamp: Date.now(),
+            },
           }
         )
         commit('SET_MATERIAL_TO_COLLECTION', materialsInfo)
@@ -118,7 +118,7 @@ export default {
       } else {
         $log.error('Validate error: ', { id })
       }
-    }
+    },
   },
   mutations: {
     SET_COLLECTION(state, payload) {
@@ -132,12 +132,12 @@ export default {
         state.collection_materials = {
           ...state.collection_materials,
           ...payload,
-          ...{ records: [...records, ...payload.records] }
+          ...{ records: [...records, ...payload.records] },
         }
       }
     },
     SET_MATERIAL_TO_COLLECTION_LOADING(state, payload) {
       state.collection_materials_loading = payload
-    }
-  }
+    },
+  },
 }

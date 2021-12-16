@@ -28,7 +28,7 @@ function switchLocalePathFactory() {
     const { params, ...routeCopy } = this.$route
     const baseRoute = Object.assign({}, routeCopy, {
       name,
-      params: { ...params, '0': params.pathMatch }
+      params: { ...params, 0: params.pathMatch },
     })
     return this.localePath(baseRoute, locale)
   }
@@ -36,8 +36,8 @@ function switchLocalePathFactory() {
 
 function getRouteBaseNameFactory(contextRoute) {
   const routeGetter = contextRoute
-    ? route => route || contextRoute
-    : function(route) {
+    ? (route) => route || contextRoute
+    : function (route) {
         return route || this.$route
       }
 
@@ -63,6 +63,6 @@ Vue.mixin({
     localePath: localePath,
     switchLocalePath: switchLocalePathFactory(),
     getRouteBaseName: getRouteBaseNameFactory(),
-    titleTranslation: titleTranslation
-  }
+    titleTranslation: titleTranslation,
+  },
 })

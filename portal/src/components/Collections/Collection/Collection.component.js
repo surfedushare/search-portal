@@ -11,25 +11,25 @@ export default {
     collection: {
       type: Object,
       default: null,
-      required: true
+      required: true,
     },
     contenteditable: {
-      default: false
+      default: false,
     },
     submitting: {
-      default: false
+      default: false,
     },
     changeViewType: {
-      default: false
+      default: false,
     },
     'items-in-line': {
-      default: 4
-    }
+      default: 4,
+    },
   },
   components: {
     ShareCollection,
     SwitchInput,
-    InputWithCounter
+    InputWithCounter,
   },
   mounted() {
     this.resetData()
@@ -42,7 +42,7 @@ export default {
       collectionTitle: null,
       search: {},
       isShowShareCollection: false,
-      isCopied: false
+      isCopied: false,
     }
   },
   computed: {
@@ -54,17 +54,16 @@ export default {
         this.collection.publish_status = value
           ? PublishStatus.PUBLISHED
           : PublishStatus.DRAFT
-      }
+      },
     },
     communityTitle() {
       if (!this.collection || !this.collection.communities[0]) {
         return
       }
-      const communityDetails = this.collection.communities[0].community_details.find(
-        details => {
+      const communityDetails =
+        this.collection.communities[0].community_details.find((details) => {
           return details.language_code.toLowerCase() === this.$i18n.locale
-        }
-      )
+        })
       return communityDetails.title
     },
     communityLink() {
@@ -73,11 +72,11 @@ export default {
       }
       const path = localePath({
         name: 'communities-community',
-        params: { community: this.collection.communities[0].id }
+        params: { community: this.collection.communities[0].id },
       })
       const route = this.$router.resolve(path)
       return route.href
-    }
+    },
   },
   methods: {
     resetData() {
@@ -89,7 +88,7 @@ export default {
       if (this.collectionTitle.trim().length === 0) {
         this.$store.commit('ADD_MESSAGE', {
           level: 'error',
-          message: 'collection-title-can-not-be-empty'
+          message: 'collection-title-can-not-be-empty',
         })
       } else {
         if (this.$i18n.locale === 'nl') {
@@ -119,14 +118,14 @@ export default {
               },
               {
                 linkedin: {
-                  counter_value: 0
+                  counter_value: 0,
                 },
                 twitter: {
-                  counter_value: 0
+                  counter_value: 0,
                 },
                 link: {
-                  counter_value: 0
-                }
+                  counter_value: 0,
+                },
               }
             )
 
@@ -154,8 +153,8 @@ export default {
         .dispatch('setCollectionSocial', {
           id: this.$route.params.id,
           params: {
-            shared: type
-          }
+            shared: type,
+          },
         })
         .then(() => {
           this.setSocialCounters()
@@ -169,7 +168,7 @@ export default {
       if (this.isCopied) {
         this.closeSocialSharing('link')
       }
-    }
+    },
   },
   watch: {
     search(search) {
@@ -184,7 +183,7 @@ export default {
       this.resetData()
       this.setSocialCounters()
     },
-    '$i18n.locale': function() {
+    '$i18n.locale': function () {
       this.resetData()
     },
     isPublished() {
@@ -192,6 +191,6 @@ export default {
         ? PublishStatus.PUBLISHED
         : PublishStatus.DRAFT
       this.$emit('onSubmit', { publish_status })
-    }
-  }
+    },
+  },
 }

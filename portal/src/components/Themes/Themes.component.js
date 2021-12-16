@@ -19,7 +19,7 @@ export default {
         return theme.description_translations[language]
       }
       return theme.description
-    }
+    },
   },
   computed: {
     /**
@@ -35,6 +35,6 @@ export default {
         return themes
       }
       return false
-    }
-  }
+    },
+  },
 }

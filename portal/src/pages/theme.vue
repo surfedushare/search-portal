@@ -5,7 +5,7 @@
     </div>
     <div v-else-if="theme && isReady" class="theme">
       <div class="center_block center-header">
-        <div class="theme__info ">
+        <div class="theme__info">
           <img
             src="/images/pictures/rawpixel-760027-unsplash.jpg"
             srcset="
@@ -109,13 +109,13 @@ export default {
     Materials,
     Disciplines,
     Collections,
-    Error
+    Error,
   },
   mixins: [PageMixin],
   props: [],
   data() {
     return {
-      search: {}
+      search: {},
     }
   },
   computed: {
@@ -125,14 +125,14 @@ export default {
       'themeCommunities',
       'themeCollections',
       'materials',
-      'filter'
-    ])
+      'filter',
+    ]),
   },
   created() {
     let themeId = this.$route.params.id
 
     this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
-      this.$store.dispatch('getTheme', themeId).then(theme => {
+      this.$store.dispatch('getTheme', themeId).then((theme) => {
         let themeCategory = this.$store.getters.getCategoryById(
           theme.filter_category,
           THEME_CATEGORY_FILTER_ID
@@ -143,7 +143,7 @@ export default {
           search_text: '',
           ordering: '-publisher_date',
           filters: this.$store.getters.search_filters,
-          return_filters: false
+          return_filters: false,
         })
       })
     })
@@ -153,7 +153,7 @@ export default {
     this.$store.dispatch('getThemeDisciplines', themeId)
     this.$store.dispatch('getThemeCommunities', {
       id: this.$route.params.id,
-      params: { page_size: 2 }
+      params: { page_size: 2 },
     })
     this.$store.dispatch('getThemeCollections', themeId)
   },
@@ -162,7 +162,7 @@ export default {
     return {
       title: this.theme
         ? this.theme.title_translations[this.$i18n.locale] || defaultTitle
-        : defaultTitle
+        : defaultTitle,
     }
   },
   methods: {
@@ -172,17 +172,17 @@ export default {
         THEME_CATEGORY_FILTER_ID
       )
       const filterIds = category
-        ? category.children.map(child => {
+        ? category.children.map((child) => {
             return child.external_id
           })
         : []
       this.search = {
         search_text: this.search.search_text,
         filters: {
-          learning_material_themes: [this.theme.filter_category, ...filterIds]
+          learning_material_themes: [this.theme.filter_category, ...filterIds],
         },
         page_size: 10,
-        page: 1
+        page: 1,
       }
       this.$store.dispatch('searchMaterials', this.search)
       const location = generateSearchMaterialsQuery(
@@ -203,8 +203,8 @@ export default {
         return theme.description_translations[language]
       }
       return theme.description
-    }
-  }
+    },
+  },
 }
 </script>
 

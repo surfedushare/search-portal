@@ -16,7 +16,7 @@ export default {
      */
     setMaterial(material) {
       this.$store.commit('SET_MATERIAL', material)
-    }
+    },
   },
   computed: {
     ...mapGetters(['materials_loading']),
@@ -34,7 +34,7 @@ export default {
         const { records } = materials
         if (records && records.length && material) {
           const materialIndex = records.findIndex(
-            record => record.external_id === material.external_id
+            (record) => record.external_id === material.external_id
           )
 
           if (materialIndex !== -1) {
@@ -54,7 +54,7 @@ export default {
                     page: page + 1,
                     page_size: materials.page_size,
                     search_text: materials.search_text,
-                    ordering: materials.ordering
+                    ordering: materials.ordering,
                   }
                 )
               )
@@ -67,9 +67,9 @@ export default {
                   page: 1,
                   page_size: materials.page_size,
                   search_text: materials.search_text,
-                  ordering: materials.ordering
+                  ordering: materials.ordering,
                 }) || null,
-              next: records[materialIndex + 1]
+              next: records[materialIndex + 1],
             }
           }
         }
@@ -77,8 +77,8 @@ export default {
       return {
         prev: null,
         filter: null,
-        next: null
+        next: null,
       }
-    }
-  }
+    },
+  },
 }

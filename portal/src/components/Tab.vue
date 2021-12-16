@@ -9,18 +9,18 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     identifier: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
-      isActive: true
+      isActive: true,
     }
-  }
+  },
 }
 </script>
 <style lang="less" scoped>

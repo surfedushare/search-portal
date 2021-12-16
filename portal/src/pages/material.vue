@@ -47,7 +47,7 @@ export default {
     Materials,
     Sidebar,
     MaterialInfo,
-    Navigation
+    Navigation,
   },
   mixins: [PageMixin],
   dependencies: ['$log'],
@@ -55,8 +55,8 @@ export default {
     return {
       collections: [],
       materials: {
-        records: []
-      }
+        records: [],
+      },
     }
   },
   computed: {
@@ -64,31 +64,27 @@ export default {
     communities() {
       // Get communities from collections
       const communities = this.collections
-        .map(collection => collection.communities)
+        .map((collection) => collection.communities)
         .flat()
 
       // Remove duplicate communities
       return uniqBy(communities, 'id')
-    }
+    },
   },
   metaInfo() {
     const defaultTitle = this.$root.$meta().title
     return {
-      title: this.material ? this.material.title || defaultTitle : defaultTitle
+      title: this.material ? this.material.title || defaultTitle : defaultTitle,
     }
   },
   created() {
     this.pageLoad = new Promise((resolve, reject) => {
-      this.updateMaterial(this.$route.params.id)
-        .then(resolve)
-        .catch(reject)
+      this.updateMaterial(this.$route.params.id).then(resolve).catch(reject)
     })
   },
   beforeRouteUpdate(to, from, next) {
     this.pageLoad = new Promise((resolve, reject) => {
-      this.updateMaterial(to.params.id)
-        .then(resolve)
-        .catch(reject)
+      this.updateMaterial(to.params.id).then(resolve).catch(reject)
     })
     next()
   },
@@ -96,12 +92,12 @@ export default {
     async updateMaterial(externalId) {
       const materialLoad = this.$store.dispatch('getMaterial', {
         id: externalId,
-        params: { count_view: true }
+        params: { count_view: true },
       })
       const material = await materialLoad
       const materials = await this.$store.dispatch('getSimilarMaterials', {
         external_id: this.$route.params.id,
-        language: material.language
+        language: material.language,
       })
       materials.records = materials.results
       this.materials = materials
@@ -115,10 +111,10 @@ export default {
     },
     onMoreLikeThisClick(material) {
       this.$log.customEvent('Waypoint', 'Click', material.external_id, null, {
-        dimension2: 'more_like_this'
+        dimension2: 'more_like_this',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

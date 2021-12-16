@@ -14,20 +14,20 @@ export default {
   props: {
     label: {
       type: String,
-      default: ''
+      default: '',
     },
-    value: Boolean
+    value: Boolean,
   },
   data() {
     return {
-      internalValue: this.value
+      internalValue: this.value,
     }
   },
   watch: {
     internalValue(input) {
       this.$emit('input', input)
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less">
