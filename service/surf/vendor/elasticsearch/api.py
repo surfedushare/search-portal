@@ -430,7 +430,7 @@ class ElasticSearchApiClient:
                         "filtered": {
                             "terms": {
                                 "field": elastic_type,
-                                "size": 500,
+                                "size": 2000,
                             }
                         }
                     },
@@ -439,7 +439,7 @@ class ElasticSearchApiClient:
                 aggregation_items[aggregation_name] = {
                     "terms": {
                         "field": elastic_type,
-                        "size": 500,
+                        "size": 2000,
                     }
                 }
         return aggregation_items
