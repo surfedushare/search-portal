@@ -42,4 +42,4 @@ secrets:
   harvester:
     api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/api-key"
   matomo:
-    api_key: null
+    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/matomo-api-key"
