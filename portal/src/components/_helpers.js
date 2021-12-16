@@ -1,5 +1,6 @@
 import i18n from '~/i18n'
 import { isEmpty } from 'lodash'
+import { DateTime } from 'luxon'
 
 export const generateSearchMaterialsQuery = function (
   data = { filters: {}, search_text: '' },
@@ -78,4 +79,24 @@ export const addFilter = function (search, category, filterId) {
   }
   search.filters[category].push(filterId)
   return search
+}
+
+export const formatDate = function (date, locale) {
+  if (!date) {
+    return
+  }
+  let format
+  switch (date.length) {
+    case 7: // year + month
+      format = { year: 'numeric', month: 'long' }
+      break
+    case 4: // year
+      format = { year: 'numeric' }
+      break
+    default:
+      format = { year: 'numeric', month: 'numeric', day: 'numeric' }
+  }
+  return new DateTime.fromISO(date)
+    .setLocale(locale === 'en' ? 'en-US' : 'nl-NL')
+    .toLocaleString(format)
 }

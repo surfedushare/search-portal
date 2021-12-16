@@ -18,7 +18,7 @@
       <h4 v-if="material.technical_type !== 'unknown'">{{ $t('File-format') }}</h4>
       <span v-if="material.technical_type !== 'unknown'">{{ $t(material.technical_type) }}</span>
       <h4>{{ $t('Publication-date') }}</h4>
-      {{ material.date || '-' }}
+      {{ formattedPublishedAt || '-' }}
       <h4>{{ $t('Language') }}</h4>
       {{ $t(material.language) }}
       <div  v-if="material.video && material.video.duration">
