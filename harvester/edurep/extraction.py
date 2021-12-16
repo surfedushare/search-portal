@@ -3,6 +3,7 @@ import vobject
 from html import unescape
 from mimetypes import guess_type
 from hashlib import sha1
+from dateutil.parser import parse as date_parser
 
 from django.conf import settings
 from django.utils.text import slugify
@@ -243,6 +244,14 @@ class EdurepDataExtraction(object):
         return datetime.text.strip()
 
     @classmethod
+    def get_publisher_year(cls, soup, el):
+        publisher_date = cls.get_publisher_date(soup, el)
+        if publisher_date is None:
+            return
+        datetime = date_parser(publisher_date)
+        return datetime.year
+
+    @classmethod
     def get_lom_educational_levels(cls, soup, el):
         educational = el.find('czp:educational')
         if not educational:
@@ -342,6 +351,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "authors": EdurepDataExtraction.get_authors,
     "publishers": EdurepDataExtraction.get_publishers,
     "publisher_date": EdurepDataExtraction.get_publisher_date,
+    "publisher_year": EdurepDataExtraction.get_publisher_year,
     "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
     "disciplines": EdurepDataExtraction.get_disciplines,

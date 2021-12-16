@@ -118,3 +118,8 @@ class TestGetHarvestSeedsAnatomyTool(TestCase):
     def test_get_keywords(self):
         seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[0]["keywords"], ['A05.6.02.001 Duodenum', 'A05.9.01.001 Pancreas'])
+
+    def test_get_publisher_year(self):
+        seeds = get_harvest_seeds("anatomy_tool", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]["publisher_year"], 2016)
+        self.assertIsNone(seeds[1]["publisher_year"])
