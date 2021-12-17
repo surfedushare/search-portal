@@ -41,3 +41,5 @@ secrets:
     admin_password: "qwerty"
   sharekit:
     api_key: null
+  matomo:
+    api_key: null

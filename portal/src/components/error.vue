@@ -18,13 +18,13 @@ export default {
   props: {
     statusCode: {
       type: String,
-      default: ''
+      default: '',
     },
     messageKey: {
       type: String,
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
 }
 </script>
 

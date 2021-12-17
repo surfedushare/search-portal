@@ -4,12 +4,12 @@ export default {
   name: 'save-material-in-collection',
   props: ['isShow', 'close', 'material'],
   components: {
-    Popup
+    Popup,
   },
   data() {
     return {
       collection: null,
-      submitting: false
+      submitting: false,
     }
   },
   methods: {
@@ -23,9 +23,9 @@ export default {
           collection_id: this.collection,
           data: [
             {
-              external_id: this.material.external_id
-            }
-          ]
+              external_id: this.material.external_id,
+            },
+          ],
         })
         .then(() => {
           this.$store
@@ -35,9 +35,9 @@ export default {
               this.close()
             })
         })
-    }
+    },
   },
   computed: {
-    ...mapGetters(['my_collections'])
-  }
+    ...mapGetters(['my_collections']),
+  },
 }

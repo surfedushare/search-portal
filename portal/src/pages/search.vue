@@ -54,7 +54,7 @@
         <button
           :class="{
             'search__tools_type_button--list': materials_in_line === 3,
-            'search__tools_type_button--cards': materials_in_line === 1
+            'search__tools_type_button--cards': materials_in_line === 1,
           }"
           class="search__tools_type_button"
           @click.prevent="changeViewType"
@@ -96,6 +96,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
 import FilterCategories from '~/components/FilterCategories'
 import Materials from '~/components/Materials'
@@ -103,7 +104,7 @@ import Spinner from '~/components/Spinner'
 import {
   generateSearchMaterialsQuery,
   parseSearchMaterialsQuery,
-  addFilter
+  addFilter,
 } from '~/components/_helpers'
 
 export default {
@@ -111,21 +112,22 @@ export default {
     Search,
     FilterCategories,
     Materials,
-    Spinner
+    Spinner,
   },
+  mixins: [PageMixin],
   data() {
     const urlInfo = parseSearchMaterialsQuery(this.$route.query)
     return {
       search: urlInfo.search,
       formData: {
-        name: null
+        name: null,
       },
       sort_order: 'relevance',
       sort_order_options: [
         { value: 'relevance' },
         { value: 'date_descending' },
-        { value: 'date_ascending' }
-      ]
+        { value: 'date_ascending' },
+      ],
     }
   },
   computed: {
@@ -133,7 +135,7 @@ export default {
       'materials',
       'materials_loading',
       'materials_in_line',
-      'did_you_mean'
+      'did_you_mean',
     ]),
     defaultFilterTitle() {
       if (!this.$route.params.filterId) {
@@ -146,14 +148,14 @@ export default {
       return defaultFilter
         ? defaultFilter.title_translations[this.$i18n.locale]
         : null
-    }
+    },
   },
   watch: {
     search(search) {
       if (search && !this.materials_loading) {
         this.executeSearch()
       }
-    }
+    },
   },
   mounted() {
     this.loadFilterCategories().finally(() => {
@@ -198,7 +200,7 @@ export default {
         search_text: this.search.search_text,
         filters: {},
         page_size: 10,
-        page: 1
+        page: 1,
       }
       this.executeSearch(true)
     },
@@ -210,7 +212,7 @@ export default {
         if (records_total > page_size * page) {
           this.$store.dispatch('searchNextPageMaterials', {
             ...search,
-            page: page + 1
+            page: page + 1,
           })
         }
       }
@@ -231,9 +233,9 @@ export default {
     changeOrdering() {
       const { sort_order } = this
       if (sort_order === 'date_descending') {
-        this.search.ordering = '-lom.lifecycle.contribute.publisherdate'
+        this.search.ordering = '-publisher_date'
       } else if (sort_order === 'date_ascending') {
-        this.search.ordering = 'lom.lifecycle.contribute.publisherdate'
+        this.search.ordering = 'publisher_date'
       } else {
         this.search.ordering = ''
       }
@@ -245,8 +247,8 @@ export default {
         return Promise.resolve(null)
       }
       return this.$store.dispatch('getFilterCategories')
-    }
-  }
+    },
+  },
 }
 </script>
 

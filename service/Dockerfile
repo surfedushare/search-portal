@@ -2,7 +2,7 @@
 # BUILD FRONTEND
 #################################################
 
-FROM node:12.13 AS builder
+FROM node:14.18 AS builder
 
 # Create the app environment
 RUN mkdir -p /usr/src/portal

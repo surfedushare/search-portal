@@ -2,7 +2,7 @@ export const PublishStatus = {
   // NB: this enum has a hard copy in the API
   DRAFT: 0,
   REVIEW: 1,
-  PUBLISHED: 2
+  PUBLISHED: 2,
 }
 
 // Imported from vue-router

@@ -4,7 +4,7 @@ export default {
   name: 'share-material',
   props: ['is-show', 'close', 'material', 'value'],
   components: {
-    Popup
+    Popup,
   },
   mounted() {
     this.link = validateHREF(window.location.href)
@@ -15,8 +15,8 @@ export default {
       link: false,
       submitting: false,
       formData: {
-        title: null
-      }
+        title: null,
+      },
     }
   },
   methods: {
@@ -26,7 +26,7 @@ export default {
     onCopy() {
       this.saved = true
       this.$emit('input', true)
-    }
+    },
   },
-  computed: {}
+  computed: {},
 }

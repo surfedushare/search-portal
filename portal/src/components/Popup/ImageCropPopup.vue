@@ -19,45 +19,45 @@ import Popup from '~/components/Popup'
 export default {
   name: 'ImageCropPopup',
   components: {
-    Popup
+    Popup,
   },
   props: {
     width: {
       type: Number,
-      default: 100
+      default: 100,
     },
     height: {
       type: Number,
-      default: 50
+      default: 50,
     },
     isShow: {
       type: Boolean,
-      default: false
+      default: false,
     },
     image: {
       type: String,
-      default: null
+      default: null,
     },
     crop: {
       type: Function,
-      default: () => {}
+      default: () => {},
     },
     close: {
       type: Function,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   watch: {
     image(image) {
       this.$refs.croppieRef.bind({
-        url: image
+        url: image,
       })
-    }
+    },
   },
   mounted() {
     if (this.image) {
       this.$refs.croppieRef.bind({
-        url: this.image
+        url: this.image,
       })
     }
   },
@@ -65,7 +65,7 @@ export default {
     result(result) {
       this.$emit('crop', result)
       const reader = new FileReader()
-      reader.onload = e => {
+      reader.onload = (e) => {
         this.$emit('preview', e.target.result)
         this.closePopup()
       }
@@ -75,14 +75,14 @@ export default {
       const options = {
         format: 'png',
         size: { width: this.width, height: this.height },
-        type: 'blob'
+        type: 'blob',
       }
       this.$refs.croppieRef.result(options)
     },
     closePopup() {
       this.$emit('close')
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less">

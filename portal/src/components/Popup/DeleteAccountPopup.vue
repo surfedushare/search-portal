@@ -29,22 +29,22 @@ import Popup from '~/components/Popup'
 export default {
   name: 'DeleteAccountPopup',
   components: {
-    Popup
+    Popup,
   },
   props: {
     showPopup: {
       type: Boolean,
-      default: false
+      default: false,
     },
     deleteAccount: {
       type: Function,
-      default: () => {}
+      default: () => {},
     },
     close: {
       type: Function,
-      default: () => {}
-    }
-  }
+      default: () => {},
+    },
+  },
 }
 </script>
 

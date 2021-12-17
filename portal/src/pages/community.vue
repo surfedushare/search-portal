@@ -1,10 +1,10 @@
 <template>
   <section class="container main">
     <section class="community">
-      <div v-if="!community_details">
+      <div v-if="!community_details && isReady">
         <error status-code="404" message-key="community-not-found" />
       </div>
-      <div v-else>
+      <div v-else-if="community_details">
         <div class="center_block">
           <InfoBlock
             :title="community_details.title"
@@ -22,7 +22,7 @@
               <template slot="header-info">
                 <h2>{{ $t('Collections-2') }}</h2>
                 <button
-                  v-if="!isLoading && community_info.publisher"
+                  v-if="isReady && community_info.publisher"
                   class="button"
                   @click="goToCommunitySearch()"
                 >
@@ -52,6 +52,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import InfoBlock from '~/components/InfoBlock'
 import Themes from '~/components/Themes'
 import Disciplines from '~/components/Disciplines'
@@ -69,14 +70,14 @@ export default {
     Disciplines,
     Collections,
     Spinner,
-    InfoBlock
+    InfoBlock,
   },
+  mixins: [PageMixin],
   props: [],
   data() {
     return {
-      isLoading: true,
       isSearch: false,
-      search: false
+      search: false,
     }
   },
   computed: {
@@ -84,19 +85,13 @@ export default {
       'community_disciplines',
       'community_themes',
       'community_collections_loading',
-      'user'
+      'user',
     ]),
     community_collections() {
-      let communityCollections = this.$store.getters.getPublicCollections(
-        this.user
-      )
-      return this.isLoading || !isEmpty(communityCollections)
-        ? communityCollections
-        : null
+      return this.$store.getters.getPublicCollections(this.user)
     },
     community_info() {
-      let communityInfo = this.$store.getters.getCommunityInfo(this.user)
-      return this.isLoading || !isEmpty(communityInfo) ? communityInfo : null
+      return this.$store.getters.getCommunityInfo(this.user) || null
     },
     community_details() {
       // Retrieve the details and exit when invalid or loading
@@ -105,33 +100,39 @@ export default {
         this.$i18n.locale
       )
       if (isEmpty(communityDetails)) {
-        return this.isLoading ? communityDetails || {} : null
+        return communityDetails || null
       }
       // Fill some defaults for the details
       communityDetails.featured_image =
         communityDetails.featured_image ||
         '/images/pictures/community-default.jpg'
       return communityDetails
-    }
+    },
   },
-  mounted() {
+  created() {
     const { community } = this.$route.params
-    this.$store.dispatch('getCommunity', community).finally(() => {
-      this.isLoading = false
-    })
+    this.pageLoad = this.$store.dispatch('getCommunity', community)
     this.$store.dispatch('getCommunityThemes', community)
     this.$store.dispatch('getCommunityDisciplines', community)
     this.$store.dispatch('getCommunityCollections', community)
+  },
+  metaInfo() {
+    const defaultTitle = this.$root.$meta().title
+    return {
+      title: this.community_details
+        ? this.community_details.title || defaultTitle
+        : defaultTitle,
+    }
   },
   methods: {
     goToCommunitySearch() {
       const searchRoute = localePath({
         name: 'communities-search',
-        params: { filterId: this.community_info.publisher }
+        params: { filterId: this.community_info.publisher },
       })
       this.$router.push(searchRoute)
-    }
-  }
+    },
+  },
 }
 </script>
 

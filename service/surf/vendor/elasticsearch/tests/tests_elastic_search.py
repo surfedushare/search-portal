@@ -102,7 +102,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def test_basic_search(self):
         search_result = self.instance.search('')
         search_result_filter = self.instance.search(
-            '', filters=[{"external_id": "lom.technical.format", "items": ["video"]}])
+            '', filters=[{"external_id": "technical_type", "items": ["video"]}])
         # did we get _anything_ from search?
         self.assertIsNotNone(search_result)
         self.assertIsNotNone(search_result_filter)
@@ -136,14 +136,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         # search with single filter applied
         search_biologie_video = self.instance.search(
             "biologie",
-            filters=[{"external_id": "lom.technical.format", "items": ["video"]}]
+            filters=[{"external_id": "technical_type", "items": ["video"]}]
         )
         self.assertTrue(search_biologie_video["records"])
         for record in search_biologie_video["records"]:
             self.assert_value_from_record(record, "technical_type", "video")
         search_biologie_video_and_docs = self.instance.search(
             "biologie",
-            filters=[{"external_id": "lom.technical.format", "items": ["video", "document"]}]
+            filters=[{"external_id": "technical_type", "items": ["video", "document"]}]
         )
         self.assertGreater(len(search_biologie_video_and_docs["records"]), len(search_biologie_video["records"]))
         for record in search_biologie_video_and_docs["records"]:
@@ -153,8 +153,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_biologie_text_and_cc_by = self.instance.search(
             "biologie",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["document"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
+                {"external_id": "technical_type", "items": ["document"]},
+                {"external_id": "copyright.keyword", "items": ["cc-by-40"]}
             ]
         )
         self.assertTrue(search_biologie_text_and_cc_by["records"])
@@ -167,8 +167,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_biologie_and_didactiek_with_filters = self.instance.search(
             "biologie didactiek",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["document"]},
-                {"external_id": "lom.rights.copyrightandotherrestrictions", "items": ["cc-by-40"]}
+                {"external_id": "technical_type", "items": ["document"]},
+                {"external_id": "copyright.keyword", "items": ["cc-by-40"]}
             ])
 
         self.assertIsNotNone(search_biologie_and_didactiek)
@@ -182,7 +182,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
 
         # search with publish date filter applied
         search_biologie_upper_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, "2018-12-31"]}
+            {"external_id": "publisher_date", "items": [None, "2018-12-31"]}
         ])
         self.assertTrue(search_biologie_upper_date["records"])
         for record in search_biologie_upper_date["records"]:
@@ -193,7 +193,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 self.assertLessEqual
             )
         search_biologie_lower_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", None]}
+            {"external_id": "publisher_date", "items": ["2018-01-01", None]}
         ])
         self.assertTrue(search_biologie_lower_date["records"])
         for record in search_biologie_lower_date["records"]:
@@ -204,7 +204,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 self.assertGreaterEqual
             )
         search_biologie_between_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": ["2018-01-01", "2018-12-31"]}
+            {"external_id": "publisher_date", "items": ["2018-01-01", "2018-12-31"]}
         ])
         self.assertTrue(search_biologie_between_date["records"])
         for record in search_biologie_between_date["records"]:
@@ -223,7 +223,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
 
         # search with None, None as date filter. This search should give the same result as not filtering at all.
         search_biologie_none_date = self.instance.search("biologie", filters=[
-            {"external_id": "lom.lifecycle.contribute.publisherdate", "items": [None, None]}
+            {"external_id": "publisher_date", "items": [None, None]}
         ])
         search_biologie = self.instance.search("biologie")
         self.assertEqual(search_biologie_none_date, search_biologie)
@@ -234,21 +234,21 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search_result_filter_1 = self.instance.search(
             '',
             filters=[{
-                "external_id": "lom.classification.obk.discipline.id",
+                "external_id": "disciplines",
                 "items": ['0861c43d-1874-4788-b522-df8be575677f']
             }]
         )
         search_result_filter_2 = self.instance.search(
             '',
             filters=[{
-                "external_id": "lom.classification.obk.discipline.id",
+                "external_id": "disciplines",
                 "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
         search_result_filter_3 = self.instance.search(
             '',
             filters=[{
-                "external_id": "lom.classification.obk.discipline.id",
+                "external_id": "disciplines",
                 "items": ['0861c43d-1874-4788-b522-df8be575677f', '2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
@@ -266,7 +266,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
 
     def test_drilldown_search(self):
-        search_biologie = self.instance.search("biologie", drilldown_names=["lom.technical.format"])
+        search_biologie = self.instance.search("biologie", drilldown_names=["technical_type"])
         self.assertIsNotNone(search_biologie)
         self.assertTrue(search_biologie['drilldowns'])
         self.assertTrue(search_biologie['drilldowns'][0]['items'])
@@ -278,13 +278,13 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def test_drilldown_search_disciplines(self):
         search_with_theme_drilldown = self.instance.search(
             '',
-            drilldown_names=["lom.classification.obk.discipline.id"]
+            drilldown_names=["disciplines"]
         )
         self.assertIsNotNone(search_with_theme_drilldown)
         self.assertTrue(search_with_theme_drilldown['drilldowns'])
         self.assertEqual(
             [drilldown["external_id"] for drilldown in search_with_theme_drilldown['drilldowns']],
-            ["lom.classification.obk.discipline.id"]
+            ["disciplines"]
         )
         for drilldown in search_with_theme_drilldown['drilldowns']:
             self.assertTrue(drilldown["items"])
@@ -296,14 +296,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         search = self.instance.search(
             "biologie",
             filters=[
-                {"external_id": "lom.technical.format", "items": ["text"]}
+                {"external_id": "technical_type", "items": ["text"]}
             ],
-            drilldown_names=['about.repository', 'lom.technical.format']
+            drilldown_names=['harvest_source', 'technical_type']
         )
 
         drilldowns = search['drilldowns']
-        drilldowns_for_format = next((d for d in drilldowns if d['external_id'] == 'lom.technical.format'), None)
-        drilldowns_for_repo = next((d for d in drilldowns if d['external_id'] == 'about.repository'), None)
+        drilldowns_for_format = next((d for d in drilldowns if d['external_id'] == 'technical_type'), None)
+        drilldowns_for_repo = next((d for d in drilldowns if d['external_id'] == 'harvest_source'), None)
 
         total_for_format = sum(item['count'] for item in drilldowns_for_format['items'])
         total_for_repo = sum(item['count'] for item in drilldowns_for_repo['items'])
@@ -321,14 +321,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.get_value_from_record(record, "publish_datetime")
             for record in search_biologie["records"]
         ]
-        search_biologie_asc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
+        search_biologie_asc = self.instance.search("biologie", ordering="publisher_date")
         self.assertIsNotNone(search_biologie_asc)
         self.assertTrue(search_biologie_asc["records"])
         search_biologie_asc_dates = [
             self.get_value_from_record(record, "publish_datetime")
             for record in search_biologie_asc["records"]
         ]
-        search_biologie_desc = self.instance.search("biologie", ordering="lom.lifecycle.contribute.publisherdate")
+        search_biologie_desc = self.instance.search("biologie", ordering="publisher_date")
         self.assertIsNotNone(search_biologie_desc)
         self.assertTrue(search_biologie_asc["records"])
         search_biologie_desc_dates = [
@@ -365,14 +365,14 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         self.assertFalse(biologie_drilldowns['records'])
         self.assertFalse(biologie_drilldowns['drilldowns'])
 
-        repo_drilldowns = self.instance.drilldowns(['about.repository'])
+        repo_drilldowns = self.instance.drilldowns(['harvest_source'])
         self.assertTrue(repo_drilldowns['drilldowns'])
         self.assertTrue(repo_drilldowns['drilldowns'][0]['items'])
         for item in repo_drilldowns['drilldowns'][0]['items']:
             self.assertTrue(item['external_id'])
             self.assertIsNotNone(item['count'])
 
-        repo_and_format_drilldowns = self.instance.drilldowns(['about.repository', 'lom.technical.format'])
+        repo_and_format_drilldowns = self.instance.drilldowns(['harvest_source', 'technical_type'])
         self.assertTrue(repo_and_format_drilldowns['drilldowns'])
         for drilldown in repo_and_format_drilldowns['drilldowns']:
             self.assertTrue(drilldown['items'])
@@ -441,7 +441,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def check_author_search(self, author, expected_record_count):
         search_author = self.instance.search(
             '',
-            filters=[{"external_id": "lom.lifecycle.contribute.author", "items": [author]}]
+            filters=[{"external_id": "authors.name.keyword", "items": [author]}]
         )
         for record in search_author['records']:
             authors = [author["name"] for author in self.get_value_from_record(record, 'authors')]

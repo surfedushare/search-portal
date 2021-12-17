@@ -10,7 +10,7 @@
         :collections="collections"
       />
     </div>
-    <div v-else-if="!material && materialLoaded" class="not-found-section">
+    <div v-else-if="!material && isReady" class="not-found-section">
       <h1 class="not-found-title">
         {{ $t('Not-found-title') }}
       </h1>
@@ -40,22 +40,23 @@ import Materials from '~/components/Materials'
 import Sidebar from '~/components/Materials/Sidebar'
 import MaterialInfo from '~/components/Materials/MaterialInfo'
 import Navigation from '~/components/Materials/Navigation'
+import PageMixin from '~/pages/page-mixin'
 
 export default {
   components: {
     Materials,
     Sidebar,
     MaterialInfo,
-    Navigation
+    Navigation,
   },
+  mixins: [PageMixin],
   dependencies: ['$log'],
   data() {
     return {
       collections: [],
       materials: {
-        records: []
+        records: [],
       },
-      materialLoaded: false
     }
   },
   computed: {
@@ -63,48 +64,57 @@ export default {
     communities() {
       // Get communities from collections
       const communities = this.collections
-        .map(collection => collection.communities)
+        .map((collection) => collection.communities)
         .flat()
 
       // Remove duplicate communities
       return uniqBy(communities, 'id')
+    },
+  },
+  metaInfo() {
+    const defaultTitle = this.$root.$meta().title
+    return {
+      title: this.material ? this.material.title || defaultTitle : defaultTitle,
     }
   },
-  mounted() {
-    this.updateMaterial(this.$route.params.id)
+  created() {
+    this.pageLoad = new Promise((resolve, reject) => {
+      this.updateMaterial(this.$route.params.id).then(resolve).catch(reject)
+    })
   },
   beforeRouteUpdate(to, from, next) {
-    this.updateMaterial(to.params.id)
+    this.pageLoad = new Promise((resolve, reject) => {
+      this.updateMaterial(to.params.id).then(resolve).catch(reject)
+    })
     next()
   },
   methods: {
     async updateMaterial(externalId) {
-      try {
-        const material = await this.$store.dispatch('getMaterial', {
-          id: externalId,
-          params: { count_view: true }
-        })
-        const materials = await this.$store.dispatch('getSimilarMaterials', {
-          external_id: this.$route.params.id,
-          language: material.language
-        })
-        materials.records = materials.results
-        this.materials = materials
-      } finally {
-        this.materialLoaded = true
-      }
+      const materialLoad = this.$store.dispatch('getMaterial', {
+        id: externalId,
+        params: { count_view: true },
+      })
+      const material = await materialLoad
+      const materials = await this.$store.dispatch('getSimilarMaterials', {
+        external_id: this.$route.params.id,
+        language: material.language,
+      })
+      materials.records = materials.results
+      this.materials = materials
+
       const collections = await this.$store.dispatch(
         'checkMaterialInCollection',
         externalId
       )
       this.collections = collections.results
+      return materialLoad
     },
     onMoreLikeThisClick(material) {
       this.$log.customEvent('Waypoint', 'Click', material.external_id, null, {
-        dimension2: 'more_like_this'
+        dimension2: 'more_like_this',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

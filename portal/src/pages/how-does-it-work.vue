@@ -16,6 +16,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import Materials from '~/components/Materials'
 import InfoBlock from '~/components/InfoBlock'
 import HeaderBlock from '~/components/HeaderBlock'
@@ -24,14 +25,20 @@ export default {
   components: {
     HeaderBlock,
     Materials,
-    InfoBlock
+    InfoBlock,
   },
+  mixins: [PageMixin],
   computed: {
-    ...mapGetters(['materials'])
+    ...mapGetters(['materials']),
   },
   mounted() {
     this.$store.dispatch('getMaterials', { page_size: 4 })
-  }
+  },
+  metaInfo() {
+    return {
+      title: this.$i18n.t('How-does-it-work'),
+    }
+  },
 }
 </script>
 

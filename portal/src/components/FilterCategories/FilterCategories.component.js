@@ -7,13 +7,13 @@ export default {
   name: 'filter-categories',
   components: { DatesRange, FilterCategory },
   data() {
-    const publisherDateExternalId = 'lom.lifecycle.contribute.publisherdate'
+    const publisherDateExternalId = 'publisher_date'
     return {
       publisherDateExternalId,
       data: {
         start_date: null,
-        end_date: null
-      }
+        end_date: null,
+      },
     }
   },
   props: ['materials', 'defaultFilter', 'selectedFilters'],
@@ -23,18 +23,18 @@ export default {
       if (!category.children.length) {
         return false
       }
-      return category.children.some(child => {
+      return category.children.some((child) => {
         return !child.is_hidden
       })
     },
     childExternalIds(categoryId, itemId) {
       const category = this.materials.filter_categories.find(
-        category => category.external_id === categoryId
+        (category) => category.external_id === categoryId
       )
-      const item = category.children.find(item => item.external_id === itemId)
+      const item = category.children.find((item) => item.external_id === itemId)
       const iterator = (memo, item) => {
         if (item.children.length > 0) {
-          item.children.forEach(child => iterator(memo, child))
+          item.children.forEach((child) => iterator(memo, child))
         }
         memo.push(item.external_id)
         return memo
@@ -54,7 +54,7 @@ export default {
       const existingItems = this.selectedFilters[categoryId] || []
       const filters = this.childExternalIds(categoryId, itemId)
       this.selectedFilters[categoryId] = existingItems.filter(
-        item => !filters.includes(item)
+        (item) => !filters.includes(item)
       )
       if (this.selectedFilters[categoryId].length === 0) {
         this.$delete(this.selectedFilters, categoryId)
@@ -74,7 +74,7 @@ export default {
       const searchRequest = {
         search_text,
         ordering,
-        filters: { ...filters }
+        filters: { ...filters },
       }
       // Execute search
       await this.$router.push(
@@ -89,8 +89,8 @@ export default {
       return this.selectedFilters[this.publisherDateExternalId] || [null, null]
     },
     hasDatesRangeFilter() {
-      return this.datesRangeFilter().some(item => item !== null)
-    }
+      return this.datesRangeFilter().some((item) => item !== null)
+    },
   },
   computed: {
     selectionFilterItems() {
@@ -102,16 +102,16 @@ export default {
         return []
       }
       return flatMap(this.selectedFilters, (items, categoryId) => {
-        const category = this.materials.filter_categories.find(category => {
+        const category = this.materials.filter_categories.find((category) => {
           return category.external_id === categoryId
         })
-        const results = items.map(item => {
-          return category.children.find(child => {
+        const results = items.map((item) => {
+          return category.children.find((child) => {
             child.parent = category
             return child.external_id === item
           })
         })
-        return results.filter(rsl => {
+        return results.filter((rsl) => {
           return rsl
         })
       })
@@ -131,15 +131,15 @@ export default {
           ) || {}
       }
       const visibleCategories = this.materials.filter_categories.filter(
-        category =>
+        (category) =>
           !category.is_hidden &&
           category.external_id !== defaultFilterItem.searchId
       )
 
       // aggregate counts to the highest level
-      return visibleCategories.map(category => {
+      return visibleCategories.map((category) => {
         if (category.children) {
-          category.children = category.children.map(child => {
+          category.children = category.children.map((child) => {
             if (child.children.length > 0) {
               child.count = child.children.reduce(
                 (memo, c) => memo + c.count,
@@ -151,10 +151,10 @@ export default {
         }
 
         category.children = category.children.filter(
-          child => !child.is_hidden && child.count > 0
+          (child) => !child.is_hidden && child.count > 0
         )
 
-        category.children = category.children.map(child => {
+        category.children = category.children.map((child) => {
           const selected = this.selectedFilters[category.external_id] || []
           child.selected = selected.includes(child.external_id)
           return child
@@ -162,6 +162,6 @@ export default {
 
         return category
       })
-    }
-  }
+    },
+  },
 }

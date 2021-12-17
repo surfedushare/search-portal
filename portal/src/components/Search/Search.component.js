@@ -7,39 +7,39 @@ import axios from '~/axios'
 export default {
   name: 'search',
   components: {
-    VueAutosuggest
+    VueAutosuggest,
   },
   props: {
     selectOptions: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           name: '',
-          options: []
+          options: [],
         }
-      }
+      },
     },
     checkboxOptions: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           name: '',
-          options: []
+          options: [],
         }
-      }
+      },
     },
     placeholder: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
       searchText: this.value,
-      suggestions: []
+      suggestions: [],
     }
   },
   methods: {
@@ -47,14 +47,14 @@ export default {
       this.searchSuggestions(query, this)
       this.$emit('input', query)
     },
-    searchSuggestions: debounce(async function(search) {
+    searchSuggestions: debounce(async function (search) {
       if (!search || search.length <= 2) {
         this.suggestions = []
         return
       }
 
       const { data } = await axios.get('keywords/', {
-        params: { query: search }
+        params: { query: search },
       })
 
       this.suggestions = [{ data }]
@@ -77,34 +77,34 @@ export default {
     changeCheckboxOption($event) {
       this.$emit('selectCheckboxOption', {
         value: $event.target.value,
-        checked: $event.target.checked
+        checked: $event.target.checked,
       })
-    }
+    },
   },
   watch: {
     value(value) {
       this.searchText = value
-    }
+    },
   },
   computed: {
     ...mapGetters({
-      keywords: 'materials_keywords'
+      keywords: 'materials_keywords',
     }),
-    autosuggestInputProps: function() {
+    autosuggestInputProps: function () {
       return {
         placeholder: this.placeholder || this.$t('Search'),
         id: 'autosuggest__input',
         type: 'search',
         autofocus: true,
         class: {
-          'with-dropdown': this.suggestions.length > 0
-        }
+          'with-dropdown': this.suggestions.length > 0,
+        },
       }
     },
-    autosuggestClasses: function() {
+    autosuggestClasses: function () {
       return {
-        'with-dropdown': this.suggestions.length > 0
+        'with-dropdown': this.suggestions.length > 0,
       }
-    }
-  }
+    },
+  },
 }

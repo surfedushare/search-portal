@@ -19,20 +19,20 @@ if (process.env.VUE_APP_USE_SENTRY) {
         delete event.request.headers['User-Agent']
       }
       return event
-    }
+    },
   })
 }
 
-injector.decorator('$log', function($log) {
+injector.decorator('$log', function ($log) {
   /***************************
    * CUSTOM METHODS
    ***************************/
 
-  $log.pageView = function(page) {
+  $log.pageView = function (page) {
     $log.info('Visiting: ' + page)
   }
 
-  $log.customEvent = function(category, action, label, value, dimensions) {
+  $log.customEvent = function (category, action, label, value, dimensions) {
     if (!label && !value) {
       $log.info('Trigger: ' + category + ' => ' + action)
     } else if (label) {
@@ -44,7 +44,7 @@ injector.decorator('$log', function($log) {
       $log.info('Custom dimensions:', dimensions)
     }
   }
-  $log.setIsStaff = function(value) {
+  $log.setIsStaff = function (value) {
     $log.info('Set is_staff: ', value)
   }
 
@@ -65,17 +65,19 @@ injector.decorator('$log', function($log) {
   $log._customEvent = $log.customEvent
   $log._setIsStaff = $log.setIsStaff
 
-  $log.pageView = function(page) {
+  $log.pageView = function (page) {
+    window._paq.push(['setDocumentTitle', window.document.title])
+    window._paq.push(['setCustomUrl', window.location.href])
     window._paq.push(['trackPageView'])
     $log._pageView(page)
   }
 
-  $log.customEvent = function(category, action, label, value, dimensions) {
+  $log.customEvent = function (category, action, label, value, dimensions) {
     $log._customEvent(category, action, label, value, dimensions)
     window._paq.push(['trackEvent', category, action, label, value, dimensions]) // NB: this modifies dimensions!
   }
 
-  $log.setIsStaff = function(value) {
+  $log.setIsStaff = function (value) {
     if (value) {
       window._paq.push(['setCustomDimension', 1, value])
     } else {
@@ -91,36 +93,36 @@ injector.decorator('$log', function($log) {
   $log._warn = $log.warn
   $log._error = $log.error
 
-  $log.warn = function(message, context) {
+  $log.warn = function (message, context) {
     if (context) {
       $log._warn(message, context)
       Sentry.captureEvent({
         message: message,
         level: 'warning',
-        extra: context
+        extra: context,
       })
     } else {
       $log._warn(message)
       Sentry.captureEvent({
         message: message,
-        level: 'warning'
+        level: 'warning',
       })
     }
   }
 
-  $log.error = function(message, context) {
+  $log.error = function (message, context) {
     if (context) {
       $log._error(message, context)
       Sentry.captureEvent({
         message: message,
         level: 'error',
-        extra: context
+        extra: context,
       })
     } else {
       $log._error(message)
       Sentry.captureEvent({
         message: message,
-        level: 'error'
+        level: 'error',
       })
     }
   }

@@ -2,6 +2,7 @@ class Repositories:
     EDUREP = "edurep.EdurepOAIPMH"
     SHAREKIT = "sharekit.SharekitMetadataHarvest"
     ANATOMY_TOOL = "anatomy_tool.AnatomyToolOAIPMH"
+    HANZE = "hanze.HanzeResearchObjectResource"
 
 
 REPOSITORY_CHOICES = [

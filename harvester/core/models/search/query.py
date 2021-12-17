@@ -6,13 +6,17 @@ from django.utils.text import slugify
 from rest_framework import serializers
 
 
+def default_version():
+    return settings.VERSION
+
+
 class QueryRanking(models.Model):
 
     query = models.ForeignKey("core.Query", on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
 
     subquery = models.CharField(max_length=255, db_index=True)
-    version = models.CharField(max_length=50, default=settings.VERSION, editable=False)
+    version = models.CharField(max_length=50, default=default_version, editable=False)
     ranking = models.JSONField(default=dict)
     is_approved = models.BooleanField(null=True)
 

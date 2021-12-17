@@ -13,19 +13,19 @@ export default {
     community_themes: null,
     community_disciplines: null,
     community_collections: null,
-    community_collections_loading: null
+    community_collections_loading: null,
   },
   getters: {
     communities(state) {
       return state.communities
     },
     allCommunities(state) {
-      return user => {
+      return (user) => {
         if (!state.communities) {
           return []
         }
 
-        return state.communities.filter(community => {
+        return state.communities.filter((community) => {
           return (
             community.publish_status === PublishStatus.PUBLISHED ||
             (user &&
@@ -36,17 +36,17 @@ export default {
       }
     },
     userCommunities(state) {
-      return user => {
+      return (user) => {
         if (!state.communities || isNil(user)) {
           return []
         }
-        return state.communities.filter(community => {
+        return state.communities.filter((community) => {
           return user.communities.indexOf(community.id) >= 0
         })
       }
     },
     getCommunityInfo(state) {
-      return user => {
+      return (user) => {
         if (isEmpty(state.community_info)) {
           return state.community_info
         } else if (
@@ -65,7 +65,7 @@ export default {
       return (user, language) => {
         let communityInfo = getters.getCommunityInfo(user)
         return find(communityInfo.community_details, {
-          language_code: language.toUpperCase()
+          language_code: language.toUpperCase(),
         })
       }
     },
@@ -82,11 +82,11 @@ export default {
       return state.community_collections_loading
     },
     getPublicCollections(state) {
-      return user => {
+      return (user) => {
         if (!state.community_collections) {
           return []
         }
-        return filter(state.community_collections.results, collection => {
+        return filter(state.community_collections.results, (collection) => {
           return (
             collection.publish_status === PublishStatus.PUBLISHED ||
             (user &&
@@ -95,13 +95,13 @@ export default {
           )
         })
       }
-    }
+    },
   },
   actions: {
     async getCommunities({ commit }, { params = {} } = {}) {
       if (validateParams(params)) {
         const { data: communities } = await axios.get('communities/', {
-          params
+          params,
         })
         commit('SET_COMMUNITIES', communities.results)
         return communities
@@ -198,14 +198,14 @@ export default {
       } else {
         $log.error('Validate error: ', { id, data })
       }
-    }
+    },
   },
   mutations: {
     SET_COMMUNITIES(state, payload) {
       state.communities = payload
     },
     UPDATE_COMMUNITY(state, payload) {
-      state.communities = state.communities.map(community => {
+      state.communities = state.communities.map((community) => {
         if (payload.id === community.id) {
           return payload
         }
@@ -229,14 +229,14 @@ export default {
       state.community_collections = {
         ...state.community_collections,
         next: payload.next,
-        results: [...state.community_collections.results, ...payload.results]
+        results: [...state.community_collections.results, ...payload.results],
       }
     },
     ADD_COMMUNITY_COLLECTION(state, payload) {
       const results = state.community_collections.results || []
       state.community_collections = {
         ...state.community_collections,
-        results: [payload, ...results]
+        results: [payload, ...results],
       }
     },
     EXTEND_COMMUNITY_COLLECTION(state, payload) {
@@ -245,16 +245,16 @@ export default {
 
       state.community_collections = {
         ...state.community_collections,
-        results: results.map(item => {
+        results: results.map((item) => {
           if (item.id === payloadItem.id) {
             return payloadItem
           }
           return item
-        })
+        }),
       }
     },
     SET_COMMUNITY_COLLECTIONS_LOADING(state, payload) {
       state.community_collections_loading = payload
-    }
-  }
+    },
+  },
 }

@@ -5,7 +5,7 @@ export default {
   name: 'dates-range',
   props: ['dates', 'inline', 'theme', 'disableFutureDays', 'category'],
   components: {
-    Datepicker
+    Datepicker,
   },
   mounted() {
     // prevent click outside event with popupItem.
@@ -14,7 +14,7 @@ export default {
   data() {
     const { dates } = this
 
-    const opened = dates.some(date => date !== null)
+    const opened = dates.some((date) => date !== null)
 
     return {
       opened,
@@ -23,20 +23,20 @@ export default {
       format: 'yyyy-MM-dd',
       formData: {
         start_date: dates[0] ? new Date(dates[0]) : null,
-        end_date: dates[1] ? new Date(dates[1]) : null
-      }
+        end_date: dates[1] ? new Date(dates[1]) : null,
+      },
     }
   },
   directives: {
-    ClickOutside
+    ClickOutside,
   },
   watch: {
     dates(dates) {
       this.formData = {
         start_date: dates[0] ? new Date(dates[0]) : null,
-        end_date: dates[1] ? new Date(dates[1]) : null
+        end_date: dates[1] ? new Date(dates[1]) : null,
       }
-    }
+    },
   },
   methods: {
     toggle() {
@@ -58,6 +58,6 @@ export default {
         ? formatDate(this.dates[1], 'YYYY-MM-DD')
         : null
       this.$emit('input', [startDate, endDate])
-    }
-  }
+    },
+  },
 }

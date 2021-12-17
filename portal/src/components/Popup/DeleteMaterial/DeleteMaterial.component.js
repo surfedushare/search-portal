@@ -3,20 +3,20 @@ export default {
   name: 'delete-material',
   props: ['is-show', 'close', 'collection', 'deletefunction'],
   components: {
-    Popup
+    Popup,
   },
   mounted() {},
   data() {
     return {
       formData: {
-        title: null
-      }
+        title: null,
+      },
     }
   },
   methods: {
     deleteCollection() {
       this.deletefunction()
-    }
+    },
   },
-  computed: {}
+  computed: {},
 }

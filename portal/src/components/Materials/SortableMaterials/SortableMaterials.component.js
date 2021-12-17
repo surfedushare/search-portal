@@ -8,32 +8,32 @@ export default {
   components: {
     draggable,
     StarRating,
-    Material
+    Material,
   },
   props: {
     materials: {
       type: Object,
-      default: null
+      default: null,
     },
     'items-in-line': {
       type: Number,
-      default: 4
+      default: 4,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     'content-editable': {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     handleMaterialClick(material) {
       this.$router.push(
         this.localePath({
           name: 'materials-id',
-          params: { id: material.external_id }
+          params: { id: material.external_id },
         })
       )
     },
@@ -42,12 +42,12 @@ export default {
       this.$store
         .dispatch('removeMaterialFromCollection', {
           collection_id: id,
-          data: [{ external_id: material.external_id }]
+          data: [{ external_id: material.external_id }],
         })
         .then(() => {
           Promise.all([
             this.$store.dispatch('getCollectionMaterials', id),
-            this.$store.dispatch('getCollection', id)
+            this.$store.dispatch('getCollection', id),
           ]).then(() => null)
         })
     },
@@ -55,7 +55,7 @@ export default {
       if (!records) {
         return []
       }
-      return records.map(record => {
+      return records.map((record) => {
         if (record.description && record.description.length > 200) {
           record.description = record.description.slice(0, 200) + '...'
         }
@@ -64,7 +64,7 @@ export default {
     },
     sortByPosition(records) {
       return records.sort((a, b) => (a.position > b.position ? 1 : -1))
-    }
+    },
   },
   computed: {
     ...mapGetters(['materials_loading']),
@@ -87,27 +87,27 @@ export default {
           value.position = index
           return value
         })
-        const external_ids = values.map(material => ({
-          external_id: material.external_id
+        const external_ids = values.map((material) => ({
+          external_id: material.external_id,
         }))
-        const materials = orderedList.map(material => {
+        const materials = orderedList.map((material) => {
           return {
             external_id: material.external_id,
-            position: material.position
+            position: material.position,
           }
         })
         this.$store
           .dispatch('removeMaterialFromCollection', {
             collection_id: id,
-            data: external_ids
+            data: external_ids,
           })
           .then(() => {
             this.$store.dispatch('addMaterialToCollection', {
               collection_id: id,
-              data: materials
+              data: materials,
             })
           })
-      }
-    }
-  }
+      },
+    },
+  },
 }

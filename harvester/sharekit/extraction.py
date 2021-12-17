@@ -1,6 +1,7 @@
 import re
 from mimetypes import guess_type
 from hashlib import sha1
+from dateutil.parser import parse as date_parser
 
 from django.conf import settings
 
@@ -125,6 +126,14 @@ class SharekitMetadataExtraction(ExtractProcessor):
         return publishers
 
     @classmethod
+    def get_publisher_year(cls, node):
+        publisher_date = node["attributes"].get("publishedAt", None)
+        if not publisher_date:
+            return
+        publisher_datetime = date_parser(publisher_date)
+        return publisher_datetime.year
+
+    @classmethod
     def get_lom_educational_levels(cls, node):
         educational_levels = node["attributes"].get("educationalLevels", [])
         if not educational_levels:
@@ -223,6 +232,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "authors": SharekitMetadataExtraction.get_authors,
     "publishers": SharekitMetadataExtraction.get_publishers,
     "publisher_date": "$.attributes.publishedAt",
+    "publisher_year": SharekitMetadataExtraction.get_publisher_year,
     "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
     "disciplines": SharekitMetadataExtraction.get_empty_list,

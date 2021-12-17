@@ -186,3 +186,10 @@ class TestGetHarvestSeedsEdurep(TestCase):
         self.assertEqual(seeds[1]["material_types"], [],
                          "Expected material without a type to return empty list")
         self.assertEqual(seeds[4]["material_types"], ["weblecture"])
+
+    def test_get_publisher_year(self):
+        seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertIsNone(seeds[0]["publisher_year"], "Expected deleted material to have no publication year")
+        self.assertIsNone(seeds[1]["publisher_year"],
+                          "Expected material without publication date to have no publication year")
+        self.assertEqual(seeds[3]["publisher_year"], 2017)

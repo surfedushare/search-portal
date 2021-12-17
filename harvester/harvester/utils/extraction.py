@@ -5,6 +5,7 @@ from django.conf import settings
 from edurep.models import EdurepOAIPMH
 from sharekit.models import SharekitMetadataHarvest
 from anatomy_tool.models import AnatomyToolOAIPMH
+from hanze.models import HanzeResearchObjectResource
 
 
 logger = logging.getLogger("harvester")
@@ -20,6 +21,7 @@ def get_harvest_seeds(set_specification, latest_update, include_deleted=True, in
     results = EdurepOAIPMH.objects.extract_seeds(set_specification, latest_update)
     results += SharekitMetadataHarvest.objects.extract_seeds(set_specification, latest_update)
     results += AnatomyToolOAIPMH.objects.extract_seeds(latest_update)
+    results += HanzeResearchObjectResource.objects.extract_seeds(latest_update)
 
     seeds = []
     for seed in results:

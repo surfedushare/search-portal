@@ -1,11 +1,11 @@
 <template>
   <section class="container main themes">
-    <div v-if="!theme && !isLoading">
+    <div v-if="!theme && isReady">
       <error status-code="404" message-key="theme-not-found" />
     </div>
-    <div v-else-if="theme && !isLoading" class="theme">
+    <div v-else-if="theme && isReady" class="theme">
       <div class="center_block center-header">
-        <div class="theme__info ">
+        <div class="theme__info">
           <img
             src="/images/pictures/rawpixel-760027-unsplash.jpg"
             srcset="
@@ -91,6 +91,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { isEmpty } from 'lodash'
+import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
 import PopularList from '~/components/Communities/PopularList'
 import Materials from '~/components/Materials'
@@ -108,20 +109,13 @@ export default {
     Materials,
     Disciplines,
     Collections,
-    Error
+    Error,
   },
+  mixins: [PageMixin],
   props: [],
   data() {
     return {
-      isLoading: true,
-      search: {
-        filters: [
-          {
-            external_id: 'lom.technical.format',
-            items: []
-          }
-        ]
-      }
+      search: {},
     }
   },
   computed: {
@@ -131,32 +125,27 @@ export default {
       'themeCommunities',
       'themeCollections',
       'materials',
-      'filter'
-    ])
+      'filter',
+    ]),
   },
-  mounted() {
+  created() {
     let themeId = this.$route.params.id
 
-    this.$store.dispatch('getFilterCategories').then(() => {
-      this.$store
-        .dispatch('getTheme', themeId)
-        .then(theme => {
-          let themeCategory = this.$store.getters.getCategoryById(
-            theme.filter_category,
-            THEME_CATEGORY_FILTER_ID
-          )
-          themeCategory.selected = true
-          this.$store.dispatch('searchMaterials', {
-            page_size: 4,
-            search_text: '',
-            ordering: '-lom.lifecycle.contribute.publisherdate',
-            filters: this.$store.getters.search_filters,
-            return_filters: false
-          })
+    this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
+      this.$store.dispatch('getTheme', themeId).then((theme) => {
+        let themeCategory = this.$store.getters.getCategoryById(
+          theme.filter_category,
+          THEME_CATEGORY_FILTER_ID
+        )
+        themeCategory.selected = true
+        this.$store.dispatch('searchMaterials', {
+          page_size: 4,
+          search_text: '',
+          ordering: '-publisher_date',
+          filters: this.$store.getters.search_filters,
+          return_filters: false,
         })
-        .finally(() => {
-          this.isLoading = false
-        })
+      })
     })
 
     // TODO: all data fetched below is also in the getFilterCategories above
@@ -164,9 +153,17 @@ export default {
     this.$store.dispatch('getThemeDisciplines', themeId)
     this.$store.dispatch('getThemeCommunities', {
       id: this.$route.params.id,
-      params: { page_size: 2 }
+      params: { page_size: 2 },
     })
     this.$store.dispatch('getThemeCollections', themeId)
+  },
+  metaInfo() {
+    const defaultTitle = this.$root.$meta().title
+    return {
+      title: this.theme
+        ? this.theme.title_translations[this.$i18n.locale] || defaultTitle
+        : defaultTitle,
+    }
   },
   methods: {
     onSearch() {
@@ -175,17 +172,17 @@ export default {
         THEME_CATEGORY_FILTER_ID
       )
       const filterIds = category
-        ? category.children.map(child => {
+        ? category.children.map((child) => {
             return child.external_id
           })
         : []
       this.search = {
         search_text: this.search.search_text,
         filters: {
-          learning_material_themes: [this.theme.filter_category, ...filterIds]
+          learning_material_themes: [this.theme.filter_category, ...filterIds],
         },
         page_size: 10,
-        page: 1
+        page: 1,
       }
       this.$store.dispatch('searchMaterials', this.search)
       const location = generateSearchMaterialsQuery(
@@ -206,8 +203,8 @@ export default {
         return theme.description_translations[language]
       }
       return theme.description
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -296,6 +296,9 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'type': 'date',
                     'format': 'strict_date_optional_time||yyyy-MM||epoch_millis'
                 },
+                'publisher_year': {
+                    'type': 'keyword'
+                },
                 'keywords': {
                     'type': 'text',
                     'fields': {

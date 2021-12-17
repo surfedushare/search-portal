@@ -18,7 +18,7 @@
       :to="
         localePath({
           name: editableContent ? 'my-collection' : 'collections-id',
-          params: { id: collection.id }
+          params: { id: collection.id },
         })
       "
       class="collections__item_ttl_link"
@@ -35,19 +35,19 @@ export default {
     collection: {
       type: Object,
       default: null,
-      required: false
+      required: false,
     },
     editableContent: {
       type: Boolean,
       default: false,
-      required: false
+      required: false,
     },
     deleteCollectionPopup: {
       type: Function,
       default: () => {},
-      required: false
-    }
-  }
+      required: false,
+    },
+  },
 }
 </script>
 

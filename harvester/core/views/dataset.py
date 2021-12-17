@@ -63,7 +63,7 @@ class DatasetDocumentsView(generics.ListAPIView):
             raise Http404("No content found")
 
         dataset_version = dataset.versions.get_latest_version()
-        page = self.paginate_queryset(dataset_version.document_set.all())
+        page = self.paginate_queryset(dataset_version.document_set.exclude(properties__state="deleted"))
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)

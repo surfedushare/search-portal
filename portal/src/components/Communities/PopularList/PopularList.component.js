@@ -8,10 +8,10 @@ export default {
   methods: {
     getCommunityTitle(community) {
       const communityDetails = community.community_details.find(
-        details => details.language_code === this.$i18n.locale.toUpperCase()
+        (details) => details.language_code === this.$i18n.locale.toUpperCase()
       )
       return communityDetails.title
-    }
+    },
   },
   computed: {
     /**
@@ -29,6 +29,6 @@ export default {
       }
 
       return false
-    }
-  }
+    },
+  },
 }

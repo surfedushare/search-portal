@@ -12,7 +12,6 @@ from django.db import models
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from surf.apps.filters.models import MpttFilterItem
 from surf.apps.locale.models import Locale
-from surf.vendor.search.choices import AUTHOR_FIELD_ID, PUBLISHER_FIELD_ID
 
 
 logger = logging.getLogger("service")
@@ -25,7 +24,10 @@ EDUSTANDAARD_TEMPLATE = "{protocol}://purl.edustandaard.nl/begrippenkader/{conce
 
 DEEPL_ENDPOINT = "https://api-free.deepl.com/v2/translate"
 
-ENGLISH_SAME_AS_DUTCH = [AUTHOR_FIELD_ID, PUBLISHER_FIELD_ID]
+ENGLISH_SAME_AS_DUTCH = [
+    "authors.name.keyword",
+    "publishers.keyword"
+]
 
 
 def sync_category_filters():

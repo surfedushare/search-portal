@@ -3,6 +3,7 @@ import vobject
 from html import unescape
 from mimetypes import guess_type
 from hashlib import sha1
+from dateutil.parser import parse as date_parser
 
 from django.conf import settings
 from django.utils.text import slugify
@@ -194,11 +195,11 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_publishers(cls, soup, el):
-        return ["Anatomy Tool"]
+        return ["AnatomyTOOL"]
 
     @classmethod
     def get_publisher_date(cls, soup, el):
-        publisher = el.find(string='publisher')
+        publisher = el.find(string='Created')
         if not publisher:
             return
         contribution = publisher.find_parent('contribute')
@@ -208,6 +209,14 @@ class AnatomyToolExtraction(object):
         if not datetime:
             return
         return datetime.text.strip()
+
+    @classmethod
+    def get_publisher_year(cls, soup, el):
+        publisher_date = cls.get_publisher_date(soup, el)
+        if publisher_date is None:
+            return
+        datetime = date_parser(publisher_date)
+        return datetime.year
 
     @classmethod
     def get_lom_educational_levels(cls, soup, el):
@@ -269,6 +278,7 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "authors": AnatomyToolExtraction.get_authors,
     "publishers": AnatomyToolExtraction.get_publishers,
     "publisher_date": AnatomyToolExtraction.get_publisher_date,
+    "publisher_year": AnatomyToolExtraction.get_publisher_year,
     "lom_educational_levels": AnatomyToolExtraction.get_lom_educational_levels,
     "lowest_educational_level": AnatomyToolExtraction.get_lowest_educational_level,
     "disciplines": AnatomyToolExtraction.get_disciplines,

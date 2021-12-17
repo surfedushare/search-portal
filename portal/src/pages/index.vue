@@ -86,6 +86,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
@@ -98,12 +99,13 @@ export default {
   components: {
     Search,
     PopularList,
-    Materials
+    Materials,
   },
+  mixins: [PageMixin],
   data() {
     return {
       searchText: '',
-      filters: {}
+      filters: {},
     }
   },
   computed: {
@@ -112,16 +114,14 @@ export default {
       materials: 'materials',
       allCommunities: 'allCommunities',
       sortedThemes: 'sortedThemes',
-      statistic: 'statistic'
+      statistic: 'statistic',
     }),
     numberOfMaterials() {
-      return numeral(this.statistic.value)
-        .format('0,0')
-        .replace(',', '.')
+      return numeral(this.statistic.value).format('0,0').replace(',', '.')
     },
     educationalLevelOptions() {
       return this.getFilterOptions(EDUCATIONAL_LEVEL_CATEGORY_ID)
-    }
+    },
   },
   mounted() {
     this.$store.dispatch('getMaterials', { page_size: 4 })
@@ -133,13 +133,13 @@ export default {
     getFilterOptions(external_id) {
       if (this.filterCategories) {
         const filterCategory = this.filterCategories.find(
-          category => category.external_id === external_id
+          (category) => category.external_id === external_id
         )
 
         if (filterCategory) {
           return {
             name: filterCategory.title_translations[this.$i18n.locale],
-            options: filterCategory.children
+            options: filterCategory.children,
           }
         }
       }
@@ -155,11 +155,11 @@ export default {
           search_text: this.searchText,
           filters: this.filters,
           page_size: 10,
-          page: 1
+          page: 1,
         })
       )
-    }
-  }
+    },
+  },
 }
 </script>
 

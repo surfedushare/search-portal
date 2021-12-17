@@ -6,7 +6,7 @@
         :key="tab.title"
         :class="{
           active: tab.identifier === currentTab,
-          [tab.identifier]: true
+          [tab.identifier]: true,
         }"
         class="tab"
         @click="clickTab(tab.identifier)"
@@ -24,42 +24,42 @@ export default {
   props: {
     activeTab: {
       type: String,
-      default: null
+      default: null,
     },
     selectTab: {
       type: Function,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
-      tabs: []
+      tabs: [],
     }
   },
   computed: {
     currentTab() {
-      const tab = this.tabs.find(tab => tab.isActive)
+      const tab = this.tabs.find((tab) => tab.isActive)
       return tab && tab.identifier
-    }
+    },
   },
   mounted() {
-    this.tabs = this.$children.filter(c => {
+    this.tabs = this.$children.filter((c) => {
       return c.$slots.default
     })
 
-    this.tabs.forEach(tab => {
+    this.tabs.forEach((tab) => {
       tab.isActive = tab.identifier === this.activeTab
     })
   },
   methods: {
     clickTab(identifier) {
-      this.tabs.forEach(tab => {
+      this.tabs.forEach((tab) => {
         tab.isActive = tab.identifier === identifier
       })
 
       this.selectTab(identifier)
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>

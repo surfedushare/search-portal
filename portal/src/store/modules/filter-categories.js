@@ -3,7 +3,7 @@ import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
 
-const PUBLISHER_DATE_ID = 'lom.lifecycle.contribute.publisherdate'
+const PUBLISHER_DATE_ID = 'publisher_date'
 
 function getFiltersForSearch(items) {
   if (isNil(items)) {
@@ -33,7 +33,7 @@ function getFiltersFromQuery(query) {
   let querySearch = parseSearchMaterialsQuery(query)
   let selected = {}
   if (!isEmpty(querySearch.search)) {
-    forEach(querySearch.search.filters, filter => {
+    forEach(querySearch.search.filters, (filter) => {
       // filters is an object, not an array
       filter.items.reduce((obj, item) => {
         obj[item] = true
@@ -51,7 +51,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
   showAlls = showAlls || []
   let searchId = isNil(parent) ? null : parent.searchId
 
-  items.forEach(item => {
+  items.forEach((item) => {
     // Set values that might be relevant when loading children
     item.searchId = searchId || item.external_id
     item.selected = selected[item.external_id] || false
@@ -74,7 +74,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
       opened.indexOf(item.id) >= 0 || item.selected || hasSelectedChildren
     item.showAll = showAlls.indexOf(item.id) >= 0
   })
-  return items.some(item => {
+  return items.some((item) => {
     return item.selected
   })
 }
@@ -85,7 +85,7 @@ export default {
     filter_categories_loading: null,
     disciplines: null,
     languages: null,
-    byCategoryId: {}
+    byCategoryId: {},
   },
   getters: {
     filter_categories(state) {
@@ -111,7 +111,7 @@ export default {
 
       const filterMap = {}
       for (const group in selectedGroups) {
-        const items = selectedGroups[group].map(item => {
+        const items = selectedGroups[group].map((item) => {
           return item.external_id
         })
         filterMap[group] = items
@@ -120,7 +120,7 @@ export default {
     },
     getFiltersFromQuery() {
       return getFiltersFromQuery
-    }
+    },
   },
   actions: {
     async getFilterCategories({ state, commit }) {
@@ -144,7 +144,7 @@ export default {
       return isNil(state.filter_categories_loading)
         ? state.filter_categories
         : state.filter_categories_loading
-    }
+    },
   },
   mutations: {
     SET_FILTER_CATEGORIES(state, payload) {
@@ -155,7 +155,7 @@ export default {
       state.filter_categories = payload
 
       const disciplines = payload.find(
-        child => child.external_id.search('discipline.id') !== -1
+        (child) => child.external_id.search('discipline') !== -1
       )
       state.disciplines = disciplines.children.reduce((obj, value) => {
         obj[value.external_id] = value
@@ -164,7 +164,7 @@ export default {
 
       state.byCategoryId = {}
       function setCategoryIds(items) {
-        items.forEach(item => {
+        items.forEach((item) => {
           const key = isNull(item.parent)
             ? item.external_id
             : `${item.parent}-${item.external_id}`
@@ -176,6 +176,6 @@ export default {
     },
     SET_FILTER_CATEGORIES_LOADING(state, payload) {
       state.filter_categories_loading = payload
-    }
-  }
+    },
+  },
 }

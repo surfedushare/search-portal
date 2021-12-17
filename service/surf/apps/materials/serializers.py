@@ -36,7 +36,7 @@ class SearchFilterCategorySerializer(serializers.Serializer):
     """
 
     external_id = serializers.CharField()
-    items = serializers.ListField(child=serializers.CharField())
+    items = serializers.ListField(child=serializers.CharField(allow_null=True))
 
 
 class SearchSerializer(serializers.Serializer):

@@ -41,3 +41,5 @@ secrets:
     admin_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
   sharekit:
     api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/sharekit-credentials"
+  matomo:
+    api_key: null

@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'edurep',
     'sharekit',
     'anatomy_tool',
+    'hanze',
 ]
 
 MIDDLEWARE = [
@@ -475,3 +476,8 @@ MIDDLEWARE.append('x_robots_tag_middleware.middleware.XRobotsTagMiddleware')
 VERSATILEIMAGEFIELD_SETTINGS = {
     'sized_directory_name': 'thumbnails',
 }
+
+
+# Matomo
+
+MATOMO_API_KEY = environment.secrets.matomo.api_key

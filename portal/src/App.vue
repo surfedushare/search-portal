@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="main_block ">
+    <div class="main_block">
       <MainHeader />
 
       <router-view />
@@ -25,24 +25,21 @@ import MainHeader from '~/components/MainHeader'
 import MainFooter from '~/components/MainFooter'
 import { setLanguage } from '~/axios'
 
+const DEFAULT_TITLE = 'Edusources'
+
 export default {
   dependencies: ['$window', '$log'],
   components: {
     MainHeader,
-    MainFooter
+    MainFooter,
   },
   watch: {
     '$i18n.locale'(newLocale) {
       setLanguage(newLocale)
-    }
+    },
   },
   mounted() {
-    this.$log.pageView(this.$route.path)
     this.$store.dispatch('getThemes')
-    this.$router.beforeEach((to, from, next) => {
-      this.$log.pageView(to.path)
-      next()
-    })
   },
   methods: {
     isDemoEnvironment() {
@@ -50,7 +47,15 @@ export default {
         this.$window.location.hostname.indexOf('acc.') >= 0 ||
         new URLSearchParams(this.$window.location.search).get('demo')
       )
-    }
-  }
+    },
+  },
+  metaInfo: {
+    title: DEFAULT_TITLE,
+    titleTemplate: (titleChunk) => {
+      return titleChunk && titleChunk !== DEFAULT_TITLE
+        ? `${titleChunk} | ${DEFAULT_TITLE}`
+        : DEFAULT_TITLE
+    },
+  },
 }
 </script>

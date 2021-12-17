@@ -72,6 +72,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import PageMixin from '~/pages/page-mixin'
 import CommunityItem from '~/components/CommunityItem'
 import HeaderBlock from '~/components/HeaderBlock'
 import SwitchInput from '~/components/switch-input'
@@ -86,12 +87,13 @@ export default {
     HeaderBlock,
     SwitchInput,
     Tab,
-    Tabs
+    Tabs,
   },
+  mixins: [PageMixin],
   data() {
     return {
       activeTab: this.$route.query.tab || 'all-communities',
-      showDrafts: true
+      showDrafts: true,
     }
   },
   computed: {
@@ -102,7 +104,7 @@ export default {
       }
 
       return this.allCommunities(this.user).filter(
-        c => c.publish_status === PublishStatus.PUBLISHED
+        (c) => c.publish_status === PublishStatus.PUBLISHED
       )
     },
     myCommunities() {
@@ -111,12 +113,17 @@ export default {
       }
 
       return this.userCommunities(this.user).filter(
-        c => c.publish_status === PublishStatus.PUBLISHED
+        (c) => c.publish_status === PublishStatus.PUBLISHED
       )
-    }
+    },
   },
   mounted() {
     this.$store.dispatch('getCommunities')
+  },
+  metaInfo() {
+    return {
+      title: this.$i18n.t('Communities'),
+    }
   },
   methods: {
     editable(community) {
@@ -124,17 +131,17 @@ export default {
         return false
       }
 
-      return this.user.communities.some(id => id === community.id)
+      return this.user.communities.some((id) => id === community.id)
     },
     setActiveTab(tabIdentifier) {
       this.activeTab = tabIdentifier
 
       this.$router.replace({
         name: this.localePath({ name: 'communities' }).name,
-        query: { tab: tabIdentifier }
+        query: { tab: tabIdentifier },
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
