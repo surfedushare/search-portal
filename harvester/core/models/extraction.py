@@ -10,7 +10,7 @@ OBJECTIVE_PROPERTIES = {
     "copyright", "copyright_description", "aggregation_level", "authors", "publishers", "publisher_date",
     "lom_educational_levels", "lowest_educational_level", "disciplines", "ideas", "from_youtube", "is_restricted",
     "analysis_allowed", "is_part_of", "has_parts", "doi", "research_object_type", "research_themes", "parties",
-    "external_id", "state"
+    "external_id", "state", "publisher_year"
 }
 
 
