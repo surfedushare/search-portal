@@ -222,7 +222,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import './../variables';
+@import './../../variables';
 
 .privacy {
   width: 100%;
