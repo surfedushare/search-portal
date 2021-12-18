@@ -122,85 +122,85 @@ class TestCommunities(BaseLiveServerTestCase):
             )
         )
 
-    # def test_community_editing(self):
-    #     community = CommunityFactory.create()
-    #     TeamFactory.create(user=self.user, community=community)
-    #     self.selenium.get(f"{self.live_server_url}/mijn/community/{community.id}")
-    #     WebDriverWait(self.selenium, 2).until(
-    #         EC.text_to_be_present_in_element(
-    #             (By.CSS_SELECTOR, "body"),
-    #             "Mijn Community"
-    #         )
-    #     )
-    #     replace_content(self.selenium.find_element_by_id("title_nl"), 'Nieuwe titel')
-    #     replace_content(self.selenium.find_element_by_id("title_en"), 'New title')
-    #     replace_content(
-    #         self.selenium.find_element_by_css_selector("#description_nl .ProseMirror"),
-    #         'Nieuwe beschrijving'
-    #     )
-    #     replace_content(
-    #         self.selenium.find_element_by_css_selector("#description_en .ProseMirror"),
-    #         'New description'
-    #     )
-    #     replace_content(self.selenium.find_element_by_id("website_nl"), 'https://www.surf.nl')
-    #     replace_content(self.selenium.find_element_by_id("website_en"), 'https://www.surf.com')
-    #
-    #     nl_logo = self.selenium.find_element_by_css_selector("#logo_nl input")
-    #     nl_logo.send_keys(os.path.dirname(__file__)+"/images/community_logo.png")
-    #     self.selenium.find_element_by_css_selector(".crop-popup button.crop").click()
-    #
-    #     en_logo = self.selenium.find_element_by_css_selector("#logo_en input")
-    #     en_logo.send_keys(os.path.dirname(__file__)+"/images/community_logo.png")
-    #     self.selenium.find_element_by_css_selector("#logo_en .crop-popup button.crop").click()
-    #
-    #     nl_featured = self.selenium.find_element_by_css_selector("#featured_image_nl input")
-    #     nl_featured.send_keys(os.path.dirname(__file__)+"/images/community_featured_image.png")
-    #     self.selenium.find_element_by_css_selector("#featured_image_nl .crop-popup button.crop").click()
-    #
-    #     en_featured = self.selenium.find_element_by_css_selector("#featured_image_en input")
-    #     en_featured.send_keys(os.path.dirname(__file__)+"/images/community_featured_image.png")
-    #     self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup button.crop").click()
-    #
-    #     crop_popup = self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup")
-    #     WebDriverWait(self.selenium, 2).until(
-    #         EC.staleness_of(crop_popup)
-    #     )
-    #
-    #     self.selenium.find_element_by_css_selector(".communities__form__buttons button[type='submit']").click()
-    #     WebDriverWait(self.selenium, 2).until(
-    #         EC.text_to_be_present_in_element((By.CSS_SELECTOR, "body"), "Gegevens opgeslagen!")
-    #     )
-    #
-    #     # Dutch preview
-    #     self.selenium.find_element_by_css_selector(".communities__form__buttons button.preview").click()
-    #     WebDriverWait(self.selenium, 2).until(
-    #         EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe titel")
-    #     )
-    #     WebDriverWait(self.selenium, 2).until(
-    #         EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe beschrijving")
-    #     )
-    #
-    #     website = self.selenium.find_element_by_css_selector(".how_work_link").get_attribute("href")
-    #     self.assertEqual(website, "https://www.surf.nl/")
-    #
-    #     featured_image = self.selenium.find_element_by_css_selector(".preview__bg_block-img").get_attribute("src")
-    #     self.assertIn("data:image/png", featured_image)
-    #
-    #     # English preview
-    #     self.selenium.find_element_by_css_selector("a.lang").click()
-    #
-    #     WebDriverWait(self.selenium, 2).until(
-    #         EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New title")
-    #     )
-    #     WebDriverWait(self.selenium, 2).until(
-    #         EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New description")
-    #     )
-    #
-    #     website = self.selenium.find_element_by_css_selector(".how_work_link").get_attribute("href")
-    #     self.assertEqual(website, "https://www.surf.com/")
-    #
-    #     featured_image = self.selenium.find_element_by_css_selector(".preview__bg_block-img").get_attribute("src")
-    #     self.assertIn("data:image/png", featured_image)
+    def test_community_editing(self):
+        community = CommunityFactory.create()
+        TeamFactory.create(user=self.user, community=community)
+        self.selenium.get(f"{self.live_server_url}/mijn/community/{community.id}")
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "body"),
+                "Mijn Community"
+            )
+        )
+        replace_content(self.selenium.find_element_by_id("title_nl"), 'Nieuwe titel')
+        replace_content(self.selenium.find_element_by_id("title_en"), 'New title')
+        replace_content(
+            self.selenium.find_element_by_css_selector("#description_nl .ProseMirror"),
+            'Nieuwe beschrijving'
+        )
+        replace_content(
+            self.selenium.find_element_by_css_selector("#description_en .ProseMirror"),
+            'New description'
+        )
+        replace_content(self.selenium.find_element_by_id("website_nl"), 'https://www.surf.nl')
+        replace_content(self.selenium.find_element_by_id("website_en"), 'https://www.surf.com')
+
+        nl_logo = self.selenium.find_element_by_css_selector("#logo_nl input")
+        nl_logo.send_keys(os.path.dirname(__file__)+"/images/community_logo.png")
+        self.selenium.find_element_by_css_selector(".crop-popup button.crop").click()
+
+        en_logo = self.selenium.find_element_by_css_selector("#logo_en input")
+        en_logo.send_keys(os.path.dirname(__file__)+"/images/community_logo.png")
+        self.selenium.find_element_by_css_selector("#logo_en .crop-popup button.crop").click()
+
+        nl_featured = self.selenium.find_element_by_css_selector("#featured_image_nl input")
+        nl_featured.send_keys(os.path.dirname(__file__)+"/images/community_featured_image.png")
+        self.selenium.find_element_by_css_selector("#featured_image_nl .crop-popup button.crop").click()
+
+        en_featured = self.selenium.find_element_by_css_selector("#featured_image_en input")
+        en_featured.send_keys(os.path.dirname(__file__)+"/images/community_featured_image.png")
+        self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup button.crop").click()
+
+        crop_popup = self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup")
+        WebDriverWait(self.selenium, 2).until(
+            EC.staleness_of(crop_popup)
+        )
+
+        self.selenium.find_element_by_css_selector(".communities__form__buttons button[type='submit']").click()
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "body"), "Gegevens opgeslagen!")
+        )
+
+        # Dutch preview
+        self.selenium.find_element_by_css_selector(".communities__form__buttons button.preview").click()
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe titel")
+        )
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe beschrijving")
+        )
+
+        website = self.selenium.find_element_by_css_selector(".how_work_link").get_attribute("href")
+        self.assertEqual(website, "https://www.surf.nl/")
+
+        featured_image = self.selenium.find_element_by_css_selector(".preview__bg_block-img").get_attribute("src")
+        self.assertIn("data:image/png", featured_image)
+
+        # English preview
+        self.selenium.find_element_by_css_selector("a.lang").click()
+
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New title")
+        )
+        WebDriverWait(self.selenium, 2).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New description")
+        )
+
+        website = self.selenium.find_element_by_css_selector(".how_work_link").get_attribute("href")
+        self.assertEqual(website, "https://www.surf.com/")
+
+        featured_image = self.selenium.find_element_by_css_selector(".preview__bg_block-img").get_attribute("src")
+        self.assertIn("data:image/png", featured_image)
 
 
 class TestCommunityTabVisibility(BaseLiveServerTestCase):

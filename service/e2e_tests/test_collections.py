@@ -6,7 +6,7 @@ from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, Coll
 from e2e_tests.helpers import login, replace_content
 
 
-class TestCollections(object):
+class TestCollections(BaseLiveServerTestCase):
     def setUp(self):
         super().setUp()
         self.user = UserFactory.create()
