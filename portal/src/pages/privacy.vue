@@ -130,7 +130,7 @@ export default {
   },
   metaInfo() {
     return {
-      title: this.$i18n.t('My-privacy')
+      title: this.$i18n.t('My-privacy'),
     }
   },
   computed: {

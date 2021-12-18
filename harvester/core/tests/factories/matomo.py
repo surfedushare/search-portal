@@ -1,7 +1,6 @@
 import os
 import factory
 from datetime import datetime
-from urllib.parse import quote
 import json
 
 from django.conf import settings

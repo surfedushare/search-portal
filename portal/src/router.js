@@ -129,22 +129,22 @@ export default new Router({
     {
       path: '/en/my/community/:community',
       component: CommunityEdit,
-      name: 'my-community___en'
+      name: 'my-community___en',
     },
     {
       path: '/mijn/community/:community',
       component: CommunityEdit,
-      name: 'my-community___nl'
+      name: 'my-community___nl',
     },
     {
       path: '/en/my/privacy',
       component: Privacy,
-      name: 'my-privacy___en'
+      name: 'my-privacy___en',
     },
     {
       path: '/mijn/privacy',
       component: Privacy,
-      name: 'my-privacy___nl'
+      name: 'my-privacy___nl',
     },
     {
       path: '/en/themes/:id',

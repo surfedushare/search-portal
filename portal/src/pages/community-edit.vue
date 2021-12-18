@@ -24,7 +24,7 @@
                   class="fas fa-eye"
                   :class="{
                     'fa-eye': !previewMode,
-                    'fa-eye-slash': previewMode
+                    'fa-eye-slash': previewMode,
                   }"
                 />
                 {{ $t('example') }}
@@ -125,7 +125,7 @@ const defaultFormData = {
   logo_en: null,
   featured_image_nl: null,
   featured_image_en: null,
-  publish_status: PublishStatus.DRAFT
+  publish_status: PublishStatus.DRAFT,
 }
 
 export default {
@@ -138,7 +138,7 @@ export default {
     CommunityForm,
     InfoBlock,
     Tabs,
-    Tab
+    Tab,
   },
   data() {
     return {
@@ -148,12 +148,12 @@ export default {
       formData: null,
       notFound: false,
       previewMode: false,
-      activeTab: this.$route.query.tab || 'general'
+      activeTab: this.$route.query.tab || 'general',
     }
   },
   metaInfo() {
     return {
-      title: this.$i18n.t('My-community')
+      title: this.$i18n.t('My-community'),
     }
   },
   computed: {
@@ -163,7 +163,7 @@ export default {
       'communities',
       'isAuthenticated',
       'user',
-      'userCommunities'
+      'userCommunities',
     ]),
     isPublished: {
       get() {
@@ -173,8 +173,8 @@ export default {
         this.formData.publish_status = value
           ? PublishStatus.PUBLISHED
           : PublishStatus.DRAFT
-      }
-    }
+      },
+    },
   },
   mounted() {
     if (!this.isAuthenticated) {
@@ -203,7 +203,7 @@ export default {
 
       this.$router.replace({
         name: this.localePath({ name: 'my-community' }).name,
-        query: { tab: tabIdentifier }
+        query: { tab: tabIdentifier },
       })
     },
     setInitialFormData() {
@@ -213,7 +213,7 @@ export default {
       }
 
       const communities = this.userCommunities(this.user)
-      const community = find(communities, community => {
+      const community = find(communities, (community) => {
         return community.id === this.$route.params.community
       })
 
@@ -224,9 +224,9 @@ export default {
       if (community.community_details) {
         const formData = {
           external_id: community.id,
-          publish_status: community.publish_status
+          publish_status: community.publish_status,
         }
-        community.community_details.forEach(detail => {
+        community.community_details.forEach((detail) => {
           if (detail.language_code === 'NL') {
             formData.title_nl = detail.title
             formData.description_nl = detail.description
@@ -263,19 +263,19 @@ export default {
       this.$store
         .dispatch('putCommunity', {
           id: this.formData.external_id,
-          data: data
+          data: data,
         })
         .then(() => {
           this.$store.commit('ADD_MESSAGE', {
             level: 'info',
-            message: 'Data-saved'
+            message: 'Data-saved',
           })
         })
-        .catch(err => {
+        .catch((err) => {
           if (err.response.data) {
             this.$store.commit('ADD_MESSAGE', {
               level: 'error',
-              message: 'any-field-error'
+              message: 'any-field-error',
             })
           }
           const errors = {}
@@ -294,7 +294,7 @@ export default {
       if (!isEmpty(this.selection)) {
         const deletePayload = {
           id: this.$route.params.community,
-          data: this.selection
+          data: this.selection,
         }
         this.$store
           .dispatch('deleteCommunityCollections', deletePayload)
@@ -322,26 +322,26 @@ export default {
         language_code: 'NL',
         title: this.formData.title_nl,
         website_url: this.formData.website_url_nl,
-        description: this.formData.description_nl
+        description: this.formData.description_nl,
       }
 
       const data_en = {
         language_code: 'EN',
         title: this.formData.title_en,
         website_url: this.formData.website_url_en,
-        description: this.formData.description_en
+        description: this.formData.description_en,
       }
 
       const fileFields = [
         'logo_nl',
         'logo_en',
         'featured_image_nl',
-        'featured_image_en'
+        'featured_image_en',
       ]
 
       const deleted_logos = []
 
-      fileFields.forEach(field => {
+      fileFields.forEach((field) => {
         const fieldData = this.formData[field]
 
         if (fieldData instanceof File) {
@@ -366,23 +366,23 @@ export default {
           {
             id: collection.id,
             title_nl: collection.title_nl,
-            title_en: collection.title_en
-          }
-        ]
+            title_en: collection.title_en,
+          },
+        ],
       })
     },
     getPreviewPath() {
       return this.localePath({
         name: 'communities-community',
         params: {
-          community: this.formData.external_id
-        }
+          community: this.formData.external_id,
+        },
       })
     },
     setCollectionSelection(selection) {
       this.selection = selection
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less">
