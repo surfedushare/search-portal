@@ -128,6 +128,11 @@ export default {
       showDeleteAccountPopup: false,
     }
   },
+  metaInfo() {
+    return {
+      title: this.$i18n.t('My-privacy')
+    }
+  },
   computed: {
     ...mapGetters(['user', 'isAuthenticated', 'hasGivenCommunityPermission']),
     permissions() {
