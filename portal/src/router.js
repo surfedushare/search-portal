@@ -7,8 +7,8 @@ import Home from '~/pages/index'
 import Search from '~/pages/search'
 import HowDoesItWork from '~/pages/how-does-it-work'
 import Communities from '~/pages/communities'
-import MyCommunity from '~/pages/my/community'
-import MyPrivacy from '~/pages/my/privacy'
+import CommunityEdit from '~/pages/community-edit'
+import Privacy from '~/pages/privacy'
 import Theme from '~/pages/theme'
 import Material from '~/pages/material'
 import Collection from '~/pages/collection'
@@ -128,22 +128,22 @@ export default new Router({
     },
     {
       path: '/en/my/community/:community',
-      component: MyCommunity,
+      component: CommunityEdit,
       name: 'my-community___en'
     },
     {
       path: '/mijn/community/:community',
-      component: MyCommunity,
+      component: CommunityEdit,
       name: 'my-community___nl'
     },
     {
       path: '/en/my/privacy',
-      component: MyPrivacy,
+      component: Privacy,
       name: 'my-privacy___en'
     },
     {
       path: '/mijn/privacy',
-      component: MyPrivacy,
+      component: Privacy,
       name: 'my-privacy___nl'
     },
     {

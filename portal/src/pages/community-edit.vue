@@ -151,6 +151,11 @@ export default {
       activeTab: this.$route.query.tab || 'general'
     }
   },
+  metaInfo() {
+    return {
+      title: this.$i18n.t('My-community')
+    }
+  },
   computed: {
     ...mapGetters([
       'community_collections',
@@ -381,7 +386,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import './../../variables';
+@import './../variables';
 .communities {
   width: 100%;
 
