@@ -1,6 +1,5 @@
 import re
 import vobject
-from html import unescape
 from mimetypes import guess_type
 from hashlib import sha1
 from dateutil.parser import parse as date_parser
@@ -41,8 +40,7 @@ class AnatomyToolExtraction(object):
 
     @staticmethod
     def parse_vcard_element(el):
-        card = unescape(el.text.strip())
-        card = "\n".join(field.strip() for field in card.split("\n"))
+        card = "\n".join(field.strip() for field in el.text.strip().split("\n"))
         card = card.replace("BEGIN:VCARD - VERSION:3.0 -", "BEGIN:VCARD\nVERSION:3.0")
         return vobject.readOne(card)
 
@@ -118,7 +116,7 @@ class AnatomyToolExtraction(object):
         if node is None:
             return
         translation = node.find('string')
-        return unescape(translation.text.strip()) if translation else None
+        return translation.text.strip() if translation else None
 
     @classmethod
     def get_language(cls, soup, el):
@@ -132,7 +130,7 @@ class AnatomyToolExtraction(object):
             return []
         nodes = general.find_all('keyword')
         return [
-            unescape(node.find('string').text.strip())
+            node.find('string').text.strip()
             for node in nodes if node.find('string').text
         ]
 
@@ -142,7 +140,7 @@ class AnatomyToolExtraction(object):
         if node is None:
             return
         translation = node.find('string')
-        return unescape(translation.text) if translation else None
+        return translation.text if translation else None
 
     @classmethod
     def get_mime_type(cls, soup, el):
