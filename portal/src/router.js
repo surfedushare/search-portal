@@ -145,7 +145,6 @@ export default new Router({
       path: '/mijn/privacy',
       component: Privacy,
       name: 'my-privacy___nl'
-      name: 'my-privacy___nl'
     },
     {
       path: '/en/themes/:id',
