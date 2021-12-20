@@ -11,7 +11,7 @@ from datagrowth.utils.iterators import ibatch
 
 from harvester.tasks.base import DatabaseConnectionResetTask
 from core.constants import Repositories, HarvestStages
-from core.models import Harvest, DatasetVersion
+from core.models import Harvest, Dataset, DatasetVersion
 from sharekit.models import SharekitMetadataHarvest
 
 
@@ -20,8 +20,11 @@ logger = logging.getLogger("harvester")
 
 @app.task(name="sync_sharekit_metadata", base=DatabaseConnectionResetTask)
 def sync_sharekit_metadata():
+    # Select which data to sync this run
+    latest_active_dataset = Dataset.objects.filter(is_active=True).last()
+    dataset_version = DatasetVersion.objects.get_latest_version(dataset=latest_active_dataset)
     harvest_queryset = Harvest.objects.filter(
-        dataset__is_active=True,
+        dataset=latest_active_dataset,
         source__repository=Repositories.SHAREKIT,
         stage=HarvestStages.COMPLETE  # prevents syncing materials half way a full harvest
     )
@@ -36,6 +39,10 @@ def sync_sharekit_metadata():
         return
     # Now that we're the only ones starting the sync we execute it
     for harvest in harvest_queryset.filter(is_syncing=True):
+        # Check that a non-valid harvest source didn't slip through the lock
+        if harvest.stage != HarvestStages.COMPLETE:
+            logging.warning("Encountered a non-complete harvest source during sync")
+            continue
         # Recording which time will become latest_update_at
         current_time = make_aware(datetime.now())
         # Getting metadata from Sharekit and stop immediately if anything went wrong
@@ -53,7 +60,6 @@ def sync_sharekit_metadata():
             continue
         # Now parse the metadata and update current Collection for this Harvest
         seeds = SharekitMetadataHarvest.objects.extract_seeds(set_specification, harvest.latest_update_at)
-        dataset_version = DatasetVersion.objects.get_latest_version(dataset=harvest.dataset)
         collection = dataset_version.collection_set.get(name=harvest.source.spec)
         for seeds_batch in ibatch(seeds, batch_size=32):
             updates = []
