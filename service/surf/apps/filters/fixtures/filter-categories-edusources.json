@@ -2441,7 +2441,7 @@
         "updated_at": "2020-03-25T13:57:46.732Z",
         "deleted_from_edurep_at": null,
         "title_translations": "91fb49f9-ded1-4961-aff2-418ba1ae83c0",
-        "external_id": "lom.educational.context",
+        "external_id": "lom_educational_levels",
         "is_manual": false,
         "is_hidden": false,
         "lft": 1,

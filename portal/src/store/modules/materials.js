@@ -1,10 +1,4 @@
-import {
-  formatDate,
-  validateSearch,
-  validateParams,
-  validateIDString,
-  decodeAuthor,
-} from './_helpers'
+import { validateSearch, validateParams, validateIDString } from './_helpers'
 import injector from 'vue-inject'
 import axios from '~/axios'
 
@@ -66,7 +60,6 @@ export default {
         const { data: material } = await axios.get(`materials/${id}/`, {
           params,
         })
-        decodeAuthor(material)
         commit('SET_MATERIAL', material)
         commit('SET_MATERIAL_LOADING', false)
         return material
@@ -199,38 +192,18 @@ export default {
   mutations: {
     SET_MATERIALS(state, payload) {
       const records = payload.records || payload
-      records.forEach((record) => {
-        record.date = formatDate(record.publish_datetime)
-        decodeAuthor(record)
-      })
       state.materials = Object.assign({}, payload, {
-        records: records.map((record) => {
-          return Object.assign(
-            { date: formatDate(record.publish_datetime) },
-            record
-          )
-        }),
+        records: records,
       })
     },
     SET_NEXT_PAGE_MATERIALS(state, payload) {
       const records = state.materials.records || []
       state.materials = Object.assign({}, state.materials, payload, {
-        records: [
-          ...records,
-          ...payload.records.map((record) => {
-            return Object.assign(
-              { date: formatDate(record.publish_datetime) },
-              record
-            )
-          }),
-        ],
+        records: [...records, ...payload.records],
       })
     },
     SET_MATERIAL(state, payload) {
-      state.material = Object.assign(
-        { date: formatDate(payload.publish_datetime) },
-        payload
-      )
+      state.material = payload
     },
     SET_MATERIAL_COMMUNITIES(state, payload) {
       state.material_communities = payload

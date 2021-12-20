@@ -24,7 +24,7 @@
           {{ material.publishers.join(', ') }}
         </div>
         <div class="materials__item_date">
-          {{ material.date || null }}
+          {{ formattedPublishedAt || null }}
         </div>
         <div v-if="hasPart" class="materials__item_set_count">
           {{ $tc('Materials', material.has_parts.length) }}
@@ -143,6 +143,7 @@
 
 <script>
 import StarRating from '../../StarRating/index'
+import { formatDate } from '../../_helpers'
 
 export default {
   name: 'Material',
@@ -172,6 +173,9 @@ export default {
   computed: {
     hasPart() {
       return this.material.has_parts.length > 0
+    },
+    formattedPublishedAt() {
+      return formatDate(this.material.published_at, this.$i18n.locale)
     },
   },
   methods: {
