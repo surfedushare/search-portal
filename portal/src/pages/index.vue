@@ -93,7 +93,7 @@ import Materials from '~/components/Materials'
 import PopularList from '~/components/Communities/PopularList'
 import { generateSearchMaterialsQuery } from '../components/_helpers'
 
-const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom.educational.context'
+const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
 export default {
   components: {
