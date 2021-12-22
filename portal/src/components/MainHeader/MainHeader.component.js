@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { generateSearchMaterialsQuery } from '../_helpers'
 import Menu from './Menu'
 import LanguageSwitch from './LanguageSwitch'
 import Feedback from '../Feedback/Feedback'
@@ -46,6 +47,17 @@ export default {
       return this.$i18n.locale === 'nl'
         ? 'https://wiki.surfnet.nl/display/EDS/edusources'
         : 'https://wiki.surfnet.nl/pages/viewpage.action?pageId=55345575'
+    },
+    searchLink() {
+      const searchRequest = {
+        search_text: '',
+        ordering: null,
+        filters: [],
+      }
+      const route = this.$router.resolve(
+        generateSearchMaterialsQuery(searchRequest, 'materials-search')
+      )
+      return route ? route.href : ''
     },
   },
 }
