@@ -5,6 +5,7 @@ import requests
 from requests.status_codes import codes
 from urllib.parse import urlparse, urljoin
 from urlobject import URLObject
+import logging
 
 from django.core.files import File
 from django.db import models
@@ -14,6 +15,9 @@ from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.utils import build_versatileimagefield_url_set
 
 from datagrowth.resources import ShellResource
+
+
+logger = logging.getLogger("harvester")
 
 
 class YoutubeThumbnailResource(ShellResource):
@@ -102,6 +106,9 @@ class YoutubeThumbnailResource(ShellResource):
 def delete_youtube_thumbnail_images(sender, instance, **kwargs):
     if instance.preview:
         # Deletes images from VersatileImageField
-        instance.preview.delete_all_created_images()
+        try:
+            instance.preview.delete_all_created_images()
+        except AssertionError:
+            logger.warning(f"AssertionError when deleting images for YoutubeThumbnailResource {instance.id}")
         # Deletes original image
         instance.preview.delete(save=False)
