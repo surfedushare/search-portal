@@ -30,7 +30,7 @@
                     <div
                       class="description"
                       :class="{
-                        'notification-only': permission.is_notification_only
+                        'notification-only': permission.is_notification_only,
                       }"
                     >
                       <p>
@@ -115,7 +115,7 @@ export default {
     DeleteAccountPopup,
     HeaderBlock,
     SwitchInput,
-    CreateAccount
+    CreateAccount,
   },
   data() {
     const showPopup = !!this.$route.query.popup
@@ -125,12 +125,12 @@ export default {
       isSubmitting: false,
       permissionsKey: 0,
       showPopup,
-      showDeleteAccountPopup: false
+      showDeleteAccountPopup: false,
     }
   },
   metaInfo() {
     return {
-      title: this.$i18n.t('My-privacy')
+      title: this.$i18n.t('My-privacy'),
     }
   },
   computed: {
@@ -141,11 +141,11 @@ export default {
       }
       let permissions =
         this.user.permissions.filter(
-          permission => !permission.is_notification_only
+          (permission) => !permission.is_notification_only
         ) || []
       if (!this.isAuthenticated) {
         permissions = permissions.filter(
-          permission => !permission.is_after_login
+          (permission) => !permission.is_after_login
         )
       }
       return permissions
@@ -153,7 +153,7 @@ export default {
     cookies() {
       if (this.user && this.user.permissions) {
         return this.user.permissions.find(
-          permission => permission.type === 'Cookies'
+          (permission) => permission.type === 'Cookies'
         )
       } else return false
     },
@@ -167,7 +167,7 @@ export default {
       return (
         !this.hasGivenCommunityPermission && this.hasInitialCommunityPermission
       )
-    }
+    },
   },
   mounted() {
     this.hasInitialCommunityPermission = this.hasGivenCommunityPermission
@@ -180,11 +180,11 @@ export default {
         .then(() => {
           this.$store.dispatch('logout', { fully: true })
         })
-        .catch(error => {
+        .catch((error) => {
           if (error) {
             this.$store.commit('ADD_MESSAGE', {
               level: 'error',
-              message: 'Session-expired'
+              message: 'Session-expired',
             })
           }
         })
@@ -222,8 +222,8 @@ export default {
     },
     closeDeleteAccountPopup() {
       this.showDeleteAccountPopup = false
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less">

@@ -8,8 +8,8 @@ const axios = Axios.create({ baseURL })
 setLanguage(i18n.locale)
 
 axios.interceptors.response.use(
-  res => res,
-  error => {
+  (res) => res,
+  (error) => {
     const code = parseInt(error.response && error.response.status)
     if (code === 401) {
       store.dispatch('logout')

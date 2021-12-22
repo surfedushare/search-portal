@@ -7,7 +7,7 @@ import AddCollection from './../../Popup/AddCollection'
 import ShareMaterial from '~/components/Popup/ShareMaterial'
 import Multiselect from './../../Multiselect'
 import { validateHREF } from '~/components/_helpers'
-import { generateSearchMaterialsQuery } from '../../_helpers'
+import { generateSearchMaterialsQuery, formatDate } from '../../_helpers'
 import SelectDownloadPopup from '@/components/Popup/SelectDownload/SelectDownload'
 
 export default {
@@ -16,12 +16,12 @@ export default {
   props: {
     material: {
       type: Object,
-      default: null
+      default: null,
     },
     collections: {
       type: Array,
-      default: []
-    }
+      default: [],
+    },
   },
   components: {
     SaveMaterialInCollection,
@@ -29,7 +29,7 @@ export default {
     ShareMaterial,
     Multiselect,
     SelectDownloadPopup,
-    EnlargeableImage
+    EnlargeableImage,
   },
   mounted() {
     this.setSocialCounters()
@@ -38,12 +38,12 @@ export default {
   data() {
     return {
       href: '',
-      currentCollectionIds: this.collections.map(c => c.id),
+      currentCollectionIds: this.collections.map((c) => c.id),
       submitting: false,
       isShowSaveMaterial: false,
       isShowShareMaterial: false,
       isShowAddCollection: false,
-      showDownloadPopup: false
+      showDownloadPopup: false,
     }
   },
   methods: {
@@ -53,7 +53,7 @@ export default {
     getIdeaLink(idea) {
       const query = generateSearchMaterialsQuery({
         search_text: '"' + idea + '"',
-        filters: []
+        filters: [],
       })
       const route = this.$router.resolve(query)
       return route.href
@@ -92,9 +92,9 @@ export default {
           data: [
             {
               external_id: this.material.external_id,
-              position: this.collectionItems.length
-            }
-          ]
+              position: this.collectionItems.length,
+            },
+          ],
         })
         .then(() => (this.submitting = false))
     },
@@ -109,9 +109,9 @@ export default {
           collection_id: collectionId,
           data: [
             {
-              external_id: this.material.external_id
-            }
-          ]
+              external_id: this.material.external_id,
+            },
+          ],
         })
         .then(() => (this.submitting = false))
     },
@@ -225,14 +225,14 @@ export default {
               },
               {
                 linkedin: {
-                  counter_value: 0
+                  counter_value: 0,
                 },
                 twitter: {
-                  counter_value: 0
+                  counter_value: 0,
                 },
                 link: {
-                  counter_value: 0
-                }
+                  counter_value: 0,
+                },
               }
             )
 
@@ -284,8 +284,8 @@ export default {
         .dispatch('setMaterialSocial', {
           id: this.$route.params.id,
           params: {
-            shared: type
-          }
+            shared: type,
+          },
         })
         .then(() => {
           this.setSocialCounters()
@@ -316,25 +316,26 @@ export default {
       this.showDownloadPopup = true
     },
     parseVideoDuration(duration) {
-      return Duration.fromISO(duration)
-        .toFormat('h:mm:ss')
-        .padStart(8, '0')
+      return Duration.fromISO(duration).toFormat('h:mm:ss').padStart(8, '0')
     },
     shouldShowPreviews() {
-      return this.$root.isDemoEnvironment() && !isEmpty(this.material.previews)
-    }
+      return !isEmpty(this.material.previews)
+    },
   },
   computed: {
     ...mapGetters([
       'isAuthenticated',
       'my_collections',
       'material_communities',
-      'disciplines'
+      'disciplines',
     ]),
+    formattedPublishedAt() {
+      return formatDate(this.material.published_at, this.$i18n.locale)
+    },
     collectionItems() {
-      return this.my_collections.map(collection => ({
+      return this.my_collections.map((collection) => ({
         id: collection.id,
-        title: collection[`title_${this.$i18n.locale}`]
+        title: collection[`title_${this.$i18n.locale}`],
       }))
     },
     /**
@@ -352,7 +353,7 @@ export default {
       if (!isNil(disciplines)) {
         // TODO: material.disciplines is sometimes an Array with Object and sometimes with external_id
         // We should make the type consistent
-        let disciplineTitles = material.disciplines.map(discipline => {
+        let disciplineTitles = material.disciplines.map((discipline) => {
           let disciplineObj = isObject(discipline)
             ? discipline
             : disciplines[discipline]
@@ -362,11 +363,11 @@ export default {
       }
 
       return material
-    }
+    },
   },
   watch: {
     collections() {
-      this.currentCollectionIds = this.collections.map(c => c.id)
-    }
-  }
+      this.currentCollectionIds = this.collections.map((c) => c.id)
+    },
+  },
 }

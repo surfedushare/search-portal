@@ -14,12 +14,12 @@ export default {
           search_text: `"${keyword}"`,
           filters: [],
           page: 1,
-          page_size: 10
+          page_size: 10,
         })
       }
 
       return '/'
-    }
+    },
   },
-  computed: {}
+  computed: {},
 }

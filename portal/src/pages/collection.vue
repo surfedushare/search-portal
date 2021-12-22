@@ -75,7 +75,7 @@ export default {
     Spinner,
     DeleteCollection,
     Error,
-    AddMaterialPopup
+    AddMaterialPopup,
   },
   mixins: [PageMixin],
   data() {
@@ -89,9 +89,9 @@ export default {
         page_size: 10,
         page: 1,
         filters: [],
-        search_text: ''
+        search_text: '',
       },
-      isShowAddMaterial: false
+      isShowAddMaterial: false,
     }
   },
   computed: {
@@ -99,7 +99,7 @@ export default {
       'collection',
       'collection_materials',
       'collection_materials_loading',
-      'user'
+      'user',
     ]),
     collectionInfo() {
       if (isEmpty(this.collection)) {
@@ -109,21 +109,21 @@ export default {
       } else if (
         this.user &&
         this.user.collections.find(
-          collection => collection.id === this.collection.id
+          (collection) => collection.id === this.collection.id
         )
       ) {
         return this.collection
       }
 
       return null
-    }
+    },
   },
   created() {
     const { id } = this.$route.params
     this.$store.dispatch('getCollectionMaterials', id)
     this.pageLoad = Promise.all([
       this.$store.dispatch('getCollection', id),
-      this.$store.dispatch('getUser')
+      this.$store.dispatch('getUser'),
     ])
   },
   metaInfo() {
@@ -131,7 +131,7 @@ export default {
     return {
       title: this.collectionInfo
         ? this.collectionInfo[`title_${this.$i18n.locale}`] || defaultTitle
-        : defaultTitle
+        : defaultTitle,
     }
   },
   methods: {
@@ -147,7 +147,7 @@ export default {
       this.isReady = false
       Promise.all([
         this.$store.dispatch('getCollectionMaterials', id),
-        this.$store.dispatch('getCollection', id)
+        this.$store.dispatch('getCollection', id),
       ]).finally(() => {
         this.isReady = true
       })
@@ -172,7 +172,7 @@ export default {
       this.$store
         .dispatch('editCollection', {
           ...this.collection,
-          ...data
+          ...data,
         })
         .catch(() => {
           if (
@@ -181,7 +181,7 @@ export default {
           ) {
             this.$store.commit('ADD_MESSAGE', {
               level: 'error',
-              message: 'can-not-publish-empty-collection'
+              message: 'can-not-publish-empty-collection',
             })
             this.collection.publish_status = PublishStatus.DRAFT
           }
@@ -189,8 +189,8 @@ export default {
         .finally(() => {
           this.submitting = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -9,7 +9,7 @@ export default {
   components: {
     LanguageSwitch,
     Menu,
-    Feedback
+    Feedback,
   },
   methods: {
     logout() {
@@ -23,13 +23,13 @@ export default {
     },
     acknowledgeNotification(notificationType) {
       let notification = this.user_permission_notifications.find(
-        notification => {
+        (notification) => {
           return notification.type === notificationType
         }
       )
       notification.is_allowed = true
       this.$store.dispatch('postUser')
-    }
+    },
   },
   computed: {
     ...mapGetters([
@@ -40,12 +40,12 @@ export default {
       'hasMessages',
       'getMessageLevels',
       'getLevelIcon',
-      'getMessagesContent'
+      'getMessagesContent',
     ]),
     supportLink() {
       return this.$i18n.locale === 'nl'
         ? 'https://wiki.surfnet.nl/display/EDS/edusources'
         : 'https://wiki.surfnet.nl/pages/viewpage.action?pageId=55345575'
-    }
-  }
+    },
+  },
 }

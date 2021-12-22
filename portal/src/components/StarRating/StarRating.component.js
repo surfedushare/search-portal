@@ -3,22 +3,22 @@ export default {
   props: {
     type: {
       type: String,
-      default: function() {
+      default: function () {
         return 'default'
-      }
+      },
     },
     darkStars: {
       type: Boolean,
-      default: false
+      default: false,
     },
     hideCounter: {
       type: Boolean,
-      default: false
+      default: false,
     },
     value: null,
     counter: [String, Number],
     disabled: Boolean,
-    required: Boolean
+    required: Boolean,
   },
   mounted() {},
   data() {
@@ -31,8 +31,8 @@ export default {
         this.$t('Tevreden'),
         this.$t('Normal'),
         this.$t('Good'),
-        this.$t('Perfect')
-      ]
+        this.$t('Perfect'),
+      ],
     }
   },
   methods: {
@@ -63,11 +63,11 @@ export default {
       if (!this.disabled) {
         this.$emit('input', value)
       }
-    }
+    },
   },
   watch: {
     value(value) {
       this.avg_rating = value
-    }
-  }
+    },
+  },
 }

@@ -27,7 +27,7 @@ async function authenticate() {
   if (store.getters.api_token) {
     try {
       return await store.dispatch('authenticate', {
-        token: store.getters.api_token
+        token: store.getters.api_token,
       })
     } catch {
       return store.dispatch('getUser')
@@ -46,8 +46,8 @@ async function mountApp() {
     router,
     store,
     i18n,
-    ...App
+    ...App,
   }).$mount('#app')
 }
 
-mountApp().catch(err => $log.error('Error while initializing app', err))
+mountApp().catch((err) => $log.error('Error while initializing app', err))

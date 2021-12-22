@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       pageLoad: Promise.resolve(),
-      isReady: false
+      isReady: false,
     }
   },
 
@@ -21,7 +21,7 @@ export default {
     // this method hooks into vue-router
 
     // Upon route enter we send a signal to analytics to keep track of (anonymous) app usage
-    next(page => {
+    next((page) => {
       // The analytics pageView signal will be send when two conditions are met:
       //    1)   Auto track has not been disabled
       //    2)   The page has loaded the data it needs or failed to do so
@@ -43,5 +43,5 @@ export default {
       this.isReady = true
     }
     next()
-  }
+  },
 }

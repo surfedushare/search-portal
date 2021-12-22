@@ -24,7 +24,7 @@
           {{ material.publishers.join(', ') }}
         </div>
         <div class="materials__item_date">
-          {{ material.date || null }}
+          {{ formattedPublishedAt || null }}
         </div>
         <div v-if="hasPart" class="materials__item_set_count">
           {{ $tc('Materials', material.has_parts.length) }}
@@ -107,7 +107,7 @@
             :to="
               localePath({
                 name: 'communities-community',
-                params: { community: community.id }
+                params: { community: community.id },
               })
             "
             class="materials__item_community_link"
@@ -143,36 +143,40 @@
 
 <script>
 import StarRating from '../../StarRating/index'
+import { formatDate } from '../../_helpers'
 
 export default {
   name: 'Material',
   components: {
-    StarRating
+    StarRating,
   },
   props: {
     material: {
       type: Object,
       default: null,
-      required: false
+      required: false,
     },
     index: {
       type: Number,
-      default: 0
+      default: 0,
     },
     itemsInLine: {
       type: Number,
-      default: 4
+      default: 4,
     },
     handleMaterialClick: {
       type: Function,
       params: 1,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   computed: {
     hasPart() {
       return this.material.has_parts.length > 0
-    }
+    },
+    formattedPublishedAt() {
+      return formatDate(this.material.published_at, this.$i18n.locale)
+    },
   },
   methods: {
     punctuate(word, index, len) {
@@ -184,8 +188,8 @@ export default {
         punctuated = punctuated + '...'
       }
       return punctuated
-    }
-  }
+    },
+  },
 }
 </script>
 

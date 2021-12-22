@@ -19,7 +19,7 @@ import axios from '~/axios'
 import store from '~/store'
 import {
   THEME_CATEGORY_FILTER_ID,
-  CONSORTIUM_CATEGORY_FILTER_ID
+  CONSORTIUM_CATEGORY_FILTER_ID,
 } from '~/constants'
 import { localePath } from '~/i18n/plugin.routing'
 
@@ -28,7 +28,7 @@ const $log = injector.get('$log')
 Vue.use(Router)
 Vue.use(VueMeta)
 
-const scrollBehavior = function(to, from, savedPosition) {
+const scrollBehavior = function (to, from, savedPosition) {
   if (savedPosition) {
     return savedPosition
   }
@@ -51,146 +51,146 @@ export default new Router({
     {
       path: '/en/how-does-it-work',
       component: HowDoesItWork,
-      name: 'how-does-it-work___en'
+      name: 'how-does-it-work___en',
     },
     {
       path: '/hoe-werkt-het',
       component: HowDoesItWork,
-      name: 'how-does-it-work___nl'
+      name: 'how-does-it-work___nl',
     },
     {
       path: '/en/communities',
       component: Communities,
-      name: 'communities___en'
+      name: 'communities___en',
     },
     {
       path: '/communities',
       component: Communities,
-      name: 'communities___nl'
+      name: 'communities___nl',
     },
     {
       path: '/en/materials/search',
       component: Search,
-      name: 'materials-search___en'
+      name: 'materials-search___en',
     },
     {
       path: '/materialen/zoeken',
       component: Search,
-      name: 'materials-search___nl'
+      name: 'materials-search___nl',
     },
     {
       path: '/en/communities/:filterId/search',
       component: Search,
       name: 'communities-search___en',
       meta: {
-        filterRoot: CONSORTIUM_CATEGORY_FILTER_ID
-      }
+        filterRoot: CONSORTIUM_CATEGORY_FILTER_ID,
+      },
     },
     {
       path: '/communities/:filterId/zoeken',
       component: Search,
       name: 'communities-search___nl',
       meta: {
-        filterRoot: CONSORTIUM_CATEGORY_FILTER_ID
-      }
+        filterRoot: CONSORTIUM_CATEGORY_FILTER_ID,
+      },
     },
     {
       path: '/en/themes/:filterId/search',
       component: Search,
       name: 'themes-search___en',
       meta: {
-        filterRoot: THEME_CATEGORY_FILTER_ID
-      }
+        filterRoot: THEME_CATEGORY_FILTER_ID,
+      },
     },
     {
       path: '/themas/:filterId/zoeken',
       component: Search,
       name: 'themes-search___nl',
       meta: {
-        filterRoot: THEME_CATEGORY_FILTER_ID
-      }
+        filterRoot: THEME_CATEGORY_FILTER_ID,
+      },
     },
     {
       path: '/en/my/collection/:id',
       component: Collection,
       name: 'my-collection___en',
       meta: {
-        editable: true
-      }
+        editable: true,
+      },
     },
     {
       path: '/mijn/collectie/:id',
       component: Collection,
       name: 'my-collection___nl',
       meta: {
-        editable: true
-      }
+        editable: true,
+      },
     },
     {
       path: '/en/my/community/:community',
       component: CommunityEdit,
-      name: 'my-community___en'
+      name: 'my-community___en',
     },
     {
       path: '/mijn/community/:community',
       component: CommunityEdit,
-      name: 'my-community___nl'
+      name: 'my-community___nl',
     },
     {
       path: '/en/my/privacy',
       component: Privacy,
-      name: 'my-privacy___en'
+      name: 'my-privacy___en',
     },
     {
       path: '/mijn/privacy',
       component: Privacy,
-      name: 'my-privacy___nl'
+      name: 'my-privacy___nl',
     },
     {
       path: '/en/themes/:id',
       component: Theme,
-      name: 'themes-id___en'
+      name: 'themes-id___en',
     },
     {
       path: '/themas/:id',
       component: Theme,
-      name: 'themes-id___nl'
+      name: 'themes-id___nl',
     },
     {
       path: '/en/materials/:id',
       component: Material,
-      name: 'materials-id___en'
+      name: 'materials-id___en',
     },
     {
       path: '/materialen/:id',
       component: Material,
-      name: 'materials-id___nl'
+      name: 'materials-id___nl',
     },
     {
       path: '/en/collections/:id?',
       component: Collection,
       name: 'collections-id___en',
       meta: {
-        editable: false
-      }
+        editable: false,
+      },
     },
     {
       path: '/collecties/:id?',
       component: Collection,
       name: 'collections-id___nl',
       meta: {
-        editable: false
-      }
+        editable: false,
+      },
     },
     {
       path: '/en/communities/:community',
       component: Community,
-      name: 'communities-community___en'
+      name: 'communities-community___en',
     },
     {
       path: '/communities/:community',
       component: Community,
-      name: 'communities-community___nl'
+      name: 'communities-community___nl',
     },
     {
       path: '/en/privacy',
@@ -198,8 +198,8 @@ export default new Router({
       name: 'privacy___en',
       meta: {
         title_translation_key: 'title-privacy-info',
-        html_translation_key: 'html-privacy-info'
-      }
+        html_translation_key: 'html-privacy-info',
+      },
     },
     {
       path: '/privacy',
@@ -207,8 +207,8 @@ export default new Router({
       name: 'privacy___nl',
       meta: {
         title_translation_key: 'title-privacy-info',
-        html_translation_key: 'html-privacy-info'
-      }
+        html_translation_key: 'html-privacy-info',
+      },
     },
     {
       path: '/en/copyright',
@@ -216,8 +216,8 @@ export default new Router({
       name: 'copyright___en',
       meta: {
         title_translation_key: 'title-copyright-info',
-        html_translation_key: 'html-copyright-info'
-      }
+        html_translation_key: 'html-copyright-info',
+      },
     },
     {
       path: '/copyright',
@@ -225,8 +225,8 @@ export default new Router({
       name: 'copyright___nl',
       meta: {
         title_translation_key: 'title-copyright-info',
-        html_translation_key: 'html-copyright-info'
-      }
+        html_translation_key: 'html-copyright-info',
+      },
     },
     {
       path: '/en/cookies',
@@ -234,8 +234,8 @@ export default new Router({
       name: 'cookies___en',
       meta: {
         title_translation_key: 'title-cookies-info',
-        html_translation_key: 'html-cookies-info'
-      }
+        html_translation_key: 'html-cookies-info',
+      },
     },
     {
       path: '/cookies',
@@ -243,8 +243,8 @@ export default new Router({
       name: 'cookies___nl',
       meta: {
         title_translation_key: 'title-cookies-info',
-        html_translation_key: 'html-cookies-info'
-      }
+        html_translation_key: 'html-cookies-info',
+      },
     },
     {
       path: '/en/disclaimer',
@@ -252,8 +252,8 @@ export default new Router({
       name: 'disclaimer___en',
       meta: {
         title_translation_key: 'title-disclaimer-info',
-        html_translation_key: 'html-disclaimer-info'
-      }
+        html_translation_key: 'html-disclaimer-info',
+      },
     },
     {
       path: '/disclaimer',
@@ -261,18 +261,18 @@ export default new Router({
       name: 'disclaimer___nl',
       meta: {
         title_translation_key: 'title-disclaimer-info',
-        html_translation_key: 'html-disclaimer-info'
-      }
+        html_translation_key: 'html-disclaimer-info',
+      },
     },
     {
       path: '/en/',
       component: Home,
-      name: 'index___en'
+      name: 'index___en',
     },
     {
       path: '/',
       component: Home,
-      name: 'index___nl'
+      name: 'index___nl',
     },
     {
       path: '/login/permissions',
@@ -280,21 +280,21 @@ export default new Router({
         let authFlowToken = to.query.partial_token || null
         store.commit('AUTH_FLOW_TOKEN', authFlowToken)
         next(localePath({ name: 'my-privacy', query: { popup: 1 } }))
-      }
+      },
     },
     {
       path: '/login/success',
       beforeEnter(to, from, next) {
         axios
           .get('users/obtain-token/')
-          .then(response => {
+          .then((response) => {
             let token = response.token || response.data.token
             store
               .dispatch('authenticate', { token: token })
               .then(() => {
                 next(to.query.continue || '/')
               })
-              .catch(error => {
+              .catch((error) => {
                 $log.warn(
                   'Unable to login due to error during store "login" dispatch'
                 )
@@ -302,13 +302,13 @@ export default new Router({
                 next('/')
               })
           })
-          .catch(error => {
+          .catch((error) => {
             $log.warn('Unable to login due to error during obtaining a token')
             $log.error(error)
             next('/')
           })
-      }
-    }
+      },
+    },
   ],
-  fallback: false
+  fallback: false,
 })

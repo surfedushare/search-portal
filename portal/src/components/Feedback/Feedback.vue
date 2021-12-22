@@ -18,18 +18,18 @@ import FeedbackPopup from '../Popup/Feedback/FeedbackPopup'
 export default {
   name: 'Feedback',
   components: {
-    FeedbackPopup
+    FeedbackPopup,
   },
   data() {
     return {
-      showPopup: false
+      showPopup: false,
     }
   },
   methods: {
     togglePopup() {
       this.showPopup = !this.showPopup
-    }
-  }
+    },
+  },
 }
 </script>
 

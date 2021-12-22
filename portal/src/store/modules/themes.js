@@ -7,7 +7,7 @@ export default {
     theme: null,
     themeDisciplines: null,
     themeCommunities: null,
-    themeCollections: null
+    themeCollections: null,
   },
   getters: {
     themes(state) {
@@ -41,12 +41,12 @@ export default {
     },
     themeCollections(state) {
       return state.themeCollections
-    }
+    },
   },
   actions: {
     async getThemes({ commit }) {
       const { data: themes } = await axios.get('themes/', {
-        params: { page_size: 100 }
+        params: { page_size: 100 },
       })
       commit('SET_THEMES', themes)
     },
@@ -70,7 +70,7 @@ export default {
         const { data: themeCommunities } = await axios.get(
           `themes/${id}/communities`,
           {
-            params
+            params,
           }
         )
         commit('SET_COMMUNITIES', themeCommunities.results)
@@ -83,7 +83,7 @@ export default {
         )
         commit('SET_COLLECTIONS', themeCollections)
       }
-    }
+    },
   },
   mutations: {
     SET_THEMES(state, payload) {
@@ -100,6 +100,6 @@ export default {
     },
     SET_COLLECTIONS(state, payload) {
       state.themeCollections = payload
-    }
-  }
+    },
+  },
 }

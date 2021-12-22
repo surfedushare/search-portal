@@ -29,22 +29,22 @@ import Popup from '~/components/Popup'
 export default {
   name: 'SelectDownloadPopup',
   components: {
-    Popup
+    Popup,
   },
   props: {
     showPopup: {
       type: Boolean,
-      default: false
+      default: false,
     },
     close: {
       type: Function,
-      default: () => {}
+      default: () => {},
     },
     material: {
       type: Object,
-      default: null
-    }
-  }
+      default: null,
+    },
+  },
 }
 </script>
 <style scoped lang="less">

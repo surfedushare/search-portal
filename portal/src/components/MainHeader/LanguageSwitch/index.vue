@@ -23,8 +23,8 @@ export default {
   methods: {
     switchLanguage(language) {
       this.$i18n.locale = language
-    }
-  }
+    },
+  },
 }
 </script>
 

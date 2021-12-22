@@ -1,7 +1,8 @@
 import i18n from '~/i18n'
 import { isEmpty } from 'lodash'
+import { DateTime } from 'luxon'
 
-export const generateSearchMaterialsQuery = function(
+export const generateSearchMaterialsQuery = function (
   data = { filters: {}, search_text: '' },
   name = 'materials-search'
 ) {
@@ -14,32 +15,32 @@ export const generateSearchMaterialsQuery = function(
     query: {
       ...data,
       filters: JSON.stringify(data.filters),
-      search_text: JSON.stringify(data.search_text)
-    }
+      search_text: JSON.stringify(data.search_text),
+    },
   }
 }
 
-export const parseSearchMaterialsQuery = function(query) {
+export const parseSearchMaterialsQuery = function (query) {
   let search = { search_text: '', filters: {} }
 
   if (query) {
     search = {
       ...query,
       filters: query.filters ? parseFilters(query.filters) : {},
-      search_text: query.search_text ? parseSearchText(query.search_text) : ''
+      search_text: query.search_text ? parseSearchText(query.search_text) : '',
     }
   }
 
   const dateRangeItems = search.filters['publisher_date'] || []
   const dateRange = {
     start_date: dateRangeItems[0],
-    end_date: dateRangeItems[1]
+    end_date: dateRangeItems[1],
   }
 
   return { search, dateRange }
 }
 
-const parseFilters = function(filters) {
+const parseFilters = function (filters) {
   const parsedFilters = JSON.parse(filters)
   if (Array.isArray(parsedFilters)) {
     return parsedFilters.reduce((memo, filter) => {
@@ -54,7 +55,7 @@ const parseFilters = function(filters) {
   return parsedFilters
 }
 
-const parseSearchText = function(searchText) {
+const parseSearchText = function (searchText) {
   const parsedSearchText = JSON.parse(searchText)
   if (Array.isArray(parsedSearchText)) {
     return parsedSearchText[0]
@@ -63,13 +64,13 @@ const parseSearchText = function(searchText) {
   return parsedSearchText
 }
 
-export const validateHREF = function(href) {
+export const validateHREF = function (href) {
   return href.search(process.env.frontendUrl) === 0
     ? href
     : process.env.frontendUrl
 }
 
-export const addFilter = function(search, category, filterId) {
+export const addFilter = function (search, category, filterId) {
   if (isEmpty(search.filters[category])) {
     search.filters[category] = [filterId]
     return search
@@ -78,4 +79,24 @@ export const addFilter = function(search, category, filterId) {
   }
   search.filters[category].push(filterId)
   return search
+}
+
+export const formatDate = function (date, locale) {
+  if (!date) {
+    return
+  }
+  let format
+  switch (date.length) {
+    case 7: // year + month
+      format = { year: 'numeric', month: 'long' }
+      break
+    case 4: // year
+      format = { year: 'numeric' }
+      break
+    default:
+      format = { year: 'numeric', month: 'numeric', day: 'numeric' }
+  }
+  return new DateTime.fromISO(date)
+    .setLocale(locale === 'en' ? 'en-US' : 'nl-NL')
+    .toLocaleString(format)
 }

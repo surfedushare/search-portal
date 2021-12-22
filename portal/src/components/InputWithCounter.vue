@@ -18,12 +18,12 @@ export default {
   props: {
     onSubmit: {
       type: Function,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
-      showCounter: false
+      showCounter: false,
     }
   },
   computed: {
@@ -33,7 +33,7 @@ export default {
       }
 
       return this.$attrs.maxlength
-    }
+    },
   },
   methods: {
     onChange(event) {
@@ -42,8 +42,8 @@ export default {
     onBlur() {
       this.onSubmit()
       this.showCounter = false
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>

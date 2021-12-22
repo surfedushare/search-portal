@@ -70,14 +70,14 @@ export default {
     Disciplines,
     Collections,
     Spinner,
-    InfoBlock
+    InfoBlock,
   },
   mixins: [PageMixin],
   props: [],
   data() {
     return {
       isSearch: false,
-      search: false
+      search: false,
     }
   },
   computed: {
@@ -85,7 +85,7 @@ export default {
       'community_disciplines',
       'community_themes',
       'community_collections_loading',
-      'user'
+      'user',
     ]),
     community_collections() {
       return this.$store.getters.getPublicCollections(this.user)
@@ -107,7 +107,7 @@ export default {
         communityDetails.featured_image ||
         '/images/pictures/community-default.jpg'
       return communityDetails
-    }
+    },
   },
   created() {
     const { community } = this.$route.params
@@ -121,18 +121,18 @@ export default {
     return {
       title: this.community_details
         ? this.community_details.title || defaultTitle
-        : defaultTitle
+        : defaultTitle,
     }
   },
   methods: {
     goToCommunitySearch() {
       const searchRoute = localePath({
         name: 'communities-search',
-        params: { filterId: this.community_info.publisher }
+        params: { filterId: this.community_info.publisher },
       })
       this.$router.push(searchRoute)
-    }
-  }
+    },
+  },
 }
 </script>
 

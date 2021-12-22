@@ -5,18 +5,18 @@ export default {
   name: 'create-account',
   props: ['showPopup', 'close', 'user'],
   components: {
-    Popup
+    Popup,
   },
   data() {
     return {
-      isSubmitting: false
+      isSubmitting: false,
     }
   },
   methods: {
     onCreateAccount() {
       this.isSubmitting = true
       const accountPermission = this.user.permissions.find(
-        permission => permission['type'] === 'Communities'
+        (permission) => permission['type'] === 'Communities'
       )
       accountPermission.is_allowed = true
       this.$store
@@ -35,17 +35,17 @@ export default {
     },
     continueWithoutAccount() {
       this.$router.push('/')
-    }
+    },
   },
   computed: {
     communityPermission() {
       if (this.user && this.user.permissions) {
         return this.user.permissions.find(
-          permission => permission.type === 'Communities'
+          (permission) => permission.type === 'Communities'
         )
       } else {
         return null
       }
-    }
-  }
+    },
+  },
 }

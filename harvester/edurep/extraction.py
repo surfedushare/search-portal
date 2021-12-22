@@ -1,8 +1,8 @@
 import re
 import vobject
-from html import unescape
 from mimetypes import guess_type
 from hashlib import sha1
+from dateutil.parser import parse as date_parser
 
 from django.conf import settings
 from django.utils.text import slugify
@@ -40,8 +40,7 @@ class EdurepDataExtraction(object):
 
     @staticmethod
     def parse_vcard_element(el):
-        card = unescape(el.text.strip())
-        card = "\n".join(field.strip() for field in card.split("\n"))
+        card = "\n".join(field.strip() for field in el.text.strip().split("\n"))
         return vobject.readOne(card)
 
     @classmethod
@@ -116,7 +115,7 @@ class EdurepDataExtraction(object):
         if node is None:
             return
         translation = node.find('czp:langstring')
-        return unescape(translation.text.strip()) if translation else None
+        return translation.text.strip() if translation else None
 
     @classmethod
     def get_language(cls, soup, el):
@@ -127,7 +126,7 @@ class EdurepDataExtraction(object):
     def get_keywords(cls, soup, el):
         nodes = el.find_all('czp:keyword')
         return [
-            unescape(node.find('czp:langstring').text.strip())
+            node.find('czp:langstring').text.strip()
             for node in nodes
         ]
 
@@ -137,7 +136,7 @@ class EdurepDataExtraction(object):
         if node is None:
             return
         translation = node.find('czp:langstring')
-        return unescape(translation.text) if translation else None
+        return translation.text if translation else None
 
     @classmethod
     def get_mime_type(cls, soup, el):
@@ -243,6 +242,14 @@ class EdurepDataExtraction(object):
         return datetime.text.strip()
 
     @classmethod
+    def get_publisher_year(cls, soup, el):
+        publisher_date = cls.get_publisher_date(soup, el)
+        if publisher_date is None:
+            return
+        datetime = date_parser(publisher_date)
+        return datetime.year
+
+    @classmethod
     def get_lom_educational_levels(cls, soup, el):
         educational = el.find('czp:educational')
         if not educational:
@@ -342,6 +349,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "authors": EdurepDataExtraction.get_authors,
     "publishers": EdurepDataExtraction.get_publishers,
     "publisher_date": EdurepDataExtraction.get_publisher_date,
+    "publisher_year": EdurepDataExtraction.get_publisher_year,
     "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
     "disciplines": EdurepDataExtraction.get_disciplines,

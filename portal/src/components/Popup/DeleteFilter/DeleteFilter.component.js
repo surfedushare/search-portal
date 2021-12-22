@@ -3,20 +3,20 @@ export default {
   name: 'delete-filter',
   props: ['is-show', 'close', 'collection', 'deletefunction'],
   components: {
-    Popup
+    Popup,
   },
   mounted() {},
   data() {
     return {
       formData: {
-        title: null
-      }
+        title: null,
+      },
     }
   },
   methods: {
     deleteFilter() {
       this.deletefunction()
-    }
+    },
   },
-  computed: {}
+  computed: {},
 }

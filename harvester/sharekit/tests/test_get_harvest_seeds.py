@@ -197,6 +197,11 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertEqual(seeds[5]["material_types"], ["kennisoverdracht"],
                          "Expected null values to get filtered from lists")
 
+    def test_get_publisher_year(self):
+        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        self.assertEqual(seeds[0]["publisher_year"], 1970)
+        self.assertIsNone(seeds[8]["publisher_year"], "Expected deleted material to have no publisher year")
+
 
 class TestGetHarvestSeedsSharekitRestricted(TestCase):
 

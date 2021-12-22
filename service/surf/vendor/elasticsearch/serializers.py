@@ -57,7 +57,7 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
             child=serializers.CharField()
         )
     )
-    publish_datetime = serializers.CharField(source="publisher_date", allow_blank=True, allow_null=True)
+    published_at = serializers.CharField(source="publisher_date", allow_blank=True, allow_null=True)
     educationallevels = serializers.ListField(child=serializers.CharField(), source="lom_educational_levels")
     disciplines = serializers.ListField(child=serializers.DictField())
     themes = serializers.ListField(child=serializers.CharField(), default=[])

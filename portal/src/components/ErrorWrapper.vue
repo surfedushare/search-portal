@@ -15,9 +15,9 @@ export default {
   props: {
     errors: {
       type: Array,
-      default: () => []
-    }
-  }
+      default: () => [],
+    },
+  },
 }
 </script>
 <style lang="less" scoped>

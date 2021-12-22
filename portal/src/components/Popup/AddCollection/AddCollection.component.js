@@ -7,7 +7,7 @@ export default {
   components: {
     InputLanguageWrapper,
     InputWithCounter,
-    Popup
+    Popup,
   },
   mounted() {},
   data() {
@@ -15,8 +15,8 @@ export default {
       submitting: false,
       formData: {
         title_nl: null,
-        title_en: null
-      }
+        title_en: null,
+      },
     }
   },
   methods: {
@@ -24,7 +24,7 @@ export default {
       this.submitting = true
       this.$store
         .dispatch(this.submitMethod || 'createCollection', this.formData)
-        .then(collection => {
+        .then((collection) => {
           this.$store.dispatch('getUser')
           if (this.$listeners.submitted) {
             this.$emit('submitted', collection)
@@ -34,7 +34,7 @@ export default {
           this.close()
           this.submitting = false
         })
-    }
+    },
   },
-  computed: {}
+  computed: {},
 }

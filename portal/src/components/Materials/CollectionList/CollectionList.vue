@@ -12,7 +12,7 @@
           :to="
             localePath({
               name: 'collections-id',
-              params: { id: collection.id }
+              params: { id: collection.id },
             })
           "
         >
@@ -35,8 +35,8 @@ export default {
   props: {
     collections: {
       type: Array,
-      default: null
-    }
+      default: null,
+    },
   },
   mounted() {},
   methods: {
@@ -44,8 +44,8 @@ export default {
       return this.$i18n.locale === 'nl'
         ? collection.title_nl
         : collection.title_en
-    }
-  }
+    },
+  },
 }
 </script>
 

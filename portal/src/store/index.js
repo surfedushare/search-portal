@@ -25,8 +25,8 @@ const store = new Vuex.Store({
     statistic,
     headerMenu,
     headerSubMenu,
-    messages
-  }
+    messages,
+  },
 })
 
 export default store

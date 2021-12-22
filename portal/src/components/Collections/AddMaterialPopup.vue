@@ -49,38 +49,38 @@ export default {
   components: {
     Popup,
     Search,
-    Materials
+    Materials,
   },
   props: {
     isShow: { type: Boolean },
     close: { type: Function, default: () => {} },
     collectionId: { type: String, default: '' },
-    collectionCount: { type: Number, default: 0 }
+    collectionCount: { type: Number, default: 0 },
   },
   data() {
     return {
       search: '',
       selection: [],
       saved: false,
-      submitting: false
+      submitting: false,
     }
   },
   computed: {
-    ...mapGetters(['materials', 'materials_loading'])
+    ...mapGetters(['materials', 'materials_loading']),
   },
   watch: {
     isShow(shouldShow) {
       if (!shouldShow) {
         this.reset()
       }
-    }
+    },
   },
   methods: {
     onSearch() {
       this.$store.dispatch('searchMaterials', {
         search_text: this.search,
         page_size: 10,
-        page: 1
+        page: 1,
       })
     },
     loadMore() {
@@ -92,7 +92,7 @@ export default {
           this.$store.dispatch('searchNextPageMaterials', {
             search_text: this.search,
             page_size: page_size,
-            page: page + 1
+            page: page + 1,
           })
         }
       }
@@ -106,15 +106,15 @@ export default {
       const data = this.selection.map((material, index) => {
         return {
           external_id: material,
-          position: index + this.collectionCount
+          position: index + this.collectionCount,
         }
       })
       this.$store
         .dispatch('addMaterialToCollection', {
           collection_id: this.collectionId,
-          data
+          data,
         })
-        .then(collection => {
+        .then((collection) => {
           this.saved = true
           if (this.$listeners.submitted) {
             this.$emit('submitted', collection)
@@ -124,8 +124,8 @@ export default {
           this.submitting = false
           this.close()
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

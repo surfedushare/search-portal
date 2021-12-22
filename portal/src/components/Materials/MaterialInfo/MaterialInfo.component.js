@@ -25,7 +25,7 @@ export default {
     MaterialSet,
     MaterialPartOfSet,
     CollectionList,
-    EnlargeableImage
+    EnlargeableImage,
   },
   mounted() {
     this.href = validateHREF(window.location.href)
@@ -46,8 +46,8 @@ export default {
         page_size: 10,
         page: 1,
         filters: [],
-        search_text: ''
-      }
+        search_text: '',
+      },
     }
   },
   methods: {
@@ -55,9 +55,9 @@ export default {
       if (this.material.has_parts.length > 0) {
         this.$store
           .dispatch('getSetMaterials', {
-            external_id: this.material.external_id
+            external_id: this.material.external_id,
           })
-          .then(res => (this.setMaterials = res.records))
+          .then((res) => (this.setMaterials = res.records))
       }
     },
     authorUrl(author) {
@@ -65,8 +65,8 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            'authors.name.keyword': [author]
-          }
+            'authors.name.keyword': [author],
+          },
         })
       }
     },
@@ -75,8 +75,8 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            'publishers.keyword': [publisher]
-          }
+            'publishers.keyword': [publisher],
+          },
         })
       }
     },
@@ -85,8 +85,8 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            consortium: [consortium]
-          }
+            consortium: [consortium],
+          },
         })
       }
     },
@@ -120,7 +120,7 @@ export default {
       this.is_loading_applaud = true
       this.$store
         .dispatch('setApplaudMaterial', {
-          external_id: material.external_id
+          external_id: material.external_id,
         })
         .then(() => {
           this.is_applauded = true
@@ -130,7 +130,7 @@ export default {
               this.is_loading_applaud = false
             })
         })
-    }
+    },
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'themes']),
@@ -152,9 +152,9 @@ export default {
         const material_themes = material.themes
 
         return {
-          results: themes.results.filter(theme => {
+          results: themes.results.filter((theme) => {
             return material_themes.indexOf(theme.external_id) !== -1
-          })
+          }),
         }
       }
 
@@ -162,19 +162,19 @@ export default {
     },
     publishedCollections() {
       return this.collections.filter(
-        collection => collection.publish_status === PublishStatus.PUBLISHED
+        (collection) => collection.publish_status === PublishStatus.PUBLISHED
       )
-    }
+    },
   },
   watch: {
     /**
      * If the material changes, it is checked if the material has been rated
      */
-    material: function() {
+    material: function () {
       const { material } = this
       if (!isNil(material)) {
         this.rating_given = this.isMaterialRated(material.external_id)
       }
-    }
-  }
+    },
+  },
 }

@@ -21,7 +21,7 @@
         :to="
           localePath({
             name: 'my-community',
-            params: { community: community.id }
+            params: { community: community.id },
           })
         "
         class="button edit"
@@ -42,34 +42,34 @@ export default {
       type: Object,
       default: () => ({
         nl: {},
-        en: {}
-      })
+        en: {},
+      }),
     },
     editable: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     communityDetails() {
       return this.community.community_details.find(
-        detail => detail.language_code === this.$i18n.locale.toUpperCase()
+        (detail) => detail.language_code === this.$i18n.locale.toUpperCase()
       )
     },
     draft() {
       return this.community.publish_status == PublishStatus.DRAFT
-    }
+    },
   },
   methods: {
     navigateToCommunity() {
       this.$router.push(
         this.localePath({
           name: 'communities-community',
-          params: { community: this.community.id }
+          params: { community: this.community.id },
         })
       )
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="less" scoped>

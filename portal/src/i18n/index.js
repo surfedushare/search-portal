@@ -14,7 +14,7 @@ export async function loadLanguages() {
       try {
         const messages = await axios
           .get('/locales/' + locale)
-          .then(response => response.data)
+          .then((response) => response.data)
 
         i18n.setLocaleMessage(locale, messages)
         i18n.loadedLanguages.push(locale)
@@ -30,14 +30,14 @@ export async function loadLanguages() {
   await loadLanguageAsync(i18n, i18n.locale)
 
   i18n.locales
-    .filter(locale => locale !== i18n.locale)
-    .forEach(locale => loadLanguageAsync(i18n, locale.code))
+    .filter((locale) => locale !== i18n.locale)
+    .forEach((locale) => loadLanguageAsync(i18n, locale.code))
 }
 
 const i18n = new VueI18n({ fallbackLocale: 'nl' })
 i18n.locales = [
   { code: 'en', iso: 'en-US', file: 'en.js' },
-  { code: 'nl', iso: 'nl-NL', file: 'nl.js' }
+  { code: 'nl', iso: 'nl-NL', file: 'nl.js' },
 ]
 i18n.defaultLocale = 'nl'
 i18n.differentDomains = false

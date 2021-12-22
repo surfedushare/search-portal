@@ -5,14 +5,14 @@ export default {
   props: ['value', 'is-show', 'close', 'material'],
   components: {
     Popup,
-    StarRating
+    StarRating,
   },
   mounted() {},
   data() {
     return {
       saved: false,
       submitting: false,
-      rating: 0
+      rating: 0,
     }
   },
   methods: {
@@ -26,7 +26,7 @@ export default {
       this.$store
         .dispatch('setMaterialRating', {
           external_id: this.material.external_id,
-          star_rating: this.rating
+          star_rating: this.rating,
         })
         .then(() => {
           this.$store
@@ -37,7 +37,7 @@ export default {
               this.rating = 0
             })
         })
-    }
+    },
   },
-  computed: {}
+  computed: {},
 }

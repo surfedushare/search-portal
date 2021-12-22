@@ -5,12 +5,12 @@ export default {
   name: 'main-footer',
   props: [],
   components: {
-    Menu
+    Menu,
   },
   mounted() {},
   data() {
     return {
-      isShowSubMenu: this.show_sub_menu
+      isShowSubMenu: this.show_sub_menu,
     }
   },
   methods: {
@@ -23,7 +23,7 @@ export default {
     },
     getLoginLink() {
       return this.$store.getters.getLoginLink(this.$route)
-    }
+    },
   },
   watch: {
     /**
@@ -32,9 +32,9 @@ export default {
      */
     show_sub_menu(show_sub_menu) {
       this.isShowSubMenu = show_sub_menu
-    }
+    },
   },
   computed: {
-    ...mapGetters(['show_sub_menu', 'isAuthenticated'])
-  }
+    ...mapGetters(['show_sub_menu', 'isAuthenticated']),
+  },
 }
