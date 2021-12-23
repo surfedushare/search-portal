@@ -31,20 +31,5 @@
         </button>
       </div>
     </div>
-    <div class="search__themes" v-if="checkboxOptions && checkboxOptions.options.length > 0">
-      <h4 class="search__themes_title">{{ $t('Filter-search-results') }}</h4>
-      <ul class="search__themes_items">
-        <li v-for="item in checkboxOptions.options" v-if="!item.is_hidden" class="search__themes_item">
-          <input
-            type="checkbox"
-            :id="item.external_id"
-            :value="item.external_id"
-            @change="changeCheckboxOption"
-            name="search_category"
-          >
-          <label :for="item.external_id"> {{titleTranslation(item) }}</label>
-        </li>
-      </ul>
-    </div>
   </form>
 </section>

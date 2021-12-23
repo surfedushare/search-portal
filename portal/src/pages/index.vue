@@ -27,11 +27,19 @@
             </ul>
           </div>
           <Search
+            v-if="!$root.isDemoEnvironment()"
             v-model="searchText"
             :select-options="educationalLevelOptions"
             class="main__info_search"
             @onSearch="searchMaterials"
             @selectDropdownOption="setEducationalLevelFilter"
+          />
+          <DomainSearch
+            v-else
+            v-model="searchText"
+            class="main__info_search domain_search"
+            @onSearch="searchMaterials"
+            @update:filter="onUpdateFilter"
           />
         </div>
       </div>
@@ -85,9 +93,11 @@
 </template>
 
 <script>
+import { isNull } from 'lodash'
 import { mapGetters } from 'vuex'
 import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
+import DomainSearch from '@/components/Search/DomainSearch'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
 import PopularList from '~/components/Communities/PopularList'
@@ -97,6 +107,7 @@ const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
 export default {
   components: {
+    DomainSearch,
     Search,
     PopularList,
     Materials,
@@ -156,6 +167,13 @@ export default {
           page: 1,
         })
       )
+    },
+    onUpdateFilter(filter) {
+      if (isNull(filter.value)) {
+        delete this.filters[filter.field]
+        return
+      }
+      this.filters[filter.field] = filter.values
     },
   },
 }
@@ -268,6 +286,10 @@ export default {
 
     &_search {
       margin: auto;
+    }
+    .domain_search {
+      display: flex;
+      justify-content: space-between;
     }
   }
 
