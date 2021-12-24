@@ -53,7 +53,7 @@ export default {
         {
           field: 'lom_educational_levels',
           label: this.$i18n.t('for'),
-          defaultOption: this.$i18n.t('alle niveaus'),
+          defaultOption: this.$i18n.t('all-levels'),
         },
       ],
       dropdownData: null,
