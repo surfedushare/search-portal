@@ -101,6 +101,11 @@ export default {
       return this.sortedChildren.slice(0, this.numberOfVisibleItems)
     },
   },
+  watch: {
+    category(newCategory) {
+      this.isOpen = newCategory.children.some((child) => child.selected)
+    },
+  },
   methods: {
     toggle() {
       this.isOpen = !this.isOpen
