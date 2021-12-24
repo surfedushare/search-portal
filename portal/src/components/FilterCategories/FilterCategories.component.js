@@ -1,4 +1,4 @@
-import { flatMap } from 'lodash'
+import { flatMap, isEmpty } from 'lodash'
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
 import FilterCategory from './FilterCategory/FilterCategory'
@@ -117,7 +117,11 @@ export default {
       })
     },
     filterableCategories() {
-      if (!this.materials || !this.materials.filter_categories) {
+      if (
+        !this.materials ||
+        !this.materials.filter_categories ||
+        isEmpty(this.materials.records)
+      ) {
         return []
       }
 
@@ -137,7 +141,7 @@ export default {
       )
 
       // aggregate counts to the highest level
-      return visibleCategories.map((category) => {
+      const filterableCategories = visibleCategories.map((category) => {
         if (category.children) {
           category.children = category.children.map((child) => {
             if (child.children.length > 0) {
@@ -161,6 +165,15 @@ export default {
         })
 
         return category
+      })
+
+      return filterableCategories.filter((category) => {
+        return (
+          category.children.length >= 2 ||
+          category.children.some((child) => {
+            return child.selected
+          })
+        )
       })
     },
   },

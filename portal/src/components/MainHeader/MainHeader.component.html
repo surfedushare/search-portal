@@ -56,7 +56,12 @@
               </ul>
             </nav>
           </div>
-          <LanguageSwitch />
+          <LanguageSwitch class="main-header__language_switch"/>
+          <div class="container">
+            <router-link :to="searchLink" class="search-icon">
+              <img src="/images/search.svg"/>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -116,7 +121,12 @@
         <div class="main-header__support">
           <a class="button" :href="supportLink">Support</a>
         </div>
-        <LanguageSwitch />
+        <LanguageSwitch class="main-header__language_switch"/>
+        <div class="container">
+          <router-link :to="searchLink" class="search-icon">
+            <img src="/images/search.svg"/>
+          </router-link>
+        </div>
       </div>
     </div>
 

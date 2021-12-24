@@ -23,7 +23,7 @@
   <span class="star-rating__counter_text" v-else-if="type === 'giant'" >{{types[avg_rating]}}</span>
   <span class="star-rating__counter" v-else >{{avg_rating}} / 5</span>
   <span class="star-rating__counter_big" v-if="type === 'big' && !hideCounter" >
-    {{counter}} {{ $t('ratings') }}
+    {{counter}} {{ $tc('ratings', counter) }}
   </span>
 
 </div>

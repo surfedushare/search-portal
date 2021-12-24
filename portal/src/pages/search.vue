@@ -69,7 +69,7 @@
         infinite-scroll-distance="10"
         class="search__wrapper center_block"
       >
-        <div class="search__filter">
+        <div v-if="showFilterCategories" class="search__filter">
           <div class="search__filter_content">
             <FilterCategories
               v-model="search"
@@ -148,6 +148,14 @@ export default {
       return defaultFilter
         ? defaultFilter.title_translations[this.$i18n.locale]
         : null
+    },
+    showFilterCategories() {
+      return (
+        this.isReady &&
+        this.materials &&
+        this.materials.records &&
+        this.materials.records.length
+      )
     },
   },
   watch: {
