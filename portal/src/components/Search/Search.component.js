@@ -74,12 +74,6 @@ export default {
     changeSelectedOption($event) {
       this.$emit('selectDropdownOption', $event.target.value)
     },
-    changeCheckboxOption($event) {
-      this.$emit('selectCheckboxOption', {
-        value: $event.target.value,
-        checked: $event.target.checked,
-      })
-    },
   },
   watch: {
     value(value) {

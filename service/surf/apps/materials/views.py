@@ -20,6 +20,7 @@ from rest_framework.viewsets import (
     ModelViewSet
 )
 from rest_framework.permissions import AllowAny
+from rest_framework.renderers import JSONRenderer
 
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
@@ -78,10 +79,16 @@ def portal_material(request, *args, **kwargs):
 def portal_single_page_application(request, *args):
     site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
     site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
+    filter_category_tree = MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
+    filter_categories = MpttFilterItemSerializer(
+        filter_category_tree,
+        many=True
+    )
     return render(request, "portal/index.html", {
         'meta_title': "Edusources",
         'meta_description': site_description,
-        'matomo_id': settings.MATOMO_ID
+        'matomo_id': settings.MATOMO_ID,
+        'filter_categories_json': JSONRenderer().render(filter_categories.data).decode("utf-8")
     })
 
 
