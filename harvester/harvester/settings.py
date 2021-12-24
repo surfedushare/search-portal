@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'datagrowth',
 
     'core',
+    'metadata',
     'edurep',
     'sharekit',
     'anatomy_tool',
