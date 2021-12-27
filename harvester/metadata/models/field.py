@@ -10,6 +10,7 @@ class MetadataField(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     translation = models.OneToOneField(MetadataTranslation, on_delete=models.PROTECT, null=False, blank=False)
+    is_hidden = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
