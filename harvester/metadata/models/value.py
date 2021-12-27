@@ -17,6 +17,7 @@ class MetadataValueManager(TreeManager):
 
 class MetadataValue(MPTTModel):
 
+    objects = MetadataValueManager()
     _tree_manager = MetadataValueManager()
 
     name = models.CharField(max_length=255)
