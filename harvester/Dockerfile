@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && apt-get install -y apt-transport-https && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
         && echo "deb https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
         && apt-get update \
-        && apt-get install -y less vim ffmpeg default-jre time dialog sox subversion build-essential zlib1g-dev automake \
+        && apt-get install -y less vim ffmpeg time dialog sox subversion build-essential zlib1g-dev automake \
         autoconf libtool libatlas3-base google-chrome-stable poppler-utils
 
 # Create the app environment
@@ -32,12 +32,6 @@ RUN chown app:app /usr/src/media
 RUN chown app:app /usr/src/environments
 RUN chown app:app /usr/src/logs
 
-# Download and verify Tika
-RUN curl -sSL https://archive.apache.org/dist/tika/tika-app-1.25.jar -o /home/app/tika-app-1.25.jar
-RUN curl -sSL https://archive.apache.org/dist/tika/tika-app-1.25.jar.sha512 -o /home/app/tika-app-1.25.jar.sha512
-RUN cat /home/app/tika-app-1.25.jar.sha512 | echo "$(</dev/stdin) /home/app/tika-app-1.25.jar" | sha512sum -c
-RUN rm /home/app/tika-app-1.25.jar.sha512
-
 # Become app user to prevent attacks during install (possibly from hijacked PyPi packages)
 USER app:app
 
@@ -54,12 +48,6 @@ COPY harvester /usr/src/app
 # The default environment mode is production, but during image build we use the localhost mode
 # This allows to run setup commands locally without loading secrets
 COPY environments /usr/src/environments
-
-# Move tika to harvester bin folder
-USER root
-RUN mv /home/app/tika-app-1.25.jar /usr/src/app/harvester/bin
-RUN chown app:app /usr/src/app/harvester/bin/tika-app-1.25.jar
-USER app:app
 
 # We're serving static files through Whitenoise
 # See: http://whitenoise.evans.io/en/stable/index.html#
