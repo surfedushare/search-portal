@@ -5,7 +5,7 @@ from metadata.models import MetadataValue, MetadataField, MetadataTranslation
 
 
 class MetadataFieldAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'is_hidden', 'english_as_dutch',)
 
 
 class MetadataTranslationAdmin(admin.ModelAdmin):

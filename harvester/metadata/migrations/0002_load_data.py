@@ -42,9 +42,10 @@ def load_filter_categories_data(apps, schema_editor):
     for field in data:
         translation = MetadataTranslation.objects.create(**field["title_translations"])
         field_instance = MetadataField.objects.create(
-            name=field["name"],
+            name=field["external_id"],
             translation=translation,
-            is_hidden=field["is_hidden"]
+            is_hidden=field["is_hidden"],
+            english_as_dutch=field["external_id"] in ["authors.name.keyword", "publishers.keyword"]
         )
         _load_metadata_values(field_instance, field["children"], MetadataValue, MetadataTranslation)
     # Rebuilds the tree, we can only do that with the "full" MetadataValue manager
