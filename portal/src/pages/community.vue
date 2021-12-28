@@ -32,18 +32,6 @@
             </Collections>
             <Spinner v-if="community_collections_loading" />
           </div>
-
-          <template>
-            <div v-show="false" class="community__row">
-              <Themes :themes="community_themes" class="community__themas" />
-              <div class="community__themas_and_disciplines">
-                <Disciplines
-                  class="community__disciplines"
-                  :disciplines="community_disciplines"
-                />
-              </div>
-            </div>
-          </template>
         </div>
       </div>
     </section>
@@ -66,8 +54,6 @@ export default {
   name: 'Community',
   components: {
     Error,
-    Themes,
-    Disciplines,
     Collections,
     Spinner,
     InfoBlock,
@@ -82,8 +68,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'community_disciplines',
-      'community_themes',
       'community_collections_loading',
       'user',
     ]),
@@ -112,8 +96,6 @@ export default {
   created() {
     const { community } = this.$route.params
     this.pageLoad = this.$store.dispatch('getCommunity', community)
-    this.$store.dispatch('getCommunityThemes', community)
-    this.$store.dispatch('getCommunityDisciplines', community)
     this.$store.dispatch('getCommunityCollections', community)
   },
   metaInfo() {

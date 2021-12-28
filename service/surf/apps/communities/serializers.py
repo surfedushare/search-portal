@@ -1,16 +1,11 @@
 """
 This module contains API view serializers for communities app.
 """
-from collections import OrderedDict
-
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from surf.apps.communities.models import Community, CommunityDetail
-from surf.apps.filters.models import MpttFilterItem
-from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.models import Material
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from django.core.exceptions import ValidationError
 from rest_framework.exceptions import APIException
 
@@ -170,24 +165,3 @@ class CommunitySerializer(serializers.ModelSerializer):
                   'community_details', 'community_details_update',
                   'logo_nl', 'logo_en', 'featured_image_nl', 'featured_image_en', 'deleted_logos',
                   'publisher')
-
-
-class CommunityDisciplineSerializer(MpttFilterItemSerializer):
-    """
-    Community discipline instance serializer
-    """
-
-    materials_count = serializers.SerializerMethodField()
-
-    def get_materials_count(self, obj):
-        if obj.external_id:
-            elastic = ElasticSearchApiClient()
-            filters = [OrderedDict(external_id=obj.parent.external_id, items=[obj.external_id])]
-            res = elastic.search('', filters=filters, page_size=0)
-            return res['recordcount']
-
-        return 0
-
-    class Meta:
-        model = MpttFilterItem
-        fields = ('id', 'external_id', 'name', 'materials_count',)
