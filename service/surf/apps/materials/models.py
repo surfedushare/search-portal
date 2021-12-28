@@ -18,16 +18,6 @@ RESOURCE_TYPE_MATERIAL = "material"
 RESOURCE_TYPE_COLLECTION = "collection"
 
 
-def add_material_themes(material, themes):
-    ts = Theme.objects.filter(external_id__in=themes).all()
-    material.themes.set(ts)
-
-
-def add_material_disciplines(material, disciplines):
-    ds = MpttFilterItem.objects.filter(external_id__in=disciplines).all()
-    material.disciplines.set(ds)
-
-
 class Material(UUIDModel):
     """
     Implementation of EduRep Material model.
@@ -97,9 +87,6 @@ class Material(UUIDModel):
         if self.deleted_at:  # we restore materials if they reappear in an index
             self.deleted_at = None
         self.save()
-        m = records[0]
-        add_material_themes(self, m.get("themes", []))  # currently themes are not at all returned from ES
-        add_material_disciplines(self, m.get("disciplines", []))
 
     def __str__(self):
         return self.external_id

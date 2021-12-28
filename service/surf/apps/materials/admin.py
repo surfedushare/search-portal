@@ -57,8 +57,7 @@ class MaterialAdmin(admin.ModelAdmin):
     list_display = ('external_id', 'view_count', 'applaud_count', 'get_avg_star_rating', 'deleted_at',)
     list_filter = (TrashListFilter,)
     readonly_fields = (
-        'external_id', 'themes', 'disciplines', 'view_count', 'applaud_count', 'get_avg_star_rating',
-        'get_star_count', "deleted_at",
+        'external_id', 'view_count', 'applaud_count', 'get_avg_star_rating', 'get_star_count', "deleted_at",
     )
     search_fields = ('external_id',)
     inlines = (CollectionMaterialInline,)
