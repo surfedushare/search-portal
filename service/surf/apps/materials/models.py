@@ -8,8 +8,6 @@ from django.utils import timezone
 from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
-from surf.apps.filters.models import MpttFilterItem
-from surf.apps.themes.models import Theme
 from surf.statusenums import PublishStatus
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
@@ -26,16 +24,6 @@ class Material(UUIDModel):
     # identifier of material in EduRep
     external_id = django_models.CharField(max_length=255,
                                           verbose_name="EduRep material id")
-
-    # list of related themes
-    themes = django_models.ManyToManyField(Theme,
-                                           blank=True,
-                                           related_name="materials")
-
-    # list of related disciplines
-    disciplines = django_models.ManyToManyField(MpttFilterItem,
-                                                blank=True,
-                                                related_name="materials")
 
     deleted_at = django_models.DateTimeField(null=True, blank=True, default=None)
 

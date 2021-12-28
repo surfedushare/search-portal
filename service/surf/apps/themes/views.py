@@ -22,4 +22,3 @@ class ThemeViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ThemeSerializer
     filter_class = ThemeFilter
     permission_classes = []
-    lookup_field = 'filter_category_item__id'

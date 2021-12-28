@@ -12,9 +12,9 @@ class ThemeSerializer(serializers.ModelSerializer):
     Theme instance serializer
     """
 
-    id = serializers.UUIDField(source="filter_category_item.id")
+    id = serializers.UUIDField()
     description_translations = LocaleHTMLSerializer()
-    external_id = serializers.CharField(source="filter_category_item.external_id")
+    external_id = serializers.CharField()
 
     class Meta:
         model = Theme
