@@ -33,9 +33,9 @@ function getFiltersFromQuery(query) {
   let querySearch = parseSearchMaterialsQuery(query)
   let selected = {}
   if (!isEmpty(querySearch.search)) {
-    forEach(querySearch.search.filters, (filter) => {
+    forEach(querySearch.search.filters, (items) => {
       // filters is an object, not an array
-      filter.items.reduce((obj, item) => {
+      items.reduce((obj, item) => {
         obj[item] = true
         return obj
       }, selected)
