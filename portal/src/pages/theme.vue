@@ -15,7 +15,7 @@
             class="theme__info_bg"
           />
           <h2 class="theme__info_ttl">
-            {{ getTitleTranslation(theme, $i18n.locale) }}
+            {{ getTitleTranslation() }}
           </h2>
           <Search
             v-if="search"
@@ -29,9 +29,7 @@
       <div class="center_block theme__row">
         <div class="theme__description">
           <h2>
-            {{ $t('About-the-theme') }} <br />{{
-              getTitleTranslation(theme, $i18n.locale)
-            }}
+            {{ $t('About-the-theme') }} <br />{{ getTitleTranslation() }}
           </h2>
           <p>
             <!-- eslint-disable vue/no-v-html -->
@@ -58,7 +56,7 @@
             <h2>{{ $t('Newest-open-learning-material-for-theme') }}</h2>
             <p class="materials__description">
               {{ $t('Featured-learning-materials-in-the-theme') }}
-              {{ getTitleTranslation(theme, $i18n.locale) }}
+              {{ getTitleTranslation() }}
             </p>
           </template>
         </Materials>
@@ -95,7 +93,8 @@ export default {
   data() {
     return {
       search: {},
-      themeDisciplines: []
+      themeDisciplines: [],
+      themeCategory: null
     }
   },
   computed: {
@@ -103,19 +102,19 @@ export default {
       'theme',
       'materials',
       'filter',
-    ]),
+    ])
   },
   created() {
     let themeId = this.$route.params.id
 
     this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
       this.$store.dispatch('getTheme', themeId).then((theme) => {
-        let themeCategory = this.$store.getters.getCategoryById(
-          theme.filter_category,
+        this.themeCategory = this.$store.getters.getCategoryById(
+          theme.external_id,
           THEME_CATEGORY_FILTER_ID
         )
-        this.themeDisciplines = themeCategory.children
-        themeCategory.selected = true
+        this.themeDisciplines = this.themeCategory.children
+        this.themeCategory.selected = true
         this.$store.dispatch('searchMaterials', {
           page_size: 4,
           search_text: '',
@@ -129,26 +128,22 @@ export default {
   metaInfo() {
     const defaultTitle = this.$root.$meta().title
     return {
-      title: this.theme
-        ? this.theme.title_translations[this.$i18n.locale] || defaultTitle
+      title: this.themeCategory
+        ? this.themeCategory.title_translations[this.$i18n.locale] || defaultTitle
         : defaultTitle,
     }
   },
   methods: {
     onSearch() {
-      const category = this.$store.getters.getCategoryById(
-        this.theme.filter_category,
-        THEME_CATEGORY_FILTER_ID
-      )
-      const filterIds = category
-        ? category.children.map((child) => {
+      const filterIds = this.themeCategory
+        ? this.themeCategory.children.map((child) => {
             return child.external_id
           })
         : []
       this.search = {
         search_text: this.search.search_text,
         filters: {
-          learning_material_themes: [this.theme.filter_category, ...filterIds],
+          learning_material_themes: [this.theme.external_id, ...filterIds],
         },
         page_size: 10,
         page: 1,
@@ -158,21 +153,19 @@ export default {
         this.search,
         'themes-search'
       )
-      location.params = { filterId: this.theme.filter_category }
+      location.params = { filterId: this.theme.external_id }
       this.$router.push(location)
-    },
-    getTitleTranslation(theme, language) {
-      if (!isEmpty(theme.title_translations)) {
-        return theme.title_translations[language]
-      }
-      return theme.title
     },
     getDescriptionTranslation(theme, language) {
       if (!isEmpty(theme.description_translations)) {
         return theme.description_translations[language]
       }
-      return theme.description
     },
+    getTitleTranslation() {
+      if (this.themeCategory) {
+        return this.themeCategory.title_translations[this.$i18n.locale]
+      }
+    }
   },
 }
 </script>
