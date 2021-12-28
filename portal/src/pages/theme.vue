@@ -28,9 +28,7 @@
       </div>
       <div class="center_block theme__row">
         <div class="theme__description">
-          <h2>
-            {{ $t('About-the-theme') }} <br />{{ getTitleTranslation() }}
-          </h2>
+          <h2>{{ $t('About-the-theme') }} <br />{{ getTitleTranslation() }}</h2>
           <p>
             <!-- eslint-disable vue/no-v-html -->
             <span
@@ -70,10 +68,8 @@ import { mapGetters } from 'vuex'
 import { isEmpty } from 'lodash'
 import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
-import PopularList from '~/components/Communities/PopularList'
 import Materials from '~/components/Materials'
 import Disciplines from '~/components/Disciplines'
-import Collections from '~/components/Collections'
 import Error from '~/components/error'
 import { THEME_CATEGORY_FILTER_ID } from '~/constants'
 import { generateSearchMaterialsQuery } from '@/components/_helpers'
@@ -82,10 +78,8 @@ export default {
   name: 'Theme',
   components: {
     Search,
-    PopularList,
     Materials,
     Disciplines,
-    Collections,
     Error,
   },
   mixins: [PageMixin],
@@ -94,15 +88,11 @@ export default {
     return {
       search: {},
       themeDisciplines: [],
-      themeCategory: null
+      themeCategory: null,
     }
   },
   computed: {
-    ...mapGetters([
-      'theme',
-      'materials',
-      'filter',
-    ])
+    ...mapGetters(['theme', 'materials', 'filter']),
   },
   created() {
     let themeId = this.$route.params.id
@@ -129,7 +119,8 @@ export default {
     const defaultTitle = this.$root.$meta().title
     return {
       title: this.themeCategory
-        ? this.themeCategory.title_translations[this.$i18n.locale] || defaultTitle
+        ? this.themeCategory.title_translations[this.$i18n.locale] ||
+          defaultTitle
         : defaultTitle,
     }
   },
@@ -165,7 +156,7 @@ export default {
       if (this.themeCategory) {
         return this.themeCategory.title_translations[this.$i18n.locale]
       }
-    }
+    },
   },
 }
 </script>

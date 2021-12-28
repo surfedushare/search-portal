@@ -4,7 +4,7 @@ import axios from '~/axios'
 export default {
   state: {
     themes: null,
-    theme: null
+    theme: null,
   },
   getters: {
     themes(state) {
@@ -12,7 +12,7 @@ export default {
     },
     theme(state) {
       return state.theme
-    }
+    },
   },
   actions: {
     async getThemes({ commit }) {
@@ -27,7 +27,7 @@ export default {
         commit('SET_THEME', theme)
         return theme
       }
-    }
+    },
   },
   mutations: {
     SET_THEMES(state, payload) {
@@ -35,6 +35,6 @@ export default {
     },
     SET_THEME(state, payload) {
       state.theme = payload
-    }
+    },
   },
 }

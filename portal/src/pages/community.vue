@@ -42,8 +42,6 @@
 import { mapGetters } from 'vuex'
 import PageMixin from '~/pages/page-mixin'
 import InfoBlock from '~/components/InfoBlock'
-import Themes from '~/components/Themes'
-import Disciplines from '~/components/Disciplines'
 import Collections from '~/components/Collections'
 import Spinner from '~/components/Spinner'
 import Error from '~/components/error'
@@ -67,10 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'community_collections_loading',
-      'user',
-    ]),
+    ...mapGetters(['community_collections_loading', 'user']),
     community_collections() {
       return this.$store.getters.getPublicCollections(this.user)
     },
