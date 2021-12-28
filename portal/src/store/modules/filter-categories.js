@@ -1,4 +1,4 @@
-import { forEach, isNil, isNull, isEmpty, groupBy } from 'lodash'
+import { forEach, isNil, isNull, isEmpty, groupBy, sortBy } from 'lodash'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
@@ -121,6 +121,14 @@ export default {
     },
     getFiltersFromQuery() {
       return getFiltersFromQuery
+    },
+    sortedThemes(state, getters) {
+      const themeCategory = getters.getCategoryById('learning_material_themes')
+      if (!themeCategory) {
+        return []
+      }
+      const themes = themeCategory.children
+      return sortBy(themes, ['external_id'])
     },
   },
   actions: {

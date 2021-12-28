@@ -12,23 +12,6 @@ export default {
     },
     theme(state) {
       return state.theme
-    },
-    sortedThemes(state) {
-      const { themes } = state
-
-      if (themes) {
-        return themes.results.slice(0).sort((a, b) => {
-          if (a.title < b.title) {
-            return -1
-          }
-          if (a.title > b.title) {
-            return 1
-          }
-          return 0
-        })
-      }
-
-      return false
     }
   },
   actions: {
