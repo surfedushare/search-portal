@@ -1,8 +1,3 @@
-"""
-This module contains implementation of REST API views for materials app.
-"""
-
-import json
 import logging
 
 from django.conf import settings
