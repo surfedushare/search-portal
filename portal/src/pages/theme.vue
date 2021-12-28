@@ -48,27 +48,6 @@
           :theme="theme"
         />
       </div>
-      <div class="theme__materials_and_communities theme__row center_block">
-        <Collections
-          :collections="themeCollections"
-          :items-in-line="2"
-          class="theme__materials"
-        >
-          <template slot="header-info">
-            <h2>{{ $t('Collections-2') }}</h2>
-          </template>
-        </Collections>
-
-        <PopularList class="theme__communities" :communities="themeCommunities">
-          <template slot="header-info">
-            <h2>{{ $t('Communities') }}</h2>
-            <div class="popular-list__description">
-              {{ $t('Subject-communities-within-the-theme') }}
-              {{ getTitleTranslation(theme, $i18n.locale) }}
-            </div>
-          </template>
-        </PopularList>
-      </div>
       <div class="theme__collections theme__row center_block">
         <Materials
           :materials="materials"
@@ -116,14 +95,12 @@ export default {
   data() {
     return {
       search: {},
+      themeDisciplines: []
     }
   },
   computed: {
     ...mapGetters([
       'theme',
-      'themeDisciplines',
-      'themeCommunities',
-      'themeCollections',
       'materials',
       'filter',
     ]),
@@ -137,6 +114,7 @@ export default {
           theme.filter_category,
           THEME_CATEGORY_FILTER_ID
         )
+        this.themeDisciplines = themeCategory.children
         themeCategory.selected = true
         this.$store.dispatch('searchMaterials', {
           page_size: 4,
@@ -147,15 +125,6 @@ export default {
         })
       })
     })
-
-    // TODO: all data fetched below is also in the getFilterCategories above
-    // We should remove these calls and use the getFilterCategories
-    this.$store.dispatch('getThemeDisciplines', themeId)
-    this.$store.dispatch('getThemeCommunities', {
-      id: this.$route.params.id,
-      params: { page_size: 2 },
-    })
-    this.$store.dispatch('getThemeCollections', themeId)
   },
   metaInfo() {
     const defaultTitle = this.$root.$meta().title
