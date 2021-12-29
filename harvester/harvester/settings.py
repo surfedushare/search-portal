@@ -440,6 +440,10 @@ CELERY_BEAT_SCHEDULE = {
     'sync_indices': {
         'task': 'sync_indices',
         'schedule': 30,
+    },
+    'sync_metadata': {
+        'task': 'sync_metadata',
+        'schedule': crontab(minute=30)
     }
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
@@ -460,9 +464,15 @@ SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
 SHAREKIT_BASE_URL = environment.django.repositories.sharekit
 
 
-# Edurep
+# Edurep & Eduterm
 
 EDUREP_BASE_URL = environment.django.repositories.edurep
+EDUTERM_API_KEY = environment.secrets.eduterm.api_key
+
+
+# Deepl
+
+DEEPL_API_KEY = environment.secrets.deepl.api_key
 
 
 # Robots
