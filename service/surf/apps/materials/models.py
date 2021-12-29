@@ -8,24 +8,12 @@ from django.utils import timezone
 from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
-from surf.apps.filters.models import MpttFilterItem
-from surf.apps.themes.models import Theme
 from surf.statusenums import PublishStatus
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
 RESOURCE_TYPE_MATERIAL = "material"
 RESOURCE_TYPE_COLLECTION = "collection"
-
-
-def add_material_themes(material, themes):
-    ts = Theme.objects.filter(external_id__in=themes).all()
-    material.themes.set(ts)
-
-
-def add_material_disciplines(material, disciplines):
-    ds = MpttFilterItem.objects.filter(external_id__in=disciplines).all()
-    material.disciplines.set(ds)
 
 
 class Material(UUIDModel):
@@ -36,16 +24,6 @@ class Material(UUIDModel):
     # identifier of material in EduRep
     external_id = django_models.CharField(max_length=255,
                                           verbose_name="EduRep material id")
-
-    # list of related themes
-    themes = django_models.ManyToManyField(Theme,
-                                           blank=True,
-                                           related_name="materials")
-
-    # list of related disciplines
-    disciplines = django_models.ManyToManyField(MpttFilterItem,
-                                                blank=True,
-                                                related_name="materials")
 
     deleted_at = django_models.DateTimeField(null=True, blank=True, default=None)
 
@@ -97,9 +75,6 @@ class Material(UUIDModel):
         if self.deleted_at:  # we restore materials if they reappear in an index
             self.deleted_at = None
         self.save()
-        m = records[0]
-        add_material_themes(self, m.get("themes", []))  # currently themes are not at all returned from ES
-        add_material_disciplines(self, m.get("disciplines", []))
 
     def __str__(self):
         return self.external_id

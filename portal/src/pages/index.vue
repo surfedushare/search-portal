@@ -124,7 +124,6 @@ export default {
       filterCategories: 'filter_categories',
       materials: 'materials',
       allCommunities: 'allCommunities',
-      sortedThemes: 'sortedThemes',
       statistic: 'statistic',
     }),
     numberOfMaterials() {

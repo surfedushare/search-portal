@@ -1,8 +1,3 @@
-"""
-This module contains implementation of REST API views for materials app.
-"""
-
-import json
 import logging
 
 from django.conf import settings
@@ -51,8 +46,6 @@ from surf.apps.materials.serializers import (
 from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
     get_material_details_by_id,
-    add_material_themes,
-    add_material_disciplines,
     add_search_query_to_elastic_index
 )
 from surf.apps.locale.models import Locale
@@ -543,14 +536,7 @@ class CollectionViewSet(ModelViewSet):
             if not details:
                 continue
 
-            keywords = details[0].get("keywords")
-            if keywords:
-                keywords = json.dumps(keywords)
-
             m, _ = Material.objects.update_or_create(external_id=m_external_id)
-
-            add_material_themes(m, details[0].get("themes", []))
-            add_material_disciplines(m, details[0].get("disciplines", []))
             CollectionMaterial.objects.create(collection=instance, material=m, position=m_position)
 
     @staticmethod
