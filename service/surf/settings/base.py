@@ -446,7 +446,7 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
-EDUTERM_API_KEY = environment.secrets.eduterm.api_key
-DEEPL_API_KEY = environment.secrets.deepl.api_key
+EDUTERM_API_KEY = None
+DEEPL_API_KEY = None
 HARVESTER_API = environment.django.harvester_api
 HARVESTER_API_KEY = environment.secrets.harvester.api_key
