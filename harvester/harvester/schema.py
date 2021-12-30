@@ -25,6 +25,19 @@ class HarvesterSchema(AutoSchema):
             operation["tags"] = ["Extending data"]
         elif path.startswith("/metadata"):
             operation["tags"] = ["Metadata"]
+            if "tree" in path:
+                operation["parameters"] = [
+                    {
+                        "name": "max_children",
+                        "in": "query",
+                        "required": False,
+                        "description": "Limits the amount of children returned by this endpoint "
+                                       "(mostly useful to speed up responses from the interactive documentation)",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
         else:
             operation["tags"] = ["default"]
         return operation

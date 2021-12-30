@@ -56,13 +56,17 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
     value = serializers.CharField(source="name")
     frequency = serializers.IntegerField(default=0)
 
+    max_children = serializers.IntegerField(write_only=True, required=False)
+
     def get_parent(self, obj):
         return None
 
     def get_children(self, obj):
         children = obj.metadatavalue_set.select_related("translation").get_cached_trees()
-        return MetadataValueSerializer(children, many=True).data
+        max_children = self.context["request"].GET.get("max_children", "")
+        max_children = int(max_children) if max_children else None
+        return MetadataValueSerializer(children, many=True).data[:max_children]
 
     class Meta:
         model = MetadataField
-        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency',)
+        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency', 'max_children',)
