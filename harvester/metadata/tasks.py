@@ -27,11 +27,13 @@ def _translate_metadata_value(field, value):
 
 @app.task(name="sync_metadata", base=DatabaseConnectionResetTask)
 def sync_metadata():
-    frequencies = MetadataField.objects.fetch_value_frequencies()
+    frequencies = MetadataField.objects.fetch_value_frequencies(is_manual=False)
 
     metadata_updates = []
     for metadata_value in MetadataValue.objects.iterator():
-        frequency = frequencies[metadata_value.field.name].pop(metadata_value.value, None)
+        if metadata_value.field.name not in frequencies:
+            continue
+        frequency = frequencies[metadata_value.field.name].pop(metadata_value.value, 0)
         if not frequency and not metadata_value.is_manual:
             metadata_value.deleted_at = now()
             metadata_updates.append(metadata_value)
@@ -39,7 +41,7 @@ def sync_metadata():
         metadata_value.frequency = frequency
         metadata_value.deleted_at = None
         metadata_updates.append(metadata_value)
-    MetadataValue.objects.bulk_update(metadata_updates, fields=["value", "deleted_at"])
+    MetadataValue.objects.bulk_update(metadata_updates, fields=["value", "frequency", "deleted_at"])
 
     metadata_inserts = []
     translation_inserts = []

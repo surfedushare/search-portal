@@ -7,8 +7,7 @@ from metadata.models import MetadataTranslation, MetadataTranslationSerializer, 
 
 class MetadataFieldManager(models.Manager):
 
-    def fetch_value_frequencies(self, filters=None):
-        filters = filters or {}
+    def fetch_value_frequencies(self, **kwargs):
         client = get_es_client()
         aggregation_query = {
             field.name: {
@@ -17,7 +16,7 @@ class MetadataFieldManager(models.Manager):
                     "size": field.size + 500,
                 }
             }
-            for field in self.annotate(size=models.Count("metadatavalue")).filter(**filters).iterator()
+            for field in self.annotate(size=models.Count("metadatavalue")).filter(**kwargs).iterator()
         }
         response = client.search(
             index=["latest-nl", "latest-en", "latest-unk"],
