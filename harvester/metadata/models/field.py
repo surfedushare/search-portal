@@ -42,6 +42,7 @@ class MetadataField(models.Model):
 
     translation = models.OneToOneField(MetadataTranslation, on_delete=models.PROTECT, null=False, blank=False)
     is_hidden = models.BooleanField(default=False)
+    is_manual = models.BooleanField(default=False)
     english_as_dutch = models.BooleanField(default=False)
 
     def __str__(self):

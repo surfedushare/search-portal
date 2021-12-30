@@ -45,6 +45,7 @@ def load_filter_categories_data(apps, schema_editor):
             name=field["external_id"],
             translation=translation,
             is_hidden=field["is_hidden"],
+            is_manual=field["is_manual"],
             english_as_dutch=field["external_id"] in ["authors.name.keyword", "publishers.keyword"]
         )
         _load_metadata_values(field_instance, field["children"], MetadataValue, MetadataTranslation)
