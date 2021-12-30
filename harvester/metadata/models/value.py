@@ -1,9 +1,10 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from rest_framework import serializers
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 from mptt.exceptions import InvalidMove
 
-from metadata.models import MetadataTranslation, MetadataField
+from metadata.models import MetadataTranslation, MetadataTranslationSerializer
 
 
 class MetadataValueManager(TreeManager):
@@ -25,7 +26,7 @@ class MetadataValue(MPTTModel):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
 
-    field = models.ForeignKey(MetadataField, on_delete=models.CASCADE, null=False, blank=False)
+    field = models.ForeignKey("metadata.MetadataField", on_delete=models.CASCADE, null=False, blank=False)
     value = models.CharField(max_length=255, blank=False, null=False)
     translation = models.OneToOneField(MetadataTranslation, on_delete=models.PROTECT, null=False, blank=False)
     frequency = models.PositiveIntegerField(default=0)
@@ -47,3 +48,19 @@ class MetadataValue(MPTTModel):
 
     class Meta:
         unique_together = ("field", "value",)
+
+
+class MetadataValueSerializer(serializers.ModelSerializer):
+
+    children = serializers.SerializerMethodField()
+    translation = MetadataTranslationSerializer()
+
+    def get_children(self, obj):
+        if obj.is_leaf_node():
+            return []
+        else:
+            return MetadataValueSerializer(obj.get_children(), many=True).data
+
+    class Meta:
+        model = MetadataValue
+        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency',)

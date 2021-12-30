@@ -1,7 +1,8 @@
 from django.db import models
+from rest_framework import serializers
 
 from core.utils.elastic import get_es_client
-from metadata.models import MetadataTranslation
+from metadata.models import MetadataTranslation, MetadataTranslationSerializer, MetadataValueSerializer
 
 
 class MetadataFieldManager(models.Manager):
@@ -45,3 +46,23 @@ class MetadataField(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class MetadataFieldSerializer(serializers.ModelSerializer):
+
+    parent = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
+    translation = MetadataTranslationSerializer()
+    value = serializers.CharField(source="name")
+    frequency = serializers.IntegerField(default=0)
+
+    def get_parent(self, obj):
+        return None
+
+    def get_children(self, obj):
+        children = obj.metadatavalue_set.select_related("translation").get_cached_trees()
+        return MetadataValueSerializer(children, many=True).data
+
+    class Meta:
+        model = MetadataField
+        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency',)
