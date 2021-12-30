@@ -60,3 +60,9 @@ urlpatterns = [
 # We provide *insecure* access to harvester content when dealing with local storage (aka localhost development)
 if not settings.IS_AWS:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

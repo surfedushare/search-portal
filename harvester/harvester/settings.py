@@ -449,6 +449,27 @@ CELERY_BEAT_SCHEDULE = {
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 
+# Debug Toolbar
+# https://django-debug-toolbar.readthedocs.io/en/latest/
+
+if DEBUG:
+    # Activation
+    INSTALLED_APPS += [
+        'debug_toolbar'
+    ]
+    MIDDLEWARE = MIDDLEWARE[0:4] + ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE[4:]
+
+    # Configuration
+    # NB: INTERNAL_IPS doesn't work well for Docker containers
+    INTERNAL_HOSTS = [
+        '127.0.0.1:8888',
+        'localhost:8888',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
+    }
+
+
 # Datagrowth
 # https://data-scope.com/datagrowth/index.html
 
