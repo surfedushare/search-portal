@@ -73,5 +73,5 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MetadataField
-        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency', 'field',
+        fields = ('id', 'parent', 'is_hidden', 'is_manual', 'children', 'value', 'translation', 'frequency', 'field',
                   'max_children',)

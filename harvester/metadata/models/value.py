@@ -64,4 +64,4 @@ class MetadataValueSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MetadataValue
-        fields = ('id', 'parent', 'field', 'is_hidden', 'children', 'value', 'translation', 'frequency',)
+        fields = ('id', 'parent', 'field', 'is_hidden', 'is_manual', 'children', 'value', 'translation', 'frequency',)
