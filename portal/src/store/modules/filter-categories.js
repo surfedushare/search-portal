@@ -179,9 +179,9 @@ export default {
       state.byCategoryId = {}
       function setCategoryIds(items) {
         items.forEach((item) => {
-          const key = isNull(item.parent)
+          const key = isNull(item.field)
             ? item.external_id
-            : `${item.parent}-${item.external_id}`
+            : `${item.field}-${item.external_id}`
           state.byCategoryId[key] = item
           setCategoryIds(item.children)
         })

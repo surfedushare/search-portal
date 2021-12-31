@@ -9,6 +9,7 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     parent = serializers.IntegerField()
     name = serializers.CharField(source="translation.nl")
+    field = serializers.CharField()
     value = serializers.CharField()
     external_id = serializers.CharField(source="value")
     children = serializers.SerializerMethodField()
@@ -39,4 +40,4 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.MpttFilterItem
         fields = ('id', 'name', 'parent', 'title_translations', 'translation', 'value', 'external_id', 'is_hidden',
-                  'children', 'count', 'frequency',)
+                  'children', 'count', 'frequency', 'field')
