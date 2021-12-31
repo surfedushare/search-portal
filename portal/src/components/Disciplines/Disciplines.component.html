@@ -11,7 +11,7 @@
         :to="generateLink(discipline)"
       >
         {{ getTitleTranslation(discipline, $i18n.locale) }}
-        <span>({{discipline.materials_count || '0'}})</span>
+        <span>({{discipline.count || '0'}})</span>
       </router-link>
     </li>
   </ul>
