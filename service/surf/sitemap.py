@@ -37,8 +37,7 @@ class RemoteMaterialsList(object):
     def _get_response_data(self, url):
         response = requests.get(url, headers={"Authorization": f"Token {self.api_token}"})
         if response.status_code != requests.status_codes.codes.ok:
-            print(response.content)
-            raise ValueError("Failed request")
+            raise ValueError(f"Failed request: {response.status_code}")
         return response.json()
 
     def __init__(self, url, api_token, page_size, page_parameter):
