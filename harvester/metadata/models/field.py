@@ -55,6 +55,7 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
     translation = MetadataTranslationSerializer()
     value = serializers.CharField(source="name")
     frequency = serializers.IntegerField(default=0)
+    field = serializers.SerializerMethodField()
 
     max_children = serializers.IntegerField(write_only=True, required=False)
 
@@ -67,6 +68,10 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
         max_children = int(max_children) if max_children else None
         return MetadataValueSerializer(children, many=True).data[:max_children]
 
+    def get_field(self, obj):
+        return None
+
     class Meta:
         model = MetadataField
-        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency', 'max_children',)
+        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency', 'field',
+                  'max_children',)

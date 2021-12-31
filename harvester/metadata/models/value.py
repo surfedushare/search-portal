@@ -54,6 +54,7 @@ class MetadataValueSerializer(serializers.ModelSerializer):
 
     children = serializers.SerializerMethodField()
     translation = MetadataTranslationSerializer()
+    field = serializers.CharField(source="field.name")
 
     def get_children(self, obj):
         if obj.is_leaf_node():
@@ -63,4 +64,4 @@ class MetadataValueSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MetadataValue
-        fields = ('id', 'parent', 'is_hidden', 'children', 'value', 'translation', 'frequency',)
+        fields = ('id', 'parent', 'field', 'is_hidden', 'children', 'value', 'translation', 'frequency',)
