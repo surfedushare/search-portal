@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.apps import apps
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Count, F, Q, QuerySet
@@ -18,7 +19,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework.renderers import JSONRenderer
 
 from surf.apps.communities.models import Team, Community
-from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.filters import (
     CollectionFilter
@@ -54,6 +54,7 @@ from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
 logger = logging.getLogger(__name__)
+filters_app = apps.get_app_config("filters")
 
 
 @gzip_page
@@ -72,7 +73,7 @@ def portal_material(request, *args, **kwargs):
 def portal_single_page_application(request, *args):
     site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
     site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
-    filter_category_tree = MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
+    filter_category_tree = filters_app.metadata.tree
     filter_categories = MpttFilterItemSerializer(
         filter_category_tree,
         many=True
@@ -150,36 +151,23 @@ class MaterialSearchAPIView(CreateAPIView):
     schema = SearchSchema()
 
     def post(self, request, *args, **kwargs):
-        # validate request parameters
+        # validate request parameters and prepare search
         serializer = SearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-
-        data["drilldown_names"] = [
-            mptt_filter.external_id for mptt_filter in MpttFilterItem.objects.filter(parent=None)
-        ]
+        data["drilldown_names"] = filters_app.metadata.get_filter_field_names()
 
         elastic = ElasticSearchApiClient()
 
         res = elastic.search(**data)
         records = res["records"]
         if settings.PROJECT == "edusources":
-            records = add_extra_parameters_to_materials(request.user, records)
+            records = add_extra_parameters_to_materials(filters_app.metadata, records)
 
-        drill_down_dict = {item['external_id']: item for item in res["drilldowns"]}
-        drill_down_flat = {}
-        for external_id, drilldown in drill_down_dict.items():
-            if drilldown.get('count', None):
-                drill_down_flat.update({external_id: drilldown})
-            if drilldown['items']:
-                for el in drilldown['items']:
-                    drill_down_flat.update({el['external_id']: el})
-
-        filter_category_tree = MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
         filter_categories = MpttFilterItemSerializer(
-            filter_category_tree,
+            filters_app.metadata.tree,
             many=True,
-            context={'search_counts': drill_down_flat}
+            context={'drilldowns': res["drilldowns"]}
         )
 
         if data['page'] == 1 and data["search_text"]:
@@ -241,7 +229,7 @@ class SimilarityAPIView(RetrieveAPIView):
         elastic = ElasticSearchApiClient()
         result = elastic.more_like_this(external_id, language)
         if settings.PROJECT == "edusources":
-            result["results"] = add_extra_parameters_to_materials(self.request.user, result["results"])
+            result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result
 
 
@@ -265,7 +253,7 @@ class AuthorSuggestionsAPIView(RetrieveAPIView):
         elastic = ElasticSearchApiClient()
         result = elastic.author_suggestions(author_name)
         if settings.PROJECT == "edusources":
-            result["results"] = add_extra_parameters_to_materials(self.request.user, result["results"])
+            result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result
 
 
@@ -309,7 +297,7 @@ class MaterialAPIView(APIView):
                                  ordering="-publisher_date",
                                  page_size=_MATERIALS_COUNT_IN_OVERVIEW)
 
-            res = add_extra_parameters_to_materials(request.user,
+            res = add_extra_parameters_to_materials(filters_app.metadata,
                                                     res["records"])
         return Response(res)
 
@@ -358,7 +346,7 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
         SharedResourceCounter.increase_counter(counter_key, extra=shared)
 
     rv = get_material_details_by_id(external_id)
-    rv = add_extra_parameters_to_materials(request.user, rv)
+    rv = add_extra_parameters_to_materials(filters_app.metadata, rv)
     rv = add_share_counters_to_materials(rv)
     return rv
 
@@ -479,7 +467,7 @@ class CollectionViewSet(ModelViewSet):
 
                 res = elastic.get_materials_by_id(ids, 1, len(ids))
                 records = res.get("records", [])
-                records = add_extra_parameters_to_materials(request.user, records)
+                records = add_extra_parameters_to_materials(filters_app.metadata, records)
 
                 collection_materials = CollectionMaterial.objects.filter(
                     collection=instance, material__external_id__in=[r['external_id'] for r in records]

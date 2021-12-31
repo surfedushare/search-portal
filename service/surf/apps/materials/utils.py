@@ -1,23 +1,20 @@
-"""
-This module contains some common functions for materials app.
-"""
-
 import datetime
 from functools import reduce
 
+from django.apps import apps
+
 from surf.apps.communities.models import Community
-from surf.apps.filters.models import MpttFilterItem
 from surf.apps.materials.models import Material
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 
 
-def add_extra_parameters_to_materials(user, materials):
+def add_extra_parameters_to_materials(metadata, materials):
     """
     Add additional parameters for materials (bookmark, number of applauds,
     number of views)
     NB: this gets added to deleted materials as well, but as they were being found still that seems good
 
-    :param user: user who requested material
+    :param metadata: the metadata tree to get some extra information from
     :param materials: array of materials
     :return: updated array of materials
     """
@@ -25,23 +22,6 @@ def add_extra_parameters_to_materials(user, materials):
     material_objects = {
         material.external_id: material
         for material in Material.objects.filter(external_id__in=(m["external_id"] for m in materials))
-    }
-
-    educational_level_filters = {
-        filter_item.external_id: filter_item
-        for filter_item in MpttFilterItem.objects.filter(name__in=(
-                level for material in materials
-                for level in material.get("educationallevels", material.get("lom_educational_levels", []))
-            )
-        ).distinct().select_related("title_translations")
-    }
-
-    discipline_filters = {
-        filter_item.external_id: filter_item
-        for filter_item in MpttFilterItem.objects.filter(
-            external_id__in=(discipline for material in materials for discipline in material["disciplines"])
-        ).distinct().select_related("title_translations")
-
     }
 
     for m in materials:
@@ -55,19 +35,10 @@ def add_extra_parameters_to_materials(user, materials):
         else:
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
 
-        educational_levels = filter(
-            None,
-            [
-                educational_level_filters.get(external_id, None)
-                for external_id in m.get("educationallevels", m.get("lom_educational_levels", []))
-            ]
-        )
+        educational_level_translations = metadata.translations["lom_educational_levels"]
         m["educationallevels"] = [
-            {
-                "en": educational_level.title_translations.en,
-                "nl": educational_level.title_translations.nl
-            }
-            for educational_level in educational_levels
+            educational_level_translations[educational_level_id]
+            for educational_level_id in m.get("educationallevels", [])
         ]
 
         communities = Community.objects.filter(
@@ -75,16 +46,14 @@ def add_extra_parameters_to_materials(user, materials):
 
         m["communities"] = [dict(id=c.id, name=c.name) for c in communities.distinct().all()]
 
-        disciplines = filter(
-            None,
-            [discipline_filters.get(external_id, None) for external_id in m["disciplines"]]
-        )
-
-        m["disciplines"] = [dict(
-            id=d.id,
-            title_translations={"nl": d.title_translations.nl, "en": d.title_translations.en} if d.title_translations
-            else {"nl": d.name, "en": d.name}
-        ) for d in disciplines]
+        discipline_translations = metadata.translations["disciplines"]
+        m["disciplines"] = [
+            {
+                "id": discipline_id,
+                "title_translations": discipline_translations[discipline_id]
+            }
+            for discipline_id in m["disciplines"]
+        ]
 
         m["authors"] = [author["name"] for author in m["authors"]]
 
@@ -162,37 +131,18 @@ def add_search_query_to_elastic_index(number_of_results, query, filters):
 
 
 def _get_translated_filters(filters):
-    def append_external_ids(memo, filter):
-        filter_list = list(filter.items())
-        name = filter_list[0][1]
-        memo.append(name)
-        items = filter_list[1][1]
-        for item in items:
-            memo.append(item)
-        return memo
 
-    external_ids = reduce(append_external_ids, filters, [])
-    filter_items = {
-        filter_item.external_id: filter_item
-        for filter_item in MpttFilterItem.objects.filter(
-            external_id__in=external_ids
-        ).select_related("title_translations").all()
-    }
+    filters_app = apps.get_app_config("filters")
+    filter_translations = filters_app.metadata.translations
 
     def add_translated_filter(memo, filter_item):
-        filter_list = list(filter_item.items())
-        external_id = filter_list[0][1]
-        filter_item_external_id = filter_items.get(external_id, None)
-        items = filter_list[1][1]
-        name = filter_item_external_id.title_translations.en if filter_item_external_id else external_id
-        translated_items = [
-            filter_items.get(item).title_translations.en
-            if filter_items.get(item, None) else item for item in items
-        ]
-
+        field = filters_app.metadata.get_field(filter_item["external_id"])
         memo.append({
-            'name': name,
-            'values': translated_items
+            'name': field["translation"]["en"],
+            'values': [
+                filter_translations[field["value"]][item]["en"]
+                for item in filter_item["items"]
+            ]
         })
         return memo
 

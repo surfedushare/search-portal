@@ -1,7 +1,3 @@
-"""
-This module contains API view serializers for filters app.
-"""
-
 from rest_framework import serializers
 
 from surf.apps.filters import models
@@ -9,26 +5,38 @@ from surf.apps.locale.serializers import LocaleSerializer
 
 
 class MpttFilterItemSerializer(serializers.ModelSerializer):
+
+    id = serializers.IntegerField()
+    parent = serializers.IntegerField()
+    name = serializers.CharField(source="translation.nl")
+    value = serializers.CharField()
+    external_id = serializers.CharField(source="value")
     children = serializers.SerializerMethodField()
-    title_translations = LocaleSerializer()
+    title_translations = LocaleSerializer(source="translation")
+    translation = LocaleSerializer()
+    frequency = serializers.SerializerMethodField()
     count = serializers.SerializerMethodField()
 
     def get_children(self, obj):
-        if obj.is_leaf_node():
-            return []
-        else:
-            counts = self.context.get('search_counts', [])
-            return MpttFilterItemSerializer(obj.get_children(), many=True, context={'search_counts': counts}).data
+        return MpttFilterItemSerializer(
+            obj["children"],
+            many=True,
+            context={
+                "drilldowns": self.context.get("drilldowns", {})
+            }
+        ).data
 
     def get_count(self, obj):
-        search_counts = self.context.get('search_counts', [])
-        if search_counts:
-            item = search_counts.get(obj.external_id, None)
-            if item:
-                return item.get('count', 0)
-        return 0
+        return self.get_frequency(obj)
+
+    def get_frequency(self, obj):
+        drilldowns = self.context.get('drilldowns', {})
+        default = obj["frequency"]
+        if drilldowns:
+            return drilldowns.get(f"{obj['field']}-{obj['value']}", default)
+        return default
 
     class Meta:
         model = models.MpttFilterItem
-        fields = ('id', 'name', 'parent', 'title_translations', 'external_id', 'is_hidden', 'is_manual', 'children',
-                  'count',)
+        fields = ('id', 'name', 'parent', 'title_translations', 'translation', 'value', 'external_id', 'is_hidden',
+                  'children', 'count', 'frequency',)
