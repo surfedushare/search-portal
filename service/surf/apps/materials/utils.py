@@ -1,6 +1,7 @@
 import datetime
 from functools import reduce
 
+from django.conf import settings
 from django.apps import apps
 
 from surf.apps.communities.models import Community
@@ -18,6 +19,8 @@ def add_extra_parameters_to_materials(metadata, materials):
     :param materials: array of materials
     :return: updated array of materials
     """
+    if settings.PROJECT != "edusources":
+        return materials
 
     material_objects = {
         material.external_id: material

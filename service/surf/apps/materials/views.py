@@ -161,8 +161,7 @@ class MaterialSearchAPIView(CreateAPIView):
 
         res = elastic.search(**data)
         records = res["records"]
-        if settings.PROJECT == "edusources":
-            records = add_extra_parameters_to_materials(filters_app.metadata, records)
+        records = add_extra_parameters_to_materials(filters_app.metadata, records)
 
         filter_categories = MpttFilterItemSerializer(
             filters_app.metadata.tree,
@@ -228,8 +227,7 @@ class SimilarityAPIView(RetrieveAPIView):
         language = serializer.validated_data["language"]
         elastic = ElasticSearchApiClient()
         result = elastic.more_like_this(external_id, language)
-        if settings.PROJECT == "edusources":
-            result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
+        result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result
 
 
@@ -252,8 +250,7 @@ class AuthorSuggestionsAPIView(RetrieveAPIView):
         author_name = serializer.validated_data["author_name"]
         elastic = ElasticSearchApiClient()
         result = elastic.author_suggestions(author_name)
-        if settings.PROJECT == "edusources":
-            result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
+        result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result
 
 
