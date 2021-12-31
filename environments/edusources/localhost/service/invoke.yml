@@ -9,7 +9,7 @@ django:
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   matomo_id: null
   administrative_emails: true
-  harvester_api: "http://harvester:8080/api/v1/"
+  harvester_api: "http://harvester:8888/api/v1/"
   sentry:
     dsn: null
 

@@ -88,22 +88,6 @@ This is very similar to how it works on AWS and in production.
 A major difference is the load balancer in front of UWSGI, which is missing in the local setup.
 
 
-#### Migrate locally
-
-Database tables are owned by the root database user called "postgres".
-This is a different user than the application database user.
-and that causes problems when you try to migrate,
-because the application user is not allowed to alter or create anything.
-
-To apply migrations locally you'll need to switch the connection to the root user.
-You can do so by setting an environment variable before running the migration:
-
-```bash
-export POL_POSTGRES_USER=postgres
-python manage.py migrate
-```
-
-
 #### Translations
 
 There are very few Django translations as yet.
