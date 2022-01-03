@@ -1,4 +1,5 @@
 from django.db import migrations
+from django.utils.text import slugify
 
 
 def update_theme_data(apps, schema_editor):
@@ -7,13 +8,15 @@ def update_theme_data(apps, schema_editor):
         theme.delete()
         theme.id = theme.filter_category_item.id
         theme.external_id = theme.filter_category_item.external_id
+        theme.nl_slug = slugify(theme.filter_category_item.title_translations.nl)
+        theme.en_slug = slugify(theme.filter_category_item.title_translations.en)
         theme.save()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('themes', '0001_squashed_0007_predictable_theme_ordering'),
+        ('themes', '0002_theme_slugs'),
     ]
 
     operations = [

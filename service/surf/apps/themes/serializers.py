@@ -18,4 +18,4 @@ class ThemeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Theme
-        fields = ('id', 'external_id', 'description_translations',)
+        fields = ('id', 'nl_slug', 'en_slug', 'external_id', 'description_translations',)

@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('themes', '0002_update_themes_data'),
+        ('themes', '0003_update_themes_data'),
     ]
 
     operations = [
