@@ -5,6 +5,26 @@ from django.conf import settings
 from django.db import migrations
 
 
+def _duplicate_themes_field(field_name, MetadataField, MetadataValue):
+    themes_field = MetadataField.objects.get(name=field_name)
+    themes_field.id = None
+    themes_field.name += "_normalized"
+    field_translation = themes_field.translation
+    field_translation.id = None
+    field_translation.save()
+    themes_field.translation = field_translation
+    themes_field.translation.save()
+    themes_field.save()
+    for theme_value in MetadataValue.objects.filter(field__name=field_name, parent=None):
+        theme_value.field_id = themes_field.id
+        value_translation = theme_value.translation
+        value_translation.id = None
+        value_translation.save()
+        theme_value.translation = value_translation
+        theme_value.id = None
+        theme_value.save()
+
+
 def _load_metadata_values(field, values, MetadataValue, MetadataTranslation, parent=None):
     for value in values:
         translation = MetadataTranslation.objects.create(**value["title_translations"])
@@ -52,6 +72,9 @@ def load_filter_categories_data(apps, schema_editor):
     # Rebuilds the tree, we can only do that with the "full" MetadataValue manager
     from metadata.models import MetadataValue
     MetadataValue.objects.rebuild()
+    # Duplicates the themes field on Edusources to create a normalized version
+    if settings.PROJECT == "edusources":
+        _duplicate_themes_field("learning_material_themes", MetadataField, MetadataValue)
 
 
 def delete_filter_categories_data(apps, schema_editor):

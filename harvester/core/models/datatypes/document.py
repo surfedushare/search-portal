@@ -4,6 +4,7 @@ from unidecode import unidecode
 from django.db import models
 
 from datagrowth.datatypes import DocumentBase
+from metadata.models import MetadataValue
 
 
 PRIVATE_PROPERTIES = ["from_youtube", "lowest_educational_level"]
@@ -46,7 +47,7 @@ class Document(DocumentBase):
             return
         return language.get("metadata", "unk")
 
-    def get_search_document_extras(self, reference_id, title, text, video, material_types):
+    def get_search_document_extras(self, reference_id, title, text, video, material_types, learning_material_themes):
         suggest_completion = []
         if title:
             suggest_completion += title.split(" ")
@@ -57,6 +58,11 @@ class Document(DocumentBase):
             alpha_pattern.sub("", unidecode(word))
             for word in suggest_completion
         ]
+        learning_material_themes_normalized = set([
+            metadata_value.get_root().value if metadata_value.get_root() else metadata_value.value
+            for metadata_value in MetadataValue.objects.filter(value__in=learning_material_themes,
+                                                               field__name="learning_material_themes")
+        ])
         extras = {
             '_id': reference_id,
             "language": self.get_language(),
@@ -65,7 +71,8 @@ class Document(DocumentBase):
             'text': text,
             'suggest_phrase': text,
             'video': video,
-            'material_types': material_types
+            'material_types': material_types,
+            'learning_material_themes_normalized': list(learning_material_themes_normalized)
         }
         return extras
 
@@ -123,7 +130,8 @@ class Document(DocumentBase):
             self.properties["title"],
             text,
             video,
-            material_types=material_types
+            material_types=material_types,
+            learning_material_themes=elastic_base.get("learning_material_themes", [])
         )
         elastic_details.update(elastic_base)
         yield elastic_details
