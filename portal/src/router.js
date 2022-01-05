@@ -147,12 +147,12 @@ export default new Router({
       name: 'my-privacy___nl',
     },
     {
-      path: '/en/themes/:id',
+      path: '/en/themes/:slug',
       component: Theme,
       name: 'themes-id___en',
     },
     {
-      path: '/themas/:id',
+      path: '/themas/:slug',
       component: Theme,
       name: 'themes-id___nl',
     },

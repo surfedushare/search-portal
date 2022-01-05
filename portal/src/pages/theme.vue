@@ -95,7 +95,7 @@ export default {
     ...mapGetters(['theme', 'materials', 'filter']),
   },
   created() {
-    let themeId = this.$route.params.id
+    let themeId = this.$route.params.slug
 
     this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
       this.$store.dispatch('getTheme', themeId).then((theme) => {
