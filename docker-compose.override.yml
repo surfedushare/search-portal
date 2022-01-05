@@ -46,7 +46,7 @@ services:
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
       - POL_POSTGRES_USER=${POL_POSTGRES_USER}
     ports:
-      - "127.0.0.1:8888:8888"
+      - "127.0.0.1:8888:8080"
     volumes:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
