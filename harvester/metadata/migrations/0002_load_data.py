@@ -69,12 +69,12 @@ def load_filter_categories_data(apps, schema_editor):
             english_as_dutch=field["external_id"] in ["authors.name.keyword", "publishers.keyword"]
         )
         _load_metadata_values(field_instance, field["children"], MetadataValue, MetadataTranslation)
-    # Rebuilds the tree, we can only do that with the "full" MetadataValue manager
-    from metadata.models import MetadataValue
-    MetadataValue.objects.rebuild()
     # Duplicates the themes field on Edusources to create a normalized version
     if settings.PROJECT == "edusources":
         _duplicate_themes_field("learning_material_themes", MetadataField, MetadataValue)
+    # Rebuilds the tree, we can only do that with the "full" MetadataValue manager
+    from metadata.models import MetadataValue
+    MetadataValue.objects.rebuild()
 
 
 def delete_filter_categories_data(apps, schema_editor):
