@@ -41,8 +41,10 @@ export default {
     },
     getThemeSlug(theme) {
       // TODO: this needs a more reliable way once we decided how/if we load the themes
-      return theme.translation[this.$i18n.locale].replace(/\s/g, '-').toLowerCase()
-    }
+      return theme.translation[this.$i18n.locale]
+        .replace(/\s/g, '-')
+        .toLowerCase()
+    },
   },
   watch: {
     /**

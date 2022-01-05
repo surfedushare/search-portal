@@ -18,7 +18,7 @@ import { keyBy } from 'lodash'
 import Search from './index'
 import { mapGetters } from 'vuex'
 import FilterDropdown from '@/components/FilterCategories/FilterDropdown'
-import { THEME_CATEGORY_FILTER_FIELD} from '@/constants'
+import { THEME_CATEGORY_FILTER_FIELD } from '@/constants'
 
 export default {
   name: 'SearchDomain',

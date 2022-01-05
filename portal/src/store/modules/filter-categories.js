@@ -4,8 +4,6 @@ import axios from '~/axios'
 import router from '~/router'
 import { THEME_CATEGORY_FILTER_FIELD, PUBLISHER_DATE_FIELD } from '@/constants'
 
-
-
 function getFiltersForSearch(items) {
   if (isNil(items)) {
     return []
