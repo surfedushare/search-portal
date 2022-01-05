@@ -18,17 +18,14 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from surf.apps.communities.models import Community, Team
-from surf.apps.communities.serializers import (
-    CommunitySerializer,
-    CommunityDisciplineSerializer,)
-from surf.apps.filters.models import MpttFilterItem
+from surf.apps.communities.serializers import CommunitySerializer
+
 from surf.apps.materials.models import Collection
 from surf.apps.materials.serializers import (
     CollectionSerializer,
     CollectionShortSerializer
 )
-from surf.apps.themes.models import Theme
-from surf.apps.themes.serializers import ThemeSerializer
+
 
 logger = logging.getLogger(__name__)
 
@@ -89,45 +86,6 @@ class CommunityViewSet(ListModelMixin,
                 return self.get_paginated_response(serializer.data)
 
         res = CollectionSerializer(many=True).to_representation(qs.all())
-        return Response(res)
-
-    @action(methods=['get'], detail=True)
-    def themes(self, request, pk=None, **kwargs):
-        """
-        Returns themes related to community
-        """
-
-        instance = self.get_object()
-
-        ids = instance.collections.filter(deleted_at=None).values_list("materials__themes__id", flat=True)
-        qs = Theme.objects.filter(id__in=ids)
-
-        res = []
-        if qs.exists():
-            res = ThemeSerializer(many=True).to_representation(qs.all())
-
-        return Response(res)
-
-    @action(methods=['get'], detail=True)
-    def disciplines(self, request, pk=None, **kwargs):
-        """
-        Returns disciplines related to collection materials
-        """
-
-        instance = self.get_object()
-
-        ids = instance.collections.filter(deleted_at=None).values_list("materials__disciplines__id", flat=True)
-        qs = MpttFilterItem.objects.filter(id__in=ids)
-
-        context = self.get_serializer_context()
-        context["mptt_tree"] = MpttFilterItem.objects.get_cached_trees()
-
-        res = CommunityDisciplineSerializer(
-            many=True, context=context
-        ).to_representation(
-            qs.all()
-        )
-
         return Response(res)
 
     @staticmethod

@@ -38,8 +38,8 @@ export default {
       setLanguage(newLocale)
     },
   },
-  mounted() {
-    this.$store.dispatch('getThemes')
+  created() {
+    this.$store.dispatch('getFilterCategories')
   },
   methods: {
     isDemoEnvironment() {

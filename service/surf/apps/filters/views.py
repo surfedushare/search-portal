@@ -55,7 +55,3 @@ class FilterCategoryView(generics.ListAPIView):
 
     def get_queryset(self):
         return MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
-
-
-class MpttFilterItems(generics.GenericAPIView):
-    serializer_class = MpttFilterItemSerializer
