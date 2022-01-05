@@ -18,7 +18,7 @@ import { isEqual } from 'lodash'
 import axios from '~/axios'
 import store from '~/store'
 import {
-  THEME_CATEGORY_FILTER_ID,
+  THEME_CATEGORY_FILTER_FIELD,
   CONSORTIUM_CATEGORY_FILTER_ID,
 } from '~/constants'
 import { localePath } from '~/i18n/plugin.routing'
@@ -99,7 +99,7 @@ export default new Router({
       component: Search,
       name: 'themes-search___en',
       meta: {
-        filterRoot: THEME_CATEGORY_FILTER_ID,
+        filterRoot: THEME_CATEGORY_FILTER_FIELD,
       },
     },
     {
@@ -107,7 +107,7 @@ export default new Router({
       component: Search,
       name: 'themes-search___nl',
       meta: {
-        filterRoot: THEME_CATEGORY_FILTER_ID,
+        filterRoot: THEME_CATEGORY_FILTER_FIELD,
       },
     },
     {

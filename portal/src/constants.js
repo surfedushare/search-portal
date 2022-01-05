@@ -1,4 +1,4 @@
-const THEME_CATEGORY_FILTER_ID = 'learning_material_themes'
+const THEME_CATEGORY_FILTER_FIELD = 'learning_material_themes_normalized'
 const CONSORTIUM_CATEGORY_FILTER_ID = 'consortium'
 
-export { THEME_CATEGORY_FILTER_ID, CONSORTIUM_CATEGORY_FILTER_ID }
+export { THEME_CATEGORY_FILTER_FIELD, CONSORTIUM_CATEGORY_FILTER_ID }

@@ -2,6 +2,7 @@ import { forEach, isNil, isNull, isEmpty, groupBy, sortBy } from 'lodash'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
+import { THEME_CATEGORY_FILTER_FIELD} from '@/constants'
 
 const PUBLISHER_DATE_ID = 'publisher_date'
 
@@ -123,7 +124,7 @@ export default {
       return getFiltersFromQuery
     },
     sortedThemes(state, getters) {
-      const themeCategory = getters.getCategoryById('learning_material_themes')
+      const themeCategory = getters.getCategoryById(THEME_CATEGORY_FILTER_FIELD)
       if (!themeCategory) {
         return []
       }
