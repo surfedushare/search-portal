@@ -17,7 +17,8 @@ class FiltersConfig(AppConfig):
             return metadata
         metadata = MetadataTree(
             harvester_url=settings.HARVESTER_API,
-            api_token=settings.HARVESTER_API_KEY
+            api_token=settings.HARVESTER_API_KEY,
+            warm_up_cache=True
         )
         cache.set(cache_key, metadata, 60*60)
         return metadata

@@ -9,9 +9,11 @@ class MetadataTree(object):
     harvester_url = None
     api_token = None
 
-    def __init__(self, harvester_url, api_token):
+    def __init__(self, harvester_url, api_token, warm_up_cache=False):
         self.harvester_url = harvester_url
         self.api_token = api_token
+        if warm_up_cache:
+            self._warm_up_cache = self.translations  # result should be ignored as it only fills the cache
 
     @cached_property
     def tree(self):
