@@ -431,8 +431,8 @@ if DEBUG:
     # Configuration
     # NB: INTERAL_IPS doesn't work well for Docker containers
     INTERNAL_HOSTS = [
-        '127.0.0.1:8080',
-        'localhost:8080',
+        '127.0.0.1:8000',
+        'localhost:8000',
     ]
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
