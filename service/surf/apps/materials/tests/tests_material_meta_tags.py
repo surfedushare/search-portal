@@ -1,10 +1,12 @@
-from django.conf import settings
-from django.test import TestCase, Client
 from unittest import skipIf
 from unittest.mock import patch
 
+from django.conf import settings
+from django.test import TestCase, Client
+
 import surf.apps.materials.views as views
 from surf.apps.locale.models import Locale
+from e2e_tests.helpers import get_metadata_tree_mock
 
 
 def patched_version_with_material(a, b):
@@ -54,6 +56,7 @@ class TestMaterialMetaTags(TestCase):
             "/materialen/edurep_delen:7a8446c7-1dab-46be-8980-bf1009bc1cfa/")
         self.assertEqual(response.status_code, 404)
 
+    @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
     def test_when_other_path(self, mock):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
