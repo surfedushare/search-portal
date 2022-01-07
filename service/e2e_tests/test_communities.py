@@ -1,14 +1,16 @@
 import os
 import factory
+from unittest.mock import patch
 from e2e_tests.base import BaseLiveServerTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, CommunityDetailFactory
-from e2e_tests.helpers import login, replace_content
+from e2e_tests.helpers import login, replace_content, get_metadata_tree_mock
 from surf.statusenums import PublishStatus
 
 
+@patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestCommunities(BaseLiveServerTestCase):
 
     def setUp(cls):

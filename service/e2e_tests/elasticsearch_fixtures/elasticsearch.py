@@ -32,7 +32,8 @@ NL_MATERIAL = {
         "analysis_allowed": True,
         "ideas": [],
         "doi": None,
-        "technical_type": "document"
+        "technical_type": "document",
+        "learning_material_themes_normalized": ["exact_informatica"]
     },
     "biology": {
         "title": "Didactiek van biologisch denken",
@@ -67,7 +68,8 @@ NL_MATERIAL = {
         "analysis_allowed": True,
         "ideas": [],
         "doi": None,
-        "technical_type": "document"
+        "technical_type": "document",
+        "learning_material_themes_normalized": ["aarde_milieu"]
     }
 }
 

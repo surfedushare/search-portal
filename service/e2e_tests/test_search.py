@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.conf import settings
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
@@ -5,9 +7,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 from e2e_tests.base import BaseLiveServerTestCase
+from e2e_tests.helpers import get_metadata_tree_mock
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
+@patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestSearch(BaseLiveServerTestCase):
 
     @classmethod
@@ -121,6 +125,7 @@ class TestSearch(BaseLiveServerTestCase):
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Niet gevonden"))
 
 
+@patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestSearchFiltering(BaseLiveServerTestCase):
 
     @classmethod
@@ -136,15 +141,15 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["WO"], source="surfsharekit")
+            body=generate_nl_material(educational_levels=["WO"], source="edusources")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["WO"], technical_type="video", source="surfsharekit")
+            body=generate_nl_material(educational_levels=["WO"], technical_type="video", source="edusources")
         )
         cls.elastic.index(
             index=settings.ELASTICSEARCH_NL_INDEX,
-            body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="surfsharekit")
+            body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="edusources")
         )
 
     def test_filter_search(self):
