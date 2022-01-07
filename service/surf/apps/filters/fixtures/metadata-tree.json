@@ -58,7 +58,7 @@
                         "id": 17088,
                         "parent": 17087,
                         "field": "harvest_source",
-                        "is_hidden": false,
+                        "is_hidden": true,
                         "is_manual": false,
                         "children": [],
                         "value": "edusources",
