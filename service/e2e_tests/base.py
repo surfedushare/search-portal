@@ -36,6 +36,7 @@ class BaseElasticSearchMixin(object):
         cls.elastic.indices.delete(settings.ELASTICSEARCH_NL_INDEX)
         cls.elastic.indices.delete(settings.ELASTICSEARCH_EN_INDEX)
         cls.elastic.indices.delete(settings.ELASTICSEARCH_UNK_INDEX)
+        super().tearDownClass()
 
 
 @override_settings(
@@ -57,8 +58,8 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
         self.selenium.implicitly_wait(10)
 
     def tearDown(self):
-        super().tearDown()
         self.selenium.quit()
+        super().tearDown()
 
 
 @override_settings(
