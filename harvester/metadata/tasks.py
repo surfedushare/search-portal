@@ -40,8 +40,9 @@ def sync_metadata():
             continue
         metadata_value.frequency = frequency
         metadata_value.deleted_at = None
+        metadata_value.updated_at = now()
         metadata_updates.append(metadata_value)
-    MetadataValue.objects.bulk_update(metadata_updates, fields=["value", "frequency", "deleted_at"])
+    MetadataValue.objects.bulk_update(metadata_updates, fields=["value", "frequency", "updated_at", "deleted_at"])
 
     metadata_inserts = []
     translation_inserts = []
