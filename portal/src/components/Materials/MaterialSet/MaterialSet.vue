@@ -9,7 +9,7 @@
       <div class="row header">
         <span class="title">{{ $t('Title') }}</span>
         <span class="type">{{ $t('File-format') }}</span>
-        <span class="link"></span>
+        <span class="link" />
       </div>
       <div
         v-for="setMaterial in setMaterials"

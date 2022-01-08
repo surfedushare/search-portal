@@ -5,7 +5,7 @@
       @input="onChange"
       @focus="showCounter = true"
       @blur="onBlur"
-    />
+    >
     <div v-if="showCounter" class="counter">
       {{ charactersRemaining }}
     </div>

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h3 class="material__info_subttl">{{ $t('In-collection') }}</h3>
+    <h3 class="material__info_subttl">
+      {{ $t('In-collection') }}
+    </h3>
     <ul class="material__info_collections">
       <li
         v-for="collection in collections"
@@ -18,7 +20,7 @@
         >
           <h3>
             {{ collectionTitle(collection) }}
-            <i class="arrow"></i>
+            <i class="arrow" />
           </h3>
           <div>
             {{ $tc('Materials', collection.materials_count) }}

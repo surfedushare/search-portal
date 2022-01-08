@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'with-errors': errors.length > 0 }">
-    <slot></slot>
+    <slot />
     <ul v-if="errors.length > 0" class="errors">
       <li v-for="(error, ix) in errors" :key="ix">
         {{ error }}

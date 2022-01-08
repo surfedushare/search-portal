@@ -14,8 +14,8 @@
         {{ tab.title }}
       </button>
     </div>
-    <slot name="after-tabs" :active-tab="currentTab"></slot>
-    <slot></slot>
+    <slot name="after-tabs" :active-tab="currentTab" />
+    <slot />
   </div>
 </template>
 <script>

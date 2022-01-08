@@ -4,7 +4,9 @@
       :class="{ selected: collection.selected }"
       class="collections__item_wrapper tile__wrapper"
     >
-      <div class="collections__item_header">{{ $t('Collection') }}</div>
+      <div class="collections__item_header">
+        {{ $t('Collection') }}
+      </div>
       <h3 class="collections__item_ttl">
         {{ $i18n.locale === 'nl' ? collection.title_nl : collection.title_en }}
       </h3>

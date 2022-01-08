@@ -7,7 +7,9 @@
       class="popup-content"
     >
       <slot>
-        <h2 class="popup__title">{{ $t('Give-feedback') }}</h2>
+        <h2 class="popup__title">
+          {{ $t('Give-feedback') }}
+        </h2>
         <div class="popup__subtext">
           {{ $t('Give-feedback-subtext') }}
         </div>
@@ -16,7 +18,7 @@
             v-model="message"
             rows="4"
             class="input textarea"
-          ></textarea>
+          />
           <div class="popup-content__actions">
             <button class="button" @click="sendFeedback">
               {{ $t('Send-feedback') }}

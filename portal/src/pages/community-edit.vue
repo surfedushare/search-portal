@@ -68,7 +68,7 @@
             <Tab :title="$t('general')" identifier="general">
               <div id="General" class="communities__form">
                 {{ $t('manage-community-information') }}
-                <br /><br />
+                <br><br>
                 <CommunityForm v-model="formData" :errors="errors" />
               </div>
             </Tab>
@@ -81,8 +81,7 @@
                     :editable-content="true"
                     :loading="community_collections_loading"
                     @input="setCollectionSelection"
-                  >
-                  </SortableCollections>
+                  />
                 </div>
                 <AddCollection
                   v-if="showPopup"
