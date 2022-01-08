@@ -6,8 +6,7 @@
       :viewport="{ width: width, height: height }"
       :enable-resize="false"
       @result="result"
-    >
-    </vue-croppie>
+    />
     <button type="button" class="button crop" @click="cropImage()">
       {{ $t('Crop') }}
     </button>

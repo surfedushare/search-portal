@@ -7,12 +7,11 @@
             class="main__info_bg"
             src="/images/pictures/header-image.jpg"
             alt="header-image"
-          />
+          >
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
-              <span v-if="statistic">{{ numberOfMaterials }} </span
-              >{{ $t('open-learning-materials-from-higher-education') }}
+              <span v-if="statistic">{{ numberOfMaterials }} </span>{{ $t('open-learning-materials-from-higher-education') }}
             </h2>
             <ul class="main__info_items">
               <li class="main__info_item">
@@ -70,7 +69,7 @@
             <img
               src="/images/pictures/hoe-werkt-het.png"
               class="preview__bg_block-img"
-            />
+            >
           </div>
           <div class="preview__text_block">
             <h2 class="preview__title">

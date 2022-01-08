@@ -7,9 +7,11 @@
             <div v-if="$route.params.filterId">
               <h4>{{ $t('Search-in') }}:</h4>
               <p>
-                <router-link :to="localePath('materials-search')">{{
-                  $t('Everything')
-                }}</router-link>
+                <router-link :to="localePath('materials-search')">
+                  {{
+                    $t('Everything')
+                  }}
+                </router-link>
                 > {{ defaultFilterTitle }}
               </p>
             </div>
@@ -23,7 +25,7 @@
                 /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
               "
               class="search__info_bg"
-            />
+            >
           </div>
           <Search
             v-if="search"
@@ -150,12 +152,7 @@ export default {
         : null
     },
     showFilterCategories() {
-      return (
-        this.isReady &&
-        this.materials &&
-        this.materials.records &&
-        this.materials.records.length
-      )
+      return this.isReady && this.materials && this.materials.records && this.materials.records.length
     },
   },
   watch: {

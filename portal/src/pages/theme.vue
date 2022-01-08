@@ -13,7 +13,7 @@
               /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
             "
             class="theme__info_bg"
-          />
+          >
           <h2 class="theme__info_ttl">
             {{ getTitleTranslation() }}
           </h2>
@@ -28,7 +28,7 @@
       </div>
       <div class="center_block theme__row">
         <div class="theme__description">
-          <h2>{{ $t('About-the-theme') }} <br />{{ getTitleTranslation() }}</h2>
+          <h2>{{ $t('About-the-theme') }} <br>{{ getTitleTranslation() }}</h2>
           <p>
             <!-- eslint-disable vue/no-v-html -->
             <span

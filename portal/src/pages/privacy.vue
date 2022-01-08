@@ -81,8 +81,8 @@
                 {{ cookies[$i18n.locale].description }} (<router-link
                   :to="localePath(cookies.more_info_route)"
                 >
-                  {{ $t('more-info') }} </router-link
-                >)
+                  {{ $t('more-info') }}
+                </router-link>)
               </p>
             </div>
           </div>

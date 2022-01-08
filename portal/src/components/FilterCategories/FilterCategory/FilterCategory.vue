@@ -23,7 +23,7 @@
               :data-category-id="category.external_id"
               :data-item-id="item.external_id"
               @change="onChange"
-            />
+            >
 
             <label :for="item.external_id">
               {{ titleTranslation(item) }}

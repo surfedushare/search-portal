@@ -7,7 +7,9 @@
       class="popup-content"
     >
       <slot>
-        <h2 class="popup__title">{{ $t('Delete-account') }}</h2>
+        <h2 class="popup__title">
+          {{ $t('Delete-account') }}
+        </h2>
         <div class="popup__subtext">
           {{ $t('Are-you-sure-you-want-to-delete-this-account') }}
         </div>

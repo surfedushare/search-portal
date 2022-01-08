@@ -5,7 +5,7 @@
     @click="navigateToCommunity"
   >
     <div v-if="communityDetails.logo" class="logo">
-      <img :src="communityDetails.logo" alt="" />
+      <img :src="communityDetails.logo" alt="">
     </div>
     <h3 class="name">
       {{ communityDetails.title }}
@@ -13,7 +13,7 @@
     <div class="actions">
       <span>
         {{ $t('See') }}
-        <i class="fa fa-chevron-right"></i>
+        <i class="fa fa-chevron-right" />
       </span>
       <router-link
         v-if="editable"
@@ -27,7 +27,7 @@
         class="button edit"
         @click.native="$event.stopImmediatePropagation()"
       >
-        <i class="fa fa-pencil-alt"></i>
+        <i class="fa fa-pencil-alt" />
       </router-link>
     </div>
   </div>

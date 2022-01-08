@@ -53,7 +53,7 @@
               class="communities__form__input"
               :placeholder="$t('community-url-placeholder')"
               @blur="onWebsiteURLBlur('nl')"
-            />
+            >
           </InputLanguageWrapper>
         </ErrorWrapper>
       </div>
@@ -68,7 +68,7 @@
               class="communities__form__input"
               :placeholder="$t('community-url-placeholder')"
               @blur="onWebsiteURLBlur('en')"
-            />
+            >
           </InputLanguageWrapper>
         </ErrorWrapper>
       </div>

@@ -7,7 +7,9 @@
       class="popup-content"
     >
       <slot>
-        <h2 class="popup__title">{{ $t('View-materials') }}</h2>
+        <h2 class="popup__title">
+          {{ $t('View-materials') }}
+        </h2>
         <div>
           <a
             v-for="(file, ix) in material.files"
@@ -15,8 +17,7 @@
             :href="file.url"
             class="button button--full-width material__grey_block-btn"
             target="_blank"
-            >{{ file.title }}</a
-          >
+          >{{ file.title }}</a>
         </div>
       </slot>
     </Popup>

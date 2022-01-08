@@ -5,15 +5,17 @@
       class="lang"
       :to="switchLocalePath('nl')"
       @click.native="switchLanguage('nl')"
-      >NL</router-link
     >
+      NL
+    </router-link>
     <router-link
       v-if="$i18n.locale === 'nl'"
       class="lang"
       :to="switchLocalePath('en')"
       @click.native="switchLanguage('en')"
-      >EN</router-link
     >
+      EN
+    </router-link>
   </div>
 </template>
 

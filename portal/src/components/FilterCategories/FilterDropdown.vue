@@ -2,7 +2,9 @@
   <div class="dropdown-container">
     <label>{{ label }}:</label>
     <select v-model="selection">
-      <option selected>{{ defaultOption }}</option>
+      <option selected>
+        {{ defaultOption }}
+      </option>
       <option
         v-for="filter in filters"
         :key="filter.external_id"
