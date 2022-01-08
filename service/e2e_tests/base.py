@@ -48,18 +48,20 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 
     fixtures = ['locales-edusources', 'filter-categories-edusources', 'privacy_statements']
 
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("window-size=1920,1080")
 
-        self.selenium = WebDriver(options=chrome_options)
-        self.selenium.implicitly_wait(10)
+        cls.selenium = WebDriver(options=chrome_options)
+        cls.selenium.implicitly_wait(10)
 
-    def tearDown(self):
-        self.selenium.quit()
-        super().tearDown()
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
 
 
 @override_settings(

@@ -13,10 +13,10 @@ from surf.statusenums import PublishStatus
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestCommunities(BaseLiveServerTestCase):
 
-    def setUp(cls):
+    def setUp(self):
         super().setUp()
-        cls.user = UserFactory.create()
-        login(cls, cls.user)
+        self.user = UserFactory.create()
+        login(self, self.user)
 
     def test_community_overview(self):
         CommunityFactory.create(
