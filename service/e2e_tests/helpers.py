@@ -27,7 +27,7 @@ def login(self, user):
     token, created = SessionToken.objects.get_or_create(user=user)
     with patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock):
         self.selenium.get(self.live_server_url)
-        sleep(1)
+        sleep(10)
     self.selenium.execute_script("window.localStorage.setItem(arguments[0], arguments[1]);", "surf_token", token.key)
 
 
