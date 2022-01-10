@@ -71,7 +71,7 @@ import Search from '~/components/Search'
 import Materials from '~/components/Materials'
 import Disciplines from '~/components/Disciplines'
 import Error from '~/components/error'
-import { THEME_CATEGORY_FILTER_ID } from '~/constants'
+import { THEME_CATEGORY_FILTER_FIELD } from '~/constants'
 import { generateSearchMaterialsQuery } from '@/components/_helpers'
 
 export default {
@@ -95,13 +95,13 @@ export default {
     ...mapGetters(['theme', 'materials', 'filter']),
   },
   created() {
-    let themeId = this.$route.params.id
+    let themeId = this.$route.params.slug
 
     this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
       this.$store.dispatch('getTheme', themeId).then((theme) => {
         this.themeCategory = this.$store.getters.getCategoryById(
           theme.external_id,
-          THEME_CATEGORY_FILTER_ID
+          THEME_CATEGORY_FILTER_FIELD
         )
         this.themeDisciplines = this.themeCategory.children
         this.themeCategory.selected = true
@@ -134,7 +134,7 @@ export default {
       this.search = {
         search_text: this.search.search_text,
         filters: {
-          learning_material_themes: [this.theme.external_id, ...filterIds],
+          [THEME_CATEGORY_FILTER_FIELD]: [this.theme.external_id, ...filterIds],
         },
         page_size: 10,
         page: 1,

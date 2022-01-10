@@ -65,10 +65,6 @@ export default {
       this.$emit('onSearch')
     },
     onSubmit() {
-      if (!this.searchText) {
-        return
-      }
-
       this.$emit('onSearch')
     },
     changeSelectedOption($event) {

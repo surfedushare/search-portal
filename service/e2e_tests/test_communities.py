@@ -1,20 +1,22 @@
 import os
 import factory
+from unittest.mock import patch
 from e2e_tests.base import BaseLiveServerTestCase
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, CommunityDetailFactory
-from e2e_tests.helpers import login, replace_content
+from e2e_tests.helpers import login, replace_content, get_metadata_tree_mock
 from surf.statusenums import PublishStatus
 
 
+@patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestCommunities(BaseLiveServerTestCase):
 
-    def setUp(cls):
+    def setUp(self):
         super().setUp()
-        cls.user = UserFactory.create()
-        login(cls, cls.user)
+        self.user = UserFactory.create()
+        login(self, self.user)
 
     def test_community_overview(self):
         CommunityFactory.create(
@@ -59,7 +61,7 @@ class TestCommunities(BaseLiveServerTestCase):
         TeamFactory.create(user=self.user, community=my_published_community)
 
         self.selenium.get(f"{self.live_server_url}/communities")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items"), "Publieke community"
             )
@@ -69,13 +71,13 @@ class TestCommunities(BaseLiveServerTestCase):
 
         self.selenium.find_element_by_css_selector(".my-communities-tab").click()
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items.my-communities"), "Mijn community"
             )
         )
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items.my-communities"), "Mijn draft community"
             )
@@ -83,7 +85,7 @@ class TestCommunities(BaseLiveServerTestCase):
 
         self.selenium.find_element_by_css_selector(".draft-switch label").click()
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items.my-communities"), "Mijn community"
             )
@@ -95,7 +97,7 @@ class TestCommunities(BaseLiveServerTestCase):
     def test_community_overview_without_own_communities(self):
         CommunityFactory.create()
         self.selenium.get(f"{self.live_server_url}/communities")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items"), "Ethiek"
             )
@@ -106,7 +108,7 @@ class TestCommunities(BaseLiveServerTestCase):
         community = CommunityFactory.create()
         TeamFactory.create(user=self.user, community=community)
         self.selenium.get(f"{self.live_server_url}/communities")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__item"),
                 "Ethiek"
@@ -116,7 +118,7 @@ class TestCommunities(BaseLiveServerTestCase):
         # Switch to English
         self.selenium.find_element_by_css_selector("a.lang").click()
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__item"),
                 "Ethics"
@@ -127,7 +129,7 @@ class TestCommunities(BaseLiveServerTestCase):
         community = CommunityFactory.create()
         TeamFactory.create(user=self.user, community=community)
         self.selenium.get(f"{self.live_server_url}/mijn/community/{community.id}")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, "body"),
                 "Mijn Community"
@@ -163,21 +165,21 @@ class TestCommunities(BaseLiveServerTestCase):
         self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup button.crop").click()
 
         crop_popup = self.selenium.find_element_by_css_selector("#featured_image_en .crop-popup")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.staleness_of(crop_popup)
         )
 
         self.selenium.find_element_by_css_selector(".communities__form__buttons button[type='submit']").click()
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "body"), "Gegevens opgeslagen!")
         )
 
         # Dutch preview
         self.selenium.find_element_by_css_selector(".communities__form__buttons button.preview").click()
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe titel")
         )
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "Nieuwe beschrijving")
         )
 
@@ -190,10 +192,10 @@ class TestCommunities(BaseLiveServerTestCase):
         # English preview
         self.selenium.find_element_by_css_selector("a.lang").click()
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New title")
         )
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".preview-block"), "New description")
         )
 
@@ -209,7 +211,7 @@ class TestCommunityTabVisibility(BaseLiveServerTestCase):
     def test_community_not_authenticated(self):
         self.community = CommunityFactory.create()
         self.selenium.get(f"{self.live_server_url}/communities")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items"), "Ethiek"
             )

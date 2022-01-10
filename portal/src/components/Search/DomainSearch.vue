@@ -18,6 +18,7 @@ import { keyBy } from 'lodash'
 import Search from './index'
 import { mapGetters } from 'vuex'
 import FilterDropdown from '@/components/FilterCategories/FilterDropdown'
+import { THEME_CATEGORY_FILTER_FIELD } from '@/constants'
 
 export default {
   name: 'SearchDomain',
@@ -41,7 +42,7 @@ export default {
           defaultOption: this.$i18n.t('material'),
         },
         {
-          field: 'learning_material_themes',
+          field: THEME_CATEGORY_FILTER_FIELD,
           label: this.$i18n.t('about'),
           defaultOption: this.$i18n.t('all-themes'),
         },

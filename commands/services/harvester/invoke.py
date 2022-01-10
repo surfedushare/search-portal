@@ -195,3 +195,13 @@ def sync_harvest_content(ctx, source, path="core"):
     source_path = os.path.join(source, path)
     destination_path = os.path.join(destination, path)
     ctx.run(f"aws s3 sync {source_path} {destination_path}", echo=True)
+
+
+@task(help={
+    "mode": "Mode you want to sync metadata for: localhost, development, acceptance or production. "
+            "Must match APPLICATION_MODE"
+})
+def sync_metadata(ctx, mode):
+    command = ["python", "manage.py", "sync_metadata"]
+
+    run_harvester_task(ctx, mode, command)

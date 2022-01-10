@@ -1,14 +1,13 @@
-"""
-This module contains implementation of REST API views for filters app.
-"""
-
+from django.apps import apps
 from django.views.decorators.gzip import gzip_page
 from django.utils.decorators import method_decorator
 from rest_framework import generics
 
 from surf.apps.core.schema import SearchSchema
-from surf.apps.filters.models import MpttFilterItem
 from surf.apps.filters.serializers import MpttFilterItemSerializer
+
+
+filters_app = apps.get_app_config("filters")
 
 
 @method_decorator(gzip_page, name="dispatch")
@@ -54,4 +53,4 @@ class FilterCategoryView(generics.ListAPIView):
     filter_backends = []
 
     def get_queryset(self):
-        return MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
+        return filters_app.metadata.tree

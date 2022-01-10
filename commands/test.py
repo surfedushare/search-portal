@@ -1,21 +1,13 @@
-import logging
 from invoke.tasks import task
 from invoke import Collection
 
 from commands.deploy.container import prepare_builds
 
 
-log = logging.getLogger(__file__)
-
-
 @task(prepare_builds)
-def prepare_e2e(ctx):
+def e2e(ctx):
     with ctx.cd("portal"):
         ctx.run("npm run build")
-
-
-@task(prepare_e2e)
-def e2e(ctx):
     with ctx.cd("service"):
         ctx.run("APPLICATION_PROJECT=edusources python manage.py test e2e_tests --failfast", echo=True, pty=True)
 

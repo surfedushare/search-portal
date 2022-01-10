@@ -58,23 +58,11 @@ class ElasticSearchApiClient:
         result['recordcount'] = hits['total']['value']
 
         # Transform aggregations into drilldowns
-        drilldowns = []
+        drilldowns = {}
         for aggregation_name, aggregation in aggregations.items():
             buckets = aggregation["filtered"]["buckets"] if "filtered" in aggregation else aggregation["buckets"]
-
-            items = [
-                {
-                    "external_id": bucket["key"],
-                    "count": bucket["doc_count"]
-                }
-                for bucket in buckets
-            ]
-
-            drilldowns.append({
-                "external_id": aggregation_name,
-                "items": items
-            })
-
+            for bucket in buckets:
+                drilldowns[f"{aggregation_name}-{bucket['key']}"] = bucket["doc_count"]
         result['drilldowns'] = drilldowns
 
         # Parse spelling suggestions

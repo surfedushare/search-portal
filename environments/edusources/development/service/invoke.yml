@@ -45,9 +45,5 @@ secrets:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/surfconext"
   elastic_search:
     password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/elastic"
-  eduterm:
-    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:eduterm"
-  deepl:
-    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:search-portal/deepl"
   harvester:
     api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/api-key"

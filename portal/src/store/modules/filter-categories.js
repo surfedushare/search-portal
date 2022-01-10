@@ -2,8 +2,7 @@ import { forEach, isNil, isNull, isEmpty, groupBy, sortBy } from 'lodash'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
-
-const PUBLISHER_DATE_ID = 'publisher_date'
+import { THEME_CATEGORY_FILTER_FIELD, PUBLISHER_DATE_FIELD } from '@/constants'
 
 function getFiltersForSearch(items) {
   if (isNil(items)) {
@@ -20,7 +19,7 @@ function getFiltersForSearch(items) {
     }
     // Also add this filter if a date has been selected
     if (
-      item.external_id === PUBLISHER_DATE_ID &&
+      item.external_id === PUBLISHER_DATE_FIELD &&
       (item.dates.start_date || item.dates.end_date)
     ) {
       results.push(item)
@@ -56,7 +55,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
     item.searchId = searchId || item.external_id
     item.selected = selected[item.external_id] || false
     // Set relevant properties for date filters
-    if (item.external_id === PUBLISHER_DATE_ID) {
+    if (item.external_id === PUBLISHER_DATE_FIELD) {
       item.dates = dates
       item.selected = dates.start_date || dates.end_date
     }
@@ -123,7 +122,7 @@ export default {
       return getFiltersFromQuery
     },
     sortedThemes(state, getters) {
-      const themeCategory = getters.getCategoryById('learning_material_themes')
+      const themeCategory = getters.getCategoryById(THEME_CATEGORY_FILTER_FIELD)
       if (!themeCategory) {
         return []
       }
@@ -179,9 +178,9 @@ export default {
       state.byCategoryId = {}
       function setCategoryIds(items) {
         items.forEach((item) => {
-          const key = isNull(item.parent)
+          const key = isNull(item.field)
             ? item.external_id
-            : `${item.parent}-${item.external_id}`
+            : `${item.field}-${item.external_id}`
           state.byCategoryId[key] = item
           setCategoryIds(item.children)
         })
