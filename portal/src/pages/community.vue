@@ -32,18 +32,6 @@
             </Collections>
             <Spinner v-if="community_collections_loading" />
           </div>
-
-          <template>
-            <div v-show="false" class="community__row">
-              <Themes :themes="community_themes" class="community__themas" />
-              <div class="community__themas_and_disciplines">
-                <Disciplines
-                  class="community__disciplines"
-                  :disciplines="community_disciplines"
-                />
-              </div>
-            </div>
-          </template>
         </div>
       </div>
     </section>
@@ -54,8 +42,6 @@
 import { mapGetters } from 'vuex'
 import PageMixin from '~/pages/page-mixin'
 import InfoBlock from '~/components/InfoBlock'
-import Themes from '~/components/Themes'
-import Disciplines from '~/components/Disciplines'
 import Collections from '~/components/Collections'
 import Spinner from '~/components/Spinner'
 import Error from '~/components/error'
@@ -66,8 +52,6 @@ export default {
   name: 'Community',
   components: {
     Error,
-    Themes,
-    Disciplines,
     Collections,
     Spinner,
     InfoBlock,
@@ -81,12 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'community_disciplines',
-      'community_themes',
-      'community_collections_loading',
-      'user',
-    ]),
+    ...mapGetters(['community_collections_loading', 'user']),
     community_collections() {
       return this.$store.getters.getPublicCollections(this.user)
     },
@@ -112,8 +91,6 @@ export default {
   created() {
     const { community } = this.$route.params
     this.pageLoad = this.$store.dispatch('getCommunity', community)
-    this.$store.dispatch('getCommunityThemes', community)
-    this.$store.dispatch('getCommunityDisciplines', community)
     this.$store.dispatch('getCommunityCollections', community)
   },
   metaInfo() {

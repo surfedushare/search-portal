@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <slot class="input"></slot>
-    <div v-if="language" class="language">{{ language }}</div>
+    <slot class="input" />
+    <div v-if="language" class="language">
+      {{ language }}
+    </div>
   </div>
 </template>
 <script>

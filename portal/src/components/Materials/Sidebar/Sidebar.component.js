@@ -7,7 +7,7 @@ import AddCollection from './../../Popup/AddCollection'
 import ShareMaterial from '~/components/Popup/ShareMaterial'
 import Multiselect from './../../Multiselect'
 import { validateHREF } from '~/components/_helpers'
-import { generateSearchMaterialsQuery } from '../../_helpers'
+import { generateSearchMaterialsQuery, formatDate } from '../../_helpers'
 import SelectDownloadPopup from '@/components/Popup/SelectDownload/SelectDownload'
 
 export default {
@@ -329,6 +329,9 @@ export default {
       'material_communities',
       'disciplines',
     ]),
+    formattedPublishedAt() {
+      return formatDate(this.material.published_at, this.$i18n.locale)
+    },
     collectionItems() {
       return this.my_collections.map((collection) => ({
         id: collection.id,

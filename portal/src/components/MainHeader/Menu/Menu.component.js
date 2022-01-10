@@ -38,7 +38,6 @@ export default {
       if (!isEmpty(theme.title_translations)) {
         return theme.title_translations[language]
       }
-      return theme.title
     },
   },
   watch: {

@@ -1,8 +1,3 @@
-"""
-This module contains implementation of REST API views for materials app.
-"""
-
-import json
 import logging
 
 from django.conf import settings
@@ -20,6 +15,7 @@ from rest_framework.viewsets import (
     ModelViewSet
 )
 from rest_framework.permissions import AllowAny
+from rest_framework.renderers import JSONRenderer
 
 from surf.apps.communities.models import Team, Community
 from surf.apps.filters.models import MpttFilterItem
@@ -50,8 +46,6 @@ from surf.apps.materials.serializers import (
 from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
     get_material_details_by_id,
-    add_material_themes,
-    add_material_disciplines,
     add_search_query_to_elastic_index
 )
 from surf.apps.locale.models import Locale
@@ -78,10 +72,16 @@ def portal_material(request, *args, **kwargs):
 def portal_single_page_application(request, *args):
     site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
     site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
+    filter_category_tree = MpttFilterItem.objects.select_related("title_translations").get_cached_trees()
+    filter_categories = MpttFilterItemSerializer(
+        filter_category_tree,
+        many=True
+    )
     return render(request, "portal/index.html", {
         'meta_title': "Edusources",
         'meta_description': site_description,
-        'matomo_id': settings.MATOMO_ID
+        'matomo_id': settings.MATOMO_ID,
+        'filter_categories_json': JSONRenderer().render(filter_categories.data).decode("utf-8")
     })
 
 
@@ -536,14 +536,7 @@ class CollectionViewSet(ModelViewSet):
             if not details:
                 continue
 
-            keywords = details[0].get("keywords")
-            if keywords:
-                keywords = json.dumps(keywords)
-
             m, _ = Material.objects.update_or_create(external_id=m_external_id)
-
-            add_material_themes(m, details[0].get("themes", []))
-            add_material_disciplines(m, details[0].get("disciplines", []))
             CollectionMaterial.objects.create(collection=instance, material=m, position=m_position)
 
     @staticmethod

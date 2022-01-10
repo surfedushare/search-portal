@@ -1,6 +1,6 @@
 <template>
   <div v-show="isActive" class="tabcontent">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 <script>

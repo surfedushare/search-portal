@@ -1,4 +1,4 @@
-import { forEach, isNil, isNull, isEmpty, cloneDeep, groupBy } from 'lodash'
+import { forEach, isNil, isNull, isEmpty, groupBy, sortBy } from 'lodash'
 import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import axios from '~/axios'
 import router from '~/router'
@@ -33,9 +33,9 @@ function getFiltersFromQuery(query) {
   let querySearch = parseSearchMaterialsQuery(query)
   let selected = {}
   if (!isEmpty(querySearch.search)) {
-    forEach(querySearch.search.filters, (filter) => {
+    forEach(querySearch.search.filters, (items) => {
       // filters is an object, not an array
-      filter.items.reduce((obj, item) => {
+      items.reduce((obj, item) => {
         obj[item] = true
         return obj
       }, selected)
@@ -99,7 +99,8 @@ export default {
     },
     getCategoryById(state) {
       return (itemId, rootId) => {
-        return state.byCategoryId[`${rootId}-${itemId}`]
+        const key = isNil(rootId) ? itemId : `${rootId}-${itemId}`
+        return state.byCategoryId[key]
       }
     },
     search_filters(state) {
@@ -121,26 +122,39 @@ export default {
     getFiltersFromQuery() {
       return getFiltersFromQuery
     },
+    sortedThemes(state, getters) {
+      const themeCategory = getters.getCategoryById('learning_material_themes')
+      if (!themeCategory) {
+        return []
+      }
+      const themes = themeCategory.children
+      return sortBy(themes, ['external_id'])
+    },
   },
   actions: {
     async getFilterCategories({ state, commit }) {
-      if (
+      const filters = getFiltersFromQuery(router.currentRoute.query)
+      if (window.CATEGORY_FILTERS) {
+        loadCategoryFilters(
+          window.CATEGORY_FILTERS,
+          filters.selected,
+          filters.dateRange
+        )
+        commit('SET_FILTER_CATEGORIES', window.CATEGORY_FILTERS)
+        commit('SET_FILTER_CATEGORIES_LOADING', null)
+      } else if (
         isNil(state.filter_categories_loading) &&
         isEmpty(state.filter_categories)
       ) {
         const promise = axios.get('filter-categories/').then(({ data }) => {
           // Preprocess the filters
-          data.defaults = cloneDeep(data)
-          let filters = getFiltersFromQuery(router.currentRoute.query)
           loadCategoryFilters(data, filters.selected, filters.dateRange)
-
           commit('SET_FILTER_CATEGORIES', data)
           commit('SET_FILTER_CATEGORIES_LOADING', null)
           return data
         })
         commit('SET_FILTER_CATEGORIES_LOADING', promise)
       }
-
       return isNil(state.filter_categories_loading)
         ? state.filter_categories
         : state.filter_categories_loading

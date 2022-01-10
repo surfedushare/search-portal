@@ -66,7 +66,6 @@ class TestSyncSharekitMetadata(TestCase):
         }
         datasets = {
             "primary": DatasetFactory.create(name="primary"),
-            "secondary": DatasetFactory.create(name="secondary"),
             "inactive": DatasetFactory.create(name="inactive", is_active=False)
         }
         for dataset_type, dataset in datasets.items():
@@ -105,20 +104,21 @@ class TestSyncSharekitMetadata(TestCase):
                 "Non-current dataset versions should never get document updates from sync_sharekit_metadata"
             )
             self.assertEqual(doc.created_at.replace(microsecond=0), doc.modified_at.replace(microsecond=0))
-        for dataset_name in ["primary", "secondary"]:
-            for collection in Collection.objects.filter(name="edusources", dataset_version__version="0.0.2",
-                                                        dataset_version__dataset__name=dataset_name):
-                self.assertEqual(collection.documents.count(), 5,
-                                 f"Did not add documents to collection inside dataset {dataset_name}")
-                update_doc = collection.documents.get(properties__external_id="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
-                self.assertEqual(update_doc.properties["technical_type"], "website",
-                                 f"Did not add documents to collection inside dataset {dataset_name}")
-                self.assertNotEqual(
-                    update_doc.created_at.replace(microsecond=0),
-                    update_doc.modified_at.replace(microsecond=0)
-                )
-                delete_doc = collection.documents.get(properties__external_id="3903863-6c93-4bda-b850-277f3c9ec00e")
-                self.assertEqual(delete_doc.properties["state"], "deleted")
+        # See if active dataset did get an update
+        dataset_name = "primary"
+        for collection in Collection.objects.filter(name="edusources", dataset_version__version="0.0.2",
+                                                    dataset_version__dataset__name=dataset_name):
+            self.assertEqual(collection.documents.count(), 5,
+                             f"Did not add documents to collection inside dataset {dataset_name}")
+            update_doc = collection.documents.get(properties__external_id="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
+            self.assertEqual(update_doc.properties["technical_type"], "website",
+                             f"Did not update documents of collection inside dataset {dataset_name}")
+            self.assertNotEqual(
+                update_doc.created_at.replace(microsecond=0),
+                update_doc.modified_at.replace(microsecond=0)
+            )
+            delete_doc = collection.documents.get(properties__external_id="3903863-6c93-4bda-b850-277f3c9ec00e")
+            self.assertEqual(delete_doc.properties["state"], "deleted")
         # Checking harvest instance updates
         for harvest in Harvest.objects.filter(source__spec="wikiwijs"):
             self.assertEqual(

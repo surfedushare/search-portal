@@ -1,6 +1,5 @@
 import re
 import vobject
-from html import unescape
 from mimetypes import guess_type
 from hashlib import sha1
 from dateutil.parser import parse as date_parser
@@ -41,8 +40,7 @@ class EdurepDataExtraction(object):
 
     @staticmethod
     def parse_vcard_element(el):
-        card = unescape(el.text.strip())
-        card = "\n".join(field.strip() for field in card.split("\n"))
+        card = "\n".join(field.strip() for field in el.text.strip().split("\n"))
         return vobject.readOne(card)
 
     @classmethod
@@ -117,7 +115,7 @@ class EdurepDataExtraction(object):
         if node is None:
             return
         translation = node.find('czp:langstring')
-        return unescape(translation.text.strip()) if translation else None
+        return translation.text.strip() if translation else None
 
     @classmethod
     def get_language(cls, soup, el):
@@ -128,7 +126,7 @@ class EdurepDataExtraction(object):
     def get_keywords(cls, soup, el):
         nodes = el.find_all('czp:keyword')
         return [
-            unescape(node.find('czp:langstring').text.strip())
+            node.find('czp:langstring').text.strip()
             for node in nodes
         ]
 
@@ -138,7 +136,7 @@ class EdurepDataExtraction(object):
         if node is None:
             return
         translation = node.find('czp:langstring')
-        return unescape(translation.text) if translation else None
+        return translation.text if translation else None
 
     @classmethod
     def get_mime_type(cls, soup, el):

@@ -39,21 +39,21 @@
             :class="{ 'is-active': isActive.bullet_list() }"
             @click="commands.bullet_list"
           >
-            <span><i class="fas fa-list"></i></span>
+            <span><i class="fas fa-list" /></span>
           </div>
           <div
             class="menubar-button"
             :class="{ 'is-active': isActive.link() }"
             @click="openLinkPopup"
           >
-            <span><i class="fas fa-link"></i></span>
+            <span><i class="fas fa-link" /></span>
           </div>
           <div
             v-if="isActive.link()"
             class="menubar-button"
             @click="editor.commands.link"
           >
-            <span><i class="fas fa-unlink"></i></span>
+            <span><i class="fas fa-unlink" /></span>
           </div>
         </div>
       </editor-menu-bar>
@@ -73,12 +73,14 @@
       class="popup-content"
     >
       <slot>
-        <h2 class="popup__title">{{ $t('Add-link') }}</h2>
+        <h2 class="popup__title">
+          {{ $t('Add-link') }}
+        </h2>
         <div class="popup__subtext">
           {{ $t('Add-link-subtext') }}
         </div>
         <div>
-          <input v-model="url" class="input" />
+          <input v-model="url" class="input">
           <div class="popup-content__actions">
             <button class="button" @click="saveLink">
               {{ $t('Save') }}

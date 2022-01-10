@@ -51,6 +51,12 @@
 
     <div id="app"></div>
 
+    {% if filter_categories_json %}
+    <script>
+        var FILTER_CATEGORIES = {{ filter_categories_json|safe }};
+    </script>
+    {% endif %}
+
     <script>
         var isIE = typeof document.documentMode == "number" || new Function("return/*@cc_on!@*/!1")( );
         var isEdge = !isIE && !!window.StyleMedia;

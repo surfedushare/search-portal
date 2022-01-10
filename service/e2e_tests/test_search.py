@@ -2,11 +2,10 @@ from django.conf import settings
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 from e2e_tests.base import BaseLiveServerTestCase
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
-
-from surf.apps.filters.models import MpttFilterItem
 
 
 class TestSearch(BaseLiveServerTestCase):
@@ -149,6 +148,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         )
 
     def test_filter_search(self):
+        action = ActionChains(self.selenium)
         self.selenium.get(self.live_server_url)
         self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
         self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
@@ -177,6 +177,11 @@ class TestSearchFiltering(BaseLiveServerTestCase):
 
         # Filter on WO
         educational_levels.find_element_by_css_selector("input").click()
+        WebDriverWait(self.selenium, 2).until(EC.visibility_of(educational_levels))
+        action.move_to_element(source_category).perform()
+        technical_types.click()
+        source_category.click()
+
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
         WebDriverWait(self.selenium, 2).until(
@@ -190,8 +195,12 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
-        # Filter on Tekst
+        # Filter on Document
         technical_types.find_element_by_css_selector("input").click()
+        WebDriverWait(self.selenium, 2).until(EC.visibility_of(technical_types))
+        action.move_to_element(source_category).perform()
+        source_category.click()
+
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (2)"))
         WebDriverWait(self.selenium, 2).until(
@@ -255,20 +264,3 @@ class TestSearchFiltering(BaseLiveServerTestCase):
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (2)"))
         WebDriverWait(self.selenium, 2).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
-
-    def test_filter_search_missing_filter_translations(self):
-        math_discipline = MpttFilterItem.objects.get(id="7268e600-42d4-4508-9072-3365ec12416a")
-        math_discipline.name = "Piskunde"
-        math_discipline.title_translations = None
-        math_discipline.save()
-
-        self.selenium.get(self.live_server_url)
-        self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
-        self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
-
-        # Open filter categories
-        disciplines = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Vakgebied')]]]")
-        disciplines.click()
-        WebDriverWait(self.selenium, 2).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'label[for="7afbb7a6-c29b-425c-9c59-6f79c845f5f0"]'),
-                                             "Piskunde (5)"))

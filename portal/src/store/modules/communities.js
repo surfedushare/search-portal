@@ -69,12 +69,6 @@ export default {
         })
       }
     },
-    community_themes(state) {
-      return state.community_themes
-    },
-    community_disciplines(state) {
-      return state.community_disciplines
-    },
     community_collections(state) {
       return state.community_collections
     },
@@ -123,26 +117,6 @@ export default {
         const { data: communityInfo } = await axios.get(`communities/${id}/`)
         commit('SET_COMMUNITY', communityInfo)
         return communityInfo
-      } else {
-        $log.error('Validate error: ', id)
-      }
-    },
-    async getCommunityThemes({ commit }, id) {
-      if (validateID(id)) {
-        const { data: communityThemes } = await axios.get(
-          `communities/${id}/themes/`
-        )
-        commit('SET_COMMUNITY_THEMES', communityThemes)
-      } else {
-        $log.error('Validate error: ', id)
-      }
-    },
-    async getCommunityDisciplines({ commit }, id) {
-      if (validateID(id)) {
-        const { data: communityDisciplines } = await axios.get(
-          `communities/${id}/disciplines/`
-        )
-        commit('SET_COMMUNITY_DISCIPLINES', communityDisciplines)
       } else {
         $log.error('Validate error: ', id)
       }

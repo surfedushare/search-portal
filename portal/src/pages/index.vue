@@ -7,12 +7,11 @@
             class="main__info_bg"
             src="/images/pictures/header-image.jpg"
             alt="header-image"
-          />
+          >
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
-              <span v-if="statistic">{{ numberOfMaterials }} </span
-              >{{ $t('open-learning-materials-from-higher-education') }}
+              <span v-if="statistic">{{ numberOfMaterials }} </span>{{ $t('open-learning-materials-from-higher-education') }}
             </h2>
             <ul class="main__info_items">
               <li class="main__info_item">
@@ -27,11 +26,19 @@
             </ul>
           </div>
           <Search
+            v-if="!$root.isDemoEnvironment()"
             v-model="searchText"
             :select-options="educationalLevelOptions"
             class="main__info_search"
             @onSearch="searchMaterials"
             @selectDropdownOption="setEducationalLevelFilter"
+          />
+          <DomainSearch
+            v-else
+            v-model="searchText"
+            class="main__info_search domain_search"
+            @onSearch="searchMaterials"
+            @update:filter="onUpdateFilter"
           />
         </div>
       </div>
@@ -62,7 +69,7 @@
             <img
               src="/images/pictures/hoe-werkt-het.png"
               class="preview__bg_block-img"
-            />
+            >
           </div>
           <div class="preview__text_block">
             <h2 class="preview__title">
@@ -85,18 +92,21 @@
 </template>
 
 <script>
+import { isNull } from 'lodash'
 import { mapGetters } from 'vuex'
 import PageMixin from '~/pages/page-mixin'
 import Search from '~/components/Search'
+import DomainSearch from '@/components/Search/DomainSearch'
 import numeral from 'numeral'
 import Materials from '~/components/Materials'
 import PopularList from '~/components/Communities/PopularList'
 import { generateSearchMaterialsQuery } from '../components/_helpers'
 
-const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom.educational.context'
+const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
 export default {
   components: {
+    DomainSearch,
     Search,
     PopularList,
     Materials,
@@ -113,7 +123,6 @@ export default {
       filterCategories: 'filter_categories',
       materials: 'materials',
       allCommunities: 'allCommunities',
-      sortedThemes: 'sortedThemes',
       statistic: 'statistic',
     }),
     numberOfMaterials() {
@@ -158,6 +167,13 @@ export default {
           page: 1,
         })
       )
+    },
+    onUpdateFilter(filter) {
+      if (isNull(filter.value)) {
+        delete this.filters[filter.field]
+        return
+      }
+      this.filters[filter.field] = filter.values
     },
   },
 }
@@ -270,6 +286,10 @@ export default {
 
     &_search {
       margin: auto;
+    }
+    .domain_search {
+      display: flex;
+      justify-content: space-between;
     }
   }
 

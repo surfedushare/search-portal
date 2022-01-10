@@ -4,7 +4,7 @@
       <div class="content" @click="goToMaterial">
         <h3>
           {{ material.title }}
-          <i class="arrow"></i>
+          <i class="arrow" />
         </h3>
         <div v-if="material.has_parts">
           {{ $tc('Materials', material.has_parts.length) }}

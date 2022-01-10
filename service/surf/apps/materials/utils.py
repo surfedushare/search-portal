@@ -7,21 +7,8 @@ from functools import reduce
 
 from surf.apps.communities.models import Community
 from surf.apps.filters.models import MpttFilterItem
-from surf.apps.materials.models import (
-    Material,
-)
-from surf.apps.themes.models import Theme
+from surf.apps.materials.models import Material
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
-
-
-def add_material_themes(material, themes):
-    ts = Theme.objects.filter(external_id__in=themes).all()
-    material.themes.set(ts)
-
-
-def add_material_disciplines(material, disciplines):
-    ds = MpttFilterItem.objects.filter(external_id__in=disciplines).all()
-    material.disciplines.set(ds)
 
 
 def add_extra_parameters_to_materials(user, materials):

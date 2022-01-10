@@ -23,7 +23,7 @@
               :data-category-id="category.external_id"
               :data-item-id="item.external_id"
               @change="onChange"
-            />
+            >
 
             <label :for="item.external_id">
               {{ titleTranslation(item) }}
@@ -99,6 +99,11 @@ export default {
       }
 
       return this.sortedChildren.slice(0, this.numberOfVisibleItems)
+    },
+  },
+  watch: {
+    category(newCategory) {
+      this.isOpen = newCategory.children.some((child) => child.selected)
     },
   },
   methods: {

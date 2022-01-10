@@ -62,9 +62,9 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
 
     def get_value_from_record(self, record, key):
-        if settings.PROJECT == "edusources" and key != "publish_datetime":
+        if settings.PROJECT == "edusources" and key != "published_at":
             value = record[key]
-        elif settings.PROJECT == "edusources" and key == "publish_datetime":
+        elif settings.PROJECT == "edusources" and key == "published_at":
             value = parse(record[key], ignoretz=True)
         elif key == "authors":
             value = record["relations"]["authors"]
@@ -74,7 +74,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             value = record["relations"]["keywords"]
         elif key == "technical_type":
             value = record["type"]
-        elif key == "publish_datetime":
+        elif key == "published_at":
             value = parse(record["published_at"], ignoretz=True)
         else:
             raise ValueError(f"No translation for key '{key}' in NPPO project")
@@ -188,7 +188,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         for record in search_biologie_upper_date["records"]:
             self.assert_value_from_record(
                 record,
-                "publish_datetime",
+                "published_at",
                 datetime(year=2018, month=12, day=31),
                 self.assertLessEqual
             )
@@ -199,7 +199,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         for record in search_biologie_lower_date["records"]:
             self.assert_value_from_record(
                 record,
-                "publish_datetime",
+                "published_at",
                 datetime.strptime("2018-01-01", "%Y-%m-%d"),
                 self.assertGreaterEqual
             )
@@ -210,13 +210,13 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         for record in search_biologie_between_date["records"]:
             self.assert_value_from_record(
                 record,
-                "publish_datetime",
+                "published_at",
                 datetime.strptime("2018-12-31", "%Y-%m-%d"),
                 self.assertLessEqual
             )
             self.assert_value_from_record(
                 record,
-                "publish_datetime",
+                "published_at",
                 datetime.strptime("2018-01-01", "%Y-%m-%d"),
                 self.assertGreaterEqual
             )
@@ -318,21 +318,21 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         self.assertIsNotNone(search_biologie)
         self.assertTrue(search_biologie["records"])
         search_biologie_dates = [
-            self.get_value_from_record(record, "publish_datetime")
+            self.get_value_from_record(record, "published_at")
             for record in search_biologie["records"]
         ]
         search_biologie_asc = self.instance.search("biologie", ordering="publisher_date")
         self.assertIsNotNone(search_biologie_asc)
         self.assertTrue(search_biologie_asc["records"])
         search_biologie_asc_dates = [
-            self.get_value_from_record(record, "publish_datetime")
+            self.get_value_from_record(record, "published_at")
             for record in search_biologie_asc["records"]
         ]
         search_biologie_desc = self.instance.search("biologie", ordering="publisher_date")
         self.assertIsNotNone(search_biologie_desc)
         self.assertTrue(search_biologie_asc["records"])
         search_biologie_desc_dates = [
-            self.get_value_from_record(record, "publish_datetime")
+            self.get_value_from_record(record, "published_at")
             for record in search_biologie_desc["records"]
         ]
         # make sure that a default ordering is different than a date ordering
@@ -397,7 +397,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         self.assert_value_from_record(material, 'publishers', ["Wikiwijs Maken"])
         self.assert_value_from_record(
             material,
-            'publish_datetime',
+            'published_at',
             datetime(year=2017, month=4, day=16, hour=22, minute=35, second=9)
         )
         self.assert_value_from_record(material, 'authors', [
