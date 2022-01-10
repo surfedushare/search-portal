@@ -31,7 +31,7 @@ class TestSearch(BaseLiveServerTestCase):
         search.send_keys("Wiskunde")
         button.click()
 
-        WebDriverWait(self.selenium, 2).until_not(
+        WebDriverWait(self.selenium, 10).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
@@ -45,7 +45,7 @@ class TestSearch(BaseLiveServerTestCase):
         search.send_keys("Theo")
         button.click()
 
-        WebDriverWait(self.selenium, 2).until_not(
+        WebDriverWait(self.selenium, 10).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
@@ -59,7 +59,7 @@ class TestSearch(BaseLiveServerTestCase):
         author_link = self.selenium.find_element_by_css_selector(".material__info_author a")
         author_link.click()
 
-        WebDriverWait(self.selenium, 2).until_not(
+        WebDriverWait(self.selenium, 10).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
@@ -72,7 +72,7 @@ class TestSearch(BaseLiveServerTestCase):
         author_link = self.selenium.find_element_by_css_selector(".material__info_publishers a")
         author_link.click()
 
-        WebDriverWait(self.selenium, 2).until_not(
+        WebDriverWait(self.selenium, 10).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         search_results = self.selenium.find_elements_by_css_selector(".materials__item_wrapper.tile__wrapper")
@@ -88,22 +88,22 @@ class TestSearch(BaseLiveServerTestCase):
         search.send_keys("didaktiek")
         button.click()
 
-        WebDriverWait(self.selenium, 2).until_not(
+        WebDriverWait(self.selenium, 10).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Geen resultaten voor"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "didaktiek"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Bedoelde je"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "didactiek"))
 
         spelling_link = self.selenium.find_element_by_css_selector(".not_found a")
         spelling_link.click()
 
-        WebDriverWait(self.selenium, 2).until_not(
+        WebDriverWait(self.selenium, 10).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
@@ -118,10 +118,10 @@ class TestSearch(BaseLiveServerTestCase):
         search.send_keys("kauwgomballenautomaat")
         button.click()
 
-        WebDriverWait(self.selenium, 2).until_not(
+        WebDriverWait(self.selenium, 10).until_not(
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Niet gevonden"))
 
 
@@ -167,69 +167,69 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         source_category.click()
 
         # Initial filter state
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#document ~ label"), "Document (3)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (3)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (3)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (2)"))
 
         # Filter on WO
         educational_levels.find_element_by_css_selector("input").click()
-        WebDriverWait(self.selenium, 2).until(EC.visibility_of(educational_levels))
+        WebDriverWait(self.selenium, 10).until(EC.visibility_of(educational_levels))
         action.move_to_element(source_category).perform()
         technical_types.click()
         source_category.click()
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#document ~ label"), "Document (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (3)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
         # Filter on Document
         technical_types.find_element_by_css_selector("input").click()
-        WebDriverWait(self.selenium, 2).until(EC.visibility_of(technical_types))
+        WebDriverWait(self.selenium, 10).until(EC.visibility_of(technical_types))
         action.move_to_element(source_category).perform()
         source_category.click()
 
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#HBO ~ label"), "HBO (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#document ~ label"), "Document (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
         # Filter on Sharekit
         source_category.find_element_by_css_selector("input").click()
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#document ~ label"), "Document (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
 
     def test_filter_search_home_by_education_level(self):
@@ -244,15 +244,15 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
         # Checking search results and educational level filters should be visible and selected
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.XPATH, "//li[.//h4[text()[contains(., 'Onderwijsniveau')]]]"),
                 "Onderwijsniveau"
             )
         )
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#WO"), True))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.element_located_selection_state_to_be((By.CSS_SELECTOR, "#HBO"), False))
 
         # Now we'll be clicking open a lot of the other filters to make sure their counts are correct
@@ -261,11 +261,11 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         source_category = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Bron')]]]")
         source_category.click()
         # And check the actual counts per filter
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#document ~ label"), "Document (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (2)"))
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))

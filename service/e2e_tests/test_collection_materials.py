@@ -40,7 +40,7 @@ class TestCollectionMaterials(BaseLiveServerTestCase):
         self.selenium.find_element_by_css_selector(".search__materials .select-icon").click()
         self.selenium.find_element_by_xpath("//button[text()[contains(., '1 toevoegen')]]").click()
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".collection__materials"), "Didactiek van wiskundig denken"
             )
@@ -49,13 +49,13 @@ class TestCollectionMaterials(BaseLiveServerTestCase):
     def test_remove_material(self):
         MaterialFactory.create(collections=[self.collection], external_id=self.material["external_id"])
         self.selenium.get(f"{self.live_server_url}/mijn/collectie/{self.collection.id}")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".collection__materials"), "Didactiek van wiskundig denken"
             )
         )
         self.selenium.find_element_by_css_selector(".collection__materials .select-icon").click()
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, 10).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".collection__materials"), "Niet gevonden"
             )
