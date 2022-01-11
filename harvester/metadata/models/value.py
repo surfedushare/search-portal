@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from rest_framework import serializers
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 from mptt.exceptions import InvalidMove
@@ -42,6 +43,17 @@ class MetadataValue(MPTTModel):
             raise ValidationError(f"Can not make '{self.value}' child of '{self.parent.value}', "
                                   f"because they do not share a field")
         super().clean()
+
+    def restore(self):
+        self.deleted_at = None
+        self.save()
+
+    def delete(self, using=None, keep_parents=False):
+        if not self.deleted_at:
+            self.deleted_at = timezone.now()
+            self.save()
+        else:
+            super().delete(using=using, keep_parents=keep_parents)
 
     class MPTTMeta:
         order_insertion_by = ['name']
