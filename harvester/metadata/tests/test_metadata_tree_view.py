@@ -8,7 +8,7 @@ from metadata.models import MetadataField, MetadataValue
 class TestMetadataTreeView(TestCase):
 
     def setUp(self):
-        super().setUpClass()
+        super().setUp()
         self.user = User.objects.create(username="supersurf")
         self.client.force_login(self.user)
 
