@@ -117,7 +117,7 @@ class Document(DocumentBase):
             }
             return
         # Transform the data to the structure we actually want in Elastic Search
-        elastic_base.pop("language")
+        elastic_base.pop("language", None)
         text = elastic_base.pop("text", None)
         if text and len(text) >= 1000000:
             text = " ".join(text.split(" ")[:10000])
