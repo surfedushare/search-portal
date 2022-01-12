@@ -109,6 +109,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
                 "external_id": author["person"]["id"],
                 "dai": author["person"]["dai"],
                 "orcid": author["person"]["orcid"],
+                "isni": author["person"]["isni"],
             }
             for author in authors
         ]

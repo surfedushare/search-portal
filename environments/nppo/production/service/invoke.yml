@@ -42,9 +42,5 @@ secrets:
     admin_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:search-portal/django"
   surfconext:
     secret_key: null
-  eduterm:
-    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:eduterm"
-  deepl:
-    api_key: null
   harvester:
     api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/api-key"
