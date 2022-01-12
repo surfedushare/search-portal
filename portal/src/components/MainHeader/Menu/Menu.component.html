@@ -16,7 +16,7 @@
               <li v-for="theme in sortedThemes" class="menu__sub_list_item">
                 <router-link
                   class="menu__sub_link arrow-link"
-                  :to="localePath({name: 'themes-id', params: {id: theme.id}})"
+                  :to="localePath({name: 'themes-id', params: {slug: getThemeSlug(theme) }})"
                   @click.native="closeSubMenu(true)"
                 >
                   {{getThemeTitleTranslation(theme, $i18n.locale)}}</router-link>

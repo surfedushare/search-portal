@@ -8,7 +8,7 @@ django:
     - "surf/apps/filters/fixtures/filter-categories-nppo.json"
   matomo_id: null
   administrative_emails: true
-  harvester_api: null
+  harvester_api: "http://harvester:8888/api/v1/"
   sentry:
     dsn: null
 
@@ -43,4 +43,4 @@ secrets:
   deepl:
     api_key: null
   harvester:
-    api_key: null
+    api_key: "123abc"

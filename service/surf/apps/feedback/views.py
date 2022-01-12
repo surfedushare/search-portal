@@ -19,6 +19,7 @@ def send_feedback_mail(feedback, current_url, user):
 
 
 class FeedbackAPIView(APIView):
+
     def post(self, request, *args, **kwargs):
         feedback = request.data["feedback"]
         current_url = request.data["current_url"]

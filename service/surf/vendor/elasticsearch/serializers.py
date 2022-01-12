@@ -60,7 +60,8 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
     published_at = serializers.CharField(source="publisher_date", allow_blank=True, allow_null=True)
     educationallevels = serializers.ListField(child=serializers.CharField(), source="lom_educational_levels")
     disciplines = serializers.ListField(child=serializers.DictField())
-    themes = serializers.ListField(child=serializers.CharField(), default=[])
+    themes = serializers.ListField(child=serializers.CharField(), default=[],
+                                   source="learning_material_themes_normalized")
     source = serializers.CharField(source="harvest_source")
     ideas = serializers.ListField(child=serializers.CharField())
     technical_type = serializers.CharField(required=False, allow_blank=True, allow_null=True)

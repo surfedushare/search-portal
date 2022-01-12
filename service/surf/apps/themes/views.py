@@ -1,8 +1,5 @@
-"""
-This module contains implementation of REST API views for themes app.
-"""
+from django.shortcuts import Http404
 from rest_framework.viewsets import GenericViewSet
-
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 
 from surf.apps.themes.models import Theme
@@ -22,3 +19,14 @@ class ThemeViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ThemeSerializer
     filter_class = ThemeFilter
     permission_classes = []
+    lookup_url_kwarg = "slug"
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        obj = queryset.filter(nl_slug=self.kwargs["slug"]).first()
+        if not object:
+            obj = queryset.filter(en_slug=self.kwargs["slug"]).first()
+        if obj is None:
+            raise Http404()
+        self.check_object_permissions(self.request, obj)
+        return obj

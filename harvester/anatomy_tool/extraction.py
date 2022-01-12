@@ -260,6 +260,10 @@ class AnatomyToolExtraction(object):
         description = node.find('description')
         return description.find('string').text.strip() if description else None
 
+    @classmethod
+    def get_learning_material_themes(cls, soup, el):
+        return ["gezondheid"]
+
 
 ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "url": AnatomyToolExtraction.get_url,
@@ -291,6 +295,6 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "research_object_type": lambda soup, el: None,
     "research_themes": lambda soup, el: None,
     "parties": lambda soup, el: [],
-    "learning_material_themes": lambda soup, el: [],
+    "learning_material_themes": AnatomyToolExtraction.get_learning_material_themes,
     "consortium": lambda soup, el: None,
 }

@@ -49,6 +49,7 @@ class Extension(DocumentBase):
             'aggregation_level': None,
             'analysis_allowed': None,
             'publisher_date': None,
+            'learning_material_themes_normalized': []
         }
         if "keywords" in elastic_base:
             elastic_base["keywords"] = [entry["label"] for entry in elastic_base["keywords"]]

@@ -9,7 +9,7 @@ django:
     - "surf/apps/filters/fixtures/filter-categories-nppo.json"
   matomo_id: null
   administrative_emails: false
-  harvester_api: null
+  harvester_api: "http://harvester.nppo/api/v1/"
   sentry:
     dsn: "https://84bb029bea9643399833826dfa1512d4@o356528.ingest.sentry.io/6080811"
 
@@ -47,4 +47,4 @@ secrets:
   deepl:
     api_key: null
   harvester:
-    api_key: null
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/api-key"

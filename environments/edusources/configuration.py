@@ -50,6 +50,9 @@ def get_project_search_mapping_properties():
         'learning_material_themes': {
             'type': 'keyword'
         },
+        'learning_material_themes_normalized': {
+            'type': 'keyword'
+        },
         'consortium': {
             'type': 'keyword'
         },
