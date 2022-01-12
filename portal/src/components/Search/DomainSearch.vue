@@ -9,7 +9,7 @@
       :filters="dropdownData ? dropdownData[dropdown.field].children : []"
       @update:selection="onSelection"
     />
-    <Search v-model="searchText" @onSearch="onSearch" />
+    <Search :search-input="searchText" @onSearch="onSearch" />
   </div>
 </template>
 
