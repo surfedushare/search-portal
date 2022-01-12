@@ -184,7 +184,9 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         educational_levels.find_element_by_css_selector("input").click()
         WebDriverWait(self.selenium, 10).until(EC.visibility_of(educational_levels))
         action.move_to_element(source_category).perform()
+        WebDriverWait(self.selenium, 300).until(EC.visibility_of(technical_types))
         technical_types.click()
+        WebDriverWait(self.selenium, 300).until(EC.visibility_of(source_category))
         source_category.click()
 
         WebDriverWait(self.selenium, 10).until(
@@ -204,6 +206,7 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         technical_types.find_element_by_css_selector("input").click()
         WebDriverWait(self.selenium, 10).until(EC.visibility_of(technical_types))
         action.move_to_element(source_category).perform()
+        WebDriverWait(self.selenium, 300).until(EC.visibility_of(source_category))
         source_category.click()
 
         WebDriverWait(self.selenium, 10).until(
