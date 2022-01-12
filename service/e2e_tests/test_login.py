@@ -14,6 +14,6 @@ class TestLogin(BaseLiveServerTestCase):
             "fake-session"
         )
         self.selenium.get(self.live_server_url)
-        WebDriverWait(self.selenium, 10).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".main_block"))
         )
