@@ -44,3 +44,7 @@ secrets:
     api_key: "123abc"
   matomo:
     api_key: null
+  eduterm:
+    api_key: null
+  deepl:
+    api_key: null

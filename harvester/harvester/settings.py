@@ -77,9 +77,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'versatileimagefield',
+    'mptt',
     'datagrowth',
 
     'core',
+    'metadata',
     'edurep',
     'sharekit',
     'anatomy_tool',
@@ -438,9 +440,34 @@ CELERY_BEAT_SCHEDULE = {
     'sync_indices': {
         'task': 'sync_indices',
         'schedule': 30,
+    },
+    'sync_metadata': {
+        'task': 'sync_metadata',
+        'schedule': crontab(minute=30)
     }
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+
+
+# Debug Toolbar
+# https://django-debug-toolbar.readthedocs.io/en/latest/
+
+if DEBUG:
+    # Activation
+    INSTALLED_APPS += [
+        'debug_toolbar'
+    ]
+    MIDDLEWARE = MIDDLEWARE[0:4] + ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE[4:]
+
+    # Configuration
+    # NB: INTERNAL_IPS doesn't work well for Docker containers
+    INTERNAL_HOSTS = [
+        '127.0.0.1:8888',
+        'localhost:8888',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: request.get_host() in INTERNAL_HOSTS
+    }
 
 
 # Datagrowth
@@ -458,9 +485,15 @@ SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
 SHAREKIT_BASE_URL = environment.django.repositories.sharekit
 
 
-# Edurep
+# Edurep & Eduterm
 
 EDUREP_BASE_URL = environment.django.repositories.edurep
+EDUTERM_API_KEY = environment.secrets.eduterm.api_key
+
+
+# Deepl
+
+DEEPL_API_KEY = environment.secrets.deepl.api_key
 
 
 # Robots

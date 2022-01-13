@@ -27,7 +27,6 @@
           </div>
           <Search
             v-if="!$root.isDemoEnvironment()"
-            v-model="searchText"
             :select-options="educationalLevelOptions"
             class="main__info_search"
             @onSearch="searchMaterials"
@@ -35,7 +34,6 @@
           />
           <DomainSearch
             v-else
-            v-model="searchText"
             class="main__info_search domain_search"
             @onSearch="searchMaterials"
             @update:filter="onUpdateFilter"
@@ -114,7 +112,6 @@ export default {
   mixins: [PageMixin],
   data() {
     return {
-      searchText: '',
       filters: {},
     }
   },
@@ -158,10 +155,10 @@ export default {
     setEducationalLevelFilter(value) {
       this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value]
     },
-    searchMaterials() {
+    searchMaterials(searchText) {
       this.$router.push(
         generateSearchMaterialsQuery({
-          search_text: this.searchText,
+          search_text: searchText,
           filters: this.filters,
           page_size: 10,
           page: 1,

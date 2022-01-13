@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.conf import settings
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -5,10 +7,11 @@ from selenium.webdriver.common.by import By
 
 from e2e_tests.base import BaseLiveServerTestCase
 from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, CollectionFactory, MaterialFactory
-from e2e_tests.helpers import login
+from e2e_tests.helpers import login, get_metadata_tree_mock
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
+@patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestCollectionMaterials(BaseLiveServerTestCase):
 
     @classmethod
@@ -37,7 +40,7 @@ class TestCollectionMaterials(BaseLiveServerTestCase):
         self.selenium.find_element_by_css_selector(".search__materials .select-icon").click()
         self.selenium.find_element_by_xpath("//button[text()[contains(., '1 toevoegen')]]").click()
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".collection__materials"), "Didactiek van wiskundig denken"
             )
@@ -46,13 +49,13 @@ class TestCollectionMaterials(BaseLiveServerTestCase):
     def test_remove_material(self):
         MaterialFactory.create(collections=[self.collection], external_id=self.material["external_id"])
         self.selenium.get(f"{self.live_server_url}/mijn/collectie/{self.collection.id}")
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".collection__materials"), "Didactiek van wiskundig denken"
             )
         )
         self.selenium.find_element_by_css_selector(".collection__materials .select-icon").click()
-        WebDriverWait(self.selenium, 2).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".collection__materials"), "Niet gevonden"
             )

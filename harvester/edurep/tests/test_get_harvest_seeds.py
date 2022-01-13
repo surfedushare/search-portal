@@ -74,7 +74,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
     def test_authors_property(self):
         seeds = get_harvest_seeds("surfsharekit", make_aware(datetime(year=1970, month=1, day=1)))
         self.assertEqual(seeds[3]['authors'], [
-            {'name': 'Ruud Kok', 'email': None, 'external_id': None, 'dai': None, 'orcid': None}
+            {'name': 'Ruud Kok', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
         ])
 
     def test_publishers_property(self):

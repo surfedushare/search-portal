@@ -1,4 +1,3 @@
-import { validateID } from './_helpers.js'
 import axios from '~/axios'
 
 export default {
@@ -22,11 +21,9 @@ export default {
       commit('SET_THEMES', themes)
     },
     async getTheme({ commit }, id) {
-      if (validateID(id)) {
-        const { data: theme } = await axios.get(`themes/${id}/`)
-        commit('SET_THEME', theme)
-        return theme
-      }
+      const { data: theme } = await axios.get(`themes/${id}/`)
+      commit('SET_THEME', theme)
+      return theme
     },
   },
   mutations: {

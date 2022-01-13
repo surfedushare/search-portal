@@ -32,20 +32,19 @@ export default {
       type: String,
       default: null,
     },
-    value: {
+    searchInput: {
       type: String,
     },
   },
   data() {
     return {
-      searchText: this.value,
+      searchText: this.searchInput,
       suggestions: [],
     }
   },
   methods: {
     onInputChange(query) {
       this.searchSuggestions(query, this)
-      this.$emit('input', query)
     },
     searchSuggestions: debounce(async function (search) {
       if (!search || search.length <= 2) {
@@ -61,23 +60,18 @@ export default {
     }, 350),
     onSelectSuggestion(result) {
       const text = result ? result.item : this.searchText
-      this.$emit('input', text)
-      this.$emit('onSearch')
+      this.$emit('onSearch', text)
     },
     onSubmit() {
-      if (!this.searchText) {
-        return
-      }
-
-      this.$emit('onSearch')
+      this.$emit('onSearch', this.searchText)
     },
     changeSelectedOption($event) {
       this.$emit('selectDropdownOption', $event.target.value)
     },
   },
   watch: {
-    value(value) {
-      this.searchText = value
+    searchInput(input) {
+      this.searchText = input
     },
   },
   computed: {

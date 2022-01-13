@@ -19,6 +19,8 @@ class Command(BaseCommand):
     help = 'Updates the filter items through Elastic Search aggregations'
 
     def handle(self, *args, **options):
+        logger.info('Skipping sync_category_filters as harvester is now the authority on this data')
+        return
         logger.info('Starting filter update')
         has_new_filters = sync_category_filters()
         if has_new_filters and settings.ENABLE_ADMINISTRATIVE_EMAILS:

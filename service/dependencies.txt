@@ -10,3 +10,4 @@ django-nose==1.4.6
 django-webpack-loader==0.7.0
 django-csp==3.7
 python-jose[cryptography]==3.3.0
+django-clearcache==1.2.1

@@ -43,3 +43,7 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/api-key"
   matomo:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/matomo-api-key"
+  eduterm:
+    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:eduterm"
+  deepl:
+    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/deepl"

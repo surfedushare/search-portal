@@ -29,7 +29,7 @@
           </div>
           <Search
             v-if="search"
-            v-model="search.search_text"
+            :search-input="search.search_text"
             class="search__info_search"
             @onSearch="onSearch"
           />
@@ -200,14 +200,15 @@ export default {
         )
       }
     },
-    onSearch() {
+    onSearch(searchText) {
+      const changed = searchText !== this.search.search_text
       this.search = {
-        search_text: this.search.search_text,
+        search_text: searchText || '',
         filters: {},
         page_size: 10,
         page: 1,
       }
-      this.executeSearch(true)
+      this.executeSearch(changed)
     },
     loadMore() {
       const { search, materials } = this

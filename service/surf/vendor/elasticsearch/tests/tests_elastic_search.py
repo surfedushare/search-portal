@@ -114,7 +114,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         # does an empty search return a list of records?
         self.assertIsInstance(search_result['records'], list)
         # are there no drilldowns for an empty search?
-        self.assertIsInstance(search_result['drilldowns'], list)
+        self.assertIsInstance(search_result['drilldowns'], dict)
         self.assertEqual(len(search_result['drilldowns']), 0)
 
         # basic search
@@ -268,11 +268,10 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def test_drilldown_search(self):
         search_biologie = self.instance.search("biologie", drilldown_names=["technical_type"])
         self.assertIsNotNone(search_biologie)
-        self.assertTrue(search_biologie['drilldowns'])
-        self.assertTrue(search_biologie['drilldowns'][0]['items'])
-        for item in search_biologie['drilldowns'][0]['items']:
-            self.assertTrue(item['external_id'])
-            self.assertIsNotNone(item['count'])
+        self.assertEqual(len(search_biologie['drilldowns']), 2)
+        for key, value in search_biologie['drilldowns'].items():
+            self.assertIn("-", key)
+            self.assertGreater(value, 0)
 
     @skipIf(settings.PROJECT == "nppo", "Disciplines not supported by NPPO")
     def test_drilldown_search_disciplines(self):
@@ -282,35 +281,30 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         )
         self.assertIsNotNone(search_with_theme_drilldown)
         self.assertTrue(search_with_theme_drilldown['drilldowns'])
-        self.assertEqual(
-            [drilldown["external_id"] for drilldown in search_with_theme_drilldown['drilldowns']],
-            ["disciplines"]
-        )
-        for drilldown in search_with_theme_drilldown['drilldowns']:
-            self.assertTrue(drilldown["items"])
-            for item in drilldown['items']:
-                self.assertTrue(item['external_id'])
-                self.assertIsNotNone(item['count'])
+        for key, value in search_with_theme_drilldown['drilldowns'].items():
+            self.assertIn('disciplines-', key)
+            self.assertGreater(value, 0)
 
     def test_drilldown_with_filters(self):
         search = self.instance.search(
             "biologie",
             filters=[
-                {"external_id": "technical_type", "items": ["text"]}
+                {"external_id": "technical_type", "items": ["document"]}
             ],
             drilldown_names=['harvest_source', 'technical_type']
         )
 
         drilldowns = search['drilldowns']
-        drilldowns_for_format = next((d for d in drilldowns if d['external_id'] == 'technical_type'), None)
-        drilldowns_for_repo = next((d for d in drilldowns if d['external_id'] == 'harvest_source'), None)
 
-        total_for_format = sum(item['count'] for item in drilldowns_for_format['items'])
-        total_for_repo = sum(item['count'] for item in drilldowns_for_repo['items'])
-
+        total_for_technical_type = sum(
+            count for drilldown_name, count in drilldowns.items() if "technical_type" in drilldown_name
+        )
+        total_for_repo = sum(
+            count for drilldown_name, count in drilldowns.items() if "harvest_source" in drilldown_name
+        )
         # The counts for format do not include the filter (as it is applied to format)
         # The counts for repo DO include the format filter, so it returns less results
-        self.assertGreater(total_for_format, total_for_repo)
+        self.assertGreater(total_for_technical_type, total_for_repo)
 
     def test_ordering_search(self):
         # make a bunch of queries with different ordering
@@ -356,29 +350,26 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
     def test_drilldowns(self):
         empty_drilldowns = self.instance.drilldowns(drilldown_names=[])
         self.assertGreater(empty_drilldowns['recordcount'], 0)
-        self.assertFalse(empty_drilldowns['records'])
-        self.assertFalse(empty_drilldowns['drilldowns'])
+        self.assertEqual(empty_drilldowns['records'], [])
+        self.assertEqual(empty_drilldowns['drilldowns'], {})
 
         biologie_drilldowns = self.instance.drilldowns([], search_text="biologie")
         self.assertGreater(biologie_drilldowns['recordcount'], 0)
         self.assertGreater(empty_drilldowns['recordcount'], biologie_drilldowns['recordcount'])
-        self.assertFalse(biologie_drilldowns['records'])
-        self.assertFalse(biologie_drilldowns['drilldowns'])
+        self.assertEqual(empty_drilldowns['records'], [])
+        self.assertEqual(empty_drilldowns['drilldowns'], {})
 
         repo_drilldowns = self.instance.drilldowns(['harvest_source'])
-        self.assertTrue(repo_drilldowns['drilldowns'])
-        self.assertTrue(repo_drilldowns['drilldowns'][0]['items'])
-        for item in repo_drilldowns['drilldowns'][0]['items']:
-            self.assertTrue(item['external_id'])
-            self.assertIsNotNone(item['count'])
+        for drilldown_name, value in repo_drilldowns['drilldowns'].items():
+            self.assertIn("harvest_source", drilldown_name)
+            self.assertGreater(value, 0)
 
         repo_and_format_drilldowns = self.instance.drilldowns(['harvest_source', 'technical_type'])
-        self.assertTrue(repo_and_format_drilldowns['drilldowns'])
-        for drilldown in repo_and_format_drilldowns['drilldowns']:
-            self.assertTrue(drilldown['items'])
-            for item in drilldown['items']:
-                self.assertTrue(item['external_id'])
-                self.assertIsNotNone(item['count'])
+        for drilldown_name, value in repo_and_format_drilldowns['drilldowns'].items():
+            field_id, external_id = drilldown_name.split("-")
+            self.assertIn(field_id, ["harvest_source", "technical_type"])
+            self.assertTrue(external_id)
+            self.assertGreater(value, 0)
 
     def test_get_materials_by_id(self):
         # Sharekit material
@@ -528,7 +519,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 "title": "title",
                 "description": "description",
                 "authors": authors,
-                "themes": themes,
+                "learning_material_themes_normalized": themes,
                 "research_themes": themes
             }
         }
