@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 
 from surf.apps.communities import models
-from surf.apps.communities.models import PublishStatus, REQUIRED_LANGUAGES
+from surf.apps.communities.models import REQUIRED_LANGUAGES
 
 
 def trash_nodes(modeladmin, request, queryset):
@@ -43,18 +43,6 @@ class TrashListFilter(admin.SimpleListFilter):
         return queryset.filter(deleted_at__isnull=not is_trash)
 
 
-class CommunityForm(forms.ModelForm):
-    """
-    Implementation of Community Form class.
-    """
-    publish_status = forms.TypedChoiceField(choices=PublishStatus.choices(), coerce=int)
-
-    class Meta:
-        model = models.Community
-        fields = '__all__'
-        exclude = ['members']
-
-
 class TeamInline(admin.TabularInline):
     model = models.Team
     extra = 0
@@ -90,7 +78,6 @@ class CommunityAdmin(admin.ModelAdmin):
     list_filter = ("publish_status", TrashListFilter,)
     readonly_fields = ("deleted_at",)
     inlines = [TeamInline, CommunityDetailInline]
-    form = CommunityForm
 
     actions = [restore_nodes, trash_nodes]
 
