@@ -25,7 +25,7 @@ class TestCollections(BaseLiveServerTestCase):
         replace_content(self.selenium.find_element_by_id("collection_title_nl"), 'Mijn collectie')
         replace_content(self.selenium.find_element_by_id("collection_title_en"), 'My collection')
         self.selenium.find_element_by_css_selector(".popup.add-collection .form__button button").click()
-        WebDriverWait(self.selenium, 10).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".collections__item_ttl"), "Mijn collectie")
         )
 
@@ -35,6 +35,6 @@ class TestCollections(BaseLiveServerTestCase):
         self.selenium.find_element_by_css_selector(".collections-tab").click()
         self.selenium.find_element_by_css_selector(".collections__item .select-icon").click()
         self.selenium.find_element_by_css_selector(".popup.popup-content .popup-content__actions button").click()
-        WebDriverWait(self.selenium, 10).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".collections"), "Geen collecties")
         )

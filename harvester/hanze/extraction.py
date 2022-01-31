@@ -99,7 +99,8 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
                 "email": None,
                 "external_id": person["person"]["uuid"],
                 "dai": None,
-                "orcid": None
+                "orcid": None,
+                "isni": None
             }
             for person in node["personAssociations"] if person
         ]

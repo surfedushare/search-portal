@@ -76,7 +76,6 @@ export default {
   mixins: [PageMixin],
   data() {
     return {
-      searchText: '',
       filters: {},
     }
   },

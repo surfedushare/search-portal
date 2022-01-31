@@ -57,7 +57,7 @@
     "json-schema": ">=0.4.0",
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
-    "node-forge": ">=0.10.0",
+    "node-forge": ">=1.0.0",
     "npm-check": "5.9.2",
     "nth-check": ">=2.0.1",
     "trim-newlines": ">=3.0.1",

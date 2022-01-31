@@ -11,6 +11,7 @@
       @toggle="onToggle"
       @update:selection="onSelection"
     />
+    <Search :search-input="searchText" @onSearch="onSearch" />
   </div>
 </template>
 

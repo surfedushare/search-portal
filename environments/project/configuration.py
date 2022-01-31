@@ -276,6 +276,9 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                         },
                         'orcid': {
                             'type': 'keyword'
+                        },
+                        'isni': {
+                            'type': 'keyword'
                         }
                     }
                 },

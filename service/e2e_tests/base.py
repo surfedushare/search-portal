@@ -57,6 +57,7 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 
         cls.selenium = WebDriver(options=chrome_options)
         cls.selenium.implicitly_wait(10)
+        cls.explicit_wait = 300
 
     @classmethod
     def tearDownClass(cls):

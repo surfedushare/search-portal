@@ -27,6 +27,8 @@ schedule:
   harvest:
     hour: 4  # uses UTC
     minute: 0
+  sync_sharekit_metadata:
+    minute: "*/5"
 
 aws:
   task_role_arn: "arn:aws:iam::870512711545:role/ecsHarvesterTaskExecutionRole"

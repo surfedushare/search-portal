@@ -19,7 +19,7 @@ class TestUsers(BaseLiveServerTestCase):
     @override_settings(DEBUG=True)
     def test_delete_user(self):
         self.selenium.get(f"{self.live_server_url}/mijn/privacy")
-        WebDriverWait(self.selenium, 10).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".info .title"), "Mijn privacy"
             ),
@@ -30,7 +30,7 @@ class TestUsers(BaseLiveServerTestCase):
         self.selenium.find_element_by_css_selector(".privacy input").is_selected()
         self.selenium.find_element_by_css_selector(".permission-container .switch-input").click()
 
-        WebDriverWait(self.selenium, 10).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".privacy__form__button"), "Verwijder account en log uit"
             )
@@ -38,13 +38,13 @@ class TestUsers(BaseLiveServerTestCase):
 
         self.selenium.find_element_by_css_selector(".privacy__form__button").click()
 
-        WebDriverWait(self.selenium, 10).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".popup__title"), "Account verwijderen"
             )
         )
         self.selenium.find_element_by_css_selector(".popup-content__actions button").click()
 
-        WebDriverWait(self.selenium, 10).until(
+        WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.url_to_be("https://engine.surfconext.nl/logout")
         )
