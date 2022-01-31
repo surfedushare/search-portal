@@ -10,9 +10,9 @@
       <div class="dropdown-container__selector"></div>
     </div>
 
-    <ul class="dropdown-container__dropdown" v-show="state">
+    <ul v-show="state" class="dropdown-container__dropdown">
       <li v-for="filter in filters" :key="filter.external_id" :value="filter.external_id">
-        <input type="checkbox" v-model="filter.selected" />
+        <input v-model="filter.selected" type="checkbox" />
         {{ filter.title_translations[$i18n.locale] }}
       </li>
     </ul>
@@ -44,11 +44,6 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      selection: this.defaultOption,
-    }
-  },
   computed: {
     selectedFilters(filter) {
       const selection = this.filters
@@ -59,9 +54,7 @@ export default {
         .map(filter => filter.title_translations[this.$i18n.locale].toLowerCase());
 
       this.$emit('update:selection', { field: this.field, selection })
-      this.selection = filterNames?.length > 0;
       return filterNames?.length == 0 ? filter.defaultOption : filterNames.join(", ");
-
     }
   },
   methods: {

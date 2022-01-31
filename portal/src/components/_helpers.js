@@ -1,6 +1,6 @@
+import { DateTime } from 'luxon'
 import i18n from '~/i18n'
 import { isEmpty } from 'lodash'
-import { DateTime } from 'luxon'
 
 export const generateSearchMaterialsQuery = function (
   data = { filters: {}, search_text: '' },
@@ -9,7 +9,6 @@ export const generateSearchMaterialsQuery = function (
   if (name.indexOf('___') < 0) {
     name += '___' + i18n.locale
   }
-
   return {
     name: name,
     query: {

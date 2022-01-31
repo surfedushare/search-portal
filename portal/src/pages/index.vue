@@ -45,6 +45,7 @@
           </div>
           <div class="preview__text_block">
             <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <div class="preview__text html-content" v-html="$t('html-How-does-it-work-text')" />
             <router-link
               :to="localePath('how-does-it-work')"
@@ -65,7 +66,6 @@ import Materials from '~/components/Materials'
 import { generateSearchMaterialsQuery } from '~/components/_helpers'
 import PageMixin from '~/pages/page-mixin'
 import SearchBar from '../components/Search/SearchBar.vue'
-const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
 export default {
   components: {
