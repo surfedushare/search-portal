@@ -10,7 +10,6 @@ redis==3.5.3
 flower==1.0.0
 
 # Harvester other
-scikit-learn==0.23.1
 mwparserfromhell==0.5.4
 django-log-formatter-json==0.2.0
 ujson==3.1.0  # implicit dependency of django-log-formatter-json
@@ -27,7 +26,7 @@ django-debug-toolbar==2.2
 jsonschema==3.2.0
 pytz==2020.1
 urlobject==2.4.3
-pandas==1.1.5
+pandas==1.4.0
 git+https://github.com/fako/django-json-field.git
 lxml==4.6.1
 datagrowth==0.17.5
