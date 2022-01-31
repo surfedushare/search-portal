@@ -13,7 +13,7 @@ but there is also an admin available for that part.
 Prerequisites
 -------------
 
-This project uses ``Python 3.8``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
+This project uses ``Python 3.8``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``aws-cli``.
 Make sure they are installed on your system before installing the project.
 
 
@@ -25,8 +25,17 @@ It can be convenient to run some code for inspection outside of containers.
 To stay close to the production environment it works well to run the project in containers.
 External services like the database run in containers, so it's always necessary to use Docker.
 
+Configure AWS cli
+----
 
-#### General setup
+Make sure you have aws configured:
+
+```bash
+aws configure --profile pol-dev
+```
+
+General setup
+-----
 
 To install the basic environment and tooling you'll need to first setup a local environment on a host machine with:
 
@@ -54,7 +63,7 @@ To finish the general setup you can run these commands to build all containers:
 ```bash
 invoke prepare-builds
 aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 017973353230.dkr.ecr.eu-central-1.amazonaws.com
-docker-compose -f docker-compose.yml up --build
+docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build | docker login --username AWS --password-stdin 017973353230.dkr.ecr.eu-central-1.amazonaws.com
 ```
 
 
