@@ -8,15 +8,10 @@
         <div class="theme__info">
           <img
             src="/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="
-              /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-              /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
-            "
+            srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
             class="theme__info_bg"
-          >
-          <h2 class="theme__info_ttl">
-            {{ getTitleTranslation() }}
-          </h2>
+          />
+          <h2 class="theme__info_ttl">{{ getTitleTranslation() }}</h2>
           <Search
             v-if="search"
             v-model="search.search_text"
@@ -28,28 +23,21 @@
       </div>
       <div class="center_block theme__row">
         <div class="theme__description">
-          <h2>{{ $t('About-the-theme') }} <br>{{ getTitleTranslation() }}</h2>
+          <h2>
+            {{ $t('About-the-theme') }}
+            <br />
+            {{ getTitleTranslation() }}
+          </h2>
           <p>
             <!-- eslint-disable vue/no-v-html -->
-            <span
-              class="html-content"
-              v-html="getDescriptionTranslation(theme, $i18n.locale)"
-            />
+            <span class="html-content" v-html="getDescriptionTranslation(theme, $i18n.locale)" />
             <!-- eslint-enable vue/no-v-html -->
           </p>
         </div>
-        <Disciplines
-          class="theme__disciplines"
-          :disciplines="themeDisciplines"
-          :theme="theme"
-        />
+        <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" :theme="theme" />
       </div>
       <div class="theme__collections theme__row center_block">
-        <Materials
-          :materials="materials"
-          :items-in-line="4"
-          class="theme__materials"
-        >
+        <Materials :materials="materials" :items-in-line="4" class="theme__materials">
           <template slot="header-info">
             <h2>{{ $t('Newest-open-learning-material-for-theme') }}</h2>
             <p class="materials__description">
@@ -64,15 +52,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { generateSearchMaterialsQuery } from '@/components/_helpers'
 import { isEmpty } from 'lodash'
-import PageMixin from '~/pages/page-mixin'
-import Search from '~/components/Search'
-import Materials from '~/components/Materials'
+import { mapGetters } from 'vuex'
 import Disciplines from '~/components/Disciplines'
 import Error from '~/components/error'
+import Materials from '~/components/Materials'
+import Search from '~/components/Search/Search'
 import { THEME_CATEGORY_FILTER_FIELD } from '~/constants'
-import { generateSearchMaterialsQuery } from '@/components/_helpers'
+import PageMixin from '~/pages/page-mixin'
 
 export default {
   name: 'Theme',
@@ -120,7 +108,7 @@ export default {
     return {
       title: this.themeCategory
         ? this.themeCategory.title_translations[this.$i18n.locale] ||
-          defaultTitle
+        defaultTitle
         : defaultTitle,
     }
   },
@@ -128,8 +116,8 @@ export default {
     onSearch() {
       const filterIds = this.themeCategory
         ? this.themeCategory.children.map((child) => {
-            return child.external_id
-          })
+          return child.external_id
+        })
         : []
       this.search = {
         search_text: this.search.search_text,
@@ -162,7 +150,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import url('../variables');
+@import url("../variables");
 .theme {
   padding: 96px 0 152px;
   @media @mobile {
@@ -201,7 +189,7 @@ export default {
       padding: 0 0 55px;
       position: relative;
       &:before {
-        content: '';
+        content: "";
         min-width: 100%;
         position: absolute;
         background-color: rgba(244, 244, 244, 0.9);
@@ -267,8 +255,8 @@ export default {
     }
 
     &:before {
-      content: '';
-      background: url('/images/combined-shape.svg') no-repeat 0 0;
+      content: "";
+      background: url("/images/combined-shape.svg") no-repeat 0 0;
       position: absolute;
       left: -23px;
       top: -40px;
@@ -276,9 +264,9 @@ export default {
       height: 109px;
     }
     &:after {
-      content: '';
+      content: "";
       position: absolute;
-      background: url('/images/message.svg') no-repeat 0 0;
+      background: url("/images/message.svg") no-repeat 0 0;
       left: 44px;
       top: -17px;
       height: 33px;

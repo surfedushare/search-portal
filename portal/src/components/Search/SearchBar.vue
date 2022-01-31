@@ -1,79 +1,24 @@
 <template>
-  <section class="container main">
-    <div>
-      <div class="main__info">
-        <div class="center_block center-header">
-          <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
-          <div class="main__info_block">
-            <div class="bg" />
-            <h2 class="main__info_title">
-              <span v-if="statistic">{{ numberOfMaterials }}</span>
-              {{ $t('open-learning-materials-from-higher-education') }}
-            </h2>
-            <ul class="main__info_items">
-              <li class="main__info_item">{{ $t('Free-to-use') }}</li>
-              <li class="main__info_item">{{ $t('Judged-by-quality') }}</li>
-              <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
-            </ul>
-          </div>
-          <SearchBar @onSearch="searchMaterials" />
-        </div>
-      </div>
-
-      <div class="main__materials">
-        <div class="center_block">
-          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
-          <Materials :materials="materials" />
-        </div>
-      </div>
-
-      <div class="center_block main__thems_and_communities">
-        <PopularList :communities="allCommunities()" class="main__communities">
-          <template slot="header-info">
-            <h2>{{ $t('Communities') }}</h2>
-            <div
-              class="popular-list__description"
-            >{{ $t('Open-learning-materials-from-professional-communit') }}</div>
-          </template>
-        </PopularList>
-      </div>
-
-      <div class="center_block">
-        <section class="preview">
-          <div class="preview__bg_block">
-            <img src="/images/pictures/hoe-werkt-het.png" class="preview__bg_block-img" />
-          </div>
-          <div class="preview__text_block">
-            <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
-            <!-- eslint-disable-next-line vue/no-v-html -->
-            <div class="preview__text html-content" v-html="$t('html-How-does-it-work-text')" />
-            <router-link
-              :to="localePath('how-does-it-work')"
-              class="button"
-            >{{ $t('How-does-it-work') }}</router-link>
-          </div>
-        </section>
-      </div>
-    </div>
+  <section class="main__info_search">
+    <SearchDomain class="main__info_search__domain" @update:filter="onUpdateFilter" />
+    <Search class="main__info_search__term" @onSearch="searchMaterials" />
   </section>
 </template>
 
 <script>
+import SearchDomain from '@/components/Search/SearchDomain'
+import { isNull } from 'lodash'
 import numeral from 'numeral'
 import { mapGetters } from 'vuex'
-import PopularList from '~/components/Communities/PopularList'
-import Materials from '~/components/Materials'
-import { generateSearchMaterialsQuery } from '~/components/_helpers'
-import PageMixin from '~/pages/page-mixin'
-import SearchBar from '../components/Search/SearchBar.vue'
+import Search from '~/components/Search/Search'
+
 
 export default {
+  name: 'SearchBar',
   components: {
-    PopularList,
-    Materials,
-    SearchBar
+    Search,
+    SearchDomain
   },
-  mixins: [PageMixin],
   data() {
     return {
       searchText: '',
@@ -91,22 +36,46 @@ export default {
       return numeral(this.statistic.value).format('0,0').replace(',', '.')
     },
   },
-  mounted() {
-    this.$store.dispatch('getMaterials', { page_size: 4 })
-    this.$store.dispatch('getCommunities', { params: { page_size: 3 } })
-    this.$store.dispatch('getStatistic')
-    this.$store.dispatch('getFilterCategories')
-  },
   methods: {
-    searchMaterials(search) {
-      this.$router.push(generateSearchMaterialsQuery(search))
+    getFilterOptions(external_id) {
+      if (this.filterCategories) {
+        const filterCategory = this.filterCategories.find(
+          (category) => category.external_id === external_id
+        )
+
+        if (filterCategory) {
+          return {
+            name: filterCategory.title_translations[this.$i18n.locale],
+            options: filterCategory.children,
+          }
+        }
+      }
+
+      return null
     },
+    searchMaterials(searchText) {
+      const searchRequest = {
+        search_text: searchText || '',
+        filters: this.filters,
+        page_size: 10,
+        page: 1,
+      }
+      this.$emit('onSearch', searchRequest)
+    },
+    onUpdateFilter(filter) {
+      if (isNull(filter.selection)) {
+        delete this.filters[filter.field]
+        return
+      }
+      this.filters[filter.field] = filter.selection
+    },
+
   },
 }
 </script>
 
 <style lang="less">
-@import "./../variables";
+@import "../../variables";
 .main {
   position: relative;
   z-index: 1;
@@ -207,6 +176,29 @@ export default {
             height: 30px;
           }
         }
+      }
+    }
+
+    &_search {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      z-index: 10;
+      background: white;
+      height: 92px;
+      border-radius: 20px;
+      box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+      margin-top: -18px;
+
+      &__term {
+        display: flex;
+      }
+
+      &__domain {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 1rem;
+        margin-top: 1rem;
       }
     }
   }
