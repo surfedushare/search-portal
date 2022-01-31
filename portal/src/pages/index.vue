@@ -45,6 +45,7 @@
           </div>
           <div class="preview__text_block">
             <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <div class="preview__text html-content" v-html="$t('html-How-does-it-work-text')" />
             <router-link
               :to="localePath('how-does-it-work')"

@@ -10,8 +10,8 @@
 
       <div class="search__tools center_block">
         <h2
-          class="search__tools_results"
           v-if="materials && !materials_loading"
+          class="search__tools_results"
         >{{ $t('Search-results') }} {{ `(${materials.records_total})` }}</h2>
         <label for="search_order_select">{{ $t('sort_by') }}: &nbsp;</label>
         <div class="search__chooser search__select">
@@ -165,6 +165,7 @@ export default {
           }, this.search)
         }
       }
+      console.log(this.search)
       this.$store.dispatch('searchMaterials', this.search)
       if (updateUrl) {
         this.$router.push(

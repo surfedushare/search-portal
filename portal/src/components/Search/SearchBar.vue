@@ -13,8 +13,6 @@ import { mapGetters } from 'vuex'
 import Search from '~/components/Search/Search'
 
 
-const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
-
 export default {
   name: 'SearchBar',
   components: {
@@ -57,7 +55,7 @@ export default {
     },
     searchMaterials(searchText) {
       const searchRequest = {
-        search_text: searchText,
+        search_text: searchText || '',
         filters: this.filters,
         page_size: 10,
         page: 1,
