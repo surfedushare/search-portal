@@ -1,6 +1,6 @@
-import { isNil } from 'lodash'
-import injector from 'vue-inject'
 import axios from '~/axios'
+import injector from 'vue-inject'
+import { isNil } from 'lodash'
 
 const $log = injector.get('$log')
 

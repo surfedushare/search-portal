@@ -1,18 +1,20 @@
-import './logging.js'
-import Vue from 'vue'
-import injector from 'vue-inject'
-import i18n, { loadLanguages } from './i18n'
 import '@fortawesome/fontawesome-free/css/all.css'
+import 'croppie/croppie.css'
+import './i18n/plugin.routing.js'
+import './logging.js'
+
+import i18n, { loadLanguages } from './i18n'
+
+import App from './App.vue'
+import InfiniteScroll from 'vue-infinite-scroll'
+import SocialSharing from 'vue-social-sharing'
+import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
+import VueCroppie from 'vue-croppie'
+import VueMasonry from 'vue-masonry-css'
+import injector from 'vue-inject'
 import router from '~/router'
 import store from '~/store/index'
-import App from './App.vue'
-import SocialSharing from 'vue-social-sharing'
-import VueClipboard from 'vue-clipboard2'
-import VueMasonry from 'vue-masonry-css'
-import InfiniteScroll from 'vue-infinite-scroll'
-import VueCroppie from 'vue-croppie'
-import './i18n/plugin.routing.js'
-import 'croppie/croppie.css'
 
 Vue.use(injector)
 Vue.use(SocialSharing)

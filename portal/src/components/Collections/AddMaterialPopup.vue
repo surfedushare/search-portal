@@ -3,18 +3,13 @@
     <Popup v-if="isShow" :close="close" :is-show="isShow" class="add-material">
       <div class="content-container center_block">
         <div class="flex-container">
-          <h2 class="popup__title">
-            {{ $t('Add-materials-to-collection') }}
-          </h2>
-          <button class="button secondary" @click.prevent="onSaveMaterials">
-            {{ $t('Add-selected-materials', { count: selection.length }) }}
-          </button>
+          <h2 class="popup__title">{{ $t('Add-materials-to-collection') }}</h2>
+          <button
+            class="button secondary"
+            @click.prevent="onSaveMaterials"
+          >{{ $t('Add-selected-materials', { count: selection.length }) }}</button>
         </div>
-        <Search
-          v-model="search"
-          class="add_materials__info_search"
-          @onSearch="onSearch"
-        />
+        <Search v-model="search" class="add_materials__info_search" @onSearch="onSearch" />
 
         <div
           v-infinite-scroll="loadMore"
@@ -40,9 +35,9 @@
 <script>
 import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
-import Popup from '~/components/Popup'
-import Search from '~/components/Search'
 import Materials from '~/components/Materials'
+import Popup from '~/components/Popup'
+import Search from '~/components/Search/Search'
 
 export default {
   name: 'AddMaterialPopup',
@@ -53,7 +48,7 @@ export default {
   },
   props: {
     isShow: { type: Boolean },
-    close: { type: Function, default: () => {} },
+    close: { type: Function, default: () => { } },
     collectionId: { type: String, default: '' },
     collectionCount: { type: Number, default: 0 },
   },
@@ -136,7 +131,7 @@ export default {
 }
 </style>
 <style lang="less" scoped>
-@import '../../variables';
+@import "../../variables";
 
 .content-container {
   overflow: scroll;

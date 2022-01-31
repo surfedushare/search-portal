@@ -94,6 +94,7 @@ ENV/
 
 # Visual Studio Code
 .vscode/
+frontend.code-workspace
 
 # Dependency directories
 node_modules/
@@ -111,3 +112,4 @@ logs/
 elastic/repositories
 environments/info.json
 harvester/harvester/bin/
+
