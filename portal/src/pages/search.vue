@@ -165,7 +165,6 @@ export default {
           }, this.search)
         }
       }
-      console.log(this.search)
       this.$store.dispatch('searchMaterials', this.search)
       if (updateUrl) {
         this.$router.push(
