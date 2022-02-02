@@ -210,10 +210,10 @@ export default {
           const { material } = this
           const { social_counters } = this.$refs
           // Somehow the $refs can be empty when this method runs, but it rarely happens.
-          // We'll log to Sentry and hope it sends some information to reproduce the problem.
+          // When it does (on the homepage for mysterious reasons) the page seems to get stuck in a loop
+          // We'll throw an error and see if Sentry sends some information to reproduce the problem.
           if (!social_counters) {
-            this.$log.warn('Problems with social counter')
-            return
+            throw new Error('Problems with social counter')
           }
           const linkedIn = social_counters.querySelector('#linkedin_counter')
 
