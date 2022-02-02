@@ -47,7 +47,16 @@ def add_extra_parameters_to_materials(metadata, materials):
         communities = Community.objects.filter(
             collections__materials__external_id=m["external_id"])
 
-        m["communities"] = [dict(id=c.id, name=c.name) for c in communities.distinct().all()]
+        m["communities"] = [
+            {
+                "id": community.id,
+                "title_translations": {
+                    details.language_code.lower(): details.title
+                    for details in community.community_details.all()
+                }
+            }
+            for community in communities.prefetch_related("community_details").distinct().all()
+        ]
 
         discipline_translations = metadata.translations["disciplines"]
         m["disciplines"] = [
