@@ -48,7 +48,8 @@ class Command(PipelineCommand):
             set_specification = harvest.source.spec
             upserts = []
             deletes = []
-            for seed in get_harvest_seeds(set_specification, harvest.latest_update_at, include_no_url=True):
+            for seed in get_harvest_seeds(harvest.source.repository, harvest.source.spec, harvest.latest_update_at,
+                                          include_no_url=True):
                 if seed.get("state", "active") == "active":
                     upserts.append(seed)
                 else:
