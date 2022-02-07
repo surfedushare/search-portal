@@ -10,7 +10,7 @@
       <div class="dropdown-container__selector"></div>
     </div>
 
-    <ul v-show="state" class="dropdown-container__dropdown">
+    <ul v-show="visible" class="dropdown-container__dropdown">
       <li v-for="filter in filters" :key="filter.external_id" :value="filter.external_id">
         <input v-model="filter.selected" type="checkbox" />
         {{ filter.title_translations[$i18n.locale] }}
@@ -39,7 +39,7 @@ export default {
       type: Array,
       default: Array,
     },
-    state: {
+    visible: {
       type: Boolean,
       default: false
     }

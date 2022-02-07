@@ -6,7 +6,7 @@
       :label="dropdown.label"
       :field="dropdown.field"
       :default-option="dropdown.defaultOption"
-      :state="dropdown.state"
+      :visible="dropdown.visible"
       :filters="dropdownData ? dropdownData[dropdown.field].children : []"
       @toggle="onToggle"
       @update:selection="onSelection"
@@ -32,25 +32,25 @@ export default {
           field: 'technical_type',
           label: this.$i18n.t('searching-for-a'),
           defaultOption: this.$i18n.t('material'),
-          state: false
+          visible: false
         },
         {
           field: THEME_CATEGORY_FILTER_FIELD,
           label: this.$i18n.t('about'),
           defaultOption: this.$i18n.t('all-themes'),
-          state: false
+          visible: false
         },
         {
           field: 'language.keyword',
           label: this.$i18n.t('in'),
           defaultOption: this.$i18n.t('dutch-or-english'),
-          state: false
+          visible: false
         },
         {
           field: 'lom_educational_levels',
           label: this.$i18n.t('for'),
           defaultOption: this.$i18n.t('all-levels'),
-          state: false
+          visible: false
         },
       ],
       dropdownData: null,
@@ -80,12 +80,12 @@ export default {
       this.$emit('update:filter', selection)
     },
     onToggle(dropdown) {
-      this.dropdowns.map(dd => dd.field !== dropdown.field ? dd.state = false : dd.state = !dd.state);
+      this.dropdowns.map(dd => dd.field !== dropdown.field ? dd.visible = false : dd.visible = !dd.visible);
     },
     onFocusOut(event) {
       const element = event.target;
       if (!element.contains(event.relatedTarget) && event.relatedTarget?.className !== 'main__info_search__domain' && event.relatedTarget?.type !== 'checkbox') {
-        this.dropdowns.map(dd => dd.state = false);
+        this.dropdowns.map(dd => dd.visible = false);
       }
     }
   },
