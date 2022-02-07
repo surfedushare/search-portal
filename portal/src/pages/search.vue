@@ -74,14 +74,14 @@
 import { mapGetters } from 'vuex'
 import FilterCategories from '~/components/FilterCategories'
 import Materials from '~/components/Materials'
+import Search from '~/components/Search'
+import SearchBar from '~/components/Search/SearchBar.vue'
 import Spinner from '~/components/Spinner'
 import {
   addFilter, generateSearchMaterialsQuery,
   parseSearchMaterialsQuery
 } from '~/components/_helpers'
 import PageMixin from '~/pages/page-mixin'
-import Search from '../components/Search'
-import SearchBar from '../components/Search/SearchBar.vue'
 
 export default {
   components: {

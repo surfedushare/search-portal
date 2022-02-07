@@ -72,9 +72,9 @@ import { mapGetters } from 'vuex'
 import PopularList from '~/components/Communities/PopularList'
 import Materials from '~/components/Materials'
 import Search from '~/components/Search'
+import SearchBar from '~/components/Search/SearchBar.vue'
+import { generateSearchMaterialsQuery } from '~/components/_helpers'
 import PageMixin from '~/pages/page-mixin'
-import SearchBar from '../components/Search/SearchBar.vue'
-import { generateSearchMaterialsQuery } from '../components/_helpers'
 
 const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
