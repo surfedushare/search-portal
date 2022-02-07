@@ -1,15 +1,18 @@
 import logging
 
+from django.db.transaction import atomic
+
 from core.models import Harvest
 
 
 logger = logging.getLogger("harvester")
 
 
+@atomic()
 def prepare_harvest(dataset, reset=False):
 
     excluded_specs = []
-    for harvest in Harvest.objects.filter(dataset=dataset):
+    for harvest in Harvest.objects.filter(dataset=dataset).select_for_update():
         if reset or harvest.should_purge():
             logger.debug(f"Resetting harvest stage for '{harvest.source.name}'")
             harvest.reset()
