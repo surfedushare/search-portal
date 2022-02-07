@@ -138,7 +138,6 @@ export default {
           filters: this.filters,
           page_size: 10,
           page: 1,
-          demo: this.$root.isDemoEnvironment()
         })
       )
     },
