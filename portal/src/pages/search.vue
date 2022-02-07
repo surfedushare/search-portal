@@ -180,6 +180,7 @@ export default {
       }
     },
     onSearch(searchText) {
+
       const changed = searchText !== this.search.search_text
       this.search = {
         search_text: searchText || '',

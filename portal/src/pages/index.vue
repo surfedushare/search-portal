@@ -131,13 +131,14 @@ export default {
     setEducationalLevelFilter(value) {
       this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value]
     },
-    searchMaterials(searchText) {
+    searchMaterials(search) {
       this.$router.push(
         generateSearchMaterialsQuery({
-          search_text: searchText,
+          search_text: this.$root.isDemoEnvironment() ? search.search_text : search,
           filters: this.filters,
           page_size: 10,
           page: 1,
+          demo: this.$root.isDemoEnvironment()
         })
       )
     },
