@@ -3,7 +3,6 @@ from .ims import CommonCartridge
 from .resources.harvest import HarvestHttpResource
 from .resources.basic import HttpTikaResource, ExtructResource
 from .resources.youtube_dl import YouTubeDLResource
-from .resources.chrome_screenshot import ChromeScreenshotResource
 from .resources.youtube_thumbnail import YoutubeThumbnailResource
 from .resources.pdf_thumbnail import PdfThumbnailResource
 from .resources.matomo import MatomoVisitsResource

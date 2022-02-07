@@ -83,9 +83,7 @@ export default {
         return filter(state.community_collections.results, (collection) => {
           return (
             collection.publish_status === PublishStatus.PUBLISHED ||
-            (user &&
-              find(user.collections, { id: collection.id }) &&
-              collection.publish_status !== PublishStatus.DRAFT)
+            (user && find(user.collections, { id: collection.id }))
           )
         })
       }
