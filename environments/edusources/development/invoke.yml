@@ -4,7 +4,7 @@
 env: "development"
 
 django:
-  debug: true
+  debug: false
   protocol: "https"
   domain: "dev.surfedushare.nl"
   logging:
