@@ -1,60 +1,56 @@
 <template>
-  <div>
+  <div tabindex="-1" @focusout="onFocusOut">
     <FilterDropdown
       v-for="dropdown in dropdowns"
       :key="dropdown.field"
       :label="dropdown.label"
       :field="dropdown.field"
       :default-option="dropdown.defaultOption"
+      :visible="dropdown.visible"
       :filters="dropdownData ? dropdownData[dropdown.field].children : []"
+      @toggle="onToggle"
       @update:selection="onSelection"
     />
-    <Search :search-input="searchText" @onSearch="onSearch" />
   </div>
 </template>
 
 <script>
-import { keyBy } from 'lodash'
-import Search from './index'
-import { mapGetters } from 'vuex'
 import FilterDropdown from '@/components/FilterCategories/FilterDropdown'
 import { THEME_CATEGORY_FILTER_FIELD } from '@/constants'
+import { keyBy } from 'lodash'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: 'SearchDomain',
+  name: 'PreSearchFilters',
   components: {
-    Search,
     FilterDropdown,
-  },
-  props: {
-    value: {
-      type: String,
-      default: '',
-    },
   },
   data() {
     return {
-      searchText: this.value,
       dropdowns: [
         {
           field: 'technical_type',
           label: this.$i18n.t('searching-for-a'),
           defaultOption: this.$i18n.t('material'),
+          visible: false
         },
         {
           field: THEME_CATEGORY_FILTER_FIELD,
           label: this.$i18n.t('about'),
           defaultOption: this.$i18n.t('all-themes'),
+          visible: false
         },
         {
           field: 'language.keyword',
           label: this.$i18n.t('in'),
           defaultOption: this.$i18n.t('dutch-or-english'),
+          visible: false
         },
         {
           field: 'lom_educational_levels',
           label: this.$i18n.t('for'),
           defaultOption: this.$i18n.t('all-levels'),
+          visible: false
         },
       ],
       dropdownData: null,
@@ -65,11 +61,6 @@ export default {
       filterCategories: 'filter_categories',
       getCategoryById: 'getCategoryById',
     }),
-  },
-  watch: {
-    value(value) {
-      this.searchText = value
-    },
   },
   mounted() {
     this.$store.dispatch('getFilterCategories').then(() => {
@@ -85,13 +76,19 @@ export default {
     })
   },
   methods: {
-    onSearch() {
-      this.$emit('input', this.searchText)
-      this.$emit('onSearch')
-    },
     onSelection(selection) {
       this.$emit('update:filter', selection)
     },
+    onToggle(dropdown) {
+      this.dropdowns.map(dd => dd.field !== dropdown.field ? dd.visible = false : dd.visible = !dd.visible);
+    },
+    onFocusOut(event) {
+      const element = event.target;
+      if (!element.contains(event.relatedTarget) && event.relatedTarget?.className !== 'main__info_search__domain' && event.relatedTarget?.type !== 'checkbox') {
+        this.dropdowns.map(dd => dd.visible = false);
+      }
+    }
   },
 }
 </script>
+
