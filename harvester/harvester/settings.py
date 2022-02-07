@@ -421,10 +421,7 @@ CELERY_RESULT_BACKEND = f'redis://{environment.django.redis_host}/0'
 CELERY_BEAT_SCHEDULE = {
     'harvest': {
         'task': 'harvest',
-        'schedule': crontab(
-            hour=environment.schedule.harvest.hour,
-            minute=environment.schedule.harvest.minute,
-        )
+        'schedule': crontab(**environment.schedule.harvest)
     },
     'clean_data': {
         'task': 'clean_data',
@@ -435,7 +432,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'sync_sharekit_metadata': {
         'task': 'sync_sharekit_metadata',
-        'schedule': 30,
+        'schedule': crontab(**environment.schedule.sync_sharekit_metadata)
     },
     'sync_indices': {
         'task': 'sync_indices',

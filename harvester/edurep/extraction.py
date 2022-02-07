@@ -203,6 +203,7 @@ class EdurepDataExtraction(object):
                     "external_id": None,
                     "dai": None,
                     "orcid": None,
+                    "isni": None,
                 })
         return authors
 

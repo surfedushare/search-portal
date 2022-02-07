@@ -121,23 +121,21 @@ class MaterialSearchAPIView(CreateAPIView):
     By default ordering is ascending.
     If you specify the minus sign (for instance: "-publisher_date") the ordering will be descending.
 
-    **filters**: Filters consist of objects that specify a external_id and an items property.
-    The external_id should be the external_id of a root filter category (for instance: "technical_type").
+    **filters**: Filters consist of an array of objects that specify an external_id and an items property.
+    The external_id should be the value of a "field" filter category (for instance: "technical_type").
     See the filter categories endpoint described below for more details on filter categories.
     Next to the external_id you should specify an array under the items property.
-    Elements in this array should only consist of external_id values.
-    These external_ids are also filter category external_ids (for instance: "video"),
-    but the referenced filter categories should be a descendant of the root filter category specified earlier
-    ("technical_type" in our example).
-    Filters under the same root filter category will function as an OR filter.
-    While multiple filter category items across root filter categories function as AND filters.
+    Elements in this array should only consist of values from category filter objects (for instance: "video").
+
+    Filters under the same "field" filter category will function as an OR filter.
+    While multiple filter category items across "field" filter categories function as AND filters.
 
     ## Response body
 
     **results**: An array containing the search results.
 
     **filter_categories**: An array with all filter categories.
-    The count values of the filter categories will indicate how many results match the filter category.
+    The frequency of the filter categories will indicate how many results match the filter category.
 
     **records_total**: Count of all available results
 

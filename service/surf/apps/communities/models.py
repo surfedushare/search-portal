@@ -6,7 +6,6 @@ import re
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, URLValidator, validate_image_file_extension
-from django.core.files.images import get_image_dimensions
 from django.db import models as django_models
 from django.utils import timezone
 from django_enumfield import enum
@@ -75,16 +74,11 @@ class Community(UUIDModel):
 
 
 def validate_logo_size(image):
-    width, height = get_image_dimensions(image)
-    # Also support older images of 230x136
-    if not ((width == 230 and height == 136) or (width == 120 and height == 52)):
-        raise ValidationError("The proportion of the logo image should be 120x52")
+    return
 
 
 def validate_featured_size(image):
-    width, height = get_image_dimensions(image)
-    if width != 388 or height != 227:
-        raise ValidationError("The proportion of the featured image should be 388x227")
+    return
 
 
 class CommunityDetail(django_models.Model):
@@ -95,10 +89,10 @@ class CommunityDetail(django_models.Model):
     website_url = django_models.URLField(blank=True, null=True, validators=[URLValidator])
 
     logo = django_models.ImageField(upload_to='communities', blank=True, null=True,
-                                    validators=[validate_image_file_extension, validate_logo_size])
+                                    validators=[validate_image_file_extension])
 
     featured_image = django_models.ImageField(upload_to='communities', blank=True, null=True,
-                                              validators=[validate_image_file_extension, validate_featured_size])
+                                              validators=[validate_image_file_extension])
 
     class Meta:
         # only allow unique language codes for communities

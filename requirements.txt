@@ -3,13 +3,13 @@ gitpython==3.1.7
 flake8==3.8.3
 
 # Common
-django==3.2.10
+django==3.2.11
 djangorestframework==3.11.2
 django-cors-headers==3.4.0
 whitenoise==5.1.0
 psycopg2-binary==2.8.6
 requests==2.27.1
-Pillow==8.3.2
+Pillow==9.0.0
 elasticsearch==7.8.1
 python-dateutil==2.8.1
 uritemplate==3.0.1
@@ -23,7 +23,7 @@ requests-aws4auth==1.0
 django-storages==1.9.1
 
 # Tools
-ipython==7.16.1
+ipython==7.16.3
 jedi==0.17.2
 tqdm==4.50.2
 invoke==1.4.1
