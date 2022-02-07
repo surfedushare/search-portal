@@ -21,7 +21,7 @@ import { keyBy } from 'lodash'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'PreFilterSearch',
+  name: 'PreSearchFilters',
   components: {
     FilterDropdown,
   },
