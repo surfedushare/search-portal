@@ -3,32 +3,10 @@
     <div>
       <div class="search__info">
         <div class="center_block center-header">
-          <div class="search__info_top">
-            <div v-if="$route.params.filterId">
-              <h4>{{ $t('Search-in') }}:</h4>
-              <p>
-                <router-link :to="localePath('materials-search')">
-                  {{
-                    $t('Everything')
-                  }}
-                </router-link>
-                > {{ defaultFilterTitle }}
-              </p>
-            </div>
-            <h2 v-if="materials && !materials_loading">
-              {{ $t('Search-results') }} {{ `(${materials.records_total})` }}
-            </h2>
-            <img
-              src="/images/pictures/rawpixel-760027-unsplash.jpg"
-              srcset="
-                /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-                /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
-              "
-              class="search__info_bg"
-            >
-          </div>
+          <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
+          <SearchBar v-if="$root.isDemoEnvironment()" @onSearch="initialSearch" />
           <Search
-            v-if="search"
+            v-if="!$root.isDemoEnvironment()"
             :search-input="search.search_text"
             class="search__info_search"
             @onSearch="onSearch"
@@ -37,20 +15,18 @@
       </div>
 
       <div class="search__tools center_block">
+        <h2
+          v-if="materials && !materials_loading"
+          class="search__tools_results"
+        >{{ $t('Search-results') }} {{ `(${materials.records_total})` }}</h2>
         <label for="search_order_select">{{ $t('sort_by') }}: &nbsp;</label>
         <div class="search__chooser search__select">
-          <select
-            id="search_order_select"
-            v-model="sort_order"
-            @change="changeOrdering"
-          >
+          <select id="search_order_select" v-model="sort_order" @change="changeOrdering">
             <option
               v-for="option in sort_order_options"
               :key="option.value"
               :value="option.value"
-            >
-              &nbsp;&nbsp;{{ $t(option.value) }}
-            </option>
+            >&nbsp;&nbsp;{{ $t(option.value) }}</option>
           </select>
         </div>
         <button
@@ -60,9 +36,7 @@
           }"
           class="search__tools_type_button"
           @click.prevent="changeViewType"
-        >
-          {{ materials_in_line === 1 ? $t('Card-view') : $t('List-view') }}
-        </button>
+        >{{ materials_in_line === 1 ? $t('Card-view') : $t('List-view') }}</button>
       </div>
 
       <div
@@ -98,23 +72,23 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import PageMixin from '~/pages/page-mixin'
-import Search from '~/components/Search'
 import FilterCategories from '~/components/FilterCategories'
 import Materials from '~/components/Materials'
 import Spinner from '~/components/Spinner'
 import {
-  generateSearchMaterialsQuery,
-  parseSearchMaterialsQuery,
-  addFilter,
+  addFilter, generateSearchMaterialsQuery,
+  parseSearchMaterialsQuery
 } from '~/components/_helpers'
+import PageMixin from '~/pages/page-mixin'
+import Search from '../components/Search'
+import SearchBar from '../components/Search/SearchBar.vue'
 
 export default {
   components: {
-    Search,
     FilterCategories,
     Materials,
     Spinner,
+    SearchBar, Search
   },
   mixins: [PageMixin],
   data() {
@@ -176,7 +150,12 @@ export default {
     this.$store.dispatch('searchMaterials', this.search).finally(next)
   },
   methods: {
+    initialSearch(search) {
+      this.search = search;
+      this.executeSearch(true)
+    },
     executeSearch(updateUrl) {
+
       if (this.$route.params.filterId) {
         const category = this.$store.getters.getCategoryById(
           this.$route.params.filterId,
@@ -222,20 +201,14 @@ export default {
           })
         }
       }
-    },
-    /**
-     * Change 1 item in line to 3 and back.
-     */
+    },      /*         Change 1 item in line to 3 and back       */
     changeViewType() {
       if (this.materials_in_line === 1) {
         this.$store.dispatch('searchMaterialsInLine', 3)
       } else {
         this.$store.dispatch('searchMaterialsInLine', 1)
       }
-    },
-    /**
-     * Event the ordering items
-     */
+    },     /*         Event the ordering item       */
     changeOrdering() {
       const { sort_order } = this
       if (sort_order === 'date_descending') {
@@ -259,7 +232,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import './../variables';
+@import "./../variables";
 .search {
   position: relative;
 
@@ -370,6 +343,10 @@ export default {
       justify-content: flex-start;
     }
 
+    &_results {
+      width: 485px;
+    }
+
     &_dates {
       width: 251px;
     }
@@ -387,12 +364,12 @@ export default {
       cursor: pointer;
 
       &--cards {
-        background: transparent url('/images/card-view-copy.svg') 0 50%
+        background: transparent url("/images/card-view-copy.svg") 0 50%
           no-repeat;
       }
 
       &--list {
-        background: transparent url('/images/list-view-copy.svg') 0 50%
+        background: transparent url("/images/list-view-copy.svg") 0 50%
           no-repeat;
       }
 
@@ -472,14 +449,14 @@ export default {
     }
 
     &:before {
-      content: '';
+      content: "";
       position: absolute;
       right: 8px;
       top: 50%;
       transform: translate(0, -100%) rotate(90deg);
       width: 14px;
       height: 14px;
-      background: url('/images/arrow-text-grey.svg') 50% 50% / contain no-repeat;
+      background: url("/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
       pointer-events: none;
     }
 

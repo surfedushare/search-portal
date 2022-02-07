@@ -16,11 +16,10 @@
               <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
             </ul>
           </div>
-          <SearchBar v-if="!$root.isDemoEnvironment()"></SearchBar>
+          <SearchBar v-if="$root.isDemoEnvironment()" @onSearch="searchMaterials" />
           <Search
             v-if="!$root.isDemoEnvironment()"
             :select-options="educationalLevelOptions"
-            class="main__info_search"
             @onSearch="searchMaterials"
             @selectDropdownOption="setEducationalLevelFilter"
           />
@@ -67,7 +66,6 @@
 </template>
 
 <script>
-import DomainSearch from '@/components/Search/DomainSearch'
 import { isNull } from 'lodash'
 import numeral from 'numeral'
 import { mapGetters } from 'vuex'
@@ -82,7 +80,6 @@ const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
 export default {
   components: {
-    DomainSearch,
     Search,
     PopularList,
     Materials,
@@ -258,14 +255,6 @@ export default {
           }
         }
       }
-    }
-
-    &_search {
-      margin: auto;
-    }
-    .domain_search {
-      display: flex;
-      justify-content: space-between;
     }
   }
 
