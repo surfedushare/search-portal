@@ -57,7 +57,7 @@ export default {
         search_text: searchText || '',
         filters: this.filters,
         page_size: 10,
-        page: 1,
+        page: 1
       }
       this.$emit('onSearch', searchRequest)
     },

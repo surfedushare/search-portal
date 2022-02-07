@@ -1,8 +1,7 @@
-import { mapGetters } from 'vuex'
 import { VueAutosuggest } from 'vue-autosuggest'
-import { debounce } from 'lodash'
-
 import axios from '~/axios'
+import { debounce } from 'lodash'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'search',
