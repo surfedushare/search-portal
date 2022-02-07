@@ -155,7 +155,6 @@ export default {
       this.executeSearch(true)
     },
     executeSearch(updateUrl) {
-
       if (this.$route.params.filterId) {
         const category = this.$store.getters.getCategoryById(
           this.$route.params.filterId,
@@ -180,13 +179,13 @@ export default {
       }
     },
     onSearch(searchText) {
-
       const changed = searchText !== this.search.search_text
       this.search = {
         search_text: searchText || '',
         filters: {},
         page_size: 10,
         page: 1,
+        demo: this.$root.isDemoEnvironment()
       }
       this.executeSearch(changed)
     },
