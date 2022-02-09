@@ -42,7 +42,7 @@ class MetadataTreeView(generics.ListAPIView):
 
     **children**: All nodes that have this node as a parent.
 
-    **frequency**: How many results match this node last time it was checked. Formerly the "count"
+    **frequency**: How many results match this node in the entire dataset.
 
     """
     queryset = MetadataField.objects.select_related("translation")
