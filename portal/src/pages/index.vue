@@ -3,49 +3,32 @@
     <div>
       <div class="main__info">
         <div class="center_block center-header">
-          <img
-            class="main__info_bg"
-            src="/images/pictures/header-image.jpg"
-            alt="header-image"
-          >
+          <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
-              <span v-if="statistic">{{ numberOfMaterials }} </span>{{ $t('open-learning-materials-from-higher-education') }}
+              <span v-if="statistic">{{ numberOfMaterials }}</span>
+              {{ $t('open-learning-materials-from-higher-education') }}
             </h2>
             <ul class="main__info_items">
-              <li class="main__info_item">
-                {{ $t('Free-to-use') }}
-              </li>
-              <li class="main__info_item">
-                {{ $t('Judged-by-quality') }}
-              </li>
-              <li class="main__info_item">
-                {{ $t('Inspiration-in-your-field') }}
-              </li>
+              <li class="main__info_item">{{ $t('Free-to-use') }}</li>
+              <li class="main__info_item">{{ $t('Judged-by-quality') }}</li>
+              <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
             </ul>
           </div>
+          <SearchBar v-if="$root.isDemoEnvironment()" @onSearch="searchMaterials" />
           <Search
             v-if="!$root.isDemoEnvironment()"
             :select-options="educationalLevelOptions"
-            class="main__info_search"
             @onSearch="searchMaterials"
             @selectDropdownOption="setEducationalLevelFilter"
-          />
-          <DomainSearch
-            v-else
-            class="main__info_search domain_search"
-            @onSearch="searchMaterials"
-            @update:filter="onUpdateFilter"
           />
         </div>
       </div>
 
       <div class="main__materials">
         <div class="center_block">
-          <h2 class="main__materials_title">
-            {{ $t('Newest-open-learning-material') }}
-          </h2>
+          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
           <Materials :materials="materials" />
         </div>
       </div>
@@ -54,9 +37,9 @@
         <PopularList :communities="allCommunities()" class="main__communities">
           <template slot="header-info">
             <h2>{{ $t('Communities') }}</h2>
-            <div class="popular-list__description">
-              {{ $t('Open-learning-materials-from-professional-communit') }}
-            </div>
+            <div
+              class="popular-list__description"
+            >{{ $t('Open-learning-materials-from-professional-communit') }}</div>
           </template>
         </PopularList>
       </div>
@@ -64,24 +47,17 @@
       <div class="center_block">
         <section class="preview">
           <div class="preview__bg_block">
-            <img
-              src="/images/pictures/hoe-werkt-het.png"
-              class="preview__bg_block-img"
-            >
+            <img src="/images/pictures/hoe-werkt-het.png" class="preview__bg_block-img" />
           </div>
           <div class="preview__text_block">
-            <h2 class="preview__title">
-              {{ $t('How-does-it-work-title') }}
-            </h2>
+            <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
             <!-- eslint-disable vue/no-v-html -->
-            <div
-              class="preview__text html-content"
-              v-html="$t('html-How-does-it-work-text')"
-            />
+            <div class="preview__text html-content" v-html="$t('html-How-does-it-work-text')" />
             <!-- eslint-enable vue/no-v-html -->
-            <router-link :to="localePath('how-does-it-work')" class="button">
-              {{ $t('How-does-it-work') }}
-            </router-link>
+            <router-link
+              :to="localePath('how-does-it-work')"
+              class="button"
+            >{{ $t('How-does-it-work') }}</router-link>
           </div>
         </section>
       </div>
@@ -91,23 +67,23 @@
 
 <script>
 import { isNull } from 'lodash'
-import { mapGetters } from 'vuex'
-import PageMixin from '~/pages/page-mixin'
-import Search from '~/components/Search'
-import DomainSearch from '@/components/Search/DomainSearch'
 import numeral from 'numeral'
-import Materials from '~/components/Materials'
+import { mapGetters } from 'vuex'
 import PopularList from '~/components/Communities/PopularList'
-import { generateSearchMaterialsQuery } from '../components/_helpers'
+import Materials from '~/components/Materials'
+import Search from '~/components/Search'
+import SearchBar from '~/components/Search/SearchBar.vue'
+import { generateSearchMaterialsQuery } from '~/components/_helpers'
+import PageMixin from '~/pages/page-mixin'
 
 const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
 export default {
   components: {
-    DomainSearch,
     Search,
     PopularList,
     Materials,
+    SearchBar
   },
   mixins: [PageMixin],
   data() {
@@ -155,10 +131,10 @@ export default {
     setEducationalLevelFilter(value) {
       this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value]
     },
-    searchMaterials(searchText) {
+    searchMaterials(search) {
       this.$router.push(
         generateSearchMaterialsQuery({
-          search_text: searchText,
+          search_text: this.$root.isDemoEnvironment() ? search.search_text : search,
           filters: this.filters,
           page_size: 10,
           page: 1,
@@ -177,7 +153,7 @@ export default {
 </script>
 
 <style lang="less">
-@import './../variables';
+@import "./../variables";
 .main {
   position: relative;
   z-index: 1;
@@ -221,7 +197,7 @@ export default {
       margin: 0;
       list-style: none;
       padding: 5px 0 8px 40px;
-      background: url('/images/check-white.svg') 0 0 no-repeat;
+      background: url("/images/check-white.svg") 0 0 no-repeat;
 
       @media @mobile {
         background-size: 20px 20px;
@@ -264,8 +240,8 @@ export default {
           width: auto;
         }
         &:before {
-          content: '';
-          background: url('/images/bubble-background-green.svg') 0 0 no-repeat;
+          content: "";
+          background: url("/images/bubble-background-green.svg") 0 0 no-repeat;
           position: absolute;
           top: -36px;
           left: -46px;
@@ -279,14 +255,6 @@ export default {
           }
         }
       }
-    }
-
-    &_search {
-      margin: auto;
-    }
-    .domain_search {
-      display: flex;
-      justify-content: space-between;
     }
   }
 
@@ -352,18 +320,18 @@ export default {
       }
 
       &:before {
-        content: '';
+        content: "";
         position: absolute;
-        background: url('/images/combined-shape.svg') no-repeat 0 0;
+        background: url("/images/combined-shape.svg") no-repeat 0 0;
         right: -100px;
         top: 0;
         height: 109px;
         width: 119px;
       }
       &:after {
-        content: '';
+        content: "";
         position: absolute;
-        background: url('/images/message.svg') no-repeat 0 0;
+        background: url("/images/message.svg") no-repeat 0 0;
         right: -82px;
         top: 22px;
         height: 33px;

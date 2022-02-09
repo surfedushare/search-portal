@@ -21,7 +21,10 @@ class TestExtensionAPI(TestCase):
             "title": "title",
             "description": "description",
             "authors": [
-                {"name": "Monty Python"}
+                {
+                    "name": "Monty Python",
+                    "email": None
+                }
             ],
             "parties": [
                 {"name": "I love the 90's"}

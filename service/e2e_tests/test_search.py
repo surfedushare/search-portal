@@ -1,14 +1,14 @@
 from unittest.mock import patch
 
 from django.conf import settings
-from selenium.webdriver.support.ui import WebDriverWait, Select
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from e2e_tests.base import BaseLiveServerTestCase
-from e2e_tests.helpers import get_metadata_tree_mock
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
+from e2e_tests.helpers import get_metadata_tree_mock
 
 
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
@@ -25,8 +25,8 @@ class TestSearch(BaseLiveServerTestCase):
     def test_search(self):
         self.selenium.get(self.live_server_url)
 
-        search = self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]")
-        button = self.selenium.find_element_by_css_selector(".search.main__info_search button")
+        search = self.selenium.find_element_by_css_selector(".search input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search button")
 
         search.send_keys("Wiskunde")
         button.click()
@@ -39,8 +39,8 @@ class TestSearch(BaseLiveServerTestCase):
     def test_search_by_author_from_searchbox(self):
         self.selenium.get(self.live_server_url)
 
-        search = self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]")
-        button = self.selenium.find_element_by_css_selector(".search.main__info_search button")
+        search = self.selenium.find_element_by_css_selector(".search input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search button")
 
         search.send_keys("Theo")
         button.click()
@@ -82,8 +82,8 @@ class TestSearch(BaseLiveServerTestCase):
 
         self.selenium.get(self.live_server_url)
 
-        search = self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]")
-        button = self.selenium.find_element_by_css_selector(".search.main__info_search button")
+        search = self.selenium.find_element_by_css_selector(".search input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search button")
 
         search.send_keys("didaktiek")
         button.click()
@@ -112,8 +112,8 @@ class TestSearch(BaseLiveServerTestCase):
 
         self.selenium.get(self.live_server_url)
 
-        search = self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]")
-        button = self.selenium.find_element_by_css_selector(".search.main__info_search button")
+        search = self.selenium.find_element_by_css_selector(".search input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search button")
 
         search.send_keys("kauwgomballenautomaat")
         button.click()
@@ -155,8 +155,8 @@ class TestSearchFiltering(BaseLiveServerTestCase):
     def test_filter_search(self):
         action = ActionChains(self.selenium)
         self.selenium.get(self.live_server_url)
-        self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
-        self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
+        self.selenium.find_element_by_css_selector(".search input[type=search]").send_keys("Wiskunde")
+        self.selenium.find_element_by_css_selector(".search button").click()
 
         # Open filter categories
         educational_levels = self.selenium.find_element_by_xpath("//li[.//h4[text()[contains(., 'Onderwijsniveau')]]]")
@@ -246,11 +246,11 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         Loading the homepage, selecting WO as educational level and making a search
         """
         self.selenium.get(self.live_server_url)
-        select_element = self.selenium.find_element_by_css_selector(".search.main__info_search select")
+        select_element = self.selenium.find_element_by_css_selector(".search select")
         select = Select(select_element)
         select.select_by_value("WO")
-        self.selenium.find_element_by_css_selector(".search.main__info_search input[type=search]").send_keys("Wiskunde")
-        self.selenium.find_element_by_css_selector(".search.main__info_search button").click()
+        self.selenium.find_element_by_css_selector(".search input[type=search]").send_keys("Wiskunde")
+        self.selenium.find_element_by_css_selector(".search button").click()
         # Checking search results and educational level filters should be visible and selected
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
         WebDriverWait(self.selenium, self.explicit_wait).until(
