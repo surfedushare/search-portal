@@ -128,6 +128,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'harvester.wsgi.application'
 
+SILENCED_SYSTEM_CHECKS = [
+    'rest_framework.W001'
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -209,7 +213,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'PAGE_SIZE': 100
 }
 
 
