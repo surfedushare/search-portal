@@ -26,7 +26,7 @@ schedule:
     hour: 6  # uses UTC
     minute: 0
   sync_sharekit_metadata:
-    minute: "*/5"
+    minute: "7-59/5"
 
 aws:
   task_role_arn: "arn:aws:iam::322480324822:role/ecsHarvesterTaskExecutionRole"
