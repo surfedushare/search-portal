@@ -124,7 +124,6 @@ class TestSearch(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Niet gevonden"))
 
-
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestSearchFiltering(BaseLiveServerTestCase):
 
@@ -151,6 +150,26 @@ class TestSearchFiltering(BaseLiveServerTestCase):
             index=settings.ELASTICSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="edusources")
         )
+
+    def test_pre_filter_search(self):
+        self.selenium.get(self.live_server_url + "?demo=true")
+        search = self.selenium.find_element_by_css_selector(".search_bar input[type=search]")
+        button = self.selenium.find_element_by_css_selector(".search_bar button")
+
+        material_dropdown_select = self.selenium.find_element_by_css_selector(".dropdown-container__select:nth-of-type(1)")
+        material_dropdown_select.click()
+
+        material_dropdown_image_checkbox = self.selenium.find_element_by_css_selector(".dropdown-container__dropdown:nth-of-type(1) input[type=checkbox]:nth-of-type(1)")
+        material_dropdown_image_checkbox.click()
+
+        # theme_dropdown_select = self.selenium.find_element_by_css_selector(".dropdown-container__select:nth-of-type(2)")
+        # theme_dropdown_select.click()
+
+        # theme_dropdown_law_checkbox = self.selenium.find_element_by_css_selector(".dropdown-container__dropdown:nth-of-type(2) input[type=checkbox]:nth-of-type(1)")
+        # theme_dropdown_law_checkbox.click()
+
+        WebDriverWait(self.selenium, self.explicit_wait).until(
+            EC.text_to_be_present_in_element(material_dropdown_select.text, "afbeelding"))
 
     def test_filter_search(self):
         action = ActionChains(self.selenium)
