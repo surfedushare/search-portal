@@ -52,6 +52,7 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
 
     parent = serializers.SerializerMethodField()
     children = serializers.SerializerMethodField()
+    children_count = serializers.SerializerMethodField()
     translation = MetadataTranslationSerializer()
     value = serializers.CharField(source="name")
     frequency = serializers.SerializerMethodField()
@@ -71,6 +72,9 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
         max_children = int(max_children) if max_children else None
         return MetadataValueSerializer(children, many=True, context=self.context).data[:max_children]
 
+    def get_children_count(self, obj):
+        return obj.metadatavalue_set.filter(deleted_at__isnull=True, parent__isnull=True).count()
+
     def get_frequency(self, obj):
         aggregation = obj.metadatavalue_set.filter(deleted_at__isnull=True).aggregate(models.Sum("frequency"))
         return aggregation["frequency__sum"]
@@ -80,5 +84,5 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MetadataField
-        fields = ('id', 'parent', 'is_hidden', 'is_manual', 'children', 'value', 'translation', 'frequency', 'field',
-                  'max_children',)
+        fields = ('id', 'parent', 'is_hidden', 'is_manual', 'children', 'children_count', 'value', 'translation',
+                  'frequency', 'field', 'max_children',)

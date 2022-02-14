@@ -65,6 +65,7 @@ class MetadataValue(MPTTModel):
 class MetadataValueSerializer(serializers.ModelSerializer):
 
     children = serializers.SerializerMethodField()
+    children_count = serializers.SerializerMethodField()
     frequency = serializers.SerializerMethodField()
     translation = MetadataTranslationSerializer()
     field = serializers.CharField(source="field.name")
@@ -77,10 +78,14 @@ class MetadataValueSerializer(serializers.ModelSerializer):
         max_children = int(max_children) if max_children else None
         return MetadataValueSerializer(children, many=True).data[:max_children]
 
+    def get_children_count(self, obj):
+        return len(obj.get_children())
+
     def get_frequency(self, obj):
         aggregation = obj.get_children().filter(deleted_at__isnull=True).aggregate(models.Sum("frequency"))
         return obj.frequency + (aggregation["frequency__sum"] or 0)
 
     class Meta:
         model = MetadataValue
-        fields = ('id', 'parent', 'field', 'is_hidden', 'is_manual', 'children', 'value', 'translation', 'frequency',)
+        fields = ('id', 'parent', 'field', 'is_hidden', 'is_manual', 'children', 'children_count', 'value',
+                  'translation', 'frequency',)

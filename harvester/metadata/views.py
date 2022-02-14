@@ -46,7 +46,7 @@ class MetadataTreeView(generics.ListAPIView):
     **frequency**: How many results match this node in the entire dataset.
 
     """
-    queryset = MetadataField.objects.select_related("translation")
+    queryset = MetadataField.objects.filter(is_hidden=False).select_related("translation")
     serializer_class = MetadataFieldSerializer
     schema = HarvesterSchema()
     pagination_class = None

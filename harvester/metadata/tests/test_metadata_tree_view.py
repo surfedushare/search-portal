@@ -14,14 +14,15 @@ class TestMetadataTreeView(TestCase):
 
     def assert_metadata_node_structure(self, node):
         expected_keys = {
-            "value", "frequency", "field", "translation", "id", "parent", "children", "is_hidden", "is_manual"
+            "value", "frequency", "field", "translation", "id", "parent", "children", "is_hidden", "is_manual",
+            "children_count",
         }
         self.assertEqual(set(node.keys()), expected_keys, node["value"])
 
     def test_metadata_tree_view(self):
         response = self.client.get("/api/v1/metadata/tree/")
         data = response.json()
-        self.assertEqual(len(data), MetadataField.objects.all().count())
+        self.assertEqual(len(data), MetadataField.objects.filter(is_hidden=False).count())
         for field in data:
             self.assertIsNone(field["field"])
             self.assert_metadata_node_structure(field)
@@ -33,7 +34,7 @@ class TestMetadataTreeView(TestCase):
         max_children = 2
         response = self.client.get(f"/api/v1/metadata/tree/?max_children={max_children}")
         data = response.json()
-        self.assertEqual(len(data), MetadataField.objects.all().count())
+        self.assertEqual(len(data), MetadataField.objects.filter(is_hidden=False).count())
         for field in data:
             self.assertIsNone(field["field"])
             self.assert_metadata_node_structure(field)
@@ -49,7 +50,7 @@ class TestMetadataTreeView(TestCase):
         self.assertIsNotNone(document.deleted_at)
         response = self.client.get("/api/v1/metadata/tree/")
         data = response.json()
-        self.assertEqual(len(data), MetadataField.objects.all().count())
+        self.assertEqual(len(data), MetadataField.objects.filter(is_hidden=False).count())
         technical_type = next(field for field in data if field["value"] == "technical_type")
         for child in technical_type["children"]:
             self.assertNotEqual(child["value"], "document")
