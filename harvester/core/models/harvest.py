@@ -60,6 +60,7 @@ class Harvest(models.Model):
 
     def prepare(self):
         self.stage = HarvestStages.NEW
+        self.is_syncing = False
         if self.harvested_at:
             self.latest_update_at = self.harvested_at
         self.save()
@@ -68,6 +69,7 @@ class Harvest(models.Model):
         self.latest_update_at = make_aware(datetime(year=1970, month=1, day=1))
         self.harvested_at = None
         self.stage = HarvestStages.NEW
+        self.is_syncing = False
         self.purge_after = None
         self.clean()
         self.save()

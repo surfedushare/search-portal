@@ -297,5 +297,5 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "research_themes": lambda soup, el: None,
     "parties": lambda soup, el: [],
     "learning_material_themes": AnatomyToolExtraction.get_learning_material_themes,
-    "consortium": lambda soup, el: None,
+    "consortium": AnatomyToolExtraction.get_publishers,
 }

@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <label @click="setFocus">
-        {{ title }}
-      </label>
+      <label @click="setFocus">{{ title }}</label>
       <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
         <div class="menubar">
           <div
@@ -39,21 +37,23 @@
             :class="{ 'is-active': isActive.bullet_list() }"
             @click="commands.bullet_list"
           >
-            <span><i class="fas fa-list" /></span>
+            <span>
+              <i class="fas fa-list" />
+            </span>
           </div>
           <div
             class="menubar-button"
             :class="{ 'is-active': isActive.link() }"
             @click="openLinkPopup"
           >
-            <span><i class="fas fa-link" /></span>
+            <span>
+              <i class="fas fa-link" />
+            </span>
           </div>
-          <div
-            v-if="isActive.link()"
-            class="menubar-button"
-            @click="editor.commands.link"
-          >
-            <span><i class="fas fa-unlink" /></span>
+          <div v-if="isActive.link()" class="menubar-button" @click="editor.commands.link">
+            <span>
+              <i class="fas fa-unlink" />
+            </span>
           </div>
         </div>
       </editor-menu-bar>
@@ -73,18 +73,12 @@
       class="popup-content"
     >
       <slot>
-        <h2 class="popup__title">
-          {{ $t('Add-link') }}
-        </h2>
-        <div class="popup__subtext">
-          {{ $t('Add-link-subtext') }}
-        </div>
+        <h2 class="popup__title">{{ $t('Add-link') }}</h2>
+        <div class="popup__subtext">{{ $t('Add-link-subtext') }}</div>
         <div>
-          <input v-model="url" class="input">
+          <input v-model="url" class="input" />
           <div class="popup-content__actions">
-            <button class="button" @click="saveLink">
-              {{ $t('Save') }}
-            </button>
+            <button class="button" @click="saveLink">{{ $t('Save') }}</button>
           </div>
         </div>
       </slot>
@@ -99,11 +93,9 @@ import {
   HardBreak,
   Heading,
   History,
-  Italic,
-  ListItem,
+  Italic, Link, ListItem,
   Placeholder,
-  Underline,
-  Link,
+  Underline
 } from 'tiptap-extensions'
 import InputLanguageWrapper from '~/components/InputLanguageWrapper'
 import Popup from '~/components/Popup'
@@ -139,7 +131,7 @@ export default {
     },
     update: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
   },
   data() {
@@ -157,6 +149,7 @@ export default {
             showOnlyWhenEditable: true,
             showOnlyCurrent: true,
           }),
+          new HardBreak(),
           new Bold(),
           new Italic(),
           new Underline(),
