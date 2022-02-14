@@ -32,10 +32,9 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
 
     def get_frequency(self, obj):
         drilldowns = self.context.get('drilldowns', {})
-        default = obj["frequency"]
-        if drilldowns:
-            return drilldowns.get(f"{obj['field']}-{obj['value']}", default)
-        return default
+        if not drilldowns:
+            return obj["frequency"]
+        return drilldowns.get(f"{obj['field']}-{obj['value']}", 0)
 
     class Meta:
         model = models.MpttFilterItem
