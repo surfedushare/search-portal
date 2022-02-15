@@ -245,8 +245,8 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         source_category.find_element_by_css_selector("input").click()
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (1)"))
-        WebDriverWait(self.selenium, self.explicit_wait).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
+        # WebDriverWait(self.selenium, self.explicit_wait).until(
+        #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (2)"))
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#document ~ label"), "Document (1)"))
         WebDriverWait(self.selenium, self.explicit_wait).until(
