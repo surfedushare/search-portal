@@ -2,7 +2,7 @@
   <div class="dropdown-container">
     <label class="dropdown-container__label">{{ label }}:</label>
 
-    <div class="dropdown-container__select" @click="onToggle">
+    <div class="dropdown-container__select" :data-test="'filter_' + field" @click="onToggle">
       <span
         role="textbox"
         :class="{ 'bold': selectedFilters !== defaultOption }"
@@ -12,7 +12,11 @@
 
     <ul v-show="visible" class="dropdown-container__dropdown">
       <li v-for="filter in filters" :key="filter.external_id" :value="filter.external_id">
-        <input v-model="filter.selected" type="checkbox" />
+        <input
+          v-model="filter.selected"
+          type="checkbox"
+          :data-test="'filter_' + field + '_' + filter.external_id"
+        />
         {{ filter.title_translations[$i18n.locale] }}
       </li>
     </ul>
