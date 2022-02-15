@@ -16,7 +16,7 @@ django:
     edurep: "https://wszoeken.edurep.kennisnet.nl"
     sharekit: "https://api.surfsharekit.nl"
   sentry:
-    dsn: "https://97de571e7e144bf5881f9537429db8e8@o356528.ingest.sentry.io/6080809"
+    dsn: "https://13ca8b29c8384e57b7294280117728f1@o1143393.ingest.sentry.io/6208201"
 
 postgres:
   database: "harvester"
