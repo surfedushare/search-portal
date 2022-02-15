@@ -124,6 +124,7 @@ class TestSearch(BaseLiveServerTestCase):
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Niet gevonden"))
 
+
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestSearchFiltering(BaseLiveServerTestCase):
 
