@@ -9,6 +9,7 @@ def _duplicate_themes_field(field_name, MetadataField, MetadataValue):
     themes_field = MetadataField.objects.get(name=field_name)
     themes_field.id = None
     themes_field.name += "_normalized"
+    themes_field.is_hidden = False
     field_translation = themes_field.translation
     field_translation.id = None
     field_translation.save()

@@ -1671,14 +1671,14 @@
         "id": 130,
         "parent": null,
         "is_hidden": false,
-        "is_manual": true,
+        "is_manual": false,
         "children": [
             {
                 "id": 19751,
                 "parent": null,
                 "field": "language.keyword",
                 "is_hidden": false,
-                "is_manual": true,
+                "is_manual": false,
                 "children": [],
                 "children_count": 0,
                 "value": "en",
@@ -1693,13 +1693,28 @@
                 "parent": null,
                 "field": "language.keyword",
                 "is_hidden": false,
-                "is_manual": true,
+                "is_manual": false,
                 "children": [],
                 "children_count": 0,
                 "value": "nl",
                 "translation": {
                     "en": "Dutch",
                     "nl": "Nederlands"
+                },
+                "frequency": 0
+            },
+            {
+                "id": 19000,
+                "parent": null,
+                "field": "language.keyword",
+                "is_hidden": true,
+                "is_manual": true,
+                "children": [],
+                "children_count": 0,
+                "value": "unk",
+                "translation": {
+                    "en": "Unknown",
+                    "nl": "Onbekend"
                 },
                 "frequency": 0
             }
