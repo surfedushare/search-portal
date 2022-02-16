@@ -7,13 +7,13 @@ from django.apps import apps
 logger = logging.getLogger("harvester")
 
 
-NPPO_PUBLISHERS_WHITELIST = [
+NPPO_PUBLISHERS_WHITELIST = {
     "Hogeschool Utrecht",
     "Fontys",
     "Hogeschool Rotterdam",
     "Zuyd Hogeschool",
     "Hogeschool van Arnhem en Nijmegen",
-]
+}
 
 
 def get_harvest_seeds(repository, set_specification, latest_update, include_deleted=True, include_no_url=False):
@@ -44,8 +44,12 @@ def get_harvest_seeds(repository, set_specification, latest_update, include_dele
             seed["state"] = "deleted"
         if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
             seed["state"] = "deleted"
-        if seed["publishers"] not in NPPO_PUBLISHERS_WHITELIST and settings.PROJECT == "nppo":
-            seed["state"] = "deleted"
+        if settings.PROJECT == "nppo":
+            for publisher in seed["publishers"]:
+                if publisher in NPPO_PUBLISHERS_WHITELIST:
+                    break
+            else:
+                seed["state"] = "deleted"
         if seed.get("is_restricted", False):
             seed["analysis_allowed"] = False
     # And we return the seeds based on whether to include deleted or not
