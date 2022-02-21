@@ -4,7 +4,6 @@ from invoke import task, Responder, Exit
 from environments.project.configuration import create_configuration
 from commands.postgres.download import download_snapshot
 from commands.postgres.sql import insert_django_user_statement
-from commands.aws.ecs import run_task
 
 
 @task(name="import_snapshot", help={
@@ -65,16 +64,6 @@ def sync_upload_media(ctx, source="production", path="communities"):
     destination_path = os.path.join(destination, path)
     profile_name = ctx.config.aws.profile_name or "pol-prod"
     ctx.run(f"AWS_PROFILE={profile_name} aws s3 sync {source_path} {destination_path}", echo=True)
-
-
-@task(name="sync_category_filters", help={
-    "mode": "Mode you want to sync: localhost, development, acceptance or production. Must match APPLICATION_MODE",
-})
-def sync_category_filters(ctx, mode):
-    """
-    Syncs the list of category filters with Elastic Search
-    """
-    run_task(ctx, "service", mode, ["python", "manage.py", "sync_category_filters"])
 
 
 @task(name="make_translations")

@@ -31,7 +31,6 @@ aws:
   task_role_arn: "arn:aws:iam::322480324822:role/ecsTaskExecutionRole"
   scheduled_tasks:
     - "clearlogins"
-    - "sync_category_filters"
     - "sync_materials"
 
 secrets:
