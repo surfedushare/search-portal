@@ -22,6 +22,8 @@ logger = logging.getLogger("harvester")
 def sync_sharekit_metadata():
     # Select which data to sync this run
     latest_active_dataset = Dataset.objects.filter(is_active=True).last()
+    if not latest_active_dataset:
+        return
     dataset_version = DatasetVersion.objects.get_latest_version(dataset=latest_active_dataset)
     harvest_queryset = Harvest.objects.filter(
         dataset=latest_active_dataset,
