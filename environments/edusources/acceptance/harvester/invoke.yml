@@ -2,6 +2,7 @@ service:
   name: "harvester"
 
 django:
+  domain: "harvester.acc.surfedushare.nl"
   directory: "harvester"
   fixtures:
     - "core/fixtures/initial-edusources.json"
@@ -51,3 +52,5 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/deepl"
   hanze:
     api_key: null
+  teams_webhooks:
+    harvester: null

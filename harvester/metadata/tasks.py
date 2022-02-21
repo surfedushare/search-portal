@@ -1,8 +1,11 @@
 from datetime import timedelta
+
 from django.utils.timezone import now
+from django.urls import reverse
 from celery import current_app as app
 
 from harvester.tasks.base import DatabaseConnectionResetTask
+from core.utils.notifications import send_admin_notification
 from metadata.models import MetadataField, MetadataValue, MetadataTranslation
 from metadata.utils.translate import fetch_eduterm_translations, fetch_edustandaard_translations, translate_with_deepl
 
@@ -67,6 +70,11 @@ def sync_metadata():
     MetadataTranslation.objects.bulk_create(translation_inserts)
     MetadataValue.objects.bulk_create(metadata_inserts)
     MetadataValue.objects.rebuild()
+    if metadata_inserts:
+        send_admin_notification(
+            "New metadata values and translations have been added",
+            reverse("admin:metadata_metadatavalue_changelist") + "?is_fuzzy__exact=1"
+        )
 
     in_30_days = now() + timedelta(days=30)
     MetadataValue.objects.filter(deleted_at__gte=in_30_days).delete()
