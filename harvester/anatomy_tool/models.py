@@ -51,6 +51,7 @@ class AnatomyToolOAIPMH(HarvestHttpResource):
     objects = AnatomyToolOAIPMHManager()
 
     set_specification = models.CharField(max_length=255, blank=True, null=False, default="anatomy_tool")
+    use_multiple_sets = False
 
     URI_TEMPLATE = "https://anatomytool.org/oai-pmh?from={}"
     PARAMETERS = {

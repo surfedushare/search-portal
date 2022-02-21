@@ -68,8 +68,8 @@ class TestMetadataHarvest(TestCase):
         self.assertEqual(args, (self.spec_set, "1970-01-01T00:00:00Z"), "Wrong arguments given to resource")
         self.assertEqual(kwargs["method"], "get", "Resource is not using HTTP GET method")
         # Asserting usage of get_harvest_seeds
-        seeds_target.assert_called_once_with(self.spec_set, make_aware(datetime(year=1970, month=1, day=1)),
-                                             include_no_url=True)
+        seeds_target.assert_called_once_with(self.repository, self.spec_set,
+                                             make_aware(datetime(year=1970, month=1, day=1)), include_no_url=True)
         # Asserting usage of handle_upsert_seeds
         upsert_target.assert_called_once()
         args, kwargs = upsert_target.call_args
@@ -133,7 +133,8 @@ class TestMetadataHarvest(TestCase):
         command = self.get_command_instance()
         upserts = [
             seed
-            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds(self.repository, self.spec_set,
+                                          make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") == "active"
         ]
         documents_count = command.handle_upsert_seeds(collection, upserts)
@@ -157,7 +158,8 @@ class TestMetadataHarvest(TestCase):
         command = self.get_command_instance()
         deletes = [
             seed
-            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=1970, month=1, day=1)))
+            for seed in get_harvest_seeds(self.repository, self.spec_set,
+                                          make_aware(datetime(year=1970, month=1, day=1)))
             if seed.get("state", "active") != "active"
         ]
         # Basically we're testing that deletion seeds are not triggering errors when their targets do not exist.
@@ -206,7 +208,7 @@ class TestMetadataHarvestWithHistory(TestCase):
         expected_since = make_aware(
             datetime(year=2020, month=2, day=10, hour=13, minute=8, second=39, microsecond=315000)
         )
-        seeds_target.assert_called_once_with(self.spec_set, expected_since, include_no_url=True)
+        seeds_target.assert_called_once_with(self.repository, self.spec_set, expected_since, include_no_url=True)
         # Asserting usage of handle_upsert_seeds
         upsert_target.assert_called_once()
         args, kwargs = upsert_target.call_args
@@ -245,7 +247,8 @@ class TestMetadataHarvestWithHistory(TestCase):
         # Perform the test
         upserts = [
             seed
-            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds(self.repository, self.spec_set,
+                                          make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") == "active"
         ]
         command.handle_upsert_seeds(collection, upserts)
@@ -288,7 +291,8 @@ class TestMetadataHarvestWithHistory(TestCase):
         document_count = collection.document_set.count()
         deletes = [
             seed
-            for seed in get_harvest_seeds(self.spec_set, make_aware(datetime(year=2019, month=12, day=31)))
+            for seed in get_harvest_seeds(self.repository, self.spec_set,
+                                          make_aware(datetime(year=2019, month=12, day=31)))
             if seed.get("state", "active") != "active"
         ]
         document_deletes = command.handle_deletion_seeds(collection, deletes)

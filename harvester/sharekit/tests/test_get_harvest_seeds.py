@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.utils.timezone import make_aware
 
 from harvester.utils.extraction import get_harvest_seeds
+from core.constants import Repositories
 from sharekit.tests.factories import SharekitMetadataHarvestFactory
 from sharekit.extraction import SHAREKIT_EXTRACTION_OBJECTIVE
 
@@ -13,6 +14,8 @@ class TestGetHarvestSeedsSharekit(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.set_spec = "edusources"
+        cls.begin_of_time = make_aware(datetime(year=1970, month=1, day=1))
         SharekitMetadataHarvestFactory.create_common_sharekit_responses(include_delta=True)
 
     def extract_seed_types(self, seeds):
@@ -44,35 +47,39 @@ class TestGetHarvestSeedsSharekit(TestCase):
             self.assertEqual(seed_types["deleted"]["state"], "deleted")
 
     def test_get_complete_set(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(len(seeds), 16)
         self.check_seed_integrity(seeds)
 
     def test_get_partial_set(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=2020, month=2, day=9, hour=22, minute=22)))
+        seeds = get_harvest_seeds(
+            Repositories.SHAREKIT,
+            self.set_spec,
+            make_aware(datetime(year=2020, month=2, day=9, hour=22, minute=22))
+        )
         self.assertEqual(len(seeds), 5)
         self.check_seed_integrity(seeds)
 
     def test_get_complete_set_without_deletes(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)),
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time,
                                   include_deleted=False)
         self.assertEqual(len(seeds), 14)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set_without_deletes(self):
-        seeds = get_harvest_seeds("edusources", make_aware(
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, make_aware(
             datetime(year=2020, month=2, day=9, hour=22, minute=22)), include_deleted=False)
         self.assertEqual(len(seeds), 4)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_from_youtube_property(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(len(seeds), 16)
         youtube_seeds = [seed for seed in seeds if seed['from_youtube']]
         self.assertEqual(len(youtube_seeds), 9)
 
     def test_authors_property(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[2]['authors'], [
             {
                 'name': 'Ruud Kok',
@@ -101,23 +108,23 @@ class TestGetHarvestSeedsSharekit(TestCase):
         ])
 
     def test_publishers_property(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[2]['publishers'], ['SURFnet'])
         self.assertEqual(seeds[4]['publishers'], ['SURFnet'])
 
     def test_is_restricted(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         for seed in seeds:
             self.assertFalse(seed["is_restricted"])
 
     def test_analysis_allowed_property(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]['analysis_allowed'], True, "Expected standard material to allow analysis")
         self.assertEqual(seeds[12]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
         self.assertEqual(seeds[13]['analysis_allowed'], False, "Expexted yes copyright material to disallow analysis")
 
     def test_is_part_of_property(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]['is_part_of'], [], "Expected standard material to have no parent")
         self.assertEqual(
             seeds[4]['is_part_of'],
@@ -126,7 +133,7 @@ class TestGetHarvestSeedsSharekit(TestCase):
         )
 
     def test_has_parts_property(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]['has_parts'], [], "Expected standard material to have no parts")
         self.assertEqual(
             seeds[3]['has_parts'],
@@ -141,7 +148,7 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertEqual(seeds[5]['has_parts'], [], "Expected child material to have no children")
 
     def test_ideas_property(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         possible_ideas = [
             "Informatievaardigheid vocabulaire 2020",
             "Publiceren en communiceren",
@@ -153,21 +160,21 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertEqual(seeds[2]["ideas"], [], "Expected material without ideas to return empty list")
 
     def test_lom_educational_level(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]["lom_educational_levels"], ["HBO"],
                          "Expected HBO materials to have an educational level")
         self.assertEqual(seeds[1]["lom_educational_levels"], ["WO"],
                          "Expected HBO materials to have an educational level")
 
     def test_lowest_educational_level(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]["lowest_educational_level"], 2,
                          "Expected HBO materials to have an educational level of 2")
         self.assertEqual(seeds[1]["lowest_educational_level"], 3,
                          "Expected HBO materials to have an educational level of 3")
 
     def test_get_files(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(len(seeds[0]["files"]), 1)
         file = seeds[0]["files"][0]
         self.assertEqual(file["mime_type"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
@@ -181,7 +188,7 @@ class TestGetHarvestSeedsSharekit(TestCase):
             self.assertTrue(file["hash"], "Hashes should never be falsy")
 
     def test_get_technical_type(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]["technical_type"], "document",
                          "Expected unknown technical types to be deferred from mime type")
         self.assertEqual(seeds[2]["technical_type"], "document",
@@ -191,7 +198,7 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertEqual(seeds[5]["technical_type"], "unknown", "Expected 'unknown' for missing mime types")
 
     def test_get_material_types(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]["material_types"], [], "Expected material without a type to return empty list")
         self.assertEqual(seeds[1]["material_types"], [], "Expected material with null as type to return empty list")
         self.assertEqual(seeds[3]["material_types"], ["kennisoverdracht"])
@@ -201,7 +208,7 @@ class TestGetHarvestSeedsSharekit(TestCase):
                          "Expected null values to get filtered from lists")
 
     def test_get_publisher_year(self):
-        seeds = get_harvest_seeds("edusources", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         self.assertEqual(seeds[0]["publisher_year"], 1970)
         self.assertIsNone(seeds[8]["publisher_year"], "Expected deleted material to have no publisher year")
 
@@ -211,14 +218,16 @@ class TestGetHarvestSeedsSharekitRestricted(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.set_spec = "edusourcesprivate"
+        cls.begin_of_time = make_aware(datetime(year=1970, month=1, day=1))
         SharekitMetadataHarvestFactory.create_common_sharekit_responses(include_delta=True, is_restricted=True)
 
     def test_is_restricted(self):
-        seeds = get_harvest_seeds("edusourcesprivate", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, "edusourcesprivate", self.begin_of_time)
         for seed in seeds:
             self.assertTrue(seed["is_restricted"])
 
     def test_analysis_allowed_property(self):
-        seeds = get_harvest_seeds("edusourcesprivate", make_aware(datetime(year=1970, month=1, day=1)))
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, "edusourcesprivate", self.begin_of_time)
         for seed in seeds:
             self.assertFalse(seed["analysis_allowed"])

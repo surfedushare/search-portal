@@ -1,27 +1,24 @@
 import logging
 
 from django.conf import settings
-
-from edurep.models import EdurepOAIPMH
-from sharekit.models import SharekitMetadataHarvest
-from anatomy_tool.models import AnatomyToolOAIPMH
-from hanze.models import HanzeResearchObjectResource
+from django.apps import apps
 
 
 logger = logging.getLogger("harvester")
 
 
-def get_harvest_seeds(set_specification, latest_update, include_deleted=True, include_no_url=False):
+def get_harvest_seeds(repository, set_specification, latest_update, include_deleted=True, include_no_url=False):
     """
     Extracts metadata from HarvestHttpResource
 
     Currently supports Sharekit and Edurep
     More information on Edurep: https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
     """
-    results = EdurepOAIPMH.objects.extract_seeds(set_specification, latest_update)
-    results += SharekitMetadataHarvest.objects.extract_seeds(set_specification, latest_update)
-    results += AnatomyToolOAIPMH.objects.extract_seeds(latest_update)
-    results += HanzeResearchObjectResource.objects.extract_seeds(latest_update)
+    RepositoryResource = apps.get_model(repository)
+    if RepositoryResource.use_multiple_sets:
+        results = RepositoryResource.objects.extract_seeds(set_specification, latest_update)
+    else:
+        results = RepositoryResource.objects.extract_seeds(latest_update)
 
     seeds = []
     for seed in results:
