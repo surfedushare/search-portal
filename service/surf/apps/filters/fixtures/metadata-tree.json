@@ -1,187 +1,78 @@
 [
     {
-        "id": 105,
+        "id": 121,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
             {
-                "id": 17084,
-                "parent": null,
-                "field": "harvest_source",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "anatomy_tool",
-                "translation": {
-                    "en": "anatomy_tool",
-                    "nl": "anatomy_tool"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17085,
-                "parent": null,
-                "field": "harvest_source",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "edurep_delen",
-                "translation": {
-                    "en": "Edurep Delen",
-                    "nl": "Edurep Delen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17086,
-                "parent": null,
-                "field": "harvest_source",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "l4l",
-                "translation": {
-                    "en": "WUR Library 4 Learning",
-                    "nl": "WUR Library 4 Learning"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17087,
-                "parent": null,
-                "field": "harvest_source",
-                "is_hidden": false,
-                "is_manual": true,
-                "children": [
-                    {
-                        "id": 17088,
-                        "parent": 17087,
-                        "field": "harvest_source",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "edusources",
-                        "translation": {
-                            "en": "Edusources",
-                            "nl": "Edusources"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17089,
-                        "parent": 17087,
-                        "field": "harvest_source",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "edusourcesprivate",
-                        "translation": {
-                            "en": "edusources private",
-                            "nl": "edusources besloten"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "sharekit",
-                "translation": {
-                    "en": "Sharekit",
-                    "nl": "Sharekit"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17090,
-                "parent": null,
-                "field": "harvest_source",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "wikiwijsmaken",
-                "translation": {
-                    "en": "Wikiwijs Maken",
-                    "nl": "Wikiwijs Maken"
-                },
-                "frequency": 0
-            }
-        ],
-        "value": "harvest_source",
-        "translation": {
-            "en": "Source",
-            "nl": "Bron"
-        },
-        "frequency": 0,
-        "field": null
-    },
-    {
-        "id": 106,
-        "parent": null,
-        "is_hidden": false,
-        "is_manual": false,
-        "children": [
-            {
-                "id": 17091,
+                "id": 19558,
                 "parent": null,
                 "field": "publisher_year",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "2018",
-                "translation": {
-                    "en": "2018",
-                    "nl": "2018"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17092,
-                "parent": null,
-                "field": "publisher_year",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "2019",
-                "translation": {
-                    "en": "2019",
-                    "nl": "2019"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17093,
-                "parent": null,
-                "field": "publisher_year",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
+                "children_count": 0,
                 "value": "2020",
                 "translation": {
                     "en": "2020",
                     "nl": "2020"
                 },
-                "frequency": 0
+                "frequency": 2443
             },
             {
-                "id": 17094,
+                "id": 19557,
                 "parent": null,
                 "field": "publisher_year",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
+                "value": "2019",
+                "translation": {
+                    "en": "2019",
+                    "nl": "2019"
+                },
+                "frequency": 2354
+            },
+            {
+                "id": 19559,
+                "parent": null,
+                "field": "publisher_year",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
                 "value": "2021",
                 "translation": {
                     "en": "2021",
                     "nl": "2021"
                 },
-                "frequency": 0
+                "frequency": 1158
             },
             {
-                "id": 17095,
+                "id": 19556,
+                "parent": null,
+                "field": "publisher_year",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "2018",
+                "translation": {
+                    "en": "2018",
+                    "nl": "2018"
+                },
+                "frequency": 719
+            },
+            {
+                "id": 19560,
                 "parent": null,
                 "field": "publisher_year",
                 "is_hidden": false,
                 "is_manual": true,
                 "children": [],
+                "children_count": 0,
                 "value": "2022",
                 "translation": {
                     "en": "2022",
@@ -190,2819 +81,1606 @@
                 "frequency": 0
             },
             {
-                "id": 17096,
+                "id": 19561,
                 "parent": null,
                 "field": "publisher_year",
                 "is_hidden": false,
                 "is_manual": true,
                 "children": [
                     {
-                        "id": 17098,
-                        "parent": 17096,
+                        "id": 19562,
+                        "parent": 19561,
                         "field": "publisher_year",
-                        "is_hidden": true,
+                        "is_hidden": false,
                         "is_manual": false,
                         "children": [],
-                        "value": "1713",
-                        "translation": {
-                            "en": "1713",
-                            "nl": "1713"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17099,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "1716",
-                        "translation": {
-                            "en": "1716",
-                            "nl": "1716"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17100,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "1795",
-                        "translation": {
-                            "en": "1795",
-                            "nl": "1795"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17101,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "1797",
-                        "translation": {
-                            "en": "1797",
-                            "nl": "1797"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17102,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "1970",
-                        "translation": {
-                            "en": "1970",
-                            "nl": "1970"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17109,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2009",
-                        "translation": {
-                            "en": "2009",
-                            "nl": "2009"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17110,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2010",
-                        "translation": {
-                            "en": "2010",
-                            "nl": "2010"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17108,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2011",
-                        "translation": {
-                            "en": "2011",
-                            "nl": "2011"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17107,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2012",
-                        "translation": {
-                            "en": "2012",
-                            "nl": "2012"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17106,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2013",
-                        "translation": {
-                            "en": "2013",
-                            "nl": "2013"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17105,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2014",
-                        "translation": {
-                            "en": "2014",
-                            "nl": "2014"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17104,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2015",
-                        "translation": {
-                            "en": "2015",
-                            "nl": "2015"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17103,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "2016",
-                        "translation": {
-                            "en": "2016",
-                            "nl": "2016"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17097,
-                        "parent": 17096,
-                        "field": "publisher_year",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
+                        "children_count": 0,
                         "value": "2017",
                         "translation": {
                             "en": "2017",
                             "nl": "2017"
                         },
-                        "frequency": 0
+                        "frequency": 620
+                    },
+                    {
+                        "id": 19568,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2016",
+                        "translation": {
+                            "en": "2016",
+                            "nl": "2016"
+                        },
+                        "frequency": 322
+                    },
+                    {
+                        "id": 19569,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2015",
+                        "translation": {
+                            "en": "2015",
+                            "nl": "2015"
+                        },
+                        "frequency": 82
+                    },
+                    {
+                        "id": 19567,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "1970",
+                        "translation": {
+                            "en": "1970",
+                            "nl": "1970"
+                        },
+                        "frequency": 45
+                    },
+                    {
+                        "id": 19572,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2012",
+                        "translation": {
+                            "en": "2012",
+                            "nl": "2012"
+                        },
+                        "frequency": 43
+                    },
+                    {
+                        "id": 19573,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2011",
+                        "translation": {
+                            "en": "2011",
+                            "nl": "2011"
+                        },
+                        "frequency": 25
+                    },
+                    {
+                        "id": 19571,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2013",
+                        "translation": {
+                            "en": "2013",
+                            "nl": "2013"
+                        },
+                        "frequency": 17
+                    },
+                    {
+                        "id": 19570,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2014",
+                        "translation": {
+                            "en": "2014",
+                            "nl": "2014"
+                        },
+                        "frequency": 12
+                    },
+                    {
+                        "id": 19574,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2009",
+                        "translation": {
+                            "en": "2009",
+                            "nl": "2009"
+                        },
+                        "frequency": 3
+                    },
+                    {
+                        "id": 19563,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "1713",
+                        "translation": {
+                            "en": "1713",
+                            "nl": "1713"
+                        },
+                        "frequency": 2
+                    },
+                    {
+                        "id": 19575,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "2010",
+                        "translation": {
+                            "en": "2010",
+                            "nl": "2010"
+                        },
+                        "frequency": 2
+                    },
+                    {
+                        "id": 19564,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "1716",
+                        "translation": {
+                            "en": "1716",
+                            "nl": "1716"
+                        },
+                        "frequency": 1
+                    },
+                    {
+                        "id": 19565,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "1795",
+                        "translation": {
+                            "en": "1795",
+                            "nl": "1795"
+                        },
+                        "frequency": 1
+                    },
+                    {
+                        "id": 19566,
+                        "parent": 19561,
+                        "field": "publisher_year",
+                        "is_hidden": false,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "1797",
+                        "translation": {
+                            "en": "1797",
+                            "nl": "1797"
+                        },
+                        "frequency": 1
                     }
                 ],
+                "children_count": 14,
                 "value": "older-than",
                 "translation": {
                     "en": "Older than 2018",
                     "nl": "Ouder dan 2018"
                 },
-                "frequency": 0
+                "frequency": 1176
             }
         ],
+        "children_count": 6,
         "value": "publisher_year",
         "translation": {
             "en": "Publication year",
             "nl": "Publicatiejaar"
         },
-        "frequency": 0,
+        "frequency": 7850,
         "field": null
     },
     {
-        "id": 107,
-        "parent": null,
-        "is_hidden": true,
-        "is_manual": true,
-        "children": [],
-        "value": "publisher_date",
-        "translation": {
-            "en": "Publication date",
-            "nl": "Publicatiedatum"
-        },
-        "frequency": 0,
-        "field": null
-    },
-    {
-        "id": 108,
+        "id": 123,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
             {
-                "id": 17111,
+                "id": 19576,
                 "parent": null,
                 "field": "technical_type",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "image",
                 "translation": {
                     "en": "Image",
                     "nl": "Afbeelding"
                 },
-                "frequency": 0
+                "frequency": 3020
             },
             {
-                "id": 17112,
+                "id": 19586,
                 "parent": null,
                 "field": "technical_type",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "app",
-                "translation": {
-                    "en": "App",
-                    "nl": "App"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17113,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "audio",
-                "translation": {
-                    "en": "Audio",
-                    "nl": "Audio"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17114,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "degrees-video",
-                "translation": {
-                    "en": "360 Degrees Video",
-                    "nl": "360 Graden Video"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17115,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "document",
-                "translation": {
-                    "en": "Document",
-                    "nl": "Document"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17116,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "openaccess-textbook",
-                "translation": {
-                    "en": "Open (Access) Text Book",
-                    "nl": "Open (Access) Tekst Boek"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17117,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "presentation",
-                "translation": {
-                    "en": "Presentation",
-                    "nl": "Presentatie"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17118,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "spreadsheet",
-                "translation": {
-                    "en": "Spreadsheet",
-                    "nl": "Spreadsheet"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17119,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": true,
-                "is_manual": false,
-                "children": [],
-                "value": "unknown",
-                "translation": {
-                    "en": "unknown",
-                    "nl": "onbekend"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17120,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "video",
-                "translation": {
-                    "en": "Video",
-                    "nl": "Video"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17121,
-                "parent": null,
-                "field": "technical_type",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
+                "children_count": 0,
                 "value": "website",
                 "translation": {
                     "en": "Website",
                     "nl": "Website"
                 },
-                "frequency": 0
+                "frequency": 2889
+            },
+            {
+                "id": 19580,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "document",
+                "translation": {
+                    "en": "Document",
+                    "nl": "Document"
+                },
+                "frequency": 1656
+            },
+            {
+                "id": 19585,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "video",
+                "translation": {
+                    "en": "Video",
+                    "nl": "Video"
+                },
+                "frequency": 421
+            },
+            {
+                "id": 19582,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "presentation",
+                "translation": {
+                    "en": "Presentation",
+                    "nl": "Presentatie"
+                },
+                "frequency": 414
+            },
+            {
+                "id": 19581,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "openaccess-textbook",
+                "translation": {
+                    "en": "Open (Access) Text Book",
+                    "nl": "Open (Access) Tekst Boek"
+                },
+                "frequency": 30
+            },
+            {
+                "id": 19577,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "app",
+                "translation": {
+                    "en": "App",
+                    "nl": "App"
+                },
+                "frequency": 8
+            },
+            {
+                "id": 19583,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "spreadsheet",
+                "translation": {
+                    "en": "Spreadsheet",
+                    "nl": "Spreadsheet"
+                },
+                "frequency": 7
+            },
+            {
+                "id": 19584,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "unknown",
+                "translation": {
+                    "en": "unknown",
+                    "nl": "onbekend"
+                },
+                "frequency": 6
+            },
+            {
+                "id": 19578,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "audio",
+                "translation": {
+                    "en": "Audio",
+                    "nl": "Audio"
+                },
+                "frequency": 1
+            },
+            {
+                "id": 19579,
+                "parent": null,
+                "field": "technical_type",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "degrees-video",
+                "translation": {
+                    "en": "360 Degrees Video",
+                    "nl": "360 Graden Video"
+                },
+                "frequency": 1
             }
         ],
+        "children_count": 11,
         "value": "technical_type",
         "translation": {
             "en": "File type",
             "nl": "Bestandstype"
         },
-        "frequency": 0,
+        "frequency": 8453,
         "field": null
     },
     {
-        "id": 109,
+        "id": 124,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
             {
-                "id": 17122,
+                "id": 19587,
                 "parent": null,
                 "field": "aggregation_level",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "1",
                 "translation": {
                     "en": "Fragment",
                     "nl": "Fragment"
                 },
-                "frequency": 0
+                "frequency": 3959
             },
             {
-                "id": 17123,
+                "id": 19588,
                 "parent": null,
                 "field": "aggregation_level",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "2",
                 "translation": {
                     "en": "Learning object",
                     "nl": "Leerobject"
                 },
-                "frequency": 0
+                "frequency": 2140
             },
             {
-                "id": 17124,
+                "id": 19589,
                 "parent": null,
                 "field": "aggregation_level",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "3",
                 "translation": {
                     "en": "Lesson",
                     "nl": "Les"
                 },
-                "frequency": 0
+                "frequency": 1935
             },
             {
-                "id": 17125,
+                "id": 19590,
                 "parent": null,
                 "field": "aggregation_level",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "4",
                 "translation": {
                     "en": "Course",
                     "nl": "Cursus"
                 },
-                "frequency": 0
+                "frequency": 469
             }
         ],
+        "children_count": 4,
         "value": "aggregation_level",
         "translation": {
             "en": "Useable as",
             "nl": "Bruikbaar als"
         },
-        "frequency": 0,
+        "frequency": 8503,
         "field": null
     },
     {
-        "id": 110,
+        "id": 125,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
             {
-                "id": 17126,
+                "id": 19614,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "betoog",
+                "children_count": 0,
+                "value": "unknown",
                 "translation": {
-                    "en": "argument",
-                    "nl": "betoog"
+                    "en": "unknown",
+                    "nl": "onbekend"
                 },
-                "frequency": 0
+                "frequency": 5256
             },
             {
-                "id": 17127,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": true,
-                "is_manual": false,
-                "children": [],
-                "value": "document",
-                "translation": {
-                    "en": "document",
-                    "nl": "document"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17128,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [
-                    {
-                        "id": 17129,
-                        "parent": 17128,
-                        "field": "material_types",
-                        "is_hidden": false,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "evaluatie- en toetsmateriaal",
-                        "translation": {
-                            "en": "evaluation and testing material",
-                            "nl": "evaluatie- en toetsmateriaal"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "evaluatie_en_toets",
-                "translation": {
-                    "en": "evaluation and testing",
-                    "nl": "evaluatie en toets"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17130,
+                "id": 19601,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "exercise",
-                "translation": {
-                    "en": "exercise",
-                    "nl": "opdracht"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17131,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": true,
-                "is_manual": false,
-                "children": [],
-                "value": "experiment",
-                "translation": {
-                    "en": "experiment",
-                    "nl": "experiment"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17132,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "game-spel",
-                "translation": {
-                    "en": "game",
-                    "nl": "game/spel"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17133,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "gereedschap",
-                "translation": {
-                    "en": "tool",
-                    "nl": "gereedschap"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17134,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": true,
-                "is_manual": false,
-                "children": [],
-                "value": "gesloten opdracht",
-                "translation": {
-                    "en": "closed assignment",
-                    "nl": "gesloten opdracht"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17135,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "handleiding",
-                "translation": {
-                    "en": "manual",
-                    "nl": "handleiding"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17136,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
+                "children_count": 0,
                 "value": "informatiebron",
                 "translation": {
                     "en": "information resource",
                     "nl": "informatiebron"
                 },
-                "frequency": 0
+                "frequency": 1342
             },
             {
-                "id": 17137,
+                "id": 19603,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "instructie",
-                "translation": {
-                    "en": "instruction",
-                    "nl": "instructie"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17138,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
+                "children_count": 0,
                 "value": "kennisoverdracht",
                 "translation": {
                     "en": "knowledge transfer",
                     "nl": "kennisoverdracht"
                 },
-                "frequency": 0
+                "frequency": 377
             },
             {
-                "id": 17139,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [
-                    {
-                        "id": 17140,
-                        "parent": 17139,
-                        "field": "material_types",
-                        "is_hidden": false,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "open opdracht",
-                        "translation": {
-                            "en": "open assignment",
-                            "nl": "open opdracht"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "opdracht",
-                "translation": {
-                    "en": "excercise",
-                    "nl": "opdracht"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17141,
+                "id": 19602,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "practicum",
+                "children_count": 0,
+                "value": "instructie",
                 "translation": {
-                    "en": "practicum",
-                    "nl": "practicum"
+                    "en": "instruction",
+                    "nl": "instructie"
                 },
-                "frequency": 0
+                "frequency": 347
             },
             {
-                "id": 17142,
+                "id": 19607,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [
                     {
-                        "id": 17143,
-                        "parent": 17142,
+                        "id": 19608,
+                        "parent": 19607,
                         "field": "material_types",
                         "is_hidden": false,
                         "is_manual": false,
                         "children": [],
+                        "children_count": 0,
                         "value": "professionaliserings-materiaal",
                         "translation": {
                             "en": "professionalization material",
                             "nl": "professionaliseringsmateriaal"
                         },
-                        "frequency": 0
+                        "frequency": 70
                     }
                 ],
+                "children_count": 1,
                 "value": "professionaliseringsmateriaal",
                 "translation": {
                     "en": "professionalization material",
                     "nl": "professionaliseringsmateriaal"
                 },
-                "frequency": 0
+                "frequency": 348
             },
             {
-                "id": 17144,
+                "id": 19600,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "questionnaire",
+                "children_count": 0,
+                "value": "handleiding",
                 "translation": {
-                    "en": "questionnaire",
-                    "nl": "vragenlijst"
+                    "en": "manual",
+                    "nl": "handleiding"
                 },
-                "frequency": 0
+                "frequency": 215
             },
             {
-                "id": 17145,
+                "id": 19599,
                 "parent": null,
                 "field": "material_types",
-                "is_hidden": false,
+                "is_hidden": true,
                 "is_manual": false,
                 "children": [],
-                "value": "referentiemateriaal",
+                "children_count": 0,
+                "value": "gesloten opdracht",
                 "translation": {
-                    "en": "references",
-                    "nl": "referentiemateriaal"
+                    "en": "closed assignment",
+                    "nl": "gesloten opdracht"
                 },
-                "frequency": 0
+                "frequency": 213
             },
             {
-                "id": 17146,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "rubric",
-                "translation": {
-                    "en": "rubric",
-                    "nl": "toetsmatrijs"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17147,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "self assessment",
-                "translation": {
-                    "en": "self assessment",
-                    "nl": "zelf assessment"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17148,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "simulatie",
-                "translation": {
-                    "en": "simulation",
-                    "nl": "simulatie"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17149,
-                "parent": null,
-                "field": "material_types",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "unknown",
-                "translation": {
-                    "en": "unknown",
-                    "nl": "onbekend"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17150,
+                "id": 19604,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [
                     {
-                        "id": 17151,
-                        "parent": 17150,
+                        "id": 19605,
+                        "parent": 19604,
                         "field": "material_types",
-                        "is_hidden": true,
+                        "is_hidden": false,
                         "is_manual": false,
                         "children": [],
-                        "value": "verkennings- en onderzoeksmateriaal",
+                        "children_count": 0,
+                        "value": "open opdracht",
                         "translation": {
-                            "en": "exploration and research materials",
-                            "nl": "verkennings- en onderzoeksmateriaal"
+                            "en": "open assignment",
+                            "nl": "open opdracht"
                         },
-                        "frequency": 0
+                        "frequency": 436
                     }
                 ],
-                "value": "verkenning_en_onderzoek",
+                "children_count": 1,
+                "value": "opdracht",
                 "translation": {
-                    "en": "Exploration and research",
-                    "nl": "Verkenning en onderzoek"
+                    "en": "excercise",
+                    "nl": "opdracht"
                 },
-                "frequency": 0
+                "frequency": 571
             },
             {
-                "id": 17152,
+                "id": 19598,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "visualisatie",
+                "children_count": 0,
+                "value": "gereedschap",
                 "translation": {
-                    "en": "visualization",
-                    "nl": "visualisatie"
+                    "en": "tool",
+                    "nl": "gereedschap"
                 },
-                "frequency": 0
+                "frequency": 112
             },
             {
-                "id": 17153,
+                "id": 19592,
+                "parent": null,
+                "field": "material_types",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "document",
+                "translation": {
+                    "en": "document",
+                    "nl": "document"
+                },
+                "frequency": 92
+            },
+            {
+                "id": 19618,
                 "parent": null,
                 "field": "material_types",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "zelftoets",
                 "translation": {
                     "en": "self assessment",
                     "nl": "zelftoets"
                 },
-                "frequency": 0
+                "frequency": 24
+            },
+            {
+                "id": 19595,
+                "parent": null,
+                "field": "material_types",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "exercise",
+                "translation": {
+                    "en": "exercise",
+                    "nl": "opdracht"
+                },
+                "frequency": 23
+            },
+            {
+                "id": 19609,
+                "parent": null,
+                "field": "material_types",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "questionnaire",
+                "translation": {
+                    "en": "questionnaire",
+                    "nl": "vragenlijst"
+                },
+                "frequency": 13
+            },
+            {
+                "id": 19617,
+                "parent": null,
+                "field": "material_types",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "visualisatie",
+                "translation": {
+                    "en": "visualization",
+                    "nl": "visualisatie"
+                },
+                "frequency": 10
+            },
+            {
+                "id": 19610,
+                "parent": null,
+                "field": "material_types",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "referentiemateriaal",
+                "translation": {
+                    "en": "references",
+                    "nl": "referentiemateriaal"
+                },
+                "frequency": 7
             }
         ],
+        "children_count": 24,
         "value": "material_types",
         "translation": {
             "en": "Type of material",
             "nl": "Soort materiaal"
         },
-        "frequency": 0,
+        "frequency": 9223,
         "field": null
     },
     {
-        "id": 111,
+        "id": 126,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
             {
-                "id": 17154,
+                "id": 19622,
                 "parent": null,
                 "field": "publishers.keyword",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "All you can learn",
-                "translation": {
-                    "en": "All you can learn",
-                    "nl": "All you can learn"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17155,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "All You Can Learn",
-                "translation": {
-                    "en": "All You Can Learn",
-                    "nl": "All You Can Learn"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17156,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "All You Can Leran",
-                "translation": {
-                    "en": "All You Can Learn",
-                    "nl": "All You Can Learn"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17157,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
+                "children_count": 0,
                 "value": "AnatomyTOOL",
                 "translation": {
                     "en": "AnatomyTOOL",
                     "nl": "AnatomyTOOL"
                 },
-                "frequency": 0
+                "frequency": 3768
             },
             {
-                "id": 17158,
+                "id": 19697,
                 "parent": null,
                 "field": "publishers.keyword",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "Antonius Ziekenhuis Nieuwegein",
-                "translation": {
-                    "en": "Antonius Ziekenhuis Nieuwegein",
-                    "nl": "Antonius Ziekenhuis Nieuwegein"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17159,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Avans Hogeschool",
-                "translation": {
-                    "en": "Avans Hogeschool",
-                    "nl": "Avans Hogeschool"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17160,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Beeld en geluid op school",
-                "translation": {
-                    "en": "Beeld en geluid op school",
-                    "nl": "Beeld en geluid op school"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17161,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Bibliotheek Wageningen University & Research",
-                "translation": {
-                    "en": "Bibliotheek Wageningen University & Research",
-                    "nl": "Bibliotheek Wageningen University & Research"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17162,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "BPM medica",
-                "translation": {
-                    "en": "BPM medica",
-                    "nl": "BPM medica"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17163,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Bronnen voor NME",
-                "translation": {
-                    "en": "Bronnen voor NME",
-                    "nl": "Bronnen voor NME"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17164,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Christelijke Hogeschool Ede",
-                "translation": {
-                    "en": "Christelijke Hogeschool Ede",
-                    "nl": "Christelijke Hogeschool Ede"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17165,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Community Ethics",
-                "translation": {
-                    "en": "Community Ethics",
-                    "nl": "Community Ethics"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17166,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Community Urban Resilience Engineering",
-                "translation": {
-                    "en": "Community Urban Resilience Engineering",
-                    "nl": "Community Urban Resilience Engineering"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17167,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "De Haagse Hogeschool",
-                "translation": {
-                    "en": "De Haagse Hogeschool",
-                    "nl": "De Haagse Hogeschool"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17168,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Didactiek N2",
-                "translation": {
-                    "en": "Didactiek N2",
-                    "nl": "Didactiek N2"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17169,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Dolphinimaging",
-                "translation": {
-                    "en": "Dolphinimaging",
-                    "nl": "Dolphinimaging"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17170,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Domein Applied Science",
-                "translation": {
-                    "en": "Domain Applied Science",
-                    "nl": "Domein Applied Science"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17171,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Dr. Teeth Academy",
-                "translation": {
-                    "en": "Dr. Teeth Academy",
-                    "nl": "Dr. Teeth Academy"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17172,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Edurep Delen",
-                "translation": {
-                    "en": "Edurep Delen",
-                    "nl": "Edurep Delen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17173,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "EduTech zone.college",
-                "translation": {
-                    "en": "EduTech zone.college",
-                    "nl": "EduTech zone.college"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17174,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Erasmus MC Zorgacademie",
-                "translation": {
-                    "en": "Erasmus MC Zorgacademie",
-                    "nl": "Erasmus MC Zorgacademie"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17175,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Erasmus Universiteit",
-                "translation": {
-                    "en": "Erasmus Universiteit",
-                    "nl": "Erasmus Universiteit"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17176,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "FERM",
-                "translation": {
-                    "en": "FERM",
-                    "nl": "FERM"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17177,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Fontys",
-                "translation": {
-                    "en": "Fontys",
-                    "nl": "Fontys"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17178,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Fontys Hogescholen",
-                "translation": {
-                    "en": "Fontys University of Applied Sciences",
-                    "nl": "Fontys Hogescholen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17179,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Free Learning",
-                "translation": {
-                    "en": "Free Learning",
-                    "nl": "Free Learning"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17180,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "GGZ ecademy",
-                "translation": {
-                    "en": "GGZ ecademy",
-                    "nl": "GGZ ecademy"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17181,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "GGZ-ecademy",
-                "translation": {
-                    "en": "GGZ-ecademy",
-                    "nl": "GGZ-ecademy"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17182,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hanze University Groningen",
-                "translation": {
-                    "en": "Hanze University Groningen",
-                    "nl": "Hanze University Groningen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17183,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "hbo-ict open-oio",
-                "translation": {
-                    "en": "hbo-ict open-oio",
-                    "nl": "hbo-ict open-oio"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17184,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "HBO Verpleegkunde",
-                "translation": {
-                    "en": "HBO Nursing",
-                    "nl": "HBO Verpleegkunde"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17185,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Inholland",
-                "translation": {
-                    "en": "Inholland University of Applied Sciences",
-                    "nl": "Hogeschool Inholland"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17186,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Leiden",
-                "translation": {
-                    "en": "Leiden University of Applied Sciences",
-                    "nl": "Hogeschool Leiden"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17187,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Rotterdam",
-                "translation": {
-                    "en": "Hogeschool Rotterdam",
-                    "nl": "Hogeschool Rotterdam"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17188,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Rotterdam - Instituut voor Lerarenopleidingen (IvL)",
-                "translation": {
-                    "en": "Hogeschool Rotterdam - Instituut voor Lerarenopleidingen (IvL)",
-                    "nl": "Hogeschool Rotterdam - Instituut voor Lerarenopleidingen (IvL)"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17189,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Rotterdam Workshop Kennisclips maken",
-                "translation": {
-                    "en": "Hogeschool Rotterdam Workshop Kennisclips maken",
-                    "nl": "Hogeschool Rotterdam Workshop Kennisclips maken"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17190,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Saxion",
-                "translation": {
-                    "en": "Hogeschool Saxion",
-                    "nl": "Hogeschool Saxion"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17191,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Utrecht",
-                "translation": {
-                    "en": "Utrecht University of Applied Sciences",
-                    "nl": "Hogeschool Utrecht"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17192,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool van Amsterdam",
-                "translation": {
-                    "en": "Hogeschool van Amsterdam",
-                    "nl": "Hogeschool van Amsterdam"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17193,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool van Arnhem en Nijmegen",
-                "translation": {
-                    "en": "Hogeschool van Arnhem en Nijmegen",
-                    "nl": "Hogeschool van Arnhem en Nijmegen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17194,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Viaa",
-                "translation": {
-                    "en": "Hogeschool Viaa",
-                    "nl": "Hogeschool Viaa"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17195,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Hogeschool Windesheim",
-                "translation": {
-                    "en": "Hogeschool Windesheim",
-                    "nl": "Hogeschool Windesheim"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17196,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Information Literacy",
-                "translation": {
-                    "en": "Information Literacy",
-                    "nl": "Information Literacy"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17197,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Kahoot",
-                "translation": {
-                    "en": "Kahoot",
-                    "nl": "Kahoot"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17198,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Kennemer Gasthuis",
-                "translation": {
-                    "en": "Kennemer Gasthuis",
-                    "nl": "Kennemer Gasthuis"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17199,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Lerarenopleiders wiskunde",
-                "translation": {
-                    "en": "Teachers math",
-                    "nl": "Lerarenopleiders wiskunde"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17200,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Leyden Academy on Vitality and Ageing",
-                "translation": {
-                    "en": "Leyden Academy on Vitality and Ageing",
-                    "nl": "Leyden Academy on Vitality and Ageing"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17201,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "LOCOmotion",
-                "translation": {
-                    "en": "LOCOmotion",
-                    "nl": "LOCOmotion"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17202,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Maastricht University",
-                "translation": {
-                    "en": "Maastricht University",
-                    "nl": "Maastricht University"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17203,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Mayo Clinic",
-                "translation": {
-                    "en": "Mayo Clinic",
-                    "nl": "Mayo Clinic"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17204,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Medela Healthcare",
-                "translation": {
-                    "en": "Medela Healthcare",
-                    "nl": "Medela Healthcare"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17205,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "mediacenter.verplegingenverzorging.nl www.boekje-pienter.nl",
-                "translation": {
-                    "en": "mediacenter.verplegingenverzorging.nl www.boekje-pienter.nl",
-                    "nl": "mediacenter.verplegingenverzorging.nl www.boekje-pienter.nl"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17206,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Medi Stitch.eu",
-                "translation": {
-                    "en": "Medi Stitch.eu",
-                    "nl": "Medi Stitch.eu"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17207,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Movisie Academie",
-                "translation": {
-                    "en": "Movisie Academie",
-                    "nl": "Movisie Academie"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17208,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "NHL Stenden Hogeschool",
-                "translation": {
-                    "en": "NHL Stenden Hogeschool",
-                    "nl": "NHL Stenden Hogeschool"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17209,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "NOH-I",
-                "translation": {
-                    "en": "NOH-I",
-                    "nl": "NOH-I"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17210,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": true,
-                "is_manual": false,
-                "children": [],
-                "value": "",
-                "translation": {
-                    "en": "(no text)",
-                    "nl": "(geen tekst)"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17211,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "O2PZ",
-                "translation": {
-                    "en": "O2PZ",
-                    "nl": "O2PZ"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17212,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Ontwerpteam Didactiek van Wiskundige denkactiviteiten",
-                "translation": {
-                    "en": "Design Team Didactiek van Wiskundige denkactiviteiten",
-                    "nl": "Ontwerpteam Didactiek van Wiskundige denkactiviteiten"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17213,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Open Online Betadidaktiek - Warmte",
-                "translation": {
-                    "en": "Open Online Beta didactics - Warmth",
-                    "nl": "Open Online Betadidaktiek - Warmte"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17214,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Organisatie onbekend",
-                "translation": {
-                    "en": "Organisatie onbekend",
-                    "nl": "Organisatie onbekend"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17215,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "PASEMECO",
-                "translation": {
-                    "en": "PASEMECO",
-                    "nl": "PASEMECO"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17216,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Pharos",
-                "translation": {
-                    "en": "Pharos",
-                    "nl": "Pharos"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17217,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Platform IV-HO",
-                "translation": {
-                    "en": "Platform IV-HO",
-                    "nl": "Platform IV-HO"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17218,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Projectgroep Vaktherapie",
-                "translation": {
-                    "en": "Project group Vaktherapie",
-                    "nl": "Projectgroep Vaktherapie"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17219,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Project Structured Exercise Repository with Feedback (SERF)",
-                "translation": {
-                    "en": "Project Structured Exercise Repository with Feedback (SERF)",
-                    "nl": "Project Structured Exercise Repository with Feedback (SERF)"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17220,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Project Wiskunde",
-                "translation": {
-                    "en": "Project Wiskunde",
-                    "nl": "Project Wiskunde"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17221,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Pubmed",
-                "translation": {
-                    "en": "Pubmed",
-                    "nl": "Pubmed"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17222,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Radboud Universiteit",
-                "translation": {
-                    "en": "Radboud Universiteit",
-                    "nl": "Radboud Universiteit"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17223,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Rijksuniversiteit Groningen",
-                "translation": {
-                    "en": "Rijksuniversiteit Groningen",
-                    "nl": "Rijksuniversiteit Groningen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17224,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Samen HBO-V",
-                "translation": {
-                    "en": "Together HBO-V",
-                    "nl": "Samen HBO-V"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17225,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [
-                    {
-                        "id": 17226,
-                        "parent": 17225,
-                        "field": "publishers.keyword",
-                        "is_hidden": false,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "Saxion HBO-ICT",
-                        "translation": {
-                            "en": "Saxion HBO-IT",
-                            "nl": "Saxion HBO-ICT"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "Saxion",
-                "translation": {
-                    "en": "Saxion",
-                    "nl": "Saxion"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17227,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Stimuleringsregeling Open en Online Onderwijs",
-                "translation": {
-                    "en": "Stimuleringsregeling Open en Online Onderwijs",
-                    "nl": "Stimuleringsregeling Open en Online Onderwijs"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17228,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Stryker",
-                "translation": {
-                    "en": "Stryker",
-                    "nl": "Stryker"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17229,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Superflux",
-                "translation": {
-                    "en": "Superflux",
-                    "nl": "Superflux"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17230,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "SURF",
-                "translation": {
-                    "en": "SURF",
-                    "nl": "SURF"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17231,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "SURFmarket",
-                "translation": {
-                    "en": "SURFmarket",
-                    "nl": "SURFmarket"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17232,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
+                "children_count": 0,
                 "value": "SURFnet",
                 "translation": {
                     "en": "SURFnet",
                     "nl": "SURFnet"
                 },
-                "frequency": 0
+                "frequency": 1172
             },
             {
-                "id": 17233,
+                "id": 19637,
                 "parent": null,
                 "field": "publishers.keyword",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "Team (H)RBS support",
+                "children_count": 0,
+                "value": "Edurep Delen",
                 "translation": {
-                    "en": "Team (H)RBS support",
-                    "nl": "Team (H)RBS support"
+                    "en": "Edurep Delen",
+                    "nl": "Edurep Delen"
                 },
-                "frequency": 0
+                "frequency": 1144
             },
             {
-                "id": 17234,
+                "id": 19661,
                 "parent": null,
                 "field": "publishers.keyword",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "Team Informatievaardigheid Hogeschool Rotterdam",
-                "translation": {
-                    "en": "Team Informatievaardigheid Rotterdam University of Applied Sciences",
-                    "nl": "Team Informatievaardigheid Hogeschool Rotterdam"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17235,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Team IvG support Hogeschool Rotterdam",
-                "translation": {
-                    "en": "Team IvG support Hogeschool Rotterdam",
-                    "nl": "Team IvG support Hogeschool Rotterdam"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17236,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Team LGW",
-                "translation": {
-                    "en": "Team LGW",
-                    "nl": "Team LGW"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17237,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Team Ondersteuning Wikiwijs maken",
-                "translation": {
-                    "en": "Team Ondersteuning Wikiwijs maken",
-                    "nl": "Team Ondersteuning Wikiwijs maken"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17238,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Tropenmuseum",
-                "translation": {
-                    "en": "Tropenmuseum",
-                    "nl": "Tropenmuseum"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17239,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "TU Delft",
-                "translation": {
-                    "en": "TU Delft",
-                    "nl": "TU Delft"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17240,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Universiteit Twente",
-                "translation": {
-                    "en": "University of Twente",
-                    "nl": "Universiteit Twente"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17241,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Universiteit van Amsterdam",
-                "translation": {
-                    "en": "Universiteit van Amsterdam",
-                    "nl": "Universiteit van Amsterdam"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17242,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Vilans",
-                "translation": {
-                    "en": "Vilans",
-                    "nl": "Vilans"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17243,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Vrije Universiteit Amsterdam",
-                "translation": {
-                    "en": "Vrije Universiteit Amsterdam",
-                    "nl": "Vrije Universiteit Amsterdam"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17244,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Vrije Universiteit en Rijksuniversiteit Groningen",
-                "translation": {
-                    "en": "Vrije Universiteit en Rijksuniversiteit Groningen",
-                    "nl": "Vrije Universiteit en Rijksuniversiteit Groningen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17245,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Wageningen University & Research",
-                "translation": {
-                    "en": "Wageningen University & Research",
-                    "nl": "Wageningen University & Research"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17246,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Wikiwijs Maken",
-                "translation": {
-                    "en": "Wikiwijs Maken",
-                    "nl": "Wikiwijs Maken"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17247,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "wikiwijs_repository",
-                "translation": {
-                    "en": "wikiwijs_repository",
-                    "nl": "wikiwijs_repository"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17248,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Y-Publicaties",
-                "translation": {
-                    "en": "Y-Publicaties",
-                    "nl": "Y-Publicaties"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17249,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Zone: naar digitale (open) leermaterialen",
-                "translation": {
-                    "en": "Zone: naar digitale (open) leermaterialen",
-                    "nl": "Zone: naar digitale (open) leermaterialen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17250,
-                "parent": null,
-                "field": "publishers.keyword",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Zuyd Hogeschool",
-                "translation": {
-                    "en": "Zuyd University of Applied Sciences",
-                    "nl": "Zuyd Hogeschool"
-                },
-                "frequency": 0
-            }
-        ],
-        "value": "publishers.keyword",
-        "translation": {
-            "en": "Publisher",
-            "nl": "Uitgever"
-        },
-        "frequency": 0,
-        "field": null
-    },
-    {
-        "id": 112,
-        "parent": null,
-        "is_hidden": false,
-        "is_manual": false,
-        "children": [
-            {
-                "id": 17251,
-                "parent": null,
-                "field": "consortium",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Community Ethics",
-                "translation": {
-                    "en": "Community Ethics",
-                    "nl": "Community Ethics"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17252,
-                "parent": null,
-                "field": "consortium",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Community Urban Resilience Engineering",
-                "translation": {
-                    "en": "Community Urban Resilience Engineering",
-                    "nl": "Community Urban Resilience Engineering"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17253,
-                "parent": null,
-                "field": "consortium",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "Domein Applied Science",
-                "translation": {
-                    "en": "Domain Applied Science",
-                    "nl": "Domein Applied Science"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17254,
-                "parent": null,
-                "field": "consortium",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
-                "value": "HBO Verpleegkunde",
-                "translation": {
-                    "en": "HBO Nursing",
-                    "nl": "HBO Verpleegkunde"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17255,
-                "parent": null,
-                "field": "consortium",
-                "is_hidden": false,
-                "is_manual": false,
-                "children": [],
+                "children_count": 0,
                 "value": "Information Literacy",
                 "translation": {
                     "en": "Information Literacy",
                     "nl": "Information Literacy"
                 },
-                "frequency": 0
+                "frequency": 443
             },
             {
-                "id": 17256,
+                "id": 19705,
                 "parent": null,
-                "field": "consortium",
+                "field": "publishers.keyword",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "Projectgroep Vaktherapie",
+                "children_count": 0,
+                "value": "Universiteit Twente",
                 "translation": {
-                    "en": "Projectgroep Vaktherapie",
-                    "nl": "Projectgroep Vaktherapie"
+                    "en": "University of Twente",
+                    "nl": "Universiteit Twente"
                 },
-                "frequency": 0
+                "frequency": 193
             },
             {
-                "id": 17257,
+                "id": 19708,
                 "parent": null,
-                "field": "consortium",
+                "field": "publishers.keyword",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "Project Structured Exercise Repository with Feedback (SERF)",
+                "children_count": 0,
+                "value": "Vrije Universiteit Amsterdam",
                 "translation": {
-                    "en": "Project Structured Exercise Repository with Feedback (SERF)",
-                    "nl": "Project Structured Exercise Repository with Feedback (SERF)"
+                    "en": "Vrije Universiteit Amsterdam",
+                    "nl": "Vrije Universiteit Amsterdam"
                 },
-                "frequency": 0
+                "frequency": 169
             },
             {
-                "id": 17258,
+                "id": 19649,
                 "parent": null,
-                "field": "consortium",
+                "field": "publishers.keyword",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
-                "value": "Project Wiskunde",
+                "children_count": 0,
+                "value": "HBO Verpleegkunde",
                 "translation": {
-                    "en": "Project Math",
-                    "nl": "Project Wiskunde"
+                    "en": "HBO Nursing",
+                    "nl": "HBO Verpleegkunde"
                 },
-                "frequency": 0
+                "frequency": 159
             },
             {
-                "id": 17259,
+                "id": 19689,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Samen HBO-V",
+                "translation": {
+                    "en": "Together HBO-V",
+                    "nl": "Samen HBO-V"
+                },
+                "frequency": 158
+            },
+            {
+                "id": 19631,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Community Urban Resilience Engineering",
+                "translation": {
+                    "en": "Community Urban Resilience Engineering",
+                    "nl": "Community Urban Resilience Engineering"
+                },
+                "frequency": 153
+            },
+            {
+                "id": 19704,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "TU Delft",
+                "translation": {
+                    "en": "TU Delft",
+                    "nl": "TU Delft"
+                },
+                "frequency": 148
+            },
+            {
+                "id": 19629,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Christelijke Hogeschool Ede",
+                "translation": {
+                    "en": "Christelijke Hogeschool Ede",
+                    "nl": "Christelijke Hogeschool Ede"
+                },
+                "frequency": 137
+            },
+            {
+                "id": 19650,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Hogeschool Inholland",
+                "translation": {
+                    "en": "Inholland University of Applied Sciences",
+                    "nl": "Hogeschool Inholland"
+                },
+                "frequency": 117
+            },
+            {
+                "id": 19711,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Wikiwijs Maken",
+                "translation": {
+                    "en": "Wikiwijs Maken",
+                    "nl": "Wikiwijs Maken"
+                },
+                "frequency": 90
+            },
+            {
+                "id": 19651,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Hogeschool Leiden",
+                "translation": {
+                    "en": "Leiden University of Applied Sciences",
+                    "nl": "Hogeschool Leiden"
+                },
+                "frequency": 83
+            },
+            {
+                "id": 19712,
+                "parent": null,
+                "field": "publishers.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "wikiwijs_repository",
+                "translation": {
+                    "en": "wikiwijs_repository",
+                    "nl": "wikiwijs_repository"
+                },
+                "frequency": 82
+            }
+        ],
+        "children_count": 97,
+        "value": "publishers.keyword",
+        "translation": {
+            "en": "Publisher",
+            "nl": "Uitgever"
+        },
+        "frequency": 8914,
+        "field": null
+    },
+    {
+        "id": 127,
+        "parent": null,
+        "is_hidden": false,
+        "is_manual": false,
+        "children": [
+            {
+                "id": 19719,
                 "parent": null,
                 "field": "consortium",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
+                "value": "HBO Verpleegkunde",
+                "translation": {
+                    "en": "HBO Nursing",
+                    "nl": "HBO Verpleegkunde"
+                },
+                "frequency": 1238
+            },
+            {
+                "id": 19720,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Information Literacy",
+                "translation": {
+                    "en": "Information Literacy",
+                    "nl": "Information Literacy"
+                },
+                "frequency": 443
+            },
+            {
+                "id": 19717,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Community Urban Resilience Engineering",
+                "translation": {
+                    "en": "Community Urban Resilience Engineering",
+                    "nl": "Community Urban Resilience Engineering"
+                },
+                "frequency": 188
+            },
+            {
+                "id": 19724,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
                 "value": "Samen HBO-V",
                 "translation": {
                     "en": "Samen HBO-V",
                     "nl": "Samen HBO-V"
                 },
-                "frequency": 0
+                "frequency": 158
             },
             {
-                "id": 17260,
+                "id": 19716,
                 "parent": null,
                 "field": "consortium",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
+                "value": "Community Ethics",
+                "translation": {
+                    "en": "Community Ethics",
+                    "nl": "Community Ethics"
+                },
+                "frequency": 77
+            },
+            {
+                "id": 19725,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
                 "value": "Stimuleringsregeling Open en Online Onderwijs",
                 "translation": {
                     "en": "Stimuleringsregeling Open en Online Onderwijs",
                     "nl": "Stimuleringsregeling Open en Online Onderwijs"
                 },
-                "frequency": 0
+                "frequency": 70
             },
             {
-                "id": 17261,
+                "id": 19718,
                 "parent": null,
                 "field": "consortium",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
+                "value": "Domein Applied Science",
+                "translation": {
+                    "en": "Domain Applied Science",
+                    "nl": "Domein Applied Science"
+                },
+                "frequency": 16
+            },
+            {
+                "id": 19721,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Projectgroep Vaktherapie",
+                "translation": {
+                    "en": "Projectgroep Vaktherapie",
+                    "nl": "Projectgroep Vaktherapie"
+                },
+                "frequency": 15
+            },
+            {
+                "id": 19723,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Project Wiskunde",
+                "translation": {
+                    "en": "Project Math",
+                    "nl": "Project Wiskunde"
+                },
+                "frequency": 2
+            },
+            {
+                "id": 19722,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Project Structured Exercise Repository with Feedback (SERF)",
+                "translation": {
+                    "en": "Project Structured Exercise Repository with Feedback (SERF)",
+                    "nl": "Project Structured Exercise Repository with Feedback (SERF)"
+                },
+                "frequency": 1
+            },
+            {
+                "id": 19726,
+                "parent": null,
+                "field": "consortium",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
                 "value": "Zone: naar digitale (open) leermaterialen",
                 "translation": {
                     "en": "Zone: Towards digital (open) educational resources",
                     "nl": "Zone: naar digitale (open) leermaterialen"
                 },
-                "frequency": 0
+                "frequency": 1
             }
         ],
+        "children_count": 11,
         "value": "consortium",
         "translation": {
             "en": "Consortium",
             "nl": "Samenwerkingsverband"
         },
-        "frequency": 0,
+        "frequency": 2209,
         "field": null
     },
     {
-        "id": 113,
+        "id": 128,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
             {
-                "id": 17262,
+                "id": 19727,
                 "parent": null,
                 "field": "lom_educational_levels",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "HBO",
                 "translation": {
                     "en": "University of applied science",
                     "nl": "HBO"
                 },
-                "frequency": 0
+                "frequency": 6246
             },
             {
-                "id": 17263,
+                "id": 19728,
                 "parent": null,
                 "field": "lom_educational_levels",
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "WO",
                 "translation": {
                     "en": "University",
                     "nl": "WO"
                 },
-                "frequency": 0
+                "frequency": 6173
             }
         ],
+        "children_count": 2,
         "value": "lom_educational_levels",
         "translation": {
             "en": "Educational level",
             "nl": "Onderwijsniveau"
         },
-        "frequency": 0,
+        "frequency": 12419,
         "field": null
     },
     {
-        "id": 114,
+        "id": 129,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
             {
-                "id": 17264,
+                "id": 19746,
                 "parent": null,
                 "field": "copyright.keyword",
                 "is_hidden": false,
                 "is_manual": true,
                 "children": [
                     {
-                        "id": 17265,
-                        "parent": 17264,
+                        "id": 19747,
+                        "parent": 19746,
                         "field": "copyright.keyword",
                         "is_hidden": true,
                         "is_manual": false,
                         "children": [],
-                        "value": "cc-by-30",
-                        "translation": {
-                            "en": "cc-by-30",
-                            "nl": "cc-by-30"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17266,
-                        "parent": 17264,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-40",
-                        "translation": {
-                            "en": "cc-by-40",
-                            "nl": "cc-by-40"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "cc-by",
-                "translation": {
-                    "en": "Attribution",
-                    "nl": "Naamsvermelding"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17267,
-                "parent": null,
-                "field": "copyright.keyword",
-                "is_hidden": false,
-                "is_manual": true,
-                "children": [
-                    {
-                        "id": 17268,
-                        "parent": 17267,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-nc-40",
-                        "translation": {
-                            "en": "cc-by-nc-40",
-                            "nl": "cc-by-nc-40"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "cc-by-nc",
-                "translation": {
-                    "en": "Attribution-Noncommercial",
-                    "nl": "Naamsvermelding-NietCommercieel"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17269,
-                "parent": null,
-                "field": "copyright.keyword",
-                "is_hidden": false,
-                "is_manual": true,
-                "children": [
-                    {
-                        "id": 17270,
-                        "parent": 17269,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-nc-nd-30",
-                        "translation": {
-                            "en": "cc-by-nc-nd-30",
-                            "nl": "cc-by-nc-nd-30"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17271,
-                        "parent": 17269,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-nc-nd-40",
-                        "translation": {
-                            "en": "cc-by-nc-nd-40",
-                            "nl": "cc-by-nc-nd-40"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "cc-by-nc-nd",
-                "translation": {
-                    "en": "Attribution-Noncommercial-NoDerivatives",
-                    "nl": "Naamsvermelding-NietCommercieel-GeenAfgeleideWerken"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17272,
-                "parent": null,
-                "field": "copyright.keyword",
-                "is_hidden": false,
-                "is_manual": true,
-                "children": [
-                    {
-                        "id": 17273,
-                        "parent": 17272,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-nc-sa-30",
-                        "translation": {
-                            "en": "cc-by-nc-sa-30",
-                            "nl": "cc-by-nc-sa-30"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17274,
-                        "parent": 17272,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-nc-sa-40",
-                        "translation": {
-                            "en": "cc-by-nc-sa-40",
-                            "nl": "cc-by-nc-sa-40"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17275,
-                        "parent": 17272,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-sa-nc",
-                        "translation": {
-                            "en": "cc-by-sa-nc",
-                            "nl": "cc-by-sa-nc"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "cc-by-nc-sa",
-                "translation": {
-                    "en": "Attribution-Noncommercial-ShareAlike",
-                    "nl": "Naamsvermelding-NietCommercieel-GelijkDelen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17276,
-                "parent": null,
-                "field": "copyright.keyword",
-                "is_hidden": false,
-                "is_manual": true,
-                "children": [
-                    {
-                        "id": 17277,
-                        "parent": 17276,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-nd-30",
-                        "translation": {
-                            "en": "cc-by-nd-30",
-                            "nl": "cc-by-nd-30"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "cc-by-nd",
-                "translation": {
-                    "en": "Attribution-NonDerivative",
-                    "nl": "Naamsvermelding-GeenAfgeleideWerken"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17278,
-                "parent": null,
-                "field": "copyright.keyword",
-                "is_hidden": false,
-                "is_manual": true,
-                "children": [
-                    {
-                        "id": 17279,
-                        "parent": 17278,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-sa-30",
-                        "translation": {
-                            "en": "cc-by-sa-30",
-                            "nl": "cc-by-sa-30"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17280,
-                        "parent": 17278,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc-by-sa-40",
-                        "translation": {
-                            "en": "cc-by-sa-40",
-                            "nl": "cc-by-sa-40"
-                        },
-                        "frequency": 0
-                    }
-                ],
-                "value": "cc-by-sa",
-                "translation": {
-                    "en": "Attribution-ShareAlike",
-                    "nl": "Naamsvermelding-GelijkDelen"
-                },
-                "frequency": 0
-            },
-            {
-                "id": 17281,
-                "parent": null,
-                "field": "copyright.keyword",
-                "is_hidden": false,
-                "is_manual": true,
-                "children": [
-                    {
-                        "id": 17283,
-                        "parent": 17281,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
-                        "value": "cc0-10",
-                        "translation": {
-                            "en": "cc0-10",
-                            "nl": "cc0-10"
-                        },
-                        "frequency": 0
-                    },
-                    {
-                        "id": 17282,
-                        "parent": 17281,
-                        "field": "copyright.keyword",
-                        "is_hidden": true,
-                        "is_manual": false,
-                        "children": [],
+                        "children_count": 0,
                         "value": "pdm-10",
                         "translation": {
                             "en": "pdm-10",
                             "nl": "pdm-10"
                         },
-                        "frequency": 0
+                        "frequency": 845
+                    },
+                    {
+                        "id": 19748,
+                        "parent": 19746,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc0-10",
+                        "translation": {
+                            "en": "cc0-10",
+                            "nl": "cc0-10"
+                        },
+                        "frequency": 4
                     }
                 ],
+                "children_count": 2,
                 "value": "no",
                 "translation": {
                     "en": "None",
                     "nl": "Geen"
                 },
-                "frequency": 0
+                "frequency": 1234
             },
             {
-                "id": 17284,
+                "id": 19737,
+                "parent": null,
+                "field": "copyright.keyword",
+                "is_hidden": false,
+                "is_manual": true,
+                "children": [
+                    {
+                        "id": 19739,
+                        "parent": 19737,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-nc-sa-40",
+                        "translation": {
+                            "en": "cc-by-nc-sa-40",
+                            "nl": "cc-by-nc-sa-40"
+                        },
+                        "frequency": 2017
+                    },
+                    {
+                        "id": 19738,
+                        "parent": 19737,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-nc-sa-30",
+                        "translation": {
+                            "en": "cc-by-nc-sa-30",
+                            "nl": "cc-by-nc-sa-30"
+                        },
+                        "frequency": 56
+                    },
+                    {
+                        "id": 19740,
+                        "parent": 19737,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-sa-nc",
+                        "translation": {
+                            "en": "cc-by-sa-nc",
+                            "nl": "cc-by-sa-nc"
+                        },
+                        "frequency": 3
+                    }
+                ],
+                "children_count": 3,
+                "value": "cc-by-nc-sa",
+                "translation": {
+                    "en": "Attribution-Noncommercial-ShareAlike",
+                    "nl": "Naamsvermelding-NietCommercieel-GelijkDelen"
+                },
+                "frequency": 2174
+            },
+            {
+                "id": 19749,
                 "parent": null,
                 "field": "copyright.keyword",
                 "is_hidden": true,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "unknown",
                 "translation": {
                     "en": "unknown",
                     "nl": "onbekend"
                 },
-                "frequency": 0
+                "frequency": 30
             },
             {
-                "id": 17285,
+                "id": 19750,
                 "parent": null,
                 "field": "copyright.keyword",
                 "is_hidden": true,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "yes",
                 "translation": {
                     "en": "Yes",
                     "nl": "Ja"
                 },
-                "frequency": 0
+                "frequency": 26
+            },
+            {
+                "id": 19741,
+                "parent": null,
+                "field": "copyright.keyword",
+                "is_hidden": false,
+                "is_manual": true,
+                "children": [
+                    {
+                        "id": 19742,
+                        "parent": 19741,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-nd-30",
+                        "translation": {
+                            "en": "cc-by-nd-30",
+                            "nl": "cc-by-nd-30"
+                        },
+                        "frequency": 2
+                    }
+                ],
+                "children_count": 1,
+                "value": "cc-by-nd",
+                "translation": {
+                    "en": "Attribution-NonDerivative",
+                    "nl": "Naamsvermelding-GeenAfgeleideWerken"
+                },
+                "frequency": 3
+            },
+            {
+                "id": 19729,
+                "parent": null,
+                "field": "copyright.keyword",
+                "is_hidden": false,
+                "is_manual": true,
+                "children": [
+                    {
+                        "id": 19731,
+                        "parent": 19729,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-40",
+                        "translation": {
+                            "en": "cc-by-40",
+                            "nl": "cc-by-40"
+                        },
+                        "frequency": 1670
+                    },
+                    {
+                        "id": 19730,
+                        "parent": 19729,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-30",
+                        "translation": {
+                            "en": "cc-by-30",
+                            "nl": "cc-by-30"
+                        },
+                        "frequency": 150
+                    }
+                ],
+                "children_count": 2,
+                "value": "cc-by",
+                "translation": {
+                    "en": "Attribution",
+                    "nl": "Naamsvermelding"
+                },
+                "frequency": 1820
+            },
+            {
+                "id": 19732,
+                "parent": null,
+                "field": "copyright.keyword",
+                "is_hidden": false,
+                "is_manual": true,
+                "children": [
+                    {
+                        "id": 19733,
+                        "parent": 19732,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-nc-40",
+                        "translation": {
+                            "en": "cc-by-nc-40",
+                            "nl": "cc-by-nc-40"
+                        },
+                        "frequency": 265
+                    }
+                ],
+                "children_count": 1,
+                "value": "cc-by-nc",
+                "translation": {
+                    "en": "Attribution-Noncommercial",
+                    "nl": "Naamsvermelding-NietCommercieel"
+                },
+                "frequency": 265
+            },
+            {
+                "id": 19734,
+                "parent": null,
+                "field": "copyright.keyword",
+                "is_hidden": false,
+                "is_manual": true,
+                "children": [
+                    {
+                        "id": 19736,
+                        "parent": 19734,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-nc-nd-40",
+                        "translation": {
+                            "en": "cc-by-nc-nd-40",
+                            "nl": "cc-by-nc-nd-40"
+                        },
+                        "frequency": 1201
+                    },
+                    {
+                        "id": 19735,
+                        "parent": 19734,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-nc-nd-30",
+                        "translation": {
+                            "en": "cc-by-nc-nd-30",
+                            "nl": "cc-by-nc-nd-30"
+                        },
+                        "frequency": 8
+                    }
+                ],
+                "children_count": 2,
+                "value": "cc-by-nc-nd",
+                "translation": {
+                    "en": "Attribution-Noncommercial-NoDerivatives",
+                    "nl": "Naamsvermelding-NietCommercieel-GeenAfgeleideWerken"
+                },
+                "frequency": 1209
+            },
+            {
+                "id": 19743,
+                "parent": null,
+                "field": "copyright.keyword",
+                "is_hidden": false,
+                "is_manual": true,
+                "children": [
+                    {
+                        "id": 19745,
+                        "parent": 19743,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-sa-40",
+                        "translation": {
+                            "en": "cc-by-sa-40",
+                            "nl": "cc-by-sa-40"
+                        },
+                        "frequency": 1656
+                    },
+                    {
+                        "id": 19744,
+                        "parent": 19743,
+                        "field": "copyright.keyword",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "cc-by-sa-30",
+                        "translation": {
+                            "en": "cc-by-sa-30",
+                            "nl": "cc-by-sa-30"
+                        },
+                        "frequency": 86
+                    }
+                ],
+                "children_count": 2,
+                "value": "cc-by-sa",
+                "translation": {
+                    "en": "Attribution-ShareAlike",
+                    "nl": "Naamsvermelding-GelijkDelen"
+                },
+                "frequency": 1742
             }
         ],
+        "children_count": 9,
         "value": "copyright.keyword",
         "translation": {
             "en": "Copyright",
             "nl": "Gebruiksrechten"
         },
-        "frequency": 0,
+        "frequency": 8503,
         "field": null
     },
     {
-        "id": 115,
+        "id": 130,
         "parent": null,
         "is_hidden": false,
         "is_manual": true,
         "children": [
             {
-                "id": 17286,
+                "id": 19751,
                 "parent": null,
                 "field": "language.keyword",
                 "is_hidden": false,
                 "is_manual": true,
                 "children": [],
+                "children_count": 0,
                 "value": "en",
                 "translation": {
                     "en": "English",
@@ -3011,12 +1689,13 @@
                 "frequency": 0
             },
             {
-                "id": 17287,
+                "id": 19752,
                 "parent": null,
                 "field": "language.keyword",
                 "is_hidden": false,
                 "is_manual": true,
                 "children": [],
+                "children_count": 0,
                 "value": "nl",
                 "translation": {
                     "en": "Dutch",
@@ -3025,6 +1704,7 @@
                 "frequency": 0
             }
         ],
+        "children_count": 2,
         "value": "language.keyword",
         "translation": {
             "en": "Language",
@@ -3034,11 +1714,221 @@
         "field": null
     },
     {
-        "id": 116,
+        "id": 131,
         "parent": null,
         "is_hidden": false,
         "is_manual": false,
         "children": [
+            {
+                "id": 19860,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "5c98610c-3f7d-4521-b231-d0932b4ca799",
+                "translation": {
+                    "en": "Medicine",
+                    "nl": "Geneeskunde"
+                },
+                "frequency": 3913
+            },
+            {
+                "id": 20104,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "b333369b-e647-4bbf-b04c-d11a9235a113",
+                "translation": {
+                    "en": "Nursing and care",
+                    "nl": "Verpleging en verzorging"
+                },
+                "frequency": 712
+            },
+            {
+                "id": 20111,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "5e86dc82-1981-48df-bbe5-abd4a9b3767b",
+                "translation": {
+                    "en": "Food, nature and environment",
+                    "nl": "Voedsel, natuur en leefomgeving"
+                },
+                "frequency": 563
+            },
+            {
+                "id": 20152,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "743e38e7-d3bc-40e5-9f5d-5d7941af659e",
+                "translation": {
+                    "en": "Caregiver",
+                    "nl": "Zorgverlener"
+                },
+                "frequency": 407
+            },
+            {
+                "id": 20019,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "20c66254-fbf7-4ae6-b4c1-29101adc1376",
+                "translation": {
+                    "en": "Reflective EBP Professional",
+                    "nl": "Reflectieve EBP-professional"
+                },
+                "frequency": 329
+            },
+            {
+                "id": 19805,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "2e2c4f06-fd69-4da3-b66f-a6f1aa28e40c",
+                "translation": {
+                    "en": "Communicator",
+                    "nl": "Communicator"
+                },
+                "frequency": 312
+            },
+            {
+                "id": 20023,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "07a09753-80a3-4dda-9150-bafb0f3cd757",
+                "translation": {
+                    "en": "Cooperation partner",
+                    "nl": "Samenwerkingspartner"
+                },
+                "frequency": 199
+            },
+            {
+                "id": 19911,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "75d11262-b83c-405e-9e3e-b0f8303b414f",
+                "translation": {
+                    "en": "Clinical reasoning",
+                    "nl": "Klinisch redeneren"
+                },
+                "frequency": 198
+            },
+            {
+                "id": 20003,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "5e953658-fccc-4583-8f3a-98c5d027cbb6",
+                "translation": {
+                    "en": "Professional and Quality Assurance",
+                    "nl": "Professional en Kwaliteitsbevorderaar"
+                },
+                "frequency": 179
+            },
+            {
+                "id": 19985,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "85f410bc-942a-4b26-84c4-b91b2a633cb4",
+                "translation": {
+                    "en": "Person-centred communication",
+                    "nl": "Persoonsgerichte communicatie"
+                },
+                "frequency": 176
+            },
+            {
+                "id": 19877,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "2b233fa6-f3de-40e4-8713-973479dddb8c",
+                "translation": {
+                    "en": "Health Promoter",
+                    "nl": "Gezondheidsbevorderaar"
+                },
+                "frequency": 174
+            },
+            {
+                "id": 19975,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "6451810e-44f2-452b-8a4a-308d7be85927",
+                "translation": {
+                    "en": "Organiser",
+                    "nl": "Organisator"
+                },
+                "frequency": 171
+            },
+            {
+                "id": 19967,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "4cc9c676-2bd3-4acb-8e5b-e0fa025a3de2",
+                "translation": {
+                    "en": "Research ability",
+                    "nl": "Onderzoekend vermogen"
+                },
+                "frequency": 120
+            },
+            {
+                "id": 20053,
+                "parent": null,
+                "field": "disciplines",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "01de5c67-9aaa-45a6-9fdf-4910fb5f550b",
+                "translation": {
+                    "en": "Caring",
+                    "nl": "Uitvoeren van zorg"
+                },
+                "frequency": 109
+            },
             {
                 "id": 17668,
                 "parent": null,
@@ -3046,20 +1936,581 @@
                 "is_hidden": false,
                 "is_manual": false,
                 "children": [],
+                "children_count": 0,
                 "value": "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",
                 "translation": {
                     "en": "Mathematics",
                     "nl": "Wiskunde"
                 },
-                "frequency": 0
+                "frequency": 1
             }
         ],
+        "children_count": 402,
         "value": "disciplines",
         "translation": {
             "en": "Discipline",
             "nl": "Vakgebied"
         },
-        "frequency": 0,
+        "frequency": 11226,
+        "field": null
+    },
+    {
+        "id": 132,
+        "parent": null,
+        "is_hidden": false,
+        "is_manual": false,
+        "children": [
+            {
+                "id": 21285,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Prof.dr. Johannes Sobotta",
+                "translation": {
+                    "en": "Prof.dr. Johannes Sobotta",
+                    "nl": "Prof.dr. Johannes Sobotta"
+                },
+                "frequency": 669
+            },
+            {
+                "id": 21220,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "OpenStax",
+                "translation": {
+                    "en": "OpenStax",
+                    "nl": "OpenStax"
+                },
+                "frequency": 414
+            },
+            {
+                "id": 21293,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Prof Johannes Sobotta",
+                "translation": {
+                    "en": "Prof Johannes Sobotta",
+                    "nl": "Prof Johannes Sobotta"
+                },
+                "frequency": 410
+            },
+            {
+                "id": 21355,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Ron Slagter",
+                "translation": {
+                    "en": "Ron Slagter",
+                    "nl": "Ron Slagter"
+                },
+                "frequency": 325
+            },
+            {
+                "id": 20466,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "dream_studio3",
+                "translation": {
+                    "en": "dream_studio3",
+                    "nl": "dream_studio3"
+                },
+                "frequency": 200
+            },
+            {
+                "id": 20715,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Henk van der Kolk",
+                "translation": {
+                    "en": "Henk van der Kolk",
+                    "nl": "Henk van der Kolk"
+                },
+                "frequency": 168
+            },
+            {
+                "id": 21129,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Monika Fejtek",
+                "translation": {
+                    "en": "Monika Fejtek",
+                    "nl": "Monika Fejtek"
+                },
+                "frequency": 127
+            },
+            {
+                "id": 21217,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "O. Paul Gobée",
+                "translation": {
+                    "en": "O. Paul Gobée",
+                    "nl": "O. Paul Gobée"
+                },
+                "frequency": 124
+            },
+            {
+                "id": 21390,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Servier Medical Art",
+                "translation": {
+                    "en": "Servier Medical Art",
+                    "nl": "Servier Medical Art"
+                },
+                "frequency": 124
+            },
+            {
+                "id": 20303,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Blausen.com staff (2014)",
+                "translation": {
+                    "en": "Blausen.com staff (2014)",
+                    "nl": "Blausen.com staff (2014)"
+                },
+                "frequency": 122
+            },
+            {
+                "id": 20833,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Johan Meuleman",
+                "translation": {
+                    "en": "Johan Meuleman",
+                    "nl": "Johan Meuleman"
+                },
+                "frequency": 113
+            },
+            {
+                "id": 20704,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Hasan Yar",
+                "translation": {
+                    "en": "Hasan Yar",
+                    "nl": "Hasan Yar"
+                },
+                "frequency": 112
+            },
+            {
+                "id": 20294,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Bibliotheek HvA",
+                "translation": {
+                    "en": "Bibliotheek HvA",
+                    "nl": "Bibliotheek HvA"
+                },
+                "frequency": 98
+            },
+            {
+                "id": 21212,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Olivier Rastello",
+                "translation": {
+                    "en": "Olivier Rastello",
+                    "nl": "Olivier Rastello"
+                },
+                "frequency": 92
+            },
+            {
+                "id": 21236,
+                "parent": null,
+                "field": "authors.name.keyword",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "Patrick J. Lynch",
+                "translation": {
+                    "en": "Patrick J. Lynch",
+                    "nl": "Patrick J. Lynch"
+                },
+                "frequency": 90
+            }
+        ],
+        "children_count": 1418,
+        "value": "authors.name.keyword",
+        "translation": {
+            "en": "Author",
+            "nl": "Auteur"
+        },
+        "frequency": 9863,
+        "field": null
+    },
+    {
+        "id": 134,
+        "parent": null,
+        "is_hidden": false,
+        "is_manual": false,
+        "children": [
+            {
+                "id": 22007,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "gezondheid",
+                "translation": {
+                    "en": "Health",
+                    "nl": "Gezondheid"
+                },
+                "frequency": 1754
+            },
+            {
+                "id": 22003,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "aarde_milieu",
+                "translation": {
+                    "en": "Earth and environment",
+                    "nl": "Aarde en Milieu"
+                },
+                "frequency": 931
+            },
+            {
+                "id": 22012,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "taal_communicatie",
+                "translation": {
+                    "en": "Language and Communication",
+                    "nl": "Taal en Communicatie"
+                },
+                "frequency": 529
+            },
+            {
+                "id": 22006,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "gedrag_maatschappij",
+                "translation": {
+                    "en": "Behaviour and Society",
+                    "nl": "Gedrag en Maatschappij"
+                },
+                "frequency": 445
+            },
+            {
+                "id": 22009,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "kunst_cultuur",
+                "translation": {
+                    "en": "Art and Culture",
+                    "nl": "Kunst en Cultuur"
+                },
+                "frequency": 253
+            },
+            {
+                "id": 22008,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "interdisciplinair",
+                "translation": {
+                    "en": "Interdisciplinary",
+                    "nl": "Interdisciplinair"
+                },
+                "frequency": 229
+            },
+            {
+                "id": 22004,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "economie_bedrijf",
+                "translation": {
+                    "en": "Economics and Organization",
+                    "nl": "Economie en Bedrijf"
+                },
+                "frequency": 180
+            },
+            {
+                "id": 22013,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "techniek",
+                "translation": {
+                    "en": "Engineering",
+                    "nl": "Techniek"
+                },
+                "frequency": 153
+            },
+            {
+                "id": 22011,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "recht_bestuur",
+                "translation": {
+                    "en": "Law and Policy",
+                    "nl": "Recht en Bestuur"
+                },
+                "frequency": 148
+            },
+            {
+                "id": 22005,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "exact_informatica",
+                "translation": {
+                    "en": "Exact sciences and Informatics",
+                    "nl": "Exact en Informatica"
+                },
+                "frequency": 127
+            },
+            {
+                "id": 22010,
+                "parent": null,
+                "field": "learning_material_themes_normalized",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "onderwijs_opvoeding",
+                "translation": {
+                    "en": "Education and Pedagogy",
+                    "nl": "Onderwijs en Opvoeding"
+                },
+                "frequency": 107
+            }
+        ],
+        "children_count": 11,
+        "value": "learning_material_themes_normalized",
+        "translation": {
+            "en": "Theme",
+            "nl": "Thema"
+        },
+        "frequency": 4856,
+        "field": null
+    },
+    {
+        "id": 120,
+        "parent": null,
+        "is_hidden": false,
+        "is_manual": false,
+        "children": [
+            {
+                "id": 19549,
+                "parent": null,
+                "field": "harvest_source",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "anatomy_tool",
+                "translation": {
+                    "en": "anatomy_tool",
+                    "nl": "anatomy_tool"
+                },
+                "frequency": 3768
+            },
+            {
+                "id": 19550,
+                "parent": null,
+                "field": "harvest_source",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "edurep_delen",
+                "translation": {
+                    "en": "Edurep Delen",
+                    "nl": "Edurep Delen"
+                },
+                "frequency": 1465
+            },
+            {
+                "id": 19551,
+                "parent": null,
+                "field": "harvest_source",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "l4l",
+                "translation": {
+                    "en": "WUR Library 4 Learning",
+                    "nl": "WUR Library 4 Learning"
+                },
+                "frequency": 563
+            },
+            {
+                "id": 19555,
+                "parent": null,
+                "field": "harvest_source",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "wikiwijsmaken",
+                "translation": {
+                    "en": "Wikiwijs Maken",
+                    "nl": "Wikiwijs Maken"
+                },
+                "frequency": 140
+            },
+            {
+                "id": 22019,
+                "parent": null,
+                "field": "harvest_source",
+                "is_hidden": true,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "nppo",
+                "translation": {
+                    "en": "nppo",
+                    "nl": "nppo"
+                },
+                "frequency": 1
+            },
+            {
+                "id": 19552,
+                "parent": null,
+                "field": "harvest_source",
+                "is_hidden": false,
+                "is_manual": true,
+                "children": [
+                    {
+                        "id": 19553,
+                        "parent": 19552,
+                        "field": "harvest_source",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "edusources",
+                        "translation": {
+                            "en": "Edusources",
+                            "nl": "Edusources"
+                        },
+                        "frequency": 2544
+                    },
+                    {
+                        "id": 19554,
+                        "parent": 19552,
+                        "field": "harvest_source",
+                        "is_hidden": true,
+                        "is_manual": false,
+                        "children": [],
+                        "children_count": 0,
+                        "value": "edusourcesprivate",
+                        "translation": {
+                            "en": "edusources private",
+                            "nl": "edusources besloten"
+                        },
+                        "frequency": 23
+                    }
+                ],
+                "children_count": 2,
+                "value": "sharekit",
+                "translation": {
+                    "en": "Sharekit",
+                    "nl": "Sharekit"
+                },
+                "frequency": 2567
+            }
+        ],
+        "children_count": 6,
+        "value": "harvest_source",
+        "translation": {
+            "en": "Source",
+            "nl": "Bron"
+        },
+        "frequency": 8504,
         "field": null
     }
 ]

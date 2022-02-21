@@ -1,9 +1,10 @@
 from django.views.decorators.gzip import gzip_page
 from django.utils.decorators import method_decorator
 from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 
 from harvester.schema import HarvesterSchema
-from metadata.models import MetadataField, MetadataFieldSerializer
+from metadata.models import MetadataField, MetadataFieldSerializer, MetadataValue, MetadataValueSerializer
 
 
 @method_decorator(gzip_page, name="dispatch")
@@ -42,10 +43,26 @@ class MetadataTreeView(generics.ListAPIView):
 
     **children**: All nodes that have this node as a parent.
 
-    **frequency**: How many results match this node last time it was checked. Formerly the "count"
+    **frequency**: How many results match this node in the entire dataset.
 
     """
-    queryset = MetadataField.objects.select_related("translation")
+    queryset = MetadataField.objects.filter(is_hidden=False).select_related("translation")
     serializer_class = MetadataFieldSerializer
     schema = HarvesterSchema()
     pagination_class = None
+
+
+@method_decorator(gzip_page, name="dispatch")
+class MetadataFieldValuesView(generics.ListAPIView):
+
+    queryset = MetadataValue.objects.all()
+    serializer_class = MetadataValueSerializer
+    schema = HarvesterSchema()
+    pagination_class = PageNumberPagination
+
+    def filter_queryset(self, queryset):
+        queryset = queryset.filter(field__name=self.kwargs["field"])
+        startswith = self.kwargs.get("startswith", None)
+        if startswith:
+            queryset = queryset.filter(value__istartswith=startswith)
+        return queryset

@@ -51,6 +51,7 @@ class HanzeResearchObjectResource(HarvestHttpResource):
     objects = HanzeResearchObjectResourceManager()
 
     set_specification = models.CharField(max_length=255, blank=True, null=False, default="hanze")
+    use_multiple_sets = False
 
     URI_TEMPLATE = "https://hanzetest.azure-api.net/nppo/research-outputs"
     PARAMETERS = {

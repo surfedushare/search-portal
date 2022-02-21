@@ -11,7 +11,7 @@ django:
   administrative_emails: false
   harvester_api: "http://harvester.nppo/api/v1/"
   sentry:
-    dsn: "https://84bb029bea9643399833826dfa1512d4@o356528.ingest.sentry.io/6080811"
+    dsn: "https://9bd01d846fd34f4f9708304781769a05@o1143393.ingest.sentry.io/6208207"
 
 postgres:
   database: "nppo"
@@ -31,7 +31,6 @@ aws:
   task_role_arn: "arn:aws:iam::870512711545:role/ecsTaskExecutionRole"
   scheduled_tasks:
     - "clearlogins"
-    - "sync_category_filters"
 
 secrets:
   postgres:

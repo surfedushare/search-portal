@@ -25,6 +25,7 @@ class HarvestHttpResource(HttpResource):
     }
 
     set_specification = models.CharField(max_length=255, blank=True, null=False)
+    use_multiple_sets = True
     since = models.DateTimeField()
 
     def variables(self, *args):
