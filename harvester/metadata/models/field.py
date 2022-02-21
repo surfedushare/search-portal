@@ -52,9 +52,10 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
 
     parent = serializers.SerializerMethodField()
     children = serializers.SerializerMethodField()
+    children_count = serializers.SerializerMethodField()
     translation = MetadataTranslationSerializer()
     value = serializers.CharField(source="name")
-    frequency = serializers.IntegerField(default=0)
+    frequency = serializers.SerializerMethodField()
     field = serializers.SerializerMethodField()
 
     max_children = serializers.IntegerField(write_only=True, required=False)
@@ -66,14 +67,22 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
         children = obj.metadatavalue_set.filter(deleted_at__isnull=True) \
             .select_related("translation") \
             .get_cached_trees()
+        children.sort(key=lambda child: child.frequency, reverse=True)
         max_children = self.context["request"].GET.get("max_children", "")
         max_children = int(max_children) if max_children else None
-        return MetadataValueSerializer(children, many=True).data[:max_children]
+        return MetadataValueSerializer(children, many=True, context=self.context).data[:max_children]
+
+    def get_children_count(self, obj):
+        return obj.metadatavalue_set.filter(deleted_at__isnull=True, parent__isnull=True).count()
+
+    def get_frequency(self, obj):
+        aggregation = obj.metadatavalue_set.filter(deleted_at__isnull=True).aggregate(models.Sum("frequency"))
+        return aggregation["frequency__sum"]
 
     def get_field(self, obj):
         return None
 
     class Meta:
         model = MetadataField
-        fields = ('id', 'parent', 'is_hidden', 'is_manual', 'children', 'value', 'translation', 'frequency', 'field',
-                  'max_children',)
+        fields = ('id', 'parent', 'is_hidden', 'is_manual', 'children', 'children_count', 'value', 'translation',
+                  'frequency', 'field', 'max_children',)

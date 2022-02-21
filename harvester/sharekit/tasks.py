@@ -10,9 +10,9 @@ from datagrowth.resources.http.tasks import send
 from datagrowth.utils.iterators import ibatch
 
 from harvester.tasks.base import DatabaseConnectionResetTask
+from harvester.utils.extraction import get_harvest_seeds
 from core.constants import Repositories, HarvestStages
 from core.models import Harvest, Dataset, DatasetVersion
-from sharekit.models import SharekitMetadataHarvest
 
 
 logger = logging.getLogger("harvester")
@@ -22,6 +22,8 @@ logger = logging.getLogger("harvester")
 def sync_sharekit_metadata():
     # Select which data to sync this run
     latest_active_dataset = Dataset.objects.filter(is_active=True).last()
+    if not latest_active_dataset:
+        return
     dataset_version = DatasetVersion.objects.get_latest_version(dataset=latest_active_dataset)
     harvest_queryset = Harvest.objects.filter(
         dataset=latest_active_dataset,
@@ -59,7 +61,12 @@ def sync_sharekit_metadata():
         if len(err) or not len(scc):
             continue
         # Now parse the metadata and update current Collection for this Harvest
-        seeds = SharekitMetadataHarvest.objects.extract_seeds(set_specification, harvest.latest_update_at)
+        seeds = get_harvest_seeds(
+            Repositories.SHAREKIT,
+            set_specification,
+            harvest.latest_update_at,
+            include_no_url=True
+        )
         collection = dataset_version.collection_set.get(name=harvest.source.spec)
         for seeds_batch in ibatch(seeds, batch_size=32):
             updates = []

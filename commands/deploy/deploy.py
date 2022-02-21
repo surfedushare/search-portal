@@ -83,6 +83,9 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
         taskDefinition=harvester_task_definition_arn
     )
 
+
+def deploy_celery(ctx, mode, ecs_client, task_role_arn, version):
+    target_info = TARGETS["harvester"]
     celery_container_variables = build_default_container_variables(mode, version)
     celery_container_variables.update({
         "concurrency": "4",
@@ -154,6 +157,15 @@ def deploy(ctx, mode, version=None):
     ecs_client = create_aws_session(ctx.config.aws.profile_name).client('ecs', )
 
     if target == "harvester":
+        print(f"Deploying Celery version {version}")
+        deploy_celery(ctx, mode, ecs_client, task_role_arn, version)
+        print("Waiting for Celery to finish ... do not interrupt")
+        while True:
+            running_containers = list_running_containers(ecs_client, ctx.config.aws.cluster_arn, "celery")
+            versions = set([container["version"] for container in running_containers])
+            if len(versions) == 1 and version in versions:
+                break
+            sleep(10)
         print(f"Deploying harvester version {version}")
         deploy_harvester(ctx, mode, ecs_client, task_role_arn, version)
 

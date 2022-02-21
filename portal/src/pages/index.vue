@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import { isNull } from 'lodash'
 import numeral from 'numeral'
 import { mapGetters } from 'vuex'
 import PopularList from '~/components/Communities/PopularList'
@@ -135,18 +134,11 @@ export default {
       this.$router.push(
         generateSearchMaterialsQuery({
           search_text: this.$root.isDemoEnvironment() ? search.search_text : search,
-          filters: this.filters,
+          filters: this.$root.isDemoEnvironment() ? search.filters : this.filters,
           page_size: 10,
           page: 1,
         })
       )
-    },
-    onUpdateFilter(filter) {
-      if (isNull(filter.value)) {
-        delete this.filters[filter.field]
-        return
-      }
-      this.filters[filter.field] = filter.values
     },
   },
 }

@@ -1,27 +1,33 @@
 import logging
 
 from django.conf import settings
-
-from edurep.models import EdurepOAIPMH
-from sharekit.models import SharekitMetadataHarvest
-from anatomy_tool.models import AnatomyToolOAIPMH
-from hanze.models import HanzeResearchObjectResource
+from django.apps import apps
 
 
 logger = logging.getLogger("harvester")
 
 
-def get_harvest_seeds(set_specification, latest_update, include_deleted=True, include_no_url=False):
+NPPO_PUBLISHERS_WHITELIST = {
+    "Hogeschool Utrecht",
+    "Fontys",
+    "Hogeschool Rotterdam",
+    "Zuyd Hogeschool",
+    "Hogeschool van Arnhem en Nijmegen",
+}
+
+
+def get_harvest_seeds(repository, set_specification, latest_update, include_deleted=True, include_no_url=False):
     """
     Extracts metadata from HarvestHttpResource
 
     Currently supports Sharekit and Edurep
     More information on Edurep: https://developers.wiki.kennisnet.nl/index.php/Edurep:Hoofdpagina
     """
-    results = EdurepOAIPMH.objects.extract_seeds(set_specification, latest_update)
-    results += SharekitMetadataHarvest.objects.extract_seeds(set_specification, latest_update)
-    results += AnatomyToolOAIPMH.objects.extract_seeds(latest_update)
-    results += HanzeResearchObjectResource.objects.extract_seeds(latest_update)
+    RepositoryResource = apps.get_model(repository)
+    if RepositoryResource.use_multiple_sets:
+        results = RepositoryResource.objects.extract_seeds(set_specification, latest_update)
+    else:
+        results = RepositoryResource.objects.extract_seeds(latest_update)
 
     seeds = []
     for seed in results:
@@ -38,6 +44,12 @@ def get_harvest_seeds(set_specification, latest_update, include_deleted=True, in
             seed["state"] = "deleted"
         if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
             seed["state"] = "deleted"
+        if settings.PROJECT == "nppo":
+            for publisher in seed["publishers"]:
+                if publisher in NPPO_PUBLISHERS_WHITELIST:
+                    break
+            else:
+                seed["state"] = "deleted"
         if seed.get("is_restricted", False):
             seed["analysis_allowed"] = False
     # And we return the seeds based on whether to include deleted or not
