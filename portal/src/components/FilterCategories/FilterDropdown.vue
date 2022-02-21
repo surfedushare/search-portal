@@ -72,28 +72,10 @@ export default {
 <style lang="less" scoped>
 @import "../../variables";
 .dropdown-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  display: grid;
+  grid-auto-flow: row;
   z-index: 10;
   position: relative;
-
-  &__dropdown {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(6, auto);
-    grid-auto-columns: max-content;
-    column-gap: 2rem;
-    position: absolute;
-    top: 80px;
-    background-color: @grey;
-    list-style: none;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-    margin-left: -10px;
-    min-width: 200px;
-  }
 
   &__label {
     display: block;
@@ -107,8 +89,9 @@ export default {
     transform: translate(0, -100%) rotate(90deg);
     width: 14px;
     height: 14px;
-    left: 8px;
-    top: 20px;
+    left: 12px;
+    top: 30px;
+
     background: url("/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
     &:hover {
       background: url("/images/arrow-text-green.svg") 50% 50% / contain
@@ -118,16 +101,23 @@ export default {
 
   &__select {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    width: 100%;
+    max-width: 205px;
+    border-radius: 6px;
+    background-color: @grey;
     span {
       text-overflow: ellipsis;
       font-family: "nunito";
       font-size: 16px;
       border: none;
       outline: none;
-      padding: 0;
+      padding: 10px;
       caret-color: transparent;
-      max-width: 180px;
+      max-width: 150px;
+      height: 40px;
+      width: 150px;
       display: inline-block;
       white-space: nowrap;
       overflow: hidden;
@@ -136,6 +126,23 @@ export default {
         font-weight: bolder;
       }
     }
+  }
+
+  &__dropdown {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(6, auto);
+    grid-auto-columns: max-content;
+    column-gap: 2rem;
+    position: absolute;
+    top: 60px;
+    background-color: white;
+    list-style: none;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+    margin-left: 0px;
+    min-width: 200px;
   }
 }
 </style>

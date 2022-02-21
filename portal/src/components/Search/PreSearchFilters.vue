@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dropdownData" tabindex="-1" @focusout="onFocusOut">
+  <div class="presearchfilters" v-if="dropdownData" tabindex="-1" @focusout="onFocusOut">
     <FilterDropdown
       v-for="dropdown in dropdowns"
       :key="dropdown.field"
@@ -41,17 +41,18 @@ export default {
           visible: false
         },
         {
-          field: 'language.keyword',
-          label: this.$i18n.t('in'),
-          defaultOption: this.$i18n.t('dutch-or-english'),
-          visible: false
-        },
-        {
           field: 'lom_educational_levels',
           label: this.$i18n.t('for'),
           defaultOption: this.$i18n.t('all-levels'),
           visible: false
         },
+        {
+          field: 'language.keyword',
+          label: this.$i18n.t('in'),
+          defaultOption: this.$i18n.t('dutch-or-english'),
+          visible: false
+        },
+
       ],
       dropdownData: null,
     }
@@ -91,4 +92,14 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+@import "../../variables";
+.presearchfilters {
+  display: grid;
+  grid-auto-flow: column;
+  width: 1040px;
+  height: 80px;
+}
+</style>
 

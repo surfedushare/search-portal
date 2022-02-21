@@ -73,7 +73,7 @@ export default {
     }),
     autosuggestInputProps: function () {
       return {
-        placeholder: this.placeholder || this.$t('Search'),
+        placeholder: this.placeholder || this.$t('title-author-subject'),
         id: 'autosuggest__input',
         type: 'search',
         autofocus: false,
@@ -124,40 +124,47 @@ export default {
 <style lang="less" scoped>
 @import "../../variables";
 .search {
+  display: grid;
   position: relative;
 
   &__fields {
     padding: 15px;
     text-align: center;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
   }
   &__suggestions {
     position: absolute;
     right: 0;
     background: @grey;
-    padding: 10px 15px;
     font-weight: bold;
     font-size: 12pt;
+    margin: 10px;
   }
-
+  #autosuggest {
+    grid-column: span 7;
+  }
   /deep/#autosuggest__input {
     position: relative;
-    width: 279px;
     height: 50px;
     border-radius: 10px;
-    background: @grey url("/images/search-grey.svg") 95% 50% no-repeat;
+    background: @grey url("/images/search-grey.svg") 12px 50% no-repeat;
     background-size: 21px;
     border: none;
     font-family: "nunito";
     font-size: 14pt;
-    padding-left: 20px;
+    padding-left: 40px;
+    margin-left: 0px;
+    width: 100%;
   }
 
   .button {
     position: relative;
+
     @media @desktop {
       margin: 0 0 0 30px;
-      width: initial;
+      width: 104px;
+      height: 48px;
     }
   }
 }
@@ -172,15 +179,11 @@ export default {
 }
 /deep/.autosuggest__results-container {
   position: absolute;
-  margin-top: 24px;
-  background-color: @grey;
+  margin-top: 4px;
   list-style: none;
-  // padding: 20px;
   border-radius: 20px;
   box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-  // margin-left: -10px;
-  min-width: 97%;
-  right: 0;
+  max-width: 980px;
 }
 /deep/.autosuggest__results {
   ul {
