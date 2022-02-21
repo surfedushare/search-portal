@@ -15,7 +15,7 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
     title_translations = LocaleSerializer(source="translation")
     translation = LocaleSerializer()
-    frequency = serializers.SerializerMethodField()
+    frequency = serializers.IntegerField()
     count = serializers.SerializerMethodField()
 
     def get_children(self, obj):
@@ -28,9 +28,6 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
         ).data
 
     def get_count(self, obj):
-        return self.get_frequency(obj)
-
-    def get_frequency(self, obj):
         drilldowns = self.context.get('drilldowns', {})
         if not drilldowns:
             return obj["frequency"]
