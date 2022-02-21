@@ -73,6 +73,7 @@ class MetadataValueAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'indented_title', 'is_hidden', 'is_manual', 'frequency', 'deleted_at',)
     list_display_links = ('indented_title',)
     list_filter = ('is_hidden', 'field', TrashListFilter)
+    readonly_fields = ('frequency',)
 
     actions = [unhide_filters, trash_nodes, restore_nodes]
 

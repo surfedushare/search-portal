@@ -73,7 +73,7 @@ def sync_metadata():
     if metadata_inserts:
         send_admin_notification(
             "New metadata values and translations have been added",
-            reverse("admin:metadata_metadatavalue_changelist") + "?is_fuzzy__exact=1"
+            reverse("admin:metadata_metadatatranslation_changelist") + "?is_fuzzy__exact=1"
         )
 
     in_30_days = now() + timedelta(days=30)

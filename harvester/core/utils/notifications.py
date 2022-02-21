@@ -10,7 +10,7 @@ def send_admin_notification(text, admin_path=None, build_only=False):
     notification.text(text)
     if admin_path:
         admin_url = f"{settings.PROTOCOL}://{settings.DOMAIN}" + admin_path
-        notification.addLinkButton("admin", admin_url)
+        notification.addLinkButton("go to admin", admin_url)
     if not build_only:
         notification.send()
     return notification
