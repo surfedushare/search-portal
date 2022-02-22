@@ -160,6 +160,9 @@ class ExtensionListView(generics.ListCreateAPIView):
     The values of the title, description, language, published_at and copyright properties (if given)
     will be used as data to search through.
 
+    **state**: The values for this can be "active", "inactive" and "deleted".
+    Any value other than "active" will remove the document from the index.
+
     **authors**: (optional) The list of authors that this extension should overwrite.
     An author consists of a name and email address.
 
