@@ -108,14 +108,15 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
     def create(self, validated_data):
         external_id = validated_data["external_id"]
         is_addition = validated_data.pop("is_addition")
-        if not is_addition:
-            Document.objects.filter(reference=external_id).update(modified_at=now())
-        return super().create({
+        extension = super().create({
             "id": external_id,
             "is_addition": is_addition,
             "reference": external_id,
             "properties": validated_data
         })
+        if not is_addition:
+            Document.objects.filter(reference=external_id).update(modified_at=now(), extension=extension)
+        return extension
 
     def update(self, instance, validated_data):
         is_addition = validated_data.pop("is_addition", None)
