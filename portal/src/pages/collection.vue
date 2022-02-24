@@ -1,5 +1,5 @@
 <template>
-  <section class="container main collection">
+  <section class="edusources-container main collection">
     <div v-if="!collectionInfo && isReady">
       <error status-code="404" message-key="collection-not-found" />
     </div>

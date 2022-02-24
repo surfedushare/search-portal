@@ -1,5 +1,5 @@
 <template>
-  <section class="container container-pd text-center">
+  <section class="edusources-container container-pd text-center">
     <h1 class="title">
       {{ statusCode }}
     </h1>
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.edusources-container {
   flex: 1 1 auto;
   box-sizing: border-box;
   background: transparent;
