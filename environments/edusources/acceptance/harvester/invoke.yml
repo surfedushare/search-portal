@@ -49,3 +49,5 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:eduterm"
   deepl:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/deepl"
+  hanze:
+    api_key: null

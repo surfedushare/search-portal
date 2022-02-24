@@ -516,3 +516,8 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 # Matomo
 
 MATOMO_API_KEY = environment.secrets.matomo.api_key
+
+
+# Hanze
+
+HANZE_API_KEY = environment.secrets.hanze.api_key

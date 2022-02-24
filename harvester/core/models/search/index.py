@@ -65,6 +65,10 @@ class ElasticIndex(models.Model):
             )
         if recreate:
             self.error_count = 0
+            elastic_documents = [
+                elastic_document for elastic_document in elastic_documents
+                if elastic_document.get("_op_type", None) != "delete"
+            ]
 
         # Actual push of docs to ES
         errors = []
