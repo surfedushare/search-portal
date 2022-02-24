@@ -20,24 +20,6 @@ module.exports = {
       alias: {
         '~': path.resolve(__dirname + '/src')
       }
-    },
-    module: {
-      rules: [
-        {
-          test: /\.s(c|a)ss$/,
-          use: [
-            {
-              loader: 'sass-loader',
-              // Requires >= sass-loader@^8.0.0
-              options: {
-                implementation: require('sass'),
-                sassOptions: { },
-                additionalData: "@import '@/styles/variables.scss'"
-              },
-            },
-          ],
-        },
-      ],
     }
   },
   chainWebpack: config => {
