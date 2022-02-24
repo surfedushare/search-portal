@@ -3,7 +3,7 @@
     <h1 class="title">
       {{ statusCode }}
     </h1>
-    <h2 class="info">
+    <h2 class="message">
       {{ $t(messageKey) }}
     </h2>
     <router-link v-if="parseInt(statusCode) === 404" class="button" to="/">
@@ -40,7 +40,7 @@ export default {
   font-size: 5em;
 }
 
-.info {
+.message {
   font-weight: 300;
   color: #9aabb1;
   margin: 20px 0;
