@@ -3,7 +3,7 @@ import Vue from 'vue'
 import injector from 'vue-inject'
 import i18n, { loadLanguages } from './i18n'
 import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import 'vuetify/src/styles/styles.sass'
 import '@fortawesome/fontawesome-free/css/all.css'
 import router from '~/router'
 
