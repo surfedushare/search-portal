@@ -51,6 +51,9 @@ async function mountApp() {
     store,
     i18n,
     vuetify: new Vuetify({
+      icons: {
+        iconfont: 'fa4',
+      },
       theme: {
         themes: {
           light: {
