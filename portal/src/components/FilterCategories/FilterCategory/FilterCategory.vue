@@ -52,7 +52,7 @@
     </div>
     <FilterCategoriesPopup
       :category="category"
-      :show-popup="showAll" :close="onToggleShowAll"
+      :show-popup="showPopup" :close="onToggleShowAll"
       @apply="onApply"
     />
   </li>
@@ -81,6 +81,7 @@ export default {
     return {
       isOpen,
       showAll: false,
+      showPopup: false,
       visibleItems: 5,
     }
   },
@@ -118,6 +119,10 @@ export default {
       this.isOpen = !this.isOpen
     },
     onToggleShowAll() {
+      if (this.$root.isDemoEnvironment() && this.category.children.length >= 15) {
+        this.showPopup = !this.showPopup
+        return
+      }
       this.showAll = !this.showAll
     },
     onChange(e) {
