@@ -50,12 +50,19 @@
         </li>
       </ul>
     </div>
+    <FilterCategoriesPopup
+      :category="category"
+      :show-popup="showAll" :close="onToggleShowAll"
+      @apply="onApply"
+    />
   </li>
 </template>
 
 <script>
+import FilterCategoriesPopup from '~/components/FilterCategories/FilterCategoriesPopup'
 export default {
   name: 'FilterCategory',
+  components: {FilterCategoriesPopup},
   props: {
     category: {
       type: Object,
@@ -115,13 +122,22 @@ export default {
     },
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
-
       if (e.target.checked) {
         this.$emit('check', categoryId, itemId)
       } else {
         this.$emit('uncheck', categoryId, itemId)
       }
     },
+    onApply(values) {
+      values = values || []
+      this.category.children.forEach((child) => {
+        if (values.indexOf(child.value) >= 0) {
+          this.$emit('check', this.category.external_id, child.value)
+        } else {
+          this.$emit('uncheck', this.category.external_id, child.value)
+        }
+      })
+    }
   },
 }
 </script>
