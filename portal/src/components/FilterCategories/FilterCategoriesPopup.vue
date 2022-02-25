@@ -127,7 +127,14 @@ export default {
 </script>
 
 <style lang="less">
+  @import "../../variables.less";
+
   .popup__subtext {
     overflow-y: scroll;
+  }
+  .list-header {
+    color: @dark-grey;
+    background-color: rgba(@green, 0.16);
+    padding: 5px;
   }
 </style>
