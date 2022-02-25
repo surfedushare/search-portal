@@ -57,6 +57,9 @@ async function mountApp() {
       theme: {
         themes: {
           light: {
+            primary: '#2CA055',
+            secondary: '#0077c8',
+            accent: '#fedb00',
             anchor: '#2CA055',
           },
         },
