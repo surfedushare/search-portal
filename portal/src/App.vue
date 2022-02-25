@@ -20,6 +20,8 @@
 @import 'styles/common.less';
 
 @import 'styles/forms.less';
+
+@import 'styles/vuetify-overrides.less';
 </style>
 
 <script>
