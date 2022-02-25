@@ -12,13 +12,17 @@
         </h2>
         <v-autocomplete
           v-model="selectedValues"
-          @change="onChangeAutocomplete"
           :items="category.children"
           :item-text="'translation.' + $i18n.locale"
-          outlined multiple deletable-chips small-chips clearable
+          outlined
+          multiple
+          deletable-chips
+          small-chips
+          clearable
+          @change="onChangeAutocomplete"
         ></v-autocomplete>
         <div class="popup__subtext">
-          <ul v-for="(filters, group) in groupedFilters">
+          <ul v-for="(filters, group) in groupedFilters" :key="group" class="popup-filters-list">
             <div class="list-header">{{ group.toUpperCase() }}</div>
             <li
               v-for="item in filters"
@@ -84,6 +88,14 @@ export default {
       selectedValues: []
     }
   },
+  computed: {
+    groupedFilters() {
+      return groupBy(
+        sortBy(this.category.children, ['value']),
+        (child) => { return child.value.slice(0, 1).toLowerCase() }
+      )
+    }
+  },
   watch: {
     showPopup(visible) {
       if (!visible) {
@@ -94,14 +106,6 @@ export default {
       }).map((selectedFilter) => {
         return selectedFilter.value
       })
-    }
-  },
-  computed: {
-    groupedFilters() {
-      return groupBy(
-        sortBy(this.category.children, ['value']),
-        (child) => { return child.value.slice(0, 1).toLowerCase() }
-      )
     }
   },
   methods: {
@@ -137,4 +141,8 @@ export default {
     background-color: rgba(@green, 0.16);
     padding: 5px;
   }
+  .popup-filters-list {
+    padding-left: 0;
+  }
+
 </style>

@@ -52,7 +52,8 @@
     </div>
     <FilterCategoriesPopup
       :category="category"
-      :show-popup="showPopup" :close="onToggleShowAll"
+      :show-popup="showPopup"
+      :close="onToggleShowAll"
       @apply="onApply"
     />
   </li>
