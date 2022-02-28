@@ -1,10 +1,12 @@
-from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import TestCase, override_settings
-from elasticsearch import Elasticsearch
-from project.configuration import create_elastic_search_index_configuration
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.chrome.options import Options
+from django.conf import settings
+from django.test import override_settings, TestCase
+
+from elasticsearch import Elasticsearch
+
+from project.configuration import create_elastic_search_index_configuration
 
 
 class BaseElasticSearchMixin(object):
