@@ -53,4 +53,4 @@ secrets:
   hanze:
     api_key: null
   teams_webhooks:
-    harvester: null
+    harvester: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/teams-webhooks"
