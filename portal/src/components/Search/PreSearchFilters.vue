@@ -1,5 +1,5 @@
 <template>
-  <div class="presearchfilters" v-if="dropdownData" tabindex="-1" @focusout="onFocusOut">
+  <div v-if="dropdownData" class="presearchfilters" tabindex="-1" @focusout="onFocusOut">
     <FilterDropdown
       v-for="dropdown in dropdowns"
       :key="dropdown.field"
