@@ -154,11 +154,9 @@ export default {
     padding: 120px 0 0;
     margin-bottom: 60px;
     position: relative;
-
-    .center-header {
-      position: relative;
+    @media @mobile-ls {
+      padding: 230px 0 0;
     }
-
     &_bg {
       width: 100%;
     }
@@ -198,7 +196,7 @@ export default {
     }
     &_block {
       position: absolute;
-      top: -50px;
+      top: 30px;
       right: 100px;
       color: #fff;
       width: auto;
@@ -209,11 +207,29 @@ export default {
       font-weight: bold;
       z-index: 1;
 
+      @media @desktop {
+        top: 50px;
+        right: 20px;
+        padding: 5px 32px;
+        max-width: 550px;
+      }
+      @media @tablet {
+        right: 20px;
+        padding: 5px 32px;
+        max-width: 400px;
+      }
       @media @mobile {
-        top: -90px;
+        top: 30px;
         right: 20px;
         padding: 5px 32px;
         max-width: 300px;
+      }
+      @media @mobile-ls {
+        top: 50px;
+        right: 20px;
+        padding: 5px 32px;
+        max-width: 300px;
+        min-height: 300px;
       }
 
       & .bg {
@@ -343,7 +359,7 @@ export default {
     }
 
     &__title {
-      margin: 0 0 20px;
+      margin: 0 0 40px;
       @media @mobile {
         font-size: 22px;
       }
