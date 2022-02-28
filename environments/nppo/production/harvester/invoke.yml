@@ -51,3 +51,5 @@ secrets:
     api_key: null
   hanze:
     api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/hanze-credentials"
+  teams_webhooks:
+    harvester: null
