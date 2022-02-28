@@ -76,7 +76,7 @@ export default {
 @import "../../variables";
 .search_bar {
   display: grid;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
   grid-template-rows: repeat(2, auto);
   position: relative;
   z-index: 10;
@@ -84,8 +84,5 @@ export default {
   border-radius: 20px;
   box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
   margin-top: -18px;
-  &__filters {
-    padding: 1rem;
-  }
 }
 </style>

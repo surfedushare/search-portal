@@ -85,7 +85,10 @@ export default {
     },
     onFocusOut(event) {
       const element = event.target;
-      if (!element.contains(event.relatedTarget) && event.relatedTarget?.className !== 'search_bar__filters' && event.relatedTarget?.type !== 'checkbox') {
+      if (element.contains(event.relatedTarget)
+        && !(event.relatedTarget?.className == 'search_bar__filters' || event.relatedTarget?.type == 'checkbox')
+        || event.relatedTarget?.type == 'search'
+        || event.relatedTarget?.type == 'submit') {
         this.dropdowns.map(dd => dd.visible = false);
       }
     }
@@ -98,8 +101,21 @@ export default {
 .presearchfilters {
   display: grid;
   grid-auto-flow: column;
-  width: 1040px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 115px;
+  grid-gap: 20px;
   height: 80px;
+  padding: 15px 24px;
+  @media @mobile-ls {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    min-height: 160px;
+  }
+  @media @mobile {
+    grid-auto-flow: row;
+    grid-template-columns: 100%;
+    min-height: 310px;
+    width: 100%;
+  }
 }
 </style>
 

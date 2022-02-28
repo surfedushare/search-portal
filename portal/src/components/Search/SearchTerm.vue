@@ -124,35 +124,39 @@ export default {
 <style lang="less" scoped>
 @import "../../variables";
 .search {
-  display: grid;
-  position: relative;
-
   &__fields {
-    padding: 15px;
-    text-align: center;
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    padding: 15px 0px;
+    margin: 0px 24px;
+    @media @wide {
+      grid-template-columns: 3fr 135px;
+    }
+    @media @desktop {
+      grid-template-columns: auto 135px;
+    }
+    @media @tablet {
+      grid-template-columns: 3fr 135px;
+    }
+    @media @mobile-ls {
+      grid-template-columns: 3fr 135px;
+    }
   }
   &__suggestions {
     position: absolute;
     right: 0;
-    background: @grey;
     font-weight: bold;
     font-size: 12pt;
     margin: 10px;
   }
-  #autosuggest {
-    grid-column: span 7;
-  }
   /deep/#autosuggest__input {
     position: relative;
-    height: 50px;
+    height: 48px;
     border-radius: 10px;
     background: @grey url("/images/search-grey.svg") 12px 50% no-repeat;
     background-size: 21px;
     border: none;
     font-family: "nunito";
-    font-size: 14pt;
+    font-size: 16px;
     padding-left: 40px;
     margin-left: 0px;
     width: 100%;
@@ -160,41 +164,43 @@ export default {
 
   .button {
     position: relative;
-
-    @media @desktop {
-      margin: 0 0 0 30px;
-      width: 104px;
-      height: 48px;
+    margin: 0 0 0 30px;
+    height: 48px;
+    width: 104px;
+    @media @mobile {
+      margin: 10px 0;
+      width: 100%;
+      justify-content: center;
     }
   }
 }
 .search-container {
   margin-top: 5px;
   font-family: "nunito";
-  font-size: 14pt;
-
-  @media @mobile {
-    background-position-y: 12px;
-  }
+  font-size: 16px;
 }
 /deep/.autosuggest__results-container {
   position: absolute;
-  margin-top: 4px;
+  margin-top: -3px;
+  margin-left: 25px;
   list-style: none;
   border-radius: 20px;
   box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-  max-width: 980px;
+  max-width: calc(100% - 185px);
+  @media @mobile {
+    max-width: calc(100% - 50px);
+  }
 }
+
 /deep/.autosuggest__results {
   ul {
     list-style: none;
-    padding: 10px 0;
   }
 
   li {
     text-align: left;
     padding: 3px;
-    padding-left: 20px;
+    padding-left: 30px;
     background-size: 20px;
     cursor: pointer;
 
