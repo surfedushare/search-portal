@@ -71,8 +71,11 @@ def sync_sharekit_metadata():
         for seeds_batch in ibatch(seeds, batch_size=32):
             updates = []
             for seed in seeds_batch:
-                language = seed.pop("language", None)
-                seed["language"] = {"metadata": language} if language else None
+                # We never sync the language because we would have to switch a document between indices.
+                # A delete signal would also not propagate, because language will be None
+                # and that maps to latest-unk index, but the document might be elsewhere.
+                # During the nightly harvest the indices get recreated and a language switch will propagate.
+                seed.pop("language", None)
                 updates.append(seed)
             collection.update(updates, "external_id")
         # Last but not least we update the harvest update time to get a different delta later

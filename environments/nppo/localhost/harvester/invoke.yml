@@ -49,3 +49,5 @@ secrets:
     api_key: null
   deepl:
     api_key: null
+  hanze:
+    api_key: null

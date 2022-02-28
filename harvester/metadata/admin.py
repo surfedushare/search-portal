@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import format_html
+from django.urls import reverse
 from mptt.admin import DraggableMPTTAdmin
 
 from metadata.models import MetadataValue, MetadataField, MetadataTranslation
@@ -9,10 +11,15 @@ class MetadataFieldAdmin(admin.ModelAdmin):
 
 
 class MetadataTranslationAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'nl', 'en', 'is_fuzzy',)
+    list_display = ('__str__', 'nl', 'en', 'is_fuzzy', 'change_metadata_value')
     list_editable = ('nl', 'en', 'is_fuzzy',)
     list_filter = ('is_fuzzy',)
     search_fields = ('en', 'nl',)
+
+    def change_metadata_value(self, obj):
+        button_label = "metadata"
+        url = reverse("admin:metadata_metadatavalue_change", args=(obj.metadatavalue.id,))
+        return format_html('<a class="button" href="{}">{}</a>', url, button_label)
 
 
 def unhide_filters(modeladmin, request, queryset):
@@ -66,6 +73,7 @@ class MetadataValueAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'indented_title', 'is_hidden', 'is_manual', 'frequency', 'deleted_at',)
     list_display_links = ('indented_title',)
     list_filter = ('is_hidden', 'field', TrashListFilter)
+    readonly_fields = ('frequency',)
 
     actions = [unhide_filters, trash_nodes, restore_nodes]
 
