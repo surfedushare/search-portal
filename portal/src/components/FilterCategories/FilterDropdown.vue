@@ -12,7 +12,7 @@
         role="textbox"
         :class="{ 'bold': selectedFilters !== defaultOption }"
       >{{ selectedFilters }}</span>
-      <div class="dropdown-container__selector" :class="{ 'active': visible == true }"></div>
+      <div class="dropdown-container__selector" :class="{ 'active': visible === true }"></div>
     </div>
 
     <ul v-show="visible" class="dropdown-container__dropdown">
