@@ -104,14 +104,6 @@ input[type="checkbox"]:checked:before {
   cursor: pointer;
 }
 
-label {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 0 -2px 8px;
-  color: @black;
-  font-weight: 600;
-  cursor: pointer;
-}
 .dropdown-container {
   display: grid;
   grid-auto-flow: row;
@@ -123,6 +115,7 @@ label {
     display: block;
     width: 100%;
     height: 24px;
+    font-weight: 600;
   }
 
   &__selector {
@@ -194,6 +187,14 @@ label {
     margin-left: 0px;
     min-width: 200px;
     cursor: pointer;
+    label {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 0 -2px 8px;
+      color: @black;
+      font-weight: 400;
+      cursor: pointer;
+    }
     @media @mobile {
       width: 100%;
       grid-auto-flow: row;
