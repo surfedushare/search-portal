@@ -52,3 +52,5 @@ secrets:
     api_key: null
   hanze:
     api_key: null
+  teams_webhooks:
+    harvester: null
