@@ -108,14 +108,15 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
     def create(self, validated_data):
         external_id = validated_data["external_id"]
         is_addition = validated_data.pop("is_addition")
-        if not is_addition:
-            Document.objects.filter(reference=external_id).update(modified_at=now())
-        return super().create({
+        extension = super().create({
             "id": external_id,
             "is_addition": is_addition,
             "reference": external_id,
             "properties": validated_data
         })
+        if not is_addition:
+            Document.objects.filter(reference=external_id).update(modified_at=now(), extension=extension)
+        return extension
 
     def update(self, instance, validated_data):
         is_addition = validated_data.pop("is_addition", None)
@@ -158,6 +159,9 @@ class ExtensionListView(generics.ListCreateAPIView):
     the external_id must be set by its creator upon a POST.
     The values of the title, description, language, published_at and copyright properties (if given)
     will be used as data to search through.
+
+    **state**: The values for this can be "active", "inactive" and "deleted".
+    Any value other than "active" will remove the document from the index.
 
     **authors**: (optional) The list of authors that this extension should overwrite.
     An author consists of a name and email address.

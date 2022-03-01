@@ -10,6 +10,7 @@ django:
   logging:
     level: "DEBUG"
     is_elastic: true
+  send_admin_notifications: true
 
 postgres:
   host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"

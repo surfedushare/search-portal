@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 
-from core.models import Document
+from core.models import Document, Extension
 
 
 class TestExtensionAPI(TestCase):
@@ -158,6 +158,32 @@ class TestExtensionAPI(TestCase):
         self.assertEqual(response_data["properties"].pop("children"), children)
         self.assert_properties(response_data["properties"], is_addition=True, external_id=external_id)
 
+    def test_create(self):
+        """
+        When creating an Extension we should be able to set properties like: title and description.
+        """
+        # We first delete the existing Extension to make sure were testing correctly
+        external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
+        Extension.objects.filter(id=external_id).last().delete()
+        children = [
+            "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257"
+        ]
+        body = {
+            "is_addition": False,
+            "external_id": external_id,
+            "children": children,
+            **self.extension_properties
+        }
+        response = self.client.post("/api/v1/extension/", body, content_type="application/json")
+        self.assertEqual(response.status_code, 201)
+        response_data = response.json()
+        self.assertIsInstance(response_data, dict)
+        self.assertFalse(response_data["is_addition"])
+        self.assertEqual(response_data["properties"].pop("children"), children)
+        self.assert_properties(response_data["properties"], is_addition=False, external_id=external_id)
+        document = Document.objects.get(reference=external_id)
+        self.assertIsNotNone(document.extension)
+
     def test_update(self):
         """
         Updating an existing Extension means that all properties will get overridden.
@@ -228,6 +254,7 @@ class TestExtensionAPI(TestCase):
         document = Document.objects.get(reference=external_id)
         self.assertGreater(document.modified_at, datetime_begin_test,
                            "Expected modified_at of document to get updated")
+        self.assertIsNotNone(document.extension)
 
     def test_invalid_update_addition(self):
         """
