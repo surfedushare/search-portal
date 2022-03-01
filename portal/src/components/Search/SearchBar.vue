@@ -36,22 +36,6 @@ export default {
     },
   },
   methods: {
-    getFilterOptions(external_id) {
-      if (this.filterCategories) {
-        const filterCategory = this.filterCategories.find(
-          (category) => category.external_id === external_id
-        )
-
-        if (filterCategory) {
-          return {
-            name: filterCategory.title_translations[this.$i18n.locale],
-            options: filterCategory.children,
-          }
-        }
-      }
-
-      return null
-    },
     searchMaterials(searchText) {
       const searchRequest = {
         search_text: searchText || '',
