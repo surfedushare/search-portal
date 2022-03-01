@@ -11,19 +11,19 @@
 </template>
 
 <style lang="less">
-@import 'styles/normalize.css';
+@import "styles/normalize.css";
 
-@import 'variables.less';
+@import "variables.less";
 
-@import 'styles/common.less';
+@import "styles/common.less";
 
-@import 'styles/forms.less';
+@import "styles/forms.less";
 </style>
 
 <script>
-import MainHeader from '~/components/MainHeader'
-import MainFooter from '~/components/MainFooter'
 import { setLanguage } from '~/axios'
+import MainFooter from '~/components/MainFooter'
+import MainHeader from '~/components/MainHeader'
 
 const DEFAULT_TITLE = 'Edusources'
 
@@ -44,8 +44,7 @@ export default {
   methods: {
     isDemoEnvironment() {
       return (
-        this.$window.location.hostname.indexOf('acc.') >= 0 ||
-        new URLSearchParams(this.$window.location.search).get('demo')
+        true
       )
     },
   },
