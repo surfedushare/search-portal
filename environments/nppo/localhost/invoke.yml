@@ -13,6 +13,7 @@ django:
   logging:
     level: "DEBUG"
     is_elastic: false
+  send_admin_notifications: false
 
 postgres:
   host: "postgres"

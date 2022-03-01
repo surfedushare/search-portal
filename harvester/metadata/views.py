@@ -43,6 +43,9 @@ class MetadataTreeView(generics.ListAPIView):
 
     **children**: All nodes that have this node as a parent.
 
+    **children_count**: Total number of children.
+    When the max_children parameter is used this property will still reflect the true available amount of children.
+
     **frequency**: How many results match this node in the entire dataset.
 
     """

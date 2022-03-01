@@ -55,6 +55,9 @@ ALLOWED_HOSTS = ["*"]
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+DOMAIN = environment.django.domain
+PROTOCOL = environment.django.protocol
+
 
 # Detect our own IP address
 try:
@@ -516,3 +519,14 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 # Matomo
 
 MATOMO_API_KEY = environment.secrets.matomo.api_key
+
+
+# Hanze
+
+HANZE_API_KEY = environment.secrets.hanze.api_key
+
+
+# Teams webhooks
+
+SEND_ADMIN_NOTIFICATIONS = environment.django.send_admin_notifications
+TEAMS_HARVESTER_WEBHOOK = environment.secrets.teams_webhooks.harvester
