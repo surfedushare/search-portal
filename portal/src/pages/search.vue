@@ -241,9 +241,6 @@ export default {
     position: relative;
     min-height: 300px;
 
-    @media @mobile {
-      overflow: hidden;
-    }
     &_top {
       border-radius: 20px;
       background: fade(@light-grey, 90%);
@@ -321,6 +318,9 @@ export default {
   }
 
   &__wrapper {
+    @media @wide {
+      display: flex;
+    }
     @media @desktop {
       display: flex;
     }
@@ -340,6 +340,7 @@ export default {
 
     @media @mobile {
       justify-content: flex-start;
+      flex-wrap: wrap;
     }
 
     &_results {

@@ -96,6 +96,7 @@ input[type="checkbox"]:before {
   border-radius: 2px;
   margin-right: 8px;
   cursor: pointer;
+  vertical-align: text-bottom;
 }
 input[type="checkbox"]:hover:before {
   border: 2px solid #008741;
@@ -158,7 +159,7 @@ input[type="checkbox"]:checked:before {
       font-size: 16px;
       border: none;
       outline: none;
-      padding: 10px;
+      padding: 12px;
       caret-color: transparent;
       color: @dark-grey;
       max-width: 90%;
@@ -179,18 +180,20 @@ input[type="checkbox"]:checked:before {
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(6, auto);
-    grid-template-columns: 1fr 1fr;
-    column-gap: 2rem;
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
     z-index: 10;
     position: absolute;
     top: 75px;
     background-color: white;
     list-style: none;
-    padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-    margin-left: 0px;
-    min-width: max-content;
+    padding: 20px;
+    :first-child:not(:empty) {
+      margin: 0;
+      min-width: 200px;
+    }
     cursor: pointer;
     label {
       display: inline-block;
@@ -203,7 +206,7 @@ input[type="checkbox"]:checked:before {
     @media @mobile {
       width: 100%;
       grid-auto-flow: row;
-      column-gap: 2rem;
+      grid-template-columns: 1fr;
     }
   }
 }

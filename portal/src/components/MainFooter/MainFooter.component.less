@@ -8,6 +8,9 @@
   margin-top: 80px;
 
   &__top_block {
+    @media @wide {
+      display: flex;
+    }
     @media @desktop {
       display: flex;
     }
@@ -28,6 +31,9 @@
     max-width: 407px;
     margin: 0 0 0 40px;
     padding: 54px 37px 47px;
+    @media @wide {
+      margin: 3px 57px 0 47px;
+    }
     @media @desktop {
       margin: 3px 57px 0 47px;
     }
@@ -98,6 +104,11 @@
   }
 
   &__bottom_block {
+    @media @wide {
+      display: flex;
+      justify-content: space-around;
+      height: 139px;
+    }
     @media @desktop {
       display: flex;
       justify-content: space-around;
@@ -115,6 +126,11 @@
       height: 180px;
       margin-left: -25px;
       width: 100%;
+      @media @wide {
+        height: 137px;
+        margin: 0 -600px 0 0;
+        width: auto;
+      }
       @media @desktop {
         height: 137px;
         margin: 0 -600px 0 0;

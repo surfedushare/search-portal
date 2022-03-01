@@ -182,9 +182,10 @@ input:checked + .share-collection_slider:before {
   z-index: 10;
   border-radius: 20px;
   box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+  @media @wide {
+    background: @green;
+  }
   @media @desktop {
-    //background: url("../../public/images/collection-white.svg") no-repeat 20px 55%  @green;
-    //background-size: 30px 30px;
     background: @green;
   }
   @media @mobile {
@@ -229,15 +230,10 @@ input:checked + .share-collection_slider:before {
     }
   }
   &__filter{
-    //width: 19%;
-    //min-height: 100%;
     color: #fff;
 
     @media @mobile {
       display: none;
-      //margin-top: 15px;
-      //width: auto;
-      //text-align: center;
     }
   }
 
