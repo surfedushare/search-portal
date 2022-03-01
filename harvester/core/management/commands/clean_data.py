@@ -5,7 +5,7 @@ from django.apps import apps
 from django.utils.timezone import make_aware
 from django.core.management.base import BaseCommand
 
-from core.models import Dataset, DatasetVersion, Document, ElasticIndex
+from core.models import Dataset, DatasetVersion, Document, ElasticIndex, Extension
 
 
 class Command(BaseCommand):
@@ -33,6 +33,8 @@ class Command(BaseCommand):
             if current_dataset_versions.count() > settings.DATA_RETENTION_KEEP_VERSIONS:
                 for old_dataset_version in current_dataset_versions[settings.DATA_RETENTION_KEEP_VERSIONS:]:
                     old_dataset_version.delete()
+        # Delete old is_addition Extensions that got deleted
+        Extension.objects.filter(deleted_at__lte=purge_time).delete()
         # Now go over all resources and delete old ones without matching documents
         for resource_model, pipeline_phase in self.resources.items():
             model = apps.get_model(resource_model)
