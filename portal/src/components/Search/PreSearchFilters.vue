@@ -95,16 +95,6 @@ export default {
     onToggle(dropdown) {
       this.dropdowns.map(dd => dd.field !== dropdown.field ? dd.visible = false : dd.visible = !dd.visible);
     },
-    // onFocusOut(event) {
-    //   const element = event.target;
-    //   console.log(event)
-    //   if (element.contains(event.relatedTarget)
-    //     && !(event.target?.className?.includes('search_bar__filters') || event.target?.type == 'checkbox')
-    //     || event.relatedTarget?.type == 'search'
-    //     || event.relatedTarget?.type == 'submit') {
-    //     this.dropdowns.map(dd => dd.visible = false);
-    //   }
-    // }
   },
 }
 </script>
