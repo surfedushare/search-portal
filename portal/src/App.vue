@@ -44,7 +44,8 @@ export default {
   methods: {
     isDemoEnvironment() {
       return (
-        true
+        this.$window.location.hostname.indexOf('acc.') >= 0 ||
+        new URLSearchParams(this.$window.location.search).get('demo')
       )
     },
   },
