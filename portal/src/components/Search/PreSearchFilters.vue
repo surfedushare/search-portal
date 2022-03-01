@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dropdownData" class="presearchfilters" tabindex="-1" @focusout="onFocusOut">
+  <div v-if="dropdownData" class="presearchfilters" tabindex="-1">
     <FilterDropdown
       v-for="dropdown in dropdowns"
       :key="dropdown.field"
@@ -64,6 +64,7 @@ export default {
     }),
   },
   mounted() {
+    document.addEventListener('click', this.onClick);
     this.$store.dispatch('getFilterCategories').then(() => {
       const categories = this.dropdowns.map((dropdown) => {
         return dropdown.field
@@ -76,22 +77,34 @@ export default {
       )
     })
   },
+  beforeDestroy() {
+    document.removeEventListener('click', this.onClick);
+  },
   methods: {
+    onClick(event) {
+      if (!(event.target?.className?.includes('dropdown-container')
+        || event.target?.className?.includes('filter_'))
+        || event.target?.type == 'search'
+        || event.target?.type == 'submit') {
+        this.dropdowns.map(dd => dd.visible = false)
+      }
+    },
     onSelection(selection) {
       this.$emit('update:filter', selection)
     },
     onToggle(dropdown) {
       this.dropdowns.map(dd => dd.field !== dropdown.field ? dd.visible = false : dd.visible = !dd.visible);
     },
-    onFocusOut(event) {
-      const element = event.target;
-      if (element.contains(event.relatedTarget)
-        && !(event.relatedTarget?.className == 'search_bar__filters' || event.relatedTarget?.type == 'checkbox')
-        || event.relatedTarget?.type == 'search'
-        || event.relatedTarget?.type == 'submit') {
-        this.dropdowns.map(dd => dd.visible = false);
-      }
-    }
+    // onFocusOut(event) {
+    //   const element = event.target;
+    //   console.log(event)
+    //   if (element.contains(event.relatedTarget)
+    //     && !(event.target?.className?.includes('search_bar__filters') || event.target?.type == 'checkbox')
+    //     || event.relatedTarget?.type == 'search'
+    //     || event.relatedTarget?.type == 'submit') {
+    //     this.dropdowns.map(dd => dd.visible = false);
+    //   }
+    // }
   },
 }
 </script>

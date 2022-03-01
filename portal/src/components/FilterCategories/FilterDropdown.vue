@@ -11,17 +11,19 @@
       <span
         role="textbox"
         :class="{ 'bold': selectedFilters !== defaultOption }"
+        class="filter_checkbox"
       >{{ selectedFilters }}</span>
       <div class="dropdown-container__selector" :class="{ 'active': visible === true }"></div>
     </div>
 
     <ul v-show="visible" class="dropdown-container__dropdown">
       <li v-for="filter in filters" :key="filter.external_id" :value="filter.external_id">
-        <label>
+        <label class="filter_label">
           <input
             v-model="filter.selected"
             type="checkbox"
             :data-test="'filter_' + field + '_' + filter.external_id"
+            class="filter_checkbox"
           />
           {{ filter.title_translations[$i18n.locale] }}
         </label>
