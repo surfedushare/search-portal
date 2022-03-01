@@ -70,7 +70,7 @@ export default {
       return filterNames?.length == 0 ? filter.defaultOption : filterNames.join(", ");
     },
     visibleFilters() {
-      return this.filters.filter(x => !x.is_hidden)
+      return this.filters.filter(x => !x.is_hidden).sort()
     }
   },
   methods: {
