@@ -17,7 +17,7 @@
     </div>
 
     <ul v-show="visible" class="dropdown-container__dropdown">
-      <li v-for="filter in filters" :key="filter.external_id" :value="filter.external_id">
+      <li v-for="filter in visibleFilters" :key="filter.external_id" :value="filter.external_id">
         <label class="filter_label">
           <input
             v-model="filter.selected"
@@ -68,6 +68,9 @@ export default {
 
       this.$emit('update:selection', { field: this.field, selection })
       return filterNames?.length == 0 ? filter.defaultOption : filterNames.join(", ");
+    },
+    visibleFilters() {
+      return this.filters.filter(x => !x.is_hidden)
     }
   },
   methods: {
