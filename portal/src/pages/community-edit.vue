@@ -1,5 +1,5 @@
 <template>
-  <section class="container main communities">
+  <section class="edusources-container main communities">
     <div v-if="notFound">
       <error status-code="404" message-key="community-not-found" />
     </div>

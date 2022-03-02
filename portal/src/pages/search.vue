@@ -1,5 +1,5 @@
 <template>
-  <section class="container search">
+  <section class="edusources-container search">
     <div>
       <div class="search__info">
         <div class="center_block center-header">

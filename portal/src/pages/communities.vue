@@ -1,5 +1,5 @@
 <template>
-  <section class="container main">
+  <section class="edusources-container main">
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">

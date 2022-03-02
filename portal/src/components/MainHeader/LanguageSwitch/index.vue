@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="edusources-container">
     <router-link
       v-if="$i18n.locale === 'en'"
       class="lang"
@@ -33,7 +33,7 @@ export default {
 <style scoped lang="less">
 @import './../../../variables';
 
-.container {
+.edusources-container {
   align-self: center;
   flex-shrink: 0;
 }

@@ -1,5 +1,5 @@
 <template>
-  <section class="container main">
+  <section class="edusources-container main">
     <div>
       <div class="main__info">
         <div class="center_block center-header">
