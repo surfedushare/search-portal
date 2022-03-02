@@ -199,18 +199,20 @@ export default {
       top: 30px;
       right: 100px;
       color: #fff;
-      width: auto;
       max-width: 550px;
       font-family: @second-font;
       padding: 31px 48px 40px;
       font-size: 16px;
       font-weight: bold;
       z-index: 1;
-
+      @media @wide {
+        top: 50px;
+        right: 470px;
+        max-width: 550px;
+      }
       @media @desktop {
         top: 50px;
-        right: 20px;
-        padding: 5px 32px;
+        right: 170px;
         max-width: 550px;
       }
       @media @tablet {
