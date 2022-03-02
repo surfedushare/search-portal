@@ -91,8 +91,8 @@ export default {
   computed: {
     groupedFilters() {
       return groupBy(
-        sortBy(this.category.children, ['value']),
-        (child) => { return child.value.slice(0, 1).toLowerCase() }
+        sortBy(this.category.children, [`translation.${this.$i18n.locale}`]),
+        (child) => { return child.translation[this.$i18n.locale].slice(0, 1).toLowerCase() }
       )
     }
   },
