@@ -141,8 +141,11 @@ export default {
     background-color: rgba(@green, 0.16);
     padding: 5px;
   }
-  .popup-filters-list {
-    padding-left: 0;
+
+  .v-application {
+    .popup-filters-list {
+      padding-left: 0;
+    }
   }
 
 </style>
