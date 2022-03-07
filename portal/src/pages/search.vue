@@ -324,6 +324,9 @@ export default {
     @media @desktop {
       display: flex;
     }
+    @media @tablet {
+      display: flex;
+    }
     @media @mobile {
       margin-bottom: 60px;
     }
@@ -376,6 +379,9 @@ export default {
       &:focus,
       &:active {
         outline: none;
+      }
+      @media @tablet {
+        display: none;
       }
 
       @media @mobile {
