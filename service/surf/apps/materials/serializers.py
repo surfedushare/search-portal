@@ -155,7 +155,7 @@ class CollectionShortSerializer(serializers.ModelSerializer):
         fields = ('id', 'title_nl', 'title_en', 'position')
 
 
-class CollectionSerializer(CollectionShortSerializer):
+class CollectionSerializer(serializers.ModelSerializer):
     """
     Collection instance serializer
     """
