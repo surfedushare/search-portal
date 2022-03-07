@@ -21,10 +21,7 @@ from surf.apps.communities.models import Community, Team
 from surf.apps.communities.serializers import CommunitySerializer
 
 from surf.apps.materials.models import Collection
-from surf.apps.materials.serializers import (
-    CollectionSerializer,
-    CollectionShortSerializer
-)
+from surf.apps.materials.serializers import CollectionSerializer
 
 
 logger = logging.getLogger(__name__)
@@ -60,8 +57,7 @@ class CommunityViewSet(ListModelMixin,
         qs = instance.collections.filter(deleted_at=None).order_by("position")
         if request.method in {"POST", "DELETE", "PUT"}:
             # validate request parameters
-            serializer = CollectionSerializer(many=True, data=request.data) if request.method == "POST" else \
-                CollectionShortSerializer(many=True, data=request.data)
+            serializer = CollectionSerializer(many=True, data=request.data)
             serializer.is_valid(raise_exception=True)
             data = serializer.initial_data
             collection_ids = [d["id"] for d in data]
