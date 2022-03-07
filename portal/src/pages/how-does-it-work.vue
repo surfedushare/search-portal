@@ -1,5 +1,5 @@
 <template>
-  <section class="container main how_work">
+  <section class="edusources-container main how_work">
     <HeaderBlock :title="$t('How-does-it-work')" />
     <InfoBlock
       :title="$t('About-the-portal')"

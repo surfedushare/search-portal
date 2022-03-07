@@ -1,5 +1,5 @@
 <template>
-  <section class="container main privacy">
+  <section class="edusources-container main privacy">
     <HeaderBlock :title="$t('My-privacy')" />
     <div class="center_block">
       <div class="content">

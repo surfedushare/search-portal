@@ -2,20 +2,15 @@
 This module contains API view serializers for materials app.
 """
 
-from rest_framework import serializers
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
-
-from surf.vendor.elasticsearch.serializers import SearchResultSerializer
+from django.core.validators import MinValueValidator
+from rest_framework import serializers
 from surf.apps.communities.serializers import CommunitySerializer
-from surf.apps.materials.models import (
-    Collection,
-    Material,
-    SharedResourceCounter,
-    RESOURCE_TYPE_COLLECTION,
-    PublishStatus,
-)
 from surf.apps.filters.serializers import MpttFilterItemSerializer
+from surf.apps.materials.models import (RESOURCE_TYPE_COLLECTION, Collection,
+                                        Material, PublishStatus,
+                                        SharedResourceCounter)
+from surf.vendor.elasticsearch.serializers import SearchResultSerializer
 
 
 class SharedResourceCounterSerializer(serializers.ModelSerializer):
@@ -46,8 +41,8 @@ class SearchSerializer(serializers.Serializer):
 
     search_text = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
     page = serializers.IntegerField(required=False, default=1, validators=[MinValueValidator(1)])
-    page_size = serializers.IntegerField(required=False, default=5,
-                                         validators=[MinValueValidator(0), MaxValueValidator(10)])
+    page_size = serializers.IntegerField(required=False, default=10,
+                                         validators=[MinValueValidator(0)])
     ordering = serializers.CharField(required=False, allow_blank=True, default=None, allow_null=True, write_only=True)
     filters = SearchFilterCategorySerializer(many=True, write_only=True, default=[])
 
@@ -100,8 +95,7 @@ class MaterialsRequestSerializer(serializers.Serializer):
                                     validators=[MinValueValidator(1)])
 
     page_size = serializers.IntegerField(required=False, default=1,
-                                         validators=[MinValueValidator(0),
-                                                     MaxValueValidator(10)])
+                                         validators=[MinValueValidator(0)])
     count_view = serializers.BooleanField(required=False, default=False)
 
 
@@ -113,9 +107,8 @@ class CollectionMaterialsRequestSerializer(serializers.Serializer):
     page = serializers.IntegerField(required=False, default=1,
                                     validators=[MinValueValidator(1)])
 
-    page_size = serializers.IntegerField(required=False, default=5,
-                                         validators=[MinValueValidator(0),
-                                                     MaxValueValidator(10)])
+    page_size = serializers.IntegerField(required=False, default=10,
+                                         validators=[MinValueValidator(0)])
 
 
 class MaterialRatingsRequestSerializer(serializers.Serializer):
@@ -129,8 +122,7 @@ class MaterialRatingsRequestSerializer(serializers.Serializer):
                                     validators=[MinValueValidator(1)])
 
     page_size = serializers.IntegerField(required=False, default=10,
-                                         validators=[MinValueValidator(0),
-                                                     MaxValueValidator(10)])
+                                         validators=[MinValueValidator(0)])
 
 
 class MaterialShortSerializer(serializers.ModelSerializer):
@@ -163,7 +155,7 @@ class CollectionShortSerializer(serializers.ModelSerializer):
         fields = ('id', 'title_nl', 'title_en', 'position')
 
 
-class CollectionSerializer(CollectionShortSerializer):
+class CollectionSerializer(serializers.ModelSerializer):
     """
     Collection instance serializer
     """

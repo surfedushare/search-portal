@@ -129,14 +129,14 @@ input[type="checkbox"]:checked:before {
     width: 14px;
     height: 48px;
     right: 8px;
-    background: url("/images/dropdown-arrow-grey.svg") 50% 50% / contain
+    background: url("/images/dropdown-arrow-grey.svg") 50% 55% / contain
       no-repeat;
     &.active {
-      background: url("/images/dropdown-arrow-green.svg") 50% 50% / contain
+      background: url("/images/dropdown-arrow-green.svg") 50% 55% / contain
         no-repeat;
     }
     &:hover {
-      background: url("/images/dropdown-arrow-green.svg") 50% 50% / contain
+      background: url("/images/dropdown-arrow-green.svg") 50% 55% / contain
         no-repeat;
     }
   }

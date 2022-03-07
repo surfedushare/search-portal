@@ -21,7 +21,7 @@ class TestUsers(BaseLiveServerTestCase):
         self.selenium.get(f"{self.live_server_url}/mijn/privacy")
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".info .title"), "Mijn privacy"
+                (By.CSS_SELECTOR, ".header-title"), "Mijn privacy"
             ),
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".privacy__form__label"), "Communities"

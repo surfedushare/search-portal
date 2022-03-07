@@ -285,8 +285,8 @@ class TestExtensionAPI(TestCase):
 
     def test_delete(self):
         datetime_begin_test = now()
-        external_id = "custom-extension"
-        response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
+        addition_external_id = "custom-extension"
+        response = self.client.delete(f"/api/v1/extension/{addition_external_id}/", content_type="application/json")
         self.assertEqual(response.status_code, 204)
         external_id = "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751"
         response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
@@ -297,6 +297,25 @@ class TestExtensionAPI(TestCase):
         external_id = "does-not-exist"
         response = self.client.delete(f"/api/v1/extension/{external_id}/", content_type="application/json")
         self.assertEqual(response.status_code, 404)
+        # Check whether the deleted extensions are truly not returned by the API
+        response = self.client.get(f"/api/v1/extension/{addition_external_id}/", content_type="application_json")
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f"/api/v1/extension/{external_id}/", content_type="application_json")
+        self.assertEqual(response.status_code, 404)
+        # Allow for recreation of the is_addition extension
+        body = {
+            "is_addition": True,
+            "external_id": addition_external_id,
+            **self.extension_properties,
+            **self.addition_properties,
+        }
+        response = self.client.post("/api/v1/extension/", body, content_type="application/json")
+        self.assertEqual(response.status_code, 201)
+        response_data = response.json()
+        self.assertIsInstance(response_data, dict)
+        self.assertTrue(response_data["is_addition"])
+        self.assertNotIn("children", response_data["properties"])
+        self.assert_properties(response_data["properties"], is_addition=True, external_id=addition_external_id)
 
     def test_invalid_external_id(self):
         # It should be impossible to create non-parent Extensions if a Document with given external_id does not exist

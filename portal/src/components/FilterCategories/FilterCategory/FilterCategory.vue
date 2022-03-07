@@ -50,12 +50,20 @@
         </li>
       </ul>
     </div>
+    <FilterCategoriesPopup
+      :category="category"
+      :show-popup="showPopup"
+      :close="onToggleShowAll"
+      @apply="onApply"
+    />
   </li>
 </template>
 
 <script>
+import FilterCategoriesPopup from '~/components/FilterCategories/FilterCategoriesPopup'
 export default {
   name: 'FilterCategory',
+  components: {FilterCategoriesPopup},
   props: {
     category: {
       type: Object,
@@ -74,6 +82,7 @@ export default {
     return {
       isOpen,
       showAll: false,
+      showPopup: false,
       visibleItems: 5,
     }
   },
@@ -111,17 +120,30 @@ export default {
       this.isOpen = !this.isOpen
     },
     onToggleShowAll() {
+      if (this.$root.isDemoEnvironment() && this.category.children.length >= 15) {
+        this.showPopup = !this.showPopup
+        return
+      }
       this.showAll = !this.showAll
     },
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
-
       if (e.target.checked) {
         this.$emit('check', categoryId, itemId)
       } else {
         this.$emit('uncheck', categoryId, itemId)
       }
     },
+    onApply(values) {
+      values = values || []
+      this.category.children.forEach((child) => {
+        if (values.indexOf(child.value) >= 0) {
+          this.$emit('check', this.category.external_id, child.value)
+        } else {
+          this.$emit('uncheck', this.category.external_id, child.value)
+        }
+      })
+    }
   },
 }
 </script>

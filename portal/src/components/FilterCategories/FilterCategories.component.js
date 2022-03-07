@@ -1,4 +1,4 @@
-import { flatMap, isEmpty } from 'lodash'
+import { flatMap, isEmpty, isEqual } from 'lodash'
 import { generateSearchMaterialsQuery } from '../_helpers'
 import DatesRange from '~/components/DatesRange'
 import FilterCategory from './FilterCategory/FilterCategory'
@@ -44,6 +44,9 @@ export default {
     },
     onCheck(categoryId, itemId) {
       const existingItems = this.selectedFilters[categoryId] || []
+      if (existingItems.indexOf(itemId) >= 0) {
+        return
+      }
 
       const filters = this.childExternalIds(categoryId, itemId)
       this.selectedFilters[categoryId] = [...existingItems, ...filters]
@@ -77,9 +80,11 @@ export default {
         filters: { ...filters },
       }
       // Execute search
-      await this.$router.push(
-        this.generateSearchMaterialsQuery(searchRequest, name)
-      )
+      const route = this.generateSearchMaterialsQuery(searchRequest, name)
+      if(isEqual(route.query, this.$route.query)) {
+        return
+      }
+      await this.$router.push(route)
       this.$emit('input', searchRequest) // actual search is done by the parent page
     },
     resetFilter() {

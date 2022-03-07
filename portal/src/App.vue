@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <div class="main_block">
-      <MainHeader />
+    <v-app>
+      <div class="main_block">
+        <MainHeader />
 
-      <router-view />
+        <router-view />
 
-      <MainFooter />
-    </div>
+        <MainFooter />
+      </div>
+    </v-app>
   </div>
 </template>
 
@@ -17,7 +19,13 @@
 
 @import "styles/common.less";
 
+@import 'styles/forms.less';
+
+@import 'styles/vuetify-overrides.less';
+
 @import "styles/forms.less";
+
+@import "styles/vuetify-overrides.less";
 </style>
 
 <script>

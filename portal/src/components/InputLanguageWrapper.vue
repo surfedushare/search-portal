@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="edusources-container">
     <slot class="input" />
     <div v-if="language" class="language">
       {{ language }}
@@ -18,7 +18,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.container {
+.edusources-container {
   position: relative;
 }
 

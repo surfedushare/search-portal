@@ -1,5 +1,5 @@
 <template>
-  <section class="container main material">
+  <section class="edusources-container main material">
     <Navigation :materials="materials" :material="material" />
     <div v-if="material" class="center_block material__wrapper">
       <Sidebar :material="material" :collections="collections" />

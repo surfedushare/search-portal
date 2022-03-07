@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="edusources-container">
     <input
       v-bind="$attrs"
       @input="onChange"
@@ -49,7 +49,7 @@ export default {
 <style lang="less" scoped>
 @import './../variables';
 
-.container {
+.edusources-container {
   position: relative;
 }
 
