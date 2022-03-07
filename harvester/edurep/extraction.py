@@ -1,13 +1,12 @@
 import re
-import vobject
-from mimetypes import guess_type
 from hashlib import sha1
-from dateutil.parser import parse as date_parser
+from mimetypes import guess_type
 
+import vobject
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
+from dateutil.parser import parse as date_parser
 from django.conf import settings
 from django.utils.text import slugify
-
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class EdurepDataExtraction(object):
@@ -198,7 +197,7 @@ class EdurepDataExtraction(object):
             author = cls.parse_vcard_element(node)
             if hasattr(author, "fn"):
                 authors.append({
-                    "name": author.fn.value,
+                    "name": author.fn.value.strip(),
                     "email": None,
                     "external_id": None,
                     "dai": None,
