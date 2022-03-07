@@ -37,6 +37,9 @@
     @media @desktop {
       margin: 3px 57px 0 47px;
     }
+    @media @tablet {
+      margin: 3px 57px 50px 47px;
+    }
     flex-shrink: 0;
     position: relative;
     .bg{
@@ -114,6 +117,11 @@
       justify-content: space-around;
       height: 139px;
     }
+    @media @tablet {
+      display: flex;
+      justify-content: space-around;
+      height: 339px;
+    }
     margin: auto;
     align-items: center;
     z-index: 1;
@@ -133,7 +141,12 @@
       }
       @media @desktop {
         height: 137px;
-        margin: 0 -600px 0 0;
+        margin: 0 -570px 0 0;
+        width: auto;
+      }
+      @media @tablet {
+        height: 239px;
+        margin: 0 -390px 0 0;
         width: auto;
       }
       bottom: 0;

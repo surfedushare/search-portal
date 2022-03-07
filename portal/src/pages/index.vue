@@ -306,18 +306,23 @@ export default {
   }
 
   .preview {
+    display: flex;
     position: relative;
-    @media @desktop {
-      padding: 50px 0 0 100px;
-    }
+    padding: 50px 0 0 0px;
 
     &__bg_block {
       position: absolute;
-      top: -80px;
-      left: 0;
+
+      @media @wide {
+        top: -2px;
+      }
 
       @media @desktop {
         top: -2px;
+      }
+
+      @media @tablet {
+        display: none;
       }
 
       @media @mobile {
@@ -330,6 +335,7 @@ export default {
       }
 
       &:before {
+        display: flex;
         content: "";
         position: absolute;
         background: url("/images/combined-shape.svg") no-repeat 0 0;
@@ -351,12 +357,20 @@ export default {
 
     &__text_block {
       background: fade(@light-grey, 90%);
+      margin-left: 100px;
       border-radius: 20px;
-      margin: 0 0 80px;
-      padding: 20px;
+
+      @media @wide {
+        padding: 30px 30px 30px 270px;
+      }
 
       @media @desktop {
         padding: 30px 30px 30px 270px;
+      }
+
+      @media @tablet {
+        padding: 30px 30px 30px 70px;
+        margin-left: 0px;
       }
     }
 
