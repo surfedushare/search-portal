@@ -400,9 +400,8 @@ export default {
   }
 
   &__filter {
-    width: 250px;
     flex-shrink: 0;
-    margin: 0 64px 0 0;
+    margin: 0 44px 0 0;
 
     @media @mobile {
       width: 100%;
@@ -428,6 +427,9 @@ export default {
     padding: 60px 0 0;
     width: 100%;
 
+    @media @tablet {
+      width: 60%;
+    }
     @media @mobile {
       padding: 0;
     }
