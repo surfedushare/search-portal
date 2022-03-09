@@ -39,4 +39,6 @@ class Command(BaseCommand):
             logger.info(f"Promoting index { index.remote_name } to latest")
             index.promote_to_latest()
 
+        dataset_version.set_current()
+
         logger.info("Finished promoting indices")
