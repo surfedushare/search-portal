@@ -2,18 +2,31 @@
   <div class="dropdown-container">
     <label class="dropdown-container__label">{{ label }}:</label>
 
-    <div class="dropdown-container__select" @click="onToggle">
+    <div
+      :class="{ 'active': visible == true }"
+      class="dropdown-container__select"
+      :data-test="'filter_' + field"
+      @click="onToggle"
+    >
       <span
         role="textbox"
         :class="{ 'bold': selectedFilters !== defaultOption }"
+        class="filter_checkbox"
       >{{ selectedFilters }}</span>
-      <div class="dropdown-container__selector"></div>
+      <div class="dropdown-container__selector" :class="{ 'active': visible === true }"></div>
     </div>
 
     <ul v-show="visible" class="dropdown-container__dropdown">
-      <li v-for="filter in filters" :key="filter.external_id" :value="filter.external_id">
-        <input v-model="filter.selected" type="checkbox" />
-        {{ filter.title_translations[$i18n.locale] }}
+      <li v-for="filter in visibleFilters" :key="filter.external_id" :value="filter.external_id">
+        <label class="filter_label">
+          <input
+            v-model="filter.selected"
+            type="checkbox"
+            :data-test="'filter_' + field + '_' + filter.external_id"
+            class="filter_checkbox"
+          />
+          {{ filter.title_translations[$i18n.locale] }}
+        </label>
       </li>
     </ul>
   </div>
@@ -55,6 +68,9 @@ export default {
 
       this.$emit('update:selection', { field: this.field, selection })
       return filterNames?.length == 0 ? filter.defaultOption : filterNames.join(", ");
+    },
+    visibleFilters() {
+      return this.filters.filter(x => !x.is_hidden).sort()
     }
   },
   methods: {
@@ -67,70 +83,130 @@ export default {
 
 <style lang="less" scoped>
 @import "../../variables";
-.dropdown-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  z-index: 10;
-  position: relative;
+input {
+  appearance: none;
+}
 
-  &__dropdown {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(6, auto);
-    grid-auto-columns: max-content;
-    column-gap: 2rem;
-    position: absolute;
-    top: 80px;
-    background-color: @grey;
-    list-style: none;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
-    margin-left: -10px;
-    min-width: 200px;
-  }
+input[type="checkbox"]:before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #686d75;
+  border-radius: 2px;
+  margin-right: 8px;
+  cursor: pointer;
+  vertical-align: text-bottom;
+}
+input[type="checkbox"]:hover:before {
+  border: 2px solid #008741;
+}
+input[type="checkbox"]:checked:before {
+  background: @green url("/images/checkmark.svg") 50% 50% / contain no-repeat;
+  border: 1px solid #2ca055;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.dropdown-container {
+  display: grid;
+  grid-auto-flow: row;
+
+  position: relative;
+  max-height: 50px;
 
   &__label {
     display: block;
     width: 100%;
-    height: 1.5rem;
+    height: 24px;
+    font-weight: 600;
   }
 
   &__selector {
-    position: relative;
-    -webkit-transform: translate(0, -100%) rotate(90deg);
-    transform: translate(0, -100%) rotate(90deg);
+    position: absolute;
     width: 14px;
-    height: 14px;
-    left: 8px;
-    top: 20px;
-    background: url("/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
+    height: 48px;
+    right: 8px;
+    background: url("/images/dropdown-arrow-grey.svg") 50% 55% / contain
+      no-repeat;
+    &.active {
+      background: url("/images/dropdown-arrow-green.svg") 50% 55% / contain
+        no-repeat;
+    }
     &:hover {
-      background: url("/images/arrow-text-green.svg") 50% 50% / contain
+      background: url("/images/dropdown-arrow-green.svg") 50% 55% / contain
         no-repeat;
     }
   }
 
   &__select {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    border-radius: 6px;
+    background-color: @grey;
+    max-height: 48px;
+    cursor: pointer;
+
+    &.active {
+      background-color: @darker-grey;
+    }
     span {
       text-overflow: ellipsis;
       font-family: "nunito";
       font-size: 16px;
       border: none;
       outline: none;
-      padding: 0;
+      padding: 12px;
       caret-color: transparent;
-      max-width: 180px;
+      color: @dark-grey;
+      max-width: 90%;
+      max-height: 48px;
+      height: 48px;
       display: inline-block;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+
       &.bold {
         font-weight: bolder;
       }
+    }
+  }
+
+  &__dropdown {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(6, auto);
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+    z-index: 10;
+    position: absolute;
+    top: 75px;
+    background-color: white;
+    list-style: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
+    padding: 20px;
+    :first-child:not(:empty) {
+      margin: 0;
+      min-width: 200px;
+    }
+    cursor: pointer;
+    label {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 0 -2px 8px;
+      color: @black;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    @media @mobile {
+      width: 100%;
+      grid-auto-flow: row;
+      grid-template-columns: 1fr;
     }
   }
 }

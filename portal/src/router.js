@@ -211,57 +211,21 @@ export default new Router({
       },
     },
     {
-      path: '/en/copyright',
+      path: '/en/institutes',
       component: InfoPage,
-      name: 'copyright___en',
+      name: 'institutes___en',
       meta: {
-        title_translation_key: 'title-copyright-info',
-        html_translation_key: 'html-copyright-info',
+        title_translation_key: 'title-institutes-info',
+        html_translation_key: 'html-institutes-info',
       },
     },
     {
-      path: '/copyright',
+      path: '/instellingen',
       component: InfoPage,
-      name: 'copyright___nl',
+      name: 'institutes___nl',
       meta: {
-        title_translation_key: 'title-copyright-info',
-        html_translation_key: 'html-copyright-info',
-      },
-    },
-    {
-      path: '/en/cookies',
-      component: InfoPage,
-      name: 'cookies___en',
-      meta: {
-        title_translation_key: 'title-cookies-info',
-        html_translation_key: 'html-cookies-info',
-      },
-    },
-    {
-      path: '/cookies',
-      component: InfoPage,
-      name: 'cookies___nl',
-      meta: {
-        title_translation_key: 'title-cookies-info',
-        html_translation_key: 'html-cookies-info',
-      },
-    },
-    {
-      path: '/en/disclaimer',
-      component: InfoPage,
-      name: 'disclaimer___en',
-      meta: {
-        title_translation_key: 'title-disclaimer-info',
-        html_translation_key: 'html-disclaimer-info',
-      },
-    },
-    {
-      path: '/disclaimer',
-      component: InfoPage,
-      name: 'disclaimer___nl',
-      meta: {
-        title_translation_key: 'title-disclaimer-info',
-        html_translation_key: 'html-disclaimer-info',
+        title_translation_key: 'title-institutes-info',
+        html_translation_key: 'html-institutes-info',
       },
     },
     {

@@ -7,7 +7,7 @@ from rest_framework import serializers
 from surf.apps.users.models import User
 from surf.apps.communities.models import Community
 from surf.apps.materials.models import Collection
-from surf.apps.materials.serializers import CollectionShortSerializer
+from surf.apps.materials.serializers import CollectionSerializer
 
 
 class UserDetailsSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_collections(obj):
         qs = Collection.objects.filter(communities__team__user=obj).order_by("title_nl")
-        return CollectionShortSerializer(qs, many=True).data
+        return CollectionSerializer(qs, many=True).data
 
     class Meta:
         model = User

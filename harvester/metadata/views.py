@@ -58,7 +58,7 @@ class MetadataTreeView(generics.ListAPIView):
 @method_decorator(gzip_page, name="dispatch")
 class MetadataFieldValuesView(generics.ListAPIView):
 
-    queryset = MetadataValue.objects.all()
+    queryset = MetadataValue.objects.filter(deleted_at__isnull=True)
     serializer_class = MetadataValueSerializer
     schema = HarvesterSchema()
     pagination_class = PageNumberPagination

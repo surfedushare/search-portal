@@ -1,5 +1,5 @@
 <template>
-  <div tabindex="-1" @focusout="onFocusOut">
+  <div v-if="dropdownData" class="presearchfilters" tabindex="-1">
     <FilterDropdown
       v-for="dropdown in dropdowns"
       :key="dropdown.field"
@@ -7,7 +7,7 @@
       :field="dropdown.field"
       :default-option="dropdown.defaultOption"
       :visible="dropdown.visible"
-      :filters="dropdownData ? dropdownData[dropdown.field].children : []"
+      :filters="dropdownData && dropdownData[dropdown.field] ? dropdownData[dropdown.field].children : []"
       @toggle="onToggle"
       @update:selection="onSelection"
     />
@@ -41,17 +41,18 @@ export default {
           visible: false
         },
         {
-          field: 'language.keyword',
-          label: this.$i18n.t('in'),
-          defaultOption: this.$i18n.t('dutch-or-english'),
-          visible: false
-        },
-        {
           field: 'lom_educational_levels',
           label: this.$i18n.t('for'),
           defaultOption: this.$i18n.t('all-levels'),
           visible: false
         },
+        {
+          field: 'language.keyword',
+          label: this.$i18n.t('in'),
+          defaultOption: this.$i18n.t('dutch-or-english'),
+          visible: false
+        },
+
       ],
       dropdownData: null,
     }
@@ -63,6 +64,7 @@ export default {
     }),
   },
   mounted() {
+    document.addEventListener('click', this.onClick);
     this.$store.dispatch('getFilterCategories').then(() => {
       const categories = this.dropdowns.map((dropdown) => {
         return dropdown.field
@@ -75,20 +77,48 @@ export default {
       )
     })
   },
+  beforeDestroy() {
+    document.removeEventListener('click', this.onClick);
+  },
   methods: {
+    onClick(event) {
+      if (!(event.target?.className?.includes('dropdown-container')
+        || event.target?.className?.includes('filter_'))
+        || event.target?.type == 'search'
+        || event.target?.type == 'submit') {
+        this.dropdowns.map(dd => dd.visible = false)
+      }
+    },
     onSelection(selection) {
       this.$emit('update:filter', selection)
     },
     onToggle(dropdown) {
       this.dropdowns.map(dd => dd.field !== dropdown.field ? dd.visible = false : dd.visible = !dd.visible);
     },
-    onFocusOut(event) {
-      const element = event.target;
-      if (!element.contains(event.relatedTarget) && event.relatedTarget?.className !== 'main__info_search__domain' && event.relatedTarget?.type !== 'checkbox') {
-        this.dropdowns.map(dd => dd.visible = false);
-      }
-    }
   },
 }
 </script>
+
+<style lang="less" scoped>
+@import "../../variables";
+.presearchfilters {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr 1fr 1fr 115px;
+  grid-gap: 20px;
+  height: 80px;
+  padding: 15px 24px;
+  @media @mobile-ls {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    min-height: 160px;
+  }
+  @media @mobile {
+    grid-auto-flow: row;
+    grid-template-columns: 100%;
+    min-height: 310px;
+    width: 100%;
+  }
+}
+</style>
 

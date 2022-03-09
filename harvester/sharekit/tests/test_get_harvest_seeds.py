@@ -112,6 +112,11 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertEqual(seeds[2]['publishers'], ['SURFnet'])
         self.assertEqual(seeds[4]['publishers'], ['SURFnet'])
 
+    def test_consortium(self):
+        seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
+        self.assertEqual(seeds[0]['consortium'], 'vaktherapie')
+        self.assertIsNone(seeds[1]['consortium'])
+
     def test_is_restricted(self):
         seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         for seed in seeds:

@@ -1,6 +1,6 @@
-import { validateSearch, validateParams, validateIDString } from './_helpers'
 import injector from 'vue-inject'
 import axios from '~/axios'
+import { validateIDString, validateParams, validateSearch } from './_helpers'
 
 const $log = injector.get('$log')
 
@@ -194,6 +194,7 @@ export default {
       const records = payload.records || payload
       state.materials = Object.assign({}, payload, {
         records: records,
+        total_pages: Math.round(payload.records_total / payload.page_size)
       })
     },
     SET_NEXT_PAGE_MATERIALS(state, payload) {

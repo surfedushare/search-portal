@@ -1,9 +1,9 @@
 <template>
-  <section class="container container-pd text-center">
+  <section class="edusources-container container-pd text-center">
     <h1 class="title">
       {{ statusCode }}
     </h1>
-    <h2 class="info">
+    <h2 class="message">
       {{ $t(messageKey) }}
     </h2>
     <router-link v-if="parseInt(statusCode) === 404" class="button" to="/">
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.edusources-container {
   flex: 1 1 auto;
   box-sizing: border-box;
   background: transparent;
@@ -40,7 +40,7 @@ export default {
   font-size: 5em;
 }
 
-.info {
+.message {
   font-weight: 300;
   color: #9aabb1;
   margin: 20px 0;

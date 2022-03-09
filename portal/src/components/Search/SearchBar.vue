@@ -36,22 +36,6 @@ export default {
     },
   },
   methods: {
-    getFilterOptions(external_id) {
-      if (this.filterCategories) {
-        const filterCategory = this.filterCategories.find(
-          (category) => category.external_id === external_id
-        )
-
-        if (filterCategory) {
-          return {
-            name: filterCategory.title_translations[this.$i18n.locale],
-            options: filterCategory.children,
-          }
-        }
-      }
-
-      return null
-    },
     searchMaterials(searchText) {
       const searchRequest = {
         search_text: searchText || '',
@@ -75,24 +59,14 @@ export default {
 <style lang="less">
 @import "../../variables";
 .search_bar {
-  margin-bottom: 60px;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-rows: repeat(2, auto);
   position: relative;
-  display: flex;
-  justify-content: space-between;
   z-index: 10;
   background: white;
-  height: 92px;
   border-radius: 20px;
   box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
   margin-top: -18px;
-  &__term {
-    display: flex;
-  }
-  &__filters {
-    display: flex;
-    justify-content: space-between;
-    margin-left: 1rem;
-    margin-top: 1rem;
-  }
 }
 </style>

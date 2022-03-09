@@ -1,25 +1,18 @@
 <template>
-  <section class="container main privacy">
+  <section class="edusources-container main privacy">
     <HeaderBlock :title="$t('My-privacy')" />
     <div class="center_block">
       <div class="content">
         <div v-if="permissions.length" class="left-column">
           <div class="privacy__form">
-            <form
-              action="/"
-              class="privacy__form_in"
-              novalidate
-              @submit.prevent="onSubmit"
-            >
+            <form action="/" class="privacy__form_in" novalidate @submit.prevent="onSubmit">
               <div class="privacy__form__column">
                 <div
                   v-for="permission in permissions"
                   :key="permission.type"
                   class="privacy__form__row"
                 >
-                  <p class="privacy__form__label">
-                    {{ permission[$i18n.locale].title }}
-                  </p>
+                  <p class="privacy__form__label">{{ permission[$i18n.locale].title }}</p>
                   <div class="permission-container">
                     <div class="switch-container">
                       <switch-input
@@ -37,9 +30,7 @@
                         {{ permission[$i18n.locale].description }}
                         <router-link
                           :to="localePath(permission.more_info_route)"
-                        >
-                          {{ $t('more-info') }}
-                        </router-link>
+                        >{{ $t('more-info') }}</router-link>
                       </p>
                     </div>
                   </div>
@@ -50,39 +41,28 @@
                 <p>{{ $t('Delete-account-warning') }}</p>
               </div>
 
-              <div v-if="isSaved" class="success">
-                &#10004; {{ $t('Data-saved') }}
-              </div>
+              <div v-if="isSaved" class="success">&#10004; {{ $t('Data-saved') }}</div>
               <div class="privacy__form__buttons">
                 <button
                   :disabled="isSubmitting"
                   class="button privacy__form__button"
                   :class="withdrawnCommunityPermission && 'warning'"
-                >
-                  {{ submitButtonLabel }}
-                </button>
+                >{{ submitButtonLabel }}</button>
                 <button
                   class="button privacy__form__button cancel"
                   @click.prevent="$router.go(-1)"
-                >
-                  {{ $t('cancel-privacy-settings') }}
-                </button>
+                >{{ $t('cancel-privacy-settings') }}</button>
               </div>
             </form>
           </div>
         </div>
         <div class="right-column">
           <div v-if="cookies">
-            <p class="privacy__form__label">
-              {{ cookies[$i18n.locale].title }}
-            </p>
+            <p class="privacy__form__label">{{ cookies[$i18n.locale].title }}</p>
             <div class="description">
               <p>
-                {{ cookies[$i18n.locale].description }} (<router-link
-                  :to="localePath(cookies.more_info_route)"
-                >
-                  {{ $t('more-info') }}
-                </router-link>)
+                {{ cookies[$i18n.locale].description }} (
+                <router-link :to="localePath(cookies.more_info_route)">{{ $t('more-info') }}</router-link>)
               </p>
             </div>
           </div>
@@ -105,10 +85,10 @@
 <script>
 import { isNil } from 'lodash'
 import { mapGetters } from 'vuex'
-import SwitchInput from '~/components/switch-input'
+import HeaderBlock from '~/components/HeaderBlock'
 import CreateAccount from '~/components/Popup/CreateAccount'
 import DeleteAccountPopup from '~/components/Popup/DeleteAccountPopup'
-import HeaderBlock from '~/components/HeaderBlock'
+import SwitchInput from '~/components/switch-input'
 
 export default {
   components: {
@@ -227,7 +207,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import './../variables';
+@import "./../variables";
 
 .privacy {
   width: 100%;
@@ -242,7 +222,7 @@ export default {
     position: relative;
     display: block;
 
-    background-image: url('/images/pictures/rawpixel-760027-unsplash.jpg');
+    background-image: url("/images/pictures/rawpixel-760027-unsplash.jpg");
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position-x: calc(100% - 30px);
@@ -258,7 +238,7 @@ export default {
       background-position-x: calc(100% - 20px);
     }
 
-    @media @small-mobile {
+    @media @mobile {
       background-size: 0;
     }
   }
@@ -367,7 +347,7 @@ export default {
       width: 100%;
       margin: 10px 0 20px;
 
-      @media @small-mobile {
+      @media @mobile {
         flex-direction: column;
       }
 
@@ -381,7 +361,7 @@ export default {
     &__button {
       padding: 13px 60px;
 
-      @media @small-mobile {
+      @media @mobile {
         display: block !important;
       }
 
@@ -399,7 +379,7 @@ export default {
         padding: 17px 23px;
         margin-left: 20px;
 
-        @media @small-mobile {
+        @media @mobile {
           margin-left: 0;
           margin-top: 20px;
           display: block;

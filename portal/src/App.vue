@@ -1,29 +1,37 @@
 <template>
   <div id="app">
-    <div class="main_block">
-      <MainHeader />
+    <v-app>
+      <div class="main_block">
+        <MainHeader />
 
-      <router-view />
+        <router-view />
 
-      <MainFooter />
-    </div>
+        <MainFooter />
+      </div>
+    </v-app>
   </div>
 </template>
 
 <style lang="less">
-@import 'styles/normalize.css';
+@import "styles/normalize.css";
 
-@import 'variables.less';
+@import "variables.less";
 
-@import 'styles/common.less';
+@import "styles/common.less";
 
 @import 'styles/forms.less';
+
+@import 'styles/vuetify-overrides.less';
+
+@import "styles/forms.less";
+
+@import "styles/vuetify-overrides.less";
 </style>
 
 <script>
-import MainHeader from '~/components/MainHeader'
-import MainFooter from '~/components/MainFooter'
 import { setLanguage } from '~/axios'
+import MainFooter from '~/components/MainFooter'
+import MainHeader from '~/components/MainHeader'
 
 const DEFAULT_TITLE = 'Edusources'
 

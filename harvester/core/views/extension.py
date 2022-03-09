@@ -99,7 +99,7 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
                         f"Can't set {prop} property for anything but an addition extension."
                     )
         if self.context["request"].method == "POST":
-            if Extension.objects.filter(id=external_id).exists():
+            if Extension.objects.filter(id=external_id, deleted_at__isnull=True).exists():
                 raise ValidationError(
                     f"Extension with id '{external_id}' already exists. Try to PUT the extension instead."
                 )
@@ -108,6 +108,10 @@ class ExtensionSerializer(DocumentBaseSerializer, ExtensionPropertiesSerializer)
     def create(self, validated_data):
         external_id = validated_data["external_id"]
         is_addition = validated_data.pop("is_addition")
+        # Detect whether a deleted addition extension exists and permanently delete it before creation
+        if is_addition:
+            Extension.objects.filter(id=external_id, deleted_at__isnull=False).delete()
+        # Create the extension
         extension = super().create({
             "id": external_id,
             "is_addition": is_addition,
@@ -187,7 +191,7 @@ class ExtensionListView(generics.ListCreateAPIView):
     The response contains a list of extensions (GET) or the newly created extension (POST).
     See request body to learn more about the properties of an extension.
     """
-    queryset = Extension.objects.all()
+    queryset = Extension.objects.filter(deleted_at__isnull=True)
     serializer_class = ExtensionSerializer
     schema = HarvesterSchema()
 
@@ -241,7 +245,7 @@ class ExtensionDetailView(generics.RetrieveUpdateDestroyAPIView):
     The response contains an extension (GET or PUT) or an empty response (DELETE).
     See request body to learn more about the properties of an extension.
     """
-    queryset = Extension.objects.all()
+    queryset = Extension.objects.filter(deleted_at__isnull=True)
     serializer_class = ExtensionSerializer
     lookup_url_kwarg = "external_id"
     schema = HarvesterSchema()

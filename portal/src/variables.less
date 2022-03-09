@@ -2,20 +2,46 @@
 @dark-blue-hover: #0077a0;
 @yellow: #fedb00;
 @green: #2CA055;
-@green-hover: #2C8855;
+@green-hover: #008741;
 @orange: #ea7600;
 @red: red;
 @orange-hover: #FFC100;
 @grey: #F6F6F6;
+@darker-grey: #F0F0F0;
 @dark-grey: #686d75;
 @light-grey: #f4f4f4;
-@black: #050e1d;
+@black: #050E1D;
 
 @main-font: 'Source Sans Pro', Arial, sans-serif;
 @second-font: 'nunito';
 
-@wide:      ~"only screen and (min-width: 1200px)";
-@desktop:   ~"only screen and (min-width: 935px)";
-@tablet:    ~"only screen and (min-width: 935px) and (max-width: 999px)";
-@mobile:    ~"only screen and (max-width: 934px)";
-@small-mobile: ~"only screen and (max-width: 700px)";
+/*
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+@wide:      ~"only screen and (min-width: 1281px)";
+/*
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+@desktop:   ~"only screen and (min-width: 1025px) and (max-width: 1280px)";
+/*
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+@tablet:    ~"only screen and (min-width: 768px) and (max-width: 1024px)";
+/*
+##Device = Tablets, Ipads (landscape)
+##Screen = B/w 768px to 1024px
+*/
+@tablet-ls: ~"only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape)";
+/*
+##Device = Low Resolution Tablets, Mobiles (Landscape)
+##Screen = B/w 481px to 767px
+*/
+@mobile-ls: ~"only screen and (min-width: 481px) and (max-width: 767px)";
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+@mobile:    ~"only screen and (min-width: 320px) and (max-width: 480px)";

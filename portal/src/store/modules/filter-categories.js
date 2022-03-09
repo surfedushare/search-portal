@@ -1,8 +1,8 @@
-import { forEach, isNil, isNull, isEmpty, groupBy, sortBy } from 'lodash'
-import { parseSearchMaterialsQuery } from '~/components/_helpers'
+import { PUBLISHER_DATE_FIELD, THEME_CATEGORY_FILTER_FIELD } from '@/constants'
+import { forEach, groupBy, isEmpty, isNil, isNull, sortBy } from 'lodash'
 import axios from '~/axios'
+import { parseSearchMaterialsQuery } from '~/components/_helpers'
 import router from '~/router'
-import { THEME_CATEGORY_FILTER_FIELD, PUBLISHER_DATE_FIELD } from '@/constants'
 
 function getFiltersForSearch(items) {
   if (isNil(items)) {
@@ -74,7 +74,7 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
     item.showAll = showAlls.indexOf(item.id) >= 0
   })
   return items.some((item) => {
-    return item.selected
+      return item.selected
   })
 }
 
@@ -133,15 +133,7 @@ export default {
   actions: {
     async getFilterCategories({ state, commit }) {
       const filters = getFiltersFromQuery(router.currentRoute.query)
-      if (window.CATEGORY_FILTERS) {
-        loadCategoryFilters(
-          window.CATEGORY_FILTERS,
-          filters.selected,
-          filters.dateRange
-        )
-        commit('SET_FILTER_CATEGORIES', window.CATEGORY_FILTERS)
-        commit('SET_FILTER_CATEGORIES_LOADING', null)
-      } else if (
+      if (
         isNil(state.filter_categories_loading) &&
         isEmpty(state.filter_categories)
       ) {

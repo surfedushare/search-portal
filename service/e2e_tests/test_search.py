@@ -207,14 +207,14 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         # Locally the test passes.
         # The tests fail with a TimeoutException without a message so it's not entirely clear what goes wrong here.
         # We should re-enable this test.
-        self.skipTest("Skipped due to strange Github behaviour")
-        # # Filter on Document
+        # self.skipTest("Skipped due to strange Github behaviour")
+        # Filter on Document
         # technical_types.find_element_by_css_selector("input").click()
         # WebDriverWait(self.selenium, self.explicit_wait).until(EC.visibility_of(technical_types))
         # action.move_to_element(source_category).perform()
         # WebDriverWait(self.selenium, self.explicit_wait).until(EC.visibility_of(source_category))
         # source_category.click()
-        #
+
         # WebDriverWait(self.selenium, self.explicit_wait).until(
         #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (2)"))
         # WebDriverWait(self.selenium, self.explicit_wait).until(
@@ -227,13 +227,13 @@ class TestSearchFiltering(BaseLiveServerTestCase):
         #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#sharekit ~ label"), "Sharekit (1)"))
         # WebDriverWait(self.selenium, self.explicit_wait).until(
         #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#wikiwijsmaken ~ label"), "Wikiwijs Maken (1)"))
-        #
-        # # Filter on Sharekit
+
+        # Filter on Sharekit
         # source_category.find_element_by_css_selector("input").click()
         # WebDriverWait(self.selenium, self.explicit_wait).until(
         #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#WO ~ label"), "WO (1)"))
         # WebDriverWait(self.selenium, self.explicit_wait).until(
-        #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (1)"))
+        #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#video ~ label"), "Video (2)"))
         # WebDriverWait(self.selenium, self.explicit_wait).until(
         #     EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#document ~ label"), "Document (1)"))
         # WebDriverWait(self.selenium, self.explicit_wait).until(

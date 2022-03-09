@@ -333,10 +333,19 @@ export default {
       return formatDate(this.material.published_at, this.$i18n.locale)
     },
     collectionItems() {
-      return this.my_collections.map((collection) => ({
-        id: collection.id,
-        title: collection[`title_${this.$i18n.locale}`],
-      }))
+      return this.my_collections.map((collection) => {
+        const collectionTitle = collection[`title_${this.$i18n.locale}`]
+        const communityTitles = collection.communities.map((community) => {
+          const communityDetails = community.community_details.find((details) => {
+            return details.language_code.toLowerCase() === this.$i18n.locale
+          })
+          return communityDetails.title
+        })
+        return {
+          id: collection.id,
+          title: `${collectionTitle} (${communityTitles.join(' ,')})`,
+        }
+      })
     },
     /**
      * Extend to the material fields "disciplines"

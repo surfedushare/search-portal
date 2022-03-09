@@ -1,5 +1,5 @@
 <template>
-  <section class="container main">
+  <section class="edusources-container main">
     <div>
       <div class="main__info">
         <div class="center_block center-header">
@@ -154,11 +154,9 @@ export default {
     padding: 120px 0 0;
     margin-bottom: 60px;
     position: relative;
-
-    .center-header {
-      position: relative;
+    @media @mobile-ls {
+      padding: 230px 0 0;
     }
-
     &_bg {
       width: 100%;
     }
@@ -198,22 +196,42 @@ export default {
     }
     &_block {
       position: absolute;
-      top: -50px;
+      top: 30px;
       right: 100px;
       color: #fff;
-      width: auto;
       max-width: 550px;
       font-family: @second-font;
       padding: 31px 48px 40px;
       font-size: 16px;
       font-weight: bold;
       z-index: 1;
-
+      @media @wide {
+        top: 50px;
+        right: 470px;
+        max-width: 550px;
+      }
+      @media @desktop {
+        top: 50px;
+        right: 170px;
+        max-width: 550px;
+      }
+      @media @tablet {
+        right: 20px;
+        padding: 5px 32px;
+        max-width: 400px;
+      }
       @media @mobile {
-        top: -90px;
+        top: 30px;
         right: 20px;
         padding: 5px 32px;
         max-width: 300px;
+      }
+      @media @mobile-ls {
+        top: 50px;
+        right: 20px;
+        padding: 5px 32px;
+        max-width: 300px;
+        min-height: 300px;
       }
 
       & .bg {
@@ -288,18 +306,23 @@ export default {
   }
 
   .preview {
+    display: flex;
     position: relative;
-    @media @desktop {
-      padding: 50px 0 0 100px;
-    }
+    padding: 50px 0 0 0px;
 
     &__bg_block {
       position: absolute;
-      top: -80px;
-      left: 0;
+
+      @media @wide {
+        top: -2px;
+      }
 
       @media @desktop {
         top: -2px;
+      }
+
+      @media @tablet {
+        display: none;
       }
 
       @media @mobile {
@@ -312,6 +335,7 @@ export default {
       }
 
       &:before {
+        display: flex;
         content: "";
         position: absolute;
         background: url("/images/combined-shape.svg") no-repeat 0 0;
@@ -333,17 +357,25 @@ export default {
 
     &__text_block {
       background: fade(@light-grey, 90%);
+      margin-left: 100px;
       border-radius: 20px;
-      margin: 0 0 80px;
-      padding: 20px;
+
+      @media @wide {
+        padding: 30px 30px 30px 270px;
+      }
 
       @media @desktop {
         padding: 30px 30px 30px 270px;
       }
+
+      @media @tablet {
+        padding: 30px 30px 30px 70px;
+        margin-left: 0px;
+      }
     }
 
     &__title {
-      margin: 0 0 20px;
+      margin: 0 0 40px;
       @media @mobile {
         font-size: 22px;
       }

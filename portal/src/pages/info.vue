@@ -1,5 +1,5 @@
 <template>
-  <section class="container main info">
+  <section class="edusources-container main-info">
     <div class="center_block info__center-header">
       <div class="info__info">
         <h2>{{ $t(titleKey) }}</h2>
@@ -33,7 +33,7 @@ export default {
 <style lang="less" scoped>
 @import './../variables';
 
-.info {
+.main-info {
   &__center-header {
     @media @mobile {
       padding-left: 30px;

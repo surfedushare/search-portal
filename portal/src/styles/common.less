@@ -143,11 +143,13 @@ h5,
   opacity: 0;
 }
 
-a,
-.link {
+.v-application a, a, .link {
   color: @green;
   text-decoration: none;
 
+  &.button {
+    color: #353535;
+  }
   &:not(.button):hover {
     text-decoration: underline;
   }
@@ -160,7 +162,7 @@ a,
 
 .center_block {
   width: 100%;
-  max-width: 1300px;
+  max-width: 1296px;
   margin-left: auto;
   margin-right: auto;
 

@@ -1,10 +1,11 @@
 <template>
-  <section class="container search">
+  <section class="edusources-container search">
     <div>
       <div class="search__info">
         <div class="center_block center-header">
           <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
           <SearchBar v-if="$root.isDemoEnvironment()" @onSearch="initialSearch" />
+          <div ref="top"></div>
           <Search
             v-if="!$root.isDemoEnvironment()"
             :search-input="search.search_text"
@@ -39,12 +40,7 @@
         >{{ materials_in_line === 1 ? $t('Card-view') : $t('List-view') }}</button>
       </div>
 
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="materials_loading"
-        infinite-scroll-distance="10"
-        class="search__wrapper center_block"
-      >
+      <div class="search__wrapper center_block">
         <div v-if="showFilterCategories" class="search__filter">
           <div class="search__filter_content">
             <FilterCategories
@@ -63,6 +59,13 @@
             :items-in-line="materials_in_line"
             :did-you-mean="did_you_mean"
           />
+          <v-pagination
+            v-if="materials && !materials_loading"
+            v-model="materials.page"
+            :length="materials.total_pages"
+            :total-visible="11"
+            @input="onLoadPage"
+          ></v-pagination>
           <Spinner v-if="materials_loading" />
         </div>
       </div>
@@ -188,17 +191,15 @@ export default {
       }
       this.executeSearch(changed)
     },
-    loadMore() {
+    onLoadPage(page) {
       const { search, materials } = this
       if (materials && search) {
-        const { page_size, page, records_total } = materials
-
-        if (records_total > page_size * page) {
-          this.$store.dispatch('searchNextPageMaterials', {
-            ...search,
-            page: page + 1,
-          })
-        }
+        search.page = page;
+        this.$router.push(
+          generateSearchMaterialsQuery(this.search, this.$route.name)
+        )
+        this.$store.dispatch('searchMaterials', search)
+        this.$refs.top.scrollIntoView({ behavior: "smooth" });
       }
     },      /*         Change 1 item in line to 3 and back       */
     changeViewType() {
@@ -241,9 +242,6 @@ export default {
     position: relative;
     min-height: 300px;
 
-    @media @mobile {
-      overflow: hidden;
-    }
     &_top {
       border-radius: 20px;
       background: fade(@light-grey, 90%);
@@ -321,7 +319,13 @@ export default {
   }
 
   &__wrapper {
+    @media @wide {
+      display: flex;
+    }
     @media @desktop {
+      display: flex;
+    }
+    @media @tablet {
       display: flex;
     }
     @media @mobile {
@@ -340,6 +344,7 @@ export default {
 
     @media @mobile {
       justify-content: flex-start;
+      flex-wrap: wrap;
     }
 
     &_results {
@@ -376,6 +381,9 @@ export default {
       &:active {
         outline: none;
       }
+      @media @tablet {
+        display: none;
+      }
 
       @media @mobile {
         display: none;
@@ -392,9 +400,8 @@ export default {
   }
 
   &__filter {
-    width: 250px;
     flex-shrink: 0;
-    margin: 0 64px 0 0;
+    margin: 0 44px 0 0;
 
     @media @mobile {
       width: 100%;
@@ -420,6 +427,9 @@ export default {
     padding: 60px 0 0;
     width: 100%;
 
+    @media @tablet {
+      width: 60%;
+    }
     @media @mobile {
       padding: 0;
     }

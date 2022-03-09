@@ -1,5 +1,5 @@
 <template>
-  <section class="container main themes">
+  <section class="edusources-container main themes">
     <div v-if="!theme && isReady">
       <error status-code="404" message-key="theme-not-found" />
     </div>

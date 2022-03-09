@@ -1,6 +1,6 @@
 <template>
-  <div class="center_block center-header header-block">
-    <div class="info">
+  <div class="center_block center-header">
+    <div class="header-block">
       <img
         class="bg"
         src="/images/pictures/rawpixel-760027-unsplash.jpg"
@@ -9,7 +9,7 @@
           /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
         "
       >
-      <h2 class="title">
+      <h2 class="header-title">
         {{ title }}
       </h2>
     </div>
@@ -36,7 +36,7 @@ export default {
     padding: 30px;
   }
 }
-.info {
+.header-block {
   border-radius: 20px;
   position: relative;
   background: @light-grey;
