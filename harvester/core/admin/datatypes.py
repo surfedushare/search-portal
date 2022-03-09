@@ -1,8 +1,16 @@
+from elasticsearch import NotFoundError
+
 from django.contrib import admin
+from django.utils.html import format_html
+from django.urls import reverse
 
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin as DatagrowthDocumentAdmin
 from core.admin.harvest import HarvestAdminInline
 from core.admin.filters import TrashListFilter
+from core.utils.elastic import get_es_client
+
+
+es_client = get_es_client()
 
 
 class DatasetAdmin(DataStorageAdmin):
@@ -10,7 +18,18 @@ class DatasetAdmin(DataStorageAdmin):
 
 
 class DatasetVersionAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'is_current', "created_at")
+    list_display = ('__str__', 'is_current', "created_at", "harvest_count", "index_count",)
+
+    def harvest_count(self, obj):
+        return obj.document_set.filter(properties__state="active", dataset_version=obj).count()
+
+    def index_count(self, obj):
+        indices = [index.remote_name for index in obj.indices.all()]
+        try:
+            counts = es_client.count(index=",".join(indices))
+        except NotFoundError:
+            counts = {}
+        return counts.get("count", 0)
 
 
 class DocumentAdmin(DatagrowthDocumentAdmin):
