@@ -115,6 +115,18 @@ class SharekitMetadataExtraction(ExtractProcessor):
         ]
 
     @classmethod
+    def get_consortium(cls, node):
+        consortium = node["attributes"].get("consortium", None)
+        if consortium is None:
+            consortium_keywords = [
+                keyword for keyword in node["attributes"].get("keywords", [])
+                if "vaktherapie" in keyword.lower()
+            ]
+            if consortium_keywords:
+                consortium = "vaktherapie"
+        return consortium
+
+    @classmethod
     def get_publishers(cls, node):
         publishers = node["attributes"].get("publishers", []) or []
         if isinstance(publishers, str):
@@ -248,5 +260,5 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "research_themes": SharekitMetadataExtraction.get_research_themes,
     "parties": SharekitMetadataExtraction.get_empty_list,
     "learning_material_themes": SharekitMetadataExtraction.get_learning_material_themes,
-    "consortium": "$.attributes.consortium"
+    "consortium": SharekitMetadataExtraction.get_consortium
 }
