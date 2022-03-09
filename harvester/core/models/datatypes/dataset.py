@@ -1,4 +1,6 @@
 from collections import defaultdict
+from itertools import groupby
+from functools import reduce
 
 from django.conf import settings
 from django.db import models, transaction
@@ -34,9 +36,8 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
     @transaction.atomic
     def create_new_version(self, excluded_specs=None):
         excluded_specs = excluded_specs or []
-        current_version = self.versions.filter(is_current=True).last()
-        self.versions.filter(is_current=True, version=settings.VERSION).update(is_current=False)
-        new_version = self.versions.create(version=settings.VERSION, is_current=True)
+        current_version = DatasetVersion.objects.get_current_version()
+        new_version = self.versions.create(version=settings.VERSION, is_current=False)
 
         for harvest in self.harvest_set.all():
             if current_version and harvest.source.spec not in excluded_specs and not harvest.should_purge():
@@ -55,13 +56,49 @@ class DatasetVersionManager(models.Manager):
 
     def get_latest_version(self, dataset=None, dataset_name=None):
         filters = {
-            "is_current": True
+            "version": settings.VERSION
         }
         if dataset:
             filters.update({"dataset": dataset})
         elif dataset_name:
             filters.update({"dataset__name": dataset_name})
-        return super().get_queryset().filter(**filters).latest()
+        return super().get_queryset().filter(**filters).last()
+
+    def get_current_version(self):
+        return super().get_queryset().filter(is_current=True).last()
+
+    @staticmethod
+    def reduce_version_integer(dataset_version):
+        def _reduce_version_integer(value, ix_element):
+            ix, element = ix_element
+            multiplier = pow(1000, ix)
+            integer = multiplier * int(element) if multiplier else int(element)
+            return value + integer
+        version_split = dataset_version.version.split(".")
+        version_split.reverse()
+        result = reduce(_reduce_version_integer, enumerate(version_split), 0)
+        return result
+
+    def get_stale_versions(self, purge_time, dataset):
+        queryset = self.get_queryset().filter(dataset=dataset, is_current=False).order_by("version", "created_at")
+        grouped_versions = {
+            group: list(versions)
+            for group, versions in groupby(queryset, self.reduce_version_integer)
+        }
+        version_keys = sorted(grouped_versions.keys(), reverse=True)
+        retained_versions = []
+        stale_versions = []
+        for version_key in version_keys:
+            dataset_versions = grouped_versions[version_key]
+            if len(retained_versions) < settings.DATA_RETENTION_KEEP_VERSIONS:
+                retained_versions.append(dataset_versions.pop())
+                stale_versions += dataset_versions
+            else:
+                stale_versions += dataset_versions
+        return [
+            stale_version for stale_version in stale_versions
+            if stale_version.created_at <= purge_time
+        ]
 
 
 class DatasetVersion(models.Model):
@@ -106,5 +143,10 @@ class DatasetVersion(models.Model):
             by_language[language] += list(extension.to_search())
         return by_language
 
+    def set_current(self):
+        DatasetVersion.objects.all().update(is_current=False)
+        self.is_current = True
+        self.save()
+
     class Meta:
-        get_latest_by = "created_at"
+        get_latest_by = "-created_at"

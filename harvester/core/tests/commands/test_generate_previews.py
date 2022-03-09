@@ -1,6 +1,6 @@
 from unittest.mock import patch, MagicMock
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.core.management import call_command
 
 from core.models import Document
@@ -14,6 +14,7 @@ shell_mock_result = MagicMock()
 http_mock_result = MagicMock()
 
 
+@override_settings(VERSION="0.0.1")
 class TestGeneratePreviews(TestCase):
 
     def setUp(self):

@@ -13,7 +13,7 @@ from core.models import ElasticIndex, DatasetVersion, Extension
 
 @app.task(name="sync_indices", base=DatabaseConnectionResetTask)
 def sync_indices():
-    dataset_version = DatasetVersion.objects.get_latest_version()
+    dataset_version = DatasetVersion.objects.get_current_version()
     indices_queryset = ElasticIndex.objects.filter(dataset_version=dataset_version, pushed_at__isnull=False)
     try:
         with atomic():

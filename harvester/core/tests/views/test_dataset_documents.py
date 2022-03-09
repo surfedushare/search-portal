@@ -19,9 +19,9 @@ class TestDatasetDocumentsAPI(TestCase):
         self.client.force_login(self.user)
         created_time = make_aware(datetime.now())
         self.active_dataset = DatasetFactory.create(name="active test", is_active=True, is_latest=True)
-        create_dataset_version(self.active_dataset, "0.0.1", created_time)
+        create_dataset_version(self.active_dataset, "0.0.1", created_time, include_current=True)
         self.inactive_dataset = DatasetFactory.create(name="inactive test", is_active=False, is_latest=False)
-        create_dataset_version(self.inactive_dataset, "0.0.1", created_time, docs=1)
+        create_dataset_version(self.inactive_dataset, "0.0.1", created_time, docs=1, include_current=False)
 
     def test_documents(self):
         response = self.client.get(f"/api/v1/dataset/{self.active_dataset.id}/documents/?page_size=2")

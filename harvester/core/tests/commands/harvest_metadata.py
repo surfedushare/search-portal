@@ -1,7 +1,8 @@
 from unittest.mock import patch
 from datetime import datetime
 
-from django.test import TestCase
+from django.conf import settings
+from django.test import TestCase, override_settings
 from django.core.management import call_command, CommandError
 from django.utils.timezone import make_aware
 
@@ -32,6 +33,7 @@ DUMMY_SEEDS = [
 ]
 
 
+@override_settings(VERSION="0.0.1")
 class TestMetadataHarvest(TestCase):
     """
     This test case represents the scenario where a harvest is started from t=0
@@ -167,6 +169,7 @@ class TestMetadataHarvest(TestCase):
         self.assertEqual(collection.document_set.count(), 0)
 
 
+@override_settings(VERSION="0.0.1")
 class TestMetadataHarvestWithHistory(TestCase):
     """
     This test case represents the scenario where a harvest from a previous harvest

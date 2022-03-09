@@ -24,7 +24,7 @@ def sync_sharekit_metadata():
     latest_active_dataset = Dataset.objects.filter(is_active=True).last()
     if not latest_active_dataset:
         return
-    dataset_version = DatasetVersion.objects.get_latest_version(dataset=latest_active_dataset)
+    dataset_version = DatasetVersion.objects.get_current_version()
     harvest_queryset = Harvest.objects.filter(
         dataset=latest_active_dataset,
         source__repository=Repositories.SHAREKIT,
