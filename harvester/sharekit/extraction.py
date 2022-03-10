@@ -123,7 +123,7 @@ class SharekitMetadataExtraction(ExtractProcessor):
                 if "vaktherapie" in keyword.lower()
             ]
             if consortium_keywords:
-                consortium = "vaktherapie"
+                consortium = "Projectgroep Vaktherapie"
         return consortium
 
     @classmethod
