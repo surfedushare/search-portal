@@ -1,13 +1,16 @@
 from elasticsearch import NotFoundError
 
 from django.contrib import admin
-from django.utils.html import format_html
-from django.urls import reverse
+from django.contrib import messages
+
+from admin_confirm import AdminConfirmMixin
+from admin_confirm.admin import confirm_action
 
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin as DatagrowthDocumentAdmin
 from core.admin.harvest import HarvestAdminInline
 from core.admin.filters import TrashListFilter
 from core.utils.elastic import get_es_client
+from core.tasks.commands import promote_dataset_version
 
 
 es_client = get_es_client()
@@ -17,8 +20,11 @@ class DatasetAdmin(DataStorageAdmin):
     inlines = [HarvestAdminInline]
 
 
-class DatasetVersionAdmin(admin.ModelAdmin):
+class DatasetVersionAdmin(AdminConfirmMixin, admin.ModelAdmin):
+
     list_display = ('__str__', 'is_current', "created_at", "harvest_count", "index_count",)
+    actions = ["promote_dataset_version"]
+    readonly_fields = ("is_current",)
 
     def harvest_count(self, obj):
         return obj.document_set.filter(properties__state="active", dataset_version=obj).count()
@@ -30,6 +36,16 @@ class DatasetVersionAdmin(admin.ModelAdmin):
         except NotFoundError:
             counts = {}
         return counts.get("count", 0)
+
+    @confirm_action
+    def promote_dataset_version(self, request, queryset):
+        if queryset.count() > 1:
+            messages.error(request, "Can't promote more than one dataset version at a time")
+            return
+        dataset_version = queryset.first()
+        promote_dataset_version.delay(dataset_version.id)
+        messages.info(request, "A job to switch the dataset version has been dispatched. "
+                      "Please refresh the page in a couple of minutes to see the results.")
 
 
 class DocumentAdmin(DatagrowthDocumentAdmin):
