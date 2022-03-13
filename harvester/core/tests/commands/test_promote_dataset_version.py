@@ -40,7 +40,6 @@ class TestPromoteDatasetVersion(TestCase):
             "but asserted the opposite"
         )
 
-
     @override_settings(VERSION="0.0.1")
     @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     def test_promote_dataset(self, get_es_client):

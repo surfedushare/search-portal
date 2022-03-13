@@ -1,7 +1,6 @@
 from unittest.mock import patch
 from datetime import datetime
 
-from django.conf import settings
 from django.test import TestCase, override_settings
 from django.core.management import call_command, CommandError
 from django.utils.timezone import make_aware
