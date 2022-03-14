@@ -197,6 +197,10 @@ class AnatomyToolExtraction(object):
         return ["AnatomyTOOL"]
 
     @classmethod
+    def get_consortium(cls, soup, el):
+        return "AnatomyTOOL"
+
+    @classmethod
     def get_publisher_date(cls, soup, el):
         publisher = el.find(string='Created')
         if not publisher:
@@ -297,5 +301,5 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "research_themes": lambda soup, el: None,
     "parties": lambda soup, el: [],
     "learning_material_themes": AnatomyToolExtraction.get_learning_material_themes,
-    "consortium": AnatomyToolExtraction.get_publishers,
+    "consortium": AnatomyToolExtraction.get_consortium,
 }
