@@ -118,7 +118,6 @@ class TestGetHarvestSeedsSharekit(TestCase):
         self.assertIsNone(seeds[1]['consortium'])
         self.assertEqual(seeds[2]['consortium'], 'Domain Applied Science')
 
-
     def test_is_restricted(self):
         seeds = get_harvest_seeds(Repositories.SHAREKIT, self.set_spec, self.begin_of_time)
         for seed in seeds:
