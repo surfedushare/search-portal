@@ -23,6 +23,7 @@ class DatasetAdmin(DataStorageAdmin):
 class DatasetVersionAdmin(AdminConfirmMixin, admin.ModelAdmin):
 
     list_display = ('__str__', 'is_current', "created_at", "harvest_count", "index_count",)
+    list_per_page = 10
     actions = ["promote_dataset_version"]
     readonly_fields = ("is_current",)
 
