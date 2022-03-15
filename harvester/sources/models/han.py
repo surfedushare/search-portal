@@ -50,7 +50,7 @@ class HanOAIPMHResource(HarvestHttpResource):
 
     objects = HanOAIPMHManager()
 
-    set_specification = models.CharField(max_length=255, blank=True, null=False, default="col_20.500.12470_2")  # TODO: remove the default here
+    set_specification = models.CharField(max_length=255, blank=True, null=False)
 
     URI_TEMPLATE = "https://repository.han.nl/hanoai/request"
     PARAMETERS = {

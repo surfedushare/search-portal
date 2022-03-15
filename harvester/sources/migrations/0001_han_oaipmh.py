@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('head', models.JSONField(default=dict)),
                 ('body', models.TextField(blank=True, default=None, null=True)),
                 ('since', models.DateTimeField()),
-                ('set_specification', models.CharField(blank=True, default='col_20.500.12470_2', max_length=255)),
+                ('set_specification', models.CharField(blank=True, max_length=255)),
                 ('retainer_type', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
             ],
             options={
