@@ -28,7 +28,7 @@ RUN npm install && npm run build
 # SERVICE
 #################################################
 
-FROM python:3.9.4
+FROM python:3.8-buster
 
 RUN apt-get update && apt-get install -y less vim build-essential gettext
 
@@ -59,7 +59,7 @@ USER app:app
 COPY service/requirements.txt /usr/src/app/
 COPY service/dependencies.txt /usr/src/app/
 RUN pip install -U --no-cache-dir --user pip
-RUN pip install --no-cache-dir --user uwsgi==2.0.20
+RUN pip install --no-cache-dir --user uwsgi==2.0.18
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Copy application and frontend build

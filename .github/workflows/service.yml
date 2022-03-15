@@ -1,14 +1,16 @@
 name: Service CI
 
-on: [push, pull_request]
+on:
+  [push, pull_request]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.9.4]
+        python-version: [3.8]
 
     services:
       postgres:
@@ -25,41 +27,42 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Read .nvmrc
-        run: echo "##[set-output name=NVMRC;]$(cat portal/.nvmrc)"
-        id: nvm
-      - name: Use Node.js ${{ steps.nvm.outputs.NVMRC }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ steps.nvm.outputs.NVMRC }}
-      - name: psycopg2 prerequisites
-        run: sudo apt-get install python3-dev libpq-dev gettext
-      - name: Configure sysctl limits
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-      - name: Runs Elasticsearch
-        uses: elastic/elastic-github-actions/elasticsearch@master
-        with:
-          stack-version: 7.9.3
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          cd portal
-          npm install
-      - name: Run Tests
-        env:
-          APPLICATION_CONTEXT: host
-          APPLICATION_MODE: localhost
-          POL_POSTGRES_HOST: 127.0.0.1
-          POL_ELASTIC_SEARCH_HOST: "localhost:9200"
-          POL_ELASTIC_SEARCH_USERNAME: ""
-        run: invoke test.run
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Read .nvmrc
+      run: echo "##[set-output name=NVMRC;]$(cat portal/.nvmrc)"
+      id: nvm
+    - name: Use Node.js ${{ steps.nvm.outputs.NVMRC }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ steps.nvm.outputs.NVMRC }}
+    - name: psycopg2 prerequisites
+      run: sudo apt-get install python3-dev libpq-dev gettext
+    - name: Configure sysctl limits
+      run: |
+        sudo swapoff -a
+        sudo sysctl -w vm.swappiness=1
+        sudo sysctl -w fs.file-max=262144
+        sudo sysctl -w vm.max_map_count=262144
+    - name: Runs Elasticsearch
+      uses: elastic/elastic-github-actions/elasticsearch@master
+      with:
+        stack-version: 7.9.3
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        cd portal
+        npm install
+    - name: Run Tests
+      env:
+        APPLICATION_CONTEXT: host
+        APPLICATION_MODE: localhost
+        POL_POSTGRES_HOST: 127.0.0.1
+        POL_ELASTIC_SEARCH_HOST: "localhost:9200"
+        POL_ELASTIC_SEARCH_USERNAME: ""
+      run:
+        invoke test.run
