@@ -1,4 +1,5 @@
 # Common
+setuptools==58
 django==3.2.12
 djangorestframework==3.11.2
 psycopg2-binary==2.9.3
@@ -12,7 +13,6 @@ uritemplate==3.0.1
 Jinja2==2.11.3
 django-x-robots-tag-middleware==1.3.3
 markupsafe==2.0.1
-setuptools==58
 
 # AWS
 awscli==1.22.74
