@@ -3,6 +3,7 @@ class Repositories:
     SHAREKIT = "sharekit.SharekitMetadataHarvest"
     ANATOMY_TOOL = "anatomy_tool.AnatomyToolOAIPMH"
     HANZE = "hanze.HanzeResearchObjectResource"
+    HAN = "sources.HanOAIPMHResource"
 
 
 REPOSITORY_CHOICES = [

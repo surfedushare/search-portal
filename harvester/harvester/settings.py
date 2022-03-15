@@ -86,6 +86,8 @@ INSTALLED_APPS = [
 
     'core',
     'metadata',
+    'sources',
+
     'edurep',
     'sharekit',
     'anatomy_tool',
