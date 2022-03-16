@@ -7,7 +7,7 @@
     <h4>{{ $t('Learning-materials-in-set') }}</h4>
     <div class="material__info_set_table">
       <div class="row header">
-        <span class="title">{{ $t('Title') }}</span>
+        <span class="edusources-title">{{ $t('Title') }}</span>
         <span class="type">{{ $t('File-format') }}</span>
         <span class="link" />
       </div>
@@ -17,7 +17,7 @@
         class="row"
         @click="onMaterialClick(setMaterial)"
       >
-        <span class="title">{{ setMaterial.title }}</span>
+        <span class="edusources-title">{{ setMaterial.title }}</span>
         <span class="type">
           {{
             setMaterial.technical_type !== 'unknown'
