@@ -1,9 +1,7 @@
 import re
 from hashlib import sha1
-from mimetypes import guess_type
 
 import vobject
-from dateutil.parser import parse as date_parser
 from django.conf import settings
 from django.utils.text import slugify
 
