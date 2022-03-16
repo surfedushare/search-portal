@@ -13,9 +13,6 @@ from core.utils.elastic import get_es_client
 from core.tasks.commands import promote_dataset_version
 
 
-es_client = get_es_client()
-
-
 class DatasetAdmin(DataStorageAdmin):
     inlines = [HarvestAdminInline]
 
@@ -31,6 +28,7 @@ class DatasetVersionAdmin(AdminConfirmMixin, admin.ModelAdmin):
         return obj.document_set.filter(properties__state="active", dataset_version=obj).count()
 
     def index_count(self, obj):
+        es_client = get_es_client()
         indices = [index.remote_name for index in obj.indices.all()]
         try:
             counts = es_client.count(index=",".join(indices))
