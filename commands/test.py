@@ -9,7 +9,7 @@ def e2e(ctx):
     with ctx.cd("portal"):
         ctx.run("npm run build")
     with ctx.cd("service"):
-        ctx.run("APPLICATION_PROJECT=edusources python manage.py test e2e_tests --failfast", echo=True, pty=True)
+        ctx.run("python manage.py test e2e_tests --failfast", echo=True, pty=True)
 
 
 @task
@@ -25,9 +25,13 @@ def harvester(ctx):
         ctx.run("python manage.py test", echo=True, pty=True)
 
 
-@task(service, harvester, e2e)
+@task
 def run(ctx):
-    pass
+    tests = [service, harvester]
+    if ctx.config.project.prefix == "pol":
+        tests.append(e2e)
+    for test in tests:
+        test(ctx)
 
 
 test_collection = Collection(

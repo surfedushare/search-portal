@@ -65,4 +65,5 @@ jobs:
         POL_ELASTIC_SEARCH_HOST: "localhost:9200"
         POL_ELASTIC_SEARCH_USERNAME: ""
       run:
-        invoke test.run
+        APPLICATION_PROJECT=edusources invoke test.run
+        APPLICATION_PROJECT=nppo invoke test.run

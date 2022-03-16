@@ -19,6 +19,7 @@ service_collection = Collection("srv", setup_postgres_localhost, import_snapshot
 service_collection.configure(service_environment)
 aws_collection = Collection("aws", build, push, migrate, print_available_images, print_running_containers)
 aws_collection.configure(service_environment)
+test_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, service="harvester")
