@@ -425,6 +425,8 @@ COPYRIGHT_VALUES = [
     "cc0-10"
 ]
 
+PUBLISHERS_WHITELIST = environment.django.publishers_whitelist
+
 
 # Celery
 # https://docs.celeryproject.org/en/v4.1.0/

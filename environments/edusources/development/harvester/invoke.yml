@@ -17,6 +17,7 @@ django:
     sharekit: "https://api.acc.surfsharekit.nl"
   sentry:
     dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
+  publishers_whitelist: []
 
 postgres:
   database: "harvester"

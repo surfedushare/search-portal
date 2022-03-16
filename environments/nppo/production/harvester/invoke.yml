@@ -18,6 +18,12 @@ django:
     sharekit: "https://api.surfsharekit.nl"
   sentry:
     dsn: "https://13ca8b29c8384e57b7294280117728f1@o1143393.ingest.sentry.io/6208201"
+  publishers_whitelist:
+    - "Hogeschool Utrecht"
+    - "Fontys"
+    - "Hogeschool Rotterdam"
+    - "Zuyd Hogeschool"
+    - "Hogeschool van Arnhem en Nijmegen"
 
 postgres:
   database: "harvester"
