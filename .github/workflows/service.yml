@@ -64,6 +64,6 @@ jobs:
         POL_POSTGRES_HOST: 127.0.0.1
         POL_ELASTIC_SEARCH_HOST: "localhost:9200"
         POL_ELASTIC_SEARCH_USERNAME: ""
-      run:
+      run: |
         APPLICATION_PROJECT=edusources invoke test.run
         APPLICATION_PROJECT=nppo invoke test.run
