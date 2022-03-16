@@ -6,7 +6,6 @@ django:
   directory: "service"
   fixtures:
     - "surf/apps/locale/fixtures/locales-nppo.json"
-    - "surf/apps/filters/fixtures/filter-categories-nppo.json"
   matomo_id: null
   administrative_emails: false
   harvester_api: "http://harvester.nppo/api/v1/"
