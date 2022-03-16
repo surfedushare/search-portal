@@ -7,6 +7,7 @@ django:
   fixtures:
     - "core/fixtures/initial-nppo.json"
     - "core/fixtures/initial-nppo-admin.json"
+    - "metadata/fixtures/initial-metadata-nppo.json"
   redis_host: "harvester.vkafto.0001.euc1.cache.amazonaws.com:6379"
   data_retention:
     purge_after:
@@ -43,6 +44,8 @@ secrets:
     admin_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
   sharekit:
     api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/sharekit-credentials"
+  harvester:
+    api_key: " arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/api-key"
   matomo:
     api_key: null
   eduterm:

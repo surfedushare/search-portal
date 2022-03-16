@@ -7,6 +7,7 @@ django:
     - "core/fixtures/datasets-history.json"
     - "core/fixtures/initial-nppo.json"
     - "core/fixtures/initial-nppo-admin.json"
+    - "metadata/fixtures/initial-metadata-nppo.json"
   redis_host: "redis:6379"
   data_retention:
     purge_after:
@@ -43,6 +44,8 @@ secrets:
     admin_password: "qwerty"
   sharekit:
     api_key: null
+  harvester:
+    api_key: "123abc"
   matomo:
     api_key: null
   eduterm:

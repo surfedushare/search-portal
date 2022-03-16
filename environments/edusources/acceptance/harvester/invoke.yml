@@ -6,6 +6,7 @@ django:
   directory: "harvester"
   fixtures:
     - "core/fixtures/initial-edusources.json"
+    - "metadata/fixtures/initial-metadata-edusources.json"
   redis_host: "harvester.2rmfel.0001.euc1.cache.amazonaws.com:6379"
   data_retention:
     purge_after:
