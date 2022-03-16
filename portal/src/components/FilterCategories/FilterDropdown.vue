@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown-container">
-    <label class="dropdown-container__label">{{ label }}:</label>
+    <label class="dropdown-container__label">{{ $t(label) }}:</label>
 
     <div
       :class="{ 'active': visible == true }"
@@ -10,7 +10,7 @@
     >
       <span
         role="textbox"
-        :class="{ 'bold': selectedFilters !== defaultOption }"
+        :class="{ 'bold': selectedFilters !== $t(defaultOption) }"
         class="filter_checkbox"
       >{{ selectedFilters }}</span>
       <div class="dropdown-container__selector" :class="{ 'active': visible === true }"></div>
@@ -64,10 +64,10 @@ export default {
         .map(filter => filter.value);
       const filterNames = this.filters
         .filter(filter => filter.selected)
-        .map(filter => filter.title_translations[this.$i18n.locale].toLowerCase());
+        .map(filter => filter.title_translations[this.$i18n.locale].toLowerCase())
 
       this.$emit('update:selection', { field: this.field, selection })
-      return filterNames?.length == 0 ? filter.defaultOption : filterNames.join(", ");
+      return filterNames?.length === 0 ? this.$i18n.t(filter.defaultOption) : filterNames.join(", ")
     },
     visibleFilters() {
       return this.filters.filter(x => !x.is_hidden).sort()
