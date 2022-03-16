@@ -35,7 +35,7 @@ class HanOAIPMHFactory(factory.django.DjangoModelFactory):
     set_specification = SET_SPECIFICATION
     status = 200
     head = {
-        "content-type": "text/xml"  # TODO: make this application/xml instead
+        "content-type": "application/xml"
     }
 
     @factory.lazy_attribute
