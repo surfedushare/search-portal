@@ -160,11 +160,12 @@ class HanDataExtraction(object):
             author = role.find_parent('mods:name')
             if not author:
                 continue
-            name = author.find('mods:displayform')
-            if not name:
+            given_name = author.find('mods:namepart', attrs={"type": "given"})
+            family_name = author.find('mods:namepart', attrs={"type": "family"})
+            if not given_name and not family_name:
                 continue
             authors.append({
-                "name": name.text.strip(),
+                "name": f"{given_name.text.strip()} {family_name.text.strip()}",
                 "email": None,
                 "external_id": None,
                 "dai": None,

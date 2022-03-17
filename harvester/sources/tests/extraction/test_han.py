@@ -80,8 +80,8 @@ class TestGetHarvestSeedsHan(TestCase):
     def test_authors_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]['authors'], [
-            {'name': 'Os, R.G. van', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
-            {'name': 'Hachmang, Daphne', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
+            {'name': 'R.G. van Os', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
+            {'name': 'Daphne Hachmang', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
         ])
         self.assertEqual(seeds[2]["authors"], [], "Expected deleted record to have no authors")
 
