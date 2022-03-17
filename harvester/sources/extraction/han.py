@@ -1,3 +1,4 @@
+import os
 import re
 from hashlib import sha1
 
@@ -94,11 +95,12 @@ class HanDataExtraction(object):
             element = item.find("didl:resource")
             if element:
                 url = element["ref"]
+                tail, file_name = os.path.split(url)
                 results.append({
                     "mime_type": element["mimetype"],
                     "url": url,
                     "hash": sha1(url.encode("utf-8")).hexdigest(),
-                    "title": None
+                    "title": file_name
                 })
         return results
 

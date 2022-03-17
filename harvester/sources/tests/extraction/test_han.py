@@ -31,13 +31,13 @@ class TestGetHarvestSeedsHan(TestCase):
                 "url": "https://repository.han.nl/han/bitstream/handle/20.500.12470/7/"
                        "A-artikel_Webcare_en_reputatieschade.pdf",
                 "hash": "dfe656e9bdb0c1597ec44a74be46ac7eaa2dce3c",
-                "title": None
+                "title": "A-artikel_Webcare_en_reputatieschade.pdf"
             },
             {
                 "mime_type": "text/html",
                 "url": "http://hdl.handle.net/20.500.12470/7",
                 "hash": "3f679086acfed2dddbb549dc24def669f59793ed",
-                "title": None
+                "title": "7"
             }
         ])
         self.assertEqual(seeds[2]["files"], [], "Expected deleted record to have no files")
