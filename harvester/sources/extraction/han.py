@@ -173,10 +173,7 @@ class HanDataExtraction(object):
 
     @classmethod
     def get_publishers(cls, soup, el):
-        return [
-            publisher.text.strip()
-            for publisher in el.find_all('mods:publisher') if publisher.text.strip()
-        ]
+        return ["Hogeschool van Arnhem en Nijmegen"]
 
     @classmethod
     def get_publisher_date(cls, soup, el):

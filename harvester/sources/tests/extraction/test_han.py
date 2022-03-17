@@ -85,12 +85,6 @@ class TestGetHarvestSeedsHan(TestCase):
         ])
         self.assertEqual(seeds[2]["authors"], [], "Expected deleted record to have no authors")
 
-    def test_get_publishers(self):
-        seeds = self.seeds
-        self.assertEqual(seeds[0]["publishers"], [])
-        self.assertEqual(seeds[2]["publishers"], [], "Expected deleted record to have no publishers")
-        self.assertEqual(seeds[3]["publishers"], ["Abingdon : Routledge"])
-
     def test_publisher_date(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["publisher_date"], "2020-08-15T01:50:05.152997Z")
