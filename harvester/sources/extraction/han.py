@@ -227,10 +227,6 @@ class HanDataExtraction(object):
         ]
         return dois[0] if len(dois) else None
 
-    @classmethod
-    def get_lowest_educational_level(cls, soup, el):
-        return 3
-
 
 HAN_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
@@ -269,5 +265,5 @@ HAN_EXTRACTION_OBJECTIVE = {
     "learning_material_themes": lambda soup, el: [],
     "consortium": lambda soup, el: None,
     "lom_educational_level": lambda soup, el: None,
-    "lowest_educational_level": HanDataExtraction.get_lowest_educational_level,  # TODO: make tests run as NPPO
+    "lowest_educational_level": lambda soup, el: 2,
 }
