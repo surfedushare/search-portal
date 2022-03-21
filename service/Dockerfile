@@ -28,7 +28,7 @@ RUN npm install && npm run build
 # SERVICE
 #################################################
 
-FROM python:3.9.10
+FROM python:3.9
 
 RUN apt-get update && apt-get install -y less vim build-essential gettext
 
