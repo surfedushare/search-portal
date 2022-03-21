@@ -12,7 +12,7 @@ Installation of the frontend is a lot more straightforward than the other compon
 From the ``portal`` directory run:
 
 ```bash
-npm install
+npm ci
 ```
 
 
