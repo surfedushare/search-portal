@@ -19,9 +19,9 @@ postgres:
   application_user: "edushare"
 
 surfconext:
-  oidc_endpoint: "https://connect.test.surfconext.nl"
-  voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "front-dev.surfcatalog.nl"
+  oidc_endpoint: "https://connect.surfconext.nl"
+  voot_api_endpoint: "https://voot.surfconext.nl"
+  client_id: "acc.surfedushare.nl"
 
 edurep:
   json_api_endpoint: "https://proxy.edurep.nl/v3/search"

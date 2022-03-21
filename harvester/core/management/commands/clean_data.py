@@ -23,16 +23,10 @@ class Command(BaseCommand):
     def handle(self, **options):
         purge_time = make_aware(datetime.now()) - timedelta(**settings.DATA_RETENTION_PURGE_AFTER)
         # Delete DatasetVersions that are not in use and overdue
-        stale_dataset_versions = DatasetVersion.objects.filter(created_at__lte=purge_time, is_current=False)
-        stale_dataset_versions.delete()
-        # Keep some old versions for each dataset around and destroy the rest
         for dataset in Dataset.objects.all():
-            current_dataset_versions = DatasetVersion.objects \
-                .filter(created_at__lte=purge_time, is_current=True, dataset=dataset) \
-                .order_by("-created_at")
-            if current_dataset_versions.count() > settings.DATA_RETENTION_KEEP_VERSIONS:
-                for old_dataset_version in current_dataset_versions[settings.DATA_RETENTION_KEEP_VERSIONS:]:
-                    old_dataset_version.delete()
+            stale_dataset_versions = DatasetVersion.objects.get_stale_versions(purge_time, dataset)
+            for stale_dataset_version in stale_dataset_versions:
+                stale_dataset_version.delete()
         # Delete old is_addition Extensions that got deleted
         Extension.objects.filter(deleted_at__lte=purge_time).delete()
         # Now go over all resources and delete old ones without matching documents

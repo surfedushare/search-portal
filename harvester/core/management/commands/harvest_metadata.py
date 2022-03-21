@@ -117,7 +117,7 @@ class Command(PipelineCommand):
     def handle(self, *args, **options):
 
         dataset_name = options["dataset"]
-        dataset_version = DatasetVersion.objects.filter(dataset__name=dataset_name, is_current=True).last()
+        dataset_version = DatasetVersion.objects.get_latest_version(dataset_name=dataset_name)
         repository_resource = options["repository"]
         repository, resource = repository_resource.split(".")
         harvest_phase = f"seeds.{repository}"

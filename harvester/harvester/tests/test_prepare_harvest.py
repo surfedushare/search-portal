@@ -77,7 +77,7 @@ class TestPrepareHarvestNoHistory(TestPrepareHarvestBase):
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 1)
         dataset_version = DatasetVersion.objects.last()
-        self.assertTrue(dataset_version.is_current)
+        self.assertFalse(dataset_version.is_current)
         self.assertEqual(dataset_version.version, settings.VERSION)
         self.assertEqual(dataset_version.collection_set.all().count(), 0)
         self.assertEqual(dataset_version.document_set.all().count(), 0)
@@ -95,7 +95,7 @@ class TestPrepareHarvestNoHistory(TestPrepareHarvestBase):
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 1)
         dataset_version = DatasetVersion.objects.last()
-        self.assertTrue(dataset_version.is_current)
+        self.assertFalse(dataset_version.is_current)
         self.assertEqual(dataset_version.version, settings.VERSION)
         self.assertEqual(dataset_version.collection_set.all().count(), 0)
         self.assertEqual(dataset_version.document_set.all().count(), 0)
@@ -106,7 +106,7 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.dataset_version = DatasetVersionFactory.create(dataset=cls.dataset)
+        cls.dataset_version = DatasetVersionFactory.create(dataset=cls.dataset, is_current=True, version="0.0.1")
         for source in [cls.sharekit, cls.wikiwijs]:
             collection = CollectionFactory.create(name=source.spec, dataset_version=cls.dataset_version)
             DocumentFactory.create(collection=collection, dataset_version=cls.dataset_version)
@@ -152,8 +152,8 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
-        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
-        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=False).last()
         self.assertEqual(dataset_version.version, settings.VERSION)
         self.assertEqual(dataset_version.collection_set.all().count(), 1)
         self.assertEqual(dataset_version.document_set.all().count(), 2)
@@ -174,8 +174,8 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
-        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
-        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=False).last()
         self.assertEqual(dataset_version.version, settings.VERSION)
         self.assertEqual(dataset_version.collection_set.all().count(), 0)
         self.assertEqual(dataset_version.document_set.all().count(), 0)
@@ -203,8 +203,8 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
-        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
-        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=False).last()
         self.assertEqual(dataset_version.version, settings.VERSION)
         self.assertEqual(dataset_version.collection_set.all().count(), 0)
         self.assertEqual(dataset_version.document_set.all().count(), 0)
@@ -229,8 +229,8 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
-        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 2)
-        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=False).last()
         self.assertEqual(dataset_version.version, settings.VERSION)
         self.assertEqual(dataset_version.collection_set.all().count(), 1)
         self.assertEqual(dataset_version.document_set.all().count(), 2)

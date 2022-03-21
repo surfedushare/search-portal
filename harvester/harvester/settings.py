@@ -71,6 +71,7 @@ except Exception:
 
 INSTALLED_APPS = [
     'harvester',  # first to override runserver command
+    'admin_confirm',  # needs to override admin templates
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
