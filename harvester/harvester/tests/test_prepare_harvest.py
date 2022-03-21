@@ -148,7 +148,7 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 2)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 0)
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
@@ -199,7 +199,7 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 1)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 0)
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
@@ -225,7 +225,7 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 2)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 0)
         self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
