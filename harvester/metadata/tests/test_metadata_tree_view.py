@@ -7,6 +7,8 @@ from metadata.models import MetadataField, MetadataValue
 
 class TestMetadataTreeView(TestCase):
 
+    fixtures = ["initial-metadata-edusources"]
+
     def setUp(self):
         super().setUp()
         self.user = User.objects.create(username="supersurf")
