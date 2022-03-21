@@ -30,26 +30,26 @@ export default {
       dropdowns: [
         {
           field: 'technical_type',
-          label: this.$i18n.t('searching-for-a'),
-          defaultOption: this.$i18n.t('material'),
+          label: 'searching-for-a',
+          defaultOption: 'material',
           visible: false
         },
         {
           field: THEME_CATEGORY_FILTER_FIELD,
-          label: this.$i18n.t('about'),
-          defaultOption: this.$i18n.t('all-themes'),
+          label: 'about',
+          defaultOption: 'all-themes',
           visible: false
         },
         {
           field: 'lom_educational_levels',
-          label: this.$i18n.t('for'),
-          defaultOption: this.$i18n.t('all-levels'),
+          label: 'for',
+          defaultOption: 'all-levels',
           visible: false
         },
         {
           field: 'language.keyword',
-          label: this.$i18n.t('in'),
-          defaultOption: this.$i18n.t('dutch-or-english'),
+          label: 'in',
+          defaultOption: 'dutch-or-english',
           visible: false
         },
 
