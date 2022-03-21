@@ -17,19 +17,15 @@ def _serialize_resource(resource=None):
     }
 
 
-def create_dataset_version(dataset, version, created_at, copies=3, docs=5):
-    current_dataset_version = None
+def create_dataset_version(dataset, version, created_at, include_current, copies=3, docs=5):
     for ix in range(0, copies):
-        is_current = ix == copies - 1
         dataset_version = DatasetVersionFactory.create(
             dataset=dataset,
             version=version,
-            is_current=is_current,
+            is_current=include_current and ix == 0,
         )
         dataset_version.created_at = created_at  # only possible to overwrite after creation
         dataset_version.save()
-        if is_current:
-            current_dataset_version = dataset_version
         collection = CollectionFactory.create(
             name=dataset.name,
             dataset_version=dataset_version,
@@ -59,4 +55,3 @@ def create_dataset_version(dataset, version, created_at, copies=3, docs=5):
                 modified_at=created_at,
                 pipeline=pipeline
             )
-    return current_dataset_version
