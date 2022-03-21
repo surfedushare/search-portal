@@ -13,20 +13,20 @@ from sharekit.tests.factories import SharekitMetadataHarvestFactory
 from sharekit.tasks import sync_sharekit_metadata
 
 
-def create_dataset_data(dataset):
+def create_dataset_data(dataset, include_current):
     previous_version = DatasetVersionFactory.create(dataset=dataset, is_current=False)
-    current_version = DatasetVersionFactory.create(dataset=dataset, version="0.0.2")
+    last_version = DatasetVersionFactory.create(dataset=dataset, version="0.0.2", is_current=include_current)
     previous_edusources = CollectionFactory.create(dataset_version=previous_version, name="edusources")
     previous_wikiwijs = CollectionFactory.create(dataset_version=previous_version, name="wikiwijs")
-    current_edusources = CollectionFactory.create(dataset_version=current_version, name="edusources")
-    current_wikiwijs = CollectionFactory.create(dataset_version=current_version, name="wikiwijs")
+    current_edusources = CollectionFactory.create(dataset_version=last_version, name="edusources")
+    current_wikiwijs = CollectionFactory.create(dataset_version=last_version, name="wikiwijs")
     DocumentFactory.create(dataset_version=previous_version, collection=previous_edusources,
                            reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
     DocumentFactory.create(dataset_version=previous_version, collection=previous_wikiwijs,
                            reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
-    DocumentFactory.create(dataset_version=current_version, collection=current_edusources,
+    DocumentFactory.create(dataset_version=last_version, collection=current_edusources,
                            reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
-    DocumentFactory.create(dataset_version=current_version, collection=current_wikiwijs,
+    DocumentFactory.create(dataset_version=last_version, collection=current_wikiwijs,
                            reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
 
 
@@ -69,7 +69,7 @@ class TestSyncSharekitMetadata(TestCase):
             "inactive": DatasetFactory.create(name="inactive", is_active=False)
         }
         for dataset_type, dataset in datasets.items():
-            create_dataset_data(dataset)
+            create_dataset_data(dataset, include_current=dataset_type == "primary")
             create_dataset_harvests(dataset_type, dataset, sources, self.latest_update_at)
         SharekitMetadataHarvestFactory.create(is_initial=False, number=0, is_restricted=False)
         sleep(1)  # makes sure created_at and modified_at will differ at least 1 second when asserting

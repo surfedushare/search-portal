@@ -18,7 +18,7 @@ class Command(PipelineCommand):
         should_promote = not options["no_promote"]
 
         dataset = Dataset.objects.get(name=dataset_name)
-        version_filter = {"is_current": True}
+        version_filter = {}
         if version:
             version_filter.update({"version": version})
         dataset_version = dataset.versions.filter(**version_filter).last()
@@ -49,5 +49,8 @@ class Command(PipelineCommand):
                 self.logger.info(f"Promoting index { index.remote_name } to latest")
                 index.promote_to_latest()
             self.logger.end(f"index.{lang}", fail=index.error_count)
+
+        if should_promote:
+            dataset_version.set_current()
 
         self.logger.end("index")

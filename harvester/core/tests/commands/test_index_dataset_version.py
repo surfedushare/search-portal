@@ -61,6 +61,9 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
     @patch("core.logging.HarvestLogger.info")
     def test_index(self, info_logger, streaming_bulk, get_es_client):
 
+        # Setting up the database that indicates no Elastic index exists yet
+        DatasetVersion.objects.all().update(is_current=False)
+
         # Setting basic expectations used in the test
         expected_doc_count = {
             "en": 7,
@@ -108,6 +111,10 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
 
+        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(dataset_version.id, 1)
+
     def test_invalid_dataset(self):
         # Testing the case where a Dataset does not exist at all
         try:
@@ -115,6 +122,8 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
             self.fail("index_dataset_version did not raise for an invalid dataset")
         except Dataset.DoesNotExist:
             pass
+        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1,
+                         "No changes should have been made to existing versions")
 
 
 class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
@@ -192,6 +201,10 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
 
+        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(dataset_version.id, 1)
+
     @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     @patch("core.models.search.index.streaming_bulk")
     @override_settings(VERSION="0.0.2")
@@ -223,6 +236,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
                                      "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "002")
+        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(dataset_version.id, 3)
         # Index the previous version and check we only get the modified documents
         get_es_client.reset_mock()
         streaming_bulk.reset_mock()
@@ -249,11 +265,19 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
+        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(dataset_version.id, 1)
 
     @patch("core.models.search.index.get_es_client", return_value=elastic_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
+    @override_settings(VERSION="0.0.1")
     def test_index_no_promote(self, info_logger, streaming_bulk, get_es_client):
+
+        # Setup a new version and modify the old version to a single document version
+        dataset = Dataset.objects.last()
+        dataset.create_new_version()
 
         # Setting basic expectations used in the test
         expected_doc_count = {
@@ -307,3 +331,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
                              "Expected index configuration to come from database if one was created in the past")
         self.assertEqual(self.elastic_client.indices.put_alias.call_count, 0,
                          "Expected no alias creation")
+
+        self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
+        dataset_version = DatasetVersion.objects.filter(is_current=True).last()
+        self.assertEqual(dataset_version.id, 1)

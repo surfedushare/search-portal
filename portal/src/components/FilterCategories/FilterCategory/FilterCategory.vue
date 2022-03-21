@@ -120,7 +120,7 @@ export default {
       this.isOpen = !this.isOpen
     },
     onToggleShowAll() {
-      if (this.$root.isDemoEnvironment() && this.category.children.length >= 15) {
+      if (this.category.children.length >= 20) {
         this.showPopup = !this.showPopup
         return
       }

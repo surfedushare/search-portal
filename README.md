@@ -34,7 +34,6 @@ To install the basic environment and tooling you'll need to first setup a local 
 python3 -m venv venv
 source activate.sh
 pip install --upgrade pip
-pip install setuptools==58 # as long as 2to3 in not phased out
 pip install -r requirements.txt
 ```
 

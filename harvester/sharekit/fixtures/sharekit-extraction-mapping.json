@@ -177,6 +177,14 @@
     }
 },
 {
+    "model": "core.extractionmethod",
+    "pk": 22,
+    "fields": {
+        "method": "get_consortium",
+        "processor": "SharekitMetadataExtraction"
+    }
+},
+{
     "model": "core.methodextractionfield",
     "pk": 1,
     "fields": {
@@ -324,6 +332,13 @@
     }
 },
 {
+    "model": "core.methodextractionfield",
+    "pk": 22,
+    "fields": {
+        "method": 22
+    }
+},
+{
     "model": "core.jsonextractionfield",
     "pk": 1,
     "fields": {
@@ -391,13 +406,6 @@
     "pk": 10,
     "fields": {
         "path": "$.attributes.typeResearchObject"
-    }
-},
-{
-    "model": "core.jsonextractionfield",
-    "pk": 11,
-    "fields": {
-        "path": "$.attributes.consortium"
     }
 },
 {
@@ -746,8 +754,8 @@
     "pk": 32,
     "fields": {
         "mapping": 1,
-        "json_field": 11,
-        "method_field": null,
+        "json_field": null,
+        "method_field": 22,
         "property": "consortium",
         "is_context": false
     }

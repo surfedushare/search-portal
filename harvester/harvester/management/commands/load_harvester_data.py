@@ -99,7 +99,7 @@ class Command(base.LabelCommand):
 
         # Index data
         if should_index:
-            latest_dataset_version = DatasetVersion.objects.get_latest_version()
+            latest_dataset_version = DatasetVersion.objects.get_current_version()
             call_command(
                 "index_dataset_version",
                 dataset=latest_dataset_version.dataset.name,
