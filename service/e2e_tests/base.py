@@ -46,7 +46,7 @@ class BaseElasticSearchMixin(object):
 )
 class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 
-    fixtures = ['locales-edusources', 'filter-categories-edusources', 'privacy_statements']
+    fixtures = ['locales-edusources', 'privacy_statements']
 
     @classmethod
     def setUpClass(cls):
@@ -72,4 +72,4 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 )
 class BaseElasticSearchTestCase(BaseElasticSearchMixin, TestCase):
 
-    fixtures = ['locales-edusources', 'filter-categories-edusources', 'privacy_statements']
+    fixtures = ['locales-edusources', 'privacy_statements']

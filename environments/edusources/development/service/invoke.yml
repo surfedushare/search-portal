@@ -5,7 +5,6 @@ django:
   directory: "service"
   fixtures:
     - "surf/apps/locale/fixtures/locales-edusources.json"
-    - "surf/apps/filters/fixtures/filter-categories-edusources.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   matomo_id: null
   administrative_emails: false
