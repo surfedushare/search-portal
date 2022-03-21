@@ -1,5 +1,4 @@
 # Common
-setuptools==58
 django==3.2.12
 djangorestframework==3.11.2
 django-cors-headers==3.4.0
