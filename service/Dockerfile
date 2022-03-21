@@ -21,7 +21,7 @@ USER app:app
 
 COPY --chown=app portal /usr/src/portal
 
-RUN npm install && npm run build
+RUN npm ci && npm run build
 
 
 #################################################
