@@ -69,7 +69,7 @@
 import numeral from 'numeral'
 import { mapGetters } from 'vuex'
 import PopularList from '~/components/Communities/PopularList'
-import Materials from '~/components/Materials'
+import Materials from '~/components/Materials/Materials.vue'
 import Search from '~/components/Search'
 import SearchBar from '~/components/Search/SearchBar.vue'
 import { generateSearchMaterialsQuery } from '~/components/_helpers'

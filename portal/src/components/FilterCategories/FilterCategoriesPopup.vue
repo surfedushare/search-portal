@@ -1,15 +1,8 @@
 <template>
   <transition name="fade">
-    <Popup
-      v-if="showPopup"
-      :close="close"
-      :is-show="showPopup"
-      class="popup-content"
-    >
+    <Popup v-if="showPopup" :close="close" :is-show="showPopup" class="popup-content">
       <slot>
-        <h2 class="popup__title">
-          {{ category.translation[$i18n.locale] }}
-        </h2>
+        <h2 class="popup__title">{{ category.translation[$i18n.locale] }}</h2>
         <v-autocomplete
           v-model="selectedValues"
           :items="category.children"
@@ -24,11 +17,7 @@
         <div class="popup__subtext">
           <ul v-for="(filters, group) in groupedFilters" :key="group" class="popup-filters-list">
             <div class="list-header">{{ group.toUpperCase() }}</div>
-            <li
-              v-for="item in filters"
-              :key="item.external_id"
-              class="filter-categories__subitem"
-            >
+            <li v-for="item in filters" :key="item.external_id" class="filter-categories__subitem">
               <div class="filter-checkbox">
                 <input
                   :id="item.external_id"
@@ -37,7 +26,7 @@
                   :value="item.external_id"
                   :data-item-id="item.external_id"
                   @change="onChange"
-                >
+                />
                 <label :for="item.external_id">
                   {{ item.translation[$i18n.locale] }}
                   ({{ item.count }})
@@ -48,9 +37,7 @@
         </div>
         <div>
           <div class="popup-content__actions">
-            <button class="button" @click="onApply">
-              {{ $t('See-results') }}
-            </button>
+            <button class="button" @click="onApply">{{ $t('See-results') }}</button>
           </div>
         </div>
       </slot>
@@ -59,7 +46,7 @@
 </template>
 
 <script>
-import { sortBy, groupBy, without, concat } from 'lodash'
+import { concat, groupBy, sortBy, without } from 'lodash'
 import Popup from '~/components/Popup'
 
 export default {
@@ -80,7 +67,7 @@ export default {
     },
     close: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
   },
   data() {
@@ -132,22 +119,21 @@ export default {
 }
 </script>
 
-<style lang="less">
-  @import "../../variables.less";
+<style lang="less" scoped>
+@import "../../variables.less";
 
-  .popup__subtext {
-    overflow-y: scroll;
-  }
-  .list-header {
-    color: @dark-grey;
-    background-color: rgba(@green, 0.16);
-    padding: 5px;
-  }
+.popup__subtext {
+  overflow-y: scroll;
+}
+.list-header {
+  color: @dark-grey;
+  background-color: rgba(@green, 0.16);
+  padding: 5px;
+}
 
-  .v-application {
-    .popup-filters-list {
-      padding-left: 0;
-    }
+.v-application {
+  .popup-filters-list {
+    padding-left: 0;
   }
-
+}
 </style>
