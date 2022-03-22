@@ -96,3 +96,7 @@ class TestGetHarvestSeedsHva(TestCase):
     def test_publisher_year(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["publisher_year"], 2016)
+
+    def test_research_object_type(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["research_object_type"], "Report")

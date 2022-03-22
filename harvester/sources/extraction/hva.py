@@ -141,13 +141,6 @@ class HvaMetadataExtraction(ExtractProcessor):
     def get_analysis_allowed(cls, node):
         return True
 
-    @classmethod
-    def get_learning_material_themes(cls, node):
-        theme_value = node["attributes"].get("themesLearningMaterial", [])
-        if not theme_value:
-            return []
-        return theme_value if isinstance(theme_value, list) else [theme_value]
-
 
 HVA_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
@@ -169,7 +162,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     "from_youtube": HvaMetadataExtraction.get_from_youtube,
     "is_restricted": HvaMetadataExtraction.get_is_restricted,
     "analysis_allowed": HvaMetadataExtraction.get_analysis_allowed,
-    "research_object_type": lambda node: None,
+    "research_object_type": "$.type.term.en_GB",
     "research_themes": lambda node: [],
     "parties": lambda node: [],
     "doi": lambda node: None,
