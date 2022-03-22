@@ -186,7 +186,7 @@ class HanDataExtraction(object):
     @classmethod
     def get_publisher_year(cls, soup, el):
         year = el.find("mods:dateissued")
-        return year.text.strip() if year else None
+        return int(year.text.strip()) if year else None
 
     @classmethod
     def get_technical_type(cls, soup, el):
