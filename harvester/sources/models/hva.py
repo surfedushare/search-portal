@@ -50,7 +50,8 @@ class HvaPureResource(HarvestHttpResource):
     set_specification = models.CharField(max_length=255, blank=True, null=False, default="hva")
     use_multiple_sets = False
 
-    URI_TEMPLATE = settings.SOURCES["hva"]["endpoint"] + "/ws/api/research-outputs"
+    URI_TEMPLATE = settings.SOURCES["hva"]["endpoint"] + "/ws/api/research-outputs" \
+        if settings.SOURCES["hva"]["endpoint"] else "/ws/api/research-outputs"
 
     def auth_headers(self):
         return {

@@ -51,7 +51,8 @@ class HanOAIPMHResource(HarvestHttpResource):
 
     objects = HanOAIPMHManager()
 
-    URI_TEMPLATE = settings.SOURCES["han"]["endpoint"] + "/hanoai/request"
+    URI_TEMPLATE = settings.SOURCES["han"]["endpoint"] + "/hanoai/request" \
+        if settings.SOURCES["han"]["endpoint"] else "/hanoai/request"
     PARAMETERS = {
         "verb": "ListRecords",
         "metadataPrefix": "nl_didl"
