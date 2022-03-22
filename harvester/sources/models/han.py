@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.db import models
 from urlobject import URLObject
 
@@ -50,9 +51,7 @@ class HanOAIPMHResource(HarvestHttpResource):
 
     objects = HanOAIPMHManager()
 
-    set_specification = models.CharField(max_length=255, blank=True, null=False)
-
-    URI_TEMPLATE = "https://repository.han.nl/hanoai/request"
+    URI_TEMPLATE = settings.SOURCES["han"]["endpoint"] + "/hanoai/request"
     PARAMETERS = {
         "verb": "ListRecords",
         "metadataPrefix": "nl_didl"

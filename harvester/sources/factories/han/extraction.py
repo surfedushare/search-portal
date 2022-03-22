@@ -10,7 +10,7 @@ from sources.models import HanOAIPMHResource
 
 
 SLUG = "han"
-ENDPOINT = HanOAIPMHResource.URI_TEMPLATE.replace("https//", "")
+ENDPOINT = HanOAIPMHResource.URI_TEMPLATE.replace("https://", "")
 SET_SPECIFICATION = "col_20.500.12470_2"
 METADATA_PREFIX = "nl_didl"
 RESUMPTION_TOKEN = "MToxMDB8Mjp8Mzp8NDp8NTpubF9kaWRs"

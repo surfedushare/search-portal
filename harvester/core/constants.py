@@ -4,6 +4,7 @@ class Repositories:
     ANATOMY_TOOL = "anatomy_tool.AnatomyToolOAIPMH"
     HANZE = "hanze.HanzeResearchObjectResource"
     HAN = "sources.HanOAIPMHResource"
+    HVA = "sources.HvaPureResource"
 
 
 REPOSITORY_CHOICES = [
