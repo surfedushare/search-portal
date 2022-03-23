@@ -116,20 +116,6 @@ class HvaMetadataExtraction(ExtractProcessor):
         return ["Hogeschool van Amsterdam"]
 
     @classmethod
-    def get_lom_educational_levels(cls, node):
-        educational_levels = node["attributes"].get("educationalLevels", [])
-        if not educational_levels:
-            return []
-        return list(set([
-            educational_level["value"] for educational_level in educational_levels
-            if educational_level["value"]
-        ]))
-
-    @classmethod
-    def get_lowest_educational_level(cls, node):
-        return 2
-
-    @classmethod
     def get_is_restricted(cls, node):
         return False
 
