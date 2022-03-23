@@ -549,5 +549,9 @@ SOURCES = {
     "hva": {
         "endpoint": environment.django.repositories.hva,
         "api_key": environment.secrets.hva.api_key
+    },
+    "hku": {
+        "endpoint": "https://octo.hku.nl",
+        "api_key": None
     }
 }

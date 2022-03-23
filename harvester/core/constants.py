@@ -5,6 +5,7 @@ class Repositories:
     HANZE = "hanze.HanzeResearchObjectResource"
     HAN = "sources.HanOAIPMHResource"
     HVA = "sources.HvaPureResource"
+    HKU = "sources.HkuMetadataResource"
 
 
 REPOSITORY_CHOICES = [
