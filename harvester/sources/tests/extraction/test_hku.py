@@ -36,7 +36,8 @@ class TestGetHarvestSeedsHku(TestCase):
                 "title": "Budapest2005.pdf"
             }
         ])
-        #self.assertEqual(seeds[21]["files"], [])  # TODO: why is this not an empty list??
+        all_seeds = get_harvest_seeds(Repositories.HKU, SET_SPECIFICATION, self.begin_of_time, include_no_url=True)
+        self.assertEqual(all_seeds[21]["files"], [])
 
     def test_get_url(self):
         seeds = self.seeds

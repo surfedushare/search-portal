@@ -109,7 +109,10 @@ class HkuMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        return True
+        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
+        # NB: any material that is_restricted will also have analysis_allowed set to False
+        copyright = HkuMetadataExtraction.get_copyright(node)
+        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
 
 HKU_EXTRACTION_OBJECTIVE = {
