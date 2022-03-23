@@ -63,13 +63,6 @@ def restore_snapshot(conn, source_profile, snapshot_name=None):
     snapshot_file_path = download_snapshot(snapshot_name, conn.config.aws.search_content_bucket, source_profile)
     database = conn.config.postgres.database
 
-    if "test" in conn.config.surfconext.oidc_endpoint:
-        print("Rewriting team ARN's for test communities")
-        production_test_team_urn = "urn:collab:group:surfteams.nl:nl:surfnet:diensten:test_team_zoekportal"
-        development_test_team_urn = "urn:collab:group:test.surfconext.nl:nl:surfnet:diensten:zoekportaal_test_community"
-        conn.local(f"sed -i.bak 's/{production_test_team_urn}/{development_test_team_urn}/g' {snapshot_file_path}",
-                   echo=True)
-
     print("Restoring snapshot")
     # Setup auto-responder
     postgres_user = conn.config.postgres.user
