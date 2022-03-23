@@ -73,5 +73,5 @@ class HvaPureResource(HarvestHttpResource):
         }
 
     class Meta:
-        verbose_name = "HAN OAIPMH harvest"
-        verbose_name_plural = "HAN OAIPMH harvests"
+        verbose_name = "HvA Pure harvest"
+        verbose_name_plural = "HvA Pure harvests"

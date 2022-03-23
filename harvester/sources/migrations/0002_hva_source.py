@@ -33,8 +33,8 @@ class Migration(migrations.Migration):
                 ('retainer_type', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
             ],
             options={
-                'verbose_name': 'HAN OAIPMH harvest',
-                'verbose_name_plural': 'HAN OAIPMH harvests',
+                'verbose_name': 'HvA Pure harvest',
+                'verbose_name_plural': 'HvA Pure harvests',
             },
         ),
     ]
