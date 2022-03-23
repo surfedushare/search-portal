@@ -1,14 +1,10 @@
 import re
 from mimetypes import guess_type
 from hashlib import sha1
-from dateutil.parser import parse as date_parser
 
 from django.conf import settings
 
 from datagrowth.processors import ExtractProcessor
-from datagrowth.utils import reach
-
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class HvaMetadataExtraction(ExtractProcessor):
