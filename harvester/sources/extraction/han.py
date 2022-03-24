@@ -138,14 +138,6 @@ class HanDataExtraction(object):
         return node.text.strip() if node else None
 
     @classmethod
-    def get_keywords(cls, soup, el):
-        nodes = el.find_all('czp:keyword')
-        return [
-            node.find('czp:langstring').text.strip()
-            for node in nodes
-        ]
-
-    @classmethod
     def get_description(cls, soup, el):
         node = el.find('mods:abstract')
         return node.text if node else None
