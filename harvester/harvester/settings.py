@@ -553,5 +553,9 @@ SOURCES = {
     "hku": {
         "endpoint": "https://octo.hku.nl",
         "api_key": None
+    },
+    "greeni": {
+        "endpoint": "https://www.greeni.nl",
+        "api_key": None
     }
 }

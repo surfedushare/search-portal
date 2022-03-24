@@ -6,6 +6,7 @@ class Repositories:
     HAN = "sources.HanOAIPMHResource"
     HVA = "sources.HvaPureResource"
     HKU = "sources.HkuMetadataResource"
+    GREENI = "sources.GreeniOAIPMHResource"
 
 
 REPOSITORY_CHOICES = [
