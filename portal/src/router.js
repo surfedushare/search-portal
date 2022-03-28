@@ -211,21 +211,21 @@ export default new Router({
       },
     },
     {
-      path: '/en/institutes',
+      path: '/en/institutions',
       component: InfoPage,
-      name: 'institutes___en',
+      name: 'institutions___en',
       meta: {
-        title_translation_key: 'title-institutes-info',
-        html_translation_key: 'html-institutes-info',
+        title_translation_key: 'title-institutions-info',
+        html_translation_key: 'html-institutions-info',
       },
     },
     {
       path: '/instellingen',
       component: InfoPage,
-      name: 'institutes___nl',
+      name: 'institutions___nl',
       meta: {
-        title_translation_key: 'title-institutes-info',
-        html_translation_key: 'html-institutes-info',
+        title_translation_key: 'title-institutions-info',
+        html_translation_key: 'html-institutions-info',
       },
     },
     {

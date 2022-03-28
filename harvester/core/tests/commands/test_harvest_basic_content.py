@@ -1,6 +1,6 @@
 from unittest.mock import patch, MagicMock
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.core.management import call_command
 
 from core.constants import HarvestStages
@@ -12,6 +12,7 @@ PIPELINE_PROCESSOR_TARGET = "core.management.commands.harvest_basic_content.Http
 processor_mock_result = MagicMock()
 
 
+@override_settings(VERSION="0.0.1")
 class TestBasicHarvest(TestCase):
 
     fixtures = ["datasets-history"]

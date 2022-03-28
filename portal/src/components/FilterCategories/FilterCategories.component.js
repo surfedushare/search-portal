@@ -152,7 +152,7 @@ export default {
             if (child.children.length > 0) {
               child.count = child.children.reduce(
                 (memo, c) => memo + c.count,
-                0
+                child.count
               )
             }
             return child

@@ -45,21 +45,21 @@
       .autosuggest__results {
         ul {
           list-style: none;
-          padding: 0;
-          padding-top: 10px;
+          padding: 10px;
         }
 
         li {
           text-align: left;
           padding: 10px;
-          padding-left: 40px;
+          padding-left: 30px;
           background-size: 20px;
           cursor: pointer;
 
           &:hover, &.autosuggest__results-item--highlighted {
             background-size: 20px;
             color: @black;
-            text-decoration: underline;
+            text-decoration: none;
+            font-weight: 500;
           }
 
           &:last-child {

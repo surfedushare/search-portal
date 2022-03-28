@@ -20,12 +20,23 @@ class TestCleanData(TestCase):
         created_time = make_aware(datetime.now())
         for version_number in range(0, 29, 7):
             created_time -= timedelta(days=version_number)
-            create_dataset_version(self.active_dataset, f"0.0.{28 - version_number}", created_time)
+            include_current = version_number == 0
+            create_dataset_version(
+                self.active_dataset,
+                f"0.0.{28 - version_number}",
+                created_time,
+                include_current=include_current
+            )
         self.inactive_dataset = DatasetFactory.create(name="inactive test", is_active=False)
         created_time = make_aware(datetime.now())
         for version_number in range(21, 43, 7):
             created_time -= timedelta(days=version_number)
-            create_dataset_version(self.inactive_dataset, f"0.0.{42 - version_number}", created_time)
+            create_dataset_version(
+                self.inactive_dataset,
+                f"0.0.{42 - version_number}",
+                created_time,
+                include_current=False
+            )
         self.new_extension = Extension.objects.create(id="new", is_addition=True, properties={})
         self.old_extension = Extension.objects.create(
             id="old",
@@ -40,21 +51,21 @@ class TestCleanData(TestCase):
         call_command("clean_data")
         # Assert which data remains
         self.assertEqual(Dataset.objects.count(), 2, "clean_data should never delete Datasets")
-        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 4,
-                         "Per dataset only younger than DATA_RETENTION_PURGE_AFTER of non-currents should remain")
+        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 6,
+                         "Per dataset only younger than DATA_RETENTION_PURGE_AFTER of non-currents should remain "
+                         "outside of the DATA_RETENTION_KEEP_VERSIONS amount")
         self.assertEqual(
-            DatasetVersion.objects.filter(is_current=True).count(), 2 + 2,
-            "Expected two current DatasetVersion younger than DATA_RETENTION_PURGE_AFTER and "
-            "DATA_RETENTION_KEEP_VERSIONS current DatasetVersions per Dataset extra"
+            DatasetVersion.objects.filter(is_current=True).count(), 1,
+            "Expected one is_current dataset version to exist at all times"
         )
-        self.assertEqual(ElasticIndex.objects.count(), 16, "Expected two indices per dataset version")
-        self.assertEqual(Collection.objects.count(), 8, "Expected one collection per dataset version")
-        self.assertEqual(Document.objects.count(), 40, "Expected five documents per collection")
-        self.assertEqual(HttpTikaResource.objects.count(), 40, "Expected one HttpTikaResource per Document")
+        self.assertEqual(ElasticIndex.objects.count(), 14, "Expected two indices per dataset version")
+        self.assertEqual(Collection.objects.count(), 7, "Expected one collection per dataset version")
+        self.assertEqual(Document.objects.count(), 35, "Expected five documents per collection")
+        self.assertEqual(HttpTikaResource.objects.count(), 35, "Expected one HttpTikaResource per Document")
         # Check if Elastic indices were removed properly as well
-        self.assertEqual(get_es_client.call_count, 76, "Not sure why there are two calls per removed ElasticIndex")
-        self.assertEqual(self.elastic_client.indices.exists.call_count, 38)
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 38)
+        self.assertEqual(get_es_client.call_count, 80, "Not sure why there are two calls per removed ElasticIndex")
+        self.assertEqual(self.elastic_client.indices.exists.call_count, 40)
+        self.assertEqual(self.elastic_client.indices.delete.call_count, 40)
         self.assertEqual(Extension.objects.all().count(), 1)
         self.assertEqual(Extension.objects.all().last().id, "new")
 
@@ -82,18 +93,18 @@ class TestCleanData(TestCase):
         call_command("clean_data")
         # Assert which data remains
         self.assertEqual(Dataset.objects.count(), 2, "clean_data should never delete Datasets")
-        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 4,
-                         "Per dataset only younger than DATA_RETENTION_PURGE_AFTER of non-currents should remain")
+        self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 6,
+                         "Per dataset only younger than DATA_RETENTION_PURGE_AFTER of non-currents should remain "
+                         "outside of the DATA_RETENTION_KEEP_VERSIONS amount")
         self.assertEqual(
-            DatasetVersion.objects.filter(is_current=True).count(), 2 + 2,
-            "Expected two current DatasetVersion younger than DATA_RETENTION_PURGE_AFTER and "
-            "DATA_RETENTION_KEEP_VERSIONS current DatasetVersions per Dataset extra"
+            DatasetVersion.objects.filter(is_current=True).count(), 1,
+            "Expected one is_current dataset version to exist at all times"
         )
-        self.assertEqual(ElasticIndex.objects.count(), 16, "Expected two indices per dataset version")
-        self.assertEqual(Collection.objects.count(), 8, "Expected one collection per dataset version")
-        self.assertEqual(Document.objects.count(), 40, "Expected five documents per collection")
+        self.assertEqual(ElasticIndex.objects.count(), 14, "Expected two indices per dataset version")
+        self.assertEqual(Collection.objects.count(), 7, "Expected one collection per dataset version")
+        self.assertEqual(Document.objects.count(), 35, "Expected five documents per collection")
         self.assertEqual(HttpTikaResource.objects.count(), 0)
         # Check if Elastic indices were removed properly as well
-        self.assertEqual(get_es_client.call_count, 76, "Not sure why there are two calls per removed ElasticIndex")
-        self.assertEqual(self.elastic_client.indices.exists.call_count, 38)
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 38)
+        self.assertEqual(get_es_client.call_count, 80, "Not sure why there are two calls per removed ElasticIndex")
+        self.assertEqual(self.elastic_client.indices.exists.call_count, 40)
+        self.assertEqual(self.elastic_client.indices.delete.call_count, 40)

@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown-container">
-    <label class="dropdown-container__label">{{ label }}:</label>
+    <label class="dropdown-container__label">{{ $t(label) }}:</label>
 
     <div
       :class="{ 'active': visible == true }"
@@ -10,7 +10,7 @@
     >
       <span
         role="textbox"
-        :class="{ 'bold': selectedFilters !== defaultOption }"
+        :class="{ 'bold': selectedFilters !== $t(defaultOption) }"
         class="filter_checkbox"
       >{{ selectedFilters }}</span>
       <div class="dropdown-container__selector" :class="{ 'active': visible === true }"></div>
@@ -64,10 +64,10 @@ export default {
         .map(filter => filter.value);
       const filterNames = this.filters
         .filter(filter => filter.selected)
-        .map(filter => filter.title_translations[this.$i18n.locale].toLowerCase());
+        .map(filter => filter.title_translations[this.$i18n.locale].toLowerCase())
 
       this.$emit('update:selection', { field: this.field, selection })
-      return filterNames?.length == 0 ? filter.defaultOption : filterNames.join(", ");
+      return filterNames?.length === 0 ? this.$i18n.t(filter.defaultOption) : filterNames.join(", ")
     },
     visibleFilters() {
       return this.filters.filter(x => !x.is_hidden).sort()
@@ -96,8 +96,11 @@ input[type="checkbox"]:before {
   border-radius: 2px;
   margin-right: 8px;
   cursor: pointer;
-  vertical-align: text-bottom;
+  vertical-align: middle;
+  position: relative;
+  bottom: 2px;
 }
+
 input[type="checkbox"]:hover:before {
   border: 2px solid #008741;
 }
@@ -128,7 +131,7 @@ input[type="checkbox"]:checked:before {
     position: absolute;
     width: 14px;
     height: 48px;
-    right: 8px;
+    right: 12px;
     background: url("/images/dropdown-arrow-grey.svg") 50% 55% / contain
       no-repeat;
     &.active {
@@ -197,11 +200,10 @@ input[type="checkbox"]:checked:before {
     cursor: pointer;
     label {
       display: inline-block;
-      vertical-align: middle;
-      margin: 0 0 -2px 8px;
       color: @black;
       font-weight: 400;
       cursor: pointer;
+      vertical-align: text-bottom;
     }
     @media @mobile {
       width: 100%;

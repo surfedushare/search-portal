@@ -71,6 +71,7 @@ except Exception:
 
 INSTALLED_APPS = [
     'harvester',  # first to override runserver command
+    'admin_confirm',  # needs to override admin templates
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -85,6 +86,8 @@ INSTALLED_APPS = [
 
     'core',
     'metadata',
+    'sources',
+
     'edurep',
     'sharekit',
     'anatomy_tool',
@@ -151,6 +154,7 @@ DATABASES = {
 }
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -204,6 +208,7 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media', 'harvester')
     MEDIA_URL = '/media/harvester/'
     AWS_STORAGE_BUCKET_NAME = None
+
 
 # Rest framework
 # https://www.django-rest-framework.org/
@@ -419,6 +424,8 @@ COPYRIGHT_VALUES = [
     "pdm-10",
     "cc0-10"
 ]
+
+PUBLISHERS_WHITELIST = environment.django.publishers_whitelist
 
 
 # Celery

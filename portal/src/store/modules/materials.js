@@ -194,7 +194,7 @@ export default {
       const records = payload.records || payload
       state.materials = Object.assign({}, payload, {
         records: records,
-        total_pages: Math.round(payload.records_total / payload.page_size)
+        total_pages: Math.ceil(payload.records_total / payload.page_size)
       })
     },
     SET_NEXT_PAGE_MATERIALS(state, payload) {

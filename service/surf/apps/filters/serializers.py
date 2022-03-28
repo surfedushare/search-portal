@@ -1,10 +1,9 @@
 from rest_framework import serializers
 
-from surf.apps.filters import models
 from surf.apps.locale.serializers import LocaleSerializer
 
 
-class MpttFilterItemSerializer(serializers.ModelSerializer):
+class MpttFilterItemSerializer(serializers.Serializer):
 
     id = serializers.IntegerField()
     parent = serializers.IntegerField()
@@ -17,6 +16,7 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
     translation = LocaleSerializer()
     frequency = serializers.IntegerField()
     count = serializers.SerializerMethodField()
+    is_hidden = serializers.BooleanField()
 
     def get_children(self, obj):
         return MpttFilterItemSerializer(
@@ -34,6 +34,5 @@ class MpttFilterItemSerializer(serializers.ModelSerializer):
         return drilldowns.get(f"{obj['field']}-{obj['value']}", 0)
 
     class Meta:
-        model = models.MpttFilterItem
         fields = ('id', 'name', 'parent', 'title_translations', 'translation', 'value', 'external_id', 'is_hidden',
                   'children', 'count', 'frequency', 'field')
