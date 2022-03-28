@@ -8,24 +8,24 @@ from datagrowth.configuration import create_config
 from datagrowth.processors import ExtractProcessor
 
 from core.models import HarvestHttpResource
-from sources.extraction.han import HanDataExtraction, HAN_EXTRACTION_OBJECTIVE
+from sources.extraction.greeni import GreeniDataExtraction, GREENI_EXTRACTION_OBJECTIVE
 
 
 logger = logging.getLogger("harvester")
 
 
-class HanOAIPMHManager(models.Manager):
+class GreeniOAIPMHResourceManager(models.Manager):
 
     def extract_seeds(self, set_specification, latest_update):
         queryset = self.get_queryset() \
             .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
 
         oaipmh_objective = {
-            "@": HanDataExtraction.get_oaipmh_records,
-            "external_id": HanDataExtraction.get_oaipmh_external_id,
-            "state": HanDataExtraction.get_oaipmh_record_state
+            "@": GreeniDataExtraction.get_oaipmh_records,
+            "external_id": GreeniDataExtraction.get_oaipmh_external_id,
+            "state": GreeniDataExtraction.get_oaipmh_record_state
         }
-        oaipmh_objective.update(HAN_EXTRACTION_OBJECTIVE)
+        oaipmh_objective.update(GREENI_EXTRACTION_OBJECTIVE)
         extract_config = create_config("extract_processor", {
             "objective": oaipmh_objective
         })
@@ -38,24 +38,21 @@ class HanOAIPMHManager(models.Manager):
                 "id": harvest.id,
                 "success": True
             }
-            try:
-                for seed in prc.extract_from_resource(harvest):
-                    seed["seed_resource"] = seed_resource
-                    results.append(seed)
-            except ValueError as exc:
-                logger.warning("Invalid XML:", exc, harvest.uri)
+            for seed in prc.extract_from_resource(harvest):
+                seed["seed_resource"] = seed_resource
+                results.append(seed)
         return results
 
 
-class HanOAIPMHResource(HarvestHttpResource):
+class GreeniOAIPMHResource(HarvestHttpResource):
 
-    objects = HanOAIPMHManager()
+    objects = GreeniOAIPMHResourceManager()
 
-    URI_TEMPLATE = settings.SOURCES["han"]["endpoint"] + "/hanoai/request" \
-        if settings.SOURCES["han"]["endpoint"] else "/hanoai/request"
+    URI_TEMPLATE = settings.SOURCES["greeni"]["endpoint"] + "/webopac/oai2.CSP?set={}" \
+        if settings.SOURCES["greeni"]["endpoint"] else "/webopac/oai2.CSP?set={}"
     PARAMETERS = {
         "verb": "ListRecords",
-        "metadataPrefix": "nl_didl"
+        "metadataPrefix": "didl"
     }
 
     def next_parameters(self):
@@ -78,5 +75,5 @@ class HanOAIPMHResource(HarvestHttpResource):
         return next_request
 
     class Meta:
-        verbose_name = "HAN OAIPMH harvest"
-        verbose_name_plural = "HAN OAIPMH harvests"
+        verbose_name = "Greeni OAIPMH harvest"
+        verbose_name_plural = "Greeni OAIPMH harvests"

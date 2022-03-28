@@ -537,3 +537,25 @@ HANZE_API_KEY = environment.secrets.hanze.api_key
 
 SEND_ADMIN_NOTIFICATIONS = environment.django.send_admin_notifications
 TEAMS_HARVESTER_WEBHOOK = environment.secrets.teams_webhooks.harvester
+
+
+# Sources
+
+SOURCES = {
+    "han": {
+        "endpoint": environment.django.repositories.han,
+        "api_key": None
+    },
+    "hva": {
+        "endpoint": environment.django.repositories.hva,
+        "api_key": environment.secrets.hva.api_key
+    },
+    "hku": {
+        "endpoint": "https://octo.hku.nl",
+        "api_key": None
+    },
+    "greeni": {
+        "endpoint": "https://www.greeni.nl",
+        "api_key": None
+    }
+}

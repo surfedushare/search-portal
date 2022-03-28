@@ -6,20 +6,20 @@ from urllib.parse import quote
 from django.conf import settings
 from django.utils.timezone import make_aware
 
-from sources.models import HanOAIPMHResource
+from sources.models import GreeniOAIPMHResource
 
 
-SLUG = "han"
-ENDPOINT = HanOAIPMHResource.URI_TEMPLATE.replace("https://", "")
-SET_SPECIFICATION = "col_20.500.12470_2"
-METADATA_PREFIX = "nl_didl"
+SLUG = "greeni"
+ENDPOINT = GreeniOAIPMHResource.URI_TEMPLATE.replace("https://", "")
+SET_SPECIFICATION = "PUBVHL"
+METADATA_PREFIX = "didl"
 RESUMPTION_TOKEN = "MToxMDB8Mjp8Mzp8NDp8NTpubF9kaWRs"
 
 
-class HanOAIPMHFactory(factory.django.DjangoModelFactory):
+class GreeniOAIPMHResourceFactory(factory.django.DjangoModelFactory):
 
     class Meta:
-        model = HanOAIPMHResource
+        model = GreeniOAIPMHResource
         strategy = factory.BUILD_STRATEGY
 
     class Params:
@@ -35,7 +35,7 @@ class HanOAIPMHFactory(factory.django.DjangoModelFactory):
     set_specification = SET_SPECIFICATION
     status = 200
     head = {
-        "content-type": "application/xml"
+        "content-type": "text/xml"
     }
 
     @factory.lazy_attribute

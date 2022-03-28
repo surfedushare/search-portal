@@ -1,13 +1,14 @@
 import os
 import re
 from hashlib import sha1
+from dateutil.parser import parse as date_parser
 
 import vobject
 from django.conf import settings
 from django.utils.text import slugify
 
 
-class HanDataExtraction(object):
+class GreeniDataExtraction(object):
 
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
     cc_url_regex = re.compile(r"^https?://creativecommons\.org/(?P<type>\w+)/(?P<license>[a-z\-]+)/(?P<version>\d\.\d)",
@@ -120,26 +121,29 @@ class HanDataExtraction(object):
 
     @classmethod
     def get_copyright(cls, soup, el):
-        metadata = cls.find_metadata(el)
-        if not metadata:
-            return
-        copyright_element = metadata.find("mods:accesscondition")
-        if not copyright_element:
-            return
-        return "no" if "openAccess" in copyright_element["type"] else "yes"
+        return "cc-by-40"
 
     @classmethod
     def get_language(cls, soup, el):
-        return None
+        metadata = cls.find_metadata(el)
+        if not metadata:
+            return
+        language_term = metadata.find("languageterm")
+        language_code = language_term.text.strip()
+        if language_code == "dut":
+            return "nl"
+        elif language_code == "eng":
+            return "en"
+        return "unk"
 
     @classmethod
     def get_title(cls, soup, el):
-        node = el.find('mods:title')
+        node = el.find('title')
         return node.text.strip() if node else None
 
     @classmethod
     def get_description(cls, soup, el):
-        node = el.find('mods:abstract')
+        node = el.find('abstract')
         return node.text if node else None
 
     @classmethod
@@ -149,11 +153,11 @@ class HanDataExtraction(object):
             return []
         authors = []
         for role in roles:
-            author = role.find_parent('mods:name')
+            author = role.find_parent('name')
             if not author:
                 continue
-            given_name = author.find('mods:namepart', attrs={"type": "given"})
-            family_name = author.find('mods:namepart', attrs={"type": "family"})
+            given_name = author.find('namepart', attrs={"type": "given"})
+            family_name = author.find('namepart', attrs={"type": "family"})
             if not given_name and not family_name:
                 continue
             authors.append({
@@ -168,7 +172,8 @@ class HanDataExtraction(object):
 
     @classmethod
     def get_publishers(cls, soup, el):
-        return ["Hogeschool van Arnhem en Nijmegen"]
+        publisher = el.find("publisher")
+        return [publisher.text.strip()] if publisher else []
 
     @classmethod
     def get_publisher_date(cls, soup, el):
@@ -177,8 +182,9 @@ class HanDataExtraction(object):
 
     @classmethod
     def get_publisher_year(cls, soup, el):
-        year = el.find("mods:dateissued")
-        return int(year.text.strip()) if year else None
+        date_issued = el.find("dateissued")
+        datetime = date_parser(date_issued.text)
+        return datetime.year if datetime else None
 
     @classmethod
     def get_technical_type(cls, soup, el):
@@ -202,48 +208,44 @@ class HanDataExtraction(object):
     def get_analysis_allowed(cls, soup, el):
         # We disallow analysis for non-derivative materials as we'll create derivatives in that process
         # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = HanDataExtraction.get_copyright(soup, el)
+        copyright = GreeniDataExtraction.get_copyright(soup, el)
         return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
     @classmethod
     def get_research_object_type(cls, soup, el):
-        genre = el.find("mods:genre")
+        genre = el.find("genre")
         return genre.text.strip() if genre else None
 
     @classmethod
     def get_doi(cls, soup, el):
-        dois = [
-            url_identifier.text.strip()
-            for url_identifier in el.find_all("mods:identifier", attrs={"type": "uri"})
-            if "doi.org" in url_identifier.text
-        ]
-        return dois[0] if len(dois) else None
+        identifier = el.find("identifier", attrs={"type": "doi"})
+        return identifier.text.strip() if identifier else None
 
 
-HAN_EXTRACTION_OBJECTIVE = {
+GREENI_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
-    "url": HanDataExtraction.get_url,
-    "files": HanDataExtraction.get_files,
-    "copyright": HanDataExtraction.get_copyright,
-    "title": HanDataExtraction.get_title,
-    "language": HanDataExtraction.get_language,
+    "url": GreeniDataExtraction.get_url,
+    "files": GreeniDataExtraction.get_files,
+    "copyright": GreeniDataExtraction.get_copyright,
+    "title": GreeniDataExtraction.get_title,
+    "language": GreeniDataExtraction.get_language,
     "keywords": lambda soup, el: [],
-    "description": HanDataExtraction.get_description,
-    "mime_type": HanDataExtraction.get_mime_type,
-    "authors": HanDataExtraction.get_authors,
-    "publishers": HanDataExtraction.get_publishers,
-    "publisher_date": HanDataExtraction.get_publisher_date,
-    "publisher_year": HanDataExtraction.get_publisher_year,
+    "description": GreeniDataExtraction.get_description,
+    "mime_type": GreeniDataExtraction.get_mime_type,
+    "authors": GreeniDataExtraction.get_authors,
+    "publishers": GreeniDataExtraction.get_publishers,
+    "publisher_date": GreeniDataExtraction.get_publisher_date,
+    "publisher_year": GreeniDataExtraction.get_publisher_year,
 
     # Non-essential NPPO properties
-    "technical_type": HanDataExtraction.get_technical_type,
-    "from_youtube": HanDataExtraction.get_from_youtube,
-    "is_restricted": HanDataExtraction.get_is_restricted,
-    "analysis_allowed": HanDataExtraction.get_analysis_allowed,
-    "research_object_type": HanDataExtraction.get_research_object_type,
+    "technical_type": GreeniDataExtraction.get_technical_type,
+    "from_youtube": GreeniDataExtraction.get_from_youtube,
+    "is_restricted": GreeniDataExtraction.get_is_restricted,
+    "analysis_allowed": GreeniDataExtraction.get_analysis_allowed,
+    "research_object_type": GreeniDataExtraction.get_research_object_type,
     "research_themes": lambda soup, el: None,
     "parties": lambda soup, el: [],
-    "doi": HanDataExtraction.get_doi,
+    "doi": GreeniDataExtraction.get_doi,
 
     # Non-essential Edusources properties (for compatibility reasons)
     "material_types": lambda soup, el: None,

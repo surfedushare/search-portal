@@ -92,7 +92,7 @@ class TestGetHarvestSeedsHan(TestCase):
 
     def test_publisher_year(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["publisher_year"], "2018")
+        self.assertEqual(seeds[0]["publisher_year"], 2018)
         self.assertIsNone(seeds[2]["publisher_year"], "Expected deleted record to have no publisher_year")
 
     def test_research_object_type(self):
