@@ -16,6 +16,7 @@ class MpttFilterItemSerializer(serializers.Serializer):
     translation = LocaleSerializer()
     frequency = serializers.IntegerField()
     count = serializers.SerializerMethodField()
+    is_hidden = serializers.BooleanField()
 
     def get_children(self, obj):
         return MpttFilterItemSerializer(
