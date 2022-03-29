@@ -16,13 +16,7 @@
               <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
             </ul>
           </div>
-          <SearchBar v-if="$root.isDemoEnvironment()" @onSearch="searchMaterials" />
-          <Search
-            v-if="!$root.isDemoEnvironment()"
-            :select-options="educationalLevelOptions"
-            @onSearch="searchMaterials"
-            @selectDropdownOption="setEducationalLevelFilter"
-          />
+          <SearchBar @onSearch="searchMaterials" />
         </div>
       </div>
 
@@ -70,7 +64,6 @@ import numeral from 'numeral'
 import { mapGetters } from 'vuex'
 import PopularList from '~/components/Communities/PopularList'
 import Materials from '~/components/Materials/Materials.vue'
-import Search from '~/components/Search'
 import SearchBar from '~/components/Search/SearchBar.vue'
 import { generateSearchMaterialsQuery } from '~/components/_helpers'
 import PageMixin from '~/pages/page-mixin'
@@ -79,7 +72,6 @@ const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
 
 export default {
   components: {
-    Search,
     PopularList,
     Materials,
     SearchBar
@@ -133,8 +125,8 @@ export default {
     searchMaterials(search) {
       this.$router.push(
         generateSearchMaterialsQuery({
-          search_text: this.$root.isDemoEnvironment() ? search.search_text : search,
-          filters: this.$root.isDemoEnvironment() ? search.filters : this.filters,
+          search_text: search.search_text,
+          filters: search.filters,
           page_size: 10,
           page: 1,
         })

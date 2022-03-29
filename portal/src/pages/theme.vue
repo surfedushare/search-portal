@@ -12,13 +12,14 @@
             class="theme__info_bg"
           />
           <h2 class="theme__info_ttl">{{ getTitleTranslation() }}</h2>
-          <Search
+          <SearchTerm class="theme__info_search" @onSearch="onSearch" />
+          <!-- <SearchTerm
             v-if="search"
             v-model="search.search_text"
             class="theme__info_search"
             :placeholder="$t('Search-in-theme')"
             @onSearch="onSearch"
-          />
+          />-->
         </div>
       </div>
       <div class="center_block theme__row">
@@ -58,17 +59,17 @@ import { mapGetters } from 'vuex'
 import Disciplines from '~/components/Disciplines'
 import Error from '~/components/error'
 import Materials from '~/components/Materials/Materials.vue'
-import Search from '~/components/Search'
 import { THEME_CATEGORY_FILTER_FIELD } from '~/constants'
 import PageMixin from '~/pages/page-mixin'
+import SearchTerm from '../components/Search/SearchTerm.vue'
 
 export default {
   name: 'Theme',
   components: {
-    Search,
     Materials,
     Disciplines,
     Error,
+    SearchTerm
   },
   mixins: [PageMixin],
   props: [],

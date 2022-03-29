@@ -9,7 +9,7 @@
             @click.prevent="onSaveMaterials"
           >{{ $t('Add-selected-materials', { count: selection.length }) }}</button>
         </div>
-        <Search v-model="search" class="add_materials__info_search" @onSearch="onSearch" />
+        <SearchTerm class="add_materials__info_search" @onSearch="onSearch" />
 
         <div
           v-infinite-scroll="loadMore"
@@ -19,6 +19,7 @@
         >
           <div class="search__materials">
             <Materials
+              v-if="materials"
               v-model="selection"
               :materials="materials"
               :items-in-line="2"
@@ -37,14 +38,14 @@ import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
 import Materials from '~/components/Materials/Materials.vue'
 import Popup from '~/components/Popup'
-import Search from '~/components/Search'
+import SearchTerm from '~/components/Search/SearchTerm.vue'
 
 export default {
   name: 'AddMaterialPopup',
   components: {
     Popup,
-    Search,
     Materials,
+    SearchTerm
   },
   props: {
     isShow: { type: Boolean },
@@ -54,7 +55,6 @@ export default {
   },
   data() {
     return {
-      search: '',
       selection: [],
       saved: false,
       submitting: false,
@@ -71,9 +71,9 @@ export default {
     },
   },
   methods: {
-    onSearch() {
+    onSearch(searchText) {
       this.$store.dispatch('searchMaterials', {
-        search_text: this.search,
+        search_text: searchText,
         page_size: 10,
         page: 1,
       })
@@ -124,14 +124,12 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+@import "../../variables";
 .popup.add-material .popup__center {
   max-width: calc(100% - 200px);
   width: 1050px;
 }
-</style>
-<style lang="less" scoped>
-@import "../../variables";
 
 .content-container {
   overflow: scroll;
