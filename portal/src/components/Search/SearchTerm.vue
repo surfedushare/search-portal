@@ -160,6 +160,11 @@ export default {
     padding-left: 40px;
     margin-left: 0px;
     width: 100%;
+    outline: none;
+
+    @media @mobile {
+      margin-bottom: 10px;
+    }
   }
 
   .button {
@@ -181,12 +186,14 @@ export default {
 }
 /deep/.autosuggest__results-container {
   position: absolute;
+  width: 100%;
   margin-top: -3px;
-  margin-left: 25px;
   list-style: none;
   border-radius: 20px;
   box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
   max-width: calc(100% - 185px);
+  z-index: 10;
+  background-color: white;
   @media @mobile {
     max-width: calc(100% - 50px);
   }
@@ -195,20 +202,22 @@ export default {
 /deep/.autosuggest__results {
   ul {
     list-style: none;
+    padding: 10px;
   }
 
   li {
     text-align: left;
-    padding: 3px;
+    padding: 10px;
     padding-left: 30px;
     background-size: 20px;
     cursor: pointer;
 
     &:hover,
     &.autosuggest__results-item--highlighted {
-      color: green;
-      font-weight: bold;
-      text-decoration: underline;
+      background-size: 20px;
+      color: @black;
+      text-decoration: none;
+      font-weight: 500;
     }
 
     &:last-child {
