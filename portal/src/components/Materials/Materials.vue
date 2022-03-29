@@ -39,7 +39,8 @@
       <div class="not_found__icon"></div>
       <div class="not_found__message">
         {{ $t('Did-you-mean') }}
-        <span class="not_found__suggestion">{{ didYouMean.suggestion }}?</span>
+        <a :href="no_result_suggestion_link">{{ didYouMean.suggestion }}</a>
+        ?
         {{ $t('Because-no-results-for') }} '{{ didYouMean.original }}'
         <div class="not_found__info">
           <i>{{ $t('Adjust-your-search-query') }}</i>
@@ -296,7 +297,6 @@ export default {
     grid-template-rows: repeat(2, max-height);
     grid-template-columns: auto 1fr;
     width: 100%;
-    height: 100px;
     margin: 0 auto;
     background-color: @grey;
     border-radius: 20px;
@@ -311,7 +311,7 @@ export default {
     }
     &__message {
       grid-template-rows: repeat(2, max-height);
-      height: 48px;
+      min-height: 48px;
       padding-left: 24px;
       font-weight: 800;
       font-size: 20px;
