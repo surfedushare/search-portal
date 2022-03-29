@@ -85,7 +85,7 @@
           >
             <span
               v-for="(keyword, i) in material.keywords.slice(0, 2)"
-              :key="keyword"
+              :key="keyword + '_' + i"
               class="materials__item_keyword"
             >{{ punctuate(keyword, i, material.keywords.length) }}</span>
           </div>

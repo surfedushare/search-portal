@@ -62,7 +62,7 @@
             :search-term="search.search_text"
           />
           <v-pagination
-            v-if="materials && !materials_loading && materials.length"
+            v-if="!materials_loading && materials && materials.records && materials.records.length"
             v-model="materials.page"
             :length="materials.total_pages"
             :total-visible="11"
