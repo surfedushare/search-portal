@@ -139,7 +139,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     "mime_type": HvaMetadataExtraction.get_mime_type,
     "authors": HvaMetadataExtraction.get_authors,
     "publishers": HvaMetadataExtraction.get_publishers,
-    "publisher_date": "$.modifiedDate",
+    "publisher_date": lambda node: None,
     "publisher_year": "$.publicationStatuses.0.publicationDate.year",
 
     # Non-essential NPPO properties

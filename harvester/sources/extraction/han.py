@@ -171,11 +171,6 @@ class HanDataExtraction(object):
         return ["Hogeschool van Arnhem en Nijmegen"]
 
     @classmethod
-    def get_publisher_date(cls, soup, el):
-        datetime = el.find("dcterms:modified")
-        return datetime.text.strip() if datetime else None
-
-    @classmethod
     def get_publisher_year(cls, soup, el):
         year = el.find("mods:dateissued")
         return int(year.text.strip()) if year else None
@@ -232,7 +227,7 @@ HAN_EXTRACTION_OBJECTIVE = {
     "mime_type": HanDataExtraction.get_mime_type,
     "authors": HanDataExtraction.get_authors,
     "publishers": HanDataExtraction.get_publishers,
-    "publisher_date": HanDataExtraction.get_publisher_date,
+    "publisher_date": lambda soup, el: None,
     "publisher_year": HanDataExtraction.get_publisher_year,
 
     # Non-essential NPPO properties

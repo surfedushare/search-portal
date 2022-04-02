@@ -127,7 +127,7 @@ HKU_EXTRACTION_OBJECTIVE = {
     "mime_type": HkuMetadataExtraction.get_mime_type,
     "authors": HkuMetadataExtraction.get_authors,
     "publishers": HkuMetadataExtraction.get_publishers,
-    "publisher_date": "$.datelastmodified",
+    "publisher_date": lambda node: None,
     "publisher_year": HkuMetadataExtraction.get_publisher_year,
 
     # Non-essential NPPO properties
