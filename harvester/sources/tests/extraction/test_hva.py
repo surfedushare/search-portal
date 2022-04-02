@@ -96,3 +96,8 @@ class TestGetHarvestSeedsHva(TestCase):
     def test_research_object_type(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["research_object_type"], "Report")
+
+    def test_doi(self):
+        seeds = self.seeds
+        self.assertIsNone(seeds[0]["doi"])
+        self.assertEqual(seeds[5]["doi"], "10.1088/0031-9120/50/5/573")
