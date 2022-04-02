@@ -21,7 +21,7 @@ class HkuMetadataResourceManager(models.Manager):
 
         metadata_objective = {
             "@": "$.root.item",
-            "external_id": "$.resultId",
+            "external_id": "$.resultid",
             "state": HkuMetadataExtraction.get_record_state
         }
         metadata_objective.update(HKU_EXTRACTION_OBJECTIVE)
