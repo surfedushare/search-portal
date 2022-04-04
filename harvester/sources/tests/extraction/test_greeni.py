@@ -74,10 +74,6 @@ class TestGetHarvestSeedsGreeni(TestCase):
         self.assertEqual(seeds[0]["publishers"], ["VHL"])
         self.assertEqual(seeds[9]["publishers"], ["Agrimedia"])
 
-    def test_publisher_date(self):
-        seeds = self.seeds
-        self.assertEqual(seeds[0]["publisher_date"], "2022-03-16T15:13:40")
-
     def test_publisher_year(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["publisher_year"], 2010)

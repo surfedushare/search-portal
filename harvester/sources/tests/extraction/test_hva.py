@@ -89,10 +89,6 @@ class TestGetHarvestSeedsHva(TestCase):
             {'name': 'Bonne Zijlstra', 'email': None, 'external_id': 140060, 'dai': None, 'orcid': None, 'isni': None}
         ])
 
-    def test_publisher_date(self):
-        seeds = self.seeds
-        self.assertEqual(seeds[0]["publisher_date"], "2018-05-01T08:21:40.498+02:00")
-
     def test_publisher_year(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["publisher_year"], 2016)

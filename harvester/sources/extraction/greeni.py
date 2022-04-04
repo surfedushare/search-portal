@@ -176,11 +176,6 @@ class GreeniDataExtraction(object):
         return [publisher.text.strip()] if publisher else []
 
     @classmethod
-    def get_publisher_date(cls, soup, el):
-        datetime = el.find("dcterms:modified")
-        return datetime.text.strip() if datetime else None
-
-    @classmethod
     def get_publisher_year(cls, soup, el):
         date_issued = el.find("dateissued")
         datetime = date_parser(date_issued.text)
@@ -234,7 +229,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "mime_type": GreeniDataExtraction.get_mime_type,
     "authors": GreeniDataExtraction.get_authors,
     "publishers": GreeniDataExtraction.get_publishers,
-    "publisher_date": GreeniDataExtraction.get_publisher_date,
+    "publisher_date": lambda soup, el: None,
     "publisher_year": GreeniDataExtraction.get_publisher_year,
 
     # Non-essential NPPO properties
