@@ -1,3 +1,4 @@
+
 <template>
   <section class="edusources-container search">
     <div>
@@ -58,9 +59,10 @@
             :materials="materials"
             :items-in-line="materials_in_line"
             :did-you-mean="did_you_mean"
+            :search-term="search.search_text"
           />
           <v-pagination
-            v-if="materials && !materials_loading"
+            v-if="!materials_loading && materials && materials.records && materials.records.length"
             v-model="materials.page"
             :length="materials.total_pages"
             :total-visible="11"
@@ -75,8 +77,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import FilterCategories from '~/components/FilterCategories'
-import Materials from '~/components/Materials'
+import FilterCategories from '~/components/FilterCategories/FilterCategories.vue'
+import Materials from '~/components/Materials/Materials.vue'
 import Search from '~/components/Search'
 import SearchBar from '~/components/Search/SearchBar.vue'
 import Spinner from '~/components/Spinner'
@@ -129,7 +131,7 @@ export default {
         : null
     },
     showFilterCategories() {
-      return this.isReady && this.materials && this.materials.records && this.materials.records.length
+      return this.isReady && this.materials && this.materials.records
     },
   },
   watch: {

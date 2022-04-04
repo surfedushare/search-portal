@@ -92,7 +92,7 @@ class TestSearch(BaseLiveServerTestCase):
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         WebDriverWait(self.selenium, self.explicit_wait).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Geen resultaten voor"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Because-no-results-for"))
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "didaktiek"))
         WebDriverWait(self.selenium, self.explicit_wait).until(
@@ -122,7 +122,7 @@ class TestSearch(BaseLiveServerTestCase):
             EC.presence_of_element_located((By.CSS_SELECTOR, "section.spinner")))
 
         WebDriverWait(self.selenium, self.explicit_wait).until(
-            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Niet gevonden"))
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".not_found"), "Geen resultaten voor"))
 
 
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)

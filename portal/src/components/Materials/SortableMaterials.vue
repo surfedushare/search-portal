@@ -1,187 +1,162 @@
 <template>
-  <div
-    :class="{ selected: material.selected, stack: hasPart }"
-    class="materials__item_wrapper tile__wrapper"
-    @click="handleMaterialClick(material)"
-  >
-    <div class="materials__item_set-wrapper">
-      <span v-if="hasPart" class="materials__item_set">{{ $t('Set') }}</span>
-    </div>
-    <div class="materials__item_content">
-      <div class="materials__item_main_info">
-        <h3 class="materials__item_title">{{ material.title }}</h3>
-        <div
-          v-if="material.authors.length > 0"
-          class="materials__item_author"
-        >{{ material.authors.join(', ') }}</div>
-        <div
-          v-if="material.publishers.length > 0"
-          class="materials__item_publisher"
-        >{{ material.publishers.join(', ') }}</div>
-        <div class="materials__item_date">{{ formattedPublishedAt || null }}</div>
-        <div
-          v-if="hasPart"
-          class="materials__item_set_count"
-        >{{ $tc('Materials', material.has_parts.length) }}</div>
-        <div
-          v-if="itemsInLine === 1 && material.description"
-          class="materials__item_description"
-        >{{ material.description }}</div>
-      </div>
-      <div class="materials__item_subinfo">
-        <div>
-          <div
-            v-if="material.disciplines && material.disciplines.length"
-            class="materials__item_disciplines"
-          >
-            <span
-              v-for="(discipline, i) in material.disciplines.slice(0, 2)"
-              :key="i"
-              class="materials__item_discipline"
-            >
-              {{
-                punctuate(
-                  titleTranslation(discipline, $i18n.locale),
-                  i,
-                  material.disciplines.length
-                )
-              }}
-            </span>
-          </div>
-          <div
-            v-if="
-              material.educationallevels && material.educationallevels.length
-            "
-            class="materials__item_educationallevels"
-          >
-            <span
-              v-for="(educationallevel, i) in material.educationallevels.slice(
-                0,
-                2
-              )"
-              :key="i"
-              class="materials__item_educationallevel"
-            >
-              {{
-                punctuate(
-                  educationallevel[$i18n.locale],
-                  i,
-                  material.educationallevels.length
-                )
-              }}
-            </span>
-          </div>
-          <div
-            v-if="
-              material.technical_type && material.technical_type !== 'unknown'
-            "
-            class="materials__item_format"
-          >{{ $t(material.technical_type) }}</div>
-          <div
-            v-if="
-              material.keywords && material.keywords.length && itemsInLine === 1
-            "
-            class="materials__item_keywords"
-          >
-            <span
-              v-for="(keyword, i) in material.keywords.slice(0, 2)"
-              :key="keyword + '_' + i"
-              class="materials__item_keyword"
-            >{{ punctuate(keyword, i, material.keywords.length) }}</span>
-          </div>
-          <routerLink
-            v-for="community in material.communities"
-            :key="`${community.id}`"
-            :to="
-              localePath({
-                name: 'communities-community',
-                params: { community: community.id },
-              })
-            "
-            class="materials__item_community_link"
-            @click.native="$event.stopImmediatePropagation()"
-          >{{ titleTranslation(community, $i18n.locale) }}</routerLink>
-        </div>
-        <div class="materials__item_copyrights" :class="material.copyright" />
-      </div>
-    </div>
-    <footer class="materials__item_footer">
-      <StarRating
-        v-model="material.avg_star_rating"
-        :counter="material.count_star_rating"
-        :disabled="true"
-        :dark-stars="true"
-      />
-      <div class="materials__item_actions">
-        <div class="materials__item_applauds">
-          <span>{{ material.applaud_count }}</span>
-        </div>
-        <a
-          v-if="material.url"
-          class="materials__item_external_link"
-          target="_blank"
-          :href="material.url"
+  <section class="collection__materials">
+    <slot name="header-info"></slot>
+    <draggable
+      v-model="myList"
+      draggable=".materials__item"
+      class="materials__items deleting"
+      :class="{
+        loading: current_loading,
+        list: itemsInLine === 1,
+        tile: itemsInLine > 1
+      }"
+    >
+      <div
+        v-for="(material, index) in myList"
+        :key="material.external_id"
+        :class="[
+          `tile--items-in-line-${itemsInLine}`,
+          `materials__item--items-in-line-${itemsInLine}`,
+          'select-delete'
+        ]"
+        class="materials__item tile"
+      >
+        <div v-if="material.has_bookmark" class="materials__bookmark">Bookmark</div>
+        <button v-if="contentEditable" class="select-icon" @click="deleteFromCollection(material)" />
+        <Material
+          :material="material"
+          :handle-material-click="handleMaterialClick"
+          :items-in-line="itemsInLine"
+          :index="index"
         />
       </div>
-    </footer>
-  </div>
+    </draggable>
+    <div v-if="myList.length === 0" class="not_found">{{ $t('Not-found') }}</div>
+  </section>
 </template>
 
 <script>
-import StarRating from '../../StarRating/index'
-import { formatDate } from '../../_helpers'
+import draggable from 'vuedraggable'
+import { mapGetters } from 'vuex'
+import Material from './Material/Material.vue'
 
 export default {
-  name: 'Material',
+  name: 'SortableMaterials',
   components: {
-    StarRating,
+    draggable,
+    Material,
   },
   props: {
-    material: {
+    materials: {
       type: Object,
       default: null,
-      required: false,
-    },
-    index: {
-      type: Number,
-      default: 0,
     },
     itemsInLine: {
       type: Number,
       default: 4,
     },
-    handleMaterialClick: {
-      type: Function,
-      params: 1,
-      default: () => { },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    contentEditable: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
-    hasPart() {
-      return this.material.has_parts.length > 0
+    ...mapGetters(['materials_loading']),
+    current_loading() {
+      return this.materials_loading || this.loading
     },
-    formattedPublishedAt() {
-      return formatDate(this.material.published_at, this.$i18n.locale)
+    myList: {
+      get() {
+        if (this.materials) {
+          return this.sortByPosition(
+            this.shortenDescriptions(this.materials.records)
+          )
+        } else {
+          return []
+        }
+      },
+      set(values) {
+        const { id } = this.$route.params
+        const orderedList = values.map((value, index) => {
+          value.position = index
+          return value
+        })
+        const external_ids = values.map((material) => ({
+          external_id: material.external_id,
+        }))
+        const materials = orderedList.map((material) => {
+          return {
+            external_id: material.external_id,
+            position: material.position,
+          }
+        })
+        this.$store
+          .dispatch('removeMaterialFromCollection', {
+            collection_id: id,
+            data: external_ids,
+          })
+          .then(() => {
+            this.$store.dispatch('addMaterialToCollection', {
+              collection_id: id,
+              data: materials,
+            })
+          })
+      },
     },
   },
   methods: {
-    punctuate(word, index, len) {
-      let punctuated = word
-      if (len > 1 && index < len - 1) {
-        punctuated = punctuated + ', '
+    handleMaterialClick(material) {
+      this.$router.push(
+        this.localePath({
+          name: 'materials-id',
+          params: { id: material.external_id },
+        })
+      )
+    },
+    deleteFromCollection(material) {
+      const { id } = this.$route.params
+      this.$store
+        .dispatch('removeMaterialFromCollection', {
+          collection_id: id,
+          data: [{ external_id: material.external_id }],
+        })
+        .then(() => {
+          Promise.all([
+            this.$store.dispatch('getCollectionMaterials', id),
+            this.$store.dispatch('getCollection', id),
+          ]).then(() => null)
+        })
+    },
+    shortenDescriptions(records) {
+      if (!records) {
+        return []
       }
-      if (index === 1 && len >= 3) {
-        punctuated = punctuated + '...'
-      }
-      return punctuated
+      return records.map((record) => {
+        if (record.description && record.description.length > 200) {
+          record.description = record.description.slice(0, 200) + '...'
+        }
+        return record
+      })
+    },
+    sortByPosition(records) {
+      return records.sort((a, b) => (a.position > b.position ? 1 : -1))
     },
   },
+
 }
+
 </script>
 
 <style lang="less" scoped>
-@import "./../../../variables";
+@import "./../../variables";
 .materials {
+  &.community__materials h2 {
+    margin-bottom: 20px;
+  }
   &__items {
     padding: 0;
     list-style: none;
@@ -191,6 +166,13 @@ export default {
 
     &.list {
       grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+
+      @media @mobile {
+        .materials__item_content {
+          flex-direction: column;
+        }
+      }
+
       .materials__item_main_info {
         flex: 1;
         padding: 10px 20px 20px;
@@ -209,6 +191,45 @@ export default {
       .materials__item_content {
         flex-direction: column;
         justify-content: space-between;
+      }
+    }
+
+    .select-icon {
+      background-size: 20px 20px;
+      position: absolute;
+      left: 50%;
+      top: -20px;
+      width: 40px;
+      height: 40px;
+      color: transparent;
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+      z-index: 1;
+      border-radius: 50%;
+      transform: translate(-50%, 0);
+      border: 0;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &.deleting {
+      .select-icon {
+        background: @light-grey url("/images/close-grey.svg") 50% 50% no-repeat;
+      }
+      .selected {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+    &.adding {
+      .select-icon {
+        background: @light-grey url("/images/plus-black.svg") 50% 50% no-repeat;
+      }
+      .select-icon.selected {
+        background: @green url("/images/plus-white.svg") 50% 50% no-repeat;
       }
     }
   }
