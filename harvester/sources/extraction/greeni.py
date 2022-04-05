@@ -121,7 +121,12 @@ class GreeniDataExtraction(object):
 
     @classmethod
     def get_copyright(cls, soup, el):
-        return "cc-by-40"
+        access_rights = el.find("dcterms:accessrights")
+        if not access_rights:
+            return
+        if access_rights.text.strip() == "http://purl.org/eprint/accessRights/OpenAccess":
+            return "open-access"
+        return "yes"
 
     @classmethod
     def get_language(cls, soup, el):

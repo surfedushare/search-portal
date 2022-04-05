@@ -54,6 +54,15 @@ class TestGetHarvestSeedsGreeni(TestCase):
         self.assertEqual(seeds[0]["language"], "nl")
         self.assertEqual(seeds[30]["language"], "en")
 
+    def test_get_copyright(self):
+        seeds = self.seeds
+        self.assertEqual(len(seeds), 100, "Expected get_harvest_seeds to filter differently based on copyright")
+        self.assertEqual(seeds[0]["copyright"], "open-access")
+        self.assertEqual(seeds[1]["copyright"], "yes")
+        seeds = get_harvest_seeds(Repositories.GREENI, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
+        self.assertEqual(len(seeds), 97, "Expected get_harvest_seeds to delete invalid copyright")
+        self.assertEqual(seeds[1]["copyright"], "open-access")
+
     def test_get_title(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["title"], "Out of the box...!")

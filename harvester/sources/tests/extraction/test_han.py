@@ -58,11 +58,11 @@ class TestGetHarvestSeedsHan(TestCase):
     def test_get_copyright(self):
         seeds = self.seeds
         self.assertEqual(len(seeds), 200, "Expected get_harvest_seeds to filter differently based on copyright")
-        self.assertEqual(seeds[0]["copyright"], "no")
+        self.assertEqual(seeds[0]["copyright"], "open-access")
         self.assertIsNone(seeds[2]["copyright"], "Expected deleted record to have no copyright")
         seeds = get_harvest_seeds(Repositories.HAN, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
         self.assertEqual(len(seeds), 67, "Expected get_harvest_seeds to delete invalid copyright")
-        self.assertEqual(seeds[1]["copyright"], "no")
+        self.assertEqual(seeds[1]["copyright"], "open-access")
 
     def test_get_language(self):
         self.skipTest("Not implemented yet, but seems essential for the system to function")

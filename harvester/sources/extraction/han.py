@@ -126,7 +126,7 @@ class HanDataExtraction(object):
         copyright_element = metadata.find("mods:accesscondition")
         if not copyright_element:
             return
-        return "no" if "openAccess" in copyright_element["type"] else "yes"
+        return "open-access" if "openAccess" in copyright_element["type"] else "yes"
 
     @classmethod
     def get_language(cls, soup, el):

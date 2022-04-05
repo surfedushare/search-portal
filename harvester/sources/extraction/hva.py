@@ -87,7 +87,7 @@ class HvaMetadataExtraction(ExtractProcessor):
     @classmethod
     def get_copyright(cls, node):
         access = node["openAccessPermission"]["term"]["en_GB"]
-        return "no" if access == "Open" else "yes"
+        return "open-access" if access == "Open" else "yes"
 
     @classmethod
     def get_from_youtube(cls, node):
