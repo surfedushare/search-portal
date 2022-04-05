@@ -130,7 +130,7 @@ class HanDataExtraction(object):
 
     @classmethod
     def get_language(cls, soup, el):
-        return None
+        return "unk"
 
     @classmethod
     def get_title(cls, soup, el):
