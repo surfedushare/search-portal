@@ -266,7 +266,7 @@
                             </didl:Descriptor>
                             <didl:Descriptor>
                                 <didl:Statement mimeType="application/xml">
-                                    <dcterms:accessRights>http://purl.org/eprint/accessRights/OpenAccess
+                                    <dcterms:accessRights>http://purl.org/eprint/accessRights/ClosedAccess
                                     </dcterms:accessRights>
                                 </didl:Statement>
                             </didl:Descriptor>
