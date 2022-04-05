@@ -31,7 +31,7 @@ External services like the database run in containers, so it's always necessary 
 To install the basic environment and tooling you'll need to first setup a local environment on a host machine with:
 
 ```bash
-python3 -m venv venv
+python3 -m venv venv --copies
 source activate.sh
 pip install --upgrade pip
 pip install -r requirements.txt

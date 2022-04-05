@@ -21,14 +21,14 @@ USER app:app
 
 COPY --chown=app portal /usr/src/portal
 
-RUN npm install && npm run build
+RUN npm ci && npm run build
 
 
 #################################################
 # SERVICE
 #################################################
 
-FROM python:3.8-buster
+FROM python:3.9
 
 RUN apt-get update && apt-get install -y less vim build-essential gettext
 
