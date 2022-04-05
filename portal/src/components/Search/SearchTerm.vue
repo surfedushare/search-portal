@@ -8,6 +8,7 @@
             :class="autosuggestClasses"
             :suggestions="suggestions"
             :input-props="autosuggestInputProps"
+            data-test="search_term"
             @input="onInputChange"
             @selected="onSelectSuggestion"
           >
@@ -15,7 +16,7 @@
               <div class="search__suggestions" tabindex="-1">{{ $t("SearchSuggestions") }}</div>
             </template>
           </vue-autosuggest>
-          <button class="button" type="submit">{{ $t("Search") }}</button>
+          <button data-test="search_button" class="button" type="submit">{{ $t("Search") }}</button>
         </div>
       </div>
     </form>

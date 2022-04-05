@@ -3,6 +3,7 @@
     <slot name="header-info"></slot>
     <ul
       v-if="extended_materials && extended_materials.length"
+      data-test="search_results"
       class="materials__items"
       :class="{
         loading: current_loading,
@@ -35,11 +36,18 @@
         />
       </li>
     </ul>
-    <div v-else-if="!current_loading && has_no_result_suggestion" class="not_found">
+    <div
+      v-else-if="!current_loading && has_no_result_suggestion"
+      data-test="search_suggestion"
+      class="not_found"
+    >
       <div class="not_found__icon"></div>
       <div class="not_found__message">
         {{ $t('Did-you-mean') }}
-        <a :href="no_result_suggestion_link">{{ didYouMean.suggestion }}</a>
+        <a
+          :href="no_result_suggestion_link"
+          data-test="search_suggestion_link"
+        >{{ didYouMean.suggestion }}</a>
         ?
         {{ $t('Because-no-results-for') }} '{{ didYouMean.original }}'
         <div class="not_found__info">
@@ -47,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div v-else-if="!current_loading" class="not_found">
+    <div v-else-if="!current_loading" data-test="no_search_results" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
         {{ $t('No-results-for') }} '{{ searchTerm }}'
