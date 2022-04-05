@@ -7,8 +7,6 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    replaces = [('themes', '0001_squashed_0007_predictable_theme_ordering'), ('themes', '0002_theme_slugs'), ('themes', '0003_update_themes_data'), ('themes', '0004_strip_themes_and_disciplines')]
-
     initial = True
 
     dependencies = [

@@ -138,14 +138,6 @@ class HanDataExtraction(object):
         return node.text.strip() if node else None
 
     @classmethod
-    def get_keywords(cls, soup, el):
-        nodes = el.find_all('czp:keyword')
-        return [
-            node.find('czp:langstring').text.strip()
-            for node in nodes
-        ]
-
-    @classmethod
     def get_description(cls, soup, el):
         node = el.find('mods:abstract')
         return node.text if node else None
@@ -179,14 +171,9 @@ class HanDataExtraction(object):
         return ["Hogeschool van Arnhem en Nijmegen"]
 
     @classmethod
-    def get_publisher_date(cls, soup, el):
-        datetime = el.find("dcterms:modified")
-        return datetime.text.strip() if datetime else None
-
-    @classmethod
     def get_publisher_year(cls, soup, el):
         year = el.find("mods:dateissued")
-        return year.text.strip() if year else None
+        return int(year.text.strip()) if year else None
 
     @classmethod
     def get_technical_type(cls, soup, el):
@@ -240,7 +227,7 @@ HAN_EXTRACTION_OBJECTIVE = {
     "mime_type": HanDataExtraction.get_mime_type,
     "authors": HanDataExtraction.get_authors,
     "publishers": HanDataExtraction.get_publishers,
-    "publisher_date": HanDataExtraction.get_publisher_date,
+    "publisher_date": lambda soup, el: None,
     "publisher_year": HanDataExtraction.get_publisher_year,
 
     # Non-essential NPPO properties

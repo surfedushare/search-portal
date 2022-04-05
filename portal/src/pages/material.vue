@@ -11,9 +11,7 @@
       />
     </div>
     <div v-else-if="!material && isReady" class="not-found-section">
-      <h1 class="not-found-title">
-        {{ $t('Not-found-title') }}
-      </h1>
+      <h1 class="not-found-title">{{ $t('Not-found-title') }}</h1>
       <router-link :to="localePath('index')" class="button">
         {{
           $t('Not-found-button')
@@ -22,26 +20,20 @@
     </div>
     <div v-if="materials.records.length" class="main__materials">
       <div class="center_block">
-        <h2 class="main__materials_title">
-          {{ $t('Also-interesting-for-you') }}
-        </h2>
-        <Materials
-          :materials="materials"
-          :items-length="4"
-          @click="onMoreLikeThisClick"
-        />
+        <h2 class="main__materials_title">{{ $t('Also-interesting-for-you') }}</h2>
+        <Materials :materials="materials" :items-length="4" @click="onMoreLikeThisClick" />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { uniqBy } from 'lodash'
-import Materials from '~/components/Materials'
-import Sidebar from '~/components/Materials/Sidebar'
+import { mapGetters } from 'vuex'
 import MaterialInfo from '~/components/Materials/MaterialInfo'
+import Materials from '~/components/Materials/Materials.vue'
 import Navigation from '~/components/Materials/Navigation'
+import Sidebar from '~/components/Materials/Sidebar'
 import PageMixin from '~/pages/page-mixin'
 
 export default {
@@ -121,7 +113,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import './../variables';
+@import "./../variables";
 .material {
   padding: 32px 0 60px;
   @media @tablet, @mobile {
