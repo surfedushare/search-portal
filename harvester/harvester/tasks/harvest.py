@@ -28,7 +28,9 @@ def harvest(reset=False, no_promote=False):
         call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.EDUREP}")
         call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.SHAREKIT}")
         call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.ANATOMY_TOOL}")
-        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.HANZE}")
+        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.HAN}")
+        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.HKU}")
+        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.GREENI}")
         # After getting all the metadata we'll download content
         call_command("harvest_basic_content", f"--dataset={dataset.name}", "--async")
         # We skip any video downloading/processing for now
