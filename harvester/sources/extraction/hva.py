@@ -126,6 +126,16 @@ class HvaMetadataExtraction(ExtractProcessor):
         copyright = HvaMetadataExtraction.get_copyright(node)
         return (copyright is not None and "nd" not in copyright) and copyright != "yes"
 
+    @classmethod
+    def get_doi(cls, node):
+        if "electronicVersions" not in node:
+            return None
+        doi_version = next(
+            (electronic_version for electronic_version in node["electronicVersions"] if "doi" in electronic_version),
+            None
+        )
+        return doi_version["doi"] if doi_version else None
+
 
 HVA_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
@@ -150,7 +160,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     "research_object_type": "$.type.term.en_GB",
     "research_themes": lambda node: [],
     "parties": lambda node: [],
-    "doi": lambda node: None,
+    "doi": HvaMetadataExtraction.get_doi,
 
     # Non-essential Edusources properties (for compatibility reasons)
     "material_types": lambda node: None,
