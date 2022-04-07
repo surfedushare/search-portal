@@ -1,7 +1,7 @@
 import os
 import re
 from hashlib import sha1
-from dateutil.parser import parse as date_parser
+from dateutil.parser import ParserError, parse as date_parser
 
 import vobject
 from django.conf import settings
@@ -183,7 +183,11 @@ class GreeniDataExtraction(object):
     @classmethod
     def get_publisher_year(cls, soup, el):
         date_issued = el.find("dateissued")
-        datetime = date_parser(date_issued.text)
+        datetime = None
+        try:
+            datetime = date_parser(date_issued.text)
+        except ParserError:
+            pass
         return datetime.year if datetime else None
 
     @classmethod
