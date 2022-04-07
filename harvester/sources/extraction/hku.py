@@ -8,6 +8,15 @@ from django.conf import settings
 from datagrowth.processors import ExtractProcessor
 
 
+FILE_TYPE_TO_MIME_TYPE = {
+    "TEXT": "application/pdf",
+    "VIDEO": "video/mp4",
+    "AUDIO": "audio/mp3",
+    "IMAGE": "image/jpeg",
+    "NOT_SET": None
+}
+
+
 class HkuMetadataExtraction(ExtractProcessor):
 
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
@@ -30,7 +39,7 @@ class HkuMetadataExtraction(ExtractProcessor):
             {
                 "title": file_object["title"],
                 "url": file_object["raw"],
-                "mime_type": None,
+                "mime_type": FILE_TYPE_TO_MIME_TYPE.get(file_object["type"]),
                 "hash": sha1(file_object["raw"].encode("utf-8")).hexdigest()
             }
         ]
@@ -74,7 +83,16 @@ class HkuMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        return "cc-by-40"
+        if node["licence"] == "Creative Commons Non-Commercial license":
+            return "cc-by-nc-40"
+        return "yes"
+
+    @classmethod
+    def get_keywords(cls, node):
+        tags = node["tags"]
+        if not tags:
+            return []
+        return tags.split(", ")
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -87,8 +105,8 @@ class HkuMetadataExtraction(ExtractProcessor):
     def get_authors(cls, node):
         return [{
             "name": node["author"],
-            "email": None,
-            "external_id": None,
+            "email": node["owner"],
+            "external_id": node["persons"].get("person_id", None),
             "dai": None,
             "orcid": None,
             "isni": None
@@ -122,7 +140,7 @@ HKU_EXTRACTION_OBJECTIVE = {
     "copyright": HkuMetadataExtraction.get_copyright,
     "title": "$.title",
     "language": HkuMetadataExtraction.get_language,
-    "keywords": lambda node: [],
+    "keywords": HkuMetadataExtraction.get_keywords,
     "description": "$.description",
     "mime_type": HkuMetadataExtraction.get_mime_type,
     "authors": HkuMetadataExtraction.get_authors,
