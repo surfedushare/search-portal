@@ -21,13 +21,13 @@ def create_dataset_data(dataset, include_current):
     current_edusources = CollectionFactory.create(dataset_version=last_version, name="edusources")
     current_wikiwijs = CollectionFactory.create(dataset_version=last_version, name="wikiwijs")
     DocumentFactory.create(dataset_version=previous_version, collection=previous_edusources,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown", language="en")
     DocumentFactory.create(dataset_version=previous_version, collection=previous_wikiwijs,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown", language="en")
     DocumentFactory.create(dataset_version=last_version, collection=current_edusources,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown", language="en")
     DocumentFactory.create(dataset_version=last_version, collection=current_wikiwijs,
-                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown")
+                           reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257", mime_type="unknown", language="en")
 
 
 def create_dataset_harvests(dataset_type, dataset, sources, latest_update_at):
@@ -116,6 +116,10 @@ class TestSyncSharekitMetadata(TestCase):
             self.assertNotEqual(
                 update_doc.created_at.replace(microsecond=0),
                 update_doc.modified_at.replace(microsecond=0)
+            )
+            self.assertEqual(
+                update_doc.properties["language"], {"metadata": "en"},
+                "Language should not update when Sharekit sends new language value"
             )
             delete_doc = collection.documents.get(properties__external_id="3903863-6c93-4bda-b850-277f3c9ec00e")
             self.assertEqual(delete_doc.properties["state"], "deleted")
