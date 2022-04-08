@@ -247,7 +247,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "is_restricted": GreeniDataExtraction.get_is_restricted,
     "analysis_allowed": GreeniDataExtraction.get_analysis_allowed,
     "research_object_type": GreeniDataExtraction.get_research_object_type,
-    "research_themes": lambda soup, el: None,
+    "research_themes": lambda soup, el: [],
     "parties": lambda soup, el: [],
     "doi": GreeniDataExtraction.get_doi,
 

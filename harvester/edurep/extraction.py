@@ -362,7 +362,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "copyright_description": EdurepDataExtraction.get_copyright_description,
     "doi": lambda soup, el: None,
     "research_object_type": lambda soup, el: None,
-    "research_themes": lambda soup, el: None,
+    "research_themes": lambda soup, el: [],
     "parties": lambda soup, el: [],
     "learning_material_themes": EdurepDataExtraction.get_disciplines,
     "consortium": EdurepDataExtraction.get_consortium,
