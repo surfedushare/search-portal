@@ -98,7 +98,7 @@ class GreeniDataExtraction(object):
                 url = element["ref"]
                 tail, file_name = os.path.split(url)
                 results.append({
-                    "mime_type": element["mimetype"],
+                    "mime_type": element.get("mimetype", None),
                     "url": url,
                     "hash": sha1(url.encode("utf-8")).hexdigest(),
                     "title": file_name
@@ -117,7 +117,7 @@ class GreeniDataExtraction(object):
         files = cls.get_files(soup, el)
         if not len(files):  # happens when a record was deleted
             return
-        return files[0]["mime_type"].strip()
+        return files[0]["mime_type"].strip() if files[0]["mime_type"] else None
 
     @classmethod
     def get_copyright(cls, soup, el):

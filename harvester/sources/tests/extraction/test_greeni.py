@@ -48,6 +48,7 @@ class TestGetHarvestSeedsGreeni(TestCase):
     def test_get_mime_type(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["mime_type"], "application/pdf")
+        self.assertIsNone(seeds[1]["mime_type"])
 
     def test_get_language(self):
         seeds = self.seeds
