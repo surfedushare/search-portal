@@ -1,30 +1,30 @@
-let path = require('path')
-const BundleTracker = require('webpack-bundle-tracker')
-const packageJSON = require('./package.json')
+let path = require("path");
+const BundleTracker = require("webpack-bundle-tracker");
+const packageJSON = require("./package.json");
 
-const appDirectory = packageJSON.name + '/'
-const djangoPublicPath = '/static/' + appDirectory
+const appDirectory = packageJSON.name + "/";
+const djangoPublicPath = "/static/" + appDirectory;
 const server =
-  process.env.npm_config_server || process.env.npm_package_config_server
+  process.env.npm_config_server || process.env.npm_package_config_server;
 
 module.exports = {
-  publicPath: server === 'django' ? djangoPublicPath : '/',
+  publicPath: server === "vue" ? "/" : djangoPublicPath,
   lintOnSave: false,
-  transpileDependencies: ['@sentry'], // this makes sure we polyfill certain dependencies
+  transpileDependencies: ["@sentry"], // this makes sure we polyfill certain dependencies
   devServer: {
-    proxy: 'http://localhost:8000'
+    proxy: "http://localhost:8000",
   },
   configureWebpack: {
-    devtool: 'source-map',
+    devtool: "source-map",
     resolve: {
       alias: {
-        '~': path.resolve(__dirname + '/src')
-      }
-    }
+        "~": path.resolve(__dirname + "/src"),
+      },
+    },
   },
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config
-      .plugin('BundleTracker')
-      .use(BundleTracker, [{ path: config.output.get('path') }])
-  }
-}
+      .plugin("BundleTracker")
+      .use(BundleTracker, [{ path: config.output.get("path") }]);
+  },
+};

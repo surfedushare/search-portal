@@ -44,12 +44,6 @@ def get_harvest_seeds(repository, set_specification, latest_update, include_dele
             seed["state"] = "deleted"
         if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
             seed["state"] = "deleted"
-        if settings.PUBLISHERS_WHITELIST:
-            for publisher in seed["publishers"]:
-                if publisher in settings.PUBLISHERS_WHITELIST:
-                    break
-            else:
-                seed["state"] = "deleted"
         if seed.get("is_restricted", False):
             seed["analysis_allowed"] = False
     # And we return the seeds based on whether to include deleted or not

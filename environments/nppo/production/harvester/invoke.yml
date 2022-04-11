@@ -16,6 +16,8 @@ django:
   repositories:
     edurep: "https://wszoeken.edurep.kennisnet.nl"
     sharekit: "https://api.surfsharekit.nl"
+    han: "https://repository.han.nl"
+    hva: "https://accpure.hva.nl"
   sentry:
     dsn: "https://13ca8b29c8384e57b7294280117728f1@o1143393.ingest.sentry.io/6208201"
   publishers_whitelist:
@@ -62,3 +64,5 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/hanze-credentials"
   teams_webhooks:
     harvester: null
+  hva:
+    api_key: null

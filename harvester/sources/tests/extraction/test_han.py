@@ -58,11 +58,11 @@ class TestGetHarvestSeedsHan(TestCase):
     def test_get_copyright(self):
         seeds = self.seeds
         self.assertEqual(len(seeds), 200, "Expected get_harvest_seeds to filter differently based on copyright")
-        self.assertEqual(seeds[0]["copyright"], "no")
+        self.assertEqual(seeds[0]["copyright"], "open-access")
         self.assertIsNone(seeds[2]["copyright"], "Expected deleted record to have no copyright")
         seeds = get_harvest_seeds(Repositories.HAN, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
         self.assertEqual(len(seeds), 67, "Expected get_harvest_seeds to delete invalid copyright")
-        self.assertEqual(seeds[1]["copyright"], "no")
+        self.assertEqual(seeds[1]["copyright"], "open-access")
 
     def test_get_language(self):
         self.skipTest("Not implemented yet, but seems essential for the system to function")
@@ -85,14 +85,9 @@ class TestGetHarvestSeedsHan(TestCase):
         ])
         self.assertEqual(seeds[2]["authors"], [], "Expected deleted record to have no authors")
 
-    def test_publisher_date(self):
-        seeds = self.seeds
-        self.assertEqual(seeds[0]["publisher_date"], "2020-08-15T01:50:05.152997Z")
-        self.assertIsNone(seeds[2]["publisher_date"], "Expected deleted record to have no publisher_date")
-
     def test_publisher_year(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["publisher_year"], "2018")
+        self.assertEqual(seeds[0]["publisher_year"], 2018)
         self.assertIsNone(seeds[2]["publisher_year"], "Expected deleted record to have no publisher_year")
 
     def test_research_object_type(self):

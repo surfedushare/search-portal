@@ -19,9 +19,7 @@
         <button
           class="materials__add__link button secondary"
           @click.prevent="showAddMaterial"
-        >
-          {{ $t('Add-materials') }}
-        </button>
+        >{{ $t('Add-materials') }}</button>
       </div>
       <SortableMaterials
         v-if="contenteditable && collection_materials"
@@ -39,10 +37,7 @@
       />
       <Spinner v-if="collection_materials_loading" />
     </div>
-    <DeleteCollection
-      :close="closeDeleteCollection"
-      :is-show="isShowDeleteCollection"
-    />
+    <DeleteCollection :close="closeDeleteCollection" :is-show="isShowDeleteCollection" />
     <AddMaterialPopup
       v-if="isShowAddMaterial"
       :close="closeAddMaterial"
@@ -57,15 +52,15 @@
 <script>
 import { isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
-import PageMixin from '~/pages/page-mixin'
-import Spinner from '~/components/Spinner'
-import Collection from '~/components/Collections/Collection'
 import AddMaterialPopup from '~/components/Collections/AddMaterialPopup'
-import DeleteCollection from '~/components/Popup/DeleteCollection'
+import Collection from '~/components/Collections/Collection'
 import Error from '~/components/error'
+import Materials from '~/components/Materials/Materials.vue'
+import SortableMaterials from '~/components/Materials/SortableMaterials.vue'
+import DeleteCollection from '~/components/Popup/DeleteCollection'
+import Spinner from '~/components/Spinner'
+import PageMixin from '~/pages/page-mixin'
 import { PublishStatus } from '~/utils'
-import Materials from '~/components/Materials'
-import SortableMaterials from '~/components/Materials/SortableMaterials'
 
 export default {
   components: {
@@ -194,8 +189,8 @@ export default {
 }
 </script>
 
-<style lang="less">
-@import '../variables';
+<style lang="less" scoped>
+@import "../variables";
 
 .collection {
   width: 100%;
@@ -214,13 +209,9 @@ export default {
 
 .materials__add__link {
   padding: 13px 43px 13px 51px;
-  background-image: url('/images/plus-black.svg');
+  background-image: url("/images/plus-black.svg");
   background-position: 10px 50%;
   background-repeat: no-repeat;
   background-size: 24px 24px;
-}
-
-.not_found {
-  margin-bottom: 40px;
 }
 </style>

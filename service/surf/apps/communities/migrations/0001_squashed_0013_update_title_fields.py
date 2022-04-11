@@ -18,14 +18,12 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    replaces = [('communities', '0001_initial'), ('communities', '0002_community_collections'), ('communities', '0003_auto_20181210_1031'), ('communities', '0004_create_surf_teams'), ('communities', '0005_auto_20181210_1121'), ('communities', '0006_auto_20190801_1438'), ('communities', '0007_auto_20190806_1428'), ('communities', '0008_auto_20191104_1008'), ('communities', '0009_community_cleanup'), ('communities', '0010_auto_20200214_1051'), ('communities', '0011_update_meta_communities'), ('communities', '0012_auto_20200714_1324'), ('communities', '0013_update_title_fields')]
-
     initial = True
 
     dependencies = [
         ('locale', '0004_improved_translations'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('materials', '0001_squashed_0028_collectionmaterial_position'),
+        ('materials', '0001_squashed_0006_strip_themes_and_disciplines'),
     ]
 
     operations = [

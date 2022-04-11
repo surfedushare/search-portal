@@ -10,13 +10,11 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    replaces = [('materials', '0001_squashed_0028_collectionmaterial_position'), ('materials', '0002_collection_position'), ('materials', '0003_new_sharekit'), ('materials', '0004_strip_materials'), ('materials', '0005_sharekit_ids'), ('materials', '0006_strip_themes_and_disciplines')]
-
     initial = True
 
     dependencies = [
         ('filters', '0001_squashed_0016_filters_external_id_unique'),
-        ('themes', '0001_squashed_0007_predictable_theme_ordering'),
+        ('themes', '0001_squashed_0004_strip_themes_and_disciplines'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
