@@ -64,5 +64,14 @@ jobs:
           POL_ELASTIC_SEARCH_HOST: "localhost:9200"
           POL_ELASTIC_SEARCH_USERNAME: ""
         run: |
+          invoke srv.setup-postgres
+          invoke hrv.setup-postgres
+          invoke hrv.index-dataset-version localhost -d test
+          cd harvester
+          python manage.py runserver &
+          cd ..
+          cd service
+          python manage.py runserver 8888 &
+          cd ..
           APPLICATION_PROJECT=edusources invoke test.run
           APPLICATION_PROJECT=nppo invoke test.run
