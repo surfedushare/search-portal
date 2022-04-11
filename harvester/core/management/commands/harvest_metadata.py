@@ -34,7 +34,7 @@ class Command(PipelineCommand):
 
         if len(err):
             error_counter = Counter([error.status for error in err])
-            self.logger.report_results(harvest.source.name, harvest.repository, 0)
+            self.logger.report_results(harvest.source.name, harvest.source.repository, 0)
             raise CommandError(f"Failed to harvest seeds from {harvest.source.name}: {error_counter}")
 
         harvest.harvested_at = current_time
@@ -59,6 +59,8 @@ class Command(PipelineCommand):
             seeds_by_collection[(harvest.source.repository, harvest.source.spec)] += (upserts, deletes,)
             self.logger.progress(f"preprocess.{set_specification}", source_count, success=len(upserts) + len(deletes))
         self.logger.end("preprocess")
+        if not seeds_by_collection:
+            self.logger.report_results(harvest.source.spec, harvest.source.repository, 0)
         return seeds_by_collection
 
     def handle_upsert_seeds(self, collection, seeds):
