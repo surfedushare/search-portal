@@ -165,8 +165,14 @@ class GreeniDataExtraction(object):
             family_name = author.find('namepart', attrs={"type": "family"})
             if not given_name and not family_name:
                 continue
+            elif not given_name:
+                name = family_name.text.strip()
+            elif not family_name:
+                name = given_name.text.strip()
+            else:
+                name = f"{given_name.text.strip()} {family_name.text.strip()}"
             authors.append({
-                "name": f"{given_name.text.strip()} {family_name.text.strip()}",
+                "name": name,
                 "email": None,
                 "external_id": None,
                 "dai": None,
@@ -183,6 +189,8 @@ class GreeniDataExtraction(object):
     @classmethod
     def get_publisher_year(cls, soup, el):
         date_issued = el.find("dateissued")
+        if not date_issued:
+            return
         datetime = None
         try:
             datetime = date_parser(date_issued.text)
