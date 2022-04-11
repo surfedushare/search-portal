@@ -58,6 +58,11 @@ class HkuMetadataResource(HarvestHttpResource):
         "project": "pubplatv4"
     }
 
+    def handle_errors(self):
+        if not self.body:
+            self.status = 204
+        super().handle_errors()
+
     class Meta:
         verbose_name = "HKU metadata harvest"
         verbose_name_plural = "HKU metadata harvests"

@@ -273,7 +273,7 @@
                             <didl:Component>
                                 <didl:Resource
                                         ref="https://www.greeni.nl/iguana/CMS.MetaDataEditDownload.cls?file=2:122980:1"
-                                        mimeType="application/pdf"/>
+                                        />
                             </didl:Component>
                         </didl:Item>
                         <didl:Item>

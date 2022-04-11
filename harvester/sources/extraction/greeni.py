@@ -98,7 +98,7 @@ class GreeniDataExtraction(object):
                 url = element["ref"]
                 tail, file_name = os.path.split(url)
                 results.append({
-                    "mime_type": element["mimetype"],
+                    "mime_type": element.get("mimetype", None),
                     "url": url,
                     "hash": sha1(url.encode("utf-8")).hexdigest(),
                     "title": file_name
@@ -117,7 +117,7 @@ class GreeniDataExtraction(object):
         files = cls.get_files(soup, el)
         if not len(files):  # happens when a record was deleted
             return
-        return files[0]["mime_type"].strip()
+        return files[0]["mime_type"].strip() if files[0]["mime_type"] else None
 
     @classmethod
     def get_copyright(cls, soup, el):
@@ -165,8 +165,14 @@ class GreeniDataExtraction(object):
             family_name = author.find('namepart', attrs={"type": "family"})
             if not given_name and not family_name:
                 continue
+            elif not given_name:
+                name = family_name.text.strip()
+            elif not family_name:
+                name = given_name.text.strip()
+            else:
+                name = f"{given_name.text.strip()} {family_name.text.strip()}"
             authors.append({
-                "name": f"{given_name.text.strip()} {family_name.text.strip()}",
+                "name": name,
                 "email": None,
                 "external_id": None,
                 "dai": None,
@@ -183,6 +189,8 @@ class GreeniDataExtraction(object):
     @classmethod
     def get_publisher_year(cls, soup, el):
         date_issued = el.find("dateissued")
+        if not date_issued:
+            return
         datetime = None
         try:
             datetime = date_parser(date_issued.text)
@@ -247,7 +255,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "is_restricted": GreeniDataExtraction.get_is_restricted,
     "analysis_allowed": GreeniDataExtraction.get_analysis_allowed,
     "research_object_type": GreeniDataExtraction.get_research_object_type,
-    "research_themes": lambda soup, el: None,
+    "research_themes": lambda soup, el: [],
     "parties": lambda soup, el: [],
     "doi": GreeniDataExtraction.get_doi,
 

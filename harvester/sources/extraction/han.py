@@ -236,7 +236,7 @@ HAN_EXTRACTION_OBJECTIVE = {
     "is_restricted": HanDataExtraction.get_is_restricted,
     "analysis_allowed": HanDataExtraction.get_analysis_allowed,
     "research_object_type": HanDataExtraction.get_research_object_type,
-    "research_themes": lambda soup, el: None,
+    "research_themes": lambda soup, el: [],
     "parties": lambda soup, el: [],
     "doi": HanDataExtraction.get_doi,
 

@@ -298,7 +298,7 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "copyright_description": AnatomyToolExtraction.get_copyright_description,
     "doi": lambda soup, el: None,
     "research_object_type": lambda soup, el: None,
-    "research_themes": lambda soup, el: None,
+    "research_themes": lambda soup, el: [],
     "parties": lambda soup, el: [],
     "learning_material_themes": AnatomyToolExtraction.get_learning_material_themes,
     "consortium": AnatomyToolExtraction.get_consortium,
