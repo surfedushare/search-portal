@@ -6,7 +6,7 @@
       <p class="filter-categories__reset">{{ $t('Selected-filters') }}</p>
       <a href="/materials/search/" @click.prevent="resetFilter">({{ $t('Reset-filters') }})</a>
     </div>
-    <ul class="selected-filters">
+    <ul data-test="selected_filters" class="selected-filters">
       <li v-for="filter in selectionFilterItems" :key="filter.id">
         <span>
           {{ filter.parent.title_translations[$i18n.locale] }}:&nbsp;
@@ -25,6 +25,7 @@
           <DatesRange
             v-if="category.external_id === publisherDateExternalId"
             :key="category.external_id"
+            :data-test="category.external_id"
             :category="category"
             :dates="datesRangeFilter()"
             :inline="true"
@@ -36,6 +37,7 @@
           <FilterCategory
             v-else-if="hasVisibleChildren(category)"
             :key="category.id"
+            :data-test="category.external_id"
             :category="category"
             @check="onCheck"
             @uncheck="onUncheck"
