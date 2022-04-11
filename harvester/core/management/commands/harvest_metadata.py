@@ -1,13 +1,13 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 
+from core.constants import HarvestStages
+from core.management.base import PipelineCommand
+from core.models import (Collection, DatasetVersion, Document, Extension,
+                         Harvest)
+from datagrowth.configuration import create_config
+from datagrowth.resources.http.tasks import send
 from django.core.management import CommandError
 from django.utils.timezone import now
-from datagrowth.resources.http.tasks import send
-from datagrowth.configuration import create_config
-
-from core.management.base import PipelineCommand
-from core.constants import HarvestStages
-from core.models import Harvest, DatasetVersion, Collection, Document, Extension
 from harvester.utils.extraction import get_harvest_seeds
 
 
@@ -33,7 +33,9 @@ class Command(PipelineCommand):
         )
 
         if len(err):
-            raise CommandError(f"Failed to harvest seeds from {harvest.source.name}")
+            error_counter = Counter([error.status for error in err])
+            self.logger.report_results(harvest.source.name, harvest.repository, 0)
+            raise CommandError(f"Failed to harvest seeds from {harvest.source.name}: {error_counter}")
 
         harvest.harvested_at = current_time
         harvest.save()
