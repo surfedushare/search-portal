@@ -1,7 +1,7 @@
 # Common
 django==3.2.12
 djangorestframework==3.11.2
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.3
 whitenoise==5.1.0
 requests==2.27.1
 Pillow==9.0.1
