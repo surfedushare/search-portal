@@ -68,10 +68,10 @@ jobs:
           invoke hrv.setup-postgres
           invoke hrv.index-dataset-version localhost -d test
           cd harvester
-          python manage.py runserver &
+          python manage.py runserver 8888 &
           cd ..
           cd service
-          python manage.py runserver 8888 &
+          python manage.py runserver &
           cd ..
           APPLICATION_PROJECT=edusources invoke test.run
           APPLICATION_PROJECT=nppo invoke test.run
