@@ -528,7 +528,7 @@ export default {
 
   &__link {
     padding: 13px 43px 13px 51px;
-    background-image: url('/images/plus-black.svg');
+    background-image: url('../assets/images/plus-black.svg');
     background-position: 10px 50%;
     background-repeat: no-repeat;
     background-size: 24px 24px;

@@ -179,7 +179,7 @@ export default {
       margin: 0;
       list-style: none;
       padding: 5px 0 8px 40px;
-      background: url("/images/check-white.svg") 0 0 no-repeat;
+      background: url("../assets/images/check-white.svg") 0 0 no-repeat;
 
       @media @mobile {
         background-size: 20px 20px;
@@ -243,7 +243,7 @@ export default {
         }
         &:before {
           content: "";
-          background: url("/images/bubble-background-green.svg") 0 0 no-repeat;
+          background: url("../assets/images/bubble-background-green.svg") 0 0 no-repeat;
           position: absolute;
           top: -36px;
           left: -46px;
@@ -330,7 +330,7 @@ export default {
         display: flex;
         content: "";
         position: absolute;
-        background: url("/images/combined-shape.svg") no-repeat 0 0;
+        background: url("../assets/images/combined-shape.svg") no-repeat 0 0;
         right: -100px;
         top: 0;
         height: 109px;
@@ -339,7 +339,7 @@ export default {
       &:after {
         content: "";
         position: absolute;
-        background: url("/images/message.svg") no-repeat 0 0;
+        background: url("../assets/images/message.svg") no-repeat 0 0;
         right: -82px;
         top: 22px;
         height: 33px;

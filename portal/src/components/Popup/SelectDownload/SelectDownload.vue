@@ -55,7 +55,7 @@ export default {
   text-overflow: ellipsis;
 
   margin-bottom: 15px;
-  background-image: url('/images/open-link-black.svg');
+  background-image: url('../../../assets/images/open-link-black.svg');
   background-position: 17px 15px;
   background-repeat: no-repeat;
   background-size: 25px 25px;

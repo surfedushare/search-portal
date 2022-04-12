@@ -3,9 +3,7 @@
     <v-app>
       <div class="main_block">
         <MainHeader />
-
         <router-view />
-
         <MainFooter />
       </div>
     </v-app>
@@ -14,17 +12,9 @@
 
 <style lang="less">
 @import "styles/normalize.css";
-
 @import "variables.less";
-
 @import "styles/common.less";
-
-@import 'styles/forms.less';
-
-@import 'styles/vuetify-overrides.less';
-
 @import "styles/forms.less";
-
 @import "styles/vuetify-overrides.less";
 </style>
 

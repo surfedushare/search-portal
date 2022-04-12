@@ -56,7 +56,7 @@
             :search-term="search.search_text"
           />
           <v-pagination
-            v-if="!materials_loading && materials && materials.records && materials.records.length"
+            v-if="!materials_loading && materials && materials.records && materials.records.length && materials.total_pages"
             v-model="materials.page"
             :length="materials.total_pages"
             :total-visible="11"
@@ -363,12 +363,12 @@ export default {
       cursor: pointer;
 
       &--cards {
-        background: transparent url("/images/card-view-copy.svg") 0 50%
+        background: transparent url("../assets/images/card-view-copy.svg") 0 50%
           no-repeat;
       }
 
       &--list {
-        background: transparent url("/images/list-view-copy.svg") 0 50%
+        background: transparent url("../assets/images/list-view-copy.svg") 0 50%
           no-repeat;
       }
 
@@ -460,7 +460,7 @@ export default {
       transform: translate(0, -100%) rotate(90deg);
       width: 14px;
       height: 14px;
-      background: url("/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
+      background: url("../assets/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
       pointer-events: none;
     }
 
