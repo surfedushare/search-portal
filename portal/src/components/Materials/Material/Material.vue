@@ -273,6 +273,7 @@ export default {
     &_wrapper {
       display: flex;
       flex-direction: column;
+      cursor: pointer;
     }
 
     &_content {
