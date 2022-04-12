@@ -1,9 +1,9 @@
-import Popup from '~/components/Popup'
-import InputWithCounter from '~/components/InputWithCounter'
-import InputLanguageWrapper from '~/components/InputLanguageWrapper'
+import InputLanguageWrapper from "~/components/InputLanguageWrapper";
+import InputWithCounter from "~/components/InputWithCounter";
+import Popup from "~/components/Popup";
 export default {
-  name: 'add-collection',
-  props: ['showPopup', 'close', 'submitMethod'],
+  name: "add-collection",
+  props: ["showPopup", "close", "submitMethod"],
   components: {
     InputLanguageWrapper,
     InputWithCounter,
@@ -17,24 +17,24 @@ export default {
         title_nl: null,
         title_en: null,
       },
-    }
+    };
   },
   methods: {
     onSaveCollection() {
-      this.submitting = true
+      this.submitting = true;
       this.$store
-        .dispatch(this.submitMethod || 'createCollection', this.formData)
+        .dispatch(this.submitMethod || "createCollection", this.formData)
         .then((collection) => {
-          this.$store.dispatch('getUser')
+          this.$store.dispatch("getUser");
           if (this.$listeners.submitted) {
-            this.$emit('submitted', collection)
+            this.$emit("submitted", collection);
           }
         })
         .finally(() => {
-          this.close()
-          this.submitting = false
-        })
+          this.close();
+          this.submitting = false;
+        });
     },
   },
   computed: {},
-}
+};

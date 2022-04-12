@@ -39,14 +39,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import PageMixin from '~/pages/page-mixin'
-import InfoBlock from '~/components/InfoBlock'
-import Collections from '~/components/Collections'
-import Spinner from '~/components/Spinner'
-import Error from '~/components/error'
 import { isEmpty } from 'lodash'
+import { mapGetters } from 'vuex'
+import Collections from '~/components/Collections'
+import Error from '~/components/error'
+import InfoBlock from '~/components/InfoBlock'
+import Spinner from '~/components/Spinner'
 import { localePath } from '~/i18n/plugin.routing'
+import PageMixin from '~/pages/page-mixin'
 
 export default {
   name: 'Community',

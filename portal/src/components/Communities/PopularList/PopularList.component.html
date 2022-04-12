@@ -15,18 +15,18 @@
             <i class="arrow"></i>
           </h3>
           <div>
-            {{ $tc('Materials', community.materials_count) }}
+            {{ $tc("Materials", community.materials_count) }}
           </div>
         </router-link>
       </li>
     </ul>
     <div class="popular-list--all" v-if="type !== 'material'">
       <router-link :to="localePath('communities')" class="arrow-link">
-        {{ $t('All-communities') }}
+        {{ $t("All-communities") }}
       </router-link>
     </div>
   </template>
   <div v-else>
-    {{ $t('No-communities') }}
+    {{ $t("No-communities") }}
   </div>
 </section>

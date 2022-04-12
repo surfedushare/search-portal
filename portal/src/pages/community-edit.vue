@@ -100,17 +100,17 @@
 </template>
 
 <script>
-import { isEmpty, find, forEach } from 'lodash'
+import { find, forEach, isEmpty } from 'lodash'
 import { mapGetters } from 'vuex'
 import SortableCollections from '~/components/Collections/SortableCollections'
-import HeaderBlock from '~/components/HeaderBlock'
-import AddCollection from '~/components/Popup/AddCollection'
-import Error from '~/components/error'
-import SwitchInput from '~/components/switch-input'
 import CommunityForm from '~/components/CommunityForm'
+import Error from '~/components/error'
+import HeaderBlock from '~/components/HeaderBlock'
 import InfoBlock from '~/components/InfoBlock'
-import Tabs from '~/components/Tabs'
+import AddCollection from '~/components/Popup/AddCollection'
+import SwitchInput from '~/components/switch-input'
 import Tab from '~/components/Tab'
+import Tabs from '~/components/Tabs'
 import { PublishStatus } from '~/utils'
 
 const defaultFormData = {

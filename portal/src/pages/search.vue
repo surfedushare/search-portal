@@ -76,8 +76,8 @@ import Materials from '~/components/Materials/Materials.vue'
 import SearchBar from '~/components/Search/SearchBar.vue'
 import Spinner from '~/components/Spinner'
 import {
-  addFilter, generateSearchMaterialsQuery,
-  parseSearchMaterialsQuery
+addFilter, generateSearchMaterialsQuery,
+parseSearchMaterialsQuery
 } from '~/components/_helpers'
 import PageMixin from '~/pages/page-mixin'
 
