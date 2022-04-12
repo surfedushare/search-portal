@@ -5,7 +5,7 @@ env: "production"
 
 django:
   debug: false
-  protocol: "http"
+  protocol: "https"
   logging:
     level: "DEBUG"
     is_elastic: true
