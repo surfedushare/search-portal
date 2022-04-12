@@ -15,7 +15,7 @@ describe("Home page - search", () => {
       .should("be.visible")
       .children()
       .should("have.length", 6)
-      .eq(3)
+      .eq(2)
       .should("contain", "muscularis")
       .click(50, 25, { force: true })
       .searchResultsShouldContain("muscularis", 10, 1);
