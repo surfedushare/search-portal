@@ -153,4 +153,13 @@ describe("Home page - search - filters", () => {
       "aarde_milieu"
     ).selectedFiltersShouldContain("Thema", "Aarde en Milieu", 2, 1);
   });
+
+  it.only("Should filter on multiple filter categories", () => {
+    cy.selectFilter("learning_material_themes_normalized", "aarde_milieu")
+      .selectFilter("authors.name.keyword", "Mensink")
+      .selectFilter("lom_educational_levels", "WO")
+      .selectedFiltersShouldContain("Thema", "Aarde en Milieu", 3, 0)
+      .selectedFiltersShouldContain("Auteur", "Mensink", 3, 1)
+      .selectedFiltersShouldContain("Onderwijsniveau", "WO", 3, 2);
+  });
 });
