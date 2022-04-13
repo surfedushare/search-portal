@@ -1,12 +1,12 @@
-import { generateSearchMaterialsQuery } from './../../_helpers'
-import { mapGetters } from 'vuex'
+import { generateSearchMaterialsQuery } from "./../../_helpers";
+import { mapGetters } from "vuex";
 export default {
-  name: 'navigation',
-  props: ['materials', 'material'],
+  name: "navigation",
+  props: ["materials", "material"],
   components: {},
   mounted() {},
   data() {
-    return {}
+    return {};
   },
   methods: {
     generateSearchMaterialsQuery,
@@ -15,11 +15,11 @@ export default {
      * @param material - {Object}
      */
     setMaterial(material) {
-      this.$store.commit('SET_MATERIAL', material)
+      this.$store.commit("SET_MATERIAL", material);
     },
   },
   computed: {
-    ...mapGetters(['materials_loading']),
+    ...mapGetters(["materials_loading"]),
     /**
      * Generating the navigation links
      * @returns {
@@ -29,16 +29,16 @@ export default {
      * }
      */
     links() {
-      const { materials, material, materials_loading } = this
+      const { materials, material, materials_loading } = this;
       if (materials && materials.search_text) {
-        const { records } = materials
+        const { records } = materials;
         if (records && records.length && material) {
           const materialIndex = records.findIndex(
             (record) => record.external_id === material.external_id
-          )
+          );
 
           if (materialIndex !== -1) {
-            const { page_size, page, records_total } = materials
+            const { page_size, page, records_total } = materials;
 
             if (
               records_total > page_size * page &&
@@ -46,7 +46,7 @@ export default {
               !materials_loading
             ) {
               this.$store.dispatch(
-                'searchNextPageMaterials',
+                "searchNextPageMaterials",
                 Object.assign(
                   {},
                   {
@@ -57,7 +57,7 @@ export default {
                     ordering: materials.ordering,
                   }
                 )
-              )
+              );
             }
             return {
               prev: materialIndex ? records[materialIndex - 1] : null,
@@ -70,7 +70,7 @@ export default {
                   ordering: materials.ordering,
                 }) || null,
               next: records[materialIndex + 1],
-            }
+            };
           }
         }
       }
@@ -78,7 +78,7 @@ export default {
         prev: null,
         filter: null,
         next: null,
-      }
+      };
     },
   },
-}
+};

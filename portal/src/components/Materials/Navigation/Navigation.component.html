@@ -9,7 +9,7 @@
       :to="localePath({name: 'materials-id', params: {id: links.prev.external_id}})"
       @click.native="setMaterial(links.prev)"
     >
-      {{ $t('Previous') }}
+      {{ $t("Previous") }}
     </router-link>
   </div>
   <router-link
@@ -17,7 +17,7 @@
     :to="links.filter"
     v-if="links.filter"
   >
-    {{ $t('back-to-search-results') }}
+    {{ $t("back-to-search-results") }}
   </router-link>
   <div class="material__list_next">
     <router-link
@@ -26,7 +26,7 @@
       :to="localePath({name: 'materials-id', params: {id: links.next.external_id}})"
       @click.native="setMaterial(links.next)"
     >
-      {{ $t('Next') }}
+      {{ $t("Next") }}
     </router-link>
   </div>
 </div>

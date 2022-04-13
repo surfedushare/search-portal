@@ -12,7 +12,7 @@
           <div class="header">
             <div class="header__info">
               <h2 class="header__info_ttl">
-                {{ $t('welcome-title') }}
+                {{ $t("welcome-title") }}
               </h2>
             </div>
             <img
@@ -26,16 +26,20 @@
           </div>
 
           <div class="content">
-            <div class="welcome">{{ $t('welcome-description') }}</div>
-            <div v-if="communityPermission && communityPermission[$i18n.locale]">
+            <div class="welcome">{{ $t("welcome-description") }}</div>
+            <div
+              v-if="communityPermission && communityPermission[$i18n.locale]"
+            >
               <p class="label">
                 {{ communityPermission[$i18n.locale].title }}
               </p>
               <div class="description">
                 <p>
                   {{ communityPermission[$i18n.locale].description }}
-                  <router-link :to="localePath(communityPermission.more_info_route)">
-                    {{ $t('more-info') }}
+                  <router-link
+                    :to="localePath(communityPermission.more_info_route)"
+                  >
+                    {{ $t("more-info") }}
                   </router-link>
                 </p>
               </div>
@@ -46,10 +50,13 @@
                 class="button"
                 @click.prevent="onCreateAccount()"
               >
-                {{ $t('create-account') }}
+                {{ $t("create-account") }}
               </button>
-              <button class="button cancel" @click.prevent="continueWithoutAccount()">
-                {{ $t('cancel-create-account') }}
+              <button
+                class="button cancel"
+                @click.prevent="continueWithoutAccount()"
+              >
+                {{ $t("cancel-create-account") }}
               </button>
             </div>
           </div>

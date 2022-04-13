@@ -1,50 +1,51 @@
-import './logging.js'
-import Vue from 'vue'
-import injector from 'vue-inject'
-import i18n, { loadLanguages } from './i18n'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import '@fortawesome/fontawesome-free/css/all.css'
-import router from '~/router'
+import "@fortawesome/fontawesome-free/css/all.css";
+import "croppie/croppie.css";
+import "vuetify/dist/vuetify.min.css";
+import "./i18n/plugin.routing.js";
+import "./logging.js";
 
-import store from '~/store/index'
-import App from './App.vue'
-import SocialSharing from 'vue-social-sharing'
-import VueClipboard from 'vue-clipboard2'
-import VueMasonry from 'vue-masonry-css'
-import InfiniteScroll from 'vue-infinite-scroll'
-import VueCroppie from 'vue-croppie'
-import './i18n/plugin.routing.js'
-import 'croppie/croppie.css'
+import i18n, { loadLanguages } from "./i18n";
 
-Vue.use(injector)
-Vue.use(SocialSharing)
-Vue.use(VueClipboard)
-Vue.use(VueMasonry)
-Vue.use(InfiniteScroll)
-Vue.use(VueCroppie)
-Vue.use(Vuetify)
+import App from "./App.vue";
+import InfiniteScroll from "vue-infinite-scroll";
+import SocialSharing from "vue-social-sharing";
+import Vue from "vue";
+import VueClipboard from "vue-clipboard2";
+import VueCroppie from "vue-croppie";
+import VueMasonry from "vue-masonry-css";
+import Vuetify from "vuetify";
+import injector from "vue-inject";
+import router from "~/router";
+import store from "~/store/index";
 
-const $log = injector.get('$log')
+Vue.use(injector);
+Vue.use(SocialSharing);
+Vue.use(VueClipboard);
+Vue.use(VueMasonry);
+Vue.use(InfiniteScroll);
+Vue.use(VueCroppie);
+Vue.use(Vuetify);
+
+const $log = injector.get("$log");
 
 async function authenticate() {
   if (store.getters.api_token) {
     try {
-      return await store.dispatch('authenticate', {
+      return await store.dispatch("authenticate", {
         token: store.getters.api_token,
-      })
+      });
     } catch {
-      return store.dispatch('getUser')
+      return store.dispatch("getUser");
     }
   }
 
-  return store.dispatch('getUser')
+  return store.dispatch("getUser");
 }
 
 async function mountApp() {
-  await loadLanguages()
+  await loadLanguages();
 
-  await authenticate()
+  await authenticate();
 
   new Vue({
     router,
@@ -52,21 +53,21 @@ async function mountApp() {
     i18n,
     vuetify: new Vuetify({
       icons: {
-        iconfont: 'fa4',
+        iconfont: "fa4",
       },
       theme: {
         themes: {
           light: {
-            primary: '#2CA055',
-            secondary: '#0077c8',
-            accent: '#fedb00',
-            anchor: '#2CA055',
+            primary: "#2CA055",
+            secondary: "#0077c8",
+            accent: "#fedb00",
+            anchor: "#2CA055",
           },
         },
-      }
+      },
     }),
     ...App,
-  }).$mount('#app')
+  }).$mount("#app");
 }
 
-mountApp().catch((err) => $log.error('Error while initializing app', err))
+mountApp().catch((err) => $log.error("Error while initializing app", err));

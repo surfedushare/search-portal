@@ -1,12 +1,10 @@
-
 <section class="themes">
-  <h2>{{ $t('Themes') }}</h2>
-  <div class="themes__description">{{ $t('Search-and-find-open-learning-materials-by-theme') }}</div>
+  <h2>{{ $t("Themes") }}</h2>
+  <div class="themes__description">
+    {{ $t("Search-and-find-open-learning-materials-by-theme") }}
+  </div>
   <ul class="themes__list" v-if="currentThemes">
-    <li
-      class="themes__item"
-      v-for="theme in currentThemes"
-    >
+    <li class="themes__item" v-for="theme in currentThemes">
       <router-link
         :to="localePath({name: 'themes-id', params: {id: theme.id}})"
       >
@@ -14,6 +12,5 @@
       </router-link>
     </li>
   </ul>
-  <div class="themes__info" v-else>{{ $t('No-themes') }}</div>
+  <div class="themes__info" v-else>{{ $t("No-themes") }}</div>
 </section>
-

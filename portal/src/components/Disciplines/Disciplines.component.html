@@ -1,20 +1,13 @@
-
 <section class="disciplines">
-  <h2>{{ $t('Discipline') }}</h2>
-  <div class="disciplines__description">{{ $t('Search-and-find') }}</div>
+  <h2>{{ $t("Discipline") }}</h2>
+  <div class="disciplines__description">{{ $t("Search-and-find") }}</div>
   <ul class="disciplines__list" v-if="disciplines && disciplines.length">
-    <li
-      class="disciplines__item"
-      v-for="discipline in disciplines"
-    >
-      <router-link
-        :to="generateLink(discipline)"
-      >
+    <li class="disciplines__item" v-for="discipline in disciplines">
+      <router-link :to="generateLink(discipline)">
         {{ getTitleTranslation(discipline, $i18n.locale) }}
-        <span>({{discipline.count || '0'}})</span>
+        <span>({{ discipline.count || "0" }})</span>
       </router-link>
     </li>
   </ul>
-  <div class="disciplines__info" v-else>{{ $t('No-disciplines') }}</div>
+  <div class="disciplines__info" v-else>{{ $t("No-disciplines") }}</div>
 </section>
-

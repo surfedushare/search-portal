@@ -1,10 +1,10 @@
 export default {
-  name: 'spinner',
+  name: "spinner",
   props: [],
   mounted() {},
   data() {
-    return {}
+    return {};
   },
   methods: {},
   computed: {},
-}
+};

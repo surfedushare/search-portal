@@ -1,51 +1,51 @@
-import { isNil } from 'lodash'
-import Popup from '~/components/Popup'
+import Popup from "~/components/Popup";
+import { isNil } from "lodash";
 
 export default {
-  name: 'create-account',
-  props: ['showPopup', 'close', 'user'],
+  name: "create-account",
+  props: ["showPopup", "close", "user"],
   components: {
     Popup,
   },
   data() {
     return {
       isSubmitting: false,
-    }
+    };
   },
   methods: {
     onCreateAccount() {
-      this.isSubmitting = true
+      this.isSubmitting = true;
       const accountPermission = this.user.permissions.find(
-        (permission) => permission['type'] === 'Communities'
-      )
-      accountPermission.is_allowed = true
+        (permission) => permission["type"] === "Communities"
+      );
+      accountPermission.is_allowed = true;
       this.$store
-        .dispatch('postUser')
+        .dispatch("postUser")
         .then(() => {
-          const authFlowToken = this.$store.getters.auth_flow_token
+          const authFlowToken = this.$store.getters.auth_flow_token;
           if (!isNil(authFlowToken)) {
-            this.$store.commit('AUTH_FLOW_TOKEN', null)
+            this.$store.commit("AUTH_FLOW_TOKEN", null);
             window.location =
-              '/complete/surf-conext/?partial_token=' + authFlowToken
+              "/complete/surf-conext/?partial_token=" + authFlowToken;
           }
         })
         .finally(() => {
-          this.isSubmitting = false
-        })
+          this.isSubmitting = false;
+        });
     },
     continueWithoutAccount() {
-      this.$router.push('/')
+      this.$router.push("/");
     },
   },
   computed: {
     communityPermission() {
       if (this.user && this.user.permissions) {
         return this.user.permissions.find(
-          (permission) => permission.type === 'Communities'
-        )
+          (permission) => permission.type === "Communities"
+        );
       } else {
-        return null
+        return null;
       }
     },
   },
-}
+};

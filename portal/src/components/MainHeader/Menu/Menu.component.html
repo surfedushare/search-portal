@@ -1,4 +1,3 @@
-
 <section class="menu">
   <nav>
     <ul class="menu__list">
@@ -8,10 +7,11 @@
           @click.prevent="toggleSubMenu"
           class="menu__link arrow-link-grey"
           :class="{'router-link-active': isShowSubMenu}"
-        >{{ $t('Themes') }}</a>
+          >{{ $t("Themes") }}</a
+        >
         <transition name="fade">
           <div class="menu__sub" v-if="isShowSubMenu">
-            <h3 class="title">{{ $t('Themes') }}</h3>
+            <h3 class="title">{{ $t("Themes") }}</h3>
             <ul v-if="sortedThemes.length" class="menu__sub_list">
               <li v-for="theme in sortedThemes" class="menu__sub_list_item">
                 <router-link
@@ -19,7 +19,10 @@
                   :to="localePath({name: 'themes-id', params: {slug: getThemeSlug(theme) }})"
                   @click.native="closeSubMenu(true)"
                 >
-                  {{getThemeTitleTranslation(theme, $i18n.locale)}}</router-link>
+                  {{
+                    getThemeTitleTranslation(theme, $i18n.locale)
+                  }}</router-link
+                >
               </li>
             </ul>
           </div>
@@ -31,7 +34,7 @@
           class="menu__link"
           @click.native="closeSubMenu(true)"
         >
-          {{ $t('Communities') }}
+          {{ $t("Communities") }}
         </router-link>
       </li>
       <li class="menu__list_item">
@@ -40,10 +43,9 @@
           class="menu__link"
           @click.native="closeSubMenu(true)"
         >
-          {{ $t('How-does-it-work') }}
+          {{ $t("How-does-it-work") }}
         </router-link>
       </li>
     </ul>
   </nav>
 </section>
-

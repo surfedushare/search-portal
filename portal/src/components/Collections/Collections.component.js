@@ -1,14 +1,14 @@
-import Spinner from './../Spinner'
-import CollectionCard from './CollectionCard/CollectionCard'
+import CollectionCard from "./CollectionCard/CollectionCard";
+import Spinner from "./../Spinner";
 
 export default {
-  name: 'collections',
+  name: "collections",
   components: { Spinner, CollectionCard },
   props: {
     collections: {
       default: false,
     },
-    'items-in-line': {
+    "items-in-line": {
       type: Number,
       default: 4,
     },
@@ -17,4 +17,4 @@ export default {
       default: false,
     },
   },
-}
+};
