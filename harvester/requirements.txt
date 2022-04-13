@@ -3,7 +3,7 @@ django==3.2.12
 djangorestframework==3.11.2
 django-cors-headers==3.4.0
 whitenoise==5.1.0
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.3
 requests==2.27.1
 Pillow==9.0.1
 elasticsearch==7.13.4
@@ -20,7 +20,7 @@ requests-aws4auth==1.0
 django-storages==1.9.1
 
 # Tools
-ipython==7.16.3
+ipython==8.0.0b1
 tqdm==4.50.2
 invoke==1.4.1
 ipdb==0.13.3

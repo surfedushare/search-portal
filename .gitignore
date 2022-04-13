@@ -111,3 +111,4 @@ logs/
 elastic/repositories
 environments/info.json
 harvester/harvester/bin/
+portal/tests/e2e/videos/

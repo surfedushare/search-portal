@@ -9,6 +9,7 @@
       <h3 class="material__info_subttl">{{ $tc('Authors', material.authors.length) }}</h3>
       <span v-for="(author, index) in material.authors">
         <router-link
+          data-test="author_link"
           :to="authorUrl(author)"
           >
           <span>{{ author }}</span>
@@ -20,6 +21,7 @@
       <h3 class="material__info_subttl">{{ $tc('Publishers', material.publishers.length) }}</h3>
       <span v-for="(publisher, index) in material.publishers">
         <router-link
+          data-test="publisher_link"
           :to="publisherUrl(publisher)"
           >
           <span>{{ publisher }}</span>
@@ -31,6 +33,7 @@
       <h3 class="material__info_subttl">{{ $t('Consortium') }}</h3>
       <span>
         <router-link
+          data-test="consortium_link"
           :to="consortiumUrl(material.consortium)"
         >
           <span>{{ material.consortium }}</span>

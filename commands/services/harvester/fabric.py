@@ -24,7 +24,7 @@ def connect_flower(conn):
     if conn.host != conn.config.aws.bastion:
         raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
 
-    print("Flow-er dashboard available with SSH encryption at: http://localhost:3333/")
+    print("Flow-er dashboard available with SSH encryption at: http://localhost:3333/flower/")
     with conn.forward_local(local_port=3333, remote_host="harvester.pol", remote_port=5555):
         signal.pause()
 

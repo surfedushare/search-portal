@@ -5,14 +5,8 @@
       <div class="search__info">
         <div class="center_block center-header">
           <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
-          <SearchBar v-if="$root.isDemoEnvironment()" @onSearch="initialSearch" />
+          <SearchBar @onSearch="initialSearch" />
           <div ref="top"></div>
-          <Search
-            v-if="!$root.isDemoEnvironment()"
-            :search-input="search.search_text"
-            class="search__info_search"
-            @onSearch="onSearch"
-          />
         </div>
       </div>
 
@@ -79,7 +73,6 @@
 import { mapGetters } from 'vuex'
 import FilterCategories from '~/components/FilterCategories/FilterCategories.vue'
 import Materials from '~/components/Materials/Materials.vue'
-import Search from '~/components/Search'
 import SearchBar from '~/components/Search/SearchBar.vue'
 import Spinner from '~/components/Spinner'
 import {
@@ -93,7 +86,7 @@ export default {
     FilterCategories,
     Materials,
     Spinner,
-    SearchBar, Search
+    SearchBar
   },
   mixins: [PageMixin],
   data() {

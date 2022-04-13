@@ -30,7 +30,7 @@ class TestGetHarvestSeedsHku(TestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["files"], [
             {
-                "mime_type": None,
+                "mime_type": "application/pdf",
                 "url": "https://octo.hku.nl/octo/repository/getfile?id=zZQC1ZBu8c4",
                 "hash": "9ac373e877133f0c00173bd02d82b1861c9934a2",
                 "title": "Budapest2005.pdf"
@@ -48,7 +48,7 @@ class TestGetHarvestSeedsHku(TestCase):
 
     def test_get_mime_type(self):
         seeds = self.seeds
-        self.assertIsNone(seeds[0]["mime_type"])
+        self.assertEqual(seeds[0]["mime_type"], "application/pdf")
 
     def test_get_language(self):
         seeds = self.seeds
@@ -63,10 +63,36 @@ class TestGetHarvestSeedsHku(TestCase):
         seeds = self.seeds
         self.assertTrue(seeds[0]["description"].startswith("This symposium was brought to life"))
 
+    def test_get_keywords(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["keywords"], [])
+        self.assertEqual(
+            seeds[2]["keywords"],
+            [
+                "crossovers", "didactische methoden", "makerschap", "performance", "touch", "interaction",
+                "artistic research", "performance", "scenography", "fine arts"
+            ]
+        )
+
     def test_authors_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]['authors'], [
-            {'name': 'Henk Slager', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
+            {
+                'name': 'Henk Slager', 'email': "henk.slager@hku.nl", 'external_id': None,
+                'dai': None, 'orcid': None, 'isni': None
+            },
+        ])
+        self.assertEqual(seeds[0]['authors'], [
+            {
+                'name': 'Henk Slager', 'email': "henk.slager@hku.nl", 'external_id': None,
+                'dai': None, 'orcid': None, 'isni': None
+            },
+        ])
+        self.assertEqual(seeds[43]['authors'], [
+            {
+                'name': 'Eva den Heijer', 'email': "eva.denheijer@hku.nl", 'external_id': 5952259,
+                'dai': None, 'orcid': None, 'isni': None
+            },
         ])
 
     def test_publisher_year(self):

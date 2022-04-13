@@ -273,7 +273,7 @@
                             <didl:Component>
                                 <didl:Resource
                                         ref="https://www.greeni.nl/iguana/CMS.MetaDataEditDownload.cls?file=2:122980:1"
-                                        mimeType="application/pdf"/>
+                                        />
                             </didl:Component>
                         </didl:Item>
                         <didl:Item>
@@ -378,7 +378,7 @@
                                                 <placeTerm type="text">Leeuwarden</placeTerm>
                                             </place>
                                             <publisher>VHL</publisher>
-                                            <dateIssued encoding="iso8601">2013-09-01</dateIssued>
+                                            <dateIssued encoding="iso8601">[2013]</dateIssued>
                                         </originInfo>
                                         <physicalDescription>
                                             <extent>48 p.</extent>

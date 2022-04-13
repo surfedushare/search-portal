@@ -48,6 +48,7 @@ class TestGetHarvestSeedsGreeni(TestCase):
     def test_get_mime_type(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["mime_type"], "application/pdf")
+        self.assertIsNone(seeds[1]["mime_type"])
 
     def test_get_language(self):
         seeds = self.seeds
@@ -87,6 +88,7 @@ class TestGetHarvestSeedsGreeni(TestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["publisher_year"], 2010)
         self.assertEqual(seeds[1]["publisher_year"], 2012)
+        self.assertIsNone(seeds[2]["publisher_year"], "Expected parse errors to be ignored")
 
     def test_research_object_type(self):
         seeds = self.seeds

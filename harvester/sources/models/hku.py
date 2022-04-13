@@ -21,7 +21,7 @@ class HkuMetadataResourceManager(models.Manager):
 
         metadata_objective = {
             "@": "$.root.item",
-            "external_id": "$.resultId",
+            "external_id": "$.resultid",
             "state": HkuMetadataExtraction.get_record_state
         }
         metadata_objective.update(HKU_EXTRACTION_OBJECTIVE)
@@ -57,6 +57,11 @@ class HkuMetadataResource(HarvestHttpResource):
         "format": "json",
         "project": "pubplatv4"
     }
+
+    def handle_errors(self):
+        if not self.body:
+            self.status = 204
+        super().handle_errors()
 
     class Meta:
         verbose_name = "HKU metadata harvest"
