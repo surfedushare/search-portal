@@ -1,13 +1,13 @@
 export default {
   props: {
-    title: '',
-    content: '',
+    title: "",
+    content: "",
     logo_src: { default: null, type: String },
-    website_url: '',
+    website_url: "",
   },
   computed: {
     logo() {
-      return this.logo_src || '/images/pictures/hoe-werkt-het.png'
+      return this.logo_src || "/images/pictures/hoe-werkt-het.png";
     },
   },
-}
+};

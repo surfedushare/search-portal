@@ -4,7 +4,6 @@ Search Portal Single Page Application
 A frontend build in Vue that provides a search bar, filters and viewing results.
 As well as a way for users to organise themselves in communities.
 
-
 Installation
 ------------
 
@@ -14,7 +13,6 @@ From the ``portal`` directory run:
 ```bash
 npm ci
 ```
-
 
 Getting started
 ---------------
@@ -36,8 +34,8 @@ but the frontend comes entirely from Vue development server.
 npm run serve
 ```
 
-
-#### Available apps
+Available apps
+--------------
 
 If you run the frontend through the ``service``. Then the frontend is available under:
 
@@ -51,8 +49,8 @@ If you use the Vue development server it is available under:
 http://localhost:8080/
 ```
 
-
-#### Logging in locally
+Logging in locally
+------------------
 
 On the servers the login works through SURFConext.
 It's a bit of a hassle to make that work locally.

@@ -1,6 +1,6 @@
-
 <li class="filter-categories__item">
-  <h4 @click="toggle()"
+  <h4
+    @click="toggle()"
     class="filter-categories__item_title"
     :class="{'filter-categories__item_title--hide': opened}"
   >
@@ -14,7 +14,7 @@
         :class="{'dates-range__popup--inline': inline}"
       >
         <div class="dates-range__form-group">
-          <label class="vdp-datepicker__label">{{ $t('From') }}</label>
+          <label class="vdp-datepicker__label">{{ $t("From") }}</label>
           <Datepicker
             :format="format"
             :value="formData.start_date"
@@ -28,7 +28,7 @@
           ></Datepicker>
         </div>
         <div class="dates-range__form-group">
-          <label class="vdp-datepicker__label">{{ $t('To') }}</label>
+          <label class="vdp-datepicker__label">{{ $t("To") }}</label>
           <Datepicker
             :format="format"
             :value="formData.end_date"
@@ -46,4 +46,3 @@
     </section>
   </div>
 </li>
-

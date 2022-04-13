@@ -1,16 +1,16 @@
-import ImageCropPopup from '~/components/Popup/ImageCropPopup'
+import ImageCropPopup from "~/components/Popup/ImageCropPopup";
 
 export default {
-  name: 'input-file',
+  name: "input-file",
   props: {
     imagesrc: {
       default: false,
     },
     title: {
-      default: '',
+      default: "",
     },
     refinput: {
-      default: 'file',
+      default: "file",
     },
     width: {
       type: Number,
@@ -27,47 +27,47 @@ export default {
   data() {
     return {
       image: null,
-      accept: 'image/jpeg,image/gif,image/png',
+      accept: "image/jpeg,image/gif,image/png",
       showPopup: false,
-    }
+    };
   },
   methods: {
     onFileChange(e) {
-      const files = e.target.files || e.dataTransfer.files
-      if (!files.length) return
-      this.openModal(files[0])
+      const files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.openModal(files[0]);
     },
     openModal(file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
 
       reader.onload = (e) => {
-        this.originalImage = e.target.result
-        this.name = file.name
-        this.showPopup = true
-      }
-      reader.readAsDataURL(file)
+        this.originalImage = e.target.result;
+        this.name = file.name;
+        this.showPopup = true;
+      };
+      reader.readAsDataURL(file);
     },
     removeImage: function () {
-      this.$emit('remove_image')
-      this.image = null
-      this.$refs.file.value = null
+      this.$emit("remove_image");
+      this.image = null;
+      this.$refs.file.value = null;
     },
     onCrop(croppedImage) {
-      const file = new File([croppedImage], this.name)
-      this.$emit('add_image', file)
+      const file = new File([croppedImage], this.name);
+      this.$emit("add_image", file);
     },
     onPreview(preview) {
-      this.image = preview
-      this.$emit('preview_url', preview)
+      this.image = preview;
+      this.$emit("preview_url", preview);
     },
     closePopup() {
-      this.$refs.file.value = null
-      this.showPopup = false
+      this.$refs.file.value = null;
+      this.showPopup = false;
     },
   },
   computed: {
     imagePath() {
-      return this.image !== null ? this.image : this.imagesrc
+      return this.image !== null ? this.image : this.imagesrc;
     },
   },
-}
+};

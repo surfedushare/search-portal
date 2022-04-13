@@ -88,14 +88,14 @@
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
-  Bold,
-  BulletList,
-  HardBreak,
-  Heading,
-  History,
-  Italic, Link, ListItem,
-  Placeholder,
-  Underline
+Bold,
+BulletList,
+HardBreak,
+Heading,
+History,
+Italic, Link, ListItem,
+Placeholder,
+Underline
 } from 'tiptap-extensions'
 import InputLanguageWrapper from '~/components/InputLanguageWrapper'
 import Popup from '~/components/Popup'

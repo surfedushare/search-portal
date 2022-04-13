@@ -163,12 +163,12 @@
   </form>
 </template>
 <script>
+import { isEmpty, startsWith } from 'lodash'
 import ErrorWrapper from '~/components/ErrorWrapper'
 import InputFile from '~/components/InputFile'
 import InputLanguageWrapper from '~/components/InputLanguageWrapper'
 import InputWithCounter from '~/components/InputWithCounter'
 import RichTextInput from '~/components/RichTextInput'
-import { isEmpty, startsWith } from 'lodash'
 
 export default {
   name: 'CommunityForm',

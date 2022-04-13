@@ -1,12 +1,12 @@
-import injector from 'vue-inject'
+import injector from "vue-inject";
 
 function pageReadyCallback(pageComponent, route) {
   return () => {
-    pageComponent.$meta().refresh()
-    pageComponent.isReady = true
-    const $log = injector.get('$log')
-    $log.pageView(route.fullPath)
-  }
+    pageComponent.$meta().refresh();
+    pageComponent.isReady = true;
+    const $log = injector.get("$log");
+    $log.pageView(route.fullPath);
+  };
 }
 
 export default {
@@ -14,7 +14,7 @@ export default {
     return {
       pageLoad: Promise.resolve(),
       isReady: false,
-    }
+    };
   },
 
   beforeRouteEnter(to, from, next) {
@@ -29,19 +29,19 @@ export default {
       // In order to fulfill these conditions a property named pageLoad is exposed.
       // A page can set its property to a promise and this method acts when that resolves/rejects.
       if (!to.meta.noAutoTrack) {
-        page.pageLoad.finally(pageReadyCallback(page, to))
+        page.pageLoad.finally(pageReadyCallback(page, to));
       } else {
-        page.isReady = true
+        page.isReady = true;
       }
-    })
+    });
   },
 
   beforeRouteUpdate(to, from, next) {
     if (!to.meta.noAutoTrack) {
-      this.pageLoad.finally(pageReadyCallback(this, to))
+      this.pageLoad.finally(pageReadyCallback(this, to));
     } else {
-      this.isReady = true
+      this.isReady = true;
     }
-    next()
+    next();
   },
-}
+};

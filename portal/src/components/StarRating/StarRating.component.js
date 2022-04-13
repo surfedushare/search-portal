@@ -1,10 +1,10 @@
 export default {
-  name: 'star-rating',
+  name: "star-rating",
   props: {
     type: {
       type: String,
       default: function () {
-        return 'default'
+        return "default";
       },
     },
     darkStars: {
@@ -26,14 +26,14 @@ export default {
       avg_rating: this.value,
       ratings: [1, 2, 3, 4, 5],
       types: [
-        this.$t('Not-judged'),
-        this.$t('Bad'),
-        this.$t('Tevreden'),
-        this.$t('Normal'),
-        this.$t('Good'),
-        this.$t('Perfect'),
+        this.$t("Not-judged"),
+        this.$t("Bad"),
+        this.$t("Tevreden"),
+        this.$t("Normal"),
+        this.$t("Good"),
+        this.$t("Perfect"),
       ],
-    }
+    };
   },
   methods: {
     /**
@@ -42,7 +42,7 @@ export default {
      */
     star_over(index) {
       if (!this.disabled) {
-        this.avg_rating = index
+        this.avg_rating = index;
       }
     },
 
@@ -51,7 +51,7 @@ export default {
      */
     star_out() {
       if (!this.disabled) {
-        return (this.avg_rating = this.value)
+        return (this.avg_rating = this.value);
       }
     },
 
@@ -61,13 +61,13 @@ export default {
      */
     setValue(value) {
       if (!this.disabled) {
-        this.$emit('input', value)
+        this.$emit("input", value);
       }
     },
   },
   watch: {
     value(value) {
-      this.avg_rating = value
+      this.avg_rating = value;
     },
   },
-}
+};

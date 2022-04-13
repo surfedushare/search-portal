@@ -72,12 +72,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import PageMixin from '~/pages/page-mixin'
 import CommunityItem from '~/components/CommunityItem'
 import HeaderBlock from '~/components/HeaderBlock'
 import SwitchInput from '~/components/switch-input'
-import Tabs from '~/components/Tabs'
 import Tab from '~/components/Tab'
+import Tabs from '~/components/Tabs'
+import PageMixin from '~/pages/page-mixin'
 import { PublishStatus } from '~/utils'
 
 export default {

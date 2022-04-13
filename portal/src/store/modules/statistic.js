@@ -1,4 +1,4 @@
-import axios from '~/axios'
+import axios from "~/axios";
 
 export default {
   state: {
@@ -6,18 +6,18 @@ export default {
   },
   getters: {
     statistic(state) {
-      return state.statistic
+      return state.statistic;
     },
   },
   actions: {
     async getStatistic({ commit }) {
-      const { data: statistic } = await axios.get('stats/all-materials/')
-      commit('GET_STATISTIC', statistic)
+      const { data: statistic } = await axios.get("stats/all-materials/");
+      commit("GET_STATISTIC", statistic);
     },
   },
   mutations: {
     GET_STATISTIC(state, payload) {
-      state.statistic = payload
+      state.statistic = payload;
     },
   },
-}
+};

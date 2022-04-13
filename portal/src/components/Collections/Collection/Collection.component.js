@@ -1,12 +1,12 @@
-import ShareCollection from '~/components/Popup/ShareCollection'
-import { validateHREF } from '~/components/_helpers'
-import SwitchInput from '~/components/switch-input'
-import InputWithCounter from '~/components/InputWithCounter'
-import { PublishStatus } from '~/utils'
-import { localePath } from '@/i18n/plugin.routing'
+import InputWithCounter from "~/components/InputWithCounter";
+import { PublishStatus } from "~/utils";
+import ShareCollection from "~/components/Popup/ShareCollection";
+import SwitchInput from "~/components/switch-input";
+import { localePath } from "@/i18n/plugin.routing";
+import { validateHREF } from "~/components/_helpers";
 
 export default {
-  name: 'collection',
+  name: "collection",
   props: {
     collection: {
       type: Object,
@@ -22,7 +22,7 @@ export default {
     changeViewType: {
       default: false,
     },
-    'items-in-line': {
+    "items-in-line": {
       default: 4,
     },
   },
@@ -32,78 +32,78 @@ export default {
     InputWithCounter,
   },
   mounted() {
-    this.resetData()
-    this.setSocialCounters()
-    this.href = validateHREF(window.location.href)
+    this.resetData();
+    this.setSocialCounters();
+    this.href = validateHREF(window.location.href);
   },
   data() {
     return {
-      href: '',
+      href: "",
       collectionTitle: null,
       search: {},
       isShowShareCollection: false,
       isCopied: false,
-    }
+    };
   },
   computed: {
     isPublished: {
       get() {
-        return this.collection.publish_status === PublishStatus.PUBLISHED
+        return this.collection.publish_status === PublishStatus.PUBLISHED;
       },
       set(value) {
         this.collection.publish_status = value
           ? PublishStatus.PUBLISHED
-          : PublishStatus.DRAFT
+          : PublishStatus.DRAFT;
       },
     },
     communityTitle() {
       if (!this.collection || !this.collection.communities[0]) {
-        return
+        return;
       }
       const communityDetails =
         this.collection.communities[0].community_details.find((details) => {
-          return details.language_code.toLowerCase() === this.$i18n.locale
-        })
-      return communityDetails.title
+          return details.language_code.toLowerCase() === this.$i18n.locale;
+        });
+      return communityDetails.title;
     },
     communityLink() {
       if (!this.collection || !this.collection.communities[0]) {
-        return
+        return;
       }
       const path = localePath({
-        name: 'communities-community',
+        name: "communities-community",
         params: { community: this.collection.communities[0].id },
-      })
-      const route = this.$router.resolve(path)
-      return route.href
+      });
+      const route = this.$router.resolve(path);
+      return route.href;
     },
   },
   methods: {
     resetData() {
-      const { collection } = this
+      const { collection } = this;
       this.collectionTitle =
-        this.$i18n.locale === 'nl' ? collection.title_nl : collection.title_en
+        this.$i18n.locale === "nl" ? collection.title_nl : collection.title_en;
     },
     onSubmit() {
       if (this.collectionTitle.trim().length === 0) {
-        this.$store.commit('ADD_MESSAGE', {
-          level: 'error',
-          message: 'collection-title-can-not-be-empty',
-        })
+        this.$store.commit("ADD_MESSAGE", {
+          level: "error",
+          message: "collection-title-can-not-be-empty",
+        });
       } else {
-        if (this.$i18n.locale === 'nl') {
-          this.$emit('onSubmit', { title_nl: this.collectionTitle })
+        if (this.$i18n.locale === "nl") {
+          this.$emit("onSubmit", { title_nl: this.collectionTitle });
         } else {
-          this.$emit('onSubmit', { title_en: this.collectionTitle })
+          this.$emit("onSubmit", { title_en: this.collectionTitle });
         }
       }
     },
     setSocialCounters() {
       const interval = setInterval(() => {
         this.$nextTick().then(() => {
-          const { collection } = this
-          const { social_counters } = this.$refs
-          const linkedIn = social_counters.querySelector('#linkedin_counter')
+          const { collection } = this;
+          const { social_counters } = this.$refs;
+          const linkedIn = social_counters.querySelector("#linkedin_counter");
 
           if (
             collection &&
@@ -113,8 +113,8 @@ export default {
           ) {
             const share = collection.sharing_counters.reduce(
               (prev, next) => {
-                prev[next.sharing_type] = next
-                return prev
+                prev[next.sharing_type] = next;
+                return prev;
               },
               {
                 linkedin: {
@@ -127,70 +127,70 @@ export default {
                   counter_value: 0,
                 },
               }
-            )
+            );
 
             if (share.linkedin) {
-              social_counters.querySelector('#linkedin_counter').innerText =
-                share.linkedin.counter_value
+              social_counters.querySelector("#linkedin_counter").innerText =
+                share.linkedin.counter_value;
             }
             if (share.twitter) {
-              social_counters.querySelector('#twitter_counter').innerText =
-                share.twitter.counter_value
+              social_counters.querySelector("#twitter_counter").innerText =
+                share.twitter.counter_value;
             }
             if (share.link) {
-              social_counters.querySelector('#url_counter').innerText =
-                share.link.counter_value
+              social_counters.querySelector("#url_counter").innerText =
+                share.link.counter_value;
             }
             if (linkedIn) {
-              clearInterval(interval)
+              clearInterval(interval);
             }
           }
-        })
-      }, 200)
+        });
+      }, 200);
     },
     closeSocialSharing(type) {
       this.$store
-        .dispatch('setCollectionSocial', {
+        .dispatch("setCollectionSocial", {
           id: this.$route.params.id,
           params: {
             shared: type,
           },
         })
         .then(() => {
-          this.setSocialCounters()
-        })
+          this.setSocialCounters();
+        });
     },
     showShareCollection() {
-      this.isShowShareCollection = true
+      this.isShowShareCollection = true;
     },
     closeShareCollection() {
-      this.isShowShareCollection = false
+      this.isShowShareCollection = false;
       if (this.isCopied) {
-        this.closeSocialSharing('link')
+        this.closeSocialSharing("link");
       }
     },
   },
   watch: {
     search(search) {
-      this.$emit('input', search)
+      this.$emit("input", search);
     },
     contenteditable(isEditable) {
       if (!isEditable) {
-        this.resetData()
+        this.resetData();
       }
     },
     collection() {
-      this.resetData()
-      this.setSocialCounters()
+      this.resetData();
+      this.setSocialCounters();
     },
-    '$i18n.locale': function () {
-      this.resetData()
+    "$i18n.locale": function () {
+      this.resetData();
     },
     isPublished() {
       const publish_status = this.isPublished
         ? PublishStatus.PUBLISHED
-        : PublishStatus.DRAFT
-      this.$emit('onSubmit', { publish_status })
+        : PublishStatus.DRAFT;
+      this.$emit("onSubmit", { publish_status });
     },
   },
-}
+};
