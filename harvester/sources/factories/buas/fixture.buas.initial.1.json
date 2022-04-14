@@ -1,0 +1,3055 @@
+{
+    "count": 4753,
+    "pageInformation": {
+        "offset": 10,
+        "size": 10
+    },
+    "items": [
+        {
+            "pureId": 29117,
+            "externalId": "316040",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "19e98137-f007-4d7c-b316-440ea064e3ea",
+            "title": {
+                "formatted": true,
+                "value": "Get Colinked : het vereconomiseren van cultuur"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:35.858+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.541+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/19e98137-f007-4d7c-b316-440ea064e3ea",
+                "prettyURLIdentifiers": [
+                    "get-colinked-het-vereconomiseren-van-cultuur"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29118,
+                "title": {
+                    "value": "Brabant Cultureel"
+                },
+                "journal": {
+                    "uuid": "d50a2863-ee2f-4836-894d-e6e1ef3d1903",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/d50a2863-ee2f-4836-894d-e6e1ef3d1903"
+                    },
+                    "externalId": "Brabant Cultureel",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "Brabant Cultureel"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 1,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29117,
+                    "externalId": "316040",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2009,
+                        "month": 11,
+                        "day": 1
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29120,
+                    "person": {
+                        "uuid": "33dc4584-a0bf-4408-ab7a-e58d9e8fddff",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/33dc4584-a0bf-4408-ab7a-e58d9e8fddff"
+                        },
+                        "externalId": "v89Qq8KIdZl/FH41pF9AmQ==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "Simon de Wijs"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "SPH",
+                        "lastName": "de Wijs"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "a27cc1a1-3756-4bfd-97e2-693da8c2f0e7",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/a27cc1a1-3756-4bfd-97e2-693da8c2f0e7"
+                            },
+                            "externalId": "1100000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Leisure & Events"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "a27cc1a1-3756-4bfd-97e2-693da8c2f0e7",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/a27cc1a1-3756-4bfd-97e2-693da8c2f0e7"
+                    },
+                    "externalId": "1100000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Leisure & Events"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29129,
+            "externalId": "312299",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "b98a1855-098d-448f-99ba-fc4169568d3f",
+            "title": {
+                "formatted": true,
+                "value": "Kantoren worden hotels zonder bedden: Working Wonderland: waar mensen graviteren en managers navigeren"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:35.883+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.550+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/b98a1855-098d-448f-99ba-fc4169568d3f",
+                "prettyURLIdentifiers": [
+                    "kantoren-worden-hotels-zonder-bedden-working-wonderland-waar-mens"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29130,
+                "title": {
+                    "value": "In: Weekblad Facilitair & Gebouwenbeheer, vol 5, nr. 209"
+                },
+                "journal": {
+                    "uuid": "380d3546-c55b-42dc-bb86-874722450515",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/380d3546-c55b-42dc-bb86-874722450515"
+                    },
+                    "externalId": "In: Weekblad Facilitair & Gebouwenbeheer, vol 5, nr. 209",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "In: Weekblad Facilitair & Gebouwenbeheer, vol 5, nr. 209"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 2,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29129,
+                    "externalId": "312299",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2010
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29135,
+                    "externalPerson": {
+                        "uuid": "c5cca276-b2d9-4cfd-a3ee-6f0b33c7b7ef",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/external-persons/c5cca276-b2d9-4cfd-a3ee-6f0b33c7b7ef"
+                        },
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "J.W.. Schampers"
+                                }
+                            ]
+                        },
+                        "type": {
+                            "pureId": 4861,
+                            "uri": "/dk/atira/pure/externalperson/externalpersontypes/externalperson/externalperson",
+                            "term": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "External person"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "name": {
+                        "firstName": "J.W..",
+                        "lastName": "Schampers"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "pureId": 29137,
+                    "person": {
+                        "uuid": "a948fdd2-f213-4693-bb0f-49077a23ef0a",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/a948fdd2-f213-4693-bb0f-49077a23ef0a"
+                        },
+                        "externalId": "Vssyxudfeu65x3t3SsDYKQ==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "BAM Drion"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "BAM",
+                        "lastName": "Drion"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                            },
+                            "externalId": "1200000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Hotel & Facility"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                    },
+                    "externalId": "1200000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Hotel & Facility"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29146,
+            "externalId": "312319",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "9c0d948b-b9c2-4c39-837c-511a83fb3e4b",
+            "title": {
+                "formatted": true,
+                "value": "Haal de 'F' maar weg!"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:35.941+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.560+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/9c0d948b-b9c2-4c39-837c-511a83fb3e4b",
+                "prettyURLIdentifiers": [
+                    "haal-de-f-maar-weg"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29147,
+                "title": {
+                    "value": "In: Facility Management Magazine, vol. 23, nr. 178"
+                },
+                "journal": {
+                    "uuid": "ee2dd7bd-4a56-40dc-89e9-79029954585c",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/ee2dd7bd-4a56-40dc-89e9-79029954585c"
+                    },
+                    "externalId": "In: Facility Management Magazine, vol. 23, nr. 178",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "In: Facility Management Magazine, vol. 23, nr. 178"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 4,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "submissionYear": 2010,
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29146,
+                    "externalId": "312319",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2010
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29151,
+                    "externalPerson": {
+                        "uuid": "10dfb5a7-c5fc-41c4-acae-2bc9fa5eaaa5",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/external-persons/10dfb5a7-c5fc-41c4-acae-2bc9fa5eaaa5"
+                        },
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "P. Bekkering"
+                                }
+                            ]
+                        },
+                        "type": {
+                            "pureId": 4861,
+                            "uri": "/dk/atira/pure/externalperson/externalpersontypes/externalperson/externalperson",
+                            "term": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "External person"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "name": {
+                        "firstName": "P.",
+                        "lastName": "Bekkering"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "pureId": 29153,
+                    "person": {
+                        "uuid": "a948fdd2-f213-4693-bb0f-49077a23ef0a",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/a948fdd2-f213-4693-bb0f-49077a23ef0a"
+                        },
+                        "externalId": "Vssyxudfeu65x3t3SsDYKQ==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "BAM Drion"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "BAM",
+                        "lastName": "Drion"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                            },
+                            "externalId": "1200000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Hotel & Facility"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "pureId": 29157,
+                    "person": {
+                        "uuid": "608abbf2-9b07-466c-8901-7116f2c0f5cc",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/608abbf2-9b07-466c-8901-7116f2c0f5cc"
+                        },
+                        "externalId": "1Zl4C76qquflMqLqMD30Gw==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "Geoff Mar\u00e9e"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "G",
+                        "lastName": "Mar\u00e9e"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                            },
+                            "externalId": "1200000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Hotel & Facility"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "pureId": 29160,
+                    "person": {
+                        "uuid": "a308ec01-76e4-457e-9a3d-40d43a50ae78",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/a308ec01-76e4-457e-9a3d-40d43a50ae78"
+                        },
+                        "externalId": "ca0JVLLPJ24ClD0fzj+uUw==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "Frans Melissen"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "F",
+                        "lastName": "Melissen"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                            },
+                            "externalId": "1200000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Hotel & Facility"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                    },
+                    "externalId": "1200000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Hotel & Facility"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29176,
+            "externalId": "317119",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "4a4a14fa-a819-492b-bf18-120d521d9263",
+            "title": {
+                "formatted": true,
+                "value": "City brand leaders - Manchester"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:36.005+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.655+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/4a4a14fa-a819-492b-bf18-120d521d9263",
+                "prettyURLIdentifiers": [
+                    "city-brand-leaders-manchester"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29177,
+                "title": {
+                    "value": "Creative Brief"
+                },
+                "journal": {
+                    "uuid": "2f0c5fb1-e8d4-4fe8-8cdd-eb63fc74534b",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/2f0c5fb1-e8d4-4fe8-8cdd-eb63fc74534b"
+                    },
+                    "externalId": "Creative Brief",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "Creative Brief"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 127,
+                "uri": "/dk/atira/pure/core/languages/en_GB",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "English"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 1,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29176,
+                    "externalId": "317119",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2012,
+                        "month": 5,
+                        "day": 17
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29179,
+                    "person": {
+                        "uuid": "6f1bbf4a-b32a-4923-9f47-bb764f3dbbde",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/6f1bbf4a-b32a-4923-9f47-bb764f3dbbde"
+                        },
+                        "externalId": "XQzTN+2mcJRb7HT56H6owg==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "KJ Dinnie"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "KJ",
+                        "lastName": "Dinnie"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                            },
+                            "externalId": "1300000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Tourism"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                    },
+                    "externalId": "1300000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Tourism"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29188,
+            "externalId": "315206",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "47e0ea34-e550-4246-8d0d-4b2ca7c3ad85",
+            "title": {
+                "formatted": true,
+                "value": "Distributie \u2013 Blijf baas in eigen huis"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:36.034+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.666+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/47e0ea34-e550-4246-8d0d-4b2ca7c3ad85",
+                "prettyURLIdentifiers": [
+                    "distributie-blijf-baas-in-eigen-huis"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29189,
+                "title": {
+                    "value": "Hospitality Management, online"
+                },
+                "journal": {
+                    "uuid": "f3c19082-0c3a-43d6-8128-5bba7baee8af",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/f3c19082-0c3a-43d6-8128-5bba7baee8af"
+                    },
+                    "externalId": "Hospitality Management, online",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "Hospitality Management, online"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 1,
+            "openAccessPermission": {
+                "pureId": 2926,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Indeterminate"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29188,
+                    "externalId": "315206",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2011,
+                        "month": 5,
+                        "day": 2
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29196,
+                    "person": {
+                        "uuid": "c0ba733c-b319-4092-a055-81066c8f7c72",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/c0ba733c-b319-4092-a055-81066c8f7c72"
+                        },
+                        "externalId": "ZxJDO73MG9NzZwJ7LceBSw==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "Stan Josephi"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "SHG",
+                        "lastName": "Josephi"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                            },
+                            "externalId": "1200000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Hotel & Facility"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "d77a4518-4e8f-4780-b758-fb0b15d24bb2",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/d77a4518-4e8f-4780-b758-fb0b15d24bb2"
+                    },
+                    "externalId": "1200000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Hotel & Facility"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "electronicVersions": [
+                {
+                    "pureId": 29194,
+                    "visibleOnPortalDate": "2016-01-25T12:00:00.000+0000",
+                    "link": "http://www.hospitality-management.nl/nieuws/distributie---blijf-baas-in-eigen-huis-56/",
+                    "accessType": {
+                        "pureId": 105,
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Open"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29219,
+            "externalId": "310900",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "47e212d1-d010-4e2d-b43a-baccdddb407e",
+            "title": {
+                "formatted": true,
+                "value": "\"Claimen is riskant\""
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:36.122+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.675+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/47e212d1-d010-4e2d-b43a-baccdddb407e",
+                "prettyURLIdentifiers": [
+                    "claimen-is-riskant"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29220,
+                "title": {
+                    "value": "Het Financieele Dagblad"
+                },
+                "journal": {
+                    "uuid": "d014bcf5-adf9-45a4-a6d9-66014194ba81",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/d014bcf5-adf9-45a4-a6d9-66014194ba81"
+                    },
+                    "externalId": "Het Financieele Dagblad",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "Het Financieele Dagblad"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 1,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29219,
+                    "externalId": "310900",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2010,
+                        "month": 3,
+                        "day": 25
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29222,
+                    "person": {
+                        "uuid": "7748b1ac-2acd-40b6-ab69-e728b6e9c91e",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/7748b1ac-2acd-40b6-ab69-e728b6e9c91e"
+                        },
+                        "externalId": "TLQJObJAAyK65eFo2FY8zw==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "PPM Ruijs"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "PPM",
+                        "lastName": "Ruijs"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                            },
+                            "externalId": "1300000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Tourism"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                    },
+                    "externalId": "1300000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Tourism"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29235,
+            "externalId": "310919",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "5c3c6f4c-482b-429c-b348-28b83e61f343",
+            "title": {
+                "formatted": true,
+                "value": "Klagen is wel degelijk lonend"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:36.155+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.718+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/5c3c6f4c-482b-429c-b348-28b83e61f343",
+                "prettyURLIdentifiers": [
+                    "klagen-is-wel-degelijk-lonend"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29236,
+                "title": {
+                    "value": "Volkskrant"
+                },
+                "journal": {
+                    "uuid": "f39498e4-226d-4f5a-b7be-2043459ec4e3",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/f39498e4-226d-4f5a-b7be-2043459ec4e3"
+                    },
+                    "externalId": "Volkskrant",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "Volkskrant"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 1,
+            "openAccessPermission": {
+                "pureId": 2926,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Indeterminate"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29235,
+                    "externalId": "310919",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2010,
+                        "month": 4,
+                        "day": 22
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29239,
+                    "person": {
+                        "uuid": "7748b1ac-2acd-40b6-ab69-e728b6e9c91e",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/7748b1ac-2acd-40b6-ab69-e728b6e9c91e"
+                        },
+                        "externalId": "TLQJObJAAyK65eFo2FY8zw==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "PPM Ruijs"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "PPM",
+                        "lastName": "Ruijs"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                            },
+                            "externalId": "1300000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Tourism"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                    },
+                    "externalId": "1300000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Tourism"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "electronicVersions": [
+                {
+                    "pureId": 29237,
+                    "visibleOnPortalDate": "2016-01-25T12:00:00.000+0000",
+                    "link": "http://www.volkskrant.nl/vk/nl/2702/Reizen/archief/article/detail/985443/2010/04/22/Klagen-is-wel-degelijk-lonend.dhtml",
+                    "accessType": {
+                        "pureId": 105,
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Open"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29262,
+            "externalId": "317900",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "6c4bc596-be8c-4336-ab85-0dd7f034ce77",
+            "title": {
+                "formatted": true,
+                "value": "Sprookjes van Grimm zijn nog altijd goed leesvoer"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:36.214+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2021-07-06T09:27:25.075+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/6c4bc596-be8c-4336-ab85-0dd7f034ce77",
+                "prettyURLIdentifiers": [
+                    "sprookjes-van-grimm-zijn-nog-altijd-goed-leesvoer"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29263,
+                "title": {
+                    "value": "Metro"
+                },
+                "journal": {
+                    "uuid": "4609c763-f4d0-4a4d-a8b3-f9fd84fa9bf6",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/4609c763-f4d0-4a4d-a8b3-f9fd84fa9bf6"
+                    },
+                    "externalId": "Metro",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "Metro"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 1,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "bibliographicalNote": {
+                "formatted": false,
+                "text": [
+                    {
+                        "locale": "en_GB",
+                        "value": "Auteur artikel: Wilke Martens"
+                    }
+                ]
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29262,
+                    "externalId": "317900",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2013,
+                        "month": 3,
+                        "day": 12
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29265,
+                    "person": {
+                        "uuid": "7ddc48ee-ba52-48f0-93e1-7054cedbe541",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/7ddc48ee-ba52-48f0-93e1-7054cedbe541"
+                        },
+                        "externalId": "VPO8DdoKPYfY3IFeZ30UoQ==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "Moniek Hover"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "MEJ",
+                        "lastName": "Hover"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "a27cc1a1-3756-4bfd-97e2-693da8c2f0e7",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/a27cc1a1-3756-4bfd-97e2-693da8c2f0e7"
+                            },
+                            "externalId": "1100000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Leisure & Events"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "uuid": "0d445342-f922-44f0-aa12-383a06ac1b9f",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/0d445342-f922-44f0-aa12-383a06ac1b9f"
+                            },
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Storytelling"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 10848260,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/professorship",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Professorship"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "a27cc1a1-3756-4bfd-97e2-693da8c2f0e7",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/a27cc1a1-3756-4bfd-97e2-693da8c2f0e7"
+                    },
+                    "externalId": "1100000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Leisure & Events"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "uuid": "0d445342-f922-44f0-aa12-383a06ac1b9f",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/0d445342-f922-44f0-aa12-383a06ac1b9f"
+                    },
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Storytelling"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 10848260,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/professorship",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Professorship"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29286,
+            "externalId": "317117",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "81a00931-c831-446b-96e6-709a3c57ee93",
+            "title": {
+                "formatted": true,
+                "value": "Expert urges Korea to push forward national branding"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:36.277+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.744+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/81a00931-c831-446b-96e6-709a3c57ee93",
+                "prettyURLIdentifiers": [
+                    "expert-urges-korea-to-push-forward-national-branding"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29287,
+                "title": {
+                    "value": "The Korea Herald"
+                },
+                "journal": {
+                    "uuid": "8b9bdadd-bae3-4df5-8828-c58d98761251",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/8b9bdadd-bae3-4df5-8828-c58d98761251"
+                    },
+                    "externalId": "The Korea Herald",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "The Korea Herald"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 127,
+                "uri": "/dk/atira/pure/core/languages/en_GB",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "English"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 1,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29286,
+                    "externalId": "317117",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2010,
+                        "month": 3,
+                        "day": 30
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29289,
+                    "person": {
+                        "uuid": "6f1bbf4a-b32a-4923-9f47-bb764f3dbbde",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/6f1bbf4a-b32a-4923-9f47-bb764f3dbbde"
+                        },
+                        "externalId": "XQzTN+2mcJRb7HT56H6owg==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "KJ Dinnie"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "KJ",
+                        "lastName": "Dinnie"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                            },
+                            "externalId": "1300000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Tourism"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                    },
+                    "externalId": "1300000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Tourism"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "pureId": 29305,
+            "externalId": "314139",
+            "externalIdSource": "researchoutputwizard",
+            "uuid": "fdc24bce-6b39-41e9-9eb4-80285c771286",
+            "title": {
+                "formatted": true,
+                "value": "Je moet je gast persoonlijke betrokkenheid bieden"
+            },
+            "confidential": false,
+            "info": {
+                "createdBy": "root",
+                "createdDate": "2016-01-25T09:14:36.338+0000",
+                "modifiedBy": "root",
+                "modifiedDate": "2018-10-17T08:06:43.754+0000",
+                "portalUrl": "https://pure.buas.nl/en/publications/fdc24bce-6b39-41e9-9eb4-80285c771286",
+                "prettyURLIdentifiers": [
+                    "je-moet-je-gast-persoonlijke-betrokkenheid-bieden"
+                ]
+            },
+            "journalAssociation": {
+                "pureId": 29306,
+                "title": {
+                    "value": "Recreactie, 2011, nr. 2"
+                },
+                "journal": {
+                    "uuid": "ae4634d4-3b67-4b21-b3a2-385a5d2af500",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/journals/ae4634d4-3b67-4b21-b3a2-385a5d2af500"
+                    },
+                    "externalId": "Recreactie, 2011, nr. 2",
+                    "externalIdSource": "researchoutputwizard",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "value": "Recreactie, 2011, nr. 2"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 989,
+                        "uri": "/dk/atira/pure/journal/journaltypes/journal/journal",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Journal"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "type": {
+                "pureId": 4492,
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Article"
+                        }
+                    ]
+                }
+            },
+            "category": {
+                "pureId": 4458,
+                "uri": "/dk/atira/pure/researchoutput/category/popular",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Popular"
+                        }
+                    ]
+                }
+            },
+            "language": {
+                "pureId": 135,
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Dutch"
+                        }
+                    ]
+                }
+            },
+            "totalNumberOfAuthors": 2,
+            "openAccessPermission": {
+                "pureId": 2928,
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "None"
+                        }
+                    ]
+                }
+            },
+            "visibility": {
+                "key": "FREE",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Public - No restriction"
+                        }
+                    ]
+                }
+            },
+            "workflow": {
+                "workflowStep": "approved",
+                "value": {
+                    "formatted": false,
+                    "text": [
+                        {
+                            "locale": "en_GB",
+                            "value": "Validated"
+                        }
+                    ]
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 29305,
+                    "externalId": "314139",
+                    "externalIdSource": "researchoutputwizard",
+                    "current": true,
+                    "publicationDate": {
+                        "year": 2011
+                    },
+                    "publicationStatus": {
+                        "pureId": 869,
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Published"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "personAssociations": [
+                {
+                    "pureId": 29309,
+                    "person": {
+                        "uuid": "478602da-480d-4b8e-82a9-a4f1918812df",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/persons/478602da-480d-4b8e-82a9-a4f1918812df"
+                        },
+                        "externalId": "8ucd40kjecQP+8G3Yjziag==",
+                        "externalIdSource": "synchronisedUnifiedPerson",
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "Herman Lier"
+                                }
+                            ]
+                        }
+                    },
+                    "name": {
+                        "firstName": "HH",
+                        "lastName": "Lier"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                            "link": {
+                                "ref": "content",
+                                "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                            },
+                            "externalId": "1300000",
+                            "externalIdSource": "synchronisedUnifiedOrganisation",
+                            "name": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "Academy for Tourism"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "pureId": 5173,
+                                "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                                "term": {
+                                    "formatted": false,
+                                    "text": [
+                                        {
+                                            "locale": "en_GB",
+                                            "value": "Academy"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "pureId": 29311,
+                    "externalPerson": {
+                        "uuid": "62e80917-aca3-43a9-b67b-78a74b50587b",
+                        "link": {
+                            "ref": "content",
+                            "href": "https://pure.buas.nl/ws/api/523/external-persons/62e80917-aca3-43a9-b67b-78a74b50587b"
+                        },
+                        "name": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "value": "J. Sandijk"
+                                }
+                            ]
+                        },
+                        "type": {
+                            "pureId": 4861,
+                            "uri": "/dk/atira/pure/externalperson/externalpersontypes/externalperson/externalperson",
+                            "term": {
+                                "formatted": false,
+                                "text": [
+                                    {
+                                        "locale": "en_GB",
+                                        "value": "External person"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "name": {
+                        "firstName": "J.",
+                        "lastName": "Sandijk"
+                    },
+                    "personRole": {
+                        "pureId": 4918,
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Author"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ],
+            "organisationalUnits": [
+                {
+                    "uuid": "7a5dfd22-d2a1-41a9-ad88-328044569844",
+                    "link": {
+                        "ref": "content",
+                        "href": "https://pure.buas.nl/ws/api/523/organisational-units/7a5dfd22-d2a1-41a9-ad88-328044569844"
+                    },
+                    "externalId": "1300000",
+                    "externalIdSource": "synchronisedUnifiedOrganisation",
+                    "name": {
+                        "formatted": false,
+                        "text": [
+                            {
+                                "locale": "en_GB",
+                                "value": "Academy for Tourism"
+                            }
+                        ]
+                    },
+                    "type": {
+                        "pureId": 5173,
+                        "uri": "/dk/atira/pure/organisation/organisationtypes/organisation/academy",
+                        "term": {
+                            "formatted": false,
+                            "text": [
+                                {
+                                    "locale": "en_GB",
+                                    "value": "Academy"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "navigationLinks": [
+        {
+            "ref": "prev",
+            "href": "https://pure.buas.nl/ws/api/523/research-outputs?size=10&offset=0"
+        },
+        {
+            "ref": "next",
+            "href": "https://pure.buas.nl/ws/api/523/research-outputs?size=10&offset=20"
+        }
+    ]
+}
