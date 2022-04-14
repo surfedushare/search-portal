@@ -1,6 +1,7 @@
 from datetime import datetime
 from itertools import chain
 
+from django.conf import settings
 from django.db.transaction import atomic, DatabaseError
 from django.utils.timezone import make_aware
 from celery import current_app as app
@@ -23,7 +24,13 @@ def sync_indices():
                     modified_at__gte=index.pushed_at
                 )
                 for doc_batch in ibatch(documents_queryset, batch_size=32):
-                    docs = [doc.to_search() for doc in doc_batch if doc.get_language() == index.language]
+                    docs = []
+                    for doc in doc_batch:
+                        language = doc.get_language()
+                        if language == index.language:
+                            docs.append(doc.to_search())
+                        elif language and language not in settings.ELASTICSEARCH_ANALYSERS and index.language == "unk":
+                            docs.append(doc.to_search())
                     index.push(chain(*docs), recreate=False)
                 extensions_queryset = Extension.objects.filter(
                     modified_at__gte=index.pushed_at,
