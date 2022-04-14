@@ -556,5 +556,9 @@ SOURCES = {
     "greeni": {
         "endpoint": "https://www.greeni.nl",
         "api_key": None
+    },
+    "buas": {
+        "endpoint": "https://pure.buas.nl",
+        "api_key": environment.secrets.buas.api_key
     }
 }
