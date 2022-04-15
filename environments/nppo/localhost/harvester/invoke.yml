@@ -20,7 +20,6 @@ django:
     hva: "https://accpure.hva.nl"
   sentry:
     dsn: null
-  publishers_whitelist: []
 
 postgres:
   database: "harvester"

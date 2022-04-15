@@ -19,7 +19,6 @@ django:
     hva: null
   sentry:
     dsn: null
-  publishers_whitelist: []
 
 postgres:
   database: "harvester"
