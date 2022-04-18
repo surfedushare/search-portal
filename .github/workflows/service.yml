@@ -60,9 +60,9 @@ jobs:
         env:
           APPLICATION_CONTEXT: host
           APPLICATION_MODE: localhost
-          POL_POSTGRES_HOST: 127.0.0.1
+          POL_POSTGRES_HOST: localhost
           POL_ELASTIC_SEARCH_HOST: "localhost:9200"
-          POL_ELASTIC_SEARCH_USERNAME: ""
+          POL_DJANGO_HARVESTER_API: "http://localhost:8888/api/v1/"
         run: |
           invoke srv.setup-postgres
           invoke hrv.setup-postgres
