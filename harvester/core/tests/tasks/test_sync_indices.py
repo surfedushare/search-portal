@@ -18,6 +18,7 @@ def create_dataset_data(dataset):
     previous_wikiwijs = CollectionFactory.create(dataset_version=previous_version, name="wikiwijs")
     current_edusources = CollectionFactory.create(dataset_version=current_version, name="edusources")
     current_wikiwijs = CollectionFactory.create(dataset_version=current_version, name="wikiwijs")
+    # Dutch documents
     DocumentFactory.create(dataset_version=previous_version, collection=previous_edusources)
     DocumentFactory.create(dataset_version=previous_version, collection=previous_wikiwijs)
     DocumentFactory.create(dataset_version=current_version, collection=current_edusources)
@@ -31,13 +32,23 @@ def create_dataset_data(dataset):
                            reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
     DocumentFactory.create(dataset_version=current_version, collection=current_wikiwijs,
                            reference="5be6dfeb-b9ad-41a8-b4f5-94b9438e4257")
+    # English documents
+    DocumentFactory.create(dataset_version=previous_version, collection=previous_edusources, language="en")
+    DocumentFactory.create(dataset_version=previous_version, collection=previous_wikiwijs, language="en")
+    DocumentFactory.create(dataset_version=current_version, collection=current_edusources, language="en")
+    DocumentFactory.create(dataset_version=current_version, collection=current_wikiwijs, language="en")
+    # Unknown documents
+    DocumentFactory.create(dataset_version=previous_version, collection=previous_edusources, language="other")
+    DocumentFactory.create(dataset_version=previous_version, collection=previous_wikiwijs, language="other")
+    DocumentFactory.create(dataset_version=current_version, collection=current_edusources, language="other")
+    DocumentFactory.create(dataset_version=current_version, collection=current_wikiwijs, language="other")
 
     return current_version, previous_version
 
 
 def create_dataset_version_indices(dataset_version):
     pushed_at = dataset_version.created_at.replace(microsecond=0) + timedelta(seconds=1)
-    for language in ["nl", "en"]:
+    for language in ["nl", "en", "unk"]:
         ElasticIndexFactory.create(  # this gets ignored for inactive datasets
             name=f"{dataset_version.dataset.name}-{dataset_version.version}-{dataset_version.id}",
             dataset_version=dataset_version,
@@ -76,9 +87,20 @@ class TestSyncIndices(TestCase):
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")
             if language == "nl":
-                self.assertEqual(len(list(docs)), 2, "Expected both an edusources and wikwijs Document to get pushed")
-            else:
-                self.assertEqual(len(list(docs)), 0, "English documents not expected in test set")
+                self.assertEqual(
+                    len(list(docs)), 2,
+                    "Expected both an edusources and wikwijs Document to get pushed to nl"
+                )
+            elif language == "en":
+                self.assertEqual(
+                    len(list(docs)), 2,
+                    "Expected both an edusources and wikwijs Document to get pushed to en"
+                )
+            elif language == "unk":
+                self.assertEqual(
+                    len(list(docs)), 2,
+                    "Expected both an edusources and wikwijs Document to get pushed to unk"
+                )
             self.assertEqual(index_name, "primary")
             self.assertEqual(version, "002")
         # Check that pushed_at was updated
