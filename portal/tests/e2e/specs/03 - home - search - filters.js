@@ -13,9 +13,9 @@ describe("Home page - search - filters", () => {
   });
 
   it("Should filter on aggregation level", () => {
-    cy.selectFilter("aggregation_level", "1").selectedFiltersShouldContain(
+    cy.selectFilter("aggregation_level", "3").selectedFiltersShouldContain(
       "Bruikbaar als",
-      "Fragment",
+      "Les",
       1,
       0
     );
@@ -28,30 +28,36 @@ describe("Home page - search - filters", () => {
   });
 
   it("Should filter on material type", () => {
-    cy.selectFilter("material_types", "opdracht").selectedFiltersShouldContain(
+    cy.selectFilter("material_types", "unknown").selectedFiltersShouldContain(
       "Soort materiaal",
-      "opdracht",
+      "onbekend",
       1,
       0
     );
     cy.selectFilter(
       "material_types",
-      "informatiebron"
-    ).selectedFiltersShouldContain("Soort materiaal", "informatiebron", 2, 1);
+      "kennisoverdracht"
+    ).selectedFiltersShouldContain("Soort materiaal", "kennisoverdracht", 2, 1);
   });
 
   it("Should filter on publisher", () => {
     cy.selectFilter(
       "publishers.keyword",
-      "Edurep Delen"
-    ).selectedFiltersShouldContain("Uitgever", "Edurep Delen", 1, 0);
+      "SURFnet"
+    ).selectedFiltersShouldContain("Uitgever", "SURFnet", 1, 0);
     cy.selectFilter(
       "publishers.keyword",
-      "SURFnet"
-    ).selectedFiltersShouldContain("Uitgever", "SURFnet", 2, 1);
+      "Stimuleringsregeling Open en Online Onderwijs"
+    ).selectedFiltersShouldContain(
+      "Uitgever",
+      "Stimuleringsregeling Open en Online Onderwijs",
+      2,
+      1
+    );
   });
 
-  it("Should filter on consortium", () => {
+  // TODO add test data
+  it.skip("Should filter on consortium", () => {
     cy.selectFilter(
       "consortium",
       "HBO Verpleegkunde"
@@ -116,7 +122,8 @@ describe("Home page - search - filters", () => {
     );
   });
 
-  it("Should filter on disciplines", () => {
+  // TODO add test data with dicipline
+  it.skip("Should filter on disciplines", () => {
     cy.selectFilter(
       "disciplines",
       "b333369b-e647-4bbf-b04c-d11a9235a113"
@@ -135,15 +142,16 @@ describe("Home page - search - filters", () => {
   it("Should filter on author", () => {
     cy.selectFilter(
       "authors.name.keyword",
-      "OpenStax"
-    ).selectedFiltersShouldContain("Auteur", "OpenStax", 1, 0);
+      "Esther Quaedackers"
+    ).selectedFiltersShouldContain("Auteur", "Esther Quaedackers", 1, 0);
     cy.selectFilter(
       "authors.name.keyword",
-      "Ron Slagter"
-    ).selectedFiltersShouldContain("Auteur", "Ron Slagter", 2, 1);
+      "Fred Spier"
+    ).selectedFiltersShouldContain("Auteur", "Fred Spier", 2, 1);
   });
 
-  it("Should filter on theme", () => {
+  // TODO add test data with theme
+  it.skip("Should filter on theme", () => {
     cy.selectFilter(
       "learning_material_themes_normalized",
       "gezondheid"
@@ -154,12 +162,13 @@ describe("Home page - search - filters", () => {
     ).selectedFiltersShouldContain("Thema", "Aarde en Milieu", 2, 1);
   });
 
-  it.only("Should filter on multiple filter categories", () => {
+  // TODO add test data with theme
+  it.skip("Should filter on multiple filter categories", () => {
     cy.selectFilter("learning_material_themes_normalized", "aarde_milieu")
-      .selectFilter("authors.name.keyword", "Mensink")
+      .selectFilter("authors.name.keyword", "Fred Spier")
       .selectFilter("lom_educational_levels", "WO")
       .selectedFiltersShouldContain("Thema", "Aarde en Milieu", 3, 0)
-      .selectedFiltersShouldContain("Auteur", "Mensink", 3, 1)
+      .selectedFiltersShouldContain("Auteur", "Fred Spier", 3, 1)
       .selectedFiltersShouldContain("Onderwijsniveau", "WO", 3, 2);
   });
 });
