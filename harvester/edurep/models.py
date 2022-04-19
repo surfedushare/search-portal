@@ -17,8 +17,12 @@ logger = logging.getLogger("harvester")
 class EdurepOAIPMHManager(models.Manager):
 
     def extract_seeds(self, set_specification, latest_update):
-        queryset = self.get_queryset() \
-            .filter(set_specification=set_specification, since__date__gte=latest_update.date(), status=200)
+        queryset = self.get_queryset().filter(
+            set_specification=set_specification,
+            since__date__gte=latest_update.date(),
+            status=200,
+            is_extracted=False
+        )
 
         oaipmh_objective = {
             "@": EdurepDataExtraction.get_oaipmh_records,

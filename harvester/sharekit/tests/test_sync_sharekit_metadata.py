@@ -71,7 +71,8 @@ class TestSyncSharekitMetadata(TestCase):
         for dataset_type, dataset in datasets.items():
             create_dataset_data(dataset, include_current=dataset_type == "primary")
             create_dataset_harvests(dataset_type, dataset, sources, self.latest_update_at)
-        SharekitMetadataHarvestFactory.create(is_initial=False, number=0, is_restricted=False)
+        SharekitMetadataHarvestFactory.create(is_initial=False, number=0, is_restricted=False, is_extracted=True)
+        SharekitMetadataHarvestFactory.create(is_initial=False, number=1, is_restricted=False)
         sleep(1)  # makes sure created_at and modified_at will differ at least 1 second when asserting
 
     def test_sync_sharekit_metadata(self):
