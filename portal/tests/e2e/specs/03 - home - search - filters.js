@@ -56,7 +56,7 @@ describe("Home page - search - filters", () => {
     );
   });
 
-  // TODO add test data
+  // TODO add test data with consortium
   it.skip("Should filter on consortium", () => {
     cy.selectFilter(
       "consortium",

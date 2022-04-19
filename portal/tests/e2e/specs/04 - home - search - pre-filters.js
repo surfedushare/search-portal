@@ -9,10 +9,11 @@ describe("Home page - search - pre-filters", () => {
       .selectedFiltersShouldContain("Bestandstype", "Document", 1, 0);
     cy.selectPreFilter("technical_type", "website")
       .search()
-      .selectedFiltersShouldContain("Bestandstype", "Website", 2, 0);
+      .selectedFiltersShouldContain("Bestandstype", "Website", 2, 1);
   });
 
-  it("Should pre-filter on theme", () => {
+  // TODO add test data with theme
+  it.skip("Should pre-filter on theme", () => {
     cy.selectPreFilter("learning_material_themes_normalized", "gezondheid")
       .search()
       .selectedFiltersShouldContain("Thema", "Gezondheid", 1, 0);
