@@ -73,8 +73,11 @@ Cypress.Commands.add("selectFilter", (filter_category, filter_name) => {
 });
 
 Cypress.Commands.add("selectPreFilter", (filter_category, filter_name) => {
-  cy.get(`[data-test='filter_${filter_category}']`).click();
-  cy.get(`[data-test='filter_${filter_category}_${filter_name}']`)
+  cy.get("[data-test='presearch_filters']")
+    .should("be.visible")
+    .get(`[data-test='filter_${filter_category}']`)
+    .click()
+    .get(`[data-test='filter_${filter_category}_${filter_name}']`)
     .should("be.visible")
     .click();
 });
