@@ -2,7 +2,7 @@ import boto3
 from collections import defaultdict
 
 from django.conf import settings
-from elasticsearch import Elasticsearch, RequestsHttpConnection
+from opensearchpy import OpenSearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
 from project.configuration import SEARCH_FIELDS
@@ -30,7 +30,7 @@ class ElasticSearchApiClient:
         else:
             http_auth = (None, None)
 
-        self.client = Elasticsearch(
+        self.client = OpenSearch(
             [elastic_url],
             http_auth=http_auth,
             connection_class=RequestsHttpConnection,
