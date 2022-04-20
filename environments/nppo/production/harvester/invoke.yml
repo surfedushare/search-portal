@@ -45,7 +45,7 @@ secrets:
     secret_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
     admin_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
   sharekit:
-    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/sharekit-credentials"
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/sharekit"
   harvester:
     api_key: " arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/api-key"
   matomo:
@@ -55,8 +55,8 @@ secrets:
   deepl:
     api_key: null
   hanze:
-    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/hanze-credentials"
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/hanze"
   teams_webhooks:
     harvester: null
   hva:
-    api_key: null
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/hva"
