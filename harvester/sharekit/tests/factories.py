@@ -43,7 +43,7 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
         modified_parameter = quote(f"filter[modified][GE]={self.since:%Y-%m-%dT%H:%M:%SZ}", safe="=")
         page_size_parameter = quote("page[size]=25", safe="=")
         page_number_parameter = quote(f"page[number]={self.number+1}", safe="=")
-        if self.is_initial and self.number > 0:
+        if self.number > 0:
             params = [modified_parameter, page_number_parameter, page_size_parameter]
         else:
             params = [modified_parameter, page_size_parameter]
@@ -63,12 +63,15 @@ class SharekitMetadataHarvestFactory(factory.django.DjangoModelFactory):
     @factory.lazy_attribute
     def body(self):
         if self.is_empty:
+            response_sequence = self.number
             response_type = "empty"
         elif self.is_initial:
+            response_sequence = self.number
             response_type = "initial"
         else:
+            response_sequence = 0
             response_type = "delta"
-        response_file = f"sharekit-api.{response_type}.{self.number}.json"
+        response_file = f"sharekit-api.{response_type}.{response_sequence}.json"
         response_file_path = os.path.join(settings.BASE_DIR, "sharekit", "fixtures", response_file)
         with open(response_file_path, "r") as response:
             response_string = response.read()

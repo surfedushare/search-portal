@@ -27,8 +27,12 @@ class SharekitMetadataHarvestManager(models.Manager):
 
     def extract_seeds(self, set_specification, latest_update):
         latest_update = latest_update.replace(microsecond=0)
-        queryset = self.get_queryset() \
-            .filter(set_specification=set_specification, since__gte=latest_update, status=200)
+        queryset = self.get_queryset().filter(
+            set_specification=set_specification,
+            since__gte=latest_update,
+            status=200,
+            is_extracted=False
+        )
 
         extract_config = create_config("extract_processor", {
             "objective": self._create_objective()
