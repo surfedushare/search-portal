@@ -175,4 +175,16 @@ class Command(PipelineCommand):
 
             self.handle_upsert_seeds(collection, upserts)
             self.handle_deletion_seeds(collection, deletes)
-            self.logger.report_results(spec_name, repository, collection.document_set.count())
+
+            inactive_educational_level_count = collection.document_set \
+                .filter(properties__state="inactive", properties__lowest_educational_level__lte=1) \
+                .count()
+            inactive_copyright_count = \
+                collection.document_set.fiter(properties__state="inactive").count() - inactive_educational_level_count
+            self.logger.report_results(
+                spec_name,
+                repository,
+                collection.document_set.count(),
+                inactive_educational_level_count,
+                inactive_copyright_count
+            )

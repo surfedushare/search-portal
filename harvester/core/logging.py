@@ -110,10 +110,14 @@ class HarvestLogger(object):
         extra = self._get_extra_info(phase="report", material=material_info)
         documents.info(f"Report: {external_id}", extra=extra)
 
-    def report_results(self, source, repository, total):
+    def report_results(self, source, repository, total, inactive_educational_level, inactive_copyright):
         extra = self._get_extra_info(result={
             "source": source,
             "repository": repository,
-            "total": total
+            "total": total,
+            "inactive": {
+                "educational_level": inactive_educational_level,
+                "copyright": inactive_copyright
+            }
         })
         results.info(f"{source} ({repository}) => {total}", extra=extra)
