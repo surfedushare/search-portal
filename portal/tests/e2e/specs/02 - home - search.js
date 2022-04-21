@@ -4,8 +4,7 @@ describe("Home page - search", () => {
   });
 
   it("Should find materials by search term", () => {
-    cy.searchFor("How");
-    cy.searchResultsShouldContain("how", 7);
+    cy.searchFor("How").wait(5000).searchResultsShouldContain("how", 7);
   });
 
   it("Should give search term suggestions and use the search suggestion as search term when clicked", () => {
