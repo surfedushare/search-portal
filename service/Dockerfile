@@ -19,10 +19,12 @@ RUN chown -R app:app /usr/src
 # Become app user to prevent attacks during install (possibly from hijacked npm packages)
 USER app:app
 
+COPY --chown=app portal/package.json /usr/src/portal/package.json
+COPY --chown=app portal/package-lock.json /usr/src/portal/package-lock.json
+RUN npm ci
+
 COPY --chown=app portal /usr/src/portal
-
-RUN npm ci && npm run build
-
+RUN npm run build
 
 #################################################
 # SERVICE
