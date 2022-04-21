@@ -32,9 +32,9 @@ def get_harvest_seeds(repository, set_specification, latest_update, include_dele
     # Invalid seeds have a copyright or are of insufficient education level
     for seed in seeds:
         if not seed["copyright"] or seed["copyright"] in ["yes", "unknown"]:
-            seed["state"] = "deleted"
+            seed["state"] = "inactive"
         if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
-            seed["state"] = "deleted"
+            seed["state"] = "inactive"
         if seed.get("is_restricted", False):
             seed["analysis_allowed"] = False
     # And we return the seeds based on whether to include deleted or not

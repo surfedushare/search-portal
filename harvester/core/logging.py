@@ -69,12 +69,18 @@ class HarvestLogger(object):
         })
         harvester.info(f"Ending: {phase}", extra=extra)
 
-    def report_material(self, external_id, title=None, url=None, pipeline=None, state="upsert"):
+    def report_material(self, external_id, title=None, url=None, pipeline=None, state="upsert", copyright=None,
+                        lowest_educational_level=None):
         material_info = {
             "external_id": external_id,
             "title": title,
             "url": url
         }
+        if state == "inactive":
+            material_info.update({
+                "copyright": copyright,
+                "lowest_educational_level": lowest_educational_level
+            })
         pipeline = pipeline or {}
         # Report on pipeline steps
         for step, result in pipeline.items():
