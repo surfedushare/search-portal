@@ -20,12 +20,6 @@ django:
     hva: "https://accpure.hva.nl"
   sentry:
     dsn: "https://13ca8b29c8384e57b7294280117728f1@o1143393.ingest.sentry.io/6208201"
-  publishers_whitelist:
-    - "Hogeschool Utrecht"
-    - "Fontys"
-    - "Hogeschool Rotterdam"
-    - "Zuyd Hogeschool"
-    - "Hogeschool van Arnhem en Nijmegen"
 
 postgres:
   database: "harvester"
@@ -51,7 +45,7 @@ secrets:
     secret_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
     admin_password: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/django"
   sharekit:
-    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/sharekit-credentials"
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/sharekit"
   harvester:
     api_key: " arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/api-key"
   matomo:
@@ -61,8 +55,8 @@ secrets:
   deepl:
     api_key: null
   hanze:
-    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:harvester/hanze-credentials"
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/hanze"
   teams_webhooks:
     harvester: null
   hva:
-    api_key: null
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/hva"

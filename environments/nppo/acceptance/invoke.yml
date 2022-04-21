@@ -1,7 +1,7 @@
 # NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
 # It uses AWS Secret Manager to lookup any secrets at application bootstrap
 
-env: "production"
+env: "acceptance"
 
 django:
   debug: false
@@ -12,12 +12,12 @@ django:
   send_admin_notifications: false
 
 postgres:
-  host: "nppo.cewgqm9ngaxe.eu-central-1.rds.amazonaws.com"
+  host: "nppo.c5t2ydmvgkgv.eu-central-1.rds.amazonaws.com"
   port: 5432
 
 elastic_search:
   username: null
-  host: "vpc-nppo-main-kik7e7hcp4lbsqwdcbrlx63uz4.eu-central-1.es.amazonaws.com"
+  host: "vpc-nppo-main-vqrc3btlbtx62gj3mrk4qxzctu.eu-central-1.es.amazonaws.com"
   protocol: "https"
   verify_certs: true
   enable_decompound_analyzers: false
@@ -27,5 +27,5 @@ elastic_search:
 
 aws:
   is_aws: true
-  harvest_content_bucket: "nppo-harvester-content-prod"
-  search_content_bucket: "nppo-harvester-content-prod"
+  harvest_content_bucket: "nppo-harvester-content-acc"
+  search_content_bucket: "nppo-harvester-content-acc"

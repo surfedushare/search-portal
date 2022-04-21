@@ -7,15 +7,6 @@ from django.apps import apps
 logger = logging.getLogger("harvester")
 
 
-NPPO_PUBLISHERS_WHITELIST = {
-    "Hogeschool Utrecht",
-    "Fontys",
-    "Hogeschool Rotterdam",
-    "Zuyd Hogeschool",
-    "Hogeschool van Arnhem en Nijmegen",
-}
-
-
 def get_harvest_seeds(repository, set_specification, latest_update, include_deleted=True, include_no_url=False):
     """
     Extracts metadata from HarvestHttpResource
