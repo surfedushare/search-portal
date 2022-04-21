@@ -180,7 +180,7 @@ class Command(PipelineCommand):
                 .filter(properties__state="inactive", properties__lowest_educational_level__lte=1) \
                 .count()
             inactive_copyright_count = \
-                collection.document_set.fiter(properties__state="inactive").count() - inactive_educational_level_count
+                collection.document_set.filter(properties__state="inactive").count() - inactive_educational_level_count
             self.logger.report_results(
                 spec_name,
                 repository,
