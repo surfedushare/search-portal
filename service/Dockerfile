@@ -21,7 +21,7 @@ USER app:app
 
 COPY --chown=app portal/package.json /usr/src/portal/package.json
 COPY --chown=app portal/package-lock.json /usr/src/portal/package-lock.json
-RUN npm ci
+RUN npm ci --no-optional
 
 COPY --chown=app portal /usr/src/portal
 RUN npm run build
