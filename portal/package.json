@@ -112,10 +112,5 @@
     "not ie <= 10"
   ],
   "license": "MIT",
-  "repository": "A frontend for searching open access higher education learning materials",
-  "optionalDependencies": {
-    "@cypress/webpack-dev-server": "^1.8.3",
-    "@vue/cli-plugin-e2e-cypress": "^4.5.17",
-    "eslint-plugin-cypress": "^2.12.1"
-  }
+  "repository": "A frontend for searching open access higher education learning materials"
 }
