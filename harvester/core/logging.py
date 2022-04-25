@@ -110,14 +110,20 @@ class HarvestLogger(object):
         extra = self._get_extra_info(phase="report", material=material_info)
         documents.info(f"Report: {external_id}", extra=extra)
 
-    def report_results(self, source, repository, total, inactive_educational_level, inactive_copyright):
+    def report_collection(self, collection, repository):
+        total = collection.document_set.count(),
+        inactive_educational_level_count = collection.document_set \
+            .filter(properties__state="inactive", properties__lowest_educational_level__lte=1) \
+            .count()
+        inactive_copyright_count = \
+            collection.document_set.filter(properties__state="inactive").count() - inactive_educational_level_count
         extra = self._get_extra_info(result={
-            "source": source,
+            "source": collection.name,
             "repository": repository,
             "total": total,
             "inactive": {
-                "educational_level": inactive_educational_level,
-                "copyright": inactive_copyright
+                "educational_level": inactive_educational_level_count,
+                "copyright": inactive_copyright_count
             }
         })
-        results.info(f"{source} ({repository}) => {total}", extra=extra)
+        results.info(f"{collection.name} ({repository}) => {total}", extra=extra)
