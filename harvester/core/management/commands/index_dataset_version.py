@@ -44,7 +44,9 @@ class Command(PipelineCommand):
             index.configuration = None  # gets recreated by the clean method below
             index.clean()
             index.save()
-            index.push(lang_doc_dict[lang], recreate=True)
+            errors = index.push(lang_doc_dict[lang], recreate=True)
+            for error in errors:
+                self.logger.error(f"Unable to index {error['index']['_id']}: {error['index']['error']}")
             if should_promote:
                 self.logger.info(f"Promoting index { index.remote_name } to latest")
                 index.promote_to_latest()

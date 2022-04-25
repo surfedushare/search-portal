@@ -123,7 +123,7 @@ class TestSyncSharekitMetadata(TestCase):
                 "Language should not update when Sharekit sends new language value"
             )
             delete_doc = collection.documents.get(properties__external_id="3903863-6c93-4bda-b850-277f3c9ec00e")
-            self.assertEqual(delete_doc.properties["state"], "deleted")
+            self.assertEqual(delete_doc.properties["state"], "inactive")
         # Checking harvest instance updates
         for harvest in Harvest.objects.filter(source__spec="wikiwijs"):
             self.assertEqual(

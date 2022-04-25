@@ -1,15 +1,17 @@
 from datetime import datetime
 
-from django.test import TestCase
 from django.utils.timezone import make_aware
 
 from harvester.utils.extraction import get_harvest_seeds
 from core.constants import Repositories
+from core.tests.base import SeedExtractionTestCase
 from edurep.tests.factories import EdurepOAIPMHFactory
 from edurep.extraction import EDUREP_EXTRACTION_OBJECTIVE, EdurepDataExtraction
 
 
-class TestGetHarvestSeedsEdurep(TestCase):
+class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
+
+    OBJECTIVE = EDUREP_EXTRACTION_OBJECTIVE
 
     @classmethod
     def setUpClass(cls):
@@ -18,34 +20,6 @@ class TestGetHarvestSeedsEdurep(TestCase):
         cls.begin_of_time = make_aware(datetime(year=1970, month=1, day=1))
         EdurepOAIPMHFactory.create_common_edurep_responses(include_delta=True)
         cls.seeds = get_harvest_seeds(Repositories.EDUREP, cls.set_spec, cls.begin_of_time)
-
-    def extract_seed_types(self, seeds):
-        normal = next(
-            (seed for seed in seeds
-             if seed["state"] != "deleted")
-        )
-        deleted = next(
-            (seed for seed in seeds if seed["state"] == "deleted"), None
-        )
-        return {
-            "normal": normal,
-            "deleted": deleted,
-        }
-
-    def check_seed_integrity(self, seeds, include_deleted=True):
-        # We'll check if seeds if various types are dicts with the same keys
-        seed_types = self.extract_seed_types(seeds)
-        for seed_type, seed in seed_types.items():
-            if not include_deleted and seed_type == "deleted":
-                assert seed is None, "Expected no deleted seeds"
-                continue
-            assert "state" in seed, "Missing key 'state' in seed"
-            assert "external_id" in seed, "Missing key 'external_id' in seed"
-            for required_key in EDUREP_EXTRACTION_OBJECTIVE.keys():
-                assert required_key in seed, f"Missing key '{required_key}' in seed"
-        # A deleted seed is special due to its "state"
-        if include_deleted:
-            self.assertEqual(seed_types["deleted"]["state"], "deleted")
 
     def test_get_complete_set(self):
         seeds = self.seeds
