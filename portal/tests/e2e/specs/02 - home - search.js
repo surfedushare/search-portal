@@ -4,7 +4,7 @@ describe("Home page - search", () => {
   });
 
   it("Should find materials by search term", () => {
-    cy.searchFor("How").wait(5000).searchResultsShouldContain("how", 7);
+    cy.searchFor("How").searchResultsShouldContain("how", 7);
   });
 
   it("Should give search term suggestions and use the search suggestion as search term when clicked", () => {
@@ -21,13 +21,16 @@ describe("Home page - search", () => {
   });
 
   it("Should find materials by author", () => {
-    cy.searchFor("esther");
-    cy.searchResultsShouldContain("Esther Quaedackers", 5, 1);
+    cy.searchFor("esther").searchResultsShouldContain(
+      "Esther Quaedackers",
+      5,
+      1
+    );
   });
 
   it("Should show search suggestion when a search suggestion is available", () => {
-    cy.searchFor("thee");
-    cy.get("[data-test=search_suggestion]")
+    cy.searchFor("thee")
+      .get("[data-test=search_suggestion]")
       .should("be.visible")
       .should(
         "contain",
@@ -36,14 +39,16 @@ describe("Home page - search", () => {
   });
 
   it("Should search with search suggestion when the search suggestion is clicked", () => {
-    cy.searchFor("thee");
-    cy.get("[data-test=search_suggestion_link]").should("be.visible").click();
-    cy.searchResultsShouldContain("these", 3, 1);
+    cy.searchFor("thee")
+      .get("[data-test=search_suggestion_link]")
+      .should("be.visible")
+      .click()
+      .searchResultsShouldContain("these", 3, 1);
   });
 
   it("Should show 'no search result' message when no search suggestion is available", () => {
-    cy.searchFor("xyzyz");
-    cy.get("[data-test=no_search_results]")
+    cy.searchFor("xyzyz")
+      .get("[data-test=no_search_results]")
       .should("be.visible")
       .should("contain", "Er zijn geen resultaten voor 'xyzyz'");
   });
