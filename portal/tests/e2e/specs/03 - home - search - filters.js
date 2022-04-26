@@ -56,25 +56,15 @@ describe("Home page - search - filters", () => {
     );
   });
 
-  // TODO add test data with consortium
-  it.skip("Should filter on consortium", () => {
-    cy.selectFilter(
-      "consortium",
-      "HBO Verpleegkunde"
-    ).selectedFiltersShouldContain(
-      "Samenwerkingsverband",
-      "HBO Verpleegkunde",
-      1,
-      0
-    );
+  it("Should filter on consortium", () => {
     cy.selectFilter(
       "consortium",
       "Community Ethics"
     ).selectedFiltersShouldContain(
       "Samenwerkingsverband",
       "Community Ethics",
-      2,
-      1
+      1,
+      0
     );
   });
 
