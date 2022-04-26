@@ -43,16 +43,13 @@
     "vuex": "3.5.1"
   },
   "devDependencies": {
-    "@cypress/webpack-dev-server": "1.8.4",
     "@vue/cli-plugin-babel": "5.0.4",
-    "@vue/cli-plugin-e2e-cypress": "5.0.4",
     "@vue/cli-plugin-eslint": "5.0.4",
     "@vue/cli-service": "5.0.4",
     "@babel/eslint-parser": "7.17.0",
     "browserslist": "4.16.5",
     "deepmerge": "^4.2.2",
     "eslint": "8.13.0",
-    "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-vue": "8.6.0",
     "glob-parent": ">=5.1.2",
     "highlight.js": ">=10.4.1",
@@ -71,6 +68,11 @@
     "webpack": "5.72.0",
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-bundle-tracker": "1.5.0"
+  },
+  "optionalDependencies": {
+    "@cypress/webpack-dev-server": "1.8.4",
+    "@vue/cli-plugin-e2e-cypress": "5.0.4",
+    "eslint-plugin-cypress": "2.12.1"
   },
   "eslintConfig": {
     "root": true,
