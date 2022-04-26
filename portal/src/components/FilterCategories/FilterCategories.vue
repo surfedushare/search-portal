@@ -158,10 +158,7 @@ export default {
       } else {
         return filterableCategories.filter((category) => {
           return (
-            category.children.length >= 2 ||
-            category.children.some((child) => {
-              return child.selected
-            })
+            category.children.length > 0
           )
         })
       }
