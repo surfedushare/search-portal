@@ -1,4 +1,4 @@
-from elasticsearch import Elasticsearch, RequestsHttpConnection
+from opensearchpy import OpenSearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 import boto3
 
@@ -18,7 +18,7 @@ def get_es_client(conn, silent=False):
     http_auth = AWS4Auth(credentials.access_key, credentials.secret_key, "eu-central-1", "es",
                          session_token=credentials.token)
 
-    es_client = Elasticsearch(
+    es_client = OpenSearch(
         [elastic_url],
         http_auth=http_auth,
         connection_class=RequestsHttpConnection,

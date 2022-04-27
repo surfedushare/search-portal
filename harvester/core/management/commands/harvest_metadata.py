@@ -106,9 +106,15 @@ class Command(PipelineCommand):
         self.logger.start("documents.delete")
         document_delete_total = 0
         for seeds_batch in self.batchify("update.delete.batch", deletion_seeds, len(deletion_seeds)):
-            ids = [seed["external_id"] for seed in seeds_batch]
-            for external_id in ids:
-                self.logger.report_material(external_id, state="delete")
+            seeds = list(seeds_batch)
+            for seed in seeds:
+                self.logger.report_material(
+                    seed["external_id"],
+                    state=seed["state"],
+                    copyright=seed.get("copyright", None),
+                    lowest_educational_level=seed.get("lowest_educational_level", None)
+                )
+            ids = [seed["external_id"] for seed in seeds]
             delete_total, delete_details = collection.documents.filter(reference__in=ids).delete()
             document_delete_total += delete_total
         self.logger.end("update.delete", success=document_delete_total)
@@ -169,4 +175,4 @@ class Command(PipelineCommand):
 
             self.handle_upsert_seeds(collection, upserts)
             self.handle_deletion_seeds(collection, deletes)
-            self.logger.report_results(spec_name, repository, collection.document_set.count())
+            self.logger.report_collection(collection, repository)

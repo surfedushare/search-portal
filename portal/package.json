@@ -5,8 +5,8 @@
   "scripts": {
     "serve": "npm_config_server=vue vue-cli-service serve",
     "build": "vue-cli-service build --dest ../service/surf/apps/materials/static/portal/",
-    "test:e2e": "npm_config_server=vue vue-cli-service test:e2e --headless",
-    "test:dev": "npm_config_server=vue vue-cli-service test:e2e --mode e2e",
+    "test:e2e": "npm_config_server=vue vue-cli-service test:e2e --headless --mode e2e --browser chrome",
+    "test:dev": "npm_config_server=vue vue-cli-service test:e2e --mode e2e --browser chrome",
     "lint": "eslint --ext .vue,.js src",
     "watch": "vue-cli-service build --watch --dest ../service/surf/apps/materials/static/portal/"
   },
@@ -43,9 +43,7 @@
     "vuex": "3.5.1"
   },
   "devDependencies": {
-    "@cypress/webpack-dev-server": "^1.8.3",
     "@vue/cli-plugin-babel": "^4.4.6",
-    "@vue/cli-plugin-e2e-cypress": "~4.5.15",
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-service": "^4.5.15",
     "babel-eslint": "^10.1.0",
@@ -53,7 +51,6 @@
     "deepmerge": "^4.2.2",
     "eslint": "^7.6.0",
     "eslint-plugin-vue": "^6.2.2",
-    "eslint-plugin-cypress": "^2.12.1",
     "glob-parent": ">=5.1.2",
     "highlight.js": ">=10.4.1",
     "is-svg": ">=4.2.2",
@@ -114,5 +111,10 @@
     "not ie <= 10"
   ],
   "license": "MIT",
-  "repository": "A frontend for searching open access higher education learning materials"
+  "repository": "A frontend for searching open access higher education learning materials",
+  "optionalDependencies": {
+    "@cypress/webpack-dev-server": "^1.8.3",
+    "@vue/cli-plugin-e2e-cypress": "^4.5.17",
+    "eslint-plugin-cypress": "^2.12.1"
+  }
 }

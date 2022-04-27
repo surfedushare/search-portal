@@ -69,12 +69,18 @@ class HarvestLogger(object):
         })
         harvester.info(f"Ending: {phase}", extra=extra)
 
-    def report_material(self, external_id, title=None, url=None, pipeline=None, state="upsert"):
+    def report_material(self, external_id, title=None, url=None, pipeline=None, state="upsert", copyright=None,
+                        lowest_educational_level=None):
         material_info = {
             "external_id": external_id,
             "title": title,
             "url": url
         }
+        if state == "inactive":
+            material_info.update({
+                "copyright": copyright,
+                "lowest_educational_level": lowest_educational_level
+            })
         pipeline = pipeline or {}
         # Report on pipeline steps
         for step, result in pipeline.items():
@@ -104,10 +110,20 @@ class HarvestLogger(object):
         extra = self._get_extra_info(phase="report", material=material_info)
         documents.info(f"Report: {external_id}", extra=extra)
 
-    def report_results(self, source, repository, total):
+    def report_collection(self, collection, repository):
+        total = collection.document_set.count(),
+        inactive_educational_level_count = collection.document_set \
+            .filter(properties__state="inactive", properties__lowest_educational_level__lte=1) \
+            .count()
+        inactive_copyright_count = \
+            collection.document_set.filter(properties__state="inactive").count() - inactive_educational_level_count
         extra = self._get_extra_info(result={
-            "source": source,
+            "source": collection.name,
             "repository": repository,
-            "total": total
+            "total": total,
+            "inactive": {
+                "educational_level": inactive_educational_level_count,
+                "copyright": inactive_copyright_count
+            }
         })
-        results.info(f"{source} ({repository}) => {total}", extra=extra)
+        results.info(f"{collection.name} ({repository}) => {total}", extra=extra)

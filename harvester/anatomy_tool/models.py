@@ -16,8 +16,11 @@ logger = logging.getLogger("harvester")
 class AnatomyToolOAIPMHManager(models.Manager):
 
     def extract_seeds(self, latest_update):
-        queryset = self.get_queryset() \
-            .filter(since__date__gte=latest_update.date(), status=200)
+        queryset = self.get_queryset().filter(
+            since__date__gte=latest_update.date(),
+            status=200,
+            is_extracted=False
+        )
 
         oaipmh_objective = {
             "@": AnatomyToolExtraction.get_oaipmh_records,
