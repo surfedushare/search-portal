@@ -1,7 +1,7 @@
-import Popup from '~/components/Popup'
+import Popup from "~/components/Popup";
 export default {
-  name: 'delete-material',
-  props: ['is-show', 'close', 'collection', 'deletefunction'],
+  name: "delete-material",
+  props: ["is-show", "close", "collection", "deletefunction"],
   components: {
     Popup,
   },
@@ -11,12 +11,12 @@ export default {
       formData: {
         title: null,
       },
-    }
+    };
   },
   methods: {
     deleteCollection() {
-      this.deletefunction()
+      this.deletefunction();
     },
   },
   computed: {},
-}
+};

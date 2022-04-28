@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dropdownData" class="presearchfilters" tabindex="-1">
+  <div v-if="dropdownData" data-test="presearch_filters" class="presearchfilters" tabindex="-1">
     <FilterDropdown
       v-for="dropdown in dropdowns"
       :key="dropdown.field"

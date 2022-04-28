@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from django.conf import settings
 from django.test import override_settings, TestCase
 
-from elasticsearch import Elasticsearch
+from opensearchpy import OpenSearch
 
 from project.configuration import create_elastic_search_index_configuration
 
@@ -24,7 +24,7 @@ class BaseElasticSearchMixin(object):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.elastic = Elasticsearch(
+        cls.elastic = OpenSearch(
             [settings.ELASTICSEARCH_HOST]
         )
         cls.elastic.indices.create(settings.ELASTICSEARCH_NL_INDEX, ignore=400, body=cls.index_body('nl'))

@@ -1,4 +1,4 @@
-from elasticsearch import NotFoundError
+from opensearchpy import NotFoundError
 
 from django.contrib import admin
 from django.contrib import messages

@@ -1,10 +1,10 @@
 export default {
-  name: 'menu-block',
+  name: "menu-block",
   props: [],
   mounted() {},
   data() {
-    return {}
+    return {};
   },
   methods: {},
   computed: {},
-}
+};

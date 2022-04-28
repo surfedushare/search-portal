@@ -1,13 +1,13 @@
-import { DateTime } from 'luxon'
-import i18n from '~/i18n'
-import { isEmpty } from 'lodash'
+import { DateTime } from "luxon";
+import i18n from "~/i18n";
+import { isEmpty } from "lodash";
 
 export const generateSearchMaterialsQuery = function (
-  data = { filters: {}, search_text: '' },
-  name = 'materials-search'
+  data = { filters: {}, search_text: "" },
+  name = "materials-search"
 ) {
-  if (name.indexOf('___') < 0) {
-    name += '___' + i18n.locale
+  if (name.indexOf("___") < 0) {
+    name += "___" + i18n.locale;
   }
 
   return {
@@ -17,86 +17,86 @@ export const generateSearchMaterialsQuery = function (
       filters: JSON.stringify(data.filters),
       search_text: JSON.stringify(data.search_text),
     },
-  }
-}
+  };
+};
 
 export const parseSearchMaterialsQuery = function (query) {
-  let search = { search_text: '', filters: {} }
+  let search = { search_text: "", filters: {} };
 
   if (query) {
     search = {
       ...query,
       filters: query.filters ? parseFilters(query.filters) : {},
-      search_text: query.search_text ? parseSearchText(query.search_text) : '',
-    }
+      search_text: query.search_text ? parseSearchText(query.search_text) : "",
+    };
   }
 
-  const dateRangeItems = search.filters['publisher_date'] || []
+  const dateRangeItems = search.filters["publisher_date"] || [];
   const dateRange = {
     start_date: dateRangeItems[0],
     end_date: dateRangeItems[1],
-  }
+  };
 
-  return { search, dateRange }
-}
+  return { search, dateRange };
+};
 
 const parseFilters = function (filters) {
-  const parsedFilters = JSON.parse(filters)
+  const parsedFilters = JSON.parse(filters);
   if (Array.isArray(parsedFilters)) {
     return parsedFilters.reduce((memo, filter) => {
       if (filter.external_id) {
-        memo[filter.external_id] = filter.items
+        memo[filter.external_id] = filter.items;
       }
 
-      return memo
-    }, {})
+      return memo;
+    }, {});
   }
 
-  return parsedFilters
-}
+  return parsedFilters;
+};
 
 const parseSearchText = function (searchText) {
-  const parsedSearchText = JSON.parse(searchText)
+  const parsedSearchText = JSON.parse(searchText);
   if (Array.isArray(parsedSearchText)) {
-    return parsedSearchText[0]
+    return parsedSearchText[0];
   }
 
-  return parsedSearchText
-}
+  return parsedSearchText;
+};
 
 export const validateHREF = function (href) {
   return href.search(process.env.frontendUrl) === 0
     ? href
-    : process.env.frontendUrl
-}
+    : process.env.frontendUrl;
+};
 
 export const addFilter = function (search, category, filterId) {
   if (isEmpty(search.filters[category])) {
-    search.filters[category] = [filterId]
-    return search
+    search.filters[category] = [filterId];
+    return search;
   } else if (search.filters[category].indexOf(filterId) >= 0) {
-    return search
+    return search;
   }
-  search.filters[category].push(filterId)
-  return search
-}
+  search.filters[category].push(filterId);
+  return search;
+};
 
 export const formatDate = function (date, locale) {
   if (!date) {
-    return
+    return;
   }
-  let format
+  let format;
   switch (date.length) {
     case 7: // year + month
-      format = { year: 'numeric', month: 'long' }
-      break
+      format = { year: "numeric", month: "long" };
+      break;
     case 4: // year
-      format = { year: 'numeric' }
-      break
+      format = { year: "numeric" };
+      break;
     default:
-      format = { year: 'numeric', month: 'numeric', day: 'numeric' }
+      format = { year: "numeric", month: "numeric", day: "numeric" };
   }
   return new DateTime.fromISO(date)
-    .setLocale(locale === 'en' ? 'en-US' : 'nl-NL')
-    .toLocaleString(format)
-}
+    .setLocale(locale === "en" ? "en-US" : "nl-NL")
+    .toLocaleString(format);
+};

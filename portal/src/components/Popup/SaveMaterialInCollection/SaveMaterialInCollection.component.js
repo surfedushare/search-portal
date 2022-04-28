@@ -1,8 +1,8 @@
-import { mapGetters } from 'vuex'
-import Popup from './../../Popup'
+import Popup from "./../../Popup";
+import { mapGetters } from "vuex";
 export default {
-  name: 'save-material-in-collection',
-  props: ['isShow', 'close', 'material'],
+  name: "save-material-in-collection",
+  props: ["isShow", "close", "material"],
   components: {
     Popup,
   },
@@ -10,16 +10,16 @@ export default {
     return {
       collection: null,
       submitting: false,
-    }
+    };
   },
   methods: {
     /**
      * Save material
      */
     onSaveMaterial() {
-      this.submitting = true
+      this.submitting = true;
       this.$store
-        .dispatch('addMaterialToCollection', {
+        .dispatch("addMaterialToCollection", {
           collection_id: this.collection,
           data: [
             {
@@ -29,15 +29,15 @@ export default {
         })
         .then(() => {
           this.$store
-            .dispatch('getMaterial', { id: this.$route.params.id })
+            .dispatch("getMaterial", { id: this.$route.params.id })
             .then(() => {
-              this.submitting = false
-              this.close()
-            })
-        })
+              this.submitting = false;
+              this.close();
+            });
+        });
     },
   },
   computed: {
-    ...mapGetters(['my_collections']),
+    ...mapGetters(["my_collections"]),
   },
-}
+};

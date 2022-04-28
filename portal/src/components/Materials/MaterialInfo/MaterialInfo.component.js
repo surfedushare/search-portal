@@ -1,21 +1,22 @@
-import { mapGetters } from 'vuex'
-import { isNil } from 'lodash'
-import StarRating from '~/components/StarRating'
-import PopularList from '~/components/Communities/PopularList'
-import numeral from 'numeral'
-import Themes from '~/components/Themes'
-import Keywords from '~/components/Keywords'
-import SaveRating from '~/components/Popup/SaveRating'
-import MaterialSet from '../MaterialSet/MaterialSet'
-import MaterialPartOfSet from '../MaterialSet/MaterialPartOfSet'
-import CollectionList from '../CollectionList/CollectionList'
-import EnlargeableImage from '@diracleo/vue-enlargeable-image'
-import { generateSearchMaterialsQuery, validateHREF } from './../../_helpers'
-import { PublishStatus } from '~/utils'
+import { generateSearchMaterialsQuery, validateHREF } from "./../../_helpers";
+
+import CollectionList from "../CollectionList/CollectionList";
+import EnlargeableImage from "@diracleo/vue-enlargeable-image";
+import Keywords from "~/components/Keywords";
+import MaterialPartOfSet from "../MaterialSet/MaterialPartOfSet";
+import MaterialSet from "../MaterialSet/MaterialSet";
+import PopularList from "~/components/Communities/PopularList";
+import { PublishStatus } from "~/utils";
+import SaveRating from "~/components/Popup/SaveRating";
+import StarRating from "~/components/StarRating";
+import Themes from "~/components/Themes";
+import { isNil } from "lodash";
+import { mapGetters } from "vuex";
+import numeral from "numeral";
 
 export default {
-  name: 'material-info',
-  props: ['material', 'communities', 'collections'],
+  name: "material-info",
+  props: ["material", "communities", "collections"],
   components: {
     StarRating,
     Themes,
@@ -28,12 +29,12 @@ export default {
     EnlargeableImage,
   },
   mounted() {
-    this.href = validateHREF(window.location.href)
-    this.fetchSetMaterials()
+    this.href = validateHREF(window.location.href);
+    this.fetchSetMaterials();
   },
   data() {
     return {
-      href: '',
+      href: "",
       shared_link: false,
       isShow: false,
       is_loading_applaud: false,
@@ -46,18 +47,18 @@ export default {
         page_size: 10,
         page: 1,
         filters: [],
-        search_text: '',
+        search_text: "",
       },
-    }
+    };
   },
   methods: {
     fetchSetMaterials() {
       if (this.material.has_parts.length > 0) {
         this.$store
-          .dispatch('getSetMaterials', {
+          .dispatch("getSetMaterials", {
             external_id: this.material.external_id,
           })
-          .then((res) => (this.setMaterials = res.records))
+          .then((res) => (this.setMaterials = res.records));
       }
     },
     authorUrl(author) {
@@ -65,9 +66,9 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            'authors.name.keyword': [author],
+            "authors.name.keyword": [author],
           },
-        })
+        });
       }
     },
     publisherUrl(publisher) {
@@ -75,9 +76,9 @@ export default {
         return this.generateSearchMaterialsQuery({
           ...this.formData,
           filters: {
-            'publishers.keyword': [publisher],
+            "publishers.keyword": [publisher],
           },
-        })
+        });
       }
     },
     consortiumUrl(consortium) {
@@ -87,7 +88,7 @@ export default {
           filters: {
             consortium: [consortium],
           },
-        })
+        });
       }
     },
     generateSearchMaterialsQuery,
@@ -95,75 +96,75 @@ export default {
      * Show the popup "Save rating"
      */
     showPopupSaveRating() {
-      this.isShow = true
+      this.isShow = true;
     },
     /**
      * Close the popup "Save rating"
      */
     closePopupSaveRating() {
-      this.isShow = false
+      this.isShow = false;
     },
     /**
      * Check in sessionStorage if material has been rated by the current user"
      * @param external_id of material - String
      */
     isMaterialRated(materialId) {
-      const ratings = sessionStorage.getItem('ratedMaterials')
-      const parsedRatings = ratings !== null ? JSON.parse(ratings) : []
-      return parsedRatings.includes(materialId)
+      const ratings = sessionStorage.getItem("ratedMaterials");
+      const parsedRatings = ratings !== null ? JSON.parse(ratings) : [];
+      return parsedRatings.includes(materialId);
     },
     /**
      * Saving the applaud for material
      * @param material - Object
      */
     setApplaudMaterial(material) {
-      this.is_loading_applaud = true
+      this.is_loading_applaud = true;
       this.$store
-        .dispatch('setApplaudMaterial', {
+        .dispatch("setApplaudMaterial", {
           external_id: material.external_id,
         })
         .then(() => {
-          this.is_applauded = true
+          this.is_applauded = true;
           this.$store
-            .dispatch('getMaterial', { id: this.$route.params.id })
+            .dispatch("getMaterial", { id: this.$route.params.id })
             .then(() => {
-              this.is_loading_applaud = false
-            })
-        })
+              this.is_loading_applaud = false;
+            });
+        });
     },
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'themes']),
+    ...mapGetters(["isAuthenticated", "themes"]),
     /**
      * Get formatted 'number_of_views'
      * @returns String
      */
     viewCount() {
-      return numeral(this.material.view_count).format('0a')
+      return numeral(this.material.view_count).format("0a");
     },
     /**
      * get material themes
      * @returns {*}
      */
     material_themes() {
-      const { material, themes } = this
+      const { material, themes } = this;
 
       if (material && themes) {
-        const material_themes = material.themes
+        const material_themes = material.themes;
 
         return {
           results: themes.results.filter((theme) => {
-            return material_themes.indexOf(theme.external_id) !== -1
+            return material_themes.indexOf(theme.external_id) !== -1;
           }),
-        }
+        };
       }
 
-      return false
+      return false;
     },
     publishedCollections() {
       return this.collections.filter(
         (collection) => collection.publish_status === PublishStatus.PUBLISHED
-      )
+      );
     },
   },
   watch: {
@@ -171,10 +172,10 @@ export default {
      * If the material changes, it is checked if the material has been rated
      */
     material: function () {
-      const { material } = this
+      const { material } = this;
       if (!isNil(material)) {
-        this.rating_given = this.isMaterialRated(material.external_id)
+        this.rating_given = this.isMaterialRated(material.external_id);
       }
     },
   },
-}
+};

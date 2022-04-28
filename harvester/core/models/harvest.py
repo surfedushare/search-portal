@@ -30,6 +30,10 @@ class HarvestSource(models.Model):
         harvest_resource = apps.get_model(self.repository)
         harvest_resource.objects.filter(set_specification=self.spec).delete()
 
+    def mark_repository_resources_as_extracted(self):
+        harvest_resource = apps.get_model(self.repository)
+        harvest_resource.objects.filter(set_specification=self.spec, is_extracted=False).update(is_extracted=True)
+
     def __str__(self):
         return self.name
 

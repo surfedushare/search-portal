@@ -1,11 +1,11 @@
-import { mapGetters } from 'vuex'
-import { generateSearchMaterialsQuery } from '../_helpers'
-import Menu from './Menu'
-import LanguageSwitch from './LanguageSwitch'
-import Feedback from '../Feedback/Feedback'
+import Feedback from "../Feedback/Feedback";
+import LanguageSwitch from "./LanguageSwitch";
+import Menu from "./Menu";
+import { generateSearchMaterialsQuery } from "../_helpers";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'main-header',
+  name: "main-header",
   props: [],
   components: {
     LanguageSwitch,
@@ -14,50 +14,50 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch('logout', { fully: true })
+      this.$store.dispatch("logout", { fully: true });
     },
     toggleMobileMenu() {
-      this.$store.commit('SET_HEADER_MENU_STATE', !this.show_header_menu)
+      this.$store.commit("SET_HEADER_MENU_STATE", !this.show_header_menu);
     },
     hideMobileMenu() {
-      this.$store.commit('SET_HEADER_MENU_STATE', false)
+      this.$store.commit("SET_HEADER_MENU_STATE", false);
     },
     acknowledgeNotification(notificationType) {
       let notification = this.user_permission_notifications.find(
         (notification) => {
-          return notification.type === notificationType
+          return notification.type === notificationType;
         }
-      )
-      notification.is_allowed = true
-      this.$store.dispatch('postUser')
+      );
+      notification.is_allowed = true;
+      this.$store.dispatch("postUser");
     },
   },
   computed: {
     ...mapGetters([
-      'isAuthenticated',
-      'user',
-      'show_header_menu',
-      'user_permission_notifications',
-      'hasMessages',
-      'getMessageLevels',
-      'getLevelIcon',
-      'getMessagesContent',
+      "isAuthenticated",
+      "user",
+      "show_header_menu",
+      "user_permission_notifications",
+      "hasMessages",
+      "getMessageLevels",
+      "getLevelIcon",
+      "getMessagesContent",
     ]),
     supportLink() {
-      return this.$i18n.locale === 'nl'
-        ? 'https://wiki.surfnet.nl/display/EDS/edusources'
-        : 'https://wiki.surfnet.nl/pages/viewpage.action?pageId=55345575'
+      return this.$i18n.locale === "nl"
+        ? "https://wiki.surfnet.nl/display/EDS/edusources"
+        : "https://wiki.surfnet.nl/pages/viewpage.action?pageId=55345575";
     },
     searchLink() {
       const searchRequest = {
-        search_text: '',
+        search_text: "",
         ordering: null,
         filters: [],
-      }
+      };
       const route = this.$router.resolve(
-        generateSearchMaterialsQuery(searchRequest, 'materials-search')
-      )
-      return route ? route.href : ''
+        generateSearchMaterialsQuery(searchRequest, "materials-search")
+      );
+      return route ? route.href : "";
     },
   },
-}
+};

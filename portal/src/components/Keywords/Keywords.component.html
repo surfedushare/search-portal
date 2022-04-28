@@ -1,19 +1,11 @@
-
 <section class="keywords">
-  <h2>{{ $t('Keywords') }}</h2>
+  <h2>{{ $t("Keywords") }}</h2>
   <ul class="keywords__list" v-if="material.keywords.length">
-    <li
-      class="keywords__item"
-      v-for="keyword in material.keywords"
-    >
-      <router-link
-        :to="url(keyword)"
-        class="keywords__item-link"
-      >
-        {{keyword}}
+    <li class="keywords__item" v-for="keyword in material.keywords">
+      <router-link :to="url(keyword)" class="keywords__item-link">
+        {{ keyword }}
       </router-link>
     </li>
   </ul>
-  <div class="keywords__info" v-else>{{ $t('No-keywords') }}</div>
+  <div class="keywords__info" v-else>{{ $t("No-keywords") }}</div>
 </section>
-

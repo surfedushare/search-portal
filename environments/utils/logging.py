@@ -14,8 +14,8 @@ import datetime
 import socket
 from threading import Timer, Lock
 from enum import Enum
-from elasticsearch import helpers as eshelpers
-from elasticsearch import Elasticsearch, RequestsHttpConnection, JSONSerializer
+from opensearchpy import helpers as eshelpers
+from opensearchpy import OpenSearch, RequestsHttpConnection, JSONSerializer
 from requests_aws4auth import AWS4Auth
 
 
@@ -226,21 +226,21 @@ class ElasticsearchHandler(logging.Handler):
     def __get_es_client(self):
         if self.auth_type == ElasticsearchHandler.AuthType.NO_AUTH:
             if self._client is None:
-                self._client = Elasticsearch(hosts=self.hosts,
-                                             use_ssl=self.use_ssl,
-                                             verify_certs=self.verify_certs,
-                                             connection_class=RequestsHttpConnection,
-                                             serializer=self.serializer)
+                self._client = OpenSearch(hosts=self.hosts,
+                                          use_ssl=self.use_ssl,
+                                          verify_certs=self.verify_certs,
+                                          connection_class=RequestsHttpConnection,
+                                          serializer=self.serializer)
             return self._client
 
         if self.auth_type == ElasticsearchHandler.AuthType.BASIC_AUTH:
             if self._client is None:
-                return Elasticsearch(hosts=self.hosts,
-                                     http_auth=self.auth_details,
-                                     use_ssl=self.use_ssl,
-                                     verify_certs=self.verify_certs,
-                                     connection_class=RequestsHttpConnection,
-                                     serializer=self.serializer)
+                return OpenSearch(hosts=self.hosts,
+                                  http_auth=self.auth_details,
+                                  use_ssl=self.use_ssl,
+                                  verify_certs=self.verify_certs,
+                                  connection_class=RequestsHttpConnection,
+                                  serializer=self.serializer)
             return self._client
 
         if self.auth_type == ElasticsearchHandler.AuthType.AWS_SIGNED_AUTH:
@@ -250,7 +250,7 @@ class ElasticsearchHandler(logging.Handler):
                 credentials = self.aws_session.get_credentials()
                 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, self.aws_session.region_name, 'es',
                                    session_token=credentials.token)
-                self._client = Elasticsearch(
+                self._client = OpenSearch(
                     hosts=self.hosts,
                     http_auth=awsauth,
                     use_ssl=self.use_ssl,

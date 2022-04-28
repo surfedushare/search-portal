@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from django.utils.timezone import make_aware
-from elasticsearch.helpers import streaming_bulk
+from opensearchpy.helpers import streaming_bulk
 from rest_framework import serializers
 
 from project.configuration import create_elastic_search_index_configuration

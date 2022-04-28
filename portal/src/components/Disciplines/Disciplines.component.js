@@ -1,15 +1,15 @@
-import { generateSearchMaterialsQuery } from '../_helpers'
-import { isEmpty } from 'lodash'
+import { generateSearchMaterialsQuery } from "../_helpers";
+import { isEmpty } from "lodash";
 
 export default {
-  name: 'disciplines',
-  props: ['disciplines', 'theme'],
+  name: "disciplines",
+  props: ["disciplines", "theme"],
   methods: {
     getTitleTranslation(discipline, language) {
       if (!isEmpty(discipline.title_translations)) {
-        return discipline.title_translations[language]
+        return discipline.title_translations[language];
       }
-      return discipline.name
+      return discipline.name;
     },
     generateSearchMaterialsQuery: generateSearchMaterialsQuery,
     /**
@@ -20,14 +20,14 @@ export default {
     generateLink(discipline) {
       const filters = {
         disciplines: [discipline.external_id],
-      }
+      };
       return this.generateSearchMaterialsQuery({
         page: 1,
         page_size: 10,
         filters: filters,
-        search_text: '',
+        search_text: "",
         return_filters: false,
-      })
+      });
     },
   },
-}
+};

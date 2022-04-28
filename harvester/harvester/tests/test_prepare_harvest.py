@@ -148,8 +148,16 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 0)
-        self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 2)
+        self.assertEqual(
+            EdurepOAIPMH.objects.filter(is_extracted=True).count(), 2,
+            "Expected previously extracted resources to get marked as extracted"
+        )
+        self.assertEqual(
+            SharekitMetadataHarvest.objects.all().count(), 0,
+            "Expected sources with no delete policy to get completely refreshed "
+            "and old irrelevant resources to get deleted"
+        )
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
         self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 1)
@@ -199,8 +207,16 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 0)
-        self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 1)
+        self.assertEqual(
+            EdurepOAIPMH.objects.filter(is_extracted=True).count(), 1,
+            "Expected previously extracted resources to get marked as extracted"
+        )
+        self.assertEqual(
+            SharekitMetadataHarvest.objects.all().count(), 0,
+            "Expected sources with no delete policy to get completely refreshed "
+            "and old irrelevant resources to get deleted"
+        )
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
         self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 1)
@@ -225,8 +241,16 @@ class TestPrepareHarvestHistory(TestPrepareHarvestBase):
                 self.assertEqual(harvest.latest_update_at, self.last_harvest)
                 self.assertEqual(harvest.harvested_at, self.last_harvest)
         # Check what happened with resources
-        self.assertEqual(EdurepOAIPMH.objects.all().count(), 0)
-        self.assertEqual(SharekitMetadataHarvest.objects.all().count(), 0)
+        self.assertEqual(EdurepOAIPMH.objects.all().count(), 2)
+        self.assertEqual(
+            EdurepOAIPMH.objects.filter(is_extracted=True).count(), 2,
+            "Expected previously extracted resources to get marked as extracted"
+        )
+        self.assertEqual(
+            SharekitMetadataHarvest.objects.all().count(), 0,
+            "Expected sources with no delete policy to get completely refreshed "
+            "and old irrelevant resources to get deleted"
+        )
         # Check what happened with Dataset
         self.assertEqual(DatasetVersion.objects.all().count(), 2)
         self.assertEqual(DatasetVersion.objects.filter(is_current=False).count(), 1)
