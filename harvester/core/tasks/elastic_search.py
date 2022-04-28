@@ -34,17 +34,15 @@ def sync_indices():
                         elif language and language not in settings.ELASTICSEARCH_ANALYSERS and index.language == "unk":
                             docs.append(doc.to_search())
                     errors = index.push(chain(*docs), recreate=False)
-                    for error in errors:
-                        logger.error(f"Unable to index {error['index']['_id']}: {error['index']['error']}")
+                    logger.elastic_errors(errors)
                 extensions_queryset = Extension.objects.filter(
                     modified_at__gte=index.pushed_at,
                     is_addition=True
                 )
                 for ext_batch in ibatch(extensions_queryset, batch_size=32):
                     exts = [ext.to_search() for ext in ext_batch if ext.get_language() == index.language]
-                    index.push(chain(*exts), recreate=False)
-                    for error in errors:
-                        logger.error(f"Unable to index {error['index']['_id']}: {error['index']['error']}")
+                    errors = index.push(chain(*exts), recreate=False)
+                    logger.elastic_errors(errors)
                 index.pushed_at = current_time
                 index.save()
     except DatabaseError:

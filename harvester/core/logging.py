@@ -127,3 +127,12 @@ class HarvestLogger(object):
             }
         })
         results.info(f"{collection.name} ({repository}) => {total}", extra=extra)
+
+    def elastic_errors(self, errors):
+        for error in errors:
+            if "index" in error:
+                self.error(f"Unable to index {error['index']['_id']}: {error['index']['error']}")
+            elif "delete" in error and error["delete"]["result"] == "not_found":
+                self.warning(f"Unable to delete document that does not exist: {error['delete']['_id']}")
+            else:
+                self.error(f"Unknown elastic error: {error}")
