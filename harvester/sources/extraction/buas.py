@@ -89,7 +89,7 @@ class BuasMetadataExtraction(ExtractProcessor):
     @classmethod
     def get_copyright(cls, node):
         access = node["openAccessPermission"]["term"]["text"][0]["value"]
-        return "open-access" if access == "Open" else "yes"
+        return "open-access" if access in ["Open", "Indeterminate", "None"] else "yes"
 
     @classmethod
     def get_from_youtube(cls, node):

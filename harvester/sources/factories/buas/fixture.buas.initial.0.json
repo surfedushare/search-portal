@@ -103,13 +103,13 @@
             "totalNumberOfAuthors": 1,
             "openAccessPermission": {
                 "pureId": 2928,
-                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/closed",
                 "term": {
                     "formatted": false,
                     "text": [
                         {
                             "locale": "en_GB",
-                            "value": "None"
+                            "value": "Closed"
                         }
                     ]
                 }
