@@ -13,24 +13,48 @@
 #
 # For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
 
+image: python:3.9
+
 stages:
+  - install
   - lint
   - test
   - build
   - deploy
 
-lint-job:
-  stage: lint
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - venv/
+    - portal/node_modules
+
+.tooling-job:
+  before_script:
+    - apt-get update
+    - apt-get install -y nodejs npm
+    - source venv/bin/activate
 
 install-job:
-  stage: test
+  stage: install
+  before_script:
+    - apt-get update
+    - apt-get install -y nodejs npm
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - python -m venv venv --copies
+    - source venv/bin/activate
+    - pip install setuptools==58
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - cd portal
+    - npm ci --no-optional
+
+lint-job:
+  stage: lint
+  extends: .tooling-job
+  script:
+    - flake8 .
+    - cd portal
+    - npm run lint
 
 service-test-job:
   stage: test
