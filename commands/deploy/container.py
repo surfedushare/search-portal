@@ -12,12 +12,13 @@ from environments.utils.packaging import get_package_info
 
 
 @task()
-def prepare_builds(ctx):
+def prepare_builds(ctx, commit=None):
     """
     Makes sure that repo information will be present inside Docker images
     """
-    repo = Repo(".")
-    commit = str(repo.head.commit)
+    if commit is None:
+        repo = Repo(".")
+        commit = str(repo.head.commit)
     # TODO: we can make assertions about the git state like: no uncommited changes and no untracked files
     with open(os.path.join("portal", "package.json")) as portal_package_file:
         portal_package = json.load(portal_package_file)
