@@ -12,7 +12,7 @@ describe("Home page - search - pre-filters", () => {
       .selectedFiltersShouldContain("Bestandstype", "Website", 2, 1);
   });
 
-  it.only("Should pre-filter on theme", () => {
+  it("Should pre-filter on theme", () => {
     cy.selectPreFilter(
       "learning_material_themes_normalized",
       "gedrag_maatschappij"

@@ -97,7 +97,7 @@ describe("Home page - search - filters", () => {
     );
   });
 
-  it.only("Should filter on language", () => {
+  it("Should filter on language", () => {
     cy.selectFilter("language.keyword", "nl").selectedFiltersShouldContain(
       "Taal",
       "Nederlands",
