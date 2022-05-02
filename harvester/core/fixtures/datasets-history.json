@@ -120,7 +120,8 @@
         "themes": [{ "label": "theme" }, { "label": "extended" }],
         "children": ["part", "child"],
         "parents": ["parent"],
-        "parties": [{ "name": "The Extension Party" }]
+        "parties": [{ "name": "The Extension Party" }],
+        "consortium": null
       }
     }
   },
@@ -181,7 +182,8 @@
         "aggregation_level": "3",
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
-        "lowest_educational_level": 2
+        "lowest_educational_level": 2,
+        "consortium": null
       },
       "dataset_version": 1
     }
@@ -237,6 +239,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
+        "parties": [],
+        "consortium": null,
         "learning_material_themes_normalized": ["gedrag_maatschappij"]
       },
       "dataset_version": 1
@@ -315,7 +319,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
-        "parties": []
+        "parties": [],
+        "consortium": null
       },
       "dataset_version": 1
     }
@@ -373,7 +378,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
-        "parties": []
+        "parties": [],
+        "consortium": null
       },
       "collection": 171,
       "identity": null,
@@ -429,7 +435,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
-        "parties": []
+        "parties": [],
+        "consortium": null
       },
       "collection": 171,
       "identity": null,
@@ -485,7 +492,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
-        "parties": []
+        "parties": [],
+        "consortium": null
       },
       "collection": 171,
       "identity": null,
@@ -601,7 +609,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
-        "parties": []
+        "parties": [],
+        "consortium": null
       },
       "dataset_version": 1
     }
@@ -670,7 +679,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
-        "parties": []
+        "parties": [],
+        "consortium": null
       },
       "dataset_version": 1
     }
@@ -737,7 +747,9 @@
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
-        "learning_material_themes_normalized": ["gedrag_maatschappij"]
+        "learning_material_themes_normalized": ["gedrag_maatschappij"],
+        "parties": [],
+        "consortium": null
       },
       "dataset_version": 1
     }
@@ -790,7 +802,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
-        "parties": []
+        "parties": [],
+        "consortium": null
       },
       "collection": 171,
       "identity": null,
