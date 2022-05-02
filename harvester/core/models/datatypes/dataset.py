@@ -51,6 +51,24 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         latest_harvest = self.harvest_set.order_by("harvested_at").first()
         return latest_harvest.harvested_at if latest_harvest else None
 
+    def evaluate_dataset_version(self, new_version):
+        current_version = self.versions.get_current_version()
+        if not current_version or not new_version:
+            return []
+        error_collections = []
+        current_aggregates = current_version.aggregate()
+        new_aggregates = new_version.aggregate()
+        for collection_name, collection_info in current_aggregates.items():
+            document_count = collection_info["document_count"]
+            if collection_name not in new_aggregates:
+                error_collections.append(collection_info["collection"])
+                continue
+            new_count = new_aggregates[collection_name]["document_count"]
+            count_diff = document_count - new_count
+            if count_diff and count_diff / document_count >= 0.05:
+                error_collections.append(collection_info["collection"])
+        return error_collections
+
 
 class DatasetVersionManager(models.Manager):
 
@@ -147,6 +165,15 @@ class DatasetVersion(models.Model):
         DatasetVersion.objects.all().update(is_current=False)
         self.is_current = True
         self.save()
+
+    def aggregate(self):
+        return {
+            collection.name: {
+                "collection": collection,
+                "document_count": collection.document_set.count()
+            }
+            for collection in self.collection_set.all()
+        }
 
     class Meta:
         get_latest_by = "-created_at"
