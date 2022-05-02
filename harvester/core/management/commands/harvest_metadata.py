@@ -1,13 +1,15 @@
 from collections import Counter, defaultdict
 
+from django.core.management import CommandError
+from django.utils.timezone import now
+from django.apps import apps
+
 from core.constants import HarvestStages
 from core.management.base import PipelineCommand
 from core.models import (Collection, DatasetVersion, Document, Extension,
                          Harvest)
 from datagrowth.configuration import create_config
 from datagrowth.resources.http.tasks import send
-from django.core.management import CommandError
-from django.utils.timezone import now
 from harvester.utils.extraction import get_harvest_seeds
 
 
@@ -33,8 +35,8 @@ class Command(PipelineCommand):
         )
 
         if len(err):
-            error_counter = Counter([error.status for error in err])
-            self.logger.report_results(harvest.source.name, harvest.source.repository, 0)
+            Resource = apps.get_model(harvest.source.repository)
+            error_counter = Counter([error.status for error in Resource.objects.filter(id__in=err)])
             raise CommandError(f"Failed to harvest seeds from {harvest.source.name}: {error_counter}")
 
         harvest.harvested_at = current_time
@@ -59,8 +61,6 @@ class Command(PipelineCommand):
             seeds_by_collection[(harvest.source.repository, harvest.source.spec)] += (upserts, deletes,)
             self.logger.progress(f"preprocess.{set_specification}", source_count, success=len(upserts) + len(deletes))
         self.logger.end("preprocess")
-        if not seeds_by_collection:
-            self.logger.report_results(harvest.source.spec, harvest.source.repository, 0)
         return seeds_by_collection
 
     def handle_upsert_seeds(self, collection, seeds):
