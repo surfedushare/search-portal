@@ -237,7 +237,7 @@
         "copyright_description": null,
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
-        "parties": []
+        "learning_material_themes_normalized": ["gedrag_maatschappij"]
       },
       "dataset_version": 1
     }
@@ -305,7 +305,7 @@
         "is_part_of": [],
         "publishers": ["SURFnet"],
         "description": "Geen samenvatting",
-        "disciplines": [],
+        "disciplines": ["0861c43d-1874-4788-b522-df8be575677f"],
         "external_id": "63903863-6c93-4bda-b850-277f3c9ec00e",
         "from_youtube": false,
         "preview_path": null,
@@ -541,7 +541,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
-        "parties": []
+        "parties": [],
+        "consortium": "Community Ethics"
       },
       "collection": 171,
       "identity": null,
@@ -736,7 +737,7 @@
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
-        "parties": []
+        "learning_material_themes_normalized": ["gedrag_maatschappij"]
       },
       "dataset_version": 1
     }

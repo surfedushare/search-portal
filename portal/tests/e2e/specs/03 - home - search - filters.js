@@ -97,36 +97,20 @@ describe("Home page - search - filters", () => {
     );
   });
 
-  it("Should filter on language", () => {
+  it.only("Should filter on language", () => {
     cy.selectFilter("language.keyword", "nl").selectedFiltersShouldContain(
       "Taal",
       "Nederlands",
       1,
       0
     );
-    cy.selectFilter("language.keyword", "en").selectedFiltersShouldContain(
-      "Taal",
-      "Engels",
-      2,
-      1
-    );
   });
 
-  // TODO add test data with dicipline
-  it.skip("Should filter on disciplines", () => {
+  it("Should filter on disciplines", () => {
     cy.selectFilter(
       "disciplines",
-      "b333369b-e647-4bbf-b04c-d11a9235a113"
-    ).selectedFiltersShouldContain(
-      "Vakgebied",
-      "Verpleging en verzorging",
-      1,
-      0
-    );
-    cy.selectFilter(
-      "disciplines",
-      "743e38e7-d3bc-40e5-9f5d-5d7941af659e"
-    ).selectedFiltersShouldContain("Vakgebied", "Zorgverlener", 2, 1);
+      "0861c43d-1874-4788-b522-df8be575677f"
+    ).selectedFiltersShouldContain("Vakgebied", "Onderwijskunde", 1, 0);
   });
 
   it("Should filter on author", () => {
@@ -140,25 +124,22 @@ describe("Home page - search - filters", () => {
     ).selectedFiltersShouldContain("Auteur", "Fred Spier", 2, 1);
   });
 
-  // TODO add test data with theme
-  it.skip("Should filter on theme", () => {
+  it("Should filter on theme", () => {
     cy.selectFilter(
       "learning_material_themes_normalized",
-      "gezondheid"
-    ).selectedFiltersShouldContain("Thema", "Gezondheid", 1, 0);
-    cy.selectFilter(
-      "learning_material_themes_normalized",
-      "aarde_milieu"
-    ).selectedFiltersShouldContain("Thema", "Aarde en Milieu", 2, 1);
+      "gedrag_maatschappij"
+    ).selectedFiltersShouldContain("Thema", "Gedrag en Maatschappij", 1, 0);
   });
 
-  // TODO add test data with theme
-  it.skip("Should filter on multiple filter categories", () => {
-    cy.selectFilter("learning_material_themes_normalized", "aarde_milieu")
-      .selectFilter("authors.name.keyword", "Fred Spier")
-      .selectFilter("lom_educational_levels", "WO")
-      .selectedFiltersShouldContain("Thema", "Aarde en Milieu", 3, 0)
-      .selectedFiltersShouldContain("Auteur", "Fred Spier", 3, 1)
-      .selectedFiltersShouldContain("Onderwijsniveau", "WO", 3, 2);
+  it("Should filter on multiple filter categories", () => {
+    cy.selectFilter(
+      "learning_material_themes_normalized",
+      "gedrag_maatschappij"
+    )
+      .selectFilter("authors.name.keyword", "Ning Ding")
+      .selectFilter("lom_educational_levels", "HBO")
+      .selectedFiltersShouldContain("Thema", "Gedrag en Maatschappij", 3, 0)
+      .selectedFiltersShouldContain("Auteur", "Ning Ding", 3, 1)
+      .selectedFiltersShouldContain("Onderwijsniveau", "HBO", 3, 2);
   });
 });

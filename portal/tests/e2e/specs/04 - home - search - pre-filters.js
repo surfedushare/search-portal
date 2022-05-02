@@ -12,14 +12,13 @@ describe("Home page - search - pre-filters", () => {
       .selectedFiltersShouldContain("Bestandstype", "Website", 2, 1);
   });
 
-  // TODO add test data with theme
-  it.skip("Should pre-filter on theme", () => {
-    cy.selectPreFilter("learning_material_themes_normalized", "gezondheid")
+  it.only("Should pre-filter on theme", () => {
+    cy.selectPreFilter(
+      "learning_material_themes_normalized",
+      "gedrag_maatschappij"
+    )
       .search()
-      .selectedFiltersShouldContain("Thema", "Gezondheid", 1, 0);
-    cy.selectPreFilter("learning_material_themes_normalized", "aarde_milieu")
-      .search()
-      .selectedFiltersShouldContain("Thema", "Aarde en Milieu", 2, 1);
+      .selectedFiltersShouldContain("Thema", "Gedrag en Maatschappij", 1, 0);
   });
 
   it("Should pre-filter on educational level", () => {
