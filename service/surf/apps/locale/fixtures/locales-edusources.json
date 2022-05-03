@@ -8351,6 +8351,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "3c12c129-8ae1-4408-bbff-7c19dba38db2",
+    "fields": {
+        "asset": "Not-found",
+        "en": "Not found",
+        "nl": "Niet gevonden",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "3c19db60-1270-4b6a-8b12-9e3b4c92d3ad",
     "fields": {
         "asset": "Alex Stefanov​_auto_generated_at_Thu Aug 19 06:01:38 2021-810470",
@@ -13014,8 +13024,8 @@
     "pk": "5b6af2b3-cc88-45ef-b8d2-6435c9ad654a",
     "fields": {
         "asset": "all-themes",
-        "en": "all themes",
-        "nl": "alle thema's",
+        "en": "all disciplines",
+        "nl": "alle vakgebieden",
         "is_fuzzy": false
     }
 },
