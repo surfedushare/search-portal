@@ -10,14 +10,6 @@
   </div>
 </template>
 
-<style lang="less">
-@import "styles/normalize.css";
-@import "variables.less";
-@import "styles/common.less";
-@import "styles/forms.less";
-@import "styles/vuetify-overrides.less";
-</style>
-
 <script>
 import { setLanguage } from '~/axios'
 import MainFooter from '~/components/MainFooter'
@@ -57,3 +49,11 @@ export default {
   },
 }
 </script>
+
+<style lang="less">
+@import "styles/normalize.css";
+@import "variables.less";
+@import "styles/common.less";
+@import "styles/forms.less";
+@import "styles/vuetify-overrides.less";
+</style>

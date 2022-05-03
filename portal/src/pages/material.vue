@@ -45,6 +45,12 @@ export default {
   },
   mixins: [PageMixin],
   dependencies: ['$log'],
+  beforeRouteUpdate(to, from, next) {
+    this.pageLoad = new Promise((resolve, reject) => {
+      this.updateMaterial(to.params.id).then(resolve).catch(reject)
+    })
+    next()
+  },
   data() {
     return {
       collections: [],
@@ -75,12 +81,6 @@ export default {
     this.pageLoad = new Promise((resolve, reject) => {
       this.updateMaterial(this.$route.params.id).then(resolve).catch(reject)
     })
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.pageLoad = new Promise((resolve, reject) => {
-      this.updateMaterial(to.params.id).then(resolve).catch(reject)
-    })
-    next()
   },
   methods: {
     async updateMaterial(externalId) {

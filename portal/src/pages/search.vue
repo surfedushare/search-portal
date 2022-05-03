@@ -89,6 +89,14 @@ export default {
     SearchBar
   },
   mixins: [PageMixin],
+  beforeRouteLeave(to, from, next) {
+    if (!from.params.filterId || to.params.filterId) {
+      next()
+      return
+    }
+    this.search.filters = {}
+    this.$store.dispatch('searchMaterials', this.search).finally(next)
+  },
   data() {
     const urlInfo = parseSearchMaterialsQuery(this.$route.query)
     return {
@@ -138,14 +146,6 @@ export default {
     this.loadFilterCategories().finally(() => {
       this.executeSearch()
     })
-  },
-  beforeRouteLeave(to, from, next) {
-    if (!from.params.filterId || to.params.filterId) {
-      next()
-      return
-    }
-    this.search.filters = {}
-    this.$store.dispatch('searchMaterials', this.search).finally(next)
   },
   methods: {
     initialSearch(search) {
