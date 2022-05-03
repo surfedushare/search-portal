@@ -4,7 +4,7 @@
     <div>
       <div class="search__info">
         <div class="center_block center-header">
-          <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
+          <img class="main__info_bg" src="../assets/images/pictures/header-image.jpg" alt="header-image" />
           <SearchBar @onSearch="initialSearch" />
           <div ref="top"></div>
         </div>
