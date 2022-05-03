@@ -1,4 +1,4 @@
-describe("Material page - search", () => {
+describe("Material page - search", { defaultCommandTimeout: 5000 }, () => {
   beforeEach(function () {
     cy.visit("/materialen/f929b625-5ef7-47b8-8fa8-94c969d0c427");
   });
