@@ -41,6 +41,6 @@ class TestDataset(TestCase):
         for doc in test_version.document_set.all()[:3]:
             doc.delete()
         error_collections = self.dataset.evaluate_dataset_version(test_version)
-        self.assertEqual(len(error_collections), 1,"Expected dataset version with insufficient docs to generate error")
+        self.assertEqual(len(error_collections), 1, "Expected dataset version with insufficient docs to generate error")
         self.assertIsInstance(error_collections[0], Collection)
         self.assertEqual(error_collections[0].name, "test")
