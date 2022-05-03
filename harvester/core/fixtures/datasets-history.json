@@ -120,8 +120,7 @@
         "themes": [{ "label": "theme" }, { "label": "extended" }],
         "children": ["part", "child"],
         "parents": ["parent"],
-        "parties": [{ "name": "The Extension Party" }],
-        "consortium": null
+        "parties": [{ "name": "The Extension Party" }]
       }
     }
   },
