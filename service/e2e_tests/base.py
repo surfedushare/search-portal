@@ -5,6 +5,7 @@ from opensearchpy import OpenSearch
 from project.configuration import create_elastic_search_index_configuration
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 
@@ -54,7 +55,7 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("window-size=1920,1080")
 
-        cls.selenium = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+        cls.selenium = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         cls.selenium.implicitly_wait(10)
         cls.explicit_wait = 300
 
