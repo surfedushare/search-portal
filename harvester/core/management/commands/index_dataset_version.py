@@ -29,7 +29,6 @@ class Command(PipelineCommand):
             send_admin_notification(
                 f"The {collection.name} collection dropped by more than 5%. Falling back to previous version."
             )
-            dataset_version.collection_set.filter(name=collection.name).update(dataset_version=None)
             dataset_version.document_set.filter(collection__name=collection.name).update(dataset_version=None)
             dataset_version.copy_collection(collection)
 
