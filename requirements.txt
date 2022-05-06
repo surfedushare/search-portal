@@ -1,6 +1,7 @@
 # Development
 gitpython==3.1.7
 flake8==3.8.3
+wheel==0.36.2
 
 # Common
 django==3.2.13
@@ -27,7 +28,7 @@ django-storages==1.9.1
 ipython==7.16.3
 jedi==0.17.2
 tqdm==4.50.2
-invoke==1.4.1
+invoke==1.7.0
 fabric==2.5.0
 ipdb==0.13.3
 sentry-sdk==1.0.0
