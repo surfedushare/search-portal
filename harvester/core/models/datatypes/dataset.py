@@ -55,19 +55,19 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         current_version = self.versions.get_current_version()
         if not current_version or not new_version:
             return []
-        error_collections = []
+        fallback_collections = []
         current_aggregates = current_version.aggregate()
         new_aggregates = new_version.aggregate()
         for collection_name, collection_info in current_aggregates.items():
             document_count = collection_info["document_count"]
             if collection_name not in new_aggregates:
-                error_collections.append(collection_info["collection"])
+                fallback_collections.append(collection_info["collection"])
                 continue
             new_count = new_aggregates[collection_name]["document_count"]
             count_diff = document_count - new_count
             if count_diff and count_diff / document_count >= 0.05:
-                error_collections.append(collection_info["collection"])
-        return error_collections
+                fallback_collections.append(collection_info["collection"])
+        return fallback_collections
 
 
 class DatasetVersionManager(models.Manager):
@@ -170,7 +170,7 @@ class DatasetVersion(models.Model):
         return {
             collection.name: {
                 "collection": collection,
-                "document_count": collection.document_set.count()
+                "document_count": collection.document_set.filter(dataset_version=self).count()
             }
             for collection in self.collection_set.all()
         }
