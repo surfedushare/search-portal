@@ -60,6 +60,8 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         new_aggregates = new_version.aggregate()
         for collection_name, collection_info in current_aggregates.items():
             document_count = collection_info["document_count"]
+            if not document_count:
+                continue
             if collection_name not in new_aggregates:
                 fallback_collections.append(collection_info["collection"])
                 continue
