@@ -8,6 +8,7 @@ from commands.deploy.container import prepare_builds
 def e2e(ctx):
     with ctx.cd("portal"):
         ctx.run("npm run build")
+        ctx.run("npm run test:e2e")
     with ctx.cd("service"):
         ctx.run("python manage.py test e2e_tests --failfast", echo=True, pty=True)
 

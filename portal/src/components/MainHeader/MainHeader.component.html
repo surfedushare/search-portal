@@ -25,8 +25,8 @@
       <div class="main-header__wrapper">
         <router-link :to="localePath('index')" class="main-header__logo">
           <img
-            src="/images/edusourceslogo.png"
-            srcset="/images/edusourceslogo@2x.png 2x, /images/edusourceslogo@3x.png 3x"
+            src="../../assets/images/edusourceslogo.png"
+            srcset="../../assets/images/edusourceslogo@2x.png 2x, ../../assets/images/edusourceslogo@3x.png 3x"
             class="main-header__logo_img"
           >
         </router-link>
@@ -59,7 +59,7 @@
           <LanguageSwitch class="main-header__language_switch"/>
           <div class="edusources-container">
             <router-link :to="searchLink" class="search-icon">
-              <img src="/images/search.svg"/>
+              <img src="../../assets/images/search.svg"/>
             </router-link>
           </div>
         </div>
@@ -70,8 +70,8 @@
       <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
       <router-link to="/" class="main-header__mobile_logo" v-on:click.native="hideMobileMenu()">
         <img
-          src="/images/edusourceslogo.png"
-          srcset="/images/edusourceslogo@2x.png 2x, /images/edusourceslogo@3x.png 3x"
+          src="../../assets/images/edusourceslogo.png"
+          srcset="../../assets/images/edusourceslogo@2x.png 2x, ../../assets/images/edusourceslogo@3x.png 3x"
           class="main-header__logo_img"
         >
       </router-link>
@@ -124,7 +124,7 @@
         <LanguageSwitch class="main-header__language_switch"/>
         <div class="edusources-container">
           <router-link :to="searchLink" class="search-icon">
-            <img src="/images/search.svg"/>
+            <img src="../../assets/images/search.svg"/>
           </router-link>
         </div>
       </div>
