@@ -98,7 +98,8 @@
       "vue/singleline-html-element-content-newline": "off",
       "vue/multiline-html-element-content-newline": "off",
       "vue/html-self-closing": "off",
-      "vue/v-slot-style": "off"
+      "vue/v-slot-style": "off",
+      "vue/no-mutating-props": "off"
     },
     "parserOptions": {
       "parser": "@babel/eslint-parser",
