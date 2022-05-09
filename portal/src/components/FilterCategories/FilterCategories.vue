@@ -179,7 +179,6 @@ export default {
       })
     },
     childExternalIds(categoryId, itemId) {
-      // he
       const category = this.materials.filter_categories.find(
         (category) => category.external_id === categoryId
       )
@@ -195,33 +194,34 @@ export default {
       return item.children?.reduce(iterator, [item.external_id])
     },
     onCheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || []
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      const existingItems = newSelectedFilters[categoryId] || []
       if (existingItems.indexOf(itemId) >= 0) {
         return
       }
-
       const filters = this.childExternalIds(categoryId, itemId)
-      this.selectedFilters[categoryId] = [...existingItems, ...filters]
-
-      return this.executeSearch(this.selectedFilters)
+      newSelectedFilters[categoryId] = [...existingItems, ...filters] || []
+      return this.executeSearch(newSelectedFilters)
     },
     onUncheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || []
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      const existingItems = newSelectedFilters[categoryId] || []
       const filters = this.childExternalIds(categoryId, itemId)
-      this.selectedFilters[categoryId] = existingItems.filter(
+      newSelectedFilters[categoryId] = existingItems.filter(
         (item) => !filters.includes(item)
       )
-      if (this.selectedFilters[categoryId].length === 0) {
-        this.$delete(this.selectedFilters, categoryId)
+      if (newSelectedFilters[categoryId].length === 0) {
+        this.$delete(newSelectedFilters, categoryId)
       }
       if (itemId === this.$route.params.filterId) {
-        return this.executeSearch(this.selectedFilters, 'materials-search')
+        return this.executeSearch(newSelectedFilters, 'materials-search')
       }
-      return this.executeSearch(this.selectedFilters)
+      return this.executeSearch(newSelectedFilters)
     },
     onDateChange(dates) {
-      this.selectedFilters[this.publisherDateExternalId] = dates
-      this.executeSearch(this.selectedFilters)
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      newSelectedFilters[this.publisherDateExternalId] = dates
+      this.executeSearch(newSelectedFilters)
     },
     async executeSearch(filters = {}, name = null) {
       name = name || this.$route.name

@@ -14,7 +14,7 @@
           <InputLanguageWrapper language="NL">
             <InputWithCounter
               id="title_nl"
-              v-model="value.title_nl"
+              v-model="fields.title_nl"
               required
               name="name"
               type="text"
@@ -29,7 +29,7 @@
           <InputLanguageWrapper language="EN">
             <InputWithCounter
               id="title_en"
-              v-model="value.title_en"
+              v-model="fields.title_en"
               required
               name="name"
               type="text"
@@ -47,7 +47,7 @@
           <InputLanguageWrapper language="NL">
             <input
               id="website_nl"
-              v-model="value.website_url_nl"
+              v-model="fields.website_url_nl"
               name="website"
               type="url"
               class="communities__form__input"
@@ -62,7 +62,7 @@
           <InputLanguageWrapper language="EN">
             <input
               id="website_en"
-              v-model="value.website_url_en"
+              v-model="fields.website_url_en"
               name="website"
               type="url"
               class="communities__form__input"
@@ -110,7 +110,7 @@
       <div id="description_nl" class="communities__form__row">
         <ErrorWrapper :errors="getFieldErrors('description_nl')">
           <RichTextInput
-            v-model="value.description_nl"
+            v-model="fields.description_nl"
             :title="$t('Description')"
             language="NL"
             :placeholder="$t('community-description-placeholder')"
@@ -120,7 +120,7 @@
       <div id="description_en" class="communities__form__row">
         <ErrorWrapper :errors="getFieldErrors('description_en')">
           <RichTextInput
-            v-model="value.description_en"
+            v-model="fields.description_en"
             language="EN"
             :placeholder="$t('community-description-placeholder')"
           />
@@ -189,36 +189,41 @@ export default {
       default: () => ({}),
     },
   },
+  data() {
+    return {
+      fields: this.value || []
+    };
+  },
   methods: {
     getFieldErrors(fieldName) {
       return this.errors[fieldName]
     },
     onRemoveImage(field) {
-      this.value[field] = null
+      this.fields[field] = null
     },
     onAddImage(field, file) {
-      this.value[field] = file
+      this.fields[field] = file
     },
     onPreviewUrl(field, url) {
-      this.value[`${field}_preview`] = url
+      this.fields[`${field}_preview`] = url
     },
     onWebsiteURLBlur(language) {
-      const hasValue = !isEmpty(this.value['website_url_' + language])
+      const hasValue = !isEmpty(this.fields['website_url_' + language])
       const hasValidProtocol = startsWith(
-        this.value['website_url_' + language],
+        this.fields['website_url_' + language],
         'http'
       )
       if (hasValue && !hasValidProtocol) {
-        this.value['website_url_' + language] =
-          'https://' + this.value['website_url_' + language]
+        this.fields['website_url_' + language] =
+          'https://' + this.fields['website_url_' + language]
       }
       const oppositeLanguage = language === 'en' ? 'nl' : 'en'
       const hasOppositeValue = !isEmpty(
-        this.value['website_url_' + oppositeLanguage]
+        this.fields['website_url_' + oppositeLanguage]
       )
       if (hasValue && !hasOppositeValue) {
-        this.value['website_url_' + oppositeLanguage] =
-          this.value['website_url_' + language]
+        this.fields['website_url_' + oppositeLanguage] =
+          this.fields['website_url_' + language]
       }
     },
   },
