@@ -67,7 +67,7 @@
     "vuetify-loader": "^1.7.3",
     "webpack": "5.72.0",
     "webpack-bundle-analyzer": "4.5.0",
-    "webpack-bundle-tracker": "1.5.0"
+    "webpack-bundle-tracker": "0.4.3"
   },
   "optionalDependencies": {
     "@cypress/webpack-dev-server": "1.8.4",
