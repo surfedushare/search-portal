@@ -222,7 +222,7 @@ export default {
     position: relative;
     display: block;
 
-    background-image: url("/images/pictures/rawpixel-760027-unsplash.jpg");
+    background-image: url("../assets/images/pictures/rawpixel-760027-unsplash.jpg");
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position-x: calc(100% - 30px);

@@ -217,7 +217,7 @@ export default {
 
     &.deleting {
       .select-icon {
-        background: @light-grey url("/images/close-grey.svg") 50% 50% no-repeat;
+        background: @light-grey url("../../assets/images/close-grey.svg") 50% 50% no-repeat;
       }
       .selected {
         opacity: 0.5;
@@ -226,10 +226,10 @@ export default {
     }
     &.adding {
       .select-icon {
-        background: @light-grey url("/images/plus-black.svg") 50% 50% no-repeat;
+        background: @light-grey url("../../assets/images/plus-black.svg") 50% 50% no-repeat;
       }
       .select-icon.selected {
-        background: @green url("/images/plus-white.svg") 50% 50% no-repeat;
+        background: @green url("../../assets/images/plus-white.svg") 50% 50% no-repeat;
       }
     }
   }
@@ -264,7 +264,7 @@ export default {
         width: 13px;
         height: 13px;
         margin-right: 6px;
-        background: url("/images/icon-set.svg") 50% 50% no-repeat;
+        background: url("../../assets/images/icon-set.svg") 50% 50% no-repeat;
         background-size: contain;
       }
     }
@@ -282,7 +282,7 @@ export default {
         width: 13px;
         height: 13px;
         margin-right: 6px;
-        background: url("/images/icon-materials.svg") 50% 50% no-repeat;
+        background: url("../../assets/images/icon-materials.svg") 50% 50% no-repeat;
         background-size: contain;
       }
     }
@@ -356,7 +356,7 @@ export default {
     }
 
     &_applauds {
-      background: @green url("/images/clap_white.svg") 2px 50% no-repeat;
+      background: @green url("../../assets/images/clap_white.svg") 2px 50% no-repeat;
       background-size: 20px 20px;
       height: 25px;
       border-radius: 4px;
@@ -369,7 +369,7 @@ export default {
     }
 
     &_external_link {
-      background: @yellow url("/images/open-link-black.svg") 50% 50% no-repeat;
+      background: @yellow url("../../assets/images/open-link-black.svg") 50% 50% no-repeat;
       background-size: 20px 20px;
       margin: 0 0 0 7px;
       display: inline-block;
@@ -390,51 +390,51 @@ export default {
       &.cc-by,
       &.cc-by-30,
       &.cc-by-40 {
-        background: url("/images/cc-black.svg") no-repeat 0 0,
-          url("/images/by-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/cc-black.svg") no-repeat 0 0,
+          url("../../assets/images/by-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-nc,
       &.cc-by-nc-30,
       &.cc-by-nc-40 {
-        background: url("/images/cc-black.svg") no-repeat 0 0,
-          url("/images/by-black.svg") no-repeat 23px 0,
-          url("/images/nc-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/cc-black.svg") no-repeat 0 0,
+          url("../../assets/images/by-black.svg") no-repeat 23px 0,
+          url("../../assets/images/nc-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
       &.cc-by-nc-sa,
       &.cc-by-nc-sa-30,
       &.cc-by-nc-sa-40 {
-        background: url("/images/cc-black.svg") no-repeat 0 0,
-          url("/images/by-black.svg") no-repeat 23px 0,
-          url("/images/nc-black.svg") no-repeat 46px 0,
-          url("/images/sa-black.svg") no-repeat 69px 0;
+        background: url("../../assets/images/cc-black.svg") no-repeat 0 0,
+          url("../../assets/images/by-black.svg") no-repeat 23px 0,
+          url("../../assets/images/nc-black.svg") no-repeat 46px 0,
+          url("../../assets/images/sa-black.svg") no-repeat 69px 0;
         background-size: contain;
       }
       &.cc-by-nd,
       &.cc-by-nd-30,
       &.cc-by-nd-40 {
-        background: url("/images/cc-black.svg") no-repeat 0 0,
-          url("/images/by-black.svg") no-repeat 23px 0,
-          url("/images/nd-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/cc-black.svg") no-repeat 0 0,
+          url("../../assets/images/by-black.svg") no-repeat 23px 0,
+          url("../../assets/images/nd-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
       &.cc-by-sa,
       &.cc-by-sa-30,
       &.cc-by-sa-40 {
-        background: url("/images/cc-black.svg") no-repeat 0 0,
-          url("/images/by-black.svg") no-repeat 23px 0,
-          url("/images/sa-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/cc-black.svg") no-repeat 0 0,
+          url("../../assets/images/by-black.svg") no-repeat 23px 0,
+          url("../../assets/images/sa-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
       &.yes,
       &.cc-by-nc-nd,
       &.cc-by-nc-nd-30,
       &.cc-by-nc-nd-40 {
-        background: url("/images/cc-black.svg") no-repeat 0 0,
-          url("/images/by-black.svg") no-repeat 23px 0,
-          url("/images/nc-black.svg") no-repeat 46px 0,
-          url("/images/nd-black.svg") no-repeat 69px 0;
+        background: url("../../assets/images/cc-black.svg") no-repeat 0 0,
+          url("../../assets/images/by-black.svg") no-repeat 23px 0,
+          url("../../assets/images/nc-black.svg") no-repeat 46px 0,
+          url("../../assets/images/nd-black.svg") no-repeat 69px 0;
         background-size: contain;
       }
       height: 20px;
@@ -462,7 +462,7 @@ export default {
     top: -3px;
     overflow: hidden;
     color: transparent;
-    background: url("/images/label.svg") 50% 0 no-repeat;
+    background: url("../../assets/images/label.svg") 50% 0 no-repeat;
   }
 }
 </style>

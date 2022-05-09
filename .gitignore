@@ -113,3 +113,4 @@ environments/info.json
 harvester/harvester/bin/
 portal/tests/e2e/videos/
 portal/tests/e2e/screenshots/
+portal/webpack-stats.json

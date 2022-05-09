@@ -1,4 +1,4 @@
-import validate from "uuid-validate";
+import isUUID from "is-uuid";
 
 /**
  * formatting date
@@ -35,7 +35,7 @@ export const formatDate = (str, format) => {
  * @returns {Boolean}
  */
 export const validateID = (str) => {
-  return validate(str, 4) || validateBASE64(str);
+  return isUUID.v4(str) || validateBASE64(str);
 };
 
 /**

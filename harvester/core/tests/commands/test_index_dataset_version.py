@@ -36,7 +36,7 @@ class ElasticSearchClientTestCase(TestCase):
             "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "is_part_of", "preview_path",
             "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_types",
             "text", "suggest_phrase", "research_object_type", "research_themes", "parties", "video", "state",
-            "extension", "learning_material_themes_normalized",
+            "extension", "learning_material_themes_normalized", "consortium"
         }
         has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]
         if not has_text:
@@ -68,7 +68,7 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }
@@ -147,7 +147,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }
@@ -221,7 +221,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             DocumentFactory.create(dataset_version=old_version, collection=collection)
         # Expectations
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }
@@ -283,7 +283,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }

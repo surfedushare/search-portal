@@ -1,12 +1,10 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
-from django.test import TestCase
 from celery.canvas import Signature
-
-from core.models import Collection, Batch, ProcessResult
+from core.models import Batch, Collection, ProcessResult
 from core.processors import HttpPipelineProcessor
 from core.tests.factories import DocumentFactory
-
+from django.test import TestCase
 
 chord_mock_result = MagicMock()
 
@@ -45,7 +43,7 @@ class TestHttpPipelineProcessor(TestCase):
         processor(self.collection.documents)
         self.assertEqual(Batch.objects.count(), 3)
         self.assertEqual(ProcessResult.objects.count(), 0)
-        self.assertEqual(self.collection.documents.count(), 12)
+        self.assertEqual(self.collection.documents.count(), 13)
         for document in self.collection.documents.all():
             if "metadata" not in document.pipeline:
                 self.assertEqual(document.id, self.ignored_document.id,

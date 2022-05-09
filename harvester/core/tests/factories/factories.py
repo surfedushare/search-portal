@@ -1,11 +1,11 @@
-import factory
 from datetime import datetime
 
-from django.conf import settings
-
-from core.models import (Document, Collection, Dataset, DatasetVersion, Harvest, HarvestSource, ElasticIndex,
+import factory
+from core.constants import DeletePolicies, HarvestStages, Repositories
+from core.models import (Collection, Dataset, DatasetVersion, Document,
+                         ElasticIndex, Harvest, HarvestSource,
                          HttpTikaResource)
-from core.constants import HarvestStages, Repositories, DeletePolicies
+from django.conf import settings
 
 
 class DatasetFactory(factory.django.DjangoModelFactory):
@@ -89,7 +89,8 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "keywords": [],
             "research_object_type": None,
             "research_themes": [],
-            "parties": []
+            "parties": [],
+            "consortium": None
         })
 
 
