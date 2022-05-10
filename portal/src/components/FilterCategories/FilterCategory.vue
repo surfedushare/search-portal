@@ -107,7 +107,9 @@ export default {
   },
   methods: {
     toggle() {
-      this.isOpen = !this.isOpen
+      if (this.category.children.length > 0) {
+            this.isOpen = !this.isOpen
+      }
     },
     onToggleShowAll() {
       if (this.category.children.length >= 20) {
