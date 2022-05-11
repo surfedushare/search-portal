@@ -1,5 +1,6 @@
 from core.models import Dataset, ElasticIndex
 from core.management.base import PipelineCommand
+from core.utils.notifications import send_admin_notification
 
 
 class Command(PipelineCommand):
@@ -22,6 +23,14 @@ class Command(PipelineCommand):
         if version:
             version_filter.update({"version": version})
         dataset_version = dataset.versions.filter(**version_filter).last()
+        collection_errors = dataset.evaluate_dataset_version(dataset_version) if not version else []
+
+        for collection in collection_errors:
+            send_admin_notification(
+                f"The {collection.name} collection dropped by more than 5%. Falling back to previous version."
+            )
+            dataset_version.document_set.filter(collection__name=collection.name).update(dataset_version=None)
+            dataset_version.copy_collection(collection)
 
         self.logger.start("index")
 
