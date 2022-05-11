@@ -153,7 +153,7 @@ export default {
     position: relative;
     height: 48px;
     border-radius: 10px;
-    background: @grey url("/images/search-grey.svg") 12px 50% no-repeat;
+    background: @grey url("../../assets/images/search-grey.svg") 12px 50% no-repeat;
     background-size: 21px;
     border: none;
     font-family: "nunito";

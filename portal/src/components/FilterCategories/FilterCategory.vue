@@ -155,11 +155,11 @@ export default {
       height: 20px;
       flex-shrink: 0;
       margin: 2px 5px 0 20px;
-      background: url("/images/plus-black.svg") 50% 50% / contain no-repeat;
+      background: url("../../assets/images/plus-black.svg") 50% 50% / contain no-repeat;
     }
 
     &--hide:after {
-      background: url("/images/min-black.svg") 50% 50% / contain no-repeat;
+      background: url("../../assets/images/min-black.svg") 50% 50% / contain no-repeat;
     }
   }
 
@@ -185,31 +185,31 @@ export default {
 
     &_icon {
       &.cc-by {
-        background: url("/images/by-black.svg") no-repeat 0 0,
-          url("/images/sa-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/sa-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-nc,
       &.cc-by-nc-sa {
-        background: url("/images/by-black.svg") no-repeat 0 0,
-          url("/images/nc-black.svg") no-repeat 23px 0,
-          url("/images/sa-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0,
+          url("../../assets/images/sa-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
       &.cc-by-nd {
-        background: url("/images/by-black.svg") no-repeat 0 0,
-          url("/images/nd-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nd-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-sa {
-        background: url("/images/by-black.svg") no-repeat 0 0,
-          url("/images/nc-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-nc-nd {
-        background: url("/images/by-black.svg") no-repeat 0 0,
-          url("/images/nc-black.svg") no-repeat 23px 0,
-          url("/images/nd-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0,
+          url("../../assets/images/nd-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
 

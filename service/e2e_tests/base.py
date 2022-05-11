@@ -1,12 +1,12 @@
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.chrome.options import Options
 from django.conf import settings
-from django.test import override_settings, TestCase
-
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import TestCase, override_settings
 from opensearchpy import OpenSearch
-
 from project.configuration import create_elastic_search_index_configuration
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class BaseElasticSearchMixin(object):
@@ -55,7 +55,7 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("window-size=1920,1080")
 
-        cls.selenium = WebDriver(options=chrome_options)
+        cls.selenium = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         cls.selenium.implicitly_wait(10)
         cls.explicit_wait = 300
 

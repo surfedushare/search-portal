@@ -1,13 +1,15 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from django.core.management import CommandError
 from django.utils.timezone import now
-from datagrowth.resources.http.tasks import send
-from datagrowth.configuration import create_config
+from django.apps import apps
 
-from core.management.base import PipelineCommand
 from core.constants import HarvestStages
-from core.models import Harvest, DatasetVersion, Collection, Document, Extension
+from core.management.base import PipelineCommand
+from core.models import (Collection, DatasetVersion, Document, Extension,
+                         Harvest)
+from datagrowth.configuration import create_config
+from datagrowth.resources.http.tasks import send
 from harvester.utils.extraction import get_harvest_seeds
 
 
@@ -33,7 +35,9 @@ class Command(PipelineCommand):
         )
 
         if len(err):
-            raise CommandError(f"Failed to harvest seeds from {harvest.source.name}")
+            Resource = apps.get_model(harvest.source.repository)
+            error_counter = Counter([error.status for error in Resource.objects.filter(id__in=err)])
+            raise CommandError(f"Failed to harvest seeds from {harvest.source.name}: {error_counter}")
 
         harvest.harvested_at = current_time
         harvest.save()
@@ -106,9 +110,15 @@ class Command(PipelineCommand):
         self.logger.start("documents.delete")
         document_delete_total = 0
         for seeds_batch in self.batchify("update.delete.batch", deletion_seeds, len(deletion_seeds)):
-            ids = [seed["external_id"] for seed in seeds_batch]
-            for external_id in ids:
-                self.logger.report_material(external_id, state="delete")
+            seeds = list(seeds_batch)
+            for seed in seeds:
+                self.logger.report_material(
+                    seed["external_id"],
+                    state=seed["state"],
+                    copyright=seed.get("copyright", None),
+                    lowest_educational_level=seed.get("lowest_educational_level", None)
+                )
+            ids = [seed["external_id"] for seed in seeds]
             delete_total, delete_details = collection.documents.filter(reference__in=ids).delete()
             document_delete_total += delete_total
         self.logger.end("update.delete", success=document_delete_total)
@@ -169,4 +179,4 @@ class Command(PipelineCommand):
 
             self.handle_upsert_seeds(collection, upserts)
             self.handle_deletion_seeds(collection, deletes)
-            self.logger.report_results(spec_name, repository, collection.document_set.count())
+            self.logger.report_collection(collection, repository)

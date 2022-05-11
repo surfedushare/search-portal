@@ -7,8 +7,8 @@
       <div class="center_block center-header">
         <div class="theme__info">
           <img
-            src="/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+            src="../assets/images/pictures/rawpixel-760027-unsplash.jpg"
+            srcset="../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
             class="theme__info_bg"
           />
           <h2 class="theme__info_ttl">{{ getTitleTranslation() }}</h2>
@@ -257,7 +257,7 @@ export default {
 
     &:before {
       content: "";
-      background: url("/images/combined-shape.svg") no-repeat 0 0;
+      background: url("../assets/images/combined-shape.svg") no-repeat 0 0;
       position: absolute;
       left: -23px;
       top: -40px;
@@ -267,7 +267,7 @@ export default {
     &:after {
       content: "";
       position: absolute;
-      background: url("/images/message.svg") no-repeat 0 0;
+      background: url("../assets/images/message.svg") no-repeat 0 0;
       left: 44px;
       top: -17px;
       height: 33px;

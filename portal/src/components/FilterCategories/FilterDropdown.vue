@@ -105,7 +105,7 @@ input[type="checkbox"]:hover:before {
   border: 2px solid #008741;
 }
 input[type="checkbox"]:checked:before {
-  background: @green url("/images/checkmark.svg") 50% 50% / contain no-repeat;
+  background: @green url("../../assets/images/checkmark.svg") 50% 50% / contain no-repeat;
   border: 1px solid #2ca055;
   width: 16px;
   height: 16px;
@@ -132,14 +132,14 @@ input[type="checkbox"]:checked:before {
     width: 14px;
     height: 48px;
     right: 12px;
-    background: url("/images/dropdown-arrow-grey.svg") 50% 55% / contain
+    background: url("../../assets/images/dropdown-arrow-grey.svg") 50% 55% / contain
       no-repeat;
     &.active {
-      background: url("/images/dropdown-arrow-green.svg") 50% 55% / contain
+      background: url("../../assets/images/dropdown-arrow-green.svg") 50% 55% / contain
         no-repeat;
     }
     &:hover {
-      background: url("/images/dropdown-arrow-green.svg") 50% 55% / contain
+      background: url("../../assets/images/dropdown-arrow-green.svg") 50% 55% / contain
         no-repeat;
     }
   }

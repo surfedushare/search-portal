@@ -3,30 +3,12 @@
     <v-app>
       <div class="main_block">
         <MainHeader />
-
         <router-view />
-
         <MainFooter />
       </div>
     </v-app>
   </div>
 </template>
-
-<style lang="less">
-@import "styles/normalize.css";
-
-@import "variables.less";
-
-@import "styles/common.less";
-
-@import 'styles/forms.less';
-
-@import 'styles/vuetify-overrides.less';
-
-@import "styles/forms.less";
-
-@import "styles/vuetify-overrides.less";
-</style>
 
 <script>
 import { setLanguage } from '~/axios'
@@ -67,3 +49,11 @@ export default {
   },
 }
 </script>
+
+<style lang="less">
+@import "styles/normalize.css";
+@import "variables.less";
+@import "styles/common.less";
+@import "styles/forms.less";
+@import "styles/vuetify-overrides.less";
+</style>

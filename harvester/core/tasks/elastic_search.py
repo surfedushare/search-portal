@@ -9,12 +9,14 @@ from celery import current_app as app
 from datagrowth.utils.iterators import ibatch
 
 from harvester.tasks.base import DatabaseConnectionResetTask
+from core.logging import HarvestLogger
 from core.models import ElasticIndex, DatasetVersion, Extension
 
 
 @app.task(name="sync_indices", base=DatabaseConnectionResetTask)
 def sync_indices():
     dataset_version = DatasetVersion.objects.get_current_version()
+    logger = HarvestLogger(dataset_version.dataset.name, "sync_indices", {})
     indices_queryset = ElasticIndex.objects.filter(dataset_version=dataset_version, pushed_at__isnull=False)
     try:
         with atomic():
@@ -31,15 +33,17 @@ def sync_indices():
                             docs.append(doc.to_search())
                         elif language and language not in settings.ELASTICSEARCH_ANALYSERS and index.language == "unk":
                             docs.append(doc.to_search())
-                    index.push(chain(*docs), recreate=False)
+                    errors = index.push(chain(*docs), recreate=False)
+                    logger.elastic_errors(errors)
                 extensions_queryset = Extension.objects.filter(
                     modified_at__gte=index.pushed_at,
                     is_addition=True
                 )
                 for ext_batch in ibatch(extensions_queryset, batch_size=32):
                     exts = [ext.to_search() for ext in ext_batch if ext.get_language() == index.language]
-                    index.push(chain(*exts), recreate=False)
+                    errors = index.push(chain(*exts), recreate=False)
+                    logger.elastic_errors(errors)
                 index.pushed_at = current_time
                 index.save()
-    except DatabaseError:  # select_for_update lock failed
-        pass
+    except DatabaseError:
+        logger.warning("Unable to acquire a database lock for sync_indices")

@@ -158,10 +158,7 @@ export default {
       } else {
         return filterableCategories.filter((category) => {
           return (
-            category.children.length >= 2 ||
-            category.children.some((child) => {
-              return child.selected
-            })
+            category.children.length > 0
           )
         })
       }
@@ -182,7 +179,6 @@ export default {
       })
     },
     childExternalIds(categoryId, itemId) {
-      // he
       const category = this.materials.filter_categories.find(
         (category) => category.external_id === categoryId
       )
@@ -198,33 +194,34 @@ export default {
       return item.children?.reduce(iterator, [item.external_id])
     },
     onCheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || []
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      const existingItems = newSelectedFilters[categoryId] || []
       if (existingItems.indexOf(itemId) >= 0) {
         return
       }
-
       const filters = this.childExternalIds(categoryId, itemId)
-      this.selectedFilters[categoryId] = [...existingItems, ...filters]
-
-      return this.executeSearch(this.selectedFilters)
+      newSelectedFilters[categoryId] = [...existingItems, ...filters] || []
+      return this.executeSearch(newSelectedFilters)
     },
     onUncheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || []
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      const existingItems = newSelectedFilters[categoryId] || []
       const filters = this.childExternalIds(categoryId, itemId)
-      this.selectedFilters[categoryId] = existingItems.filter(
+      newSelectedFilters[categoryId] = existingItems.filter(
         (item) => !filters.includes(item)
       )
-      if (this.selectedFilters[categoryId].length === 0) {
-        this.$delete(this.selectedFilters, categoryId)
+      if (newSelectedFilters[categoryId].length === 0) {
+        this.$delete(newSelectedFilters, categoryId)
       }
       if (itemId === this.$route.params.filterId) {
-        return this.executeSearch(this.selectedFilters, 'materials-search')
+        return this.executeSearch(newSelectedFilters, 'materials-search')
       }
-      return this.executeSearch(this.selectedFilters)
+      return this.executeSearch(newSelectedFilters)
     },
     onDateChange(dates) {
-      this.selectedFilters[this.publisherDateExternalId] = dates
-      this.executeSearch(this.selectedFilters)
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      newSelectedFilters[this.publisherDateExternalId] = dates
+      this.executeSearch(newSelectedFilters)
     },
     async executeSearch(filters = {}, name = null) {
       name = name || this.$route.name
@@ -288,7 +285,7 @@ export default {
       vertical-align: middle;
       width: 13px;
       height: 13px;
-      background: url("/images/filters.svg") 50% 50% no-repeat;
+      background: url("../../assets/images/filters.svg") 50% 50% no-repeat;
       background-size: contain;
       margin: -3px 4px 0 0;
     }
@@ -305,7 +302,7 @@ export default {
       height: 23px;
       margin-right: 3px;
       border: none;
-      background: url(/images/close-black.svg) 50% 50% no-repeat;
+      background: url(../../assets/images/close-black.svg) 50% 50% no-repeat;
       background-size: 23px 23px;
     }
   }
@@ -328,11 +325,11 @@ export default {
       height: 20px;
       flex-shrink: 0;
       margin: 2px 5px 0 20px;
-      background: url("/images/plus-black.svg") 50% 50% / contain no-repeat;
+      background: url("../../assets/images/plus-black.svg") 50% 50% / contain no-repeat;
     }
 
     &--hide:after {
-      background: url("/images/min-black.svg") 50% 50% / contain no-repeat;
+      background: url("../../assets/images/min-black.svg") 50% 50% / contain no-repeat;
     }
   }
 
@@ -399,31 +396,31 @@ export default {
 
     &_icon {
       &.cc-by {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/sa-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/sa-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-nc,
       &.cc-by-nc-sa {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nc-black.svg") no-repeat 23px 0,
-          url("../../../public/images/sa-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0,
+          url("../../assets/images/sa-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
       &.cc-by-nd {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nd-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nd-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-sa {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nc-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
       &.cc-by-nc-nd {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nc-black.svg") no-repeat 23px 0,
-          url("../../../public/images/nd-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0,
+          url("../../assets/images/nd-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
 

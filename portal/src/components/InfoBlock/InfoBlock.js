@@ -7,7 +7,7 @@ export default {
   },
   computed: {
     logo() {
-      return this.logo_src || "/images/pictures/hoe-werkt-het.png";
+      return this.logo_src || "../../assets/images/pictures/hoe-werkt-het.png";
     },
   },
 };
