@@ -13,7 +13,7 @@
 #
 # For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
 
-image: python:3.9
+image: ubuntu:22.04
 
 variables:
   POSTGRES_DB: database
@@ -25,6 +25,7 @@ variables:
   POL_POSTGRES_DATABASE: $POSTGRES_DB
   POL_POSTGRES_USER: $POSTGRES_USER
   POL_SECRETS_POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+  DOCKER_AUTH_CONFIG: "{\"credsStore\": \"ecr-login\"}"
 
 stages:
   - install
@@ -43,19 +44,29 @@ cache:
 .tooling-job:
   before_script:
     - apt-get update
-    - apt-get install -y nodejs npm python3-dev gettext
+    - apt-get install -y nodejs npm gettext libmagic-dev
+    - source venv/bin/activate
+
+.build-job:
+  before_script:
+    - apt-get update
+    - apt-get install -y ca-certificates curl gnupg lsb-release nodejs npm gettext libmagic-dev
+    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    - apt-get update
+    - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
     - source venv/bin/activate
 
 install-job:
   stage: install
   before_script:
     - apt-get update
-    - apt-get install -y nodejs npm
+    - apt-get install -y nodejs npm python3.10-venv libxml2-dev libxslt-dev python3.10-dev
   script:
-    - python -m venv venv --copies
+    - python3 --version
+    - python3 -m venv venv --copies --upgrade-deps
     - source venv/bin/activate
     - pip install setuptools==58
-    - pip install --upgrade pip
     - pip install -r requirements.txt
     - invoke prepare-builds --commit $CI_COMMIT_SHA
     - cd portal
@@ -92,9 +103,14 @@ harvester-test-job:
 
 build-job:
   stage: build
+  extends: .build-job
+  services:
+    - docker:dind
   script:
-    - echo "Building application..."
-    - echo "Application successfully build."
+    - invoke aws.build harvester --commit $CI_COMMIT_SHA
+    - invoke aws.build service --commit $CI_COMMIT_SHA
+    - invoke aws.push harvester --commit $CI_COMMIT_SHA
+    - invoke aws.push service --commit $CI_COMMIT_SHA
 
 integration-test-job:
   stage: integration-test
