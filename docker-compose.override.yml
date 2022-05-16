@@ -17,7 +17,6 @@ services:
       - APPLICATION_MODE=${APPLICATION_MODE}
       - APPLICATION_PROJECT=${APPLICATION_PROJECT}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
-      - POL_POSTGRES_USER=${POL_POSTGRES_USER}
     ports:
       - "127.0.0.1:8000:8080"
     volumes:
@@ -44,7 +43,6 @@ services:
       - APPLICATION_MODE=${APPLICATION_MODE}
       - APPLICATION_PROJECT=${APPLICATION_PROJECT}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
-      - POL_POSTGRES_USER=${POL_POSTGRES_USER}
     ports:
       - "127.0.0.1:8888:8080"
     volumes:
@@ -68,7 +66,6 @@ services:
       - PYTHONUNBUFFERED=1
       - APPLICATION_MODE=${APPLICATION_MODE}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
-      - POL_SECRETS_SHAREKIT_API_KEY=${POL_SECRETS_SHAREKIT_API_KEY}
     volumes:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
