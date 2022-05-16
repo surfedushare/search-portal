@@ -67,7 +67,7 @@ def sync_sharekit_metadata():
             harvest.latest_update_at,
             include_no_url=True
         )
-        collection = dataset_version.collection_set.get(name=harvest.source.spec)
+        collection = dataset_version.collection_set.filter(name=harvest.source.spec).last()
         for seeds_batch in ibatch(seeds, batch_size=32):
             updates = []
             for seed in seeds_batch:
