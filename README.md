@@ -13,7 +13,7 @@ but there is also an admin available for that part.
 Prerequisites
 -------------
 
-This project uses ``Python 3.8``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
+This project uses ``Python 3.10``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
 Make sure they are installed on your system before installing the project.
 
 
@@ -31,9 +31,14 @@ External services like the database run in containers, so it's always necessary 
 To install the basic environment and tooling you'll need to first setup a local environment on a host machine with:
 
 ```bash
-python3 -m venv venv --copies
+# macos M1 specific:
+# brew update && brew upgrade pyenv
+# pyenv install 3.10.4 
+# pip install setuptools==58  
+
+python3 -m venv venv --copies --upgrade-deps
 source activate.sh
-pip install --upgrade pip
+pip install setuptools==58
 pip install -r requirements.txt
 ```
 

@@ -23,8 +23,7 @@ def create_decompound_dictionary(ctx, input_file):
 
 
 @task(help={
-    "decompound_file_path": "The decompound words dictionary to push to AWS",
-    "package_id": "When updating the AWS ES package_id that should get updated"
+    "decompound_file_path": "The decompound words dictionary to push to AWS"
 })
 def push_decompound_dictionary(ctx, decompound_file_path):
     """
