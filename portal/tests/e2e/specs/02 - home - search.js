@@ -52,4 +52,12 @@ describe("Home page - search", () => {
       .should("be.visible")
       .should("contain", "Er zijn geen resultaten voor 'xyzyz'");
   });
+
+  it.only("Should hide all filters when no search results", () => {
+    cy.searchFor("xyzyz")
+      .get(".filter-categories__title")
+      .should("not.be.visible")
+      .get(".filter-categories__items")
+      .should("not.be.visible")
+  });
 });
