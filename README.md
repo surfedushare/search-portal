@@ -13,7 +13,7 @@ but there is also an admin available for that part.
 Prerequisites
 -------------
 
-This project uses ``Python 3.8``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
+This project uses ``Python 3.10``, ``npm``, ``Docker``, ``docker-compose``, ``psql`` and ``chromedriver``.
 Make sure they are installed on your system before installing the project.
 
 
@@ -34,6 +34,7 @@ To install the basic environment and tooling you'll need to first setup a local 
 python3 -m venv venv --copies
 source activate.sh
 pip install --upgrade pip
+pip install setuptools==58
 pip install -r requirements.txt
 ```
 
