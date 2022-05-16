@@ -35,6 +35,8 @@ def get_harvest_seeds(repository, set_specification, latest_update, include_dele
             seed["state"] = "inactive"
         if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
             seed["state"] = "inactive"
+        if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "acceptance":
+            seed["state"] = "skipped"
         if seed.get("is_restricted", False):
             seed["analysis_allowed"] = False
     # And we return the seeds based on whether to include deleted or not
