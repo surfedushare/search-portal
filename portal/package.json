@@ -91,7 +91,7 @@
         {
           "singleline": 20,
           "multiline": {
-            "max": 1
+            "max": 4
           }
         }
       ],
@@ -99,7 +99,10 @@
       "vue/multiline-html-element-content-newline": "off",
       "vue/html-self-closing": "off",
       "vue/v-slot-style": "off",
-      "vue/no-mutating-props": "off"
+      "vue/no-mutating-props": "off",
+      "vue/first-attribute-linebreak": "off",
+      "vue/html-indent": "off",
+      "vue/html-closing-bracket-newline": "off"
     },
     "parserOptions": {
       "parser": "@babel/eslint-parser",
