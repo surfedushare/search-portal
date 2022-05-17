@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "vetur.validation.template": false,
+    "vetur.format.enable": false,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "extensions": {
+    "recommendations": ["dbaeumer.vscode-eslint", "amatiasq.sort-imports"]
+  }
+}
