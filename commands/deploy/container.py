@@ -94,6 +94,47 @@ def push(ctx, target, commit, docker_login=False):
 
 
 @task(help={
+    "target": "Name of the project you want to promote: service or harvester",
+    "commit": "The commit hash that the image to be promoted is tagged with"
+})
+def promote(ctx, target, commit, docker_login=False):
+    """
+    Pushes a previously made Docker image to the AWS container registry, that's shared between environments
+    """
+
+    # Check the input for validity
+    if target not in TARGETS:
+        raise Exit(f"Unknown target: {target}", code=1)
+    # Load info
+    target_info = TARGETS[target]
+    name = target_info["name"]
+    version = target_info["version"]
+
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
+
+    # Check if version tag already exists in registry
+    inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{version}", warn=True)
+    if inspection.exited == 0:
+        raise Exit(f"Can't promote commit to {version}, because that version tag already exists")
+
+    # Pulling the relevant images
+    ctx.run(f"docker pull {REPOSITORY}/{name}:{commit}", echo=True, pty=True)
+    ctx.run(f"docker pull {REPOSITORY}/{name}-nginx:{commit}", echo=True, pty=True)
+
+    # Tagging and pushing of our image and nginx image with version number from package files
+    ctx.run(f"docker tag {REPOSITORY}/{name}:{commit} {REPOSITORY}/{name}:{version}", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
+    ctx.run(f"docker tag {REPOSITORY}/{name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{version}", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{version}", echo=True, pty=True)
+
+
+@task(help={
     "target": "Name of the project you want to list images for: service or harvester",
 })
 def print_available_images(ctx, target):

@@ -152,8 +152,16 @@ integration-test-job:
     # TODO: we need Cypress to use service:8080 instead of localhost:8000
     # - APPLICATION_PROJECT=edusources invoke test.e2e
 
-deploy-job:
+deploy:
   stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "fako/gitlab-deploy"
+      when: manual
+    - if: $CI_COMMIT_BRANCH == "acceptance"
+      when: manual
+    - if: $CI_COMMIT_BRANCH == "edusources"
+      when: manual
+  extends: .docker-job
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - invoke aws.promote harvester --commit $CI_COMMIT_SHA
+    - invoke aws.promote service --commit $CI_COMMIT_SHA
