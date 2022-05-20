@@ -7,7 +7,7 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS
-from environments.project import REPOSITORY
+from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
 
 
 @task(help={
@@ -78,12 +78,13 @@ def push(ctx, target, commit, docker_login=False):
     target_info = TARGETS[target]
     name = target_info["name"]
 
-    # Login with Docker to AWS
-    ctx.run(
-        f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
-        f"docker login --username AWS --password-stdin {REPOSITORY}",
-        echo=True
-    )
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
 
     # Tagging and pushing of our image and nginx image
     ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{commit}", echo=True)

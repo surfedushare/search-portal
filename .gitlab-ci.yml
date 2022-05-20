@@ -16,16 +16,15 @@
 image: ubuntu:22.04
 
 variables:
-  POSTGRES_DB: database
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: qwerty
   POSTGRES_HOST_AUTH_METHOD: trust
   APPLICATION_CONTEXT: host
   APPLICATION_MODE: localhost
-  POL_POSTGRES_DATABASE: $POSTGRES_DB
   POL_POSTGRES_USER: $POSTGRES_USER
   POL_SECRETS_POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-  DOCKER_AUTH_CONFIG: "{\"credsStore\": \"ecr-login\"}"
+  DOCKER_AUTH_CONFIG: "{\"credHelpers\": {\"017973353230.dkr.ecr.eu-central-1.amazonaws.com\": \"ecr-login\"}}"
+  AWS_CONTAINER_REGISTRY: 017973353230.dkr.ecr.eu-central-1.amazonaws.com
 
 stages:
   - install
@@ -45,17 +44,33 @@ cache:
   before_script:
     - apt-get update
     - apt-get install -y nodejs npm gettext libmagic-dev
+    - export PATH=$PATH:portal/node_modules/.bin
     - source venv/bin/activate
 
-.build-job:
+.docker-job:
+  services:
+    - name: docker:dind
   before_script:
     - apt-get update
-    - apt-get install -y ca-certificates curl gnupg lsb-release nodejs npm gettext libmagic-dev
+    # General build requirements
+    - apt-get install -y ca-certificates curl gnupg lsb-release nodejs npm gettext libmagic-dev software-properties-common postgresql-client wget
+    # Install docker repository
     - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    # Install Chrome repository
+    - wget -O- https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | tee /usr/share/keyrings/google-chrome.gpg
+    - echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main | tee /etc/apt/sources.list.d/google-chrome.list
+    # Propagate added repositories and install actual packages
     - apt-get update
     - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    - apt-get install -y google-chrome-stable
+    # Cypress requirements
+    - apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+    # Prepare shell environment
     - source venv/bin/activate
+    - export PATH=$PATH:portal/node_modules/.bin
+    # Login to AWS container registry
+    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 322480324822.dkr.ecr.eu-central-1.amazonaws.com
 
 install-job:
   stage: install
@@ -70,7 +85,7 @@ install-job:
     - pip install -r requirements.txt
     - invoke prepare-builds --commit $CI_COMMIT_SHA
     - cd portal
-    - npm ci --no-optional
+    - npm ci
 
 lint-job:
   stage: lint-and-test
@@ -103,21 +118,39 @@ harvester-test-job:
 
 build-job:
   stage: build
-  extends: .build-job
-  services:
-    - docker:dind
+  extends: .docker-job
   script:
     - invoke aws.build harvester --commit $CI_COMMIT_SHA
     - invoke aws.build service --commit $CI_COMMIT_SHA
+    # TODO: create a check that doesn't try to push if commit tag exists?
     - invoke aws.push harvester --commit $CI_COMMIT_SHA
     - invoke aws.push service --commit $CI_COMMIT_SHA
 
 integration-test-job:
   stage: integration-test
+  services:
+    - name: $AWS_CONTAINER_REGISTRY/harvester:$CI_COMMIT_SHA
+      alias: harvester
+    - name: $AWS_CONTAINER_REGISTRY/search-portal:$CI_COMMIT_SHA
+      alias: service
+    - name: docker:dind
+    - name: postgres:12.2-alpine
+    - name: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+      alias: elasticsearch
+      command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
+  extends: .docker-job
+  variables:
+    POL_ELASTIC_SEARCH_ENABLE_DECOMPOUND_ANALYZERS: 0
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - docker ps
+    - cypress install
+    - invoke srv.setup-postgres --host postgres
+    - invoke hrv.setup-postgres --host postgres
+    - invoke hrv.index-dataset-version localhost -d test
+    - curl http://harvester:8888/
+    - curl http://service:8000/health
+    # TODO: we need Cypress to use service:8080 instead of localhost:8000
+    # - APPLICATION_PROJECT=edusources invoke test.e2e
 
 deploy-job:
   stage: deploy
