@@ -86,6 +86,11 @@ def push(ctx, target, commit, docker_login=False):
             echo=True
         )
 
+    # Check if version tag already exists in registry
+    inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{commit}", warn=True)
+    if inspection.exited == 0:
+        raise Exit(f"Can't push for commit that already has an image in the registry")
+
     # Tagging and pushing of our image and nginx image
     ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{commit}", echo=True)
     ctx.run(f"docker push {REPOSITORY}/{name}:{commit}", echo=True, pty=True)

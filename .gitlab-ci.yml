@@ -122,7 +122,6 @@ build-job:
   script:
     - invoke aws.build harvester --commit $CI_COMMIT_SHA
     - invoke aws.build service --commit $CI_COMMIT_SHA
-    # TODO: create a check that doesn't try to push if commit tag exists?
     - invoke aws.push harvester --commit $CI_COMMIT_SHA
     - invoke aws.push service --commit $CI_COMMIT_SHA
 
