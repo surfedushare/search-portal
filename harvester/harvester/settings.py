@@ -37,6 +37,7 @@ VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
 environment, session = create_configuration_and_session(service='harvester')
 credentials = session.get_credentials()
 IS_AWS = environment.aws.is_aws
+ENVIRONMENT = environment.env
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
