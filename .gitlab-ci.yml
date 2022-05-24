@@ -39,6 +39,7 @@ cache:
     - venv/
     - portal/node_modules
     - environments/info.json
+    - nginx/ip-whitelist.conf
 
 .tooling-job:
   before_script:
@@ -83,6 +84,7 @@ install-job:
     - source venv/bin/activate
     - pip install setuptools==58
     - pip install -r requirements.txt
+    - invoke aws.sync-repository-state --no-profile
     - invoke prepare-builds --commit $CI_COMMIT_SHA
     - cd portal
     - npm ci
