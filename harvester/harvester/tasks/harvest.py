@@ -1,17 +1,12 @@
-import logging
-from invoke import Context
-
-from django.conf import settings
-from django.core.management import call_command
-
-from harvester.settings import environment
-from harvester.celery import app
-from core.models import Dataset, Harvest
 from core.constants import HarvestStages, Repositories
+from core.logging import HarvestLogger
+from core.models import Dataset, Harvest
 from core.utils.harvest import prepare_harvest
-
-
-logger = logging.getLogger("harvester")
+from django.conf import settings
+from django.core.management import CommandError, call_command
+from harvester.celery import app
+from harvester.settings import environment
+from invoke import Context
 
 
 @app.task(name="harvest")
@@ -25,12 +20,20 @@ def harvest(reset=False, no_promote=False):
         # Preparing dataset state and deletes old model instances
         prepare_harvest(dataset, reset=reset)
         # First we call the commands that will query the repository interfaces
-        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.EDUREP}")
-        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.SHAREKIT}")
-        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.ANATOMY_TOOL}")
-        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.HAN}")
-        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.HKU}")
-        call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={Repositories.GREENI}")
+        repositories = [
+            Repositories.EDUREP, Repositories.SHAREKIT, Repositories.ANATOMY_TOOL,
+            Repositories.HANZE, Repositories.HAN, Repositories.HKU, Repositories.GREENI
+        ]
+        for repository in repositories:
+            try:
+                call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={repository}")
+            except CommandError as exc:
+                logger = HarvestLogger(dataset, "harvest_metadata", {
+                    "dataset": dataset.name,
+                    "repository": repository
+                })
+                logger.error(str(exc))
+
         # After getting all the metadata we'll download content
         call_command("harvest_basic_content", f"--dataset={dataset.name}", "--async")
         # We skip any video downloading/processing for now

@@ -3,7 +3,8 @@
     <div class="center_block">
       <div class="how_work__desc">
         <div class="how_work__bg_block">
-          <img :src="logo" class="preview__bg_block-img" />
+          <img v-if="logo_src" :src="logo_src" class="preview__bg_block-img" />
+          <img v-else src="../../assets/images/pictures/hoe-werkt-het.png" class="preview__bg_block-img" />
         </div>
         <div class="how_work__txt_block">
           <h2 class="how_work__txt_block__ttl">{{ title }}</h2>

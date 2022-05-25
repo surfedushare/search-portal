@@ -4,64 +4,41 @@
     <div>
       <div class="search__info">
         <div class="center_block center-header">
-          <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
+          <img class="main__info_bg" src="../assets/images/pictures/header-image.jpg" alt="header-image" />
           <SearchBar @onSearch="initialSearch" />
           <div ref="top"></div>
         </div>
       </div>
-
-      <div class="search__tools center_block">
-        <h2
-          v-if="materials && !materials_loading"
-          class="search__tools_results"
-        >{{ $t('Search-results') }} {{ `(${materials.records_total})` }}</h2>
-        <label for="search_order_select">{{ $t('sort_by') }}: &nbsp;</label>
-        <div class="search__chooser search__select">
-          <select id="search_order_select" v-model="sort_order" @change="changeOrdering">
-            <option
-              v-for="option in sort_order_options"
-              :key="option.value"
-              :value="option.value"
-            >&nbsp;&nbsp;{{ $t(option.value) }}</option>
-          </select>
-        </div>
-        <button
-          :class="{
+      <div class="search__container">
+        <div></div>
+        <FilterCategories v-model="search" :selected-filters="search.filters" :default-filter="$route.params.filterId"
+          :materials="materials" @reset="onSearch" />
+        <div class="search__tools">
+          <h2 v-if="materials && !materials_loading" class="search__tools_results">{{ $t('Search-results') }} {{
+              `(${materials.records_total})`
+          }}</h2>
+          <label for="search_order_select">{{ $t('sort_by') }}: &nbsp;</label>
+          <div class="search__chooser search__select">
+            <select id="search_order_select" v-model="sort_order" @change="changeOrdering">
+              <option v-for="option in sort_order_options" :key="option.value" :value="option.value">&nbsp;&nbsp;{{
+                  $t(option.value)
+              }}</option>
+            </select>
+          </div>
+          <button :class="{
             'search__tools_type_button--list': materials_in_line === 3,
             'search__tools_type_button--cards': materials_in_line === 1,
-          }"
-          class="search__tools_type_button"
-          @click.prevent="changeViewType"
-        >{{ materials_in_line === 1 ? $t('Card-view') : $t('List-view') }}</button>
-      </div>
-
-      <div class="search__wrapper center_block">
-        <div v-if="showFilterCategories" class="search__filter">
-          <div class="search__filter_content">
-            <FilterCategories
-              v-model="search"
-              :selected-filters="search.filters"
-              :default-filter="$route.params.filterId"
-              :materials="materials"
-              @reset="onSearch"
-            />
-          </div>
+          }" class="search__tools_type_button" @click.prevent="changeViewType">{{ materials_in_line === 1 ?
+    $t('Card-view') : $t('List-view')
+}}</button>
         </div>
-
         <div class="search__materials">
-          <Materials
-            :materials="materials"
-            :items-in-line="materials_in_line"
-            :did-you-mean="did_you_mean"
-            :search-term="search.search_text"
-          />
+          <Materials :materials="materials" :items-in-line="materials_in_line" :did-you-mean="did_you_mean"
+            :search-term="search.search_text" />
           <v-pagination
-            v-if="!materials_loading && materials && materials.records && materials.records.length"
-            v-model="materials.page"
-            :length="materials.total_pages"
-            :total-visible="11"
-            @input="onLoadPage"
-          ></v-pagination>
+            v-if="!materials_loading && materials && materials.records && materials.records.length && materials.total_pages"
+            v-model="materials.page" :length="materials.total_pages" :total-visible="11" @input="onLoadPage">
+          </v-pagination>
           <Spinner v-if="materials_loading" />
         </div>
       </div>
@@ -76,8 +53,8 @@ import Materials from '~/components/Materials/Materials.vue'
 import SearchBar from '~/components/Search/SearchBar.vue'
 import Spinner from '~/components/Spinner'
 import {
-addFilter, generateSearchMaterialsQuery,
-parseSearchMaterialsQuery
+  addFilter, generateSearchMaterialsQuery,
+  parseSearchMaterialsQuery
 } from '~/components/_helpers'
 import PageMixin from '~/pages/page-mixin'
 
@@ -89,6 +66,14 @@ export default {
     SearchBar
   },
   mixins: [PageMixin],
+  beforeRouteLeave(to, from, next) {
+    if (!from.params.filterId || to.params.filterId) {
+      next()
+      return
+    }
+    this.search.filters = {}
+    this.$store.dispatch('searchMaterials', this.search).finally(next)
+  },
   data() {
     const urlInfo = parseSearchMaterialsQuery(this.$route.query)
     return {
@@ -138,14 +123,6 @@ export default {
     this.loadFilterCategories().finally(() => {
       this.executeSearch()
     })
-  },
-  beforeRouteLeave(to, from, next) {
-    if (!from.params.filterId || to.params.filterId) {
-      next()
-      return
-    }
-    this.search.filters = {}
-    this.$store.dispatch('searchMaterials', this.search).finally(next)
   },
   methods: {
     initialSearch(search) {
@@ -228,6 +205,11 @@ export default {
 
 <style lang="less" scoped>
 @import "./../variables";
+
+.filter-categories {
+  min-width: 250px;
+}
+
 .search {
   position: relative;
 
@@ -259,6 +241,7 @@ export default {
 
       @media @tablet {
         padding: 65px 46px 95px 46px;
+
         h2 {
           font-size: 28px;
         }
@@ -295,11 +278,13 @@ export default {
       color: #fff;
       margin: 0 0 20px;
     }
+
     &_item {
       margin: 0 0 14px;
       list-style: none;
       padding: 0;
     }
+
     &_block {
       background: fade(@green, 90%);
       color: #fff;
@@ -313,26 +298,18 @@ export default {
     }
   }
 
-  &__wrapper {
-    @media @wide {
-      display: flex;
-    }
-    @media @desktop {
-      display: flex;
-    }
-    @media @tablet {
-      display: flex;
-    }
-    @media @mobile {
-      margin-bottom: 60px;
-    }
-    position: relative;
+  &__container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: auto auto;
+    grid-template-columns: minmax(200px, 275px) auto;
+    margin: 0 50px;
   }
 
   &__tools {
-    width: 100%;
-    justify-content: flex-end;
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: auto;
     margin-bottom: -30px;
     position: relative;
     z-index: 1;
@@ -343,7 +320,8 @@ export default {
     }
 
     &_results {
-      width: 485px;
+      display: grid;
+      margin-left: 50px;
     }
 
     &_dates {
@@ -363,19 +341,18 @@ export default {
       cursor: pointer;
 
       &--cards {
-        background: transparent url("/images/card-view-copy.svg") 0 50%
-          no-repeat;
+        background: transparent url("../assets/images/card-view-copy.svg") 0 50% no-repeat;
       }
 
       &--list {
-        background: transparent url("/images/list-view-copy.svg") 0 50%
-          no-repeat;
+        background: transparent url("../assets/images/list-view-copy.svg") 0 50% no-repeat;
       }
 
       &:focus,
       &:active {
         outline: none;
       }
+
       @media @tablet {
         display: none;
       }
@@ -388,43 +365,27 @@ export default {
     .select {
       height: 50px;
       width: 251px;
+
       @media @mobile {
         width: 100%;
       }
     }
   }
 
-  &__filter {
-    flex-shrink: 0;
-    margin: 0 44px 0 0;
-
-    @media @mobile {
-      width: 100%;
-      max-width: 400px;
-      margin: 0;
-    }
-
-    &_content {
-      width: 100%;
-      padding-top: 80px;
-      padding-bottom: 102px;
-
-      @media @mobile {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    }
-  }
 
   &__materials {
     position: relative;
-    flex: 1 1 auto;
-    padding: 60px 0 0;
-    width: 100%;
+    padding: 50px 20px;
+    margin: 0 20px;
+
+    @media @wide {
+      width: auto;
+    }
 
     @media @tablet {
-      width: 60%;
+      width: auto;
     }
+
     @media @mobile {
       padding: 0;
     }
@@ -434,6 +395,7 @@ export default {
     line-height: 50px;
     margin-right: 10px;
   }
+
   &__select {
     position: relative;
     overflow: hidden;
@@ -460,7 +422,7 @@ export default {
       transform: translate(0, -100%) rotate(90deg);
       width: 14px;
       height: 14px;
-      background: url("/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
+      background: url("../assets/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
       pointer-events: none;
     }
 
@@ -489,10 +451,12 @@ export default {
       &::-ms-expand {
         display: none;
       }
+
       &::-ms-value {
         background: transparent;
         color: @dark-grey;
       }
+
       &:-moz-focusring {
         color: transparent;
         text-shadow: 0 0 0 #000;

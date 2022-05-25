@@ -7,13 +7,15 @@ to update the indices.
 """
 
 from unittest.mock import patch
+from datetime import datetime
 
 from django.test import TestCase, override_settings
 from django.core.management import call_command
+from django.utils.timezone import make_aware
 
-from core.models import Dataset, DatasetVersion, ElasticIndex
+from core.models import Dataset, DatasetVersion, ElasticIndex, Collection, Document
 from core.tests.mocks import get_elastic_client_mock
-from core.tests.factories import DocumentFactory
+from core.tests.factories import DatasetFactory, create_dataset_version, DocumentFactory
 
 
 class ElasticSearchClientTestCase(TestCase):
@@ -34,7 +36,7 @@ class ElasticSearchClientTestCase(TestCase):
             "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "is_part_of", "preview_path",
             "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_types",
             "text", "suggest_phrase", "research_object_type", "research_themes", "parties", "video", "state",
-            "extension", "learning_material_themes_normalized",
+            "extension", "learning_material_themes_normalized", "consortium"
         }
         has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]
         if not has_text:
@@ -66,7 +68,7 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }
@@ -145,7 +147,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }
@@ -219,7 +221,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             DocumentFactory.create(dataset_version=old_version, collection=collection)
         # Expectations
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }
@@ -281,7 +283,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
-            "en": 7,
+            "en": 8,
             "nl": 2,
             "unk": 3
         }
@@ -335,3 +337,78 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
         self.assertEqual(dataset_version.id, 1)
+
+
+class TestIndexDatasetVersionFallback(ElasticSearchClientTestCase):
+    """
+    This test case creates two dataset versions and drops Document count to below the 5% mark for non-current version.
+    That should result in the new version becoming the current version,
+    but the documents should come from the old version as the new version got corrupted.
+    """
+
+    elastic_client = get_elastic_client_mock(has_history=True)
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.dataset = DatasetFactory(name="test")
+        now = make_aware(datetime.now())
+        cls.docs_count = 22
+        create_dataset_version(cls.dataset, "0.0.3", now, include_current=True, copies=2, docs=cls.docs_count)
+        cls.original_version = cls.dataset.versions.filter(is_current=True).last()
+        cls.new_version = cls.dataset.versions.filter(is_current=False).last()
+        for doc in cls.new_version.document_set.all()[:3]:
+            doc.delete()
+
+    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.streaming_bulk")
+    @patch("core.logging.HarvestLogger.info")
+    def test_index(self, info_logger, streaming_bulk, get_es_client):
+
+        expected_doc_count = {
+            "en": 0,
+            "nl": 22,
+            "unk": 0
+        }
+
+        call_command("index_dataset_version", "--dataset=test")
+
+        # Check models update
+        current_version = DatasetVersion.objects.get_current_version()
+        self.assertEqual(current_version.id, self.new_version.id, "Expected new version to become current version")
+        self.assertEqual(
+            Document.objects.filter(dataset_version=None).count(), 19,
+            "Expected all documents from corrupted collection to get de-linked from dataset version"
+        )
+        self.assertEqual(
+            Document.objects.filter(dataset_version=current_version).count(), 22,
+            "Expected new current version to gain previous documents"
+        )
+        self.assertEqual(
+            Collection.objects.all().count(), 3,
+            "Expected corrupted version to copy collection from previous current version, creating a new Collection"
+        )
+
+        # Asserting calls to Elastic Search library
+        self.assertEqual(get_es_client.call_count, 3,
+                         "Expected an Elastic Search client to get created for each language")
+        for args, kwargs in streaming_bulk.call_args_list:
+            client, docs = args
+            index_name, version, version_id, language = kwargs["index"].split("-")
+            self.assertEqual(int(version_id), self.new_version.id, "Expected new version to get promoted")
+            self.assertEqual(len(docs), expected_doc_count[language])
+            for doc in docs:
+                self.assert_document_structure(doc)
+            self.assertEqual(index_name, "test")
+            self.assertEqual(version, "003")
+
+        # Check that cleanup still works correctly even if documents lost direct versions link
+        deleted = current_version.delete()
+        self.assertEqual(
+            deleted,
+            (44, {
+                "core.DatasetVersion": 1,
+                "core.Collection": 2,
+                "core.Document": 41
+            })
+        )

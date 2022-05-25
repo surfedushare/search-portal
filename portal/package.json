@@ -15,17 +15,17 @@
     "@fortawesome/fontawesome-free": "5.14.0",
     "@sentry/browser": "5.26.0",
     "@sentry/integrations": "5.20.1",
-    "axios": "0.21.2",
-    "cookie": "0.4.1",
-    "core-js": "3.6.5",
-    "js-cookie": "2.2.1",
-    "lodash": "^4.17.21",
-    "luxon": "^2.0.2",
+    "axios": "0.26.1",
+    "cookie": "0.5.0",
+    "core-js": "3.21.1",
+    "is-uuid": "^1.0.2",
+    "js-cookie": "3.0.1",
+    "lodash": "4.17.21",
+    "luxon": "2.3.1",
     "numeral": "2.0.6",
     "tiptap": "1.32.2",
-    "tiptap-extensions": "1.33.2",
-    "uuid-validate": "0.0.3",
-    "vue": "^2.6.11",
+    "tiptap-extensions": "1.35.2",
+    "vue": "2.6.14",
     "vue-autosuggest": "^2.2.0",
     "vue-click-outside": "1.1.0",
     "vue-clipboard2": "0.3.1",
@@ -39,37 +39,40 @@
     "vue-social-sharing": "2.4.7",
     "vuedraggable": "^2.24.3",
     "vuejs-datepicker": "1.6.2",
-    "vuetify": "^2.6.3",
+    "vuetify": "2.6.4",
     "vuex": "3.5.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.4.6",
-    "@vue/cli-plugin-eslint": "^4.4.6",
-    "@vue/cli-service": "^4.5.15",
-    "babel-eslint": "^10.1.0",
+    "@babel/eslint-parser": "7.17.0",
+    "@vue/cli-plugin-babel": "5.0.4",
+    "@vue/cli-plugin-eslint": "5.0.4",
+    "@vue/cli-service": "5.0.4",
     "browserslist": "4.16.5",
     "deepmerge": "^4.2.2",
-    "eslint": "^7.6.0",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint": "8.13.0",
+    "eslint-plugin-vue": "8.6.0",
     "glob-parent": ">=5.1.2",
     "highlight.js": ">=10.4.1",
+    "html-webpack-plugin": "5.5.0",
     "is-svg": ">=4.2.2",
     "json-schema": ">=0.4.0",
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
     "node-forge": ">=1.3.0",
-    "npm-check": "5.9.2",
     "nth-check": ">=2.0.1",
-    "sass": "^1.32.13",
+    "sass": "1.32.13",
     "sass-loader": "^10.1.1",
-    "trim-newlines": ">=3.0.1",
-    "vue-cli-plugin-vuetify": "~2.4.6",
-    "vue-template-compiler": "^2.6.11",
+    "vue-cli-plugin-vuetify": "2.4.8",
+    "vue-template-compiler": "2.6.14",
     "vuetify-loader": "^1.7.3",
-    "webpack": "4.6.0",
-    "webpack-bundle-analyzer": "^3.8.0",
-    "html-webpack-plugin": "4.5.2",
+    "webpack": "5.72.0",
+    "webpack-bundle-analyzer": "4.5.0",
     "webpack-bundle-tracker": "0.4.3"
+  },
+  "optionalDependencies": {
+    "@cypress/webpack-dev-server": "1.8.4",
+    "@vue/cli-plugin-e2e-cypress": "5.0.4",
+    "eslint-plugin-cypress": "2.12.1"
   },
   "eslintConfig": {
     "root": true,
@@ -82,22 +85,28 @@
       "eslint:recommended"
     ],
     "rules": {
+      "vue/multi-word-component-names": "off",
       "vue/max-attributes-per-line": [
         2,
         {
           "singleline": 20,
           "multiline": {
-            "max": 1,
-            "allowFirstLine": false
+            "max": 4
           }
         }
       ],
       "vue/singleline-html-element-content-newline": "off",
       "vue/multiline-html-element-content-newline": "off",
-      "vue/html-self-closing": "off"
+      "vue/html-self-closing": "off",
+      "vue/v-slot-style": "off",
+      "vue/no-mutating-props": "off",
+      "vue/first-attribute-linebreak": "off",
+      "vue/html-indent": "off",
+      "vue/html-closing-bracket-newline": "off"
     },
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser",
+      "requireConfigFile": false
     }
   },
   "postcss": {
@@ -111,10 +120,5 @@
     "not ie <= 10"
   ],
   "license": "MIT",
-  "repository": "A frontend for searching open access higher education learning materials",
-  "optionalDependencies": {
-    "@cypress/webpack-dev-server": "^1.8.3",
-    "@vue/cli-plugin-e2e-cypress": "^4.5.17",
-    "eslint-plugin-cypress": "^2.12.1"
-  }
+  "repository": "A frontend for searching open access higher education learning materials"
 }

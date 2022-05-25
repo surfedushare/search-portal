@@ -1,6 +1,6 @@
 <template>
   <section class="filter-categories">
-    <h3 class="filter-categories__title">{{ $t('Filter') }}</h3>
+    <h3 v-show="materials.records.length > 0" class="filter-categories__title">{{ $t('Filter') }}</h3>
 
     <div v-if="selectionFilterItems.length" class="filter-categories__links">
       <p class="filter-categories__reset">{{ $t('Selected-filters') }}</p>
@@ -12,36 +12,18 @@
           {{ filter.parent.title_translations[$i18n.locale] }}:&nbsp;
           <b>{{ filter.title_translations[$i18n.locale] }}</b>
         </span>
-        <button
-          class="remove-icon"
-          @click="onUncheck(filter.parent.external_id, filter.external_id)"
-        ></button>
+        <button class="remove-icon" @click="onUncheck(filter.parent.external_id, filter.external_id)"></button>
       </li>
     </ul>
-
-    <div class="filter-categories__items">
+    <div v-show="materials.records.length > 0" class="filter-categories__items">
       <ul v-if="filterableCategories.length" class="filter-categories__items_wrapper">
         <template v-for="category in filterableCategories">
-          <DatesRange
-            v-if="category.external_id === publisherDateExternalId"
-            :key="category.external_id"
-            :data-test="category.external_id"
-            :category="category"
-            :dates="datesRangeFilter()"
-            :inline="true"
-            :disable-future-days="true"
-            theme="min"
-            @input="onDateChange"
-          />
+          <DatesRange v-if="category.external_id === publisherDateExternalId" :key="category.external_id"
+            :data-test="category.external_id" :category="category" :dates="datesRangeFilter()" :inline="true"
+            :disable-future-days="true" theme="min" @input="onDateChange" />
 
-          <FilterCategory
-            v-else-if="hasVisibleChildren(category)"
-            :key="category.id"
-            :data-test="category.external_id"
-            :category="category"
-            @check="onCheck"
-            @uncheck="onUncheck"
-          />
+          <FilterCategory v-else-if="hasVisibleChildren(category)" :key="category.id" :data-test="category.external_id"
+            :category="category" @check="onCheck" @uncheck="onUncheck" />
         </template>
       </ul>
     </div>
@@ -94,7 +76,7 @@ export default {
       }
       return flatMap(this.selectedFilters, (filter_ids, categoryId) => {
 
-        const cat = this.materials.filter_categories?.find((category) => {
+        const cat = this.materials?.filter_categories?.find((category) => {
           return category.external_id === categoryId
         })
         const results = filter_ids.map((filter_id) => {
@@ -110,7 +92,7 @@ export default {
       })
     },
     filterableCategories() {
-      if (!this.materials.filter_categories) {
+      if (!this.materials?.filter_categories) {
         return []
       }
       // remove all filters that should not be shown to the users
@@ -158,10 +140,7 @@ export default {
       } else {
         return filterableCategories.filter((category) => {
           return (
-            category.children.length >= 2 ||
-            category.children.some((child) => {
-              return child.selected
-            })
+            category.children.length > 0
           )
         })
       }
@@ -182,7 +161,6 @@ export default {
       })
     },
     childExternalIds(categoryId, itemId) {
-      // he
       const category = this.materials.filter_categories.find(
         (category) => category.external_id === categoryId
       )
@@ -198,33 +176,34 @@ export default {
       return item.children?.reduce(iterator, [item.external_id])
     },
     onCheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || []
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      const existingItems = newSelectedFilters[categoryId] || []
       if (existingItems.indexOf(itemId) >= 0) {
         return
       }
-
       const filters = this.childExternalIds(categoryId, itemId)
-      this.selectedFilters[categoryId] = [...existingItems, ...filters]
-
-      return this.executeSearch(this.selectedFilters)
+      newSelectedFilters[categoryId] = [...existingItems, ...filters] || []
+      return this.executeSearch(newSelectedFilters)
     },
     onUncheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || []
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      const existingItems = newSelectedFilters[categoryId] || []
       const filters = this.childExternalIds(categoryId, itemId)
-      this.selectedFilters[categoryId] = existingItems.filter(
+      newSelectedFilters[categoryId] = existingItems.filter(
         (item) => !filters.includes(item)
       )
-      if (this.selectedFilters[categoryId].length === 0) {
-        this.$delete(this.selectedFilters, categoryId)
+      if (newSelectedFilters[categoryId].length === 0) {
+        this.$delete(newSelectedFilters, categoryId)
       }
       if (itemId === this.$route.params.filterId) {
-        return this.executeSearch(this.selectedFilters, 'materials-search')
+        return this.executeSearch(newSelectedFilters, 'materials-search')
       }
-      return this.executeSearch(this.selectedFilters)
+      return this.executeSearch(newSelectedFilters)
     },
     onDateChange(dates) {
-      this.selectedFilters[this.publisherDateExternalId] = dates
-      this.executeSearch(this.selectedFilters)
+      let newSelectedFilters = JSON.parse(JSON.stringify(this.selectedFilters));
+      newSelectedFilters[this.publisherDateExternalId] = dates
+      this.executeSearch(newSelectedFilters)
     },
     async executeSearch(filters = {}, name = null) {
       name = name || this.$route.name
@@ -273,6 +252,7 @@ export default {
     display: flex;
     width: 100%;
     justify-content: space-between;
+
     p {
       font-family: @second-font;
       font-size: 16px;
@@ -288,24 +268,27 @@ export default {
       vertical-align: middle;
       width: 13px;
       height: 13px;
-      background: url("/images/filters.svg") 50% 50% no-repeat;
+      background: url("../../assets/images/filters.svg") 50% 50% no-repeat;
       background-size: contain;
       margin: -3px 4px 0 0;
     }
   }
+
   .selected-filters {
     padding-left: 0;
     margin-bottom: 17px;
   }
+
   .selected-filters li {
     display: flex;
     justify-content: space-between;
+
     .remove-icon {
       width: 23px;
       height: 23px;
       margin-right: 3px;
       border: none;
-      background: url(/images/close-black.svg) 50% 50% no-repeat;
+      background: url(../../assets/images/close-black.svg) 50% 50% no-repeat;
       background-size: 23px 23px;
     }
   }
@@ -328,17 +311,18 @@ export default {
       height: 20px;
       flex-shrink: 0;
       margin: 2px 5px 0 20px;
-      background: url("/images/plus-black.svg") 50% 50% / contain no-repeat;
+      background: url("../../assets/images/plus-black.svg") 50% 50% / contain no-repeat;
     }
 
     &--hide:after {
-      background: url("/images/min-black.svg") 50% 50% / contain no-repeat;
+      background: url("../../assets/images/min-black.svg") 50% 50% / contain no-repeat;
     }
   }
 
   &__item--full-visible &__item_title {
     border-bottom: 1px solid @light-grey;
     padding-bottom: 6px;
+
     &:after {
       display: none;
     }
@@ -399,31 +383,35 @@ export default {
 
     &_icon {
       &.cc-by {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/sa-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/sa-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
+
       &.cc-by-nc,
       &.cc-by-nc-sa {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nc-black.svg") no-repeat 23px 0,
-          url("../../../public/images/sa-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0,
+          url("../../assets/images/sa-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
+
       &.cc-by-nd {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nd-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nd-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
+
       &.cc-by-sa {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nc-black.svg") no-repeat 23px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0;
         background-size: contain;
       }
+
       &.cc-by-nc-nd {
-        background: url("../../../public/images/by-black.svg") no-repeat 0 0,
-          url("../../../public/images/nc-black.svg") no-repeat 23px 0,
-          url("../../../public/images/nd-black.svg") no-repeat 46px 0;
+        background: url("../../assets/images/by-black.svg") no-repeat 0 0,
+          url("../../assets/images/nc-black.svg") no-repeat 23px 0,
+          url("../../assets/images/nd-black.svg") no-repeat 46px 0;
         background-size: contain;
       }
 
@@ -433,7 +421,8 @@ export default {
       display: block;
       background-size: contain;
 
-      @media @tablet, @mobile {
+      @media @tablet,
+      @mobile {
         margin-bottom: 25px;
       }
 
@@ -472,6 +461,7 @@ export default {
     margin-left: 20px;
     padding-left: 0;
     border-left: 1px solid lightgray;
+
     li {
       padding-left: 20px;
     }

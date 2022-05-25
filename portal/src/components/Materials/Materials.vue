@@ -267,7 +267,7 @@ export default {
 
     &.deleting {
       .select-icon {
-        background: @light-grey url("/images/close-grey.svg") 50% 50% no-repeat;
+        background: @light-grey url("../../assets/images/close-grey.svg") 50% 50% no-repeat;
       }
       .selected {
         opacity: 0.5;
@@ -276,10 +276,10 @@ export default {
     }
     &.adding {
       .select-icon {
-        background: @light-grey url("/images/plus-black.svg") 50% 50% no-repeat;
+        background: @light-grey url("../../assets/images/plus-black.svg") 50% 50% no-repeat;
       }
       .select-icon.selected {
-        background: @green url("/images/plus-white.svg") 50% 50% no-repeat;
+        background: @green url("../../assets/images/plus-white.svg") 50% 50% no-repeat;
       }
     }
   }
@@ -297,7 +297,7 @@ export default {
     top: -3px;
     overflow: hidden;
     color: transparent;
-    background: url("/images/label.svg") 50% 0 no-repeat;
+    background: url("../../assets/images/label.svg") 50% 0 no-repeat;
   }
   .not_found {
     display: grid;
@@ -313,7 +313,7 @@ export default {
     &__icon {
       display: inline-block;
       border-radius: 50%;
-      background: @green url("/images/search-white.svg") 50% 50% no-repeat;
+      background: @green url("../../assets/images/search-white.svg") 50% 50% no-repeat;
       height: 48px;
       width: 48px;
     }

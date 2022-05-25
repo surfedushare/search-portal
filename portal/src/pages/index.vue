@@ -3,7 +3,7 @@
     <div>
       <div class="main__info">
         <div class="center_block center-header">
-          <img class="main__info_bg" src="/images/pictures/header-image.jpg" alt="header-image" />
+          <img class="main__info_bg" src="../assets/images/pictures/header-image.jpg" alt="header-image" />
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
@@ -41,7 +41,7 @@
       <div class="center_block">
         <section class="preview">
           <div class="preview__bg_block">
-            <img src="/images/pictures/hoe-werkt-het.png" class="preview__bg_block-img" />
+            <img src="../assets/images/pictures/hoe-werkt-het.png" class="preview__bg_block-img" />
           </div>
           <div class="preview__text_block">
             <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
@@ -179,7 +179,7 @@ export default {
       margin: 0;
       list-style: none;
       padding: 5px 0 8px 40px;
-      background: url("/images/check-white.svg") 0 0 no-repeat;
+      background: url("../assets/images/check-white.svg") 0 0 no-repeat;
 
       @media @mobile {
         background-size: 20px 20px;
@@ -243,7 +243,7 @@ export default {
         }
         &:before {
           content: "";
-          background: url("/images/bubble-background-green.svg") 0 0 no-repeat;
+          background: url("../assets/images/bubble-background-green.svg") 0 0 no-repeat;
           position: absolute;
           top: -36px;
           left: -46px;
@@ -330,7 +330,7 @@ export default {
         display: flex;
         content: "";
         position: absolute;
-        background: url("/images/combined-shape.svg") no-repeat 0 0;
+        background: url("../assets/images/combined-shape.svg") no-repeat 0 0;
         right: -100px;
         top: 0;
         height: 109px;
@@ -339,7 +339,7 @@ export default {
       &:after {
         content: "";
         position: absolute;
-        background: url("/images/message.svg") no-repeat 0 0;
+        background: url("../assets/images/message.svg") no-repeat 0 0;
         right: -82px;
         top: 22px;
         height: 33px;

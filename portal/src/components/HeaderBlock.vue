@@ -3,10 +3,10 @@
     <div class="header-block">
       <img
         class="bg"
-        src="/images/pictures/rawpixel-760027-unsplash.jpg"
+        src="../assets/images/pictures/rawpixel-760027-unsplash.jpg"
         srcset="
-          /images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
-          /images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
+          ../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+          ../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
         "
       >
       <h2 class="header-title">

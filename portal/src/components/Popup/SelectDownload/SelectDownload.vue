@@ -10,7 +10,7 @@
         <h2 class="popup__title">
           {{ $t('View-materials') }}
         </h2>
-        <div>
+        <div class="download-list">
           <a
             v-for="(file, ix) in material.files"
             :key="ix"
@@ -55,10 +55,13 @@ export default {
   text-overflow: ellipsis;
 
   margin-bottom: 15px;
-  background-image: url('/images/open-link-black.svg');
+  background-image: url('../../../assets/images/open-link-black.svg');
   background-position: 17px 15px;
   background-repeat: no-repeat;
   background-size: 25px 25px;
   padding: 19px 23px 19px 62px;
+}
+.download-list {
+  overflow-y: scroll;
 }
 </style>
