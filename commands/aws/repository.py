@@ -16,7 +16,7 @@ def sync_repository_state(ctx, push=False, no_profile=False):
     A pull needs to be performed in order to be able to run tests or make builds.
     APPLICATION_MODE needs to be production in order to run this command.
     """
-    if push and ctx.config.env != "development":
+    if push and ctx.config.env != "production":
         Exit("Can't push to environment other than production")
     elif push:
         sure = input("You are about to overwrite production configuration with your local configuration. Are you sure?")
