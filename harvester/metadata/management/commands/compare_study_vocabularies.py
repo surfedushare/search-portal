@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from metadata.models import MetadataValue
 
 
-uuid4hex = re.compile('(?P<uuid>[0-9a-f]{8}\-[0-9a-f]{4}\-4[0-9a-f]{3}\-[89ab][0-9a-f]{3}\-[0-9a-f]{12})', re.I)
+uuid4hex = re.compile(r'(?P<uuid>[0-9a-f]{8}\-[0-9a-f]{4}\-4[0-9a-f]{3}\-[89ab][0-9a-f]{3}\-[0-9a-f]{12})', re.I)
 
 
 class Command(BaseCommand):
