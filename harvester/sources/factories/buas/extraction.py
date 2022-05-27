@@ -51,8 +51,7 @@ class BuasPureResourceFactory(factory.django.DjangoModelFactory):
         response_type = "initial"
         response_file = f"fixture.{SLUG}.{response_type}.{self.number}.json"
         response_file_path = os.path.join(
-            settings.BASE_DIR, "sources", "factories",
-            SLUG,
+            settings.BASE_DIR, "sources", "factories", "fixtures",
             response_file
         )
         with open(response_file_path, "r") as response:
