@@ -5,8 +5,8 @@
   "scripts": {
     "serve": "npm_config_server=vue vue-cli-service serve",
     "build": "vue-cli-service build --dest ../service/surf/apps/materials/static/portal/",
-    "test:e2e": "npm_config_server=vue vue-cli-service test:e2e --headless --mode e2e --browser chrome",
-    "test:dev": "npm_config_server=vue vue-cli-service test:e2e --mode e2e --browser chrome",
+    "test:e2e": "npm_config_server=vue vue-cli-service test:e2e --headless --mode e2e --browser chromium",
+    "test:dev": "npm_config_server=vue vue-cli-service test:e2e --mode e2e --browser chromium",
     "lint": "eslint --ext .vue,.js src",
     "watch": "vue-cli-service build --watch --dest ../service/surf/apps/materials/static/portal/"
   },
@@ -91,7 +91,7 @@
         {
           "singleline": 20,
           "multiline": {
-            "max": 1
+            "max": 4
           }
         }
       ],
@@ -99,7 +99,10 @@
       "vue/multiline-html-element-content-newline": "off",
       "vue/html-self-closing": "off",
       "vue/v-slot-style": "off",
-      "vue/no-mutating-props": "off"
+      "vue/no-mutating-props": "off",
+      "vue/first-attribute-linebreak": "off",
+      "vue/html-indent": "off",
+      "vue/html-closing-bracket-newline": "off"
     },
     "parserOptions": {
       "parser": "@babel/eslint-parser",
