@@ -10,8 +10,8 @@
         </div>
       </div>
       <div class="search__container">
-        <div></div>
-        <FilterCategories v-model="search" :selected-filters="search.filters" :default-filter="$route.params.filterId"
+        <div><!-- filler --></div>
+        <FilterCategories v-if="materials" v-model="search" :selected-filters="search.filters" :default-filter="$route.params.filterId"
           :materials="materials" @reset="onSearch" />
         <div class="search__tools">
           <h2 v-if="materials && !materials_loading" class="search__tools_results">{{ $t('Search-results') }} {{
@@ -303,7 +303,9 @@ export default {
     grid-auto-flow: column;
     grid-template-rows: auto auto;
     grid-template-columns: minmax(200px, 275px) auto;
-    margin: 0 50px;
+    margin: 0 auto;
+    max-width: 1296px;
+    padding: 0 25px;
   }
 
   &__tools {
@@ -375,8 +377,7 @@ export default {
 
   &__materials {
     position: relative;
-    padding: 50px 20px;
-    margin: 0 20px;
+    padding-left: 25px;
 
     @media @wide {
       width: auto;
