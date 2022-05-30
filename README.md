@@ -140,7 +140,9 @@ This section outlines the most common options for deployment.
 Use `invoke -h <command>` to learn more about any invoke command.
 
 Before deploying you'll want to decide on a version number.
-To see a list of all currently available images for a project and the versions they are tagged with you can run:
+To see a list of all currently available images for a project and the versions they are tagged with you can run
+the following command.
+Where `<target-project-name>` will be `harvester` or `service`.
 
 ```bash
 invoke aws.print-available-images <target-project-name>
