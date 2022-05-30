@@ -47,6 +47,8 @@ pip install -r requirements.txt
 Then copy the ``.env.example`` file to ``.env`` and update the variable values to fit your system.
 For a start the default values will do.
 
+When using vscode copy `.env` and `activate.sh` to venv/bin
+
 If you want to run the project outside of a container you'll need to add the following to your hosts file:
 ```
 127.0.0.1 postgres
