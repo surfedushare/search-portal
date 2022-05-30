@@ -15,11 +15,9 @@
           :dark-stars="true"
         />
         <div
-          v-if="itemsInLine === 1 && material.description"
           class="materials__item_description"
-        >
-          {{ material.description }}
-        </div>
+          v-html="hightlightedSearchResult"
+        ></div>
       </div>
 
       <div class="materials__item_subinfo">
@@ -75,6 +73,7 @@
 <script>
 import StarRating from "../../StarRating/index";
 import { formatDate } from "../../_helpers";
+import DOMPurify from "dompurify";
 
 export default {
   name: "Material",
@@ -107,6 +106,14 @@ export default {
     },
     formattedPublishedAt() {
       return formatDate(this.material.published_at, this.$i18n.locale);
+    },
+    hightlightedSearchResult() {
+      const description = this.material.highlight?.description
+        ? this.material.highlight?.description[0]
+        : this.material.highlight?.text
+        ? this.material.highlight?.text[0]
+        : this.material.description;
+      return DOMPurify.sanitize(description);
     },
   },
   methods: {
@@ -193,19 +200,14 @@ export default {
     }
 
     &_subinfo {
-      display: flex;
+      display: grid;
       font-size: 14px;
-      line-height: 22px;
-      justify-content: space-around;
-      margin: 10px 20px;
+      margin: 20px;
+      grid-template-columns: auto auto auto;
     }
 
     &_educationallevel {
-      display: inline-block;
-      overflow: hidden;
-      max-height: 20px;
-      max-width: 100px;
-      text-overflow: ellipsis;
+      padding-right: 10px;
       &:before {
         content: "";
         display: inline-block;
@@ -364,6 +366,10 @@ export default {
 
     &_description {
       padding: 16px 0 0;
+      /deep/ em {
+        background-color: yellow;
+        font-style: normal;
+      }
     }
   }
 

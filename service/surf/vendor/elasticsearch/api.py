@@ -120,6 +120,11 @@ class ElasticSearchApiClient:
             if field.source != "*":
                 continue
             record[field_name] = getattr(serializer, field.method_name)(data)
+
+        # Add highlight to the record
+        if hit.get("highlight", 0):
+            record["highlight"] = hit["highlight"]
+
         return record
 
     def autocomplete(self, query):
@@ -187,6 +192,14 @@ class ElasticSearchApiClient:
             'size': page_size,
             'post_filter': {
                 "bool": defaultdict(list)
+            },
+            'highlight': {
+                'number_of_fragments': 1,
+                'fragment_size': 120,
+                'fields': {
+                    'description': {},
+                    'text': {}
+                }
             }
         }
 
