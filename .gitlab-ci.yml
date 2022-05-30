@@ -58,7 +58,7 @@ cache:
     - source venv/bin/activate
     - export PATH=$PATH:portal/node_modules/.bin
     # Login to AWS container registry
-    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 322480324822.dkr.ecr.eu-central-1.amazonaws.com
+    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $AWS_CONTAINER_REGISTRY
 
 install-job:
   stage: install
