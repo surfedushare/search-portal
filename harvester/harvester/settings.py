@@ -146,7 +146,7 @@ SILENCED_SYSTEM_CHECKS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'harvester',
+        'NAME': environment.postgres.database,
         'USER': environment.postgres.user,
         'PASSWORD': environment.secrets.postgres.password,
         'HOST': environment.postgres.host,

@@ -6,7 +6,7 @@ from commands.postgres.sql import insert_django_user_statement
 
 
 @task(name="setup_postgres")
-def setup_postgres_localhost(ctx):
+def setup_postgres_localhost(ctx, host="localhost"):
     """
     Sets up the postgres databases and roles with correct permissions on localhost
     """
@@ -25,7 +25,7 @@ def setup_postgres_localhost(ctx):
     for statement in global_statements:
         # Run SQL statements that are not specific for a database
         ctx.run(
-            f'psql -h localhost -U {postgres_user} -W -c "{statement}"',
+            f'psql -h {host} -U {postgres_user} -W -c "{statement}"',
             echo=True,
             pty=True,
             warn=True,
@@ -34,7 +34,7 @@ def setup_postgres_localhost(ctx):
     for statement in database_statements:
         # Run SQL statements per database
         ctx.run(
-            f'psql -h localhost -U {postgres_user} -W -d {ctx.config.postgres.database} -c "{statement}"',
+            f'psql -h {host} -U {postgres_user} -W -d {ctx.config.postgres.database} -c "{statement}"',
             echo=True,
             pty=True,
             warn=True,
@@ -52,7 +52,7 @@ def setup_postgres_localhost(ctx):
         "supersurf", admin_password, harvester_key, is_search_service=ctx.config.service.name == "service"
     )
     ctx.run(
-        f'psql -h localhost -U {postgres_user} -d {ctx.config.postgres.database} -W -c "{insert_user}"',
+        f'psql -h {host} -U {postgres_user} -d {ctx.config.postgres.database} -W -c "{insert_user}"',
         echo=True,
         pty=True,
         warn=True,

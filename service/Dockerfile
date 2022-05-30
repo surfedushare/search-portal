@@ -86,4 +86,4 @@ RUN export APPLICATION_MODE=localhost && python manage.py compilemessages
 CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
 
 # EXPOSE port 8080 to allow communication to/from server
-EXPOSE 8080
+EXPOSE 8080 8000

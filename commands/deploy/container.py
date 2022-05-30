@@ -8,62 +8,55 @@ from git import Repo
 
 from commands import TARGETS
 from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
-from environments.utils.packaging import get_package_info
 
 
-@task()
-def prepare_builds(ctx):
+@task(help={
+    "commit": "The commit hash a new build should include in its info.json"
+})
+def prepare_builds(ctx, commit=None):
     """
     Makes sure that repo information will be present inside Docker images
     """
-    repo = Repo(".")
-    commit = str(repo.head.commit)
-    # TODO: we can make assertions about the git state like: no uncommited changes and no untracked files
-    with open(os.path.join("portal", "package.json")) as portal_package_file:
-        portal_package = json.load(portal_package_file)
+    if commit is None:
+        repo = Repo(".")
+        commit = str(repo.head.commit)
+
     service_package = TARGETS["service"]
     harvester_package = TARGETS["harvester"]
     info = {
         "commit": commit,
         "versions": {
             "service": service_package["version"],
-            "harvester": harvester_package["version"],
-            "portal": portal_package["version"]
+            "harvester": harvester_package["version"]
         }
     }
     with open(os.path.join("environments", "info.json"), "w") as info_file:
         json.dump(info, info_file)
 
 
-@task(prepare_builds, help={
+@task(help={
     "target": "Name of the project you want to build: service or harvester",
-    "version": "Version of the project you want to build. Must match value in package.py"
+    "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image."
 })
-def build(ctx, target, version):
+def build(ctx, target, commit=None):
     """
     Uses Docker to build an image for a Django project
     """
+    prepare_builds(ctx, commit)
 
     # Check the input for validity
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
-    package_info = get_package_info()
-    package_version = package_info["versions"][target]
-    if package_version != version:
-        raise Exit(
-            f"Expected version of {target} to match {version} instead it's {package_version}. Update package.py?",
-            code=1
-        )
 
     # Gather necessary info and call Docker to build
     target_info = TARGETS[target]
     ctx.run(
-        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{version} .",
+        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{commit} .",
         pty=True,
         echo=True
     )
     ctx.run(
-        f"docker build -f nginx/Dockerfile-nginx -t {target_info['name']}-nginx:{version} .",
+        f"docker build -f nginx/Dockerfile-nginx -t {target_info['name']}-nginx:{commit} .",
         pty=True,
         echo=True
     )
@@ -71,9 +64,9 @@ def build(ctx, target, version):
 
 @task(help={
     "target": "Name of the project you want to push to AWS registry: service or harvester",
-    "version": "Version of the project you want to push. Defaults to latest version"
+    "commit": "The commit hash that the image to be pushed is tagged with."
 })
-def push(ctx, target, version=None):
+def push(ctx, target, commit, docker_login=False):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
@@ -83,20 +76,66 @@ def push(ctx, target, version=None):
         raise Exit(f"Unknown target: {target}", code=1)
     # Load info
     target_info = TARGETS[target]
-    version = version or target_info["version"]
     name = target_info["name"]
 
-    # Login with Docker to AWS
-    ctx.run(
-        f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
-        f"docker login --username AWS --password-stdin {REPOSITORY}",
-        echo=True
-    )
-    # Tag the main image and push
-    ctx.run(f"docker tag {name}:{version} {REPOSITORY}/{name}:{version}", echo=True)
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
+
+    # Check if version tag already exists in registry
+    inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{commit}", warn=True)
+    if inspection.exited == 0:
+        raise Exit("Can't push for commit that already has an image in the registry")
+
+    # Tagging and pushing of our image and nginx image
+    ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{commit}", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/{name}:{commit}", echo=True, pty=True)
+    ctx.run(f"docker tag {name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{commit}", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{commit}", echo=True, pty=True)
+
+
+@task(help={
+    "target": "Name of the project you want to promote: service or harvester",
+    "commit": "The commit hash that the image to be promoted is tagged with"
+})
+def promote(ctx, target, commit, docker_login=False):
+    """
+    Pushes a previously made Docker image to the AWS container registry, that's shared between environments
+    """
+
+    # Check the input for validity
+    if target not in TARGETS:
+        raise Exit(f"Unknown target: {target}", code=1)
+    # Load info
+    target_info = TARGETS[target]
+    name = target_info["name"]
+    version = target_info["version"]
+
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
+
+    # Check if version tag already exists in registry
+    inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{version}", warn=True)
+    if inspection.exited == 0:
+        raise Exit(f"Can't promote commit to {version}, because that version tag already exists")
+
+    # Pulling the relevant images
+    ctx.run(f"docker pull {REPOSITORY}/{name}:{commit}", echo=True, pty=True)
+    ctx.run(f"docker pull {REPOSITORY}/{name}-nginx:{commit}", echo=True, pty=True)
+
+    # Tagging and pushing of our image and nginx image with version number from package files
+    ctx.run(f"docker tag {REPOSITORY}/{name}:{commit} {REPOSITORY}/{name}:{version}", echo=True)
     ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
-    # Tag Nginx and push
-    ctx.run(f"docker tag {name}-nginx:{version} {REPOSITORY}/{name}-nginx:{version}", echo=True)
+    ctx.run(f"docker tag {REPOSITORY}/{name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{version}", echo=True)
     ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{version}", echo=True, pty=True)
 
 
