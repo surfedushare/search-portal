@@ -11,7 +11,7 @@
     "vetur.validation.template": false,
     "vetur.format.enable": false,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "[html]": {
+    "[vue]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
   },
