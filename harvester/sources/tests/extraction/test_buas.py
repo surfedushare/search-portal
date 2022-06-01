@@ -26,9 +26,9 @@ class TestGetHarvestSeedsBuas(TestCase):
         self.assertEqual(seeds[0]["files"], [])
         self.assertEqual(seeds[1]["files"], [
             {
-                "title": None, 
-                "url": "http://www.control-online.nl/gamesindustrie/2010/04/26/nieuw-column-op-maandag/", 
-                "mime_type": "text/html", 
+                "title": None,
+                "url": "http://www.control-online.nl/gamesindustrie/2010/04/26/nieuw-column-op-maandag/",
+                "mime_type": "text/html",
                 "hash": "d42e0d5475f052d4fa0ef5216fd7dcbfc3a4374d"
             }
         ])
