@@ -62,6 +62,7 @@ COPY service/requirements.txt /usr/src/app/
 COPY service/dependencies.txt /usr/src/app/
 RUN pip install -U --no-cache-dir --user pip
 RUN pip install setuptools==58
+RUN pip install wheel
 RUN pip install --no-cache-dir --user uwsgi==2.0.20
 RUN pip install --no-cache-dir --user -r requirements.txt
 
@@ -86,4 +87,4 @@ RUN export APPLICATION_MODE=localhost && python manage.py compilemessages
 CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
 
 # EXPOSE port 8080 to allow communication to/from server
-EXPOSE 8080
+EXPOSE 8080 8000
