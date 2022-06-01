@@ -10,6 +10,11 @@ from commands import TARGETS
 from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
 
 
+def get_commit_hash():
+    repo = Repo(".")
+    return str(repo.head.commit)
+
+
 @task(help={
     "commit": "The commit hash a new build should include in its info.json"
 })
@@ -17,9 +22,7 @@ def prepare_builds(ctx, commit=None):
     """
     Makes sure that repo information will be present inside Docker images
     """
-    if commit is None:
-        repo = Repo(".")
-        commit = str(repo.head.commit)
+    commit = commit or get_commit_hash()
 
     service_package = TARGETS["service"]
     harvester_package = TARGETS["harvester"]
@@ -42,6 +45,8 @@ def build(ctx, target, commit=None):
     """
     Uses Docker to build an image for a Django project
     """
+    commit = commit or get_commit_hash()
+
     prepare_builds(ctx, commit)
 
     # Check the input for validity
@@ -66,10 +71,11 @@ def build(ctx, target, commit=None):
     "target": "Name of the project you want to push to AWS registry: service or harvester",
     "commit": "The commit hash that the image to be pushed is tagged with."
 })
-def push(ctx, target, commit, docker_login=False):
+def push(ctx, target, commit=None, docker_login=False):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
+    commit = commit or get_commit_hash()
 
     # Check the input for validity
     if target not in TARGETS:
@@ -102,10 +108,11 @@ def push(ctx, target, commit, docker_login=False):
     "target": "Name of the project you want to promote: service or harvester",
     "commit": "The commit hash that the image to be promoted is tagged with"
 })
-def promote(ctx, target, commit, docker_login=False):
+def promote(ctx, target, commit=None, docker_login=False):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
+    commit = commit or get_commit_hash()
 
     # Check the input for validity
     if target not in TARGETS:
