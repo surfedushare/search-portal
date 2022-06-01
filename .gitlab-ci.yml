@@ -27,6 +27,7 @@ cache:
     - portal/node_modules
     - environments/info.json
     - nginx/ip-whitelist.conf
+    - harvester/sources/factories/fixtures
 
 .tooling-job:
   before_script:
