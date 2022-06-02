@@ -13,13 +13,7 @@ class BaseElasticSearchMixin(object):
 
     @classmethod
     def index_body(cls, language):
-        if language == 'nl':
-            analyzer = 'dutch'
-        elif language == 'en':
-            analyzer = 'english'
-        else:
-            analyzer = 'standard'
-        return create_elastic_search_index_configuration(language, analyzer)
+        return create_elastic_search_index_configuration(language)
 
     @classmethod
     def setUpClass(cls):
