@@ -88,6 +88,12 @@ class TestGetHarvestSeedsHku(TestCase):
                 'dai': None, 'orcid': None, 'isni': None
             },
         ])
+        self.assertEqual(seeds[11]['authors'], [
+            {
+                'name': 'Henk Slager', 'email': None, 'external_id': None,
+                'dai': None, 'orcid': None, 'isni': None
+            },
+        ])
         self.assertEqual(seeds[43]['authors'], [
             {
                 'name': 'Eva den Heijer', 'email': "eva.denheijer@hku.nl", 'external_id': 5952259,

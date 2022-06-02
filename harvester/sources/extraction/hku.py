@@ -105,7 +105,7 @@ class HkuMetadataExtraction(ExtractProcessor):
     def get_authors(cls, node):
         return [{
             "name": node["author"],
-            "email": node["owner"],
+            "email": node["owner"] or None,  # sometimes owner is not an email, but an empty object :(
             "external_id": node["persons"].get("person_id", None),
             "dai": None,
             "orcid": None,
