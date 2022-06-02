@@ -152,7 +152,7 @@ class ElasticSearchApiClient:
         autocomplete = result['suggest']['autocomplete']
         options = autocomplete[0]['options']
         flat_options = list(set([item for option in options for item in option['_source']['suggest_completion']]))
-        options_with_prefix = [option for option in flat_options if option.startswith(query)]
+        options_with_prefix = [option for option in flat_options if option.lower().startswith(query.lower())]
         options_with_prefix.sort(key=lambda option: len(option))
         return options_with_prefix
 
