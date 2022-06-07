@@ -172,5 +172,6 @@ def print_available_images(ctx, target):
     # Print output
     def image_version_sort(image):
         return tuple([int(section) for section in image["imageTag"].split(".")])
-    images = sorted(response["imageIds"], key=image_version_sort, reverse=True)
+    images = [image for image in response["imageIds"] if "." in image["imageTag"]]
+    images.sort(key=image_version_sort, reverse=True)
     print(json.dumps(images[:10], indent=4))
