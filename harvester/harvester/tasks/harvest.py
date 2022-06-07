@@ -22,7 +22,8 @@ def harvest(reset=False, no_promote=False):
         # First we call the commands that will query the repository interfaces
         repositories = [
             Repositories.EDUREP, Repositories.SHAREKIT, Repositories.ANATOMY_TOOL,
-            Repositories.HANZE, Repositories.HAN, Repositories.HKU, Repositories.GREENI
+            Repositories.HANZE, Repositories.HAN, Repositories.HKU, Repositories.GREENI, Repositories.HVA,
+            Repositories.BUAS
         ]
         for repository in repositories:
             try:
