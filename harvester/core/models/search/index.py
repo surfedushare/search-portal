@@ -113,7 +113,6 @@ class ElasticIndex(models.Model):
             decompound_word_list = settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch
         return create_elastic_search_index_configuration(
             lang,
-            settings.ELASTICSEARCH_ANALYSERS[lang],
             decompound_word_list=decompound_word_list
         )
 
