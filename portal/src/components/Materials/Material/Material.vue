@@ -331,7 +331,17 @@ export default {
     }
 
     &_title {
-      line-height: 1.2;
+      display: block;
+      display: -webkit-box;
+      max-width: 100%;
+      height: 40px;
+      margin: 0 auto;
+      margin-bottom: 10px;
+      line-height: 1;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &_link {
