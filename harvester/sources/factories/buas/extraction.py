@@ -5,18 +5,18 @@ from datetime import datetime
 from django.conf import settings
 from django.utils.timezone import make_aware
 
-from sources.models import HvaPureResource
+from sources.models import BuasPureResource
 
 
-SLUG = "hva"
-ENDPOINT = HvaPureResource.URI_TEMPLATE.replace("https://", "")
-SET_SPECIFICATION = "hva"
+SLUG = "buas"
+ENDPOINT = BuasPureResource.URI_TEMPLATE.replace("https://", "")
+SET_SPECIFICATION = "buas"
 
 
-class HvaPureResourceFactory(factory.django.DjangoModelFactory):
+class BuasPureResourceFactory(factory.django.DjangoModelFactory):
 
     class Meta:
-        model = HvaPureResource
+        model = BuasPureResource
         strategy = factory.BUILD_STRATEGY
 
     class Params:

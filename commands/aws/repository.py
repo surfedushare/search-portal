@@ -7,9 +7,10 @@ from environments.project import REPOSITORY_AWS_PROFILE
 
 @task(name="sync_repository_state", help={
     "push": "Specify this flag to push your local files to production instead of pulling them",
-    "no_profile": "Do not use conventional profiles to connect to the S3 bucket, but leave profile unspecified instead"
+    "no_profile": "Do not use conventional profiles to connect to the S3 bucket, but leave profile unspecified instead",
+    "bucket_prefix": "Prefix for the S3 bucket name to use. Defaults to AWS profile for the repository"
 })
-def sync_repository_state(ctx, push=False, no_profile=False):
+def sync_repository_state(ctx, push=False, no_profile=False, bucket_prefix=None):
     """
     Performs a pull or push from local filesystem to a production S3 bucket.
 
@@ -25,11 +26,13 @@ def sync_repository_state(ctx, push=False, no_profile=False):
     profile = f"AWS_PROFILE={REPOSITORY_AWS_PROFILE}" if not no_profile else ""
 
     local_directory = "."
-    repository_state_bucket = f"s3://{REPOSITORY_AWS_PROFILE}-repository-state"
+    bucket_prefix = bucket_prefix or REPOSITORY_AWS_PROFILE
+    repository_state_bucket = f"s3://{bucket_prefix}-repository-state"
     source = repository_state_bucket if not push else local_directory
     destination = local_directory if not push else repository_state_bucket
     targets = [
-        ("cp", os.path.join("nginx", "ip-whitelist.conf"))
+        ("cp", os.path.join("nginx", "ip-whitelist.conf")),
+        ("sync", os.path.join("harvester", "sources", "factories", "fixtures"))
     ]
     for operation, path in targets:
         source_path = os.path.join(source, path)
