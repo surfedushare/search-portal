@@ -206,6 +206,14 @@ we merge the release PR into its branch.
 This completes the release, which we mark in Pivotal by "finishing" the release ticket.
 We also post a message into Teams if people are waiting for certain features.
 
+As you can see the release may consist of many steps and release plans can become elaborate.
+Here is an overview of commands that are regularly used during a release and their relevant documentation:
+
+* [Database migration](#Migrate)
+* [Harvesting](harvester/README.md#Harvesting on AWS)
+* Index recreation. See: `invoke -h hrv.index-dataset-version`
+(this doesn't collect documents from sources like harvesting, but does recreate Elastic indices for a Dataset)
+* [Terraform](https://www.terraform.io/intro)
 
 #### Active containers/versions
 
