@@ -32,6 +32,15 @@ class TestGetHarvestSeedsBuas(TestCase):
                 "hash": "d42e0d5475f052d4fa0ef5216fd7dcbfc3a4374d"
             }
         ])
+        self.assertEqual(seeds[3]["files"], [
+            {
+                "title": "Peeters_tourismandclimatemitigation_peetersp_ed_nhtv2007.pdf",
+                "url": "https://pure.buas.nl/ws/files/15672869/"
+                       "Peeters_tourismandclimatemitigation_peetersp_ed_nhtv2007.pdf",
+                "mime_type": "application/pdf",
+                "hash": "f8839eeea39968549dafe4075232074a15adcb63"
+            }
+        ])
 
     def test_get_url(self):
         seeds = self.seeds

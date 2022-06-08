@@ -24,7 +24,7 @@ class BuasMetadataExtraction(ExtractProcessor):
     @staticmethod
     def _parse_electronic_version(electronic_version):
         if "file" in electronic_version:
-            url = electronic_version["file"]["url"]
+            url = electronic_version["file"]["fileURL"]
             file_name = electronic_version["file"]["fileName"]
             mime_type = electronic_version["file"]["mimeType"]
         elif "link" in electronic_version:
