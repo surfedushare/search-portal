@@ -38,7 +38,7 @@ Here is the [exact definition of the custom event](src/pages/material.vue#L107-L
 Passing on the data like this to Matomo should result in an event object with the correct event data set:
 
 * [URL property](../harvester/core/fixtures/matomo-visits.json#L91) (should contain the identifier of the item)
-* [Event category and action properties](../harvester/core/fixtures/matomo-visits.json#L6) (fixed values)
+* [Event category and action properties](../harvester/core/fixtures/matomo-visits.json#L96-L97) (fixed values)
 * [Event name property](../harvester/core/fixtures/matomo-visits.json#L106) (the external_id of the suggestion)
 
 
