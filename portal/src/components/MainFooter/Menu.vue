@@ -1,4 +1,5 @@
-<section class="menu">
+<template>
+    <section class="menu">
   <nav class="menu__links">
     <router-link class="menu__link" :to="localePath('how-does-it-work')">{{
       $t("How-does-it-work")
@@ -18,3 +19,41 @@
     >
   </nav>
 </section>
+
+</template>
+<script>
+export default {
+  name: "MenuBlock",
+};
+
+</script>
+<style lang="less" scoped>
+@import "./../../variables";
+.menu {
+  @media @desktop {
+    text-align: right;
+  }
+
+  &__links {
+    @media @mobile {
+      padding-left: 45px;
+      display: table;
+      a {
+        display: table-row;
+      }
+    }
+  }
+
+  &__link {
+    font-family: @second-font;
+    font-size: 16px;
+    font-weight: bold;
+    color: @dark-grey;
+    margin: 0 0 0 53px;
+    &:first-child {
+      margin: 0;
+    }
+  }
+}
+
+</style>

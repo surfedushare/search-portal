@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import Menu from "./Menu";
+import Menu from "./Menu.vue";
 import { mapGetters } from "vuex";
 
 export default {
