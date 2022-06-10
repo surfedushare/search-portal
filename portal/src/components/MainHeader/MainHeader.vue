@@ -25,7 +25,11 @@
       </div>
     </div>
 
-    <div v-for="level in getMessageLevels" id="messages-bar-container" :key="level">
+    <div
+      v-for="level in getMessageLevels"
+      id="messages-bar-container"
+      :key="level"
+    >
       <div v-if="hasMessages(level)" class="messages-bar">
         <i class="fas" :class="[getLevelIcon(level), level]"></i>
         <p class="message">
@@ -53,7 +57,9 @@
         <Menu class="main-header__menu" />
         <div class="main-header__actions">
           <div class="main-header__support">
-            <a class="button" :href="supportLink">Support</a>
+            <a class="button" :href="questionLink" target="_blank">{{
+              $t("Question")
+            }}</a>
           </div>
           <div v-if="isAuthenticated" class="main-header__user">
             <div class="main-header__user_name arrow-link">
@@ -195,10 +201,8 @@ export default {
       "getLevelIcon",
       "getMessagesContent",
     ]),
-    supportLink() {
-      return this.$i18n.locale === "nl"
-        ? "https://wiki.surfnet.nl/display/EDS/edusources"
-        : "https://wiki.surfnet.nl/pages/viewpage.action?pageId=55345575";
+    questionLink() {
+      return "mailto:info@edusources.nl?subject=" + this.$i18n.t("Question");
     },
     searchLink() {
       const searchRequest = {
