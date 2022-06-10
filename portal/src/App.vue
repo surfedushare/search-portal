@@ -11,32 +11,32 @@
 </template>
 
 <script>
-import { setLanguage } from '~/axios'
-import MainFooter from '~/components/MainFooter'
-import MainHeader from '~/components/MainHeader/MainHeader.vue'
+import { setLanguage } from "~/axios";
+import MainFooter from "~/components/MainFooter/MainFooter.vue";
+import MainHeader from "~/components/MainHeader/MainHeader.vue";
 
-const DEFAULT_TITLE = 'Edusources'
+const DEFAULT_TITLE = "Edusources";
 
 export default {
-  dependencies: ['$window', '$log'],
+  dependencies: ["$window", "$log"],
   components: {
     MainHeader,
     MainFooter,
   },
   watch: {
-    '$i18n.locale'(newLocale) {
-      setLanguage(newLocale)
+    "$i18n.locale"(newLocale) {
+      setLanguage(newLocale);
     },
   },
   created() {
-    this.$store.dispatch('getFilterCategories')
+    this.$store.dispatch("getFilterCategories");
   },
   methods: {
     isDemoEnvironment() {
       return (
-        this.$window.location.hostname.indexOf('acc.') >= 0 ||
-        new URLSearchParams(this.$window.location.search).get('demo')
-      )
+        this.$window.location.hostname.indexOf("acc.") >= 0 ||
+        new URLSearchParams(this.$window.location.search).get("demo")
+      );
     },
   },
   metaInfo: {
@@ -44,10 +44,10 @@ export default {
     titleTemplate: (titleChunk) => {
       return titleChunk && titleChunk !== DEFAULT_TITLE
         ? `${titleChunk} | ${DEFAULT_TITLE}`
-        : DEFAULT_TITLE
+        : DEFAULT_TITLE;
     },
   },
-}
+};
 </script>
 
 <style lang="less">
