@@ -13,7 +13,7 @@
 <script>
 import { setLanguage } from '~/axios'
 import MainFooter from '~/components/MainFooter'
-import MainHeader from '~/components/MainHeader'
+import MainHeader from '~/components/MainHeader/MainHeader.vue'
 
 const DEFAULT_TITLE = 'Edusources'
 
