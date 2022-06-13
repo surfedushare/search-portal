@@ -9,7 +9,7 @@
         <h3>{{ $t("Footer-info-title") }}</h3>
         <div
           class="main-footer__info_text html-content"
-          v-html="getFooter"
+          v-html="getFooterText"
         ></div>
         <a
           :href="$t('Digital-learning-materials-link')"
@@ -79,7 +79,7 @@ export default {
     getLoginLink() {
       return this.$store.getters.getLoginLink(this.$route);
     },
-    getFooter() {
+    getFooterText() {
       const footerInfo = this.$i18n.t("html-Footer-info-text");
       return DOMPurify.sanitize(footerInfo);
     },
