@@ -123,7 +123,6 @@ integration-test-job:
       alias: harvester
     - name: $AWS_CONTAINER_REGISTRY/search-portal:$CI_COMMIT_SHA
       alias: service
-    - name: docker:dind
     - name: postgres:$POSTGRES_VERSION-alpine
     - name: docker.elastic.co/elasticsearch/elasticsearch:$ELASTIC_SEARCH_VERSION
       alias: elasticsearch
@@ -132,7 +131,6 @@ integration-test-job:
   variables:
     POL_ELASTIC_SEARCH_ENABLE_DECOMPOUND_ANALYZERS: 0
   script:
-    - docker ps
     - cypress install
     - invoke srv.setup-postgres --host postgres
     - invoke hrv.setup-postgres --host postgres
