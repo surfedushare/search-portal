@@ -1,6 +1,7 @@
 image: ubuntu:22.04
 
 variables:
+  FF_NETWORK_PER_BUILD: 1
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: qwerty
   POSTGRES_HOST_AUTH_METHOD: trust
@@ -18,7 +19,7 @@ stages:
   - lint-and-test
   - build
   - integration-test
-  - deploy
+  - promote
 
 cache:
   key: $CI_COMMIT_REF_SLUG
@@ -122,7 +123,6 @@ integration-test-job:
       alias: harvester
     - name: $AWS_CONTAINER_REGISTRY/search-portal:$CI_COMMIT_SHA
       alias: service
-    - name: docker:dind
     - name: postgres:$POSTGRES_VERSION-alpine
     - name: docker.elastic.co/elasticsearch/elasticsearch:$ELASTIC_SEARCH_VERSION
       alias: elasticsearch
@@ -131,24 +131,15 @@ integration-test-job:
   variables:
     POL_ELASTIC_SEARCH_ENABLE_DECOMPOUND_ANALYZERS: 0
   script:
-    - docker ps
     - cypress install
     - invoke srv.setup-postgres --host postgres
     - invoke hrv.setup-postgres --host postgres
     - invoke hrv.index-dataset-version localhost -d test
-    - curl http://harvester:8888/
-    - curl http://service:8000/health
-    # - APPLICATION_PROJECT=edusources invoke test.e2e
+    - APPLICATION_PROJECT=edusources invoke test.e2e
 
-deploy:
-  stage: deploy
-  rules:
-    - if: $CI_COMMIT_BRANCH == "fako/gitlab-deploy"
-      when: manual
-    - if: $CI_COMMIT_BRANCH == "acceptance"
-      when: manual
-    - if: $CI_COMMIT_BRANCH == "edusources"
-      when: manual
+promote:
+  stage: promote
+  when: manual
   extends: .docker-job
   script:
     - invoke aws.promote harvester --commit $CI_COMMIT_SHA
