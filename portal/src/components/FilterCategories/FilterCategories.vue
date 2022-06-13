@@ -6,22 +6,6 @@
     >
       {{ $t("Filter") }}
     </h3>
-
-    <div v-if="selectionFilterItems.length" class="filter-categories__links">
-      <p class="filter-categories__reset">{{ $t("Selected-filters") }}</p>
-      <a href="/materials/search/" @click.prevent="resetFilter"
-        >({{ $t("Reset-filters") }})</a
-      >
-    </div>
-    <ul data-test="selected_filters" class="selected-filters">
-      <li v-for="filter in selectionFilterItems" :key="filter.id">
-        <span>
-          {{ filter.parent.title_translations[$i18n.locale] }}:&nbsp;
-          <b>{{ filter.title_translations[$i18n.locale] }}</b>
-        </span>
-        <button class="remove-icon" @click="onUncheck(filter.parent.external_id, filter.external_id)"></button>
-      </li>
-    </ul>
     <div
       v-show="materials && materials.records.length > 0"
       class="filter-categories__items"
@@ -44,10 +28,11 @@
 </template>
 
 <script>
-import { flatMap, isEqual } from "lodash";
-import DatesRange from "~/components/DatesRange";
-import { generateSearchMaterialsQuery } from "../_helpers";
-import FilterCategory from "./FilterCategory.vue";
+import { flatMap, isEqual, isEmpty } from 'lodash';
+import DatesRange from '~/components/DatesRange';
+import { generateSearchMaterialsQuery } from '../_helpers';
+import FilterCategory from './FilterCategory.vue';
+
 
 export default {
   name: "FilterCategories",
@@ -78,7 +63,7 @@ export default {
   },
   computed: {
     selectionFilterItems() {
-      if (!this.selectedFilters) {
+      if (isEmpty(this.selectedFilters)) {
         return [];
       }
       return flatMap(this.selectedFilters, (filter_ids, categoryId) => {

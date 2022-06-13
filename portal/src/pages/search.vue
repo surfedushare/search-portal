@@ -12,6 +12,12 @@
           <div ref="top"></div>
         </div>
       </div>
+      <FilterCategoriesSelection
+        v-if="materials"
+        :materials="materials"
+        :selected-filters="search.filters"
+        @reset="onSearch"
+      />
       <div class="search__container">
         <div><!-- filler --></div>
         <FilterCategories
@@ -83,6 +89,7 @@
 <script>
 import { mapGetters } from "vuex";
 import FilterCategories from "~/components/FilterCategories/FilterCategories.vue";
+import FilterCategoriesSelection from "~/components/FilterCategories/FilterCategoriesSelection.vue";
 import Materials from "~/components/Materials/Materials.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
@@ -97,6 +104,7 @@ import PageMixin from "~/pages/page-mixin";
 export default {
   components: {
     FilterCategories,
+    FilterCategoriesSelection,
     Materials,
     Spinner,
     SearchBar,
