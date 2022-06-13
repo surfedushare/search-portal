@@ -4,7 +4,7 @@
       <div class="notifications">
         <div
           v-for="notification in user_permission_notifications"
-          :key="notification"
+          :key="notification.id"
         >
           <p class="message">
             {{ notification[$i18n.locale].description }}
@@ -56,7 +56,7 @@
         </router-link>
         <Menu class="main-header__menu" />
         <div class="main-header__actions">
-          <div class="main-header__support">
+          <div class="main-header__question">
             <a class="button" :href="questionLink" target="_blank">{{
               $t("Question")
             }}</a>
@@ -137,6 +137,14 @@
                 {{ $t("How-does-it-work") }}
               </router-link>
             </li>
+            <li class="main-header__user_menuitem">
+              <a
+                class="main-header__user_menu_link"
+                :href="questionLink"
+                target="_blank"
+                >{{ $t("Question") }}</a
+              >
+            </li>
             <li v-if="isAuthenticated" class="main-header__user_menu_item">
               <router-link
                 class="main-header__user_menu_link"
@@ -159,9 +167,6 @@
         </div>
       </div>
       <div class="main-header__actions">
-        <div class="main-header__support">
-          <a class="button" :href="supportLink">Support</a>
-        </div>
         <LanguageSwitch class="main-header__language_switch" />
         <div class="edusources-container">
           <router-link :to="searchLink" class="search-icon">
@@ -178,7 +183,7 @@
 <script>
 import Feedback from "../Feedback/Feedback";
 import LanguageSwitch from "./LanguageSwitch";
-import Menu from "./Menu";
+import Menu from "./Menu.vue";
 import { generateSearchMaterialsQuery } from "../_helpers";
 import { mapGetters } from "vuex";
 
@@ -429,7 +434,7 @@ export default {
     padding: @p-top 0 @p-bottom;
   }
 
-  &__support {
+  &__question {
     display: flex;
     align-items: flex-end;
     margin-right: 20px;

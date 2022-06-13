@@ -3,15 +3,15 @@
     <div class="center_block info__center-header">
       <div class="info__info">
         <h2>{{ $t(titleKey) }}</h2>
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div class="html-content" v-html="$t(htmlKey)" />
+        <div class="html-content" v-html="getHtmlKey" />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import PageMixin from '~/pages/page-mixin'
+import PageMixin from "~/pages/page-mixin";
+import DOMPurify from "dompurify";
 
 export default {
   components: {},
@@ -20,18 +20,24 @@ export default {
     return {
       titleKey: this.$route.meta.title_translation_key,
       htmlKey: this.$route.meta.html_translation_key,
-    }
+    };
   },
   metaInfo() {
     return {
       title: this.$i18n.t(this.$route.meta.title_translation_key),
-    }
+    };
   },
-}
+  methods: {
+    getHtmlKey() {
+      const htmlKey = this.$i18n.t("htmlKey");
+      return DOMPurify.sanitize(htmlKey);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-@import './../variables';
+@import "./../variables";
 
 .main-info {
   &__center-header {

@@ -94,7 +94,7 @@ export const formatDate = function (date, locale) {
       format = { year: "numeric" };
       break;
     default:
-      format = { year: "numeric", month: "numeric", day: "numeric" };
+      format = { year: "numeric", month: "long", day: "numeric" };
   }
   return new DateTime.fromISO(date)
     .setLocale(locale === "en" ? "en-US" : "nl-NL")

@@ -20,7 +20,6 @@ It can be convenient to run some code for inspection outside of containers.
 To stay close to the production environment it works well to run the project in containers.
 External services like the database run in containers, so it's always necessary to use Docker.
 
-
 #### Mac OS setup
 
 We recommend installing Python through pyenv:
@@ -31,7 +30,6 @@ pyenv install 3.10.4
 ```
 
 When using macOS make sure you have `libmagic` installed. It can be installed using `brew install libmagic`.
-
 
 #### General setup
 
@@ -44,16 +42,20 @@ pip install setuptools==58
 pip install -r requirements.txt
 ```
 
-Then copy the ``.env.example`` file to ``.env`` and update the variable values to fit your system.
+Then copy the `.env.example` file to `.env` and update the variable values to fit your system.
 For a start the default values will do.
 
+When using vscode copy `activate.sh` to venv/bin so pylance can find it.
+
 If you want to run the project outside of a container you'll need to add the following to your hosts file:
+
 ```
 127.0.0.1 postgres
 127.0.0.1 elasticsearch
 127.0.0.1 harvester
 127.0.0.1 service
 ```
+
 This way you can reach these containers outside of the container network through their names.
 This is important for many setup commands as well as the integration tests and running the service locally.
 
@@ -173,7 +175,6 @@ If you do not want to wait you can `CTRL+C` in the terminal safely. This cancels
 
 Also note that these commands will deploy the image with a version tag to whatever is in your package.py files.
 If you want to deploy a different version use the `--version` flag with the commands above.
-
 
 #### Active containers/versions
 

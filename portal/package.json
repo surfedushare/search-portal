@@ -18,6 +18,8 @@
     "axios": "0.26.1",
     "cookie": "0.5.0",
     "core-js": "3.21.1",
+    "dompurify": "^2.3.8",
+    "eslint-plugin-risxss": "^2.1.0",
     "is-uuid": "^1.0.2",
     "js-cookie": "3.0.1",
     "lodash": "4.17.21",
@@ -84,6 +86,10 @@
       "plugin:vue/recommended",
       "eslint:recommended"
     ],
+    "plugins": [
+      "vue",
+      "risxss"
+    ],
     "rules": {
       "vue/multi-word-component-names": "off",
       "vue/max-attributes-per-line": [
@@ -102,7 +108,9 @@
       "vue/no-mutating-props": "off",
       "vue/first-attribute-linebreak": "off",
       "vue/html-indent": "off",
-      "vue/html-closing-bracket-newline": "off"
+      "vue/html-closing-bracket-newline": "off",
+      "vue/no-v-html": "off",
+      "risxss/catch-potential-xss-vue": "error"
     },
     "parserOptions": {
       "parser": "@babel/eslint-parser",
