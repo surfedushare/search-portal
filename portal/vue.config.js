@@ -15,7 +15,7 @@ module.exports = {
     proxy: "http://service:8000",
   },
   configureWebpack: {
-    devtool: "eval",
+    devtool: "eval-source-map",
     resolve: {
       alias: {
         "~": path.resolve(__dirname + "/src"),
