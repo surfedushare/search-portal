@@ -56,7 +56,7 @@
         </router-link>
         <Menu class="main-header__menu" />
         <div class="main-header__actions">
-          <div class="main-header__support">
+          <div class="main-header__question">
             <a class="button" :href="questionLink" target="_blank">{{
               $t("Question")
             }}</a>
@@ -159,8 +159,10 @@
         </div>
       </div>
       <div class="main-header__actions">
-        <div class="main-header__support">
-          <a class="button" :href="supportLink">Support</a>
+        <div class="main-header__question">
+          <a class="button" :href="questionLink" target="_blank">{{
+            $t("Question")
+          }}</a>
         </div>
         <LanguageSwitch class="main-header__language_switch" />
         <div class="edusources-container">
@@ -429,7 +431,7 @@ export default {
     padding: @p-top 0 @p-bottom;
   }
 
-  &__support {
+  &__question {
     display: flex;
     align-items: flex-end;
     margin-right: 20px;

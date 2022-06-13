@@ -7,10 +7,9 @@
       </div>
       <div class="main-footer__info">
         <h3>{{ $t("Footer-info-title") }}</h3>
-        <!-- eslint-disable vue/no-v-html -->
         <div
           class="main-footer__info_text html-content"
-          v-html="$t('html-Footer-info-text')"
+          v-html="getFooter"
         ></div>
         <a
           :href="$t('Digital-learning-materials-link')"
@@ -47,6 +46,7 @@
 <script>
 import Menu from "./Menu.vue";
 import { mapGetters } from "vuex";
+import DOMPurify from "dompurify";
 
 export default {
   name: "MainFooter",
@@ -78,6 +78,10 @@ export default {
     },
     getLoginLink() {
       return this.$store.getters.getLoginLink(this.$route);
+    },
+    getFooter() {
+      const footerInfo = this.$i18n.t("html-Footer-info-text");
+      return DOMPurify.sanitize(footerInfo);
     },
   },
 };

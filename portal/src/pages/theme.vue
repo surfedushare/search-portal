@@ -8,7 +8,10 @@
         <div class="theme__info">
           <img
             src="../assets/images/pictures/rawpixel-760027-unsplash.jpg"
-            srcset="../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x, ../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x"
+            srcset="
+              ../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
+              ../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
+            "
             class="theme__info_bg"
           />
           <h2 class="theme__info_ttl">{{ getTitleTranslation() }}</h2>
@@ -25,24 +28,33 @@
       <div class="center_block theme__row">
         <div class="theme__description">
           <h2>
-            {{ $t('About-the-theme') }}
+            {{ $t("About-the-theme") }}
             <br />
             {{ getTitleTranslation() }}
           </h2>
           <p>
-            <!-- eslint-disable vue/no-v-html -->
-            <span class="html-content" v-html="getDescriptionTranslation(theme, $i18n.locale)" />
-            <!-- eslint-enable vue/no-v-html -->
+            <span
+              class="html-content"
+              v-html="getDescriptionTranslation(theme, $i18n.locale)"
+            />
           </p>
         </div>
-        <Disciplines class="theme__disciplines" :disciplines="themeDisciplines" :theme="theme" />
+        <Disciplines
+          class="theme__disciplines"
+          :disciplines="themeDisciplines"
+          :theme="theme"
+        />
       </div>
       <div class="theme__collections theme__row center_block">
-        <Materials :materials="materials" :items-in-line="4" class="theme__materials">
+        <Materials
+          :materials="materials"
+          :items-in-line="4"
+          class="theme__materials"
+        >
           <template slot="header-info">
-            <h2>{{ $t('Newest-open-learning-material-for-theme') }}</h2>
+            <h2>{{ $t("Newest-open-learning-material-for-theme") }}</h2>
             <p class="materials__description">
-              {{ $t('Featured-learning-materials-in-the-theme') }}
+              {{ $t("Featured-learning-materials-in-the-theme") }}
               {{ getTitleTranslation() }}
             </p>
           </template>
@@ -53,23 +65,24 @@
 </template>
 
 <script>
-import { generateSearchMaterialsQuery } from '@/components/_helpers'
-import { isEmpty } from 'lodash'
-import { mapGetters } from 'vuex'
-import Disciplines from '~/components/Disciplines'
-import Error from '~/components/error'
-import Materials from '~/components/Materials/Materials.vue'
-import { THEME_CATEGORY_FILTER_FIELD } from '~/constants'
-import PageMixin from '~/pages/page-mixin'
-import SearchTerm from '../components/Search/SearchTerm.vue'
+import { generateSearchMaterialsQuery } from "@/components/_helpers";
+import { isEmpty } from "lodash";
+import { mapGetters } from "vuex";
+import Disciplines from "~/components/Disciplines";
+import Error from "~/components/error";
+import Materials from "~/components/Materials/Materials.vue";
+import { THEME_CATEGORY_FILTER_FIELD } from "~/constants";
+import PageMixin from "~/pages/page-mixin";
+import SearchTerm from "../components/Search/SearchTerm.vue";
+import DOMPurify from "dompurify";
 
 export default {
-  name: 'Theme',
+  name: "Theme",
   components: {
     Materials,
     Disciplines,
     Error,
-    SearchTerm
+    SearchTerm,
   },
   mixins: [PageMixin],
   props: [],
@@ -78,48 +91,48 @@ export default {
       search: {},
       themeDisciplines: [],
       themeCategory: null,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['theme', 'materials', 'filter']),
+    ...mapGetters(["theme", "materials", "filter"]),
   },
   created() {
-    let themeId = this.$route.params.slug
+    let themeId = this.$route.params.slug;
 
-    this.pageLoad = this.$store.dispatch('getFilterCategories').then(() => {
-      this.$store.dispatch('getTheme', themeId).then((theme) => {
+    this.pageLoad = this.$store.dispatch("getFilterCategories").then(() => {
+      this.$store.dispatch("getTheme", themeId).then((theme) => {
         this.themeCategory = this.$store.getters.getCategoryById(
           theme.external_id,
           THEME_CATEGORY_FILTER_FIELD
-        )
-        this.themeDisciplines = this.themeCategory.children
-        this.themeCategory.selected = true
-        this.$store.dispatch('searchMaterials', {
+        );
+        this.themeDisciplines = this.themeCategory.children;
+        this.themeCategory.selected = true;
+        this.$store.dispatch("searchMaterials", {
           page_size: 4,
-          search_text: '',
-          ordering: '-publisher_date',
+          search_text: "",
+          ordering: "-publisher_date",
           filters: this.$store.getters.search_filters,
           return_filters: false,
-        })
-      })
-    })
+        });
+      });
+    });
   },
   metaInfo() {
-    const defaultTitle = this.$root.$meta().title
+    const defaultTitle = this.$root.$meta().title;
     return {
       title: this.themeCategory
         ? this.themeCategory.title_translations[this.$i18n.locale] ||
-        defaultTitle
+          defaultTitle
         : defaultTitle,
-    }
+    };
   },
   methods: {
     onSearch() {
       const filterIds = this.themeCategory
         ? this.themeCategory.children.map((child) => {
-          return child.external_id
-        })
-        : []
+            return child.external_id;
+          })
+        : [];
       this.search = {
         search_text: this.search.search_text,
         filters: {
@@ -127,27 +140,27 @@ export default {
         },
         page_size: 10,
         page: 1,
-      }
-      this.$store.dispatch('searchMaterials', this.search)
+      };
+      this.$store.dispatch("searchMaterials", this.search);
       const location = generateSearchMaterialsQuery(
         this.search,
-        'themes-search'
-      )
-      location.params = { filterId: this.theme.external_id }
-      this.$router.push(location)
+        "themes-search"
+      );
+      location.params = { filterId: this.theme.external_id };
+      this.$router.push(location);
     },
     getDescriptionTranslation(theme, language) {
       if (!isEmpty(theme.description_translations)) {
-        return theme.description_translations[language]
+        return DOMPurify.sanitize(theme.description_translations[language]);
       }
     },
     getTitleTranslation() {
       if (this.themeCategory) {
-        return this.themeCategory.title_translations[this.$i18n.locale]
+        return this.themeCategory.title_translations[this.$i18n.locale];
       }
     },
   },
-}
+};
 </script>
 
 <style scoped lang="less">
