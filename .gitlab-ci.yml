@@ -1,6 +1,7 @@
 image: ubuntu:22.04
 
 variables:
+  FF_NETWORK_PER_BUILD: 1
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: qwerty
   POSTGRES_HOST_AUTH_METHOD: trust
@@ -136,15 +137,11 @@ integration-test-job:
     - invoke srv.setup-postgres --host postgres
     - invoke hrv.setup-postgres --host postgres
     - invoke hrv.index-dataset-version localhost -d test
-    - curl http://harvester:8888/
-    - curl http://service:8000/health
-    # - APPLICATION_PROJECT=edusources invoke test.e2e
+    - APPLICATION_PROJECT=edusources invoke test.e2e
 
 deploy:
   stage: deploy
   rules:
-    - if: $CI_COMMIT_BRANCH == "fako/gitlab-deploy"
-      when: manual
     - if: $CI_COMMIT_BRANCH == "acceptance"
       when: manual
     - if: $CI_COMMIT_BRANCH == "edusources"
