@@ -19,7 +19,7 @@ stages:
   - lint-and-test
   - build
   - integration-test
-  - deploy
+  - promote
 
 cache:
   key: $CI_COMMIT_REF_SLUG
@@ -139,13 +139,9 @@ integration-test-job:
     - invoke hrv.index-dataset-version localhost -d test
     - APPLICATION_PROJECT=edusources invoke test.e2e
 
-deploy:
-  stage: deploy
-  rules:
-    - if: $CI_COMMIT_BRANCH == "acceptance"
-      when: manual
-    - if: $CI_COMMIT_BRANCH == "edusources"
-      when: manual
+promote:
+  stage: promote
+  when: manual
   extends: .docker-job
   script:
     - invoke aws.promote harvester --commit $CI_COMMIT_SHA
