@@ -1,5 +1,5 @@
 <template>
-  <section class="filter-categories-selection">
+  <section class="filter-categories-selection" data-test="selected_filters">
     <v-chip
       v-for="filter in selectionFilterItems"
       :key="filter.id"

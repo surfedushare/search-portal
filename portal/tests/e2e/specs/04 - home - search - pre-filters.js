@@ -7,7 +7,7 @@ describe("Home page - search - pre-filters", () => {
     cy.selectPreFilter("technical_type", "document")
       .search()
       .selectedFiltersShouldContain("Bestandstype", "Document", 1, 0);
-    cy.selectPreFilter("technical_type", "website")
+    cy.selectFilter("technical_type", "website")
       .search()
       .selectedFiltersShouldContain("Bestandstype", "Website", 2, 1);
   });
@@ -25,7 +25,7 @@ describe("Home page - search - pre-filters", () => {
     cy.selectPreFilter("lom_educational_levels", "HBO")
       .search()
       .selectedFiltersShouldContain("Onderwijsniveau", "HBO", 1, 0);
-    cy.selectPreFilter("lom_educational_levels", "WO")
+    cy.selectFilter("lom_educational_levels", "WO")
       .search()
       .selectedFiltersShouldContain("Onderwijsniveau", "WO", 2, 1);
   });
@@ -34,8 +34,5 @@ describe("Home page - search - pre-filters", () => {
     cy.selectPreFilter("language.keyword", "nl")
       .search()
       .selectedFiltersShouldContain("Taal", "Nederlands", 1, 0);
-    cy.selectPreFilter("language.keyword", "en")
-      .search()
-      .selectedFiltersShouldContain("Taal", "Engels", 2, 0);
   });
 });

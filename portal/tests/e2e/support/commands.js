@@ -53,7 +53,7 @@ Cypress.Commands.add(
     cy.get("[data-test=selected_filters]")
       .should("be.visible")
       .children()
-      .should("have.length", no_of_filters ? no_of_filters : 1)
+      .should("have.length", no_of_filters ? no_of_filters + 1 : 2) // children also includes the reset button
       .eq(filter_nr ? filter_nr : 0)
       .should("be.visible")
       .should("contain", filter_name)
