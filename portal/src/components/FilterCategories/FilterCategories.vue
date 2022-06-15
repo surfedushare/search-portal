@@ -15,12 +15,14 @@
         class="filter-categories__items_wrapper"
       >
         <template v-for="category in filterableCategories">
-          <DatesRange v-if="category.external_id === publisherDateExternalId" :key="category.external_id"
-            :data-test="category.external_id" :category="category" :dates="datesRangeFilter()" :inline="true"
-            :disable-future-days="true" theme="min" @input="onDateChange" />
-
-          <FilterCategory v-else-if="hasVisibleChildren(category)" :key="category.id" :data-test="category.external_id"
-            :category="category" @check="onCheck" @uncheck="onUncheck" />
+          <FilterCategory
+            v-if="hasVisibleChildren(category)"
+            :key="category.id"
+            :data-test="category.external_id"
+            :category="category"
+            @check="onCheck"
+            @uncheck="onUncheck"
+          />
         </template>
       </ul>
     </div>
@@ -29,14 +31,13 @@
 
 <script>
 import { flatMap, isEqual, isEmpty } from 'lodash';
-import DatesRange from '~/components/DatesRange';
 import { generateSearchMaterialsQuery } from '../_helpers';
 import FilterCategory from './FilterCategory.vue';
 
 
 export default {
   name: "FilterCategories",
-  components: { DatesRange, FilterCategory },
+  components: { FilterCategory },
   props: {
     materials: {
       type: Object,
