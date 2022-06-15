@@ -43,10 +43,6 @@ export default {
       type: Object,
       default: () => ({ records: [] }),
     },
-    defaultFilter: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   data() {
     const publisherDateExternalId = "publisher_date";
@@ -83,18 +79,8 @@ export default {
       }
       const selectedFilters = this.$store.state.filterCategories.selection
       // remove all filters that should not be shown to the users
-      let defaultFilterItem = {};
-      if (this.defaultFilter) {
-        defaultFilterItem =
-          this.$store.getters.getCategoryById(
-            this.defaultFilter,
-            this.$route.meta.filterRoot
-          ) || {};
-      }
       const visibleCategories = this.materials.filter_categories.filter(
-        (category) =>
-          !category.is_hidden &&
-          category.external_id !== defaultFilterItem.searchId
+        (category) => !category.is_hidden
       );
       // aggregate counts to the highest level
       const filterableCategories = visibleCategories.map((category) => {

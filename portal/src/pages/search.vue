@@ -22,7 +22,6 @@
         <div><!-- filler --></div>
         <FilterCategories
           v-if="materials"
-          :default-filter="$route.params.filterId"
           :materials="materials"
           @filter="onFilter"
         />
@@ -109,16 +108,22 @@ export default {
   },
   mixins: [PageMixin],
   beforeRouteLeave(to, from, next) {
-    if (!from.params.filterId || to.params.filterId) {
-      next();
-      return;
-    }
     this.search.filters = {};
     this.$store.dispatch("searchMaterials", this.search).finally(next);
   },
   data() {
+    // Set filters from the URL parameters
     const urlInfo = parseSearchMaterialsQuery(this.$route.query);
     this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION', urlInfo.search.filters)
+    // Set filters from the router parameters (Community and Theme filters)
+    if (this.$route.params.filterId) {
+      this.$store.commit('SELECT_FILTER_CATEGORIES', {
+        category: this.$route.meta.filterRoot,
+        selection: [this.$route.params.filterId]
+      })
+    }
+    // Update the filters and return data
+    urlInfo.search.filters = this.$store.state.filterCategories.selection
     return {
       search: urlInfo.search,
       formData: {
@@ -139,18 +144,6 @@ export default {
       "materials_in_line",
       "did_you_mean",
     ]),
-    defaultFilterTitle() {
-      if (!this.$route.params.filterId) {
-        return;
-      }
-      const defaultFilter = this.$store.getters.getCategoryById(
-        this.$route.params.filterId,
-        this.$route.meta.filterRoot
-      );
-      return defaultFilter
-        ? defaultFilter.title_translations[this.$i18n.locale]
-        : null;
-    },
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
     },
@@ -166,22 +159,6 @@ export default {
       this.executeSearch(true);
     },
     executeSearch(updateUrl) {
-      if (this.$route.params.filterId) {
-        const category = this.$store.getters.getCategoryById(
-          this.$route.params.filterId,
-          this.$route.meta.filterRoot
-        );
-        if (category) {
-          this.search = addFilter(
-            this.search,
-            category.searchId,
-            this.$route.params.filterId
-          );
-          this.search = category.children.reduce((search, child) => {
-            return addFilter(search, child.searchId, child.external_id);
-          }, this.search);
-        }
-      }
       this.$store.dispatch("searchMaterials", this.search);
       if (updateUrl) {
         this.$router.push(
