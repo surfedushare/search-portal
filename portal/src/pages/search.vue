@@ -108,8 +108,8 @@ export default {
   },
   mixins: [PageMixin],
   beforeRouteLeave(to, from, next) {
-    this.search.filters = {};
-    this.$store.dispatch("searchMaterials", this.search).finally(next);
+    this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION')
+    next()
   },
   data() {
     // Set filters from the URL parameters
