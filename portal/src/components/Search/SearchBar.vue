@@ -1,6 +1,6 @@
 <template>
   <section class="search_bar">
-    <PreSearchFilters class="search_bar__filters" @update:filter="onUpdateFilter" />
+    <PreSearchFilters v-if="enablePreFilters" class="search_bar__filters" @update:filter="onUpdateFilter" />
     <SearchTerm class="search_bar__term" @search="searchMaterials" />
   </section>
 </template>
@@ -15,6 +15,12 @@ export default {
   components: {
     SearchTerm,
     PreSearchFilters
+  },
+  props: {
+    enablePreFilters: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
