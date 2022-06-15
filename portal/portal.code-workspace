@@ -10,7 +10,11 @@
     },
     "vetur.validation.template": false,
     "vetur.format.enable": false,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "vetur.format.enable": false,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "[vue]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
   },
   "extensions": {
     "recommendations": ["dbaeumer.vscode-eslint", "amatiasq.sort-imports"]

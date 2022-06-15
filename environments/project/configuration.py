@@ -135,16 +135,14 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
     return environment, session
 
 
-def create_elastic_search_index_configuration(lang, analyzer, decompound_word_list=None):
-    search_analyzer = analyzer
+def create_elastic_search_index_configuration(lang, decompound_word_list=None):
+    language_analyzers = {
+        'nl': 'custom_dutch',
+        'en': 'english'
+    }
+    search_analyzer = language_analyzers.get(lang, "standard")
     if decompound_word_list and lang == "nl":
         search_analyzer = "dutch_dictionary_decompound"
-    # We first create a basic configuration without decompound dictionaries
-    # Once AWS fixes problems with decompound dictionaries these can be included always
-    language_analyzers = {
-        'dutch': 'custom_dutch',
-        'english': 'english'
-    }
     configuration = {
         "settings": {
             "index": {
@@ -211,7 +209,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'fields': {
                         'analyzed': {
                             'type': 'text',
-                            'analyzer': language_analyzers.get(analyzer, "standard"),
+                            'analyzer': language_analyzers.get(lang, "standard"),
                             'search_analyzer': search_analyzer,
                         },
                         'folded': {
@@ -225,7 +223,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'fields': {
                         'analyzed': {
                             'type': 'text',
-                            'analyzer': language_analyzers.get(analyzer, "standard"),
+                            'analyzer': language_analyzers.get(lang, "standard"),
                             'search_analyzer': search_analyzer,
                         },
                         'folded': {
@@ -239,7 +237,7 @@ def create_elastic_search_index_configuration(lang, analyzer, decompound_word_li
                     'fields': {
                         'analyzed': {
                             'type': 'text',
-                            'analyzer': language_analyzers.get(analyzer, "standard"),
+                            'analyzer': language_analyzers.get(lang, "standard"),
                             'search_analyzer': search_analyzer,
                         },
                         'folded': {

@@ -12,10 +12,10 @@ module.exports = {
   lintOnSave: false,
   transpileDependencies: ["@sentry"], // this makes sure we polyfill certain dependencies
   devServer: {
-    proxy: "http://localhost:8000",
+    proxy: "http://service:8000",
   },
   configureWebpack: {
-    devtool: "source-map",
+    devtool: "eval",
     resolve: {
       alias: {
         "~": path.resolve(__dirname + "/src"),

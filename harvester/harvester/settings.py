@@ -146,7 +146,7 @@ SILENCED_SYSTEM_CHECKS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'harvester',
+        'NAME': environment.postgres.database,
         'USER': environment.postgres.user,
         'PASSWORD': environment.secrets.postgres.password,
         'HOST': environment.postgres.host,
@@ -556,5 +556,9 @@ SOURCES = {
     "greeni": {
         "endpoint": "https://www.greeni.nl",
         "api_key": None
+    },
+    "buas": {
+        "endpoint": "https://pure.buas.nl",
+        "api_key": environment.secrets.buas.api_key
     }
 }
