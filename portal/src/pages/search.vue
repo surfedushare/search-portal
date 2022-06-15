@@ -259,7 +259,7 @@ export default {
 
   &__info {
     padding: 97px 0 0;
-    margin-bottom: 60px;
+    margin-bottom: 20px;
     position: relative;
     min-height: 300px;
 
