@@ -13,8 +13,8 @@
         </div>
         <FilterCategoriesSelection
           v-if="materials"
-          :materials="materials"
           :key="JSON.stringify(search.filters)"
+          :materials="materials"
           @filter="onFilter"
         />
       </div>
@@ -91,7 +91,6 @@ import Materials from "~/components/Materials/Materials.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
 import {
-  addFilter,
   generateSearchMaterialsQuery,
   parseSearchMaterialsQuery,
 } from "~/components/_helpers";

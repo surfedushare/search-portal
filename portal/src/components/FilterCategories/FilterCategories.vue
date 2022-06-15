@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { flatMap, isEqual, isEmpty } from 'lodash';
+import { flatMap, isEmpty } from 'lodash';
 import { generateSearchMaterialsQuery } from '../_helpers';
 import FilterCategory from './FilterCategory.vue';
 

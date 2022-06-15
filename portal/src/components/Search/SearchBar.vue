@@ -9,8 +9,6 @@
 import PreSearchFilters from '@/components/Search/PreSearchFilters'
 import SearchTerm from '@/components/Search/SearchTerm'
 import { isNull, forEach } from 'lodash'
-import numeral from 'numeral'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'SearchBar',
@@ -23,17 +21,6 @@ export default {
       searchText: '',
       filters: {},
     }
-  },
-  computed: {
-    ...mapGetters({
-      filterCategories: 'filter_categories',
-      materials: 'materials',
-      allCommunities: 'allCommunities',
-      statistic: 'statistic',
-    }),
-    numberOfMaterials() {
-      return numeral(this.statistic.value).format('0,0').replace(',', '.')
-    },
   },
   methods: {
     searchMaterials(searchText) {
