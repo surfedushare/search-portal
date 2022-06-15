@@ -57,12 +57,8 @@
           </button>
         </div>
         <div class="search__materials">
-          <Materials
-            :materials="materials"
-            :items-in-line="materials_in_line"
-            :did-you-mean="did_you_mean"
-            :search-term="search.search_text"
-          />
+          <Materials :materials="materials" :items-in-line="materials_in_line" :did-you-mean="did_you_mean"
+            :search-term="search.search_text" />
           <v-pagination
             v-if="
               !materials_loading &&
@@ -96,6 +92,7 @@ import {
   parseSearchMaterialsQuery,
 } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
+
 
 export default {
   components: {
@@ -391,13 +388,11 @@ export default {
       cursor: pointer;
 
       &--cards {
-        background: transparent url("../assets/images/card-view-copy.svg") 0 50%
-          no-repeat;
+        background: transparent url("../assets/images/card-view-copy.svg") 0 50% no-repeat;
       }
 
       &--list {
-        background: transparent url("../assets/images/list-view-copy.svg") 0 50%
-          no-repeat;
+        background: transparent url("../assets/images/list-view-copy.svg") 0 50% no-repeat;
       }
 
       &:focus,

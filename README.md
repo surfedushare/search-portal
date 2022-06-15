@@ -10,7 +10,7 @@ but there is also an admin available for that part.
 
 ## Prerequisites
 
-This project uses `Python 3.10`, `npm`, `Docker`, `docker-compose`, `psql` and `chromedriver`.
+This project uses `Python 3.10`, `npm`, `Docker`, `docker-compose` and `psql`.
 Make sure they are installed on your system before installing the project.
 
 ## Installation

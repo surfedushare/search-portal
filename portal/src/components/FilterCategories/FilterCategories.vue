@@ -19,10 +19,7 @@
           {{ filter.parent.title_translations[$i18n.locale] }}:&nbsp;
           <b>{{ filter.title_translations[$i18n.locale] }}</b>
         </span>
-        <button
-          class="remove-icon"
-          @click="onUncheck(filter.parent.external_id, filter.external_id)"
-        ></button>
+        <button class="remove-icon" @click="onUncheck(filter.parent.external_id, filter.external_id)"></button>
       </li>
     </ul>
     <div
@@ -34,26 +31,12 @@
         class="filter-categories__items_wrapper"
       >
         <template v-for="category in filterableCategories">
-          <DatesRange
-            v-if="category.external_id === publisherDateExternalId"
-            :key="category.external_id"
-            :data-test="category.external_id"
-            :category="category"
-            :dates="datesRangeFilter()"
-            :inline="true"
-            :disable-future-days="true"
-            theme="min"
-            @input="onDateChange"
-          />
+          <DatesRange v-if="category.external_id === publisherDateExternalId" :key="category.external_id"
+            :data-test="category.external_id" :category="category" :dates="datesRangeFilter()" :inline="true"
+            :disable-future-days="true" theme="min" @input="onDateChange" />
 
-          <FilterCategory
-            v-else-if="hasVisibleChildren(category)"
-            :key="category.id"
-            :data-test="category.external_id"
-            :category="category"
-            @check="onCheck"
-            @uncheck="onUncheck"
-          />
+          <FilterCategory v-else-if="hasVisibleChildren(category)" :key="category.id" :data-test="category.external_id"
+            :category="category" @check="onCheck" @uncheck="onUncheck" />
         </template>
       </ul>
     </div>
@@ -445,7 +428,8 @@ export default {
       display: block;
       background-size: contain;
 
-      @media @tablet, @mobile {
+      @media @tablet,
+      @mobile {
         margin-bottom: 25px;
       }
 
