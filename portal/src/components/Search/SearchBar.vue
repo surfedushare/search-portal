@@ -1,14 +1,14 @@
 <template>
   <section class="search_bar">
     <PreSearchFilters class="search_bar__filters" @update:filter="onUpdateFilter" />
-    <SearchTerm class="search_bar__term" @onSearch="searchMaterials" />
+    <SearchTerm class="search_bar__term" @search="searchMaterials" />
   </section>
 </template>
 
 <script>
 import PreSearchFilters from '@/components/Search/PreSearchFilters'
 import SearchTerm from '@/components/Search/SearchTerm'
-import { isNull } from 'lodash'
+import { isNull, forEach } from 'lodash'
 import numeral from 'numeral'
 import { mapGetters } from 'vuex'
 
@@ -37,13 +37,12 @@ export default {
   },
   methods: {
     searchMaterials(searchText) {
-      const searchRequest = {
-        search_text: searchText || '',
-        filters: this.filters,
-        page_size: 10,
-        page: 1,
-      }
-      this.$emit('onSearch', searchRequest)
+      forEach(this.filters, (selection, field) => {
+        if (selection.length) {
+          this.$store.commit('SELECT_FILTER_CATEGORIES', {category: field, selection})
+        }
+      })
+      this.$emit('search', searchText)
     },
     onUpdateFilter(filter) {
       if (isNull(filter.selection)) {

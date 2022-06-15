@@ -1,5 +1,5 @@
 import { PUBLISHER_DATE_FIELD, THEME_CATEGORY_FILTER_FIELD } from "@/constants";
-import { forEach, groupBy, isEmpty, isNil, isNull, sortBy } from "lodash";
+import { forEach, groupBy, isEmpty, isNil, isNull, sortBy, union, pull } from "lodash";
 
 import axios from "~/axios";
 import { parseSearchMaterialsQuery } from "~/components/_helpers";
@@ -84,7 +84,7 @@ export default {
     filter_categories: null,
     filter_categories_loading: null,
     disciplines: null,
-    languages: null,
+    selection: {},
     byCategoryId: {},
   },
   getters: {
@@ -192,6 +192,18 @@ export default {
     },
     SET_FILTER_CATEGORIES_LOADING(state, payload) {
       state.filter_categories_loading = payload;
+    },
+    SELECT_FILTER_CATEGORIES(state, {category, selection}) {
+      state.selection[category] = union(state.selection[category], selection);
+    },
+    DESELECT_FILTER_CATEGORIES(state, {category, selection}) {
+      state.selection[category] = pull(state.selection[category], ...selection);
+      if(isEmpty(state.selection[category])) {
+        delete state.selection[category]
+      }
+    },
+    RESET_FILTER_CATEGORIES_SELECTION(state, selection) {
+      state.selection = (isEmpty(selection)) ? {} : selection
     },
   },
 };

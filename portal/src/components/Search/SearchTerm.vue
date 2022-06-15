@@ -112,10 +112,10 @@ export default {
     }, 350),
     onSelectSuggestion(result) {
       const text = result ? result.item : this.searchText
-      this.$emit('onSearch', text)
+      this.$emit('search', text)
     },
     onSubmit() {
-      this.$emit('onSearch', this.searchText)
+      this.$emit('search', this.searchText)
     },
   },
 }

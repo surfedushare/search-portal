@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { flatMap, isEqual, isEmpty } from 'lodash'
+import { flatMap, isEmpty } from 'lodash'
 
 
 export default {
@@ -33,17 +33,14 @@ export default {
       default: () => ({
       }),
     },
-    'selectedFilters': {
-      type: Object,
-      default: () => ({}),
-    }
   },
   computed: {
     selectionFilterItems() {
-      if (isEmpty(this.selectedFilters)) {
+      const selectedFilters = this.$store.state.filterCategories.selection
+      if (isEmpty(selectedFilters)) {
         return []
       }
-      return flatMap(this.selectedFilters, (filter_ids, categoryId) => {
+      return flatMap(selectedFilters, (filter_ids, categoryId) => {
         const cat = this.materials?.filter_categories?.find((category) => {
           return category.external_id === categoryId
         })
@@ -58,54 +55,13 @@ export default {
     },
   },
   methods: {
-    childExternalIds(categoryId, itemId) {
-      // he
-      const category = this.materials.filter_categories.find(
-        (category) => category.external_id === categoryId
-      )
-      const item = category.children.find((item) => item.external_id === itemId)
-      const iterator = (memo, item) => {
-        if (item.children.length > 0) {
-          item.children.forEach((child) => iterator(memo, child))
-        }
-        memo.push(item.external_id)
-        return memo
-      }
-
-      return item.children?.reduce(iterator, [item.external_id])
-    },
     onClose(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || []
-      const filters = this.childExternalIds(categoryId, itemId)
-      this.selectedFilters[categoryId] = existingItems.filter(
-        (item) => !filters.includes(item)
-      )
-      if (this.selectedFilters[categoryId].length === 0) {
-        this.$delete(this.selectedFilters, categoryId)
-      }
-      if (itemId === this.$route.params.filterId) {
-        return this.executeSearch(this.selectedFilters, 'materials-search')
-      }
-      return this.executeSearch(this.selectedFilters)
-    },
-    async executeSearch(filters = {}, name = null) {
-      name = name || this.$route.name
-      const { ordering, search_text } = this.materials
-      const searchRequest = {
-        search_text,
-        ordering,
-        filters: { ...filters },
-      }
-      // Execute search
-      const route = this.generateSearchMaterialsQuery(searchRequest, name)
-      if (isEqual(route.query, this.$route.query)) {
-        return
-      }
-      await this.$router.push(route)
-      this.$emit('input', searchRequest) // actual search is done by the parent page
+      this.$store.commit('DESELECT_FILTER_CATEGORIES', {category: categoryId, selection: [itemId]})
+      this.$emit("filter");
     },
     resetFilter() {
-      this.$emit('reset')
+      this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION')
+      this.$emit("filter");
     },
   },
 }

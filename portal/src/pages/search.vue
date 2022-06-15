@@ -8,25 +8,23 @@
             src="../assets/images/pictures/header-image.jpg"
             alt="header-image"
           />
-          <SearchBar @onSearch="initialSearch" />
+          <SearchBar @search="onSearch" />
           <div ref="top"></div>
         </div>
+        <FilterCategoriesSelection
+          v-if="materials"
+          :materials="materials"
+          :key="JSON.stringify(search.filters)"
+          @filter="onFilter"
+        />
       </div>
-      <FilterCategoriesSelection
-        v-if="materials"
-        :materials="materials"
-        :selected-filters="search.filters"
-        @reset="onSearch"
-      />
       <div class="search__container">
         <div><!-- filler --></div>
         <FilterCategories
           v-if="materials"
-          v-model="search"
-          :selected-filters="search.filters"
           :default-filter="$route.params.filterId"
           :materials="materials"
-          @reset="onSearch"
+          @filter="onFilter"
         />
         <div class="search__tools">
           <h2
@@ -120,6 +118,7 @@ export default {
   },
   data() {
     const urlInfo = parseSearchMaterialsQuery(this.$route.query);
+    this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION', urlInfo.search.filters)
     return {
       search: urlInfo.search,
       formData: {
@@ -156,21 +155,14 @@ export default {
       return this.isReady && this.materials && this.materials.records;
     },
   },
-  watch: {
-    search(search) {
-      if (search && !this.materials_loading) {
-        this.executeSearch();
-      }
-    },
-  },
   mounted() {
     this.loadFilterCategories().finally(() => {
       this.executeSearch();
     });
   },
   methods: {
-    initialSearch(search) {
-      this.search = search;
+    onSearch(searchText) {
+      this.search.search_text = searchText;
       this.executeSearch(true);
     },
     executeSearch(updateUrl) {
@@ -197,15 +189,14 @@ export default {
         );
       }
     },
-    onSearch(searchText) {
-      const changed = searchText !== this.search.search_text;
+    onFilter() {
       this.search = {
-        search_text: searchText || "",
-        filters: {},
+        search_text: this.search.search_text,
+        filters: this.$store.state.filterCategories.selection,
         page_size: 10,
         page: 1,
       };
-      this.executeSearch(changed);
+      this.executeSearch(true);
     },
     onLoadPage(page) {
       const { search, materials } = this;
