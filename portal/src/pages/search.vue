@@ -154,8 +154,10 @@ export default {
   },
   methods: {
     onSearch(searchText) {
+      searchText = searchText || ""
+      const changed = searchText !== this.search.search_text;
       this.search.search_text = searchText;
-      this.executeSearch(true);
+      this.executeSearch(changed);
     },
     executeSearch(updateUrl) {
       this.$store.dispatch("searchMaterials", this.search);
