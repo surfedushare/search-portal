@@ -136,6 +136,12 @@ integration-test-job:
     - invoke hrv.setup-postgres --host postgres
     - invoke hrv.index-dataset-version localhost -d test
     - APPLICATION_PROJECT=edusources invoke test.e2e
+  artifacts:
+    when: always
+    paths:
+      - portal/tests/e2e/videos/**/*.mp4
+      - portal/tests/e2e/screenshots/**/*.png
+    expire_in: 1 day
 
 promote:
   stage: promote
