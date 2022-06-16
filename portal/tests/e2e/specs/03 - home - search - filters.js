@@ -142,4 +142,20 @@ describe("Home page - search - filters", () => {
       .selectedFiltersShouldContain("Auteur", "Ning Ding", 3, 1)
       .selectedFiltersShouldContain("Onderwijsniveau", "HBO", 3, 2);
   });
+
+  it("Should retain filters when searching again", () => {
+    cy.selectFilter("technical_type", "document").selectedFiltersShouldContain(
+      "Bestandstype",
+      "Document",
+      1,
+      0
+    );
+    cy.searchFor("big").selectedFiltersShouldContain(
+      "Bestandstype",
+      "Document",
+      1,
+      0
+    );
+  });
+
 });

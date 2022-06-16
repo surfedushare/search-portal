@@ -35,4 +35,22 @@ describe("Home page - search - pre-filters", () => {
       .search()
       .selectedFiltersShouldContain("Taal", "Nederlands", 1, 0);
   });
+
+  it("Should clear all filters when resetting filters", () => {
+    cy.selectPreFilter("technical_type", "website")
+      .search()
+      .selectedFiltersShouldContain("Bestandstype", "Website", 0, 0)
+    cy.get("[data-test=reset_filters").click()
+      .get("[data-test=selected_filters]").should("not.be.visible")
+  });
+
+  it("Should clear all filters when navigating away", () => {
+    cy.selectPreFilter("technical_type", "website")
+      .search()
+      .selectedFiltersShouldContain("Bestandstype", "Website", 0, 0)
+    cy.visit("/").search()
+      .get("[data-test=selected_filters]")
+      .should("not.be.visible")
+  });
+
 });

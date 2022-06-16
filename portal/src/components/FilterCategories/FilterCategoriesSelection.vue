@@ -16,7 +16,10 @@
       v-show="selectionFilterItems.length"
       outlined
       depressed
-      @click="resetFilter">{{ $t('Reset-filters') }}
+      @click="resetFilter"
+      data-test="reset_filters"
+    >
+      {{ $t('Reset-filters') }}
     </v-btn>
   </section>
 </template>
