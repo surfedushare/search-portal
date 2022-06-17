@@ -35,24 +35,6 @@ export default {
     VueAutosuggest,
   },
   props: {
-    selectOptions: {
-      type: Object,
-      default: function () {
-        return {
-          name: '',
-          options: [],
-        }
-      },
-    },
-    checkboxOptions: {
-      type: Object,
-      default: function () {
-        return {
-          name: '',
-          options: [],
-        }
-      },
-    },
     placeholder: {
       type: String,
       default: null,

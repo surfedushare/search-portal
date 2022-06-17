@@ -73,7 +73,7 @@ export default {
   methods: {
     onSearch(searchText) {
       this.$store.dispatch('searchMaterials', {
-        search_text: searchText,
+        search_text: searchText || "",
         page_size: 10,
         page: 1,
       })
