@@ -14,35 +14,21 @@
           :disabled="true"
           :dark-stars="true"
         />
-        <div
-          class="materials__item_description"
-          v-html="hightlightedSearchResult"
-        ></div>
+        <div class="materials__item_description" v-html="hightlightedSearchResult"></div>
       </div>
 
       <div class="materials__item_subinfo">
         <div class="materials__item_subinfo_row">
           <div
-            v-if="
-              material.educationallevels && material.educationallevels.length
-            "
+            v-if="material.educationallevels && material.educationallevels.length"
             class="materials__item_educationallevels"
           >
             <span
-              v-for="(educationallevel, i) in material.educationallevels.slice(
-                0,
-                2
-              )"
+              v-for="(educationallevel, i) in material.educationallevels.slice(0, 2)"
               :key="i"
               class="materials__item_educationallevel"
             >
-              {{
-                punctuate(
-                  educationallevel[$i18n.locale],
-                  i,
-                  material.educationallevels.length
-                )
-              }}
+              {{ punctuate(educationallevel[$i18n.locale], i, material.educationallevels.length) }}
             </span>
           </div>
 
@@ -51,9 +37,7 @@
           </div>
 
           <div
-            v-if="
-              material.technical_type && material.technical_type !== 'unknown'
-            "
+            v-if="material.technical_type && material.technical_type !== 'unknown'"
             :class="`materials__item_format_kind materials__item_format_${material.technical_type}`"
           >
             {{ $t(material.technical_type) }}
@@ -237,8 +221,7 @@ li:hover h3 {
         display: inline-grid;
         height: 16px;
         width: 18px;
-        background: url("../../../assets/images/docs.svg") 2px 0px / contain
-          no-repeat;
+        background: url("../../../assets/images/docs.svg") 2px 0px / contain no-repeat;
       }
     }
 
@@ -254,56 +237,47 @@ li:hover h3 {
       }
       &_app {
         &:before {
-          background: url("../../../assets/images/app.svg") 0px 0px / contain
-            no-repeat;
+          background: url("../../../assets/images/app.svg") 0px 0px / contain no-repeat;
         }
       }
       &_document {
         &:before {
-          background: url("../../../assets/images/doc.svg") 2px 0px / contain
-            no-repeat;
+          background: url("../../../assets/images/doc.svg") 2px 0px / contain no-repeat;
         }
       }
       &_audio {
         &:before {
-          background: url("../../../assets/images/audio.svg") 2px 0px / contain
-            no-repeat;
+          background: url("../../../assets/images/audio.svg") 2px 0px / contain no-repeat;
         }
       }
       &_video {
         &:before {
-          background: url("../../../assets/images/video.svg") 2px 0px / contain
-            no-repeat;
+          background: url("../../../assets/images/video.svg") 2px 0px / contain no-repeat;
         }
       }
       &_image {
         &:before {
-          background: url("../../../assets/images/image.svg") 2px 0px / contain
-            no-repeat;
+          background: url("../../../assets/images/image.svg") 2px 0px / contain no-repeat;
         }
       }
       &_openaccess-textbook {
         &:before {
-          background: url("../../../assets/images/open-text-book.svg") 2px 0px /
-            contain no-repeat;
+          background: url("../../../assets/images/open-text-book.svg") 2px 0px / contain no-repeat;
         }
       }
       &_presentation {
         &:before {
-          background: url("../../../assets/images/presentation.svg") 2px 0px /
-            contain no-repeat;
+          background: url("../../../assets/images/presentation.svg") 2px 0px / contain no-repeat;
         }
       }
       &_spreadsheet {
         &:before {
-          background: url("../../../assets/images/spreadsheet.png") 2px 0px /
-            contain no-repeat;
+          background: url("../../../assets/images/spreadsheet.png") 2px 0px / contain no-repeat;
         }
       }
       &_website {
         &:before {
-          background: url("../../../assets/images/website.svg") 2px 0px /
-            contain no-repeat;
+          background: url("../../../assets/images/website.svg") 2px 0px / contain no-repeat;
         }
       }
     }

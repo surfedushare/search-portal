@@ -23,7 +23,7 @@ export default {
   mounted() {},
   data() {
     return {
-      avg_rating: 2,
+      avg_rating: this.value,
       ratings: [1, 2, 3, 4, 5],
       types: [
         this.$t("Not-judged"),
