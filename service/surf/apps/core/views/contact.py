@@ -1,5 +1,3 @@
-from email import message
-from re import sub
 from rest_framework.views import APIView
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -19,6 +17,7 @@ def send_feedback_mail(feedback, current_url, user):
         ['edusources-team@surf.nl']
     )
 
+
 def send_contact_mail(subject, name, email, message, current_url):
     content = (
         f"name: {name} "
@@ -33,6 +32,7 @@ def send_contact_mail(subject, name, email, message, current_url):
         email,
         ['edusources-team@surf.nl']
     )
+
 
 class FeedbackAPIView(APIView):
 
