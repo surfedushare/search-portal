@@ -23,34 +23,20 @@
         ]"
         class="materials__item tile"
       >
-        <div v-if="material.has_bookmark" class="materials__bookmark">
-          Bookmark
-        </div>
+        <div v-if="material.has_bookmark" class="materials__bookmark">Bookmark</div>
         <button
           v-if="contenteditable"
           :class="{ 'select-icon': true, selected: material.selected }"
           @click="selectMaterial(material)"
         />
-        <Material
-          :material="material"
-          :handle-material-click="handleMaterialClick"
-          :items-in-line="itemsInLine"
-        />
+        <Material :material="material" :handle-material-click="handleMaterialClick" :items-in-line="itemsInLine" />
       </li>
     </ul>
-    <div
-      v-else-if="!current_loading && has_no_result_suggestion"
-      data-test="search_suggestion"
-      class="not_found"
-    >
+    <div v-else-if="!current_loading && has_no_result_suggestion" data-test="search_suggestion" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
         {{ $t("Did-you-mean") }}
-        <a
-          :href="no_result_suggestion_link"
-          data-test="search_suggestion_link"
-          >{{ didYouMean.suggestion }}</a
-        >
+        <a :href="no_result_suggestion_link" data-test="search_suggestion_link">{{ didYouMean.suggestion }}</a>
         ?
         {{ $t("Because-no-results-for") }} '{{ didYouMean.original }}'
         <div class="not_found__info">
@@ -58,11 +44,7 @@
         </div>
       </div>
     </div>
-    <div
-      v-else-if="!current_loading"
-      data-test="no_search_results"
-      class="not_found"
-    >
+    <div v-else-if="!current_loading" data-test="no_search_results" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
         {{ $t("No-results-for") }} '{{ searchTerm }}'
@@ -144,15 +126,10 @@ export default {
         const arrMaterials = materials.records ? materials.records : materials;
 
         return arrMaterials.map((material) => {
-          const description =
-            material.description && material.description.length > 200
-              ? material.description.slice(0, 200) + "..."
-              : material.description;
-
           return {
             ...material,
             selected: selected_materials.indexOf(material.external_id) !== -1,
-            description,
+            description: material.description,
           };
         });
       }
@@ -218,9 +195,7 @@ export default {
       if (selected_materials.indexOf(material.external_id) === -1) {
         selected_materials.push(material.external_id);
       } else {
-        selected_materials = selected_materials.filter(
-          (item) => item !== material.external_id
-        );
+        selected_materials = selected_materials.filter((item) => item !== material.external_id);
       }
       return selected_materials;
     },
@@ -272,8 +247,7 @@ export default {
 
     &.deleting {
       .select-icon {
-        background: @light-grey url("../../assets/images/close-grey.svg") 50%
-          50% no-repeat;
+        background: @light-grey url("../../assets/images/close-grey.svg") 50% 50% no-repeat;
       }
       .selected {
         opacity: 0.5;
@@ -282,12 +256,10 @@ export default {
     }
     &.adding {
       .select-icon {
-        background: @light-grey url("../../assets/images/plus-black.svg") 50%
-          50% no-repeat;
+        background: @light-grey url("../../assets/images/plus-black.svg") 50% 50% no-repeat;
       }
       .select-icon.selected {
-        background: @green url("../../assets/images/plus-white.svg") 50% 50%
-          no-repeat;
+        background: @green url("../../assets/images/plus-white.svg") 50% 50% no-repeat;
       }
     }
   }
@@ -321,8 +293,7 @@ export default {
     &__icon {
       display: inline-block;
       border-radius: 50%;
-      background: @green url("../../assets/images/search-white.svg") 50% 50%
-        no-repeat;
+      background: @green url("../../assets/images/search-white.svg") 50% 50% no-repeat;
       height: 48px;
       width: 48px;
     }

@@ -4,17 +4,19 @@
     class="materials__item_wrapper tile__wrapper"
     @click="handleMaterialClick(material)"
   >
-    <div class="materials__item_date">{{ formattedPublishedAt || null }}</div>
+    <div class="materials__item_date">{{ formattedPublishedAt }}</div>
     <div class="materials__item_content">
       <div class="materials__item_main_info">
-        <h3 class="materials__item_title">{{ material.title }}</h3>
+        <h3 class="materials__item_title" :class="{ truncate2: itemsInLine > 1 }">
+          {{ material.title }}
+        </h3>
         <StarRating
           v-model="material.avg_star_rating"
           :counter="material.count_star_rating"
           :disabled="true"
           :dark-stars="true"
         />
-        <div class="materials__item_description" v-html="hightlightedSearchResult"></div>
+        <div class="materials__item_description truncate3" v-html="hightlightedSearchResult"></div>
       </div>
 
       <div class="materials__item_subinfo">
@@ -122,6 +124,24 @@ export default {
 li:hover h3 {
   color: @green;
 }
+.truncate2 {
+  height: 50px;
+  line-height: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin: 0 0 1em 0;
+  overflow: hidden;
+}
+.truncate3 {
+  line-height: 26px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  margin: 0 0 1em 0;
+  overflow: hidden;
+}
+
 .materials {
   &__items {
     padding: 0;
@@ -150,7 +170,6 @@ li:hover h3 {
         flex-direction: column;
         justify-content: space-between;
         &:hover {
-          // background-color: red;
           &.title {
             color: @green;
           }
@@ -178,6 +197,7 @@ li:hover h3 {
       display: flex;
       flex-direction: column;
       cursor: pointer;
+      height: auto;
     }
 
     &_content {
@@ -191,13 +211,14 @@ li:hover h3 {
 
     &_date {
       padding: 20px 0 0 20px;
+      min-height: 48px;
     }
 
     &_subinfo {
       &_row {
         display: inline-flex;
         grid-gap: 5px;
-        padding: 10px 10px 10px 20px;
+        padding: 10px 10px 10px 15px;
       }
     }
 
@@ -293,17 +314,8 @@ li:hover h3 {
     }
 
     &_title {
-      display: block;
-      display: -webkit-box;
       max-width: 100%;
-      height: 40px;
       margin: 0 auto;
-      margin-bottom: 10px;
-      line-height: 1;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     &_link {
@@ -339,7 +351,7 @@ li:hover h3 {
 
     &_description {
       padding: 16px 0 0;
-      min-height: 180px;
+      min-height: 96px;
       /deep/ em {
         background-color: @yellow;
         font-style: normal;
