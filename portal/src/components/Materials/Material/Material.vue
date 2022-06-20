@@ -18,39 +18,39 @@
       </div>
 
       <div class="materials__item_subinfo">
-        <div
-          v-if="material.educationallevels && material.educationallevels.length"
-          class="materials__item_educationallevels"
-        >
-          <span
-            v-for="(educationallevel, i) in material.educationallevels.slice(0, 2)"
-            :key="i"
-            class="materials__item_educationallevel"
+        <div class="materials__item_subinfo_row">
+          <div
+            v-if="material.educationallevels && material.educationallevels.length"
+            class="materials__item_educationallevels"
           >
-            {{ punctuate(educationallevel[$i18n.locale], i, material.educationallevels.length) }}
-          </span>
-        </div>
+            <span
+              v-for="(educationallevel, i) in material.educationallevels.slice(0, 2)"
+              :key="i"
+              class="materials__item_educationallevel"
+            >
+              {{ punctuate(educationallevel[$i18n.locale], i, material.educationallevels.length) }}
+            </span>
+          </div>
 
-        <div v-if="hasPart" class="materials__item_set_count">
-          {{ $tc("Materials", material.has_parts.length) }}
-        </div>
+          <div v-if="hasPart" class="materials__item_set_count">
+            {{ $tc("Materials", material.has_parts.length) }}
+          </div>
 
-        <div
-          v-if="material.technical_type && material.technical_type !== 'unknown'"
-          :class="`materials__item_format_${material.technical_type}`"
-        >
-          {{ $t(material.technical_type) }}
+          <div
+            v-if="material.technical_type && material.technical_type !== 'unknown'"
+            :class="`materials__item_format_kind materials__item_format_${material.technical_type}`"
+          >
+            {{ $t(material.technical_type) }}
+          </div>
         </div>
       </div>
     </div>
     <footer class="materials__item_footer">
+      <div class="materials__item_actions">
+        <div v-if="hasPart" class="materials__item_tag">{{ $t("Set") }}</div>
+      </div>
       <div v-if="material.authors.length > 0" class="materials__item_author">
         {{ material.authors.join(", ") }}
-      </div>
-      <div class="materials__item_actions">
-        <div class="materials__item_tag">
-          <span v-if="hasPart">{{ $t("Set") }}</span>
-        </div>
       </div>
     </footer>
   </div>
@@ -119,34 +119,42 @@ export default {
 
 <style lang="less" scoped>
 @import "./../../../variables";
+li:hover h3 {
+  color: @green;
+}
 .materials {
   &__items {
     padding: 0;
     list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
-    grid-gap: 1rem;
 
     &.list {
-      grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
       .materials__item_main_info {
-        flex: 1;
         padding: 10px 20px 20px;
       }
 
       .materials__item_subinfo {
-        padding: 10px 20px 20px;
-        width: 230px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+        display: grid;
+        align-content: space-between;
+        &_row {
+          display: grid;
+          grid-gap: 16px;
+        }
       }
     }
 
     &.tile {
       .materials__item_content {
+        display: flex;
         flex-direction: column;
         justify-content: space-between;
+        &:hover {
+          // background-color: red;
+          &.title {
+            color: @green;
+          }
+        }
       }
     }
   }
@@ -173,8 +181,8 @@ export default {
     }
 
     &_content {
-      flex: 1;
-      display: flex;
+      grid-template-columns: 78% auto;
+      display: grid;
     }
 
     &_main_info {
@@ -186,114 +194,90 @@ export default {
     }
 
     &_subinfo {
-      display: grid;
-      font-size: 14px;
-      margin: 20px;
-      grid-template-columns: auto auto auto;
+      &_row {
+        display: inline-flex;
+        grid-gap: 5px;
+        padding: 10px 10px 10px 20px;
+      }
     }
 
-    &_educationallevel {
+    &_educationallevels {
+      font-size: 16px;
       padding-right: 10px;
       &:before {
         content: "";
-        display: inline-block;
-        vertical-align: middle;
-        width: 18px;
+        display: inline-grid;
         height: 18px;
-        background: url("../../../assets/images/edulevel.svg") 50% 50% / contain no-repeat;
+        width: 20px;
+        background: url("../../../assets/images/edulevel.svg") 0px 0px;
+        background-size: 100%;
       }
     }
 
     &_set_count {
+      font-size: 16px;
       &:before {
         content: "";
-        display: inline-block;
-        vertical-align: middle;
+        display: inline-grid;
+        height: 16px;
         width: 18px;
-        height: 18px;
-        background: url("../../../assets/images/docs.svg") 50% 50% / contain no-repeat;
+        background: url("../../../assets/images/docs.svg") 2px 0px / contain no-repeat;
       }
     }
 
     &_format {
-      &_app {
+      &_kind {
+        font-size: 16px;
         &:before {
           content: "";
-          display: inline-block;
-          vertical-align: middle;
+          display: inline-grid;
+          height: 16px;
           width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/app.svg") 50% 50% / contain no-repeat;
+        }
+      }
+      &_app {
+        &:before {
+          background: url("../../../assets/images/app.svg") 0px 0px / contain no-repeat;
         }
       }
       &_document {
         &:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/doc.svg") 50% 50% / contain no-repeat;
+          background: url("../../../assets/images/doc.svg") 2px 0px / contain no-repeat;
         }
       }
       &_audio {
         &:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/audio.svg") 50% 50% / contain no-repeat;
+          background: url("../../../assets/images/audio.svg") 2px 0px / contain no-repeat;
+        }
+      }
+      &_video {
+        &:before {
+          background: url("../../../assets/images/video.svg") 2px 0px / contain no-repeat;
         }
       }
       &_image {
         &:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/image.svg") 50% 50% / contain no-repeat;
+          background: url("../../../assets/images/image.svg") 2px 0px / contain no-repeat;
         }
       }
       &_openaccess-textbook {
         &:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/open-text-book.svg") 50% 50% / contain no-repeat;
+          background: url("../../../assets/images/open-text-book.svg") 2px 0px / contain no-repeat;
         }
       }
       &_presentation {
         &:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/presentation.svg") 50% 50% / contain no-repeat;
+          background: url("../../../assets/images/presentation.svg") 2px 0px / contain no-repeat;
         }
       }
       &_spreadsheet {
         &:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/spreadsheet.png") 50% 50% / contain no-repeat;
+          background: url("../../../assets/images/spreadsheet.png") 2px 0px / contain no-repeat;
         }
       }
       &_website {
         &:before {
-          content: "";
-          display: inline-block;
-          vertical-align: middle;
-          width: 18px;
-          height: 18px;
-          background: url("../../../assets/images/website.svg") 50% 50% / contain no-repeat;
+          background: url("../../../assets/images/website.svg") 2px 0px / contain no-repeat;
         }
       }
     }
@@ -304,6 +288,8 @@ export default {
       align-items: center;
       padding: 10px 20px;
       background: @light-grey;
+      flex-direction: row-reverse;
+      height: 48px;
     }
 
     &_title {
@@ -338,10 +324,11 @@ export default {
 
     &_tag {
       background: @green;
-      border-radius: 4px;
+      border-radius: 8px;
       color: #fff;
-      font-size: 1.1em;
-      padding: 0 10px;
+      font-size: 14px;
+      padding: 5px 10px;
+      height: 30px;
     }
 
     &_actions {
@@ -352,8 +339,9 @@ export default {
 
     &_description {
       padding: 16px 0 0;
+      min-height: 180px;
       /deep/ em {
-        background-color: yellow;
+        background-color: @yellow;
         font-style: normal;
       }
     }
