@@ -14,10 +14,7 @@
           :disabled="true"
           :dark-stars="true"
         />
-        <div
-          class="materials__item_description"
-          v-html="hightlightedSearchResult"
-        ></div>
+        <div class="materials__item_description" v-html="hightlightedSearchResult"></div>
       </div>
 
       <div class="materials__item_subinfo">
@@ -26,20 +23,11 @@
           class="materials__item_educationallevels"
         >
           <span
-            v-for="(educationallevel, i) in material.educationallevels.slice(
-              0,
-              2
-            )"
+            v-for="(educationallevel, i) in material.educationallevels.slice(0, 2)"
             :key="i"
             class="materials__item_educationallevel"
           >
-            {{
-              punctuate(
-                educationallevel[$i18n.locale],
-                i,
-                material.educationallevels.length
-              )
-            }}
+            {{ punctuate(educationallevel[$i18n.locale], i, material.educationallevels.length) }}
           </span>
         </div>
 
@@ -48,9 +36,7 @@
         </div>
 
         <div
-          v-if="
-            material.technical_type && material.technical_type !== 'unknown'
-          "
+          v-if="material.technical_type && material.technical_type !== 'unknown'"
           :class="`materials__item_format_${material.technical_type}`"
         >
           {{ $t(material.technical_type) }}
@@ -214,8 +200,7 @@ export default {
         vertical-align: middle;
         width: 18px;
         height: 18px;
-        background: url("../../../assets/images/edulevel.svg") 50% 50% / contain
-          no-repeat;
+        background: url("../../../assets/images/edulevel.svg") 50% 50% / contain no-repeat;
       }
     }
 
@@ -226,8 +211,7 @@ export default {
         vertical-align: middle;
         width: 18px;
         height: 18px;
-        background: url("../../../assets/images/docs.svg") 50% 50% / contain
-          no-repeat;
+        background: url("../../../assets/images/docs.svg") 50% 50% / contain no-repeat;
       }
     }
 
@@ -239,8 +223,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/app.svg") 50% 50% / contain
-            no-repeat;
+          background: url("../../../assets/images/app.svg") 50% 50% / contain no-repeat;
         }
       }
       &_document {
@@ -250,8 +233,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/doc.svg") 50% 50% / contain
-            no-repeat;
+          background: url("../../../assets/images/doc.svg") 50% 50% / contain no-repeat;
         }
       }
       &_audio {
@@ -261,8 +243,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/audio.svg") 50% 50% / contain
-            no-repeat;
+          background: url("../../../assets/images/audio.svg") 50% 50% / contain no-repeat;
         }
       }
       &_image {
@@ -272,8 +253,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/image.svg") 50% 50% / contain
-            no-repeat;
+          background: url("../../../assets/images/image.svg") 50% 50% / contain no-repeat;
         }
       }
       &_openaccess-textbook {
@@ -283,8 +263,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/open-text-book.svg") 50% 50% /
-            contain no-repeat;
+          background: url("../../../assets/images/open-text-book.svg") 50% 50% / contain no-repeat;
         }
       }
       &_presentation {
@@ -294,8 +273,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/presentation.svg") 50% 50% /
-            contain no-repeat;
+          background: url("../../../assets/images/presentation.svg") 50% 50% / contain no-repeat;
         }
       }
       &_spreadsheet {
@@ -305,8 +283,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/spreadsheet.png") 50% 50% /
-            contain no-repeat;
+          background: url("../../../assets/images/spreadsheet.png") 50% 50% / contain no-repeat;
         }
       }
       &_website {
@@ -316,8 +293,7 @@ export default {
           vertical-align: middle;
           width: 18px;
           height: 18px;
-          background: url("../../../assets/images/website.svg") 50% 50% /
-            contain no-repeat;
+          background: url("../../../assets/images/website.svg") 50% 50% / contain no-repeat;
         }
       }
     }

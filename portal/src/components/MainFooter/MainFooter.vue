@@ -9,7 +9,7 @@
         <h3>{{ $t("Footer-info-title") }}</h3>
         <div
           class="main-footer__info_text html-content"
-          v-html="getFooterText"
+          v-html="getFooterText()"
         ></div>
         <a
           :href="$t('Digital-learning-materials-link')"

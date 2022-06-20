@@ -55,11 +55,18 @@
           />
         </router-link>
         <Menu class="main-header__menu" />
+
+        <QuestionPopup
+          v-if="showQuestionPopup"
+          :show-popup="showQuestionPopup"
+          :close="toggleQuestionPopup"
+        />
+
         <div class="main-header__actions">
           <div class="main-header__question">
-            <a class="button" :href="questionLink" target="_blank">{{
-              $t("Question")
-            }}</a>
+            <button type="button" class="button" @click="toggleQuestionPopup">
+              <span>{{ $t("Question") }}</span>
+            </button>
           </div>
           <div v-if="isAuthenticated" class="main-header__user">
             <div class="main-header__user_name arrow-link">
@@ -183,6 +190,7 @@
 <script>
 import Feedback from "../Feedback/Feedback";
 import LanguageSwitch from "./LanguageSwitch";
+import QuestionPopup from "../Popup/QuestionPopup.vue";
 import Menu from "./Menu.vue";
 import { generateSearchMaterialsQuery } from "../_helpers";
 import { mapGetters } from "vuex";
@@ -193,8 +201,14 @@ export default {
     LanguageSwitch,
     Menu,
     Feedback,
+    QuestionPopup,
   },
   props: [],
+  data() {
+    return {
+      showQuestionPopup: false,
+    };
+  },
   computed: {
     ...mapGetters([
       "isAuthenticated",
@@ -239,6 +253,9 @@ export default {
       );
       notification.is_allowed = true;
       this.$store.dispatch("postUser");
+    },
+    toggleQuestionPopup() {
+      this.showQuestionPopup = !this.showQuestionPopup;
     },
   },
 };

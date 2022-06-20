@@ -15,7 +15,9 @@
         target="_blank"
         >{{ $t("Contact-email") }}</a
       >
-      <a class="menu__link" :href="supportLink" target="_blank">Support</a>
+
+      <a class="menu__link" :href="supportLink()" target="_blank">Support</a>
+
       <router-link
         class="menu__link"
         :to="{ name: 'institutions' + '___' + $i18n.locale }"
@@ -27,7 +29,7 @@
 <script>
 export default {
   name: "MenuBlock",
-  computed: {
+  methods: {
     supportLink() {
       return this.$i18n.locale === "nl"
         ? "https://wiki.surfnet.nl/display/EDS/edusources"
