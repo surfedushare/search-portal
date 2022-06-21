@@ -3,11 +3,7 @@
     <div>
       <div class="main__info">
         <div class="center_block center-header">
-          <img
-            class="main__info_bg"
-            src="../assets/images/pictures/header-image.jpg"
-            alt="header-image"
-          />
+          <img class="main__info_bg" src="../assets/images/pictures/header-image.jpg" alt="header-image" />
           <div class="main__info_block">
             <div class="bg" />
             <h2 class="main__info_title">
@@ -49,17 +45,12 @@
       <div class="center_block">
         <section class="preview">
           <div class="preview__bg_block">
-            <img
-              src="../assets/images/pictures/hoe-werkt-het.png"
-              class="preview__bg_block-img"
-            />
+            <img src="../assets/images/pictures/hoe-werkt-het.png" class="preview__bg_block-img" />
           </div>
           <div class="preview__text_block">
             <h2 class="preview__title">{{ $t("How-does-it-work-title") }}</h2>
             <div class="preview__text html-content" v-html="getHowDoesItWork" />
-            <router-link :to="localePath('how-does-it-work')" class="button">{{
-              $t("How-does-it-work")
-            }}</router-link>
+            <router-link :to="localePath('how-does-it-work')" class="button">{{ $t("How-does-it-work") }}</router-link>
           </div>
         </section>
       </div>
@@ -118,9 +109,7 @@ export default {
   methods: {
     getFilterOptions(external_id) {
       if (this.filterCategories) {
-        const filterCategory = this.filterCategories.find(
-          (category) => category.external_id === external_id
-        );
+        const filterCategory = this.filterCategories.find((category) => category.external_id === external_id);
 
         if (filterCategory) {
           return {
@@ -256,8 +245,7 @@ export default {
         }
         &:before {
           content: "";
-          background: url("../assets/images/bubble-background-green.svg") 0 0
-            no-repeat;
+          background: url("../assets/images/bubble-background-green.svg") 0 0 no-repeat;
           position: absolute;
           top: -36px;
           left: -46px;

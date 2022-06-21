@@ -1,5 +1,5 @@
 PACKAGE = {
-    "version": "1.29.19",
+    "version": "1.29.20",
     "name": "harvester",
     "cpu": "2048",
     "memory": "8192",
