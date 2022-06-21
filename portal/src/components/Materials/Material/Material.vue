@@ -220,43 +220,50 @@ li:hover h3 {
     &_subinfo {
       &_row {
         display: inline-flex;
-        grid-gap: 5px;
-        padding: 10px 10px 10px 15px;
+        grid-gap: 8px;
+        padding: 10px 10px 10px 20px;
       }
     }
 
     &_educationallevels {
       font-size: 16px;
-      padding-right: 10px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 0.4em;
       &:before {
         content: "";
-        display: inline-grid;
         height: 18px;
-        width: 20px;
-        background: url("../../../assets/images/edulevel.svg") 0px 0px;
-        background-size: 100%;
+        width: 18px;
+        background: url("../../../assets/images/edulevel.svg") 0px 0px / contain no-repeat;
       }
     }
 
     &_set_count {
       font-size: 16px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 0.4em;
       &:before {
         content: "";
-        display: inline-grid;
         height: 16px;
-        width: 18px;
-        background: url("../../../assets/images/docs.svg") 2px 0px / contain no-repeat;
+        width: 16px;
+        background: url("../../../assets/images/docs.svg") 0px 0px / contain no-repeat;
       }
     }
 
     &_format {
       &_kind {
         font-size: 16px;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.4em;
         &:before {
           content: "";
-          display: inline-grid;
           height: 16px;
-          width: 18px;
+          width: 16px;
         }
       }
       &_app {
@@ -266,12 +273,12 @@ li:hover h3 {
       }
       &_document {
         &:before {
-          background: url("../../../assets/images/doc.svg") 2px 0px / contain no-repeat;
+          background: url("../../../assets/images/doc.svg") 0px 0px / contain no-repeat;
         }
       }
       &_audio {
         &:before {
-          background: url("../../../assets/images/audio.svg") 2px 0px / contain no-repeat;
+          background: url("../../../assets/images/audio.svg") 0px 0px / contain no-repeat;
         }
       }
       &_video {
@@ -281,27 +288,27 @@ li:hover h3 {
       }
       &_image {
         &:before {
-          background: url("../../../assets/images/image.svg") 2px 0px / contain no-repeat;
+          background: url("../../../assets/images/image.svg") 0px 0px / contain no-repeat;
         }
       }
       &_openaccess-textbook {
         &:before {
-          background: url("../../../assets/images/open-text-book.svg") 2px 0px / contain no-repeat;
+          background: url("../../../assets/images/open-text-book.svg") 0px 0px / contain no-repeat;
         }
       }
       &_presentation {
         &:before {
-          background: url("../../../assets/images/presentation.svg") 2px 0px / contain no-repeat;
+          background: url("../../../assets/images/presentation.svg") 0px 0px / contain no-repeat;
         }
       }
       &_spreadsheet {
         &:before {
-          background: url("../../../assets/images/spreadsheet.png") 2px 0px / contain no-repeat;
+          background: url("../../../assets/images/spreadsheet.png") 0px 0px / contain no-repeat;
         }
       }
       &_website {
         &:before {
-          background: url("../../../assets/images/website.svg") 2px 0px / contain no-repeat;
+          background: url("../../../assets/images/website.svg") 0px 0px / contain no-repeat;
         }
       }
     }
