@@ -54,6 +54,9 @@
       <div v-if="material.authors.length > 0" class="materials__item_author">
         {{ material.authors.join(", ") }}
       </div>
+      <div v-else class="materials__item_author_none">
+        {{ $t("Authors-Unknown") }}
+      </div>
     </footer>
   </div>
 </template>
@@ -332,6 +335,9 @@ li:hover h3 {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      &_none {
+        color: @dark-grey;
+      }
     }
 
     &_tag {
