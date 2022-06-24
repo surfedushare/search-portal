@@ -29,7 +29,7 @@ def send_contact_mail(subject, name, email, message, current_url):
     send_mail(
         f'{subject} Zoekportaal Openleermaterialen',
         content,
-        email,
+        'noreply@edusources.nl',
         ['edusources-team@surf.nl']
     )
 

@@ -1,11 +1,6 @@
 <template>
   <transition name="fade">
-    <Popup
-      v-if="showPopup"
-      :close="close"
-      :is-show="showPopup"
-      class="popup-content"
-    >
+    <Popup v-if="showPopup" :close="close" :is-show="showPopup">
       <slot>
         <h2 class="popup__title">
           {{ $t("Question-popup-title") }}
@@ -13,7 +8,7 @@
         <div class="popup__subtext">
           {{ $t("Question-popup-subtext") }}
         </div>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form ref="form" v-model="valid" class="popup-form" lazy-validation @submit.prevent="sendForm">
           <v-text-field
             v-model="name"
             :rules="nameRules"
@@ -35,9 +30,7 @@
             required
             outlined
           ></v-textarea>
-          <button :disabled="!valid" class="button" @click="sendForm">
-            {{ $t("Question-popup-send") }}
-          </button>
+          <button :disabled="!valid" type="submit" class="button">{{ $t("Question-popup-send") }}</button>
         </v-form>
       </slot>
     </Popup>
@@ -106,6 +99,14 @@ export default {
 </script>
 <style scoped lang="less">
 @import "./../../variables";
+html {
+  height: 90vh;
+  overflow: "hidden";
+}
+.popup-form {
+  overflow-y: scroll;
+}
+
 /deep/.v-input__slot {
   background-color: @grey !important;
   fieldset {
