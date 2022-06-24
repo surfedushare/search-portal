@@ -2,22 +2,14 @@
   <section class="main-header">
     <div v-if="user_permission_notifications.length" id="notification-bar">
       <div class="notifications">
-        <div
-          v-for="notification in user_permission_notifications"
-          :key="notification.id"
-        >
+        <div v-for="notification in user_permission_notifications" :key="notification.id">
           <p class="message">
             {{ notification[$i18n.locale].description }}
-            (<router-link :to="localePath(notification.more_info_route)">{{
-              $t("more-info")
-            }}</router-link
+            (<router-link :to="localePath(notification.more_info_route)">{{ $t("more-info") }}</router-link
             >)
           </p>
           <p class="acknowledge">
-            <button
-              class="button"
-              @click="acknowledgeNotification(notification.type)"
-            >
+            <button class="button" @click="acknowledgeNotification(notification.type)">
               {{ $t("Ok") }}
             </button>
           </p>
@@ -25,20 +17,13 @@
       </div>
     </div>
 
-    <div
-      v-for="level in getMessageLevels"
-      id="messages-bar-container"
-      :key="level"
-    >
+    <div v-for="level in getMessageLevels" id="messages-bar-container" :key="level">
       <div v-if="hasMessages(level)" class="messages-bar">
         <i class="fas" :class="[getLevelIcon(level), level]"></i>
         <p class="message">
           {{ getMessagesContent(level) }}
         </p>
-        <i
-          class="fas fa-times"
-          @click="$store.commit('CLEAR_MESSAGES', level)"
-        ></i>
+        <i class="fas fa-times" @click="$store.commit('CLEAR_MESSAGES', level)"></i>
       </div>
     </div>
 
@@ -47,20 +32,13 @@
         <router-link :to="localePath('index')" class="main-header__logo">
           <img
             src="../../assets/images/edusourceslogo.png"
-            srcset="
-              ../../assets/images/edusourceslogo@2x.png 2x,
-              ../../assets/images/edusourceslogo@3x.png 3x
-            "
+            srcset="../../assets/images/edusourceslogo@2x.png 2x, ../../assets/images/edusourceslogo@3x.png 3x"
             class="main-header__logo_img"
           />
         </router-link>
         <Menu class="main-header__menu" />
 
-        <QuestionPopup
-          v-if="showQuestionPopup"
-          :show-popup="showQuestionPopup"
-          :close="toggleQuestionPopup"
-        />
+        <QuestionPopup v-if="showQuestionPopup" :show-popup="showQuestionPopup" :close="toggleQuestionPopup" />
 
         <div class="main-header__actions">
           <div class="main-header__question">
@@ -75,19 +53,12 @@
             <nav class="main-header__user_menu">
               <ul class="main-header__user_menu_items">
                 <li class="main-header__user_menu_item">
-                  <router-link
-                    class="main-header__user_menu_link"
-                    :to="localePath({ name: 'my-privacy' })"
-                  >
+                  <router-link class="main-header__user_menu_link" :to="localePath({ name: 'my-privacy' })">
                     {{ $t("My-privacy") }}
                   </router-link>
                 </li>
                 <li class="main-header__user_menu_item">
-                  <a
-                    class="main-header__user_menu_link"
-                    href="/logout/"
-                    @click.prevent="logout()"
-                  >
+                  <a class="main-header__user_menu_link" href="/logout/" @click.prevent="logout()">
                     {{ $t("logout") }}
                   </a>
                 </li>
@@ -105,21 +76,11 @@
     </div>
 
     <div class="main-header__mobile">
-      <button
-        class="main-header__menu_button"
-        @click="toggleMobileMenu()"
-      ></button>
-      <router-link
-        to="/"
-        class="main-header__mobile_logo"
-        @click.native="hideMobileMenu()"
-      >
+      <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
+      <router-link to="/" class="main-header__mobile_logo" @click.native="hideMobileMenu()">
         <img
           src="../../assets/images/edusourceslogo.png"
-          srcset="
-            ../../assets/images/edusourceslogo@2x.png 2x,
-            ../../assets/images/edusourceslogo@3x.png 3x
-          "
+          srcset="../../assets/images/edusourceslogo@2x.png 2x, ../../assets/images/edusourceslogo@3x.png 3x"
           class="main-header__logo_img"
         />
       </router-link>
@@ -145,12 +106,7 @@
               </router-link>
             </li>
             <li class="main-header__user_menuitem">
-              <a
-                class="main-header__user_menu_link"
-                :href="questionLink"
-                target="_blank"
-                >{{ $t("Question") }}</a
-              >
+              <a class="main-header__user_menu_link" :href="questionLink" target="_blank">{{ $t("Question") }}</a>
             </li>
             <li v-if="isAuthenticated" class="main-header__user_menu_item">
               <router-link
@@ -162,11 +118,7 @@
               </router-link>
             </li>
             <li v-if="isAuthenticated" class="main-header__user_menu_item">
-              <a
-                class="main-header__user_menu_link"
-                href="/logout/"
-                @click.prevent="logout()"
-              >
+              <a class="main-header__user_menu_link" href="/logout/" @click.prevent="logout()">
                 {{ $t("logout") }}
               </a>
             </li>
@@ -229,9 +181,7 @@ export default {
         ordering: null,
         filters: [],
       };
-      const route = this.$router.resolve(
-        generateSearchMaterialsQuery(searchRequest, "materials-search")
-      );
+      const route = this.$router.resolve(generateSearchMaterialsQuery(searchRequest, "materials-search"));
       return route ? route.href : "";
     },
   },
@@ -246,11 +196,9 @@ export default {
       this.$store.commit("SET_HEADER_MENU_STATE", false);
     },
     acknowledgeNotification(notificationType) {
-      let notification = this.user_permission_notifications.find(
-        (notification) => {
-          return notification.type === notificationType;
-        }
-      );
+      let notification = this.user_permission_notifications.find((notification) => {
+        return notification.type === notificationType;
+      });
       notification.is_allowed = true;
       this.$store.dispatch("postUser");
     },
@@ -412,8 +360,7 @@ export default {
     height: 30px;
     width: 30%;
     cursor: pointer;
-    background: transparent url("../../assets/images/list-view-copy.svg") 0 50%
-      no-repeat;
+    background: transparent url("../../assets/images/list-view-copy.svg") 0 50% no-repeat;
 
     &:focus,
     &:active {
@@ -491,8 +438,7 @@ export default {
         width: 25px;
         height: 25px;
         margin: 0 7px 0 0;
-        background: url("../../assets/images/user.svg") 50% 50% / contain
-          no-repeat;
+        background: url("../../assets/images/user.svg") 50% 50% / contain no-repeat;
       }
 
       &:after {
