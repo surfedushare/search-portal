@@ -5,9 +5,7 @@
         <h2 class="popup__title">
           {{ $t("Question-popup-title") }}
         </h2>
-        <div class="popup__subtext">
-          {{ $t("Question-popup-subtext") }}
-        </div>
+        <div class="popup__subtext" v-html="getSubText()" />
         <v-form ref="form" v-model="valid" class="popup-form" lazy-validation @submit.prevent="sendForm">
           <v-text-field
             v-model="name"
@@ -40,6 +38,7 @@
 <script>
 import axios from "~/axios";
 import Popup from "~/components/Popup";
+import DOMPurify from "dompurify";
 export default {
   name: "QuestionPopup",
   components: {
@@ -80,6 +79,10 @@ export default {
     },
   },
   methods: {
+    getSubText() {
+      const subText = this.$i18n.t("html-Question-popup-subtext");
+      return DOMPurify.sanitize(subText);
+    },
     async sendForm() {
       const valid = await this.$refs.form.validate();
       if (valid) {
