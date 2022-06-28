@@ -38,8 +38,6 @@
         </router-link>
         <Menu class="main-header__menu" />
 
-        <QuestionPopup v-if="showQuestionPopup" :show-popup="showQuestionPopup" :close="toggleQuestionPopup" />
-
         <div class="main-header__actions">
           <div class="main-header__question">
             <button type="button" class="button" @click="toggleQuestionPopup">
@@ -106,7 +104,7 @@
               </router-link>
             </li>
             <li class="main-header__user_menuitem">
-              <a class="main-header__user_menu_link" :href="questionLink" target="_blank">{{ $t("Question") }}</a>
+              <div class="main-header__user_menu_link" @click="toggleQuestionPopup">{{ $t("Question") }}</div>
             </li>
             <li v-if="isAuthenticated" class="main-header__user_menu_item">
               <router-link
@@ -136,6 +134,7 @@
     </div>
 
     <Feedback />
+    <QuestionPopup v-if="showQuestionPopup" :show-popup="showQuestionPopup" :close="toggleQuestionPopup" />
   </section>
 </template>
 
