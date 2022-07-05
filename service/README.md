@@ -1,16 +1,13 @@
-Search Portal Service
-=====================
+# Search Portal Service
 
 A REST API build with Django and Django Rest Framework.
 There is an admin available to inspect the data.
 
-All commands in this readme get run from the ``service`` directory.
+All commands in this readme get run from the `service` directory.
 
+## Installation
 
-Installation
-------------
-
-After the [initial Python/machine installation](../README.md#installation) 
+After the [initial Python/machine installation](../README.md#installation)
 and following the [getting started guide](../README.md#getting-started)
 you can further setup your Django database for the API with the following commands.
 
@@ -20,23 +17,22 @@ invoke srv.setup-postgres
 
 This should have setup your database completely.
 However it can be beneficial to get a production dump and import it to your system.
+
+Make sure you are connected to eduvpn and in the root of this repo.
+
 You can create such a dump with:
 
 ```
 APPLICATION_MODE=production fab -H bastion.prod.surfedushare.nl srv.create-snapshot
 ```
 
-The output of this command will include a SQL file name. You can then use that name to import the dump locally:
-
 ```bash
-invoke srv.import-snapshot -s pol-dev <sql-file-name>
+invoke srv.import-snapshot -s pol-dev
 ```
 
+## Getting started
 
-Getting started
----------------
-
-There are three ways to get the ``service`` component started.
+There are three ways to get the `service` component started.
 You can either start all services as explained in the [general getting started guide](../README.md#getting-started).
 Or you can start a local development server with:
 
@@ -52,7 +48,6 @@ Start a container with a UWSGI production server with:
 make run-service-container
 ```
 
-
 #### Available apps
 
 Either way the Django admin and API endpoints become available under:
@@ -64,7 +59,6 @@ http://localhost:8000/api/v1/
 
 The setup command will have created a superuser called supersurf. On localhost the password is "qwerty".
 For AWS environments you can find the admin password under the Django secrets in the Secret Manager.
-
 
 #### Production parity on localhost
 
@@ -83,10 +77,9 @@ http://localhost:8000/
 ```
 
 This will serve the frontend and backend through (a multi process) UWSGI server.
-It will also try to access AWS services in the ``surfpol-dev`` account.
+It will also try to access AWS services in the `surfpol-dev` account.
 This is very similar to how it works on AWS and in production.
 A major difference is the load balancer in front of UWSGI, which is missing in the local setup.
-
 
 #### Translations
 
@@ -98,9 +91,7 @@ To gather all translations and aggregate them into a file run:
 invoke srv.make-translations
 ```
 
-
-Tests
------
+## Tests
 
 In order to test your work in combination with harvester code as well as frontend code.
 It's recommended to [run your tests from the repo root](../README.md#tests).
@@ -119,9 +110,7 @@ cd ..
 invoke test.e2e
 ```
 
-
-Provisioning
-------------
+## Provisioning
 
 The service only needs to provision its database. To setup the database on an AWS environment run:
 

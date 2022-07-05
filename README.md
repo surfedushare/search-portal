@@ -177,43 +177,49 @@ If you do not want to wait you can `CTRL+C` in the terminal safely. This cancels
 Also note that these commands will deploy the image with a version tag to whatever is in your package.py files.
 If you want to deploy a different version use the `--version` flag with the commands above.
 
-
 #### Release
 
 A special case of deploying is releasing. You should take the following steps during releasing:
 
-* Create a PR from `acceptance` to the `edusources` or `nppo` branch (depending on which project you want to release)
-* There are a few things that you should check in a release PR, because it influences the release steps:
-  -   Are there any database migrations?
-  -   Are there changes to Elastic indices?
-  -   Is it changing the public harvester API that the search service is consuming?
-  -   Is it depending on infrastructure changes?
-* Plan your release according to the questions above.
-Use common sense for this and take into account that we do rolling updates.
-For example if you're deleting stuff from the database, indices, API or infratructure,
-then code that stops using the stuff should be deployed before the actual deletions take place.
-If you're adding to the database, indices, API or infrastructure then they should get added
-before code runs that expect these additions.
-We write down these steps, together with their associated commands if applicable, in Pivotal tickets to remember them.
-* With complicated changes we prefer to try them on development
-and we create the release plan when putting the changes on acceptance.
-When we release to production following the plan should be sufficient to make a smooth release.
-* When dealing with breaking changes we make a release tag on the `edusources` branch.
-The tag is equal to the release version prefixed with a "v" so for instance: v0.0.1
-This allows us to easily jump back to a version without these breaking changes through git.
-* Once the release plan is executed on production and a tag for the previous release is created when necessary then
-we merge the release PR into its branch.
+- Create a PR from `acceptance` to the `edusources` or `nppo` branch (depending on which project you want to release)
+- There are a few things that you should check in a release PR, because it influences the release steps:
+  - Are there any database migrations?
+  - Are there changes to Elastic indices?
+  - Is it changing the public harvester API that the search service is consuming?
+  - Is it depending on infrastructure changes?
+- Plan your release according to the questions above.
+  Use common sense for this and take into account that we do rolling updates.
+  For example if you're deleting stuff from the database, indices, API or infratructure,
+  then code that stops using the stuff should be deployed before the actual deletions take place.
+  If you're adding to the database, indices, API or infrastructure then they should get added
+  before code runs that expect these additions.
+  We write down these steps, together with their associated commands if applicable, in Pivotal tickets to remember them.
+- With complicated changes we prefer to try them on development
+  and we create the release plan when putting the changes on acceptance.
+  When we release to production following the plan should be sufficient to make a smooth release.
+- When dealing with breaking changes we make a release tag on the `edusources` branch.
+  The tag is equal to the release version prefixed with a "v" so for instance: v0.0.1
+  This allows us to easily jump back to a version without these breaking changes through git.
+- Once the release plan is executed on production and a tag for the previous release is created when necessary then
+  we merge the release PR into its branch.
+- After de pipeline has finished, run
+  APPLICATION_MODE=production invoke srv.deploy production
+  APPLICATION_MODE=production invoke hrv.deploy production
+- check https://edusources.nl/health/ for the right version
+- check https://harvester.prod.surfedushare.nl/ for the right version
+
 This completes the release, which we mark in Pivotal by "finishing" the release ticket.
 We also post a message into Teams if people are waiting for certain features.
 
 As you can see the release may consist of many steps and release plans can become elaborate.
 Here is an overview of commands that are regularly used during a release and their relevant documentation:
 
-* [Database migration](#Migrate)
-* [Harvesting](harvester/README.md#Harvesting on AWS)
-* Index recreation. See: `invoke -h hrv.index-dataset-version`
-(this doesn't collect documents from sources like harvesting, but does recreate Elastic indices for a Dataset)
-* [Terraform](https://www.terraform.io/intro)
+- [Database migration](#Migrate)
+
+- [Harvesting](harvester/README.md#Harvesting on AWS)
+- Index recreation. See: `invoke -h hrv.index-dataset-version`
+  (this doesn't collect documents from sources like harvesting, but does recreate Elastic indices for a Dataset)
+- [Terraform](https://www.terraform.io/intro)
 
 #### Active containers/versions
 
