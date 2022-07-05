@@ -26,8 +26,16 @@ You can create such a dump with:
 APPLICATION_MODE=production fab -H bastion.prod.surfedushare.nl srv.create-snapshot
 ```
 
+The output of this command will include a SQL file name. You can then use that name to import the dump locally:
+
 ```bash
 invoke srv.import-snapshot -s pol-dev
+(uses the last snapshot)
+
+or
+
+invoke srv.import-snapshot -s pol-dev -n <sql-file-name>
+(uses a specific snapshot)
 ```
 
 ## Getting started
