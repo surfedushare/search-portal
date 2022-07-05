@@ -10,7 +10,7 @@
         deleting: selectFor === 'delete',
         adding: selectFor !== 'delete',
         list: itemsInLine === 1,
-        tile: itemsInLine > 1,
+        tile: $vuetify.breakpoint.name === 'xs' || itemsInLine > 1,
       }"
     >
       <li
@@ -19,48 +19,37 @@
         :class="[
           `tile--items-in-line-${itemsInLine}`,
           `materials__item--items-in-line-${itemsInLine}`,
-          selectMaterialClass
+          selectMaterialClass,
         ]"
         class="materials__item tile"
       >
         <div v-if="material.has_bookmark" class="materials__bookmark">Bookmark</div>
         <button
           v-if="contenteditable"
-          :class="{ 'select-icon': true, 'selected': material.selected }"
+          :class="{ 'select-icon': true, selected: material.selected }"
           @click="selectMaterial(material)"
         />
-        <Material
-          :material="material"
-          :handle-material-click="handleMaterialClick"
-          :items-in-line="itemsInLine"
-        />
+        <Material :material="material" :handle-material-click="handleMaterialClick" :items-in-line="itemsInLine" />
       </li>
     </ul>
-    <div
-      v-else-if="!current_loading && has_no_result_suggestion"
-      data-test="search_suggestion"
-      class="not_found"
-    >
+    <div v-else-if="!current_loading && has_no_result_suggestion" data-test="search_suggestion" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
-        {{ $t('Did-you-mean') }}
-        <a
-          :href="no_result_suggestion_link"
-          data-test="search_suggestion_link"
-        >{{ didYouMean.suggestion }}</a>
+        {{ $t("Did-you-mean") }}
+        <a :href="no_result_suggestion_link" data-test="search_suggestion_link">{{ didYouMean.suggestion }}</a>
         ?
-        {{ $t('Because-no-results-for') }} '{{ didYouMean.original }}'
+        {{ $t("Because-no-results-for") }} '{{ didYouMean.original }}'
         <div class="not_found__info">
-          <i>{{ $t('Adjust-your-search-query') }}</i>
+          <i>{{ $t("Adjust-your-search-query") }}</i>
         </div>
       </div>
     </div>
     <div v-else-if="!current_loading" data-test="no_search_results" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
-        {{ $t('No-results-for') }} '{{ searchTerm }}'
+        {{ $t("No-results-for") }} '{{ searchTerm }}'
         <div class="not_found__info">
-          <i>{{ $t('Not-found-info') }}</i>
+          <i>{{ $t("Not-found-info") }}</i>
         </div>
       </div>
     </div>
@@ -68,12 +57,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { generateSearchMaterialsQuery } from '../_helpers'
-import Material from './Material/Material'
+import { mapGetters } from "vuex";
+import { generateSearchMaterialsQuery } from "../_helpers";
+import Material from "./Material/Material";
 
 export default {
-  name: 'Materials',
+  name: "Materials",
   components: {
     Material,
   },
@@ -85,7 +74,7 @@ export default {
     didYouMean: {
       type: Object,
       default: () => {
-        return null
+        return null;
       },
     },
     itemsInLine: {
@@ -94,7 +83,7 @@ export default {
     },
     itemsLength: {
       type: [Number, String],
-      default: 'auto',
+      default: "auto",
     },
     loading: {
       type: Boolean,
@@ -106,11 +95,11 @@ export default {
     },
     selectFor: {
       type: String,
-      default: 'delete',
+      default: "delete",
     },
     searchTerm: {
       type: String,
-      default: '',
+      default: "",
     },
     value: {
       required: false,
@@ -121,39 +110,34 @@ export default {
   data() {
     return {
       selected_materials: this.value || [],
-    }
+    };
   },
   computed: {
-    ...mapGetters(['materials_loading']),
+    ...mapGetters(["materials_loading"]),
     selectMaterialClass() {
-      return this.selectFor === 'delete' ? 'select-delete' : 'select-neutral'
+      return this.selectFor === "delete" ? "select-delete" : "select-neutral";
     },
     current_loading() {
-      return this.materials_loading || this.loading
+      return this.materials_loading || this.loading;
     },
     extended_materials() {
-      const { materials, selected_materials } = this
+      const { materials, selected_materials } = this;
       if (materials) {
-        const arrMaterials = materials.records ? materials.records : materials
+        const arrMaterials = materials.records ? materials.records : materials;
 
         return arrMaterials.map((material) => {
-          const description =
-            material.description && material.description.length > 200
-              ? material.description.slice(0, 200) + '...'
-              : material.description
-
           return {
             ...material,
             selected: selected_materials.indexOf(material.external_id) !== -1,
-            description,
-          }
-        })
+            description: material.description,
+          };
+        });
       }
 
-      return false
+      return false;
     },
     has_no_result_suggestion() {
-      return this.didYouMean?.suggestion
+      return this.didYouMean?.suggestion;
     },
     no_result_suggestion_link() {
       let searchQuery = generateSearchMaterialsQuery({
@@ -161,66 +145,62 @@ export default {
         filters: this.materials.search_filters,
         page_size: 10,
         page: 1,
-      })
-      return this.$router.resolve(searchQuery).href
+      });
+      return this.$router.resolve(searchQuery).href;
     },
   },
   watch: {
     value(value) {
-      this.selected_materials = value
+      this.selected_materials = value;
     },
   },
   methods: {
     handleMaterialClick(material) {
-      if (this.selectFor === 'add') {
-        this.$store.commit('SET_MATERIAL', material)
+      if (this.selectFor === "add") {
+        this.$store.commit("SET_MATERIAL", material);
       } else {
         this.$router.push(
           this.localePath({
-            name: 'materials-id',
+            name: "materials-id",
             params: { id: material.external_id },
           })
-        )
+        );
       }
-      this.$emit('click', material)
+      this.$emit("click", material);
     },
     selectMaterial(material) {
-      if (this.selectFor === 'delete') {
-        this.deleteMaterial(material)
+      if (this.selectFor === "delete") {
+        this.deleteMaterial(material);
       } else {
-        this.$emit('input', this.toggleMaterial(material))
+        this.$emit("input", this.toggleMaterial(material));
       }
     },
     deleteMaterial(material) {
-      const { id } = this.$route.params
+      const { id } = this.$route.params;
       this.$store
-        .dispatch('removeMaterialFromCollection', {
+        .dispatch("removeMaterialFromCollection", {
           collection_id: id,
           data: [{ external_id: material.external_id }],
         })
         .then(() => {
           Promise.all([
-            this.$store.dispatch('getCollectionMaterials', id),
-            this.$store.dispatch('getCollection', id),
-          ]).then(() => null)
-        })
+            this.$store.dispatch("getCollectionMaterials", id),
+            this.$store.dispatch("getCollection", id),
+          ]).then(() => null);
+        });
     },
     toggleMaterial(material) {
-      let selected_materials = this.value.slice(0)
+      let selected_materials = this.value.slice(0);
 
       if (selected_materials.indexOf(material.external_id) === -1) {
-        selected_materials.push(material.external_id)
+        selected_materials.push(material.external_id);
       } else {
-        selected_materials = selected_materials.filter(
-          (item) => item !== material.external_id
-        )
+        selected_materials = selected_materials.filter((item) => item !== material.external_id);
       }
-      return selected_materials
+      return selected_materials;
     },
   },
-
-}
-
+};
 </script>
 
 <style lang="less" scoped>

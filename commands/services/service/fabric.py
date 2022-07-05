@@ -48,8 +48,7 @@ def create_snapshot(conn):
 
 
 @task(help={
-    "snapshot_name": "The file name of the snapshot you want to restore. Defaults to last updated snapshot",
-    "migrate": "Whether to apply some changes to the snapshot file to migrate from a pre-AWS format"
+    "snapshot_name": "The file name of the snapshot you want to restore. Defaults to last updated snapshot"
 })
 def restore_snapshot(conn, source_profile, snapshot_name=None):
     """

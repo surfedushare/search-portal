@@ -60,3 +60,5 @@ secrets:
     harvester: null
   hva:
     api_key: null
+  buas:
+    api_key: null

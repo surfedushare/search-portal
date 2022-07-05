@@ -114,22 +114,20 @@ As explained before in the harvesting section you'll need to run the following t
 
 ```
 APPLICATION_MODE=<mode> invoke hrv.harvest <mode>
+or
+APPLICATION_MODE=<mode> invoke hrv.harvest <mode> --reset
 ```
 
 Where mode can be one of: localhost, development, acceptance or production.
+Resetting while harvesting will fetch all data from all sources anew.
 
-Seeing the results on AWS can be done by port-forwarding the relevant services in the cluster.
-There are convenience commands to do this. For example to connect to the development UWSGI server use:
+Seeing the results on AWS can be done by visiting the harvester admin or flower admin, using these addresses:
+```
+https://harvester.<environment>.surfedushare.nl/admin/
+https://harvester.<environment>.surfedushare.nl/flower/
+```
 
-```
-APPLICATION_MODE=development fab -H bastion.dev.surfedushare.nl hrv.connect-uwsgi development
-```
-
-To see the Flower you can run:
-
-```
-APPLICATION_MODE=development fab -H bastion.dev.surfedushare.nl hrv.connect-uwsgi development
-```
+Where environment can be one of: dev, acc or prod.
 
 
 Tests

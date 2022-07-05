@@ -8,12 +8,14 @@
             <div class="bg" />
             <h2 class="main__info_title">
               <span v-if="statistic">{{ numberOfMaterials }}</span>
-              {{ $t('open-learning-materials-from-higher-education') }}
+              {{ $t("open-learning-materials-from-higher-education") }}
             </h2>
             <ul class="main__info_items">
-              <li class="main__info_item">{{ $t('Free-to-use') }}</li>
-              <li class="main__info_item">{{ $t('Judged-by-quality') }}</li>
-              <li class="main__info_item">{{ $t('Inspiration-in-your-field') }}</li>
+              <li class="main__info_item">{{ $t("Free-to-use") }}</li>
+              <li class="main__info_item">{{ $t("Judged-by-quality") }}</li>
+              <li class="main__info_item">
+                {{ $t("Inspiration-in-your-field") }}
+              </li>
             </ul>
           </div>
           <SearchBar @onSearch="searchMaterials" />
@@ -22,7 +24,9 @@
 
       <div class="main__materials">
         <div class="center_block">
-          <h2 class="main__materials_title">{{ $t('Newest-open-learning-material') }}</h2>
+          <h2 class="main__materials_title">
+            {{ $t("Newest-open-learning-material") }}
+          </h2>
           <Materials :materials="materials" />
         </div>
       </div>
@@ -30,10 +34,10 @@
       <div class="center_block main__thems_and_communities">
         <PopularList :communities="allCommunities()" class="main__communities">
           <template slot="header-info">
-            <h2>{{ $t('Communities') }}</h2>
-            <div
-              class="popular-list__description"
-            >{{ $t('Open-learning-materials-from-professional-communit') }}</div>
+            <h2>{{ $t("Communities") }}</h2>
+            <div class="popular-list__description">
+              {{ $t("Open-learning-materials-from-professional-communit") }}
+            </div>
           </template>
         </PopularList>
       </div>
@@ -44,14 +48,9 @@
             <img src="../assets/images/pictures/hoe-werkt-het.png" class="preview__bg_block-img" />
           </div>
           <div class="preview__text_block">
-            <h2 class="preview__title">{{ $t('How-does-it-work-title') }}</h2>
-            <!-- eslint-disable vue/no-v-html -->
-            <div class="preview__text html-content" v-html="$t('html-How-does-it-work-text')" />
-            <!-- eslint-enable vue/no-v-html -->
-            <router-link
-              :to="localePath('how-does-it-work')"
-              class="button"
-            >{{ $t('How-does-it-work') }}</router-link>
+            <h2 class="preview__title">{{ $t("How-does-it-work-title") }}</h2>
+            <div class="preview__text html-content" v-html="getHowDoesItWork" />
+            <router-link :to="localePath('how-does-it-work')" class="button">{{ $t("How-does-it-work") }}</router-link>
           </div>
         </section>
       </div>
@@ -60,67 +59,70 @@
 </template>
 
 <script>
-import numeral from 'numeral'
-import { mapGetters } from 'vuex'
-import PopularList from '~/components/Communities/PopularList'
-import Materials from '~/components/Materials/Materials.vue'
-import SearchBar from '~/components/Search/SearchBar.vue'
-import { generateSearchMaterialsQuery } from '~/components/_helpers'
-import PageMixin from '~/pages/page-mixin'
+import numeral from "numeral";
+import { mapGetters } from "vuex";
+import PopularList from "~/components/Communities/PopularList";
+import Materials from "~/components/Materials/Materials.vue";
+import SearchBar from "~/components/Search/SearchBar.vue";
+import { generateSearchMaterialsQuery } from "~/components/_helpers";
+import PageMixin from "~/pages/page-mixin";
+import DOMPurify from "dompurify";
 
-const EDUCATIONAL_LEVEL_CATEGORY_ID = 'lom_educational_levels'
+const EDUCATIONAL_LEVEL_CATEGORY_ID = "lom_educational_levels";
 
 export default {
   components: {
     PopularList,
     Materials,
-    SearchBar
+    SearchBar,
   },
   mixins: [PageMixin],
   data() {
     return {
       filters: {},
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      filterCategories: 'filter_categories',
-      materials: 'materials',
-      allCommunities: 'allCommunities',
-      statistic: 'statistic',
+      filterCategories: "filter_categories",
+      materials: "materials",
+      allCommunities: "allCommunities",
+      statistic: "statistic",
     }),
     numberOfMaterials() {
-      return numeral(this.statistic.value).format('0,0').replace(',', '.')
+      return numeral(this.statistic.value).format("0,0").replace(",", ".");
     },
     educationalLevelOptions() {
-      return this.getFilterOptions(EDUCATIONAL_LEVEL_CATEGORY_ID)
+      return this.getFilterOptions(EDUCATIONAL_LEVEL_CATEGORY_ID);
+    },
+    getHowDoesItWork() {
+      const footerInfo = this.$i18n.t("html-How-does-it-work-text");
+      return DOMPurify.sanitize(footerInfo);
     },
   },
   mounted() {
-    this.$store.dispatch('getMaterials', { page_size: 4 })
-    this.$store.dispatch('getCommunities', { params: { page_size: 3 } })
-    this.$store.dispatch('getStatistic')
-    this.$store.dispatch('getFilterCategories')
+    this.$store.dispatch("getMaterials", { page_size: 4 });
+    this.$store.dispatch("getCommunities", { params: { page_size: 3 } });
+    this.$store.dispatch("getStatistic");
+    this.$store.dispatch("getFilterCategories");
   },
   methods: {
     getFilterOptions(external_id) {
       if (this.filterCategories) {
-        const filterCategory = this.filterCategories.find(
-          (category) => category.external_id === external_id
-        )
+        const filterCategory = this.filterCategories.find((category) => category.external_id === external_id);
 
         if (filterCategory) {
           return {
             name: filterCategory.title_translations[this.$i18n.locale],
             options: filterCategory.children,
-          }
+          };
         }
       }
 
-      return null
+      return null;
     },
     setEducationalLevelFilter(value) {
-      this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value]
+      this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value];
     },
     searchMaterials(search) {
       this.$router.push(
@@ -130,10 +132,10 @@ export default {
           page_size: 10,
           page: 1,
         })
-      )
+      );
     },
   },
-}
+};
 </script>
 
 <style lang="less">

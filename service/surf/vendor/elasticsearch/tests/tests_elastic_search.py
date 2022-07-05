@@ -455,7 +455,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         # Github Actions does not support mounting docker volumes
         # So it is impossible to mount a decompound dictionary and truly test this
         # Instead we test that indices will get created correctly and composed word search should function
-        dutch_index = create_elastic_search_index_configuration("nl", "dutch", "dutch-decompound-words.txt")
+        dutch_index = create_elastic_search_index_configuration("nl", "dutch-decompound-words.txt")
         self.assertIn("dutch_dictionary_decompound", dutch_index["settings"]["analysis"]["analyzer"])
         decompound_analyser = dutch_index["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"]
         self.assertEqual(decompound_analyser, {
@@ -481,7 +481,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertEqual(dutch_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
                              "dutch_dictionary_decompound")
 
-        english_index = create_elastic_search_index_configuration("en", "english")
+        english_index = create_elastic_search_index_configuration("en")
         self.assertNotIn("dutch_dictionary_decompound", english_index["settings"]["analysis"]["analyzer"])
         self.assertNotIn("dictionary_decompound", english_index["settings"]["analysis"]["filter"])
         for text_field in ["title", "text", "description"]:

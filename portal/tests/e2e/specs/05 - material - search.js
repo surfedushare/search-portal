@@ -1,4 +1,4 @@
-describe("Material page - search", { defaultCommandTimeout: 5000 }, () => {
+describe("Material page - search", () => {
   beforeEach(function () {
     cy.visit("/materialen/f929b625-5ef7-47b8-8fa8-94c969d0c427");
   });
@@ -13,7 +13,6 @@ describe("Material page - search", { defaultCommandTimeout: 5000 }, () => {
   it("Should find materials by publisher when clicking the publisher on the material page", () => {
     cy.get("[data-test=publisher_link]")
       .click()
-      .searchResultsShouldContain("SURFnet", 10)
       .selectedFiltersShouldContain("Uitgever", "SURFnet");
   });
 

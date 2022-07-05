@@ -3,7 +3,8 @@ from invoke import Collection
 from environments.project import create_configuration_and_session
 from commands.postgres.invoke import setup_postgres_localhost
 from commands.elastic.tasks import create_decompound_dictionary, push_decompound_dictionary
-from commands.deploy import (prepare_builds, build, push, deploy, migrate, print_available_images,
+from commands.aws.repository import sync_repository_state
+from commands.deploy import (prepare_builds, build, push, deploy, migrate, promote, print_available_images,
                              print_running_containers)
 from commands.test import test_collection
 from commands.services.service.invoke import (import_snapshot, sync_upload_media, make_translations)
@@ -17,7 +18,8 @@ service_environment, _ = create_configuration_and_session(use_aws_default_profil
 service_collection = Collection("srv", setup_postgres_localhost, import_snapshot, deploy, sync_upload_media,
                                 make_translations)
 service_collection.configure(service_environment)
-aws_collection = Collection("aws", build, push, migrate, print_available_images, print_running_containers)
+aws_collection = Collection("aws", build, push, migrate, promote, print_available_images, print_running_containers,
+                            sync_repository_state)
 aws_collection.configure(service_environment)
 test_collection.configure(service_environment)
 
