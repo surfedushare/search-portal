@@ -9,7 +9,7 @@
             @click.prevent="onSaveMaterials"
           >{{ $t('Add-selected-materials', { count: selection.length }) }}</button>
         </div>
-        <SearchTerm class="add_materials__info_search" @onSearch="onSearch" />
+        <SearchTerm class="add_materials__info_search" @search="onSearch" />
 
         <div
           v-infinite-scroll="loadMore"
