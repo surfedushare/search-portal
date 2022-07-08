@@ -75,12 +75,15 @@ export default {
 
 .filter-categories-selection {
 
-  margin: 25px auto 0;
+  margin: 15px auto 0;
   padding: 0 25px;
   max-width: 1296px;
 
   .v-chip {
-    margin-right: 10px;
+    margin: 10px 10px 0 0;
+  }
+  .v-btn {
+    margin-top: 10px;
   }
 
 }
