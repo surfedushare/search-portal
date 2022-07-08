@@ -41,6 +41,8 @@ secrets:
   postgres:
     password: "qwerty"
     application_password: "qwerty"
+  opensearch:
+    password: "qwerty"
   django:
     secret_key: "development-secret-key--do-not-use"
     admin_password: "qwerty"
