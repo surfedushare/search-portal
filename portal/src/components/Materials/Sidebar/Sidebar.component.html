@@ -5,10 +5,10 @@
         <h4>{{ $t('Discipline') }}</h4>
         <div>{{ extended_material.disciplineTitles }}</div>
       </template>
-      <template v-if="material.educationallevels" class="materials__item_educationallevels">
+      <template v-if="material.lom_educational_levels" class="materials__item_educationallevels">
         <h4>{{ $t('Learning-levels') }}</h4>
-        <div v-for="educational_level in material.educationallevels">
-          {{ educational_level[$i18n.locale] }}
+        <div v-for="educationalLevel in material.lom_educational_levels">
+          {{ educationalLevel[$i18n.locale] }}
         </div>
       </template>
       <h4 v-if="material.ideas && material.ideas.length">{{ $t('Idea') }}</h4>

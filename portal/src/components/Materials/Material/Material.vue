@@ -22,15 +22,15 @@
       <div class="materials__item_subinfo">
         <div class="materials__item_subinfo_row">
           <div
-            v-if="material.educationallevels && material.educationallevels.length"
+            v-if="material.lom_educational_levels && material.lom_educational_levels.length"
             class="materials__item_educationallevels"
           >
             <span
-              v-for="(educationallevel, i) in material.educationallevels.slice(0, 2)"
+              v-for="(educationalLevel, i) in material.lom_educational_levels"
               :key="i"
               class="materials__item_educationallevel"
             >
-              {{ punctuate(educationallevel[$i18n.locale], i, material.educationallevels.length) }}
+              {{ punctuate(educationalLevel[$i18n.locale], i, material.lom_educational_levels.length) }}
             </span>
           </div>
 
