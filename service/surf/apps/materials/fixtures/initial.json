@@ -1,0 +1,41 @@
+[
+    {
+        "model": "materials.collection",
+        "pk": "2e7d0e99-3807-429b-958b-38cd7c7f7b3b",
+        "fields": {
+            "title_nl": "Ethics - Bio and health technology cases",
+            "title_en": "Ethics - Bio and health technology cases",
+            "is_shared": false,
+            "publish_status": 2,
+            "created_at": "2020-11-30T12:52:40.457Z",
+            "deleted_at": null,
+            "position": 0
+        }
+    },
+    {
+        "model": "materials.collection",
+        "pk": "b1d912ec-8c29-4051-9b3a-4b6563ab3e0a",
+        "fields": {
+            "title_nl": "Ethics - Glossary ethics",
+            "title_en": "Ethics - Glossary ethics",
+            "is_shared": false,
+            "publish_status": 2,
+            "created_at": "2020-11-30T12:52:40.457Z",
+            "deleted_at": null,
+            "position": 0
+        }
+    },
+    {
+        "model": "materials.collection",
+        "pk": "54b2e31b-9ab3-494a-99b5-9fb71ba80d89",
+        "fields": {
+            "title_nl": "Ethics - Digital and ICT cases",
+            "title_en": "Ethics - Digital and ICT cases",
+            "is_shared": false,
+            "publish_status": 2,
+            "created_at": "2020-11-30T12:52:40.457Z",
+            "deleted_at": null,
+            "position": 0
+        }
+    }
+]

@@ -24,6 +24,7 @@
                 <button
                   v-if="isReady && community_info.publisher"
                   class="button"
+                  data-test="community_search_link"
                   @click="goToCommunitySearch()"
                 >
                   {{ $t('Search-in-community-materials') }}

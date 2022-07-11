@@ -133,13 +133,11 @@
       </div>
     </div>
 
-    <Feedback />
     <QuestionPopup v-if="showQuestionPopup" :show-popup="showQuestionPopup" :close="toggleQuestionPopup" />
   </section>
 </template>
 
 <script>
-import Feedback from "../Feedback/Feedback";
 import LanguageSwitch from "./LanguageSwitch";
 import QuestionPopup from "../Popup/QuestionPopup.vue";
 import Menu from "./Menu.vue";
@@ -151,7 +149,6 @@ export default {
   components: {
     LanguageSwitch,
     Menu,
-    Feedback,
     QuestionPopup,
   },
   props: [],

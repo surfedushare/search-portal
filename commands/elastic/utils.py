@@ -1,22 +1,19 @@
 from opensearchpy import OpenSearch, RequestsHttpConnection
-from requests_aws4auth import AWS4Auth
-import boto3
 
 
 def get_es_client(conn, silent=False):
     """
     Returns the elasticsearch client connected through port forwarding settings
     """
-    elastic_url = "https://localhost:9222"
+    elastic_url = conn.config.elastic_search.host
     protocol_config = {
         "scheme": "https",
-        "port": 9222,
+        "port": 443,
         "use_ssl": True,
-        "verify_certs": False,
+        "verify_certs": True,
     }
-    credentials = boto3.Session(profile_name=conn.aws.profile_name).get_credentials()
-    http_auth = AWS4Auth(credentials.access_key, credentials.secret_key, "eu-central-1", "es",
-                         session_token=credentials.token)
+
+    http_auth = ("supersurf", conn.config.secrets.opensearch.password,)
 
     es_client = OpenSearch(
         [elastic_url],

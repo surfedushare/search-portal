@@ -89,12 +89,12 @@ describe("Home page - search - filters", () => {
       1,
       0
     );
-    cy.selectFilter("copyright.keyword", "cc-by").selectedFiltersShouldContain(
-      "Gebruiksrechten",
-      "Naamsvermelding",
-      2,
-      1
-    );
+    // cy.selectFilter("copyright.keyword", "cc-by").selectedFiltersShouldContain(
+    //   "Gebruiksrechten",
+    //   "Naamsvermelding",
+    //   2,
+    //   1
+    // );
   });
 
   it("Should filter on language", () => {
@@ -142,4 +142,20 @@ describe("Home page - search - filters", () => {
       .selectedFiltersShouldContain("Auteur", "Ning Ding", 3, 1)
       .selectedFiltersShouldContain("Onderwijsniveau", "HBO", 3, 2);
   });
+
+  it("Should retain filters when searching again", () => {
+    cy.selectFilter("technical_type", "document").selectedFiltersShouldContain(
+      "Bestandstype",
+      "Document",
+      1,
+      0
+    );
+    cy.searchFor("big").selectedFiltersShouldContain(
+      "Bestandstype",
+      "Document",
+      1,
+      0
+    );
+  });
+
 });

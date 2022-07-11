@@ -1,4 +1,24 @@
+@import "../variables";
+
 // Disables "app" background as this currently breaks the footer backgrounds
 .theme--light.v-application {
   background: none !important;
+}
+
+/*****************************************
+* Components
+******************************************/
+
+.v-btn {
+  border-radius: 10px;
+  text-transform: none;
+  font-weight: 600;
+  font-family: @second-font;
+}
+.v-btn--outlined {
+  border: thin solid #BABCBF;
+}
+.v-chip.v-size--default {
+  height: 36px;
+  border-radius: 10px;
 }

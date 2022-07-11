@@ -18,7 +18,7 @@
               </li>
             </ul>
           </div>
-          <SearchBar @onSearch="searchMaterials" />
+          <SearchBar @search="searchMaterials" enable-pre-filters />
         </div>
       </div>
 
@@ -124,11 +124,11 @@ export default {
     setEducationalLevelFilter(value) {
       this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value];
     },
-    searchMaterials(search) {
+    searchMaterials(searchText) {
       this.$router.push(
         generateSearchMaterialsQuery({
-          search_text: search.search_text,
-          filters: search.filters,
+          search_text: searchText,
+          filters: this.$store.state.filterCategories.selection,
           page_size: 10,
           page: 1,
         })

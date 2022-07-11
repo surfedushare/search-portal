@@ -1,9 +1,7 @@
-import boto3
 from collections import defaultdict
 
 from django.conf import settings
 from opensearchpy import OpenSearch, RequestsHttpConnection
-from requests_aws4auth import AWS4Auth
 
 from project.configuration import SEARCH_FIELDS
 from surf.vendor.elasticsearch.serializers import SearchResultSerializer
@@ -24,9 +22,7 @@ class ElasticSearchApiClient:
             }
 
         if settings.IS_AWS:
-            credentials = boto3.Session().get_credentials()
-            http_auth = AWS4Auth(credentials.access_key, credentials.secret_key, "eu-central-1", "es",
-                                 session_token=credentials.token)
+            http_auth = ("supersurf", settings.OPENSEARCH_PASSWORD)
         else:
             http_auth = (None, None)
 
