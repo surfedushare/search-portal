@@ -380,6 +380,7 @@ ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored 
 ELASTICSEARCH_NL_INDEX = "latest-nl"
 ELASTICSEARCH_EN_INDEX = "latest-en"
 ELASTICSEARCH_UNK_INDEX = "latest-unk"
+OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
 # CKEditor

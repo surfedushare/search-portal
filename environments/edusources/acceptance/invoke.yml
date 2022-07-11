@@ -18,7 +18,7 @@ postgres:
 
 elastic_search:
   username: null
-  host: "vpc-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com"
+  host: "search-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com"
   protocol: "https"
   verify_certs: true
   enable_decompound_analyzers: true

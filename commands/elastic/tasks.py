@@ -2,6 +2,7 @@ import os
 import json
 
 from invoke.tasks import task
+from commands.elastic.utils import get_es_client
 
 
 @task(help={
@@ -58,3 +59,20 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     )
     print("AWS ES dictionary package processed.")
     print("Do not forget to set the package identifier under the elastic_search.decompound_word_lists configuration")
+
+
+@task
+def push_indices_template(ctx):
+    """
+    Creates or updates index templates to create indices with correct settings
+    """
+    client = get_es_client(ctx)
+    client.indices.put_template("basic-settings", body={
+        "index_patterns": [
+            "harvest-logs*", "document-logs*", "service-logs*", "search-results*", "harvest-results*", "api"
+        ],
+        "settings": {
+            "number_of_shards": 1,
+            "number_of_replicas": 0
+        }
+    })
