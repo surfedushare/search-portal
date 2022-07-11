@@ -8,19 +8,22 @@
             src="../assets/images/pictures/header-image.jpg"
             alt="header-image"
           />
-          <SearchBar @onSearch="initialSearch" />
+          <SearchBar @search="onSearch" />
           <div ref="top"></div>
         </div>
+        <FilterCategoriesSelection
+          v-if="materials"
+          :key="JSON.stringify(search.filters)"
+          :materials="materials"
+          @filter="onFilter"
+        />
       </div>
       <div class="search__container">
         <div><!-- filler --></div>
         <FilterCategories
           v-if="materials"
-          v-model="search"
-          :selected-filters="search.filters"
-          :default-filter="$route.params.filterId"
           :materials="materials"
-          @reset="onSearch"
+          @filter="onFilter"
         />
         <div class="search__tools">
           <h2
@@ -83,11 +86,11 @@
 <script>
 import { mapGetters } from "vuex";
 import FilterCategories from "~/components/FilterCategories/FilterCategories.vue";
+import FilterCategoriesSelection from "~/components/FilterCategories/FilterCategoriesSelection.vue";
 import Materials from "~/components/Materials/Materials.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
 import {
-  addFilter,
   generateSearchMaterialsQuery,
   parseSearchMaterialsQuery,
 } from "~/components/_helpers";
@@ -97,21 +100,29 @@ import PageMixin from "~/pages/page-mixin";
 export default {
   components: {
     FilterCategories,
+    FilterCategoriesSelection,
     Materials,
     Spinner,
     SearchBar,
   },
   mixins: [PageMixin],
   beforeRouteLeave(to, from, next) {
-    if (!from.params.filterId || to.params.filterId) {
-      next();
-      return;
-    }
-    this.search.filters = {};
-    this.$store.dispatch("searchMaterials", this.search).finally(next);
+    this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION')
+    next()
   },
   data() {
+    // Set filters from the URL parameters
     const urlInfo = parseSearchMaterialsQuery(this.$route.query);
+    this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION', urlInfo.search.filters)
+    // Set filters from the router parameters (Community and Theme filters)
+    if (this.$route.params.filterId) {
+      this.$store.commit('SELECT_FILTER_CATEGORIES', {
+        category: this.$route.meta.filterRoot,
+        selection: [this.$route.params.filterId]
+      })
+    }
+    // Update the filters and return data
+    urlInfo.search.filters = this.$store.state.filterCategories.selection
     return {
       search: urlInfo.search,
       formData: {
@@ -132,27 +143,8 @@ export default {
       "materials_in_line",
       "did_you_mean",
     ]),
-    defaultFilterTitle() {
-      if (!this.$route.params.filterId) {
-        return;
-      }
-      const defaultFilter = this.$store.getters.getCategoryById(
-        this.$route.params.filterId,
-        this.$route.meta.filterRoot
-      );
-      return defaultFilter
-        ? defaultFilter.title_translations[this.$i18n.locale]
-        : null;
-    },
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
-    },
-  },
-  watch: {
-    search(search) {
-      if (search && !this.materials_loading) {
-        this.executeSearch();
-      }
     },
   },
   mounted() {
@@ -161,27 +153,13 @@ export default {
     });
   },
   methods: {
-    initialSearch(search) {
-      this.search = search;
-      this.executeSearch(true);
+    onSearch(searchText) {
+      searchText = searchText || ""
+      const changed = searchText !== this.search.search_text;
+      this.search.search_text = searchText;
+      this.executeSearch(changed);
     },
     executeSearch(updateUrl) {
-      if (this.$route.params.filterId) {
-        const category = this.$store.getters.getCategoryById(
-          this.$route.params.filterId,
-          this.$route.meta.filterRoot
-        );
-        if (category) {
-          this.search = addFilter(
-            this.search,
-            category.searchId,
-            this.$route.params.filterId
-          );
-          this.search = category.children.reduce((search, child) => {
-            return addFilter(search, child.searchId, child.external_id);
-          }, this.search);
-        }
-      }
       this.$store.dispatch("searchMaterials", this.search);
       if (updateUrl) {
         this.$router.push(
@@ -189,15 +167,14 @@ export default {
         );
       }
     },
-    onSearch(searchText) {
-      const changed = searchText !== this.search.search_text;
+    onFilter() {
       this.search = {
-        search_text: searchText || "",
-        filters: {},
+        search_text: this.search.search_text,
+        filters: this.$store.state.filterCategories.selection,
         page_size: 10,
         page: 1,
       };
-      this.executeSearch(changed);
+      this.executeSearch(true);
     },
     onLoadPage(page) {
       const { search, materials } = this;
@@ -251,7 +228,7 @@ export default {
 
   &__info {
     padding: 97px 0 0;
-    margin-bottom: 60px;
+    margin-bottom: 20px;
     position: relative;
     min-height: 300px;
 

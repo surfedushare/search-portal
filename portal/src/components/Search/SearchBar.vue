@@ -1,16 +1,14 @@
 <template>
   <section class="search_bar">
-    <PreSearchFilters class="search_bar__filters" @update:filter="onUpdateFilter" />
-    <SearchTerm class="search_bar__term" @onSearch="searchMaterials" />
+    <PreSearchFilters v-if="enablePreFilters" class="search_bar__filters" @update:filter="onUpdateFilter" />
+    <SearchTerm class="search_bar__term" @search="searchMaterials" />
   </section>
 </template>
 
 <script>
 import PreSearchFilters from '@/components/Search/PreSearchFilters'
 import SearchTerm from '@/components/Search/SearchTerm'
-import { isNull } from 'lodash'
-import numeral from 'numeral'
-import { mapGetters } from 'vuex'
+import { isNull, forEach } from 'lodash'
 
 export default {
   name: 'SearchBar',
@@ -18,32 +16,26 @@ export default {
     SearchTerm,
     PreSearchFilters
   },
+  props: {
+    enablePreFilters: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       searchText: '',
       filters: {},
     }
   },
-  computed: {
-    ...mapGetters({
-      filterCategories: 'filter_categories',
-      materials: 'materials',
-      allCommunities: 'allCommunities',
-      statistic: 'statistic',
-    }),
-    numberOfMaterials() {
-      return numeral(this.statistic.value).format('0,0').replace(',', '.')
-    },
-  },
   methods: {
     searchMaterials(searchText) {
-      const searchRequest = {
-        search_text: searchText || '',
-        filters: this.filters,
-        page_size: 10,
-        page: 1,
-      }
-      this.$emit('onSearch', searchRequest)
+      forEach(this.filters, (selection, field) => {
+        if (selection.length) {
+          this.$store.commit('SELECT_FILTER_CATEGORIES', {category: field, selection})
+        }
+      })
+      this.$emit('search', searchText)
     },
     onUpdateFilter(filter) {
       if (isNull(filter.selection)) {
