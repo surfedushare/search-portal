@@ -29,7 +29,6 @@ def connect_with_shell(conn):
     with conn.forward_local(local_port=5433, remote_host=conn.config.postgres.host, remote_port=5432):
         conn.local(
             f"cd {conn.config.django.directory} && "
-            #f"AWS_PROFILE={conn.config.aws.profile_name} "
             f"POL_POSTGRES_HOST=localhost "
             f"POL_POSTGRES_PORT=5433 "
             f"python manage.py shell",
