@@ -8,6 +8,10 @@ logger = logging.getLogger("harvester")
 
 
 def prepare_seed(seed):
+    language = seed.pop("language", None)
+    seed["language"] = {"metadata": language} if language else None
+    if seed["state"] == "deleted":
+        return
     if not seed["copyright"] or seed["copyright"] in ["yes", "unknown"]:
         seed["state"] = "inactive"
     if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
@@ -16,8 +20,6 @@ def prepare_seed(seed):
         seed["state"] = "skipped"
     if seed.get("is_restricted", False):
         seed["analysis_allowed"] = False
-    language = seed.pop("language", None)
-    seed["language"] = {"metadata": language} if language else None
 
 
 def get_harvest_seeds(repository, set_specification, latest_update, include_deleted=True, include_no_url=False):
