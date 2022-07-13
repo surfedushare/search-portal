@@ -15,9 +15,6 @@ class DocumentManager(models.Manager):
     def build_from_seed(self, seed, collection=None, metadata_pipeline_key=None):
         properties = copy(seed)  # TODO: use setters that update the pipeline?
         properties["id"] = seed["external_id"]
-        properties["language"] = {
-            "metadata": seed.get("language", None)
-        }
 
         metadata_pipeline = properties.pop(metadata_pipeline_key, None)
         document = Document(properties=properties, collection=collection, pipeline={"metadata": metadata_pipeline})

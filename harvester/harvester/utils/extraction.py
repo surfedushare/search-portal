@@ -7,6 +7,19 @@ from django.apps import apps
 logger = logging.getLogger("harvester")
 
 
+def prepare_seed(seed):
+    if not seed["copyright"] or seed["copyright"] in ["yes", "unknown"]:
+        seed["state"] = "inactive"
+    if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
+        seed["state"] = "inactive"
+    if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "production":
+        seed["state"] = "skipped"
+    if seed.get("is_restricted", False):
+        seed["analysis_allowed"] = False
+    language = seed.pop("language", None)
+    seed["language"] = {"metadata": language} if language else None
+
+
 def get_harvest_seeds(repository, set_specification, latest_update, include_deleted=True, include_no_url=False):
     """
     Extracts metadata from HarvestHttpResource
@@ -31,14 +44,7 @@ def get_harvest_seeds(repository, set_specification, latest_update, include_dele
     # Now we'll mark any invalid seeds as deleted to make sure they disappear
     # Invalid seeds have a copyright or are of insufficient education level
     for seed in seeds:
-        if not seed["copyright"] or seed["copyright"] in ["yes", "unknown"]:
-            seed["state"] = "inactive"
-        if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
-            seed["state"] = "inactive"
-        if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "production":
-            seed["state"] = "skipped"
-        if seed.get("is_restricted", False):
-            seed["analysis_allowed"] = False
+        prepare_seed(seed)
     # And we return the seeds based on whether to include deleted or not
     return seeds if include_deleted else \
         [result for result in seeds if result.get("state", "active") == "active"]
