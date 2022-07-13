@@ -50,6 +50,7 @@ secrets:
     api_key: null
   harvester:
     api_key: "123abc"
+    webhook_secret: null
   matomo:
     api_key: null
   eduterm:

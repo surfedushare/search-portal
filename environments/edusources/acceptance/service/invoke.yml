@@ -44,4 +44,4 @@ secrets:
   surfconext:
     secret_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:search-portal/surfconext"
   harvester:
-    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/api-key"
+    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/credentials"

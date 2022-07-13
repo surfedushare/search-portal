@@ -492,6 +492,11 @@ DATA_RETENTION_PURGE_AFTER = environment.django.data_retention.purge_after or {}
 DATA_RETENTION_KEEP_VERSIONS = environment.django.data_retention.keep_versions
 
 
+# Internal credentials
+
+HARVESTER_WEBHOOK_SECRET = environment.secrets.harvester.webhook_secret
+
+
 # Sharekit
 
 SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
