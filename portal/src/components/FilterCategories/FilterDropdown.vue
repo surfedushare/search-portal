@@ -3,7 +3,7 @@
     <label class="dropdown-container__label">{{ $t(label) }}:</label>
 
     <div
-      :class="{ 'active': visible == true }"
+      :class="{ 'active': visible === true }"
       class="dropdown-container__select"
       :data-test="'filter_' + field"
       @click="onToggle"

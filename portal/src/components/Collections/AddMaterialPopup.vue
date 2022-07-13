@@ -9,7 +9,7 @@
             @click.prevent="onSaveMaterials"
           >{{ $t('Add-selected-materials', { count: selection.length }) }}</button>
         </div>
-        <SearchTerm class="add_materials__info_search" @onSearch="onSearch" />
+        <SearchTerm class="add_materials__info_search" @search="onSearch" />
 
         <div
           v-infinite-scroll="loadMore"
@@ -73,7 +73,7 @@ export default {
   methods: {
     onSearch(searchText) {
       this.$store.dispatch('searchMaterials', {
-        search_text: searchText,
+        search_text: searchText || "",
         page_size: 10,
         page: 1,
       })

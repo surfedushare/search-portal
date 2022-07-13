@@ -115,3 +115,4 @@ portal/tests/e2e/videos/
 portal/tests/e2e/screenshots/
 portal/webpack-stats.json
 nginx/ip-whitelist.conf
+harvester/sources/factories/fixtures

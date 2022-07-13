@@ -13,13 +13,7 @@ class BaseElasticSearchMixin(object):
 
     @classmethod
     def index_body(cls, language):
-        if language == 'nl':
-            analyzer = 'dutch'
-        elif language == 'en':
-            analyzer = 'english'
-        else:
-            analyzer = 'standard'
-        return create_elastic_search_index_configuration(language, analyzer)
+        return create_elastic_search_index_configuration(language)
 
     @classmethod
     def setUpClass(cls):
@@ -53,6 +47,7 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
         super().setUpClass()
         chrome_options = Options()
         chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("window-size=1920,1080")
 
         cls.selenium = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)

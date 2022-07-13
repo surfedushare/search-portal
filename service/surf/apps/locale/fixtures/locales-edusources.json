@@ -4824,7 +4824,7 @@
     "pk": "22f17250-3927-47c3-91a6-6688c343afdd",
     "fields": {
         "asset": "HBO_auto_generated_at_Fri Sep 13 08:51:34 2019-251173",
-        "en": "University of applied science",
+        "en": "UAS",
         "nl": "HBO",
         "is_fuzzy": false
     }
@@ -26764,7 +26764,7 @@
     "pk": "b92bc8ac-f1b8-4d8a-b71b-9feb03f51c9e",
     "fields": {
         "asset": "See-results",
-        "en": "See results",
+        "en": "View results",
         "nl": "Bekijk resultaten",
         "is_fuzzy": false
     }
@@ -28594,7 +28594,7 @@
     "pk": "c43763e1-1bc2-4366-befd-be343a526a80",
     "fields": {
         "asset": "See",
-        "en": "See",
+        "en": "View",
         "nl": "Bekijken",
         "is_fuzzy": false
     }
@@ -33494,8 +33494,8 @@
     "pk": "e48553cc-6002-4800-b57c-e7dd93903bf2",
     "fields": {
         "asset": "Thema_auto_generated_at_Fri Sep 13 08:51:31 2019",
-        "en": "Theme",
-        "nl": "Thema",
+        "en": "Discipline",
+        "nl": "Vakgebied",
         "is_fuzzy": false
     }
 },

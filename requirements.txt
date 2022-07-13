@@ -1,6 +1,6 @@
 # Development
 gitpython==3.1.7
-flake8==3.8.3
+flake8==4.0.1
 wheel==0.37.1
 
 # Common
@@ -22,7 +22,7 @@ markupsafe==2.0.1
 awscli==1.24.7
 boto3==1.23.7
 requests-aws4auth==1.0
-django-storages==1.9.1
+django-storages==1.12.3
 
 # Tools
 ipython==7.16.3

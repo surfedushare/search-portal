@@ -40,6 +40,8 @@ secrets:
   postgres:
     password: "qwerty"
     application_password: "qwerty"
+  opensearch:
+    password: "qwerty"
   django:
     secret_key: "development-secret-key--do-not-use"
     admin_password: "qwerty"
@@ -58,4 +60,6 @@ secrets:
   teams_webhooks:
     harvester: null
   hva:
+    api_key: null
+  buas:
     api_key: null

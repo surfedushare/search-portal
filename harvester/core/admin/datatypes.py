@@ -89,3 +89,19 @@ class ExtensionAdmin(DocumentAdmin):
             if "restore_extensions" in actions.keys():
                 del actions["restore_extensions"]
         return actions
+
+
+class CollectionAdmin(DataStorageAdmin):
+    list_display = [
+        '__str__', 'created_at', 'modified_at',
+        'active_document_count', 'deleted_document_count', 'inactive_document_count'
+    ]
+
+    def active_document_count(self, obj):
+        return obj.document_set.filter(properties__state="active").count()
+
+    def deleted_document_count(self, obj):
+        return obj.document_set.filter(properties__state="deleted").count()
+
+    def inactive_document_count(self, obj):
+        return obj.document_set.filter(properties__state="inactive").count()

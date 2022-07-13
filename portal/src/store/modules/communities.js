@@ -91,7 +91,7 @@ export default {
     },
   },
   actions: {
-    async getCommunities({ commit }, { params = {} } = {}) {
+    async getCommunities({ commit }, { params = { "page_size": 100} } = {}) {
       if (validateParams(params)) {
         const { data: communities } = await axios.get("communities/", {
           params,

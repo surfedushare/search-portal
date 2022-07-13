@@ -240,6 +240,7 @@ ELASTICSEARCH_ANALYSERS = {
 }
 ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
 ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
+OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
 # Logging
@@ -556,5 +557,9 @@ SOURCES = {
     "greeni": {
         "endpoint": "https://www.greeni.nl",
         "api_key": None
+    },
+    "buas": {
+        "endpoint": "https://pure.buas.nl",
+        "api_key": environment.secrets.buas.api_key
     }
 }

@@ -8,9 +8,13 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
     },
-    "vetur.validation.template": false,
+    "vetur.validation.template": true,
     "vetur.format.enable": false,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "vetur.format.enable": false,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "[vue]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
   },
   "extensions": {
     "recommendations": ["dbaeumer.vscode-eslint", "amatiasq.sort-imports"]

@@ -36,7 +36,11 @@ class TestCollectionMaterials(BaseLiveServerTestCase):
         search = self.selenium.find_element_by_css_selector(".search-container input[type=search]")
         search.send_keys("Wiskunde")
         self.selenium.find_element_by_css_selector(".search-container button[type='submit']").click()
-        self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")
+        WebDriverWait(self.selenium, self.explicit_wait).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".materials__item_title"), "Didactiek van wiskundig denken"
+            )
+        )
         self.selenium.find_element_by_css_selector(".search__materials .select-icon").click()
         self.selenium.find_element_by_xpath("//button[text()[contains(., '1 toevoegen')]]").click()
         self.selenium.find_element_by_xpath("//*[text()[contains(., 'Didactiek van wiskundig denken')]]")

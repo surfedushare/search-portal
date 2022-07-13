@@ -17,7 +17,7 @@ markupsafe==2.0.1
 awscli==1.24.7
 boto3==1.23.7
 requests-aws4auth==1.0
-django-storages==1.9.1
+django-storages==1.12.3
 
 # Tools
 ipython==8.0.0b1

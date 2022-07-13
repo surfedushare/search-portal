@@ -61,8 +61,7 @@ class GreeniOAIPMHResourceFactory(factory.django.DjangoModelFactory):
         response_type = "initial" if self.is_initial else "delta"
         response_file = f"fixture.{SLUG}.{response_type}.{self.number}.xml"
         response_file_path = os.path.join(
-            settings.BASE_DIR, "sources", "factories",
-            SLUG,
+            settings.BASE_DIR, "sources", "factories", "fixtures",
             response_file
         )
         with open(response_file_path, "r") as response:

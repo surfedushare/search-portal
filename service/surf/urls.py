@@ -49,18 +49,20 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
+from surf.apps.core.views import (
+    ContactAPIView,
+    FeedbackAPIView
+)
 from surf.apps.core.views import health_check, robots_txt
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsViewSet, StatsView
 from surf.apps.locale.views import get_localisation_strings
-from surf.apps.feedback.views import FeedbackAPIView
 
 
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
-
 
 public_api_patterns = [
     url(r'^search/filter-categories/', FilterCategoryView.as_view()),
@@ -106,7 +108,8 @@ apipatterns = public_api_patterns + router.urls + [
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
         CollectionMaterialPromotionAPIView.as_view()),
-    url(r'^feedback/', FeedbackAPIView.as_view())
+    url(r'^feedback/', FeedbackAPIView.as_view()),
+    url(r'^contact/', ContactAPIView.as_view())
 ]
 
 sitemaps = {

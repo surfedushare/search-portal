@@ -2,7 +2,7 @@ from invoke import Collection
 
 from environments.project import create_configuration_and_session
 from commands.postgres.invoke import setup_postgres_localhost
-from commands.elastic.tasks import create_decompound_dictionary, push_decompound_dictionary
+from commands.elastic.tasks import create_decompound_dictionary, push_decompound_dictionary, push_indices_template
 from commands.aws.repository import sync_repository_state
 from commands.deploy import (prepare_builds, build, push, deploy, migrate, promote, print_available_images,
                              print_running_containers)
@@ -28,7 +28,7 @@ harvester_environment, _ = create_configuration_and_session(use_aws_default_prof
 harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, clean_data, load_data, deploy,
                                   index_dataset_version, dump_data, sync_harvest_content, promote_dataset_version,
                                   create_decompound_dictionary, push_decompound_dictionary, generate_previews,
-                                  extend_resource_cache, sync_preview_media, sync_metadata)
+                                  extend_resource_cache, sync_preview_media, sync_metadata, push_indices_template)
 harvester_collection.configure(harvester_environment)
 
 

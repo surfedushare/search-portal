@@ -60,3 +60,5 @@ secrets:
     harvester: null
   hva:
     api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/hva"
+  buas:
+    api_key: "arn:aws:secretsmanager:eu-central-1:870512711545:secret:credentials/buas"

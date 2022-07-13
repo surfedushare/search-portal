@@ -1,9 +1,7 @@
-import boto3
 from collections import defaultdict
 
 from django.conf import settings
 from opensearchpy import OpenSearch, RequestsHttpConnection
-from requests_aws4auth import AWS4Auth
 
 from project.configuration import SEARCH_FIELDS
 from surf.vendor.elasticsearch.serializers import SearchResultSerializer
@@ -24,9 +22,7 @@ class ElasticSearchApiClient:
             }
 
         if settings.IS_AWS:
-            credentials = boto3.Session().get_credentials()
-            http_auth = AWS4Auth(credentials.access_key, credentials.secret_key, "eu-central-1", "es",
-                                 session_token=credentials.token)
+            http_auth = ("supersurf", settings.OPENSEARCH_PASSWORD)
         else:
             http_auth = (None, None)
 
@@ -120,6 +116,11 @@ class ElasticSearchApiClient:
             if field.source != "*":
                 continue
             record[field_name] = getattr(serializer, field.method_name)(data)
+
+        # Add highlight to the record
+        if hit.get("highlight", 0):
+            record["highlight"] = hit["highlight"]
+
         return record
 
     def autocomplete(self, query):
@@ -152,7 +153,7 @@ class ElasticSearchApiClient:
         autocomplete = result['suggest']['autocomplete']
         options = autocomplete[0]['options']
         flat_options = list(set([item for option in options for item in option['_source']['suggest_completion']]))
-        options_with_prefix = [option for option in flat_options if option.startswith(query)]
+        options_with_prefix = [option for option in flat_options if option.lower().startswith(query.lower())]
         options_with_prefix.sort(key=lambda option: len(option))
         return options_with_prefix
 
@@ -187,6 +188,14 @@ class ElasticSearchApiClient:
             'size': page_size,
             'post_filter': {
                 "bool": defaultdict(list)
+            },
+            'highlight': {
+                'number_of_fragments': 1,
+                'fragment_size': 120,
+                'fields': {
+                    'description': {},
+                    'text': {}
+                }
             }
         }
 

@@ -39,9 +39,9 @@ def add_extra_parameters_to_materials(metadata, materials):
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
 
         educational_level_translations = metadata.translations["lom_educational_levels"]
-        m["educationallevels"] = [
+        m["lom_educational_levels"] = [
             educational_level_translations[educational_level_id]
-            for educational_level_id in m.get("educationallevels", [])
+            for educational_level_id in m.get("lom_educational_levels", [])
         ]
 
         communities = Community.objects.filter(
