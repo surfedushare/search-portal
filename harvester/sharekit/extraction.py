@@ -269,13 +269,14 @@ def create_objective(root="$.data", include_is_restricted=True):
     extraction_mapping_queryset = ExtractionMapping.objects.filter(is_active=True, repository=Repositories.SHAREKIT)
     if extraction_mapping_queryset.exists():
         extraction_mapping = extraction_mapping_queryset.last()
-        return extraction_mapping.to_objective()
-    objective = {
-        "@": root,
-        "external_id": "$.id",
-        "state": SharekitMetadataExtraction.get_record_state
-    }
-    objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
+        objective = extraction_mapping.to_objective()
+    else:
+        objective = {
+            "@": root,
+            "external_id": "$.id",
+            "state": SharekitMetadataExtraction.get_record_state
+        }
+        objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
     if not include_is_restricted:
         objective.pop("#is_restricted")
     return objective
