@@ -19,7 +19,7 @@ from opensearchpy import OpenSearch, RequestsHttpConnection, JSONSerializer
 from requests_aws4auth import AWS4Auth
 
 
-def create_elasticsearch_handler(index_name, index_frequency, environment, session):
+def create_elasticsearch_handler(index_name, index_frequency, environment, password):
     assert not index_name.startswith("logs"), \
         "Index names starting with 'logs' have a special meaning in ES and won't work"
     is_aws = environment.aws.is_aws  # AWS requires signing requests
@@ -40,8 +40,8 @@ def create_elasticsearch_handler(index_name, index_frequency, environment, sessi
     }
     if is_aws:
         handler.update({
-            'auth_type': ElasticsearchHandler.AuthType.AWS_SIGNED_AUTH,
-            'aws_session': session
+            'auth_type': ElasticsearchHandler.AuthType.BASIC_AUTH,
+            'auth_details': ("supersurf", password)
         })
     return handler
 

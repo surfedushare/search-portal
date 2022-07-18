@@ -276,19 +276,19 @@ LOGGING = {
             'harvest-logs',
             ElasticsearchHandler.IndexNameFrequency.WEEKLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
         'es_documents': create_elasticsearch_handler(
             'document-logs',
             ElasticsearchHandler.IndexNameFrequency.YEARLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
         'es_results': create_elasticsearch_handler(
             'harvest-results',
             ElasticsearchHandler.IndexNameFrequency.YEARLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
