@@ -268,6 +268,17 @@ WEBPACK_LOADER = {
 }
 
 
+# Search
+
+ELASTICSEARCH_HOST = environment.elastic_search.host
+ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
+ELASTICSEARCH_NL_INDEX = "latest-nl"
+ELASTICSEARCH_EN_INDEX = "latest-en"
+ELASTICSEARCH_UNK_INDEX = "latest-unk"
+OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
+
+
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
@@ -295,7 +306,7 @@ LOGGING = {
             'service-logs',
             ElasticsearchHandler.IndexNameFrequency.WEEKLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
@@ -371,17 +382,6 @@ LOGIN_REDIRECT_URL = BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
-
-
-# Search
-
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_NL_INDEX = "latest-nl"
-ELASTICSEARCH_EN_INDEX = "latest-en"
-ELASTICSEARCH_UNK_INDEX = "latest-unk"
-OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
 # CKEditor
