@@ -29,8 +29,7 @@ schedule:
   harvest:
     hour: 5  # uses UTC
     minute: 0
-  sync_sharekit_metadata:
-    minute: "3-59/5"
+  sync_sharekit_metadata: false
 
 aws:
   task_role_arn: "arn:aws:iam::000428825067:role/ecsHarvesterTaskExecutionRole"
@@ -48,7 +47,8 @@ secrets:
   sharekit:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/sharekit-credentials"
   harvester:
-    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/api-key"
+    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/credentials"
+    webhook_secret: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/credentials"
   matomo:
     api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/matomo-api-key"
   eduterm:

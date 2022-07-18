@@ -52,8 +52,8 @@ class TestGetHarvestSeedsHku(TestCase):
 
     def test_get_language(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["language"], "en")
-        self.assertEqual(seeds[10]["language"], "nl")
+        self.assertEqual(seeds[0]["language"], {"metadata": "en"})
+        self.assertEqual(seeds[10]["language"], {"metadata": "nl"})
 
     def test_get_title(self):
         seeds = self.seeds

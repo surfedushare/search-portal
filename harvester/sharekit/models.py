@@ -5,25 +5,11 @@ from django.db import models
 
 from datagrowth.configuration import create_config
 
-from core.constants import Repositories
-from core.models import HarvestHttpResource, ExtractionMapping
-from sharekit.extraction import SharekitMetadataExtraction, SHAREKIT_EXTRACTION_OBJECTIVE
+from core.models import HarvestHttpResource
+from sharekit.extraction import SharekitMetadataExtraction, create_objective
 
 
 class SharekitMetadataHarvestManager(models.Manager):
-
-    def _create_objective(self):
-        extraction_mapping_queryset = ExtractionMapping.objects.filter(is_active=True, repository=Repositories.SHAREKIT)
-        if extraction_mapping_queryset.exists():
-            extraction_mapping = extraction_mapping_queryset.last()
-            return extraction_mapping.to_objective()
-        objective = {
-            "@": "$.data",
-            "external_id": "$.id",
-            "state": SharekitMetadataExtraction.get_record_state
-        }
-        objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
-        return objective
 
     def extract_seeds(self, set_specification, latest_update):
         latest_update = latest_update.replace(microsecond=0)
@@ -35,7 +21,7 @@ class SharekitMetadataHarvestManager(models.Manager):
         )
 
         extract_config = create_config("extract_processor", {
-            "objective": self._create_objective()
+            "objective": create_objective()
         })
         prc = SharekitMetadataExtraction(config=extract_config)
 
