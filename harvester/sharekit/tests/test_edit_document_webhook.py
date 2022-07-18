@@ -28,7 +28,7 @@ class TestSharekitMetadataHarvest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.test_start_time = now()
-        cls.webhook_secret = settings.HARVESTER_WEBHOOK_SECRET
+        cls.webhook_secret = settings.HARVESTER_WEBHOOK_SECRET or "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
         cls.webhook_url = reverse("edit-document-webhook", args=("edusources", cls.webhook_secret,))
         cls.test_ip = "20.56.15.206"
         cls.test_data = cls.load_sharekit_test_data()
