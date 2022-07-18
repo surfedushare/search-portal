@@ -436,7 +436,10 @@ CELERY_RESULT_BACKEND = f'redis://{environment.django.redis_host}/0'
 CELERY_BEAT_SCHEDULE = {
     'harvest': {
         'task': 'harvest',
-        'schedule': crontab(**environment.schedule.harvest)
+        'schedule': crontab(**environment.schedule.harvest),
+        'kwargs': {
+            'report_dataset_version': True
+        }
     },
     'clean_data': {
         'task': 'clean_data',
