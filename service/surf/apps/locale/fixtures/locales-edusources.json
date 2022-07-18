@@ -27741,16 +27741,6 @@
 },
 {
     "model": "locale.locale",
-    "pk": "bef85b80-df44-4e21-b6d7-507da63a4514",
-    "fields": {
-        "asset": "No-disciplines",
-        "en": "No disciplines",
-        "nl": "Geen vakgebieden",
-        "is_fuzzy": false
-    }
-},
-{
-    "model": "locale.locale",
     "pk": "befaa984-884e-4beb-b341-1945394a1370",
     "fields": {
         "asset": "Cristina Richie_auto_generated_at_Wed Dec 22 14:14:50 2021-682388",
