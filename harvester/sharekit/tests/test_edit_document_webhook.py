@@ -1,7 +1,6 @@
 import json
 
-from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.timezone import now
 
@@ -9,7 +8,11 @@ from core.models import Document
 from sharekit.tests.factories import SharekitMetadataHarvestFactory
 
 
-class TestSharekitMetadataHarvest(TestCase):
+TEST_HARVESTER_WEBHOOK_SECRET = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+
+
+@override_settings(HARVESTER_WEBHOOK_SECRET=TEST_HARVESTER_WEBHOOK_SECRET)
+class TestEditDocumentWebhook(TestCase):
 
     fixtures = ["datasets-history"]
 
@@ -28,7 +31,7 @@ class TestSharekitMetadataHarvest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.test_start_time = now()
-        cls.webhook_secret = settings.HARVESTER_WEBHOOK_SECRET or "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+        cls.webhook_secret = TEST_HARVESTER_WEBHOOK_SECRET
         cls.webhook_url = reverse("edit-document-webhook", args=("edusources", cls.webhook_secret,))
         cls.test_ip = "20.56.15.206"
         cls.test_data = cls.load_sharekit_test_data()
