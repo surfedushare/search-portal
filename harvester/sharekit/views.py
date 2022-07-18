@@ -28,6 +28,8 @@ def edit_document_webhook(request, channel, secret):
         data = json.loads(request.body)
     except json.decoder.JSONDecodeError:
         return HttpResponse(status=400, reason="Invalid JSON")
+    if isinstance(data["attributes"], list):
+        data["attributes"] = {}
     # Processing of incoming data
     extract_config = create_config("extract_processor", {
         "objective": create_objective(root="$", include_is_restricted=False)
