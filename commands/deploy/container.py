@@ -87,9 +87,12 @@ def build(ctx, target, commit=None, docker_login=False, pull_latest=False):
 
     # Gather necessary info and call Docker to build
     target_info = TARGETS[target]
+    name = target_info['name']
     if pull_latest:
-        ctx.run(f"docker pull {REPOSITORY}/{target_info['name']}:latest", echo=True, pty=True)
-        ctx.run(f"docker pull {REPOSITORY}/{target_info['name']}-nginx:latest", echo=True, pty=True)
+        ctx.run(f"docker pull {REPOSITORY}/{name}:latest", echo=True, pty=True)
+        ctx.run(f"docker pull {REPOSITORY}/{name}-nginx:latest", echo=True, pty=True)
+        ctx.run(f"docker tag {REPOSITORY}/{name}:latest {name}:latest", echo=True)
+        ctx.run(f"docker tag {REPOSITORY}/{name}-nginx:latest {name}-nginx:latest", echo=True)
     ctx.run(
         f"docker build -f {target}/Dockerfile -t {target_info['name']}:{commit} .",
         pty=True,
