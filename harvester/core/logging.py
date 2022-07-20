@@ -137,10 +137,14 @@ class HarvestLogger(object):
         results.info(f"{collection.name} ({repository}) => {document_counts['total']}", extra=extra)
 
     def report_dataset_version(self, dataset_version):
+        collection_names = set()
         collection_ids = set()
-        for collection in dataset_version.collection_set.all().distinct("name"):
-            self.report_collection(collection, None)
+        for collection in dataset_version.collection_set.all():
+            if collection.name in collection_names:
+                continue
+            collection_names.add(collection.name)
             collection_ids.add(collection.id)
+            self.report_collection(collection, None)
         document_counts = self._get_document_counts(
             dataset_version.document_set.filter(collection__id__in=collection_ids)
         )
