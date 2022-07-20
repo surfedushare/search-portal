@@ -61,9 +61,11 @@ def publish_runner_image(ctx, docker_login=False):
 
 @task(help={
     "target": "Name of the project you want to build: service or harvester",
-    "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image."
+    "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image.",
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session",
+    "pull_latest": "Makes the command pull latest layers before building to possibly safe some time."
 })
-def build(ctx, target, commit=None):
+def build(ctx, target, commit=None, docker_login=False, pull_latest=False):
     """
     Uses Docker to build an image for a Django project
     """
@@ -75,8 +77,19 @@ def build(ctx, target, commit=None):
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
 
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
+
     # Gather necessary info and call Docker to build
     target_info = TARGETS[target]
+    if pull_latest:
+        ctx.run(f"docker pull {REPOSITORY}/{target_info['name']}:latest", echo=True, pty=True)
+        ctx.run(f"docker pull {REPOSITORY}/{target_info['name']}-nginx:latest", echo=True, pty=True)
     ctx.run(
         f"docker build -f {target}/Dockerfile -t {target_info['name']}:{commit} .",
         pty=True,
@@ -92,9 +105,10 @@ def build(ctx, target, commit=None):
 @task(help={
     "target": "Name of the project you want to push to AWS registry: service or harvester",
     "commit": "The commit hash that the image to be pushed is tagged with.",
-    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session",
+    "push_latest": "Makes the command push a latest tag to use these layers later."
 })
-def push(ctx, target, commit=None, docker_login=False):
+def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
@@ -121,10 +135,14 @@ def push(ctx, target, commit=None, docker_login=False):
         raise Exit("Can't push for commit that already has an image in the registry")
 
     # Tagging and pushing of our image and nginx image
-    ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{commit}", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/{name}:{commit}", echo=True, pty=True)
-    ctx.run(f"docker tag {name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{commit}", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{commit}", echo=True, pty=True)
+    tags = [commit]
+    if push_latest:
+        tags.append("latest")
+    for tag in tags:
+        ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{tag}", echo=True)
+        ctx.run(f"docker push {REPOSITORY}/{name}:{tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{tag}", echo=True)
+        ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{tag}", echo=True, pty=True)
 
 
 @task(help={
