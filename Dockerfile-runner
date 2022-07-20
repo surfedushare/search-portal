@@ -3,13 +3,16 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && \
     apt-get install -y python3-venv libxml2-dev libxslt-dev python3-dev git build-essential zlib1g-dev automake \
-    autoconf libtool libatlas3-base poppler-utils gettext python-is-python3 \
-    ca-certificates curl gnupg lsb-release libmagic-dev software-properties-common postgresql-client wget
+    autoconf libtool libatlas3-base poppler-utils gettext python-is-python3 libmagic-dev postgresql-client wget
 
 # Install Docker
+RUN apt-get install -y ca-certificates curl gnupg lsb-release software-properties-common
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 RUN apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+# Install Cypress dependencies
+RUN apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
 # Setup environment
 ENV PATH="./node_modules/.bin:/root/.local/bin:$PATH"
