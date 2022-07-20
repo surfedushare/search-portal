@@ -17,7 +17,7 @@ variables:
   # npm_config_cache: "$CI_PROJECT_DIR/.npm"
   # CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
-image: $AWS_CONTAINER_REGISTRY/install-base:latest
+image: $AWS_CONTAINER_REGISTRY/gitlab-runner:latest
 
 stages:
   - lint-and-test

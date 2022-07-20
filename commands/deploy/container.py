@@ -45,7 +45,7 @@ def publish_runner_image(ctx, docker_login=False):
     Uses Docker to build and push an image to use as Gitlab pipeline image
     """
 
-    ctx.run("docker build -f Dockerfile-runner -t install-base .", pty=True, echo=True)
+    ctx.run("docker build -f Dockerfile-runner -t gitlab-runner .", pty=True, echo=True)
 
     # Login with Docker on AWS
     if docker_login:
@@ -55,8 +55,8 @@ def publish_runner_image(ctx, docker_login=False):
             echo=True
         )
 
-    ctx.run(f"docker tag install-base:latest {REPOSITORY}/install-base:latest", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/install-base:latest", echo=True, pty=True)
+    ctx.run(f"docker tag gitlab-runner:latest {REPOSITORY}/gitlab-runner:latest", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/gitlab-runner:latest", echo=True, pty=True)
 
 
 @task(help={
