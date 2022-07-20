@@ -32,7 +32,7 @@ RUN npm run build
 
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y less vim build-essential gettext
+RUN apt-get update && apt-get install -y less vim build-essential gettext git
 
 # Create the app environment
 RUN mkdir -p /usr/src/app
