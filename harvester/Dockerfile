@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.10-slim
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && \
