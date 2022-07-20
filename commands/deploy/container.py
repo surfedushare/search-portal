@@ -7,7 +7,7 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS
-from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
+from environments.project import REPOSITORY
 
 
 def get_commit_hash():
@@ -50,7 +50,7 @@ def publish_runner_image(ctx, docker_login=False):
     # Login with Docker on AWS
     if docker_login:
         ctx.run(
-            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"aws ecr get-login-password --region eu-central-1 | "
             f"docker login --username AWS --password-stdin {REPOSITORY}",
             echo=True
         )
@@ -110,7 +110,7 @@ def push(ctx, target, commit=None, docker_login=False):
     # Login with Docker on AWS
     if docker_login:
         ctx.run(
-            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"aws ecr get-login-password --region eu-central-1 | "
             f"docker login --username AWS --password-stdin {REPOSITORY}",
             echo=True
         )
@@ -149,7 +149,7 @@ def promote(ctx, target, commit=None, docker_login=False):
     # Login with Docker on AWS
     if docker_login:
         ctx.run(
-            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"aws ecr get-login-password --region eu-central-1 | "
             f"docker login --username AWS --password-stdin {REPOSITORY}",
             echo=True
         )
