@@ -62,10 +62,9 @@ def publish_runner_image(ctx, docker_login=False):
 @task(help={
     "target": "Name of the project you want to build: service or harvester",
     "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image.",
-    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session",
-    "pull_latest": "Makes the command pull latest layers before building to possibly safe some time."
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
 })
-def build(ctx, target, commit=None, docker_login=False, pull_latest=False):
+def build(ctx, target, commit=None, docker_login=False):
     """
     Uses Docker to build an image for a Django project
     """
@@ -88,13 +87,10 @@ def build(ctx, target, commit=None, docker_login=False, pull_latest=False):
     # Gather necessary info and call Docker to build
     target_info = TARGETS[target]
     name = target_info['name']
-    if pull_latest:
-        ctx.run(f"docker pull {REPOSITORY}/{name}:latest", echo=True, pty=True)
-        ctx.run(f"docker pull {REPOSITORY}/{name}-nginx:latest", echo=True, pty=True)
-        ctx.run(f"docker tag {REPOSITORY}/{name}:latest {name}:latest", echo=True)
-        ctx.run(f"docker tag {REPOSITORY}/{name}-nginx:latest {name}-nginx:latest", echo=True)
+    latest_remote_image = f"{REPOSITORY}/{name}:latest"
     ctx.run(
-        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{commit} .",
+        f"DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from {latest_remote_image} "
+        f"-f {target}/Dockerfile -t {target_info['name']}:{commit} .",
         pty=True,
         echo=True
     )
