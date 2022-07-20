@@ -19,6 +19,7 @@ RUN pip3 install --no-cache-dir --user -r requirements.txt
 # Javascript dependencies
 WORKDIR portal
 RUN npm ci
+RUN cypress install
 WORKDIR ..
 
 ENV PATH="./portal/node_modules/.bin:/root/.local/bin:$PATH"
