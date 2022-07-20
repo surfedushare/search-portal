@@ -38,6 +38,28 @@ def prepare_builds(ctx, commit=None):
 
 
 @task(help={
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
+})
+def publish_runner_image(ctx, docker_login=False):
+    """
+    Uses Docker to build and push an image to use as Gitlab pipeline image
+    """
+
+    ctx.run("docker build -f Dockerfile-runner -t install-base .", pty=True, echo=True)
+
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
+
+    ctx.run(f"docker tag install-base:latest {REPOSITORY}/install-base:latest", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/install-base:latest", echo=True, pty=True)
+
+
+@task(help={
     "target": "Name of the project you want to build: service or harvester",
     "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image."
 })
@@ -69,7 +91,8 @@ def build(ctx, target, commit=None):
 
 @task(help={
     "target": "Name of the project you want to push to AWS registry: service or harvester",
-    "commit": "The commit hash that the image to be pushed is tagged with."
+    "commit": "The commit hash that the image to be pushed is tagged with.",
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
 })
 def push(ctx, target, commit=None, docker_login=False):
     """
@@ -106,7 +129,8 @@ def push(ctx, target, commit=None, docker_login=False):
 
 @task(help={
     "target": "Name of the project you want to promote: service or harvester",
-    "commit": "The commit hash that the image to be promoted is tagged with"
+    "commit": "The commit hash that the image to be promoted is tagged with",
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
 })
 def promote(ctx, target, commit=None, docker_login=False):
     """

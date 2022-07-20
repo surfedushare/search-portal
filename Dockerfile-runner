@@ -1,0 +1,24 @@
+FROM nikolaik/python-nodejs:python3.10-nodejs16-slim
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update && \
+    apt-get install -y python3-venv libxml2-dev libxslt-dev python3-dev git build-essential zlib1g-dev automake \
+    autoconf libtool libatlas3-base poppler-utils gettext python-is-python3
+
+# Python setup
+RUN pip3 install -U --no-cache-dir --user pip
+RUN pip3 install setuptools==58
+RUN pip3 install wheel
+
+# Python dependencies
+COPY requirements.txt requirements.txt
+COPY service/dependencies.txt service/dependencies.txt
+COPY harvester/dependencies.txt harvester/dependencies.txt
+RUN pip3 install --no-cache-dir --user -r requirements.txt
+
+# Javascript dependencies
+WORKDIR portal
+RUN npm ci
+WORKDIR ..
+
+ENV PATH="./portal/node_modules/.bin:/root/.local/bin:$PATH"
