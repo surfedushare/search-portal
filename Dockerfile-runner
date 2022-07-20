@@ -17,9 +17,7 @@ COPY harvester/dependencies.txt harvester/dependencies.txt
 RUN pip3 install --no-cache-dir --user -r requirements.txt
 
 # Javascript dependencies
-WORKDIR portal
+COPY portal/package.json package.json
+COPY portal/package-lock.json package-lock.json
 RUN npm ci
-RUN cypress install
-WORKDIR ..
-
-ENV PATH="./portal/node_modules/.bin:/root/.local/bin:$PATH"
+ENV PATH="./node_modules/.bin:/root/.local/bin:$PATH"
