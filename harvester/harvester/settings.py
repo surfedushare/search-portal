@@ -504,6 +504,7 @@ HARVESTER_WEBHOOK_SECRET = environment.secrets.harvester.webhook_secret
 
 SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
 SHAREKIT_BASE_URL = environment.django.repositories.sharekit
+SHAREKIT_WEBHOOK_ALLOWED_IPS = environment.sharekit.webhook_allowed_ips
 
 
 # Edurep & Eduterm

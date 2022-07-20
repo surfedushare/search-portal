@@ -18,7 +18,7 @@ def edit_document_webhook(request, channel, secret):
     # Webhook validation
     if str(secret) != settings.HARVESTER_WEBHOOK_SECRET:
         return HttpResponse(status=403, reason="Webhook not allowed in this environment")
-    if request.META["HTTP_X_FORWARDED_FOR"] not in ["20.56.15.206", "20.56.8.62"]:
+    if request.META["HTTP_X_FORWARDED_FOR"] not in settings.SHAREKIT_WEBHOOK_ALLOWED_IPS:
         capture_message(
             f"edit_document_webhook called from invalid IP: {request.META['HTTP_X_FORWARDED_FOR']}",
             level="warning"
