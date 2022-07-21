@@ -89,13 +89,14 @@ def build(ctx, target, commit=None, docker_login=False):
     name = target_info['name']
     latest_remote_image = f"{REPOSITORY}/{name}:latest"
     ctx.run(
-        f"DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from {latest_remote_image} "
-        f"-f {target}/Dockerfile -t {target_info['name']}:{commit} .",
+        f"DOCKER_BUILDKIT=1 docker build "
+        f"--build-arg BUILDKIT_INLINE_CACHE=1 --cache-from {latest_remote_image} --progress=plain "
+        f"-f {target}/Dockerfile -t {name}:{commit} .",
         pty=True,
         echo=True
     )
     ctx.run(
-        f"docker build -f nginx/Dockerfile-nginx -t {target_info['name']}-nginx:{commit} .",
+        f"docker build -f nginx/Dockerfile-nginx -t {name}-nginx:{commit} .",
         pty=True,
         echo=True
     )
