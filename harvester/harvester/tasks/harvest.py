@@ -62,5 +62,5 @@ def harvest(reset=False, no_promote=False, report_dataset_version=False):
     # Log the totals when scheduled
     if report_dataset_version:
         dataset_version = DatasetVersion.objects.get_current_version()
-        logger = HarvestLogger(dataset_version.dataset, "harvest_task", {})
+        logger = HarvestLogger(dataset_version.dataset.name, "harvest_task", {})
         logger.report_dataset_version(dataset_version)

@@ -149,7 +149,7 @@ class HarvestLogger(object):
             dataset_version.document_set.filter(collection__id__in=collection_ids)
         )
         extra = self._get_extra_info(result={
-            "source": dataset_version,
+            "source": str(dataset_version),
             "repository": None,
             "total": document_counts["total"],
             "inactive": {
