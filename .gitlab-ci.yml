@@ -2,7 +2,6 @@ variables:
   FF_NETWORK_PER_BUILD: 1
   FF_USE_FASTZIP: "true"
   ARTIFACT_COMPRESSION_LEVEL: "fast"
-  # CACHE_COMPRESSION_LEVEL: "fast"
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: qwerty
   POSTGRES_HOST_AUTH_METHOD: trust
@@ -14,8 +13,6 @@ variables:
   POL_SECRETS_POSTGRES_PASSWORD: $POSTGRES_PASSWORD
   DOCKER_AUTH_CONFIG: "{\"credHelpers\": {\"017973353230.dkr.ecr.eu-central-1.amazonaws.com\": \"ecr-login\"}}"
   AWS_CONTAINER_REGISTRY: 017973353230.dkr.ecr.eu-central-1.amazonaws.com
-  # npm_config_cache: "$CI_PROJECT_DIR/.npm"
-  # CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
 image: $AWS_CONTAINER_REGISTRY/gitlab-runner:latest
 
