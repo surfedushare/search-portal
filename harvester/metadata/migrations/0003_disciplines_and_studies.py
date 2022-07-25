@@ -4,9 +4,21 @@ from metadata.models import MetadataField, MetadataTranslation
 
 
 fields_to_copy = {
-    "learning_material_themes": "learning_material_disciplines",
-    "learning_material_themes_normalized": "learning_material_disciplines_normalized",
-    "disciplines": "studies"
+    "learning_material_themes": {
+        "name": "learning_material_disciplines",
+        "nl": "Vakgebied",
+        "en": "Discipline"
+    },
+    "learning_material_themes_normalized": {
+        "name": "learning_material_disciplines_normalized",
+        "nl": "Vakgebied",
+        "en": "Discipline"
+    },
+    "disciplines": {
+        "name": "studies",
+        "nl": "Studies",
+        "en": "Studies"
+    }
 }
 
 
@@ -28,13 +40,13 @@ def copy_to_disciplines_and_studies(apps, schema_editor):
     """
     for field in MetadataField.objects.filter(name__in=fields_to_copy.keys()):
         root_values = list(field.metadatavalue_set.filter(parent__isnull=True))
-        field.name = fields_to_copy[field.name]
+        field_info = fields_to_copy[field.name]
+        field.name = field_info["name"]
         field.pk = None
         field.translation = MetadataTranslation.objects.create(
-            en=field.translation.en,
-            nl=field.translation.nl,
-            is_fuzzy=field.translation.is_fuzzy
-
+            en=field_info["en"],
+            nl=field_info["nl"],
+            is_fuzzy=True
         )
         field.save(force_insert=True)
         for root_value in root_values:
@@ -45,7 +57,8 @@ def copy_to_disciplines_and_studies(apps, schema_editor):
 
 
 def undo_copy_to_disciplines_and_studies(apps, schema_editor):
-    MetadataField.objects.filter(name__in=fields_to_copy.values()).delete()
+    field_names = [field_info["name"] for field_info in fields_to_copy.values()]
+    MetadataField.objects.filter(name__in=field_names).delete()
 
 
 class Migration(migrations.Migration):

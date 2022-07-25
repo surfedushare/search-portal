@@ -79278,7 +79278,7 @@
     "model": "metadata.metadatafield",
     "pk": 12,
     "fields": {
-      "name": "disciplines",
+      "name": "studies",
       "created_at": "2022-03-04T13:31:43.580Z",
       "updated_at": "2022-03-04T13:31:43.580Z",
       "translation": 222,

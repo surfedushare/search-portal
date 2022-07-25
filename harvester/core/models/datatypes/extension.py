@@ -58,6 +58,7 @@ class Extension(DocumentBase):
             'aggregation_level': None,
             'analysis_allowed': None,
             'publisher_date': None,
+            'learning_material_disciplines': [],
             'learning_material_disciplines_normalized': [],
             'learning_material_themes_normalized': [],
             'consortium': None
