@@ -31,6 +31,11 @@ schedule:
     minute: 0
   sync_sharekit_metadata: false
 
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+    - "20.56.8.62"
+
 aws:
   task_role_arn: "arn:aws:iam::322480324822:role/ecsHarvesterTaskExecutionRole"
   scheduled_tasks: []
@@ -47,8 +52,8 @@ secrets:
   sharekit:
     api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/sharekit-credentials"
   harvester:
-    api_key: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/credentials"
-    webhook_secret: "arn:aws:secretsmanager:eu-central-1:000428825067:secret:harvester/credentials"
+    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/credentials"
+    webhook_secret: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/credentials"
   matomo:
     api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/matomo-api-key"
   eduterm:

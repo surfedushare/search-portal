@@ -31,6 +31,10 @@ schedule:
     minute: 0
   sync_sharekit_metadata: false
 
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+
 aws:
   task_role_arn: "arn:aws:iam::017973353230:role/ecsHarvesterTaskExecutionRole"
   scheduled_tasks: []
