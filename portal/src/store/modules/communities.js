@@ -11,8 +11,6 @@ export default {
   state: {
     communities: null,
     community_info: {},
-    community_themes: null,
-    community_disciplines: null,
     community_collections: null,
     community_collections_loading: null,
   },
@@ -189,21 +187,8 @@ export default {
     SET_COMMUNITY(state, payload) {
       state.community_info = payload;
     },
-    SET_COMMUNITY_DISCIPLINES(state, payload) {
-      state.community_disciplines = payload;
-    },
-    SET_COMMUNITY_THEMES(state, payload) {
-      state.community_themes = payload;
-    },
     SET_COMMUNITY_COLLECTIONS(state, payload) {
       state.community_collections = payload;
-    },
-    SET_COMMUNITY_COLLECTIONS_NEXT(state, payload) {
-      state.community_collections = {
-        ...state.community_collections,
-        next: payload.next,
-        results: [...state.community_collections.results, ...payload.results],
-      };
     },
     ADD_COMMUNITY_COLLECTION(state, payload) {
       const results = state.community_collections.results || [];

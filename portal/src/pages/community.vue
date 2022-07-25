@@ -277,12 +277,6 @@ export default {
       text-decoration: none;
     }
   }
-  &__themas_and_disciplines {
-    width: 80%;
-    @media @mobile {
-      width: 100%;
-    }
-  }
   &__collections {
     margin-bottom: 20px;
   }
