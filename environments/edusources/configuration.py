@@ -31,6 +31,9 @@ def get_project_search_mapping_properties():
         'lom_educational_levels': {
             'type': 'keyword'
         },
+        'studies': {
+            'type': 'keyword'
+        },
         'disciplines': {
             'type': 'keyword'
         },
@@ -51,6 +54,12 @@ def get_project_search_mapping_properties():
             'type': 'keyword'
         },
         'learning_material_themes_normalized': {
+            'type': 'keyword'
+        },
+        'learning_material_disciplines': {
+            'type': 'keyword'
+        },
+        'learning_material_disciplines_normalized': {
             'type': 'keyword'
         },
         'consortium': {

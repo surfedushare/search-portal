@@ -43,6 +43,7 @@ class Extension(DocumentBase):
             'material_types': [],
             'copyright_description': None,
             'mime_type': None,
+            'studies': [],
             'disciplines': [],
             'url': None,
             'lom_educational_levels': [],
@@ -57,6 +58,7 @@ class Extension(DocumentBase):
             'aggregation_level': None,
             'analysis_allowed': None,
             'publisher_date': None,
+            'learning_material_disciplines_normalized': [],
             'learning_material_themes_normalized': [],
             'consortium': None
         }
