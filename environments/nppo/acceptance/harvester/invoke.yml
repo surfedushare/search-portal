@@ -33,6 +33,11 @@ schedule:
   sync_sharekit_metadata:
     minute: "3-59/5"
 
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+    - "20.56.8.62"
+
 aws:
   task_role_arn: "arn:aws:iam::825135206789:role/ecsHarvesterTaskExecutionRole"
   scheduled_tasks: []
@@ -48,6 +53,7 @@ secrets:
     api_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:credentials/sharekit"
   harvester:
     api_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/api-key"
+    webhook_secret: null
   matomo:
     api_key: null
   eduterm:

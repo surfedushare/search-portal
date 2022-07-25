@@ -110,23 +110,54 @@ class HarvestLogger(object):
         extra = self._get_extra_info(phase="report", material=material_info)
         documents.info(f"Report: {external_id}", extra=extra)
 
-    def report_collection(self, collection, repository):
-        total = collection.document_set.count(),
-        inactive_educational_level_count = collection.document_set \
+    def _get_document_counts(self, document_set):
+        total = document_set.count()
+        inactive_educational_level_count = document_set \
             .filter(properties__state="inactive", properties__lowest_educational_level__lte=1) \
             .count()
         inactive_copyright_count = \
-            collection.document_set.filter(properties__state="inactive").count() - inactive_educational_level_count
+            document_set.filter(properties__state="inactive").count() - inactive_educational_level_count
+        return {
+            "total": total - inactive_educational_level_count - inactive_copyright_count,
+            "inactive_educational_level_count": inactive_educational_level_count,
+            "inactive_copyright_count": inactive_copyright_count
+        }
+
+    def report_collection(self, collection, repository):
+        document_counts = self._get_document_counts(collection.document_set)
         extra = self._get_extra_info(result={
             "source": collection.name,
             "repository": repository,
-            "total": total,
+            "total": document_counts["total"],
             "inactive": {
-                "educational_level": inactive_educational_level_count,
-                "copyright": inactive_copyright_count
+                "educational_level": document_counts["inactive_educational_level_count"],
+                "copyright": document_counts["inactive_copyright_count"]
             }
         })
-        results.info(f"{collection.name} ({repository}) => {total}", extra=extra)
+        results.info(f"{collection.name} ({repository}) => {document_counts['total']}", extra=extra)
+
+    def report_dataset_version(self, dataset_version):
+        collection_names = set()
+        collection_ids = set()
+        for collection in dataset_version.collection_set.all():
+            if collection.name in collection_names:
+                continue
+            collection_names.add(collection.name)
+            collection_ids.add(collection.id)
+            self.report_collection(collection, None)
+        document_counts = self._get_document_counts(
+            dataset_version.document_set.filter(collection__id__in=collection_ids)
+        )
+        extra = self._get_extra_info(result={
+            "source": str(dataset_version),
+            "repository": None,
+            "total": document_counts["total"],
+            "inactive": {
+                "educational_level": document_counts["inactive_educational_level_count"],
+                "copyright": document_counts["inactive_copyright_count"]
+            }
+        })
+        results.info(f"{dataset_version} => {document_counts['total']}", extra=extra)
 
     def elastic_errors(self, errors):
         for error in errors:

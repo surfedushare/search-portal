@@ -49,11 +49,7 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
-from surf.apps.core.views import (
-    ContactAPIView,
-    FeedbackAPIView
-)
-from surf.apps.core.views import health_check, robots_txt
+from surf.apps.core.views import ContactAPIView, health_check, robots_txt
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsViewSet, StatsView
@@ -108,7 +104,6 @@ apipatterns = public_api_patterns + router.urls + [
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
         CollectionMaterialPromotionAPIView.as_view()),
-    url(r'^feedback/', FeedbackAPIView.as_view()),
     url(r'^contact/', ContactAPIView.as_view())
 ]
 

@@ -242,6 +242,7 @@ if MODE != 'localhost':
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_STORAGE_BUCKET_NAME = environment.aws.image_upload_bucket
     AWS_S3_REGION_NAME = 'eu-central-1'
+    AWS_S3_FILE_OVERWRITE = False
 
 AWS_HARVESTER_BUCKET_NAME = environment.aws.harvest_content_bucket
 
@@ -265,6 +266,17 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(PORTAL_BASE_DIR, 'webpack-stats.json'),
     }
 }
+
+
+# Search
+
+ELASTICSEARCH_HOST = environment.elastic_search.host
+ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
+ELASTICSEARCH_NL_INDEX = "latest-nl"
+ELASTICSEARCH_EN_INDEX = "latest-en"
+ELASTICSEARCH_UNK_INDEX = "latest-unk"
+OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
 # Logging
@@ -294,7 +306,7 @@ LOGGING = {
             'service-logs',
             ElasticsearchHandler.IndexNameFrequency.WEEKLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
@@ -370,17 +382,6 @@ LOGIN_REDIRECT_URL = BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
-
-
-# Search
-
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_NL_INDEX = "latest-nl"
-ELASTICSEARCH_EN_INDEX = "latest-en"
-ELASTICSEARCH_UNK_INDEX = "latest-unk"
-OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
 # CKEditor

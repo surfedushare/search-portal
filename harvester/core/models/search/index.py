@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.timezone import make_aware
 from opensearchpy.helpers import streaming_bulk
+from opensearchpy.exceptions import NotFoundError
 from rest_framework import serializers
 
 from project.configuration import create_elastic_search_index_configuration
@@ -85,8 +86,10 @@ class ElasticIndex(models.Model):
 
     def promote_to_latest(self):
         latest_alias = "latest-" + self.language
-        if self.client.indices.exists_alias(name=latest_alias):
-            self.client.indices.delete_alias(index="_all", name=latest_alias)
+        try:
+            self.client.indices.delete_alias(index=f"{self.dataset_version.dataset.name}-*", name=latest_alias)
+        except NotFoundError:
+            pass
         self.client.indices.put_alias(index=self.remote_name, name=latest_alias)
 
     def clean(self):

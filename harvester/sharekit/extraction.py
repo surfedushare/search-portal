@@ -8,7 +8,8 @@ from django.conf import settings
 from datagrowth.processors import ExtractProcessor
 from datagrowth.utils import reach
 
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
+from core.models import ExtractionMapping
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS, Repositories
 
 
 class SharekitMetadataExtraction(ExtractProcessor):
@@ -262,3 +263,22 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "learning_material_themes": SharekitMetadataExtraction.get_learning_material_themes,
     "consortium": SharekitMetadataExtraction.get_consortium
 }
+
+
+def create_objective(root=None, include_is_restricted=True):
+    extraction_mapping_queryset = ExtractionMapping.objects.filter(is_active=True, repository=Repositories.SHAREKIT)
+    if extraction_mapping_queryset.exists():
+        extraction_mapping = extraction_mapping_queryset.last()
+        objective = extraction_mapping.to_objective()
+    else:
+        objective = {
+            "@": "$.data",
+            "external_id": "$.id",
+            "state": SharekitMetadataExtraction.get_record_state
+        }
+        objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
+    if root:
+        objective["@"] = root
+    if not include_is_restricted:
+        objective.pop("#is_restricted")
+    return objective

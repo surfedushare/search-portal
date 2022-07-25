@@ -276,19 +276,19 @@ LOGGING = {
             'harvest-logs',
             ElasticsearchHandler.IndexNameFrequency.WEEKLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
         'es_documents': create_elasticsearch_handler(
             'document-logs',
             ElasticsearchHandler.IndexNameFrequency.YEARLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
         'es_results': create_elasticsearch_handler(
             'harvest-results',
             ElasticsearchHandler.IndexNameFrequency.YEARLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
@@ -436,7 +436,10 @@ CELERY_RESULT_BACKEND = f'redis://{environment.django.redis_host}/0'
 CELERY_BEAT_SCHEDULE = {
     'harvest': {
         'task': 'harvest',
-        'schedule': crontab(**environment.schedule.harvest)
+        'schedule': crontab(**environment.schedule.harvest),
+        'kwargs': {
+            'report_dataset_version': True
+        }
     },
     'clean_data': {
         'task': 'clean_data',
@@ -444,10 +447,6 @@ CELERY_BEAT_SCHEDULE = {
             hour=0,
             minute=0
         ),
-    },
-    'sync_sharekit_metadata': {
-        'task': 'sync_sharekit_metadata',
-        'schedule': crontab(**environment.schedule.sync_sharekit_metadata)
     },
     'sync_indices': {
         'task': 'sync_indices',
@@ -458,6 +457,11 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute=30)
     }
 }
+if environment.schedule.sync_sharekit_metadata:
+    CELERY_BEAT_SCHEDULE['sync_sharekit_metadata'] = {
+        'task': 'sync_sharekit_metadata',
+        'schedule': crontab(**environment.schedule.sync_sharekit_metadata)
+    }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 
@@ -491,10 +495,16 @@ DATA_RETENTION_PURGE_AFTER = environment.django.data_retention.purge_after or {}
 DATA_RETENTION_KEEP_VERSIONS = environment.django.data_retention.keep_versions
 
 
+# Internal credentials
+
+HARVESTER_WEBHOOK_SECRET = environment.secrets.harvester.webhook_secret
+
+
 # Sharekit
 
 SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
 SHAREKIT_BASE_URL = environment.django.repositories.sharekit
+SHAREKIT_WEBHOOK_ALLOWED_IPS = environment.sharekit.webhook_allowed_ips
 
 
 # Edurep & Eduterm

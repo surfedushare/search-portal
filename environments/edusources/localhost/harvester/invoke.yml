@@ -29,8 +29,12 @@ schedule:
   harvest:
     hour: 5  # uses UTC
     minute: 0
-  sync_sharekit_metadata:
-    minute: "*/5"
+  sync_sharekit_metadata: false
+
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+    - "20.56.8.62"
 
 aws:
   harvest_content_bucket: null
@@ -49,6 +53,7 @@ secrets:
     api_key: null
   harvester:
     api_key: "123abc"
+    webhook_secret: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
   matomo:
     api_key: null
   eduterm:

@@ -1,2 +1,2 @@
-from .contact import FeedbackAPIView, ContactAPIView
+from .contact import ContactAPIView
 from .health import health_check, robots_txt
