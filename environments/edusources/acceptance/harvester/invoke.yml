@@ -14,7 +14,7 @@ django:
     keep_versions: 3
   repositories:
     edurep: "https://wszoeken.edurep.kennisnet.nl"
-    sharekit: "https://api.acc.surfsharekit.nl"
+    sharekit: "https://api.surfsharekit.nl"
     han: null
     hva: null
   sentry:
@@ -30,6 +30,11 @@ schedule:
     hour: 5  # uses UTC
     minute: 0
   sync_sharekit_metadata: false
+
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+    - "20.56.8.62"
 
 aws:
   task_role_arn: "arn:aws:iam::000428825067:role/ecsHarvesterTaskExecutionRole"

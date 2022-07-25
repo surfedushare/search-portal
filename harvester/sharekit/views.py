@@ -18,7 +18,7 @@ def edit_document_webhook(request, channel, secret):
     # Webhook validation
     if str(secret) != settings.HARVESTER_WEBHOOK_SECRET:
         return HttpResponse(status=403, reason="Webhook not allowed in this environment")
-    if request.META["HTTP_X_FORWARDED_FOR"] not in ["20.56.15.206", "20.56.8.62"]:
+    if request.META["HTTP_X_FORWARDED_FOR"] not in settings.SHAREKIT_WEBHOOK_ALLOWED_IPS:
         capture_message(
             f"edit_document_webhook called from invalid IP: {request.META['HTTP_X_FORWARDED_FOR']}",
             level="warning"
@@ -28,6 +28,9 @@ def edit_document_webhook(request, channel, secret):
         data = json.loads(request.body)
     except json.decoder.JSONDecodeError:
         return HttpResponse(status=400, reason="Invalid JSON")
+    # Patches data coming from Sharekit to be consistent
+    if isinstance(data["attributes"], list):
+        data["attributes"] = {}
     # Processing of incoming data
     extract_config = create_config("extract_processor", {
         "objective": create_objective(root="$", include_is_restricted=False)
