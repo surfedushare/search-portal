@@ -1,5 +1,5 @@
-import { PUBLISHER_DATE_FIELD, THEME_CATEGORY_FILTER_FIELD } from "@/constants";
-import { forEach, groupBy, isEmpty, isNil, isNull, sortBy, union, pull } from "lodash";
+import { PUBLISHER_DATE_FIELD } from "@/constants";
+import { forEach, groupBy, isEmpty, isNil, isNull, union, pull } from "lodash";
 
 import axios from "~/axios";
 import { parseSearchMaterialsQuery } from "~/components/_helpers";
@@ -121,16 +121,6 @@ export default {
     },
     getFiltersFromQuery() {
       return getFiltersFromQuery;
-    },
-    sortedThemes(state, getters) {
-      const themeCategory = getters.getCategoryById(
-        THEME_CATEGORY_FILTER_FIELD
-      );
-      if (!themeCategory) {
-        return [];
-      }
-      const themes = themeCategory.children;
-      return sortBy(themes, ["external_id"]);
     },
   },
   actions: {

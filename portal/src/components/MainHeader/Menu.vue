@@ -32,7 +32,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "MenuBlock",
   computed: {
-    ...mapGetters(["sortedThemes", "show_header_menu"]),
+    ...mapGetters(["show_header_menu"]),
   },
   methods: {
     /**
