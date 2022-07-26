@@ -6,7 +6,6 @@
           <router-link
             :to="localePath('communities')"
             class="menu__link"
-            @click.native="closeSubMenu(true)"
           >
             {{ $t("Communities") }}
           </router-link>
@@ -15,7 +14,6 @@
           <router-link
             :to="localePath('how-does-it-work')"
             class="menu__link"
-            @click.native="closeSubMenu(true)"
           >
             {{ $t("How-does-it-work") }}
           </router-link>
