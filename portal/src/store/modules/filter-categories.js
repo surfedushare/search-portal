@@ -83,7 +83,6 @@ export default {
   state: {
     filter_categories: null,
     filter_categories_loading: null,
-    disciplines: null,
     selection: {},
     byCategoryId: {},
   },
@@ -93,9 +92,6 @@ export default {
     },
     filter_categories_loading(state) {
       return state.filter_categories_loading;
-    },
-    disciplines(state) {
-      return state.disciplines;
     },
     getCategoryById(state) {
       return (itemId, rootId) => {
@@ -159,14 +155,6 @@ export default {
       }
 
       state.filter_categories = payload;
-
-      const disciplines = payload.find(
-        (child) => child.external_id.search("discipline") !== -1
-      );
-      state.disciplines = disciplines.children.reduce((obj, value) => {
-        obj[value.external_id] = value;
-        return obj;
-      }, {});
 
       state.byCategoryId = {};
       function setCategoryIds(items) {

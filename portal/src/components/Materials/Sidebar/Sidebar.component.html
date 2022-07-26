@@ -1,9 +1,9 @@
 <div class="material__left">
   <div class="material__left_sticky">
     <div class="material__grey_block">
-      <template v-if="extended_material.disciplineTitles">
+      <template v-if="material.disciplines && material.disciplines.length">
         <h4>{{ $t('Discipline') }}</h4>
-        <div>{{ extended_material.disciplineTitles }}</div>
+        <div>{{ getDisciplineTitles() }}</div>
       </template>
       <template v-if="material.lom_educational_levels" class="materials__item_educationallevels">
         <h4>{{ $t('Learning-levels') }}</h4>
