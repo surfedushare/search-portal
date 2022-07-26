@@ -18,7 +18,7 @@
               </li>
             </ul>
           </div>
-          <SearchBar @search="searchMaterials" enable-pre-filters />
+          <SearchBar enable-pre-filters @search="searchMaterials" />
         </div>
       </div>
 

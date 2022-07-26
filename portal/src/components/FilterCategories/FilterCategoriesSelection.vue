@@ -16,8 +16,8 @@
       v-show="selectionFilterItems.length"
       outlined
       depressed
-      @click="resetFilter"
       data-test="reset_filters"
+      @click="resetFilter"
     >
       {{ $t('Reset-filters') }}
     </v-btn>
