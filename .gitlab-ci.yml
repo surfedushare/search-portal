@@ -97,5 +97,5 @@ promote:
   services:
     - name: docker:dind
   script:
-    - invoke aws.promote harvester --commit $CI_COMMIT_SHA
+    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
