@@ -9,7 +9,6 @@ import PopularList from "~/components/Communities/PopularList";
 import { PublishStatus } from "~/utils";
 import SaveRating from "~/components/Popup/SaveRating";
 import StarRating from "~/components/StarRating";
-import Themes from "~/components/Themes";
 import { isNil } from "lodash";
 import { mapGetters } from "vuex";
 import numeral from "numeral";
@@ -19,7 +18,6 @@ export default {
   props: ["material", "communities", "collections"],
   components: {
     StarRating,
-    Themes,
     PopularList,
     Keywords,
     SaveRating,
@@ -134,32 +132,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["isAuthenticated", "themes"]),
+    ...mapGetters(["isAuthenticated"]),
     /**
      * Get formatted 'number_of_views'
      * @returns String
      */
     viewCount() {
       return numeral(this.material.view_count).format("0a");
-    },
-    /**
-     * get material themes
-     * @returns {*}
-     */
-    material_themes() {
-      const { material, themes } = this;
-
-      if (material && themes) {
-        const material_themes = material.themes;
-
-        return {
-          results: themes.results.filter((theme) => {
-            return material_themes.indexOf(theme.external_id) !== -1;
-          }),
-        };
-      }
-
-      return false;
     },
     publishedCollections() {
       return this.collections.filter(

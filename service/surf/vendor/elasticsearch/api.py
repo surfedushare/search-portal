@@ -375,7 +375,7 @@ class ElasticSearchApiClient:
             # and the language filter item (it's handled by telling elastic in what index to search).
             if not filter_item['items'] or 'language.keyword' in filter_item['external_id']:
                 continue
-            elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(filter_item['external_id'])
+            elastic_type = filter_item['external_id']
             # date range query
             if elastic_type == "publisher_date":
                 lower_bound, upper_bound = filter_item["items"]
@@ -413,7 +413,7 @@ class ElasticSearchApiClient:
                 other_filters = list(filter(lambda x: x['external_id'] != aggregation_name, filters))
                 other_filters = self.parse_filters(other_filters)
 
-            elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(aggregation_name)
+            elastic_type = aggregation_name
 
             if len(other_filters) > 0:
                 # Filter the aggregation by the filters applied to other categories
@@ -450,7 +450,7 @@ class ElasticSearchApiClient:
         if ordering.startswith("-"):
             order = "desc"
             ordering = ordering[1:]
-        elastic_type = ElasticSearchApiClient.translate_external_id_to_elastic_type(ordering)
+        elastic_type = ordering
         return {elastic_type: {"order": order}}
 
     @staticmethod
@@ -470,25 +470,8 @@ class ElasticSearchApiClient:
 
     @staticmethod
     def translate_external_id_to_elastic_type(external_id):
-        """ The external id's used in edurep need to be parsed to fields in elasticsearch. """
-        if external_id == 'lom.technical.format':
-            return 'technical_type'
-        elif external_id == 'about.repository':
-            return 'harvest_source'
-        elif external_id == 'lom.rights.copyrightandotherrestrictions':
-            return 'copyright.keyword'
-        elif external_id == 'lom.educational.context':
-            return 'lom_educational_levels'
-        elif external_id == 'lom.lifecycle.contribute.publisherdate':
-            return 'publisher_date'
-        elif external_id == 'lom.classification.obk.discipline.id':
-            return 'disciplines'
-        elif external_id == 'lom.lifecycle.contribute.author':
-            return 'authors.name.keyword'
-        elif external_id == 'lom.general.language':
-            return 'language.keyword'
-        elif external_id == 'lom.general.aggregationlevel':
-            return 'aggregation_level'
-        elif external_id == 'lom.lifecycle.contribute.publisher':
-            return 'publishers.keyword'
+        """
+        (deprecated, remove once we purge old migrations)
+        The external id's used in edurep need to be parsed to fields in elasticsearch.
+        """
         return external_id

@@ -1,5 +1,5 @@
 import { formatDate, generateSearchMaterialsQuery } from "../../_helpers";
-import { isEmpty, isError, isNil, isObject } from "lodash";
+import { isEmpty } from "lodash";
 
 import AddCollection from "./../../Popup/AddCollection";
 import { Duration } from "luxon";
@@ -329,7 +329,6 @@ export default {
       "isAuthenticated",
       "my_collections",
       "material_communities",
-      "disciplines",
     ]),
     formattedPublishedAt() {
       return formatDate(this.material.published_at, this.$i18n.locale);
@@ -351,32 +350,16 @@ export default {
         };
       });
     },
-    /**
-     * Extend to the material fields "disciplines"
-     * @returns {*}
-     */
-    extended_material() {
-      const { material, disciplines } = this;
-      let self = this;
-
-      if (isNil(material) || isError(material)) {
-        return material;
+    studyTitles() {
+      const studies = (this.material.studies) ? this.material.studies : this.material.disciplines;
+      if (isEmpty(studies)) {
+        return
       }
-
-      if (!isNil(disciplines)) {
-        // TODO: material.disciplines is sometimes an Array with Object and sometimes with external_id
-        // We should make the type consistent
-        let disciplineTitles = material.disciplines.map((discipline) => {
-          let disciplineObj = isObject(discipline)
-            ? discipline
-            : disciplines[discipline];
-          return this.getTitleTranslation(disciplineObj, self.$i18n.locale);
-        });
-        material.disciplineTitles = disciplineTitles.join(", ");
-      }
-
-      return material;
-    },
+      let studyTitles = studies.map((study) => {
+        return this.getTitleTranslation(study, this.$i18n.locale);
+      });
+      return studyTitles.join(", ");
+    }
   },
   watch: {
     collections() {

@@ -1,8 +1,8 @@
-FROM python:3.10
+FROM python:3.10-slim
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && \
-    apt-get install -y less vim ffmpeg time dialog sox subversion build-essential zlib1g-dev automake \
+    apt-get install -y less vim ffmpeg time dialog sox git subversion build-essential zlib1g-dev automake \
     autoconf libtool libatlas3-base poppler-utils
 
 # Create the app environment

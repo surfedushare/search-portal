@@ -2,7 +2,7 @@
   <section class="materials">
     <slot name="header-info"></slot>
     <ul
-      v-if="extended_materials && extended_materials.length"
+      v-if="selectedMaterials && selectedMaterials.length"
       data-test="search_results"
       class="materials__items"
       :class="{
@@ -14,7 +14,7 @@
       }"
     >
       <li
-        v-for="(material, index) in extended_materials"
+        v-for="(material, index) in selectedMaterials"
         :key="index"
         :class="[
           `tile--items-in-line-${itemsInLine}`,
@@ -109,7 +109,7 @@ export default {
   },
   data() {
     return {
-      selected_materials: this.value || [],
+      selectedMaterialIds: this.value || [],
     };
   },
   computed: {
@@ -120,16 +120,15 @@ export default {
     current_loading() {
       return this.materials_loading || this.loading;
     },
-    extended_materials() {
-      const { materials, selected_materials } = this;
+    selectedMaterials() {
+      const { materials, selectedMaterialIds } = this;
       if (materials) {
         const arrMaterials = materials.records ? materials.records : materials;
 
         return arrMaterials.map((material) => {
           return {
             ...material,
-            selected: selected_materials.indexOf(material.external_id) !== -1,
-            description: material.description,
+            selected: selectedMaterialIds.indexOf(material.external_id) !== -1,
           };
         });
       }
@@ -151,7 +150,7 @@ export default {
   },
   watch: {
     value(value) {
-      this.selected_materials = value;
+      this.selectedMaterialIds = value;
     },
   },
   methods: {
@@ -190,14 +189,14 @@ export default {
         });
     },
     toggleMaterial(material) {
-      let selected_materials = this.value.slice(0);
+      let selectedMaterialIds = this.value.slice(0);
 
-      if (selected_materials.indexOf(material.external_id) === -1) {
-        selected_materials.push(material.external_id);
+      if (selectedMaterialIds.indexOf(material.external_id) === -1) {
+        selectedMaterialIds.push(material.external_id);
       } else {
-        selected_materials = selected_materials.filter((item) => item !== material.external_id);
+        selectedMaterialIds = selectedMaterialIds.filter((item) => item !== material.external_id);
       }
-      return selected_materials;
+      return selectedMaterialIds;
     },
   },
 };

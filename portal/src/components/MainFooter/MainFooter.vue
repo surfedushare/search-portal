@@ -53,29 +53,10 @@ export default {
   components: {
     Menu,
   },
-  props: [],
-  data() {
-    return {
-      isShowSubMenu: this.show_sub_menu,
-    };
-  },
   computed: {
-    ...mapGetters(["show_sub_menu", "isAuthenticated"]),
-  },
-  watch: {
-    /**
-     * §
-     * @param show_sub_menu - Boolean
-     */
-    show_sub_menu(show_sub_menu) {
-      this.isShowSubMenu = show_sub_menu;
-    },
+    ...mapGetters(["isAuthenticated"]),
   },
   methods: {
-    toggleSubMenuThemes() {
-      this.isShowSubMenu = !this.isShowSubMenu;
-      this.$store.dispatch("setSubMenuShow", this.isShowSubMenu);
-    },
     getLoginLink() {
       return this.$store.getters.getLoginLink(this.$route);
     },
