@@ -45,7 +45,7 @@ def harvest(reset=False, no_promote=False, report_dataset_version=False):
             call_command("generate_previews", f"--dataset={dataset.name}", "--async")
         else:
             Harvest.objects.filter(stage=HarvestStages.BASIC).update(stage=HarvestStages.COMPLETE)
-        # Based on the dataset we push to Elastic Search
+        # Based on the dataset we push to search engine
         index_command = ["index_dataset_version", f"--dataset={dataset.name}"]
         if no_promote or not dataset.is_latest:
             index_command += ["--no-promote"]

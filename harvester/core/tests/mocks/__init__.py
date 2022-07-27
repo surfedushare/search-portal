@@ -1,1 +1,1 @@
-from .elastic_client import get_elastic_client_mock
+from .search import get_search_client_mock

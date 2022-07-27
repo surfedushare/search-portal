@@ -6,7 +6,7 @@ from django.test import TestCase
 
 from core.tests.factories import (DatasetFactory, DatasetVersionFactory, CollectionFactory, DocumentFactory,
                                   ElasticIndexFactory)
-from core.tests.mocks import get_elastic_client_mock
+from core.tests.mocks import get_search_client_mock
 from core.models import ElasticIndex
 from core.tasks import sync_indices
 
@@ -61,7 +61,7 @@ def create_dataset_version_indices(dataset_version):
 
 class TestSyncIndices(TestCase):
 
-    elastic_client = get_elastic_client_mock(has_history=True)
+    elastic_client = get_search_client_mock(has_history=True)
 
     def setUp(self):
         super().setUp()
@@ -78,11 +78,11 @@ class TestSyncIndices(TestCase):
                 self.pushed_ats[dataset_version.id] = pushed_at
         sleep(3)
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=elastic_client)
     @patch("core.models.search.index.streaming_bulk")
-    def test_sync_indices(self, streaming_bulk_mock, get_es_client_mock):
+    def test_sync_indices(self, streaming_bulk_mock, get_search_client_mock):
         sync_indices()
-        # Check if data was send to Elastic
+        # Check if data was send to search engine
         for args, kwargs in streaming_bulk_mock.call_args_list:
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")
@@ -110,9 +110,9 @@ class TestSyncIndices(TestCase):
             self.assertEqual(index.pushed_at, self.pushed_ats[index.dataset_version_id],
                              "Only the latest DatasetVersions of the newest Dataset should get pushed")
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=elastic_client)
     @patch("core.models.search.index.streaming_bulk")
-    def test_sync_indices_new(self, streaming_bulk_mock, get_es_client_mock):
+    def test_sync_indices_new(self, streaming_bulk_mock, get_search_client_mock):
         ElasticIndex.objects.update(pushed_at=None)  # this makes all indices look like they're just created
         sync_indices()
         self.assertEqual(streaming_bulk_mock.call_count, 0)

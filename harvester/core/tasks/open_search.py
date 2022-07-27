@@ -33,7 +33,7 @@ def sync_indices():
                         language = doc.get_language()
                         if language == index.language:
                             docs.append(doc.to_search())
-                        elif language and language not in settings.ELASTICSEARCH_ANALYSERS and index.language == "unk":
+                        elif language and language not in settings.OPENSEARCH_ANALYSERS and index.language == "unk":
                             docs.append(doc.to_search())
                     errors = index.push(chain(*docs), recreate=False)
                     logger.elastic_errors(errors)

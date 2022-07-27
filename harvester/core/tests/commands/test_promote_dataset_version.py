@@ -3,14 +3,14 @@ from unittest.mock import patch
 from django.test import TestCase, override_settings
 from django.core.management import call_command, CommandError
 
-from core.tests.mocks import get_elastic_client_mock
+from core.tests.mocks import get_search_client_mock
 from core.models import DatasetVersion
 
 
 class TestPromoteDatasetVersion(TestCase):
 
     fixtures = ["datasets-history", "index-history"]
-    elastic_client = get_elastic_client_mock(has_history=True)
+    elastic_client = get_search_client_mock(has_history=True)
 
     def setUp(self):
         super().setUp()
@@ -41,20 +41,20 @@ class TestPromoteDatasetVersion(TestCase):
         )
 
     @override_settings(VERSION="0.0.1")
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
-    def test_promote_dataset(self, get_es_client):
-        get_es_client.reset_mock()
+    @patch("core.models.search.index.get_search_client", return_value=elastic_client)
+    def test_promote_dataset(self, get_search_client):
+        get_search_client.reset_mock()
         call_command("promote_dataset_version", "--dataset=test")
         self.assert_index_promoted()
 
-        get_es_client.reset_mock()
+        get_search_client.reset_mock()
         call_command("promote_dataset_version", "--dataset=test", "--harvester-version=0.0.1")
         self.assert_index_promoted()
         self.assert_is_current(True)
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
-    def test_promote_dataset_version(self, get_es_client):
-        get_es_client.reset_mock()
+    @patch("core.models.search.index.get_search_client", return_value=elastic_client)
+    def test_promote_dataset_version(self, get_search_client):
+        get_search_client.reset_mock()
         call_command("promote_dataset_version", "--dataset-version=1")
         self.assert_index_promoted()
         self.assert_is_current(True)

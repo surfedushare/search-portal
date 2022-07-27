@@ -10,13 +10,13 @@ from rest_framework import serializers
 
 from project.configuration import create_open_search_index_configuration
 from core.models import DatasetVersion
-from core.utils.elastic import get_es_client
+from core.utils.search import get_search_client
 
 
 class ElasticIndex(models.Model):
 
     name = models.CharField(max_length=255)
-    language = models.CharField(max_length=5, choices=settings.ELASTICSEARCH_ANALYSERS.items())
+    language = models.CharField(max_length=5, choices=settings.OPENSEARCH_ANALYSERS.items())
     dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.SET_NULL, null=True)
     configuration = models.JSONField(blank=True)
     error_count = models.IntegerField(default=0)
@@ -27,7 +27,7 @@ class ElasticIndex(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.client = get_es_client()
+        self.client = get_search_client()
 
     def delete(self, using=None, keep_parents=False):
         if self.remote_exists:
@@ -112,8 +112,8 @@ class ElasticIndex(models.Model):
         Configures the analysers based on the language passed in.
         """
         decompound_word_list = None
-        if settings.ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS:
-            decompound_word_list = settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch
+        if settings.OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS:
+            decompound_word_list = settings.OPENSEARCH_DECOMPOUND_WORD_LISTS.dutch
         return create_open_search_index_configuration(
             lang,
             decompound_word_list=decompound_word_list

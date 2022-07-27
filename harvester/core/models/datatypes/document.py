@@ -118,7 +118,7 @@ class Document(DocumentBase):
                 "_op_type": "delete"
             }
             return
-        # Transform the data to the structure we actually want in Elastic Search
+        # Transform the data to the structure we actually want for search engine
         elastic_base.pop("language", None)
         text = elastic_base.pop("text", None)
         if text and len(text) >= 1000000:

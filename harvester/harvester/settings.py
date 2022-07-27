@@ -227,19 +227,18 @@ REST_FRAMEWORK = {
 }
 
 
-# Elastic Search
-# https://www.elastic.co/guide/index.html
+# OpenSearch (AWS ElasticSearch)
 
-ELASTICSEARCH_HOST = environment.open_search.host
-ELASTICSEARCH_PROTOCOL = environment.open_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_ANALYSERS = {
+OPENSEARCH_HOST = environment.open_search.host
+OPENSEARCH_PROTOCOL = environment.open_search.protocol
+OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch',
     'unk': 'standard'
 }
-ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.open_search.enable_decompound_analyzers
-ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.open_search.decompound_word_lists
+OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.open_search.enable_decompound_analyzers
+OPENSEARCH_DECOMPOUND_WORD_LISTS = environment.open_search.decompound_word_lists
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
