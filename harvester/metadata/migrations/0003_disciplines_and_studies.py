@@ -16,8 +16,8 @@ fields_to_copy = {
     },
     "disciplines": {
         "name": "studies",
-        "nl": "Studies",
-        "en": "Studies"
+        "nl": "Studie",
+        "en": "Study"
     }
 }
 
