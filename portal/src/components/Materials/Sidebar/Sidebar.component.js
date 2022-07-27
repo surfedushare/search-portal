@@ -323,13 +323,6 @@ export default {
     shouldShowPreviews() {
       return !isEmpty(this.material.previews);
     },
-    getDisciplineTitles() {
-      const { material } = this;
-      let disciplineTitles = material.disciplines.map((discipline) => {
-          return this.getTitleTranslation(discipline, this.$i18n.locale);
-      });
-      return disciplineTitles.join(", ");
-    },
   },
   computed: {
     ...mapGetters([
@@ -357,6 +350,16 @@ export default {
         };
       });
     },
+    studyTitles() {
+      const studies = (this.material.studies) ? this.material.studies : this.material.disciplines;
+      if (isEmpty(studies)) {
+        return
+      }
+      let studyTitles = studies.map((study) => {
+        return this.getTitleTranslation(study, this.$i18n.locale);
+      });
+      return studyTitles.join(", ");
+    }
   },
   watch: {
     collections() {
