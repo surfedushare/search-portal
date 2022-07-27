@@ -16,7 +16,7 @@
 
 <script>
 import FilterDropdown from '@/components/FilterCategories/FilterDropdown'
-import { THEME_CATEGORY_FILTER_FIELD } from '@/constants'
+import { DISCIPLINES_CATEGORY_FILTER_FIELD } from '@/constants'
 import { keyBy } from 'lodash'
 import { mapGetters } from 'vuex'
 
@@ -35,9 +35,9 @@ export default {
           visible: false
         },
         {
-          field: THEME_CATEGORY_FILTER_FIELD,
+          field: DISCIPLINES_CATEGORY_FILTER_FIELD,
           label: 'about',
-          defaultOption: 'all-themes',
+          defaultOption: 'all-disciplines',
           visible: false
         },
         {

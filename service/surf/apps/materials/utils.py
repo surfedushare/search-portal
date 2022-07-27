@@ -58,13 +58,13 @@ def add_extra_parameters_to_materials(metadata, materials):
             for community in communities.prefetch_related("community_details").distinct().all()
         ]
 
-        discipline_translations = metadata.translations["disciplines"]
-        m["disciplines"] = [
+        study_translations = metadata.translations["studies"]
+        m["studies"] = [
             {
-                "id": discipline_id,
-                "title_translations": discipline_translations[discipline_id]
+                "id": study_id,
+                "title_translations": study_translations[study_id]
             }
-            for discipline_id in m["disciplines"]
+            for study_id in m["studies"]
         ]
 
         m["authors"] = [author["name"] for author in m["authors"]]
