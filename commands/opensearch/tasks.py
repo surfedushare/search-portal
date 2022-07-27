@@ -2,7 +2,7 @@ import os
 import json
 
 from invoke.tasks import task
-from commands.elastic.utils import get_es_client
+from commands.opensearch.utils import get_search_client
 
 
 @task(help={
@@ -66,7 +66,7 @@ def push_indices_template(ctx):
     """
     Creates or updates index templates to create indices with correct settings
     """
-    client = get_es_client(ctx)
+    client = get_search_client(ctx)
     client.indices.put_template("basic-settings", body={
         "index_patterns": [
             "harvest-logs*", "document-logs*", "service-logs*", "search-results*", "harvest-results*", "api"
