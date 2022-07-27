@@ -2,15 +2,18 @@
 network:
   host: 0.0.0.0
 cluster:
-  name: "elastic"
+  name: "opensearch"
 discovery:
   type: "single-node"
 
 
 # Settings related to individual nodes
 node:
-  name: "elastic"
+  name: "opensearch"
 bootstrap:
   memory_lock: true
 path:
-  repo: ["/usr/share/elasticsearch/repositories"]
+  repo: ["/usr/share/opensearch/repositories"]
+
+plugins.security.disabled: true
+plugins.security.ssl.http.enabled: false

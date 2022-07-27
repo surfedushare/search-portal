@@ -27,18 +27,12 @@ services:
     ports:
       - "127.0.0.1:8081:8080"
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  opensearch:
+    image: opensearchproject/opensearch:1.2.0
     volumes:
-      - elastic-data:/usr/share/elasticsearch/data
-      - ./elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - ./elastic/config/decompound_word_list.nl.txt:/usr/share/elasticsearch/config/decompound_word_list.nl.txt
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+      - opensearch-data:/usr/share/opensearch/data
+      - ./opensearch/config/opensearch.yml:/usr/share/opensearch/config/opensearch.yml
+      - ./opensearch/config/decompound_word_list.nl.txt:/usr/share/opensearch/config/decompound_word_list.nl.txt
     ports:
       - 127.0.0.1:9200:9200
 
@@ -56,4 +50,4 @@ services:
 
 volumes:
   postgres_database:
-  elastic-data:
+  opensearch-data:

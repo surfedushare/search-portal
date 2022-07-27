@@ -8,7 +8,7 @@ from opensearchpy.helpers import streaming_bulk
 from opensearchpy.exceptions import NotFoundError
 from rest_framework import serializers
 
-from project.configuration import create_elastic_search_index_configuration
+from project.configuration import create_open_search_index_configuration
 from core.models import DatasetVersion
 from core.utils.elastic import get_es_client
 
@@ -114,7 +114,7 @@ class ElasticIndex(models.Model):
         decompound_word_list = None
         if settings.ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS:
             decompound_word_list = settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch
-        return create_elastic_search_index_configuration(
+        return create_open_search_index_configuration(
             lang,
             decompound_word_list=decompound_word_list
         )

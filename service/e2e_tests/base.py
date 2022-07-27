@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase, override_settings
 from opensearchpy import OpenSearch
-from project.configuration import create_elastic_search_index_configuration
+from project.configuration import create_open_search_index_configuration
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -13,7 +13,7 @@ class BaseElasticSearchMixin(object):
 
     @classmethod
     def index_body(cls, language):
-        return create_elastic_search_index_configuration(language)
+        return create_open_search_index_configuration(language)
 
     @classmethod
     def setUpClass(cls):

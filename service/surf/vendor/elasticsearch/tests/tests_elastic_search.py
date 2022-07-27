@@ -5,7 +5,7 @@ from datetime import datetime
 
 from django.conf import settings
 
-from project.configuration import create_elastic_search_index_configuration
+from project.configuration import create_open_search_index_configuration
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from surf.vendor.elasticsearch.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
 from e2e_tests.base import BaseElasticSearchTestCase
@@ -455,7 +455,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         # Github Actions does not support mounting docker volumes
         # So it is impossible to mount a decompound dictionary and truly test this
         # Instead we test that indices will get created correctly and composed word search should function
-        dutch_index = create_elastic_search_index_configuration("nl", "dutch-decompound-words.txt")
+        dutch_index = create_open_search_index_configuration("nl", "dutch-decompound-words.txt")
         self.assertIn("dutch_dictionary_decompound", dutch_index["settings"]["analysis"]["analyzer"])
         decompound_analyser = dutch_index["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"]
         self.assertEqual(decompound_analyser, {
@@ -481,7 +481,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertEqual(dutch_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
                              "dutch_dictionary_decompound")
 
-        english_index = create_elastic_search_index_configuration("en")
+        english_index = create_open_search_index_configuration("en")
         self.assertNotIn("dutch_dictionary_decompound", english_index["settings"]["analysis"]["analyzer"])
         self.assertNotIn("dictionary_decompound", english_index["settings"]["analysis"]["filter"])
         for text_field in ["title", "text", "description"]:

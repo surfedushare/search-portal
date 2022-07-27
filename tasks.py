@@ -2,7 +2,7 @@ from invoke import Collection
 
 from environments.project import create_configuration_and_session
 from commands.postgres.invoke import setup_postgres_localhost
-from commands.elastic.tasks import create_decompound_dictionary, push_decompound_dictionary, push_indices_template
+from commands.opensearch.tasks import create_decompound_dictionary, push_decompound_dictionary, push_indices_template
 from commands.aws.repository import sync_repository_state
 from commands.deploy import (prepare_builds, build, push, deploy, migrate, promote, print_available_images,
                              print_running_containers, publish_runner_image)

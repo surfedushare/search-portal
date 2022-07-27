@@ -15,7 +15,7 @@ postgres:
   host: "nppo.c5t2ydmvgkgv.eu-central-1.rds.amazonaws.com"
   port: 5432
 
-elastic_search:
+open_search:
   username: null
   host: "vpc-nppo-main-vqrc3btlbtx62gj3mrk4qxzctu.eu-central-1.es.amazonaws.com"
   protocol: "https"

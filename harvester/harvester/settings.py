@@ -230,16 +230,16 @@ REST_FRAMEWORK = {
 # Elastic Search
 # https://www.elastic.co/guide/index.html
 
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
+ELASTICSEARCH_HOST = environment.open_search.host
+ELASTICSEARCH_PROTOCOL = environment.open_search.protocol
+ELASTICSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
 ELASTICSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch',
     'unk': 'standard'
 }
-ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
-ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
+ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.open_search.enable_decompound_analyzers
+ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.open_search.decompound_word_lists
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 

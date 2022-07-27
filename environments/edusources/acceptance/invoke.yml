@@ -16,7 +16,7 @@ postgres:
   host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
   port: 5432
 
-elastic_search:
+open_search:
   username: null
   host: "search-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com"
   protocol: "https"

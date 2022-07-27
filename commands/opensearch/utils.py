@@ -5,7 +5,7 @@ def get_es_client(conn, silent=False):
     """
     Returns the elasticsearch client connected through port forwarding settings
     """
-    elastic_url = conn.config.elastic_search.host
+    elastic_url = conn.config.open_search.host
     protocol_config = {
         "scheme": "https",
         "port": 443,
