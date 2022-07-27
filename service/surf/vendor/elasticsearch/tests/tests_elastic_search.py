@@ -8,11 +8,11 @@ from django.conf import settings
 from project.configuration import create_open_search_index_configuration
 from surf.vendor.elasticsearch.api import ElasticSearchApiClient
 from surf.vendor.elasticsearch.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
-from e2e_tests.base import BaseElasticSearchTestCase
+from e2e_tests.base import BaseOpenSearchTestCase
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
-class TestsElasticSearch(BaseElasticSearchTestCase):
+class TestsElasticSearch(BaseOpenSearchTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -30,32 +30,32 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         ]
 
         cls.instance = ElasticSearchApiClient()
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       disciplines=math_and_education_disciplines),
         )
-        cls.elastic.index(
+        cls.search.index(
             id="abc",
-            index=settings.ELASTICSEARCH_NL_INDEX,
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       disciplines=math_and_education_disciplines, external_id="abc",
                                       title="De wiskunde van Jezus", description="Groots zijn zijn getallen")
         )
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       copyright="cc-by-40", topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
                                       disciplines=biology_and_education_disciplines),
         )
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       topic="biology", publisher_date="2019-04-16T22:35:09+02:00",
                                       disciplines=biology_and_education_disciplines),
         )
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="surfsharekit",
                                       topic="biology", disciplines=biology_disciplines),
             refresh=True  # always put refresh on the last material

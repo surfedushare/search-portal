@@ -9,16 +9,16 @@ from surf.vendor.elasticsearch.serializers import SearchResultSerializer
 
 class ElasticSearchApiClient:
 
-    def __init__(self, elastic_url=settings.ELASTICSEARCH_HOST):
+    def __init__(self, elastic_url=settings.OPENSEARCH_HOST):
 
-        protocol = settings.ELASTICSEARCH_PROTOCOL
+        protocol = settings.OPENSEARCH_PROTOCOL
         protocol_config = {}
         if protocol == "https":
             protocol_config = {
                 "scheme": "https",
                 "port": 443,
                 "use_ssl": True,
-                "verify_certs": settings.ELASTICSEARCH_VERIFY_CERTS,
+                "verify_certs": settings.OPENSEARCH_VERIFY_CERTS,
             }
 
         if settings.IS_AWS:
@@ -32,9 +32,9 @@ class ElasticSearchApiClient:
             connection_class=RequestsHttpConnection,
             **protocol_config
         )
-        self.index_nl = settings.ELASTICSEARCH_NL_INDEX
-        self.index_en = settings.ELASTICSEARCH_EN_INDEX
-        self.index_unk = settings.ELASTICSEARCH_UNK_INDEX
+        self.index_nl = settings.OPENSEARCH_NL_INDEX
+        self.index_en = settings.OPENSEARCH_EN_INDEX
+        self.index_unk = settings.OPENSEARCH_UNK_INDEX
         self.languages = {
             "nl": self.index_nl,
             "en": self.index_en

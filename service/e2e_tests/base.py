@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-class BaseElasticSearchMixin(object):
+class BaseOpenSearchMixin(object):
 
     @classmethod
     def index_body(cls, language):
@@ -18,27 +18,27 @@ class BaseElasticSearchMixin(object):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.elastic = OpenSearch(
-            [settings.ELASTICSEARCH_HOST]
+        cls.search = OpenSearch(
+            [settings.OPENSEARCH_HOST]
         )
-        cls.elastic.indices.create(settings.ELASTICSEARCH_NL_INDEX, ignore=400, body=cls.index_body('nl'))
-        cls.elastic.indices.create(settings.ELASTICSEARCH_EN_INDEX, ignore=400, body=cls.index_body('en'))
-        cls.elastic.indices.create(settings.ELASTICSEARCH_UNK_INDEX, ignore=400, body=cls.index_body('unk'))
+        cls.search.indices.create(settings.OPENSEARCH_NL_INDEX, ignore=400, body=cls.index_body('nl'))
+        cls.search.indices.create(settings.OPENSEARCH_EN_INDEX, ignore=400, body=cls.index_body('en'))
+        cls.search.indices.create(settings.OPENSEARCH_UNK_INDEX, ignore=400, body=cls.index_body('unk'))
 
     @classmethod
     def tearDownClass(cls):
-        cls.elastic.indices.delete(settings.ELASTICSEARCH_NL_INDEX)
-        cls.elastic.indices.delete(settings.ELASTICSEARCH_EN_INDEX)
-        cls.elastic.indices.delete(settings.ELASTICSEARCH_UNK_INDEX)
+        cls.search.indices.delete(settings.OPENSEARCH_NL_INDEX)
+        cls.search.indices.delete(settings.OPENSEARCH_EN_INDEX)
+        cls.search.indices.delete(settings.OPENSEARCH_UNK_INDEX)
         super().tearDownClass()
 
 
 @override_settings(
-    ELASTICSEARCH_NL_INDEX="test-nl",
-    ELASTICSEARCH_EN_INDEX="test-en",
-    ELASTICSEARCH_UNK_INDEX="test-unk"
+    OPENSEARCH_NL_INDEX="test-nl",
+    OPENSEARCH_EN_INDEX="test-en",
+    OPENSEARCH_UNK_INDEX="test-unk"
 )
-class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
+class BaseLiveServerTestCase(BaseOpenSearchMixin, StaticLiveServerTestCase):
 
     fixtures = ['locales-edusources', 'privacy_statements']
 
@@ -61,10 +61,10 @@ class BaseLiveServerTestCase(BaseElasticSearchMixin, StaticLiveServerTestCase):
 
 
 @override_settings(
-    ELASTICSEARCH_NL_INDEX="test-nl",
-    ELASTICSEARCH_EN_INDEX="test-en",
-    ELASTICSEARCH_UNK_INDEX="test-unk"
+    OPENSEARCH_NL_INDEX="test-nl",
+    OPENSEARCH_EN_INDEX="test-en",
+    OPENSEARCH_UNK_INDEX="test-unk"
 )
-class BaseElasticSearchTestCase(BaseElasticSearchMixin, TestCase):
+class BaseOpenSearchTestCase(BaseOpenSearchMixin, TestCase):
 
     fixtures = ['locales-edusources', 'privacy_statements']

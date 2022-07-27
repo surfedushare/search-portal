@@ -270,12 +270,12 @@ WEBPACK_LOADER = {
 
 # Search
 
-ELASTICSEARCH_HOST = environment.open_search.host
-ELASTICSEARCH_PROTOCOL = environment.open_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_NL_INDEX = "latest-nl"
-ELASTICSEARCH_EN_INDEX = "latest-en"
-ELASTICSEARCH_UNK_INDEX = "latest-unk"
+OPENSEARCH_HOST = environment.open_search.host
+OPENSEARCH_PROTOCOL = environment.open_search.protocol
+OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_NL_INDEX = "latest-nl"
+OPENSEARCH_EN_INDEX = "latest-en"
+OPENSEARCH_UNK_INDEX = "latest-unk"
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 

@@ -18,8 +18,8 @@ class TestCollectionMaterials(BaseLiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.material = generate_nl_material()
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX, body=cls.material
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX, body=cls.material
         )
 
     def setUp(self):
