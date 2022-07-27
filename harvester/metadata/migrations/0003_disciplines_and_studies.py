@@ -42,6 +42,7 @@ def copy_to_disciplines_and_studies(apps, schema_editor):
         root_values = list(field.metadatavalue_set.filter(parent__isnull=True))
         field_info = fields_to_copy[field.name]
         field.name = field_info["name"]
+        field.is_hidden = True
         field.pk = None
         field.translation = MetadataTranslation.objects.create(
             en=field_info["en"],
