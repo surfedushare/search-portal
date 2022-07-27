@@ -29,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
+from utils.logging import OpensearchHandler, create_opensearch_handler
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
@@ -272,21 +272,21 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'es_harvest': create_elasticsearch_handler(
+        'es_harvest': create_opensearch_handler(
             'harvest-logs',
-            ElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
-        'es_documents': create_elasticsearch_handler(
+        'es_documents': create_opensearch_handler(
             'document-logs',
-            ElasticsearchHandler.IndexNameFrequency.YEARLY,
+            OpensearchHandler.IndexNameFrequency.YEARLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
-        'es_results': create_elasticsearch_handler(
+        'es_results': create_opensearch_handler(
             'harvest-results',
-            ElasticsearchHandler.IndexNameFrequency.YEARLY,
+            OpensearchHandler.IndexNameFrequency.YEARLY,
             environment,
             OPENSEARCH_PASSWORD
         ),

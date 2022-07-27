@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
+from utils.logging import OpensearchHandler, create_opensearch_handler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -302,9 +302,9 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'es_service': create_elasticsearch_handler(
+        'es_service': create_opensearch_handler(
             'service-logs',
-            ElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
