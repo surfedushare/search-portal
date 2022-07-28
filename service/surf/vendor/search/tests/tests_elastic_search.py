@@ -6,8 +6,8 @@ from datetime import datetime
 from django.conf import settings
 
 from project.configuration import create_open_search_index_configuration
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
-from surf.vendor.elasticsearch.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
+from surf.vendor.search.api import SearchApiClient
+from surf.vendor.search.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
 from e2e_tests.base import BaseOpenSearchTestCase
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
@@ -29,7 +29,7 @@ class TestsElasticSearch(BaseOpenSearchTestCase):
             "0861c43d-1874-4788-b522-df8be575677f"
         ]
 
-        cls.instance = ElasticSearchApiClient()
+        cls.instance = SearchApiClient()
         cls.search.index(
             index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
@@ -523,7 +523,7 @@ class TestsElasticSearch(BaseOpenSearchTestCase):
                 "research_themes": themes
             }
         }
-        with patch("surf.vendor.elasticsearch.api.SearchResultSerializer", EdusourcesSearchResultSerializer):
+        with patch("surf.vendor.search.api.SearchResultSerializer", EdusourcesSearchResultSerializer):
             record = self.instance.parse_elastic_hit(hit)
             self.assertIn("authors", record, "Expected authors to be part of main record for Edusources")
             self.assertIn("themes", record, "Expected themes to be part of main record for Edusources")
@@ -534,7 +534,7 @@ class TestsElasticSearch(BaseOpenSearchTestCase):
             self.assertNotIn("keywords", record, "Expected data not given in Edusources to not be included")
             self.assertNotIn("is_part_of", record, "Expected data not given in Edusources to not be included")
             self.assertNotIn("has_parts", record, "Expected data not given in Edusources to not be included")
-        with patch("surf.vendor.elasticsearch.api.SearchResultSerializer", NPPOSearchResultSerializer):
+        with patch("surf.vendor.search.api.SearchResultSerializer", NPPOSearchResultSerializer):
             record = self.instance.parse_elastic_hit(hit)
             self.assertIn("relations", record, "Expected NPPO record to have a relations key")
             self.assertNotIn("authors", record, "Expected authors to be absent in main record for NPPO")

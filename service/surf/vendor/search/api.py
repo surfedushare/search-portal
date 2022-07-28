@@ -4,12 +4,12 @@ from django.conf import settings
 from opensearchpy import OpenSearch, RequestsHttpConnection
 
 from project.configuration import SEARCH_FIELDS
-from surf.vendor.elasticsearch.serializers import SearchResultSerializer
+from surf.vendor.search.serializers import SearchResultSerializer
 
 
-class ElasticSearchApiClient:
+class SearchApiClient:
 
-    def __init__(self, elastic_url=settings.OPENSEARCH_HOST):
+    def __init__(self, host=settings.OPENSEARCH_HOST):
 
         protocol = settings.OPENSEARCH_PROTOCOL
         protocol_config = {}
@@ -27,7 +27,7 @@ class ElasticSearchApiClient:
             http_auth = (None, None)
 
         self.client = OpenSearch(
-            [elastic_url],
+            [host],
             http_auth=http_auth,
             connection_class=RequestsHttpConnection,
             **protocol_config
@@ -75,7 +75,7 @@ class ElasticSearchApiClient:
 
         # Transform hits into records
         result['records'] = [
-            ElasticSearchApiClient.parse_elastic_hit(hit)
+            SearchApiClient.parse_elastic_hit(hit)
             for hit in hits['hits']
         ]
         return result
@@ -325,7 +325,7 @@ class ElasticSearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            ElasticSearchApiClient.parse_elastic_hit(hit, transform=False)
+            SearchApiClient.parse_elastic_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result
@@ -354,7 +354,7 @@ class ElasticSearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            ElasticSearchApiClient.parse_elastic_hit(hit, transform=False)
+            SearchApiClient.parse_elastic_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result

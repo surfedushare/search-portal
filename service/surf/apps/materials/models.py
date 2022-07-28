@@ -9,7 +9,7 @@ from django_enumfield import enum
 
 from surf.apps.core.models import UUIDModel
 from surf.statusenums import PublishStatus
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from surf.vendor.search.api import SearchApiClient
 
 
 RESOURCE_TYPE_MATERIAL = "material"
@@ -63,8 +63,8 @@ class Material(UUIDModel):
         assert self.external_id, "Can't sync info if instance doesn't have an external id"
 
         # Fetch data from Elastic Search
-        api_client = ElasticSearchApiClient()
-        response = api_client.get_materials_by_id([self.external_id])
+        client = SearchApiClient()
+        response = client.get_materials_by_id([self.external_id])
         records = response.get("records", [])
         if not records:
             if not self.deleted_at:
