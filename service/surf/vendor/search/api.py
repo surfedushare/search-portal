@@ -41,12 +41,12 @@ class SearchApiClient:
         }
 
     @staticmethod
-    def parse_elastic_result(search_result):
+    def parse_search_result(search_result):
         """
-        Parses the elasticsearch search result into the format that is also used by the edurep endpoint.
-        This allows quick switching between elastic and edurep without changing code.
-        :param search_result: result from elasticsearch
-        :return result: list of results in edurep format
+        Parses the search result into the correct format that the frontend uses
+
+        :param search_result: result from search
+        :return result: list of results ready for frontend
         """
         hits = search_result.pop("hits")
         aggregations = search_result.get("aggregations", {})
@@ -75,18 +75,18 @@ class SearchApiClient:
 
         # Transform hits into records
         result['records'] = [
-            SearchApiClient.parse_elastic_hit(hit)
+            SearchApiClient.parse_search_hit(hit)
             for hit in hits['hits']
         ]
         return result
 
     @staticmethod
-    def parse_elastic_hit(hit, transform=True):
+    def parse_search_hit(hit, transform=True):
         """
-        Parses the elasticsearch search hit into the format that is also used by the edurep endpoint.
+        Parses the search hit into the format that is also used by the edurep endpoint.
         It's mostly just mapping the variables we need into the places that we expect them to be.
-        :param hit: result from elasticsearch
-        :return record: parsed record in elasticsearch format
+        :param hit: result from search
+        :return record: parsed record
         """
         data = hit["_source"]
         serializer = SearchResultSerializer()
@@ -125,11 +125,12 @@ class SearchApiClient:
 
     def autocomplete(self, query):
         """
-        Use the elasticsearch suggest query to get typing hints during searching.
+        Use the suggest query to get typing hints during searching.
+
         :param query: the input from the user so far
         :return: a list of options matching the input query, sorted by length
         """
-        # build the query for elasticsearch.
+        # build the query for search engine
         query_dictionary = {
             'suggest': {
                 "autocomplete": {
@@ -147,8 +148,8 @@ class SearchApiClient:
             body=query_dictionary
         )
 
-        # extract the options from the elasticsearch result, remove duplicates,
-        # remove non-matching prefixes (elastic will suggest things that don't match _exactly_)
+        # extract the options from the search result, remove duplicates,
+        # remove non-matching prefixes (engine will suggest things that don't match _exactly_)
         # and sort by length
         autocomplete = result['suggest']['autocomplete']
         options = autocomplete[0]['options']
@@ -169,11 +170,12 @@ class SearchApiClient:
 
     def search(self, search_text, drilldown_names=None, filters=None, ordering=None, page=1, page_size=5):
         """
-        Build and send a query to elasticsearch and parse it before returning.
+        Build and send a query to search engine and parse it before returning.
+
         :param search_text: A list of strings to search for.
-        :param drilldown_names: A list of the 'drilldowns' (filters) that are to be counted by elasticsearch.
+        :param drilldown_names: A list of the 'drilldowns' (filters) that are to be counted by engine.
         :param filters: The filters that are applied for this search.
-        :param ordering: Sort the results by this ordering (or use default elastic ordering otherwise)
+        :param ordering: Sort the results by this ordering (or use default search ordering otherwise)
         :param page: The page index of the results
         :param page_size: How many items are loaded per page.
         :return:
@@ -250,11 +252,12 @@ class SearchApiClient:
             index=indices,
             body=body
         )
-        return self.parse_elastic_result(result)
+        return self.parse_search_result(result)
 
     def get_materials_by_id(self, external_ids, page=1, page_size=10, **kwargs):
         """
-        Retrieve specific materials from elastic through their external id.
+        Retrieve specific materials from search engine through their external id.
+
         :param external_ids: the id's of the materials to retrieve
         :param page: The page index of the results
         :param page_size: How many items are loaded per page.
@@ -282,7 +285,7 @@ class SearchApiClient:
                 'size': page_size,
             },
         )
-        results = self.parse_elastic_result(result)
+        results = self.parse_search_result(result)
         materials = {
             material["external_id"]: material
             for material in results["records"]
@@ -325,7 +328,7 @@ class SearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            SearchApiClient.parse_elastic_hit(hit, transform=False)
+            SearchApiClient.parse_search_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result
@@ -354,7 +357,7 @@ class SearchApiClient:
         result = dict()
         result["records_total"] = hits["total"]["value"]
         result["results"] = [
-            SearchApiClient.parse_elastic_hit(hit, transform=False)
+            SearchApiClient.parse_search_hit(hit, transform=False)
             for hit in hits["hits"]
         ]
         return result
@@ -362,22 +365,23 @@ class SearchApiClient:
     @staticmethod
     def parse_filters(filters):
         """
-        Parse filters from the edurep format into the elastic query format.
-        Not every filter is handled by elastic in the same way so it's a lot of manual parsing.
+        Parse filters from the frontend format into the search engine format.
+        Not every filter is handled by search engine  in the same way so it's a lot of manual parsing.
+
         :param filters: the list of filters to be parsed
-        :return: the filters in the format for an elasticsearch query.
+        :return: the filters in the format for a search query.
         """
         if not filters:
             return {}
         filter_items = []
         for filter_item in filters:
             # skip filter_items that are empty
-            # and the language filter item (it's handled by telling elastic in what index to search).
+            # and the language filter item (it's handled by telling search engine in what index to search).
             if not filter_item['items'] or 'language.keyword' in filter_item['external_id']:
                 continue
-            elastic_type = filter_item['external_id']
+            search_type = filter_item['external_id']
             # date range query
-            if elastic_type == "publisher_date":
+            if search_type == "publisher_date":
                 lower_bound, upper_bound = filter_item["items"]
                 if lower_bound is not None or upper_bound is not None:
                     filter_items.append({
@@ -388,18 +392,19 @@ class SearchApiClient:
                             }
                         }
                     })
-            # all other filter types are handled by just using elastic terms with the 'translated' filter items
+            # all other filter types are handled by just using terms with the 'translated' filter items
             else:
                 filter_items.append({
                     "terms": {
-                        elastic_type: filter_item["items"]
+                        search_type: filter_item["items"]
                     }
                 })
         return filter_items
 
     def parse_aggregations(self, aggregation_names, filters):
         """
-        Parse the aggregations so elastic can count the items properly.
+        Parse the aggregations so search engine can count the items properly.
+
         :param aggregation_names: the names of the aggregations to
         :param filters: the filters for the query
         :return:
@@ -413,7 +418,7 @@ class SearchApiClient:
                 other_filters = list(filter(lambda x: x['external_id'] != aggregation_name, filters))
                 other_filters = self.parse_filters(other_filters)
 
-            elastic_type = aggregation_name
+            search_type = aggregation_name
 
             if len(other_filters) > 0:
                 # Filter the aggregation by the filters applied to other categories
@@ -426,7 +431,7 @@ class SearchApiClient:
                     "aggs": {
                         "filtered": {
                             "terms": {
-                                "field": elastic_type,
+                                "field": search_type,
                                 "size": 2000,
                             }
                         }
@@ -435,7 +440,7 @@ class SearchApiClient:
             else:
                 aggregation_items[aggregation_name] = {
                     "terms": {
-                        "field": elastic_type,
+                        "field": search_type,
                         "size": 2000,
                     }
                 }
@@ -444,14 +449,14 @@ class SearchApiClient:
     @staticmethod
     def parse_ordering(ordering):
         """
-        Parse the ordering format ('asc', 'desc' or None) into the type that elasticsearch expects.
+        Parse the frontend ordering format ('asc', 'desc' or None) into the type that search engine expects.
         """
         order = "asc"
         if ordering.startswith("-"):
             order = "desc"
             ordering = ordering[1:]
-        elastic_type = ordering
-        return {elastic_type: {"order": order}}
+        search_type = ordering
+        return {search_type: {"order": order}}
 
     @staticmethod
     def parse_index_language(self, filters):
@@ -467,11 +472,3 @@ class SearchApiClient:
             return indices
         language_indices = [f"latest-{language}" for language in language_item[0]['items']]
         return language_indices if len(language_indices) else indices
-
-    @staticmethod
-    def translate_external_id_to_elastic_type(external_id):
-        """
-        (deprecated, remove once we purge old migrations)
-        The external id's used in edurep need to be parsed to fields in elasticsearch.
-        """
-        return external_id

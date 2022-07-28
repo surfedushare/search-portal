@@ -12,7 +12,7 @@ from e2e_tests.base import BaseOpenSearchTestCase
 from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
 
 
-class TestsElasticSearch(BaseOpenSearchTestCase):
+class TestSearchApiClient(BaseOpenSearchTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -108,8 +108,6 @@ class TestsElasticSearch(BaseOpenSearchTestCase):
         self.assertIsNotNone(search_result_filter)
         self.assertGreater(search_result['recordcount'], search_result_filter['recordcount'])
         self.assertEqual(set(search_result.keys()), {"recordcount", "records", "drilldowns", "did_you_mean"})
-        # check if record count is an actual number
-        # Edurep returns everything and Elastic nothing with an empty search
         self.assertIsInstance(search_result['recordcount'], int)
         # does an empty search return a list of records?
         self.assertIsInstance(search_result['records'], list)
@@ -511,7 +509,7 @@ class TestsElasticSearch(BaseOpenSearchTestCase):
             self.assertNotIn(author_expectation, author_names)
             self.assertIn(author_expectation, result["description"])
 
-    def test_parse_elastic_hit(self):
+    def test_parse_search_hit(self):
         authors = [{"name": "author"}]
         themes = ["theme"]
         hit = {
@@ -524,7 +522,7 @@ class TestsElasticSearch(BaseOpenSearchTestCase):
             }
         }
         with patch("surf.vendor.search.api.SearchResultSerializer", EdusourcesSearchResultSerializer):
-            record = self.instance.parse_elastic_hit(hit)
+            record = self.instance.parse_search_hit(hit)
             self.assertIn("authors", record, "Expected authors to be part of main record for Edusources")
             self.assertIn("themes", record, "Expected themes to be part of main record for Edusources")
             self.assertEqual(record["title"], "title")
@@ -535,7 +533,7 @@ class TestsElasticSearch(BaseOpenSearchTestCase):
             self.assertNotIn("is_part_of", record, "Expected data not given in Edusources to not be included")
             self.assertNotIn("has_parts", record, "Expected data not given in Edusources to not be included")
         with patch("surf.vendor.search.api.SearchResultSerializer", NPPOSearchResultSerializer):
-            record = self.instance.parse_elastic_hit(hit)
+            record = self.instance.parse_search_hit(hit)
             self.assertIn("relations", record, "Expected NPPO record to have a relations key")
             self.assertNotIn("authors", record, "Expected authors to be absent in main record for NPPO")
             self.assertNotIn("themes", record, "Expected themes to be absent in main record for NPPO")
