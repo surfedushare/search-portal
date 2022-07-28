@@ -166,4 +166,4 @@ class HarvestLogger(object):
             elif "delete" in error and error["delete"]["result"] == "not_found":
                 self.warning(f"Unable to delete document that does not exist: {error['delete']['_id']}")
             else:
-                self.error(f"Unknown elastic error: {error}")
+                self.error(f"Unknown open search error: {error}")

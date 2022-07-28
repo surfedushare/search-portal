@@ -51,7 +51,7 @@ If you want to run the project outside of a container you'll need to add the fol
 
 ```
 127.0.0.1 postgres
-127.0.0.1 elasticsearch
+127.0.0.1 opensearch
 127.0.0.1 harvester
 127.0.0.1 service
 ```
