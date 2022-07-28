@@ -37,7 +37,7 @@ class Command(PipelineCommand):
 
         self.logger.start("index")
 
-        lang_doc_dict = dataset_version.get_elastic_documents_by_language()
+        lang_doc_dict = dataset_version.get_search_documents_by_language()
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
