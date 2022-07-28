@@ -9,7 +9,7 @@ from project.configuration import create_open_search_index_configuration
 from surf.vendor.search.api import SearchApiClient
 from surf.vendor.search.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
 from e2e_tests.base import BaseOpenSearchTestCase
-from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
+from e2e_tests.mock import generate_nl_material
 
 
 class TestSearchApiClient(BaseOpenSearchTestCase):
