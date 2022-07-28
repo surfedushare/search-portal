@@ -90,10 +90,7 @@ class ElasticIndex(models.Model):
         # but stay clear from targeting protected AWS indices to prevent errors
         index_pattern = f"*-*-*-{self.language}"
         try:
-            self.client.indices.delete_alias(
-                index=index_pattern,
-                name=latest_alias
-            )
+            self.client.indices.delete_alias(index=index_pattern, name=latest_alias)
         except NotFoundError:
             pass
         self.client.indices.put_alias(index=self.remote_name, name=latest_alias)
