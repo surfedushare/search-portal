@@ -63,7 +63,7 @@ def undo_update_harvest_objective_and_create_new_dataset(apps, schema_editor):
     if settings.PROJECT != "edusources":
         return
     Dataset.objects.filter(name="gamma").delete()
-    Dataset.objects.filter(name="beta").update(is_active=True)
+    Dataset.objects.filter(name="beta").update(is_active=True, is_latest=True)
 
 
 class Migration(migrations.Migration):
