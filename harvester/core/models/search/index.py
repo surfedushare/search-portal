@@ -86,8 +86,14 @@ class ElasticIndex(models.Model):
 
     def promote_to_latest(self):
         latest_alias = "latest-" + self.language
+        # The index pattern should target all datasets and versions,
+        # but stay clear from targeting protected AWS indices to prevent errors
+        index_pattern = f"*-*-*-{self.language}"
         try:
-            self.client.indices.delete_alias(index=f"{self.dataset_version.dataset.name}-*", name=latest_alias)
+            self.client.indices.delete_alias(
+                index=index_pattern,
+                name=latest_alias
+            )
         except NotFoundError:
             pass
         self.client.indices.put_alias(index=self.remote_name, name=latest_alias)
