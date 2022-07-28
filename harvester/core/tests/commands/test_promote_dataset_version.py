@@ -10,22 +10,22 @@ from core.models import DatasetVersion
 class TestPromoteDatasetVersion(TestCase):
 
     fixtures = ["datasets-history", "index-history"]
-    elastic_client = get_search_client_mock(has_history=True)
+    search_client = get_search_client_mock(has_history=True)
 
     def setUp(self):
         super().setUp()
-        self.elastic_client.indices.put_alias.reset_mock()
-        self.elastic_client.indices.create.reset_mock()
-        self.elastic_client.indices.delete.reset_mock()
+        self.search_client.indices.put_alias.reset_mock()
+        self.search_client.indices.create.reset_mock()
+        self.search_client.indices.delete.reset_mock()
         DatasetVersion.objects.all().update(is_current=False)  # pretends that no indices exists
 
     def assert_index_promoted(self):
         # Indices should not get recreated
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
-        self.assertEqual(self.elastic_client.indices.create.call_count, 0)
+        self.assertEqual(self.search_client.indices.delete.call_count, 0)
+        self.assertEqual(self.search_client.indices.create.call_count, 0)
         # Latest alias should update
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 2)
-        for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 2)
+        for args, kwargs in self.search_client.indices.put_alias.call_args_list:
             index_name, version, language, id = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
@@ -41,7 +41,7 @@ class TestPromoteDatasetVersion(TestCase):
         )
 
     @override_settings(VERSION="0.0.1")
-    @patch("core.models.search.index.get_search_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=search_client)
     def test_promote_dataset(self, get_search_client):
         get_search_client.reset_mock()
         call_command("promote_dataset_version", "--dataset=test")
@@ -52,7 +52,7 @@ class TestPromoteDatasetVersion(TestCase):
         self.assert_index_promoted()
         self.assert_is_current(True)
 
-    @patch("core.models.search.index.get_search_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=search_client)
     def test_promote_dataset_version(self, get_search_client):
         get_search_client.reset_mock()
         call_command("promote_dataset_version", "--dataset-version=1")
