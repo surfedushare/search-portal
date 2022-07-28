@@ -47,7 +47,7 @@ def update_harvest_objective_and_create_new_dataset(apps, schema_editor):
     current_dataset = Dataset.objects.filter(is_active=True).last()
     if not current_dataset:
         return
-    Dataset.objects.filter(is_active=True).update(is_active=False)
+    Dataset.objects.filter(is_active=True).update(is_active=False, is_latest=False)
     # Clone current database with new name
     _clone_dataset(current_dataset, "gamma")
 
