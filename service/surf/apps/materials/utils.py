@@ -128,7 +128,7 @@ def create_search_results_index(client):
     client.indices.create('search-results', body=body)
 
 
-def add_search_query_to_elastic_index(number_of_results, query, filters):
+def add_search_query_to_log(number_of_results, query, filters):
     api_client = SearchApiClient()
     if not api_client.client.indices.exists(index='search-results'):
         create_search_results_index(api_client.client)

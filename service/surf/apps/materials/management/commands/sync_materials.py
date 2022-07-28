@@ -15,7 +15,7 @@ class Command(BaseCommand):
     Command to check and update the materials.
     We keep track of materials for metrics mostly.
     """
-    help = 'Updates the materials through Elastic Search'
+    help = 'Updates the materials through Open Search'
 
     def handle(self, *args, **options):
         logger.info('Starting materials sync')

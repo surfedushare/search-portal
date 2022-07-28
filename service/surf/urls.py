@@ -70,7 +70,7 @@ public_api_patterns = [
 ]
 schema_view = get_schema_view(
     title="Search API",
-    description="An API that allows search through Elastic Search. Instead of writing Elastic queries "
+    description="An API that allows search through Open Search. Instead of writing Open Search queries "
                 "search can be done simply by passing a few parameters to the endpoints.",
     patterns=public_api_patterns,
     url="/api/v1/"

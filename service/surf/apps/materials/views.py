@@ -46,7 +46,7 @@ from surf.apps.materials.serializers import (
 from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
     get_material_details_by_id,
-    add_search_query_to_elastic_index
+    add_search_query_to_log
 )
 from surf.apps.locale.models import Locale
 from surf.apps.core.schema import SearchSchema
@@ -168,7 +168,7 @@ class MaterialSearchAPIView(CreateAPIView):
         )
 
         if data['page'] == 1 and data["search_text"]:
-            add_search_query_to_elastic_index(res["recordcount"], data["search_text"], data["filters"])
+            add_search_query_to_log(res["recordcount"], data["search_text"], data["filters"])
 
         rv = dict(records=records,
                   records_total=res["recordcount"],

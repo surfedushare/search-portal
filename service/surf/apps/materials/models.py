@@ -62,7 +62,7 @@ class Material(UUIDModel):
     def sync_info(self):
         assert self.external_id, "Can't sync info if instance doesn't have an external id"
 
-        # Fetch data from Elastic Search
+        # Fetch data from search engine
         client = SearchApiClient()
         response = client.get_materials_by_id([self.external_id])
         records = response.get("records", [])

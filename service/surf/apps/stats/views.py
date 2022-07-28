@@ -41,7 +41,7 @@ class StatsView(generics.RetrieveAPIView):
 
     ## Response body
 
-    **documents**: The sum of documents present in Elastic Search
+    **documents**: The sum of documents present in Open Search
 
     """
 
