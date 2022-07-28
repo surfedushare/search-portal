@@ -25,7 +25,7 @@ def run_harvester_task(ctx, mode, command, **kwargs):
 })
 def load_data(ctx, mode, source, dataset):
     """
-    Loads the production database and sets up Elastic data on localhost or an AWS cluster
+    Loads the production database and sets up Open Search data on localhost or an AWS cluster
     """
     if ctx.config.env == "production":
         raise Exit("Cowardly refusing to use production as a destination environment")

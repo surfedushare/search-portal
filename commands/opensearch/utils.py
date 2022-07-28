@@ -24,5 +24,5 @@ def get_search_client(conn, silent=False):
 
     # test if it works
     if not silent and not es_client.cat.health(request_timeout=30):
-        raise ValueError('Credentials do not work for Elastic search')
+        raise ValueError('Credentials do not work for Open Search')
     return es_client

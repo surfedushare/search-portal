@@ -126,7 +126,7 @@ And then follow the steps to [install the service](service/README.md#installatio
 
 ## Tests
 
-You can run all tests for the entire repo (except external Elastic Search integration) by running:
+You can run all tests for the entire repo by running:
 
 ```bash
 invoke test.run
@@ -184,7 +184,7 @@ A special case of deploying is releasing. You should take the following steps du
 - Create a PR from `acceptance` to the `edusources` or `nppo` branch (depending on which project you want to release)
 - There are a few things that you should check in a release PR, because it influences the release steps:
   - Are there any database migrations?
-  - Are there changes to Elastic indices?
+  - Are there changes to Open Search indices?
   - Is it changing the public harvester API that the search service is consuming?
   - Is it depending on infrastructure changes?
 - Plan your release according to the questions above.
@@ -218,7 +218,7 @@ Here is an overview of commands that are regularly used during a release and the
 
 - [Harvesting](harvester/README.md#Harvesting on AWS)
 - Index recreation. See: `invoke -h hrv.index-dataset-version`
-  (this doesn't collect documents from sources like harvesting, but does recreate Elastic indices for a Dataset)
+  (this doesn't collect documents from sources like harvesting, but does recreate indices for a Dataset)
 - [Terraform](https://www.terraform.io/intro)
 
 #### Active containers/versions
