@@ -271,19 +271,19 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'es_harvest': create_opensearch_handler(
+        'search_harvest': create_opensearch_handler(
             'harvest-logs',
             OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
-        'es_documents': create_opensearch_handler(
+        'search_documents': create_opensearch_handler(
             'document-logs',
             OpensearchHandler.IndexNameFrequency.YEARLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
-        'es_results': create_opensearch_handler(
+        'search_results': create_opensearch_handler(
             'harvest-results',
             OpensearchHandler.IndexNameFrequency.YEARLY,
             environment,
@@ -292,17 +292,17 @@ LOGGING = {
     },
     'loggers': {
         'harvester': {
-            'handlers': ['es_harvest'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_harvest'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         },
         'documents': {
-            'handlers': ['es_documents'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_documents'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         },
         'results': {
-            'handlers': ['es_results'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_results'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         },

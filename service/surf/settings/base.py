@@ -302,7 +302,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'es_service': create_opensearch_handler(
+        'search_service': create_opensearch_handler(
             'service-logs',
             OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment,
@@ -311,7 +311,7 @@ LOGGING = {
     },
     'loggers': {
         'service': {
-            'handlers': ['es_service'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_service'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         }

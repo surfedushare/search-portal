@@ -12,7 +12,7 @@ django:
   domain: "localhost"
   logging:
     level: "DEBUG"
-    is_elastic: false
+    is_open_search: false
   send_admin_notifications: false
 
 postgres:

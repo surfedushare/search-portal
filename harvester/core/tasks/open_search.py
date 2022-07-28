@@ -36,7 +36,7 @@ def sync_indices():
                         elif language and language not in settings.OPENSEARCH_ANALYSERS and index.language == "unk":
                             docs.append(doc.to_search())
                     errors = index.push(chain(*docs), recreate=False)
-                    logger.elastic_errors(errors)
+                    logger.open_search_errors(errors)
                 extensions_queryset = Extension.objects.filter(
                     modified_at__gte=index.pushed_at,
                     is_addition=True
@@ -44,7 +44,7 @@ def sync_indices():
                 for ext_batch in ibatch(extensions_queryset, batch_size=32):
                     exts = [ext.to_search() for ext in ext_batch if ext.get_language() == index.language]
                     errors = index.push(chain(*exts), recreate=False)
-                    logger.elastic_errors(errors)
+                    logger.open_search_errors(errors)
                 index.pushed_at = current_time
                 index.save()
     except DatabaseError:

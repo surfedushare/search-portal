@@ -159,7 +159,7 @@ class HarvestLogger(object):
         })
         results.info(f"{dataset_version} => {document_counts['total']}", extra=extra)
 
-    def elastic_errors(self, errors):
+    def open_search_errors(self, errors):
         for error in errors:
             if "index" in error:
                 self.error(f"Unable to index {error['index']['_id']}: {error['index']['error']}")

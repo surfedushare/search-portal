@@ -8,7 +8,7 @@ django:
   protocol: "https"
   logging:
     level: "DEBUG"
-    is_elastic: true
+    is_open_search: true
   send_admin_notifications: false
 
 postgres:
