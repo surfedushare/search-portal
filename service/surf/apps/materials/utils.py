@@ -64,7 +64,7 @@ def add_extra_parameters_to_materials(metadata, materials):
                 "id": study_id,
                 "title_translations": study_translations[study_id]
             }
-            for study_id in m["studies"]
+            for study_id in m.get("studies", [])
         ]
 
         m["authors"] = [author["name"] for author in m["authors"]]
