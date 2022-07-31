@@ -20,15 +20,14 @@ class Command(PipelineCommand):
         dataset_name = options["dataset"]
         version = options["harvester_version"]
         should_promote = not options["no_promote"]
-        skip_evaluation = options["skip_evaluation"]
+        skip_evaluation = options["skip_evaluation"] or version
 
         dataset = Dataset.objects.get(name=dataset_name)
         version_filter = {}
         if version:
             version_filter.update({"version": version})
         dataset_version = dataset.versions.filter(**version_filter).last()
-        collection_errors = dataset.evaluate_dataset_version(dataset_version) \
-            if not version or not skip_evaluation else []
+        collection_errors = dataset.evaluate_dataset_version(dataset_version) if not skip_evaluation else []
 
         for collection in collection_errors:
             send_admin_notification(
