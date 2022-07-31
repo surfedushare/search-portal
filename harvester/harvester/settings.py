@@ -29,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
+from utils.logging import OpensearchHandler, create_opensearch_handler
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
@@ -227,19 +227,18 @@ REST_FRAMEWORK = {
 }
 
 
-# Elastic Search
-# https://www.elastic.co/guide/index.html
+# OpenSearch (AWS ElasticSearch)
 
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_ANALYSERS = {
+OPENSEARCH_HOST = environment.open_search.host
+OPENSEARCH_PROTOCOL = environment.open_search.protocol
+OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch',
     'unk': 'standard'
 }
-ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.elastic_search.enable_decompound_analyzers
-ELASTICSEARCH_DECOMPOUND_WORD_LISTS = environment.elastic_search.decompound_word_lists
+OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.open_search.enable_decompound_analyzers
+OPENSEARCH_DECOMPOUND_WORD_LISTS = environment.open_search.decompound_word_lists
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
@@ -272,38 +271,38 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'es_harvest': create_elasticsearch_handler(
+        'search_harvest': create_opensearch_handler(
             'harvest-logs',
-            ElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
-        'es_documents': create_elasticsearch_handler(
+        'search_documents': create_opensearch_handler(
             'document-logs',
-            ElasticsearchHandler.IndexNameFrequency.YEARLY,
+            OpensearchHandler.IndexNameFrequency.YEARLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
-        'es_results': create_elasticsearch_handler(
+        'search_results': create_opensearch_handler(
             'harvest-results',
-            ElasticsearchHandler.IndexNameFrequency.YEARLY,
+            OpensearchHandler.IndexNameFrequency.YEARLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
         'harvester': {
-            'handlers': ['es_harvest'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_harvest'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         },
         'documents': {
-            'handlers': ['es_documents'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_documents'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         },
         'results': {
-            'handlers': ['es_results'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_results'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         },

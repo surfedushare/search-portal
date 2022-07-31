@@ -149,16 +149,16 @@ class DatasetVersion(models.Model):
             Document.objects.bulk_create(batch)
         return collection
 
-    def get_elastic_documents_by_language(self):
+    def get_search_documents_by_language(self):
         by_language = defaultdict(list)
         for document in self.document_set.select_related("extension").all():
             language = document.get_language()
-            if language not in settings.ELASTICSEARCH_ANALYSERS:
+            if language not in settings.OPENSEARCH_ANALYSERS:
                 language = "unk"
             by_language[language] += list(document.to_search())
         for extension in Extension.objects.filter(is_addition=True):
             language = extension.get_language()
-            if language not in settings.ELASTICSEARCH_ANALYSERS:
+            if language not in settings.OPENSEARCH_ANALYSERS:
                 language = "unk"
             by_language[language] += list(extension.to_search())
         return by_language

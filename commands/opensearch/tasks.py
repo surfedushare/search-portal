@@ -2,7 +2,7 @@ import os
 import json
 
 from invoke.tasks import task
-from commands.elastic.utils import get_es_client
+from commands.opensearch.utils import get_search_client
 
 
 @task(help={
@@ -12,7 +12,7 @@ def create_decompound_dictionary(ctx, input_file):
     """
     Creates a Dutch decompound words dictionary that is suitable for ES from a .tab file.
     """
-    output_file_path = os.path.join("elastic", "config", "decompound_word_list.nl.txt")
+    output_file_path = os.path.join("opensearch", "config", "decompound_word_list.nl.txt")
     tokens = set()
     with open(input_file, encoding="latin-1") as dictionary_input:
         for line in dictionary_input:
@@ -31,7 +31,7 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     Creates or updates an AWS ES decompound word package based on a decompound dictionary
     """
     s3_bucket_name = ctx.config.aws.harvest_content_bucket
-    s3_keypath = "elastic/decompound_word_list.nl.txt"
+    s3_keypath = "opensearch/decompound_word_list.nl.txt"
     # Uploading to S3
     ctx.run(f"aws s3 cp {decompound_file_path} s3://{s3_bucket_name}/{s3_keypath}")
     # Now we're associating the dictionary with a AWS ES package
@@ -54,11 +54,11 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     )
     # And last but not least we associate the package with the ES domain
     ctx.run(
-        f"aws es associate-package --package-id={package_id} --domain-name={ctx.config.elastic_search.domain_name}",
+        f"aws es associate-package --package-id={package_id} --domain-name={ctx.config.open_search.domain_name}",
         echo=True, pty=True
     )
     print("AWS ES dictionary package processed.")
-    print("Do not forget to set the package identifier under the elastic_search.decompound_word_lists configuration")
+    print("Do not forget to set the package identifier under the open_search.decompound_word_lists configuration")
 
 
 @task
@@ -66,7 +66,7 @@ def push_indices_template(ctx):
     """
     Creates or updates index templates to create indices with correct settings
     """
-    client = get_es_client(ctx)
+    client = get_search_client(ctx)
     client.indices.put_template("basic-settings", body={
         "index_patterns": [
             "harvest-logs*", "document-logs*", "service-logs*", "search-results*", "harvest-results*", "api"

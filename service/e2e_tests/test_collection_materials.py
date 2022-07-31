@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from e2e_tests.base import BaseLiveServerTestCase
 from e2e_tests.factories import UserFactory, CommunityFactory, TeamFactory, CollectionFactory, MaterialFactory
 from e2e_tests.helpers import login, get_metadata_tree_mock
-from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
+from e2e_tests.mock import generate_nl_material
 
 
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
@@ -18,8 +18,8 @@ class TestCollectionMaterials(BaseLiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.material = generate_nl_material()
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX, body=cls.material
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX, body=cls.material
         )
 
     def setUp(self):

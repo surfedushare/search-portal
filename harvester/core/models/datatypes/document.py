@@ -107,36 +107,36 @@ class Document(DocumentBase):
 
     def to_search(self):
         # Get the basic document information including from document extensions
-        elastic_base = copy(self.properties)
+        search_base = copy(self.properties)
         if self.extension:
             extension_details = self.get_extension_extras()
-            elastic_base.update(extension_details)
+            search_base.update(extension_details)
         else:
-            elastic_base["extension"] = None
+            search_base["extension"] = None
         # Decide whether to delete or not from the index
-        if elastic_base["state"] != "active":
+        if search_base["state"] != "active":
             yield {
                 "_id": self.properties["external_id"],
                 "_op_type": "delete"
             }
             return
-        # Transform the data to the structure we actually want in Elastic Search
-        elastic_base.pop("language", None)
-        text = elastic_base.pop("text", None)
+        # Transform the data to the structure we actually want for search engine
+        search_base.pop("language", None)
+        text = search_base.pop("text", None)
         if text and len(text) >= 1000000:
             text = " ".join(text.split(" ")[:10000])
         for private_property in PRIVATE_PROPERTIES:
-            elastic_base.pop(private_property, False)
-        video = elastic_base.pop("video", None)
-        material_types = elastic_base.pop("material_types", None) or ["unknown"]
-        elastic_base["disciplines"] = elastic_base.get("studies", [])
-        elastic_details = self.get_search_document_extras(
+            search_base.pop(private_property, False)
+        video = search_base.pop("video", None)
+        material_types = search_base.pop("material_types", None) or ["unknown"]
+        search_base["disciplines"] = search_base.get("studies", [])
+        search_details = self.get_search_document_extras(
             self.properties["external_id"],
             self.properties["title"],
             text,
             video,
             material_types=material_types,
-            learning_material_disciplines=elastic_base.get("learning_material_disciplines", [])
+            learning_material_disciplines=search_base.get("learning_material_disciplines", [])
         )
-        elastic_details.update(elastic_base)
-        yield elastic_details
+        search_details.update(search_base)
+        yield search_details
