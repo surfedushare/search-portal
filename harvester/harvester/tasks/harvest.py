@@ -49,6 +49,8 @@ def harvest(reset=False, no_promote=False, report_dataset_version=False):
         index_command = ["index_dataset_version", f"--dataset={dataset.name}"]
         if no_promote or not dataset.is_latest:
             index_command += ["--no-promote"]
+        if reset:
+            index_command += ["--skip-evaluation"]
         call_command(*index_command)
 
     # When dealing with a harvest on AWS seeds need to get copied to S3.

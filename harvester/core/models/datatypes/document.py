@@ -49,7 +49,8 @@ class Document(DocumentBase):
             return
         return language.get("metadata", "unk")
 
-    def get_search_document_extras(self, reference_id, title, text, video, material_types, learning_material_themes):
+    def get_search_document_extras(self, reference_id, title, text, video, material_types,
+                                   learning_material_disciplines):
         suggest_completion = []
         if title:
             suggest_completion += title.split(" ")
@@ -60,10 +61,10 @@ class Document(DocumentBase):
             alpha_pattern.sub("", unidecode(word))
             for word in suggest_completion
         ]
-        learning_material_themes_normalized = set([
+        learning_material_disciplines_normalized = set([
             metadata_value.get_root().value if metadata_value.get_root() else metadata_value.value
-            for metadata_value in MetadataValue.objects.filter(value__in=learning_material_themes,
-                                                               field__name="learning_material_themes")
+            for metadata_value in MetadataValue.objects.filter(value__in=learning_material_disciplines,
+                                                               field__name="learning_material_disciplines")
         ])
         extras = {
             '_id': reference_id,
@@ -74,7 +75,8 @@ class Document(DocumentBase):
             'suggest_phrase': text,
             'video': video,
             'material_types': material_types,
-            'learning_material_themes_normalized': list(learning_material_themes_normalized)
+            'learning_material_disciplines_normalized': list(learning_material_disciplines_normalized),
+            'learning_material_themes_normalized': list(learning_material_disciplines_normalized)
         }
         return extras
 
@@ -127,13 +129,14 @@ class Document(DocumentBase):
             elastic_base.pop(private_property, False)
         video = elastic_base.pop("video", None)
         material_types = elastic_base.pop("material_types", None) or ["unknown"]
+        elastic_base["disciplines"] = elastic_base.get("studies", [])
         elastic_details = self.get_search_document_extras(
             self.properties["external_id"],
             self.properties["title"],
             text,
             video,
             material_types=material_types,
-            learning_material_themes=elastic_base.get("learning_material_themes", [])
+            learning_material_disciplines=elastic_base.get("learning_material_disciplines", [])
         )
         elastic_details.update(elastic_base)
         yield elastic_details

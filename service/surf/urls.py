@@ -51,7 +51,6 @@ from surf.apps.users.views import (
 )
 from surf.apps.core.views import ContactAPIView, health_check, robots_txt
 from surf.apps.communities.views import CommunityViewSet
-from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsViewSet, StatsView
 from surf.apps.locale.views import get_localisation_strings
 
@@ -84,7 +83,6 @@ swagger_view = TemplateView.as_view(
 router = CustomRouter()
 router.register(r'collections', CollectionViewSet)
 router.register(r'communities', CommunityViewSet)
-router.register(r'themes', ThemeViewSet)
 router.register(r'stats', StatsViewSet, basename="stats")
 
 

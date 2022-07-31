@@ -164,7 +164,7 @@
     "model": "core.extractionmethod",
     "pk": 20,
     "fields": {
-        "method": "get_learning_material_themes",
+        "method": "get_learning_material_disciplines",
         "processor": "SharekitMetadataExtraction"
     }
 },
@@ -624,7 +624,7 @@
         "mapping": 1,
         "json_field": null,
         "method_field": 13,
-        "property": "disciplines",
+        "property": "studies",
         "is_context": false
     }
 },
@@ -745,7 +745,7 @@
         "mapping": 1,
         "json_field": null,
         "method_field": 20,
-        "property": "learning_material_themes",
+        "property": "learning_material_disciplines",
         "is_context": false
     }
 },

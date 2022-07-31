@@ -12,13 +12,13 @@ describe("Home page - search - pre-filters", () => {
       .selectedFiltersShouldContain("Bestandstype", "Website", 2, 1);
   });
 
-  it("Should pre-filter on theme", () => {
+  it("Should pre-filter on discipline", () => {
     cy.selectPreFilter(
-      "learning_material_themes_normalized",
+      "learning_material_disciplines_normalized",
       "gedrag_maatschappij"
     )
       .search()
-      .selectedFiltersShouldContain("Thema", "Gedrag en Maatschappij", 1, 0);
+      .selectedFiltersShouldContain("Vakgebied", "Gedrag en Maatschappij", 1, 0);
   });
 
   it("Should pre-filter on educational level", () => {
