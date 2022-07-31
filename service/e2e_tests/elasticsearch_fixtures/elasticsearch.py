@@ -23,7 +23,7 @@ NL_MATERIAL = {
         "keywords": ["nerds"],
         "authors": [{"name": "Michel van Ast"}, {"name": "Theo van den Bogaart"}, {"name": "Marc de Graaf"}],
         "publishers": ["Wikiwijs Maken"],
-        "disciplines": ["7afbb7a6-c29b-425c-9c59-6f79c845f5f0"],
+        "studies": ["7afbb7a6-c29b-425c-9c59-6f79c845f5f0"],
         "harvest_source": "wikiwijsmaken",
         "has_parts": [],
         "is_part_of": [],
@@ -33,7 +33,8 @@ NL_MATERIAL = {
         "ideas": [],
         "doi": None,
         "technical_type": "document",
-        "learning_material_themes_normalized": ["exact_informatica"]
+        "learning_material_disciplines": ["exact_informatica"],
+        "learning_material_disciplines_normalized": ["exact_informatica"]
     },
     "biology": {
         "title": "Didactiek van biologisch denken",
@@ -59,7 +60,7 @@ NL_MATERIAL = {
         "keywords": [],
         "authors": [{"name": "Michel van Ast"}],
         "publishers": ["Wikiwijs Maken"],
-        "disciplines": [],
+        "studies": [],
         "harvest_source": "wikiwijsmaken",
         "has_parts": [],
         "is_part_of": [],
@@ -69,13 +70,14 @@ NL_MATERIAL = {
         "ideas": [],
         "doi": None,
         "technical_type": "document",
-        "learning_material_themes_normalized": ["aarde_milieu"]
+        "learning_material_disciplines": ["aarde_milieu"],
+        "learning_material_disciplines_normalized": ["aarde_milieu"]
     }
 }
 
 
 def generate_nl_material(educational_levels=None, title=None, description=None, technical_type=None, source=None,
-                         copyright=None, publisher_date=None, disciplines=None, topic="math", external_id=None):
+                         copyright=None, publisher_date=None, studies=None, topic="math", external_id=None):
     copy = NL_MATERIAL[topic].copy()
     if title:
         copy["title"] = title
@@ -93,6 +95,6 @@ def generate_nl_material(educational_levels=None, title=None, description=None, 
         copy["copyright"] = copyright
     if publisher_date:
         copy["publisher_date"] = publisher_date
-    if disciplines:
-        copy["disciplines"] = disciplines
+    if studies:
+        copy["studies"] = studies
     return copy

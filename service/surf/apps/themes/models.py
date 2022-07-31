@@ -1,10 +1,9 @@
 from django.db import models as django_models
 
-from surf.apps.core.models import UUIDModel
 from surf.apps.locale.models import LocaleHTML
 
 
-class Theme(UUIDModel):
+class Theme(object):
 
     nl_slug = django_models.SlugField(max_length=100, null=True)
     en_slug = django_models.SlugField(max_length=100, null=True)

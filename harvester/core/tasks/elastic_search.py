@@ -16,6 +16,8 @@ from core.models import ElasticIndex, DatasetVersion, Extension
 @app.task(name="sync_indices", base=DatabaseConnectionResetTask)
 def sync_indices():
     dataset_version = DatasetVersion.objects.get_current_version()
+    if dataset_version is None:
+        return
     logger = HarvestLogger(dataset_version.dataset.name, "sync_indices", {})
     indices_queryset = ElasticIndex.objects.filter(dataset_version=dataset_version, pushed_at__isnull=False)
     try:

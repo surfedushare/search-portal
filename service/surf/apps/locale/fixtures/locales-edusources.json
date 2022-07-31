@@ -26153,9 +26153,9 @@
     "model": "locale.locale",
     "pk": "b5621161-7bca-41b1-aa48-42170feeb3d2",
     "fields": {
-        "asset": "Discipline",
-        "en": "Disciplines",
-        "nl": "Vakgebieden",
+        "asset": "Study",
+        "en": "Study",
+        "nl": "Studie",
         "is_fuzzy": false
     }
 },

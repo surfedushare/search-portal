@@ -599,7 +599,7 @@
         "mapping": 1,
         "json_field": null,
         "method_field": 13,
-        "property": "disciplines",
+        "property": "studies",
         "is_context": false,
         "is_protected": false
     }

@@ -71,7 +71,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "preview_path": o.preview_path,
             "url": o.url,
             "language": {"metadata": o.language},
-            "disciplines": [],
+            "studies": [],
             "lom_educational_levels": ["WO"],
             "lowest_educational_level": 3,
             "authors": [],
@@ -90,7 +90,8 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "research_object_type": None,
             "research_themes": [],
             "parties": [],
-            "consortium": None
+            "consortium": None,
+            "learning_material_disciplines": []
         })
 
 
