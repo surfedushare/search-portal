@@ -8,9 +8,9 @@ from core.constants import REPOSITORY_CHOICES
 OBJECTIVE_PROPERTIES = {
     "url", "files", "title", "language", "keywords", "description", "mime_type", "technical_type", "material_types",
     "copyright", "copyright_description", "aggregation_level", "authors", "publishers", "publisher_date",
-    "lom_educational_levels", "lowest_educational_level", "disciplines", "ideas", "from_youtube", "is_restricted",
+    "lom_educational_levels", "lowest_educational_level", "studies", "ideas", "from_youtube", "is_restricted",
     "analysis_allowed", "is_part_of", "has_parts", "doi", "research_object_type", "research_themes", "parties",
-    "external_id", "state", "publisher_year"
+    "external_id", "state", "publisher_year", "learning_material_disciplines"
 }
 
 

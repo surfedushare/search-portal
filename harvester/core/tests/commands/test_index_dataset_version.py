@@ -31,12 +31,13 @@ class OpenSearchClientTestCase(TestCase):
     def assert_document_structure(self, document):
         # Here we check if documents have all required keys including _id
         expected_keys = {
-            "title", "url", "external_id", "disciplines", "lom_educational_levels", "description", "publisher_date",
+            "title", "url", "external_id", "studies", "lom_educational_levels", "description", "publisher_date",
             "copyright", "language", "keywords", "mime_type", "suggest_completion", "_id",
             "harvest_source",  "aggregation_level", "publishers", "authors", "has_parts", "is_part_of", "preview_path",
             "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_types",
             "text", "suggest_phrase", "research_object_type", "research_themes", "parties", "video", "state",
-            "extension", "learning_material_themes_normalized", "consortium"
+            "extension", "learning_material_disciplines_normalized", "learning_material_disciplines", "consortium",
+            "disciplines", "learning_material_themes_normalized"
         }
         has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]
         if not has_text:

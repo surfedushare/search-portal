@@ -223,11 +223,11 @@ class SharekitMetadataExtraction(ExtractProcessor):
         return None
 
     @classmethod
-    def get_learning_material_themes(cls, node):
-        theme_value = node["attributes"].get("themesLearningMaterial", [])
-        if not theme_value:
+    def get_learning_material_disciplines(cls, node):
+        discipline_value = node["attributes"].get("themesLearningMaterial", [])
+        if not discipline_value:
             return []
-        return theme_value if isinstance(theme_value, list) else [theme_value]
+        return discipline_value if isinstance(discipline_value, list) else [discipline_value]
 
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
@@ -249,7 +249,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "publisher_year": SharekitMetadataExtraction.get_publisher_year,
     "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
-    "disciplines": SharekitMetadataExtraction.get_empty_list,
+    "studies": SharekitMetadataExtraction.get_empty_list,
     "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "#is_restricted": SharekitMetadataExtraction.get_is_restricted,
@@ -260,7 +260,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "research_object_type": "$.attributes.typeResearchObject",
     "research_themes": SharekitMetadataExtraction.get_research_themes,
     "parties": SharekitMetadataExtraction.get_empty_list,
-    "learning_material_themes": SharekitMetadataExtraction.get_learning_material_themes,
+    "learning_material_disciplines": SharekitMetadataExtraction.get_learning_material_disciplines,
     "consortium": SharekitMetadataExtraction.get_consortium
 }
 

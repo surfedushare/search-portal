@@ -230,7 +230,7 @@ class AnatomyToolExtraction(object):
         return 2  # HBO
 
     @classmethod
-    def get_disciplines(cls, soup, el):
+    def get_studies(cls, soup, el):
         blocks = cls.find_all_classification_blocks(el, "discipline", "id")
         return list(set([block.text.strip() for block in blocks]))
 
@@ -266,7 +266,7 @@ class AnatomyToolExtraction(object):
         return description.find('string').text.strip() if description else None
 
     @classmethod
-    def get_learning_material_themes(cls, soup, el):
+    def get_learning_material_disciplines(cls, soup, el):
         return ["gezondheid"]
 
 
@@ -288,7 +288,7 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "publisher_year": AnatomyToolExtraction.get_publisher_year,
     "lom_educational_levels": AnatomyToolExtraction.get_lom_educational_levels,
     "lowest_educational_level": AnatomyToolExtraction.get_lowest_educational_level,
-    "disciplines": AnatomyToolExtraction.get_disciplines,
+    "studies": AnatomyToolExtraction.get_studies,
     "ideas": AnatomyToolExtraction.get_ideas,
     "from_youtube": AnatomyToolExtraction.get_from_youtube,
     "is_restricted": AnatomyToolExtraction.get_is_restricted,
@@ -300,6 +300,6 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "research_object_type": lambda soup, el: None,
     "research_themes": lambda soup, el: [],
     "parties": lambda soup, el: [],
-    "learning_material_themes": AnatomyToolExtraction.get_learning_material_themes,
+    "learning_material_disciplines": AnatomyToolExtraction.get_learning_material_disciplines,
     "consortium": AnatomyToolExtraction.get_consortium,
 }

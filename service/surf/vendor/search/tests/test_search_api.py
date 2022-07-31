@@ -18,14 +18,14 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        math_and_education_disciplines = [
+        math_and_education_studies = [
             "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",  # math
             "0861c43d-1874-4788-b522-df8be575677f"  # onderwijskunde
         ]
-        biology_disciplines = [
+        biology_studies = [
             "2b363227-8633-4652-ad57-c61f1efc02c8"
         ]
-        biology_and_education_disciplines = biology_disciplines + [
+        biology_and_education_studies = biology_studies + [
             "0861c43d-1874-4788-b522-df8be575677f"
         ]
 
@@ -33,31 +33,31 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
         cls.search.index(
             index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
-                                      disciplines=math_and_education_disciplines),
+                                      studies=math_and_education_studies),
         )
         cls.search.index(
             id="abc",
             index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
-                                      disciplines=math_and_education_disciplines, external_id="abc",
+                                      studies=math_and_education_studies, external_id="abc",
                                       title="De wiskunde van Jezus", description="Groots zijn zijn getallen")
         )
         cls.search.index(
             index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       copyright="cc-by-40", topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
-                                      disciplines=biology_and_education_disciplines),
+                                      studies=biology_and_education_studies),
         )
         cls.search.index(
             index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       topic="biology", publisher_date="2019-04-16T22:35:09+02:00",
-                                      disciplines=biology_and_education_disciplines),
+                                      studies=biology_and_education_studies),
         )
         cls.search.index(
             index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="surfsharekit",
-                                      topic="biology", disciplines=biology_disciplines),
+                                      topic="biology", studies=biology_studies),
             refresh=True  # always put refresh on the last material
         )
 
@@ -94,8 +94,8 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
                 {"label": label}
                 for label in expectation
             ]
-        elif key == "disciplines":
-            return  # silently skipping this assertion, because NPPO doesn't support disciplines
+        elif key == "studies":
+            return  # silently skipping this assertion, because NPPO doesn't support studies
         value = self.get_value_from_record(record, key)
         assertion(value, expectation, message)
 
@@ -226,27 +226,27 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
         search_biologie = self.instance.search("biologie")
         self.assertEqual(search_biologie_none_date, search_biologie)
 
-    @skipIf(settings.PROJECT == "nppo", "Disciplines not supported by NPPO")
-    def test_search_disciplines(self):
+    @skipIf(settings.PROJECT == "nppo", "studies not supported by NPPO")
+    def test_search_studies(self):
         search_result = self.instance.search('')
         search_result_filter_1 = self.instance.search(
             '',
             filters=[{
-                "external_id": "disciplines",
+                "external_id": "studies",
                 "items": ['0861c43d-1874-4788-b522-df8be575677f']
             }]
         )
         search_result_filter_2 = self.instance.search(
             '',
             filters=[{
-                "external_id": "disciplines",
+                "external_id": "studies",
                 "items": ['2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
         search_result_filter_3 = self.instance.search(
             '',
             filters=[{
-                "external_id": "disciplines",
+                "external_id": "studies",
                 "items": ['0861c43d-1874-4788-b522-df8be575677f', '2b363227-8633-4652-ad57-c61f1efc02c8']
             }]
         )
@@ -260,7 +260,7 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
             search_result_filter_1['recordcount'] + search_result_filter_2['recordcount'],
             search_result_filter_3['recordcount'],
             "Expected at least 1 material to appear in both search_result_filter_1 and search_result_filter_2, "
-            "which would make the sum of those results larger than filtering on both disciplines together"
+            "which would make the sum of those results larger than filtering on both studies together"
         )
 
     def test_drilldown_search(self):
@@ -271,16 +271,16 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
             self.assertIn("-", key)
             self.assertGreater(value, 0)
 
-    @skipIf(settings.PROJECT == "nppo", "Disciplines not supported by NPPO")
-    def test_drilldown_search_disciplines(self):
-        search_with_theme_drilldown = self.instance.search(
+    @skipIf(settings.PROJECT == "nppo", "studies not supported by NPPO")
+    def test_drilldown_search_studies(self):
+        search_with_discipline_drilldown = self.instance.search(
             '',
-            drilldown_names=["disciplines"]
+            drilldown_names=["studies"]
         )
-        self.assertIsNotNone(search_with_theme_drilldown)
-        self.assertTrue(search_with_theme_drilldown['drilldowns'])
-        for key, value in search_with_theme_drilldown['drilldowns'].items():
-            self.assertIn('disciplines-', key)
+        self.assertIsNotNone(search_with_discipline_drilldown)
+        self.assertTrue(search_with_discipline_drilldown['drilldowns'])
+        for key, value in search_with_discipline_drilldown['drilldowns'].items():
+            self.assertIn('studies-', key)
             self.assertGreater(value, 0)
 
     def test_drilldown_with_filters(self):
@@ -395,7 +395,7 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
             {"name": "Marc de Graaf"},
         ])
         self.assert_value_from_record(material, 'keywords', ["nerds"])
-        self.assert_value_from_record(material, 'disciplines', [
+        self.assert_value_from_record(material, 'studies', [
             "7afbb7a6-c29b-425c-9c59-6f79c845f5f0",  # math
             "0861c43d-1874-4788-b522-df8be575677f"  # onderwijskunde
         ])
@@ -511,24 +511,23 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
 
     def test_parse_search_hit(self):
         authors = [{"name": "author"}]
-        themes = ["theme"]
         hit = {
             "_source": {
                 "title": "title",
                 "description": "description",
                 "authors": authors,
-                "learning_material_themes_normalized": themes,
-                "research_themes": themes
+                "learning_material_disciplines_normalized": ["discipline"],
+                "research_themes": ["theme"]
             }
         }
         with patch("surf.vendor.search.api.SearchResultSerializer", EdusourcesSearchResultSerializer):
             record = self.instance.parse_search_hit(hit)
             self.assertIn("authors", record, "Expected authors to be part of main record for Edusources")
-            self.assertIn("themes", record, "Expected themes to be part of main record for Edusources")
+            self.assertIn("disciplines", record, "Expected disciplines to be part of main record for Edusources")
             self.assertEqual(record["title"], "title")
             self.assertEqual(record["description"], "description")
             self.assertEqual(record["authors"], authors)
-            self.assertEqual(record["themes"], themes)
+            self.assertEqual(record["disciplines"], ["discipline"])
             self.assertNotIn("keywords", record, "Expected data not given in Edusources to not be included")
             self.assertNotIn("is_part_of", record, "Expected data not given in Edusources to not be included")
             self.assertNotIn("has_parts", record, "Expected data not given in Edusources to not be included")

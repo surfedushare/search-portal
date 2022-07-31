@@ -165,7 +165,7 @@ HANZE_EXTRACTION_OBJECTIVE = {
     "publisher_date": "$.publicationStatuses.0.publicationDate.year",
     "lom_educational_levels": HanzeResourceObjectExtraction.get_empty_list,
     "lowest_educational_level": HanzeResourceObjectExtraction.get_lowest_educational_level,
-    "disciplines": HanzeResourceObjectExtraction.get_empty_list,
+    "studies": HanzeResourceObjectExtraction.get_empty_list,
     "ideas": HanzeResourceObjectExtraction.get_empty_list,
     "from_youtube": HanzeResourceObjectExtraction.get_from_youtube,
     "#is_restricted": HanzeResourceObjectExtraction.get_is_restricted,
@@ -176,6 +176,6 @@ HANZE_EXTRACTION_OBJECTIVE = {
     "research_object_type": HanzeResourceObjectExtraction.get_none,
     "research_themes": HanzeResourceObjectExtraction.get_empty_list,
     "parties": HanzeResourceObjectExtraction.get_empty_list,
-    "learning_material_themes": HanzeResourceObjectExtraction.get_empty_list,
+    "learning_material_disciplines": HanzeResourceObjectExtraction.get_empty_list,
     "consortium": HanzeResourceObjectExtraction.get_none
 }

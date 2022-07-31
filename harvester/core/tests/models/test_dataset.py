@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.utils.timezone import make_aware
 
 from core.models import Collection
-from core.tests.factories import DatasetFactory, DatasetVersionFactory, create_dataset_version
+from core.tests.factories import DatasetFactory, DatasetVersionFactory, create_dataset_version, DocumentFactory
 
 
 class TestDataset(TestCase):
@@ -28,6 +28,13 @@ class TestDataset(TestCase):
         test_version.document_set.last().delete()
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(fallback_collections, [], "Expected versions with less than 5% difference to pass evaluation")
+        extra_documents = [
+            DocumentFactory.create(dataset_version=test_version, collection=test_version.collection_set.last())
+            for ix in range(10)
+        ]
+        test_version.document_set.add(*extra_documents)
+        fallback_collections = self.dataset.evaluate_dataset_version(test_version)
+        self.assertEqual(fallback_collections, [], "Expected versions with increase of more than 5% to pass evaluation")
         self.dataset.versions.update(is_current=False)
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(fallback_collections, [], "Expected no fallbacks when no promoted previous versions exist")
