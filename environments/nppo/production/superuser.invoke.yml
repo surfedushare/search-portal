@@ -14,7 +14,7 @@ aws:
   private_subnet_id: "subnet-005ccbc6bfc05fbc5"
   default_security_group_id: "sg-07cc427eb115905fc"
   rds_security_group_id: "sg-0a9cc1db5c8e670fd"
-  elasticsearch_security_group_id: "sg-0a9ca17cfcbf46473"
+  opensearch_security_group_id: "sg-0a9ca17cfcbf46473"
   redis_security_group_id: "sg-08bcf59671485d9c2"
   cluster_arn: "arn:aws:ecs:eu-central-1:870512711545:cluster/nppo"
   superuser_task_role_arn: "arn:aws:iam::870512711545:role/ecsSuperuserTaskExecutionRole"

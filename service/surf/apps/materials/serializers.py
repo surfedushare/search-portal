@@ -10,7 +10,7 @@ from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.models import (RESOURCE_TYPE_COLLECTION, Collection,
                                         Material, PublishStatus,
                                         SharedResourceCounter)
-from surf.vendor.elasticsearch.serializers import SearchResultSerializer
+from surf.vendor.search.serializers import SearchResultSerializer
 
 
 class SharedResourceCounterSerializer(serializers.ModelSerializer):

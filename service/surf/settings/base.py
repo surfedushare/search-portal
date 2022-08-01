@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
+from utils.logging import OpensearchHandler, create_opensearch_handler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -270,12 +270,12 @@ WEBPACK_LOADER = {
 
 # Search
 
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_NL_INDEX = "latest-nl"
-ELASTICSEARCH_EN_INDEX = "latest-en"
-ELASTICSEARCH_UNK_INDEX = "latest-unk"
+OPENSEARCH_HOST = environment.open_search.host
+OPENSEARCH_PROTOCOL = environment.open_search.protocol
+OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_NL_INDEX = "latest-nl"
+OPENSEARCH_EN_INDEX = "latest-en"
+OPENSEARCH_UNK_INDEX = "latest-unk"
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
@@ -302,16 +302,16 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'es_service': create_elasticsearch_handler(
+        'search_service': create_opensearch_handler(
             'service-logs',
-            ElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment,
             OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
         'service': {
-            'handlers': ['es_service'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_service'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         }

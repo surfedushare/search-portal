@@ -19,38 +19,38 @@ from opensearchpy import OpenSearch, RequestsHttpConnection, JSONSerializer
 from requests_aws4auth import AWS4Auth
 
 
-def create_elasticsearch_handler(index_name, index_frequency, environment, password):
+def create_opensearch_handler(index_name, index_frequency, environment, password):
     assert not index_name.startswith("logs"), \
-        "Index names starting with 'logs' have a special meaning in ES and won't work"
+        "Index names starting with 'logs' have a special meaning and won't work"
     is_aws = environment.aws.is_aws  # AWS requires signing requests
-    elastic_host = environment.elastic_search.host
-    elastic_protocol = environment.elastic_search.protocol
-    elastic_domain = elastic_host.split(":")[0]
-    elastic_port = 443 if elastic_protocol == 'https' else 9200
+    opensearch_host = environment.open_search.host
+    opensearch_protocol = environment.open_search.protocol
+    opensearch_domain = opensearch_host.split(":")[0]
+    opensearch_port = 443 if opensearch_protocol == 'https' else 9200
     handler = {
         'level': 'DEBUG',
-        'class': 'utils.logging.ElasticsearchHandler',
-        'hosts': [{'host': elastic_domain, 'port': elastic_port}],
+        'class': 'utils.logging.OpensearchHandler',
+        'hosts': [{'host': opensearch_domain, 'port': opensearch_port}],
         'es_index_name': index_name,
         'es_additional_fields': {'container_id': environment.container.id},
         'flush_frequency_in_sec': 5,
         'index_name_frequency': index_frequency,
-        'auth_type': ElasticsearchHandler.AuthType.NO_AUTH,  # gets overridden for AWS
-        'use_ssl': elastic_protocol == 'https',
+        'auth_type': OpensearchHandler.AuthType.NO_AUTH,  # gets overridden for AWS
+        'use_ssl': opensearch_protocol == 'https',
     }
     if is_aws:
         handler.update({
-            'auth_type': ElasticsearchHandler.AuthType.BASIC_AUTH,
+            'auth_type': OpensearchHandler.AuthType.BASIC_AUTH,
             'auth_details': ("supersurf", password)
         })
     return handler
 
 
-class ElasticsearchHandler(logging.Handler):
+class OpensearchHandler(logging.Handler):
     """
-    Elasticsearch log handler
+    Opensearch log handler
 
-    Allows to log to elasticsearch into json format.
+    Allows to log to Opensearch into json format.
     All LogRecord fields are serialised and inserted
     """
 
@@ -72,7 +72,7 @@ class ElasticsearchHandler(logging.Handler):
         YEARLY = 3
 
     # Defaults for the class
-    __DEFAULT_ELASTICSEARCH_HOST = ({'host': 'localhost', 'port': 9200},)
+    __DEFAULT_OPENSEARCH_HOST = ({'host': 'localhost', 'port': 9200},)
     __DEFAULT_AUTH_USER = ''
     __DEFAULT_AUTH_PASSWD = ''
     __DEFAULT_AWS_SESSION = None
@@ -95,20 +95,20 @@ class ElasticsearchHandler(logging.Handler):
     @staticmethod
     def _get_daily_index_name(es_index_name):
         """
-        Returns elasticearch index name
+        Returns index name
 
         :param: index_name the prefix to be used in the index
-        :return: A srting containing the elasticsearch indexname used which should include the date.
+        :return: A srting containing the indexname used which should include the date.
         """
         return "{0!s}-{1!s}".format(es_index_name, datetime.datetime.now().strftime('%Y.%m.%d'))
 
     @staticmethod
     def _get_weekly_index_name(es_index_name):
         """
-        Return elasticsearch index name
+        Return index name
 
         :param: index_name the prefix to be used in the index
-        :return: A srting containing the elasticsearch indexname used which should include the date and specific week
+        :return: A srting containing the indexname used which should include the date and specific week
         """
         current_date = datetime.datetime.now()
         start_of_the_week = current_date - datetime.timedelta(days=current_date.weekday())
@@ -117,20 +117,20 @@ class ElasticsearchHandler(logging.Handler):
     @staticmethod
     def _get_monthly_index_name(es_index_name):
         """
-        Return elasticsearch index name
+        Return index name
 
         :param: index_name the prefix to be used in the index
-        :return: A srting containing the elasticsearch indexname used which should include the date and specific moth
+        :return: A srting containing the indexname used which should include the date and specific moth
         """
         return "{0!s}-{1!s}".format(es_index_name, datetime.datetime.now().strftime('%Y.%m'))
 
     @staticmethod
     def _get_yearly_index_name(es_index_name):
         """
-        Return elasticsearch index name
+        Return index name
 
         :param: index_name the prefix to be used in the index
-        :return: A srting containing the elasticsearch indexname used which should include the date and specific year
+        :return: A srting containing the indexname used which should include the date and specific year
         """
         return "{0!s}-{1!s}".format(es_index_name, datetime.datetime.now().strftime('%Y'))
 
@@ -142,7 +142,7 @@ class ElasticsearchHandler(logging.Handler):
     }
 
     def __init__(self,
-                 hosts=__DEFAULT_ELASTICSEARCH_HOST,
+                 hosts=__DEFAULT_OPENSEARCH_HOST,
                  auth_details=(__DEFAULT_AUTH_USER, __DEFAULT_AUTH_PASSWD),
                  aws_session=__DEFAULT_AWS_SESSION,
                  auth_type=__DEFAULT_AUTH_TYPE,
@@ -158,22 +158,22 @@ class ElasticsearchHandler(logging.Handler):
         """
         Handler constructor
 
-        :param hosts: The list of hosts that elasticsearch clients will connect. The list can be provided
+        :param hosts: The list of hosts that opensearch clients will connect. The list can be provided
                     in the format ```[{'host':'host1','port':9200}, {'host':'host2','port':9200}]``` to
                     make sure the client supports failover of one of the instertion nodes
-        :param auth_details: When ```ElasticsearchHandler.AuthType.BASIC_AUTH``` is used this argument must contain
+        :param auth_details: When ```OpensearchHandler.AuthType.BASIC_AUTH``` is used this argument must contain
                     a tuple of string with the user and password that will be used to authenticate against
-                    the Elasticsearch servers, for example```('User','Password')
-        :param aws_session: When ```ElasticsearchHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must
+                    the Opensearch servers, for example```('User','Password')
+        :param aws_session: When ```OpensearchHandler.AuthType.AWS_SIGNED_AUTH``` is used this argument must
                     contain the AWS session object
-        :param auth_type: The authentication type to be used in the connection ```ElasticsearchHandler.AuthType```
+        :param auth_type: The authentication type to be used in the connection ```OpensearchHandler.AuthType```
                     Currently, NO_AUTH, BASIC_AUTH, KERBEROS_AUTH are supported
         :param use_ssl: A boolean that defines if the communications should use SSL encrypted communication
         :param verify_ssl: A boolean that defines if the SSL certificates are validated or not
         :param buffer_size: An int, Once this size is reached on the internal buffer results are flushed into ES
         :param flush_frequency_in_sec: A float representing how often and when the buffer will be flushed, even
                     if the buffer_size has not been reached yet
-        :param es_index_name: A string with the prefix of the elasticsearch index that will be created. Note a
+        :param es_index_name: A string with the prefix of the index that will be created. Note a
                     date with YYYY.MM.dd, ```python_logger``` used by default
         :param index_name_frequency: Defines what the date used in the postfix of the name would be. available values
                     are selected from the IndexNameFrequency class (IndexNameFrequency.DAILY,
@@ -183,14 +183,14 @@ class ElasticsearchHandler(logging.Handler):
                     to the logs, such the application, environment, etc.
         :param raise_on_indexing_exceptions: A boolean, True only for debugging purposes to raise exceptions
                     caused when
-        :return: A ready to be used ElasticsearchHandler.
+        :return: A ready to be used OpensearchHandler.
         """
         logging.Handler.__init__(self)
         self._client = None
         self._buffer = []
         self._buffer_lock = Lock()
         self._timer = None
-        self._index_name_func = ElasticsearchHandler._INDEX_FREQUENCY_FUNCION_DICT[index_name_frequency]
+        self._index_name_func = OpensearchHandler._INDEX_FREQUENCY_FUNCION_DICT[index_name_frequency]
 
         self.hosts = hosts
         self.auth_details = auth_details
@@ -224,7 +224,7 @@ class ElasticsearchHandler(logging.Handler):
             self._timer.start()
 
     def __get_es_client(self):
-        if self.auth_type == ElasticsearchHandler.AuthType.NO_AUTH:
+        if self.auth_type == OpensearchHandler.AuthType.NO_AUTH:
             if self._client is None:
                 self._client = OpenSearch(hosts=self.hosts,
                                           use_ssl=self.use_ssl,
@@ -233,7 +233,7 @@ class ElasticsearchHandler(logging.Handler):
                                           serializer=self.serializer)
             return self._client
 
-        if self.auth_type == ElasticsearchHandler.AuthType.BASIC_AUTH:
+        if self.auth_type == OpensearchHandler.AuthType.BASIC_AUTH:
             if self._client is None:
                 return OpenSearch(hosts=self.hosts,
                                   http_auth=self.auth_details,
@@ -243,7 +243,7 @@ class ElasticsearchHandler(logging.Handler):
                                   serializer=self.serializer)
             return self._client
 
-        if self.auth_type == ElasticsearchHandler.AuthType.AWS_SIGNED_AUTH:
+        if self.auth_type == OpensearchHandler.AuthType.AWS_SIGNED_AUTH:
             if self.aws_session is None:
                 raise ValueError("AWS signed authentication enabled, but session object is None")
             if self._client is None:
@@ -264,22 +264,22 @@ class ElasticsearchHandler(logging.Handler):
 
     def test_es_source(self):
         """
-        Returns True if the handler can ping the Elasticsearch servers
+        Returns True if the handler can ping the servers
 
         Can be used to confirm the setup of a handler has been properly done and confirm
         that things like the authentication is working properly
 
-        :return: A boolean, True if the connection against elasticserach host was successful
+        :return: A boolean, True if the connection against host was successful
         """
         return self.__get_es_client().ping()
 
     @staticmethod
     def __get_es_datetime_str(timestamp):
         """
-        Returns elasticsearch utc formatted time for an epoch timestamp
+        Returns utc formatted time for an epoch timestamp
 
         :param timestamp: epoch, including milliseconds
-        :return: A string valid for elasticsearch time record
+        :return: A string valid for time record
         """
         current_date = datetime.datetime.utcfromtimestamp(timestamp)
         return "{0!s}.{1:03d}Z".format(current_date.strftime('%Y-%m-%dT%H:%M:%S'), int(current_date.microsecond / 1000))
@@ -338,7 +338,7 @@ class ElasticsearchHandler(logging.Handler):
 
         rec = self.es_additional_fields.copy()
         for key, value in record.__dict__.items():
-            if key not in ElasticsearchHandler.__LOGGING_FILTER_FIELDS:
+            if key not in OpensearchHandler.__LOGGING_FILTER_FIELDS:
                 if key == "args":
                     value = tuple(str(arg) for arg in value)
                 rec[key] = "" if value is None else value

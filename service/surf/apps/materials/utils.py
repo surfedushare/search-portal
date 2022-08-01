@@ -6,7 +6,7 @@ from django.apps import apps
 
 from surf.apps.communities.models import Community
 from surf.apps.materials.models import Material
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from surf.vendor.search.api import SearchApiClient
 
 
 def add_extra_parameters_to_materials(metadata, materials):
@@ -79,8 +79,8 @@ def get_material_details_by_id(external_id):
     :param external_id: id of material
     :return: list containing updated material
     """
-    api_client = ElasticSearchApiClient()
-    response = api_client.get_materials_by_id([external_id])
+    client = SearchApiClient()
+    response = client.get_materials_by_id([external_id])
     records = response.get("records", [])
     if not records:
         return records
@@ -128,10 +128,10 @@ def create_search_results_index(client):
     client.indices.create('search-results', body=body)
 
 
-def add_search_query_to_elastic_index(number_of_results, query, filters):
-    elastic = ElasticSearchApiClient()
-    if not elastic.client.indices.exists(index='search-results'):
-        create_search_results_index(elastic.client)
+def add_search_query_to_log(number_of_results, query, filters):
+    api_client = SearchApiClient()
+    if not api_client.client.indices.exists(index='search-results'):
+        create_search_results_index(api_client.client)
 
     document = {
         'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(),
@@ -139,7 +139,7 @@ def add_search_query_to_elastic_index(number_of_results, query, filters):
         'query': query,
         'filters': _get_translated_filters(filters)
     }
-    elastic.client.index('search-results', body=document)
+    api_client.client.index('search-results', body=document)
 
 
 def _get_translated_filters(filters):

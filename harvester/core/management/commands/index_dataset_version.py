@@ -39,7 +39,7 @@ class Command(PipelineCommand):
 
         self.logger.start("index")
 
-        lang_doc_dict = dataset_version.get_elastic_documents_by_language()
+        lang_doc_dict = dataset_version.get_search_documents_by_language()
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
@@ -59,7 +59,7 @@ class Command(PipelineCommand):
             index.clean()
             index.save()
             errors = index.push(lang_doc_dict[lang], recreate=True)
-            self.logger.elastic_errors(errors)
+            self.logger.open_search_errors(errors)
             if should_promote:
                 self.logger.info(f"Promoting index { index.remote_name } to latest")
                 index.promote_to_latest()

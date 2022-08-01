@@ -5,14 +5,14 @@ from datetime import datetime
 
 from django.conf import settings
 
-from project.configuration import create_elastic_search_index_configuration
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
-from surf.vendor.elasticsearch.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
-from e2e_tests.base import BaseElasticSearchTestCase
-from e2e_tests.elasticsearch_fixtures.elasticsearch import generate_nl_material
+from project.configuration import create_open_search_index_configuration
+from surf.vendor.search.api import SearchApiClient
+from surf.vendor.search.serializers import EdusourcesSearchResultSerializer, NPPOSearchResultSerializer
+from e2e_tests.base import BaseOpenSearchTestCase
+from e2e_tests.mock import generate_nl_material
 
 
-class TestsElasticSearch(BaseElasticSearchTestCase):
+class TestSearchApiClient(BaseOpenSearchTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -29,33 +29,33 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             "0861c43d-1874-4788-b522-df8be575677f"
         ]
 
-        cls.instance = ElasticSearchApiClient()
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.instance = SearchApiClient()
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       studies=math_and_education_studies),
         )
-        cls.elastic.index(
+        cls.search.index(
             id="abc",
-            index=settings.ELASTICSEARCH_NL_INDEX,
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       studies=math_and_education_studies, external_id="abc",
                                       title="De wiskunde van Jezus", description="Groots zijn zijn getallen")
         )
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       copyright="cc-by-40", topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
                                       studies=biology_and_education_studies),
         )
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       topic="biology", publisher_date="2019-04-16T22:35:09+02:00",
                                       studies=biology_and_education_studies),
         )
-        cls.elastic.index(
-            index=settings.ELASTICSEARCH_NL_INDEX,
+        cls.search.index(
+            index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="surfsharekit",
                                       topic="biology", studies=biology_studies),
             refresh=True  # always put refresh on the last material
@@ -108,8 +108,6 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         self.assertIsNotNone(search_result_filter)
         self.assertGreater(search_result['recordcount'], search_result_filter['recordcount'])
         self.assertEqual(set(search_result.keys()), {"recordcount", "records", "drilldowns", "did_you_mean"})
-        # check if record count is an actual number
-        # Edurep returns everything and Elastic nothing with an empty search
         self.assertIsInstance(search_result['recordcount'], int)
         # does an empty search return a list of records?
         self.assertIsInstance(search_result['records'], list)
@@ -455,7 +453,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
         # Github Actions does not support mounting docker volumes
         # So it is impossible to mount a decompound dictionary and truly test this
         # Instead we test that indices will get created correctly and composed word search should function
-        dutch_index = create_elastic_search_index_configuration("nl", "dutch-decompound-words.txt")
+        dutch_index = create_open_search_index_configuration("nl", "dutch-decompound-words.txt")
         self.assertIn("dutch_dictionary_decompound", dutch_index["settings"]["analysis"]["analyzer"])
         decompound_analyser = dutch_index["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"]
         self.assertEqual(decompound_analyser, {
@@ -481,7 +479,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertEqual(dutch_index["mappings"]["properties"][text_field]['fields']['analyzed']["search_analyzer"],
                              "dutch_dictionary_decompound")
 
-        english_index = create_elastic_search_index_configuration("en")
+        english_index = create_open_search_index_configuration("en")
         self.assertNotIn("dutch_dictionary_decompound", english_index["settings"]["analysis"]["analyzer"])
         self.assertNotIn("dictionary_decompound", english_index["settings"]["analysis"]["filter"])
         for text_field in ["title", "text", "description"]:
@@ -511,7 +509,7 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertNotIn(author_expectation, author_names)
             self.assertIn(author_expectation, result["description"])
 
-    def test_parse_elastic_hit(self):
+    def test_parse_search_hit(self):
         authors = [{"name": "author"}]
         hit = {
             "_source": {
@@ -522,8 +520,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
                 "research_themes": ["theme"]
             }
         }
-        with patch("surf.vendor.elasticsearch.api.SearchResultSerializer", EdusourcesSearchResultSerializer):
-            record = self.instance.parse_elastic_hit(hit)
+        with patch("surf.vendor.search.api.SearchResultSerializer", EdusourcesSearchResultSerializer):
+            record = self.instance.parse_search_hit(hit)
             self.assertIn("authors", record, "Expected authors to be part of main record for Edusources")
             self.assertIn("disciplines", record, "Expected disciplines to be part of main record for Edusources")
             self.assertEqual(record["title"], "title")
@@ -533,8 +531,8 @@ class TestsElasticSearch(BaseElasticSearchTestCase):
             self.assertNotIn("keywords", record, "Expected data not given in Edusources to not be included")
             self.assertNotIn("is_part_of", record, "Expected data not given in Edusources to not be included")
             self.assertNotIn("has_parts", record, "Expected data not given in Edusources to not be included")
-        with patch("surf.vendor.elasticsearch.api.SearchResultSerializer", NPPOSearchResultSerializer):
-            record = self.instance.parse_elastic_hit(hit)
+        with patch("surf.vendor.search.api.SearchResultSerializer", NPPOSearchResultSerializer):
+            record = self.instance.parse_search_hit(hit)
             self.assertIn("relations", record, "Expected NPPO record to have a relations key")
             self.assertNotIn("authors", record, "Expected authors to be absent in main record for NPPO")
             self.assertNotIn("themes", record, "Expected themes to be absent in main record for NPPO")

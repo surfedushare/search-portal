@@ -2,7 +2,7 @@
 Checking whether progress information from index_dataset_version command matches expectations.
 This is a very basic high-over way to check if the command succeeds.
 Alternatively the involved models can get unit tested and we can see whether command uses the right methods.
-After checking basic command flow we're checking, whether the Elastic Search library was called correctly
+After checking basic command flow we're checking, whether the OpenSearch library was called correctly
 to update the indices.
 """
 
@@ -14,19 +14,19 @@ from django.core.management import call_command
 from django.utils.timezone import make_aware
 
 from core.models import Dataset, DatasetVersion, ElasticIndex, Collection, Document
-from core.tests.mocks import get_elastic_client_mock
+from core.tests.mocks import get_search_client_mock
 from core.tests.factories import DatasetFactory, create_dataset_version, DocumentFactory
 
 
-class ElasticSearchClientTestCase(TestCase):
+class OpenSearchClientTestCase(TestCase):
 
-    elastic_client = get_elastic_client_mock()
+    search_client = get_search_client_mock()
 
     def setUp(self):
         super().setUp()
-        self.elastic_client.indices.put_alias.reset_mock()
-        self.elastic_client.indices.create.reset_mock()
-        self.elastic_client.indices.delete.reset_mock()
+        self.search_client.indices.put_alias.reset_mock()
+        self.search_client.indices.create.reset_mock()
+        self.search_client.indices.delete.reset_mock()
 
     def assert_document_structure(self, document):
         # Here we check if documents have all required keys including _id
@@ -51,20 +51,20 @@ class ElasticSearchClientTestCase(TestCase):
         self.assertEqual(set(document.keys()), expected_keys, document["_id"])
 
 
-class TestIndexDatasetVersion(ElasticSearchClientTestCase):
+class TestIndexDatasetVersion(OpenSearchClientTestCase):
     """
     This test case represents the scenario where a all harvest data gets pushed to an index for the first time
     """
 
     fixtures = ["datasets-history"]
-    elastic_client = get_elastic_client_mock()
+    search_client = get_search_client_mock()
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
-    def test_index(self, info_logger, streaming_bulk, get_es_client):
+    def test_index(self, info_logger, streaming_bulk, get_search_client):
 
-        # Setting up the database that indicates no Elastic index exists yet
+        # Setting up the database that indicates no index exists yet
         DatasetVersion.objects.all().update(is_current=False)
 
         # Setting basic expectations used in the test
@@ -89,9 +89,9 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
         # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
-        # Asserting calls to Elastic Search library
-        self.assertEqual(get_es_client.call_count, 3,
-                         "Expected an Elastic Search client to get created for each language")
+        # Asserting calls to OpenSearch library
+        self.assertEqual(get_search_client.call_count, 3,
+                         "Expected a client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")
@@ -100,15 +100,15 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
                 self.assert_document_structure(doc)
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 0)
-        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
-        for args, kwargs in self.elastic_client.indices.create.call_args_list:
+        self.assertEqual(self.search_client.indices.delete.call_count, 0)
+        self.assertEqual(self.search_client.indices.create.call_count, 3)
+        for args, kwargs in self.search_client.indices.create.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 3,
-                         "Expected Elastic Search to ignore aliases")
-        for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 3,
+                         "Expected to ignore aliases")
+        for args, kwargs in self.search_client.indices.put_alias.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
@@ -129,7 +129,7 @@ class TestIndexDatasetVersion(ElasticSearchClientTestCase):
                          "No changes should have been made to existing versions")
 
 
-class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
+class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
     """
     This test case represents the scenario where indices exist.
     Under this condition the following should be possible
@@ -139,12 +139,12 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
     """
 
     fixtures = ["datasets-history", "index-history"]
-    elastic_client = get_elastic_client_mock(has_history=True)
+    search_client = get_search_client_mock(has_history=True)
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
-    def test_index(self, info_logger, streaming_bulk, get_es_client):
+    def test_index(self, info_logger, streaming_bulk, get_search_client):
 
         # Setting basic expectations used in the test
         expected_doc_count = {
@@ -157,7 +157,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             "nl": ElasticIndex.get_index_config("nl"),
             "unk": ElasticIndex.get_index_config("unk")
         }
-        get_es_client.reset_mock()
+        get_search_client.reset_mock()
 
         # Calling command and catching output for some checks
         call_command("index_dataset_version", "--dataset=test")
@@ -169,9 +169,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
-        # Asserting calls to Elastic Search library
-        self.assertEqual(get_es_client.call_count, 3,
-                         "Expected an Elastic Search client to get created for each language")
+        # Asserting calls to OpenSearch library
+        self.assertEqual(get_search_client.call_count, 3,
+                         "Expected a client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")
@@ -184,21 +184,21 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
-        for args, kwargs in self.elastic_client.indices.delete.call_args_list:
+        self.assertEqual(self.search_client.indices.delete.call_count, 3)
+        for args, kwargs in self.search_client.indices.delete.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
-        for args, kwargs in self.elastic_client.indices.create.call_args_list:
+        self.assertEqual(self.search_client.indices.create.call_count, 3)
+        for args, kwargs in self.search_client.indices.create.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],
                              "Expected index configuration to come from database if one was created in the past")
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 3,
-                         "Expected an Elastic Search alias creation for each language")
-        for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 3,
+                         "Expected alias creation for each language")
+        for args, kwargs in self.search_client.indices.put_alias.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
@@ -208,10 +208,10 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
         self.assertEqual(dataset_version.id, 1)
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @override_settings(VERSION="0.0.2")
-    def test_index_specific_version(self, streaming_bulk, get_es_client):
+    def test_index_specific_version(self, streaming_bulk, get_search_client):
         # Setup a new version and modify the old version to a single document version
         dataset = Dataset.objects.last()
         dataset.create_new_version()
@@ -243,7 +243,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
         self.assertEqual(dataset_version.id, 3)
         # Index the previous version and check we only get the modified documents
-        get_es_client.reset_mock()
+        get_search_client.reset_mock()
         streaming_bulk.reset_mock()
         call_command("index_dataset_version", "--dataset=test", "--harvester-version=0.0.1")
         self.assertEqual(streaming_bulk.call_count, 3)
@@ -259,11 +259,11 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
                                      "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
-        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 3,
-                         "Expected an Elastic Search alias creation for each language")
-        for args, kwargs in self.elastic_client.indices.put_alias.call_args_list:
+        self.assertEqual(self.search_client.indices.delete.call_count, 3)
+        self.assertEqual(self.search_client.indices.create.call_count, 3)
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 3,
+                         "Expected alias creation for each language")
+        for args, kwargs in self.search_client.indices.put_alias.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
@@ -272,11 +272,11 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
         self.assertEqual(dataset_version.id, 1)
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     @override_settings(VERSION="0.0.1")
-    def test_index_no_promote(self, info_logger, streaming_bulk, get_es_client):
+    def test_index_no_promote(self, info_logger, streaming_bulk, get_search_client):
 
         # Setup a new version and modify the old version to a single document version
         dataset = Dataset.objects.last()
@@ -293,7 +293,7 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             "nl": ElasticIndex.get_index_config("nl"),
             "unk": ElasticIndex.get_index_config("unk")
         }
-        get_es_client.reset_mock()
+        get_search_client.reset_mock()
 
         # Calling command and catching output for some checks
         call_command("index_dataset_version", "--dataset=test", "--no-promote")
@@ -305,9 +305,9 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         # Expect command to print how many documents it encountered with unknown language
         info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
-        # Asserting calls to Elastic Search library
-        self.assertEqual(get_es_client.call_count, 3,
-                         "Expected an Elastic Search client to get created for each language")
+        # Asserting calls to OpenSearch library
+        self.assertEqual(get_search_client.call_count, 3,
+                         "Expected a client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")
@@ -320,19 +320,19 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
-        self.assertEqual(self.elastic_client.indices.delete.call_count, 3)
-        for args, kwargs in self.elastic_client.indices.delete.call_args_list:
+        self.assertEqual(self.search_client.indices.delete.call_count, 3)
+        for args, kwargs in self.search_client.indices.delete.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.elastic_client.indices.create.call_count, 3)
-        for args, kwargs in self.elastic_client.indices.create.call_args_list:
+        self.assertEqual(self.search_client.indices.create.call_count, 3)
+        for args, kwargs in self.search_client.indices.create.call_args_list:
             index_name, version, version_id, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],
                              "Expected index configuration to come from database if one was created in the past")
-        self.assertEqual(self.elastic_client.indices.put_alias.call_count, 0,
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 0,
                          "Expected no alias creation")
 
         self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
@@ -340,14 +340,14 @@ class TestIndexDatasetVersionWithHistory(ElasticSearchClientTestCase):
         self.assertEqual(dataset_version.id, 1)
 
 
-class TestIndexDatasetVersionFallback(ElasticSearchClientTestCase):
+class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
     """
     This test case creates two dataset versions and drops Document count to below the 5% mark for non-current version.
     That should result in the new version becoming the current version,
     but the documents should come from the old version as the new version got corrupted.
     """
 
-    elastic_client = get_elastic_client_mock(has_history=True)
+    search_client = get_search_client_mock(has_history=True)
 
     @classmethod
     def setUpClass(cls):
@@ -361,10 +361,10 @@ class TestIndexDatasetVersionFallback(ElasticSearchClientTestCase):
         for doc in cls.new_version.document_set.all()[:3]:
             doc.delete()
 
-    @patch("core.models.search.index.get_es_client", return_value=elastic_client)
+    @patch("core.models.search.index.get_search_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
-    def test_index(self, info_logger, streaming_bulk, get_es_client):
+    def test_index(self, info_logger, streaming_bulk, get_search_client):
 
         expected_doc_count = {
             "en": 0,
@@ -390,9 +390,9 @@ class TestIndexDatasetVersionFallback(ElasticSearchClientTestCase):
             "Expected corrupted version to copy collection from previous current version, creating a new Collection"
         )
 
-        # Asserting calls to Elastic Search library
-        self.assertEqual(get_es_client.call_count, 3,
-                         "Expected an Elastic Search client to get created for each language")
+        # Asserting calls to OpenSearch library
+        self.assertEqual(get_search_client.call_count, 3,
+                         "Expected a client to get created for each language")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, version_id, language = kwargs["index"].split("-")

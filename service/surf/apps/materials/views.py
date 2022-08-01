@@ -46,11 +46,11 @@ from surf.apps.materials.serializers import (
 from surf.apps.materials.utils import (
     add_extra_parameters_to_materials,
     get_material_details_by_id,
-    add_search_query_to_elastic_index
+    add_search_query_to_log
 )
 from surf.apps.locale.models import Locale
 from surf.apps.core.schema import SearchSchema
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from surf.vendor.search.api import SearchApiClient
 
 
 logger = logging.getLogger(__name__)
@@ -155,9 +155,9 @@ class MaterialSearchAPIView(CreateAPIView):
         data = serializer.validated_data
         data["drilldown_names"] = filters_app.metadata.get_filter_field_names()
 
-        elastic = ElasticSearchApiClient()
+        client = SearchApiClient()
 
-        res = elastic.search(**data)
+        res = client.search(**data)
         records = res["records"]
         records = add_extra_parameters_to_materials(filters_app.metadata, records)
 
@@ -168,7 +168,7 @@ class MaterialSearchAPIView(CreateAPIView):
         )
 
         if data['page'] == 1 and data["search_text"]:
-            add_search_query_to_elastic_index(res["recordcount"], data["search_text"], data["filters"])
+            add_search_query_to_log(res["recordcount"], data["search_text"], data["filters"])
 
         rv = dict(records=records,
                   records_total=res["recordcount"],
@@ -200,9 +200,9 @@ class KeywordsAPIView(ListAPIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        elastic = ElasticSearchApiClient()
+        client = SearchApiClient()
 
-        res = elastic.autocomplete(**data)
+        res = client.autocomplete(**data)
         return Response(res)
 
 
@@ -223,8 +223,8 @@ class SimilarityAPIView(RetrieveAPIView):
         serializer.is_valid(raise_exception=True)
         external_id = serializer.validated_data["external_id"]
         language = serializer.validated_data["language"]
-        elastic = ElasticSearchApiClient()
-        result = elastic.more_like_this(external_id, language)
+        client = SearchApiClient()
+        result = client.more_like_this(external_id, language)
         result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result
 
@@ -246,8 +246,8 @@ class AuthorSuggestionsAPIView(RetrieveAPIView):
         serializer = self.get_serializer(data=self.request.GET)
         serializer.is_valid(raise_exception=True)
         author_name = serializer.validated_data["author_name"]
-        elastic = ElasticSearchApiClient()
-        result = elastic.author_suggestions(author_name)
+        client = SearchApiClient()
+        result = client.author_suggestions(author_name)
         result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result
 
@@ -285,13 +285,8 @@ class MaterialAPIView(APIView):
 
         else:
             # return overview of newest Materials
-            elastic = ElasticSearchApiClient()
-
-            res = elastic.search('',
-                                 # sort by newest items first
-                                 ordering="-publisher_date",
-                                 page_size=_MATERIALS_COUNT_IN_OVERVIEW)
-
+            client = SearchApiClient()
+            res = client.search('', ordering="-publisher_date", page_size=_MATERIALS_COUNT_IN_OVERVIEW)
             res = add_extra_parameters_to_materials(filters_app.metadata,
                                                     res["records"])
         return Response(res)
@@ -458,9 +453,9 @@ class CollectionViewSet(ModelViewSet):
                       page_size=data["page_size"])
 
             if ids:
-                elastic = ElasticSearchApiClient()
+                client = SearchApiClient()
 
-                res = elastic.get_materials_by_id(ids, 1, len(ids))
+                res = client.get_materials_by_id(ids, 1, len(ids))
                 records = res.get("records", [])
                 records = add_extra_parameters_to_materials(filters_app.metadata, records)
 
@@ -587,6 +582,6 @@ class MaterialSetAPIView(APIView):
         results = _get_material_by_external_id(request, data['external_id'])
         parts = results[0]['has_parts']
 
-        api_client = ElasticSearchApiClient()
-        api_response = api_client.get_materials_by_id(parts, page_size=100)
+        client = SearchApiClient()
+        api_response = client.get_materials_by_id(parts, page_size=100)
         return Response(api_response)

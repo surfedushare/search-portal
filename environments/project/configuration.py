@@ -135,7 +135,7 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
     return environment, session
 
 
-def create_elastic_search_index_configuration(lang, decompound_word_list=None):
+def create_open_search_index_configuration(lang, decompound_word_list=None):
     language_analyzers = {
         'nl': 'custom_dutch',
         'en': 'english'

@@ -12,15 +12,15 @@ django:
   domain: "localhost"
   logging:
     level: "DEBUG"
-    is_elastic: false
+    is_open_search: false
   send_admin_notifications: false
 
 postgres:
   host: "postgres"
   port: 5432
 
-elastic_search:
-  host: "elasticsearch:9200"
+open_search:
+  host: "opensearch:9200"
   protocol: "http"
   verify_certs: true  # ignored as long as protocol is http
   enable_decompound_analyzers: true

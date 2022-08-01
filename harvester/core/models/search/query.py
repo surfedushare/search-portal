@@ -23,7 +23,7 @@ class QueryRanking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-    def get_elastic_ratings(self, as_dict=False):
+    def get_search_ratings(self, as_dict=False):
         ratings = [
             {
                 "_index": key.split(":")[0],
@@ -56,7 +56,7 @@ class QueryManager(models.Manager):
     def get_query_rankings(self, user):
         rankings = defaultdict(dict)
         for ranking in QueryRanking.objects.filter(user=user):
-            rankings[ranking.query].update(ranking.get_elastic_ratings(as_dict=True))
+            rankings[ranking.query].update(ranking.get_search_ratings(as_dict=True))
         return rankings
 
 
@@ -70,7 +70,7 @@ class Query(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-    def get_elastic_query_body(self, fields, enrichments=None):
+    def get_search_query_body(self, fields, enrichments=None):
         enrichments = enrichments or []
         query = f"{self.query} {' '.join(enrichments).strip()}"
         return {
@@ -97,14 +97,14 @@ class Query(models.Model):
             }
         }
 
-    def get_elastic_ranking_request(self, user, fields):
+    def get_search_ranking_request(self, user, fields):
         ratings = []
         for ranking in self.queryranking_set.filter(user=user):
-            ratings += ranking.get_elastic_ratings()
+            ratings += ranking.get_search_ratings()
         return {
             "id": slugify(self.query),
             "request": {
-                "query": self.get_elastic_query_body(fields)
+                "query": self.get_search_query_body(fields)
             },
             "ratings": ratings
         }
