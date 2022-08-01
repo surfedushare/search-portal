@@ -78,6 +78,7 @@ export default {
     SearchBar,
   },
   mixins: [PageMixin],
+  dependencies: ["$log"],
   beforeRouteLeave(to, from, next) {
     this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
     next();
@@ -126,7 +127,10 @@ export default {
       this.executeSearch(changed);
     },
     executeSearch(updateUrl) {
-      this.$store.dispatch("searchMaterials", this.search);
+      this.$store.dispatch("searchMaterials", this.search).then((results) => {
+        this.$log.siteSearch(this.$route.query, results.records_total);
+      });
+
       if (updateUrl) {
         this.$router.push(generateSearchMaterialsQuery(this.search, this.$route.name));
       }
