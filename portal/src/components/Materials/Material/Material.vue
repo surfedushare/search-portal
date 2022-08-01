@@ -206,6 +206,9 @@ li:hover h3 {
     &_content {
       grid-template-columns: 78% auto;
       display: grid;
+      @media @tablet {
+        grid-template-columns: 74% auto;
+      }
     }
 
     &_main_info {
