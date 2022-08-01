@@ -8,7 +8,7 @@
           ../assets/images/pictures/rawpixel-760027-unsplash@2x.jpg 2x,
           ../assets/images/pictures/rawpixel-760027-unsplash@3x.jpg 3x
         "
-      >
+      />
       <h2 class="header-title">
         {{ title }}
       </h2>
@@ -18,17 +18,17 @@
 
 <script>
 export default {
-  name: 'HeaderBlock',
+  name: "HeaderBlock",
   props: {
     title: {
       type: String,
-      default: '',
+      default: "",
     },
   },
-}
+};
 </script>
 <style scoped lang="less">
-@import url('../variables');
+@import url("../variables");
 .center-header {
   padding: 80px 0;
 
