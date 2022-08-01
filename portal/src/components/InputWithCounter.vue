@@ -1,11 +1,6 @@
 <template>
   <div class="edusources-container">
-    <input
-      v-bind="$attrs"
-      @input="onChange"
-      @focus="showCounter = true"
-      @blur="onBlur"
-    >
+    <input v-bind="$attrs" @input="onChange" @focus="showCounter = true" @blur="onBlur" />
     <div v-if="showCounter" class="counter">
       {{ charactersRemaining }}
     </div>
@@ -13,7 +8,7 @@
 </template>
 <script>
 export default {
-  name: 'InputWithCounter',
+  name: "InputWithCounter",
   inheritAttrs: false,
   props: {
     onSubmit: {
@@ -24,30 +19,30 @@ export default {
   data() {
     return {
       showCounter: false,
-    }
+    };
   },
   computed: {
     charactersRemaining() {
       if (this.$attrs.value) {
-        return this.$attrs.maxlength - this.$attrs.value.length
+        return this.$attrs.maxlength - this.$attrs.value.length;
       }
 
-      return this.$attrs.maxlength
+      return this.$attrs.maxlength;
     },
   },
   methods: {
     onChange(event) {
-      this.$emit('input', event.target.value)
+      this.$emit("input", event.target.value);
     },
     onBlur() {
-      this.onSubmit()
-      this.showCounter = false
+      this.onSubmit();
+      this.showCounter = false;
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
-@import './../variables';
+@import "./../variables";
 
 .edusources-container {
   position: relative;

@@ -19,8 +19,7 @@ export default {
     onSaveRating() {
       this.submitting = true;
 
-      const ratings =
-        JSON.parse(sessionStorage.getItem("ratedMaterials")) || [];
+      const ratings = JSON.parse(sessionStorage.getItem("ratedMaterials")) || [];
       ratings.push(this.material.external_id);
       sessionStorage.setItem("ratedMaterials", JSON.stringify(ratings));
 
@@ -30,13 +29,11 @@ export default {
           star_rating: this.rating,
         })
         .then(() => {
-          this.$store
-            .dispatch("getMaterial", { id: this.$route.params.id })
-            .then(() => {
-              this.submitting = false;
-              this.saved = true;
-              this.rating = 0;
-            });
+          this.$store.dispatch("getMaterial", { id: this.$route.params.id }).then(() => {
+            this.submitting = false;
+            this.saved = true;
+            this.rating = 0;
+          });
         });
     },
   },

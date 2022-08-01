@@ -2,7 +2,7 @@
   <div class="switch-input">
     <span v-if="label" class="label">{{ label }}&nbsp;&nbsp;</span>
     <label class="switch">
-      <input v-model="internalValue" type="checkbox">
+      <input v-model="internalValue" type="checkbox" />
       <span class="slider round" />
     </label>
   </div>
@@ -10,28 +10,28 @@
 
 <script>
 export default {
-  name: 'SwitchInput',
+  name: "SwitchInput",
   props: {
     label: {
       type: String,
-      default: '',
+      default: "",
     },
     value: Boolean,
   },
   data() {
     return {
       internalValue: this.value,
-    }
+    };
   },
   watch: {
     internalValue(input) {
-      this.$emit('input', input)
+      this.$emit("input", input);
     },
   },
-}
+};
 </script>
 <style lang="less">
-@import '../variables';
+@import "../variables";
 
 .switch-input {
   display: flex;
@@ -72,7 +72,7 @@ span.label {
 
 .slider:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 26px;
   width: 26px;
   left: 4px;

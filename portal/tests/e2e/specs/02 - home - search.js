@@ -21,21 +21,14 @@ describe("Home page - search", () => {
   });
 
   it("Should find materials by author", () => {
-    cy.searchFor("esther").searchResultsShouldContain(
-      "Esther Quaedackers",
-      6,
-      1
-    );
+    cy.searchFor("esther").searchResultsShouldContain("Esther Quaedackers", 6, 1);
   });
 
   it("Should show search suggestion when a search suggestion is available", () => {
     cy.searchFor("thee")
       .get("[data-test=search_suggestion]")
       .should("be.visible")
-      .should(
-        "contain",
-        "Bedoelde je these ? Want er zijn geen resultaten voor 'thee'"
-      );
+      .should("contain", "Bedoelde je these ? Want er zijn geen resultaten voor 'thee'");
   });
 
   it("Should search with search suggestion when the search suggestion is clicked", () => {
@@ -58,6 +51,6 @@ describe("Home page - search", () => {
       .get(".filter-categories__title")
       .should("not.be.visible")
       .get(".filter-categories__items")
-      .should("not.be.visible")
+      .should("not.be.visible");
   });
 });

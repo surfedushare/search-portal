@@ -3,17 +3,15 @@
     <label class="dropdown-container__label">{{ $t(label) }}:</label>
 
     <div
-      :class="{ 'active': visible === true }"
+      :class="{ active: visible === true }"
       class="dropdown-container__select"
       :data-test="'filter_' + field"
       @click="onToggle"
     >
-      <span
-        role="textbox"
-        :class="{ 'bold': selectedFilters !== $t(defaultOption) }"
-        class="filter_checkbox"
-      >{{ selectedFilters }}</span>
-      <div class="dropdown-container__selector" :class="{ 'active': visible === true }"></div>
+      <span role="textbox" :class="{ bold: selectedFilters !== $t(defaultOption) }" class="filter_checkbox">{{
+        selectedFilters
+      }}</span>
+      <div class="dropdown-container__selector" :class="{ active: visible === true }"></div>
     </div>
 
     <ul v-show="visible" class="dropdown-container__dropdown">
@@ -34,19 +32,19 @@
 
 <script>
 export default {
-  name: 'FilterDropdown',
+  name: "FilterDropdown",
   props: {
     label: {
       type: String,
-      default: '',
+      default: "",
     },
     field: {
       type: String,
-      default: '',
+      default: "",
     },
     defaultOption: {
       type: String,
-      default: '',
+      default: "",
     },
     filters: {
       type: Array,
@@ -54,31 +52,29 @@ export default {
     },
     visible: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     selectedFilters(filter) {
-      const selection = this.filters
-        .filter(filter => filter.selected)
-        .map(filter => filter.value);
+      const selection = this.filters.filter((filter) => filter.selected).map((filter) => filter.value);
       const filterNames = this.filters
-        .filter(filter => filter.selected)
-        .map(filter => filter.title_translations[this.$i18n.locale].toLowerCase())
+        .filter((filter) => filter.selected)
+        .map((filter) => filter.title_translations[this.$i18n.locale].toLowerCase());
 
-      this.$emit('update:selection', { field: this.field, selection })
-      return filterNames?.length === 0 ? this.$i18n.t(filter.defaultOption) : filterNames.join(", ")
+      this.$emit("update:selection", { field: this.field, selection });
+      return filterNames?.length === 0 ? this.$i18n.t(filter.defaultOption) : filterNames.join(", ");
     },
     visibleFilters() {
-      return this.filters.filter(x => !x.is_hidden).sort()
-    }
+      return this.filters.filter((x) => !x.is_hidden).sort();
+    },
   },
   methods: {
     onToggle() {
-      this.$emit('toggle', { field: this.field })
+      this.$emit("toggle", { field: this.field });
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -132,15 +128,12 @@ input[type="checkbox"]:checked:before {
     width: 14px;
     height: 48px;
     right: 12px;
-    background: url("../../assets/images/dropdown-arrow-grey.svg") 50% 55% / contain
-      no-repeat;
+    background: url("../../assets/images/dropdown-arrow-grey.svg") 50% 55% / contain no-repeat;
     &.active {
-      background: url("../../assets/images/dropdown-arrow-green.svg") 50% 55% / contain
-        no-repeat;
+      background: url("../../assets/images/dropdown-arrow-green.svg") 50% 55% / contain no-repeat;
     }
     &:hover {
-      background: url("../../assets/images/dropdown-arrow-green.svg") 50% 55% / contain
-        no-repeat;
+      background: url("../../assets/images/dropdown-arrow-green.svg") 50% 55% / contain no-repeat;
     }
   }
 

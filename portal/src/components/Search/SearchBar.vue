@@ -6,46 +6,46 @@
 </template>
 
 <script>
-import PreSearchFilters from '@/components/Search/PreSearchFilters'
-import SearchTerm from '@/components/Search/SearchTerm'
-import { isNull, forEach } from 'lodash'
+import PreSearchFilters from "@/components/Search/PreSearchFilters";
+import SearchTerm from "@/components/Search/SearchTerm";
+import { isNull, forEach } from "lodash";
 
 export default {
-  name: 'SearchBar',
+  name: "SearchBar",
   components: {
     SearchTerm,
-    PreSearchFilters
+    PreSearchFilters,
   },
   props: {
     enablePreFilters: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      searchText: '',
+      searchText: "",
       filters: {},
-    }
+    };
   },
   methods: {
     searchMaterials(searchText) {
       forEach(this.filters, (selection, field) => {
         if (selection.length) {
-          this.$store.commit('SELECT_FILTER_CATEGORIES', {category: field, selection})
+          this.$store.commit("SELECT_FILTER_CATEGORIES", { category: field, selection });
         }
-      })
-      this.$emit('search', searchText)
+      });
+      this.$emit("search", searchText);
     },
     onUpdateFilter(filter) {
       if (isNull(filter.selection)) {
-        delete this.filters[filter.field]
-        return
+        delete this.filters[filter.field];
+        return;
       }
-      this.filters[filter.field] = filter.selection
+      this.filters[filter.field] = filter.selection;
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

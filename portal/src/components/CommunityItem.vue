@@ -1,18 +1,14 @@
 <template>
-  <div
-    :class="draft ? 'draft' : 'published'"
-    class="wrapper tile__wrapper"
-    @click="navigateToCommunity"
-  >
+  <div :class="draft ? 'draft' : 'published'" class="wrapper tile__wrapper" @click="navigateToCommunity">
     <div v-if="communityDetails.logo" class="logo">
-      <img :src="communityDetails.logo" alt="">
+      <img :src="communityDetails.logo" alt="" />
     </div>
     <h3 class="name">
       {{ communityDetails.title }}
     </h3>
     <div class="actions">
       <span>
-        {{ $t('See') }}
+        {{ $t("See") }}
         <i class="fa fa-chevron-right" />
       </span>
       <router-link
@@ -33,10 +29,10 @@
   </div>
 </template>
 <script>
-import { PublishStatus } from '~/utils'
+import { PublishStatus } from "~/utils";
 
 export default {
-  name: 'CommunityItem',
+  name: "CommunityItem",
   props: {
     community: {
       type: Object,
@@ -54,26 +50,26 @@ export default {
     communityDetails() {
       return this.community.community_details.find(
         (detail) => detail.language_code === this.$i18n.locale.toUpperCase()
-      )
+      );
     },
     draft() {
-      return this.community.publish_status == PublishStatus.DRAFT
+      return this.community.publish_status == PublishStatus.DRAFT;
     },
   },
   methods: {
     navigateToCommunity() {
       this.$router.push(
         this.localePath({
-          name: 'communities-community',
+          name: "communities-community",
           params: { community: this.community.id },
         })
-      )
+      );
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
-@import url('../variables');
+@import url("../variables");
 
 .wrapper {
   padding: 20px 20px 20px 40px;
@@ -86,7 +82,7 @@ export default {
   justify-content: space-between;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     width: 5px;
     height: 92px;

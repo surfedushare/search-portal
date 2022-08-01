@@ -242,12 +242,10 @@ export default {
               linkedIn.innerText = share.linkedin.counter_value;
             }
             if (share.twitter) {
-              social_counters.querySelector("#twitter_counter").innerText =
-                share.twitter.counter_value;
+              social_counters.querySelector("#twitter_counter").innerText = share.twitter.counter_value;
             }
             if (share.link) {
-              social_counters.querySelector("#url_counter").innerText =
-                share.link.counter_value;
+              social_counters.querySelector("#url_counter").innerText = share.link.counter_value;
             }
             if (linkedIn) {
               clearInterval(this.socialCounterInterval);
@@ -300,16 +298,8 @@ export default {
       return item.name;
     },
     downloadOnClick(event, material) {
-      const dimensions = material.publishers.length
-        ? { dimension3: material.publishers.join(" - ") }
-        : {};
-      this.$log.customEvent(
-        "Goal",
-        "Download",
-        event.currentTarget.href,
-        null,
-        dimensions
-      );
+      const dimensions = material.publishers.length ? { dimension3: material.publishers.join(" - ") } : {};
+      this.$log.customEvent("Goal", "Download", event.currentTarget.href, null, dimensions);
       if (!material.files || material.files.length <= 1) {
         return;
       }
@@ -325,11 +315,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      "isAuthenticated",
-      "my_collections",
-      "material_communities",
-    ]),
+    ...mapGetters(["isAuthenticated", "my_collections", "material_communities"]),
     formattedPublishedAt() {
       return formatDate(this.material.published_at, this.$i18n.locale);
     },
@@ -337,11 +323,9 @@ export default {
       return this.my_collections.map((collection) => {
         const collectionTitle = collection[`title_${this.$i18n.locale}`];
         const communityTitles = collection.communities.map((community) => {
-          const communityDetails = community.community_details.find(
-            (details) => {
-              return details.language_code.toLowerCase() === this.$i18n.locale;
-            }
-          );
+          const communityDetails = community.community_details.find((details) => {
+            return details.language_code.toLowerCase() === this.$i18n.locale;
+          });
           return communityDetails.title;
         });
         return {
@@ -351,15 +335,15 @@ export default {
       });
     },
     studyTitles() {
-      const studies = (this.material.studies) ? this.material.studies : this.material.disciplines;
+      const studies = this.material.studies ? this.material.studies : this.material.disciplines;
       if (isEmpty(studies)) {
-        return
+        return;
       }
       let studyTitles = studies.map((study) => {
         return this.getTitleTranslation(study, this.$i18n.locale);
       });
       return studyTitles.join(", ");
-    }
+    },
   },
   watch: {
     collections() {

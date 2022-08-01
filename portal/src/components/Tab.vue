@@ -5,26 +5,26 @@
 </template>
 <script>
 export default {
-  name: 'Tab',
+  name: "Tab",
   props: {
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     identifier: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   data() {
     return {
       isActive: true,
-    }
+    };
   },
-}
+};
 </script>
 <style lang="less" scoped>
-@import url('../variables');
+@import url("../variables");
 
 .tabcontent {
   margin-top: 50px;

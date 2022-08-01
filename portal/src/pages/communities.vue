@@ -3,67 +3,38 @@
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
-        <Tabs
-          v-if="user.id && userCommunities(user).length"
-          :active-tab="activeTab"
-          :select-tab="setActiveTab"
-        >
+        <Tabs v-if="user.id && userCommunities(user).length" :active-tab="activeTab" :select-tab="setActiveTab">
           <template v-slot:after-tabs>
-            <SwitchInput
-              v-model="showDrafts"
-              class="draft-switch"
-              :label="$t('Show-drafts')"
-            />
+            <SwitchInput v-model="showDrafts" class="draft-switch" :label="$t('Show-drafts')" />
           </template>
           <Tab :title="$t('All-communities')" identifier="all-communities">
             <ul v-if="communities.length" class="communities__items">
-              <li
-                v-for="community in communities"
-                :key="community.id"
-                class="communities__item"
-              >
-                <CommunityItem
-                  :community="community"
-                  :editable="editable(community)"
-                />
+              <li v-for="community in communities" :key="community.id" class="communities__item">
+                <CommunityItem :community="community" :editable="editable(community)" />
               </li>
             </ul>
             <h3 v-else class="text-center">
-              {{ $t('No-communities-available') }}
+              {{ $t("No-communities-available") }}
             </h3>
           </Tab>
           <Tab :title="$t('My-communities')" identifier="my-communities-tab">
-            <ul
-              v-if="myCommunities.length"
-              class="communities__items my-communities"
-            >
-              <li
-                v-for="community in myCommunities"
-                :key="community.id"
-                class="communities__item"
-              >
-                <CommunityItem
-                  :community="community"
-                  :editable="editable(community)"
-                />
+            <ul v-if="myCommunities.length" class="communities__items my-communities">
+              <li v-for="community in myCommunities" :key="community.id" class="communities__item">
+                <CommunityItem :community="community" :editable="editable(community)" />
               </li>
             </ul>
             <h3 v-else class="text-center">
-              {{ $t('No-communities-available') }}
+              {{ $t("No-communities-available") }}
             </h3>
           </Tab>
         </Tabs>
         <ul v-else-if="communities.length" class="communities__items">
-          <li
-            v-for="community in communities"
-            :key="community.id"
-            class="communities__item"
-          >
+          <li v-for="community in communities" :key="community.id" class="communities__item">
             <CommunityItem :community="community" />
           </li>
         </ul>
         <h3 v-else class="text-center">
-          {{ $t('No-communities-available') }}
+          {{ $t("No-communities-available") }}
         </h3>
       </div>
     </section>
@@ -71,17 +42,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import CommunityItem from '~/components/CommunityItem'
-import HeaderBlock from '~/components/HeaderBlock'
-import SwitchInput from '~/components/switch-input'
-import Tab from '~/components/Tab'
-import Tabs from '~/components/Tabs'
-import PageMixin from '~/pages/page-mixin'
-import { PublishStatus } from '~/utils'
+import { mapGetters } from "vuex";
+import CommunityItem from "~/components/CommunityItem";
+import HeaderBlock from "~/components/HeaderBlock";
+import SwitchInput from "~/components/switch-input";
+import Tab from "~/components/Tab";
+import Tabs from "~/components/Tabs";
+import PageMixin from "~/pages/page-mixin";
+import { PublishStatus } from "~/utils";
 
 export default {
-  name: 'Communities',
+  name: "Communities",
   components: {
     CommunityItem,
     HeaderBlock,
@@ -92,61 +63,57 @@ export default {
   mixins: [PageMixin],
   data() {
     return {
-      activeTab: this.$route.query.tab || 'all-communities',
+      activeTab: this.$route.query.tab || "all-communities",
       showDrafts: true,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['user', 'allCommunities', 'userCommunities']),
+    ...mapGetters(["user", "allCommunities", "userCommunities"]),
     communities() {
       if (this.showDrafts) {
-        return this.allCommunities(this.user)
+        return this.allCommunities(this.user);
       }
 
-      return this.allCommunities(this.user).filter(
-        (c) => c.publish_status === PublishStatus.PUBLISHED
-      )
+      return this.allCommunities(this.user).filter((c) => c.publish_status === PublishStatus.PUBLISHED);
     },
     myCommunities() {
       if (this.showDrafts) {
-        return this.userCommunities(this.user)
+        return this.userCommunities(this.user);
       }
 
-      return this.userCommunities(this.user).filter(
-        (c) => c.publish_status === PublishStatus.PUBLISHED
-      )
+      return this.userCommunities(this.user).filter((c) => c.publish_status === PublishStatus.PUBLISHED);
     },
   },
   mounted() {
-    this.$store.dispatch('getCommunities')
+    this.$store.dispatch("getCommunities");
   },
   metaInfo() {
     return {
-      title: this.$i18n.t('Communities'),
-    }
+      title: this.$i18n.t("Communities"),
+    };
   },
   methods: {
     editable(community) {
       if (!this.user || !this.user.communities) {
-        return false
+        return false;
       }
 
-      return this.user.communities.some((id) => id === community.id)
+      return this.user.communities.some((id) => id === community.id);
     },
     setActiveTab(tabIdentifier) {
-      this.activeTab = tabIdentifier
+      this.activeTab = tabIdentifier;
 
       this.$router.replace({
-        name: this.localePath({ name: 'communities' }).name,
+        name: this.localePath({ name: "communities" }).name,
         query: { tab: tabIdentifier },
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped lang="less">
-@import url('../variables');
+@import url("../variables");
 
 .communities {
   &__center-header {

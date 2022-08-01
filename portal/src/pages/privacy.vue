@@ -7,18 +7,11 @@
           <div class="privacy__form">
             <form action="/" class="privacy__form_in" novalidate @submit.prevent="onSubmit">
               <div class="privacy__form__column">
-                <div
-                  v-for="permission in permissions"
-                  :key="permission.type"
-                  class="privacy__form__row"
-                >
+                <div v-for="permission in permissions" :key="permission.type" class="privacy__form__row">
                   <p class="privacy__form__label">{{ permission[$i18n.locale].title }}</p>
                   <div class="permission-container">
                     <div class="switch-container">
-                      <switch-input
-                        v-if="!permission.is_notification_only"
-                        v-model="permission.is_allowed"
-                      />
+                      <switch-input v-if="!permission.is_notification_only" v-model="permission.is_allowed" />
                     </div>
                     <div
                       class="description"
@@ -28,9 +21,7 @@
                     >
                       <p>
                         {{ permission[$i18n.locale].description }}
-                        <router-link
-                          :to="localePath(permission.more_info_route)"
-                        >{{ $t('more-info') }}</router-link>
+                        <router-link :to="localePath(permission.more_info_route)">{{ $t("more-info") }}</router-link>
                       </p>
                     </div>
                   </div>
@@ -38,20 +29,21 @@
               </div>
               <div v-show="withdrawnCommunityPermission" class="warning">
                 <span class="nota-bene">i</span>
-                <p>{{ $t('Delete-account-warning') }}</p>
+                <p>{{ $t("Delete-account-warning") }}</p>
               </div>
 
-              <div v-if="isSaved" class="success">&#10004; {{ $t('Data-saved') }}</div>
+              <div v-if="isSaved" class="success">&#10004; {{ $t("Data-saved") }}</div>
               <div class="privacy__form__buttons">
                 <button
                   :disabled="isSubmitting"
                   class="button privacy__form__button"
                   :class="withdrawnCommunityPermission && 'warning'"
-                >{{ submitButtonLabel }}</button>
-                <button
-                  class="button privacy__form__button cancel"
-                  @click.prevent="$router.go(-1)"
-                >{{ $t('cancel-privacy-settings') }}</button>
+                >
+                  {{ submitButtonLabel }}
+                </button>
+                <button class="button privacy__form__button cancel" @click.prevent="$router.go(-1)">
+                  {{ $t("cancel-privacy-settings") }}
+                </button>
               </div>
             </form>
           </div>
@@ -62,19 +54,15 @@
             <div class="description">
               <p>
                 {{ cookies[$i18n.locale].description }} (
-                <router-link :to="localePath(cookies.more_info_route)">{{ $t('more-info') }}</router-link>)
+                <router-link :to="localePath(cookies.more_info_route)">{{ $t("more-info") }}</router-link
+                >)
               </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <CreateAccount
-      v-if="showPopup"
-      :user="user"
-      :show-popup="showPopup"
-      :close="closePopupCreateAccount"
-    />
+    <CreateAccount v-if="showPopup" :user="user" :show-popup="showPopup" :close="closePopupCreateAccount" />
     <DeleteAccountPopup
       v-if="showDeleteAccountPopup"
       :show-popup="showDeleteAccountPopup"
@@ -83,12 +71,12 @@
   </section>
 </template>
 <script>
-import { isNil } from 'lodash'
-import { mapGetters } from 'vuex'
-import HeaderBlock from '~/components/HeaderBlock'
-import CreateAccount from '~/components/Popup/CreateAccount'
-import DeleteAccountPopup from '~/components/Popup/DeleteAccountPopup'
-import SwitchInput from '~/components/switch-input'
+import { isNil } from "lodash";
+import { mapGetters } from "vuex";
+import HeaderBlock from "~/components/HeaderBlock";
+import CreateAccount from "~/components/Popup/CreateAccount";
+import DeleteAccountPopup from "~/components/Popup/DeleteAccountPopup";
+import SwitchInput from "~/components/switch-input";
 
 export default {
   components: {
@@ -98,7 +86,7 @@ export default {
     CreateAccount,
   },
   data() {
-    const showPopup = !!this.$route.query.popup
+    const showPopup = !!this.$route.query.popup;
     return {
       hasInitialCommunityPermission: null,
       isSaved: false,
@@ -106,105 +94,93 @@ export default {
       permissionsKey: 0,
       showPopup,
       showDeleteAccountPopup: false,
-    }
+    };
   },
   metaInfo() {
     return {
-      title: this.$i18n.t('My-privacy'),
-    }
+      title: this.$i18n.t("My-privacy"),
+    };
   },
   computed: {
-    ...mapGetters(['user', 'isAuthenticated', 'hasGivenCommunityPermission']),
+    ...mapGetters(["user", "isAuthenticated", "hasGivenCommunityPermission"]),
     permissions() {
       if (isNil(this.user) || isNil(this.user.permissions)) {
-        return []
+        return [];
       }
-      let permissions =
-        this.user.permissions.filter(
-          (permission) => !permission.is_notification_only
-        ) || []
+      let permissions = this.user.permissions.filter((permission) => !permission.is_notification_only) || [];
       if (!this.isAuthenticated) {
-        permissions = permissions.filter(
-          (permission) => !permission.is_after_login
-        )
+        permissions = permissions.filter((permission) => !permission.is_after_login);
       }
-      return permissions
+      return permissions;
     },
     cookies() {
       if (this.user && this.user.permissions) {
-        return this.user.permissions.find(
-          (permission) => permission.type === 'Cookies'
-        )
-      } else return false
+        return this.user.permissions.find((permission) => permission.type === "Cookies");
+      } else return false;
     },
     submitButtonLabel() {
       if (this.withdrawnCommunityPermission) {
-        return this.$t('Delete-account-and-logout')
+        return this.$t("Delete-account-and-logout");
       }
-      return this.$t('save-privacy-settings')
+      return this.$t("save-privacy-settings");
     },
     withdrawnCommunityPermission() {
-      return (
-        !this.hasGivenCommunityPermission && this.hasInitialCommunityPermission
-      )
+      return !this.hasGivenCommunityPermission && this.hasInitialCommunityPermission;
     },
   },
   mounted() {
-    this.hasInitialCommunityPermission = this.hasGivenCommunityPermission
+    this.hasInitialCommunityPermission = this.hasGivenCommunityPermission;
   },
   methods: {
     deleteAccount() {
-      this.isSubmitting = true
+      this.isSubmitting = true;
       this.$store
-        .dispatch('deleteUser')
+        .dispatch("deleteUser")
         .then(() => {
-          this.$store.dispatch('logout', { fully: true })
+          this.$store.dispatch("logout", { fully: true });
         })
         .catch((error) => {
           if (error) {
-            this.$store.commit('ADD_MESSAGE', {
-              level: 'error',
-              message: 'Session-expired',
-            })
+            this.$store.commit("ADD_MESSAGE", {
+              level: "error",
+              message: "Session-expired",
+            });
           }
-        })
-      this.closeDeleteAccountPopup()
+        });
+      this.closeDeleteAccountPopup();
     },
     onSubmit() {
       if (this.withdrawnCommunityPermission) {
-        this.showDeleteAccountPopup = true
+        this.showDeleteAccountPopup = true;
       } else {
-        this.submit()
+        this.submit();
       }
     },
     submit() {
-      this.isSubmitting = true
+      this.isSubmitting = true;
       this.$store
-        .dispatch('postUser')
+        .dispatch("postUser")
         .then(() => {
-          this.isSaved = true
+          this.isSaved = true;
           setTimeout(() => {
-            this.isSaved = false
-            if (
-              this.hasGivenCommunityPermission !==
-              this.hasInitialCommunityPermission
-            ) {
-              this.$store.dispatch('logout', { fully: true })
+            this.isSaved = false;
+            if (this.hasGivenCommunityPermission !== this.hasInitialCommunityPermission) {
+              this.$store.dispatch("logout", { fully: true });
             }
-          }, 1000)
+          }, 1000);
         })
         .finally(() => {
-          this.isSubmitting = false
-        })
+          this.isSubmitting = false;
+        });
     },
     closePopupCreateAccount() {
-      this.showPopup = false
+      this.showPopup = false;
     },
     closeDeleteAccountPopup() {
-      this.showDeleteAccountPopup = false
+      this.showDeleteAccountPopup = false;
     },
   },
-}
+};
 </script>
 <style lang="less">
 @import "./../variables";

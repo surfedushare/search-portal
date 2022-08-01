@@ -7,7 +7,7 @@
           <i class="arrow" />
         </h3>
         <div v-if="material.has_parts">
-          {{ $tc('Materials', material.has_parts.length) }}
+          {{ $tc("Materials", material.has_parts.length) }}
         </div>
       </div>
     </div>
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'MaterialPartOfSet',
+  name: "MaterialPartOfSet",
   props: {
     parentId: {
       type: String,
@@ -27,34 +27,34 @@ export default {
   data() {
     return {
       material: null,
-    }
+    };
   },
   mounted() {
-    this.updateMaterial()
+    this.updateMaterial();
   },
   methods: {
     goToMaterial() {
       this.$router.push(
         this.localePath({
-          name: 'materials-id',
+          name: "materials-id",
           params: { id: this.parentId },
         })
-      )
+      );
     },
     updateMaterial() {
       if (!this.parentId) {
-        return
+        return;
       }
       this.$store
-        .dispatch('getMaterial', {
+        .dispatch("getMaterial", {
           params: { external_id: this.parentId },
         })
         .then((result) => {
-          return (this.material = result[0])
-        })
+          return (this.material = result[0]);
+        });
     },
   },
-}
+};
 </script>
 
 <style src="../MaterialInfo/MaterialInfo.component.less" scoped lang="less" />

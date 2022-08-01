@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import FilterDropdown from '@/components/FilterCategories/FilterDropdown'
-import { DISCIPLINES_CATEGORY_FILTER_FIELD } from '@/constants'
-import { keyBy } from 'lodash'
-import { mapGetters } from 'vuex'
+import FilterDropdown from "@/components/FilterCategories/FilterDropdown";
+import { DISCIPLINES_CATEGORY_FILTER_FIELD } from "@/constants";
+import { keyBy } from "lodash";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'PreSearchFilters',
+  name: "PreSearchFilters",
   components: {
     FilterDropdown,
   },
@@ -29,74 +29,74 @@ export default {
     return {
       dropdowns: [
         {
-          field: 'technical_type',
-          label: 'searching-for-a',
-          defaultOption: 'material',
-          visible: false
+          field: "technical_type",
+          label: "searching-for-a",
+          defaultOption: "material",
+          visible: false,
         },
         {
           field: DISCIPLINES_CATEGORY_FILTER_FIELD,
-          label: 'about',
-          defaultOption: 'all-disciplines',
-          visible: false
+          label: "about",
+          defaultOption: "all-disciplines",
+          visible: false,
         },
         {
-          field: 'lom_educational_levels',
-          label: 'for',
-          defaultOption: 'all-levels',
-          visible: false
+          field: "lom_educational_levels",
+          label: "for",
+          defaultOption: "all-levels",
+          visible: false,
         },
         {
-          field: 'language.keyword',
-          label: 'in',
-          defaultOption: 'dutch-or-english',
-          visible: false
+          field: "language.keyword",
+          label: "in",
+          defaultOption: "dutch-or-english",
+          visible: false,
         },
-
       ],
       dropdownData: null,
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      filterCategories: 'filter_categories',
-      getCategoryById: 'getCategoryById',
+      filterCategories: "filter_categories",
+      getCategoryById: "getCategoryById",
     }),
   },
   mounted() {
-    document.addEventListener('click', this.onClick);
-    this.$store.dispatch('getFilterCategories').then(() => {
+    document.addEventListener("click", this.onClick);
+    this.$store.dispatch("getFilterCategories").then(() => {
       const categories = this.dropdowns.map((dropdown) => {
-        return dropdown.field
-      })
+        return dropdown.field;
+      });
       this.dropdownData = keyBy(
         categories.map((categoryId) => {
-          return this.getCategoryById(categoryId)
+          return this.getCategoryById(categoryId);
         }),
-        'external_id'
-      )
-    })
+        "external_id"
+      );
+    });
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.onClick);
+    document.removeEventListener("click", this.onClick);
   },
   methods: {
     onClick(event) {
-      if (!(event.target?.className?.includes('dropdown-container')
-        || event.target?.className?.includes('filter_'))
-        || event.target?.type == 'search'
-        || event.target?.type == 'submit') {
-        this.dropdowns.map(dd => dd.visible = false)
+      if (
+        !(event.target?.className?.includes("dropdown-container") || event.target?.className?.includes("filter_")) ||
+        event.target?.type == "search" ||
+        event.target?.type == "submit"
+      ) {
+        this.dropdowns.map((dd) => (dd.visible = false));
       }
     },
     onSelection(selection) {
-      this.$emit('update:filter', selection)
+      this.$emit("update:filter", selection);
     },
     onToggle(dropdown) {
-      this.dropdowns.map(dd => dd.field !== dropdown.field ? dd.visible = false : dd.visible = !dd.visible);
+      this.dropdowns.map((dd) => (dd.field !== dropdown.field ? (dd.visible = false) : (dd.visible = !dd.visible)));
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -121,4 +121,3 @@ export default {
   }
 }
 </style>
-
