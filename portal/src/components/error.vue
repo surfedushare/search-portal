@@ -7,25 +7,25 @@
       {{ $t(messageKey) }}
     </h2>
     <router-link v-if="parseInt(statusCode) === 404" class="button" to="/">
-      {{ $t('Main-page') }}
+      {{ $t("Main-page") }}
     </router-link>
   </section>
 </template>
 
 <script>
 export default {
-  name: 'Error',
+  name: "Error",
   props: {
     statusCode: {
       type: String,
-      default: '',
+      default: "",
     },
     messageKey: {
       type: String,
-      default: '',
+      default: "",
     },
   },
-}
+};
 </script>
 
 <style scoped>

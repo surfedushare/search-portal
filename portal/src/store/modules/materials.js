@@ -65,9 +65,7 @@ export default {
         commit("SET_MATERIAL_LOADING", false);
         return material;
       } else {
-        return await axios
-          .get("materials/", { params })
-          .then((res) => res.data);
+        return await axios.get("materials/", { params }).then((res) => res.data);
       }
     },
     async setMaterialSocial({ commit }, { id, params }) {
@@ -126,10 +124,7 @@ export default {
     async searchMaterials({ commit, state }, search) {
       if (validateSearch(search)) {
         commit("SET_MATERIALS_LOADING", true);
-        const { data: materials } = await axios.post(
-          "materials/search/",
-          generateSearchParams(search)
-        );
+        const { data: materials } = await axios.post("materials/search/", generateSearchParams(search));
         materials.search_text = search.search_text;
         materials.active_filters = search.filters;
         materials.ordering = search.ordering;
@@ -144,10 +139,7 @@ export default {
     async searchNextPageMaterials({ commit }, search) {
       if (validateSearch(search)) {
         commit("SET_MATERIALS_LOADING", true);
-        const { data: materials } = await axios.post(
-          "materials/search/",
-          generateSearchParams(search)
-        );
+        const { data: materials } = await axios.post("materials/search/", generateSearchParams(search));
         commit("SET_NEXT_PAGE_MATERIALS", materials);
         commit("SET_MATERIALS_LOADING", false);
       } else {

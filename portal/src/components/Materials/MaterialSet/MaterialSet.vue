@@ -2,13 +2,13 @@
   <div v-if="setMaterials.length > 0">
     <h3 class="material__info_subttl">
       <i class="set-icon large" />
-      {{ $t('Parts') }}
+      {{ $t("Parts") }}
     </h3>
-    <h4>{{ $t('Learning-materials-in-set') }}</h4>
+    <h4>{{ $t("Learning-materials-in-set") }}</h4>
     <div class="material__info_set_table">
       <div class="row header">
-        <span class="edusources-title">{{ $t('Title') }}</span>
-        <span class="type">{{ $t('File-format') }}</span>
+        <span class="edusources-title">{{ $t("Title") }}</span>
+        <span class="type">{{ $t("File-format") }}</span>
         <span class="link" />
       </div>
       <div
@@ -19,19 +19,10 @@
       >
         <span class="edusources-title">{{ setMaterial.title }}</span>
         <span class="type">
-          {{
-            setMaterial.technical_type !== 'unknown'
-              ? $t(setMaterial.technical_type)
-              : '-'
-          }}
+          {{ setMaterial.technical_type !== "unknown" ? $t(setMaterial.technical_type) : "-" }}
         </span>
         <span class="link">
-          <a
-            v-if="setMaterial.url"
-            class="external_link"
-            target="_blank"
-            :href="setMaterial.url"
-          />
+          <a v-if="setMaterial.url" class="external_link" target="_blank" :href="setMaterial.url" />
         </span>
       </div>
     </div>
@@ -40,7 +31,7 @@
 
 <script>
 export default {
-  name: 'MaterialSet',
+  name: "MaterialSet",
   props: {
     setMaterials: {
       type: Array,
@@ -52,13 +43,13 @@ export default {
     onMaterialClick(material) {
       this.$router.push(
         this.localePath({
-          name: 'materials-id',
+          name: "materials-id",
           params: { id: material.external_id },
         })
-      )
+      );
     },
   },
-}
+};
 </script>
 
 <style src="../MaterialInfo/MaterialInfo.component.less" scoped lang="less" />

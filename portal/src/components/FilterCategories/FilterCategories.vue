@@ -1,19 +1,10 @@
 <template>
   <section class="filter-categories">
-    <h3
-      v-show="materials && materials.records.length > 0"
-      class="filter-categories__title"
-    >
+    <h3 v-show="materials && materials.records.length > 0" class="filter-categories__title">
       {{ $t("Filter") }}
     </h3>
-    <div
-      v-show="materials && materials.records.length > 0"
-      class="filter-categories__items"
-    >
-      <ul
-        v-if="filterableCategories.length"
-        class="filter-categories__items_wrapper"
-      >
+    <div v-show="materials && materials.records.length > 0" class="filter-categories__items">
+      <ul v-if="filterableCategories.length" class="filter-categories__items_wrapper">
         <template v-for="category in filterableCategories">
           <FilterCategory
             v-if="hasVisibleChildren(category)"
@@ -30,10 +21,9 @@
 </template>
 
 <script>
-import { flatMap, isEmpty } from 'lodash';
-import { generateSearchMaterialsQuery } from '../_helpers';
-import FilterCategory from './FilterCategory.vue';
-
+import { flatMap, isEmpty } from "lodash";
+import { generateSearchMaterialsQuery } from "../_helpers";
+import FilterCategory from "./FilterCategory.vue";
 
 export default {
   name: "FilterCategories",
@@ -56,7 +46,7 @@ export default {
   },
   computed: {
     selectionFilterItems() {
-      const selectedFilters = this.$store.state.filterCategories.selection
+      const selectedFilters = this.$store.state.filterCategories.selection;
       if (isEmpty(selectedFilters)) {
         return [];
       }
@@ -70,35 +60,28 @@ export default {
             return child.external_id === filter_id;
           });
         });
-        return results.filter((rsl) => rsl );
+        return results.filter((rsl) => rsl);
       });
     },
     filterableCategories() {
       if (!this.materials?.filter_categories) {
         return [];
       }
-      const selectedFilters = this.$store.state.filterCategories.selection
+      const selectedFilters = this.$store.state.filterCategories.selection;
       // remove all filters that should not be shown to the users
-      const visibleCategories = this.materials.filter_categories.filter(
-        (category) => !category.is_hidden
-      );
+      const visibleCategories = this.materials.filter_categories.filter((category) => !category.is_hidden);
       // aggregate counts to the highest level
       const filterableCategories = visibleCategories.map((category) => {
         if (category.children) {
           category.children = category.children.map((child) => {
             if (child.children.length > 0) {
-              child.count = child.children.reduce(
-                (memo, c) => memo + c.count,
-                0
-              );
+              child.count = child.children.reduce((memo, c) => memo + c.count, 0);
             }
             return child;
           });
         }
 
-        category.children = category.children?.filter(
-          (child) => !child.is_hidden && child.count > 0
-        );
+        category.children = category.children?.filter((child) => !child.is_hidden && child.count > 0);
 
         category.children = category.children.map((child) => {
           const selected = selectedFilters[category.external_id] || [];
@@ -131,11 +114,11 @@ export default {
       });
     },
     onCheck(categoryId, itemId) {
-      this.$store.commit('SELECT_FILTER_CATEGORIES', {category: categoryId, selection: [itemId]})
+      this.$store.commit("SELECT_FILTER_CATEGORIES", { category: categoryId, selection: [itemId] });
       this.$emit("filter");
     },
     onUncheck(categoryId, itemId) {
-      this.$store.commit('DESELECT_FILTER_CATEGORIES', {category: categoryId, selection: [itemId]})
+      this.$store.commit("DESELECT_FILTER_CATEGORIES", { category: categoryId, selection: [itemId] });
       this.$emit("filter");
     },
   },
@@ -219,13 +202,11 @@ export default {
       height: 20px;
       flex-shrink: 0;
       margin: 2px 5px 0 20px;
-      background: url("../../assets/images/plus-black.svg") 50% 50% / contain
-        no-repeat;
+      background: url("../../assets/images/plus-black.svg") 50% 50% / contain no-repeat;
     }
 
     &--hide:after {
-      background: url("../../assets/images/min-black.svg") 50% 50% / contain
-        no-repeat;
+      background: url("../../assets/images/min-black.svg") 50% 50% / contain no-repeat;
     }
   }
 
@@ -331,8 +312,7 @@ export default {
       display: block;
       background-size: contain;
 
-      @media @tablet,
-      @mobile {
+      @media @tablet, @mobile {
         margin-bottom: 25px;
       }
 

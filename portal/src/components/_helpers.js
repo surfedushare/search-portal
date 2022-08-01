@@ -65,9 +65,7 @@ const parseSearchText = function (searchText) {
 };
 
 export const validateHREF = function (href) {
-  return href.search(process.env.frontendUrl) === 0
-    ? href
-    : process.env.frontendUrl;
+  return href.search(process.env.frontendUrl) === 0 ? href : process.env.frontendUrl;
 };
 
 export const addFilter = function (search, category, filterId) {
@@ -96,7 +94,5 @@ export const formatDate = function (date, locale) {
     default:
       format = { year: "numeric", month: "long", day: "numeric" };
   }
-  return new DateTime.fromISO(date)
-    .setLocale(locale === "en" ? "en-US" : "nl-NL")
-    .toLocaleString(format);
+  return new DateTime.fromISO(date).setLocale(locale === "en" ? "en-US" : "nl-NL").toLocaleString(format);
 };

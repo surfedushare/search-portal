@@ -123,11 +123,9 @@ export default {
         })
         .then(() => {
           this.is_applauded = true;
-          this.$store
-            .dispatch("getMaterial", { id: this.$route.params.id })
-            .then(() => {
-              this.is_loading_applaud = false;
-            });
+          this.$store.dispatch("getMaterial", { id: this.$route.params.id }).then(() => {
+            this.is_loading_applaud = false;
+          });
         });
     },
   },
@@ -141,9 +139,7 @@ export default {
       return numeral(this.material.view_count).format("0a");
     },
     publishedCollections() {
-      return this.collections.filter(
-        (collection) => collection.publish_status === PublishStatus.PUBLISHED
-      );
+      return this.collections.filter((collection) => collection.publish_status === PublishStatus.PUBLISHED);
     },
   },
   watch: {

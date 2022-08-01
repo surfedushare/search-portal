@@ -12,11 +12,7 @@ if (process.env.VUE_APP_USE_SENTRY) {
       if (event.user) {
         delete event.user;
       }
-      if (
-        event.request &&
-        event.request.headers &&
-        event.request.headers["User-Agent"]
-      ) {
+      if (event.request && event.request.headers && event.request.headers["User-Agent"]) {
         delete event.request.headers["User-Agent"];
       }
       return event;
@@ -75,14 +71,7 @@ injector.decorator("$log", function ($log) {
 
   $log.customEvent = function (category, action, label, value, dimensions) {
     $log._customEvent(category, action, label, value, dimensions);
-    window._paq.push([
-      "trackEvent",
-      category,
-      action,
-      label,
-      value,
-      dimensions,
-    ]); // NB: this modifies dimensions!
+    window._paq.push(["trackEvent", category, action, label, value, dimensions]); // NB: this modifies dimensions!
   };
 
   $log.setIsStaff = function (value) {

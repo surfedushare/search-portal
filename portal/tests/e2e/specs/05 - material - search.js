@@ -11,9 +11,7 @@ describe("Material page - search", () => {
   });
 
   it("Should find materials by publisher when clicking the publisher on the material page", () => {
-    cy.get("[data-test=publisher_link]")
-      .click()
-      .selectedFiltersShouldContain("Uitgever", "SURFnet");
+    cy.get("[data-test=publisher_link]").click().selectedFiltersShouldContain("Uitgever", "SURFnet");
   });
 
   it("Should find materials by consortium when clicking the consortium on the material page", () => {

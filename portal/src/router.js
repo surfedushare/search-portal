@@ -1,6 +1,4 @@
-import {
-  CONSORTIUM_CATEGORY_FILTER_FIELD
-} from "~/constants";
+import { CONSORTIUM_CATEGORY_FILTER_FIELD } from "~/constants";
 
 import Collection from "~/pages/collection";
 import Communities from "~/pages/communities";
@@ -231,9 +229,7 @@ export default new Router({
                 next(to.query.continue || "/");
               })
               .catch((error) => {
-                $log.warn(
-                  'Unable to login due to error during store "login" dispatch'
-                );
+                $log.warn('Unable to login due to error during store "login" dispatch');
                 $log.error(error);
                 next("/");
               });

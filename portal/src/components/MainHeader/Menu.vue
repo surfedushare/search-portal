@@ -3,18 +3,12 @@
     <nav>
       <ul class="menu__list">
         <li class="menu__list_item">
-          <router-link
-            :to="localePath('communities')"
-            class="menu__link"
-          >
+          <router-link :to="localePath('communities')" class="menu__link">
             {{ $t("Communities") }}
           </router-link>
         </li>
         <li class="menu__list_item">
-          <router-link
-            :to="localePath('how-does-it-work')"
-            class="menu__link"
-          >
+          <router-link :to="localePath('how-does-it-work')" class="menu__link">
             {{ $t("How-does-it-work") }}
           </router-link>
         </li>
@@ -24,7 +18,6 @@
 </template>
 
 <script>
-
 import { mapGetters } from "vuex";
 
 export default {

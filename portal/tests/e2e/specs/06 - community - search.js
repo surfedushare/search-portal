@@ -10,5 +10,4 @@ describe("Community page - search", () => {
       .searchResultsShouldContain("big history", 2, 1)
       .selectedFiltersShouldContain("Samenwerkingsverband", "Community Ethics");
   });
-
 });

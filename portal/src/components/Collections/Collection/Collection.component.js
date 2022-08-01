@@ -51,19 +51,16 @@ export default {
         return this.collection.publish_status === PublishStatus.PUBLISHED;
       },
       set(value) {
-        this.collection.publish_status = value
-          ? PublishStatus.PUBLISHED
-          : PublishStatus.DRAFT;
+        this.collection.publish_status = value ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
       },
     },
     communityTitle() {
       if (!this.collection || !this.collection.communities[0]) {
         return;
       }
-      const communityDetails =
-        this.collection.communities[0].community_details.find((details) => {
-          return details.language_code.toLowerCase() === this.$i18n.locale;
-        });
+      const communityDetails = this.collection.communities[0].community_details.find((details) => {
+        return details.language_code.toLowerCase() === this.$i18n.locale;
+      });
       return communityDetails.title;
     },
     communityLink() {
@@ -81,8 +78,7 @@ export default {
   methods: {
     resetData() {
       const { collection } = this;
-      this.collectionTitle =
-        this.$i18n.locale === "nl" ? collection.title_nl : collection.title_en;
+      this.collectionTitle = this.$i18n.locale === "nl" ? collection.title_nl : collection.title_en;
     },
     onSubmit() {
       if (this.collectionTitle.trim().length === 0) {
@@ -105,12 +101,7 @@ export default {
           const { social_counters } = this.$refs;
           const linkedIn = social_counters.querySelector("#linkedin_counter");
 
-          if (
-            collection &&
-            collection.sharing_counters &&
-            social_counters &&
-            linkedIn
-          ) {
+          if (collection && collection.sharing_counters && social_counters && linkedIn) {
             const share = collection.sharing_counters.reduce(
               (prev, next) => {
                 prev[next.sharing_type] = next;
@@ -130,16 +121,13 @@ export default {
             );
 
             if (share.linkedin) {
-              social_counters.querySelector("#linkedin_counter").innerText =
-                share.linkedin.counter_value;
+              social_counters.querySelector("#linkedin_counter").innerText = share.linkedin.counter_value;
             }
             if (share.twitter) {
-              social_counters.querySelector("#twitter_counter").innerText =
-                share.twitter.counter_value;
+              social_counters.querySelector("#twitter_counter").innerText = share.twitter.counter_value;
             }
             if (share.link) {
-              social_counters.querySelector("#url_counter").innerText =
-                share.link.counter_value;
+              social_counters.querySelector("#url_counter").innerText = share.link.counter_value;
             }
             if (linkedIn) {
               clearInterval(interval);
@@ -187,9 +175,7 @@ export default {
       this.resetData();
     },
     isPublished() {
-      const publish_status = this.isPublished
-        ? PublishStatus.PUBLISHED
-        : PublishStatus.DRAFT;
+      const publish_status = this.isPublished ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
       this.$emit("onSubmit", { publish_status });
     },
   },
