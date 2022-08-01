@@ -117,10 +117,12 @@ class HarvestLogger(object):
             .count()
         inactive_copyright_count = \
             document_set.filter(properties__state="inactive").count() - inactive_educational_level_count
+        deleted_count = document_set.filter(properties__state="deleted").count()
         return {
-            "total": total - inactive_educational_level_count - inactive_copyright_count,
+            "total": total - inactive_educational_level_count - inactive_copyright_count - deleted_count,
             "inactive_educational_level_count": inactive_educational_level_count,
-            "inactive_copyright_count": inactive_copyright_count
+            "inactive_copyright_count": inactive_copyright_count,
+            "deleted_count": deleted_count
         }
 
     def report_collection(self, collection, repository):
