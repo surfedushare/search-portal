@@ -176,7 +176,7 @@ input[type="checkbox"]:checked:before {
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(6, auto);
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto auto;
     column-gap: 10px;
     z-index: 10;
     position: absolute;
@@ -186,9 +186,11 @@ input[type="checkbox"]:checked:before {
     border-radius: 20px;
     box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
     padding: 20px;
+    width: max-content;
+    min-width: 100%;
     :first-child:not(:empty) {
       margin: 0;
-      min-width: 200px;
+      min-width: 80px;
     }
     cursor: pointer;
     label {
