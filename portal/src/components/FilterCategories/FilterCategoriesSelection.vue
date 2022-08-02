@@ -36,9 +36,7 @@ export default {
         return [];
       }
       return flatMap(selectedFilters, (filter_ids, categoryId) => {
-        const cat = this.materials?.filter_categories?.find((category) => {
-          return category.external_id === categoryId;
-        });
+        const cat = this.$store.state.filterCategories.byCategoryId[categoryId];
         const results = filter_ids.map((filter_id) => {
           return cat?.children.find((child) => {
             child.parent = cat;

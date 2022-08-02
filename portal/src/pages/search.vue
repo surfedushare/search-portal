@@ -6,12 +6,7 @@
         <div class="center_block center-header">
           <SearchBar @search="onSearch" />
         </div>
-        <FilterCategoriesSelection
-          v-if="materials"
-          :key="JSON.stringify(search.filters)"
-          :materials="materials"
-          @filter="onFilter"
-        />
+        <FilterCategoriesSelection :key="JSON.stringify(search.filters)" :materials="materials" @filter="onFilter" />
       </div>
 
       <div class="search__container">

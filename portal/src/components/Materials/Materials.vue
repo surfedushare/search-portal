@@ -32,6 +32,21 @@
         <Material :material="material" :handle-material-click="handleMaterialClick" :items-in-line="itemsInLine" />
       </li>
     </ul>
+
+    <div
+      v-else-if="!current_loading && has_no_results_with_search_filters"
+      data-test="no_search_results"
+      class="not_found"
+    >
+      <div class="not_found__icon"></div>
+      <div class="not_found__message">
+        {{ $t("No-results-for-filters") }}
+        <div class="not_found__info">
+          <i>{{ $t("Not-found-info") }}</i>
+        </div>
+      </div>
+    </div>
+
     <div v-else-if="!current_loading && has_no_result_suggestion" data-test="search_suggestion" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
@@ -44,6 +59,7 @@
         </div>
       </div>
     </div>
+
     <div v-else-if="!current_loading" data-test="no_search_results" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
@@ -134,6 +150,9 @@ export default {
       }
 
       return false;
+    },
+    has_no_results_with_search_filters() {
+      return Object.keys(this.$store.state.filterCategories.selection).length > 0;
     },
     has_no_result_suggestion() {
       return this.didYouMean?.suggestion;

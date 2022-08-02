@@ -157,6 +157,9 @@ export default {
       if (isEmpty(state.selection[category])) {
         delete state.selection[category];
       }
+      if (isEmpty(state.selection)) {
+        state.selection = {};
+      }
     },
     RESET_FILTER_CATEGORIES_SELECTION(state, selection) {
       state.selection = isEmpty(selection) ? {} : selection;
