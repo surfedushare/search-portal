@@ -63,7 +63,7 @@ export default {
     }),
   },
   mounted() {
-    document.addEventListener("click", this.onClick);
+    document.addEventListener("click", this.onDocumentClick);
     this.$store.dispatch("getFilterCategories").then(() => {
       const categories = this.dropdowns.map((dropdown) => {
         return dropdown.field;
@@ -77,14 +77,14 @@ export default {
     });
   },
   beforeDestroy() {
-    document.removeEventListener("click", this.onClick);
+    document.removeEventListener("click", this.onDocumentClick);
   },
   methods: {
-    onClick(event) {
+    onDocumentClick(event) {
       if (
         !(event.target?.className?.includes("dropdown-container") || event.target?.className?.includes("filter_")) ||
-        event.target?.type == "search" ||
-        event.target?.type == "submit"
+        event.target?.type === "search" ||
+        event.target?.type === "submit"
       ) {
         this.dropdowns.map((dd) => (dd.visible = false));
       }
