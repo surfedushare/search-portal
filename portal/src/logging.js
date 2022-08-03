@@ -98,9 +98,12 @@ injector.decorator("$log", function ($log) {
     const searchCategories = flatMap(filters, (values, field) => {
       return values.map((value) => `${field}=${value}`)
     });
+    if (parseInt(query.is_prefilter)) {
+      searchCategories.push("is_prefilter=1")
+    }
     const searchKeyword = query.search_term || "";
     window._paq.push(["trackSiteSearch"], searchKeyword, searchCategories.join("&"), totalResults);
-    $log._siteSearch(query, searchCategories.join("&"), totalResults);
+    $log._siteSearch(query, totalResults);
   }
 
   /***************************
