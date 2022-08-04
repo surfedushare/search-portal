@@ -30,10 +30,13 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     """
     Creates or updates an AWS ES decompound word package based on a decompound dictionary
     """
+    profile_env = f"AWS_PROFILE={ctx.config.aws.profile_name}"
     s3_bucket_name = ctx.config.aws.harvest_content_bucket
     s3_keypath = "opensearch/decompound_word_list.nl.txt"
     # Uploading to S3
-    ctx.run(f"aws s3 cp {decompound_file_path} s3://{s3_bucket_name}/{s3_keypath}")
+    ctx.run(
+        f"{profile_env} aws s3 cp {decompound_file_path} s3://{s3_bucket_name}/{s3_keypath}"
+    )
     # Now we're associating the dictionary with a AWS ES package
     # First we check for existing packages
     package_id = None
@@ -48,13 +51,14 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     if package_id is not None:
         package_command = f"update-package --package-id={package_id}"
     ctx.run(
-        f"aws es {package_command} "
+        f"{profile_env} aws es {package_command} "
         f"--package-source='S3BucketName={s3_bucket_name},S3Key={s3_keypath}'",
         echo=True, pty=True
     )
     # And last but not least we associate the package with the ES domain
     ctx.run(
-        f"aws es associate-package --package-id={package_id} --domain-name={ctx.config.open_search.domain_name}",
+        f"{profile_env} aws es associate-package "
+        f"--package-id={package_id} --domain-name={ctx.config.open_search.domain_name}",
         echo=True, pty=True
     )
     print("AWS ES dictionary package processed.")
