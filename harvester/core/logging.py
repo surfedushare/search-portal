@@ -131,6 +131,7 @@ class HarvestLogger(object):
             "source": collection.name,
             "repository": repository,
             "total": document_counts["total"],
+            "deleted": document_counts["deleted_count"],
             "inactive": {
                 "educational_level": document_counts["inactive_educational_level_count"],
                 "copyright": document_counts["inactive_copyright_count"]
@@ -154,6 +155,7 @@ class HarvestLogger(object):
             "source": str(dataset_version),
             "repository": None,
             "total": document_counts["total"],
+            "deleted": document_counts["deleted_count"],
             "inactive": {
                 "educational_level": document_counts["inactive_educational_level_count"],
                 "copyright": document_counts["inactive_copyright_count"]
