@@ -22,6 +22,23 @@ class HkuMetadataExtraction(ExtractProcessor):
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
     @classmethod
+    def build_product_id(cls, identifier):
+        if not identifier:
+            return identifier
+        return f"hku:product:{identifier}"
+
+    @classmethod
+    def build_person_id(cls, identifier):
+        if not identifier:
+            return identifier
+        return f"hku:person:{identifier}"
+
+    @classmethod
+    def get_external_id(cls, node):
+        identifier = node["resultid"] or None
+        return cls.build_product_id(identifier)
+
+    @classmethod
     def get_record_state(cls, node):
         return "deleted" if node["deleted"] else "active"
 
@@ -106,7 +123,7 @@ class HkuMetadataExtraction(ExtractProcessor):
         return [{
             "name": node["author"],
             "email": node["owner"] or None,
-            "external_id": node["persons"].get("person_id", None),
+            "external_id": cls.build_person_id(node["persons"].get("person_id", None)),
             "dai": None,
             "orcid": None,
             "isni": None
