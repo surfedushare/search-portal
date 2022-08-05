@@ -20,13 +20,14 @@
               class="community__collections"
             >
               <template slot="header-info">
-                <h2>{{ $t('Collections-2') }}</h2>
+                <h2>{{ $t("Collections-2") }}</h2>
                 <button
                   v-if="isReady && community_info.publisher"
                   class="button"
+                  data-test="community_search_link"
                   @click="goToCommunitySearch()"
                 >
-                  {{ $t('Search-in-community-materials') }}
+                  {{ $t("Search-in-community-materials") }}
                 </button>
               </template>
             </Collections>
@@ -39,17 +40,17 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash'
-import { mapGetters } from 'vuex'
-import Collections from '~/components/Collections'
-import Error from '~/components/error'
-import InfoBlock from '~/components/InfoBlock'
-import Spinner from '~/components/Spinner'
-import { localePath } from '~/i18n/plugin.routing'
-import PageMixin from '~/pages/page-mixin'
+import { isEmpty } from "lodash";
+import { mapGetters } from "vuex";
+import Collections from "~/components/Collections";
+import Error from "~/components/error";
+import InfoBlock from "~/components/InfoBlock";
+import Spinner from "~/components/Spinner";
+import { localePath } from "~/i18n/plugin.routing";
+import PageMixin from "~/pages/page-mixin";
 
 export default {
-  name: 'Community',
+  name: "Community",
   components: {
     Error,
     Collections,
@@ -62,59 +63,52 @@ export default {
     return {
       isSearch: false,
       search: false,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['community_collections_loading', 'user']),
+    ...mapGetters(["community_collections_loading", "user"]),
     community_collections() {
-      return this.$store.getters.getPublicCollections(this.user)
+      return this.$store.getters.getPublicCollections(this.user);
     },
     community_info() {
-      return this.$store.getters.getCommunityInfo(this.user) || null
+      return this.$store.getters.getCommunityInfo(this.user) || null;
     },
     community_details() {
       // Retrieve the details and exit when invalid or loading
-      let communityDetails = this.$store.getters.getCommunityDetails(
-        this.user,
-        this.$i18n.locale
-      )
+      let communityDetails = this.$store.getters.getCommunityDetails(this.user, this.$i18n.locale);
       if (isEmpty(communityDetails)) {
-        return communityDetails || null
+        return communityDetails || null;
       }
       // Fill some defaults for the details
-      communityDetails.featured_image =
-        communityDetails.featured_image ||
-        '/images/pictures/community-default.jpg'
-      return communityDetails
+      communityDetails.featured_image = communityDetails.featured_image || "/images/pictures/community-default.jpg";
+      return communityDetails;
     },
   },
   created() {
-    const { community } = this.$route.params
-    this.pageLoad = this.$store.dispatch('getCommunity', community)
-    this.$store.dispatch('getCommunityCollections', community)
+    const { community } = this.$route.params;
+    this.pageLoad = this.$store.dispatch("getCommunity", community);
+    this.$store.dispatch("getCommunityCollections", community);
   },
   metaInfo() {
-    const defaultTitle = this.$root.$meta().title
+    const defaultTitle = this.$root.$meta().title;
     return {
-      title: this.community_details
-        ? this.community_details.title || defaultTitle
-        : defaultTitle,
-    }
+      title: this.community_details ? this.community_details.title || defaultTitle : defaultTitle,
+    };
   },
   methods: {
     goToCommunitySearch() {
       const searchRoute = localePath({
-        name: 'communities-search',
+        name: "communities-search",
         params: { filterId: this.community_info.publisher },
-      })
-      this.$router.push(searchRoute)
+      });
+      this.$router.push(searchRoute);
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
-@import url('../variables');
+@import url("../variables");
 .community {
   padding-bottom: 80px;
   margin-top: 60px;
@@ -133,7 +127,7 @@ export default {
       padding-top: 40px;
       position: relative;
       &:before {
-        content: '';
+        content: "";
         min-width: 100%;
         position: absolute;
         background-color: rgba(244, 244, 244, 0.9);
@@ -221,8 +215,8 @@ export default {
     }
 
     &:before {
-      content: '';
-      background: url('../assets/images/combined-shape.svg') no-repeat 0 0;
+      content: "";
+      background: url("../assets/images/combined-shape.svg") no-repeat 0 0;
       position: absolute;
       left: 55px;
       top: -38px;
@@ -235,9 +229,9 @@ export default {
       }
     }
     &:after {
-      content: '';
+      content: "";
       position: absolute;
-      background: url('../assets/images/message.svg') no-repeat 0 0;
+      background: url("../assets/images/message.svg") no-repeat 0 0;
       left: 72px;
       top: -15px;
       height: 33px;
@@ -274,12 +268,6 @@ export default {
     &_link {
       font-weight: bold;
       text-decoration: none;
-    }
-  }
-  &__themas_and_disciplines {
-    width: 80%;
-    @media @mobile {
-      width: 100%;
     }
   }
   &__collections {

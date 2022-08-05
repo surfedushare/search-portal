@@ -37,7 +37,7 @@
         </div>
         <div>
           <div class="popup-content__actions">
-            <button class="button" @click="onApply">{{ $t('See-results') }}</button>
+            <button class="button" @click="onApply">{{ $t("See-results") }}</button>
           </div>
         </div>
       </slot>
@@ -46,11 +46,11 @@
 </template>
 
 <script>
-import { concat, groupBy, sortBy, without } from 'lodash'
-import Popup from '~/components/Popup'
+import { concat, groupBy, sortBy, without } from "lodash";
+import Popup from "~/components/Popup";
 
 export default {
-  name: 'FilterCategoriesPopup',
+  name: "FilterCategoriesPopup",
   components: {
     Popup,
   },
@@ -67,56 +67,60 @@ export default {
     },
     close: {
       type: Function,
-      default: () => { },
+      default: () => {},
     },
   },
   data() {
     return {
-      selectedValues: []
-    }
+      selectedValues: [],
+    };
   },
   computed: {
     groupedFilters() {
       return groupBy(
         sortBy(this.category.children, (child) => {
-          return child.translation[this.$i18n.locale].toLowerCase()
+          return child.translation[this.$i18n.locale].toLowerCase();
         }),
-        (child) => { return child.translation[this.$i18n.locale].slice(0, 1).toLowerCase() }
-      )
-    }
+        (child) => {
+          return child.translation[this.$i18n.locale].slice(0, 1).toLowerCase();
+        }
+      );
+    },
   },
   watch: {
     showPopup(visible) {
       if (!visible) {
-        return
+        return;
       }
-      this.selectedValues = this.category.children.filter((childFilter) => {
-        return childFilter.selected
-      }).map((selectedFilter) => {
-        return selectedFilter.value
-      })
-    }
+      this.selectedValues = this.category.children
+        .filter((childFilter) => {
+          return childFilter.selected;
+        })
+        .map((selectedFilter) => {
+          return selectedFilter.value;
+        });
+    },
   },
   methods: {
     onChangeAutocomplete(values) {
       this.category.children.forEach((childFilter) => {
-        childFilter.selected = values.indexOf(childFilter.value) >= 0
-      })
+        childFilter.selected = values.indexOf(childFilter.value) >= 0;
+      });
     },
     onChange(event) {
-      const { itemId } = event.target.dataset
+      const { itemId } = event.target.dataset;
       if (event.target.checked) {
-        this.selectedValues = concat(this.selectedValues, [itemId])
+        this.selectedValues = concat(this.selectedValues, [itemId]);
       } else {
-        this.selectedValues = without(this.selectedValues, itemId)
+        this.selectedValues = without(this.selectedValues, itemId);
       }
     },
     onApply() {
-      this.$emit('apply', this.selectedValues)
-      this.close()
-    }
-  }
-}
+      this.$emit("apply", this.selectedValues);
+      this.close();
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

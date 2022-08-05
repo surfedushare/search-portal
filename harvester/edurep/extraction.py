@@ -285,7 +285,7 @@ class EdurepDataExtraction(object):
         return current_numeric_level
 
     @classmethod
-    def get_disciplines(cls, soup, el):
+    def get_studies(cls, soup, el):
         blocks = cls.find_all_classification_blocks(el, "discipline", "czp:id")
         return list(set([block.text.strip() for block in blocks]))
 
@@ -352,7 +352,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "publisher_year": EdurepDataExtraction.get_publisher_year,
     "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
-    "disciplines": EdurepDataExtraction.get_disciplines,
+    "studies": EdurepDataExtraction.get_studies,
     "ideas": EdurepDataExtraction.get_ideas,
     "from_youtube": EdurepDataExtraction.get_from_youtube,
     "is_restricted": EdurepDataExtraction.get_is_restricted,
@@ -364,6 +364,6 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "research_object_type": lambda soup, el: None,
     "research_themes": lambda soup, el: [],
     "parties": lambda soup, el: [],
-    "learning_material_themes": EdurepDataExtraction.get_disciplines,
+    "learning_material_disciplines": EdurepDataExtraction.get_studies,
     "consortium": EdurepDataExtraction.get_consortium,
 }

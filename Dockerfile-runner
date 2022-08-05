@@ -1,0 +1,39 @@
+FROM nikolaik/python-nodejs:python3.10-nodejs16-slim
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update && \
+    apt-get install -y python3-venv libxml2-dev libxslt-dev python3-dev git build-essential zlib1g-dev automake \
+    autoconf libtool libatlas3-base poppler-utils gettext python-is-python3 libmagic-dev postgresql-client wget
+
+# Install Docker
+RUN apt-get install -y ca-certificates curl gnupg lsb-release software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+# Install Chrome
+RUN wget -O- https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | tee /usr/share/keyrings/google-chrome.gpg
+RUN echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main | tee /etc/apt/sources.list.d/google-chrome.list
+RUN apt-get update && apt-get install -y google-chrome-stable
+
+# Install Cypress dependencies
+RUN apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+
+# Setup environment
+ENV PATH="./node_modules/.bin:/root/.local/bin:$PATH"
+
+# Javascript dependencies
+COPY portal/package.json package.json
+COPY portal/package-lock.json package-lock.json
+RUN npm ci
+
+# Python setup
+RUN pip3 install -U --no-cache-dir --user pip
+RUN pip3 install setuptools==58
+RUN pip3 install wheel
+
+# Python dependencies
+COPY requirements.txt requirements.txt
+COPY service/dependencies.txt service/dependencies.txt
+COPY harvester/dependencies.txt harvester/dependencies.txt
+RUN pip3 install --no-cache-dir --user -r requirements.txt

@@ -13,19 +13,21 @@ class Command(PipelineCommand):
         super().add_arguments(parser)
         parser.add_argument('-hv', '--harvester-version', type=str, default="")
         parser.add_argument('-np', '--no-promote', action="store_true")
+        parser.add_argument('-se', '--skip-evaluation', action="store_true")
 
     def handle(self, *args, **options):
 
         dataset_name = options["dataset"]
         version = options["harvester_version"]
         should_promote = not options["no_promote"]
+        skip_evaluation = options["skip_evaluation"] or version
 
         dataset = Dataset.objects.get(name=dataset_name)
         version_filter = {}
         if version:
             version_filter.update({"version": version})
         dataset_version = dataset.versions.filter(**version_filter).last()
-        collection_errors = dataset.evaluate_dataset_version(dataset_version) if not version else []
+        collection_errors = dataset.evaluate_dataset_version(dataset_version) if not skip_evaluation else []
 
         for collection in collection_errors:
             send_admin_notification(
@@ -37,7 +39,7 @@ class Command(PipelineCommand):
 
         self.logger.start("index")
 
-        lang_doc_dict = dataset_version.get_elastic_documents_by_language()
+        lang_doc_dict = dataset_version.get_search_documents_by_language()
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
@@ -57,7 +59,7 @@ class Command(PipelineCommand):
             index.clean()
             index.save()
             errors = index.push(lang_doc_dict[lang], recreate=True)
-            self.logger.elastic_errors(errors)
+            self.logger.open_search_errors(errors)
             if should_promote:
                 self.logger.info(f"Promoting index { index.remote_name } to latest")
                 index.promote_to_latest()

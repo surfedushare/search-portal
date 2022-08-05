@@ -6,7 +6,7 @@ from django.apps import apps
 
 from surf.apps.communities.models import Community
 from surf.apps.materials.models import Material
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from surf.vendor.search.api import SearchApiClient
 
 
 def add_extra_parameters_to_materials(metadata, materials):
@@ -39,9 +39,9 @@ def add_extra_parameters_to_materials(metadata, materials):
             m["view_count"] = m["applaud_count"] = m["avg_star_rating"] = m["count_star_rating"] = 0
 
         educational_level_translations = metadata.translations["lom_educational_levels"]
-        m["educationallevels"] = [
+        m["lom_educational_levels"] = [
             educational_level_translations[educational_level_id]
-            for educational_level_id in m.get("educationallevels", [])
+            for educational_level_id in m.get("lom_educational_levels", [])
         ]
 
         communities = Community.objects.filter(
@@ -58,13 +58,13 @@ def add_extra_parameters_to_materials(metadata, materials):
             for community in communities.prefetch_related("community_details").distinct().all()
         ]
 
-        discipline_translations = metadata.translations["disciplines"]
-        m["disciplines"] = [
+        study_translations = metadata.translations["studies"]
+        m["studies"] = [
             {
-                "id": discipline_id,
-                "title_translations": discipline_translations[discipline_id]
+                "id": study_id,
+                "title_translations": study_translations[study_id]
             }
-            for discipline_id in m["disciplines"]
+            for study_id in m.get("studies", [])
         ]
 
         m["authors"] = [author["name"] for author in m["authors"]]
@@ -79,8 +79,8 @@ def get_material_details_by_id(external_id):
     :param external_id: id of material
     :return: list containing updated material
     """
-    api_client = ElasticSearchApiClient()
-    response = api_client.get_materials_by_id([external_id])
+    client = SearchApiClient()
+    response = client.get_materials_by_id([external_id])
     records = response.get("records", [])
     if not records:
         return records
@@ -128,10 +128,10 @@ def create_search_results_index(client):
     client.indices.create('search-results', body=body)
 
 
-def add_search_query_to_elastic_index(number_of_results, query, filters):
-    elastic = ElasticSearchApiClient()
-    if not elastic.client.indices.exists(index='search-results'):
-        create_search_results_index(elastic.client)
+def add_search_query_to_log(number_of_results, query, filters):
+    api_client = SearchApiClient()
+    if not api_client.client.indices.exists(index='search-results'):
+        create_search_results_index(api_client.client)
 
     document = {
         'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(),
@@ -139,7 +139,7 @@ def add_search_query_to_elastic_index(number_of_results, query, filters):
         'query': query,
         'filters': _get_translated_filters(filters)
     }
-    elastic.client.index('search-results', body=document)
+    api_client.client.index('search-results', body=document)
 
 
 def _get_translated_filters(filters):

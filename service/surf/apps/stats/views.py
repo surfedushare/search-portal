@@ -7,7 +7,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from surf.vendor.elasticsearch.api import ElasticSearchApiClient
+from surf.vendor.search.api import SearchApiClient
 from surf.apps.core.schema import SearchSchema
 
 
@@ -23,8 +23,8 @@ class StatsViewSet(ViewSet):
         """
         Returns the number of all available materials
         """
-        elastic = ElasticSearchApiClient()
-        return Response(dict(value=elastic.stats()))
+        client = SearchApiClient()
+        return Response(dict(value=client.stats()))
 
 
 class StatsSerializer(serializers.Serializer):
@@ -41,7 +41,7 @@ class StatsView(generics.RetrieveAPIView):
 
     ## Response body
 
-    **documents**: The sum of documents present in Elastic Search
+    **documents**: The sum of documents present in Open Search
 
     """
 
@@ -52,7 +52,7 @@ class StatsView(generics.RetrieveAPIView):
     filter_backends = []
 
     def get_object(self):
-        elastic = ElasticSearchApiClient()
+        client = SearchApiClient()
         return {
-            "documents": elastic.stats()
+            "documents": client.stats()
         }

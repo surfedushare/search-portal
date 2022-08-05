@@ -62,8 +62,8 @@ class TestGetHarvestSeedsHva(TestCase):
 
     def test_get_language(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["language"], "nl")
-        self.assertEqual(seeds[4]["language"], "en")
+        self.assertEqual(seeds[0]["language"], {"metadata": "nl"})
+        self.assertEqual(seeds[4]["language"], {"metadata": "en"})
 
     def test_get_title(self):
         seeds = self.seeds

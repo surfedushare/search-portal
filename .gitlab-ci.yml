@@ -1,12 +1,12 @@
-image: ubuntu:22.04
-
 variables:
   FF_NETWORK_PER_BUILD: 1
+  FF_USE_FASTZIP: "true"
+  ARTIFACT_COMPRESSION_LEVEL: "fast"
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: qwerty
   POSTGRES_HOST_AUTH_METHOD: trust
   POSTGRES_VERSION: "12.2"
-  ELASTIC_SEARCH_VERSION: "7.9.3"
+  OPEN_SEARCH_VERSION: "1.2.0"
   APPLICATION_CONTEXT: host
   APPLICATION_MODE: localhost
   POL_POSTGRES_USER: $POSTGRES_USER
@@ -14,73 +14,21 @@ variables:
   DOCKER_AUTH_CONFIG: "{\"credHelpers\": {\"017973353230.dkr.ecr.eu-central-1.amazonaws.com\": \"ecr-login\"}}"
   AWS_CONTAINER_REGISTRY: 017973353230.dkr.ecr.eu-central-1.amazonaws.com
 
+image: $AWS_CONTAINER_REGISTRY/gitlab-runner:latest
+
 stages:
-  - install
   - lint-and-test
   - build
   - integration-test
   - promote
 
-cache:
-  key: $CI_COMMIT_REF_SLUG
-  paths:
-    - venv/
-    - portal/node_modules
-    - environments/info.json
-    - nginx/ip-whitelist.conf
-    - harvester/sources/factories/fixtures
-
-.tooling-job:
+.setup-repository:
   before_script:
-    - apt-get update
-    - apt-get install -y nodejs npm gettext libmagic-dev
-    - export PATH=$PATH:portal/node_modules/.bin
-    - source venv/bin/activate
-
-.docker-job:
-  services:
-    - name: docker:dind
-  before_script:
-    - apt-get update
-    # General build requirements
-    - apt-get install -y ca-certificates curl gnupg lsb-release nodejs npm gettext libmagic-dev software-properties-common postgresql-client wget
-    # Install docker repository
-    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-    # Install Chrome repository
-    - wget -O- https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | tee /usr/share/keyrings/google-chrome.gpg
-    - echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main | tee /etc/apt/sources.list.d/google-chrome.list
-    # Propagate added repositories and install actual packages
-    - apt-get update
-    - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-    - apt-get install -y google-chrome-stable
-    # Cypress requirements
-    - apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-    # Prepare shell environment
-    - source venv/bin/activate
-    - export PATH=$PATH:portal/node_modules/.bin
-    # Login to AWS container registry
-    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $AWS_CONTAINER_REGISTRY
-
-install-job:
-  stage: install
-  before_script:
-    - apt-get update
-    - apt-get install -y nodejs npm python3.10-venv libxml2-dev libxslt-dev python3.10-dev
-  script:
-    - python3 --version
-    - python3 -m venv venv --copies --upgrade-deps
-    - source venv/bin/activate
-    - pip install setuptools==58
-    - pip install -r requirements.txt
     - invoke aws.sync-repository-state --no-profile
     - invoke prepare-builds --commit $CI_COMMIT_SHA
-    - cd portal
-    - npm ci
 
 lint-job:
   stage: lint-and-test
-  extends: .tooling-job
   script:
     - flake8 .
     - cd portal
@@ -90,31 +38,38 @@ service-test-job:
   stage: lint-and-test
   services:
     - name: postgres:$POSTGRES_VERSION-alpine
-    - name: docker.elastic.co/elasticsearch/elasticsearch:$ELASTIC_SEARCH_VERSION
-      alias: elasticsearch
-      command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
-  extends: .tooling-job
+    - name: opensearchproject/opensearch:$OPEN_SEARCH_VERSION
+      alias: opensearch
+      command: [
+        "bash", "-c", "env 'discovery.type=single-node' 'cluster.name=opensearch' ./opensearch-docker-entrypoint.sh"
+      ]
+  variables:
+    OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+    DISABLE_INSTALL_DEMO_CONFIG: "true"
+    DISABLE_SECURITY_PLUGIN: "true"
   script:
     - APPLICATION_PROJECT=edusources invoke test.service
     - APPLICATION_PROJECT=nppo invoke test.service
 
 harvester-test-job:
   stage: lint-and-test
+  extends: .setup-repository
   services:
     - name: postgres:$POSTGRES_VERSION-alpine
-  extends: .tooling-job
   script:
     - APPLICATION_PROJECT=edusources invoke test.harvester
     - APPLICATION_PROJECT=nppo invoke test.harvester
 
 build-job:
   stage: build
-  extends: .docker-job
+  extends: .setup-repository
+  services:
+    - name: docker:dind
   script:
-    - invoke aws.build harvester --commit $CI_COMMIT_SHA
+    - invoke aws.build harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.build service --commit $CI_COMMIT_SHA
-    - invoke aws.push harvester --commit $CI_COMMIT_SHA
-    - invoke aws.push service --commit $CI_COMMIT_SHA
+    - invoke aws.push harvester --commit $CI_COMMIT_SHA --push-latest
+    - invoke aws.push service --commit $CI_COMMIT_SHA --push-latest
 
 integration-test-job:
   stage: integration-test
@@ -124,23 +79,34 @@ integration-test-job:
     - name: $AWS_CONTAINER_REGISTRY/search-portal:$CI_COMMIT_SHA
       alias: service
     - name: postgres:$POSTGRES_VERSION-alpine
-    - name: docker.elastic.co/elasticsearch/elasticsearch:$ELASTIC_SEARCH_VERSION
-      alias: elasticsearch
-      command: [ "bin/elasticsearch", "-Expack.security.enabled=false", "-Ediscovery.type=single-node" ]
-  extends: .docker-job
+    - name: opensearchproject/opensearch:$OPEN_SEARCH_VERSION
+      alias: opensearch
+      command: [
+        "bash", "-c", "env 'discovery.type=single-node' 'cluster.name=opensearch' ./opensearch-docker-entrypoint.sh"
+      ]
   variables:
-    POL_ELASTIC_SEARCH_ENABLE_DECOMPOUND_ANALYZERS: 0
-  script:
-    - cypress install
+    OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+    DISABLE_INSTALL_DEMO_CONFIG: "true"
+    DISABLE_SECURITY_PLUGIN: "true"
+    POL_OPEN_SEARCH_ENABLE_DECOMPOUND_ANALYZERS: 0
+  before_script:
     - invoke srv.setup-postgres --host postgres
     - invoke hrv.setup-postgres --host postgres
     - invoke hrv.index-dataset-version localhost -d test
+  script:
     - APPLICATION_PROJECT=edusources invoke test.e2e
+  artifacts:
+    when: always
+    paths:
+      - portal/tests/e2e/videos/**/*.mp4
+      - portal/tests/e2e/screenshots/**/*.png
+    expire_in: 1 day
 
 promote:
   stage: promote
   when: manual
-  extends: .docker-job
+  services:
+    - name: docker:dind
   script:
-    - invoke aws.promote harvester --commit $CI_COMMIT_SHA
+    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA

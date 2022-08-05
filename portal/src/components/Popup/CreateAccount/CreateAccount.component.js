@@ -15,9 +15,7 @@ export default {
   methods: {
     onCreateAccount() {
       this.isSubmitting = true;
-      const accountPermission = this.user.permissions.find(
-        (permission) => permission["type"] === "Communities"
-      );
+      const accountPermission = this.user.permissions.find((permission) => permission["type"] === "Communities");
       accountPermission.is_allowed = true;
       this.$store
         .dispatch("postUser")
@@ -25,8 +23,7 @@ export default {
           const authFlowToken = this.$store.getters.auth_flow_token;
           if (!isNil(authFlowToken)) {
             this.$store.commit("AUTH_FLOW_TOKEN", null);
-            window.location =
-              "/complete/surf-conext/?partial_token=" + authFlowToken;
+            window.location = "/complete/surf-conext/?partial_token=" + authFlowToken;
           }
         })
         .finally(() => {
@@ -40,9 +37,7 @@ export default {
   computed: {
     communityPermission() {
       if (this.user && this.user.permissions) {
-        return this.user.permissions.find(
-          (permission) => permission.type === "Communities"
-        );
+        return this.user.permissions.find((permission) => permission.type === "Communities");
       } else {
         return null;
       }

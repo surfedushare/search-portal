@@ -1,5 +1,5 @@
 import { formatDate, generateSearchMaterialsQuery } from "../../_helpers";
-import { isEmpty, isError, isNil, isObject } from "lodash";
+import { isEmpty } from "lodash";
 
 import AddCollection from "./../../Popup/AddCollection";
 import { Duration } from "luxon";
@@ -242,12 +242,10 @@ export default {
               linkedIn.innerText = share.linkedin.counter_value;
             }
             if (share.twitter) {
-              social_counters.querySelector("#twitter_counter").innerText =
-                share.twitter.counter_value;
+              social_counters.querySelector("#twitter_counter").innerText = share.twitter.counter_value;
             }
             if (share.link) {
-              social_counters.querySelector("#url_counter").innerText =
-                share.link.counter_value;
+              social_counters.querySelector("#url_counter").innerText = share.link.counter_value;
             }
             if (linkedIn) {
               clearInterval(this.socialCounterInterval);
@@ -300,16 +298,8 @@ export default {
       return item.name;
     },
     downloadOnClick(event, material) {
-      const dimensions = material.publishers.length
-        ? { dimension3: material.publishers.join(" - ") }
-        : {};
-      this.$log.customEvent(
-        "Goal",
-        "Download",
-        event.currentTarget.href,
-        null,
-        dimensions
-      );
+      const dimensions = material.publishers.length ? { dimension3: material.publishers.join(" - ") } : {};
+      this.$log.customEvent("Goal", "Download", event.currentTarget.href, null, dimensions);
       if (!material.files || material.files.length <= 1) {
         return;
       }
@@ -325,12 +315,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      "isAuthenticated",
-      "my_collections",
-      "material_communities",
-      "disciplines",
-    ]),
+    ...mapGetters(["isAuthenticated", "my_collections", "material_communities"]),
     formattedPublishedAt() {
       return formatDate(this.material.published_at, this.$i18n.locale);
     },
@@ -338,11 +323,9 @@ export default {
       return this.my_collections.map((collection) => {
         const collectionTitle = collection[`title_${this.$i18n.locale}`];
         const communityTitles = collection.communities.map((community) => {
-          const communityDetails = community.community_details.find(
-            (details) => {
-              return details.language_code.toLowerCase() === this.$i18n.locale;
-            }
-          );
+          const communityDetails = community.community_details.find((details) => {
+            return details.language_code.toLowerCase() === this.$i18n.locale;
+          });
           return communityDetails.title;
         });
         return {
@@ -351,31 +334,15 @@ export default {
         };
       });
     },
-    /**
-     * Extend to the material fields "disciplines"
-     * @returns {*}
-     */
-    extended_material() {
-      const { material, disciplines } = this;
-      let self = this;
-
-      if (isNil(material) || isError(material)) {
-        return material;
+    studyTitles() {
+      const studies = this.material.studies ? this.material.studies : this.material.disciplines;
+      if (isEmpty(studies)) {
+        return;
       }
-
-      if (!isNil(disciplines)) {
-        // TODO: material.disciplines is sometimes an Array with Object and sometimes with external_id
-        // We should make the type consistent
-        let disciplineTitles = material.disciplines.map((discipline) => {
-          let disciplineObj = isObject(discipline)
-            ? discipline
-            : disciplines[discipline];
-          return this.getTitleTranslation(disciplineObj, self.$i18n.locale);
-        });
-        material.disciplineTitles = disciplineTitles.join(", ");
-      }
-
-      return material;
+      let studyTitles = studies.map((study) => {
+        return this.getTitleTranslation(study, this.$i18n.locale);
+      });
+      return studyTitles.join(", ");
     },
   },
   watch: {

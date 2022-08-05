@@ -3,13 +3,12 @@
     <Popup v-if="isShow" :close="close" :is-show="isShow" class="add-material">
       <div class="content-container center_block">
         <div class="flex-container">
-          <h2 class="popup__title">{{ $t('Add-materials-to-collection') }}</h2>
-          <button
-            class="button secondary"
-            @click.prevent="onSaveMaterials"
-          >{{ $t('Add-selected-materials', { count: selection.length }) }}</button>
+          <h2 class="popup__title">{{ $t("Add-materials-to-collection") }}</h2>
+          <button class="button secondary" @click.prevent="onSaveMaterials">
+            {{ $t("Add-selected-materials", { count: selection.length }) }}
+          </button>
         </div>
-        <SearchTerm class="add_materials__info_search" @onSearch="onSearch" />
+        <SearchTerm class="add_materials__info_search" @search="onSearch" />
 
         <div
           v-infinite-scroll="loadMore"
@@ -34,23 +33,23 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash'
-import { mapGetters } from 'vuex'
-import Materials from '~/components/Materials/Materials.vue'
-import Popup from '~/components/Popup'
-import SearchTerm from '~/components/Search/SearchTerm.vue'
+import { isEmpty } from "lodash";
+import { mapGetters } from "vuex";
+import Materials from "~/components/Materials/Materials.vue";
+import Popup from "~/components/Popup";
+import SearchTerm from "~/components/Search/SearchTerm.vue";
 
 export default {
-  name: 'AddMaterialPopup',
+  name: "AddMaterialPopup",
   components: {
     Popup,
     Materials,
-    SearchTerm
+    SearchTerm,
   },
   props: {
     isShow: { type: Boolean },
-    close: { type: Function, default: () => { } },
-    collectionId: { type: String, default: '' },
+    close: { type: Function, default: () => {} },
+    collectionId: { type: String, default: "" },
     collectionCount: { type: Number, default: 0 },
   },
   data() {
@@ -58,70 +57,70 @@ export default {
       selection: [],
       saved: false,
       submitting: false,
-    }
+    };
   },
   computed: {
-    ...mapGetters(['materials', 'materials_loading']),
+    ...mapGetters(["materials", "materials_loading"]),
   },
   watch: {
     isShow(shouldShow) {
       if (!shouldShow) {
-        this.reset()
+        this.reset();
       }
     },
   },
   methods: {
     onSearch(searchText) {
-      this.$store.dispatch('searchMaterials', {
-        search_text: searchText,
+      this.$store.dispatch("searchMaterials", {
+        search_text: searchText || "",
         page_size: 10,
         page: 1,
-      })
+      });
     },
     loadMore() {
-      const { search, materials } = this
+      const { search, materials } = this;
       if (materials && !isEmpty(search)) {
-        const { page_size, page, records_total } = materials
+        const { page_size, page, records_total } = materials;
 
         if (records_total > page_size * page) {
-          this.$store.dispatch('searchNextPageMaterials', {
+          this.$store.dispatch("searchNextPageMaterials", {
             search_text: this.search,
             page_size: page_size,
             page: page + 1,
-          })
+          });
         }
       }
     },
     reset() {
-      this.search = ''
-      this.selection = []
+      this.search = "";
+      this.selection = [];
     },
     onSaveMaterials() {
-      this.submitting = true
+      this.submitting = true;
       const data = this.selection.map((material, index) => {
         return {
           external_id: material,
           position: index + this.collectionCount,
-        }
-      })
+        };
+      });
       this.$store
-        .dispatch('addMaterialToCollection', {
+        .dispatch("addMaterialToCollection", {
           collection_id: this.collectionId,
           data,
         })
         .then((collection) => {
-          this.saved = true
+          this.saved = true;
           if (this.$listeners.submitted) {
-            this.$emit('submitted', collection)
+            this.$emit("submitted", collection);
           }
         })
         .finally(() => {
-          this.submitting = false
-          this.close()
-        })
+          this.submitting = false;
+          this.close();
+        });
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

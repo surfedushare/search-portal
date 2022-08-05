@@ -1,14 +1,10 @@
 <template>
   <div>
     <h3 class="material__info_subttl">
-      {{ $t('In-collection') }}
+      {{ $t("In-collection") }}
     </h3>
     <ul class="material__info_collections">
-      <li
-        v-for="collection in collections"
-        :key="collection.id"
-        class="green-bar material__info_collection"
-      >
+      <li v-for="collection in collections" :key="collection.id" class="green-bar material__info_collection">
         <router-link
           class="content"
           :to="
@@ -23,7 +19,7 @@
             <i class="arrow" />
           </h3>
           <div>
-            {{ $tc('Materials', collection.materials_count) }}
+            {{ $tc("Materials", collection.materials_count) }}
           </div>
         </router-link>
       </li>
@@ -33,7 +29,7 @@
 
 <script>
 export default {
-  name: 'CollectionList',
+  name: "CollectionList",
   props: {
     collections: {
       type: Array,
@@ -43,12 +39,10 @@ export default {
   mounted() {},
   methods: {
     collectionTitle(collection) {
-      return this.$i18n.locale === 'nl'
-        ? collection.title_nl
-        : collection.title_en
+      return this.$i18n.locale === "nl" ? collection.title_nl : collection.title_en;
     },
   },
-}
+};
 </script>
 
 <style src="../MaterialInfo/MaterialInfo.component.less" scoped lang="less" />

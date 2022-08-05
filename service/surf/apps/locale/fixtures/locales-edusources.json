@@ -26153,9 +26153,9 @@
     "model": "locale.locale",
     "pk": "b5621161-7bca-41b1-aa48-42170feeb3d2",
     "fields": {
-        "asset": "Discipline",
-        "en": "Disciplines",
-        "nl": "Vakgebieden",
+        "asset": "Study",
+        "en": "Study",
+        "nl": "Studie",
         "is_fuzzy": false
     }
 },
@@ -27736,16 +27736,6 @@
         "asset": "Charlotte Raven_auto_generated_at_Wed Jun  2 06:01:44 2021-451940",
         "en": "Charlotte Raven",
         "nl": "Charlotte Raven",
-        "is_fuzzy": false
-    }
-},
-{
-    "model": "locale.locale",
-    "pk": "bef85b80-df44-4e21-b6d7-507da63a4514",
-    "fields": {
-        "asset": "No-disciplines",
-        "en": "No disciplines",
-        "nl": "Geen vakgebieden",
         "is_fuzzy": false
     }
 },

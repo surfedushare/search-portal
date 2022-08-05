@@ -2,22 +2,14 @@
   <section class="main-header">
     <div v-if="user_permission_notifications.length" id="notification-bar">
       <div class="notifications">
-        <div
-          v-for="notification in user_permission_notifications"
-          :key="notification.id"
-        >
+        <div v-for="notification in user_permission_notifications" :key="notification.id">
           <p class="message">
             {{ notification[$i18n.locale].description }}
-            (<router-link :to="localePath(notification.more_info_route)">{{
-              $t("more-info")
-            }}</router-link
+            (<router-link :to="localePath(notification.more_info_route)">{{ $t("more-info") }}</router-link
             >)
           </p>
           <p class="acknowledge">
-            <button
-              class="button"
-              @click="acknowledgeNotification(notification.type)"
-            >
+            <button class="button" @click="acknowledgeNotification(notification.type)">
               {{ $t("Ok") }}
             </button>
           </p>
@@ -25,20 +17,13 @@
       </div>
     </div>
 
-    <div
-      v-for="level in getMessageLevels"
-      id="messages-bar-container"
-      :key="level"
-    >
+    <div v-for="level in getMessageLevels" id="messages-bar-container" :key="level">
       <div v-if="hasMessages(level)" class="messages-bar">
         <i class="fas" :class="[getLevelIcon(level), level]"></i>
         <p class="message">
           {{ getMessagesContent(level) }}
         </p>
-        <i
-          class="fas fa-times"
-          @click="$store.commit('CLEAR_MESSAGES', level)"
-        ></i>
+        <i class="fas fa-times" @click="$store.commit('CLEAR_MESSAGES', level)"></i>
       </div>
     </div>
 
@@ -47,19 +32,17 @@
         <router-link :to="localePath('index')" class="main-header__logo">
           <img
             src="../../assets/images/edusourceslogo.png"
-            srcset="
-              ../../assets/images/edusourceslogo@2x.png 2x,
-              ../../assets/images/edusourceslogo@3x.png 3x
-            "
+            srcset="../../assets/images/edusourceslogo@2x.png 2x, ../../assets/images/edusourceslogo@3x.png 3x"
             class="main-header__logo_img"
           />
         </router-link>
         <Menu class="main-header__menu" />
+
         <div class="main-header__actions">
           <div class="main-header__question">
-            <a class="button" :href="questionLink" target="_blank">{{
-              $t("Question")
-            }}</a>
+            <button type="button" class="button" @click="toggleQuestionPopup">
+              <span>{{ $t("Question") }}</span>
+            </button>
           </div>
           <div v-if="isAuthenticated" class="main-header__user">
             <div class="main-header__user_name arrow-link">
@@ -68,19 +51,12 @@
             <nav class="main-header__user_menu">
               <ul class="main-header__user_menu_items">
                 <li class="main-header__user_menu_item">
-                  <router-link
-                    class="main-header__user_menu_link"
-                    :to="localePath({ name: 'my-privacy' })"
-                  >
+                  <router-link class="main-header__user_menu_link" :to="localePath({ name: 'my-privacy' })">
                     {{ $t("My-privacy") }}
                   </router-link>
                 </li>
                 <li class="main-header__user_menu_item">
-                  <a
-                    class="main-header__user_menu_link"
-                    href="/logout/"
-                    @click.prevent="logout()"
-                  >
+                  <a class="main-header__user_menu_link" href="/logout/" @click.prevent="logout()">
                     {{ $t("logout") }}
                   </a>
                 </li>
@@ -98,21 +74,11 @@
     </div>
 
     <div class="main-header__mobile">
-      <button
-        class="main-header__menu_button"
-        @click="toggleMobileMenu()"
-      ></button>
-      <router-link
-        to="/"
-        class="main-header__mobile_logo"
-        @click.native="hideMobileMenu()"
-      >
+      <button class="main-header__menu_button" @click="toggleMobileMenu()"></button>
+      <router-link to="/" class="main-header__mobile_logo" @click.native="hideMobileMenu()">
         <img
           src="../../assets/images/edusourceslogo.png"
-          srcset="
-            ../../assets/images/edusourceslogo@2x.png 2x,
-            ../../assets/images/edusourceslogo@3x.png 3x
-          "
+          srcset="../../assets/images/edusourceslogo@2x.png 2x, ../../assets/images/edusourceslogo@3x.png 3x"
           class="main-header__logo_img"
         />
       </router-link>
@@ -138,12 +104,7 @@
               </router-link>
             </li>
             <li class="main-header__user_menuitem">
-              <a
-                class="main-header__user_menu_link"
-                :href="questionLink"
-                target="_blank"
-                >{{ $t("Question") }}</a
-              >
+              <div class="main-header__user_menu_link" @click="toggleQuestionPopup">{{ $t("Question") }}</div>
             </li>
             <li v-if="isAuthenticated" class="main-header__user_menu_item">
               <router-link
@@ -155,11 +116,7 @@
               </router-link>
             </li>
             <li v-if="isAuthenticated" class="main-header__user_menu_item">
-              <a
-                class="main-header__user_menu_link"
-                href="/logout/"
-                @click.prevent="logout()"
-              >
+              <a class="main-header__user_menu_link" href="/logout/" @click.prevent="logout()">
                 {{ $t("logout") }}
               </a>
             </li>
@@ -176,13 +133,13 @@
       </div>
     </div>
 
-    <Feedback />
+    <QuestionPopup v-if="showQuestionPopup" :show-popup="showQuestionPopup" :close="toggleQuestionPopup" />
   </section>
 </template>
 
 <script>
-import Feedback from "../Feedback/Feedback";
 import LanguageSwitch from "./LanguageSwitch";
+import QuestionPopup from "../Popup/QuestionPopup.vue";
 import Menu from "./Menu.vue";
 import { generateSearchMaterialsQuery } from "../_helpers";
 import { mapGetters } from "vuex";
@@ -192,9 +149,14 @@ export default {
   components: {
     LanguageSwitch,
     Menu,
-    Feedback,
+    QuestionPopup,
   },
   props: [],
+  data() {
+    return {
+      showQuestionPopup: false,
+    };
+  },
   computed: {
     ...mapGetters([
       "isAuthenticated",
@@ -215,9 +177,7 @@ export default {
         ordering: null,
         filters: [],
       };
-      const route = this.$router.resolve(
-        generateSearchMaterialsQuery(searchRequest, "materials-search")
-      );
+      const route = this.$router.resolve(generateSearchMaterialsQuery(searchRequest, "materials-search"));
       return route ? route.href : "";
     },
   },
@@ -232,13 +192,14 @@ export default {
       this.$store.commit("SET_HEADER_MENU_STATE", false);
     },
     acknowledgeNotification(notificationType) {
-      let notification = this.user_permission_notifications.find(
-        (notification) => {
-          return notification.type === notificationType;
-        }
-      );
+      let notification = this.user_permission_notifications.find((notification) => {
+        return notification.type === notificationType;
+      });
       notification.is_allowed = true;
       this.$store.dispatch("postUser");
+    },
+    toggleQuestionPopup() {
+      this.showQuestionPopup = !this.showQuestionPopup;
     },
   },
 };
@@ -262,7 +223,6 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.1);
     z-index: 10;
     pointer-events: none;
   }
@@ -395,8 +355,7 @@ export default {
     height: 30px;
     width: 30%;
     cursor: pointer;
-    background: transparent url("../../assets/images/list-view-copy.svg") 0 50%
-      no-repeat;
+    background: transparent url("../../assets/images/list-view-copy.svg") 0 50% no-repeat;
 
     &:focus,
     &:active {
@@ -426,6 +385,7 @@ export default {
   &__actions {
     display: flex;
     width: 30%;
+    justify-content: flex-end;
   }
 
   &__login {
@@ -474,8 +434,7 @@ export default {
         width: 25px;
         height: 25px;
         margin: 0 7px 0 0;
-        background: url("../../assets/images/user.svg") 50% 50% / contain
-          no-repeat;
+        background: url("../../assets/images/user.svg") 50% 50% / contain no-repeat;
       }
 
       &:after {
@@ -500,7 +459,6 @@ export default {
         margin: 0;
         padding: 0;
         list-style: none;
-        //box-shadow: inset -2px 28px 28px -21px rgba(0, 0, 0, 0.1);
       }
 
       &_item {

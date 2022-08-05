@@ -8,7 +8,8 @@ from django.conf import settings
 from datagrowth.processors import ExtractProcessor
 from datagrowth.utils import reach
 
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
+from core.models import ExtractionMapping
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS, Repositories
 
 
 class SharekitMetadataExtraction(ExtractProcessor):
@@ -222,11 +223,11 @@ class SharekitMetadataExtraction(ExtractProcessor):
         return None
 
     @classmethod
-    def get_learning_material_themes(cls, node):
-        theme_value = node["attributes"].get("themesLearningMaterial", [])
-        if not theme_value:
+    def get_learning_material_disciplines(cls, node):
+        discipline_value = node["attributes"].get("themesLearningMaterial", [])
+        if not discipline_value:
             return []
-        return theme_value if isinstance(theme_value, list) else [theme_value]
+        return discipline_value if isinstance(discipline_value, list) else [discipline_value]
 
 
 SHAREKIT_EXTRACTION_OBJECTIVE = {
@@ -248,7 +249,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "publisher_year": SharekitMetadataExtraction.get_publisher_year,
     "lom_educational_levels": SharekitMetadataExtraction.get_lom_educational_levels,
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
-    "disciplines": SharekitMetadataExtraction.get_empty_list,
+    "studies": SharekitMetadataExtraction.get_empty_list,
     "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "#is_restricted": SharekitMetadataExtraction.get_is_restricted,
@@ -259,6 +260,25 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "research_object_type": "$.attributes.typeResearchObject",
     "research_themes": SharekitMetadataExtraction.get_research_themes,
     "parties": SharekitMetadataExtraction.get_empty_list,
-    "learning_material_themes": SharekitMetadataExtraction.get_learning_material_themes,
+    "learning_material_disciplines": SharekitMetadataExtraction.get_learning_material_disciplines,
     "consortium": SharekitMetadataExtraction.get_consortium
 }
+
+
+def create_objective(root=None, include_is_restricted=True):
+    extraction_mapping_queryset = ExtractionMapping.objects.filter(is_active=True, repository=Repositories.SHAREKIT)
+    if extraction_mapping_queryset.exists():
+        extraction_mapping = extraction_mapping_queryset.last()
+        objective = extraction_mapping.to_objective()
+    else:
+        objective = {
+            "@": "$.data",
+            "external_id": "$.id",
+            "state": SharekitMetadataExtraction.get_record_state
+        }
+        objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
+    if root:
+        objective["@"] = root
+    if not include_is_restricted:
+        objective.pop("#is_restricted")
+    return objective

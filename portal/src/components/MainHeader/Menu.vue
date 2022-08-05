@@ -2,57 +2,13 @@
   <section class="menu">
     <nav>
       <ul class="menu__list">
-        <li v-if="false" v-click-outside="closeSubMenu" class="menu__list_item">
-          <a
-            href="/themes/"
-            class="menu__link arrow-link-grey"
-            :class="{ 'router-link-active': isShowSubMenu }"
-            @click.prevent="toggleSubMenu"
-            >{{ $t("Themes") }}</a
-          >
-          <transition name="fade">
-            <div v-if="isShowSubMenu" class="menu__sub">
-              <h3 class="title">{{ $t("Themes") }}</h3>
-              <ul v-if="sortedThemes.length" class="menu__sub_list">
-                <li
-                  v-for="theme in sortedThemes"
-                  :key="theme.id"
-                  class="menu__sub_list_item"
-                >
-                  <router-link
-                    class="menu__sub_link arrow-link"
-                    :to="
-                      localePath({
-                        name: 'themes-id',
-                        params: { slug: getThemeSlug(theme) },
-                      })
-                    "
-                    @click.native="closeSubMenu(true)"
-                  >
-                    {{
-                      getThemeTitleTranslation(theme, $i18n.locale)
-                    }}</router-link
-                  >
-                </li>
-              </ul>
-            </div>
-          </transition>
-        </li>
         <li class="menu__list_item">
-          <router-link
-            :to="localePath('communities')"
-            class="menu__link"
-            @click.native="closeSubMenu(true)"
-          >
+          <router-link :to="localePath('communities')" class="menu__link">
             {{ $t("Communities") }}
           </router-link>
         </li>
         <li class="menu__list_item">
-          <router-link
-            :to="localePath('how-does-it-work')"
-            class="menu__link"
-            @click.native="closeSubMenu(true)"
-          >
+          <router-link :to="localePath('how-does-it-work')" class="menu__link">
             {{ $t("How-does-it-work") }}
           </router-link>
         </li>
@@ -62,74 +18,19 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
-import { isEmpty } from "lodash";
 import { mapGetters } from "vuex";
 
 export default {
   name: "MenuBlock",
-  directives: {
-    ClickOutside,
-  },
-  props: [],
-  data() {
-    return {
-      isShowSubMenu: false,
-    };
-  },
   computed: {
-    ...mapGetters(["sortedThemes", "show_header_menu", "show_sub_menu"]),
+    ...mapGetters(["show_header_menu"]),
   },
-  watch: {
-    /**
-     * Watcher on changing the 'show_sub_menu' field
-     * @param show_sub_menu - Boolean
-     */
-    show_sub_menu(show_sub_menu) {
-      this.isShowSubMenu = show_sub_menu;
-    },
-
-    /**
-     * Watcher on route change
-     */
-    $route() {
-      this.closeSubMenu();
-    },
-  },
-  mounted() {},
   methods: {
-    /**
-     * Toggling visibility the submenu
-     */
-    toggleSubMenu() {
-      this.isShowSubMenu = !this.isShowSubMenu;
-      this.$store.dispatch("setSubMenuShow", this.isShowSubMenu);
-    },
-    /**
-     * Close the submenu
-     */
-    closeSubMenu(hide = false) {
-      this.isShowSubMenu = false;
-      if (hide === true) {
-        this.hideMenu();
-      }
-    },
     /**
      * Hide the submenu
      */
     hideMenu() {
       this.$store.commit("SET_HEADER_MENU_STATE", false);
-    },
-    getThemeTitleTranslation(theme, language) {
-      if (!isEmpty(theme.title_translations)) {
-        return theme.title_translations[language];
-      }
-    },
-    getThemeSlug(theme) {
-      // TODO: this needs a more reliable way once we decided how/if we load the themes
-      return theme.translation[this.$i18n.locale]
-        .replace(/\s/g, "-")
-        .toLowerCase();
     },
   },
 };

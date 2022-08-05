@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import ElasticsearchHandler, create_elasticsearch_handler
+from utils.logging import OpensearchHandler, create_opensearch_handler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -242,6 +242,7 @@ if MODE != 'localhost':
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_STORAGE_BUCKET_NAME = environment.aws.image_upload_bucket
     AWS_S3_REGION_NAME = 'eu-central-1'
+    AWS_S3_FILE_OVERWRITE = False
 
 AWS_HARVESTER_BUCKET_NAME = environment.aws.harvest_content_bucket
 
@@ -267,6 +268,17 @@ WEBPACK_LOADER = {
 }
 
 
+# Search
+
+OPENSEARCH_HOST = environment.open_search.host
+OPENSEARCH_PROTOCOL = environment.open_search.protocol
+OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_NL_INDEX = "latest-nl"
+OPENSEARCH_EN_INDEX = "latest-en"
+OPENSEARCH_UNK_INDEX = "latest-unk"
+OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
+
+
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/
 # https://docs.sentry.io/
@@ -290,16 +302,16 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-        'es_service': create_elasticsearch_handler(
+        'search_service': create_opensearch_handler(
             'service-logs',
-            ElasticsearchHandler.IndexNameFrequency.WEEKLY,
+            OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment,
-            session
+            OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
         'service': {
-            'handlers': ['es_service'] if environment.django.logging.is_elastic else ['console'],
+            'handlers': ['search_service'] if environment.django.logging.is_open_search else ['console'],
             'level': _log_level,
             'propagate': True,
         }
@@ -370,16 +382,6 @@ LOGIN_REDIRECT_URL = BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
-
-
-# Search
-
-ELASTICSEARCH_HOST = environment.elastic_search.host
-ELASTICSEARCH_PROTOCOL = environment.elastic_search.protocol
-ELASTICSEARCH_VERIFY_CERTS = environment.elastic_search.verify_certs  # ignored when protocol != https
-ELASTICSEARCH_NL_INDEX = "latest-nl"
-ELASTICSEARCH_EN_INDEX = "latest-en"
-ELASTICSEARCH_UNK_INDEX = "latest-unk"
 
 
 # CKEditor

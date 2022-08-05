@@ -1,42 +1,19 @@
 <template>
   <section class="filter-categories">
-    <h3
-      v-show="materials && materials.records.length > 0"
-      class="filter-categories__title"
-    >
+    <h3 v-show="materials && materials.records.length > 0" class="filter-categories__title">
       {{ $t("Filter") }}
     </h3>
-
-    <div v-if="selectionFilterItems.length" class="filter-categories__links">
-      <p class="filter-categories__reset">{{ $t("Selected-filters") }}</p>
-      <a href="/materials/search/" @click.prevent="resetFilter"
-        >({{ $t("Reset-filters") }})</a
-      >
-    </div>
-    <ul data-test="selected_filters" class="selected-filters">
-      <li v-for="filter in selectionFilterItems" :key="filter.id">
-        <span>
-          {{ filter.parent.title_translations[$i18n.locale] }}:&nbsp;
-          <b>{{ filter.title_translations[$i18n.locale] }}</b>
-        </span>
-        <button class="remove-icon" @click="onUncheck(filter.parent.external_id, filter.external_id)"></button>
-      </li>
-    </ul>
-    <div
-      v-show="materials && materials.records.length > 0"
-      class="filter-categories__items"
-    >
-      <ul
-        v-if="filterableCategories.length"
-        class="filter-categories__items_wrapper"
-      >
+    <div v-show="materials && materials.records.length > 0" class="filter-categories__items">
+      <ul v-if="filterableCategories.length" class="filter-categories__items_wrapper">
         <template v-for="category in filterableCategories">
-          <DatesRange v-if="category.external_id === publisherDateExternalId" :key="category.external_id"
-            :data-test="category.external_id" :category="category" :dates="datesRangeFilter()" :inline="true"
-            :disable-future-days="true" theme="min" @input="onDateChange" />
-
-          <FilterCategory v-else-if="hasVisibleChildren(category)" :key="category.id" :data-test="category.external_id"
-            :category="category" @check="onCheck" @uncheck="onUncheck" />
+          <FilterCategory
+            v-if="hasVisibleChildren(category)"
+            :key="category.id"
+            :data-test="category.external_id"
+            :category="category"
+            @check="onCheck"
+            @uncheck="onUncheck"
+          />
         </template>
       </ul>
     </div>
@@ -44,26 +21,17 @@
 </template>
 
 <script>
-import { flatMap, isEqual } from "lodash";
-import DatesRange from "~/components/DatesRange";
+import { flatMap, isEmpty } from "lodash";
 import { generateSearchMaterialsQuery } from "../_helpers";
 import FilterCategory from "./FilterCategory.vue";
 
 export default {
   name: "FilterCategories",
-  components: { DatesRange, FilterCategory },
+  components: { FilterCategory },
   props: {
     materials: {
       type: Object,
       default: () => ({ records: [] }),
-    },
-    defaultFilter: {
-      type: Object,
-      default: () => ({}),
-    },
-    selectedFilters: {
-      type: Object,
-      default: () => ({}),
     },
   },
   data() {
@@ -78,10 +46,11 @@ export default {
   },
   computed: {
     selectionFilterItems() {
-      if (!this.selectedFilters) {
+      const selectedFilters = this.$store.state.filterCategories.selection;
+      if (isEmpty(selectedFilters)) {
         return [];
       }
-      return flatMap(this.selectedFilters, (filter_ids, categoryId) => {
+      return flatMap(selectedFilters, (filter_ids, categoryId) => {
         const cat = this.materials?.filter_categories?.find((category) => {
           return category.external_id === categoryId;
         });
@@ -91,50 +60,31 @@ export default {
             return child.external_id === filter_id;
           });
         });
-        const filters = results.filter((rsl) => {
-          return rsl;
-        });
-        return filters;
+        return results.filter((rsl) => rsl);
       });
     },
     filterableCategories() {
       if (!this.materials?.filter_categories) {
         return [];
       }
+      const selectedFilters = this.$store.state.filterCategories.selection;
       // remove all filters that should not be shown to the users
-      let defaultFilterItem = {};
-      if (this.defaultFilter) {
-        defaultFilterItem =
-          this.$store.getters.getCategoryById(
-            this.defaultFilter,
-            this.$route.meta.filterRoot
-          ) || {};
-      }
-      const visibleCategories = this.materials.filter_categories.filter(
-        (category) =>
-          !category.is_hidden &&
-          category.external_id !== defaultFilterItem.searchId
-      );
+      const visibleCategories = this.materials.filter_categories.filter((category) => !category.is_hidden);
       // aggregate counts to the highest level
       const filterableCategories = visibleCategories.map((category) => {
         if (category.children) {
           category.children = category.children.map((child) => {
             if (child.children.length > 0) {
-              child.count = child.children.reduce(
-                (memo, c) => memo + c.count,
-                0
-              );
+              child.count = child.children.reduce((memo, c) => memo + c.count, 0);
             }
             return child;
           });
         }
 
-        category.children = category.children?.filter(
-          (child) => !child.is_hidden && child.count > 0
-        );
+        category.children = category.children?.filter((child) => !child.is_hidden && child.count > 0);
 
         category.children = category.children.map((child) => {
-          const selected = this.selectedFilters[category.external_id] || [];
+          const selected = selectedFilters[category.external_id] || [];
           child.selected = selected.includes(child.external_id);
           return child;
         });
@@ -163,77 +113,13 @@ export default {
         return !child.is_hidden;
       });
     },
-    childExternalIds(categoryId, itemId) {
-      // he
-      const category = this.materials.filter_categories.find(
-        (category) => category.external_id === categoryId
-      );
-      const item = category.children.find(
-        (item) => item.external_id === itemId
-      );
-      const iterator = (memo, item) => {
-        if (item.children.length > 0) {
-          item.children.forEach((child) => iterator(memo, child));
-        }
-        memo.push(item.external_id);
-        return memo;
-      };
-
-      return item.children?.reduce(iterator, [item.external_id]);
-    },
     onCheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || [];
-      if (existingItems.indexOf(itemId) >= 0) {
-        return;
-      }
-
-      const filters = this.childExternalIds(categoryId, itemId);
-      this.selectedFilters[categoryId] = [...existingItems, ...filters];
-
-      return this.executeSearch(this.selectedFilters);
+      this.$store.commit("SELECT_FILTER_CATEGORIES", { category: categoryId, selection: [itemId] });
+      this.$emit("filter");
     },
     onUncheck(categoryId, itemId) {
-      const existingItems = this.selectedFilters[categoryId] || [];
-      const filters = this.childExternalIds(categoryId, itemId);
-      this.selectedFilters[categoryId] = existingItems.filter(
-        (item) => !filters.includes(item)
-      );
-      if (this.selectedFilters[categoryId].length === 0) {
-        this.$delete(this.selectedFilters, categoryId);
-      }
-      if (itemId === this.$route.params.filterId) {
-        return this.executeSearch(this.selectedFilters, "materials-search");
-      }
-      return this.executeSearch(this.selectedFilters);
-    },
-    onDateChange(dates) {
-      this.selectedFilters[this.publisherDateExternalId] = dates;
-      this.executeSearch(this.selectedFilters);
-    },
-    async executeSearch(filters = {}, name = null) {
-      name = name || this.$route.name;
-      const { ordering, search_text } = this.materials;
-      const searchRequest = {
-        search_text,
-        ordering,
-        filters: { ...filters },
-      };
-      // Execute search
-      const route = this.generateSearchMaterialsQuery(searchRequest, name);
-      if (isEqual(route.query, this.$route.query)) {
-        return;
-      }
-      await this.$router.push(route);
-      this.$emit("input", searchRequest); // actual search is done by the parent page
-    },
-    resetFilter() {
-      this.$emit("reset");
-    },
-    datesRangeFilter() {
-      return this.selectedFilters[this.publisherDateExternalId] || [null, null];
-    },
-    hasDatesRangeFilter() {
-      return this.datesRangeFilter().some((item) => item !== null);
+      this.$store.commit("DESELECT_FILTER_CATEGORIES", { category: categoryId, selection: [itemId] });
+      this.$emit("filter");
     },
   },
 };
@@ -316,13 +202,11 @@ export default {
       height: 20px;
       flex-shrink: 0;
       margin: 2px 5px 0 20px;
-      background: url("../../assets/images/plus-black.svg") 50% 50% / contain
-        no-repeat;
+      background: url("../../assets/images/plus-black.svg") 50% 50% / contain no-repeat;
     }
 
     &--hide:after {
-      background: url("../../assets/images/min-black.svg") 50% 50% / contain
-        no-repeat;
+      background: url("../../assets/images/min-black.svg") 50% 50% / contain no-repeat;
     }
   }
 
@@ -428,8 +312,7 @@ export default {
       display: block;
       background-size: contain;
 
-      @media @tablet,
-      @mobile {
+      @media @tablet, @mobile {
         margin-bottom: 25px;
       }
 

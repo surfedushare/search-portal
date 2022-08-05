@@ -11,16 +11,14 @@
       />
     </div>
     <div v-else-if="!material && isReady" class="not-found-section">
-      <h1 class="not-found-title">{{ $t('Not-found-title') }}</h1>
+      <h1 class="not-found-title">{{ $t("Not-found-title") }}</h1>
       <router-link :to="localePath('index')" class="button">
-        {{
-          $t('Not-found-button')
-        }}
+        {{ $t("Not-found-button") }}
       </router-link>
     </div>
     <div v-if="materials.records.length" class="main__materials">
       <div class="center_block">
-        <h2 class="main__materials_title">{{ $t('Also-interesting-for-you') }}</h2>
+        <h2 class="main__materials_title">{{ $t("Also-interesting-for-you") }}</h2>
         <Materials :materials="materials" :items-length="4" @click="onMoreLikeThisClick" />
       </div>
     </div>
@@ -28,13 +26,13 @@
 </template>
 
 <script>
-import { uniqBy } from 'lodash'
-import { mapGetters } from 'vuex'
-import MaterialInfo from '~/components/Materials/MaterialInfo'
-import Materials from '~/components/Materials/Materials.vue'
-import Navigation from '~/components/Materials/Navigation'
-import Sidebar from '~/components/Materials/Sidebar'
-import PageMixin from '~/pages/page-mixin'
+import { uniqBy } from "lodash";
+import { mapGetters } from "vuex";
+import MaterialInfo from "~/components/Materials/MaterialInfo";
+import Materials from "~/components/Materials/Materials.vue";
+import Navigation from "~/components/Materials/Navigation";
+import Sidebar from "~/components/Materials/Sidebar";
+import PageMixin from "~/pages/page-mixin";
 
 export default {
   components: {
@@ -44,12 +42,12 @@ export default {
     Navigation,
   },
   mixins: [PageMixin],
-  dependencies: ['$log'],
+  dependencies: ["$log"],
   beforeRouteUpdate(to, from, next) {
     this.pageLoad = new Promise((resolve, reject) => {
-      this.updateMaterial(to.params.id).then(resolve).catch(reject)
-    })
-    next()
+      this.updateMaterial(to.params.id).then(resolve).catch(reject);
+    });
+    next();
   },
   data() {
     return {
@@ -57,59 +55,54 @@ export default {
       materials: {
         records: [],
       },
-    }
+    };
   },
   computed: {
-    ...mapGetters(['material']),
+    ...mapGetters(["material"]),
     communities() {
       // Get communities from collections
-      const communities = this.collections
-        .map((collection) => collection.communities)
-        .flat()
+      const communities = this.collections.map((collection) => collection.communities).flat();
 
       // Remove duplicate communities
-      return uniqBy(communities, 'id')
+      return uniqBy(communities, "id");
     },
   },
   metaInfo() {
-    const defaultTitle = this.$root.$meta().title
+    const defaultTitle = this.$root.$meta().title;
     return {
       title: this.material ? this.material.title || defaultTitle : defaultTitle,
-    }
+    };
   },
   created() {
     this.pageLoad = new Promise((resolve, reject) => {
-      this.updateMaterial(this.$route.params.id).then(resolve).catch(reject)
-    })
+      this.updateMaterial(this.$route.params.id).then(resolve).catch(reject);
+    });
   },
   methods: {
     async updateMaterial(externalId) {
-      const materialLoad = this.$store.dispatch('getMaterial', {
+      const materialLoad = this.$store.dispatch("getMaterial", {
         id: externalId,
         params: { count_view: true },
-      })
-      const material = await materialLoad
-      const materials = await this.$store.dispatch('getSimilarMaterials', {
+      });
+      const material = await materialLoad;
+      const materials = await this.$store.dispatch("getSimilarMaterials", {
         external_id: this.$route.params.id,
         language: material.language,
-      })
-      materials.records = materials.results
-      this.materials = materials
+      });
+      materials.records = materials.results;
+      this.materials = materials;
 
-      const collections = await this.$store.dispatch(
-        'checkMaterialInCollection',
-        externalId
-      )
-      this.collections = collections.results
-      return materialLoad
+      const collections = await this.$store.dispatch("checkMaterialInCollection", externalId);
+      this.collections = collections.results;
+      return materialLoad;
     },
     onMoreLikeThisClick(material) {
-      this.$log.customEvent('Waypoint', 'Click', material.external_id, null, {
-        dimension2: 'more_like_this',
-      })
+      this.$log.customEvent("Waypoint", "Click", material.external_id, null, {
+        dimension2: "more_like_this",
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

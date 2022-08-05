@@ -1,11 +1,11 @@
 # Common
-django==3.2.13
+django==3.2.14
 djangorestframework==3.11.2
 psycopg2-binary==2.9.3
 whitenoise==5.1.0
 requests==2.27.1
 Pillow==9.0.1
-opensearch-py==1.1.0
+opensearch-py==2.0.0
 python-dateutil==2.8.1
 suds-community==0.8.5
 uritemplate==3.0.1
@@ -17,7 +17,7 @@ markupsafe==2.0.1
 awscli==1.24.7
 boto3==1.23.7
 requests-aws4auth==1.0
-django-storages==1.9.1
+django-storages==1.12.3
 
 # Tools
 ipython==7.16.3

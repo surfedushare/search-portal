@@ -29,8 +29,12 @@ schedule:
   harvest:
     hour: 6  # uses UTC
     minute: 0
-  sync_sharekit_metadata:
-    minute: "7-59/5"
+  sync_sharekit_metadata: false
+
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+    - "20.56.8.62"
 
 aws:
   task_role_arn: "arn:aws:iam::322480324822:role/ecsHarvesterTaskExecutionRole"
@@ -40,13 +44,16 @@ secrets:
   postgres:
     password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/postgres-application"
     application_password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/postgres-application"
+  opensearch:
+    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:opensearch/password"
   django:
     secret_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/django"
     admin_password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/django"
   sharekit:
     api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/sharekit-credentials"
   harvester:
-    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/api-key"
+    api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/credentials"
+    webhook_secret: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/credentials"
   matomo:
     api_key: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:harvester/matomo-api-key"
   eduterm:

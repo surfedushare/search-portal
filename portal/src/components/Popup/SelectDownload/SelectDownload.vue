@@ -1,14 +1,9 @@
 <template>
   <transition name="fade">
-    <Popup
-      v-if="showPopup"
-      :close="close"
-      :is-show="showPopup"
-      class="popup-content"
-    >
+    <Popup v-if="showPopup" :close="close" :is-show="showPopup" class="popup-content">
       <slot>
         <h2 class="popup__title">
-          {{ $t('View-materials') }}
+          {{ $t("View-materials") }}
         </h2>
         <div class="download-list">
           <a
@@ -17,7 +12,8 @@
             :href="file.url"
             class="button button--full-width material__grey_block-btn"
             target="_blank"
-          >{{ file.title }}</a>
+            >{{ file.title }}</a
+          >
         </div>
       </slot>
     </Popup>
@@ -25,10 +21,10 @@
 </template>
 
 <script>
-import Popup from '~/components/Popup'
+import Popup from "~/components/Popup";
 
 export default {
-  name: 'SelectDownloadPopup',
+  name: "SelectDownloadPopup",
   components: {
     Popup,
   },
@@ -46,7 +42,7 @@ export default {
       default: null,
     },
   },
-}
+};
 </script>
 <style scoped lang="less">
 .button {
@@ -55,7 +51,7 @@ export default {
   text-overflow: ellipsis;
 
   margin-bottom: 15px;
-  background-image: url('../../../assets/images/open-link-black.svg');
+  background-image: url("../../../assets/images/open-link-black.svg");
   background-position: 17px 15px;
   background-repeat: no-repeat;
   background-size: 25px 25px;

@@ -52,8 +52,8 @@ class TestGetHarvestSeedsHku(TestCase):
 
     def test_get_language(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["language"], "en")
-        self.assertEqual(seeds[10]["language"], "nl")
+        self.assertEqual(seeds[0]["language"], {"metadata": "en"})
+        self.assertEqual(seeds[10]["language"], {"metadata": "nl"})
 
     def test_get_title(self):
         seeds = self.seeds
@@ -82,9 +82,9 @@ class TestGetHarvestSeedsHku(TestCase):
                 'dai': None, 'orcid': None, 'isni': None
             },
         ])
-        self.assertEqual(seeds[0]['authors'], [
+        self.assertEqual(seeds[1]['authors'], [
             {
-                'name': 'Henk Slager', 'email': "henk.slager@hku.nl", 'external_id': None,
+                'name': 'Henk Slager', 'email': None, 'external_id': None,
                 'dai': None, 'orcid': None, 'isni': None
             },
         ])

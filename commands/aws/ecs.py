@@ -123,7 +123,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
                 "securityGroups": [
                     ctx.config.aws.rds_security_group_id,
                     ctx.config.aws.default_security_group_id,
-                    ctx.config.aws.elasticsearch_security_group_id,
+                    ctx.config.aws.opensearch_security_group_id,
                     ctx.config.aws.redis_security_group_id
                 ]
             }

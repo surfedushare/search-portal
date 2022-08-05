@@ -1,6 +1,6 @@
 from core.constants import HarvestStages, Repositories
 from core.logging import HarvestLogger
-from core.models import Dataset, Harvest
+from core.models import Dataset, Harvest, DatasetVersion
 from core.utils.harvest import prepare_harvest
 from django.conf import settings
 from django.core.management import CommandError, call_command
@@ -10,7 +10,7 @@ from invoke import Context
 
 
 @app.task(name="harvest")
-def harvest(reset=False, no_promote=False):
+def harvest(reset=False, no_promote=False, report_dataset_version=False):
 
     if reset:
         call_command("extend_resource_cache")
@@ -29,7 +29,7 @@ def harvest(reset=False, no_promote=False):
             try:
                 call_command("harvest_metadata", f"--dataset={dataset.name}", f"--repository={repository}")
             except CommandError as exc:
-                logger = HarvestLogger(dataset, "harvest_metadata", {
+                logger = HarvestLogger(dataset, "harvest_task", {
                     "dataset": dataset.name,
                     "repository": repository
                 })
@@ -45,10 +45,12 @@ def harvest(reset=False, no_promote=False):
             call_command("generate_previews", f"--dataset={dataset.name}", "--async")
         else:
             Harvest.objects.filter(stage=HarvestStages.BASIC).update(stage=HarvestStages.COMPLETE)
-        # Based on the dataset we push to Elastic Search
+        # Based on the dataset we push to search engine
         index_command = ["index_dataset_version", f"--dataset={dataset.name}"]
         if no_promote or not dataset.is_latest:
             index_command += ["--no-promote"]
+        if reset:
+            index_command += ["--skip-evaluation"]
         call_command(*index_command)
 
     # When dealing with a harvest on AWS seeds need to get copied to S3.
@@ -58,3 +60,9 @@ def harvest(reset=False, no_promote=False):
         ctx = Context(environment)
         harvester_data_bucket = f"s3://{settings.AWS_STORAGE_BUCKET_NAME}/datasets/harvester/edurep"
         ctx.run(f"aws s3 sync --no-progress {settings.DATAGROWTH_DATA_DIR}/edurep {harvester_data_bucket}", echo=True)
+
+    # Log the totals when scheduled
+    if report_dataset_version:
+        dataset_version = DatasetVersion.objects.get_current_version()
+        logger = HarvestLogger(dataset_version.dataset.name, "harvest_task", {})
+        logger.report_dataset_version(dataset_version)

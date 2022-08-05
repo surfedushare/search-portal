@@ -5,17 +5,18 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.timezone import make_aware
 from opensearchpy.helpers import streaming_bulk
+from opensearchpy.exceptions import NotFoundError
 from rest_framework import serializers
 
-from project.configuration import create_elastic_search_index_configuration
+from project.configuration import create_open_search_index_configuration
 from core.models import DatasetVersion
-from core.utils.elastic import get_es_client
+from core.utils.search import get_search_client
 
 
 class ElasticIndex(models.Model):
 
     name = models.CharField(max_length=255)
-    language = models.CharField(max_length=5, choices=settings.ELASTICSEARCH_ANALYSERS.items())
+    language = models.CharField(max_length=5, choices=settings.OPENSEARCH_ANALYSERS.items())
     dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.SET_NULL, null=True)
     configuration = models.JSONField(blank=True)
     error_count = models.IntegerField(default=0)
@@ -26,7 +27,7 @@ class ElasticIndex(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.client = get_es_client()
+        self.client = get_search_client()
 
     def delete(self, using=None, keep_parents=False):
         if self.remote_exists:
@@ -85,8 +86,13 @@ class ElasticIndex(models.Model):
 
     def promote_to_latest(self):
         latest_alias = "latest-" + self.language
-        if self.client.indices.exists_alias(name=latest_alias):
-            self.client.indices.delete_alias(index="_all", name=latest_alias)
+        # The index pattern should target all datasets and versions,
+        # but stay clear from targeting protected AWS indices to prevent errors
+        index_pattern = f"*-*-*-{self.language}"
+        try:
+            self.client.indices.delete_alias(index=index_pattern, name=latest_alias)
+        except NotFoundError:
+            pass
         self.client.indices.put_alias(index=self.remote_name, name=latest_alias)
 
     def clean(self):
@@ -109,9 +115,9 @@ class ElasticIndex(models.Model):
         Configures the analysers based on the language passed in.
         """
         decompound_word_list = None
-        if settings.ELASTICSEARCH_ENABLE_DECOMPOUND_ANALYZERS:
-            decompound_word_list = settings.ELASTICSEARCH_DECOMPOUND_WORD_LISTS.dutch
-        return create_elastic_search_index_configuration(
+        if settings.OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS:
+            decompound_word_list = settings.OPENSEARCH_DECOMPOUND_WORD_LISTS.dutch
+        return create_open_search_index_configuration(
             lang,
             decompound_word_list=decompound_word_list
         )

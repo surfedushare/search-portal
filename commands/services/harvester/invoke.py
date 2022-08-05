@@ -25,7 +25,7 @@ def run_harvester_task(ctx, mode, command, **kwargs):
 })
 def load_data(ctx, mode, source, dataset):
     """
-    Loads the production database and sets up Elastic data on localhost or an AWS cluster
+    Loads the production database and sets up Open Search data on localhost or an AWS cluster
     """
     if ctx.config.env == "production":
         raise Exit("Cowardly refusing to use production as a destination environment")
@@ -126,13 +126,15 @@ def extend_resource_cache(ctx, mode):
     "dataset": "Name of the dataset (a Greek letter) that you want to create indices for",
     "version": "Version of the harvester you want to use. Defaults to latest version"
 })
-def index_dataset_version(ctx, mode, dataset, version=None):
+def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=False):
     """
     Starts a task on the AWS container cluster or localhost to create the ES indices for a DatasetVersion
     """
     command = ["python", "manage.py", "index_dataset_version", f"--dataset={dataset}"]
     if version:
         command += [f"--harvester-version={version}"]
+    if skip_evaluation:
+        command += ["--skip-evaluation"]
     run_harvester_task(ctx, mode, command, version=version)
 
 

@@ -21,9 +21,6 @@ surfconext:
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "https@//front-test.surfcatalog.nl/"
 
-edurep:
-  json_api_endpoint: "https://proxy.edurep.nl/v3/search"
-
 aws:
   image_upload_bucket: null
   scheduled_tasks: []
@@ -32,6 +29,8 @@ secrets:
   postgres:
     password: "qwerty"
     application_password: "qwerty"
+  opensearch:
+    password: "qwerty"
   django:
     secret_key: "development-secret-key--do-not-use"
     admin_password: "qwerty"

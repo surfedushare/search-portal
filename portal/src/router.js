@@ -1,7 +1,4 @@
-import {
-  CONSORTIUM_CATEGORY_FILTER_FIELD,
-  THEME_CATEGORY_FILTER_FIELD,
-} from "~/constants";
+import { CONSORTIUM_CATEGORY_FILTER_FIELD } from "~/constants";
 
 import Collection from "~/pages/collection";
 import Communities from "~/pages/communities";
@@ -14,7 +11,6 @@ import Material from "~/pages/material";
 import Privacy from "~/pages/privacy";
 import Router from "vue-router";
 import Search from "~/pages/search";
-import Theme from "~/pages/theme";
 import Vue from "vue";
 import VueMeta from "vue-meta";
 import axios from "~/axios";
@@ -95,22 +91,6 @@ export default new Router({
       },
     },
     {
-      path: "/en/themes/:filterId/search",
-      component: Search,
-      name: "themes-search___en",
-      meta: {
-        filterRoot: THEME_CATEGORY_FILTER_FIELD,
-      },
-    },
-    {
-      path: "/themas/:filterId/zoeken",
-      component: Search,
-      name: "themes-search___nl",
-      meta: {
-        filterRoot: THEME_CATEGORY_FILTER_FIELD,
-      },
-    },
-    {
       path: "/en/my/collection/:id",
       component: Collection,
       name: "my-collection___en",
@@ -145,16 +125,6 @@ export default new Router({
       path: "/mijn/privacy",
       component: Privacy,
       name: "my-privacy___nl",
-    },
-    {
-      path: "/en/themes/:slug",
-      component: Theme,
-      name: "themes-id___en",
-    },
-    {
-      path: "/themas/:slug",
-      component: Theme,
-      name: "themes-id___nl",
     },
     {
       path: "/en/materials/:id",
@@ -259,9 +229,7 @@ export default new Router({
                 next(to.query.continue || "/");
               })
               .catch((error) => {
-                $log.warn(
-                  'Unable to login due to error during store "login" dispatch'
-                );
+                $log.warn('Unable to login due to error during store "login" dispatch');
                 $log.error(error);
                 next("/");
               });

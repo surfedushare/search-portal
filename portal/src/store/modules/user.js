@@ -50,9 +50,7 @@ export default {
         if (process.env.VUE_APP_SURFCONEXT_BYPASS) {
           return "/" + "login/success?continue=" + currentUrl;
         }
-        let nextUrl = encodeURIComponent(
-          "/login/success?continue=" + encodeURIComponent(currentUrl)
-        );
+        let nextUrl = encodeURIComponent("/login/success?continue=" + encodeURIComponent(currentUrl));
         return "/login/surf-conext/?next=" + nextUrl;
       };
     },
@@ -60,10 +58,7 @@ export default {
       if (isNil(state.user) || isNil(state.user.permissions)) {
         return false;
       }
-      return state.user.permissions.some(
-        (permission) =>
-          permission.type === "Communities" && permission.is_allowed
-      );
+      return state.user.permissions.some((permission) => permission.type === "Communities" && permission.is_allowed);
     },
   },
   actions: {

@@ -1,14 +1,9 @@
 <template>
-  <form
-    v-if="value"
-    action="/"
-    class="communities__form_in"
-    @submit.prevent="onSubmit"
-  >
+  <form v-if="value" action="/" class="communities__form_in" @submit.prevent="onSubmit">
     <div class="communities__form__column">
       <div class="communities__form__row">
         <label class="communities__form__label">
-          {{ $t('Name') }}
+          {{ $t("Name") }}
         </label>
         <ErrorWrapper :errors="getFieldErrors('title_nl')">
           <InputLanguageWrapper language="NL">
@@ -41,7 +36,7 @@
       </div>
       <div class="communities__form__row">
         <label class="communities__form__label">
-          {{ $t('Website') }}
+          {{ $t("Website") }}
         </label>
         <ErrorWrapper :errors="getFieldErrors('website_url_nl')">
           <InputLanguageWrapper language="NL">
@@ -53,7 +48,7 @@
               class="communities__form__input"
               :placeholder="$t('community-url-placeholder')"
               @blur="onWebsiteURLBlur('nl')"
-            >
+            />
           </InputLanguageWrapper>
         </ErrorWrapper>
       </div>
@@ -68,13 +63,13 @@
               class="communities__form__input"
               :placeholder="$t('community-url-placeholder')"
               @blur="onWebsiteURLBlur('en')"
-            >
+            />
           </InputLanguageWrapper>
         </ErrorWrapper>
       </div>
       <div class="communities__form__row communities__form__file">
         <label class="communities__form__label">
-          {{ $t('Logo') }}
+          {{ $t("Logo") }}
         </label>
         <ErrorWrapper :errors="getFieldErrors('logo_nl')">
           <InputLanguageWrapper language="NL">
@@ -128,7 +123,7 @@
       </div>
       <div class="communities__form__row communities__form__file">
         <label class="communities__form__label">
-          {{ $t('Featured-image') }}
+          {{ $t("Featured-image") }}
         </label>
         <ErrorWrapper :errors="getFieldErrors('featured_image_nl')">
           <InputLanguageWrapper language="NL">
@@ -163,15 +158,15 @@
   </form>
 </template>
 <script>
-import { isEmpty, startsWith } from 'lodash'
-import ErrorWrapper from '~/components/ErrorWrapper'
-import InputFile from '~/components/InputFile'
-import InputLanguageWrapper from '~/components/InputLanguageWrapper'
-import InputWithCounter from '~/components/InputWithCounter'
-import RichTextInput from '~/components/RichTextInput'
+import { isEmpty, startsWith } from "lodash";
+import ErrorWrapper from "~/components/ErrorWrapper";
+import InputFile from "~/components/InputFile";
+import InputLanguageWrapper from "~/components/InputLanguageWrapper";
+import InputWithCounter from "~/components/InputWithCounter";
+import RichTextInput from "~/components/RichTextInput";
 
 export default {
-  name: 'CommunityForm',
+  name: "CommunityForm",
   components: {
     ErrorWrapper,
     InputFile,
@@ -191,36 +186,29 @@ export default {
   },
   methods: {
     getFieldErrors(fieldName) {
-      return this.errors[fieldName]
+      return this.errors[fieldName];
     },
     onRemoveImage(field) {
-      this.value[field] = null
+      this.value[field] = null;
     },
     onAddImage(field, file) {
-      this.value[field] = file
+      this.value[field] = file;
     },
     onPreviewUrl(field, url) {
-      this.value[`${field}_preview`] = url
+      this.value[`${field}_preview`] = url;
     },
     onWebsiteURLBlur(language) {
-      const hasValue = !isEmpty(this.value['website_url_' + language])
-      const hasValidProtocol = startsWith(
-        this.value['website_url_' + language],
-        'http'
-      )
+      const hasValue = !isEmpty(this.value["website_url_" + language]);
+      const hasValidProtocol = startsWith(this.value["website_url_" + language], "http");
       if (hasValue && !hasValidProtocol) {
-        this.value['website_url_' + language] =
-          'https://' + this.value['website_url_' + language]
+        this.value["website_url_" + language] = "https://" + this.value["website_url_" + language];
       }
-      const oppositeLanguage = language === 'en' ? 'nl' : 'en'
-      const hasOppositeValue = !isEmpty(
-        this.value['website_url_' + oppositeLanguage]
-      )
+      const oppositeLanguage = language === "en" ? "nl" : "en";
+      const hasOppositeValue = !isEmpty(this.value["website_url_" + oppositeLanguage]);
       if (hasValue && !hasOppositeValue) {
-        this.value['website_url_' + oppositeLanguage] =
-          this.value['website_url_' + language]
+        this.value["website_url_" + oppositeLanguage] = this.value["website_url_" + language];
       }
     },
   },
-}
+};
 </script>

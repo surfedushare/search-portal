@@ -42,23 +42,23 @@ class Command(BaseCommand):
         print("missing", len(missing))
         print("*"*80)
 
-    def _substract_vocabulary_metadata(self, graph, ideas, disciplines):
+    def _substract_vocabulary_metadata(self, graph, ideas, studies):
         for node in graph:
             identifier = self._get_node_id(node)
             label = self._get_node_label(node)
             ideas.pop(identifier, None)
             ideas.pop(label, None)
-            disciplines.pop(identifier, None)
-            disciplines.pop(label, None)
+            studies.pop(identifier, None)
+            studies.pop(label, None)
 
     def handle(self, **options):
         ideas = {
             value.value: value
             for value in MetadataValue.objects.filter(field__name="ideas.keyword")
         }
-        disciplines = {
+        studies = {
             value.value: value
-            for value in MetadataValue.objects.filter(field__name="disciplines")
+            for value in MetadataValue.objects.filter(field__name="studies")
         }
         vocabularies = [
             "verpleegkunde/verpleegkunde-2019.skos.json",
@@ -69,13 +69,13 @@ class Command(BaseCommand):
             vocabulary_response = requests.get(f"https://vocabulaires.edurep.nl/type/vak/{vocabulary_path}")
             vocabulary = vocabulary_response.json()
             self._analyze_vocabulary_graph(vocabulary_path, vocabulary["@graph"])
-            self._substract_vocabulary_metadata(vocabulary["@graph"], ideas, disciplines)
+            self._substract_vocabulary_metadata(vocabulary["@graph"], ideas, studies)
         print("Metadata analyze")
         print(
             "orphan ideas percentage",
             int(len(ideas) / MetadataValue.objects.filter(field__name="ideas.keyword").count() * 100)
         )
         print(
-            "orphan disciplines percentage",
-            int(len(disciplines) / MetadataValue.objects.filter(field__name="disciplines").count() * 100)
+            "orphan studies percentage",
+            int(len(studies) / MetadataValue.objects.filter(field__name="studies").count() * 100)
         )

@@ -9,16 +9,16 @@ django:
   domain: "edusources.nl"
   logging:
     level: "DEBUG"
-    is_elastic: true
+    is_open_search: true
   send_admin_notifications: true
 
 postgres:
   host: "surfpol-edushare.cef190hciiol.eu-central-1.rds.amazonaws.com"
   port: 5432
 
-elastic_search:
+open_search:
   username: null
-  host: "vpc-surfpol-main-u7aqh4lrt6glkmkrpjg3a64jhq.eu-central-1.es.amazonaws.com"
+  host: "search-surfpol-main-u7aqh4lrt6glkmkrpjg3a64jhq.eu-central-1.es.amazonaws.com"
   protocol: "https"
   verify_certs: true
   enable_decompound_analyzers: true

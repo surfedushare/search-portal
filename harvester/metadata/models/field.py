@@ -1,14 +1,14 @@
 from django.db import models
 from rest_framework import serializers
 
-from core.utils.elastic import get_es_client
+from core.utils.search import get_search_client
 from metadata.models import MetadataTranslation, MetadataTranslationSerializer, MetadataValueSerializer
 
 
 class MetadataFieldManager(models.Manager):
 
     def fetch_value_frequencies(self, **kwargs):
-        client = get_es_client()
+        client = get_search_client()
         aggregation_query = {
             field.name: {
                 "terms": {

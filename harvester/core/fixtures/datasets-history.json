@@ -172,7 +172,7 @@
         "is_part_of": ["part"],
         "publishers": ["SURFnet"],
         "description": "Fifth exercises of the course",
-        "disciplines": [],
+        "studies": [],
         "external_id": "5af0e26f-c4d2-4ddd-94ab-7dd0bd531751",
         "from_youtube": false,
         "preview_path": null,
@@ -182,7 +182,8 @@
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "dataset_version": 1
     }
@@ -228,7 +229,7 @@
         "is_part_of": ["part"],
         "publishers": ["SURFnet"],
         "description": "Instruction on how to use a Vortex mixer",
-        "disciplines": [],
+        "studies": [],
         "external_id": "5be6dfeb-b9ad-41a8-b4f5-94b9438e4257",
         "from_youtube": true,
         "preview_path": null,
@@ -240,7 +241,7 @@
         "lowest_educational_level": 3,
         "parties": [],
         "consortium": null,
-        "learning_material_themes_normalized": ["gedrag_maatschappij"]
+        "learning_material_disciplines": ["gedrag_maatschappij"]
       },
       "dataset_version": 1
     }
@@ -308,7 +309,7 @@
         "is_part_of": [],
         "publishers": ["SURFnet"],
         "description": "Geen samenvatting",
-        "disciplines": ["0861c43d-1874-4788-b522-df8be575677f"],
+        "studies": ["0861c43d-1874-4788-b522-df8be575677f"],
         "external_id": "63903863-6c93-4bda-b850-277f3c9ec00e",
         "from_youtube": false,
         "preview_path": null,
@@ -319,7 +320,8 @@
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
         "parties": [],
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "dataset_version": 1
     }
@@ -367,7 +369,7 @@
         "is_part_of": ["b5a91d32-66f4-4c12-8795-c427fe47ed97"],
         "publishers": ["Stimuleringsregeling Open en Online Onderwijs"],
         "description": "Big history is a big subject. What do you address and what do you leave out? What is big history about and how can you use little big histories to explore further?",
-        "disciplines": [],
+        "studies": [],
         "external_id": "3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b",
         "from_youtube": true,
         "preview_path": null,
@@ -378,7 +380,8 @@
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
         "parties": [],
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "collection": 171,
       "identity": null,
@@ -424,7 +427,7 @@
         "is_part_of": ["3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"],
         "publishers": ["SURFnet"],
         "description": "Video about the question: how can we summarize 13.8 billion years in one brief course? Obviously, you have to leave things out. How do you determine what to address and what not? You are invited to develop your own personal answer to this question.",
-        "disciplines": [],
+        "studies": [],
         "external_id": "a18cdda7-e9c7-40d7-a7ad-6e875d9015ce",
         "from_youtube": true,
         "preview_path": null,
@@ -435,7 +438,8 @@
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
         "parties": [],
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "collection": 171,
       "identity": null,
@@ -481,7 +485,7 @@
         "is_part_of": ["3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"],
         "publishers": ["SURFnet"],
         "description": "Video about the question 'How big is big history?' How can you place human history in a perspective of time and distance? Only recently we know how old the universe is. When you compress the age of the universe in one year, you could say that around Christmas the dinosaurs would appear. And by December 30, they would be wiped out.So the last 2 days of the year would see the evolution of mammals as we know them and human beings only appear in the last 6 minutes of that year. \nIf you compare our sun with a grapefruit the earth can be seen as a peppercorn on 10 metres distance.",
-        "disciplines": [],
+        "studies": [],
         "external_id": "8936d0a3-4157-45f4-9595-c26d4c029d97",
         "from_youtube": true,
         "preview_path": null,
@@ -492,7 +496,8 @@
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
         "parties": [],
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "collection": 171,
       "identity": null,
@@ -538,7 +543,7 @@
         "is_part_of": ["3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"],
         "publishers": ["SURFnet"],
         "description": "Video about the question 'What are little big histories?' By creating a little big history you can explore big history in a structured an systematic way. Link big history to something close to you and make distant events and processes come to life. The concept of little big history makes it easy to come up with your own new ideas.",
-        "disciplines": [],
+        "studies": [],
         "external_id": "f929b625-5ef7-47b8-8fa8-94c969d0c427",
         "from_youtube": true,
         "preview_path": null,
@@ -549,7 +554,8 @@
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
         "parties": [],
-        "consortium": "Community Ethics"
+        "consortium": "Community Ethics",
+        "learning_material_disciplines": []
       },
       "collection": 171,
       "identity": null,
@@ -598,7 +604,7 @@
         "is_part_of": [],
         "publishers": ["SURFnet"],
         "description": "Als we op een computer met muziek werken, komen we in aanraking met Audio, MIDI of een combinatie van beide. In deze les ligt de nadruk op MIDI. \r\n\r\nAan de orde komen:\r\nWat is het en wat kun je ermee? \r\nHoe kun je binnen Sibelius software gebruik maken van MIDI (play, record, mixer, sounds, export audio) \r\nHet verschijnsel Latency",
-        "disciplines": [],
+        "studies": [],
         "external_id": "b35875c5-678b-4d58-af85-4111c321c5cd",
         "from_youtube": false,
         "preview_path": null,
@@ -609,7 +615,8 @@
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
         "parties": [],
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "dataset_version": 1
     }
@@ -668,7 +675,7 @@
         "is_part_of": ["da4ab96b-bee8-40fc-beed-62fc784b6bfc"],
         "publishers": ["Stimuleringsregeling Open en Online Onderwijs"],
         "description": "Learn about some basic theories of Macroeconomics.  We focus on how you can use these theories in daily business operation and understand the business world better. \n\n",
-        "disciplines": [],
+        "studies": [],
         "external_id": "0937a9fa-e368-4227-aa9e-d36afdffdd72",
         "from_youtube": false,
         "preview_path": null,
@@ -679,7 +686,8 @@
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
         "parties": [],
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "dataset_version": 1
     }
@@ -736,7 +744,7 @@
         "is_part_of": ["0937a9fa-e368-4227-aa9e-d36afdffdd72"],
         "publishers": ["SURFnet"],
         "description": "Learning objective:\r\n- Explain the effect of changes in the labour market on the real wage rate and quantity of labour in hours.",
-        "disciplines": [],
+        "studies": [],
         "external_id": "b500d389-2fda-4696-ae51-9cd0603a48af",
         "from_youtube": false,
         "preview_path": null,
@@ -746,7 +754,7 @@
         "copyright_description": null,
         "lom_educational_levels": ["HBO"],
         "lowest_educational_level": 2,
-        "learning_material_themes_normalized": ["gedrag_maatschappij"],
+        "learning_material_disciplines": ["gedrag_maatschappij"],
         "parties": [],
         "consortium": null
       },
@@ -791,7 +799,7 @@
         "is_part_of": ["3c2b4e81-e9a1-41bc-8b6a-97bfe7e4048b"],
         "publishers": ["SURFnet"],
         "description": "Video about the question 'Can big history reunify all our knowledge?' What to leave out and what not? We can make these decisions based on theories: mental constructs that can help us order reality. What is required for the development of complexity? You need energy flows through matter and you need very good circumstances. This theory is underlying all of natural science. But how can we connect all theories, including history, psychology etc. There is a major challenge here.",
-        "disciplines": [],
+        "studies": [],
         "external_id": "befb515c-5dce-4f27-82a4-2f5a7a3618a4",
         "from_youtube": true,
         "preview_path": null,
@@ -802,7 +810,8 @@
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
         "parties": [],
-        "consortium": null
+        "consortium": null,
+        "learning_material_disciplines": []
       },
       "collection": 171,
       "identity": null,
@@ -848,7 +857,7 @@
         "is_part_of": [],
         "publishers": ["SURFnet"],
         "description": "Video about the question 'Can big history reunify all our knowledge?' What to leave out and what not? We can make these decisions based on theories: mental constructs that can help us order reality. What is required for the development of complexity? You need energy flows through matter and you need very good circumstances. This theory is underlying all of natural science. But how can we connect all theories, including history, psychology etc. There is a major challenge here.",
-        "disciplines": ["0861c43d-1874-4788-b522-df8be575677f"],
+        "studies": ["0861c43d-1874-4788-b522-df8be575677f"],
         "external_id": "cefb515c-5dce-4f27-82a4-2f5a7a3618a4",
         "from_youtube": true,
         "preview_path": null,
@@ -859,7 +868,8 @@
         "lom_educational_levels": ["WO"],
         "lowest_educational_level": 3,
         "parties": [],
-        "consortium": "Community Ethics"
+        "consortium": "Community Ethics",
+        "learning_material_disciplines": []
       },
       "collection": 171,
       "identity": null,

@@ -7,7 +7,7 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS
-from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
+from environments.project import REPOSITORY
 
 
 def get_commit_hash():
@@ -38,10 +38,33 @@ def prepare_builds(ctx, commit=None):
 
 
 @task(help={
-    "target": "Name of the project you want to build: service or harvester",
-    "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image."
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
 })
-def build(ctx, target, commit=None):
+def publish_runner_image(ctx, docker_login=False):
+    """
+    Uses Docker to build and push an image to use as Gitlab pipeline image
+    """
+
+    ctx.run("docker build -f Dockerfile-runner -t gitlab-runner .", pty=True, echo=True)
+
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
+
+    ctx.run(f"docker tag gitlab-runner:latest {REPOSITORY}/gitlab-runner:latest", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/gitlab-runner:latest", echo=True, pty=True)
+
+
+@task(help={
+    "target": "Name of the project you want to build: service or harvester",
+    "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image.",
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
+})
+def build(ctx, target, commit=None, docker_login=False):
     """
     Uses Docker to build an image for a Django project
     """
@@ -53,15 +76,27 @@ def build(ctx, target, commit=None):
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
 
+    # Login with Docker on AWS
+    if docker_login:
+        ctx.run(
+            f"aws ecr get-login-password --region eu-central-1 | "
+            f"docker login --username AWS --password-stdin {REPOSITORY}",
+            echo=True
+        )
+
     # Gather necessary info and call Docker to build
     target_info = TARGETS[target]
+    name = target_info['name']
+    latest_remote_image = f"{REPOSITORY}/{name}:latest"
     ctx.run(
-        f"docker build -f {target}/Dockerfile -t {target_info['name']}:{commit} .",
+        f"DOCKER_BUILDKIT=1 docker build "
+        f"--build-arg BUILDKIT_INLINE_CACHE=1 --cache-from {latest_remote_image} --progress=plain "
+        f"-f {target}/Dockerfile -t {name}:{commit} .",
         pty=True,
         echo=True
     )
     ctx.run(
-        f"docker build -f nginx/Dockerfile-nginx -t {target_info['name']}-nginx:{commit} .",
+        f"docker build -f nginx/Dockerfile-nginx -t {name}-nginx:{commit} .",
         pty=True,
         echo=True
     )
@@ -69,9 +104,11 @@ def build(ctx, target, commit=None):
 
 @task(help={
     "target": "Name of the project you want to push to AWS registry: service or harvester",
-    "commit": "The commit hash that the image to be pushed is tagged with."
+    "commit": "The commit hash that the image to be pushed is tagged with.",
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session",
+    "push_latest": "Makes the command push a latest tag to use these layers later."
 })
-def push(ctx, target, commit=None, docker_login=False):
+def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
@@ -87,7 +124,7 @@ def push(ctx, target, commit=None, docker_login=False):
     # Login with Docker on AWS
     if docker_login:
         ctx.run(
-            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"aws ecr get-login-password --region eu-central-1 | "
             f"docker login --username AWS --password-stdin {REPOSITORY}",
             echo=True
         )
@@ -98,15 +135,20 @@ def push(ctx, target, commit=None, docker_login=False):
         raise Exit("Can't push for commit that already has an image in the registry")
 
     # Tagging and pushing of our image and nginx image
-    ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{commit}", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/{name}:{commit}", echo=True, pty=True)
-    ctx.run(f"docker tag {name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{commit}", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{commit}", echo=True, pty=True)
+    tags = [commit]
+    if push_latest:
+        tags.append("latest")
+    for tag in tags:
+        ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{tag}", echo=True)
+        ctx.run(f"docker push {REPOSITORY}/{name}:{tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{tag}", echo=True)
+        ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{tag}", echo=True, pty=True)
 
 
 @task(help={
     "target": "Name of the project you want to promote: service or harvester",
-    "commit": "The commit hash that the image to be promoted is tagged with"
+    "commit": "The commit hash that the image to be promoted is tagged with",
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
 })
 def promote(ctx, target, commit=None, docker_login=False):
     """
@@ -125,7 +167,7 @@ def promote(ctx, target, commit=None, docker_login=False):
     # Login with Docker on AWS
     if docker_login:
         ctx.run(
-            f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} aws ecr get-login-password --region eu-central-1 | "
+            f"aws ecr get-login-password --region eu-central-1 | "
             f"docker login --username AWS --password-stdin {REPOSITORY}",
             echo=True
         )

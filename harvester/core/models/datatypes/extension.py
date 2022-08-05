@@ -24,9 +24,9 @@ class Extension(DocumentBase):
                 "_id": self.id
             }
             return
-        elastic_base = copy(self.properties)
-        title = elastic_base.get("title", None)
-        elastic_defaults = {
+        search_base = copy(self.properties)
+        title = search_base.get("title", None)
+        search_defaults = {
             '_id': self.id,
             "extension": {
                 "id": self.id,
@@ -43,6 +43,7 @@ class Extension(DocumentBase):
             'material_types': [],
             'copyright_description': None,
             'mime_type': None,
+            'studies': [],
             'disciplines': [],
             'url': None,
             'lom_educational_levels': [],
@@ -57,18 +58,20 @@ class Extension(DocumentBase):
             'aggregation_level': None,
             'analysis_allowed': None,
             'publisher_date': None,
+            'learning_material_disciplines': [],
+            'learning_material_disciplines_normalized': [],
             'learning_material_themes_normalized': [],
             'consortium': None
         }
-        if "keywords" in elastic_base:
-            elastic_base["keywords"] = [entry["label"] for entry in elastic_base["keywords"]]
-        themes = elastic_base.pop("themes", None)
+        if "keywords" in search_base:
+            search_base["keywords"] = [entry["label"] for entry in search_base["keywords"]]
+        themes = search_base.pop("themes", None)
         if themes:
-            elastic_base["research_themes"] = [entry["label"] for entry in themes]
-        elastic_base["is_part_of"] = elastic_base.pop("parents", [])
-        elastic_base["has_parts"] = elastic_base.pop("children", [])
-        elastic_defaults.update(elastic_base)
-        yield elastic_defaults
+            search_base["research_themes"] = [entry["label"] for entry in themes]
+        search_base["is_part_of"] = search_base.pop("parents", [])
+        search_base["has_parts"] = search_base.pop("children", [])
+        search_defaults.update(search_base)
+        yield search_defaults
 
     def restore(self):
         self.deleted_at = None

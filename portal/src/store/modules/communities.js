@@ -11,8 +11,6 @@ export default {
   state: {
     communities: null,
     community_info: {},
-    community_themes: null,
-    community_disciplines: null,
     community_collections: null,
     community_collections_loading: null,
   },
@@ -29,9 +27,7 @@ export default {
         return state.communities.filter((community) => {
           return (
             community.publish_status === PublishStatus.PUBLISHED ||
-            (user &&
-              user.communities &&
-              user.communities.indexOf(community.id) >= 0)
+            (user && user.communities && user.communities.indexOf(community.id) >= 0)
           );
         });
       };
@@ -50,14 +46,9 @@ export default {
       return (user) => {
         if (isEmpty(state.community_info)) {
           return state.community_info;
-        } else if (
-          state.community_info.publish_status === PublishStatus.PUBLISHED
-        ) {
+        } else if (state.community_info.publish_status === PublishStatus.PUBLISHED) {
           return state.community_info;
-        } else if (
-          user &&
-          user.communities.indexOf(state.community_info.id) >= 0
-        ) {
+        } else if (user && user.communities.indexOf(state.community_info.id) >= 0) {
           return state.community_info;
         }
       };
@@ -91,7 +82,7 @@ export default {
     },
   },
   actions: {
-    async getCommunities({ commit }, { params = {} } = {}) {
+    async getCommunities({ commit }, { params = { page_size: 100 } } = {}) {
       if (validateParams(params)) {
         const { data: communities } = await axios.get("communities/", {
           params,
@@ -123,9 +114,7 @@ export default {
     async getCommunityCollections({ commit }, id) {
       if (validateID(id)) {
         commit("SET_COMMUNITY_COLLECTIONS_LOADING", true);
-        const { data: communityCollections } = await axios.get(
-          `communities/${id}/collections/`
-        );
+        const { data: communityCollections } = await axios.get(`communities/${id}/collections/`);
         commit("SET_COMMUNITY_COLLECTIONS", communityCollections);
         commit("SET_COMMUNITY_COLLECTIONS_LOADING", false);
       } else {
@@ -150,10 +139,7 @@ export default {
     },
     async setCommunityCollection({ commit }, { id, data }) {
       if (validateID(id) && validateParams(data)) {
-        const { data: communityCollections } = await axios.post(
-          `communities/${id}/collections/`,
-          data
-        );
+        const { data: communityCollections } = await axios.post(`communities/${id}/collections/`, data);
         commit("EXTEND_COMMUNITY_COLLECTION", communityCollections);
         return communityCollections;
       } else {
@@ -162,10 +148,7 @@ export default {
     },
     async updateCommunityCollections({ commit }, { id, data }) {
       if (validateID(id) && validateParams(data)) {
-        const { data: communityCollections } = await axios.put(
-          `communities/${id}/collections/`,
-          data
-        );
+        const { data: communityCollections } = await axios.put(`communities/${id}/collections/`, data);
         commit("EXTEND_COMMUNITY_COLLECTION", communityCollections);
         return communityCollections;
       } else {
@@ -189,21 +172,8 @@ export default {
     SET_COMMUNITY(state, payload) {
       state.community_info = payload;
     },
-    SET_COMMUNITY_DISCIPLINES(state, payload) {
-      state.community_disciplines = payload;
-    },
-    SET_COMMUNITY_THEMES(state, payload) {
-      state.community_themes = payload;
-    },
     SET_COMMUNITY_COLLECTIONS(state, payload) {
       state.community_collections = payload;
-    },
-    SET_COMMUNITY_COLLECTIONS_NEXT(state, payload) {
-      state.community_collections = {
-        ...state.community_collections,
-        next: payload.next,
-        results: [...state.community_collections.results, ...payload.results],
-      };
     },
     ADD_COMMUNITY_COLLECTION(state, payload) {
       const results = state.community_collections.results || [];

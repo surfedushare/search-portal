@@ -2,7 +2,7 @@
   <section class="materials">
     <slot name="header-info"></slot>
     <ul
-      v-if="extended_materials && extended_materials.length"
+      v-if="selectedMaterials && selectedMaterials.length"
       data-test="search_results"
       class="materials__items"
       :class="{
@@ -14,7 +14,7 @@
       }"
     >
       <li
-        v-for="(material, index) in extended_materials"
+        v-for="(material, index) in selectedMaterials"
         :key="index"
         :class="[
           `tile--items-in-line-${itemsInLine}`,
@@ -23,34 +23,20 @@
         ]"
         class="materials__item tile"
       >
-        <div v-if="material.has_bookmark" class="materials__bookmark">
-          Bookmark
-        </div>
+        <div v-if="material.has_bookmark" class="materials__bookmark">Bookmark</div>
         <button
           v-if="contenteditable"
           :class="{ 'select-icon': true, selected: material.selected }"
           @click="selectMaterial(material)"
         />
-        <Material
-          :material="material"
-          :handle-material-click="handleMaterialClick"
-          :items-in-line="itemsInLine"
-        />
+        <Material :material="material" :handle-material-click="handleMaterialClick" :items-in-line="itemsInLine" />
       </li>
     </ul>
-    <div
-      v-else-if="!current_loading && has_no_result_suggestion"
-      data-test="search_suggestion"
-      class="not_found"
-    >
+    <div v-else-if="!current_loading && has_no_result_suggestion" data-test="search_suggestion" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
         {{ $t("Did-you-mean") }}
-        <a
-          :href="no_result_suggestion_link"
-          data-test="search_suggestion_link"
-          >{{ didYouMean.suggestion }}</a
-        >
+        <a :href="no_result_suggestion_link" data-test="search_suggestion_link">{{ didYouMean.suggestion }}</a>
         ?
         {{ $t("Because-no-results-for") }} '{{ didYouMean.original }}'
         <div class="not_found__info">
@@ -58,11 +44,7 @@
         </div>
       </div>
     </div>
-    <div
-      v-else-if="!current_loading"
-      data-test="no_search_results"
-      class="not_found"
-    >
+    <div v-else-if="!current_loading" data-test="no_search_results" class="not_found">
       <div class="not_found__icon"></div>
       <div class="not_found__message">
         {{ $t("No-results-for") }} '{{ searchTerm }}'
@@ -127,7 +109,7 @@ export default {
   },
   data() {
     return {
-      selected_materials: this.value || [],
+      selectedMaterialIds: this.value || [],
     };
   },
   computed: {
@@ -138,21 +120,15 @@ export default {
     current_loading() {
       return this.materials_loading || this.loading;
     },
-    extended_materials() {
-      const { materials, selected_materials } = this;
+    selectedMaterials() {
+      const { materials, selectedMaterialIds } = this;
       if (materials) {
         const arrMaterials = materials.records ? materials.records : materials;
 
         return arrMaterials.map((material) => {
-          const description =
-            material.description && material.description.length > 200
-              ? material.description.slice(0, 200) + "..."
-              : material.description;
-
           return {
             ...material,
-            selected: selected_materials.indexOf(material.external_id) !== -1,
-            description,
+            selected: selectedMaterialIds.indexOf(material.external_id) !== -1,
           };
         });
       }
@@ -174,7 +150,7 @@ export default {
   },
   watch: {
     value(value) {
-      this.selected_materials = value;
+      this.selectedMaterialIds = value;
     },
   },
   methods: {
@@ -213,16 +189,14 @@ export default {
         });
     },
     toggleMaterial(material) {
-      let selected_materials = this.value.slice(0);
+      let selectedMaterialIds = this.value.slice(0);
 
-      if (selected_materials.indexOf(material.external_id) === -1) {
-        selected_materials.push(material.external_id);
+      if (selectedMaterialIds.indexOf(material.external_id) === -1) {
+        selectedMaterialIds.push(material.external_id);
       } else {
-        selected_materials = selected_materials.filter(
-          (item) => item !== material.external_id
-        );
+        selectedMaterialIds = selectedMaterialIds.filter((item) => item !== material.external_id);
       }
-      return selected_materials;
+      return selectedMaterialIds;
     },
   },
 };
@@ -272,8 +246,7 @@ export default {
 
     &.deleting {
       .select-icon {
-        background: @light-grey url("../../assets/images/close-grey.svg") 50%
-          50% no-repeat;
+        background: @light-grey url("../../assets/images/close-grey.svg") 50% 50% no-repeat;
       }
       .selected {
         opacity: 0.5;
@@ -282,12 +255,10 @@ export default {
     }
     &.adding {
       .select-icon {
-        background: @light-grey url("../../assets/images/plus-black.svg") 50%
-          50% no-repeat;
+        background: @light-grey url("../../assets/images/plus-black.svg") 50% 50% no-repeat;
       }
       .select-icon.selected {
-        background: @green url("../../assets/images/plus-white.svg") 50% 50%
-          no-repeat;
+        background: @green url("../../assets/images/plus-white.svg") 50% 50% no-repeat;
       }
     }
   }
@@ -321,8 +292,7 @@ export default {
     &__icon {
       display: inline-block;
       border-radius: 50%;
-      background: @green url("../../assets/images/search-white.svg") 50% 50%
-        no-repeat;
+      background: @green url("../../assets/images/search-white.svg") 50% 50% no-repeat;
       height: 48px;
       width: 48px;
     }

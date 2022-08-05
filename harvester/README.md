@@ -3,7 +3,7 @@ Harvester
 
 A Django project made to run long-running tasks.
 It will connect over OAI-PMH to different repositories and index learning materials from these repositories
-in an Elastic Search instance.
+in an Open Search instance.
 
 
 Installation
@@ -72,8 +72,8 @@ Harvesting
 Harvesting is fairly straightforward. You need at least one 'active' ``Dataset``.
 The test ``Dataset`` is active by default.
 You can activate a ``Dataset`` through the Django admin under the ``core`` app.
-Once harvested all materials belonging to a ``Dataset`` will be fully processed
-and available in your Elastic Search indices.
+Once harvested all materials belonging to a ``Dataset`` will be fully processed and stored under a ``DatasetVersion``.
+If the ``Dataset`` is marked as ``is_latest`` the Open Search aliases will point to the newly created indices.
 
 You can run the following command to harvest content and update all active ``Datasets`` at once:
 
@@ -91,11 +91,11 @@ APPLICATION_MODE=<mode> invoke hrv.harvest <mode>
 
 A harvest undertakes the following steps:
 
-* Gather metadata from a repository (at the moment that's only Edurep)
-* Download all files to S3 if they haven't been downloaded before
-* Extract content from the files with Tika
-* Merge metadata and content into a ``Document`` of the ``Dataset``. A URL is represented with an ``Arrangement``
-* Upsert all ``Arrangements`` of the ``Dataset`` to Elastic Search and remove deleted ``Arrangements``
+* Gather metadata from different repositories
+* Store metadata into a ``Document`` that belongs to a ``DatasetVersion``
+* Extract content from files with Tika and add it to ``Document``
+* Create previews for files using different tools and add links to ``Document``
+* Upsert all ``Documents`` to Open Search and remove deleted ``Documents`` there as well
 
 
 #### How to add more materials to a Dataset
@@ -114,22 +114,20 @@ As explained before in the harvesting section you'll need to run the following t
 
 ```
 APPLICATION_MODE=<mode> invoke hrv.harvest <mode>
+or
+APPLICATION_MODE=<mode> invoke hrv.harvest <mode> --reset
 ```
 
 Where mode can be one of: localhost, development, acceptance or production.
+Resetting while harvesting will fetch all data from all sources anew.
 
-Seeing the results on AWS can be done by port-forwarding the relevant services in the cluster.
-There are convenience commands to do this. For example to connect to the development UWSGI server use:
+Seeing the results on AWS can be done by visiting the harvester admin or flower admin, using these addresses:
+```
+https://harvester.<environment>.surfedushare.nl/admin/
+https://harvester.<environment>.surfedushare.nl/flower/
+```
 
-```
-APPLICATION_MODE=development fab -H bastion.dev.surfedushare.nl hrv.connect-uwsgi development
-```
-
-To see the Flower you can run:
-
-```
-APPLICATION_MODE=development fab -H bastion.dev.surfedushare.nl hrv.connect-uwsgi development
-```
+Where environment can be one of: dev, acc or prod.
 
 
 Tests
@@ -148,7 +146,7 @@ python manage.py test
 Provisioning
 ------------
 
-The service only needs to provision the database and Elastic Search.
+The service only needs to provision the database and Open Search.
 To setup the database on an AWS environment run:
 
 > If you setup the database in this way all data is irreversibly destroyed
@@ -157,7 +155,7 @@ To setup the database on an AWS environment run:
 APPLICATION_MODE=<environment> fab -H <bastion-host-domain> hrv.setup-postgres
 ```
 
-To load the latest production data into the database and push that data to Elastic Search on an AWS environment run:
+To load the latest production data into the database and push that data to Open Search on an AWS environment run:
 
 ```bash
 APPLICATION_MODE=<environment> invoke hrv.load-data <environment> -s production -d <dataset-name>

@@ -49,18 +49,15 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
-from surf.apps.core.views import health_check, robots_txt
+from surf.apps.core.views import ContactAPIView, health_check, robots_txt
 from surf.apps.communities.views import CommunityViewSet
-from surf.apps.themes.views import ThemeViewSet
 from surf.apps.stats.views import StatsViewSet, StatsView
 from surf.apps.locale.views import get_localisation_strings
-from surf.apps.feedback.views import FeedbackAPIView
 
 
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
 admin.site.index_title = 'Surf'
-
 
 public_api_patterns = [
     url(r'^search/filter-categories/', FilterCategoryView.as_view()),
@@ -72,7 +69,7 @@ public_api_patterns = [
 ]
 schema_view = get_schema_view(
     title="Search API",
-    description="An API that allows search through Elastic Search. Instead of writing Elastic queries "
+    description="An API that allows search through Open Search. Instead of writing Open Search queries "
                 "search can be done simply by passing a few parameters to the endpoints.",
     patterns=public_api_patterns,
     url="/api/v1/"
@@ -86,7 +83,6 @@ swagger_view = TemplateView.as_view(
 router = CustomRouter()
 router.register(r'collections', CollectionViewSet)
 router.register(r'communities', CommunityViewSet)
-router.register(r'themes', ThemeViewSet)
 router.register(r'stats', StatsViewSet, basename="stats")
 
 
@@ -106,7 +102,7 @@ apipatterns = public_api_patterns + router.urls + [
     url(r'^materials/', MaterialAPIView.as_view()),
     url(r'^collections/(?P<collection_id>.+)/promote_material/(?P<external_id>.+)/',
         CollectionMaterialPromotionAPIView.as_view()),
-    url(r'^feedback/', FeedbackAPIView.as_view())
+    url(r'^contact/', ContactAPIView.as_view())
 ]
 
 sitemaps = {

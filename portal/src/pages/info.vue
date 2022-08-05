@@ -3,7 +3,7 @@
     <div class="center_block info__center-header">
       <div class="info__info">
         <h2>{{ $t(titleKey) }}</h2>
-        <div class="html-content" v-html="getHtmlKey" />
+        <div class="html-content" v-html="getHtmlKey()" />
       </div>
     </div>
   </section>
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     getHtmlKey() {
-      const htmlKey = this.$i18n.t("htmlKey");
+      const htmlKey = this.$i18n.t(this.htmlKey);
       return DOMPurify.sanitize(htmlKey);
     },
   },

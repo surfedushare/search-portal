@@ -80,7 +80,7 @@ class TestSyncMetadata(TestCase):
             frequency=1,
             is_insert=True
         )
-        # Everything not included in Elastic Search frequencies remains unchanged
+        # Everything not included in frequencies remains unchanged
         upsert_ids = [document.id, video.id, pdf.id]
         for value in MetadataValue.objects.filter(field__name="technical_type").exclude(id__in=upsert_ids):
             self.assertEqual(value.frequency, 0)

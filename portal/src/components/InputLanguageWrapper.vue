@@ -8,14 +8,14 @@
 </template>
 <script>
 export default {
-  name: 'InputLanguageWrapper',
+  name: "InputLanguageWrapper",
   props: {
     language: {
       type: String,
-      default: '',
+      default: "",
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .edusources-container {

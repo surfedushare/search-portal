@@ -105,7 +105,7 @@ class HkuMetadataExtraction(ExtractProcessor):
     def get_authors(cls, node):
         return [{
             "name": node["author"],
-            "email": node["owner"],
+            "email": node["owner"] or None,
             "external_id": node["persons"].get("person_id", None),
             "dai": None,
             "orcid": None,
@@ -162,12 +162,12 @@ HKU_EXTRACTION_OBJECTIVE = {
     "material_types": lambda node: None,
     "aggregation_level": lambda node: None,
     "lom_educational_levels": lambda node: [],
-    "disciplines": lambda node: [],
+    "studies": lambda node: [],
     "ideas": lambda node: [],
     "is_part_of": lambda node: [],
     "has_parts": lambda node: [],
     "copyright_description": lambda node: None,
-    "learning_material_themes": lambda node: [],
+    "learning_material_disciplines": lambda node: [],
     "consortium": lambda node: None,
     "lom_educational_level": lambda node: None,
     "lowest_educational_level": lambda node: 2,

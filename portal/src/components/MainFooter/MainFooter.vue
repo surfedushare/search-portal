@@ -7,15 +7,8 @@
       </div>
       <div class="main-footer__info">
         <h3>{{ $t("Footer-info-title") }}</h3>
-        <div
-          class="main-footer__info_text html-content"
-          v-html="getFooterText"
-        ></div>
-        <a
-          :href="$t('Digital-learning-materials-link')"
-          target="_blank"
-          class="main-footer__info_link arrow-link"
-        >
+        <div class="main-footer__info_text html-content" v-html="getFooterText()"></div>
+        <a :href="$t('Digital-learning-materials-link')" target="_blank" class="main-footer__info_link arrow-link">
           SURF.nl
         </a>
       </div>
@@ -25,10 +18,7 @@
         <router-link :to="localePath('index')">
           <img
             src="../../assets/images/surflogo.png"
-            srcset="
-              ../../assets/images/surflogo@2x.png 2x,
-              ../../assets/images/surflogo@3x.png 3x
-            "
+            srcset="../../assets/images/surflogo@2x.png 2x, ../../assets/images/surflogo@3x.png 3x"
             class="main-footer__logo_img"
           />
         </router-link>
@@ -53,29 +43,10 @@ export default {
   components: {
     Menu,
   },
-  props: [],
-  data() {
-    return {
-      isShowSubMenu: this.show_sub_menu,
-    };
-  },
   computed: {
-    ...mapGetters(["show_sub_menu", "isAuthenticated"]),
-  },
-  watch: {
-    /**
-     * §
-     * @param show_sub_menu - Boolean
-     */
-    show_sub_menu(show_sub_menu) {
-      this.isShowSubMenu = show_sub_menu;
-    },
+    ...mapGetters(["isAuthenticated"]),
   },
   methods: {
-    toggleSubMenuThemes() {
-      this.isShowSubMenu = !this.isShowSubMenu;
-      this.$store.dispatch("setSubMenuShow", this.isShowSubMenu);
-    },
     getLoginLink() {
       return this.$store.getters.getLoginLink(this.$route);
     },
@@ -144,8 +115,7 @@ export default {
       z-index: -1;
       &:before {
         content: "";
-        background: url("../../assets/images/bubble-background-flipped.svg") 0 0
-          no-repeat;
+        background: url("../../assets/images/bubble-background-flipped.svg") 0 0 no-repeat;
         position: absolute;
         bottom: -37px;
         left: -43px;
