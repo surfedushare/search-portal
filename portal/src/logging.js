@@ -102,7 +102,7 @@ injector.decorator("$log", function ($log) {
       searchCategories.push("is_prefilter=1")
     }
     const searchKeyword = query.search_term || "";
-    window._paq.push(["trackSiteSearch"], searchKeyword, searchCategories.join("&"), totalResults);
+    window._paq.push(["trackSiteSearch", searchKeyword, searchCategories.join("&"), totalResults]);
     $log._siteSearch(query, totalResults);
   }
 
