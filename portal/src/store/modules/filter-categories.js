@@ -76,6 +76,9 @@ export default {
     byCategoryId: {},
   },
   getters: {
+    selected_filters(state) {
+      return state.selection;
+    },
     filter_categories(state) {
       return state.filter_categories;
     },

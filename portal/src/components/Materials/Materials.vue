@@ -76,6 +76,7 @@
 import { mapGetters } from "vuex";
 import { generateSearchMaterialsQuery } from "../_helpers";
 import Material from "./Material/Material";
+import { isEmpty } from "lodash";
 
 export default {
   name: "Materials",
@@ -129,7 +130,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["materials_loading"]),
+    ...mapGetters(["materials_loading", "selected_filters"]),
     selectMaterialClass() {
       return this.selectFor === "delete" ? "select-delete" : "select-neutral";
     },
@@ -148,11 +149,10 @@ export default {
           };
         });
       }
-
       return false;
     },
     has_no_results_with_search_filters() {
-      return Object.keys(this.$store.state.filterCategories.selection).length > 0;
+      return !isEmpty(this.selected_filters);
     },
     has_no_result_suggestion() {
       return this.didYouMean?.suggestion;
