@@ -20,6 +20,7 @@
 
 <script>
 import { flatMap, isEmpty } from "lodash";
+import { mapGetters } from "vuex";
 
 export default {
   name: "FilterCategoriesSelection",
@@ -30,15 +31,13 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(["getCategoryById", "selected_filters"]),
     selectionFilterItems() {
-      const selectedFilters = this.$store.state.filterCategories.selection;
-      if (isEmpty(selectedFilters)) {
+      if (isEmpty(this.selected_filters)) {
         return [];
       }
-      return flatMap(selectedFilters, (filter_ids, categoryId) => {
-        const cat = this.materials?.filter_categories?.find((category) => {
-          return category.external_id === categoryId;
-        });
+      return flatMap(this.selected_filters, (filter_ids, categoryId) => {
+        const cat = this.getCategoryById(categoryId, null);
         const results = filter_ids.map((filter_id) => {
           return cat?.children.find((child) => {
             child.parent = cat;

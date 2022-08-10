@@ -76,6 +76,9 @@ export default {
     byCategoryId: {},
   },
   getters: {
+    selected_filters(state) {
+      return state.selection;
+    },
     filter_categories(state) {
       return state.filter_categories;
     },
@@ -156,6 +159,9 @@ export default {
       state.selection[category] = pull(state.selection[category], ...selection);
       if (isEmpty(state.selection[category])) {
         delete state.selection[category];
+      }
+      if (isEmpty(state.selection)) {
+        state.selection = {};
       }
     },
     RESET_FILTER_CATEGORIES_SELECTION(state, selection) {
