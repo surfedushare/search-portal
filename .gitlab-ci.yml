@@ -20,7 +20,7 @@ stages:
   - lint-and-test
   - build
   - integration-test
-  - promote
+  - promote-and-deploy
 
 .setup-repository:
   before_script:
@@ -102,11 +102,47 @@ integration-test-job:
       - portal/tests/e2e/screenshots/**/*.png
     expire_in: 1 day
 
-promote:
-  stage: promote
-  when: manual
+promote-production:
+  stage: promote-and-deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "edusources"
+      when: manual
+  environment:
+    name: production
   services:
     - name: docker:dind
+  variables:
+    APPLICATION_MODE: production
   script:
     - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
+
+promote-acceptance:
+  stage: promote-and-deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "acceptance"
+      when: manual
+  environment:
+    name: acceptance
+  services:
+    - name: docker:dind
+  variables:
+    APPLICATION_MODE: acceptance
+  script:
+    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
+    - invoke aws.promote service --commit $CI_COMMIT_SHA
+
+promote-development:
+  stage: promote-and-deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "development"
+      when: manual
+  environment:
+    name: development
+  services:
+    - name: docker:dind
+  variables:
+    APPLICATION_MODE: development
+  script:
+    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login --no-legacy-system
+    - invoke aws.promote service --commit $CI_COMMIT_SHA --no-legacy-system
