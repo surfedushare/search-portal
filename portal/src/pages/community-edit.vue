@@ -256,7 +256,7 @@ export default {
           }
           const errors = {};
           forEach(err.response.data, (feedback, language) => {
-            const response = JSON.parse(feedback.replace(/'/g, '"'));
+            const response = JSON.parse(feedback.replace(/'/g, "\""));
             forEach(response, (errorMsg, key) => {
               const errorKey = key + "_" + language.toLowerCase();
               errors[errorKey] = errorMsg;

@@ -74,7 +74,7 @@ export default {
     },
     async createCollection(context, data) {
       if (validateParams(data)) {
-        return await axios.post(`collections/`, data).then((res) => res.data);
+        return await axios.post("collections/", data).then((res) => res.data);
       } else {
         $log.error("Validate error: ", data);
       }

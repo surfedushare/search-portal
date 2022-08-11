@@ -131,12 +131,12 @@ export default {
         filters: this.$store.state.filterCategories.selection,
         page_size: 10,
         page: 1,
-      }
+      };
       const searchRoute =  generateSearchMaterialsQuery(
         searchData,
         "materials-search",
         !isEmpty(this.$store.state.filterCategories.selection)
-      )
+      );
       this.$router.push(searchRoute);
     },
   },

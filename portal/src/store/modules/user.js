@@ -76,7 +76,7 @@ export default {
       commit("USER_LOADING", false);
     },
     async deleteUser() {
-      return await axios.post(`users/delete-account/`);
+      return await axios.post("users/delete-account/");
     },
     async authenticate({ commit }, { token }) {
       if (!token) {

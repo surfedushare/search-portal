@@ -91,6 +91,8 @@
       "risxss"
     ],
     "rules": {
+      "quotes": [2, "double"],
+      "semi": [2, "always"],
       "vue/multi-word-component-names": "off",
       "vue/max-attributes-per-line": [
         2,

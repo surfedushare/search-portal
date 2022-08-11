@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      searchText: this.value || this.$route.query?.search_text?.replaceAll('"', ""),
+      searchText: this.value || this.$route.query?.search_text?.replaceAll("\"", ""),
       suggestions: [],
     };
   },

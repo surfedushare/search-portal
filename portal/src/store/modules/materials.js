@@ -85,7 +85,7 @@ export default {
     async getMaterialShare({ commit }, params) {
       if (validateParams(params)) {
         // commit('SET_MATERIAL', null);
-        const { data: material } = await axios.get(`materials/`, { params });
+        const { data: material } = await axios.get("materials/", { params });
         commit("SET_MATERIAL", material);
       } else {
         $log.error("Validate error: ", params);
