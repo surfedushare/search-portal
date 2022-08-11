@@ -62,6 +62,13 @@ harvester-test-job:
 
 build-job:
   stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "edusources"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "acceptance"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "development"
+      when: manual
   extends: .setup-repository
   services:
     - name: docker:dind
@@ -73,6 +80,11 @@ build-job:
 
 integration-test-job:
   stage: integration-test
+  rules:
+    - if: $CI_COMMIT_BRANCH == "edusources"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "acceptance"
+      when: always
   services:
     - name: $AWS_CONTAINER_REGISTRY/harvester:$CI_COMMIT_SHA
       alias: harvester
