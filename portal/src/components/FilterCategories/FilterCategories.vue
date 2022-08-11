@@ -11,8 +11,7 @@
             :key="category.id"
             :data-test="category.external_id"
             :category="category"
-            @check="onCheck"
-            @uncheck="onUncheck"
+            @filter="onFilter"
           />
         </template>
       </ul>
@@ -113,12 +112,7 @@ export default {
         return !child.is_hidden;
       });
     },
-    onCheck(categoryId, itemId) {
-      this.$store.commit("SELECT_FILTER_CATEGORIES", { category: categoryId, selection: [itemId] });
-      this.$emit("filter");
-    },
-    onUncheck(categoryId, itemId) {
-      this.$store.commit("DESELECT_FILTER_CATEGORIES", { category: categoryId, selection: [itemId] });
+    onFilter() {
       this.$emit("filter");
     },
   },
