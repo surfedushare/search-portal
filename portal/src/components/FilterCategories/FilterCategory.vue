@@ -121,20 +121,32 @@ export default {
     onChange(e) {
       const { categoryId, itemId } = e.target.dataset
       if (e.target.checked) {
-        this.$emit('check', categoryId, itemId)
+        this.$store.commit("SELECT_FILTER_CATEGORIES", {category: categoryId, selection: [itemId]});
       } else {
-        this.$emit('uncheck', categoryId, itemId)
+        this.$store.commit("DESELECT_FILTER_CATEGORIES", {category: categoryId, selection: [itemId]});
       }
+      this.$emit("filter");
     },
     onApply(values) {
-      values = values || []
+      values = values || [];
+      const check = [];
+      const uncheck = [];
       this.category.children.forEach((child) => {
         if (values.indexOf(child.value) >= 0) {
-          this.$emit('check', this.category.external_id, child.value)
+          check.push(child.value);
         } else {
-          this.$emit('uncheck', this.category.external_id, child.value)
+          uncheck.push(child.value);
         }
       })
+      this.$store.commit(
+        "SELECT_FILTER_CATEGORIES",
+        {category: this.category.external_id, selection: check}
+      )
+      this.$store.commit(
+        "DESELECT_FILTER_CATEGORIES",
+        {category: this.category.external_id, selection: uncheck}
+      )
+      this.$emit("filter")
     }
   },
 }
