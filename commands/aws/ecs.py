@@ -1,8 +1,8 @@
 import json
 from invoke import Exit
+import boto3
 
 from environments.project import MODE, REPOSITORY, PROJECT
-from commands.aws.utils import create_aws_session
 from commands import TARGETS
 
 
@@ -79,7 +79,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
 
     # Setup the AWS SDK
     print(f"Starting AWS session for: {mode}")
-    session = create_aws_session(profile_name=ctx.config.aws.profile_name)
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
     ecs_client = session.client('ecs')
     container_variables = build_default_container_variables(mode, version)
     container_variables.update({

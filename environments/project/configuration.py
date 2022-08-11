@@ -32,6 +32,7 @@ sys.path.append(ENVIRONMENTS)
 project_configuration = importlib.import_module(f"{PROJECT}.configuration")
 REPOSITORY = project_configuration.REPOSITORY
 REPOSITORY_AWS_PROFILE = project_configuration.REPOSITORY_AWS_PROFILE
+FARGATE_CLUSTER_NAME = project_configuration.FARGATE_CLUSTER_NAME
 SEARCH_FIELDS = project_configuration.SEARCH_FIELDS
 
 
