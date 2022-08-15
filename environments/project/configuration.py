@@ -69,7 +69,7 @@ def create_configuration(mode, service=None, context="container", config_class=P
     mode_environment = os.path.join(ENVIRONMENTS, PROJECT, mode)
     config = config_class(
         system_prefix=mode_environment + os.path.sep,
-        runtime_path=os.path.join(mode_environment, "superuser.invoke.yml") if context == "host" else None,
+        runtime_path=os.path.join(mode_environment, "superuser.invoke.yml") if context != "container" else None,
         project_location=os.path.join(mode_environment, service) if service else None,
         lazy=True
     )
@@ -100,12 +100,11 @@ def create_configuration(mode, service=None, context="container", config_class=P
     return config
 
 
-def create_configuration_and_session(use_aws_default_profile=True, config_class=POLConfig, service=None):
+def create_configuration_and_session(config_class=POLConfig, service=None):
     """
     Creates an environment holding all the configuration for current mode and creates an AWS session.
     The used profile for AWS session is either default or the configured profile_name for the environment
 
-    :param use_aws_default_profile: Set to false when you want to load environment specific AWS profile
     :param config_class: Set to invoke.config.Config if you want to use Fabric
     :param service: The name of the service to get the environment for
     :return: environment, session
@@ -115,7 +114,7 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
     environment = create_configuration(MODE, service=service, context=CONTEXT, config_class=config_class)
 
     # Creating a AWS session based on configuration and context
-    session = boto3.Session() if use_aws_default_profile else boto3.Session(profile_name=environment.aws.profile_name)
+    session = boto3.Session() if CONTEXT != "host" else boto3.Session(profile_name=environment.aws.profile_name)
 
     # Load secrets (we resolve secrets during runtime so that AWS can manage them)
     # This skips over any non-AWS secrets (localhost only)
@@ -126,7 +125,7 @@ def create_configuration_and_session(use_aws_default_profile=True, config_class=
             if secret_id is not None and secret_id.startswith("arn:aws:secretsmanager"):
                 aws_secrets.append((group_name, secret_name, secret_id,))
     # Here we found AWS secrets which we load using boto3
-    if aws_secrets:
+    if aws_secrets and CONTEXT != "unprivileged":
         secrets_manager = session.client('secretsmanager')
         for group_name, secret_name, secret_id in aws_secrets:
             secret_value = secrets_manager.get_secret_value(SecretId=secret_id)
