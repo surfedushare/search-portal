@@ -114,7 +114,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
     if legacy_system:
         print("Legacy run with version:", version)
         task_definition = _register_run_task_definition(
-            ecs_client, target_info, mode, version, extra_workers, is_harvester_command
+            ctx, ecs_client, target_info, mode, version, extra_workers, is_harvester_command
         )
     else:
         task_definition = target_info["name"] if not is_harvester_command else "harvester-command"
