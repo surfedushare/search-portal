@@ -1,6 +1,4 @@
-import {
-  CONSORTIUM_CATEGORY_FILTER_FIELD
-} from "~/constants";
+import { CONSORTIUM_CATEGORY_FILTER_FIELD } from "~/constants";
 
 import Collection from "~/pages/collection";
 import Communities from "~/pages/communities";
@@ -70,17 +68,24 @@ export default new Router({
       path: "/en/materials/search",
       component: Search,
       name: "materials-search___en",
+      meta: {
+        noAutoTrack: true,
+      },
     },
     {
       path: "/materialen/zoeken",
       component: Search,
       name: "materials-search___nl",
+      meta: {
+        noAutoTrack: true,
+      },
     },
     {
       path: "/en/communities/:filterId/search",
       component: Search,
       name: "communities-search___en",
       meta: {
+        noAutoTrack: true,
         filterRoot: CONSORTIUM_CATEGORY_FILTER_FIELD,
       },
     },
@@ -89,6 +94,7 @@ export default new Router({
       component: Search,
       name: "communities-search___nl",
       meta: {
+        noAutoTrack: true,
         filterRoot: CONSORTIUM_CATEGORY_FILTER_FIELD,
       },
     },
@@ -231,9 +237,7 @@ export default new Router({
                 next(to.query.continue || "/");
               })
               .catch((error) => {
-                $log.warn(
-                  'Unable to login due to error during store "login" dispatch'
-                );
+                $log.warn("Unable to login due to error during store \"login\" dispatch");
                 $log.error(error);
                 next("/");
               });

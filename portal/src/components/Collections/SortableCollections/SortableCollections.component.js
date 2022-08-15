@@ -38,9 +38,7 @@ export default {
       this.selectedCollectionId = collection.id;
     },
     deleteCollection() {
-      this.$store
-        .dispatch("deleteMyCollection", this.selectedCollectionId)
-        .then(() => this.closeDeleteCollection());
+      this.$store.dispatch("deleteMyCollection", this.selectedCollectionId).then(() => this.closeDeleteCollection());
     },
     closeDeleteCollection() {
       const { community } = this.$route.params;

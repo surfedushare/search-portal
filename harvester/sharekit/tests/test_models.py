@@ -2,7 +2,7 @@ from datetime import datetime
 from urllib.parse import unquote
 from unittest.mock import patch
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils.timezone import make_aware
 from django.core.exceptions import ValidationError
 
@@ -10,6 +10,7 @@ from sharekit.models import SharekitMetadataHarvest
 from sharekit.tests.factories import SharekitMetadataHarvestFactory
 
 
+@override_settings(PROJECT="edusources")
 class TestSharekitMetadataHarvest(TestCase):
 
     @classmethod
@@ -67,3 +68,13 @@ class TestSharekitMetadataHarvest(TestCase):
         empty = SharekitMetadataHarvestFactory(is_empty=True)
         empty.handle_errors()
         self.assertEqual(empty.status, 204)
+
+    def test_parameters(self):
+        instance = SharekitMetadataHarvestFactory()
+        self.assertEqual(instance.parameters(), instance.PARAMETERS)
+        with override_settings(PROJECT="nppo"):
+            instance = SharekitMetadataHarvestFactory()
+            self.assertEqual(instance.parameters(), {
+                "filter[termsOfUse][NEQ]": "alle-rechten-voorbehouden",
+                "page[size]": 25
+            })

@@ -8,15 +8,15 @@
       @result="result"
     />
     <button type="button" class="button crop" @click="cropImage()">
-      {{ $t('Crop') }}
+      {{ $t("Crop") }}
     </button>
   </Popup>
 </template>
 <script>
-import Popup from '~/components/Popup'
+import Popup from "~/components/Popup";
 
 export default {
-  name: 'ImageCropPopup',
+  name: "ImageCropPopup",
   components: {
     Popup,
   },
@@ -50,39 +50,39 @@ export default {
     image(image) {
       this.$refs.croppieRef.bind({
         url: image,
-      })
+      });
     },
   },
   mounted() {
     if (this.image) {
       this.$refs.croppieRef.bind({
         url: this.image,
-      })
+      });
     }
   },
   methods: {
     result(result) {
-      this.$emit('crop', result)
-      const reader = new FileReader()
+      this.$emit("crop", result);
+      const reader = new FileReader();
       reader.onload = (e) => {
-        this.$emit('preview', e.target.result)
-        this.closePopup()
-      }
-      reader.readAsDataURL(result)
+        this.$emit("preview", e.target.result);
+        this.closePopup();
+      };
+      reader.readAsDataURL(result);
     },
     cropImage() {
       const options = {
-        format: 'png',
+        format: "png",
         size: { width: this.width, height: this.height },
-        type: 'blob',
-      }
-      this.$refs.croppieRef.result(options)
+        type: "blob",
+      };
+      this.$refs.croppieRef.result(options);
     },
     closePopup() {
-      this.$emit('close')
+      this.$emit("close");
     },
   },
-}
+};
 </script>
 <style lang="less">
 .crop-popup {

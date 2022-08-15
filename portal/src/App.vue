@@ -42,9 +42,7 @@ export default {
   metaInfo: {
     title: DEFAULT_TITLE,
     titleTemplate: (titleChunk) => {
-      return titleChunk && titleChunk !== DEFAULT_TITLE
-        ? `${titleChunk} | ${DEFAULT_TITLE}`
-        : DEFAULT_TITLE;
+      return titleChunk && titleChunk !== DEFAULT_TITLE ? `${titleChunk} | ${DEFAULT_TITLE}` : DEFAULT_TITLE;
     },
   },
 };

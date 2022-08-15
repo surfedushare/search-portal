@@ -19,10 +19,7 @@ function getFiltersForSearch(items) {
       results.push(item);
     }
     // Also add this filter if a date has been selected
-    if (
-      item.external_id === PUBLISHER_DATE_FIELD &&
-      (item.dates.start_date || item.dates.end_date)
-    ) {
+    if (item.external_id === PUBLISHER_DATE_FIELD && (item.dates.start_date || item.dates.end_date)) {
       results.push(item);
     }
     return results;
@@ -61,17 +58,9 @@ function loadCategoryFilters(items, selected, dates, opened, showAlls, parent) {
       item.selected = dates.start_date || dates.end_date;
     }
     // Load children and retrospecively set some parent properties
-    let hasSelectedChildren = loadCategoryFilters(
-      item.children,
-      selected,
-      dates,
-      opened,
-      showAlls,
-      item
-    );
+    let hasSelectedChildren = loadCategoryFilters(item.children, selected, dates, opened, showAlls, item);
     item.selected = item.selected || hasSelectedChildren;
-    item.isOpen =
-      opened.indexOf(item.id) >= 0 || item.selected || hasSelectedChildren;
+    item.isOpen = opened.indexOf(item.id) >= 0 || item.selected || hasSelectedChildren;
     item.showAll = showAlls.indexOf(item.id) >= 0;
   });
   return items.some((item) => {
@@ -87,6 +76,9 @@ export default {
     byCategoryId: {},
   },
   getters: {
+    selected_filters(state) {
+      return state.selection;
+    },
     filter_categories(state) {
       return state.filter_categories;
     },
@@ -123,17 +115,10 @@ export default {
     async getFilterCategories({ state, commit }) {
       const filters = getFiltersFromQuery(router.currentRoute.query);
       if (window.CATEGORY_FILTERS) {
-        loadCategoryFilters(
-          window.CATEGORY_FILTERS,
-          filters.selected,
-          filters.dateRange
-        );
+        loadCategoryFilters(window.CATEGORY_FILTERS, filters.selected, filters.dateRange);
         commit("SET_FILTER_CATEGORIES", window.CATEGORY_FILTERS);
         commit("SET_FILTER_CATEGORIES_LOADING", null);
-      } else if (
-        isNil(state.filter_categories_loading) &&
-        isEmpty(state.filter_categories)
-      ) {
+      } else if (isNil(state.filter_categories_loading) && isEmpty(state.filter_categories)) {
         const promise = axios.get("filter-categories/").then(({ data }) => {
           // Preprocess the filters
           loadCategoryFilters(data, filters.selected, filters.dateRange);
@@ -143,9 +128,7 @@ export default {
         });
         commit("SET_FILTER_CATEGORIES_LOADING", promise);
       }
-      return isNil(state.filter_categories_loading)
-        ? state.filter_categories
-        : state.filter_categories_loading;
+      return isNil(state.filter_categories_loading) ? state.filter_categories : state.filter_categories_loading;
     },
   },
   mutations: {
@@ -159,9 +142,7 @@ export default {
       state.byCategoryId = {};
       function setCategoryIds(items) {
         items.forEach((item) => {
-          const key = isNull(item.field)
-            ? item.external_id
-            : `${item.field}-${item.external_id}`;
+          const key = isNull(item.field) ? item.external_id : `${item.field}-${item.external_id}`;
           state.byCategoryId[key] = item;
           setCategoryIds(item.children);
         });
@@ -171,17 +152,20 @@ export default {
     SET_FILTER_CATEGORIES_LOADING(state, payload) {
       state.filter_categories_loading = payload;
     },
-    SELECT_FILTER_CATEGORIES(state, {category, selection}) {
+    SELECT_FILTER_CATEGORIES(state, { category, selection }) {
       state.selection[category] = union(state.selection[category], selection);
     },
-    DESELECT_FILTER_CATEGORIES(state, {category, selection}) {
+    DESELECT_FILTER_CATEGORIES(state, { category, selection }) {
       state.selection[category] = pull(state.selection[category], ...selection);
-      if(isEmpty(state.selection[category])) {
-        delete state.selection[category]
+      if (isEmpty(state.selection[category])) {
+        delete state.selection[category];
+      }
+      if (isEmpty(state.selection)) {
+        state.selection = {};
       }
     },
     RESET_FILTER_CATEGORIES_SELECTION(state, selection) {
-      state.selection = (isEmpty(selection)) ? {} : selection
+      state.selection = isEmpty(selection) ? {} : selection;
     },
   },
 };

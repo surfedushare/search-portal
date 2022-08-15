@@ -33,18 +33,12 @@ export default {
       if (materials && materials.search_text) {
         const { records } = materials;
         if (records && records.length && material) {
-          const materialIndex = records.findIndex(
-            (record) => record.external_id === material.external_id
-          );
+          const materialIndex = records.findIndex((record) => record.external_id === material.external_id);
 
           if (materialIndex !== -1) {
             const { page_size, page, records_total } = materials;
 
-            if (
-              records_total > page_size * page &&
-              materialIndex + 1 === page * page_size &&
-              !materials_loading
-            ) {
+            if (records_total > page_size * page && materialIndex + 1 === page * page_size && !materials_loading) {
               this.$store.dispatch(
                 "searchNextPageMaterials",
                 Object.assign(

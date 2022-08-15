@@ -30,8 +30,6 @@ schedule:
   harvest:
     hour: 4  # uses UTC
     minute: 0
-  sync_sharekit_metadata:
-    minute: "3-59/5"
 
 sharekit:
   webhook_allowed_ips:
@@ -46,14 +44,16 @@ secrets:
   postgres:
     password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/postgres-application"
     application_password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/postgres-application"
+  opensearch:
+    password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:opensearch/password"
   django:
     secret_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/django"
     admin_password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/django"
   sharekit:
     api_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:credentials/sharekit"
   harvester:
-    api_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/api-key"
-    webhook_secret: null
+    api_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/credentials"
+    webhook_secret: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/credentials"
   matomo:
     api_key: null
   eduterm:

@@ -32,10 +32,12 @@ secrets:
   postgres:
     password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:search-portal/postgres-application"
     application_password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:search-portal/postgres-application"
+  opensearch:
+    password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:opensearch/password"
   django:
     secret_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:search-portal/django"
     admin_password: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:search-portal/django"
   surfconext:
     secret_key: null
   harvester:
-    api_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/api-key"
+    api_key: "arn:aws:secretsmanager:eu-central-1:825135206789:secret:harvester/credentials"

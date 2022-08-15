@@ -9,17 +9,9 @@
         <section v-if="formData" class="communities__section__blue_box">
           <form action="/" @submit.prevent="onSubmit">
             <div class="communities__form__buttons">
-              <switch-input
-                v-model="isPublished"
-                class="public-switch"
-                :label="$t('public')"
-              />
+              <switch-input v-model="isPublished" class="public-switch" :label="$t('public')" />
               &nbsp;&nbsp;
-              <button
-                type="button"
-                class="button preview"
-                @click="previewMode = !previewMode"
-              >
+              <button type="button" class="button preview" @click="previewMode = !previewMode">
                 <i
                   class="fas fa-eye"
                   :class="{
@@ -27,15 +19,11 @@
                     'fa-eye-slash': previewMode,
                   }"
                 />
-                {{ $t('example') }}
+                {{ $t("example") }}
               </button>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <button
-                :disabled="isSubmitting"
-                type="submit"
-                class="button communities__form__button"
-              >
-                {{ $t('save') }}
+              <button :disabled="isSubmitting" type="submit" class="button communities__form__button">
+                {{ $t("save") }}
               </button>
             </div>
           </form>
@@ -53,22 +41,16 @@
         <div v-show="!previewMode">
           <Tabs :active-tab="activeTab" :select-tab="setActiveTab">
             <template v-slot:after-tabs="slotProps">
-              <div
-                v-if="slotProps.activeTab === 'collections-tab'"
-                class="collections__add"
-              >
-                <button
-                  class="collections__add__link button"
-                  @click.prevent="showAddCollection"
-                >
-                  {{ $t('New-collection') }}
+              <div v-if="slotProps.activeTab === 'collections-tab'" class="collections__add">
+                <button class="collections__add__link button" @click.prevent="showAddCollection">
+                  {{ $t("New-collection") }}
                 </button>
               </div>
             </template>
             <Tab :title="$t('general')" identifier="general">
               <div id="General" class="communities__form">
-                {{ $t('manage-community-information') }}
-                <br><br>
+                {{ $t("manage-community-information") }}
+                <br /><br />
                 <CommunityForm v-model="formData" :errors="errors" />
               </div>
             </Tab>
@@ -100,32 +82,32 @@
 </template>
 
 <script>
-import { find, forEach, isEmpty } from 'lodash'
-import { mapGetters } from 'vuex'
-import SortableCollections from '~/components/Collections/SortableCollections'
-import CommunityForm from '~/components/CommunityForm'
-import Error from '~/components/error'
-import HeaderBlock from '~/components/HeaderBlock'
-import InfoBlock from '~/components/InfoBlock'
-import AddCollection from '~/components/Popup/AddCollection'
-import SwitchInput from '~/components/switch-input'
-import Tab from '~/components/Tab'
-import Tabs from '~/components/Tabs'
-import { PublishStatus } from '~/utils'
+import { find, forEach, isEmpty } from "lodash";
+import { mapGetters } from "vuex";
+import SortableCollections from "~/components/Collections/SortableCollections";
+import CommunityForm from "~/components/CommunityForm";
+import Error from "~/components/error";
+import HeaderBlock from "~/components/HeaderBlock";
+import InfoBlock from "~/components/InfoBlock";
+import AddCollection from "~/components/Popup/AddCollection";
+import SwitchInput from "~/components/switch-input";
+import Tab from "~/components/Tab";
+import Tabs from "~/components/Tabs";
+import { PublishStatus } from "~/utils";
 
 const defaultFormData = {
-  title_nl: '',
-  title_en: '',
-  description_nl: '',
-  description_en: '',
-  website_url_nl: '',
-  website_url_en: '',
+  title_nl: "",
+  title_en: "",
+  description_nl: "",
+  description_en: "",
+  website_url_nl: "",
+  website_url_en: "",
   logo_nl: null,
   logo_en: null,
   featured_image_nl: null,
   featured_image_en: null,
   publish_status: PublishStatus.DRAFT,
-}
+};
 
 export default {
   components: {
@@ -147,219 +129,201 @@ export default {
       formData: null,
       notFound: false,
       previewMode: false,
-      activeTab: this.$route.query.tab || 'general',
-    }
+      activeTab: this.$route.query.tab || "general",
+    };
   },
   metaInfo() {
     return {
-      title: this.$i18n.t('My-community'),
-    }
+      title: this.$i18n.t("My-community"),
+    };
   },
   computed: {
     ...mapGetters([
-      'community_collections',
-      'community_collections_loading',
-      'communities',
-      'isAuthenticated',
-      'user',
-      'userCommunities',
+      "community_collections",
+      "community_collections_loading",
+      "communities",
+      "isAuthenticated",
+      "user",
+      "userCommunities",
     ]),
     isPublished: {
       get() {
-        return this.formData.publish_status === PublishStatus.PUBLISHED
+        return this.formData.publish_status === PublishStatus.PUBLISHED;
       },
       set(value) {
-        this.formData.publish_status = value
-          ? PublishStatus.PUBLISHED
-          : PublishStatus.DRAFT
+        this.formData.publish_status = value ? PublishStatus.PUBLISHED : PublishStatus.DRAFT;
       },
     },
   },
   mounted() {
     if (!this.isAuthenticated) {
-      this.$router.push('/')
-      return
+      this.$router.push("/");
+      return;
     }
-    this.$store.dispatch('getCommunities').then(() => {
-      this.setInitialFormData()
-    })
-    this.$store.dispatch(
-      'getCommunityCollections',
-      this.$route.params.community
-    )
+    this.$store.dispatch("getCommunities").then(() => {
+      this.setInitialFormData();
+    });
+    this.$store.dispatch("getCommunityCollections", this.$route.params.community);
   },
   methods: {
     previewImage() {
-      const image = this.formData[`featured_image_${this.$i18n.locale}`]
+      const image = this.formData[`featured_image_${this.$i18n.locale}`];
       if (image instanceof File) {
-        return this.formData[`featured_image_${this.$i18n.locale}_preview`]
+        return this.formData[`featured_image_${this.$i18n.locale}_preview`];
       }
 
-      return image
+      return image;
     },
     setActiveTab(tabIdentifier) {
-      this.activeTab = tabIdentifier
+      this.activeTab = tabIdentifier;
 
       this.$router.replace({
-        name: this.localePath({ name: 'my-community' }).name,
+        name: this.localePath({ name: "my-community" }).name,
         query: { tab: tabIdentifier },
-      })
+      });
     },
     setInitialFormData() {
       if (!this.user) {
-        this.notFound = true
-        return
+        this.notFound = true;
+        return;
       }
 
-      const communities = this.userCommunities(this.user)
+      const communities = this.userCommunities(this.user);
       const community = find(communities, (community) => {
-        return community.id === this.$route.params.community
-      })
+        return community.id === this.$route.params.community;
+      });
 
       if (!community) {
-        this.notFound = true
-        return
+        this.notFound = true;
+        return;
       }
       if (community.community_details) {
         const formData = {
           external_id: community.id,
           publish_status: community.publish_status,
-        }
+        };
         community.community_details.forEach((detail) => {
-          if (detail.language_code === 'NL') {
-            formData.title_nl = detail.title
-            formData.description_nl = detail.description
-            formData.website_url_nl = detail.website_url
-            formData.logo_nl = detail.logo
-            formData.featured_image_nl = detail.featured_image
-          } else if (detail.language_code === 'EN') {
-            formData.title_en = detail.title
-            formData.description_en = detail.description
-            formData.website_url_en = detail.website_url
-            formData.logo_en = detail.logo
-            formData.featured_image_en = detail.featured_image
+          if (detail.language_code === "NL") {
+            formData.title_nl = detail.title;
+            formData.description_nl = detail.description;
+            formData.website_url_nl = detail.website_url;
+            formData.logo_nl = detail.logo;
+            formData.featured_image_nl = detail.featured_image;
+          } else if (detail.language_code === "EN") {
+            formData.title_en = detail.title;
+            formData.description_en = detail.description;
+            formData.website_url_en = detail.website_url;
+            formData.logo_en = detail.logo;
+            formData.featured_image_en = detail.featured_image;
           }
-        })
-        this.formData = formData
+        });
+        this.formData = formData;
       } else {
-        this.formData = defaultFormData
+        this.formData = defaultFormData;
       }
     },
     showAddCollection() {
-      this.showPopup = true
+      this.showPopup = true;
     },
     close() {
-      this.showPopup = false
+      this.showPopup = false;
     },
     /**
      * Save community data
      */
     onSubmit() {
-      this.isSubmitting = true
+      this.isSubmitting = true;
 
-      const data = this.normalizeFormData()
-      this.errors = {}
+      const data = this.normalizeFormData();
+      this.errors = {};
       this.$store
-        .dispatch('putCommunity', {
+        .dispatch("putCommunity", {
           id: this.formData.external_id,
           data: data,
         })
         .then(() => {
-          this.$store.commit('ADD_MESSAGE', {
-            level: 'info',
-            message: 'Data-saved',
-          })
+          this.$store.commit("ADD_MESSAGE", {
+            level: "info",
+            message: "Data-saved",
+          });
         })
         .catch((err) => {
           if (err.response.data) {
-            this.$store.commit('ADD_MESSAGE', {
-              level: 'error',
-              message: 'any-field-error',
-            })
+            this.$store.commit("ADD_MESSAGE", {
+              level: "error",
+              message: "any-field-error",
+            });
           }
-          const errors = {}
+          const errors = {};
           forEach(err.response.data, (feedback, language) => {
-            const response = JSON.parse(feedback.replace(/'/g, '"'))
+            const response = JSON.parse(feedback.replace(/'/g, "\""));
             forEach(response, (errorMsg, key) => {
-              const errorKey = key + '_' + language.toLowerCase()
-              errors[errorKey] = errorMsg
-            })
-          })
-          this.errors = errors
+              const errorKey = key + "_" + language.toLowerCase();
+              errors[errorKey] = errorMsg;
+            });
+          });
+          this.errors = errors;
         })
         .finally(() => {
-          this.isSubmitting = false
-        })
+          this.isSubmitting = false;
+        });
       if (!isEmpty(this.selection)) {
         const deletePayload = {
           id: this.$route.params.community,
           data: this.selection,
-        }
-        this.$store
-          .dispatch('deleteCommunityCollections', deletePayload)
-          .then(() => {
-            this.$store.dispatch(
-              'getCommunityCollections',
-              this.$route.params.community
-            )
-          })
+        };
+        this.$store.dispatch("deleteCommunityCollections", deletePayload).then(() => {
+          this.$store.dispatch("getCommunityCollections", this.$route.params.community);
+        });
       }
     },
     normalizeFormData() {
-      const data = new FormData()
+      const data = new FormData();
 
-      data.append('external_id', this.formData.external_id)
-      data.append('publish_status', this.formData.publish_status)
-      data.append('title_nl', this.formData.title_nl)
-      data.append('title_en', this.formData.title_en)
-      data.append('description_nl', this.formData.description_nl)
-      data.append('description_en', this.formData.description_en)
-      data.append('website_url_nl', this.formData.website_url_nl)
-      data.append('website_url_en', this.formData.website_url_en)
+      data.append("external_id", this.formData.external_id);
+      data.append("publish_status", this.formData.publish_status);
+      data.append("title_nl", this.formData.title_nl);
+      data.append("title_en", this.formData.title_en);
+      data.append("description_nl", this.formData.description_nl);
+      data.append("description_en", this.formData.description_en);
+      data.append("website_url_nl", this.formData.website_url_nl);
+      data.append("website_url_en", this.formData.website_url_en);
 
       const data_nl = {
-        language_code: 'NL',
+        language_code: "NL",
         title: this.formData.title_nl,
         website_url: this.formData.website_url_nl,
         description: this.formData.description_nl,
-      }
+      };
 
       const data_en = {
-        language_code: 'EN',
+        language_code: "EN",
         title: this.formData.title_en,
         website_url: this.formData.website_url_en,
         description: this.formData.description_en,
-      }
+      };
 
-      const fileFields = [
-        'logo_nl',
-        'logo_en',
-        'featured_image_nl',
-        'featured_image_en',
-      ]
+      const fileFields = ["logo_nl", "logo_en", "featured_image_nl", "featured_image_en"];
 
-      const deleted_logos = []
+      const deleted_logos = [];
 
       fileFields.forEach((field) => {
-        const fieldData = this.formData[field]
+        const fieldData = this.formData[field];
 
         if (fieldData instanceof File) {
-          data.set(field, fieldData)
+          data.set(field, fieldData);
         } else if (!fieldData) {
-          deleted_logos.push(field)
+          deleted_logos.push(field);
         }
-      })
+      });
 
-      data.append(
-        'community_details_update',
-        JSON.stringify([data_nl, data_en])
-      )
-      data.append('deleted_logos', JSON.stringify(deleted_logos))
+      data.append("community_details_update", JSON.stringify([data_nl, data_en]));
+      data.append("deleted_logos", JSON.stringify(deleted_logos));
 
-      return data
+      return data;
     },
     saveCollection(collection) {
-      this.$store.dispatch('setCommunityCollection', {
+      this.$store.dispatch("setCommunityCollection", {
         id: this.$route.params.community,
         data: [
           {
@@ -368,24 +332,24 @@ export default {
             title_en: collection.title_en,
           },
         ],
-      })
+      });
     },
     getPreviewPath() {
       return this.localePath({
-        name: 'communities-community',
+        name: "communities-community",
         params: {
           community: this.formData.external_id,
         },
-      })
+      });
     },
     setCollectionSelection(selection) {
-      this.selection = selection
+      this.selection = selection;
     },
   },
-}
+};
 </script>
 <style lang="less">
-@import './../variables';
+@import "./../variables";
 .communities {
   width: 100%;
 
@@ -528,7 +492,7 @@ export default {
 
   &__link {
     padding: 13px 43px 13px 51px;
-    background-image: url('../assets/images/plus-black.svg');
+    background-image: url("../assets/images/plus-black.svg");
     background-position: 10px 50%;
     background-repeat: no-repeat;
     background-size: 24px 24px;

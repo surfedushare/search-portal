@@ -16,10 +16,9 @@
       />
 
       <div v-if="contenteditable" class="add-materials">
-        <button
-          class="materials__add__link button secondary"
-          @click.prevent="showAddMaterial"
-        >{{ $t('Add-materials') }}</button>
+        <button class="materials__add__link button secondary" @click.prevent="showAddMaterial">
+          {{ $t("Add-materials") }}
+        </button>
       </div>
       <SortableMaterials
         v-if="contenteditable && collection_materials"
@@ -50,17 +49,17 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash'
-import { mapGetters } from 'vuex'
-import AddMaterialPopup from '~/components/Collections/AddMaterialPopup'
-import Collection from '~/components/Collections/Collection'
-import Error from '~/components/error'
-import Materials from '~/components/Materials/Materials.vue'
-import SortableMaterials from '~/components/Materials/SortableMaterials.vue'
-import DeleteCollection from '~/components/Popup/DeleteCollection'
-import Spinner from '~/components/Spinner'
-import PageMixin from '~/pages/page-mixin'
-import { PublishStatus } from '~/utils'
+import { isEmpty } from "lodash";
+import { mapGetters } from "vuex";
+import AddMaterialPopup from "~/components/Collections/AddMaterialPopup";
+import Collection from "~/components/Collections/Collection";
+import Error from "~/components/error";
+import Materials from "~/components/Materials/Materials.vue";
+import SortableMaterials from "~/components/Materials/SortableMaterials.vue";
+import DeleteCollection from "~/components/Popup/DeleteCollection";
+import Spinner from "~/components/Spinner";
+import PageMixin from "~/pages/page-mixin";
+import { PublishStatus } from "~/utils";
 
 export default {
   components: {
@@ -84,109 +83,91 @@ export default {
         page_size: 10,
         page: 1,
         filters: [],
-        search_text: '',
+        search_text: "",
       },
       isShowAddMaterial: false,
-    }
+    };
   },
   computed: {
-    ...mapGetters([
-      'collection',
-      'collection_materials',
-      'collection_materials_loading',
-      'user',
-    ]),
+    ...mapGetters(["collection", "collection_materials", "collection_materials_loading", "user"]),
     collectionInfo() {
       if (isEmpty(this.collection)) {
-        return null
+        return null;
       } else if (this.collection.publish_status === PublishStatus.PUBLISHED) {
-        return this.collection
-      } else if (
-        this.user &&
-        this.user.collections.find(
-          (collection) => collection.id === this.collection.id
-        )
-      ) {
-        return this.collection
+        return this.collection;
+      } else if (this.user && this.user.collections.find((collection) => collection.id === this.collection.id)) {
+        return this.collection;
       }
 
-      return null
+      return null;
     },
   },
   created() {
-    const { id } = this.$route.params
-    this.$store.dispatch('getCollectionMaterials', id)
-    this.pageLoad = Promise.all([
-      this.$store.dispatch('getCollection', id),
-      this.$store.dispatch('getUser'),
-    ])
+    const { id } = this.$route.params;
+    this.$store.dispatch("getCollectionMaterials", id);
+    this.pageLoad = Promise.all([this.$store.dispatch("getCollection", id), this.$store.dispatch("getUser")]);
   },
   metaInfo() {
-    const defaultTitle = this.$root.$meta().title
+    const defaultTitle = this.$root.$meta().title;
     return {
-      title: this.collectionInfo
-        ? this.collectionInfo[`title_${this.$i18n.locale}`] || defaultTitle
-        : defaultTitle,
-    }
+      title: this.collectionInfo ? this.collectionInfo[`title_${this.$i18n.locale}`] || defaultTitle : defaultTitle,
+    };
   },
   methods: {
     showAddMaterial() {
-      this.isShowAddMaterial = true
+      this.isShowAddMaterial = true;
     },
     closeAddMaterial() {
-      this.isShowAddMaterial = false
-      this.materialsUpdateKey += 1
+      this.isShowAddMaterial = false;
+      this.materialsUpdateKey += 1;
     },
     saveMaterials() {
-      const { id } = this.$route.params
-      this.isReady = false
+      const { id } = this.$route.params;
+      this.isReady = false;
       Promise.all([
-        this.$store.dispatch('getCollectionMaterials', id),
-        this.$store.dispatch('getCollection', id),
+        this.$store.dispatch("getCollectionMaterials", id),
+        this.$store.dispatch("getCollection", id),
       ]).finally(() => {
-        this.isReady = true
-      })
+        this.isReady = true;
+      });
     },
     deleteCollectionPopup() {
-      this.isShowDeleteCollection = true
+      this.isShowDeleteCollection = true;
     },
     closeDeleteCollection() {
-      this.isShowDeleteCollection = false
-      this.submitting = false
+      this.isShowDeleteCollection = false;
+      this.submitting = false;
     },
     changeViewType() {
       if (this.materials_in_line === 1) {
-        this.materials_in_line = 4
+        this.materials_in_line = 4;
       } else {
-        this.materials_in_line = 1
+        this.materials_in_line = 1;
       }
     },
     onSubmit(data) {
-      this.submitting = true
-      this.submitData = data
+      this.submitting = true;
+      this.submitData = data;
       this.$store
-        .dispatch('editCollection', {
+        .dispatch("editCollection", {
           ...this.collection,
           ...data,
         })
         .catch(() => {
-          if (
-            this.collection.publish_status === PublishStatus.PUBLISHED &&
-            !this.collection.materials_count
-          ) {
-            this.$store.commit('ADD_MESSAGE', {
-              level: 'error',
-              message: 'can-not-publish-empty-collection',
-            })
-            this.collection.publish_status = PublishStatus.DRAFT
+          if (this.collection.publish_status === PublishStatus.PUBLISHED && !this.collection.materials_count) {
+            this.$store.commit("ADD_MESSAGE", {
+              level: "error",
+              message: "can-not-publish-empty-collection",
+            });
+            this.collection.publish_status = PublishStatus.DRAFT;
           }
         })
         .finally(() => {
-          this.submitting = false
-        })
+          this.submitting = false;
+        });
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

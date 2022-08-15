@@ -11,17 +11,17 @@
 
 <script>
 export default {
-  name: 'ErrorWrapper',
+  name: "ErrorWrapper",
   props: {
     errors: {
       type: Array,
       default: () => [],
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
-@import './../variables';
+@import "./../variables";
 
 .with-errors {
   /deep/ input {

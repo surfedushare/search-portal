@@ -4,8 +4,7 @@ const packageJSON = require("./package.json");
 
 const appDirectory = packageJSON.name + "/";
 const djangoPublicPath = "/static/" + appDirectory;
-const server =
-  process.env.npm_config_server || process.env.npm_package_config_server;
+const server = process.env.npm_config_server || process.env.npm_package_config_server;
 
 module.exports = {
   publicPath: server === "vue" ? "/" : djangoPublicPath,
@@ -23,8 +22,6 @@ module.exports = {
     },
   },
   chainWebpack: (config) => {
-    config
-      .plugin("BundleTracker")
-      .use(BundleTracker, [{ path: config.output.get("path") }]);
+    config.plugin("BundleTracker").use(BundleTracker, [{ path: config.output.get("path") }]);
   },
 };

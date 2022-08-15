@@ -5,13 +5,11 @@
         class="filter-categories__item_title"
         :class="{ 'filter-categories__item_title--hide': isOpen }"
         @click="toggle()"
-      >{{ titleTranslation(category) }}</h4>
+      >
+        {{ titleTranslation(category) }}
+      </h4>
       <ul v-show="isOpen" class="filter-categories__subitems">
-        <li
-          v-for="item in visibleChildren"
-          :key="item.external_id"
-          class="filter-categories__subitem"
-        >
+        <li v-for="item in visibleChildren" :key="item.external_id" class="filter-categories__subitem">
           <div class="filter-checkbox">
             <input
               :id="item.external_id"
@@ -30,29 +28,21 @@
           </div>
         </li>
 
-        <li
-          v-if="category.children.length > numberOfVisibleItems"
-          class="filter-categories__subitem--show-more"
-        >
-          <a v-if="showAll" href="/show-more/" @click.prevent="onToggleShowAll()">{{ $t('Hide') }}</a>
+        <li v-if="category.children.length > numberOfVisibleItems" class="filter-categories__subitem--show-more">
+          <a v-if="showAll" href="/show-more/" @click.prevent="onToggleShowAll()">{{ $t("Hide") }}</a>
 
-          <a v-else href="/show-more/" @click.prevent="onToggleShowAll()">{{ $t('View-more') }}</a>
+          <a v-else href="/show-more/" @click.prevent="onToggleShowAll()">{{ $t("View-more") }}</a>
         </li>
       </ul>
     </div>
-    <FilterCategoriesPopup
-      :category="category"
-      :show-popup="showPopup"
-      :close="onToggleShowAll"
-      @apply="onApply"
-    />
+    <FilterCategoriesPopup :category="category" :show-popup="showPopup" :close="onToggleShowAll" @apply="onApply" />
   </li>
 </template>
 
 <script>
-import FilterCategoriesPopup from '~/components/FilterCategories/FilterCategoriesPopup'
+import FilterCategoriesPopup from "~/components/FilterCategories/FilterCategoriesPopup";
 export default {
-  name: 'FilterCategory',
+  name: "FilterCategory",
   components: { FilterCategoriesPopup },
   props: {
     category: {
@@ -63,63 +53,60 @@ export default {
     },
     change: {
       type: Function,
-      default: () => { },
+      default: () => {},
     },
   },
   data() {
-    const isOpen = this.category.children.some((child) => child.selected)
+    const isOpen = this.category.children.some((child) => child.selected);
 
     return {
       isOpen,
       showAll: false,
       showPopup: false,
       visibleItems: 5,
-    }
+    };
   },
   computed: {
     visible() {
-      return this.category.children.some((child) => !child.is_hidden)
+      return this.category.children.some((child) => !child.is_hidden);
     },
     sortedChildren() {
       return [...this.category.children].sort((a, b) => {
-        return b.selected - a.selected || b.count - a.count
-      })
+        return b.selected - a.selected || b.count - a.count;
+      });
     },
     numberOfVisibleItems() {
       // Display all selected items or max visibleItems
-      return Math.max(
-        this.category.children.filter((c) => c.selected).length,
-        this.visibleItems
-      )
+      return Math.max(this.category.children.filter((c) => c.selected).length, this.visibleItems);
     },
     visibleChildren() {
       if (this.showAll) {
-        return this.sortedChildren
+        return this.sortedChildren;
       }
 
-      return this.sortedChildren.slice(0, this.numberOfVisibleItems)
+      return this.sortedChildren.slice(0, this.numberOfVisibleItems);
     },
   },
   watch: {
     category(newCategory) {
-      this.isOpen = newCategory.children.some((child) => child.selected)
+      this.isOpen = newCategory.children.some((child) => child.selected);
     },
   },
   methods: {
     toggle() {
       if (this.category.children.length > 0) {
-            this.isOpen = !this.isOpen
+        this.isOpen = !this.isOpen;
       }
     },
     onToggleShowAll() {
       if (this.category.children.length >= 20) {
-        this.showPopup = !this.showPopup
-        return
+        this.showPopup = !this.showPopup;
+        return;
       }
-      this.showAll = !this.showAll
+      this.showAll = !this.showAll;
     },
     onChange(e) {
-      const { categoryId, itemId } = e.target.dataset
+      const { categoryId, itemId } = e.target.dataset;
       if (e.target.checked) {
         this.$store.commit("SELECT_FILTER_CATEGORIES", {category: categoryId, selection: [itemId]});
       } else {
@@ -137,19 +124,19 @@ export default {
         } else {
           uncheck.push(child.value);
         }
-      })
+      });
       this.$store.commit(
         "SELECT_FILTER_CATEGORIES",
         {category: this.category.external_id, selection: check}
-      )
+      );
       this.$store.commit(
         "DESELECT_FILTER_CATEGORIES",
         {category: this.category.external_id, selection: uncheck}
-      )
-      this.$emit("filter")
+      );
+      this.$emit("filter");
     }
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

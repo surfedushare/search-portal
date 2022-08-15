@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/browser";
 
 import injector from "vue-inject";
+import { flatMap, has } from "lodash";
 
 if (process.env.VUE_APP_USE_SENTRY) {
   Sentry.init({
@@ -12,11 +13,7 @@ if (process.env.VUE_APP_USE_SENTRY) {
       if (event.user) {
         delete event.user;
       }
-      if (
-        event.request &&
-        event.request.headers &&
-        event.request.headers["User-Agent"]
-      ) {
+      if (event.request && event.request.headers && event.request.headers["User-Agent"]) {
         delete event.request.headers["User-Agent"];
       }
       return event;
@@ -45,8 +42,13 @@ injector.decorator("$log", function ($log) {
       $log.info("Custom dimensions:", dimensions);
     }
   };
+
   $log.setIsStaff = function (value) {
     $log.info("Set is_staff: ", value);
+  };
+
+  $log.siteSearch = function (query, totalResults) {
+    $log.info("Searching: ", query, totalResults);
   };
 
   /***************************
@@ -65,6 +67,7 @@ injector.decorator("$log", function ($log) {
   $log._pageView = $log.pageView;
   $log._customEvent = $log.customEvent;
   $log._setIsStaff = $log.setIsStaff;
+  $log._siteSearch = $log.siteSearch;
 
   $log.pageView = function (page) {
     window._paq.push(["setDocumentTitle", window.document.title]);
@@ -75,14 +78,7 @@ injector.decorator("$log", function ($log) {
 
   $log.customEvent = function (category, action, label, value, dimensions) {
     $log._customEvent(category, action, label, value, dimensions);
-    window._paq.push([
-      "trackEvent",
-      category,
-      action,
-      label,
-      value,
-      dimensions,
-    ]); // NB: this modifies dimensions!
+    window._paq.push(["trackEvent", category, action, label, value, dimensions]); // NB: this modifies dimensions!
   };
 
   $log.setIsStaff = function (value) {
@@ -92,6 +88,22 @@ injector.decorator("$log", function ($log) {
       window._paq.push(["deleteCustomDimension", 1]);
     }
     $log._setIsStaff(value);
+  };
+
+  $log.siteSearch = function (query, totalResults) {
+    if (!has(query, "search_text")) {
+      return;
+    }
+    const filters = JSON.parse(query.filters);
+    const searchCategories = flatMap(filters, (values, field) => {
+      return values.map((value) => `${field}=${value}`);
+    });
+    if (parseInt(query.is_prefilter)) {
+      searchCategories.push("is_prefilter=1");
+    }
+    const searchKeyword = query.search_term || "";
+    window._paq.push(["trackSiteSearch", searchKeyword, searchCategories.join("&"), totalResults]);
+    $log._siteSearch(query, totalResults);
   };
 
   /***************************

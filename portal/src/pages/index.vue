@@ -67,6 +67,7 @@ import SearchBar from "~/components/Search/SearchBar.vue";
 import { generateSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
 import DOMPurify from "dompurify";
+import { isEmpty } from "lodash";
 
 const EDUCATIONAL_LEVEL_CATEGORY_ID = "lom_educational_levels";
 
@@ -125,14 +126,18 @@ export default {
       this.filters[EDUCATIONAL_LEVEL_CATEGORY_ID] = [value];
     },
     searchMaterials(searchText) {
-      this.$router.push(
-        generateSearchMaterialsQuery({
-          search_text: searchText,
-          filters: this.$store.state.filterCategories.selection,
-          page_size: 10,
-          page: 1,
-        })
+      const searchData = {
+        search_text: searchText,
+        filters: this.$store.state.filterCategories.selection,
+        page_size: 10,
+        page: 1,
+      };
+      const searchRoute =  generateSearchMaterialsQuery(
+        searchData,
+        "materials-search",
+        !isEmpty(this.$store.state.filterCategories.selection)
       );
+      this.$router.push(searchRoute);
     },
   },
 };

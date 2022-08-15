@@ -20,7 +20,7 @@
 </template>
 <script>
 export default {
-  name: 'Tabs',
+  name: "Tabs",
   props: {
     activeTab: {
       type: String,
@@ -34,36 +34,36 @@ export default {
   data() {
     return {
       tabs: [],
-    }
+    };
   },
   computed: {
     currentTab() {
-      const tab = this.tabs.find((tab) => tab.isActive)
-      return tab && tab.identifier
+      const tab = this.tabs.find((tab) => tab.isActive);
+      return tab && tab.identifier;
     },
   },
   mounted() {
     this.tabs = this.$children.filter((c) => {
-      return c.$slots.default
-    })
+      return c.$slots.default;
+    });
 
     this.tabs.forEach((tab) => {
-      tab.isActive = tab.identifier === this.activeTab
-    })
+      tab.isActive = tab.identifier === this.activeTab;
+    });
   },
   methods: {
     clickTab(identifier) {
       this.tabs.forEach((tab) => {
-        tab.isActive = tab.identifier === identifier
-      })
+        tab.isActive = tab.identifier === identifier;
+      });
 
-      this.selectTab(identifier)
+      this.selectTab(identifier);
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
-@import url('../variables');
+@import url("../variables");
 @active-tab-indicator-size: 15px;
 
 /* Style the tab */
@@ -109,7 +109,7 @@ export default {
   color: white;
 }
 .tabs button.active:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%;
   left: 50%;

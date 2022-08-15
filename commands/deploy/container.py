@@ -7,12 +7,21 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS
-from environments.project import REPOSITORY
+from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
 
 
 def get_commit_hash():
     repo = Repo(".")
     return str(repo.head.commit)
+
+
+def aws_docker_login(ctx):
+    command = f"aws ecr get-login-password --region eu-central-1 | " \
+              f"docker login --username AWS --password-stdin {REPOSITORY}"
+    if os.environ.get("AWS_PROFILE", None):
+        command = f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} " + command
+        ctx.run(command)
+    ctx.run(command, echo=True)
 
 
 @task(help={
@@ -49,11 +58,7 @@ def publish_runner_image(ctx, docker_login=False):
 
     # Login with Docker on AWS
     if docker_login:
-        ctx.run(
-            f"aws ecr get-login-password --region eu-central-1 | "
-            f"docker login --username AWS --password-stdin {REPOSITORY}",
-            echo=True
-        )
+        aws_docker_login(ctx)
 
     ctx.run(f"docker tag gitlab-runner:latest {REPOSITORY}/gitlab-runner:latest", echo=True)
     ctx.run(f"docker push {REPOSITORY}/gitlab-runner:latest", echo=True, pty=True)
@@ -78,11 +83,7 @@ def build(ctx, target, commit=None, docker_login=False):
 
     # Login with Docker on AWS
     if docker_login:
-        ctx.run(
-            f"aws ecr get-login-password --region eu-central-1 | "
-            f"docker login --username AWS --password-stdin {REPOSITORY}",
-            echo=True
-        )
+        aws_docker_login(ctx)
 
     # Gather necessary info and call Docker to build
     target_info = TARGETS[target]
@@ -123,11 +124,7 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
 
     # Login with Docker on AWS
     if docker_login:
-        ctx.run(
-            f"aws ecr get-login-password --region eu-central-1 | "
-            f"docker login --username AWS --password-stdin {REPOSITORY}",
-            echo=True
-        )
+        aws_docker_login(ctx)
 
     # Check if version tag already exists in registry
     inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{commit}", warn=True)
@@ -166,11 +163,7 @@ def promote(ctx, target, commit=None, docker_login=False):
 
     # Login with Docker on AWS
     if docker_login:
-        ctx.run(
-            f"aws ecr get-login-password --region eu-central-1 | "
-            f"docker login --username AWS --password-stdin {REPOSITORY}",
-            echo=True
-        )
+        aws_docker_login(ctx)
 
     # Check if version tag already exists in registry
     inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{version}", warn=True)

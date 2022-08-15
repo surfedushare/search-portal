@@ -12,69 +12,59 @@
         <b>{{ filter.title_translations[$i18n.locale] }}</b>
       </span>
     </v-chip>
-    <v-btn
-      v-show="selectionFilterItems.length"
-      outlined
-      depressed
-      data-test="reset_filters"
-      @click="resetFilter"
-    >
-      {{ $t('Reset-filters') }}
+    <v-btn v-show="selectionFilterItems.length" outlined depressed data-test="reset_filters" @click="resetFilter">
+      {{ $t("Reset-filters") }}
     </v-btn>
   </section>
 </template>
 
 <script>
-import { flatMap, isEmpty } from 'lodash'
-
+import { flatMap, isEmpty } from "lodash";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'FilterCategoriesSelection',
+  name: "FilterCategoriesSelection",
   props: {
-    'materials': {
+    materials: {
       type: Object,
-      default: () => ({
-      }),
+      default: () => ({}),
     },
   },
   computed: {
+    ...mapGetters(["getCategoryById", "selected_filters"]),
     selectionFilterItems() {
-      const selectedFilters = this.$store.state.filterCategories.selection
-      if (isEmpty(selectedFilters)) {
-        return []
+      if (isEmpty(this.selected_filters)) {
+        return [];
       }
-      return flatMap(selectedFilters, (filter_ids, categoryId) => {
-        const cat = this.materials?.filter_categories?.find((category) => {
-          return category.external_id === categoryId
-        })
+      return flatMap(this.selected_filters, (filter_ids, categoryId) => {
+        const cat = this.getCategoryById(categoryId, null);
         const results = filter_ids.map((filter_id) => {
           return cat?.children.find((child) => {
-            child.parent = cat
-            return child.external_id === filter_id
-          })
-        })
+            child.parent = cat;
+            return child.external_id === filter_id;
+          });
+        });
         return results.filter((rsl) => rsl);
-      })
+      });
     },
   },
   methods: {
     onClose(categoryId, itemId) {
-      this.$store.commit('DESELECT_FILTER_CATEGORIES', {category: categoryId, selection: [itemId]})
+      this.$store.commit("DESELECT_FILTER_CATEGORIES", { category: categoryId, selection: [itemId] });
       this.$emit("filter");
     },
     resetFilter() {
-      this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION')
+      this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
       this.$emit("filter");
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
 @import "../../variables.less";
 
 .filter-categories-selection {
-
   margin: 15px auto 0;
   padding: 0 25px;
   max-width: 1296px;
@@ -85,6 +75,5 @@ export default {
   .v-btn {
     margin-top: 10px;
   }
-
 }
 </style>

@@ -2,10 +2,8 @@ import { DateTime } from "luxon";
 import i18n from "~/i18n";
 import { isEmpty } from "lodash";
 
-export const generateSearchMaterialsQuery = function (
-  data = { filters: {}, search_text: "" },
-  name = "materials-search"
-) {
+export const generateSearchMaterialsQuery = function (data = { filters: {}, search_text: "" },
+                                                      name = "materials-search", isPrefilter = false) {
   if (name.indexOf("___") < 0) {
     name += "___" + i18n.locale;
   }
@@ -16,6 +14,7 @@ export const generateSearchMaterialsQuery = function (
       ...data,
       filters: JSON.stringify(data.filters),
       search_text: JSON.stringify(data.search_text),
+      is_prefilter: isPrefilter ? 1 : 0,
     },
   };
 };
@@ -65,9 +64,7 @@ const parseSearchText = function (searchText) {
 };
 
 export const validateHREF = function (href) {
-  return href.search(process.env.frontendUrl) === 0
-    ? href
-    : process.env.frontendUrl;
+  return href.search(process.env.frontendUrl) === 0 ? href : process.env.frontendUrl;
 };
 
 export const addFilter = function (search, category, filterId) {
@@ -96,7 +93,5 @@ export const formatDate = function (date, locale) {
     default:
       format = { year: "numeric", month: "long", day: "numeric" };
   }
-  return new DateTime.fromISO(date)
-    .setLocale(locale === "en" ? "en-US" : "nl-NL")
-    .toLocaleString(format);
+  return new DateTime.fromISO(date).setLocale(locale === "en" ? "en-US" : "nl-NL").toLocaleString(format);
 };

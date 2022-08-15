@@ -223,9 +223,9 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.1);
     z-index: 10;
     pointer-events: none;
+    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.1);
   }
 
   @p-top: 16px;
@@ -386,6 +386,7 @@ export default {
   &__actions {
     display: flex;
     width: 30%;
+    justify-content: flex-end;
   }
 
   &__login {
@@ -459,7 +460,6 @@ export default {
         margin: 0;
         padding: 0;
         list-style: none;
-        //box-shadow: inset -2px 28px 28px -21px rgba(0, 0, 0, 0.1);
       }
 
       &_item {

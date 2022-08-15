@@ -21,17 +21,17 @@
 
 <script>
 export default {
-  name: 'LanguageSwitch',
+  name: "LanguageSwitch",
   methods: {
     switchLanguage(language) {
-      this.$i18n.locale = language
+      this.$i18n.locale = language;
     },
   },
-}
+};
 </script>
 
 <style scoped lang="less">
-@import './../../../variables';
+@import "./../../../variables";
 
 .edusources-container {
   align-self: center;

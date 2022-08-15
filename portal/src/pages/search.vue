@@ -2,52 +2,23 @@
   <section class="edusources-container search">
     <div>
       <div class="search__info">
+        <div class="search__background"></div>
         <div class="center_block center-header">
-          <img
-            class="main__info_bg"
-            src="../assets/images/pictures/header-image.jpg"
-            alt="header-image"
-          />
           <SearchBar @search="onSearch" />
-          <div ref="top"></div>
         </div>
-        <FilterCategoriesSelection
-          v-if="materials"
-          :key="JSON.stringify(search.filters)"
-          :materials="materials"
-          @filter="onFilter"
-        />
+        <FilterCategoriesSelection :key="JSON.stringify(search.filters)" :materials="materials" @filter="onFilter" />
       </div>
+
       <div class="search__container">
         <div><!-- filler --></div>
-        <FilterCategories
-          v-if="materials"
-          :materials="materials"
-          @filter="onFilter"
-        />
+        <FilterCategories v-if="materials" :materials="materials" @filter="onFilter" />
         <div class="search__tools">
-          <h2
-            v-if="materials && !materials_loading"
-            class="search__tools_results"
-          >
-            {{ $t("Search-results") }} {{ `(${materials.records_total})` }}
+          <div ref="top" class="search__tools_top" />
+          <h2 class="search__tools_results">
+            {{ $t("Search-results") }}
+            <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
           </h2>
-          <label for="search_order_select">{{ $t("sort_by") }}: &nbsp;</label>
-          <div class="search__chooser search__select">
-            <select
-              id="search_order_select"
-              v-model="sort_order"
-              @change="changeOrdering"
-            >
-              <option
-                v-for="option in sort_order_options"
-                :key="option.value"
-                :value="option.value"
-              >
-                &nbsp;&nbsp;{{ $t(option.value) }}
-              </option>
-            </select>
-          </div>
+
           <button
             :class="{
               'search__tools_type_button--list': materials_in_line === 3,
@@ -59,16 +30,18 @@
             {{ materials_in_line === 1 ? $t("Card-view") : $t("List-view") }}
           </button>
         </div>
+
         <div class="search__materials">
-          <Materials :materials="materials" :items-in-line="materials_in_line" :did-you-mean="did_you_mean"
-            :search-term="search.search_text" />
+          <Spinner v-if="materials_loading" class="spinner" />
+          <Materials
+            :materials="materials"
+            :items-in-line="materials_in_line"
+            :did-you-mean="did_you_mean"
+            :search-term="search.search_text"
+          />
           <v-pagination
             v-if="
-              !materials_loading &&
-              materials &&
-              materials.records &&
-              materials.records.length &&
-              materials.total_pages
+              !materials_loading && materials && materials.records && materials.records.length && materials.total_pages
             "
             v-model="materials.page"
             :length="materials.total_pages"
@@ -76,7 +49,6 @@
             @input="onLoadPage"
           >
           </v-pagination>
-          <Spinner v-if="materials_loading" />
         </div>
       </div>
     </div>
@@ -90,12 +62,8 @@ import FilterCategoriesSelection from "~/components/FilterCategories/FilterCateg
 import Materials from "~/components/Materials/Materials.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
-import {
-  generateSearchMaterialsQuery,
-  parseSearchMaterialsQuery,
-} from "~/components/_helpers";
+import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
-
 
 export default {
   components: {
@@ -106,46 +74,41 @@ export default {
     SearchBar,
   },
   mixins: [PageMixin],
+  dependencies: ["$log"],
   beforeRouteLeave(to, from, next) {
-    this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION')
-    next()
+    this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
+    next();
   },
   data() {
     // Set filters from the URL parameters
     const urlInfo = parseSearchMaterialsQuery(this.$route.query);
-    this.$store.commit('RESET_FILTER_CATEGORIES_SELECTION', urlInfo.search.filters)
+    this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION", urlInfo.search.filters);
     // Set filters from the router parameters (Community and Theme filters)
     if (this.$route.params.filterId) {
-      this.$store.commit('SELECT_FILTER_CATEGORIES', {
+      this.$store.commit("SELECT_FILTER_CATEGORIES", {
         category: this.$route.meta.filterRoot,
-        selection: [this.$route.params.filterId]
-      })
+        selection: [this.$route.params.filterId],
+      });
     }
     // Update the filters and return data
-    urlInfo.search.filters = this.$store.state.filterCategories.selection
+    urlInfo.search.filters = this.$store.state.filterCategories.selection;
     return {
       search: urlInfo.search,
       formData: {
         name: null,
       },
-      sort_order: "relevance",
-      sort_order_options: [
-        { value: "relevance" },
-        { value: "date_descending" },
-        { value: "date_ascending" },
-      ],
     };
   },
   computed: {
-    ...mapGetters([
-      "materials",
-      "materials_loading",
-      "materials_in_line",
-      "did_you_mean",
-    ]),
+    ...mapGetters(["materials", "materials_loading", "materials_in_line", "did_you_mean"]),
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
     },
+  },
+  updated() {
+    if (this.$vuetify.breakpoint.name === "xs") {
+      this.$refs.top.scrollIntoView({ behavior: "smooth" });
+    }
   },
   mounted() {
     this.loadFilterCategories().finally(() => {
@@ -154,17 +117,18 @@ export default {
   },
   methods: {
     onSearch(searchText) {
-      searchText = searchText || ""
+      searchText = searchText || "";
       const changed = searchText !== this.search.search_text;
       this.search.search_text = searchText;
       this.executeSearch(changed);
     },
     executeSearch(updateUrl) {
-      this.$store.dispatch("searchMaterials", this.search);
+      this.$store.dispatch("searchMaterials", this.search).then((results) => {
+        this.$log.siteSearch(this.$route.query, results.records_total);
+      });
+
       if (updateUrl) {
-        this.$router.push(
-          generateSearchMaterialsQuery(this.search, this.$route.name)
-        );
+        this.$router.push(generateSearchMaterialsQuery(this.search, this.$route.name));
       }
     },
     onFilter() {
@@ -180,11 +144,8 @@ export default {
       const { search, materials } = this;
       if (materials && search) {
         search.page = page;
-        this.$router.push(
-          generateSearchMaterialsQuery(this.search, this.$route.name)
-        );
+        this.$router.push(generateSearchMaterialsQuery(this.search, this.$route.name));
         this.$store.dispatch("searchMaterials", search);
-        this.$refs.top.scrollIntoView({ behavior: "smooth" });
       }
     } /*         Change 1 item in line to 3 and back       */,
     changeViewType() {
@@ -194,18 +155,7 @@ export default {
         this.$store.dispatch("searchMaterialsInLine", 1);
       }
     } /*         Event the ordering item       */,
-    changeOrdering() {
-      const { sort_order } = this;
-      if (sort_order === "date_descending") {
-        this.search.ordering = "-publisher_date";
-      } else if (sort_order === "date_ascending") {
-        this.search.ordering = "publisher_date";
-      } else {
-        this.search.ordering = "";
-      }
-      this.search.page = 1;
-      this.executeSearch(true);
-    },
+
     loadFilterCategories() {
       if (this.$route.name.startsWith("mat")) {
         return Promise.resolve(null);
@@ -220,46 +170,24 @@ export default {
 @import "./../variables";
 
 .filter-categories {
-  min-width: 250px;
+  width: -webkit-fill-available;
 }
 
+.spinner {
+  position: absolute;
+  margin-left: 40%;
+}
 .search {
   position: relative;
-
+  &__background {
+    background-color: @green;
+    margin-top: -98px;
+    height: 61px;
+  }
   &__info {
     padding: 97px 0 0;
     margin-bottom: 20px;
     position: relative;
-    min-height: 300px;
-
-    &_top {
-      border-radius: 20px;
-      background: fade(@light-grey, 90%);
-      padding: 65px 576px 95px 46px;
-      min-height: 274px;
-      margin: 0 0 -68px;
-      position: relative;
-
-      @media @mobile {
-        padding: initial;
-        margin: -20px -20px -165px -20px;
-        padding-top: 20px;
-        padding-left: 20px;
-
-        h2 {
-          font-size: 24px;
-          width: 330px;
-        }
-      }
-
-      @media @tablet {
-        padding: 65px 46px 95px 46px;
-
-        h2 {
-          font-size: 28px;
-        }
-      }
-    }
 
     &_bg {
       position: absolute;
@@ -321,7 +249,7 @@ export default {
     padding: 0 25px;
     @media @mobile {
       display: flex;
-      justify-content: space-evenly;
+      justify-content: start;
       flex-wrap: wrap;
     }
   }
@@ -332,6 +260,7 @@ export default {
     grid-template-rows: auto;
     position: relative;
     z-index: 1;
+    justify-content: space-between;
 
     @media @mobile {
       display: flex;
@@ -339,12 +268,22 @@ export default {
       flex-wrap: wrap;
     }
 
+    &_top {
+      position: absolute;
+      top: -75px;
+      left: 0;
+    }
     &_results {
-      display: grid;
-      margin-left: 50px;
+      margin-left: 25px;
       @media @mobile {
         display: flex;
         margin-left: 0px;
+        font-size: 28px;
+        column-gap: 10px;
+      }
+      @media @tablet {
+        margin-left: 20px;
+        min-width: 520px;
       }
     }
 
@@ -405,11 +344,12 @@ export default {
     }
 
     @media @tablet {
-      width: auto;
+      max-width: 540px;
     }
 
     @media @mobile {
       padding: 0;
+      max-width: 340px;
     }
   }
 
@@ -444,8 +384,7 @@ export default {
       transform: translate(0, -100%) rotate(90deg);
       width: 14px;
       height: 14px;
-      background: url("../assets/images/arrow-text-grey.svg") 50% 50% / contain
-        no-repeat;
+      background: url("../assets/images/arrow-text-grey.svg") 50% 50% / contain no-repeat;
       pointer-events: none;
     }
 

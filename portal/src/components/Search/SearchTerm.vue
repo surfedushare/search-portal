@@ -24,13 +24,13 @@
 </template>
 
 <script>
-import { debounce } from 'lodash'
-import { VueAutosuggest } from 'vue-autosuggest'
-import { mapGetters } from 'vuex'
-import axios from '~/axios'
+import { debounce } from "lodash";
+import { VueAutosuggest } from "vue-autosuggest";
+import { mapGetters } from "vuex";
+import axios from "~/axios";
 
 export default {
-  name: 'SearchTerm',
+  name: "SearchTerm",
   components: {
     VueAutosuggest,
   },
@@ -46,62 +46,61 @@ export default {
   },
   data() {
     return {
-      searchText: this.value || this.$route.query?.search_text?.replaceAll('"', ''),
+      searchText: this.value || this.$route.query?.search_text?.replaceAll("\"", ""),
       suggestions: [],
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      keywords: 'materials_keywords',
+      keywords: "materials_keywords",
     }),
     autosuggestInputProps: function () {
       return {
-        placeholder: this.placeholder || this.$t('title-author-subject'),
-        id: 'autosuggest__input',
-        type: 'search',
+        placeholder: this.placeholder || this.$t("title-author-subject"),
+        id: "autosuggest__input",
+        type: "search",
         autofocus: false,
         class: {
-          'with-dropdown': this.suggestions.length > 0,
+          "with-dropdown": this.suggestions.length > 0,
         },
-      }
+      };
     },
     autosuggestClasses: function () {
       return {
-        'with-dropdown': this.suggestions.length > 0,
-      }
-    }
+        "with-dropdown": this.suggestions.length > 0,
+      };
+    },
   },
   watch: {
     value(value) {
-      this.searchText = value
+      this.searchText = value;
     },
   },
   methods: {
     onInputChange(query) {
-      this.searchSuggestions(query, this)
+      this.searchSuggestions(query, this);
     },
     searchSuggestions: debounce(async function (search) {
       if (!search || search.length <= 2) {
-        this.suggestions = []
-        return
+        this.suggestions = [];
+        return;
       }
 
-      const { data } = await axios.get('keywords/', {
+      const { data } = await axios.get("keywords/", {
         params: { query: search },
-      })
+      });
 
-      this.suggestions = [{ data }]
+      this.suggestions = [{ data }];
     }, 350),
     onSelectSuggestion(result) {
-      const text = result ? result.item : this.searchText
-      this.$emit('search', text)
+      const text = result ? result.item : this.searchText;
+      this.$emit("search", text);
     },
     onSubmit() {
-      this.$emit('search', this.searchText)
+      this.$emit("search", this.searchText);
     },
   },
-}
-
+};
 </script>
 
 <style lang="less" scoped>
@@ -209,4 +208,3 @@ export default {
   }
 }
 </style>
-

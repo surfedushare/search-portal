@@ -24,7 +24,7 @@ class TestGetHarvestSeedsHku(TestCase):
 
     def test_get_id(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["external_id"], 6247569)
+        self.assertEqual(seeds[0]["external_id"], "hku:product:6247569")
 
     def test_get_files(self):
         seeds = self.seeds
@@ -82,15 +82,15 @@ class TestGetHarvestSeedsHku(TestCase):
                 'dai': None, 'orcid': None, 'isni': None
             },
         ])
-        self.assertEqual(seeds[0]['authors'], [
+        self.assertEqual(seeds[1]['authors'], [
             {
-                'name': 'Henk Slager', 'email': "henk.slager@hku.nl", 'external_id': None,
+                'name': 'Henk Slager', 'email': None, 'external_id': None,
                 'dai': None, 'orcid': None, 'isni': None
             },
         ])
         self.assertEqual(seeds[43]['authors'], [
             {
-                'name': 'Eva den Heijer', 'email': "eva.denheijer@hku.nl", 'external_id': 5952259,
+                'name': 'Eva den Heijer', 'email': "eva.denheijer@hku.nl", 'external_id': "hku:person:5952259",
                 'dai': None, 'orcid': None, 'isni': None
             },
         ])
