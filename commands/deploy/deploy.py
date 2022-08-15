@@ -178,8 +178,8 @@ def deploy_service(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
         return
     ecs_client.update_service(  # please note that non-legacy deploys skip update of scheduled tasks
         cluster=FARGATE_CLUSTER_NAME,
-        service="service",
-        taskDefinition="service",
+        service="search-portal",
+        taskDefinition="search-portal",
         forceNewDeployment=True,
     )
 
@@ -214,13 +214,12 @@ def deploy(ctx, mode, version=None, legacy_system=True):
         await_steady_fargate_services(ecs_client, ["celery"])
         print(f"Deploying harvester version {version}")
         deploy_harvester(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
-
-    if target == "service":
+    elif target == "service":
         print(f"Deploying service version {version}")
         deploy_service(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
 
     print("Waiting for deploy to finish ...")
-    await_steady_fargate_services(ecs_client, [target])
+    await_steady_fargate_services(ecs_client, [target_info["name"]])
     print("Done deploying")
 
 
