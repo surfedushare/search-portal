@@ -122,6 +122,7 @@ promote-production:
       when: manual
   environment:
     name: production
+    url: https://edusources.nl
   services:
     - name: docker:dind
   variables:
@@ -137,6 +138,7 @@ promote-acceptance:
       when: manual
   environment:
     name: acceptance
+    url: https://acc.surfedushare.nl
   services:
     - name: docker:dind
   variables:
@@ -152,6 +154,7 @@ promote-development:
       when: manual
   environment:
     name: development
+    url: https://dev.surfedushare.nl
   services:
     - name: docker:dind
   variables:
