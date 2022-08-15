@@ -132,6 +132,13 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
     if extra_workers:
         overrides["cpu"] = str(cpu*2)
 
+    print("Acquiring subnet")
+    ec2_client = session.client('ec2')
+    subnets_response = ec2_client.describe_subnets()
+    private_subnet = next(
+        (subnet["SubnetId"] for subnet in subnets_response["Subnets"] if not subnet["MapPublicIpOnLaunch"])
+    )
+
     print(f"Target/mode: {target}/{mode}")
     print(f"Executing: {command}")
     ecs_client.run_task(
@@ -142,7 +149,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         overrides=overrides,
         networkConfiguration={
             "awsvpcConfiguration": {
-                "subnets": [ctx.config.aws.private_subnet_id],
+                "subnets": [private_subnet],
                 "securityGroups": [
                     ctx.config.aws.rds_security_group_id,
                     ctx.config.aws.default_security_group_id,
