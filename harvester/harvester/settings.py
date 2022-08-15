@@ -456,11 +456,6 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute=30)
     }
 }
-if environment.schedule.sync_sharekit_metadata:
-    CELERY_BEAT_SCHEDULE['sync_sharekit_metadata'] = {
-        'task': 'sync_sharekit_metadata',
-        'schedule': crontab(**environment.schedule.sync_sharekit_metadata)
-    }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 

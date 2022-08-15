@@ -6,18 +6,14 @@
         <div class="center_block center-header">
           <SearchBar @search="onSearch" />
         </div>
-        <FilterCategoriesSelection
-          v-if="materials"
-          :key="JSON.stringify(search.filters)"
-          :materials="materials"
-          @filter="onFilter"
-        />
+        <FilterCategoriesSelection :key="JSON.stringify(search.filters)" :materials="materials" @filter="onFilter" />
       </div>
 
       <div class="search__container">
         <div><!-- filler --></div>
         <FilterCategories v-if="materials" :materials="materials" @filter="onFilter" />
-        <div ref="top" class="search__tools">
+        <div class="search__tools">
+          <div ref="top" class="search__tools_top" />
           <h2 class="search__tools_results">
             {{ $t("Search-results") }}
             <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
@@ -78,6 +74,7 @@ export default {
     SearchBar,
   },
   mixins: [PageMixin],
+  dependencies: ["$log"],
   beforeRouteLeave(to, from, next) {
     this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
     next();
@@ -110,7 +107,7 @@ export default {
   },
   updated() {
     if (this.$vuetify.breakpoint.name === "xs") {
-      this.$refs.top.scrollIntoView({ behavior: "smooth", block: "start", inline: "start" });
+      this.$refs.top.scrollIntoView({ behavior: "smooth" });
     }
   },
   mounted() {
@@ -126,7 +123,10 @@ export default {
       this.executeSearch(changed);
     },
     executeSearch(updateUrl) {
-      this.$store.dispatch("searchMaterials", this.search);
+      this.$store.dispatch("searchMaterials", this.search).then((results) => {
+        this.$log.siteSearch(this.$route.query, results.records_total);
+      });
+
       if (updateUrl) {
         this.$router.push(generateSearchMaterialsQuery(this.search, this.$route.name));
       }
@@ -188,35 +188,6 @@ export default {
     padding: 97px 0 0;
     margin-bottom: 20px;
     position: relative;
-
-    &_top {
-      border-radius: 20px;
-      background: fade(@light-grey, 90%);
-      padding: 65px 576px 95px 46px;
-      min-height: 274px;
-      margin: 0 0 -68px;
-      position: relative;
-
-      @media @mobile {
-        padding: initial;
-        margin: -20px -20px -165px -20px;
-        padding-top: 20px;
-        padding-left: 20px;
-
-        h2 {
-          font-size: 24px;
-          width: 330px;
-        }
-      }
-
-      @media @tablet {
-        padding: 65px 46px 95px 46px;
-
-        h2 {
-          font-size: 28px;
-        }
-      }
-    }
 
     &_bg {
       position: absolute;
@@ -297,12 +268,18 @@ export default {
       flex-wrap: wrap;
     }
 
+    &_top {
+      position: absolute;
+      top: -75px;
+      left: 0;
+    }
     &_results {
       margin-left: 25px;
       @media @mobile {
         display: flex;
-        flex-direction: column;
         margin-left: 0px;
+        font-size: 28px;
+        column-gap: 10px;
       }
       @media @tablet {
         margin-left: 20px;

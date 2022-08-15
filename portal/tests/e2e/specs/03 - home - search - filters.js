@@ -84,9 +84,9 @@ describe("Home page - search - filters", () => {
     cy.selectFilter("authors.name.keyword", "Fred Spier").selectedFiltersShouldContain("Auteur", "Fred Spier", 2, 1);
   });
 
-  it("Should filter on theme", () => {
-    cy.selectFilter("learning_material_themes_normalized", "gedrag_maatschappij").selectedFiltersShouldContain(
-      "Thema",
+  it("Should filter on disciplines", () => {
+    cy.selectFilter("learning_material_disciplines_normalized", "gedrag_maatschappij").selectedFiltersShouldContain(
+      "Vakgebied",
       "Gedrag en Maatschappij",
       1,
       0
@@ -94,10 +94,10 @@ describe("Home page - search - filters", () => {
   });
 
   it("Should filter on multiple filter categories", () => {
-    cy.selectFilter("learning_material_themes_normalized", "gedrag_maatschappij")
+    cy.selectFilter("learning_material_disciplines_normalized", "gedrag_maatschappij")
       .selectFilter("authors.name.keyword", "Ning Ding")
       .selectFilter("lom_educational_levels", "HBO")
-      .selectedFiltersShouldContain("Thema", "Gedrag en Maatschappij", 3, 0)
+      .selectedFiltersShouldContain("Vakgebied", "Gedrag en Maatschappij", 3, 0)
       .selectedFiltersShouldContain("Auteur", "Ning Ding", 3, 1)
       .selectedFiltersShouldContain("Onderwijsniveau", "HBO", 3, 2);
   });

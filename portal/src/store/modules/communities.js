@@ -123,7 +123,7 @@ export default {
     },
     async postCommunityCollection({ commit }, data) {
       if (validateParams(data)) {
-        const { data: collection } = await axios.post(`collections/`, data);
+        const { data: collection } = await axios.post("collections/", data);
         commit("ADD_COMMUNITY_COLLECTION", collection);
         return collection;
       } else {

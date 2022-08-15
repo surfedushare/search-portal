@@ -225,6 +225,7 @@ export default {
     height: 100%;
     z-index: 10;
     pointer-events: none;
+    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.1);
   }
 
   @p-top: 16px;

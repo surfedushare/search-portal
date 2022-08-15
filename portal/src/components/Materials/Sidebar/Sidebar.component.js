@@ -54,7 +54,7 @@ export default {
     },
     getIdeaLink(idea) {
       const query = generateSearchMaterialsQuery({
-        search_text: '"' + idea + '"',
+        search_text: "\"" + idea + "\"",
         filters: [],
       });
       const route = this.$router.resolve(query);

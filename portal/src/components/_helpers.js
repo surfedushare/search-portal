@@ -2,10 +2,8 @@ import { DateTime } from "luxon";
 import i18n from "~/i18n";
 import { isEmpty } from "lodash";
 
-export const generateSearchMaterialsQuery = function (
-  data = { filters: {}, search_text: "" },
-  name = "materials-search"
-) {
+export const generateSearchMaterialsQuery = function (data = { filters: {}, search_text: "" },
+                                                      name = "materials-search", isPrefilter = false) {
   if (name.indexOf("___") < 0) {
     name += "___" + i18n.locale;
   }
@@ -16,6 +14,7 @@ export const generateSearchMaterialsQuery = function (
       ...data,
       filters: JSON.stringify(data.filters),
       search_text: JSON.stringify(data.search_text),
+      is_prefilter: isPrefilter ? 1 : 0,
     },
   };
 };
