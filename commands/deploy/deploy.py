@@ -196,6 +196,8 @@ def deploy(ctx, mode, version=None, legacy_system=True):
     target = ctx.config.service.name
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
+    if not legacy_system and version:
+        raise Exit("Can't deploy with a specific version. Use the promote command to switch between versions.")
 
     print(f"Starting deploy of {target}")
 

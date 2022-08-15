@@ -2,7 +2,7 @@ import json
 from invoke import Exit
 import boto3
 
-from environments.project import MODE, REPOSITORY, PROJECT
+from environments.project import MODE, REPOSITORY, PROJECT, FARGATE_CLUSTER_NAME
 from commands import TARGETS
 
 
@@ -65,22 +65,9 @@ def register_task_definition(family, ecs_client, task_role_arn, container_variab
     return task_definition["taskDefinitionArn"]
 
 
-def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False,
-             is_harvester_command=False):
-    """
-    Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
-    """
-    if mode != MODE:
-        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
+def _register_run_task_definition(ctx, ecs_client, target_info, mode, version=None, extra_workers=False,
+                                  is_harvester_command=False):
 
-    environment = environment or []
-    target_info = TARGETS[target]
-    version = version or target_info["version"]
-
-    # Setup the AWS SDK
-    print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
-    ecs_client = session.client('ecs')
     container_variables = build_default_container_variables(mode, version)
     container_variables.update({
         "flower_secret_arn": ctx.config.aws.flower_secret_arn,
@@ -92,7 +79,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
             "concurrency": 4
         })
 
-    task_definition_arn = register_task_definition(
+    return register_task_definition(
         target_info["name"] if not is_harvester_command else "harvester-command",
         ecs_client,
         ctx.config.aws.superuser_task_role_arn,
@@ -103,20 +90,56 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         extra_workers
     )
 
-    print(f"Target/mode/version: {target}/{mode}/{version}")
+
+def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False,
+             is_harvester_command=False, legacy_system=True):
+    """
+    Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
+    """
+    if mode != MODE:
+        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
+    if not legacy_system and version:
+        raise Exit("Can't run a command with a specific version. Use the promote command to switch between versions.")
+
+    environment = environment or []
+    target_info = TARGETS[target]
+    version = version or target_info["version"]
+
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
+    ecs_client = session.client('ecs')
+
+    # Switch between legacy and new deploy system
+    if legacy_system:
+        print("Legacy run with version:", version)
+        task_definition = _register_run_task_definition(
+            ecs_client, target_info, mode, version, extra_workers, is_harvester_command
+        )
+    else:
+        task_definition = target_info["name"] if not is_harvester_command else "harvester-command"
+
+    # Building overrides configuration
+    cpu = int(target_info["cpu"])
+    overrides = {
+        "containerOverrides": [{
+            "name": f"{target_info['name']}-container",
+            "command": command,
+            "environment": environment
+        }],
+        "taskRoleArn": ctx.config.aws.superuser_task_role_arn,
+    }
+    if extra_workers:
+        overrides["cpu"] = str(cpu*2)
+
+    print(f"Target/mode: {target}/{mode}")
     print(f"Executing: {command}")
     ecs_client.run_task(
-        cluster=ctx.config.aws.cluster_arn,
-        taskDefinition=task_definition_arn,
+        cluster=FARGATE_CLUSTER_NAME,
+        taskDefinition=task_definition,
         launchType="FARGATE",
         enableExecuteCommand=True,
-        overrides={
-            "containerOverrides": [{
-                "name": f"{target_info['name']}-container",
-                "command": command,
-                "environment": environment
-            }]
-        },
+        overrides=overrides,
         networkConfiguration={
             "awsvpcConfiguration": {
                 "subnets": [ctx.config.aws.private_subnet_id],
