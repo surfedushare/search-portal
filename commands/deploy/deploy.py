@@ -99,8 +99,10 @@ def _legacy_deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
 
 def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version, legacy_system):
     if legacy_system:
+        print(f"Legacy harvester deploy, version: {version}")
         _legacy_deploy_harvester(ctx, mode, ecs_client, task_role_arn, version)
         return
+    print("Deploying harvester:", ctx.config.env)
     ecs_client.update_service(
         cluster=FARGATE_CLUSTER_NAME,
         service="harvester",
@@ -136,8 +138,10 @@ def _legacy_deploy_celery(ctx, mode, ecs_client, task_role_arn, version):
 
 def deploy_celery(ctx, mode, ecs_client, task_role_arn, version, legacy_system):
     if legacy_system:
+        print(f"Legacy celery deploy, version: {version}")
         _legacy_deploy_celery(ctx, mode, ecs_client, task_role_arn, version)
         return
+    print("Deploying celery:", ctx.config.env)
     ecs_client.update_service(
         cluster=FARGATE_CLUSTER_NAME,
         service="celery",
@@ -174,8 +178,10 @@ def _legacy_deploy_service(ctx, mode, ecs_client, task_role_arn, version):
 
 def deploy_service(ctx, mode, ecs_client, task_role_arn, version, legacy_system):
     if legacy_system:
+        print(f"Legacy celery deploy, version: {version}")
         _legacy_deploy_service(ctx, mode, ecs_client, task_role_arn, version)
         return
+    print("Deploying search-portal:", ctx.config.env)
     ecs_client.update_service(  # please note that non-legacy deploys skip update of scheduled tasks
         cluster=FARGATE_CLUSTER_NAME,
         service="search-portal",
@@ -210,14 +216,11 @@ def deploy(ctx, mode, version=None, legacy_system=True):
     ecs_client = session.client('ecs')
 
     if target == "harvester":
-        print(f"Deploying Celery version {version}")
         deploy_celery(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
         print("Waiting for Celery to finish ... do not interrupt")
         await_steady_fargate_services(ecs_client, ["celery"])
-        print(f"Deploying harvester version {version}")
         deploy_harvester(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
     elif target == "service":
-        print(f"Deploying service version {version}")
         deploy_service(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
 
     print("Waiting for deploy to finish ...")
