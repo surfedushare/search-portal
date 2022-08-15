@@ -64,9 +64,9 @@ harvester-test-job:
 build-job:
   stage: build
   rules:
-    - if: $CI_COMMIT_BRANCH == "edusources"
+    - if: $CI_COMMIT_BRANCH == "edusources" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "edusources"
       when: always
-    - if: $CI_COMMIT_BRANCH == "acceptance"
+    - if: $CI_COMMIT_BRANCH == "acceptance" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "acceptance"
       when: always
     - if: $CI_COMMIT_BRANCH == "development"
       when: manual
@@ -82,9 +82,9 @@ build-job:
 integration-test-job:
   stage: integration-test
   rules:
-    - if: $CI_COMMIT_BRANCH == "edusources"
+    - if: $CI_COMMIT_BRANCH == "edusources" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "edusources"
       when: always
-    - if: $CI_COMMIT_BRANCH == "acceptance"
+    - if: $CI_COMMIT_BRANCH == "acceptance" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "acceptance"
       when: always
   services:
     - name: $AWS_CONTAINER_REGISTRY/harvester:$CI_COMMIT_SHA
