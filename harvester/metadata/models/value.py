@@ -54,7 +54,10 @@ class MetadataValue(MPTTModel):
             self.save()
         else:
             super().delete(using=using, keep_parents=keep_parents)
-
+            
+    @classmethod
+    def get_name(cls):
+        return cls._meta.model_name
     class MPTTMeta:
         order_insertion_by = ['name']
 
