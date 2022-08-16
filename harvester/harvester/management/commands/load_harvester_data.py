@@ -1,4 +1,3 @@
-from importlib import resources
 import os
 import logging
 from io import StringIO
@@ -63,7 +62,7 @@ class Command(base.LabelCommand):
         model.objects.bulk_create(objects)
 
     def handle_label(self, dataset_label, **options):
-            
+
         skip_download = options["skip_download"]
         harvest_source = options.get("harvest_source", None)
         should_index = options.get("index")

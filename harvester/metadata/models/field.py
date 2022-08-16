@@ -46,10 +46,11 @@ class MetadataField(models.Model):
 
     def __str__(self):
         return self.name
-        
+
     @classmethod
     def get_name(cls):
         return cls._meta.model_name
+
 
 class MetadataFieldSerializer(serializers.ModelSerializer):
 

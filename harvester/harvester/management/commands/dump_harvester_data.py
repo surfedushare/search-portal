@@ -7,12 +7,7 @@ from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.models import (Dataset, HttpTikaResource, Extension, ExtructResource, YoutubeThumbnailResource,
-                         PdfThumbnailResource)
-from metadata.models import MetadataValue, MetadataField, MetadataTranslation
-from edurep.models import EdurepOAIPMH
-from sharekit.models import SharekitMetadataHarvest
-
+from core.models import (Dataset, Extension)
 
 logger = logging.getLogger("harvester")
 
@@ -48,7 +43,7 @@ class Command(base.LabelCommand):
 
     def handle_label(self, dataset_label, **options):
         download_edurep = options["download_edurep"]
-            
+
         dataset = Dataset.objects.get(name=dataset_label)
 
         destination = get_dumps_path(dataset)
@@ -79,4 +74,3 @@ class Command(base.LabelCommand):
             for file in [dataset_file] + resource_files:
                 remote_file = harvester_data_bucket + file.replace(settings.DATAGROWTH_DATA_DIR, "", 1)
                 ctx.run(f"aws s3 cp {file} {remote_file}", echo=True)
-
