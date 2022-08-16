@@ -21,9 +21,10 @@ def run_harvester_task(ctx, mode, command, legacy_system=True, **kwargs):
     "mode": "Mode you want to load data for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
     "source": "Source you want to import from: development, acceptance or production.",
-    "dataset": "The name of the greek letter that represents the dataset you want to import"
+    "dataset": "The name of the greek letter that represents the dataset you want to import",
+    "download_edurep": "If edurep should be downloaded, defaults to False"
 })
-def load_data(ctx, mode, source, dataset):
+def load_data(ctx, mode, source, dataset, download_edurep=False):
     """
     Loads the production database and sets up Open Search data on localhost or an AWS cluster
     """
@@ -31,6 +32,10 @@ def load_data(ctx, mode, source, dataset):
         raise Exit("Cowardly refusing to use production as a destination environment")
 
     command = ["python", "manage.py", "load_harvester_data", dataset, f"--harvest-source={source}", "--index"]
+
+    if download_edurep:
+        print("Will download edurep data, this can take a while...")
+        command += ["--download-edurep"]
 
     if source == "localhost":
         print(f"Will try to import {dataset} using pre-downloaded files")

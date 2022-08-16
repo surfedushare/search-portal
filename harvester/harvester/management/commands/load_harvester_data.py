@@ -1,3 +1,4 @@
+from importlib import resources
 import os
 import logging
 from io import StringIO
@@ -27,7 +28,6 @@ class Command(base.LabelCommand):
         "core.ExtructResource",
         "core.YoutubeThumbnailResource",
         "core.PdfThumbnailResource",
-        "edurep.EdurepOAIPMH",
         "sharekit.SharekitMetadataHarvest",
         "metadata.MetadataField",
         "metadata.MetadataTranslation",
@@ -36,6 +36,8 @@ class Command(base.LabelCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
+
+        parser.add_argument('-de', '--download-edurep', action="store_true")
         parser.add_argument('-s', '--skip-download', action="store_true")
         parser.add_argument('-hs', '--harvest-source', type=str)
         parser.add_argument('-i', '--index', action="store_true", default=True)
@@ -61,7 +63,7 @@ class Command(base.LabelCommand):
         model.objects.bulk_create(objects)
 
     def handle_label(self, dataset_label, **options):
-
+            
         skip_download = options["skip_download"]
         harvest_source = options.get("harvest_source", None)
         should_index = options.get("index")
@@ -82,7 +84,11 @@ class Command(base.LabelCommand):
             logger.info(f"Downloading dump file for: {dataset_label}")
             ctx = Context(environment)
             harvester_data_bucket = f"s3://{source_environment.aws.harvest_content_bucket}/datasets/harvester"
-            ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
+            download_edurep = options["download_edurep"]
+            if download_edurep:
+                ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
+            else:
+                ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR} --exclude *edurepoaipmh*")
         logger.info(f"Importing dataset: {dataset_label}")
         for entry in os.scandir(get_dumps_path(Dataset)):
             if entry.is_file() and entry.name.startswith(dataset_label):
@@ -95,6 +101,10 @@ class Command(base.LabelCommand):
         with open(dataset_file, "r") as dump_file:
             for objects in objects_from_disk(dump_file):
                 self.bulk_create_objects(objects)
+
+        download_edurep = options["download_edurep"]
+        if download_edurep:
+            self.resources.append("edurep.EdurepOAIPMH")
 
         # Load resources
         self.load_resources()
