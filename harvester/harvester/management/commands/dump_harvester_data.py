@@ -19,30 +19,36 @@ logger = logging.getLogger("harvester")
 
 class Command(base.LabelCommand):
 
+    resources = [
+        "core.HttpTikaResource",
+        "core.ExtructResource",
+        "core.YoutubeThumbnailResource",
+        "core.PdfThumbnailResource",
+        "sharekit.SharekitMetadataHarvest",
+        "metadata.MetadataField",
+        "metadata.MetadataTranslation",
+        "metadata.MetadataValue"
+    ]
+
     def dump_resources(self):
-        call_command("dump_resource", "core.HttpTikaResource")
-        call_command("dump_resource", "core.ExtructResource")
-        call_command("dump_resource", "core.YoutubeThumbnailResource")
-        call_command("dump_resource", "core.PdfThumbnailResource")
-        call_command("dump_resource", "edurep.EdurepOAIPMH")
-        call_command("dump_resource", "sharekit.SharekitMetadataHarvest")
-        call_command("dump_resource", "metadata.MetadataField")
-        call_command("dump_resource", "metadata.MetadataTranslation")
-        call_command("dump_resource", "metadata.MetadataValue")
-        return [
-            os.path.join(get_dumps_path(HttpTikaResource), f"{HttpTikaResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(SharekitMetadataHarvest), f"{SharekitMetadataHarvest.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(ExtructResource), f"{ExtructResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(YoutubeThumbnailResource), f"{YoutubeThumbnailResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(PdfThumbnailResource), f"{PdfThumbnailResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(MetadataField), f"{MetadataField.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(MetadataTranslation), f"{MetadataTranslation.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(MetadataValue), f"{MetadataValue.get_name()}.dump.json"),
-        ]
+        paths = []
+        for resource_model in self.resources:
+            clazz_name = resource_model.split(".")[1]
+            clazz = globals()[clazz_name]
+            dump_file = os.path.join(get_dumps_path(clazz), f"{clazz.get_name()}.dump.json")
+            paths.append(dump_file)
+            print(f"Dumping {clazz_name} to {dump_file}")
+            call_command("dump_resource", resource_model)
+
+        return paths
+
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
+        parser.add_argument('-de', '--download-edurep', action="store_true")
 
     def handle_label(self, dataset_label, **options):
-
+        download_edurep = options["download_edurep"]
+            
         dataset = Dataset.objects.get(name=dataset_label)
 
         destination = get_dumps_path(dataset)
@@ -59,6 +65,9 @@ class Command(base.LabelCommand):
                 queryset_to_disk(version.collection_set, json_file)
                 queryset_to_disk(version.document_set, json_file)
             queryset_to_disk(Extension.objects.all(), json_file)
+
+        if download_edurep:
+            self.resources.append("edurep.EdurepOAIPMH")
 
         resource_files = self.dump_resources()
 
