@@ -28,7 +28,10 @@ class Command(base.LabelCommand):
         "core.YoutubeThumbnailResource",
         "core.PdfThumbnailResource",
         "edurep.EdurepOAIPMH",
-        "sharekit.SharekitMetadataHarvest"
+        "sharekit.SharekitMetadataHarvest",
+        "metadata.MetadataField",
+        "metadata.MetadataTranslation",
+        "metadata.MetadataValue"
     ]
 
     def add_arguments(self, parser):
