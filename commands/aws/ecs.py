@@ -1,9 +1,11 @@
 import json
-from invoke import Exit
+from time import sleep
+from invoke import Exit, task
 import boto3
 
 from environments.project import MODE, REPOSITORY, PROJECT, FARGATE_CLUSTER_NAME
 from commands import TARGETS
+from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
 TASK_CONTAINERS_BY_FAMILY = {
@@ -188,3 +190,50 @@ def list_running_containers(ecs, cluster, service):
         }
         for aws_task in response["tasks"] for container in aws_task["containers"] if service in container["name"]
     ]
+
+
+def _cleanup_ecs_task_registrations(ctx, ecs_client):
+    next_token = None
+    families = iter(["harvester", "search-portal", "celery", "harvester-command"])
+    family = next(families)
+    print("Starting cleanup of task registrations for:", family)
+    while True:
+        kwargs = {
+            "familyPrefix": family,
+            "status": "ACTIVE",
+            "sort": "DESC",
+            "maxResults": 100,
+        }
+        if next_token:
+            kwargs["nextToken"] = next_token
+        task_definitions_response = ecs_client.list_task_definitions(**kwargs)
+        for task_definition_arn in task_definitions_response["taskDefinitionArns"]:
+            task_definition_details = ecs_client.describe_task_definition(taskDefinition=task_definition_arn)
+            is_valid_task_definition = next(
+                (
+                    container for container in task_definition_details["taskDefinition"]["containerDefinitions"]
+                    if container["image"].endswith(ENVIRONMENT_NAMES_TO_CODES[ctx.config.env])
+                ),
+                False
+            )
+            if not is_valid_task_definition:
+                print("Deregistering:", task_definition_arn)
+                ecs_client.deregister_task_definition(taskDefinition=task_definition_arn)
+                sleep(1)
+        next_token = task_definitions_response.get("nextToken", None)
+        if not next_token:
+            family = next(families, None)
+            if not family:
+                break
+            print("Starting cleanup of task registrations for:", family)
+
+
+@task(help={
+    "mode": "Mode you want to clean artifacts for: development, acceptance or production. Must match APPLICATION_MODE",
+})
+def cleanup_ecs_artifacts(ctx, mode):
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
+    ecs_client = session.client('ecs')
+    _cleanup_ecs_task_registrations(ctx, ecs_client)
