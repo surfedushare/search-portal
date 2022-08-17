@@ -8,7 +8,6 @@ from commands.services.harvester.fabric import connect_flower, connect_with_shel
 
 
 service_environment, _ = create_configuration_and_session(
-    use_aws_default_profile=False,
     config_class=Config,
     service="service"
 )
@@ -17,7 +16,6 @@ service_collection.configure(service_environment)
 
 
 harvester_environment, _ = create_configuration_and_session(
-    use_aws_default_profile=False,
     config_class=Config,
     service="harvester"
 )

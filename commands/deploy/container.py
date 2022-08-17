@@ -8,6 +8,7 @@ from git import Repo
 
 from commands import TARGETS
 from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
+from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
 def get_commit_hash():
@@ -145,21 +146,39 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
 @task(help={
     "target": "Name of the project you want to promote: service or harvester",
     "commit": "The commit hash that the image to be promoted is tagged with",
-    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session",
+    "version": "Which version to promote. Defaults to version specified in package.py.",
+    "legacy_system": "Whether to promote only by changing the version tag. For backward compatibility only."
 })
-def promote(ctx, target, commit=None, docker_login=False):
+def promote(ctx, target, commit=None, docker_login=False, version=None, legacy_system=True):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
-    commit = commit or get_commit_hash()
-
     # Check the input for validity
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
-    # Load info
+    if legacy_system and version:
+        raise Exit("Can't specify a specific version to promote with the legacy system.")
+    if commit and version:
+        raise Exit("Can't promote a version and commit at the same time.")
+    if ctx.config.env not in ENVIRONMENT_NAMES_TO_CODES:
+        raise Exit(f"Can't promote for {ctx.config.env} environment")
+
+    # Load info variables
     target_info = TARGETS[target]
     name = target_info["name"]
-    version = target_info["version"]
+    commit = commit or get_commit_hash()
+    is_version_promotion = bool(version)
+
+    # Prepare promote based on legacy or new deploy system
+    if legacy_system:
+        version = target_info["version"]
+        promote_tags = [version]
+        source_tag = commit
+    else:
+        version = version or target_info["version"]
+        promote_tags = [ENVIRONMENT_NAMES_TO_CODES[ctx.config.env], version]
+        source_tag = version if is_version_promotion else commit
 
     # Login with Docker on AWS
     if docker_login:
@@ -167,18 +186,27 @@ def promote(ctx, target, commit=None, docker_login=False):
 
     # Check if version tag already exists in registry
     inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{version}", warn=True)
-    if inspection.exited == 0:
+    version_exists = inspection.exited == 0
+    if version_exists and legacy_system:
         raise Exit(f"Can't promote commit to {version}, because that version tag already exists")
+    elif version_exists:
+        print("Skipping version tagging, because version already exists in registry")
+        promote_tags.pop()
 
-    # Pulling the relevant images
-    ctx.run(f"docker pull {REPOSITORY}/{name}:{commit}", echo=True, pty=True)
-    ctx.run(f"docker pull {REPOSITORY}/{name}-nginx:{commit}", echo=True, pty=True)
+    # Print some output to know what the command is going to do
+    print("Source tag:", source_tag)
+    print("Tags added by promotion:", promote_tags)
 
-    # Tagging and pushing of our image and nginx image with version number from package files
-    ctx.run(f"docker tag {REPOSITORY}/{name}:{commit} {REPOSITORY}/{name}:{version}", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/{name}:{version}", echo=True, pty=True)
-    ctx.run(f"docker tag {REPOSITORY}/{name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{version}", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{version}", echo=True, pty=True)
+    # Pull the source images
+    ctx.run(f"docker pull {REPOSITORY}/{name}:{source_tag}", echo=True, pty=True)
+    ctx.run(f"docker pull {REPOSITORY}/{name}-nginx:{source_tag}", echo=True, pty=True)
+
+    # Tagging and pushing of our image and nginx image with relevant tags
+    for promote_tag in promote_tags:
+        ctx.run(f"docker tag {REPOSITORY}/{name}:{source_tag} {REPOSITORY}/{name}:{promote_tag}", echo=True)
+        ctx.run(f"docker push {REPOSITORY}/{name}:{promote_tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {REPOSITORY}/{name}-nginx:{source_tag} {REPOSITORY}/{name}-nginx:{promote_tag}", echo=True)
+        ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{promote_tag}", echo=True, pty=True)
 
 
 @task(help={

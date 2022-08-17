@@ -5,14 +5,13 @@ from time import sleep
 from invoke.tasks import task
 from invoke.exceptions import Exit
 
-from environments.project import MODE
+from environments.project import MODE, FARGATE_CLUSTER_NAME
 from commands import TARGETS
 from commands.aws.ecs import register_task_definition, build_default_container_variables, list_running_containers
-from commands.aws.utils import create_aws_session
 
 
 def register_scheduled_tasks(ctx, aws_config, task_definition_arn):
-    session = create_aws_session(ctx.config.aws.profile_name)
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
     events_client = session.client('events')
     iam = session.resource('iam')
     role = iam.Role('ecsEventsRole')
@@ -59,7 +58,21 @@ def register_scheduled_tasks(ctx, aws_config, task_definition_arn):
         )
 
 
-def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
+def await_steady_fargate_services(ecs_client, services):
+    steady_services = {service: False for service in services}
+    sleep(30)
+    while not all(steady_services.values()):
+        fargate_state = ecs_client.describe_services(cluster=FARGATE_CLUSTER_NAME, services=services)
+        for service in fargate_state["services"]:
+            last_event = next(iter(service["events"]), None)
+            if not last_event:
+                continue
+            if "has reached a steady state" in last_event["message"]:
+                steady_services[service["serviceName"]] = True
+        sleep(10)
+
+
+def _legacy_deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
     target_info = TARGETS["harvester"]
     harvester_container_variables = build_default_container_variables(mode, version)
     harvester_container_variables.update({
@@ -84,7 +97,21 @@ def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version):
     )
 
 
-def deploy_celery(ctx, mode, ecs_client, task_role_arn, version):
+def deploy_harvester(ctx, mode, ecs_client, task_role_arn, version, legacy_system):
+    if legacy_system:
+        print(f"Legacy harvester deploy, version: {version}")
+        _legacy_deploy_harvester(ctx, mode, ecs_client, task_role_arn, version)
+        return
+    print("Deploying harvester:", ctx.config.env)
+    ecs_client.update_service(
+        cluster=FARGATE_CLUSTER_NAME,
+        service="harvester",
+        taskDefinition="harvester",
+        forceNewDeployment=True,
+    )
+
+
+def _legacy_deploy_celery(ctx, mode, ecs_client, task_role_arn, version):
     target_info = TARGETS["harvester"]
     celery_container_variables = build_default_container_variables(mode, version)
     celery_container_variables.update({
@@ -109,7 +136,21 @@ def deploy_celery(ctx, mode, ecs_client, task_role_arn, version):
     )
 
 
-def deploy_service(ctx, mode, ecs_client, task_role_arn, version):
+def deploy_celery(ctx, mode, ecs_client, task_role_arn, version, legacy_system):
+    if legacy_system:
+        print(f"Legacy celery deploy, version: {version}")
+        _legacy_deploy_celery(ctx, mode, ecs_client, task_role_arn, version)
+        return
+    print("Deploying celery:", ctx.config.env)
+    ecs_client.update_service(
+        cluster=FARGATE_CLUSTER_NAME,
+        service="celery",
+        taskDefinition="celery",
+        forceNewDeployment=True,
+    )
+
+
+def _legacy_deploy_service(ctx, mode, ecs_client, task_role_arn, version):
     target_info = TARGETS["service"]
     service_container_variables = build_default_container_variables(mode, version)
 
@@ -135,17 +176,34 @@ def deploy_service(ctx, mode, ecs_client, task_role_arn, version):
     register_scheduled_tasks(ctx, ctx.config.aws, service_task_definition_arn)
 
 
+def deploy_service(ctx, mode, ecs_client, task_role_arn, version, legacy_system):
+    if legacy_system:
+        print(f"Legacy celery deploy, version: {version}")
+        _legacy_deploy_service(ctx, mode, ecs_client, task_role_arn, version)
+        return
+    print("Deploying search-portal:", ctx.config.env)
+    ecs_client.update_service(  # please note that non-legacy deploys skip update of scheduled tasks
+        cluster=FARGATE_CLUSTER_NAME,
+        service="search-portal",
+        taskDefinition="search-portal",
+        forceNewDeployment=True,
+    )
+
+
 @task(help={
     "mode": "Mode you want to deploy to: development, acceptance or production. Must match APPLICATION_MODE",
-    "version": "Version of the project you want to deploy. Defaults to latest version"
+    "version": "Version of the project you want to deploy. Defaults to latest version",
+    "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def deploy(ctx, mode, version=None):
+def deploy(ctx, mode, version=None, legacy_system=True):
     """
     Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
     """
     target = ctx.config.service.name
     if target not in TARGETS:
         raise Exit(f"Unknown target: {target}", code=1)
+    if not legacy_system and version:
+        raise Exit("Can't deploy with a specific version. Use the promote command to switch between versions.")
 
     print(f"Starting deploy of {target}")
 
@@ -154,32 +212,19 @@ def deploy(ctx, mode, version=None):
     task_role_arn = ctx.config.aws.task_role_arn
 
     print(f"Starting AWS session for: {mode}")
-    ecs_client = create_aws_session(ctx.config.aws.profile_name).client('ecs', )
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
+    ecs_client = session.client('ecs')
 
     if target == "harvester":
-        print(f"Deploying Celery version {version}")
-        deploy_celery(ctx, mode, ecs_client, task_role_arn, version)
+        deploy_celery(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
         print("Waiting for Celery to finish ... do not interrupt")
-        while True:
-            running_containers = list_running_containers(ecs_client, ctx.config.aws.cluster_arn, "celery")
-            versions = set([container["version"] for container in running_containers])
-            if len(versions) == 1 and version in versions:
-                break
-            sleep(10)
-        print(f"Deploying harvester version {version}")
-        deploy_harvester(ctx, mode, ecs_client, task_role_arn, version)
-
-    if target == "service":
-        print(f"Deploying service version {version}")
-        deploy_service(ctx, mode, ecs_client, task_role_arn, version)
+        await_steady_fargate_services(ecs_client, ["celery"])
+        deploy_harvester(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
+    elif target == "service":
+        deploy_service(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
 
     print("Waiting for deploy to finish ...")
-    while True:
-        running_containers = list_running_containers(ecs_client, ctx.config.aws.cluster_arn, target_info["name"])
-        versions = set([container["version"] for container in running_containers])
-        if len(versions) == 1 and version in versions:
-            break
-        sleep(10)
+    await_steady_fargate_services(ecs_client, [target_info["name"]])
     print("Done deploying")
 
 
