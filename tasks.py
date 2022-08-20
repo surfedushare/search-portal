@@ -14,7 +14,7 @@ from commands.services.harvester.invoke import (load_data, harvest, clean_data, 
                                                 sync_metadata)
 
 
-service_environment, _ = create_configuration_and_session(use_aws_default_profile=False, service="service")
+service_environment, _ = create_configuration_and_session(service="service")
 service_collection = Collection("srv", setup_postgres_localhost, import_snapshot, deploy, sync_upload_media,
                                 make_translations)
 service_collection.configure(service_environment)
@@ -24,7 +24,7 @@ aws_collection.configure(service_environment)
 test_collection.configure(service_environment)
 
 
-harvester_environment, _ = create_configuration_and_session(use_aws_default_profile=False, service="harvester")
+harvester_environment, _ = create_configuration_and_session(service="harvester")
 harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, clean_data, load_data, deploy,
                                   index_dataset_version, dump_data, sync_harvest_content, promote_dataset_version,
                                   create_decompound_dictionary, push_decompound_dictionary, generate_previews,

@@ -22,7 +22,7 @@ class CoreConfig(AppConfig):
             "connections": {
                 "analyzer": {
                     "protocol": "http",
-                    "host": "localhost:9090" if settings.IS_AWS or settings.CONTEXT == "host" else "analyzer:9090",
+                    "host": "localhost:9090" if settings.IS_AWS or settings.CONTEXT != "container" else "analyzer:9090",
                     "path": "/analyze"
                 }
             }
