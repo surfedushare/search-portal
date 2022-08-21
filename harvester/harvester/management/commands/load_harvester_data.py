@@ -41,7 +41,10 @@ class Command(base.LabelCommand):
         parser.add_argument('-hs', '--harvest-source', type=str)
         parser.add_argument('-i', '--index', action="store_true", default=True)
 
-    def load_resources(self):
+    def load_resources(self, download_edurep):
+        if download_edurep:
+            self.resources.append("edurep.EdurepOAIPMH")
+
         for resource_model in self.resources:
             model = apps.get_model(resource_model)
             model.objects.all().delete()
@@ -66,6 +69,7 @@ class Command(base.LabelCommand):
         skip_download = options["skip_download"]
         harvest_source = options.get("harvest_source", None)
         should_index = options.get("index")
+        download_edurep = options["download_edurep"]
 
         assert harvest_source or environment.env != "localhost", \
             "Expected a harvest source argument for a localhost environment"
@@ -100,13 +104,8 @@ class Command(base.LabelCommand):
         with open(dataset_file, "r") as dump_file:
             for objects in objects_from_disk(dump_file):
                 self.bulk_create_objects(objects)
-
-        download_edurep = options["download_edurep"]
-        if download_edurep:
-            self.resources.append("edurep.EdurepOAIPMH")
-
         # Load resources
-        self.load_resources()
+        self.load_resources(download_edurep)
         self.reset_postgres_sequences()
 
         # Index data

@@ -2,12 +2,13 @@ import os
 import logging
 from invoke import Context
 
+from django.apps import apps
 from django.conf import settings
 from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.models import (Dataset, Extension)
+from core.models import Dataset, Extension
 
 logger = logging.getLogger("harvester")
 
@@ -22,28 +23,25 @@ class Command(base.LabelCommand):
         "sharekit.SharekitMetadataHarvest",
         "metadata.MetadataField",
         "metadata.MetadataTranslation",
-        "metadata.MetadataValue"
+        "metadata.MetadataValue",
+        "edurep.EdurepOAIPMH"
     ]
 
     def dump_resources(self):
         paths = []
         for resource_model in self.resources:
-            clazz_name = resource_model.split(".")[1]
-            clazz = globals()[clazz_name]
+            clazz = apps.get_model(resource_model)
             dump_file = os.path.join(get_dumps_path(clazz), f"{clazz.get_name()}.dump.json")
             paths.append(dump_file)
-            print(f"Dumping {clazz_name} to {dump_file}")
+            print(f"Dumping {clazz.get_name()} to {dump_file}")
             call_command("dump_resource", resource_model)
 
         return paths
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('-de', '--download-edurep', action="store_true")
 
     def handle_label(self, dataset_label, **options):
-        download_edurep = options["download_edurep"]
-
         dataset = Dataset.objects.get(name=dataset_label)
 
         destination = get_dumps_path(dataset)
@@ -60,9 +58,7 @@ class Command(base.LabelCommand):
                 queryset_to_disk(version.collection_set, json_file)
                 queryset_to_disk(version.document_set, json_file)
             queryset_to_disk(Extension.objects.all(), json_file)
-
-        if download_edurep:
-            self.resources.append("edurep.EdurepOAIPMH")
+            Extension.objects.all().delete()
 
         resource_files = self.dump_resources()
 
