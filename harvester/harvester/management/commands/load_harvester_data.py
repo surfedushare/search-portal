@@ -11,7 +11,7 @@ from django.db import connection
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from project.configuration import create_configuration
 from harvester.settings import environment
-from core.models import Dataset, DatasetVersion
+from core.models import Dataset, DatasetVersion, Extension
 
 
 logger = logging.getLogger("harvester")
@@ -83,6 +83,7 @@ class Command(base.LabelCommand):
             dataset.harvestsource_set.all().delete()
             dataset.harvest_set.all().delete()
             dataset.delete()
+        Extension.objects.all().delete()
 
         if harvest_source and not skip_download:
             logger.info(f"Downloading dump file for: {dataset_label}")

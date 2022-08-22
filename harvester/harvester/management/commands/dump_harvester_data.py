@@ -58,7 +58,6 @@ class Command(base.LabelCommand):
                 queryset_to_disk(version.collection_set, json_file)
                 queryset_to_disk(version.document_set, json_file)
             queryset_to_disk(Extension.objects.all(), json_file)
-            Extension.objects.all().delete()
 
         resource_files = self.dump_resources()
 
