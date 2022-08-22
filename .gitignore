@@ -115,3 +115,5 @@ portal/tests/e2e/screenshots/
 portal/webpack-stats.json
 nginx/ip-whitelist.conf
 harvester/sources/factories/fixtures
+acc-to-localhost.sh
+upgrade-acceptance.sh
