@@ -6,9 +6,10 @@ from commands.aws.ecs import run_task
 @task(help={
     "target": "Name of the project you want migrate on AWS: service or harvester",
     "mode": "Mode you want to migrate: development, acceptance or production. Must match APPLICATION_MODE",
-    "version": "Version of the project you want to migrate. Defaults to latest version"
+    "version": "Version of the project you want to migrate. Defaults to latest version",
+    "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def migrate(ctx, target, mode, version=None):
+def migrate(ctx, target, mode, version=None, legacy_system=True):
     """
     Executes migration task on container cluster for development, acceptance or production environment on AWS
     """
@@ -23,4 +24,4 @@ def migrate(ctx, target, mode, version=None):
             "value": f"{ctx.config.aws.postgres_password_arn}"
         },
     ]
-    run_task(ctx, target, mode, command, environment, version=version)
+    run_task(ctx, target, mode, command, environment, version=version, legacy_system=legacy_system)

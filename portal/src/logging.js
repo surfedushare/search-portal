@@ -101,7 +101,7 @@ injector.decorator("$log", function ($log) {
     if (parseInt(query.is_prefilter)) {
       searchCategories.push("is_prefilter=1");
     }
-    const searchKeyword = query.search_term || "";
+    const searchKeyword = query.search_text || "";
     window._paq.push(["trackSiteSearch", searchKeyword, searchCategories.join("&"), totalResults]);
     $log._siteSearch(query, totalResults);
   };
