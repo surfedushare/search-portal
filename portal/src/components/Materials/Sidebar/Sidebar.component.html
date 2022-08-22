@@ -27,19 +27,15 @@
       </div>
       <h4>{{ $t('Rights-of-use') }}</h4>
       <a
+        v-if="material.copyright !== 'no'"
         class="material__grey_block-copyright"
         :class="material.copyright"
         :href="copyrightURL(material.copyright)"
         target="_blank"
       ></a>
-      <!-- Strip the -30 or -40 suffix to be able to use less translation strings. -->
-      <a :href="copyrightURL(material.copyright)"
-        target="_blank"
-        v-if="material.copyright !== 'yes'">{{ $t(material.copyright.substring(0, material.copyright.length - 3)) }}</a>
-      <!-- We're working with the assumption that copyright 'yes' means the strictest copyright version. -->
-      <a :href="copyrightURL(material.copyright)"
-        target="_blank"
-        v-if="material.copyright === 'yes'">{{ $t('cc-by-nc-nd') }}</a>
+      <a :href="copyrightURL(material.copyright)" target="_blank">
+        {{ copyrightTranslation }}
+      </a>
       <h4 v-if="material.doi">{{ $t('DOI') }}</h4>
       <span v-if="material.doi">{{ $t(material.doi) }}</span>
       <div v-if="shouldShowPreviews()">

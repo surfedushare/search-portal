@@ -344,6 +344,19 @@ export default {
       });
       return studyTitles.join(", ");
     },
+    copyrightTranslation() {
+      let translationKey;
+      switch (this.material.copyright) {
+        case "no":
+          translationKey = "unknown-copyright";
+          break;
+        default:
+          // Strip the -30 or -40 suffix to be able to use less translation strings.
+          translationKey = this.material.copyright.substring(0, this.material.copyright.length - 3);
+          break
+      }
+      return this.$i18n.t(translationKey)
+    }
   },
   watch: {
     collections() {
