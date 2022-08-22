@@ -48,6 +48,7 @@ class Command(base.LabelCommand):
         for resource_model in self.resources:
             model = apps.get_model(resource_model)
             model.objects.all().delete()
+            print(f"Loading resource {resource_model}")
             call_command("load_resource", resource_model)
 
     def reset_postgres_sequences(self):
