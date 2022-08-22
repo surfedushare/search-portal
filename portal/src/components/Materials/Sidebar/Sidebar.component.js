@@ -1,7 +1,6 @@
 import { formatDate, generateSearchMaterialsQuery } from "../../_helpers";
 import { isEmpty } from "lodash";
 
-import AddCollection from "./../../Popup/AddCollection";
 import { Duration } from "luxon";
 import EnlargeableImage from "@diracleo/vue-enlargeable-image";
 import Multiselect from "./../../Multiselect";
@@ -26,7 +25,6 @@ export default {
   },
   components: {
     SaveMaterialInCollection,
-    AddCollection,
     ShareMaterial,
     Multiselect,
     SelectDownloadPopup,
@@ -43,7 +41,6 @@ export default {
       submitting: false,
       isShowSaveMaterial: false,
       isShowShareMaterial: false,
-      isShowAddCollection: false,
       showDownloadPopup: false,
       socialCounterInterval: null,
     };
@@ -66,18 +63,6 @@ export default {
      */
     getLoginLink() {
       return this.$store.getters.getLoginLink(this.$route);
-    },
-    /**
-     * Show AddCollection popup
-     */
-    addCollection() {
-      this.isShowAddCollection = true;
-    },
-    /**
-     * Close AddCollection popup
-     */
-    closeAddCollection() {
-      this.isShowAddCollection = false;
     },
     /**
      * Close SaveMaterial popup
