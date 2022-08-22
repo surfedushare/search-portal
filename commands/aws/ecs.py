@@ -309,5 +309,6 @@ def cleanup_ecs_artifacts(ctx, mode, version_cutoff=None):
     session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
     ecs_client = session.client('ecs')
     _cleanup_ecs_task_registrations(ctx, ecs_client)
-    ecr_client = boto3.client('ecr')
-    _cleanup_ecr_images(ctx, ecr_client, version_cutoff)
+    if ctx.config.env == "production":
+        ecr_client = boto3.client('ecr')
+        _cleanup_ecr_images(ctx, ecr_client, version_cutoff)
