@@ -2,40 +2,46 @@ import os
 import logging
 from invoke import Context
 
+from django.apps import apps
 from django.conf import settings
 from django.core.management import base, call_command
 from datagrowth.utils import get_dumps_path, object_to_disk, queryset_to_disk
 
 from harvester.settings import environment
-from core.models import (Dataset, HttpTikaResource, Extension, ExtructResource, YoutubeThumbnailResource,
-                         PdfThumbnailResource)
-from edurep.models import EdurepOAIPMH
-from sharekit.models import SharekitMetadataHarvest
-
+from core.models import Dataset, Extension
 
 logger = logging.getLogger("harvester")
 
 
 class Command(base.LabelCommand):
 
+    resources = [
+        "core.HttpTikaResource",
+        "core.ExtructResource",
+        "core.YoutubeThumbnailResource",
+        "core.PdfThumbnailResource",
+        "sharekit.SharekitMetadataHarvest",
+        "metadata.MetadataField",
+        "metadata.MetadataTranslation",
+        "metadata.MetadataValue",
+        "edurep.EdurepOAIPMH"
+    ]
+
     def dump_resources(self):
-        call_command("dump_resource", "core.HttpTikaResource")
-        call_command("dump_resource", "core.ExtructResource")
-        call_command("dump_resource", "core.YoutubeThumbnailResource")
-        call_command("dump_resource", "core.PdfThumbnailResource")
-        call_command("dump_resource", "edurep.EdurepOAIPMH")
-        call_command("dump_resource", "sharekit.SharekitMetadataHarvest")
-        return [
-            os.path.join(get_dumps_path(HttpTikaResource), f"{HttpTikaResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(EdurepOAIPMH), f"{EdurepOAIPMH.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(SharekitMetadataHarvest), f"{SharekitMetadataHarvest.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(ExtructResource), f"{ExtructResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(YoutubeThumbnailResource), f"{YoutubeThumbnailResource.get_name()}.dump.json"),
-            os.path.join(get_dumps_path(PdfThumbnailResource), f"{PdfThumbnailResource.get_name()}.dump.json"),
-        ]
+        paths = []
+        for resource_model in self.resources:
+            clazz = apps.get_model(resource_model)
+            dump_file = os.path.join(get_dumps_path(clazz), f"{clazz.get_name()}.dump.json")
+            paths.append(dump_file)
+            print(f"Dumping {clazz.get_name()} to {dump_file}")
+            call_command("dump_resource", resource_model)
+
+        return paths
+
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
 
     def handle_label(self, dataset_label, **options):
-
         dataset = Dataset.objects.get(name=dataset_label)
 
         destination = get_dumps_path(dataset)
@@ -52,6 +58,7 @@ class Command(base.LabelCommand):
                 queryset_to_disk(version.collection_set, json_file)
                 queryset_to_disk(version.document_set, json_file)
             queryset_to_disk(Extension.objects.all(), json_file)
+            Extension.objects.all().delete()
 
         resource_files = self.dump_resources()
 
