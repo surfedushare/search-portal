@@ -338,9 +338,9 @@ export default {
         default:
           // Strip the -30 or -40 suffix to be able to use less translation strings.
           translationKey = this.material.copyright.substring(0, this.material.copyright.length - 3);
-          break
+          break;
       }
-      return this.$i18n.t(translationKey)
+      return this.$i18n.t(translationKey);
     }
   },
   watch: {
