@@ -23,8 +23,6 @@ services:
       - ./service:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
-    links:
-      - postgres:database
     depends_on:
       - postgres
 
@@ -49,8 +47,6 @@ services:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
-    links:
-      - postgres:database
     depends_on:
       - postgres
 
@@ -95,7 +91,17 @@ services:
     command: celery -A harvester flower
     ports:
       - "127.0.0.1:5555:5555"
-    links:
-      - redis:redis
     depends_on:
       - redis
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/ip-whitelist.conf:/etc/nginx/ip-whitelist.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    ports:
+      - "127.0.0.1:80:80"
+    network_mode: "host"
+    depends_on:
+      - harvester
+      - service
