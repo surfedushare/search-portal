@@ -33,9 +33,10 @@
         :href="copyrightURL(material.copyright)"
         target="_blank"
       ></a>
-      <a :href="copyrightURL(material.copyright)" target="_blank">
+      <a v-if="material.copyright !== 'no'" :href="copyrightURL(material.copyright)" target="_blank">
         {{ copyrightTranslation }}
       </a>
+      <span v-else>{{ copyrightTranslation }}</span>
       <h4 v-if="material.doi">{{ $t('DOI') }}</h4>
       <span v-if="material.doi">{{ $t(material.doi) }}</span>
       <div v-if="shouldShowPreviews()">
