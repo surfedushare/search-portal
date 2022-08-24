@@ -55,7 +55,7 @@ def publish_runner_image(ctx, docker_login=False):
     Uses Docker to build and push an image to use as Gitlab pipeline image
     """
 
-    ctx.run("docker build -f Dockerfile-runner -t gitlab-runner .", pty=True, echo=True)
+    ctx.run("docker build --platform=linux/amd64 -f Dockerfile-runner -t gitlab-runner .", pty=True, echo=True)
 
     # Login with Docker on AWS
     if docker_login:
@@ -93,12 +93,12 @@ def build(ctx, target, commit=None, docker_login=False):
     ctx.run(
         f"DOCKER_BUILDKIT=1 docker build "
         f"--build-arg BUILDKIT_INLINE_CACHE=1 --cache-from {latest_remote_image} --progress=plain "
-        f"-f {target}/Dockerfile -t {name}:{commit} .",
+        f"--platform=linux/amd64 -f {target}/Dockerfile -t {name}:{commit} .",
         pty=True,
         echo=True
     )
     ctx.run(
-        f"docker build -f nginx/Dockerfile-nginx -t {name}-nginx:{commit} .",
+        f"docker build --platform=linux/amd64 -f nginx/Dockerfile-nginx -t {name}-nginx:{commit} .",
         pty=True,
         echo=True
     )
