@@ -100,8 +100,6 @@ services:
     volumes:
       - ./nginx/ip-whitelist.conf:/etc/nginx/ip-whitelist.conf
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
-    ports:
-      - "127.0.0.1:80:80"
     network_mode: "host"
     depends_on:
       - harvester
