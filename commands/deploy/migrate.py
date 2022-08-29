@@ -9,7 +9,7 @@ from commands.aws.ecs import run_task
     "version": "Version of the project you want to migrate. Defaults to latest version",
     "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def migrate(ctx, target, mode, version=None, legacy_system=True):
+def migrate(ctx, target, mode, version=None, legacy_system=False):
     """
     Executes migration task on container cluster for development, acceptance or production environment on AWS
     """
