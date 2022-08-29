@@ -19,6 +19,10 @@ class MetadataTranslation(models.Model):
     def __str__(self):
         return f"{self.nl} // {self.en}"
 
+    @classmethod
+    def get_name(cls):
+        return cls._meta.model_name
+
 
 class MetadataTranslationSerializer(serializers.ModelSerializer):
 

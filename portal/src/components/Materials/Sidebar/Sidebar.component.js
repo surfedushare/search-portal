@@ -1,7 +1,6 @@
 import { formatDate, generateSearchMaterialsQuery } from "../../_helpers";
 import { isEmpty } from "lodash";
 
-import AddCollection from "./../../Popup/AddCollection";
 import { Duration } from "luxon";
 import EnlargeableImage from "@diracleo/vue-enlargeable-image";
 import Multiselect from "./../../Multiselect";
@@ -26,7 +25,6 @@ export default {
   },
   components: {
     SaveMaterialInCollection,
-    AddCollection,
     ShareMaterial,
     Multiselect,
     SelectDownloadPopup,
@@ -43,7 +41,6 @@ export default {
       submitting: false,
       isShowSaveMaterial: false,
       isShowShareMaterial: false,
-      isShowAddCollection: false,
       showDownloadPopup: false,
       socialCounterInterval: null,
     };
@@ -66,18 +63,6 @@ export default {
      */
     getLoginLink() {
       return this.$store.getters.getLoginLink(this.$route);
-    },
-    /**
-     * Show AddCollection popup
-     */
-    addCollection() {
-      this.isShowAddCollection = true;
-    },
-    /**
-     * Close AddCollection popup
-     */
-    closeAddCollection() {
-      this.isShowAddCollection = false;
     },
     /**
      * Close SaveMaterial popup
@@ -344,6 +329,19 @@ export default {
       });
       return studyTitles.join(", ");
     },
+    copyrightTranslation() {
+      let translationKey;
+      switch (this.material.copyright) {
+        case "no":
+          translationKey = "unknown-copyright";
+          break;
+        default:
+          // Strip the -30 or -40 suffix to be able to use less translation strings.
+          translationKey = this.material.copyright.substring(0, this.material.copyright.length - 3);
+          break;
+      }
+      return this.$i18n.t(translationKey);
+    }
   },
   watch: {
     collections() {
