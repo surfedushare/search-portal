@@ -130,6 +130,7 @@ export default {
   -webkit-box-orient: vertical;
   margin: 0 0 1em 0;
   overflow: hidden;
+  word-break: break-word;
 }
 .truncate3 {
   height: 64px;
