@@ -27,7 +27,11 @@
           <h2 class="main__materials_title">
             {{ $t("Newest-open-learning-material") }}
           </h2>
-          <Materials :materials="materials" />
+          <v-row v-if="materials && materials.records" class="materials">
+            <v-col v-for="material in materials.records" :key="material.id" lg="3">
+              <MaterialCard :material="material" :handle-material-click="handleMaterialClick" />
+            </v-col>
+          </v-row>
         </div>
       </div>
 
@@ -62,7 +66,7 @@
 import numeral from "numeral";
 import { mapGetters } from "vuex";
 import PopularList from "~/components/Communities/PopularList";
-import Materials from "~/components/Materials/Materials.vue";
+import MaterialCard from "~/components/Materials/MaterialCard.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import { generateSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
@@ -74,7 +78,7 @@ const EDUCATIONAL_LEVEL_CATEGORY_ID = "lom_educational_levels";
 export default {
   components: {
     PopularList,
-    Materials,
+    MaterialCard,
     SearchBar,
   },
   mixins: [PageMixin],
@@ -102,12 +106,25 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getMaterials", { page_size: 4 });
     this.$store.dispatch("getCommunities", { params: { page_size: 3 } });
     this.$store.dispatch("getStatistic");
     this.$store.dispatch("getFilterCategories");
+    this.$store.dispatch("getMaterials", { page_size: 4 });
   },
   methods: {
+    handleMaterialClick(material) {
+      if (this.selectFor === "add") {
+        this.$store.commit("SET_MATERIAL", material);
+      } else {
+        this.$router.push(
+          this.localePath({
+            name: "materials-id",
+            params: { id: material.external_id },
+          })
+        );
+      }
+      this.$emit("click", material);
+    },
     getFilterOptions(external_id) {
       if (this.filterCategories) {
         const filterCategory = this.filterCategories.find((category) => category.external_id === external_id);
@@ -132,7 +149,7 @@ export default {
         page_size: 10,
         page: 1,
       };
-      const searchRoute =  generateSearchMaterialsQuery(
+      const searchRoute = generateSearchMaterialsQuery(
         searchData,
         "materials-search",
         !isEmpty(this.$store.state.filterCategories.selection)
@@ -145,6 +162,9 @@ export default {
 
 <style lang="less">
 @import "./../variables";
+.materials {
+  list-style: none;
+}
 .main {
   position: relative;
   z-index: 1;
