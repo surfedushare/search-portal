@@ -11,7 +11,7 @@ from django.db import connection
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from project.configuration import create_configuration
 from harvester.settings import environment
-from core.models import Dataset, DatasetVersion
+from core.models import Dataset, DatasetVersion, Extension
 
 
 logger = logging.getLogger("harvester")
@@ -27,20 +27,28 @@ class Command(base.LabelCommand):
         "core.ExtructResource",
         "core.YoutubeThumbnailResource",
         "core.PdfThumbnailResource",
-        "edurep.EdurepOAIPMH",
-        "sharekit.SharekitMetadataHarvest"
+        "sharekit.SharekitMetadataHarvest",
+        "metadata.MetadataField",
+        "metadata.MetadataTranslation",
+        "metadata.MetadataValue"
     ]
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
+
+        parser.add_argument('-de', '--download-edurep', action="store_true")
         parser.add_argument('-s', '--skip-download', action="store_true")
         parser.add_argument('-hs', '--harvest-source', type=str)
         parser.add_argument('-i', '--index', action="store_true", default=True)
 
-    def load_resources(self):
+    def load_resources(self, download_edurep):
+        if download_edurep:
+            self.resources.append("edurep.EdurepOAIPMH")
+
         for resource_model in self.resources:
             model = apps.get_model(resource_model)
             model.objects.all().delete()
+            print(f"Loading resource {resource_model}")
             call_command("load_resource", resource_model)
 
     def reset_postgres_sequences(self):
@@ -62,6 +70,7 @@ class Command(base.LabelCommand):
         skip_download = options["skip_download"]
         harvest_source = options.get("harvest_source", None)
         should_index = options.get("index")
+        download_edurep = options["download_edurep"]
 
         assert harvest_source or environment.env != "localhost", \
             "Expected a harvest source argument for a localhost environment"
@@ -74,12 +83,17 @@ class Command(base.LabelCommand):
             dataset.harvestsource_set.all().delete()
             dataset.harvest_set.all().delete()
             dataset.delete()
+        Extension.objects.all().delete()
 
         if harvest_source and not skip_download:
             logger.info(f"Downloading dump file for: {dataset_label}")
             ctx = Context(environment)
             harvester_data_bucket = f"s3://{source_environment.aws.harvest_content_bucket}/datasets/harvester"
-            ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
+            download_edurep = options["download_edurep"]
+            if download_edurep:
+                ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR}")
+            else:
+                ctx.run(f"aws s3 sync {harvester_data_bucket} {settings.DATAGROWTH_DATA_DIR} --exclude *edurepoaipmh*")
         logger.info(f"Importing dataset: {dataset_label}")
         for entry in os.scandir(get_dumps_path(Dataset)):
             if entry.is_file() and entry.name.startswith(dataset_label):
@@ -92,9 +106,8 @@ class Command(base.LabelCommand):
         with open(dataset_file, "r") as dump_file:
             for objects in objects_from_disk(dump_file):
                 self.bulk_create_objects(objects)
-
         # Load resources
-        self.load_resources()
+        self.load_resources(download_edurep)
         self.reset_postgres_sequences()
 
         # Index data
