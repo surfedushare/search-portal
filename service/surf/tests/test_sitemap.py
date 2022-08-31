@@ -54,15 +54,15 @@ class TestSitemaps(TestCase):
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, "html5lib")
         expected_locations = [
-            "https://testserver/sitemap-main.xml",
-            "https://testserver/sitemap-materials.xml",
-            "https://testserver/sitemap-materials.xml?p=2",
+            "https://example.com/sitemap-main.xml",
+            "https://example.com/sitemap-materials.xml",
+            "https://example.com/sitemap-materials.xml?p=2",
         ]
         actual_locations = [location.text for location in soup.find_all("loc")]
         self.assertEqual(actual_locations, expected_locations)
         # Check that all links in sitemap are accessible
         for location in actual_locations:
-            relative_url = location.replace("https://testserver", "")
+            relative_url = location.replace("https://example.com", "")
             response = self.client.get(relative_url)
             self.assertEqual(response.status_code, 200)
 
@@ -74,9 +74,9 @@ class TestSitemaps(TestCase):
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, "html5lib")
         expected_locations = [
-            "https://testserver/materialen/external-id:1",
-            "https://testserver/en/materials/external-id.2",
-            "https://testserver/materialen/external-id%2F3",
+            "https://example.com/materialen/external-id:1",
+            "https://example.com/en/materials/external-id.2",
+            "https://example.com/materialen/external-id%2F3",
         ]
         expected_change_frequency = "daily"
         expected_modification_date = "2021-10-25"
@@ -99,10 +99,10 @@ class TestSitemaps(TestCase):
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, "html5lib")
         expected_locations = [
-            "https://testserver/",
-            "https://testserver/hoe-werkt-het",
-            "https://testserver/en",
-            "https://testserver/en/how-does-it-work",
+            "https://example.com/",
+            "https://example.com/hoe-werkt-het",
+            "https://example.com/en",
+            "https://example.com/en/how-does-it-work",
         ]
         expected_change_frequency = "monthly"
         actual_urls = soup.find_all("url")
