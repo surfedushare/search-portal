@@ -113,7 +113,7 @@ class HarvestLogger(object):
     def _get_document_counts(self, document_set):
         total = document_set.count()
         inactive_educational_level_count = document_set \
-            .filter(properties__state="inactive", properties__lowest_educational_level__lte=1) \
+            .filter(properties__state="inactive", properties__lowest_educational_level__lt=1) \
             .count()
         inactive_copyright_count = \
             document_set.filter(properties__state="inactive").count() - inactive_educational_level_count

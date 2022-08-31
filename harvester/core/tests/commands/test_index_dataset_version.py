@@ -28,6 +28,16 @@ class OpenSearchClientTestCase(TestCase):
         self.search_client.indices.create.reset_mock()
         self.search_client.indices.delete.reset_mock()
 
+    def unpack_index_name(self, index_name):
+        match index_name.split("-"):
+            case index_name, version, version_id, language, educational_level:
+                pass
+            case index_name, version, version_id, language:
+                pass
+            case _:
+                self.fail("Invalid index name given to open search")
+        return index_name, version, language, version_id
+
     def assert_document_structure(self, document):
         # Here we check if documents have all required keys including _id
         expected_keys = {
@@ -90,29 +100,29 @@ class TestIndexDatasetVersion(OpenSearchClientTestCase):
         info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
         # Asserting calls to OpenSearch library
-        self.assertEqual(get_search_client.call_count, 3,
-                         "Expected a client to get created for each language")
+        self.assertEqual(get_search_client.call_count, 6,
+                         "Expected a client to get created for each language and educational division")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
         self.assertEqual(self.search_client.indices.delete.call_count, 0)
-        self.assertEqual(self.search_client.indices.create.call_count, 3)
+        self.assertEqual(self.search_client.indices.create.call_count, 6)
         for args, kwargs in self.search_client.indices.create.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(kwargs["body"], expected_index_configuration[language])
-        self.assertEqual(self.search_client.indices.put_alias.call_count, 3,
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 6,
                          "Expected to ignore aliases")
         for args, kwargs in self.search_client.indices.put_alias.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk", "mbo-nl", "mbo-en", "mbo-unk"])
 
         self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
@@ -170,11 +180,11 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
         # Asserting calls to OpenSearch library
-        self.assertEqual(get_search_client.call_count, 3,
-                         "Expected a client to get created for each language")
+        self.assertEqual(get_search_client.call_count, 6,
+                         "Expected a client to get created for each language and educational division")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -184,25 +194,25 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
-        self.assertEqual(self.search_client.indices.delete.call_count, 3)
+        self.assertEqual(self.search_client.indices.delete.call_count, 6)
         for args, kwargs in self.search_client.indices.delete.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.search_client.indices.create.call_count, 3)
+        self.assertEqual(self.search_client.indices.create.call_count, 6)
         for args, kwargs in self.search_client.indices.create.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],
                              "Expected index configuration to come from database if one was created in the past")
-        self.assertEqual(self.search_client.indices.put_alias.call_count, 3,
-                         "Expected alias creation for each language")
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 6,
+                         "Expected alias creation for each language and educational division")
         for args, kwargs in self.search_client.indices.put_alias.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk", "mbo-nl", "mbo-en", "mbo-unk"])
 
         self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
@@ -230,7 +240,7 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         call_command("index_dataset_version", "--dataset=test")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -246,10 +256,10 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         get_search_client.reset_mock()
         streaming_bulk.reset_mock()
         call_command("index_dataset_version", "--dataset=test", "--harvester-version=0.0.1")
-        self.assertEqual(streaming_bulk.call_count, 3)
+        self.assertEqual(streaming_bulk.call_count, 6)
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             if language != "en":
                 self.assertEqual(len(docs), 1)
             for doc in docs:
@@ -259,15 +269,15 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
                                      "Expected the Extension to update authors key")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.search_client.indices.delete.call_count, 3)
-        self.assertEqual(self.search_client.indices.create.call_count, 3)
-        self.assertEqual(self.search_client.indices.put_alias.call_count, 3,
-                         "Expected alias creation for each language")
+        self.assertEqual(self.search_client.indices.delete.call_count, 6)
+        self.assertEqual(self.search_client.indices.create.call_count, 6)
+        self.assertEqual(self.search_client.indices.put_alias.call_count, 6,
+                         "Expected alias creation for each language and educational division")
         for args, kwargs in self.search_client.indices.put_alias.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk"])
+            self.assertIn(kwargs["name"], ["latest-nl", "latest-en", "latest-unk", "mbo-nl", "mbo-en", "mbo-unk"])
         self.assertEqual(DatasetVersion.objects.filter(is_current=True).count(), 1)
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
         self.assertEqual(dataset_version.id, 1)
@@ -306,11 +316,11 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         info_logger.assert_any_call(f"unk:{expected_doc_count['unk']}")
 
         # Asserting calls to OpenSearch library
-        self.assertEqual(get_search_client.call_count, 3,
-                         "Expected a client to get created for each language")
+        self.assertEqual(get_search_client.call_count, 6,
+                         "Expected a client to get created for each language and educational division")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -320,14 +330,14 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
 
-        self.assertEqual(self.search_client.indices.delete.call_count, 3)
+        self.assertEqual(self.search_client.indices.delete.call_count, 6)
         for args, kwargs in self.search_client.indices.delete.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-        self.assertEqual(self.search_client.indices.create.call_count, 3)
+        self.assertEqual(self.search_client.indices.create.call_count, 6)
         for args, kwargs in self.search_client.indices.create.call_args_list:
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
             self.assertEqual(kwargs["body"], expected_index_configuration[language],
@@ -391,11 +401,11 @@ class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
         )
 
         # Asserting calls to OpenSearch library
-        self.assertEqual(get_search_client.call_count, 3,
-                         "Expected a client to get created for each language")
+        self.assertEqual(get_search_client.call_count, 6,
+                         "Expected a client to get created for each language and educational division")
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
-            index_name, version, version_id, language = kwargs["index"].split("-")
+            index_name, version, language, version_id = self.unpack_index_name(kwargs["index"])
             self.assertEqual(int(version_id), self.new_version.id, "Expected new version to get promoted")
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:

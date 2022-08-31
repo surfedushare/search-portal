@@ -10,6 +10,7 @@ from rest_framework import serializers
 
 from project.configuration import create_open_search_index_configuration
 from core.models import DatasetVersion
+from core.models.choices import EducationalLevels
 from core.utils.search import get_search_client
 
 
@@ -17,6 +18,7 @@ class ElasticIndex(models.Model):
 
     name = models.CharField(max_length=255)
     language = models.CharField(max_length=5, choices=settings.OPENSEARCH_ANALYSERS.items())
+    educational_level = models.IntegerField(choices=EducationalLevels.choices, default=EducationalLevels.APPLIED_SCIENCE)
     dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.SET_NULL, null=True)
     configuration = models.JSONField(blank=True)
     error_count = models.IntegerField(default=0)
@@ -38,7 +40,11 @@ class ElasticIndex(models.Model):
     def remote_name(self):
         if not self.id:
             raise ValueError("Can't get the remote name for an unsaved object")
-        return slugify(f"{self.name}-{self.language}")
+        if self.educational_level == EducationalLevels.VOCATIONAL_EDUCATION:
+            name = f"{self.name}-{self.language}-{self.educational_level}"
+        else:
+            name = f"{self.name}-{self.language}"
+        return slugify(name)
 
     @property
     def remote_exists(self):
@@ -85,10 +91,16 @@ class ElasticIndex(models.Model):
         return errors
 
     def promote_to_latest(self):
-        latest_alias = "latest-" + self.language
-        # The index pattern should target all datasets and versions,
-        # but stay clear from targeting protected AWS indices to prevent errors
-        index_pattern = f"*-*-*-{self.language}"
+        if self.educational_level >= EducationalLevels.APPLIED_SCIENCE:
+            latest_alias = "latest-" + self.language
+            # The index pattern should target all datasets and versions,
+            # but stay clear from targeting protected AWS indices to prevent errors
+            index_pattern = f"*-*-*-{self.language}"
+        else:
+            latest_alias = "mbo-" + self.language
+            # The index pattern should target all datasets and versions,
+            # but stay clear from targeting protected AWS indices to prevent errors
+            index_pattern = f"*-*-*-{self.language}-*"
         try:
             self.client.indices.delete_alias(index=index_pattern, name=latest_alias)
         except NotFoundError:
@@ -127,4 +139,4 @@ class ElasticIndexSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ElasticIndex
-        fields = ("id", "name", "language", "remote_name",)
+        fields = ("id", "name", "language", "remote_name", "educational_level",)

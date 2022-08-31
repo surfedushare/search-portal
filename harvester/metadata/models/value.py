@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.contrib.sites.models import Site
 from rest_framework import serializers
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 from mptt.exceptions import InvalidMove
@@ -23,6 +24,7 @@ class MetadataValue(MPTTModel):
     _tree_manager = MetadataValueManager()
 
     name = models.CharField(max_length=255)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
