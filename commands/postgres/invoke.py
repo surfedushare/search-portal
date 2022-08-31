@@ -2,7 +2,7 @@ from invoke import Responder
 from fabric import task
 
 from commands.postgres.sql import setup_database_statements
-from commands.postgres.sql import insert_django_user_statement
+from commands.postgres.sql import insert_django_user_statement, insert_django_site_statements
 
 
 @task(name="setup_postgres")
@@ -45,19 +45,20 @@ def setup_postgres_localhost(ctx, host="localhost"):
         f"cd {ctx.config.django.directory} && python manage.py migrate",
         echo=True, pty=True
     )
-    # Create generic superuser named supersurf
+    # Create generic superuser named supersurf and site objects
+    is_search_service = ctx.config.service.name == "service"
     admin_password = ctx.config.secrets.django.admin_password
     harvester_key = ctx.config.secrets.harvester.api_key
-    insert_user = insert_django_user_statement(
-        "supersurf", admin_password, harvester_key, is_search_service=ctx.config.service.name == "service"
-    )
-    ctx.run(
-        f'psql -h {host} -U {postgres_user} -d {ctx.config.postgres.database} -W -c "{insert_user}"',
-        echo=True,
-        pty=True,
-        warn=True,
-        watchers=[postgres_password_responder],
-    )
+    insert_user = insert_django_user_statement("supersurf", admin_password, harvester_key, is_search_service)
+    site_statements = insert_django_site_statements(ctx.config.env, is_search_service)
+    for statement in site_statements + [insert_user]:
+        ctx.run(
+            f'psql -h {host} -U {postgres_user} -d {ctx.config.postgres.database} -W -c "{statement}"',
+            echo=True,
+            pty=True,
+            warn=True,
+            watchers=[postgres_password_responder],
+        )
     # Load data fixtures to get the project going
     for fixture in ctx.config.django.fixtures:
         ctx.run(
