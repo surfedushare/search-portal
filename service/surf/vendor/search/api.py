@@ -102,11 +102,12 @@ class SearchApiClient:
         # Reformatting some fields if a relations field is desired
         if "relations" in field_mapping:
             publishers = [{"name": publisher} for publisher in data.get("publishers", [])]
+            keywords = data.get("keywords", []) or []
             record["relations"] = {
                 "authors": data.get("authors", []),
                 "parties": data.get("parties", []) or publishers,
                 "projects": data.get("projects", []),
-                "keywords": [{"label": keyword} for keyword in data.get("keywords", [])],
+                "keywords": [{"label": keyword} for keyword in keywords],
                 "themes": [{"label": theme} for theme in data.get("research_themes", [])],
                 "parents": data.get("is_part_of", []),
                 "children": data.get("has_parts", [])

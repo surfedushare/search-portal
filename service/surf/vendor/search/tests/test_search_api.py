@@ -545,3 +545,7 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
             self.assertEqual(record["relations"]["keywords"], [], "Expected data not given in NPPO to have a default")
             self.assertEqual(record["relations"]["parents"], [], "Expected data not given in NPPO to have a default")
             self.assertEqual(record["relations"]["children"], [], "Expected data not given in NPPO to have a default")
+            # Checking an edge case where keywords may be None
+            hit["_source"]["keywords"] = None
+            record = self.instance.parse_search_hit(hit)
+            self.assertEqual(record["relations"]["keywords"], [])
