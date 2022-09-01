@@ -18,7 +18,8 @@ class ElasticIndex(models.Model):
 
     name = models.CharField(max_length=255)
     language = models.CharField(max_length=5, choices=settings.OPENSEARCH_ANALYSERS.items())
-    educational_level = models.IntegerField(choices=EducationalLevels.choices, default=EducationalLevels.APPLIED_SCIENCE)
+    educational_level = models.IntegerField(choices=EducationalLevels.choices,
+                                            default=EducationalLevels.APPLIED_SCIENCE)
     dataset_version = models.ForeignKey(DatasetVersion, related_name="indices", on_delete=models.SET_NULL, null=True)
     configuration = models.JSONField(blank=True)
     error_count = models.IntegerField(default=0)
