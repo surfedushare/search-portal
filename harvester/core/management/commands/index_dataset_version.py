@@ -38,7 +38,7 @@ class Command(PipelineCommand):
             dataset_version.copy_collection(collection)
 
         self.logger.start("index")
-        for educational_level in EducationalLevels:
+        for educational_level in [EducationalLevels.VOCATIONAL_EDUCATION, EducationalLevels.APPLIED_SCIENCE]:
             self.logger.start(f"index.level.{educational_level}")
             self._create_index(dataset_version, educational_level, should_promote)
             self.logger.end(f"index.level.{educational_level}")
