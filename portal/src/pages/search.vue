@@ -22,7 +22,7 @@
 
         <div class="search__materials">
           <Spinner v-if="materials_loading" class="spinner" />
-          <v-row v-if="materials && materials.records" class="mb-8">
+          <v-row v-if="materials && materials.records" class="mb-8" data-test="search_results">
             <v-col v-for="material in materials.records" :key="material.id" class="mb-4" cols="12">
               <MaterialListCard
                 v-if="$vuetify.breakpoint.name !== 'xs'"
