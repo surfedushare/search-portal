@@ -114,9 +114,9 @@ export default {
   actions: {
     async getFilterCategories({ state, commit }) {
       const filters = getFiltersFromQuery(router.currentRoute.query);
-      if (window.CATEGORY_FILTERS) {
-        loadCategoryFilters(window.CATEGORY_FILTERS, filters.selected, filters.dateRange);
-        commit("SET_FILTER_CATEGORIES", window.CATEGORY_FILTERS);
+      if (window.FILTER_CATEGORIES) {
+        loadCategoryFilters(window.FILTER_CATEGORIES, filters.selected, filters.dateRange);
+        commit("SET_FILTER_CATEGORIES", window.FILTER_CATEGORIES);
         commit("SET_FILTER_CATEGORIES_LOADING", null);
       } else if (isNil(state.filter_categories_loading) && isEmpty(state.filter_categories)) {
         const promise = axios.get("filter-categories/").then(({ data }) => {
