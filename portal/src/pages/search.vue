@@ -22,7 +22,18 @@
 
         <div class="search__materials">
           <Spinner v-if="materials_loading" class="spinner" />
-          <Materials :materials="materials" :did-you-mean="did_you_mean" :search-term="search.search_text" />
+          <v-row v-if="materials && materials.records" class="mb-8">
+            <v-col v-for="material in materials.records" :key="material.id" class="mb-4" cols="12">
+              <MaterialListCard
+                v-if="$vuetify.breakpoint.name !== 'xs'"
+                :material="material"
+                :handle-material-click="handleMaterialClick"
+              />
+              <MaterialCard v-else :material="material" :handle-material-click="handleMaterialClick" />
+            </v-col>
+          </v-row>
+
+          <!-- <Materials :materials="materials" :did-you-mean="did_you_mean" :search-term="search.search_text" /> -->
           <v-pagination
             v-if="
               !materials_loading && materials && materials.records && materials.records.length && materials.total_pages
@@ -43,7 +54,8 @@
 import { mapGetters } from "vuex";
 import FilterCategories from "~/components/FilterCategories/FilterCategories.vue";
 import FilterCategoriesSelection from "~/components/FilterCategories/FilterCategoriesSelection.vue";
-import Materials from "~/components/Materials/Materials.vue";
+import MaterialCard from "~/components/Materials/MaterialCard.vue";
+import MaterialListCard from "~/components/Materials/MaterialListCard.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from "~/components/_helpers";
@@ -53,7 +65,8 @@ export default {
   components: {
     FilterCategories,
     FilterCategoriesSelection,
-    Materials,
+    MaterialListCard,
+    MaterialCard,
     Spinner,
     SearchBar,
   },
@@ -137,6 +150,19 @@ export default {
         return Promise.resolve(null);
       }
       return this.$store.dispatch("getFilterCategories");
+    },
+    handleMaterialClick(material) {
+      if (this.selectFor === "add") {
+        this.$store.commit("SET_MATERIAL", material);
+      } else {
+        this.$router.push(
+          this.localePath({
+            name: "materials-id",
+            params: { id: material.external_id },
+          })
+        );
+      }
+      this.$emit("click", material);
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="material" :ripple="false" :class="{ stack: hasPart }" @click="handleMaterialClick(material)">
     <v-row>
-      <v-col class="pb-0" lg="12">
+      <v-col class="pb-0" lg="12" cols="12">
         <v-card-text v-if="material.published_at" class="pt-2 pb-0 date">{{ formattedPublishedAt }}</v-card-text>
         <v-card-title class="pt-0 mt-0 truncate2">{{ material.title }}</v-card-title>
         <v-card-text>
@@ -14,7 +14,7 @@
             />
           </v-row>
           <v-row>
-            <div class="mt-4 pl-4 description truncate3" v-html="hightlightedSearchResult"></div>
+            <div class="mt-4 pl-4 pr-4 description truncate3" v-html="hightlightedSearchResult"></div>
           </v-row>
         </v-card-text>
       </v-col>
@@ -39,7 +39,7 @@
         </v-container>
       </v-col>
     </v-row>
-    <v-card-actions>
+    <v-card-actions v-if="showActions">
       <v-chip v-if="hasPart">
         <span>{{ $t("Set") }} ({{ material.has_parts.length }})</span>
       </v-chip>
@@ -79,6 +79,9 @@ export default {
     hasAuthors() {
       return this.material.authors.length > 0;
     },
+    showActions() {
+      return this.$vuetify.breakpoint.name !== "xs" || this.hasPart || this.hasAuthors;
+    },
     formattedPublishedAt() {
       return formatDate(this.material.published_at, this.$i18n.locale);
     },
@@ -112,7 +115,6 @@ export default {
   color: @green-hover-dark;
 }
 .v-card {
-  max-width: 300px;
   border-radius: 12px;
   &__title {
     color: @green;

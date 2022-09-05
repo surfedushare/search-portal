@@ -28,7 +28,7 @@
             {{ $t("Newest-open-learning-material") }}
           </h2>
           <v-row v-if="materials && materials.records" class="materials">
-            <v-col v-for="material in materials.records" :key="material.id" lg="3">
+            <v-col v-for="material in materials.records" :key="material.id" lg="3" cols="12">
               <MaterialCard :material="material" :handle-material-click="handleMaterialClick" />
             </v-col>
           </v-row>
