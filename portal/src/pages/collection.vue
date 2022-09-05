@@ -16,7 +16,11 @@
       />
 
       <div v-if="contenteditable" class="add-materials">
-        <button class="materials__add__link button secondary" @click.prevent="showAddMaterial">
+        <button
+          data-test="add_materials_button"
+          class="materials__add__link button secondary"
+          @click.prevent="showAddMaterial"
+        >
           {{ $t("Add-materials") }}
         </button>
       </div>
@@ -35,7 +39,7 @@
     </div>
     <DeleteCollection :close="closeDeleteCollection" :is-show="isShowDeleteCollection" />
     <AddMaterialPopup
-      v-if="isShowAddMaterial"
+      v-if="isShowAddMaterial && collection"
       :close="closeAddMaterial"
       :is-show="isShowAddMaterial"
       :collection-id="collection.id"

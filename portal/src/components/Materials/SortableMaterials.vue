@@ -3,9 +3,14 @@
     <slot name="header-info"></slot>
 
     <draggable v-model="myList" class="row deleting">
-      <v-col v-for="material in myList" :key="material.external_id" class="select-delete" lg="3">
+      <v-col v-for="material in myList" data-test="materials" :key="material.external_id" class="select-delete" lg="3">
         <div v-if="material.has_bookmark" class="bookmark">Bookmark</div>
-        <button v-if="contentEditable" class="select-icon" @click="deleteFromCollection(material)" />
+        <button
+          v-if="contentEditable"
+          data-test="delete_select_icon"
+          class="select-icon"
+          @click="deleteFromCollection(material)"
+        />
         <MaterialCard :material="material" :handle-material-click="handleMaterialClick" />
       </v-col>
     </draggable>

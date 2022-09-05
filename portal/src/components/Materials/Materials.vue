@@ -20,6 +20,7 @@
         <div v-if="material.has_bookmark" class="materials__bookmark">Bookmark</div>
         <button
           v-if="contenteditable"
+          data-test="add_select_icon"
           :class="{ 'select-icon': true, selected: material.selected }"
           @click="selectMaterial(material)"
         />
