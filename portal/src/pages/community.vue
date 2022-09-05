@@ -48,6 +48,7 @@ import InfoBlock from "~/components/InfoBlock";
 import Spinner from "~/components/Spinner";
 import { localePath } from "~/i18n/plugin.routing";
 import PageMixin from "~/pages/page-mixin";
+import { require } from "util"
 
 export default {
   name: "Community",
@@ -80,7 +81,8 @@ export default {
         return communityDetails || null;
       }
       // Fill some defaults for the details
-      communityDetails.featured_image = communityDetails.featured_image || "/images/pictures/community-default.jpg";
+      communityDetails.featured_image = communityDetails.featured_image ||
+        require("../assets/images/pictures/community-default.jpg");
       return communityDetails;
     },
   },
