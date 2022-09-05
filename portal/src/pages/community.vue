@@ -48,7 +48,7 @@ import InfoBlock from "~/components/InfoBlock";
 import Spinner from "~/components/Spinner";
 import { localePath } from "~/i18n/plugin.routing";
 import PageMixin from "~/pages/page-mixin";
-import { require } from "util"
+import { require } from "util";
 
 export default {
   name: "Community",

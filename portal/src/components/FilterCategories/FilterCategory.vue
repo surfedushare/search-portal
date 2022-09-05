@@ -107,8 +107,8 @@ export default {
     },
     onChange(event) {
       const { categoryId, itemId } = event.target.dataset;
-      const category = this.$store.getters.getCategoryById(itemId, categoryId)
-      const selection = [itemId, ...category.children.map((child) => child.value )]
+      const category = this.$store.getters.getCategoryById(itemId, categoryId);
+      const selection = [itemId, ...category.children.map((child) => child.value )];
       if (event.target.checked) {
         this.$store.commit("SELECT_FILTER_CATEGORIES", {category: categoryId, selection});
       } else {
