@@ -435,8 +435,8 @@ COPYRIGHT_VALUES = [
 # Celery
 # https://docs.celeryproject.org/en/v4.1.0/
 
-CELERY_BROKER_URL = f'redis://{environment.django.redis_host}/0'
-CELERY_RESULT_BACKEND = f'redis://{environment.django.redis_host}/0'
+CELERY_BROKER_URL = f'redis://{environment.redis.host}/0'
+CELERY_RESULT_BACKEND = f'redis://{environment.redis.host}/0'
 CELERY_BEAT_SCHEDULE = {
     'harvest': {
         'task': 'harvest',

@@ -250,6 +250,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
 
 
+# Django cache
+# https://docs.djangoproject.com/en/3.2/topics/cache/
+
+if MODE != 'localhost':
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': environment.redis.host,
+        }
+    }
+
+
 # Django Webpack loader
 # https://github.com/owais/django-webpack-loader
 
