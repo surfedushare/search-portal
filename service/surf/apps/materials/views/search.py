@@ -1,46 +1,21 @@
 import logging
 
-from django.conf import settings
 from django.apps import apps
-from django.core import serializers
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db.models import Count, F, Q, QuerySet
-from django.shortcuts import get_object_or_404, render, Http404
-from django.views.decorators.gzip import gzip_page
-from rest_framework.decorators import action
-from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
+from django.db.models import F, QuerySet
+from django.shortcuts import Http404
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
-from rest_framework.viewsets import (
-    ModelViewSet
-)
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
-from rest_framework.renderers import JSONRenderer
 
-from surf.apps.communities.models import Team, Community
 from surf.apps.filters.serializers import MpttFilterItemSerializer
-from surf.apps.materials.filters import (
-    CollectionFilter
-)
-from surf.apps.materials.models import (
-    Collection,
-    Material,
-    CollectionMaterial,
-    SharedResourceCounter,
-    RESOURCE_TYPE_MATERIAL,
-    RESOURCE_TYPE_COLLECTION
-)
+from surf.apps.materials.models import Material, SharedResourceCounter, RESOURCE_TYPE_MATERIAL
 from surf.apps.materials.serializers import (
     SearchSerializer,
     KeywordsRequestSerializer,
-    SimilaritySerializer,
-    AuthorSuggestionSerializer,
     MaterialsRequestSerializer,
-    CollectionSerializer,
-    CollectionMaterialsRequestSerializer,
     MaterialShortSerializer,
-    CollectionMaterialPositionSerializer,
     SharedResourceCounterSerializer
 )
 from surf.apps.materials.utils import (
@@ -48,58 +23,12 @@ from surf.apps.materials.utils import (
     get_material_details_by_id,
     add_search_query_to_log
 )
-from surf.apps.locale.models import Locale
 from surf.apps.core.schema import SearchSchema
 from surf.vendor.search.api import SearchApiClient
 
 
 logger = logging.getLogger(__name__)
 filters_app = apps.get_app_config("filters")
-
-
-@gzip_page
-def portal_material(request, *args, **kwargs):
-    material = _get_material_by_external_id(request, kwargs["external_id"])
-    if not material:
-        raise Http404(f"Material not found: {kwargs['external_id']}")
-    return render(request, "portal/index.html", {
-        'meta_title': f"{material[0]['title']} | Edusources",
-        'meta_description': material[0]["description"],
-        'matomo_id': settings.MATOMO_ID
-    })
-
-
-@gzip_page
-def portal_single_page_application(request, *args):
-    site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
-    site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
-    filter_category_tree = filters_app.metadata.tree
-    filter_categories = MpttFilterItemSerializer(
-        filter_category_tree,
-        many=True
-    )
-    return render(request, "portal/index.html", {
-        'meta_title': "Edusources",
-        'meta_description': site_description,
-        'matomo_id': settings.MATOMO_ID,
-        'filter_categories_json': JSONRenderer().render(filter_categories.data).decode("utf-8")
-    })
-
-
-@gzip_page
-def portal_page_not_found(request, exception, template_name=None):
-    site_description_translation = Locale.objects.filter(asset="meta-site-description").last()
-    site_description = getattr(site_description_translation, request.LANGUAGE_CODE, "Edusources")
-    return render(
-        request,
-        "portal/index.html",
-        context={
-            'meta_title': "Edusources",
-            'meta_description': site_description,
-            'matomo_id': settings.MATOMO_ID
-        },
-        status=404
-    )
 
 
 class MaterialSearchAPIView(CreateAPIView):
@@ -206,52 +135,6 @@ class KeywordsAPIView(ListAPIView):
         return Response(res)
 
 
-class SimilarityAPIView(RetrieveAPIView):
-    """
-    This endpoint returns similar documents as the input document.
-    These similar documents can be offered as suggestions to look at for the user.
-    """
-
-    serializer_class = SimilaritySerializer
-    permission_classes = (AllowAny,)
-    schema = SearchSchema()
-    pagination_class = None
-    filter_backends = []
-
-    def get_object(self):
-        serializer = self.get_serializer(data=self.request.GET)
-        serializer.is_valid(raise_exception=True)
-        external_id = serializer.validated_data["external_id"]
-        language = serializer.validated_data["language"]
-        client = SearchApiClient()
-        result = client.more_like_this(external_id, language)
-        result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
-        return result
-
-
-class AuthorSuggestionsAPIView(RetrieveAPIView):
-    """
-    This endpoint returns documents where the name of the author appears in the text or metadata,
-    but is not set as author in the authors field.
-    These documents can be offered to authors as suggestions for more content from their hand.
-    """
-
-    serializer_class = AuthorSuggestionSerializer
-    permission_classes = (AllowAny,)
-    schema = SearchSchema()
-    pagination_class = None
-    filter_backends = []
-
-    def get_object(self):
-        serializer = self.get_serializer(data=self.request.GET)
-        serializer.is_valid(raise_exception=True)
-        author_name = serializer.validated_data["author_name"]
-        client = SearchApiClient()
-        result = client.author_suggestions(author_name)
-        result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
-        return result
-
-
 _MATERIALS_COUNT_IN_OVERVIEW = 4
 
 
@@ -259,7 +142,7 @@ class MaterialAPIView(APIView):
     """
     View class that provides retrieving Material by its edurep id (external_id)
     or retrieving overview of materials.
-    If external_id is exist in request data then `get()` method returns
+    If external_id exists in request data then `get()` method returns
     material by external_id, otherwise it returns overview of materials.
     """
 
@@ -337,239 +220,20 @@ def _get_material_by_external_id(request, external_id, shared=None, count_view=F
 
     rv = get_material_details_by_id(external_id)
     rv = add_extra_parameters_to_materials(filters_app.metadata, rv)
-    rv = add_share_counters_to_materials(rv)
+    rv = _add_share_counters_to_materials(rv)
     return rv
 
 
-class MaterialRatingAPIView(APIView):
-
-    def post(self, request, *args, **kwargs):
-        params = request.data.get('params')
-        external_id = params['external_id']
-        star_rating = params['star_rating']
-        material_object = Material.objects.get(external_id=external_id, deleted_at=None)
-        if star_rating == 1:
-            material_object.star_1 = F('star_1') + 1
-        if star_rating == 2:
-            material_object.star_2 = F('star_2') + 1
-        if star_rating == 3:
-            material_object.star_3 = F('star_3') + 1
-        if star_rating == 4:
-            material_object.star_4 = F('star_4') + 1
-        if star_rating == 5:
-            material_object.star_5 = F('star_5') + 1
-        material_object.save()
-        material_object.refresh_from_db()
-        return Response(material_object.get_avg_star_rating())
-
-
-class MaterialApplaudAPIView(APIView):
-
-    def post(self, request, *args, **kwargs):
-        params = request.data.get('params')
-        external_id = params['external_id']
-        material_object = Material.objects.get(external_id=external_id, deleted_at=None)
-        material_object.applaud_count = F('applaud_count') + 1
-        material_object.save()
-        material_object.refresh_from_db()
-        return Response(material_object.applaud_count)
-
-
-class CollectionMaterialPromotionAPIView(APIView):
-
-    def post(self, request, *args, **kwargs):
-        # only active and authorized users can promote materials in the collection
-        collection_instance = Collection.objects.get(id=kwargs['collection_id'])
-
-        # check whether the material is actually in the collection
-        external_id = kwargs['external_id']
-        collection_materials = CollectionMaterial.objects.filter(
-            collection=collection_instance, material__external_id=external_id)
-        if not collection_materials:
-            raise Http404()
-
-        # The material should only be in the collection once
-        assert len(collection_materials) == 1, f"Material with id {external_id} is in collection " \
-                                               f"{collection_instance} multiple times."
-        collection_material = collection_materials[0]
-        # promote or demote the material
-        collection_material.featured = not collection_material.featured
-        collection_material.save()
-
-        return Response(serializers.serialize('json', [collection_material]))
-
-
-class CollectionViewSet(ModelViewSet):
-    """
-    View class that provides CRUD methods for Collection and `get`, `add`
-    and `delete` methods for its materials.
-    """
-
-    queryset = Collection.objects \
-        .filter(deleted_at=None) \
-        .annotate(community_cnt=Count('communities', filter=Q(deleted_at=None)))
-    serializer_class = CollectionSerializer
-    filter_class = CollectionFilter
-    permission_classes = []
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-
-        shared = request.GET.get("shared")
-        if shared:
-            # increase sharing counter
-            counter_key = SharedResourceCounter.create_counter_key(
-                RESOURCE_TYPE_COLLECTION,
-                str(instance.id),
-                share_type=shared)
-
-            SharedResourceCounter.increase_counter(counter_key, extra=shared)
-
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-
-    def get_object(self):
-        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
-        self.check_object_permissions(self.request, obj)
-        if self.request.method != 'GET':
-            check_access_to_collection(self.request.user, obj)
-        return obj
-
-    @action(methods=['get', 'post', 'delete'], detail=True)
-    def materials(self, request, pk=None, **kwargs):
-        instance = self.get_object()
-
-        if request.method == "GET":
-            # validate request parameters
-            serializer = CollectionMaterialsRequestSerializer(data=request.GET)
-            serializer.is_valid(raise_exception=True)
-            data = serializer.validated_data
-            ids = [m.external_id for m in instance.materials.order_by("id").filter()]
-
-            rv = dict(records=[],
-                      records_total=0,
-                      filters=[],
-                      page=data["page"],
-                      page_size=data["page_size"])
-
-            if ids:
-                client = SearchApiClient()
-
-                res = client.get_materials_by_id(ids, 1, len(ids))
-                records = res.get("records", [])
-                records = add_extra_parameters_to_materials(filters_app.metadata, records)
-
-                collection_materials = CollectionMaterial.objects.filter(
-                    collection=instance, material__external_id__in=[r['external_id'] for r in records]
-                )
-
-                for collection_material in collection_materials:
-                    record = next(r for r in records if r['external_id'] == collection_material.material.external_id)
-                    record['featured'] = collection_material.featured
-                    record['position'] = collection_material.position
-
-                rv["records"] = records
-                rv["records_total"] = res["recordcount"]
-
-            return Response(rv)
-
-        data = []
-        for d in request.data:
-            # validate request parameters
-            if request.method == "POST":
-                serializer = CollectionMaterialPositionSerializer(data=d)
-            elif request.method == "DELETE":
-                serializer = MaterialShortSerializer(data=d)
-            else:
-                raise MethodNotAllowed(request.method, detail="Method not supported")
-
-            serializer.is_valid(raise_exception=True)
-            data.append(serializer.validated_data)
-
-        if request.method == "POST":
-            self._add_materials(instance, data)
-
-        elif request.method == "DELETE":
-            self._delete_materials(instance, data)
-
-        res = MaterialShortSerializer(many=True).to_representation(
-            instance.materials.filter(deleted_at=None)
-        )
-        return Response(res)
-
-    @staticmethod
-    def _add_materials(instance, materials):
-        """
-        Add materials to collection
-        :param instance: collection instance
-        :param materials: added materials
-        :return:
-        """
-
-        for material in materials:
-            m_external_id = material["external_id"]
-            m_position = material["position"]
-
-            details = get_material_details_by_id(m_external_id)
-            if not details:
-                continue
-
-            m, _ = Material.objects.update_or_create(external_id=m_external_id)
-            CollectionMaterial.objects.create(collection=instance, material=m, position=m_position)
-
-    @staticmethod
-    def _delete_materials(instance, materials):
-        """
-        Delete materials from collection
-        :param instance: collection instance
-        :param materials: materials that should be removed from collection
-        :return:
-        """
-
-        materials = [m["external_id"] for m in materials]
-        materials = Material.objects.filter(external_id__in=materials).all()
-        instance.materials.remove(*materials)
-
-
-def check_access_to_collection(user, instance=None):
-    """
-    Check if user is active and owner of collection (if collection
-    is not None)
-    :param user: user
-    :param instance: collection instance
-    :return:
-    """
-    if not user or not user.is_authenticated:
-        raise AuthenticationFailed()
-    try:
-        community = Community.objects.get(collections__in=[instance])
-        Team.objects.get(community=community, user=user)
-    except ObjectDoesNotExist as exc:
-        raise AuthenticationFailed(f"User {user} is not a member of a community that has collection {instance}. "
-                                   f"Error: \"{exc}\"")
-    except MultipleObjectsReturned as exc:
-        logger.warning(f"The collection {instance} is in multiple communities. Error:\"{exc}\"")
-        communities = Community.objects.filter(collections__in=[instance])
-        teams = Team.objects.filter(community__in=communities, user=user)
-        if len(teams) > 0:
-            logger.debug("At least one team satisfies the requirement of be able to delete this collection.")
-        else:
-            raise AuthenticationFailed(f"User {user} is not a member of any community with collection {instance}. "
-                                       f"Error: \"{exc}\"")
-
-
-def add_share_counters_to_materials(materials):
+def _add_share_counters_to_materials(materials):
     """
     Add share counter values for materials.
     :param materials: array of materials
     :return: updated array of materials
     """
-
     for m in materials:
         key = SharedResourceCounter.create_counter_key(RESOURCE_TYPE_MATERIAL, m["external_id"])
         qs = SharedResourceCounter.objects.filter(counter_key__contains=key)
         m["sharing_counters"] = SharedResourceCounterSerializer(many=True).to_representation(qs.all())
-
     return materials
 
 
