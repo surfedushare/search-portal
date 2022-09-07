@@ -6,7 +6,7 @@ from commands.aws.ecs import run_task
 from environments.project.configuration import create_configuration
 
 
-def run_harvester_task(ctx, mode, command, legacy_system=True, **kwargs):
+def run_harvester_task(ctx, mode, command, legacy_system=False, **kwargs):
     # On localhost we call the command directly and exit
     if ctx.config.env == "localhost":
         with ctx.cd(HARVESTER_DIR):
@@ -51,7 +51,7 @@ def load_data(ctx, mode, source, dataset, download_edurep=False):
     "version": "Version of the harvester you want to harvest with. Defaults to latest version",
     "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def harvest(ctx, mode, reset=False, no_promote=False, version=None, legacy_system=True):
+def harvest(ctx, mode, reset=False, no_promote=False, version=None, legacy_system=False):
     """
     Starts a harvest tasks on the AWS container cluster or localhost
     """
@@ -133,7 +133,7 @@ def extend_resource_cache(ctx, mode):
     "version": "Version of the harvester you want to use. Defaults to latest version",
     "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=False, legacy_system=True):
+def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=False, legacy_system=False):
     """
     Starts a task on the AWS container cluster or localhost to create the ES indices for a DatasetVersion
     """
@@ -155,7 +155,7 @@ def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=Fals
     "version_id": "Id of the DatasetVersion you want to promote",
     "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=None, legacy_system=True):
+def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=None, legacy_system=False):
     """
     Starts a task on the AWS container cluster or localhost to promote a DatasetVersion index to latest
     """

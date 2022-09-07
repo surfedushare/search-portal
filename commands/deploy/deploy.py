@@ -195,7 +195,7 @@ def deploy_service(ctx, mode, ecs_client, task_role_arn, version, legacy_system)
     "version": "Version of the project you want to deploy. Defaults to latest version",
     "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def deploy(ctx, mode, version=None, legacy_system=True):
+def deploy(ctx, mode, version=None, legacy_system=False):
     """
     Updates the container cluster in development, acceptance or production environment on AWS to run a Docker image
     """

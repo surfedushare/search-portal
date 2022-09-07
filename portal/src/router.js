@@ -60,9 +60,14 @@ export default new Router({
       name: "communities___en",
     },
     {
-      path: "/communities",
+      path: "/communitys",
       component: Communities,
       name: "communities___nl",
+    },
+    {
+      path: "/communities",
+      component: Communities,
+      name: "communities-legacy___nl",
     },
     {
       path: "/en/materials/search",
@@ -90,9 +95,18 @@ export default new Router({
       },
     },
     {
-      path: "/communities/:filterId/zoeken",
+      path: "/communitys/:filterId/zoeken",
       component: Search,
       name: "communities-search___nl",
+      meta: {
+        noAutoTrack: true,
+        filterRoot: CONSORTIUM_CATEGORY_FILTER_FIELD,
+      },
+    },
+    {
+      path: "/communities/:filterId/zoeken",
+      component: Search,
+      name: "communities-search-legacy___nl",
       meta: {
         noAutoTrack: true,
         filterRoot: CONSORTIUM_CATEGORY_FILTER_FIELD,
@@ -166,9 +180,14 @@ export default new Router({
       name: "communities-community___en",
     },
     {
-      path: "/communities/:community",
+      path: "/communitys/:community",
       component: Community,
       name: "communities-community___nl",
+    },
+    {
+      path: "/communities/:community",
+      component: Community,
+      name: "communities-community-legacy___nl",
     },
     {
       path: "/en/privacy",

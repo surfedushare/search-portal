@@ -74,7 +74,7 @@ export default {
         if (category.children) {
           category.children = category.children.map((child) => {
             if (child.children.length > 0) {
-              child.count = child.children.reduce((memo, c) => memo + c.count, 0);
+              child.count += child.children.reduce((memo, c) => memo + c.count, 0);
             }
             return child;
           });

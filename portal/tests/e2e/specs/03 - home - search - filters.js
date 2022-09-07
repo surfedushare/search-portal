@@ -53,12 +53,12 @@ describe("Home page - search - filters", () => {
       1,
       0
     );
-    // cy.selectFilter("copyright.keyword", "cc-by").selectedFiltersShouldContain(
-    //   "Gebruiksrechten",
-    //   "Naamsvermelding",
-    //   2,
-    //   1
-    // );
+    cy.selectFilter("copyright.keyword", "cc-by").selectedFiltersShouldContain(
+      "Gebruiksrechten",
+      "Naamsvermelding",
+      2,
+      1
+    );
   });
 
   it("Should filter on language", () => {

@@ -96,7 +96,7 @@ def _register_run_task_definition(ctx, ecs_client, target_info, mode, version=No
 
 
 def run_task(ctx, target, mode, command, environment=None, version=None, extra_workers=False,
-             is_harvester_command=False, legacy_system=True):
+             is_harvester_command=False, legacy_system=False):
     """
     Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
     """

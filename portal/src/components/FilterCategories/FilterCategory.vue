@@ -105,12 +105,14 @@ export default {
       }
       this.showAll = !this.showAll;
     },
-    onChange(e) {
-      const { categoryId, itemId } = e.target.dataset;
-      if (e.target.checked) {
-        this.$store.commit("SELECT_FILTER_CATEGORIES", {category: categoryId, selection: [itemId]});
+    onChange(event) {
+      const { categoryId, itemId } = event.target.dataset;
+      const category = this.$store.getters.getCategoryById(itemId, categoryId);
+      const selection = [itemId, ...category.children.map((child) => child.value )];
+      if (event.target.checked) {
+        this.$store.commit("SELECT_FILTER_CATEGORIES", {category: categoryId, selection});
       } else {
-        this.$store.commit("DESELECT_FILTER_CATEGORIES", {category: categoryId, selection: [itemId]});
+        this.$store.commit("DESELECT_FILTER_CATEGORIES", {category: categoryId, selection});
       }
       this.$emit("filter");
     },
@@ -121,8 +123,14 @@ export default {
       this.category.children.forEach((child) => {
         if (values.indexOf(child.value) >= 0) {
           check.push(child.value);
+          child.children.forEach((grantChild) => {
+            check.push(grantChild.value);
+          });
         } else {
           uncheck.push(child.value);
+          child.children.forEach((grantChild) => {
+            uncheck.push(grantChild.value);
+          });
         }
       });
       this.$store.commit(

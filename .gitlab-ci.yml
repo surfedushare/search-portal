@@ -144,8 +144,8 @@ promote-acceptance:
   variables:
     APPLICATION_MODE: acceptance
   script:
-    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login --no-legacy-system
-    - invoke aws.promote service --commit $CI_COMMIT_SHA --no-legacy-system
+    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
+    - invoke aws.promote service --commit $CI_COMMIT_SHA
 
 promote-development:
   stage: promote-and-deploy
@@ -160,5 +160,5 @@ promote-development:
   variables:
     APPLICATION_MODE: development
   script:
-    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login --no-legacy-system
-    - invoke aws.promote service --commit $CI_COMMIT_SHA --no-legacy-system
+    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
+    - invoke aws.promote service --commit $CI_COMMIT_SHA

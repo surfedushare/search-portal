@@ -150,7 +150,7 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     "version": "Which version to promote. Defaults to version specified in package.py.",
     "legacy_system": "Whether to promote only by changing the version tag. For backward compatibility only."
 })
-def promote(ctx, target, commit=None, docker_login=False, version=None, legacy_system=True):
+def promote(ctx, target, commit=None, docker_login=False, version=None, legacy_system=False):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
