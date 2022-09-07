@@ -142,6 +142,9 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
     private_subnet = next(
         (subnet["SubnetId"] for subnet in subnets_response["Subnets"] if not subnet["MapPublicIpOnLaunch"])
     )
+    print("Acquiring security groups")
+    security_groups_response = ec2_client.describe_security_groups(GroupNames=["default", "aws-services-access"])
+    security_group_ids = [security_group["GroupId"] for security_group in security_groups_response["SecurityGroups"]]
 
     print(f"Target/mode: {target}/{mode}")
     print(f"Executing: {command}")
@@ -154,12 +157,7 @@ def run_task(ctx, target, mode, command, environment=None, version=None, extra_w
         networkConfiguration={
             "awsvpcConfiguration": {
                 "subnets": [private_subnet],
-                "securityGroups": [
-                    ctx.config.aws.rds_security_group_id,
-                    ctx.config.aws.default_security_group_id,
-                    ctx.config.aws.opensearch_security_group_id,
-                    ctx.config.aws.redis_security_group_id
-                ]
+                "securityGroups": security_group_ids
             }
         },
     )
