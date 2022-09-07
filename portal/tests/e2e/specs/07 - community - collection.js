@@ -2,7 +2,7 @@ describe("Community page - collection", () => {
 
   beforeEach(function () {
     cy.visit("/mijn/collectie/b1d912ec-8c29-4051-9b3a-4b6563ab3e0a");
-    cy.setLocalStorage("surf_token", "abc123");
+    cy.setLocalStorage("surf_token", "123abc");
   });
 
   it("Should add materials to a collection", () => {
