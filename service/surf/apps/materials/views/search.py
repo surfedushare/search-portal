@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
 
+from surf.vendor.search.api import SearchApiClient
+from surf.apps.core.schema import SearchSchema
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.models import Material, SharedResourceCounter, RESOURCE_TYPE_MATERIAL
 from surf.apps.materials.serializers import (
@@ -23,8 +25,6 @@ from surf.apps.materials.utils import (
     get_material_details_by_id,
     add_search_query_to_log
 )
-from surf.apps.core.schema import SearchSchema
-from surf.vendor.search.api import SearchApiClient
 
 
 logger = logging.getLogger(__name__)
