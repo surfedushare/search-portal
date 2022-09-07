@@ -1,9 +1,11 @@
 describe("Community page - collection", () => {
+
   beforeEach(function () {
     cy.visit("/mijn/collectie/b1d912ec-8c29-4051-9b3a-4b6563ab3e0a");
+    cy.setLocalStorage("surf_token", "abc123");
   });
 
-  it.skip("Should add materials to a collection", () => {
+  it("Should add materials to a collection", () => {
     cy.get("[data-test=add_materials_button]")
       .click()
       .searchFor("esther")
@@ -15,7 +17,8 @@ describe("Community page - collection", () => {
       .eq(1)
       .click({ force: true })
       .get("[data-test=popup_add_materials_button]")
-      .should("contain", "2");
+      .should("contain", "2")
+      .click();
 
     // TODO first fix https://www.pivotaltracker.com/story/show/183180947
     // then click the button to send POST request using correct session credentials
