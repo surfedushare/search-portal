@@ -16,6 +16,9 @@ postgres:
   host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
   port: 5432
 
+redis:
+  host: "harvester.2rmfel.0001.euc1.cache.amazonaws.com:6379"
+
 open_search:
   username: null
   host: "search-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com"
