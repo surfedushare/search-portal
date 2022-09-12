@@ -174,18 +174,13 @@ def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=No
 @task(help={
     "mode": "Mode you want to dump data for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
-    "dataset": "Name of the dataset (a Greek letter) that you want to dump",
-    "download_edurep": "If edurep should be dumped, defaults to False"
+    "dataset": "Name of the dataset (a Greek letter) that you want to dump"
 })
-def dump_data(ctx, mode, dataset, download_edurep=False):
+def dump_data(ctx, mode, dataset):
     """
     Starts a task on the AWS container cluster to dump a specific Dataset and its related models
     """
     command = ["python", "manage.py", "dump_harvester_data", dataset]
-
-    if download_edurep:
-        print("Will download edurep data, this can take a while...")
-        command += ["--download-edurep"]
 
     run_harvester_task(ctx, mode, command)
 
