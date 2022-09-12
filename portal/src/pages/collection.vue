@@ -36,7 +36,7 @@
     </div>
     <DeleteCollection :close="closeDeleteCollection" :is-show="isShowDeleteCollection" />
     <AddMaterialPopup
-      v-if="isShowAddMaterial && collection"
+      v-if="isShowAddMaterial && collection && collection_materials"
       :close="closeAddMaterial"
       :is-show="isShowAddMaterial"
       :collection-id="collection.id"
