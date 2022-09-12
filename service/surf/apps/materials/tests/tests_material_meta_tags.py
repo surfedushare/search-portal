@@ -4,7 +4,7 @@ from unittest.mock import patch
 from django.conf import settings
 from django.test import TestCase, Client
 
-import surf.apps.materials.views as views
+import surf.apps.materials.views.app as views
 from surf.apps.locale.models import Locale
 from e2e_tests.helpers import get_metadata_tree_mock
 

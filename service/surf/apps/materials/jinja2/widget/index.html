@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Edusources Widget (test)</title>
+    <style type="text/css">
+        #results {
+            margin-top: 40px;
+            padding-left: 40px;
+        }
+        .result {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test</h1>
+    <p>This template works with <a href="https://palletsprojects.com/p/jinja/">Jinja2 templating</a></p>
+    <div id="results">
+        {% for record in records %}
+            <div class="result">
+                <h3>{{ record.title }}</h3>
+                <p>{{ record.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
