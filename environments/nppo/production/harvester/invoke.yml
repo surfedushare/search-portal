@@ -8,7 +8,6 @@ django:
     - "core/fixtures/initial-nppo.json"
     - "core/fixtures/initial-nppo-admin.json"
     - "metadata/fixtures/initial-metadata-nppo.json"
-  redis_host: "harvester.vkafto.0001.euc1.cache.amazonaws.com:6379"
   data_retention:
     purge_after:
       days: 5
