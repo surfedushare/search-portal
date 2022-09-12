@@ -30,11 +30,8 @@
         :loading="collection_materials_loading"
         :content-editable="contenteditable"
       />
-      <v-row v-if="!contenteditable && collection_materials" class="materials">
-        <v-col v-for="material in collection_materials.records" :key="material.id" lg="3">
-          <MaterialCard :material="material" :handle-material-click="handleMaterialClick" />
-        </v-col>
-      </v-row>
+
+      <MaterialCards v-if="!contenteditable" :materials="collection_materials" />
       <Spinner v-if="collection_materials_loading" />
     </div>
     <DeleteCollection :close="closeDeleteCollection" :is-show="isShowDeleteCollection" />
@@ -55,7 +52,7 @@ import { mapGetters } from "vuex";
 import AddMaterialPopup from "~/components/Collections/AddMaterialPopup";
 import Collection from "~/components/Collections/Collection";
 import Error from "~/components/error";
-import MaterialCard from "~/components/Materials/MaterialCard.vue";
+import MaterialCards from "~/components/Materials/MaterialCards.vue";
 import SortableMaterials from "~/components/Materials/SortableMaterials.vue";
 import DeleteCollection from "~/components/Popup/DeleteCollection";
 import Spinner from "~/components/Spinner";
@@ -64,7 +61,7 @@ import { PublishStatus } from "~/utils";
 
 export default {
   components: {
-    MaterialCard,
+    MaterialCards,
     SortableMaterials,
     Collection,
     Spinner,
@@ -166,19 +163,6 @@ export default {
         .finally(() => {
           this.submitting = false;
         });
-    },
-    handleMaterialClick(material) {
-      if (this.selectFor === "add") {
-        this.$store.commit("SET_MATERIAL", material);
-      } else {
-        this.$router.push(
-          this.localePath({
-            name: "materials-id",
-            params: { id: material.external_id },
-          })
-        );
-      }
-      this.$emit("click", material);
     },
   },
 };

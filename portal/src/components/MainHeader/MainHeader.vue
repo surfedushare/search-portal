@@ -9,11 +9,7 @@
             >)
           </p>
           <p class="acknowledge">
-            <button
-              data-test="accept_cookies_button"
-              class="button"
-              @click="acknowledgeNotification(notification.type)"
-            >
+            <button class="button" @click="acknowledgeNotification(notification.type)">
               {{ $t("Ok") }}
             </button>
           </p>

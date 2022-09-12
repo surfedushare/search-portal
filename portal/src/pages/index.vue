@@ -27,11 +27,7 @@
           <h2 class="main__materials_title">
             {{ $t("Newest-open-learning-material") }}
           </h2>
-          <v-row v-if="materials && materials.records" class="materials">
-            <v-col v-for="material in materials.records" :key="material.id" lg="3" cols="12">
-              <MaterialCard :material="material" :handle-material-click="handleMaterialClick" />
-            </v-col>
-          </v-row>
+          <MaterialCards :materials="materials"></MaterialCards>
         </div>
       </div>
 
@@ -66,20 +62,20 @@
 import numeral from "numeral";
 import { mapGetters } from "vuex";
 import PopularList from "~/components/Communities/PopularList";
-import MaterialCard from "~/components/Materials/MaterialCard.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import { generateSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
 import DOMPurify from "dompurify";
 import { isEmpty } from "lodash";
+import MaterialCards from "~/components/Materials/MaterialCards.vue";
 
 const EDUCATIONAL_LEVEL_CATEGORY_ID = "lom_educational_levels";
 
 export default {
   components: {
     PopularList,
-    MaterialCard,
     SearchBar,
+    MaterialCards,
   },
   mixins: [PageMixin],
   data() {
@@ -112,19 +108,6 @@ export default {
     this.$store.dispatch("getMaterials", { page_size: 4 });
   },
   methods: {
-    handleMaterialClick(material) {
-      if (this.selectFor === "add") {
-        this.$store.commit("SET_MATERIAL", material);
-      } else {
-        this.$router.push(
-          this.localePath({
-            name: "materials-id",
-            params: { id: material.external_id },
-          })
-        );
-      }
-      this.$emit("click", material);
-    },
     getFilterOptions(external_id) {
       if (this.filterCategories) {
         const filterCategory = this.filterCategories.find((category) => category.external_id === external_id);

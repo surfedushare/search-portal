@@ -25,8 +25,12 @@
               v-if="material.lom_educational_levels && material.lom_educational_levels.length"
               class="educationallevels"
             >
-              <span v-for="(educationalLevel, i) in material.lom_educational_levels" :key="i" class="educationallevel">
-                {{ punctuate(educationalLevel[$i18n.locale], i, material.lom_educational_levels.length) }}
+              <span
+                v-for="(educationalLevel, ix) in material.lom_educational_levels"
+                :key="ix"
+                class="educationallevel"
+              >
+                {{ punctuate(educationalLevel[$i18n.locale], ix, material.lom_educational_levels.length) }}
               </span>
             </v-col>
             <v-col

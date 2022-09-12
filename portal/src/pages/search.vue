@@ -33,7 +33,6 @@
             </v-col>
           </v-row>
 
-          <!-- <Materials :materials="materials" :did-you-mean="did_you_mean" :search-term="search.search_text" /> -->
           <v-pagination
             v-if="
               !materials_loading && materials && materials.records && materials.records.length && materials.total_pages

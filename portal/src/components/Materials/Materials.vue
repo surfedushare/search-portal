@@ -14,7 +14,7 @@
       <li
         v-for="(material, index) in selectedMaterials"
         :key="index"
-        :class="[selectMaterialClass]"
+        :class="selectMaterialClass"
         class="materials__item tile"
       >
         <div v-if="material.has_bookmark" class="materials__bookmark">Bookmark</div>

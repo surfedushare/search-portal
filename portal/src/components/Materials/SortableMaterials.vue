@@ -3,7 +3,14 @@
     <slot name="header-info"></slot>
 
     <draggable v-model="myList" class="row deleting">
-      <v-col v-for="material in myList" data-test="materials" :key="material.external_id" class="select-delete" lg="3">
+      <v-col
+        v-for="material in myList"
+        :key="material.external_id"
+        data-test="materials"
+        class="select-delete"
+        lg="3"
+        cols="12"
+      >
         <div v-if="material.has_bookmark" class="bookmark">Bookmark</div>
         <button
           v-if="contentEditable"
