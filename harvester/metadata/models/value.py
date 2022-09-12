@@ -65,7 +65,7 @@ class MetadataValue(MPTTModel):
         order_insertion_by = ['name']
 
     class Meta:
-        unique_together = ("field", "value",)
+        unique_together = ("field", "value", "site",)
 
 
 class MetadataValueSerializer(serializers.ModelSerializer):
