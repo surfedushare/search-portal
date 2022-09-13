@@ -42,7 +42,11 @@
           <Tabs :active-tab="activeTab" :select-tab="setActiveTab">
             <template v-slot:after-tabs="slotProps">
               <div v-if="slotProps.activeTab === 'collections-tab'" class="collections__add">
-                <button class="collections__add__link button" @click.prevent="showAddCollection">
+                <button
+                  data-test="add_collection_button"
+                  class="collections__add__link button"
+                  @click.prevent="showAddCollection"
+                >
                   {{ $t("New-collection") }}
                 </button>
               </div>
@@ -256,7 +260,8 @@ export default {
           }
           const errors = {};
           forEach(err.response.data, (feedback, language) => {
-            const response = JSON.parse(feedback.replace(/'/g, "\""));
+            // eslint-disable-next-line quotes
+            const response = JSON.parse(feedback.replace(/'/g, '"'));
             forEach(response, (errorMsg, key) => {
               const errorKey = key + "_" + language.toLowerCase();
               errors[errorKey] = errorMsg;

@@ -73,7 +73,7 @@
 import { mapGetters } from "vuex";
 import MaterialListCard from "./MaterialListCard.vue";
 import { isEmpty } from "lodash";
-import generateSearchMaterialsQuery from "../_helpers";
+import { generateSearchMaterialsQuery } from "../_helpers";
 
 export default {
   name: "Materials",
