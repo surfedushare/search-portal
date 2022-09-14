@@ -42,6 +42,7 @@ from surf.apps.materials.views import (
     MaterialApplaudAPIView,
     CollectionViewSet,
     CollectionMaterialPromotionAPIView,
+    widget_iframe_content,
 )
 from surf.apps.filters.views import FilterCategoryView
 from surf.apps.users.views import (
@@ -135,7 +136,9 @@ if settings.PROJECT == "edusources":
         path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name="sitemap-index"),
         path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps},
              name="django.contrib.sitemaps.views.sitemap"),
-        path('robots.txt', robots_txt)
+        path('robots.txt', robots_txt),
+        # Widget (iframe)
+        path('widget/', widget_iframe_content)
     ]
     # Translated frontend patterns
     urlpatterns += i18n_patterns(
