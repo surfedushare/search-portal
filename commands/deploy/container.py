@@ -127,13 +127,15 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     if docker_login:
         aws_docker_login(ctx)
 
-    # Check if version tag already exists in registry
+    # Check if commit tag already exists in registry
+    push_commit_tag = True
     inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{commit}", warn=True)
     if inspection.exited == 0:
-        raise Exit("Can't push for commit that already has an image in the registry")
+        print("Can't push commit tag that already has an image in the registry. Skipping.")
+        push_commit_tag = False
 
     # Tagging and pushing of our image and nginx image
-    tags = [commit]
+    tags = [commit] if push_commit_tag else []
     if push_latest:
         tags.append("latest")
     for tag in tags:
