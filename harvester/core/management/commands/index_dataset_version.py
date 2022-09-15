@@ -38,14 +38,18 @@ class Command(PipelineCommand):
             dataset_version.copy_collection(collection)
 
         self.logger.start("index")
-        for educational_level in [EducationalLevels.VOCATIONAL_EDUCATION, EducationalLevels.APPLIED_SCIENCE]:
-            self.logger.start(f"index.level.{educational_level}")
-            self._create_index(dataset_version, educational_level, should_promote)
-            self.logger.end(f"index.level.{educational_level}")
+        domains = {
+            "higher_education": [EducationalLevels.APPLIED_SCIENCE, EducationalLevels.UNIVERSITY],
+            "vocational_education": [EducationalLevels.VOCATIONAL_EDUCATION]
+        }
+        for domain, educational_levels in domains.items():
+            self.logger.start(f"index.level.{domain}")
+            self._create_index(dataset_version, educational_levels, should_promote)
+            self.logger.end(f"index.level.{domain}")
         self.logger.end("index")
 
-    def _create_index(self, dataset_version, educational_level, should_promote):
-        lang_doc_dict = dataset_version.get_search_documents_by_language(minimal_educational_level=educational_level)
+    def _create_index(self, dataset_version, educational_levels, should_promote):
+        lang_doc_dict = dataset_version.get_search_documents_by_language(educational_levels=educational_levels)
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
@@ -54,7 +58,7 @@ class Command(PipelineCommand):
             index, created = ElasticIndex.objects.get_or_create(
                 name=f"{dataset_version.dataset.name}-{dataset_version.version}-{dataset_version.id}",
                 language=lang,
-                educational_level=educational_level,
+                educational_level=educational_levels[0],
                 defaults={
                     "dataset_version": dataset_version,
                     "configuration": ElasticIndex.get_index_config(lang)
