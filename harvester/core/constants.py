@@ -56,12 +56,8 @@ PLAIN_TEXT_MIME_TYPES = [
 ]
 
 
-HIGHER_EDUCATION_LEVELS = {  # TODO: consider whether to strip this down to strict LOM without add-ons
-    "Volwasseneneducatie": 1,
-    "Praktijkonderwijs": 1,
-    "Beroepsonderwijs en Volwasseneneducatie": 1,
-    "Middenkaderopleiding": 1,
-    "MBO": 1,
+HIGHER_EDUCATION_LEVELS = {
+    "BVE": 1,
     "HBO": 2,
     "WO": 3
 }

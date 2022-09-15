@@ -19,6 +19,9 @@ postgres:
   host: "postgres"
   port: 5432
 
+redis:
+  host: "redis:6379"
+
 open_search:
   host: "opensearch:9200"
   protocol: "http"

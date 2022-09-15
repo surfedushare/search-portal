@@ -60,7 +60,7 @@ class TestCommunities(BaseLiveServerTestCase):
         )
         TeamFactory.create(user=self.user, community=my_published_community)
 
-        self.selenium.get(f"{self.live_server_url}/communities")
+        self.selenium.get(f"{self.live_server_url}/communitys")
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items"), "Publieke community"
@@ -96,7 +96,7 @@ class TestCommunities(BaseLiveServerTestCase):
 
     def test_community_overview_without_own_communities(self):
         CommunityFactory.create()
-        self.selenium.get(f"{self.live_server_url}/communities")
+        self.selenium.get(f"{self.live_server_url}/communitys")
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items"), "Ethiek"
@@ -107,7 +107,7 @@ class TestCommunities(BaseLiveServerTestCase):
     def test_community_overview_language_switch(self):
         community = CommunityFactory.create()
         TeamFactory.create(user=self.user, community=community)
-        self.selenium.get(f"{self.live_server_url}/communities")
+        self.selenium.get(f"{self.live_server_url}/communitys")
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__item"),
@@ -210,7 +210,7 @@ class TestCommunityTabVisibility(BaseLiveServerTestCase):
 
     def test_community_not_authenticated(self):
         self.community = CommunityFactory.create()
-        self.selenium.get(f"{self.live_server_url}/communities")
+        self.selenium.get(f"{self.live_server_url}/communitys")
         WebDriverWait(self.selenium, self.explicit_wait).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".communities__items"), "Ethiek"

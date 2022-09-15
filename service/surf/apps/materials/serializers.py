@@ -39,7 +39,7 @@ class SearchSerializer(serializers.Serializer):
     Serializer for material search request
     """
 
-    search_text = serializers.CharField(required=False, allow_blank=True, allow_null=True, write_only=True)
+    search_text = serializers.CharField(required=True, allow_blank=True, write_only=True)
     page = serializers.IntegerField(required=False, default=1, validators=[MinValueValidator(1)])
     page_size = serializers.IntegerField(required=False, default=10,
                                          validators=[MinValueValidator(0)])

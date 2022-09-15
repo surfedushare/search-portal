@@ -35,6 +35,7 @@ IS_AWS = environment.aws.is_aws
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environment.secrets.django.secret_key
 
+SITE_ID = 1  # should be overridden by extending settings file
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
 BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
@@ -74,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
+    'django.contrib.sites',
 
     'ckeditor',
     'mptt',
@@ -248,6 +250,18 @@ AWS_HARVESTER_BUCKET_NAME = environment.aws.harvest_content_bucket
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', '..', 'media')
 MEDIA_URL = '/media/'
+
+
+# Django cache
+# https://docs.djangoproject.com/en/3.2/topics/cache/
+
+if MODE != 'localhost':
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': environment.redis.host,
+        }
+    }
 
 
 # Django Webpack loader

@@ -28,9 +28,11 @@ class Command(base.LabelCommand):
         "core.YoutubeThumbnailResource",
         "core.PdfThumbnailResource",
         "sharekit.SharekitMetadataHarvest",
+    ]
+    metadata_models = [
         "metadata.MetadataField",
+        "metadata.MetadataValue",
         "metadata.MetadataTranslation",
-        "metadata.MetadataValue"
     ]
 
     def add_arguments(self, parser):
@@ -45,9 +47,18 @@ class Command(base.LabelCommand):
         if download_edurep:
             self.resources.append("edurep.EdurepOAIPMH")
 
-        for resource_model in self.resources:
+        delete_models = self.resources + self.metadata_models
+        for resource_model in delete_models:
+            print(f"Deleting resource {resource_model}")
             model = apps.get_model(resource_model)
             model.objects.all().delete()
+
+        load_models = [
+            *self.resources,
+            self.metadata_models[2],  # for load we need MetadataTranslations before MetadataField and MetadataValue
+            *self.metadata_models[:2]
+        ]
+        for resource_model in load_models:
             print(f"Loading resource {resource_model}")
             call_command("load_resource", resource_model)
 

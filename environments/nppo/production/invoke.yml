@@ -15,6 +15,9 @@ postgres:
   host: "nppo.cewgqm9ngaxe.eu-central-1.rds.amazonaws.com"
   port: 5432
 
+redis:
+  host: "harvester.vkafto.0001.euc1.cache.amazonaws.com:6379"
+
 open_search:
   username: null
   host: "search-nppo-main-kik7e7hcp4lbsqwdcbrlx63uz4.eu-central-1.es.amazonaws.com"
