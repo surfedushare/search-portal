@@ -65,15 +65,6 @@ describe("Home page - search - filters", () => {
     cy.selectFilter("language.keyword", "nl").selectedFiltersShouldContain("Taal", "Nederlands", 1, 0);
   });
 
-  it("Should filter on disciplines", () => {
-    cy.selectFilter("disciplines", "0861c43d-1874-4788-b522-df8be575677f").selectedFiltersShouldContain(
-      "Vakgebied",
-      "Onderwijskunde",
-      1,
-      0
-    );
-  });
-
   it("Should filter on author", () => {
     cy.selectFilter("authors.name.keyword", "Esther Quaedackers").selectedFiltersShouldContain(
       "Auteur",
