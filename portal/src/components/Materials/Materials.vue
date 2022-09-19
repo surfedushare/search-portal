@@ -1,5 +1,5 @@
 <template>
-  <section class="materials">
+  <section class="materials mb-4">
     <slot name="header-info"></slot>
     <ul
       v-if="selectedMaterials && selectedMaterials.length"
@@ -9,27 +9,24 @@
         loading: current_loading,
         deleting: selectFor === 'delete',
         adding: selectFor !== 'delete',
-        list: itemsInLine === 1,
-        tile: $vuetify.breakpoint.name === 'xs' || itemsInLine > 1,
       }"
     >
       <li
         v-for="(material, index) in selectedMaterials"
         :key="index"
-        :class="[
-          `tile--items-in-line-${itemsInLine}`,
-          `materials__item--items-in-line-${itemsInLine}`,
-          selectMaterialClass,
-        ]"
+        :class="selectMaterialClass"
         class="materials__item tile"
       >
         <div v-if="material.has_bookmark" class="materials__bookmark">Bookmark</div>
         <button
           v-if="contenteditable"
+          data-test="add_select_icon"
           :class="{ 'select-icon': true, selected: material.selected }"
           @click="selectMaterial(material)"
         />
-        <Material :material="material" :handle-material-click="handleMaterialClick" :items-in-line="itemsInLine" />
+        <div v-if="$vuetify.breakpoint.name !== 'xs'">
+          <MaterialListCard :material="material" :handle-material-click="handleMaterialClick" />
+        </div>
       </li>
     </ul>
 
@@ -74,14 +71,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { generateSearchMaterialsQuery } from "../_helpers";
-import Material from "./Material/Material";
+import MaterialListCard from "./MaterialListCard.vue";
 import { isEmpty } from "lodash";
+import { generateSearchMaterialsQuery } from "../_helpers";
 
 export default {
   name: "Materials",
   components: {
-    Material,
+    MaterialListCard,
   },
   props: {
     materials: {
@@ -93,10 +90,6 @@ export default {
       default: () => {
         return null;
       },
-    },
-    itemsInLine: {
-      type: Number,
-      default: 4,
     },
     itemsLength: {
       type: [Number, String],
@@ -225,11 +218,9 @@ export default {
 @import "./../../variables";
 .materials {
   &__items {
-    padding: 0;
-    list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
-    grid-gap: 1rem;
+    gap: 48px;
+    list-style: none;
 
     &.list {
       grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
@@ -244,9 +235,9 @@ export default {
 
     .select-icon {
       background-size: 20px 20px;
-      position: absolute;
+      position: relative;
       left: 50%;
-      top: -20px;
+      top: 15px;
       width: 40px;
       height: 40px;
       color: transparent;
@@ -273,6 +264,7 @@ export default {
       }
     }
     &.adding {
+      gap: unset;
       .select-icon {
         background: @light-grey url("../../assets/images/plus-black.svg") 50% 50% no-repeat;
       }

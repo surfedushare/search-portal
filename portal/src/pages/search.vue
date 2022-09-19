@@ -18,27 +18,21 @@
             {{ $t("Search-results") }}
             <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
           </h2>
-
-          <button
-            :class="{
-              'search__tools_type_button--list': materials_in_line === 3,
-              'search__tools_type_button--cards': materials_in_line === 1,
-            }"
-            class="search__tools_type_button"
-            @click.prevent="changeViewType"
-          >
-            {{ materials_in_line === 1 ? $t("Card-view") : $t("List-view") }}
-          </button>
         </div>
 
         <div class="search__materials">
           <Spinner v-if="materials_loading" class="spinner" />
-          <Materials
-            :materials="materials"
-            :items-in-line="materials_in_line"
-            :did-you-mean="did_you_mean"
-            :search-term="search.search_text"
-          />
+          <v-row v-if="materials && materials.records" class="mb-8" data-test="search_results">
+            <v-col v-for="material in materials.records" :key="material.id" class="mb-4" cols="12">
+              <MaterialListCard
+                v-if="$vuetify.breakpoint.name !== 'xs'"
+                :material="material"
+                :handle-material-click="handleMaterialClick"
+              />
+              <MaterialCard v-else :material="material" :handle-material-click="handleMaterialClick" />
+            </v-col>
+          </v-row>
+
           <v-pagination
             v-if="
               !materials_loading && materials && materials.records && materials.records.length && materials.total_pages
@@ -59,7 +53,8 @@
 import { mapGetters } from "vuex";
 import FilterCategories from "~/components/FilterCategories/FilterCategories.vue";
 import FilterCategoriesSelection from "~/components/FilterCategories/FilterCategoriesSelection.vue";
-import Materials from "~/components/Materials/Materials.vue";
+import MaterialCard from "~/components/Materials/MaterialCard.vue";
+import MaterialListCard from "~/components/Materials/MaterialListCard.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from "~/components/_helpers";
@@ -69,7 +64,8 @@ export default {
   components: {
     FilterCategories,
     FilterCategoriesSelection,
-    Materials,
+    MaterialListCard,
+    MaterialCard,
     Spinner,
     SearchBar,
   },
@@ -100,7 +96,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["materials", "materials_loading", "materials_in_line", "did_you_mean"]),
+    ...mapGetters(["materials", "materials_loading", "did_you_mean"]),
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
     },
@@ -147,20 +143,25 @@ export default {
         this.$router.push(generateSearchMaterialsQuery(this.search, this.$route.name));
         this.$store.dispatch("searchMaterials", search);
       }
-    } /*         Change 1 item in line to 3 and back       */,
-    changeViewType() {
-      if (this.materials_in_line === 1) {
-        this.$store.dispatch("searchMaterialsInLine", 3);
-      } else {
-        this.$store.dispatch("searchMaterialsInLine", 1);
-      }
-    } /*         Event the ordering item       */,
-
+    },
     loadFilterCategories() {
       if (this.$route.name.startsWith("mat")) {
         return Promise.resolve(null);
       }
       return this.$store.dispatch("getFilterCategories");
+    },
+    handleMaterialClick(material) {
+      if (this.selectFor === "add") {
+        this.$store.commit("SET_MATERIAL", material);
+      } else {
+        this.$router.push(
+          this.localePath({
+            name: "materials-id",
+            params: { id: material.external_id },
+          })
+        );
+      }
+      this.$emit("click", material);
     },
   },
 };
@@ -274,7 +275,7 @@ export default {
       left: 0;
     }
     &_results {
-      margin-left: 25px;
+      margin-left: 50px;
       @media @mobile {
         display: flex;
         margin-left: 0px;
@@ -338,6 +339,7 @@ export default {
   &__materials {
     position: relative;
     padding-left: 25px;
+    margin-top: 25px;
 
     @media @wide {
       width: auto;

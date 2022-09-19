@@ -4,7 +4,7 @@
       <div class="content-container center_block">
         <div class="flex-container">
           <h2 class="popup__title">{{ $t("Add-materials-to-collection") }}</h2>
-          <button class="button secondary" @click.prevent="onSaveMaterials">
+          <button data-test="popup_add_materials_button" class="button secondary" @click.prevent="onSaveMaterials">
             {{ $t("Add-selected-materials", { count: selection.length }) }}
           </button>
         </div>
