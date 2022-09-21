@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.gzip import gzip_page
+from django.views.decorators.clickjacking import xframe_options_exempt
 from rest_framework.exceptions import ValidationError
 
 from surf.vendor.search.api import SearchApiClient
@@ -11,6 +12,7 @@ from surf.apps.materials.utils import add_extra_parameters_to_materials
 filters_app = apps.get_app_config("filters")
 
 
+@xframe_options_exempt
 @gzip_page
 def widget_iframe_content(request):
     serializer = SearchSerializer(data=request.GET)
