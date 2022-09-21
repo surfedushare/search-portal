@@ -140,7 +140,19 @@ footer img {
      width: 22px;
      background: url("/static/materials/images/edulevel.svg") 0px 0px / contain no-repeat;
 }
-
+.set_count {
+    font-size: 16px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.4em;
+}
+.set_count:before {
+     content: "";
+     height: 22px;
+     width: 22px;
+     background: url("/static/materials/images/docs.svg") 0px 0px / contain no-repeat;
+}
 .format_kind {
     font-size: 16px;
     display: flex;

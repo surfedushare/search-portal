@@ -58,6 +58,9 @@
                                 </div>
 
                             {% endif %}
+                            {% if record.has_parts %}
+                                <div class="row set_count mb-4"> {{ record.has_parts|length }} materialen </div>
+                            {% endif %}
                             {% if record.technical_type != "unknown" %}
                                 <div class="row mt-4 format_kind format_{{ record.technical_type }}">{{ record.technical_type }}</div>
                             {%  endif %}
