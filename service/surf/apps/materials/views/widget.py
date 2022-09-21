@@ -5,6 +5,7 @@ from rest_framework.exceptions import ValidationError
 
 from surf.vendor.search.api import SearchApiClient
 from surf.apps.materials.serializers import SearchSerializer
+from surf.apps.materials.utils import add_extra_parameters_to_materials
 
 
 filters_app = apps.get_app_config("filters")
@@ -22,6 +23,7 @@ def widget_iframe_content(request):
     client = SearchApiClient()
     res = client.search(**data)
     records = res["records"]
+    records = add_extra_parameters_to_materials(filters_app.metadata, records)
     return render(request, "widget/index.html", {
         "records": records
     })

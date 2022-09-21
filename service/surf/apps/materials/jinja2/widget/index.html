@@ -15,13 +15,13 @@
 <body class="v-application">
 
     <header class="row">
-        <img src="/static/materials/images/widget-background-top.svg">
+        <img src="/static/materials/images/widget-background-top.svg" onclick="window.open('{{ request.build_absolute_uri('/') }}')">
     </header>
 
     <div id="results" class="row">
     {% for record in records %}
         <div class="mb-4 col col-12">
-            <div tabindex="0" class="v-card v-card--link v-sheet theme--light">
+            <div tabindex="0" class="v-card v-card--link v-sheet theme--light {% if record.has_parts %}stack{% endif %}" onclick="window.open('{{ request.build_absolute_uri('/') }}')">
                 <div class="row">
                     <div class="mx-auto col-sm-8 col-md-9 col">
                         <div class="v-card__text pb-0 date">{{ record.published_at }}</div>
@@ -29,22 +29,12 @@
                         <div class="v-card__text">
                             <div class="row mx-0 align-center">
                                 <div class="star-rating star-rating--default">
-                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
-                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="1">
+                                    {% for ix in range(1, 6) %}
+                                    <label class="star-rating__star star-rating__star--dark-stars {% if record.avg_star_rating >= ix %}is-selected{% else %}is-disabled{% endif %}">
+                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="{{ ix }}">
                                     </label>
-                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
-                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="2">
-                                    </label>
-                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
-                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="3">
-                                    </label>
-                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
-                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="4">
-                                    </label>
-                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
-                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="5">
-                                    </label>
-                                    <span class="star-rating__counter">(0)</span>
+                                    {% endfor %}
+                                    <span class="star-rating__counter">({{ record.count_star_rating }})</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -56,13 +46,31 @@
                     </div>
                     <div class="mt-14 pl-6 col-sm-4 col-md-3 col-lg-3 col">
                         <div class="container">
-                            <div class="row educationallevels mt-0 mb-4"><span class="educationallevel"> WO </span></div>
-                            <div class="row mt-4 format_kind format_website"> Website</div>
+                            {% if record.lom_educational_levels %}
+                                {% set lom_educational_levels_joint = joiner() %}
+                                <div class="row educationallevels mt-0 mb-4">
+                                    <span class="educationallevel">
+                                    {% for educational_level in record.lom_educational_levels %}
+                                        {{ lom_educational_levels_joint() }}
+                                        {{ educational_level.nl }}
+                                    {% endfor %}
+                                    </span>
+                                </div>
+
+                            {% endif %}
+                            {% if record.technical_type != "unknown" %}
+                                <div class="row mt-4 format_kind format_{{ record.technical_type }}">{{ record.technical_type }}</div>
+                            {%  endif %}
                         </div>
                     </div>
                 </div>
                 <div class="v-card__actions">
-                    <div class="author"> Esther Quaedackers</div>
+                    {% if record.has_parts %}
+                    <span class="v-chip v-chip--no-color theme--light v-size--default">
+                        <span class="v-chip__content"><span >Verzameling</span></span>
+                    </span>
+                    {% endif %}
+                    <div class="author">{{ record.authors|join(", ") }}</div>
                 </div>
             </div>
         </div>
@@ -71,6 +79,9 @@
 
     <footer class="row">
         <img src="/static/materials/images/widget-background-bottom.svg">
+        <button class="button all-results-button" onclick="window.open('{{ request.build_absolute_uri('/') }}')">
+            Bekijk alle resultaten
+        </button>
     </footer>
 
 </body>
