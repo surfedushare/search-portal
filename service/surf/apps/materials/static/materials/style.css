@@ -67,7 +67,7 @@ footer img {
      background: transparent url("/static/materials/images/card-flip.svg") 100.2% -2px no-repeat;
  }
 .truncate2 {
-    height: 54px;
+    height: 64px;
     line-height: 24px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
