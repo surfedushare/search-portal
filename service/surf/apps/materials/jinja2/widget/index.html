@@ -2,29 +2,77 @@
 <html>
 
 <head>
+
     <title>Edusources Widget (test)</title>
-    <style type="text/css">
-        #results {
-            margin-top: 40px;
-            padding-left: 40px;
-        }
-        .result {
-            margin-bottom: 40px;
-        }
-    </style>
+
+    <link href="{{ static("/materials/fonts/Source_Sans_Pro/web/stylesheet.css") }}" rel="stylesheet">
+    <link href="{{ static("/materials/fonts/nunito/stylesheet.css") }}" rel="stylesheet">
+    <link href="{{ static("/vuetify/vuetify.2.6.9.min.css") }}" rel="stylesheet">
+    <link href="{{ static("/materials/style.css") }}" rel="stylesheet">
+
 </head>
 
-<body>
-    <h1>Test</h1>
-    <p>This template works with <a href="https://palletsprojects.com/p/jinja/">Jinja2 templating</a></p>
-    <div id="results">
-        {% for record in records %}
-            <div class="result">
-                <h3>{{ record.title }}</h3>
-                <p>{{ record.description }}</p>
+<body class="v-application">
+
+    <header class="row">
+        <img src="/static/materials/images/widget-background-top.svg">
+    </header>
+
+    <div id="results" class="row">
+    {% for record in records %}
+        <div class="mb-4 col col-12">
+            <div tabindex="0" class="v-card v-card--link v-sheet theme--light">
+                <div class="row">
+                    <div class="mx-auto col-sm-8 col-md-9 col">
+                        <div class="v-card__text pb-0 date">{{ record.published_at }}</div>
+                        <div class="v-card__title pt-4 mt-0 truncate2">{{ record.title }}</div>
+                        <div class="v-card__text">
+                            <div class="row mx-0 align-center">
+                                <div class="star-rating star-rating--default">
+                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
+                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="1">
+                                    </label>
+                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
+                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="2">
+                                    </label>
+                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
+                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="3">
+                                    </label>
+                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
+                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="4">
+                                    </label>
+                                    <label class="star-rating__star is-disabled star-rating__star--dark-stars">
+                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="5">
+                                    </label>
+                                    <span class="star-rating__counter">(0)</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mt-4 pl-4 description truncate3">
+                                    {{ record.description }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-14 pl-6 col-sm-4 col-md-3 col-lg-3 col">
+                        <div class="container">
+                            <div class="row educationallevels mt-0 mb-4"><span class="educationallevel"> WO </span></div>
+                            <div class="row mt-4 format_kind format_website"> Website</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="v-card__actions">
+                    <div class="author"> Esther Quaedackers</div>
+                </div>
             </div>
-        {% endfor %}
+        </div>
+    {% endfor %}
     </div>
+
+    <footer class="row">
+        <img src="/static/materials/images/widget-background-bottom.svg">
+    </footer>
+
 </body>
 
 </html>
