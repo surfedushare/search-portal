@@ -18,6 +18,7 @@
             {{ $t("Search-results") }}
             <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
           </h2>
+          <button @click="toggleShareSearchPopup">share</button>
         </div>
 
         <div class="search__materials">
@@ -46,6 +47,7 @@
         </div>
       </div>
     </div>
+    <ShareSearchPopup :show-popup="showShareSearchPopup" :close="toggleShareSearchPopup" />
   </section>
 </template>
 
@@ -59,6 +61,7 @@ import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
+import ShareSearchPopup from "~/components/Popup/ShareSearchPopup";
 
 export default {
   components: {
@@ -68,6 +71,7 @@ export default {
     MaterialCard,
     Spinner,
     SearchBar,
+    ShareSearchPopup,
   },
   mixins: [PageMixin],
   dependencies: ["$log"],
@@ -93,6 +97,7 @@ export default {
       formData: {
         name: null,
       },
+      showShareSearchPopup: false,
     };
   },
   computed: {
@@ -162,6 +167,9 @@ export default {
         );
       }
       this.$emit("click", material);
+    },
+    toggleShareSearchPopup() {
+      this.showShareSearchPopup = !this.showShareSearchPopup;
     },
   },
 };
