@@ -1,8 +1,47 @@
+/**********************************
+* Vuetify overrides
+**********************************/
+
 .v-application {
     padding: 20px;
     flex-direction: column;
     font-family: 'Source Sans Pro', Arial, sans-serif;
 }
+
+.v-card:hover .v-card__title {
+    color: #006731;
+}
+
+.v-card {
+    border-radius: 12px;
+}
+
+.v-card__title {
+    color: #008741;
+    font-weight: 700;
+}
+
+.v-chip {
+    background: #008741 !important;
+    color: #fff !important;
+    min-width: fit-content !important;
+    height: 30px !important;
+}
+
+.v-card__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: lightgray;
+    flex-direction: row-reverse;
+    height: 48px;
+}
+
+
+/**********************************
+* Document structure
+**********************************/
 
 header.row, footer.row {
     position: relative;
@@ -16,7 +55,6 @@ footer.row {
 }
 #results {
     margin: 0;
-    background: url("/static/materials/images/widget-background-center.svg") 50% 0 repeat-y;
 }
 header img, footer img {
     width: 50%;
@@ -24,6 +62,12 @@ header img, footer img {
 footer img {
     margin-bottom: 50px;
 }
+
+
+/**********************************
+* User interaction
+**********************************/
+
 .button {
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -53,19 +97,16 @@ footer img {
     top: 50px;
     left: 50px;
 }
-.v-card:hover .v-card__title {
-    color: #006731;
-}
-.v-card {
-    border-radius: 12px;
-}
-.v-card__title {
-     color: #008741;
-     font-weight: 700;
-}
+
+
+/**********************************
+* Card styling
+**********************************/
+
 .stack {
      background: transparent url("/static/materials/images/card-flip.svg") 100.2% -2px no-repeat;
  }
+
 .truncate2 {
     height: 64px;
     line-height: 24px;
@@ -85,6 +126,7 @@ footer img {
     margin: 0 0 1em 0;
     overflow: hidden;
 }
+
 .description {
     line-height: 22px;
     color: black;
@@ -93,15 +135,7 @@ footer img {
     background-color: yellow;
     font-style: normal;
 }
-.v-card__actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background: lightgray;
-    flex-direction: row-reverse;
-    height: 48px;
-}
+
 .author {
     width: 100%;
     white-space: nowrap;
@@ -111,16 +145,11 @@ footer img {
 .author_none {
      color: #686d75;
 }
+
 .date {
     color: #686d75;
     font-weight: 700;
     min-height: 38px;
-}
-.v-chip {
-    background: #008741 !important;
-    color: #fff !important;
-    min-width: fit-content !important;
-    height: 30px !important;
 }
 
 .material_info {
@@ -140,6 +169,7 @@ footer img {
      width: 22px;
      background: url("/static/materials/images/edulevel.svg") 0px 0px / contain no-repeat;
 }
+
 .set_count {
     font-size: 16px;
     display: flex;
@@ -153,6 +183,7 @@ footer img {
      width: 22px;
      background: url("/static/materials/images/docs.svg") 0px 0px / contain no-repeat;
 }
+
 .format_kind {
     font-size: 16px;
     display: flex;
@@ -192,6 +223,11 @@ footer img {
 .format_website:before {
      background: url("/static/materials/images/website.svg") 0px 0px / contain no-repeat;
 }
+
+
+/**********************************
+* Star ratings
+**********************************/
 
 .star-rating__checkbox {
      position: absolute;
