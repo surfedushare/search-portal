@@ -43,24 +43,66 @@
 * Document structure
 **********************************/
 
-header.row, footer.row {
-    position: relative;
-    margin: 0 !important;
+#header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 60px;
+    padding: 10px;
+    background-color: white;
+    line-height: 60px
 }
-header.row {
-    justify-content: right;
+.logo-prefix {
+    float: left;
+    line-height: 40px;
+    padding: 0 20px;
 }
-footer.row {
-    justify-content: left;
+.logo {
+    width: 165px;
+    height: 40px;
+    cursor: pointer;
 }
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    padding: 0 10px 10px 30px;
+    line-height: 50px;
+    background: transparent;
+}
+
 #results {
-    margin: 0;
+    margin: 40px 0 35px;
 }
-header img, footer img {
+
+#left-background {
+    box-sizing: border-box;
+    position: absolute;
+    z-index: -1;
+    bottom: 30px;
+    left: 0;
+    height: 50%;
     width: 50%;
+    border-width: 3px;
+    border-color: #EA7600;
+    border-style: none solid solid none;
+    border-radius: 0 0 45px 0;
 }
-footer img {
-    margin-bottom: 50px;
+
+#right-background {
+    box-sizing: content-box;
+    position: absolute;
+    z-index: -1;
+    top: 30px;
+    right: 0;
+    height: 50%;
+    width: 50%;
+    border-width: 3px;
+    border-color: #EA7600;
+    border-style: solid none none solid;
+    border-radius: 45px 0 0 0
 }
 
 
@@ -91,11 +133,6 @@ footer img {
     transition: background-color .2s;
     cursor: pointer;
     white-space: nowrap;
-}
-.all-results-button {
-    position: absolute;
-    top: 50px;
-    left: 50px;
 }
 
 

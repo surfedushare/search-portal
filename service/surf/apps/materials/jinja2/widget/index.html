@@ -14,8 +14,8 @@
 
 <body class="v-application">
 
-    <header class="row">
-        <img src="/static/materials/images/widget-background-top.svg" onclick="window.open('{{ request.build_absolute_uri('/') }}')">
+    <header id="header">
+        <span class="logo-prefix">powered by</span> <img class="logo" src="{{ static("/edusources_logo.png") }}"/>
     </header>
 
     <div id="results" class="row">
@@ -63,7 +63,7 @@
                             {% endif %}
                             {% if record.technical_type != "unknown" %}
                                 <div class="row mt-4 format_kind format_{{ record.technical_type }}">{{ record.technical_type }}</div>
-                            {%  endif %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -80,12 +80,14 @@
     {% endfor %}
     </div>
 
-    <footer class="row">
-        <img src="/static/materials/images/widget-background-bottom.svg">
-        <button class="button all-results-button" onclick="window.open('{{ request.build_absolute_uri('/') }}')">
+    <footer id="footer">
+        <button onclick="window.open('{{ request.build_absolute_uri('/') }}')">
             Bekijk alle resultaten
         </button>
     </footer>
+
+    <div id="left-background"></div>
+    <div id="right-background"></div>
 
 </body>
 
