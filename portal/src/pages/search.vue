@@ -18,7 +18,9 @@
             {{ $t("Search-results") }}
             <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
           </h2>
-          <button @click="toggleShareSearchPopup">share</button>
+          <v-btn outlined x-large class="secondary" @click="toggleShareSearchPopup">
+            <v-icon left dark>fa-share</v-icon> share
+          </v-btn>
         </div>
 
         <div class="search__materials">

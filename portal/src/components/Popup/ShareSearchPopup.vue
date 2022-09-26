@@ -5,7 +5,7 @@
         <h2 class="popup__title">
           {{ $t("Share-search-popup-title") }}
         </h2>
-        <v-form ref="form" v-model="valid"  lazy-validation>
+        <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col>
               <v-text-field
@@ -43,10 +43,12 @@
           >
             <div class="iframe-code-block">{{ iframeCodeBlock }}</div>
           </v-sheet>
-          <button @click.prevent="isShow = false" class="button">{{ $t("Share-search-popup-cancel") }}</button>
-          <button @click.prevent="copyIframeCodeBlock" :disabled="!valid" type="submit" class="button">
+          <v-btn class="secondary button" x-large outlined @click.prevent="isShow = false">
+            {{ $t("Share-search-popup-cancel") }}
+          </v-btn>
+          <v-btn :disabled="!valid" x-large outlined class="button accent" @click.prevent="copyIframeCodeBlock">
             {{ $t("Share-search-popup-copy") }}
-          </button>
+          </v-btn>
         </v-form>
       </slot>
     </Popup>
@@ -82,12 +84,7 @@ export default {
       width: "640",
       height: "480",
       language: "nl",
-    }
-  },
-  watch: {
-    showPopup(newValue) {
-      this.isShow = newValue;
-    }
+    };
   },
   computed: {
     widthRules() {
@@ -106,9 +103,14 @@ export default {
       if(!this.valid) {
         return;
       }
-      const width = this.width
-      const height = this.height
-      return `<iframe width="${width}" height="${height}" src="secret-chocolate-sauce"/>`
+      const width = this.width;
+      const height = this.height;
+      return `<iframe width="${width}" height="${height}" src="secret-chocolate-sauce"/>`;
+    }
+  },
+  watch: {
+    showPopup(newValue) {
+      this.isShow = newValue;
     }
   },
   methods: {
