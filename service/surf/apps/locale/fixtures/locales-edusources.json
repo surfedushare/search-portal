@@ -261,12 +261,32 @@
 },
 {
     "model": "locale.locale",
+    "pk": "0eb67df1-2c76-4fc0-8f4a-fec2d0e65258",
+    "fields": {
+        "asset": "unknown-copyright",
+        "en": "Unknown",
+        "nl": "Onbekend",
+        "is_fuzzy": true
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "0fb962fe-1e81-44ca-9e63-89bb75f5ecff",
     "fields": {
         "asset": "My-communities",
         "en": "My communities",
         "nl": "Mijn community's",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "102d5de2-c920-477b-9112-a905f7831bb6",
+    "fields": {
+        "asset": "Share-search-popup-copy",
+        "en": "Copy code",
+        "nl": "Kopieer code",
+        "is_fuzzy": true
     }
 },
 {
@@ -591,6 +611,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "301fb719-af0c-401e-bc48-78a8676d26f3",
+    "fields": {
+        "asset": "Question-popup-send",
+        "en": "Send",
+        "nl": "Verstuur",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "30d7125b-100b-4946-a17a-a1665898a30d",
     "fields": {
         "asset": "Add-material-to-collection",
@@ -821,6 +851,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "419d2cb3-8048-438c-aaaf-93932a4b47e2",
+    "fields": {
+        "asset": "Question-popup-email",
+        "en": "E-mail address",
+        "nl": "Email adres",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "42a6866f-ab9a-414b-8207-c9bd3be40d79",
     "fields": {
         "asset": "Footer-info-text",
@@ -1031,6 +1071,26 @@
 },
 {
     "model": "locale.locale",
+    "pk": "55f5e5a5-092c-464b-95c0-c4867740739c",
+    "fields": {
+        "asset": "Share-search-popup-language",
+        "en": "Language",
+        "nl": "Taal",
+        "is_fuzzy": true
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "5625e130-093b-4bc2-bda9-98f56786d052",
+    "fields": {
+        "asset": "all-disciplines",
+        "en": "all disciplines",
+        "nl": "alle vakgebieden",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "5629aa6f-b810-4098-b0ca-c0d198f14f04",
     "fields": {
         "asset": "My-privacy",
@@ -1077,6 +1137,16 @@
         "en": "“The best collaborations create something bigger than the sum of what each person can create on their own”",
         "nl": "\"Alleen ga je sneller en samen kom je verder.\"",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "58d97eb3-cc0a-4b2e-b0c6-cea100a3f6f1",
+    "fields": {
+        "asset": "No-results-for-filters",
+        "en": "There are no results with these filters",
+        "nl": "Er zijn geen resultaten met deze filters",
+        "is_fuzzy": true
     }
 },
 {
@@ -2081,6 +2151,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "a43a3cf2-891a-4122-808c-0ace57df686e",
+    "fields": {
+        "asset": "Share-search-popup-height",
+        "en": "Height",
+        "nl": "Hoogte",
+        "is_fuzzy": true
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "a45b84ba-5acd-49bc-b7a2-25662e6d05ca",
     "fields": {
         "asset": "cc0-10",
@@ -2231,6 +2311,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "afd213fa-0988-4a17-bfa8-4b97d0820638",
+    "fields": {
+        "asset": "Question-popup-title",
+        "en": "Ask a question",
+        "nl": "Stel een vraag",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "b06f3fd2-de5f-4f67-8633-9f66b9c4aca6",
     "fields": {
         "asset": "Tevreden",
@@ -2303,7 +2393,7 @@
     "model": "locale.locale",
     "pk": "b5621161-7bca-41b1-aa48-42170feeb3d2",
     "fields": {
-        "asset": "Study",
+        "asset": "Discipline",
         "en": "Study",
         "nl": "Studie",
         "is_fuzzy": false
@@ -2501,12 +2591,32 @@
 },
 {
     "model": "locale.locale",
+    "pk": "bd291665-46b3-4996-9a5d-54f634bbea65",
+    "fields": {
+        "asset": "errors.fieldValidEmail",
+        "en": "Field should be a valid e-mail address",
+        "nl": "Veld moet een valide email adres zijn",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "bdc2701e-860b-491e-8d6c-5ff932a52d69",
     "fields": {
         "asset": "Name-for-collection",
         "en": "Name for collection",
         "nl": "Naam voor collectie",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "be0733a4-a15f-43b5-9f2f-6ab5023d575b",
+    "fields": {
+        "asset": "Share-search-popup-cancel",
+        "en": "Cancel",
+        "nl": "Annuleer",
+        "is_fuzzy": true
     }
 },
 {
@@ -2531,12 +2641,32 @@
 },
 {
     "model": "locale.locale",
+    "pk": "bef85b80-df44-4e21-b6d7-507da63a4514",
+    "fields": {
+        "asset": "No-disciplines",
+        "en": "No disciplines",
+        "nl": "Geen vakgebieden",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "bf134303-1795-4650-a501-4285f1d8d39d",
     "fields": {
         "asset": "Filter-selection",
         "en": "Filter selection",
         "nl": "Filterselectie",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "bf38bc02-c1e1-4e89-8dcd-96ee3568d11a",
+    "fields": {
+        "asset": "errors.fieldValidNumber",
+        "en": "Field should be a valid number",
+        "nl": "Veld moet een nummer zijn",
+        "is_fuzzy": true
     }
 },
 {
@@ -2576,6 +2706,16 @@
         "asset": "Idea",
         "en": "Professional vocabulary",
         "nl": "Vakvocabulaire",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "c5788b44-a058-42b2-aabb-4a414fc50961",
+    "fields": {
+        "asset": "Study",
+        "en": "Study",
+        "nl": "Studie",
         "is_fuzzy": false
     }
 },
@@ -2671,6 +2811,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "ce1aca60-a6bb-423a-95c1-324da50ee1a3",
+    "fields": {
+        "asset": "Authors-Unknown",
+        "en": "Author(s) unknown",
+        "nl": "Auteur(s) onbekend",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "cf0962bc-4a4b-4367-a30d-6a6be2c5e101",
     "fields": {
         "asset": "Education-themes",
@@ -2686,6 +2836,16 @@
         "asset": "cc-by-sa",
         "en": "Attribution-ShareAlike",
         "nl": "Naamsvermelding-GelijkDelen",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "d0bdbe38-f664-4284-be6a-fa4cee47f929",
+    "fields": {
+        "asset": "Question",
+        "en": "Question?",
+        "nl": "Vraag?",
         "is_fuzzy": false
     }
 },
@@ -2871,6 +3031,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "dd23314e-6e9a-4a6e-b988-7660c81af172",
+    "fields": {
+        "asset": "Share-search-popup-width",
+        "en": "Width",
+        "nl": "Breedte",
+        "is_fuzzy": true
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "dd8db5f7-3cde-4f8d-b0a2-34dd0da3e884",
     "fields": {
         "asset": "welcome-title",
@@ -2891,6 +3061,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "deb8d71c-7dcb-4381-ac38-d50cb6296606",
+    "fields": {
+        "asset": "Question-popup-name",
+        "en": "Name",
+        "nl": "Naam",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "def3d4e0-19af-494a-9a8a-5540d7e30830",
     "fields": {
         "asset": "cancel",
@@ -2906,6 +3086,16 @@
         "asset": "Share-collection",
         "en": "Share collection",
         "nl": "Collectie delen",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "df68ca28-011c-4de8-bd2f-cac271e5b7f9",
+    "fields": {
+        "asset": "Question-popup-message",
+        "en": "Your question",
+        "nl": "Je vraag",
         "is_fuzzy": false
     }
 },
@@ -2944,8 +3134,8 @@
     "pk": "e0b79476-1222-4d61-9c02-b67e16a6a25f",
     "fields": {
         "asset": "Reset-filters",
-        "en": "clear filters",
-        "nl": "wis filters",
+        "en": "Clear filters",
+        "nl": "Wis filters",
         "is_fuzzy": false
     }
 },
@@ -3027,6 +3217,16 @@
         "en": "Theme Health",
         "nl": "Thema Gezondheid",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "e57dfd86-cef3-4691-925d-1875cda4fe2c",
+    "fields": {
+        "asset": "Share-search-popup-title",
+        "en": "Share these results on your own site",
+        "nl": "Deel deze resultaten op je eigen site",
+        "is_fuzzy": true
     }
 },
 {
@@ -3126,6 +3326,16 @@
         "asset": "date_descending",
         "en": "Date descending",
         "nl": "Datum aflopend",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "e9ba1ee0-589c-4fec-b35a-fe7ecc4615b0",
+    "fields": {
+        "asset": "errors.fieldRequired",
+        "en": "Field is required",
+        "nl": "Veld is verplicht",
         "is_fuzzy": false
     }
 },
@@ -3521,6 +3731,16 @@
 },
 {
     "model": "locale.localehtml",
+    "pk": "0f6b452f-1870-4259-8cde-f6bac912ad1d",
+    "fields": {
+        "asset": "Question-popup-subtext",
+        "en": "<p>You can ask a question by using the form below or by e-mailing <strong>info@edusources.nl</strong>.</p>",
+        "nl": "<p>Je kunt een vraag stellen via onderstaand formulier of door een e-mail te sturen naar<strong> info@edusources.nl</strong>.</p>",
+        "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.localehtml",
     "pk": "124ef575-93dc-4981-a372-fae3e1e6e6e2",
     "fields": {
         "asset": "kunst-en-cultuur-thema-beschrijving",
@@ -3535,7 +3755,7 @@
     "fields": {
         "asset": "institutions-info",
         "en": "<p>The list of participating institutions&nbsp;will be added soon.</p>",
-        "nl": "<p>Hier wordt binnenkort de lijst met deelnemende instellingen getoond.</p>",
+        "nl": "<div class=\"v-data-table elevation-1 v-data-table--has-bottom theme--light\" file=\"v-data-table/usage\">\r\n<div class=\"v-data-table__wrapper\">\r\n<table>\r\n\t<thead>\r\n\t\t<tr>\r\n\t\t\t<th scope=\"col\">Instelling</th>\r\n\t\t\t<th scope=\"col\">Contactperso(o)n(en)</th>\r\n\t\t\t<th scope=\"col\">Contactgegevens</th>\r\n\t\t</tr>\r\n\t</thead>\r\n\t<tbody>\r\n\t\t<tr>\r\n\t\t\t<td>Erasmus Universiteit</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Fontys Hogescholen</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Hogeschool Utrecht</td>\r\n\t\t\t<td>Sietske Douna</td>\r\n\t\t\t<td>sietske.douna@hu.nl</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Hogeschool van Amsterdam</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Hogeschool van Arnhem en Nijmegen</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Maastricht University</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>NHLstenden</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Radboud Universiteit</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Rijksuniversiteit Groningen</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Saxion</td>\r\n\t\t\t<td>E. (Elles) Schaaphok</td>\r\n\t\t\t<td>e.schaaphok@saxion.nl</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Tilburg University</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>TU Delft</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>TU Eindhoven</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Universiteit Utrecht</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Vrije Universiteit</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Wageningen Universiteit</td>\r\n\t\t\t<td>Paulien van Vredendaal<br />\r\n\t\t\tNicolien Schmaal</td>\r\n\t\t\t<td>paulien.vanvredendaal@wur.nl</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t<td>Zuyd Hogeschool</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t\t<td>&nbsp;</td>\r\n\t\t</tr>\r\n\t</tbody>\r\n</table>\r\n</div>\r\n</div>",
         "is_fuzzy": false
     }
 },
