@@ -119,6 +119,7 @@ export default {
 .v-card {
   border-radius: 12px;
   &__title {
+    align-content: flex-start;
     color: @green;
     font-weight: 700;
   }

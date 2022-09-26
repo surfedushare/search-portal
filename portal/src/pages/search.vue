@@ -250,7 +250,7 @@ export default {
     padding: 0 25px;
     @media @mobile {
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       flex-wrap: wrap;
     }
   }
