@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { concat, groupBy, sortBy, without } from "lodash";
+import { concat, groupBy, sortBy, without, cloneDeep } from "lodash";
 import Popup from "~/components/Popup";
 
 export default {
@@ -55,7 +55,7 @@ export default {
     Popup,
   },
   props: {
-    category: {
+    categoryData: {
       type: Object,
       default: () => ({
         children: [],
@@ -72,6 +72,7 @@ export default {
   },
   data() {
     return {
+      category: cloneDeep(this.categoryData),
       selectedValues: [],
     };
   },
