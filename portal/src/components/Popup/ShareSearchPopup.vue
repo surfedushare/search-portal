@@ -64,6 +64,9 @@ export default {
     Popup,
   },
   props: {
+    shareUrl: {
+      type: String,
+    },
     showPopup: {
       type: Boolean,
       default: false,
@@ -105,7 +108,7 @@ export default {
       }
       const width = this.width;
       const height = this.height;
-      return `<iframe width="${width}" height="${height}" src="secret-chocolate-sauce"/>`;
+      return `<iframe width="${width}" height="${height}" src="${this.shareUrl}"/>`;
     }
   },
   watch: {
@@ -141,7 +144,10 @@ html {
   border: none !important;
 }
 .iframe-code-block {
+  height: 96px;
   padding: 10px;
+  word-break: break-all;
+  overflow-y: scroll;
 }
 .button {
   margin: 20px 20px 0 0;
