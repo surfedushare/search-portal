@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Edusources Widget (test)</title>
+    <title>Edusources Widget</title>
 
     <link href="{{ static("/materials/fonts/Source_Sans_Pro/web/stylesheet.css") }}" rel="stylesheet">
     <link href="{{ static("/materials/fonts/nunito/stylesheet.css") }}" rel="stylesheet">
@@ -24,7 +24,7 @@
             <div tabindex="0" class="v-card v-card--link v-sheet theme--light {% if record.has_parts %}stack{% endif %}" onclick="window.open('{{ request.build_absolute_uri('/') }}')">
                 <div class="row">
                     <div class="mx-auto col-sm-8 col-md-9 col">
-                        <div class="v-card__text pb-0 date">{{ record.published_at }}</div>
+                        <div class="v-card__text pb-0 date">{% if record.published_at %}{{ record.published_at }}{% endif %}</div>
                         <div class="v-card__title pt-4 mt-0 truncate2">{{ record.title }}</div>
                         <div class="v-card__text">
                             <div class="row mx-0 align-center">
@@ -59,7 +59,9 @@
 
                             {% endif %}
                             {% if record.has_parts %}
-                                <div class="row set_count mb-4"> {{ record.has_parts|length }} materialen </div>
+                                <div class="row set_count mb-4">
+                                    {{ record.has_parts|length }} {% trans %}materialen{% endtrans %}
+                                </div>
                             {% endif %}
                             {% if record.technical_type != "unknown" %}
                                 <div class="row mt-4 format_kind format_{{ record.technical_type }}">{{ record.technical_type }}</div>
@@ -70,7 +72,7 @@
                 <div class="v-card__actions">
                     {% if record.has_parts %}
                     <span class="v-chip v-chip--no-color theme--light v-size--default">
-                        <span class="v-chip__content"><span >Verzameling</span></span>
+                        <span class="v-chip__content"><span >{% trans %}Verzameling{% endtrans %}</span></span>
                     </span>
                     {% endif %}
                     <div class="author">{{ record.authors|join(", ") }}</div>
@@ -81,8 +83,8 @@
     </div>
 
     <footer id="footer">
-        <button onclick="window.open('{{ request.build_absolute_uri('/') }}')">
-            Bekijk alle resultaten
+        <button class="button" onclick="window.open('{{ request.build_absolute_uri('/') }}')">
+            {% trans %}Bekijk alle resultaten{% endtrans %}
         </button>
     </footer>
 

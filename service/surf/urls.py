@@ -137,13 +137,15 @@ if settings.PROJECT == "edusources":
         path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps},
              name="django.contrib.sitemaps.views.sitemap"),
         path('robots.txt', robots_txt),
-        # Widget (iframe)
-        path('widget/', widget_iframe_content)
     ]
     # Translated frontend patterns
     urlpatterns += i18n_patterns(
+        # Widget (iframe)
+        path(_('widget/'), widget_iframe_content),
+        # Frontend routes that we pre-render (for Whatsapp and other socials)
         url(_(r'^materialen/zoeken/?'), portal_single_page_application, name="portal-search"),
         url(_(r'^materialen/(?P<external_id>.+)/'), portal_material),
+        # Frontend application and fallback
         url(r'^$', portal_single_page_application, name="portal-spa"),
         url(r'^.*/$', portal_single_page_application),
         prefix_default_language=False

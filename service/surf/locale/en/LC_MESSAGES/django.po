@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-08 10:37+0000\n"
+"POT-Creation-Date: 2022-09-28 14:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: surf/urls.py:144
+msgid "widget/"
+msgstr "widget/"
+
+#: surf/urls.py:146
 msgid "^materialen/zoeken/?"
 msgstr "^materials/search/?"
 
-#: surf/urls.py:145
+#: surf/urls.py:147
 msgid "^materialen/(?P<external_id>.+)/"
 msgstr "^materials/(?P<external_id>.+)/"
+
+#: surf/apps/materials/jinja2/widget/index.html:63
+msgid "materialen"
+msgstr "materials"
+
+#: surf/apps/materials/jinja2/widget/index.html:75
+msgid "Verzameling"
+msgstr "Set"
+
+#: surf/apps/materials/jinja2/widget/index.html:87
+msgid "Bekijk alle resultaten"
+msgstr "Show all results"
+
+#: surf/apps/users/models.py:13
+msgid "sessions"
+msgstr "sessies"
