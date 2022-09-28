@@ -121,6 +121,7 @@ export default {
 .v-card {
   border-radius: 12px;
   &__title {
+    align-content: flex-start;
     color: @green;
     font-weight: 700;
   }
@@ -129,7 +130,7 @@ export default {
   background: transparent url("../../assets/images/card-flip.svg") 100.2% -2px no-repeat;
 }
 .truncate2 {
-  height: 54px;
+  height: 50px;
   line-height: 24px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
