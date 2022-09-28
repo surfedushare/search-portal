@@ -89,7 +89,7 @@ export default {
         external_id: this.$route.params.id,
         language: material.language,
       });
-      materials.records = materials.results;
+      materials.records = materials.results.slice(0, 4);
       this.materials = materials;
 
       const collections = await this.$store.dispatch("checkMaterialInCollection", externalId);
