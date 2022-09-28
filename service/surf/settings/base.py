@@ -67,7 +67,11 @@ ALLOWED_REDIRECT_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # Apps that override defaults
     'clearcache',
+    'surf.apps.core',
+
+    # Django contributions
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,17 +81,17 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.sites',
 
+    # 3rd party contributions
     'ckeditor',
     'mptt',
     'social_django',
-
     'rest_framework',
     'django_filters',
 
-    'surf.vendor.surfconext',
-
+    # SURF apps
     'surf',
-    'surf.apps.core',
+    'surf.vendor.surfconext',
+    #'surf.apps.core',
     'surf.apps.users',
     'surf.apps.filters',
     'surf.apps.materials',
