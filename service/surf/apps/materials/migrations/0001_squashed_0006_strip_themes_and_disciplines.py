@@ -14,7 +14,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('filters', '0001_squashed_0016_filters_external_id_unique'),
-        ('themes', '0001_squashed_0004_strip_themes_and_disciplines'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -24,7 +23,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('external_id', models.CharField(max_length=255, verbose_name='EduRep material id')),
-                ('themes', models.ManyToManyField(blank=True, related_name='materials', to='themes.Theme')),
                 ('description', models.TextField(blank=True, null=True)),
                 ('keywords', models.TextField(blank=True, null=True)),
                 ('material_url', models.URLField(blank=True, null=True)),
@@ -153,9 +151,5 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name='material',
             name='disciplines',
-        ),
-        migrations.RemoveField(
-            model_name='material',
-            name='themes',
         ),
     ]

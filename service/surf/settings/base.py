@@ -92,7 +92,6 @@ INSTALLED_APPS = [
     'surf.apps.filters',
     'surf.apps.materials',
     'surf.apps.communities',
-    'surf.apps.themes',
     'surf.apps.stats',
     'surf.apps.locale',
 ]

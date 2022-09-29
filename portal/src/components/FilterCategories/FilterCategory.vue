@@ -35,7 +35,7 @@
         </li>
       </ul>
     </div>
-    <FilterCategoriesPopup :category="category" :show-popup="showPopup" :close="onToggleShowAll" @apply="onApply" />
+    <FilterCategoriesPopup :category-data="category" :show-popup="showPopup" :close="onToggleShowAll" @apply="onApply" />
   </li>
 </template>
 

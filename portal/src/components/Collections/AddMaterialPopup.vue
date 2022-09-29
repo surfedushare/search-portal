@@ -141,9 +141,9 @@ export default {
 }
 
 .add-material {
-  .popup__center {
-    max-height: calc(100vh - 200px);
-    /* overflow-y: scroll; */
+  .center_block {
+    max-height: calc(100vh - 300px);
+    overflow: hidden;
   }
 }
 .add_materials__info_search {
