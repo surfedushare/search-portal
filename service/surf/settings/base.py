@@ -456,8 +456,8 @@ if DEBUG:
     }
 
 
-EMAIL_HOST = 'outgoing.mf.surf.net'
-EMAIL_PORT = 25
+EMAIL_HOST = 'out.surfmailfilter.nl'
+EMAIL_PORT = 587
 ENABLE_ADMINISTRATIVE_EMAILS = environment.django.administrative_emails
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
