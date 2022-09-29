@@ -150,13 +150,12 @@ class DatasetVersion(models.Model):
             Document.objects.bulk_create(batch)
         return collection
 
-    def get_search_documents_by_language(self, educational_levels=None):
-        educational_levels = educational_levels or \
-                                    [EducationalLevels.APPLIED_SCIENCE, EducationalLevels.UNIVERSITY]
+    def get_search_documents_by_language(self, minimal_educational_level=None):
+        minimal_educational_level = minimal_educational_level or EducationalLevels.APPLIED_SCIENCE
         by_language = defaultdict(list)
         documents = self.document_set \
             .select_related("extension") \
-            .filter(properties__lowest_educational_level__in=educational_levels)
+            .filter(properties__lowest_educational_level__gte=minimal_educational_level)
         for document in documents:
             language = document.get_language()
             if language not in settings.OPENSEARCH_ANALYSERS:

@@ -1,6 +1,6 @@
 <template>
   <v-row v-if="materials && materials.records" class="materials">
-    <v-col v-for="material in materials.records" :key="material.id" lg="3" cols="12">
+    <v-col v-for="material in materials.records" :key="material.id" lg="3" cols="12" md="4" sm="6">
       <MaterialCard :material="material" :handle-material-click="handleMaterialClick" />
     </v-col>
   </v-row>

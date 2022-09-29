@@ -13,7 +13,7 @@ from django.test import TestCase, override_settings
 from django.core.management import call_command
 from django.utils.timezone import make_aware
 
-from core.models import Dataset, DatasetVersion, ElasticIndex, Collection, Document, EducationalLevels
+from core.models import Dataset, DatasetVersion, ElasticIndex, Collection, Document
 from core.tests.mocks import get_search_client_mock
 from core.tests.factories import DatasetFactory, create_dataset_version, DocumentFactory
 
@@ -36,7 +36,6 @@ class OpenSearchClientTestCase(TestCase):
                 educational_level = None
             case _:
                 self.fail("Invalid index name given to open search")
-        educational_level = int(educational_level) if educational_level else educational_level
         return index_name, version, language, version_id, educational_level
 
     def assert_document_structure(self, document):
@@ -106,8 +105,6 @@ class TestIndexDatasetVersion(OpenSearchClientTestCase):
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, language, version_id, level = self.unpack_index_name(kwargs["index"])
-            if level == EducationalLevels.VOCATIONAL_EDUCATION:  # skipping this for now as there is no test data
-                continue
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -188,8 +185,6 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, language, version_id, level = self.unpack_index_name(kwargs["index"])
-            if level == EducationalLevels.VOCATIONAL_EDUCATION:  # skipping this for now as there is no test data
-                continue
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -246,8 +241,6 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, language, version_id, level = self.unpack_index_name(kwargs["index"])
-            if level == EducationalLevels.VOCATIONAL_EDUCATION:  # skipping this for now as there is no test data
-                continue
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -267,8 +260,6 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, language, version_id, level = self.unpack_index_name(kwargs["index"])
-            if level == EducationalLevels.VOCATIONAL_EDUCATION:  # skipping this for now as there is no test data
-                continue
             if language != "en":
                 self.assertEqual(len(docs), 1)
             for doc in docs:
@@ -330,8 +321,6 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         for args, kwargs in streaming_bulk.call_args_list:
             client, docs = args
             index_name, version, language, version_id, level = self.unpack_index_name(kwargs["index"])
-            if level == EducationalLevels.VOCATIONAL_EDUCATION:  # skipping this for now as there is no test data
-                continue
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)
@@ -418,8 +407,6 @@ class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
             client, docs = args
             index_name, version, language, version_id, level = self.unpack_index_name(kwargs["index"])
             self.assertEqual(int(version_id), self.new_version.id, "Expected new version to get promoted")
-            if level == EducationalLevels.VOCATIONAL_EDUCATION:  # skipping this for now as there is no test data
-                continue
             self.assertEqual(len(docs), expected_doc_count[language])
             for doc in docs:
                 self.assert_document_structure(doc)

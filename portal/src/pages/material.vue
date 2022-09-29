@@ -19,7 +19,7 @@
     <div v-if="materials.records.length" class="main__materials">
       <div class="center_block">
         <h2 class="main__materials_title">{{ $t("Also-interesting-for-you") }}</h2>
-        <Materials :materials="materials" :items-length="4" @click="onMoreLikeThisClick" />
+        <MaterialCards :materials="materials" @click="onMoreLikeThisClick"></MaterialCards>
       </div>
     </div>
   </section>
@@ -29,14 +29,14 @@
 import { uniqBy } from "lodash";
 import { mapGetters } from "vuex";
 import MaterialInfo from "~/components/Materials/MaterialInfo";
-import Materials from "~/components/Materials/Materials.vue";
+import MaterialCards from "~/components/Materials/MaterialCards.vue";
 import Navigation from "~/components/Materials/Navigation";
 import Sidebar from "~/components/Materials/Sidebar";
 import PageMixin from "~/pages/page-mixin";
 
 export default {
   components: {
-    Materials,
+    MaterialCards,
     Sidebar,
     MaterialInfo,
     Navigation,
@@ -89,7 +89,7 @@ export default {
         external_id: this.$route.params.id,
         language: material.language,
       });
-      materials.records = materials.results;
+      materials.records = materials.results.slice(0, 4);
       this.materials = materials;
 
       const collections = await this.$store.dispatch("checkMaterialInCollection", externalId);
