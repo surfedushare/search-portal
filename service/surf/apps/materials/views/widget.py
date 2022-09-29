@@ -28,5 +28,9 @@ def widget_iframe_content(request):
     records = add_extra_parameters_to_materials(filters_app.metadata, records)
     return render(request, "widget/index.html", {
         "records": records,
-        "record_count": res["recordcount"]
+        "record_count": res["recordcount"],
+        "technical_type_translations": {
+            technical_type: translations[request.LANGUAGE_CODE]
+            for technical_type, translations in filters_app.metadata.translations["technical_type"].items()
+        }
     })

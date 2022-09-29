@@ -67,8 +67,8 @@
                                     {{ record.has_parts|length }} {% trans %}materialen{% endtrans %}
                                 </div>
                             {% endif %}
-                            {% if record.technical_type != "unknown" %}
-                                <div class="row mt-4 format_kind format_{{ record.technical_type }}">{{ record.technical_type }}</div>
+                            {% if record.technical_type and record.technical_type != "unknown" %}
+                                <div class="row mt-4 format_kind format_{{ record.technical_type }}">{{ technical_type_translations[record.technical_type] }}</div>
                             {% endif %}
                         </div>
                     </div>
