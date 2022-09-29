@@ -44,3 +44,8 @@ msgstr "Show all results"
 #: surf/apps/users/models.py:13
 msgid "sessions"
 msgstr "sessies"
+
+#: surf/apps/materials/jinja2/widget/index.html:91
+#, python-format
+msgid "Bekijk alle %d materialen"
+msgstr "See all %d materials"

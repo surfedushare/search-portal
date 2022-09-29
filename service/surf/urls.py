@@ -144,7 +144,7 @@ if settings.PROJECT == "edusources":
         path(_('widget/'), widget_iframe_content),
         # Frontend routes that we pre-render (for Whatsapp and other socials)
         url(_(r'^materialen/zoeken/?'), portal_single_page_application, name="portal-search"),
-        url(_(r'^materialen/(?P<external_id>.+)/'), portal_material),
+        url(_(r'^materialen/(?P<external_id>.+)/'), portal_material, name="portal-material-detail"),
         # Frontend application and fallback
         url(r'^$', portal_single_page_application, name="portal-spa"),
         url(r'^.*/$', portal_single_page_application),

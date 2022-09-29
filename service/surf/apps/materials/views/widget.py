@@ -27,5 +27,6 @@ def widget_iframe_content(request):
     records = res["records"]
     records = add_extra_parameters_to_materials(filters_app.metadata, records)
     return render(request, "widget/index.html", {
-        "records": records
+        "records": records,
+        "record_count": res["recordcount"]
     })
