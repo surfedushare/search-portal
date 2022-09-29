@@ -7,7 +7,7 @@ from metadata.models import MetadataTranslation, MetadataTranslationSerializer, 
 
 class MetadataFieldManager(models.Manager):
 
-    def fetch_value_frequencies(self, **kwargs):
+    def fetch_value_frequencies(self, alias_prefix="latest", **kwargs):
         client = get_search_client()
         aggregation_query = {
             field.name: {
@@ -18,8 +18,9 @@ class MetadataFieldManager(models.Manager):
             }
             for field in self.annotate(size=models.Count("metadatavalue")).filter(**kwargs).iterator()
         }
+        indices = [f"{alias_prefix}-{language}" for language in ["nl", "en", "unk"]]
         response = client.search(
-            index=["latest-nl", "latest-en", "latest-unk"],
+            index=indices,
             body={"aggs": aggregation_query}
         )
         return {
@@ -68,7 +69,8 @@ class MetadataFieldSerializer(serializers.ModelSerializer):
         return None
 
     def get_children(self, obj):
-        children = obj.metadatavalue_set.filter(deleted_at__isnull=True) \
+        site_id = self.context["request"].GET.get("site_id", 1)
+        children = obj.metadatavalue_set.filter(deleted_at__isnull=True, site__id=site_id) \
             .select_related("translation") \
             .get_cached_trees()
         children.sort(key=lambda child: child.frequency, reverse=True)

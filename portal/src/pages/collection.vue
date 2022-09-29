@@ -16,29 +16,27 @@
       />
 
       <div v-if="contenteditable" class="add-materials">
-        <button class="materials__add__link button secondary" @click.prevent="showAddMaterial">
+        <button
+          data-test="add_materials_button"
+          class="materials__add__link button secondary"
+          @click.prevent="showAddMaterial"
+        >
           {{ $t("Add-materials") }}
         </button>
       </div>
       <SortableMaterials
         v-if="contenteditable && collection_materials"
         :materials="collection_materials"
-        :items-in-line="materials_in_line"
         :loading="collection_materials_loading"
         :content-editable="contenteditable"
       />
-      <Materials
-        v-if="!contenteditable"
-        :materials="collection_materials"
-        :items-in-line="materials_in_line"
-        :loading="collection_materials_loading"
-        :content-editable="contenteditable"
-      />
+
+      <MaterialCards v-if="!contenteditable" :materials="collection_materials" />
       <Spinner v-if="collection_materials_loading" />
     </div>
     <DeleteCollection :close="closeDeleteCollection" :is-show="isShowDeleteCollection" />
     <AddMaterialPopup
-      v-if="isShowAddMaterial"
+      v-if="isShowAddMaterial && collection && collection_materials"
       :close="closeAddMaterial"
       :is-show="isShowAddMaterial"
       :collection-id="collection.id"
@@ -54,7 +52,7 @@ import { mapGetters } from "vuex";
 import AddMaterialPopup from "~/components/Collections/AddMaterialPopup";
 import Collection from "~/components/Collections/Collection";
 import Error from "~/components/error";
-import Materials from "~/components/Materials/Materials.vue";
+import MaterialCards from "~/components/Materials/MaterialCards.vue";
 import SortableMaterials from "~/components/Materials/SortableMaterials.vue";
 import DeleteCollection from "~/components/Popup/DeleteCollection";
 import Spinner from "~/components/Spinner";
@@ -63,7 +61,7 @@ import { PublishStatus } from "~/utils";
 
 export default {
   components: {
-    Materials,
+    MaterialCards,
     SortableMaterials,
     Collection,
     Spinner,

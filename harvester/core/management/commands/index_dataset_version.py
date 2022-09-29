@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from core.models import Dataset, ElasticIndex
+from core.models import Dataset, ElasticIndex, EducationalLevels
 from core.management.base import PipelineCommand
 from core.utils.notifications import send_admin_notification
 
@@ -38,18 +38,23 @@ class Command(PipelineCommand):
             dataset_version.copy_collection(collection)
 
         self.logger.start("index")
+        for educational_level in [EducationalLevels.VOCATIONAL_EDUCATION, EducationalLevels.APPLIED_SCIENCE]:
+            self.logger.start(f"index.level.{educational_level}")
+            self._create_index(dataset_version, educational_level, should_promote)
+            self.logger.end(f"index.level.{educational_level}")
+        self.logger.end("index")
 
-        lang_doc_dict = dataset_version.get_search_documents_by_language()
+    def _create_index(self, dataset_version, educational_level, should_promote):
+        lang_doc_dict = dataset_version.get_search_documents_by_language(minimal_educational_level=educational_level)
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
         for lang in ["nl", "en", "unk"]:
-
             self.logger.start(f"index.{lang}")
-
             index, created = ElasticIndex.objects.get_or_create(
-                name=f"{dataset.name}-{dataset_version.version}-{dataset_version.id}",
+                name=f"{dataset_version.dataset.name}-{dataset_version.version}-{dataset_version.id}",
                 language=lang,
+                educational_level=educational_level,
                 defaults={
                     "dataset_version": dataset_version,
                     "configuration": ElasticIndex.get_index_config(lang)
@@ -67,5 +72,3 @@ class Command(PipelineCommand):
 
         if should_promote:
             dataset_version.set_current()
-
-        self.logger.end("index")

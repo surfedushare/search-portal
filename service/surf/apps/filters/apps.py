@@ -11,7 +11,7 @@ class FiltersConfig(AppConfig):
 
     @property
     def metadata(self):
-        cache_key = "filters.metadata"
+        cache_key = f"filters.metadata&site_id={settings.SITE_ID}"
         metadata = cache.get(cache_key, None)
         if metadata is not None:
             return metadata

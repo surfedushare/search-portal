@@ -103,6 +103,10 @@ CSRF_COOKIE_SECURE = PROTOCOL == "https"
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+if MODE == 'localhost':
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
 CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://webstats.surf.nl"]
@@ -190,7 +194,6 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ),
-
 }
 
 
@@ -287,9 +290,6 @@ WEBPACK_LOADER = {
 OPENSEARCH_HOST = environment.open_search.host
 OPENSEARCH_PROTOCOL = environment.open_search.protocol
 OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
-OPENSEARCH_NL_INDEX = "latest-nl"
-OPENSEARCH_EN_INDEX = "latest-en"
-OPENSEARCH_UNK_INDEX = "latest-unk"
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 

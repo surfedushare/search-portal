@@ -43,6 +43,7 @@
       border-radius: 10px;
     }
     &_title {
+      width: 100%;
       display: inline-block;
       vertical-align: top;
       flex: 1 1 auto;
@@ -176,7 +177,10 @@ input:checked + .share-collection_slider:before {
 }
 
 .action-bar {
+  display: flex;
+  flex-direction: row-reverse;
   position: relative;
+  align-items: center;
   height: 77px;
   line-height: 77px;
   z-index: 10;
@@ -204,9 +208,7 @@ input:checked + .share-collection_slider:before {
   }
   &__fields {
     display: flex;
-    //margin: 13px 10px 13px 69px;
     margin: 13px 10px 13px 13px;
-    //width: calc(50% - 140px);
     height: 51px;
     position: relative;
     @media @mobile {
@@ -219,7 +221,6 @@ input:checked + .share-collection_slider:before {
     cursor: pointer;
   }
   &__social{
-    //width: 42%;
     line-height: normal;
     @media @mobile {
       width: 100%;
@@ -392,5 +393,6 @@ input:checked + .share-collection_slider:before {
     background: transparent;
     border: none;
     padding-right: 60px;
+    padding-left: 0;
   }
 }

@@ -4,7 +4,7 @@
     <InfoBlock :title="$t('About-the-portal')" :content="$t('html-About-the-portal-text')" />
     <div class="center_block">
       <h2 class="how_work__materials_title">{{ $t("Newest-open-learning-material") }}</h2>
-      <Materials v-if="materials" :materials="materials" />
+      <MaterialCards :materials="materials"></MaterialCards>
     </div>
   </section>
 </template>
@@ -13,14 +13,14 @@
 import { mapGetters } from "vuex";
 import HeaderBlock from "~/components/HeaderBlock";
 import InfoBlock from "~/components/InfoBlock";
-import Materials from "~/components/Materials/Materials.vue";
 import PageMixin from "~/pages/page-mixin";
+import MaterialCards from "~/components/Materials/MaterialCards.vue";
 
 export default {
   components: {
     HeaderBlock,
-    Materials,
     InfoBlock,
+    MaterialCards,
   },
   mixins: [PageMixin],
   computed: {

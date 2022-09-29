@@ -1,6 +1,7 @@
 from collections import defaultdict
 import requests
 
+from django.conf import settings
 from django.utils.functional import cached_property
 
 
@@ -17,7 +18,7 @@ class MetadataTree(object):
 
     @cached_property
     def tree(self):
-        url = f"{self.harvester_url}metadata/tree/"
+        url = f"{self.harvester_url}metadata/tree/?site_id={settings.SITE_ID}"
         response = requests.get(url, headers={"Authorization": f"Token {self.api_token}"})
         if response.status_code != requests.status_codes.codes.ok:
             raise ValueError(f"Failed request: {response.status_code}")
