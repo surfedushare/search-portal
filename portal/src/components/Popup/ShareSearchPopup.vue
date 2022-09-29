@@ -66,6 +66,7 @@ export default {
   props: {
     shareUrl: {
       type: String,
+      default: "",
     },
     showPopup: {
       type: Boolean,

@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    <ShareSearchPopup :show-popup="showShareSearchPopup" :close="toggleShareSearchPopup" :share-url="shareUrl"/>
+    <ShareSearchPopup :show-popup="showShareSearchPopup" :close="toggleShareSearchPopup" :share-url="shareUrl" />
   </section>
 </template>
 
@@ -108,8 +108,8 @@ export default {
       return this.isReady && this.materials && this.materials.records;
     },
     shareUrl() {
-      const languagePrefix = (this.$i18n.locale === "en") ? "/en" : ""
-      return `https://${window.location.host}${languagePrefix}/widget/${window.location.search}`
+      const languagePrefix = (this.$i18n.locale === "en") ? "/en" : "";
+      return `https://${window.location.host}${languagePrefix}/widget/${window.location.search}`;
     }
   },
   updated() {

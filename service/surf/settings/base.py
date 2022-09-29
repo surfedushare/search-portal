@@ -91,7 +91,6 @@ INSTALLED_APPS = [
     # SURF apps
     'surf',
     'surf.vendor.surfconext',
-    #'surf.apps.core',
     'surf.apps.users',
     'surf.apps.filters',
     'surf.apps.materials',
