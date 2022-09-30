@@ -115,7 +115,7 @@ class BuasMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_publishers(cls, node):
-        return ["Hogeschool van Amsterdam"]
+        return ["Breda University of Applied Sciences"]
 
     @classmethod
     def get_is_restricted(cls, node):
