@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <Popup v-if="isShow" :close="close" :is-show="isShow">
+    <Popup :close="close" :is-show="showPopup">
       <slot>
         <h2 class="popup__title">
           {{ $t("Share-search-popup-title") }}
@@ -43,7 +43,7 @@
           >
             <div class="iframe-code-block">{{ iframeCodeBlock }}</div>
           </v-sheet>
-          <v-btn class="secondary button" x-large outlined @click.prevent="isShow = false">
+          <v-btn class="secondary button" x-large outlined @click.prevent="close()">
             {{ $t("Share-search-popup-cancel") }}
           </v-btn>
           <v-btn :disabled="!valid" x-large outlined class="button accent" @click.prevent="copyIframeCodeBlock">
@@ -83,7 +83,6 @@ export default {
   },
   data() {
     return {
-      isShow: this.showPopup,
       valid: true,
       width: "640",
       height: "480",
@@ -110,11 +109,6 @@ export default {
       const width = this.width;
       const height = this.height;
       return `<iframe width="${width}" height="${height}" src="${this.shareUrl}"/>`;
-    }
-  },
-  watch: {
-    showPopup(newValue) {
-      this.isShow = newValue;
     }
   },
   methods: {
