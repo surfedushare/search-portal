@@ -41,9 +41,7 @@ service-test-job:
     - name: postgres:$POSTGRES_VERSION-alpine
     - name: opensearchproject/opensearch:$OPEN_SEARCH_VERSION
       alias: opensearch
-      command: [
-        "bash", "-c", "env 'discovery.type=single-node' 'cluster.name=opensearch' ./opensearch-docker-entrypoint.sh"
-      ]
+      command: ["bash", "-c", "env 'discovery.type=single-node' 'cluster.name=opensearch' ./opensearch-docker-entrypoint.sh"]
   variables:
     OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
     DISABLE_INSTALL_DEMO_CONFIG: "true"
@@ -94,9 +92,7 @@ integration-test-job:
     - name: postgres:$POSTGRES_VERSION-alpine
     - name: opensearchproject/opensearch:$OPEN_SEARCH_VERSION
       alias: opensearch
-      command: [
-        "bash", "-c", "env 'discovery.type=single-node' 'cluster.name=opensearch' ./opensearch-docker-entrypoint.sh"
-      ]
+      command: ["bash", "-c", "env 'discovery.type=single-node' 'cluster.name=opensearch' ./opensearch-docker-entrypoint.sh"]
   variables:
     OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
     DISABLE_INSTALL_DEMO_CONFIG: "true"
@@ -162,3 +158,8 @@ promote-development:
   script:
     - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
+
+sast:
+  stage: lint-and-test
+include:
+  - template: Security/SAST.gitlab-ci.yml
