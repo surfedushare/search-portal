@@ -141,7 +141,7 @@ if settings.PROJECT == "edusources":
     # Translated frontend patterns
     urlpatterns += i18n_patterns(
         # Widget (iframe)
-        path(_('widget/'), widget_iframe_content),
+        path(_('widget/'), widget_iframe_content, name="portal-widget"),
         # Frontend routes that we pre-render (for Whatsapp and other socials)
         url(_(r'^materialen/zoeken/?'), portal_single_page_application, name="portal-search"),
         url(_(r'^materialen/(?P<external_id>.+)/'), portal_material, name="portal-material-detail"),

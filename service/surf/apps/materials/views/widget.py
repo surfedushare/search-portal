@@ -1,5 +1,6 @@
 from django.apps import apps
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import HttpResponse
+from django.template.response import TemplateResponse
 from django.views.decorators.gzip import gzip_page
 from django.views.decorators.clickjacking import xframe_options_exempt
 from rest_framework.exceptions import ValidationError
@@ -26,11 +27,15 @@ def widget_iframe_content(request):
     res = client.search(**data)
     records = res["records"]
     records = add_extra_parameters_to_materials(filters_app.metadata, records)
-    return render(request, "widget/index.html", {
-        "records": records,
-        "record_count": res["recordcount"],
-        "technical_type_translations": {
-            technical_type: translations[request.LANGUAGE_CODE]
-            for technical_type, translations in filters_app.metadata.translations["technical_type"].items()
+    return TemplateResponse(
+        request=request,
+        template="widget/index.html",
+        context={
+            "records": records,
+            "record_count": res["recordcount"],
+            "technical_type_translations": {
+                technical_type: translations[request.LANGUAGE_CODE]
+                for technical_type, translations in filters_app.metadata.translations["technical_type"].items()
+            }
         }
-    })
+    )
