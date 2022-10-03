@@ -162,3 +162,8 @@ promote-development:
   script:
     - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
+
+sast:
+  stage: test
+include:
+  - template: Security/SAST.gitlab-ci.yml
