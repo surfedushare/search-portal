@@ -160,6 +160,6 @@ promote-development:
     - invoke aws.promote service --commit $CI_COMMIT_SHA
 
 sast:
-  stage: test
+  stage: lint-and-test
 include:
   - template: Security/SAST.gitlab-ci.yml
