@@ -1,3 +1,4 @@
+from unittest import skipIf
 from unittest.mock import patch
 
 from django.conf import settings
@@ -10,6 +11,7 @@ from e2e_tests.mock import generate_nl_material
 from surf.vendor.search.api import SearchApiClient
 
 
+@skipIf(settings.PROJECT == "nppo", "Frontend not enabled for NPPO")
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestWidget(BaseOpenSearchTestCase):
 
