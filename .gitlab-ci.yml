@@ -161,5 +161,8 @@ promote-development:
 
 sast:
   stage: lint-and-test
+  artifacts:
+    reports:
+      sast: sast-report.json
 include:
   - template: Security/SAST.gitlab-ci.yml
