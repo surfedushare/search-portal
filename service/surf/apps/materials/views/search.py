@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.apps import apps
 from django.db.models import F, QuerySet
 from django.shortcuts import Http404
@@ -169,7 +170,12 @@ class MaterialAPIView(APIView):
         else:
             # return overview of newest Materials
             client = SearchApiClient()
-            res = client.search('', ordering="-publisher_date", page_size=_MATERIALS_COUNT_IN_OVERVIEW)
+            res = client.search(
+                search_text='',
+                ordering="-publisher_date",
+                page_size=_MATERIALS_COUNT_IN_OVERVIEW,
+                filters=settings.SITE_PREFERRED_FILTERS
+            )
             res = add_extra_parameters_to_materials(filters_app.metadata,
                                                     res["records"])
         return Response(res)

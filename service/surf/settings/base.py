@@ -469,3 +469,9 @@ EDUTERM_API_KEY = None
 DEEPL_API_KEY = None
 HARVESTER_API = environment.django.harvester_api
 HARVESTER_API_KEY = environment.secrets.harvester.api_key
+
+
+# Site overrides
+# https://docs.djangoproject.com/en/3.2/ref/contrib/sites/
+
+SITE_PREFERRED_FILTERS = []
