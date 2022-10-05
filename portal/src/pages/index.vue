@@ -79,7 +79,7 @@ export default {
   },
   mixins: [PageMixin],
   data() {
-    const headlineTranslationKeyPostfix = (this.$root.isMBOEnvironment()) ? "education": "higher-education"
+    const headlineTranslationKeyPostfix = (this.$root.isMBOEnvironment()) ? "education": "higher-education";
     return {
       filters: {},
       headline: this.$i18n.t(`open-learning-materials-from-${headlineTranslationKeyPostfix}`)
