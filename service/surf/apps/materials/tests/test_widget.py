@@ -1,12 +1,16 @@
+from unittest.mock import patch
+
 from django.conf import settings
 from django.urls import reverse
 
 from e2e_tests.base import BaseOpenSearchTestCase
 
+from e2e_tests.helpers import get_metadata_tree_mock
 from e2e_tests.mock import generate_nl_material
 from surf.vendor.search.api import SearchApiClient
 
 
+@patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
 class TestWidget(BaseOpenSearchTestCase):
 
     def assert_widget_response(self, response, expected_count):
