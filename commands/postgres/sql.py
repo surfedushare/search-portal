@@ -17,10 +17,10 @@ def insert_django_site_statements(environment, is_search_service=False):
         case _:
             domain = "edusources.nl"
     name = f"Edusources ({environment})" if is_search_service else f"Harvester ({environment})"
-    statements = [f"UPDATE django_site SET domain='{domain}', name='{name}' WHERE id = 1;"]
-    if is_search_service:
-        statements.append(f"INSERT INTO django_site (id, domain, name) VALUES (2, 'mbo.{domain}', 'MBO {name}');")
-    return statements
+    return [
+        f"UPDATE django_site SET domain='{domain}', name='{name}' WHERE id = 1;",
+        f"INSERT INTO django_site (id, domain, name) VALUES (2, 'mbo.{domain}', 'MBO {name}');"
+    ]
 
 
 def insert_django_user_statement(username, raw_password, api_key, is_search_service=False):
