@@ -40,7 +40,7 @@ class TestSearchApiClient(BaseOpenSearchTestCase):
             index=settings.OPENSEARCH_NL_INDEX,
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       studies=math_and_education_studies, external_id="abc",
-                                      title="De wiskunde van Jezus", description="Groots zijn zijn getallen")
+                                      title="De wiskunde van Pythagoras", description="Groots zijn zijn getallen")
         )
         cls.search.index(
             index=settings.OPENSEARCH_NL_INDEX,
