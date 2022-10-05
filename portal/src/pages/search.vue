@@ -49,7 +49,12 @@
         </div>
       </div>
     </div>
-    <ShareSearchPopup :show-popup="showShareSearchPopup" :close="toggleShareSearchPopup" :share-url="shareUrl" />
+    <ShareSearchPopup
+      :key="$i18n.locale"
+      :show-popup="showShareSearchPopup"
+      :close="toggleShareSearchPopup"
+      :share-url="shareUrl"
+    />
   </section>
 </template>
 
@@ -76,7 +81,7 @@ export default {
     ShareSearchPopup,
   },
   mixins: [PageMixin],
-  dependencies: ["$log"],
+  dependencies: ["$log", "$window"],
   beforeRouteLeave(to, from, next) {
     this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
     next();
@@ -92,30 +97,32 @@ export default {
         selection: [this.$route.params.filterId],
       });
     }
-    // Update the filters and return data
+    // Update the filters
     urlInfo.search.filters = this.$store.state.filterCategories.selection;
+    // Set other data than filters and return the object
+    const languagePrefix = (this.$i18n.locale === "en") ? "/en" : "";
     return {
       search: urlInfo.search,
       formData: {
         name: null,
       },
       showShareSearchPopup: false,
+      shareUrl: `https://${this.$window.location.host}${languagePrefix}/widget/${this.$window.location.search}`
     };
   },
   computed: {
     ...mapGetters(["materials", "materials_loading", "did_you_mean"]),
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
-    },
-    shareUrl() {
-      const languagePrefix = (this.$i18n.locale === "en") ? "/en" : "";
-      return `https://${window.location.host}${languagePrefix}/widget/${window.location.search}`;
     }
   },
   updated() {
     if (this.$vuetify.breakpoint.name === "xs") {
       this.$refs.top.scrollIntoView({ behavior: "smooth" });
     }
+    const languagePrefix = (this.$i18n.locale === "en") ? "/en" : "";
+    this.shareUrl =
+      `https://${this.$window.location.host}${languagePrefix}/widget/${this.$window.location.search}`;
   },
   mounted() {
     this.loadFilterCategories().finally(() => {
