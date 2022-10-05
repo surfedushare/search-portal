@@ -83,7 +83,9 @@ export default {
   mixins: [PageMixin],
   dependencies: ["$log", "$window"],
   beforeRouteLeave(to, from, next) {
-    this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
+    if(to.name.indexOf("___" + this.$i18n.locale) >= 0) {
+      this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
+    }
     next();
   },
   data() {
