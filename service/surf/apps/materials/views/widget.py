@@ -1,3 +1,5 @@
+import json
+
 from django.apps import apps
 from django.shortcuts import HttpResponse
 from django.template.response import TemplateResponse
@@ -16,12 +18,22 @@ filters_app = apps.get_app_config("filters")
 @xframe_options_exempt
 @gzip_page
 def widget_iframe_content(request):
-    serializer = SearchSerializer(data=request.GET)
+    # Validates incoming data
+    data = request.GET.dict()
+    data["search_text"] = data["search_text"] if data["search_text"] != '""' else ""
+    if "filters" in data:
+        data["filters"] = json.loads(data["filters"])
+    serializer = SearchSerializer(data=data)
     try:
         serializer.is_valid(raise_exception=True)
     except ValidationError as exc:
         return HttpResponse(exc, status=400)
     data = serializer.validated_data
+    # Transforms incoming data for search request
+    data["filters"] = [
+        {"external_id": external_id, "items": items}
+        for external_id, items in data["filters"].items()
+    ]
     data["drilldown_names"] = filters_app.metadata.get_filter_field_names()
     client = SearchApiClient()
     res = client.search(**data)
