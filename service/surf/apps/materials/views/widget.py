@@ -1,4 +1,5 @@
 import json
+from dateutil.parser import parse as date_parser
 
 from django.apps import apps
 from django.shortcuts import HttpResponse
@@ -38,6 +39,10 @@ def widget_iframe_content(request):
     client = SearchApiClient()
     res = client.search(**data)
     records = res["records"]
+    for record in records:
+        if not record["published_at"]:
+            continue
+        record["published_at"] = date_parser(record["published_at"])
     records = add_extra_parameters_to_materials(filters_app.metadata, records)
     return TemplateResponse(
         request=request,
@@ -48,6 +53,6 @@ def widget_iframe_content(request):
             "technical_type_translations": {
                 technical_type: translations[request.LANGUAGE_CODE]
                 for technical_type, translations in filters_app.metadata.translations["technical_type"].items()
-            }
+            },
         }
     )

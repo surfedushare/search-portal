@@ -28,7 +28,11 @@
             <div tabindex="0" class="v-card v-card--link v-sheet theme--light {% if record.has_parts %}stack{% endif %}" onclick="window.open('{{ link|replace('EXTERNAL_ID', record.external_id.replace("/", "%2F")) }}')">
                 <div class="row">
                     <div class="mx-auto col-sm-8 col-md-9 col">
-                        <div class="v-card__text pb-0 date">{% if record.published_at %}{{ record.published_at }}{% endif %}</div>
+                        <div class="v-card__text pb-0 date">
+                            {% if record.published_at %}
+                                {{ date_format(record.published_at) }}
+                            {% endif %}
+                        </div>
                         <div class="v-card__title pt-4 mt-0 truncate2">{{ record.title }}</div>
                         <div class="v-card__text">
                             <div class="row mx-0 align-center">
