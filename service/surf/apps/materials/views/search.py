@@ -14,7 +14,7 @@ from surf.apps.core.schema import SearchSchema
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.models import Material, SharedResourceCounter, RESOURCE_TYPE_MATERIAL
 from surf.apps.materials.serializers import (
-    SearchSerializer,
+    LegacySearchSerializer,
     KeywordsRequestSerializer,
     MaterialsRequestSerializer,
     MaterialShortSerializer,
@@ -73,13 +73,13 @@ class MaterialSearchAPIView(CreateAPIView):
     **page**: The current page number.
 
     """
-    serializer_class = SearchSerializer
+    serializer_class = LegacySearchSerializer
     permission_classes = (AllowAny,)
     schema = SearchSchema()
 
     def post(self, request, *args, **kwargs):
         # validate request parameters and prepare search
-        serializer = SearchSerializer(data=request.data)
+        serializer = LegacySearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         data["drilldown_names"] = filters_app.metadata.get_filter_field_names()

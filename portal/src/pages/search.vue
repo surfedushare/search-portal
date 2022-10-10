@@ -18,6 +18,9 @@
             {{ $t("Search-results") }}
             <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
           </h2>
+          <v-btn v-if="showShareButton" outlined x-large class="secondary" @click="toggleShareSearchPopup">
+            <v-icon left dark>fa-share</v-icon> {{ $t('share') }}
+          </v-btn>
         </div>
 
         <div class="search__materials">
@@ -46,6 +49,12 @@
         </div>
       </div>
     </div>
+    <ShareSearchPopup
+      :key="$i18n.locale"
+      :show-popup="showShareSearchPopup"
+      :close="toggleShareSearchPopup"
+      :share-url="shareUrl"
+    />
   </section>
 </template>
 
@@ -59,6 +68,7 @@ import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
+import ShareSearchPopup from "~/components/Popup/ShareSearchPopup";
 
 export default {
   components: {
@@ -68,11 +78,14 @@ export default {
     MaterialCard,
     Spinner,
     SearchBar,
+    ShareSearchPopup,
   },
   mixins: [PageMixin],
-  dependencies: ["$log"],
+  dependencies: ["$log", "$window"],
   beforeRouteLeave(to, from, next) {
-    this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
+    if(to.name.indexOf("___" + this.$i18n.locale) >= 0) {
+      this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
+    }
     next();
   },
   data() {
@@ -86,13 +99,17 @@ export default {
         selection: [this.$route.params.filterId],
       });
     }
-    // Update the filters and return data
+    // Update the filters
     urlInfo.search.filters = this.$store.state.filterCategories.selection;
+    // Set other data than filters and return the object
+    const languagePrefix = (this.$i18n.locale === "en") ? "/en" : "";
     return {
       search: urlInfo.search,
       formData: {
         name: null,
       },
+      showShareSearchPopup: false,
+      shareUrl: `https://${this.$window.location.host}${languagePrefix}/widget/${this.$window.location.search}`
     };
   },
   computed: {
@@ -100,11 +117,17 @@ export default {
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
     },
+    showShareButton() {
+      return this.$root.isDemoEnvironment() && this.materials?.records.length;
+    }
   },
   updated() {
     if (this.$vuetify.breakpoint.name === "xs") {
       this.$refs.top.scrollIntoView({ behavior: "smooth" });
     }
+    const languagePrefix = (this.$i18n.locale === "en") ? "/en" : "";
+    this.shareUrl =
+      `https://${this.$window.location.host}${languagePrefix}/widget/${this.$window.location.search}`;
   },
   mounted() {
     this.loadFilterCategories().finally(() => {
@@ -162,6 +185,9 @@ export default {
         );
       }
       this.$emit("click", material);
+    },
+    toggleShareSearchPopup() {
+      this.showShareSearchPopup = !this.showShareSearchPopup;
     },
   },
 };

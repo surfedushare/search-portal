@@ -74,6 +74,6 @@ def make_translations(ctx):
     with ctx.cd("service"):
         ctx.run(
             "python manage.py makemessages -l en "
-            "--settings=surf.settings.service "
-            "--ignore 'surf/vendor/*' --ignore 'surf/apps/*'"
+            "--settings=surf.settings.base "
+            "--ignore 'surf/vendor/*'"
         )
