@@ -1,5 +1,7 @@
 from unittest import skipIf
 from unittest.mock import patch
+import json
+from datetime import datetime
 
 from django.conf import settings
 from django.urls import reverse
@@ -36,9 +38,11 @@ class TestWidget(BaseOpenSearchTestCase):
         for record in response.context_data["records"]:
             for required_field in required_fields:
                 self.assertIn(required_field, record)
+            self.assertIsInstance(record["published_at"], (type(None), datetime,))
         # Translation assertions
         self.assertIsInstance(response.context_data["technical_type_translations"], dict)
         self.assertEqual(response.context_data["technical_type_translations"]["_field"], "Bestandstype")
+        return response.context_data["records"]
 
     @classmethod
     def setUpClass(cls):
@@ -96,12 +100,28 @@ class TestWidget(BaseOpenSearchTestCase):
         response = self.client.get(f'{self.base_url}?search_text="wiskunde"')
         self.assert_widget_response(response, expected_count=2)
 
+    def test_studies_filter(self):
+        expected_study = "0861c43d-1874-4788-b522-df8be575677f"
+        filters = json.dumps({
+            "studies": [expected_study]
+        })
+        response = self.client.get(f'{self.base_url}?search_text="wiskunde"&filters={filters}')
+        records = self.assert_widget_response(response, expected_count=2)
+        for record in records:
+            study_ids = [study["id"] for study in record["studies"]]
+            self.assertIn(expected_study, study_ids)
+
     def test_no_results(self):
         response = self.client.get(f'{self.base_url}?search_text="piskunde"')
         self.assert_widget_response(response, expected_count=0)
 
     def test_invalid_parameters(self):
         response = self.client.get(self.base_url)
-        self.assertEqual(response.status_code, 400)
         self.assertContains(response, "search_text", count=1, status_code=400)
         self.assertContains(response, "required", count=1, status_code=400)
+        filters = json.dumps({
+            "studies": "0861c43d-1874-4788-b522-df8be575677f"  # value should be a list
+        })
+        response = self.client.get(f'{self.base_url}?search_text="biologie"&filters={filters}')
+        self.assertContains(response, "filters", count=1, status_code=400)
+        self.assertContains(response, "not_a_list", count=1, status_code=400)
