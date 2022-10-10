@@ -159,10 +159,14 @@ promote-development:
     - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
 
+include:
+  - template: Security/SAST.gitlab-ci.yml
+
 sast:
   stage: lint-and-test
   artifacts:
+    name: sast
+    paths:
+      - gl-sast-report.json
     reports:
-      sast: sast-report.json
-include:
-  - template: Security/SAST.gitlab-ci.yml
+      sast: gl-sast-report.json
