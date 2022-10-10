@@ -21,7 +21,8 @@ filters_app = apps.get_app_config("filters")
 def widget_iframe_content(request):
     # Validates incoming data
     data = request.GET.dict()
-    data["search_text"] = data["search_text"] if data["search_text"] != '""' else ""
+    if "search_text" in data:
+        data["search_text"] = data["search_text"] if data["search_text"] != '""' else ""
     if "filters" in data:
         data["filters"] = json.loads(data["filters"])
     serializer = SearchSerializer(data=data)
