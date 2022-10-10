@@ -108,7 +108,7 @@ export default {
       }
       const width = this.width;
       const height = this.height;
-      return `<iframe width="${width}" height="${height}" src="${this.shareUrl}"/>`;
+      return `<iframe width="${width}" height="${height}" src="${this.shareUrl}"></iframe>`;
     }
   },
   methods: {
