@@ -2,6 +2,7 @@ from unittest import skipIf
 from unittest.mock import patch
 import json
 from datetime import datetime
+from bs4 import BeautifulSoup
 
 from django.conf import settings
 from django.urls import reverse
@@ -21,6 +22,11 @@ class TestWidget(BaseOpenSearchTestCase):
         # Basic assertions
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.template_name, "widget/index.html")
+        # Assert that all links have the correct source parameter attached
+        soup = BeautifulSoup(response.content, features="lxml")
+        links = soup.select("a")
+        for link in links:
+            self.assertIn("source=widget", link["href"])
         # Results assertions
         self.assertEqual(response.context_data["record_count"], expected_count)
         required_fields = [
@@ -42,6 +48,7 @@ class TestWidget(BaseOpenSearchTestCase):
         # Translation assertions
         self.assertIsInstance(response.context_data["technical_type_translations"], dict)
         self.assertEqual(response.context_data["technical_type_translations"]["_field"], "Bestandstype")
+        # Returns the records used while rendering the template for further assertions
         return response.context_data["records"]
 
     @classmethod
