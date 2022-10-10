@@ -18,8 +18,8 @@
             {{ $t("Search-results") }}
             <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
           </h2>
-          <v-btn v-if="$root.isDemoEnvironment()" outlined x-large class="secondary" @click="toggleShareSearchPopup">
-            <v-icon left dark>fa-share</v-icon> share
+          <v-btn v-if="showShareButton" outlined x-large class="secondary" @click="toggleShareSearchPopup">
+            <v-icon left dark>fa-share</v-icon> {{ $t('share') }}
           </v-btn>
         </div>
 
@@ -116,6 +116,9 @@ export default {
     ...mapGetters(["materials", "materials_loading", "did_you_mean"]),
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
+    },
+    showShareButton() {
+      return this.$root.isDemoEnvironment() && this.materials?.records.length;
     }
   },
   updated() {
