@@ -25,7 +25,6 @@ class CommunitySerializer(serializers.ModelSerializer):
     Community instance serializer for get methods
     """
 
-    external_id = serializers.CharField()
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
@@ -39,11 +38,7 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_members_count(obj):
-        try:
-            return obj.members.count()
-        except Exception as exc:
-            print(exc)
-            return 0
+        return obj.members.count()
 
     @staticmethod
     def get_collections_count(obj):
@@ -160,8 +155,15 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Community
-        fields = ('id', 'external_id', 'members_count',
-                  'collections_count', 'materials_count', 'publish_status',
+        fields = ('id', 'members_count', 'collections_count', 'materials_count', 'publish_status', 'publisher',
                   'community_details', 'community_details_update',
-                  'logo_nl', 'logo_en', 'featured_image_nl', 'featured_image_en', 'deleted_logos',
-                  'publisher')
+                  'logo_nl', 'logo_en', 'featured_image_nl', 'featured_image_en', 'deleted_logos',)
+
+
+class MinimalCommunitySerializer(serializers.ModelSerializer):
+
+    community_details = CommunityDetailSerializer(many=True, required=False)
+
+    class Meta:
+        model = Community
+        fields = ('id', 'publish_status', 'community_details',)

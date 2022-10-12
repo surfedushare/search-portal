@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from surf.apps.communities.models import Community, Team
-from surf.apps.communities.serializers import CommunitySerializer
+from surf.apps.communities.serializers import CommunitySerializer, MinimalCommunitySerializer
 
 from surf.apps.materials.models import Collection
 from surf.apps.materials.serializers import CollectionSerializer
@@ -36,8 +36,10 @@ class CommunityViewSet(ListModelMixin,
     """
 
     queryset = Community.objects.filter(deleted_at=None)
-    serializer_class = CommunitySerializer
     permission_classes = []
+
+    def get_serializer_class(self):
+        return MinimalCommunitySerializer if self.action == "list" else CommunitySerializer
 
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
