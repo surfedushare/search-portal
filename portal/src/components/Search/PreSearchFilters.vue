@@ -74,6 +74,12 @@ export default {
         }),
         "external_id"
       );
+      if(this.$root.isMBOEnvironment()) {
+        const mboLevel = this.dropdownData.lom_educational_levels.children.find((educationalLevel) => {
+          return educationalLevel.external_id === "BVE";
+        });
+        mboLevel.selected = true;
+      }
     });
   },
   beforeDestroy() {

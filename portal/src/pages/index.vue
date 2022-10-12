@@ -8,7 +8,7 @@
             <div class="bg" />
             <h2 class="main__info_title">
               <span v-if="statistic">{{ numberOfMaterials }}</span>
-              {{ $t("open-learning-materials-from-higher-education") }}
+              {{ headline }}
             </h2>
             <ul class="main__info_items">
               <li class="main__info_item">{{ $t("Free-to-use") }}</li>
@@ -79,8 +79,10 @@ export default {
   },
   mixins: [PageMixin],
   data() {
+    const headlineTranslationKeyPostfix = (this.$root.isMBOEnvironment()) ? "education": "higher-education";
     return {
       filters: {},
+      headline: this.$i18n.t(`open-learning-materials-from-${headlineTranslationKeyPostfix}`)
     };
   },
   computed: {

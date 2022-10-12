@@ -67,7 +67,11 @@ ALLOWED_REDIRECT_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # Apps that override defaults
     'clearcache',
+    'surf.apps.core',
+
+    # Django contributions
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,22 +81,20 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.sites',
 
+    # 3rd party contributions
     'ckeditor',
     'mptt',
     'social_django',
-
     'rest_framework',
     'django_filters',
 
-    'surf.vendor.surfconext',
-
+    # SURF apps
     'surf',
-    'surf.apps.core',
+    'surf.vendor.surfconext',
     'surf.apps.users',
     'surf.apps.filters',
     'surf.apps.materials',
     'surf.apps.communities',
-    'surf.apps.themes',
     'surf.apps.stats',
     'surf.apps.locale',
 ]
@@ -467,3 +469,9 @@ EDUTERM_API_KEY = None
 DEEPL_API_KEY = None
 HARVESTER_API = environment.django.harvester_api
 HARVESTER_API_KEY = environment.secrets.harvester.api_key
+
+
+# Site overrides
+# https://docs.djangoproject.com/en/3.2/ref/contrib/sites/
+
+SITE_PREFERRED_FILTERS = []

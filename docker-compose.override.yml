@@ -7,7 +7,7 @@ services:
     build:
       dockerfile: "service/Dockerfile"
       context: .
-    command: uwsgi --ini uwsgi/emperor.ini --py-autoreload=3 --honour-stdin
+    command: uwsgi --ini uwsgi/emperor.ini --vassals-include=../development.ini
     stdin_open: true
     tty: true
     environment:

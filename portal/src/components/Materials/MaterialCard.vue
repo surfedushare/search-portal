@@ -2,7 +2,7 @@
   <v-card v-if="material" :ripple="false" :class="{ stack: hasPart }" @click="handleMaterialClick(material)">
     <v-row>
       <v-col class="pb-0" lg="12" cols="12">
-        <v-card-text v-if="material.published_at" class="pt-2 pb-0 date">{{ formattedPublishedAt }}</v-card-text>
+        <v-card-text class="pt-2 pb-0 date">{{ formattedPublishedAt }}</v-card-text>
         <v-card-title class="pt-0 mt-0 truncate2">{{ material.title }}</v-card-title>
         <v-card-text>
           <v-row align="center" class="mx-0">
@@ -216,50 +216,32 @@ export default {
       width: 16px;
     }
   }
-  &_app {
-    &:before {
-      background: url("../../assets/images/app.svg") 0px 0px / contain no-repeat;
-    }
+  &_app:before {
+    background: url("../../assets/images/app.svg") 0px 0px / contain no-repeat;
   }
-  &_document {
-    &:before {
-      background: url("../../assets/images/doc.svg") 0px 0px / contain no-repeat;
-    }
+  &_document:before {
+    background: url("../../assets/images/doc.svg") 0px 0px / contain no-repeat;
   }
-  &_audio {
-    &:before {
-      background: url("../../assets/images/audio.svg") 0px 0px / contain no-repeat;
-    }
+  &_audio:before {
+    background: url("../../assets/images/audio.svg") 0px 0px / contain no-repeat;
   }
-  &_video {
-    &:before {
-      background: url("../../assets/images/video.svg") 2px 0px / contain no-repeat;
-    }
+  &_video:before {
+    background: url("../../assets/images/video.svg") 2px 0px / contain no-repeat;
   }
-  &_image {
-    &:before {
-      background: url("../../assets/images/image.svg") 0px 0px / contain no-repeat;
-    }
+  &_image:before {
+    background: url("../../assets/images/image.svg") 0px 0px / contain no-repeat;
   }
-  &_openaccess-textbook {
-    &:before {
-      background: url("../../assets/images/open-text-book.svg") 0px 0px / contain no-repeat;
-    }
+  &_openaccess-textbook:before {
+    background: url("../../assets/images/open-text-book.svg") 0px 0px / contain no-repeat;
   }
-  &_presentation {
-    &:before {
-      background: url("../../assets/images/presentation.svg") 0px 0px / contain no-repeat;
-    }
+  &_presentation:before {
+    background: url("../../assets/images/presentation.svg") 0px 0px / contain no-repeat;
   }
-  &_spreadsheet {
-    &:before {
-      background: url("../../assets/images/spreadsheet.png") 0px 0px / contain no-repeat;
-    }
+  &_spreadsheet:before {
+    background: url("../../assets/images/spreadsheet.png") 0px 0px / contain no-repeat;
   }
-  &_website {
-    &:before {
-      background: url("../../assets/images/website.svg") 0px 0px / contain no-repeat;
-    }
+  &_website:before {
+    background: url("../../assets/images/website.svg") 0px 0px / contain no-repeat;
   }
 }
 </style>
