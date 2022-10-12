@@ -83,7 +83,7 @@ export default {
       }
       // Fill some defaults for the details
       communityDetails.featured_image = communityDetails.featured_image ||
-        require("../assets/images/pictures/community-default.jpg");
+        require("../../assets/images/pictures/community-default.jpg");
       return communityDetails;
     },
   },
@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../variables");
+@import url("../../variables");
 .community {
   padding-bottom: 80px;
   margin-top: 60px;
@@ -222,7 +222,7 @@ export default {
 
     &:before {
       content: "";
-      background: url("../assets/images/combined-shape.svg") no-repeat 0 0;
+      background: url("../../assets/images/combined-shape.svg") no-repeat 0 0;
       position: absolute;
       left: 55px;
       top: -38px;
@@ -237,7 +237,7 @@ export default {
     &:after {
       content: "";
       position: absolute;
-      background: url("../assets/images/message.svg") no-repeat 0 0;
+      background: url("../../assets/images/message.svg") no-repeat 0 0;
       left: 72px;
       top: -15px;
       height: 33px;

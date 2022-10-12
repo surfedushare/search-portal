@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import url("../variables");
+@import url("../../variables");
 
 .communities {
   &__center-header {
