@@ -16,7 +16,7 @@
 
     <header id="header">
         <span class="logo-prefix">powered by</span>
-        <a target="_blank" href="{{ request.build_absolute_uri('/') }}">
+        <a target="_blank" href="{{ request.build_absolute_uri('/') }}?source=widget">
             <img class="logo" src="{{ static("edusources_logo.png") }}"/>
         </a>
     </header>
@@ -25,7 +25,7 @@
     {% for record in records %}
         {% set link = request.build_absolute_uri(url('portal-material-detail', kwargs={"external_id": "EXTERNAL_ID"})) %}
         <div class="mb-4 col col-12">
-            <div tabindex="0" class="v-card v-card--link v-sheet theme--light {% if record.has_parts %}stack{% endif %}" onclick="window.open('{{ link|replace('EXTERNAL_ID', record.external_id.replace("/", "%2F")) }}')">
+            <a target="_blank" tabindex="0" class="v-card v-card--link v-sheet theme--light {% if record.has_parts %}stack{% endif %}" href="{{ link|replace('EXTERNAL_ID', record.external_id.replace("/", "%2F")) }}?source=widget">
                 <div class="row">
                     <div class="mx-auto col-sm-8 col-md-9 col">
                         <div class="v-card__text pb-0 date">
@@ -85,15 +85,15 @@
                     {% endif %}
                     <div class="author">{{ record.authors|join(", ") }}</div>
                 </div>
-            </div>
+            </a>
         </div>
     {% endfor %}
     </div>
 
     <footer id="footer">
-        <button class="button" onclick="window.open('{{ request.build_absolute_uri(url('portal-search')) }}?{{ request.META.QUERY_STRING }}')">
+        <a class="button" target="_blank" href="{{ request.build_absolute_uri(url('portal-search')) }}?{{ request.META.QUERY_STRING }}&source=widget">
             {{ _("Bekijk alle %d materialen")|format(record_count) }}
-        </button>
+        </a>
     </footer>
 
     <div id="left-background"></div>
