@@ -21,10 +21,13 @@ class Command(base.LabelCommand):
         "core.YoutubeThumbnailResource",
         "core.PdfThumbnailResource",
         "sharekit.SharekitMetadataHarvest",
+        "edurep.EdurepOAIPMH"
+    ]
+
+    metadata = [
         "metadata.MetadataField",
         "metadata.MetadataTranslation",
         "metadata.MetadataValue",
-        "edurep.EdurepOAIPMH"
     ]
 
     def dump_resources(self):
@@ -35,8 +38,16 @@ class Command(base.LabelCommand):
             paths.append(dump_file)
             print(f"Dumping {clazz.get_name()} to {dump_file}")
             call_command("dump_resource", resource_model)
-
         return paths
+
+    def dump_metadata(self):
+        paths = []
+        for metadata_model in self.metadata:
+            clazz = apps.get_model(metadata_model)
+            dump_file = os.path.join(get_dumps_path(clazz), f"{clazz.get_name()}.dump.json")
+            paths.append(dump_file)
+            print(f"Dumping {clazz.get_name()} to {dump_file}")
+            call_command("dumpdata", metadata_model, output=dump_file)
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
@@ -60,12 +71,13 @@ class Command(base.LabelCommand):
             queryset_to_disk(Extension.objects.all(), json_file)
 
         resource_files = self.dump_resources()
+        metadata_files = self.dump_metadata()
 
         # Sync files with AWS
         if environment.env != "localhost":
             logger.info("Uploading files to AWS")
             ctx = Context(environment)
             harvester_data_bucket = f"s3://{environment.aws.harvest_content_bucket}/datasets/harvester"
-            for file in [dataset_file] + resource_files:
+            for file in [dataset_file] + resource_files + metadata_files:
                 remote_file = harvester_data_bucket + file.replace(settings.DATAGROWTH_DATA_DIR, "", 1)
                 ctx.run(f"aws s3 cp {file} {remote_file}", echo=True)
