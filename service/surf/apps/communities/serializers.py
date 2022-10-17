@@ -4,6 +4,7 @@ This module contains API view serializers for communities app.
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
+from surf.vendor.search.api import SearchApiClient
 from surf.apps.communities.models import Community, CommunityDetail
 from surf.apps.materials.models import Material
 from django.core.exceptions import ValidationError
@@ -46,11 +47,23 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_materials_count(obj):
-        materials_set = Material.objects.filter(
-            collections__in=obj.collections.filter(deleted_at=None),
-            deleted_at=None
+        # Default case does not use a "consortium" publisher, but the count of materials within community collections
+        if not obj.publisher:
+            materials_set = Material.objects.filter(
+                collections__in=obj.collections.filter(deleted_at=None),
+                deleted_at=None
+            )
+            return materials_set.count()
+        # Special case does use a "consortium publisher" as filter to indicate which materials belong to this community
+        client = SearchApiClient()
+        res = client.search(
+            search_text='',
+            filters=[{
+                "external_id": "consortium",
+                "items": [obj.publisher]
+            }]
         )
-        return materials_set.count()
+        return res["recordcount"]
 
     def create(self, validated_data):
         details_data = validated_data.pop('community_details')

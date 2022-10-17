@@ -4,6 +4,7 @@ import { validateID, validateParams } from "./_helpers";
 import { PublishStatus } from "~/utils";
 import axios from "~/axios";
 import injector from "vue-inject";
+import { require } from "util";
 
 const $log = injector.get("$log");
 
@@ -53,12 +54,18 @@ export default {
         }
       };
     },
-    getCommunityDetails(state, getters) {
+    getCommunityTranslation(state, getters) {
       return (user, language) => {
-        let communityInfo = getters.getCommunityInfo(user);
-        return find(communityInfo.community_details, {
+        const communityInfo = getters.getCommunityInfo(user);
+        const communityTranslation = find(communityInfo.community_details, {
           language_code: language.toUpperCase(),
         });
+        if(communityTranslation) {
+          communityTranslation.featured_image = communityTranslation.featured_image ||
+            require("../../assets/images/pictures/community-default.jpg");
+          communityTranslation.short_description = communityTranslation.description.slice(0, 200);
+        }
+        return communityTranslation;
       };
     },
     community_collections(state) {
