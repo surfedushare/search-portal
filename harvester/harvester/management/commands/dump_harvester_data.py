@@ -44,10 +44,14 @@ class Command(base.LabelCommand):
         paths = []
         for metadata_model in self.metadata:
             clazz = apps.get_model(metadata_model)
-            dump_file = os.path.join(get_dumps_path(clazz), f"{clazz.get_name()}.dump.json")
+            dump_path = get_dumps_path(clazz)
+            dump_file = os.path.join(dump_path, f"{clazz.get_name()}.dump.json")
+            if not os.path.exists(dump_path):
+                os.makedirs(dump_path)
             paths.append(dump_file)
             print(f"Dumping {clazz.get_name()} to {dump_file}")
             call_command("dumpdata", metadata_model, output=dump_file)
+        return paths
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
