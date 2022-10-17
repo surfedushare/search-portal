@@ -7,7 +7,7 @@
           <h1>{{ communityData.translation.title }}</h1>
         </v-col>
         <v-col class="col-4 community-logo">
-          <img :src="communityData.translation.logo">
+          <img v-if="communityData.translation.featured_image" :src="communityData.translation.featured_image">
         </v-col>
       </v-row>
       <v-row>
@@ -29,7 +29,7 @@
       </v-row>
       <v-row>
         <div class="community-website">
-          <a :href="communityData.translation.website_url" target="_blank">
+          <a v-if="communityData.translation.website_url" :href="communityData.translation.website_url" target="_blank">
             {{ $t("Visit-website") }}&nbsp;
             <v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-share</v-icon>
           </a>
@@ -50,8 +50,8 @@
       </div>
       <h3>{{ $t("About-the-community") }}</h3>
       <div class="community-description" v-html="sanitizedDescription"></div>
-      <h3>{{ $t("Contact") }}</h3>
-      <div class="community-website">
+      <h3 v-if="communityData.translation.website_url">{{ $t("Contact") }}</h3>
+      <div v-if="communityData.translation.website_url" class="community-website">
         <a :href="communityData.translation.website_url" target="_blank">
           {{ $t("Visit-website") }}&nbsp;<v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-share</v-icon>
         </a>

@@ -5,11 +5,13 @@
     </div>
     <CommunityDesktop
       v-else-if="communityData.translation && !$vuetify.breakpoint.mobile"
+      :key="`${communityData.metadata.id}-${$i18n.locale}`"
       :community-data="communityData"
       :on-community-search="goToCommunitySearch"
     />
     <CommunityMobile
       v-else-if="communityData.translation && $vuetify.breakpoint.mobile"
+      :key="`${communityData.metadata.id}-${$i18n.locale}`"
       :community-data="communityData"
       :on-community-search="goToCommunitySearch"
     />

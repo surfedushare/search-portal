@@ -1,13 +1,12 @@
 <template>
   <div>
-
     <header>
       <div class="center_block">
         <v-row class="header-content" no-gutters>
-          <v-col v-if="communityData.translation.logo" class="col-3 community-logo">
-            <img :src="communityData.translation.logo">
+          <v-col v-if="communityData.translation.featured_image" class="col-3 community-logo">
+            <img :src="communityData.translation.featured_image">
           </v-col>
-          <v-col :class="(communityData.translation.logo) ? 'col-7' : 'col-9'" class="community-title">
+          <v-col :class="(communityData.translation.featured_image) ? 'col-7' : 'col-9'" class="community-title">
             <h1>{{ communityData.translation.title }}</h1>
             <p v-html="sanitizedShortDescription"></p>
           </v-col>
@@ -53,7 +52,7 @@
         </v-col>
         <v-col class="col-2">
           <div class="community-info">
-            <a :href="communityData.translation.website_url" target="_blank">
+            <a v-if="communityData.translation.website_url" :href="communityData.translation.website_url" target="_blank">
               {{ $t("Visit-website") }}&nbsp;<v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-share</v-icon>
             </a>
           </div>
