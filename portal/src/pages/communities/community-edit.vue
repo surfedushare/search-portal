@@ -11,7 +11,7 @@
             <div class="communities__form__buttons">
               <switch-input v-model="isPublished" class="public-switch" :label="$t('public')" />
               &nbsp;&nbsp;
-              <button type="button" class="button preview" @click="previewMode = !previewMode">
+              <button v-if="false" type="button" class="button preview" @click="previewMode = !previewMode">
                 <i
                   class="fas fa-eye"
                   :class="{
