@@ -31,7 +31,7 @@
         <div class="community-website">
           <a v-if="communityData.translation.website_url" :href="communityData.translation.website_url" target="_blank">
             {{ $t("Visit-website") }}&nbsp;
-            <v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-share</v-icon>
+            <v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-arrow-up-right-from-square</v-icon>
           </a>
         </div>
       </v-row>
@@ -53,7 +53,7 @@
       <h3 v-if="communityData.translation.website_url">{{ $t("Contact") }}</h3>
       <div v-if="communityData.translation.website_url" class="community-website">
         <a :href="communityData.translation.website_url" target="_blank">
-          {{ $t("Visit-website") }}&nbsp;<v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-share</v-icon>
+          {{ $t("Visit-website") }}&nbsp;<v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-arrow-up-right-from-square</v-icon>
         </a>
       </div>
     </div>

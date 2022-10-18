@@ -53,7 +53,7 @@
         <v-col class="col-2">
           <div class="community-info">
             <a v-if="communityData.translation.website_url" :href="communityData.translation.website_url" target="_blank">
-              {{ $t("Visit-website") }}&nbsp;<v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-share</v-icon>
+              {{ $t("Visit-website") }}&nbsp;<v-icon x-small :color="$vuetify.theme.defaults.light.anchor">fa-arrow-up-right-from-square</v-icon>
             </a>
           </div>
         </v-col>
