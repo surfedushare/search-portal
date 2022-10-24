@@ -46,9 +46,10 @@ import Collections from "~/components/Collections";
 import Error from "~/components/error";
 import InfoBlock from "~/components/InfoBlock";
 import Spinner from "~/components/Spinner";
-import { localePath } from "~/i18n/plugin.routing";
 import PageMixin from "~/pages/page-mixin";
 import { require } from "util";
+import { CONSORTIUM_CATEGORY_FILTER_FIELD } from "~/constants";
+import { generateSearchMaterialsQuery } from "@/components/_helpers";
 
 export default {
   name: "Community",
@@ -99,10 +100,13 @@ export default {
   },
   methods: {
     goToCommunitySearch() {
-      const searchRoute = localePath({
-        name: "communities-search",
-        params: { filterId: this.community_info.publisher },
-      });
+      const searchData = {
+        search_text: "",
+        filters: { [CONSORTIUM_CATEGORY_FILTER_FIELD]: [this.community_info.publisher] },
+        page_size: 10,
+        page: 1,
+      };
+      const searchRoute = generateSearchMaterialsQuery(searchData, "materials-search");
       this.$router.push(searchRoute);
     },
   },

@@ -92,15 +92,6 @@ export default {
     // Set filters from the URL parameters
     const urlInfo = parseSearchMaterialsQuery(this.$route.query);
     this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION", urlInfo.search.filters);
-    // Set filters from the router parameters (Community and Theme filters)
-    if (this.$route.params.filterId) {
-      this.$store.commit("SELECT_FILTER_CATEGORIES", {
-        category: this.$route.meta.filterRoot,
-        selection: [this.$route.params.filterId],
-      });
-    }
-    // Update the filters
-    urlInfo.search.filters = this.$store.state.filterCategories.selection;
     // Set other data than filters and return the object
     const languagePrefix = this.$i18n.locale === "en" ? "/en" : "";
     return {
