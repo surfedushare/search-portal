@@ -23,7 +23,9 @@
         </v-row>
         <v-row class="header-tabs">
           <v-tabs v-model="tabIndex" :color="$vuetify.theme.defaults.light.accent">
-            <v-tab>{{ $t("collections") }} ({{ communityData.collections.length }})</v-tab>
+            <v-tab v-if="communityData.collections.length">
+              {{ $t("collections") }} ({{ communityData.collections.length }})
+            </v-tab>
             <v-tab>{{ $t("About-this-community") }}</v-tab>
           </v-tabs>
         </v-row>
@@ -34,16 +36,12 @@
       <v-row no-gutters>
         <v-col class="col-10">
           <v-tabs-items v-model="tabIndex">
-            <v-tab-item>
+            <v-tab-item v-if="communityData.collections.length">
               <Collections
-                v-if="communityData.collections"
                 :collections="communityData.collections"
                 class="community__collections"
               >
               </Collections>
-              <div v-else>
-                {{ $t("No-collections") }}
-              </div>
             </v-tab-item>
             <v-tab-item>
               <div class="community-description" v-html="sanitizedDescription"></div>
