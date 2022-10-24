@@ -296,7 +296,7 @@ export default {
     grid-template-columns: auto 1fr;
     width: 100%;
     margin: 0 auto;
-    background-color: @grey;
+    background-color: @light-grey;
     border-radius: 20px;
     box-shadow: 0 10px 15px 0 rgba(5, 14, 29, 0.2);
     padding: 24px;

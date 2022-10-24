@@ -99,7 +99,7 @@ export default {
 
 header {
   height: 250px;
-  background-color: #EAECF0;
+  background-color: @lighter-grey;
   padding-top: 32px;
 
   .header-content {

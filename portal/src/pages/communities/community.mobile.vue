@@ -94,7 +94,7 @@ export default {
 
 header {
   padding: 20px;
-  background-color: #EAECF0;
+  background-color: @lighter-grey;
 
   .community-logo {
     text-align: right;
