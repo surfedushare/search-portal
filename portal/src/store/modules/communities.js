@@ -63,7 +63,6 @@ export default {
         if(communityTranslation) {
           communityTranslation.featured_image = communityTranslation.featured_image ||
             require("../../assets/images/pictures/community-default.jpg");
-          communityTranslation.short_description = communityTranslation.description.slice(0, 200);
         }
         return communityTranslation;
       };

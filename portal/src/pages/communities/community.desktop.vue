@@ -8,7 +8,7 @@
           </v-col>
           <v-col :class="(communityData.translation.featured_image) ? 'col-7' : 'col-9'" class="community-title">
             <h1>{{ communityData.translation.title }}</h1>
-            <p v-html="sanitizedShortDescription"></p>
+            <p>{{ communityData.translation.short_description }}</p>
           </v-col>
           <v-col class="col-3">
             <button
@@ -86,7 +86,6 @@ export default {
     return {
       tabIndex: null,
       sanitizedDescription: DOMPurify.sanitize(this.communityData.translation.description),
-      sanitizedShortDescription: DOMPurify.sanitize(this.communityData.translation.short_description)
     };
   },
 };

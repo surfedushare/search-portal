@@ -16,7 +16,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <p v-html="sanitizedShortDescription"></p>
+          <p>{{ communityData.translation.short_description }}</p>
         </v-col>
       </v-row>
       <v-row justify="center">
@@ -87,7 +87,6 @@ export default {
   data() {
     return {
       sanitizedDescription: DOMPurify.sanitize(this.communityData.translation.description),
-      sanitizedShortDescription: DOMPurify.sanitize(this.communityData.translation.short_description)
     };
   }
 };
