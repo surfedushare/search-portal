@@ -1,25 +1,7 @@
-import * as Sentry from "@sentry/browser";
+const Sentry = import(/* webpackPreload: true, webpackChunkName: "sentry" */ "./sentry");
 
 import injector from "vue-inject";
 import { flatMap, has } from "lodash";
-
-if (process.env.VUE_APP_USE_SENTRY) {
-  Sentry.init({
-    dsn: `${window.location.protocol}//21fab3e788584cbe999f20ea1bb7e2df@${window.location.host}/sentry/2964956`,
-    beforeSend(event) {
-      if (window.location.host !== "edusources.nl") {
-        return event;
-      }
-      if (event.user) {
-        delete event.user;
-      }
-      if (event.request && event.request.headers && event.request.headers["User-Agent"]) {
-        delete event.request.headers["User-Agent"];
-      }
-      return event;
-    },
-  });
-}
 
 injector.decorator("$log", function ($log) {
   /***************************
