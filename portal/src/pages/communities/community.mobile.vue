@@ -6,8 +6,12 @@
         <v-col class="col-8 community-title">
           <h1>{{ communityData.translation.title }}</h1>
         </v-col>
-        <v-col class="col-4 community-logo">
-          <img v-if="communityData.translation.featured_image" :src="communityData.translation.featured_image">
+        <v-col class="col-4">
+          <div
+            v-if="communityData.translation.featured_image" :src="communityData.translation.featured_image"
+            class="community-logo"
+            :style="{'background-image': `url(${communityData.translation.featured_image})`}"
+          ></div>
         </v-col>
       </v-row>
       <v-row>
@@ -97,10 +101,13 @@ header {
   background-color: @lighter-grey;
 
   .community-logo {
-    text-align: right;
-    img {
-      max-width: 100px;
-    }
+    width: 100px;
+    height: 100px;
+    float: right;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: @white;
   }
 
   .community-search-button {

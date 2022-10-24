@@ -3,17 +3,17 @@
     <header>
       <div class="center_block">
         <v-row class="header-content" no-gutters>
-          <v-col v-if="communityData.translation.featured_image" class="col-3 community-logo">
-            <img :src="communityData.translation.featured_image">
+          <v-col v-if="communityData.translation.featured_image" class="col-2">
+            <div class="community-logo" :style="{'background-image': `url(${communityData.translation.featured_image})`}"></div>
           </v-col>
           <v-col :class="(communityData.translation.featured_image) ? 'col-7' : 'col-9'" class="community-title">
             <h1>{{ communityData.translation.title }}</h1>
             <p v-html="sanitizedShortDescription"></p>
           </v-col>
-          <v-col class="col-2">
+          <v-col class="col-3">
             <button
               v-if="communityData.metadata.publisher"
-              class="button"
+              class="button community-search"
               data-test="community_search_link"
               @click="onCommunitySearch"
             >
@@ -106,8 +106,13 @@ header {
     height: @header-height;
   }
 
-  .community-logo img {
+  .community-logo {
+    width: @header-height;
     height: @header-height;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: @white;
   }
 
   .community-title h1 {
@@ -116,6 +121,10 @@ header {
 
   .header-tabs {
     margin-top: 30px;
+  }
+
+  .community-search.button {
+    float: right;
   }
 }
 
