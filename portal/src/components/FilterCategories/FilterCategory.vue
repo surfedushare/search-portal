@@ -1,5 +1,5 @@
 <template>
-  <li class="filter-categories__item" if="visible">
+  <li class="filter-categories__item">
     <div>
       <h4
         class="filter-categories__item_title"
@@ -35,7 +35,7 @@
         </li>
       </ul>
     </div>
-    <FilterCategoriesPopup :category-data="category" :show-popup="showPopup" :close="onToggleShowAll" @apply="onApply" />
+    <FilterCategoriesPopup :key="$route.fullPath" :category-data="category" :show-popup="showPopup" :close="onToggleShowAll" @apply="onApply" />
   </li>
 </template>
 
@@ -67,9 +67,6 @@ export default {
     };
   },
   computed: {
-    visible() {
-      return this.category.children.some((child) => !child.is_hidden);
-    },
     sortedChildren() {
       return [...this.category.children].sort((a, b) => {
         return b.selected - a.selected || b.count - a.count;
