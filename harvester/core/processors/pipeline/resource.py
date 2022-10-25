@@ -1,6 +1,9 @@
+from sentry_sdk import capture_message
+
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
+from django.core.exceptions import MultipleObjectsReturned
 
 from datagrowth.configuration import create_config
 from datagrowth.resources.http.tasks import send
@@ -33,7 +36,11 @@ class ResourcePipelineProcessor(PipelineProcessor):
         creates = []
         for process_result in batch.processresult_set.all():
             args, kwargs = process_result.document.output(config.args, config.kwargs)
-            successes, fails = self.dispatch_resource(config, *args, **kwargs)
+            try:
+                successes, fails = self.dispatch_resource(config, *args, **kwargs)
+            except MultipleObjectsReturned:
+                capture_message("Dispatch resource found multiple suitable resources in the cache", level="warning")
+                successes = fails = []
             results = successes + fails
             if not len(results):
                 continue
@@ -89,6 +96,7 @@ class ResourcePipelineProcessor(PipelineProcessor):
                 try:
                     list(self.Document.objects.filter(id__in=[doc.id for doc in documents]).select_for_update())
                 except transaction.DatabaseError:
+                    capture_message("Failed to acquire lock to merge pipeline batch", level="warning")
                     continue
                 self.Document.objects.bulk_update(documents, ["pipeline", "properties"])
                 break
