@@ -42,7 +42,7 @@ class TestGeneratePreviews(TestCase):
                 "pipeline_app_label": "core",
                 "pipeline_phase": "youtube_preview",
                 "pipeline_depends_on": "metadata",
-                "batch_size": 10,
+                "batch_size": 100,
                 "asynchronous": False,
                 "retrieve_data": {
                     "resource": "core.youtubethumbnailresource",
@@ -84,7 +84,7 @@ class TestGeneratePreviews(TestCase):
                 "pipeline_app_label": "core",
                 "pipeline_phase": "pdf_preview",
                 "pipeline_depends_on": "metadata",
-                "batch_size": 10,
+                "batch_size": 100,
                 "asynchronous": False,
                 "retrieve_data": {
                     "resource": "core.pdfthumbnailresource",
