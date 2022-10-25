@@ -60,7 +60,7 @@ export default {
     goToCommunitySearch() {
       const searchData = {
         search_text: "",
-        filters: { [CONSORTIUM_CATEGORY_FILTER_FIELD]: [this.community_info.publisher] },
+        filters: { [CONSORTIUM_CATEGORY_FILTER_FIELD]: [this.communityData.metadata.publisher] },
         page_size: 10,
         page: 1,
       };
