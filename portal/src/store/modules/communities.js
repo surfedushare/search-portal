@@ -49,7 +49,7 @@ export default {
           return state.community_info;
         } else if (state.community_info.publish_status === PublishStatus.PUBLISHED) {
           return state.community_info;
-        } else if (user && user.communities.indexOf(state.community_info.id) >= 0) {
+        } else if (user && user.communities?.indexOf(state.community_info.id) >= 0) {
           return state.community_info;
         }
       };
@@ -57,6 +57,9 @@ export default {
     getCommunityTranslation(state, getters) {
       return (user, language) => {
         const communityInfo = getters.getCommunityInfo(user);
+        if(isEmpty(communityInfo)) {
+          return;
+        }
         const communityTranslation = find(communityInfo.community_details, {
           language_code: language.toUpperCase(),
         });
