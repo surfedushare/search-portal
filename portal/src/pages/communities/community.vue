@@ -4,13 +4,13 @@
       <error status-code="404" message-key="community-not-found" />
     </div>
     <CommunityDesktop
-      v-else-if="communityData.translation && !$vuetify.breakpoint.mobile"
+      v-else-if="communityData.translation && !$vuetify.breakpoint.mobile && isReady"
       :key="`${communityData.metadata.id}-${$i18n.locale}`"
       :community-data="communityData"
       :on-community-search="goToCommunitySearch"
     />
     <CommunityMobile
-      v-else-if="communityData.translation && $vuetify.breakpoint.mobile"
+      v-else-if="communityData.translation && $vuetify.breakpoint.mobile && isReady"
       :key="`${communityData.metadata.id}-${$i18n.locale}`"
       :community-data="communityData"
       :on-community-search="goToCommunitySearch"
@@ -47,8 +47,10 @@ export default {
   },
   created() {
     const { community } = this.$route.params;
-    this.pageLoad = this.$store.dispatch("getCommunity", community);
-    this.$store.dispatch("getCommunityCollections", community);
+    this.pageLoad = Promise.all([
+      this.$store.dispatch("getCommunity", community),
+      this.$store.dispatch("getCommunityCollections", community),
+    ]);
   },
   metaInfo() {
     const defaultTitle = this.$root.$meta().title;
