@@ -1,7 +1,7 @@
 describe("Community page - collection", () => {
   beforeEach(() => {
-    cy.visit("/mijn/community/62f26a9c-d593-49a5-9330-f4a71a1fd370?tab=collections-tab");
     cy.setLocalStorage("surf_token", "123abc");
+    cy.visit("/mijn/community/62f26a9c-d593-49a5-9330-f4a71a1fd370?tab=collections-tab");
   });
 
   it("Should add a collection", () => {
