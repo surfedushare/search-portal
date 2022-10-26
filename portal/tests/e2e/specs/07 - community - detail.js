@@ -27,5 +27,4 @@ describe("Community page - detail", () => {
     cy.get("[data-test=content]").contains("Bezoek website")
       .should("have.attr", "href", "https://ethicsandtechnology.eu/")
   });
-
 });

@@ -51,5 +51,54 @@
         "user": 1,
         "team_id": "urn:collab:group:surfteams.nl:nl:surfnet:diensten:test_team_zoekportal"
     }
+},
+{
+    "model": "communities.community",
+    "pk": "e7cdbb19-89fa-4a80-af69-101c8b9cf3df",
+    "fields": {
+        "publish_status": 1,
+        "name": "Level lang ontwikkelen",
+        "deleted_at": null,
+        "external_id": "urn:collab:group:surfteams.nl:nl:surfnet:diensten:test_team_zoekportal",
+        "publisher": null,
+        "collections": []
+    }
+},
+{
+    "model": "communities.communitydetail",
+    "pk": 11,
+    "fields": {
+        "community": "e7cdbb19-89fa-4a80-af69-101c8b9cf3df",
+        "language_code": "NL",
+        "title": "Leven lang ontwikkelen",
+        "description": "al een tijdje in ontwikkeling",
+        "short_description": "in ontwikkeling",
+        "website_url": null,
+        "logo": null,
+        "featured_image": null
+    }
+},
+{
+    "model": "communities.communitydetail",
+    "pk": 12,
+    "fields": {
+        "community": "e7cdbb19-89fa-4a80-af69-101c8b9cf3df",
+        "language_code": "EN",
+        "title": "Live long development",
+        "description": "Under development for a while now",
+        "short_description": "Under development",
+        "website_url": null,
+        "logo": null,
+        "featured_image": null
+    }
+},
+{
+    "model": "communities.team",
+    "pk": 1680,
+    "fields": {
+        "community": "e7cdbb19-89fa-4a80-af69-101c8b9cf3df",
+        "user": 1,
+        "team_id": "urn:collab:group:surfteams.nl:nl:surfnet:diensten:test_team_zoekportal"
+    }
 }
 ]
