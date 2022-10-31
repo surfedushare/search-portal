@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header>
+    <header data-test="header">
       <div class="center_block">
         <v-row class="header-content" no-gutters>
           <v-col v-if="communityData.translation.featured_image" class="col-2">
@@ -32,7 +32,7 @@
       </div>
     </header>
 
-    <div class="center_block">
+    <div class="center_block" data-test="content">
       <v-row no-gutters>
         <v-col class="col-10">
           <v-tabs-items v-model="tabIndex">
