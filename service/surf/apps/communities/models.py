@@ -86,6 +86,7 @@ class CommunityDetail(django_models.Model):
     language_code = django_models.CharField(max_length=2)
     title = django_models.CharField(max_length=255, validators=[MinLengthValidator(1)])
     description = django_models.TextField(max_length=16384, null=True, blank=True)
+    short_description = django_models.CharField(max_length=200, null=True, blank=True)
     website_url = django_models.URLField(blank=True, null=True, validators=[URLValidator])
 
     logo = django_models.ImageField(upload_to='communities', blank=True, null=True,

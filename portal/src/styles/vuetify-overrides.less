@@ -24,9 +24,26 @@
   font-family: @second-font;
 }
 .v-btn--outlined {
-  border: thin solid #BABCBF;
+  border: thin solid @grey;
 }
 .v-chip.v-size--default {
   height: 36px;
   border-radius: 10px;
+}
+
+.v-tabs-bar__content {
+  background: @lighter-grey;
+}
+.v-tab {
+  background: white;
+  margin-right: 10px;
+  &.v-tab {
+    color: @black;
+  }
+}
+.v-tab:not(.v-tab--active) {
+  background-color: @grey;
+}
+.v-window {
+  padding-right: 15px;
 }
