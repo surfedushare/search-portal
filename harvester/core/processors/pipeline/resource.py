@@ -1,9 +1,9 @@
+from time import sleep
 from sentry_sdk import capture_message
 
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
-from django.core.exceptions import MultipleObjectsReturned
 
 from datagrowth.configuration import create_config
 from datagrowth.resources.http.tasks import send
@@ -36,11 +36,7 @@ class ResourcePipelineProcessor(PipelineProcessor):
         creates = []
         for process_result in batch.processresult_set.all():
             args, kwargs = process_result.document.output(config.args, config.kwargs)
-            try:
-                successes, fails = self.dispatch_resource(config, *args, **kwargs)
-            except MultipleObjectsReturned:
-                capture_message("Dispatch resource found multiple suitable resources in the cache", level="warning")
-                successes = fails = []
+            successes, fails = self.dispatch_resource(config, *args, **kwargs)
             results = successes + fails
             if not len(results):
                 continue
@@ -64,7 +60,8 @@ class ResourcePipelineProcessor(PipelineProcessor):
         contribution_processor = config.extractor
         contribution_property = config.to_property
 
-        while True:
+        attempts = 0
+        while attempts < 3:
 
             documents = []
             for process_result in batch.processresult_set.filter(result_id__isnull=False):
@@ -94,9 +91,16 @@ class ResourcePipelineProcessor(PipelineProcessor):
             # We'll be locking the Documents for update to prevent accidental overwrite of parallel results
             with transaction.atomic():
                 try:
-                    list(self.Document.objects.filter(id__in=[doc.id for doc in documents]).select_for_update())
+                    list(
+                        self.Document.objects
+                            .filter(id__in=[doc.id for doc in documents])
+                            .select_for_update(nowait=True)
+                    )
                 except transaction.DatabaseError:
-                    capture_message("Failed to acquire lock to merge pipeline batch", level="warning")
+                    attempts += 1
+                    warning = f"Failed to acquire lock to merge pipeline batch (attempt={attempts})"
+                    capture_message(warning, level="warning")
+                    sleep(5)
                     continue
                 self.Document.objects.bulk_update(documents, ["pipeline", "properties"])
                 break

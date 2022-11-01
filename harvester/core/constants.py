@@ -65,5 +65,6 @@ HIGHER_EDUCATION_LEVELS = {
 
 RESTRICTED_MATERIAL_SETS = {
     "l4l",
-    "edusourcesprivate"
+    "edusourcesprivate",
+    "edusourcesmboprivate",
 }

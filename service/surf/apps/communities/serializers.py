@@ -4,6 +4,7 @@ This module contains API view serializers for communities app.
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
+from surf.vendor.search.api import SearchApiClient
 from surf.apps.communities.models import Community, CommunityDetail
 from surf.apps.materials.models import Material
 from django.core.exceptions import ValidationError
@@ -25,7 +26,6 @@ class CommunitySerializer(serializers.ModelSerializer):
     Community instance serializer for get methods
     """
 
-    external_id = serializers.CharField()
     members_count = serializers.SerializerMethodField()
     collections_count = serializers.SerializerMethodField()
     materials_count = serializers.SerializerMethodField()
@@ -39,11 +39,7 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_members_count(obj):
-        try:
-            return obj.members.count()
-        except Exception as exc:
-            print(exc)
-            return 0
+        return obj.members.count()
 
     @staticmethod
     def get_collections_count(obj):
@@ -51,11 +47,23 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_materials_count(obj):
-        materials_set = Material.objects.filter(
-            collections__in=obj.collections.filter(deleted_at=None),
-            deleted_at=None
+        # Default case does not use a "consortium" publisher, but the count of materials within community collections
+        if not obj.publisher:
+            materials_set = Material.objects.filter(
+                collections__in=obj.collections.filter(deleted_at=None),
+                deleted_at=None
+            )
+            return materials_set.count()
+        # Special case does use a "consortium publisher" as filter to indicate which materials belong to this community
+        client = SearchApiClient()
+        res = client.search(
+            search_text='',
+            filters=[{
+                "external_id": "consortium",
+                "items": [obj.publisher]
+            }]
         )
-        return materials_set.count()
+        return res["recordcount"]
 
     def create(self, validated_data):
         details_data = validated_data.pop('community_details')
@@ -160,8 +168,15 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Community
-        fields = ('id', 'external_id', 'members_count',
-                  'collections_count', 'materials_count', 'publish_status',
+        fields = ('id', 'members_count', 'collections_count', 'materials_count', 'publish_status', 'publisher',
                   'community_details', 'community_details_update',
-                  'logo_nl', 'logo_en', 'featured_image_nl', 'featured_image_en', 'deleted_logos',
-                  'publisher')
+                  'logo_nl', 'logo_en', 'featured_image_nl', 'featured_image_en', 'deleted_logos',)
+
+
+class MinimalCommunitySerializer(serializers.ModelSerializer):
+
+    community_details = CommunityDetailSerializer(many=True, required=False)
+
+    class Meta:
+        model = Community
+        fields = ('id', 'publish_status', 'community_details',)

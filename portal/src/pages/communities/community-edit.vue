@@ -11,7 +11,7 @@
             <div class="communities__form__buttons">
               <switch-input v-model="isPublished" class="public-switch" :label="$t('public')" />
               &nbsp;&nbsp;
-              <button type="button" class="button preview" @click="previewMode = !previewMode">
+              <button v-if="false" type="button" class="button preview" @click="previewMode = !previewMode">
                 <i
                   class="fas fa-eye"
                   :class="{
@@ -354,7 +354,7 @@ export default {
 };
 </script>
 <style lang="less">
-@import "./../variables";
+@import "./../../variables";
 .communities {
   width: 100%;
 
@@ -497,7 +497,7 @@ export default {
 
   &__link {
     padding: 13px 43px 13px 51px;
-    background-image: url("../assets/images/plus-black.svg");
+    background-image: url("../../assets/images/plus-black.svg");
     background-position: 10px 50%;
     background-repeat: no-repeat;
     background-size: 24px 24px;

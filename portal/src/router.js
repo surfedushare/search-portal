@@ -1,9 +1,7 @@
-import { CONSORTIUM_CATEGORY_FILTER_FIELD } from "~/constants";
-
 import Collection from "~/pages/collection";
-import Communities from "~/pages/communities";
-import Community from "~/pages/community";
-import CommunityEdit from "~/pages/community-edit";
+import Communities from "~/pages/communities/communities";
+import Community from "~/pages/communities/community";
+import CommunityEdit from "~/pages/communities/community-edit";
 import Home from "~/pages/index";
 import HowDoesItWork from "~/pages/how-does-it-work";
 import InfoPage from "~/pages/info";
@@ -83,33 +81,6 @@ export default new Router({
       name: "materials-search___nl",
       meta: {
         noAutoTrack: true,
-      },
-    },
-    {
-      path: "/en/communities/:filterId/search",
-      component: Search,
-      name: "communities-search___en",
-      meta: {
-        noAutoTrack: true,
-        filterRoot: CONSORTIUM_CATEGORY_FILTER_FIELD,
-      },
-    },
-    {
-      path: "/communitys/:filterId/zoeken",
-      component: Search,
-      name: "communities-search___nl",
-      meta: {
-        noAutoTrack: true,
-        filterRoot: CONSORTIUM_CATEGORY_FILTER_FIELD,
-      },
-    },
-    {
-      path: "/communities/:filterId/zoeken",
-      component: Search,
-      name: "communities-search-legacy___nl",
-      meta: {
-        noAutoTrack: true,
-        filterRoot: CONSORTIUM_CATEGORY_FILTER_FIELD,
       },
     },
     {

@@ -32,7 +32,7 @@ class TestBasicHarvest(TestCase):
                 "pipeline_app_label": "core",
                 "pipeline_phase": "tika",
                 "pipeline_depends_on": "metadata",
-                "batch_size": 10,
+                "batch_size": 100,
                 "asynchronous": False,
                 "retrieve_data": {
                     "resource": "core.httptikaresource",
@@ -53,7 +53,7 @@ class TestBasicHarvest(TestCase):
                 "pipeline_app_label": "core",
                 "pipeline_phase": "extruct",
                 "pipeline_depends_on": "metadata",
-                "batch_size": 10,
+                "batch_size": 100,
                 "asynchronous": False,
                 "retrieve_data": {
                     "resource": "core.extructresource",

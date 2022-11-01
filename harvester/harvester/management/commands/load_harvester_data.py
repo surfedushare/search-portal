@@ -43,7 +43,7 @@ class Command(base.LabelCommand):
         parser.add_argument('-hs', '--harvest-source', type=str)
         parser.add_argument('-i', '--index', action="store_true", default=True)
 
-    def load_resources(self, download_edurep):
+    def load_data(self, download_edurep):
         if download_edurep:
             self.resources.append("edurep.EdurepOAIPMH")
 
@@ -53,14 +53,19 @@ class Command(base.LabelCommand):
             model = apps.get_model(resource_model)
             model.objects.all().delete()
 
-        load_models = [
-            *self.resources,
-            self.metadata_models[2],  # for load we need MetadataTranslations before MetadataField and MetadataValue
-            *self.metadata_models[:2]
-        ]
-        for resource_model in load_models:
+        for resource_model in self.resources:
             print(f"Loading resource {resource_model}")
             call_command("load_resource", resource_model)
+
+        metadata_models = [  # for loading we need MetadataTranslations before MetadataField and MetadataValue
+            self.metadata_models[2],
+            *self.metadata_models[:2]
+        ]
+        for metadata_model in metadata_models:
+            print(f"Loading metadata {metadata_model}")
+            clazz = apps.get_model(metadata_model)
+            load_file = os.path.join(get_dumps_path(clazz), f"{clazz.get_name()}.dump.json")
+            call_command("loaddata", load_file)
 
     def reset_postgres_sequences(self):
         app_labels = set([resource.split(".")[0] for resource in self.resources])
@@ -118,7 +123,7 @@ class Command(base.LabelCommand):
             for objects in objects_from_disk(dump_file):
                 self.bulk_create_objects(objects)
         # Load resources
-        self.load_resources(download_edurep)
+        self.load_data(download_edurep)
         self.reset_postgres_sequences()
 
         # Index data

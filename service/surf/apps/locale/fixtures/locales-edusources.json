@@ -651,6 +651,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "329081dc-2ac6-4b19-98dd-d1f700d05553",
+    "fields": {
+        "asset": "About-this-community",
+        "en": "About this community",
+        "nl": "Over deze community",
+        "is_fuzzy": true
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "34208683-bd07-49d7-9509-f2aa90776bc1",
     "fields": {
         "asset": "About-the-theme-techniek",
@@ -911,6 +921,16 @@
 },
 {
     "model": "locale.locale",
+    "pk": "459fc6fd-bb92-4580-8140-a70e7fdd6dfb",
+    "fields": {
+        "asset": "open-learning-materials-from-education",
+        "en": "open educational resources from education",
+        "nl": "open leermaterialen uit het onderwijs",
+        "is_fuzzy": true
+    }
+},
+{
+    "model": "locale.locale",
     "pk": "45e9327d-4d46-4cb5-a004-8b88e10c297a",
     "fields": {
         "asset": "Next",
@@ -1027,6 +1047,16 @@
         "en": "more info",
         "nl": "meer info",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "51db32a9-48c0-4e44-97d7-6a248bfb32fb",
+    "fields": {
+        "asset": "Show-all-materials",
+        "en": "Show all {count} materials",
+        "nl": "Bekijk alle {count} materialen",
+        "is_fuzzy": true
     }
 },
 {
@@ -1387,6 +1417,16 @@
         "en": "A collection title cannot be empty",
         "nl": "De titel van een collectie kan niet leeg zijn",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "68edbfdf-6aba-49f6-b7fb-7131485ef5c6",
+    "fields": {
+        "asset": "share",
+        "en": "Share",
+        "nl": "Delen",
+        "is_fuzzy": true
     }
 },
 {
@@ -2477,6 +2517,16 @@
         "en": "View results",
         "nl": "Bekijk resultaten",
         "is_fuzzy": false
+    }
+},
+{
+    "model": "locale.locale",
+    "pk": "b94c5897-5d93-4935-bc54-e4084d0caf69",
+    "fields": {
+        "asset": "Contact",
+        "en": "Contact",
+        "nl": "Contact",
+        "is_fuzzy": true
     }
 },
 {

@@ -130,7 +130,7 @@ html {
 }
 
 /deep/.v-input__slot {
-  background-color: @grey !important;
+  background-color: @light-grey !important;
   fieldset {
     border: none !important;
   }
