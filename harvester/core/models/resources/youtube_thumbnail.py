@@ -42,9 +42,11 @@ class YoutubeThumbnailResource(ShellResource):
             vimeo_url = URLObject(thumbnail_url)
             if "src0" not in vimeo_url.query_dict:
                 remainder, filename = os.path.split(vimeo_url.path)
-                return filename
-            thumbnail_url = vimeo_url.query_dict["src0"]
-            remainder, filename = os.path.split(thumbnail_url)
+            else:
+                thumbnail_url = vimeo_url.query_dict["src0"]
+                remainder, filename = os.path.split(thumbnail_url)
+            if len(filename) > 70:
+                filename = filename[len(filename)-70:]
             return filename
         # Default is Youtube URL's
         url = urlparse(thumbnail_url)
