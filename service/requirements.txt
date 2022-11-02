@@ -7,7 +7,6 @@ requests==2.27.1
 Pillow==9.0.1
 opensearch-py==2.0.0
 python-dateutil==2.8.1
-suds-community==0.8.5
 uritemplate==3.0.1
 Jinja2==2.11.3
 django-x-robots-tag-middleware==1.3.3
