@@ -9,6 +9,8 @@ from datagrowth.processors import ExtractProcessor
 
 class HanzeResourceObjectExtraction(ExtractProcessor):
 
+    OBJECTIVE = None
+
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
     @classmethod
@@ -147,7 +149,7 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         return theme_value if isinstance(theme_value, list) else [theme_value]
 
 
-HANZE_EXTRACTION_OBJECTIVE = {
+HanzeResourceObjectExtraction.OBJECTIVE = {
     "url": HanzeResourceObjectExtraction.get_url,
     "files": HanzeResourceObjectExtraction.get_files,
     "title": "$.title.value",

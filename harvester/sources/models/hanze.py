@@ -3,25 +3,11 @@ from django.db import models
 
 from datagrowth.configuration import create_config
 
-from core.constants import Repositories
-from core.models import HarvestHttpResource, ExtractionMapping
-from hanze.extraction import HanzeResourceObjectExtraction, HANZE_EXTRACTION_OBJECTIVE
+from core.models import HarvestHttpResource
+from sources.extraction.hanze import HanzeResourceObjectExtraction
 
 
 class HanzeResearchObjectResourceManager(models.Manager):
-
-    def _create_objective(self):
-        extraction_mapping_queryset = ExtractionMapping.objects.filter(is_active=True, repository=Repositories.HANZE)
-        if extraction_mapping_queryset.exists():
-            extraction_mapping = extraction_mapping_queryset.last()
-            return extraction_mapping.to_objective()
-        objective = {
-            "@": "$.items",
-            "external_id": "$.uuid",
-            "state": HanzeResourceObjectExtraction.get_record_state
-        }
-        objective.update(HANZE_EXTRACTION_OBJECTIVE)
-        return objective
 
     def extract_seeds(self, latest_update):
         latest_update = latest_update.replace(microsecond=0)
@@ -31,8 +17,14 @@ class HanzeResearchObjectResourceManager(models.Manager):
             is_extracted=False
         )
 
+        metadata_objective = {
+            "@": "$.items",
+            "external_id": "$.uuid",
+            "state": HanzeResourceObjectExtraction.get_record_state
+        }
+        metadata_objective.update(HanzeResourceObjectExtraction.OBJECTIVE)
         extract_config = create_config("extract_processor", {
-            "objective": self._create_objective()
+            "objective": metadata_objective
         })
         prc = HanzeResourceObjectExtraction(config=extract_config)
 

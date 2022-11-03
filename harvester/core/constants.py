@@ -2,7 +2,7 @@ class Repositories:
     EDUREP = "edurep.EdurepOAIPMH"
     SHAREKIT = "sharekit.SharekitMetadataHarvest"
     ANATOMY_TOOL = "anatomy_tool.AnatomyToolOAIPMH"
-    HANZE = "hanze.HanzeResearchObjectResource"
+    HANZE = "sources.HanzeResearchObjectResource"
     HAN = "sources.HanOAIPMHResource"
     HVA = "sources.HvaPureResource"
     HKU = "sources.HkuMetadataResource"
