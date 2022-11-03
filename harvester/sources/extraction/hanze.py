@@ -24,7 +24,7 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
     @staticmethod
     def _parse_electronic_version(electronic_version):
         if "file" in electronic_version:
-            url = electronic_version["file"]["fileURL"]
+            url = electronic_version["file"]["url"]
         elif "link" in electronic_version:
             url = electronic_version["link"]
         else:
@@ -47,10 +47,10 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_language(cls, node):
-        language = node["language"]["term"]["text"][0]["value"]
-        if language == "Nederlands":
+        language = node["language"]["term"]["en_GB"]
+        if language == "Dutch":
             return "nl"
-        elif language == "Engels":
+        elif language == "English":
             return "en"
         return "unk"
 
@@ -95,17 +95,25 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_authors(cls, node):
-        return [
-            {
-                "name": None,
+        authors = []
+        for person in node["contributors"]:
+            name = person.get('name', {})
+            match name:
+                case {"firstName": first_name}:
+                    full_name = f"{first_name} {name['lastName']}"
+                case {"lastName": last_name}:
+                    full_name = last_name
+                case _:
+                    full_name = None
+            authors.append({
+                "name": full_name,
                 "email": None,
-                "external_id": person["person"]["uuid"],
+                "external_id": person.get("person", {}).get("uuid", None),
                 "dai": None,
                 "orcid": None,
                 "isni": None
-            }
-            for person in node["personAssociations"] if person
-        ]
+            })
+        return authors
 
     @classmethod
     def get_publishers(cls, node):
