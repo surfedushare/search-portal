@@ -26,8 +26,6 @@ postgres:
 
 schedule:
   harvest:
-    hour: 2  # uses UTC
-    minute: 0
 
 sharekit:
   webhook_allowed_ips:
