@@ -68,6 +68,8 @@ services:
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     command: watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A harvester worker --loglevel=INFO
+    healthcheck:
+      test: celery -A harvester inspect ping
     links:
       - redis:redis
     depends_on:
