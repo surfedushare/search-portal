@@ -1,7 +1,7 @@
 import Collection from "~/pages/collection";
 import Communities from "~/pages/communities/communities";
 import Community from "~/pages/communities/community";
-import CommunityEdit from "~/pages/communities/community-edit";
+const CommunityEdit = () => import(/* webpackChunkName: "rich-text-editor" */ "~/pages/communities/community-edit");
 import Home from "~/pages/index";
 import HowDoesItWork from "~/pages/how-does-it-work";
 import InfoPage from "~/pages/info";
