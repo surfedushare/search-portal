@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
 from celery import current_app as app, chord
+from celery.exceptions import SoftTimeLimitExceeded
 
 from datagrowth.configuration import load_config
 from datagrowth.processors import Processor
@@ -22,7 +23,13 @@ def load_pipeline_models(app_label, models):
     return Batch, Document, ProcessResult
 
 
-@app.task(name="pipeline_full_merge", base=DatabaseConnectionResetTask)
+@app.task(
+    name="pipeline_full_merge",
+    base=DatabaseConnectionResetTask,
+    soft_time_limit=30*60*60,
+    autoretry_for=(SoftTimeLimitExceeded,),
+    retry_kwargs={"max_retries": 3}
+)
 @load_config()
 def full_merge(config, batch_ids, processor_name):
     app_label = config.pipeline_app_label
@@ -32,7 +39,13 @@ def full_merge(config, batch_ids, processor_name):
     return processor.full_merge(Document.objects.filter(processresult__batch_id__in=batch_ids))
 
 
-@app.task(name="pipeline_process_and_merge", base=DatabaseConnectionResetTask)
+@app.task(
+    name="pipeline_process_and_merge",
+    base=DatabaseConnectionResetTask,
+    soft_time_limit=30*60*60,
+    autoretry_for=(SoftTimeLimitExceeded,),
+    retry_kwargs={"max_retries": 3}
+)
 @load_config()
 def process_and_merge(config, batch_id):
     app_label = config.pipeline_app_label
