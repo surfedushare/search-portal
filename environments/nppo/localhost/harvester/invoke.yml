@@ -17,6 +17,7 @@ django:
     sharekit: "https://api.acc.surfsharekit.nl"
     han: "https://repository.han.nl"
     hva: "https://accpure.hva.nl"
+    hanze: "https://hanzetest.azure-api.net"
   sentry:
     dsn: null
 

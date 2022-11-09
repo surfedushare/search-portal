@@ -16,6 +16,7 @@ django:
     sharekit: "https://api.surfsharekit.nl"
     han: null
     hva: null
+    hanze: null
   sentry:
     dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
 

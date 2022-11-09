@@ -15,6 +15,14 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_record_state(cls, node):
+        # Hanze wants to filter out products that have no research_focus_areas or research_line
+        for keywords in node["keywordGroups"]:
+            if keywords["logicalName"] == "research_focus_areas":
+                for classification in keywords["classifications"]:
+                    if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
+                        return "inactive"
+                    elif classification["uri"] == "research_focus_areas/02g_no_research_line_applicable":
+                        return "inactive"
         return "active"
 
     #############################
@@ -25,14 +33,18 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
     def _parse_electronic_version(electronic_version):
         if "file" in electronic_version:
             url = electronic_version["file"]["url"]
+            file_name = electronic_version["file"]["fileName"]
+            mime_type = electronic_version["file"]["mimeType"]
         elif "link" in electronic_version:
             url = electronic_version["link"]
+            file_name = None
+            mime_type = "text/html"
         else:
             return
         return {
-            "title": None,
+            "title": file_name,
             "url": url,
-            "mime_type": None,
+            "mime_type": mime_type,
             "hash": sha1(url.encode("utf-8")).hexdigest()
         }
 
@@ -84,7 +96,12 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        return "cc-by-40"
+        access = node["openAccessPermission"]["term"]["en_GB"]
+        return "open-access" if access == "Open" else "yes"
+
+    @classmethod
+    def get_description(cls, node):
+        return next(iter(node["abstract"].values()), None)
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -142,50 +159,52 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         return True
 
     @classmethod
-    def get_empty_list(cls, node):
-        return []
-
-    @classmethod
-    def get_none(cls, node):
-        return None
-
-    @classmethod
-    def get_learning_material_themes(cls, node):
-        theme_value = node["attributes"].get("themesLearningMaterial", [])
-        if not theme_value:
-            return []
-        return theme_value if isinstance(theme_value, list) else [theme_value]
+    def get_doi(cls, node):
+        if "electronicVersions" not in node:
+            return None
+        doi_version = next(
+            (electronic_version for electronic_version in node["electronicVersions"] if "doi" in electronic_version),
+            None
+        )
+        return doi_version["doi"] if doi_version else None
 
 
 HanzeResourceObjectExtraction.OBJECTIVE = {
+    # Essential NPPO properties
     "url": HanzeResourceObjectExtraction.get_url,
     "files": HanzeResourceObjectExtraction.get_files,
+    "copyright": HanzeResourceObjectExtraction.get_copyright,
     "title": "$.title.value",
     "language": HanzeResourceObjectExtraction.get_language,
-    "keywords": HanzeResourceObjectExtraction.get_empty_list,
-    "description": "$.abstract.text.0.value",
+    "keywords": "$.keywordGroups.0.keywords.0.freeKeywords",
+    "description": HanzeResourceObjectExtraction.get_description,
     "mime_type": HanzeResourceObjectExtraction.get_mime_type,
-    "technical_type": HanzeResourceObjectExtraction.get_technical_type,
-    "material_types": HanzeResourceObjectExtraction.get_empty_list,
-    "copyright": HanzeResourceObjectExtraction.get_copyright,
-    "copyright_description": HanzeResourceObjectExtraction.get_none,
-    "aggregation_level": HanzeResourceObjectExtraction.get_none,
     "authors": HanzeResourceObjectExtraction.get_authors,
     "publishers": HanzeResourceObjectExtraction.get_publishers,
-    "publisher_date": "$.publicationStatuses.0.publicationDate.year",
-    "lom_educational_levels": HanzeResourceObjectExtraction.get_empty_list,
-    "lowest_educational_level": HanzeResourceObjectExtraction.get_lowest_educational_level,
-    "studies": HanzeResourceObjectExtraction.get_empty_list,
-    "ideas": HanzeResourceObjectExtraction.get_empty_list,
+    "publisher_date": lambda node: None,
+    "publisher_year": "$.publicationStatuses.0.publicationDate.year",
+
+    # Non-essential NPPO properties
+    "technical_type": HanzeResourceObjectExtraction.get_technical_type,
     "from_youtube": HanzeResourceObjectExtraction.get_from_youtube,
-    "#is_restricted": HanzeResourceObjectExtraction.get_is_restricted,
+    "is_restricted": HanzeResourceObjectExtraction.get_is_restricted,
     "analysis_allowed": HanzeResourceObjectExtraction.get_analysis_allowed,
-    "is_part_of": HanzeResourceObjectExtraction.get_empty_list,
-    "has_parts": HanzeResourceObjectExtraction.get_empty_list,
-    "doi": HanzeResourceObjectExtraction.get_none,
-    "research_object_type": HanzeResourceObjectExtraction.get_none,
-    "research_themes": HanzeResourceObjectExtraction.get_empty_list,
-    "parties": HanzeResourceObjectExtraction.get_empty_list,
-    "learning_material_disciplines": HanzeResourceObjectExtraction.get_empty_list,
-    "consortium": HanzeResourceObjectExtraction.get_none
+    "research_object_type": "$.type.term.en_GB",
+    "research_themes": lambda node: [],
+    "parties": lambda node: [],
+    "doi": HanzeResourceObjectExtraction.get_doi,
+
+    # Non-essential Edusources properties (for compatibility reasons)
+    "material_types": lambda node: None,
+    "aggregation_level": lambda node: None,
+    "lom_educational_levels": lambda node: [],
+    "studies": lambda node: [],
+    "ideas": lambda node: [],
+    "is_part_of": lambda node: [],
+    "has_parts": lambda node: [],
+    "copyright_description": lambda node: None,
+    "learning_material_disciplines": lambda node: [],
+    "consortium": lambda node: None,
+    "lom_educational_level": lambda node: None,
+    "lowest_educational_level": lambda node: 2,
 }
