@@ -87,14 +87,14 @@ class TestGetHarvestSeedsHanze(TestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]['authors'], [
             {
-                'name': 'Floris Boogaard',
+                'name': 'Woogie Boogie',
                 'email': None,
                 'external_id': 'f515d64c-ae09-487f-b32d-a57a66cbecd5',
                 'dai': None,
                 'orcid': None,
                 'isni': None
             },
-            {'name': 'Ronald Wentink', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
+            {'name': 'Teefje Wentel', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
         ])
 
     def test_publisher_year(self):
@@ -109,3 +109,8 @@ class TestGetHarvestSeedsHanze(TestCase):
         seeds = self.seeds
         self.assertIsNone(seeds[0]["doi"])
         self.assertEqual(seeds[12]["doi"], "10.1016/j.rser.2014.10.089")
+
+    def test_research_theme(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["research_themes"], ["Techniek"])
+        self.assertEqual(seeds[14]["research_themes"], ["Economie & Management", "Ruimtelijke ordening & planning"])

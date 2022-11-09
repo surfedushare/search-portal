@@ -6,6 +6,8 @@ from django.conf import settings
 
 from datagrowth.processors import ExtractProcessor
 
+from sources.extraction.hanze.research_themes import ASJC_TO_RESEARCH_THEME
+
 
 class HanzeResourceObjectExtraction(ExtractProcessor):
 
@@ -168,6 +170,18 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         )
         return doi_version["doi"] if doi_version else None
 
+    @classmethod
+    def get_research_themes(cls, node):
+        research_themes = []
+        for keywords in node["keywordGroups"]:
+            if keywords["logicalName"] == "ASJCSubjectAreas":
+                asjc_identifiers = [
+                    classification["uri"].replace("/dk/atira/pure/subjectarea/asjc/", "")
+                    for classification in keywords["classifications"]
+                ]
+                research_themes += [ASJC_TO_RESEARCH_THEME[identifier] for identifier in asjc_identifiers]
+        return research_themes
+
 
 HanzeResourceObjectExtraction.OBJECTIVE = {
     # Essential NPPO properties
@@ -190,7 +204,7 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     "is_restricted": HanzeResourceObjectExtraction.get_is_restricted,
     "analysis_allowed": HanzeResourceObjectExtraction.get_analysis_allowed,
     "research_object_type": "$.type.term.en_GB",
-    "research_themes": lambda node: [],
+    "research_themes": HanzeResourceObjectExtraction.get_research_themes,
     "parties": lambda node: [],
     "doi": HanzeResourceObjectExtraction.get_doi,
 
