@@ -149,10 +149,6 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         ]))
 
     @classmethod
-    def get_lowest_educational_level(cls, node):
-        return 2
-
-    @classmethod
     def get_is_restricted(cls, node):
         return False
 
