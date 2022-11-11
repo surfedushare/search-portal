@@ -18,7 +18,7 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
     @classmethod
     def get_record_state(cls, node):
         # Hanze wants to filter out products that have no research_focus_areas or research_line
-        for keywords in node["keywordGroups"]:
+        for keywords in node.get("keywordGroups", []):
             if keywords["logicalName"] == "research_focus_areas":
                 for classification in keywords["classifications"]:
                     if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
@@ -106,6 +106,8 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_description(cls, node):
+        if "abstract" not in node:
+            return
         return next(iter(node["abstract"].values()), None)
 
     @classmethod
@@ -172,7 +174,7 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
     @classmethod
     def get_research_themes(cls, node):
         research_themes = []
-        for keywords in node["keywordGroups"]:
+        for keywords in node.get("keywordGroups", []):
             if keywords["logicalName"] == "ASJCSubjectAreas":
                 asjc_identifiers = [
                     classification["uri"].replace("/dk/atira/pure/subjectarea/asjc/", "")
