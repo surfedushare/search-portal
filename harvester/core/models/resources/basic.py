@@ -1,6 +1,4 @@
-from copy import copy
 import boto3
-from urlobject import URLObject
 import logging
 from json import JSONDecodeError
 
@@ -14,16 +12,17 @@ logger = logging.getLogger("harvester")
 
 class HttpTikaResource(HttpResource):
 
-    URI_TEMPLATE= "http://localhost:9090/rmeta/text?fetchKey={}"
+    URI_TEMPLATE = "http://localhost:9090/rmeta/text?fetchKey={}"
     PARAMETERS = {
         "fetcherName": "http"
     }
 
     def handle_errors(self):
         pass
-        content_type,data=self.content
+        data = self.content
         if "X-TIKA:EXCEPTION:embedded_exception" in data[0]:
-            self.status=1
+            self.status = 1
+
 
 class ExtructResource(URLResource):
 
