@@ -4,7 +4,7 @@ from urlobject import URLObject
 import logging
 from json import JSONDecodeError
 
-from datagrowth.resources import MicroServiceResource, URLResource
+from datagrowth.resources import HttpResource, URLResource
 import extruct
 
 
@@ -12,43 +12,18 @@ s3_client = boto3.client("s3")
 logger = logging.getLogger("harvester")
 
 
-class HttpTikaResource(MicroServiceResource):
+class HttpTikaResource(HttpResource):
 
-    MICRO_SERVICE = "analyzer"
-    HEADERS = {
-        "Content-Type": "application/json"
+    URI_TEMPLATE= "http://localhost:9090/rmeta/text?fetchKey={}"
+    PARAMETERS = {
+        "fetcherName": "http"
     }
 
-    def has_video(self):
-        tika_content_type, data = self.content
-        if data is None:
-            return False
-        text = data.get("text", "")
-        content_type = data.get("content-type", "")
-        if "leraar24.nl/api/video/" in text:
-            return True
-        if "video" in content_type:
-            return True
-        return any("video" in key for key in data.keys())
-
-    def is_zip(self):
-        tika_content_type, data = self.content
-        if data is None:
-            return False
-        content_type = data.get("mime-type", "")
-        return content_type == "application/zip"
-
-    @staticmethod
-    def hash_from_data(data):
-        if not data:
-            return ""
-        signed_url = URLObject(data["url"])
-        signature_keys = [key for key in signed_url.query_dict.keys() if key.startswith("X-Amz")]
-        unsigned_url = signed_url.del_query_params(signature_keys)
-        unsigned_data = copy(data)
-        unsigned_data["url"] = unsigned_url
-        return MicroServiceResource.hash_from_data(unsigned_data)
-
+    def handle_errors(self):
+        pass
+        content_type,data=self.content
+        if "X-TIKA:EXCEPTION:embedded_exception" in data[0]:
+            self.status=1
 
 class ExtructResource(URLResource):
 

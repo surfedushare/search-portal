@@ -18,15 +18,6 @@ class CoreConfig(AppConfig):
                 "batch": "Batch"
             },
         })
-        register_defaults("micro_service", {
-            "connections": {
-                "analyzer": {
-                    "protocol": "http",
-                    "host": "localhost:9090" if settings.IS_AWS or settings.CONTEXT != "container" else "analyzer:9090",
-                    "path": "/analyze"
-                }
-            }
-        })
         register_defaults("http_resource", {
             "method": "get"
         })
