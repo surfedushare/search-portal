@@ -11,6 +11,7 @@ from datagrowth.utils import ibatch
 from core.models.datatypes.extension import Extension
 from core.models.choices import EducationalLevels
 
+
 class Dataset(DocumentCollectionMixin, CollectionBase):
     """
     The most overarching model for storing learning materials.
