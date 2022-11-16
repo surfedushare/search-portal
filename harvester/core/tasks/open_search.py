@@ -10,22 +10,31 @@ from datagrowth.utils.iterators import ibatch
 
 from harvester.tasks.base import DatabaseConnectionResetTask
 from core.logging import HarvestLogger
-from core.models import ElasticIndex, DatasetVersion, Extension
+from core.models import ElasticIndex, DatasetVersion, Extension, EducationalLevels
+
+
+CHANNELS = {
+    "ho": ["edusources", "edusourcesprivate"],
+    "mbo": ["edusourcesmbo", "edusourcesmboprivate"]
+}
 
 
 @app.task(name="sync_indices", base=DatabaseConnectionResetTask)
-def sync_indices():
+def sync_indices(site="ho"):
     dataset_version = DatasetVersion.objects.get_current_version()
     if dataset_version is None:
         return
     logger = HarvestLogger(dataset_version.dataset.name, "sync_indices", {})
-    indices_queryset = ElasticIndex.objects.filter(dataset_version=dataset_version, pushed_at__isnull=False)
+    educational_level = EducationalLevels.APPLIED_SCIENCE if site == "ho" else EducationalLevels.VOCATIONAL_EDUCATION
+    indices_queryset = ElasticIndex.objects.filter(dataset_version=dataset_version, pushed_at__isnull=False,
+                                                   educational_level=educational_level)
     try:
         with atomic():
             current_time = make_aware(datetime.now())
             for index in indices_queryset.select_for_update(nowait=True):
                 documents_queryset = dataset_version.document_set.filter(
-                    modified_at__gte=index.pushed_at
+                    modified_at__gte=index.pushed_at,
+                    collection__name__in=CHANNELS[site]
                 )
                 for doc_batch in ibatch(documents_queryset, batch_size=32):
                     docs = []

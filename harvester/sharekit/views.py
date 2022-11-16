@@ -27,6 +27,7 @@ def edit_document_webhook(request, channel, secret):
     try:
         data = json.loads(request.body)
     except json.decoder.JSONDecodeError:
+        capture_message("edit_document_webhook received invalid JSON", level="warning")
         return HttpResponse(status=400, reason="Invalid JSON")
     # Patches data coming from Sharekit to be consistent
     if isinstance(data["attributes"], list):
