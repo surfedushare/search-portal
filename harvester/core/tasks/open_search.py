@@ -14,7 +14,7 @@ from core.models import ElasticIndex, DatasetVersion, Extension, EducationalLeve
 
 
 CHANNELS = {
-    "ho": ["edusources", "edusourcesprivate"],
+    "ho": ["edusources", "edusourcesprivate", "wikiwijs"],
     "mbo": ["edusourcesmbo", "edusourcesmboprivate"]
 }
 
