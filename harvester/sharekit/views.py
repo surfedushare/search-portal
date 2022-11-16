@@ -37,7 +37,7 @@ def edit_document_webhook(request, channel, secret):
     })
     prc = SharekitMetadataExtraction(config=extract_config)
     seed = next(prc.extract("application/json", data))
-    seed["is_restricted"] = channel == "edusourcesprivate"
+    seed["is_restricted"] = "private" in channel
     prepare_seed(seed)
     # Commit changes to the database
     dataset_version = DatasetVersion.objects.get_current_version()
