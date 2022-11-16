@@ -46,5 +46,12 @@ def edit_document_webhook(request, channel, secret):
     collection.update([seed], "external_id")
     # Finish webhook request
     logger = HarvestLogger(dataset_version.dataset.name, "edit_document_webhook", {})
-    logger.report_material(seed["external_id"], title=seed["title"], url=seed["url"])
+    logger.report_material(
+        seed["external_id"],
+        state=seed["state"],
+        title=seed["title"],
+        url=seed["url"],
+        copyright=seed["copyright"],
+        lowest_educational_level=seed["lowest_educational_level"]
+    )
     return HttpResponse("ok")
