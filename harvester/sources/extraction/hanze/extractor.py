@@ -98,10 +98,11 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        access_permission = node.get("openAccessPermission", None)
-        if not access_permission:
+        electronic_versions = node.get("electronicVersions", [])
+        if not electronic_versions:
             return "yes"
-        access = access_permission["term"]["en_GB"]
+        main_file = electronic_versions[0]
+        access = main_file.get("accessType", {}).get("term", {}).get("en_GB", None)
         return "open-access" if access == "Open" else "yes"
 
     @classmethod

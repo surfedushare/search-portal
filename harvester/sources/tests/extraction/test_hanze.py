@@ -60,7 +60,7 @@ class TestGetHarvestSeedsHanze(TestCase):
         self.assertEqual(seeds[0]["copyright"], "open-access")
         self.assertEqual(seeds[2]["copyright"], "yes")
         seeds = get_harvest_seeds(Repositories.HANZE, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 6, "Expected get_harvest_seeds to delete invalid copyright")
+        self.assertEqual(len(seeds), 10, "Expected get_harvest_seeds to delete invalid copyright")
         self.assertEqual(seeds[2]["copyright"], "open-access")
 
     def test_get_language(self):
