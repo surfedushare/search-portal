@@ -1,26 +1,30 @@
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
-from commands.aws import ENVIRONMENT_NAMES_TO_CODES
+from environments.project.configuration import PROJECT
 
 
-def insert_django_site_statements(environment, is_search_service=False):
-    match [environment, is_search_service]:
-        case ["acceptance" | "development", True]:
-            domain = f"{ENVIRONMENT_NAMES_TO_CODES[environment]}.surfedushare.nl"
-        case ["acceptance" | "development" | "production", False]:
-            domain = f"harvester.{ENVIRONMENT_NAMES_TO_CODES[environment]}.surfedushare.nl"
-        case ["localhost", True]:
-            domain = "edusources.localhost"
-        case ["localhost", False]:
-            domain = "harvester"
+def insert_django_site_statements(is_search_service=False):
+    match [is_search_service, PROJECT]:
+        case [True, "edusources"]:
+            domain = f"edusources.nl"
+            name = "Edusources"
+        case [False, "edusources"]:
+            domain = f"harvester.prod.surfedushare.nl"
+            name = "Edusources"
+        case [True, "nppo"]:
+            domain = f"search.publinova.nl"
+            name = "Publinova"
+        case [False, "nppo"]:
+            domain = f"harvester.publinova.nl"
+            name = "Publinova"
         case _:
             domain = "edusources.nl"
-    name = f"Edusources ({environment})" if is_search_service else f"Harvester ({environment})"
-    return [
-        f"UPDATE django_site SET domain='{domain}', name='{name}' WHERE id = 1;",
-        f"INSERT INTO django_site (id, domain, name) VALUES (2, 'mbo.{domain}', 'MBO {name}');"
-    ]
+            name = "Edusources"
+    statements = [f"UPDATE django_site SET domain='{domain}', name='{name}' WHERE id = 1;"]
+    if PROJECT == "edusources":
+        statements.append(f"INSERT INTO django_site (id, domain, name) VALUES (2, 'mbo.{domain}', 'MBO {name}');")
+    return statements
 
 
 def insert_django_user_statement(username, raw_password, api_key, is_search_service=False):
