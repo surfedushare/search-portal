@@ -453,7 +453,6 @@ CELERY_BEAT_SCHEDULE = {
     'sync_indices': {
         'task': 'sync_indices',
         'schedule': 30,
-        'options': {'queue': 'indexing'},
     },
     'sync_indices_mbo': {
         'task': 'sync_indices',
