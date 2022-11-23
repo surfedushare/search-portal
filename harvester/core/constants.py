@@ -80,3 +80,9 @@ SITE_SHORTHAND_BY_DOMAIN = {
     "harvester.mbo.prod.surfedushare.nl": "mbo",
     "harvester.publinova.nl": "publinova",
 }
+
+EXCLUDED_COLLECTIONS_BY_DOMAIN = {
+    "harvester.prod.surfedushare.nl": ["edusourcesmbo", "edusourcesmboprivate"],
+    "harvester.mbo.prod.surfedushare.nl": [],
+    "harvester.publinova.nl": [],
+}
