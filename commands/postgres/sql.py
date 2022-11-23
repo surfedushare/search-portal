@@ -7,16 +7,16 @@ from environments.project.configuration import PROJECT
 def insert_django_site_statements(is_search_service=False):
     match [is_search_service, PROJECT]:
         case [True, "edusources"]:
-            domain = f"edusources.nl"
+            domain = "edusources.nl"
             name = "Edusources"
         case [False, "edusources"]:
-            domain = f"harvester.prod.surfedushare.nl"
+            domain = "harvester.prod.surfedushare.nl"
             name = "Edusources"
         case [True, "nppo"]:
-            domain = f"search.publinova.nl"
+            domain = "search.publinova.nl"
             name = "Publinova"
         case [False, "nppo"]:
-            domain = f"harvester.publinova.nl"
+            domain = "harvester.publinova.nl"
             name = "Publinova"
         case _:
             domain = "edusources.nl"
