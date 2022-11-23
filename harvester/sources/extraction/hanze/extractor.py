@@ -98,12 +98,7 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        electronic_versions = node.get("electronicVersions", [])
-        if not electronic_versions:
-            return "yes"
-        main_file = electronic_versions[0]
-        access = main_file.get("accessType", {}).get("term", {}).get("en_GB", None)
-        return "open-access" if access == "Open" else "yes"
+        return "open-access"
 
     @classmethod
     def get_description(cls, node):
@@ -156,7 +151,12 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_is_restricted(cls, node):
-        return False
+        electronic_versions = node.get("electronicVersions", [])
+        if not electronic_versions:
+            return True
+        main_file = electronic_versions[0]
+        access = main_file.get("accessType", {}).get("term", {}).get("en_GB", None)
+        return access != "Open"
 
     @classmethod
     def get_analysis_allowed(cls, node):
