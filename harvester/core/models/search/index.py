@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from django.utils.timezone import make_aware
+from django.contrib.sites.models import Site
 from opensearchpy.helpers import streaming_bulk
 from opensearchpy.exceptions import NotFoundError
 from rest_framework import serializers
@@ -12,11 +13,13 @@ from project.configuration import create_open_search_index_configuration
 from core.models import DatasetVersion
 from core.models.choices import EducationalLevels
 from core.utils.search import get_search_client
+from core.constants import SITE_SHORTHAND_BY_DOMAIN
 
 
 class ElasticIndex(models.Model):
 
     name = models.CharField(max_length=255)
+    site = models.ForeignKey(Site, default=1, on_delete=models.CASCADE)
     language = models.CharField(max_length=5, choices=settings.OPENSEARCH_ANALYSERS.items())
     educational_level = models.IntegerField(choices=EducationalLevels.choices,
                                             default=EducationalLevels.APPLIED_SCIENCE)
@@ -41,10 +44,7 @@ class ElasticIndex(models.Model):
     def remote_name(self):
         if not self.id:
             raise ValueError("Can't get the remote name for an unsaved object")
-        if self.educational_level == EducationalLevels.VOCATIONAL_EDUCATION:
-            name = f"{self.name}-{self.language}-{self.educational_level}"
-        else:
-            name = f"{self.name}-{self.language}"
+        name = f"{self.name}-{SITE_SHORTHAND_BY_DOMAIN[self.site.domain]}-{self.language}"
         return slugify(name)
 
     @property
@@ -92,21 +92,16 @@ class ElasticIndex(models.Model):
         return errors
 
     def promote_to_latest(self):
-        if self.educational_level >= EducationalLevels.APPLIED_SCIENCE:
-            latest_alias = "latest-" + self.language
-            # The index pattern should target all datasets and versions,
-            # but stay clear from targeting protected AWS indices to prevent errors
-            index_pattern = f"*-*-*-{self.language}"
-        else:
-            latest_alias = "mbo-" + self.language
-            # The index pattern should target all datasets and versions,
-            # but stay clear from targeting protected AWS indices to prevent errors
-            index_pattern = f"*-*-*-{self.language}-*"
+        alias_prefix = SITE_SHORTHAND_BY_DOMAIN[self.site.domain]
+        alias = alias_prefix + self.language
+        # The index pattern should target all datasets and versions,
+        # but stay clear from targeting protected AWS indices to prevent errors
+        index_pattern = f"*-*-*-{self.language}-{alias_prefix}"
         try:
-            self.client.indices.delete_alias(index=index_pattern, name=latest_alias)
+            self.client.indices.delete_alias(index=index_pattern, name=alias)
         except NotFoundError:
             pass
-        self.client.indices.put_alias(index=self.remote_name, name=latest_alias)
+        self.client.indices.put_alias(index=self.remote_name, name=alias)
 
     def clean(self):
         if not self.name:
