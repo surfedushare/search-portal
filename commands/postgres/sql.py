@@ -4,29 +4,6 @@ from django.contrib.auth.hashers import make_password
 from environments.project.configuration import PROJECT
 
 
-def insert_django_site_statements(is_search_service=False):
-    match [is_search_service, PROJECT]:
-        case [True, "edusources"]:
-            domain = "edusources.nl"
-            name = "Edusources"
-        case [False, "edusources"]:
-            domain = "harvester.prod.surfedushare.nl"
-            name = "Edusources"
-        case [True, "nppo"]:
-            domain = "search.publinova.nl"
-            name = "Publinova"
-        case [False, "nppo"]:
-            domain = "harvester.publinova.nl"
-            name = "Publinova"
-        case _:
-            domain = "edusources.nl"
-            name = "Edusources"
-    statements = [f"UPDATE django_site SET domain='{domain}', name='{name}' WHERE id = 1;"]
-    if PROJECT == "edusources":
-        statements.append(f"INSERT INTO django_site (id, domain, name) VALUES (2, 'mbo.{domain}', 'MBO {name}');")
-    return statements
-
-
 def insert_django_user_statement(username, raw_password, api_key, is_search_service=False):
     settings.configure()
     hash_password = make_password(raw_password)
