@@ -93,7 +93,7 @@ class ElasticIndex(models.Model):
 
     def promote_to_latest(self):
         alias_prefix = SITE_SHORTHAND_BY_DOMAIN[self.site.domain]
-        alias = alias_prefix + self.language
+        alias = f"{alias_prefix}-{self.language}"
         # The index pattern should target all datasets and versions,
         # but stay clear from targeting protected AWS indices to prevent errors
         index_pattern = f"*-*-*-{self.language}-{alias_prefix}"
