@@ -466,14 +466,6 @@ CELERY_BEAT_SCHEDULE = {
         }
     }
 }
-if environment.schedule.harvest:
-    CELERY_BEAT_SCHEDULE["harvest"] = {
-        'task': 'harvest',
-        'schedule': crontab(**environment.schedule.harvest),
-        'kwargs': {
-            'report_dataset_version': True
-        }
-    }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 50
 

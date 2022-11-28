@@ -24,9 +24,6 @@ postgres:
   user: "harvester"
   application_user: "harvester"
 
-schedule:
-  harvest:
-
 sharekit:
   webhook_allowed_ips:
     - "20.56.15.206"
