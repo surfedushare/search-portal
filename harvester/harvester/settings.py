@@ -439,6 +439,9 @@ COPYRIGHT_VALUES = [
 
 CELERY_BROKER_URL = f'redis://{environment.redis.host}/0'
 CELERY_RESULT_BACKEND = f'redis://{environment.redis.host}/0'
+CELERY_TASK_ROUTES = {
+    'sync_indices': {'queue': 'indexing'}
+}
 CELERY_BEAT_SCHEDULE = {
     'clean_data': {
         'task': 'clean_data',
