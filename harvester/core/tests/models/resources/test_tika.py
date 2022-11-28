@@ -1,37 +1,45 @@
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
+import json 
 
 from django.test import TestCase
 
 from core.models import HttpTikaResource
 
-
 class TestTikaResource(TestCase):
 
-    @patch("core.models.resources.basic.HttpTikaResource._send")
-    @patch("core.models.resources.basic.HttpTikaResource.handle_errors")
-    def test_aws_url_signatures(self, mock_handle_error, mock_run):
-        """
-        When using the send method with X-Amz authorization parameters.
-        Then we want these parameters to get stripped from the URL.
-        Otherwise a new send with the same input (but different authorization) would re-run Tika.
-        However these X-Amz parameters should still be used when executing the request.
-        """
-        test_tika_url = "http://localhost:8000/test?X-Amz-Signature=123abc&X-Amz-Credential=ASIA"
-        expected_uri = "localhost:9090/analyze"
-        expected_hash = "3aff9963e92374c216d4ce691f7e173b2553b871"
-        resource = HttpTikaResource().post(url=test_tika_url)
-        resource.close()
-        # We check that methods which run the command were called
-        # These commands error with the fake input we give them in this test
-        self.assertTrue(mock_run.called)
-        self.assertTrue(mock_handle_error)
-        # Then we check if the resource actually behaved as expected
-        self.assertEqual(resource.uri, expected_uri)
-        self.assertEqual(resource.data_hash, expected_hash)
-        request = resource.request
-        self.assertEqual(request["url"], f"http://{expected_uri}")
-        # Testing with different AWS credentials which should yield the same instance
-        test_tika_url = "http://localhost:8000/test?X-Amz-Signature=123456abcdef&X-Amz-Credential=ASIA2"
-        resource_cache = HttpTikaResource().post(url=test_tika_url)
-        self.assertEqual(resource_cache.uri, "localhost:9090/analyze")
-        self.assertEqual(resource_cache.data_hash, expected_hash)
+    def test_handle_error_with_exception_and_no_content(self):
+        # for analyzing and optimization purposes we NOW set the status of the resource to 1 (failed)
+        # in the future we should finetune this for specific use cases
+        # In this example there is a mp4 embedded, there is no text in this mp4 so there is a
+        # "X-TIKA:EXCEPTION:warn": "End of data reached." which is correct, so we probably should return 
+        # status code 0 (succeeded) 
+        expected_data = [
+            {
+                "http-connection:target-ip-address": "145.97.38.100",
+                "http-header:status-code": "200",
+                "X-TIKA:Parsed-By-Full-Set": [
+                    "org.apache.tika.parser.DefaultParser",
+                    "org.apache.tika.parser.pkg.PackageParser",
+                    "org.apache.tika.parser.mp4.MP4Parser",
+                    "org.apache.tika.parser.EmptyParser"
+                ],
+                "X-TIKA:content_handler": "ToXMLContentHandler",
+                "resourceName": "/file/dcb11873-2a88-4b8b-a771-c26e95f46b60",
+                "http-connection:num-redirects": "1",
+                "http-connection:target-url": "https://resources.wikiwijs.nl/file/dcb11873-2a88-4b8b-a771-c26e95f46b60",
+                "X-TIKA:Parsed-By": [
+                    "org.apache.tika.parser.DefaultParser",
+                    "org.apache.tika.parser.pkg.PackageParser"
+                ],
+                "X-TIKA:parse_time_millis": "181",
+                "X-TIKA:embedded_depth": "0",
+                "X-TIKA:EXCEPTION:warn": "Something went wrong",                
+                "Content-Length": "0",
+                "http-header:content-type": "application/zip",
+                "Content-Type": "application/zip"
+            },
+        ]
+        expected_content_type = "application/json"
+        resource = HttpTikaResource(status=200, head={ "content-type": expected_content_type }, body=json.dumps(expected_data))
+        resource.handle_errors()
+        self.assertEqual(resource.status, 1)

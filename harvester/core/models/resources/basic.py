@@ -18,10 +18,12 @@ class HttpTikaResource(HttpResource):
     }
 
     def handle_errors(self):
-        pass
-        data = self.content
-        if "X-TIKA:EXCEPTION:embedded_exception" in data[0]:
-            self.status = 1
+        super().handle_errors()
+        _, data = self.content
+        if (data):
+            for key in data[0]:
+                if "X-TIKA:EXCEPTION:" in key:
+                    self.status = 1
 
 
 class ExtructResource(URLResource):

@@ -54,7 +54,7 @@ class Command(PipelineCommand):
                 "contribute_data": {
                     "objective": {
                         "@": "$",
-                        "text": "$.0.X-TIKA:content"
+                        "text": "$.text"
                     }
                 }
             })
