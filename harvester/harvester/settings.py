@@ -458,13 +458,6 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'sync_metadata',
         'schedule': crontab(minute=30)
     },
-    'sync_metadata_mbo': {
-        'task': 'sync_metadata',
-        'schedule': crontab(minute=45),
-        'kwargs': {
-            'site': 'mbo'
-        }
-    }
 }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 50
