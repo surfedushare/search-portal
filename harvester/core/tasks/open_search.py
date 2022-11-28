@@ -27,7 +27,7 @@ def sync_indices(**kwargs):
                                                        site=site)
         excluded_collections = EXCLUDED_COLLECTIONS_BY_DOMAIN[site.domain]
         collection_names = [
-            harvest.set_spec for harvest in Harvest.objects.exclude(source__spec__in=excluded_collections)
+            harvest.source.spec for harvest in Harvest.objects.exclude(source__spec__in=excluded_collections)
         ]
         try:
             with atomic():
