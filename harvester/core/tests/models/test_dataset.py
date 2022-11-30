@@ -48,7 +48,7 @@ class TestDataset(TestCase):
         self.assertEqual(fallback_collections[0].name, "test")
 
         test_version = self.dataset.versions.filter(is_current=False).last()
-        for doc in test_version.document_set.all()[:94]:
+        for doc in test_version.document_set.all()[94:]:
             doc.delete()
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(
@@ -107,7 +107,7 @@ class TestSmallDataset(TestCase):
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(fallback_collections, [], "Expected versions with increase of more than 5% to pass evaluation")
 
-        for doc in test_version.document_set.all()[:45]:
+        for doc in test_version.document_set.all()[45:]:
             doc.delete()
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(fallback_collections, [], "Expected versions with more than 5% decrease to pass evaluation")
