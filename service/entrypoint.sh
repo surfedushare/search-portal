@@ -5,9 +5,8 @@
 set -e
 
 
-# Handles editable Python packages
-# Convenient when having to update Datagrowth for this project
-rm /usr/src/app/uwsgi/sites-enabled/*
+# Links the correct uWSGI configuration files based on the project
+rm -f /usr/src/app/uwsgi/sites-enabled/*
 if [ "$APPLICATION_PROJECT" == "nppo" ]
 then
   ln -s /usr/src/app/uwsgi/sites-available/publinova_nl.ini /usr/src/app/uwsgi/sites-enabled/publinova_nl.ini
