@@ -19,7 +19,7 @@ def rename_site(apps, schema_editor):
         Site.objects.filter(id=1).update(domain=main_domain, name=main_name)
     mbo_site = Site.objects.filter(id=2).last()
     if mbo_site is None and settings.PROJECT == "edusources":
-        Site.objects.create(domain="harvester.prod.surfedushare.nl", name="MBO Edusources")
+        Site.objects.create(domain="harvester.mbo.prod.surfedushare.nl", name="MBO Edusources")
 
 
 class Migration(migrations.Migration):

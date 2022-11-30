@@ -72,7 +72,7 @@ RESTRICTED_MATERIAL_SETS = {
 MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN = {
     "edusources.nl": 2,
     "mbo.edusources.nl": 1,
-    "publinova.nl": 2,
+    "harvester.publinova.nl": 2,
 }
 
 SITE_SHORTHAND_BY_DOMAIN = {

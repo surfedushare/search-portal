@@ -211,7 +211,7 @@ def sync_harvest_content(ctx, source, path="core"):
     "mode": "Mode you want to sync metadata for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE"
 })
-def sync_metadata(ctx, mode, site="ho"):
+def sync_metadata(ctx, mode):
     command = ["python", "manage.py", "sync_metadata"]
 
     run_harvester_task(ctx, mode, command)

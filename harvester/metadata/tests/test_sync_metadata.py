@@ -20,7 +20,7 @@ class TestSyncMetadata(TestCase):
 
     def assert_metadata_value(self, field, value, frequency, is_update=True, is_deleted=False, is_insert=False,
                               parent=None):
-        value_instance = MetadataValue.objects.get(field__name=field, value=value)
+        value_instance = MetadataValue.objects.get(field__name=field, value=value, site_id=1)
         self.assertEqual(value_instance.frequency, frequency)
         if not is_deleted:
             self.assertIsNone(value_instance.deleted_at)
@@ -82,7 +82,7 @@ class TestSyncMetadata(TestCase):
         )
         # Everything not included in frequencies remains unchanged
         upsert_ids = [document.id, video.id, pdf.id]
-        for value in MetadataValue.objects.filter(field__name="technical_type").exclude(id__in=upsert_ids):
+        for value in MetadataValue.objects.filter(field__name="technical_type", site_id=1).exclude(id__in=upsert_ids):
             self.assertEqual(value.frequency, 0)
             self.assertLess(value.updated_at, self.test_time)
 
@@ -124,5 +124,5 @@ class TestSyncMetadata(TestCase):
             sync_metadata()
         for document in MetadataValue.objects.filter(value="document"):
             self.assertIsNotNone(document.deleted_at)
-        edusources = MetadataValue.objects.get(value="edusources")
-        self.assertIsNone(edusources.deleted_at)
+        for edusources in MetadataValue.objects.filter(value="edusources"):
+            self.assertIsNone(edusources.deleted_at)

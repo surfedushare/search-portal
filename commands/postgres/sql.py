@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
-from environments.project.configuration import PROJECT
-
 
 def insert_django_user_statement(username, raw_password, api_key, is_search_service=False):
     settings.configure()
