@@ -32,8 +32,8 @@ describe("Home page - search - pre-filters", () => {
   it("Should clear all filters when resetting filters", () => {
     cy.selectPreFilter("technical_type", "website")
       .search()
-      .selectedFiltersShouldContain("Bestandstype", "Website", 0, 0);
-    cy.get("[data-test=reset_filters").click().get("[data-test=selected_filters]").should("not.be.visible");
+      .selectedFiltersShouldContain("Bestandstype", "Website", 0, 0)
+      .get("[data-test=reset_filters").click().get("[data-test=selected_filters]").should("not.be.visible");
   });
 
   it("Should clear all filters when navigating away", () => {
