@@ -18,7 +18,7 @@ class TestDataset(TestCase):
             created_at=now,
             include_current=True,
             copies=2,
-            docs=22
+            docs=100
         )
 
     def test_evaluate_dataset_version_pass(self):
@@ -28,13 +28,15 @@ class TestDataset(TestCase):
         test_version.document_set.last().delete()
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(fallback_collections, [], "Expected versions with less than 5% difference to pass evaluation")
+
         extra_documents = [
             DocumentFactory.create(dataset_version=test_version, collection=test_version.collection_set.last())
-            for ix in range(10)
+            for ix in range(30)
         ]
         test_version.document_set.add(*extra_documents)
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(fallback_collections, [], "Expected versions with increase of more than 5% to pass evaluation")
+
         self.dataset.versions.update(is_current=False)
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(fallback_collections, [], "Expected no fallbacks when no promoted previous versions exist")
@@ -44,8 +46,9 @@ class TestDataset(TestCase):
         self.assertEqual(len(fallback_collections), 1, "Expected empty dataset version to generate fallback")
         self.assertIsInstance(fallback_collections[0], Collection)
         self.assertEqual(fallback_collections[0].name, "test")
+
         test_version = self.dataset.versions.filter(is_current=False).last()
-        for doc in test_version.document_set.all()[:3]:
+        for doc in test_version.document_set.all()[:94]:
             doc.delete()
         fallback_collections = self.dataset.evaluate_dataset_version(test_version)
         self.assertEqual(
@@ -72,3 +75,43 @@ class TestDataset(TestCase):
             "Expected the old corrupt collection to get ignored. "
             "No fallback needed with the new healthy collection in place."
         )
+
+
+class TestSmallDataset(TestCase):
+
+    def setUp(self):
+        super().setUp()
+        now = make_aware(datetime.now())
+        self.dataset = DatasetFactory()
+        create_dataset_version(
+            self.dataset, "0.0.1",
+            created_at=now,
+            include_current=True,
+            copies=2,
+            docs=50
+        )
+
+    def test_evaluate_dataset_version_pass(self):
+        test_version = self.dataset.versions.filter(is_current=False).last()
+        fallback_collections = self.dataset.evaluate_dataset_version(test_version)
+        self.assertEqual(fallback_collections, [], "Expected identical versions to pass evaluation")
+        test_version.document_set.last().delete()
+        fallback_collections = self.dataset.evaluate_dataset_version(test_version)
+        self.assertEqual(fallback_collections, [], "Expected versions with less than 5% difference to pass evaluation")
+
+        extra_documents = [
+            DocumentFactory.create(dataset_version=test_version, collection=test_version.collection_set.last())
+            for ix in range(30)
+        ]
+        test_version.document_set.add(*extra_documents)
+        fallback_collections = self.dataset.evaluate_dataset_version(test_version)
+        self.assertEqual(fallback_collections, [], "Expected versions with increase of more than 5% to pass evaluation")
+
+        for doc in test_version.document_set.all()[:45]:
+            doc.delete()
+        fallback_collections = self.dataset.evaluate_dataset_version(test_version)
+        self.assertEqual(fallback_collections, [], "Expected versions with more than 5% decrease to pass evaluation")
+
+        self.dataset.versions.update(is_current=False)
+        fallback_collections = self.dataset.evaluate_dataset_version(test_version)
+        self.assertEqual(fallback_collections, [], "Expected no fallbacks when no promoted previous versions exist")
