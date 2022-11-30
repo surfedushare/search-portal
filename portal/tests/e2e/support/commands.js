@@ -34,8 +34,8 @@ Cypress.Commands.add("searchFor", (search_term) => {
 
 Cypress.Commands.add("searchResultsShouldContain", (search_term, no_of_results, item_nr) => {
   cy.get("[data-test=search_results]")
-    .should("be.visible")
     .children()
+    .should("be.visible")
     .should("have.length", no_of_results ? no_of_results : 10)
     .eq(item_nr ? item_nr : 0)
     .should("contain", search_term);

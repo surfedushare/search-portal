@@ -29,11 +29,13 @@ def _translate_metadata_value(field, value):
 
 
 @app.task(name="sync_metadata", base=DatabaseConnectionResetTask)
-def sync_metadata():
-    frequencies = MetadataField.objects.fetch_value_frequencies(is_manual=False)
+def sync_metadata(site='ho'):
+    alias_prefix = "latest" if site == "ho" else "mbo"
+    site_id = 1 if site == "ho" else 2
+    frequencies = MetadataField.objects.fetch_value_frequencies(alias_prefix, is_manual=False)
 
     metadata_updates = []
-    for metadata_value in MetadataValue.objects.iterator():
+    for metadata_value in MetadataValue.objects.filter(site_id=site_id).iterator():
         if metadata_value.field.name not in frequencies:
             continue
         frequency = frequencies[metadata_value.field.name].pop(metadata_value.value, 0)
@@ -55,6 +57,7 @@ def sync_metadata():
             translation = _translate_metadata_value(field, value)
             translation_inserts.append(translation)
             metadata_value = MetadataValue(
+                site_id=site_id,
                 field=field,
                 name=value,
                 value=value,

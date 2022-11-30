@@ -67,7 +67,11 @@ ALLOWED_REDIRECT_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # Apps that override defaults
     'clearcache',
+    'surf.apps.core',
+
+    # Django contributions
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,22 +81,20 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.sites',
 
+    # 3rd party contributions
     'ckeditor',
     'mptt',
     'social_django',
-
     'rest_framework',
     'django_filters',
 
-    'surf.vendor.surfconext',
-
+    # SURF apps
     'surf',
-    'surf.apps.core',
+    'surf.vendor.surfconext',
     'surf.apps.users',
     'surf.apps.filters',
     'surf.apps.materials',
     'surf.apps.communities',
-    'surf.apps.themes',
     'surf.apps.stats',
     'surf.apps.locale',
 ]
@@ -103,6 +105,10 @@ CSRF_COOKIE_SECURE = PROTOCOL == "https"
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+if MODE == 'localhost':
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
 CSP_SCRIPT_SRC = ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://webstats.surf.nl"]
@@ -190,7 +196,6 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ),
-
 }
 
 
@@ -287,10 +292,11 @@ WEBPACK_LOADER = {
 OPENSEARCH_HOST = environment.open_search.host
 OPENSEARCH_PROTOCOL = environment.open_search.protocol
 OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
+
 OPENSEARCH_NL_INDEX = "latest-nl"
 OPENSEARCH_EN_INDEX = "latest-en"
 OPENSEARCH_UNK_INDEX = "latest-unk"
-OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
 # Logging
@@ -456,8 +462,8 @@ if DEBUG:
     }
 
 
-EMAIL_HOST = 'outgoing.mf.surf.net'
-EMAIL_PORT = 25
+EMAIL_HOST = 'out.surfmailfilter.nl'
+EMAIL_PORT = 587
 ENABLE_ADMINISTRATIVE_EMAILS = environment.django.administrative_emails
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -467,3 +473,9 @@ EDUTERM_API_KEY = None
 DEEPL_API_KEY = None
 HARVESTER_API = environment.django.harvester_api
 HARVESTER_API_KEY = environment.secrets.harvester.api_key
+
+
+# Site overrides
+# https://docs.djangoproject.com/en/3.2/ref/contrib/sites/
+
+SITE_PREFERRED_FILTERS = []

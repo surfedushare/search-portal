@@ -65,20 +65,6 @@
           </div>
         </template>
       </div>
-
-
-      <div class="action-bar__tools action-bar__filter">
-        <button
-          class="action-bar__tools_type_button"
-          :class="{
-            'action-bar__tools_type_button--list': itemsInLine === 4,
-            'action-bar__tools_type_button--cards': itemsInLine === 1
-          }"
-          @click.prevent="changeViewType"
-        >
-          {{ itemsInLine === 1 ? $t('Card-view') : $t('List-view') }}
-        </button>
-      </div>
     </div>
   </section>
   <ShareCollection

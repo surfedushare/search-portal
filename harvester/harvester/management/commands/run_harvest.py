@@ -19,9 +19,11 @@ class Command(BaseCommand):
         parser.add_argument('-r', '--reset', action="store_true",
                             help="Resets the Dataset model to be empty and deletes all OAI-PMH data")
         parser.add_argument('-np', '--no-promote', action="store_true")
+        parser.add_argument('-rd', '--report-dataset-version', action="store_true")
 
     def handle(self, **options):
         reset = options["reset"]
         no_promote = options["no_promote"]
+        report_dataset_version = options["report_dataset_version"]
         logger.info(f"Calling harvest outside of schedule; reset={reset}")
-        harvest(reset=reset, no_promote=no_promote)
+        harvest(reset=reset, no_promote=no_promote, report_dataset_version=report_dataset_version)

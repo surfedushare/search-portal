@@ -18,27 +18,24 @@
             {{ $t("Search-results") }}
             <span v-if="materials && !materials_loading">{{ `(${materials.records_total})` }}</span>
           </h2>
-
-          <button
-            :class="{
-              'search__tools_type_button--list': materials_in_line === 3,
-              'search__tools_type_button--cards': materials_in_line === 1,
-            }"
-            class="search__tools_type_button"
-            @click.prevent="changeViewType"
-          >
-            {{ materials_in_line === 1 ? $t("Card-view") : $t("List-view") }}
-          </button>
+          <v-btn v-if="showShareButton" outlined x-large class="secondary" @click="toggleShareSearchPopup">
+            <v-icon left dark>fa-share-nodes</v-icon> {{ $t("share") }}
+          </v-btn>
         </div>
 
         <div class="search__materials">
           <Spinner v-if="materials_loading" class="spinner" />
-          <Materials
-            :materials="materials"
-            :items-in-line="materials_in_line"
-            :did-you-mean="did_you_mean"
-            :search-term="search.search_text"
-          />
+          <v-row v-if="materials && materials.records" class="mb-8" data-test="search_results">
+            <v-col v-for="material in materials.records" :key="material.id" class="mb-4" cols="12">
+              <MaterialListCard
+                v-if="$vuetify.breakpoint.name !== 'xs'"
+                :material="material"
+                :handle-material-click="handleMaterialClick"
+              />
+              <MaterialCard v-else :material="material" :handle-material-click="handleMaterialClick" />
+            </v-col>
+          </v-row>
+
           <v-pagination
             v-if="
               !materials_loading && materials && materials.records && materials.records.length && materials.total_pages
@@ -52,6 +49,12 @@
         </div>
       </div>
     </div>
+    <ShareSearchPopup
+      :key="$i18n.locale"
+      :show-popup="showShareSearchPopup"
+      :close="toggleShareSearchPopup"
+      :share-url="shareUrl"
+    />
   </section>
 </template>
 
@@ -59,56 +62,62 @@
 import { mapGetters } from "vuex";
 import FilterCategories from "~/components/FilterCategories/FilterCategories.vue";
 import FilterCategoriesSelection from "~/components/FilterCategories/FilterCategoriesSelection.vue";
-import Materials from "~/components/Materials/Materials.vue";
+import MaterialCard from "~/components/Materials/MaterialCard.vue";
+import MaterialListCard from "~/components/Materials/MaterialListCard.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import Spinner from "~/components/Spinner";
 import { generateSearchMaterialsQuery, parseSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
+import ShareSearchPopup from "~/components/Popup/ShareSearchPopup";
 
 export default {
   components: {
     FilterCategories,
     FilterCategoriesSelection,
-    Materials,
+    MaterialListCard,
+    MaterialCard,
     Spinner,
     SearchBar,
+    ShareSearchPopup,
   },
   mixins: [PageMixin],
-  dependencies: ["$log"],
+  dependencies: ["$log", "$window"],
   beforeRouteLeave(to, from, next) {
-    this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
+    if (to.name.indexOf("___" + this.$i18n.locale) >= 0) {
+      this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION");
+    }
     next();
   },
   data() {
     // Set filters from the URL parameters
     const urlInfo = parseSearchMaterialsQuery(this.$route.query);
     this.$store.commit("RESET_FILTER_CATEGORIES_SELECTION", urlInfo.search.filters);
-    // Set filters from the router parameters (Community and Theme filters)
-    if (this.$route.params.filterId) {
-      this.$store.commit("SELECT_FILTER_CATEGORIES", {
-        category: this.$route.meta.filterRoot,
-        selection: [this.$route.params.filterId],
-      });
-    }
-    // Update the filters and return data
-    urlInfo.search.filters = this.$store.state.filterCategories.selection;
+    // Set other data than filters and return the object
+    const languagePrefix = this.$i18n.locale === "en" ? "/en" : "";
     return {
       search: urlInfo.search,
       formData: {
         name: null,
       },
+      showShareSearchPopup: false,
+      shareUrl: `https://${this.$window.location.host}${languagePrefix}/widget/${this.$window.location.search}`,
     };
   },
   computed: {
-    ...mapGetters(["materials", "materials_loading", "materials_in_line", "did_you_mean"]),
+    ...mapGetters(["materials", "materials_loading", "did_you_mean"]),
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
+    },
+    showShareButton() {
+      return this.$root.isDemoEnvironment() && this.materials?.records.length;
     },
   },
   updated() {
     if (this.$vuetify.breakpoint.name === "xs") {
       this.$refs.top.scrollIntoView({ behavior: "smooth" });
     }
+    const languagePrefix = this.$i18n.locale === "en" ? "/en" : "";
+    this.shareUrl = `https://${this.$window.location.host}${languagePrefix}/widget/${this.$window.location.search}`;
   },
   mounted() {
     this.loadFilterCategories().finally(() => {
@@ -147,20 +156,28 @@ export default {
         this.$router.push(generateSearchMaterialsQuery(this.search, this.$route.name));
         this.$store.dispatch("searchMaterials", search);
       }
-    } /*         Change 1 item in line to 3 and back       */,
-    changeViewType() {
-      if (this.materials_in_line === 1) {
-        this.$store.dispatch("searchMaterialsInLine", 3);
-      } else {
-        this.$store.dispatch("searchMaterialsInLine", 1);
-      }
-    } /*         Event the ordering item       */,
-
+    },
     loadFilterCategories() {
       if (this.$route.name.startsWith("mat")) {
         return Promise.resolve(null);
       }
       return this.$store.dispatch("getFilterCategories");
+    },
+    handleMaterialClick(material) {
+      if (this.selectFor === "add") {
+        this.$store.commit("SET_MATERIAL", material);
+      } else {
+        this.$router.push(
+          this.localePath({
+            name: "materials-id",
+            params: { id: material.external_id },
+          })
+        );
+      }
+      this.$emit("click", material);
+    },
+    toggleShareSearchPopup() {
+      this.showShareSearchPopup = !this.showShareSearchPopup;
     },
   },
 };
@@ -249,7 +266,7 @@ export default {
     padding: 0 25px;
     @media @mobile {
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       flex-wrap: wrap;
     }
   }
@@ -274,7 +291,7 @@ export default {
       left: 0;
     }
     &_results {
-      margin-left: 25px;
+      margin-left: 50px;
       @media @mobile {
         display: flex;
         margin-left: 0px;
@@ -338,6 +355,7 @@ export default {
   &__materials {
     position: relative;
     padding-left: 25px;
+    margin-top: 25px;
 
     @media @wide {
       width: auto;

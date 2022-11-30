@@ -29,7 +29,7 @@ APPLICATION_MODE=production fab -H bastion.prod.surfedushare.nl srv.create-snaps
 The output of this command will include a SQL file name. You can then use that name to import the dump locally:
 
 ```bash
-invoke srv.import-snapshot -s pol-dev
+invoke srv.import-snapshot -s pol-prod
 (uses the last snapshot)
 
 or

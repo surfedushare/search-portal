@@ -99,7 +99,8 @@ export default {
         this.$nextTick().then(() => {
           const { collection } = this;
           const { social_counters } = this.$refs;
-          const linkedIn = social_counters.querySelector("#linkedin_counter");
+
+          const linkedIn = social_counters?.querySelector("#linkedin_counter");
 
           if (collection && collection.sharing_counters && social_counters && linkedIn) {
             const share = collection.sharing_counters.reduce(

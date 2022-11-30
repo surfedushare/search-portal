@@ -84,7 +84,7 @@ RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinpu
 RUN export APPLICATION_MODE=localhost && python manage.py compilemessages
 
 # The default command is to start a uWSGI server
-CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
+CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi/emperor.ini"]
 
-# EXPOSE port 8080 to allow communication to/from server
-EXPOSE 8080 8000
+# EXPOSE ports to allow communication to/from server
+EXPOSE 8080 8000 8001

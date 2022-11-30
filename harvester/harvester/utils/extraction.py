@@ -14,7 +14,7 @@ def prepare_seed(seed):
         return
     if not seed["copyright"] or seed["copyright"] in ["yes", "unknown"]:
         seed["state"] = "inactive"
-    if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HBO
+    if seed["lowest_educational_level"] < 1 and settings.PROJECT == "edusources":  # lower level than MBO
         seed["state"] = "inactive"
     if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "production":
         seed["state"] = "skipped"

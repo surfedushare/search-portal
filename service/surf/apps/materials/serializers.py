@@ -25,7 +25,7 @@ class SharedResourceCounterSerializer(serializers.ModelSerializer):
         fields = ('sharing_type', 'counter_value',)
 
 
-class SearchFilterCategorySerializer(serializers.Serializer):
+class LegacySearchFilterCategorySerializer(serializers.Serializer):
     """
     Serializer for filters in material search request
     """
@@ -34,7 +34,7 @@ class SearchFilterCategorySerializer(serializers.Serializer):
     items = serializers.ListField(child=serializers.CharField(allow_null=True))
 
 
-class SearchSerializer(serializers.Serializer):
+class LegacySearchSerializer(serializers.Serializer):
     """
     Serializer for material search request
     """
@@ -44,7 +44,28 @@ class SearchSerializer(serializers.Serializer):
     page_size = serializers.IntegerField(required=False, default=10,
                                          validators=[MinValueValidator(0)])
     ordering = serializers.CharField(required=False, allow_blank=True, default=None, allow_null=True, write_only=True)
-    filters = SearchFilterCategorySerializer(many=True, write_only=True, default=[])
+    filters = LegacySearchFilterCategorySerializer(many=True, write_only=True, default=[])
+
+    results = SearchResultSerializer(many=True, read_only=True)
+    records_total = serializers.IntegerField(read_only=True)
+    filter_categories = MpttFilterItemSerializer(many=True, read_only=True)
+
+
+class SearchSerializer(serializers.Serializer):
+    """
+    Serializer for material search request that uses improved filters format
+    """
+
+    search_text = serializers.CharField(required=True, allow_blank=True, write_only=True)
+    filters = serializers.DictField(
+        child=serializers.ListField(child=serializers.CharField()),
+        write_only=True,
+        default={}
+    )
+
+    page = serializers.IntegerField(required=False, default=1, validators=[MinValueValidator(1)])
+    page_size = serializers.IntegerField(required=False, default=10,
+                                         validators=[MinValueValidator(0)])
 
     results = SearchResultSerializer(many=True, read_only=True)
     records_total = serializers.IntegerField(read_only=True)

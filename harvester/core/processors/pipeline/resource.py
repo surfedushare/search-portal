@@ -1,3 +1,6 @@
+from time import sleep
+from sentry_sdk import capture_message
+
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from django.db import transaction
@@ -57,7 +60,8 @@ class ResourcePipelineProcessor(PipelineProcessor):
         contribution_processor = config.extractor
         contribution_property = config.to_property
 
-        while True:
+        attempts = 0
+        while attempts < 3:
 
             documents = []
             for process_result in batch.processresult_set.filter(result_id__isnull=False):
@@ -87,8 +91,16 @@ class ResourcePipelineProcessor(PipelineProcessor):
             # We'll be locking the Documents for update to prevent accidental overwrite of parallel results
             with transaction.atomic():
                 try:
-                    list(self.Document.objects.filter(id__in=[doc.id for doc in documents]).select_for_update())
+                    list(
+                        self.Document.objects
+                            .filter(id__in=[doc.id for doc in documents])
+                            .select_for_update(nowait=True)
+                    )
                 except transaction.DatabaseError:
+                    attempts += 1
+                    warning = f"Failed to acquire lock to merge pipeline batch (attempt={attempts})"
+                    capture_message(warning, level="warning")
+                    sleep(5)
                     continue
                 self.Document.objects.bulk_update(documents, ["pipeline", "properties"])
                 break

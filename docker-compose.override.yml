@@ -7,7 +7,7 @@ services:
     build:
       dockerfile: "service/Dockerfile"
       context: .
-    command: uwsgi --ini uwsgi.ini --py-autoreload=3 --honour-stdin
+    command: uwsgi --ini uwsgi/emperor.ini --vassals-include=../development.ini
     stdin_open: true
     tty: true
     environment:
@@ -19,12 +19,11 @@ services:
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
     ports:
       - "127.0.0.1:8000:8080"
+      - "127.0.0.1:8001:8081"
     volumes:
       - ./service:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
-    links:
-      - postgres:database
     depends_on:
       - postgres
 
@@ -49,8 +48,6 @@ services:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
-    links:
-      - postgres:database
     depends_on:
       - postgres
 
@@ -71,6 +68,8 @@ services:
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
     command: watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A harvester worker --loglevel=INFO
+    healthcheck:
+      test: celery -A harvester inspect ping
     links:
       - redis:redis
     depends_on:
@@ -95,7 +94,15 @@ services:
     command: celery -A harvester flower
     ports:
       - "127.0.0.1:5555:5555"
-    links:
-      - redis:redis
     depends_on:
       - redis
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/ip-whitelist.conf:/etc/nginx/ip-whitelist.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    network_mode: "host"
+    depends_on:
+      - harvester
+      - service

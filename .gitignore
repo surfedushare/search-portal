@@ -104,7 +104,8 @@ node_modules/
 *.iml
 
 /data
-static/
+/static
+service/surf/apps/materials/static/portal
 media/
 postgres/dumps/*.sql
 logs/

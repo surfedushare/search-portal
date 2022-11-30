@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.apps import apps
 from django.db.models import F, QuerySet
 from django.shortcuts import Http404
@@ -14,7 +15,7 @@ from surf.apps.core.schema import SearchSchema
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.models import Material, SharedResourceCounter, RESOURCE_TYPE_MATERIAL
 from surf.apps.materials.serializers import (
-    SearchSerializer,
+    LegacySearchSerializer,
     KeywordsRequestSerializer,
     MaterialsRequestSerializer,
     MaterialShortSerializer,
@@ -73,13 +74,13 @@ class MaterialSearchAPIView(CreateAPIView):
     **page**: The current page number.
 
     """
-    serializer_class = SearchSerializer
+    serializer_class = LegacySearchSerializer
     permission_classes = (AllowAny,)
     schema = SearchSchema()
 
     def post(self, request, *args, **kwargs):
         # validate request parameters and prepare search
-        serializer = SearchSerializer(data=request.data)
+        serializer = LegacySearchSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         data["drilldown_names"] = filters_app.metadata.get_filter_field_names()
@@ -169,7 +170,12 @@ class MaterialAPIView(APIView):
         else:
             # return overview of newest Materials
             client = SearchApiClient()
-            res = client.search('', ordering="-publisher_date", page_size=_MATERIALS_COUNT_IN_OVERVIEW)
+            res = client.search(
+                search_text='',
+                ordering="-publisher_date",
+                page_size=_MATERIALS_COUNT_IN_OVERVIEW,
+                filters=settings.SITE_PREFERRED_FILTERS
+            )
             res = add_extra_parameters_to_materials(filters_app.metadata,
                                                     res["records"])
         return Response(res)

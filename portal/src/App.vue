@@ -38,6 +38,9 @@ export default {
         new URLSearchParams(this.$window.location.search).get("demo")
       );
     },
+    isMBOEnvironment() {
+      return this.$window.location.hostname.indexOf("mbo.") >= 0;
+    }
   },
   metaInfo: {
     title: DEFAULT_TITLE,

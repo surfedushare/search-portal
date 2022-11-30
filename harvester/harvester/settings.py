@@ -439,14 +439,10 @@ COPYRIGHT_VALUES = [
 
 CELERY_BROKER_URL = f'redis://{environment.redis.host}/0'
 CELERY_RESULT_BACKEND = f'redis://{environment.redis.host}/0'
+CELERY_TASK_ROUTES = {
+    'sync_indices': {'queue': 'indexing'}
+}
 CELERY_BEAT_SCHEDULE = {
-    'harvest': {
-        'task': 'harvest',
-        'schedule': crontab(**environment.schedule.harvest),
-        'kwargs': {
-            'report_dataset_version': True
-        }
-    },
     'clean_data': {
         'task': 'clean_data',
         'schedule': crontab(
@@ -458,12 +454,35 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'sync_indices',
         'schedule': 30,
     },
+    'sync_indices_mbo': {
+        'task': 'sync_indices',
+        'schedule': 30,
+        'kwargs': {
+            'site': 'mbo'
+        }
+    },
     'sync_metadata': {
         'task': 'sync_metadata',
         'schedule': crontab(minute=30)
+    },
+    'sync_metadata_mbo': {
+        'task': 'sync_metadata',
+        'schedule': crontab(minute=45),
+        'kwargs': {
+            'site': 'mbo'
+        }
     }
 }
+if environment.schedule.harvest:
+    CELERY_BEAT_SCHEDULE["harvest"] = {
+        'task': 'harvest',
+        'schedule': crontab(**environment.schedule.harvest),
+        'kwargs': {
+            'report_dataset_version': True
+        }
+    }
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 50
 
 
 # Debug Toolbar

@@ -1,5 +1,5 @@
 <template>
-  <div class="collection-card">
+  <div data-test="collection_card" class="collection-card">
     <div :class="{ selected: collection.selected }" class="collections__item_wrapper tile__wrapper">
       <div class="collections__item_header">
         {{ $t("Collection") }}

@@ -8,7 +8,7 @@
             <div class="bg" />
             <h2 class="main__info_title">
               <span v-if="statistic">{{ numberOfMaterials }}</span>
-              {{ $t("open-learning-materials-from-higher-education") }}
+              {{ headline }}
             </h2>
             <ul class="main__info_items">
               <li class="main__info_item">{{ $t("Free-to-use") }}</li>
@@ -27,7 +27,7 @@
           <h2 class="main__materials_title">
             {{ $t("Newest-open-learning-material") }}
           </h2>
-          <Materials :materials="materials" />
+          <MaterialCards :materials="materials"></MaterialCards>
         </div>
       </div>
 
@@ -62,25 +62,27 @@
 import numeral from "numeral";
 import { mapGetters } from "vuex";
 import PopularList from "~/components/Communities/PopularList";
-import Materials from "~/components/Materials/Materials.vue";
 import SearchBar from "~/components/Search/SearchBar.vue";
 import { generateSearchMaterialsQuery } from "~/components/_helpers";
 import PageMixin from "~/pages/page-mixin";
 import DOMPurify from "dompurify";
 import { isEmpty } from "lodash";
+import MaterialCards from "~/components/Materials/MaterialCards.vue";
 
 const EDUCATIONAL_LEVEL_CATEGORY_ID = "lom_educational_levels";
 
 export default {
   components: {
     PopularList,
-    Materials,
     SearchBar,
+    MaterialCards,
   },
   mixins: [PageMixin],
   data() {
+    const headlineTranslationKeyPostfix = (this.$root.isMBOEnvironment()) ? "education": "higher-education";
     return {
       filters: {},
+      headline: this.$i18n.t(`open-learning-materials-from-${headlineTranslationKeyPostfix}`)
     };
   },
   computed: {
@@ -102,10 +104,10 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getMaterials", { page_size: 4 });
     this.$store.dispatch("getCommunities", { params: { page_size: 3 } });
     this.$store.dispatch("getStatistic");
     this.$store.dispatch("getFilterCategories");
+    this.$store.dispatch("getMaterials", { page_size: 4 });
   },
   methods: {
     getFilterOptions(external_id) {
@@ -132,7 +134,7 @@ export default {
         page_size: 10,
         page: 1,
       };
-      const searchRoute =  generateSearchMaterialsQuery(
+      const searchRoute = generateSearchMaterialsQuery(
         searchData,
         "materials-search",
         !isEmpty(this.$store.state.filterCategories.selection)
@@ -145,6 +147,9 @@ export default {
 
 <style lang="less">
 @import "./../variables";
+.materials {
+  list-style: none;
+}
 .main {
   position: relative;
   z-index: 1;

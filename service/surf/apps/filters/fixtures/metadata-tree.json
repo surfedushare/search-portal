@@ -1958,6 +1958,36 @@
                     "nl": "Wiskunde"
                 },
                 "frequency": 1
+            },
+            {
+                "id": 17669,
+                "parent": null,
+                "field": "studies",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "2b363227-8633-4652-ad57-c61f1efc02c8",
+                "translation": {
+                    "en": "Biology",
+                    "nl": "Biologie"
+                },
+                "frequency": 1
+            },
+            {
+                "id": 17670,
+                "parent": null,
+                "field": "studies",
+                "is_hidden": false,
+                "is_manual": false,
+                "children": [],
+                "children_count": 0,
+                "value": "0861c43d-1874-4788-b522-df8be575677f",
+                "translation": {
+                    "en": "Pedagogy",
+                    "nl": "Onderwijskunde"
+                },
+                "frequency": 1
             }
         ],
         "children_count": 402,

@@ -2,29 +2,103 @@
 <html>
 
 <head>
-    <title>Edusources Widget (test)</title>
-    <style type="text/css">
-        #results {
-            margin-top: 40px;
-            padding-left: 40px;
-        }
-        .result {
-            margin-bottom: 40px;
-        }
-    </style>
+
+    <title>Edusources Widget</title>
+
+    <link href="{{ static("materials/fonts/Source_Sans_Pro/web/stylesheet.css") }}" rel="stylesheet">
+    <link href="{{ static("materials/fonts/nunito/stylesheet.css") }}" rel="stylesheet">
+    <link href="{{ static("vuetify/vuetify.2.6.9.min.css") }}" rel="stylesheet">
+    <link href="{{ static("materials/widget.css") }}" rel="stylesheet">
+
 </head>
 
-<body>
-    <h1>Test</h1>
-    <p>This template works with <a href="https://palletsprojects.com/p/jinja/">Jinja2 templating</a></p>
-    <div id="results">
-        {% for record in records %}
-            <div class="result">
-                <h3>{{ record.title }}</h3>
-                <p>{{ record.description }}</p>
-            </div>
-        {% endfor %}
+<body class="v-application">
+
+    <header id="header">
+        <span class="logo-prefix">powered by</span>
+        <a target="_blank" href="{{ request.build_absolute_uri('/') }}?source=widget">
+            <img class="logo" src="{{ static("edusources_logo.png") }}"/>
+        </a>
+    </header>
+
+    <div id="results" class="row">
+    {% for record in records %}
+        {% set link = request.build_absolute_uri(url('portal-material-detail', kwargs={"external_id": "EXTERNAL_ID"})) %}
+        <div class="mb-4 col col-12">
+            <a target="_blank" tabindex="0" class="v-card v-card--link v-sheet theme--light {% if record.has_parts %}stack{% endif %}" href="{{ link|replace('EXTERNAL_ID', record.external_id.replace("/", "%2F")) }}?source=widget">
+                <div class="row">
+                    <div class="mx-auto col-sm-8 col-md-9 col">
+                        <div class="v-card__text pb-0 date">
+                            {% if record.published_at %}
+                                {{ date_format(record.published_at) }}
+                            {% endif %}
+                        </div>
+                        <div class="v-card__title pt-4 mt-0 truncate2">{{ record.title }}</div>
+                        <div class="v-card__text">
+                            <div class="row mx-0 align-center">
+                                <div class="star-rating star-rating--default">
+                                    {% for ix in range(1, 6) %}
+                                    <label class="star-rating__star star-rating__star--dark-stars {% if record.avg_star_rating >= ix %}is-selected{% else %}is-disabled{% endif %}">
+                                        <input type="radio" name="name" disabled="disabled" class="star-rating star-rating__checkbox" value="{{ ix }}">
+                                    </label>
+                                    {% endfor %}
+                                    <span class="star-rating__counter">({{ record.count_star_rating }})</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mt-4 pl-4 description truncate3">
+                                    {{ record.description }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-14 pl-6 col-sm-4 col-md-3 col-lg-3 col">
+                        <div class="container">
+                            {% if record.lom_educational_levels %}
+                                {% set lom_educational_levels_joint = joiner() %}
+                                <div class="row educationallevels mt-0 mb-4">
+                                    <span class="educationallevel">
+                                    {% for educational_level in record.lom_educational_levels %}
+                                        {{ lom_educational_levels_joint() }}
+                                        {{ educational_level.nl }}
+                                    {% endfor %}
+                                    </span>
+                                </div>
+
+                            {% endif %}
+                            {% if record.has_parts %}
+                                <div class="row set_count mb-4">
+                                    {{ record.has_parts|length }} {% trans %}materialen{% endtrans %}
+                                </div>
+                            {% endif %}
+                            {% if record.technical_type and record.technical_type != "unknown" %}
+                                <div class="row mt-4 format_kind format_{{ record.technical_type }}">{{ technical_type_translations[record.technical_type] }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="v-card__actions">
+                    {% if record.has_parts %}
+                    <span class="v-chip v-chip--no-color theme--light v-size--default">
+                        <span class="v-chip__content"><span >{% trans %}Verzameling{% endtrans %}</span></span>
+                    </span>
+                    {% endif %}
+                    <div class="author">{{ record.authors|join(", ") }}</div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
     </div>
+
+    <footer id="footer">
+        <a class="button" target="_blank" href="{{ request.build_absolute_uri(url('portal-search')) }}?{{ request.META.QUERY_STRING }}&source=widget">
+            {{ _("Bekijk alle %d materialen")|format(record_count) }}
+        </a>
+    </footer>
+
+    <div id="left-background"></div>
+    <div id="right-background"></div>
+
 </body>
 
 </html>
