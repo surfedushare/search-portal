@@ -2,7 +2,7 @@ from invoke import Responder
 from fabric import task
 
 from commands.postgres.sql import setup_database_statements
-from commands.postgres.sql import insert_django_user_statement, insert_django_site_statements
+from commands.postgres.sql import insert_django_user_statement
 
 
 @task(name="setup_postgres")
@@ -50,8 +50,7 @@ def setup_postgres_localhost(ctx, host="localhost"):
     admin_password = ctx.config.secrets.django.admin_password
     harvester_key = ctx.config.secrets.harvester.api_key
     insert_user = insert_django_user_statement("supersurf", admin_password, harvester_key, is_search_service)
-    site_statements = insert_django_site_statements(ctx.config.env, is_search_service)
-    for statement in site_statements + [insert_user]:
+    for statement in [insert_user]:
         ctx.run(
             f'psql -h {host} -U {postgres_user} -d {ctx.config.postgres.database} -W -c "{statement}"',
             echo=True,

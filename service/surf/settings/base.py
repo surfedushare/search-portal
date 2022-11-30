@@ -36,6 +36,7 @@ IS_AWS = environment.aws.is_aws
 SECRET_KEY = environment.secrets.django.secret_key
 
 SITE_ID = 1  # should be overridden by extending settings file
+SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
 BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
