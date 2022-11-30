@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0041_disciplines_and_studies'),
+        ('core', '0043_site_indices'),
     ]
 
     operations = [
