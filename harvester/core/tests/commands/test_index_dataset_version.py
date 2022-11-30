@@ -358,17 +358,20 @@ class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
     """
 
     search_client = get_search_client_mock(has_history=True)
+    dataset = None
+    docs_count = None
+    new_version = None
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.dataset = DatasetFactory(name="test")
         now = make_aware(datetime.now())
-        cls.docs_count = 22
+        cls.docs_count = 100
         create_dataset_version(cls.dataset, "0.0.3", now, include_current=True, copies=2, docs=cls.docs_count)
         cls.original_version = cls.dataset.versions.filter(is_current=True).last()
         cls.new_version = cls.dataset.versions.filter(is_current=False).last()
-        for doc in cls.new_version.document_set.all()[:3]:
+        for doc in cls.new_version.document_set.all()[:6]:
             doc.delete()
 
     @patch("core.models.search.index.get_search_client", return_value=search_client)
@@ -378,7 +381,7 @@ class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
 
         expected_doc_count = {
             "en": 0,
-            "nl": 22,
+            "nl": 100,
             "unk": 0
         }
 
@@ -388,11 +391,11 @@ class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
         current_version = DatasetVersion.objects.get_current_version()
         self.assertEqual(current_version.id, self.new_version.id, "Expected new version to become current version")
         self.assertEqual(
-            Document.objects.filter(dataset_version=None).count(), 19,
+            Document.objects.filter(dataset_version=None).count(), 94,
             "Expected all documents from corrupted collection to get de-linked from dataset version"
         )
         self.assertEqual(
-            Document.objects.filter(dataset_version=current_version).count(), 22,
+            Document.objects.filter(dataset_version=current_version).count(), 100,
             "Expected new current version to gain previous documents"
         )
         self.assertEqual(
@@ -417,9 +420,9 @@ class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
         deleted = current_version.delete()
         self.assertEqual(
             deleted,
-            (44, {
+            (197, {
                 "core.DatasetVersion": 1,
                 "core.Collection": 2,
-                "core.Document": 41
+                "core.Document": 194
             })
         )
