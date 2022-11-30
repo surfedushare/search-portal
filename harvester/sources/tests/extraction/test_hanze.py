@@ -22,6 +22,8 @@ class TestGetHarvestSeedsHanze(TestCase):
         self.assertEqual(seeds[0]["state"], "active")
         self.assertEqual(seeds[7]["state"], "inactive")
         self.assertEqual(seeds[10]["state"], "inactive")
+        seeds = get_harvest_seeds(Repositories.HANZE, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
+        self.assertEqual(len(seeds), 11, "Expected get_harvest_seeds to delete inactive states")
 
     def test_get_id(self):
         seeds = self.seeds
@@ -58,10 +60,12 @@ class TestGetHarvestSeedsHanze(TestCase):
         seeds = self.seeds
         self.assertEqual(len(seeds), 20)
         self.assertEqual(seeds[0]["copyright"], "open-access")
-        self.assertEqual(seeds[2]["copyright"], "yes")
-        seeds = get_harvest_seeds(Repositories.HANZE, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 10, "Expected get_harvest_seeds to delete invalid copyright")
         self.assertEqual(seeds[2]["copyright"], "open-access")
+
+    def test_get_is_restricted(self):
+        seeds = self.seeds
+        self.assertFalse(seeds[0]["is_restricted"])
+        self.assertTrue(seeds[2]["is_restricted"])
 
     def test_get_language(self):
         seeds = self.seeds
