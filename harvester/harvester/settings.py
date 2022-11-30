@@ -569,5 +569,9 @@ SOURCES = {
     "buas": {
         "endpoint": "https://pure.buas.nl",
         "api_key": environment.secrets.buas.api_key
-    }
+    },
+    "hanze": {
+        "endpoint": environment.django.repositories.hanze,
+        "api_key": environment.secrets.hanze.api_key
+    },
 }
