@@ -70,8 +70,8 @@ RESTRICTED_MATERIAL_SETS = {
 }
 
 MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN = {
-    "edusources.nl": 2,
-    "mbo.edusources.nl": 1,
+    "harvester.prod.surfedushare.nl": 2,
+    "harvester.mbo.prod.surfedushare.nl": 1,
     "harvester.publinova.nl": 2,
 }
 
