@@ -15,6 +15,7 @@
         <div class="name-container">
           <InputLanguageWrapper language='NL'>
             <InputWithCounter
+              data-test="collection_name_nl_input"
               id="collection_title_nl"
               v-model="formData.title_nl"
               type="text"
@@ -29,6 +30,7 @@
         <div class="name-container">
           <InputLanguageWrapper language='EN'>
             <InputWithCounter
+              data-test="collection_name_en_input"
               id="collection_title_en"
               v-model="formData.title_en"
               type="text"
@@ -42,6 +44,7 @@
         </div>
         <div class="form__button">
           <button
+            data-test="collection_create_button"
             class="button"
             type="submit"
             :disabled="submitting"

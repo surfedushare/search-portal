@@ -38,6 +38,8 @@ class PdfThumbnailResource(HttpFileResource):
         if not extension:
             extension = ".png"
         now = datetime.utcnow()
+        if len(name) > 60:
+            name = name[len(name) - 60:]
         file_name = self.get_file_name(f"{name}{extension}", now)
         # Save to instance
         self.preview.save(file_name, image.fp)

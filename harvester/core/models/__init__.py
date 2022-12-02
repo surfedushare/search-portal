@@ -18,3 +18,5 @@ from .harvest import Harvest, HarvestSource
 from .search import ElasticIndex, ElasticIndexSerializer, Query
 
 from .extraction import ExtractionMapping, ExtractionMethod, MethodExtractionField, JSONExtractionField
+
+from .choices import EducationalLevels

@@ -14,7 +14,7 @@ module.exports = {
     proxy: "http://service:8000",
   },
   configureWebpack: {
-    devtool: "eval-source-map",
+    devtool: server === "vue" ? "eval-source-map" : "source-map",
     resolve: {
       alias: {
         "~": path.resolve(__dirname + "/src"),

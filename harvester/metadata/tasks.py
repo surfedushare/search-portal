@@ -2,10 +2,12 @@ from datetime import timedelta
 
 from django.utils.timezone import now
 from django.urls import reverse
+from django.contrib.sites.models import Site
 from celery import current_app as app
 
 from harvester.tasks.base import DatabaseConnectionResetTask
 from core.utils.notifications import send_admin_notification
+from core.constants import SITE_SHORTHAND_BY_DOMAIN
 from metadata.models import MetadataField, MetadataValue, MetadataTranslation
 from metadata.utils.translate import fetch_eduterm_translations, fetch_edustandaard_translations, translate_with_deepl
 
@@ -29,48 +31,57 @@ def _translate_metadata_value(field, value):
 
 
 @app.task(name="sync_metadata", base=DatabaseConnectionResetTask)
-def sync_metadata():
-    frequencies = MetadataField.objects.fetch_value_frequencies(is_manual=False)
+def sync_metadata(**kwargs):
+    has_metadata_inserts = False
+    for site in Site.objects.all():
+        frequencies = MetadataField.objects.fetch_value_frequencies(
+            SITE_SHORTHAND_BY_DOMAIN[site.domain],
+            is_manual=False
+        )
 
-    metadata_updates = []
-    for metadata_value in MetadataValue.objects.iterator():
-        if metadata_value.field.name not in frequencies:
-            continue
-        frequency = frequencies[metadata_value.field.name].pop(metadata_value.value, 0)
-        if not frequency and not metadata_value.is_manual:
-            metadata_value.deleted_at = now()
+        metadata_updates = []
+        for metadata_value in MetadataValue.objects.filter(site=site).iterator():
+            if metadata_value.field.name not in frequencies:
+                continue
+            frequency = frequencies[metadata_value.field.name].pop(metadata_value.value, 0)
+            if not frequency and not metadata_value.is_manual:
+                metadata_value.deleted_at = now()
+                metadata_updates.append(metadata_value)
+                continue
+            metadata_value.frequency = frequency
+            metadata_value.deleted_at = None
+            metadata_value.updated_at = now()
             metadata_updates.append(metadata_value)
-            continue
-        metadata_value.frequency = frequency
-        metadata_value.deleted_at = None
-        metadata_value.updated_at = now()
-        metadata_updates.append(metadata_value)
-    MetadataValue.objects.bulk_update(metadata_updates, fields=["value", "frequency", "updated_at", "deleted_at"])
+        MetadataValue.objects.bulk_update(metadata_updates, fields=["value", "frequency", "updated_at", "deleted_at"])
 
-    metadata_inserts = []
-    translation_inserts = []
-    for field_name, field_frequencies in frequencies.items():
-        field = MetadataField.objects.get(name=field_name)
-        for value, frequency in field_frequencies.items():
-            translation = _translate_metadata_value(field, value)
-            translation_inserts.append(translation)
-            metadata_value = MetadataValue(
-                field=field,
-                name=value,
-                value=value,
-                frequency=frequency,
-                translation=translation,
-                is_hidden=translation.is_fuzzy,
-                lft=0,
-                rght=0,
-                level=0,
-                tree_id=0
-            )
-            metadata_inserts.append(metadata_value)
-    MetadataTranslation.objects.bulk_create(translation_inserts)
-    MetadataValue.objects.bulk_create(metadata_inserts)
-    MetadataValue.objects.rebuild()
-    if metadata_inserts:
+        metadata_inserts = []
+        translation_inserts = []
+        for field_name, field_frequencies in frequencies.items():
+            field = MetadataField.objects.get(name=field_name)
+            for value, frequency in field_frequencies.items():
+                translation = _translate_metadata_value(field, value)
+                translation_inserts.append(translation)
+                metadata_value = MetadataValue(
+                    site=site,
+                    field=field,
+                    name=value,
+                    value=value,
+                    frequency=frequency,
+                    translation=translation,
+                    is_hidden=translation.is_fuzzy,
+                    lft=0,
+                    rght=0,
+                    level=0,
+                    tree_id=0
+                )
+                metadata_inserts.append(metadata_value)
+        MetadataTranslation.objects.bulk_create(translation_inserts)
+        MetadataValue.objects.bulk_create(metadata_inserts)
+        MetadataValue.objects.rebuild()
+        if metadata_inserts:
+            has_metadata_inserts = True
+
+    if has_metadata_inserts:
         send_admin_notification(
             "New metadata values and translations have been added",
             reverse("admin:metadata_metadatatranslation_changelist") + "?is_fuzzy__exact=1"

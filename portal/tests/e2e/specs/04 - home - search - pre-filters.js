@@ -25,10 +25,6 @@ describe("Home page - search - pre-filters", () => {
       .selectedFiltersShouldContain("Onderwijsniveau", "WO", 2, 1);
   });
 
-  it("Should pre-filter on language", () => {
-    cy.selectPreFilter("language.keyword", "nl").search().selectedFiltersShouldContain("Taal", "Nederlands", 1, 0);
-  });
-
   it("Should clear all filters when resetting filters", () => {
     cy.selectPreFilter("technical_type", "website")
       .search()
@@ -42,4 +38,9 @@ describe("Home page - search - pre-filters", () => {
       .selectedFiltersShouldContain("Bestandstype", "Website", 0, 0);
     cy.visit("/").search().get("[data-test=selected_filters]").should("not.be.visible");
   });
+
+  it("Should pre-filter on language", () => {
+    cy.selectPreFilter("language.keyword", "nl").search().selectedFiltersShouldContain("Taal", "Nederlands", 1, 0);
+  });
+
 });

@@ -74,6 +74,30 @@ class SharekitMetadataHarvest(HarvestHttpResource):
         if data and not len(data.get("data", [])):
             self.status = 204
 
+    @property
+    def content(self):
+        """
+        This is a temporary override to forcefully add "BVE" as an educational level.
+        We need this as long as Sharekit doesn't provide the "BVE" value in a proper manner.
+        """
+        content_type, data = super().content
+        variables = self.variables()
+        if not self.success or not variables:
+            return content_type, data
+        is_mbo = next((var for var in variables["url"] if var.startswith("edusourcesmbo")), None)
+        if is_mbo:
+            records = [record for record in data["data"] if record["attributes"]]
+            for record in records:
+                levels = set(
+                    [educational_level["value"] for educational_level in record["attributes"]["educationalLevels"]]
+                )
+                if "BVE" not in levels:
+                    record["attributes"]["educationalLevels"].append({
+                        "source": "edusources",
+                        "value": "BVE"
+                    })
+        return content_type, data
+
     class Meta:
         verbose_name = "Sharekit metadata harvest"
         verbose_name_plural = "Sharekit metadata harvest"

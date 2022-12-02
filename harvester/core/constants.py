@@ -2,7 +2,7 @@ class Repositories:
     EDUREP = "edurep.EdurepOAIPMH"
     SHAREKIT = "sharekit.SharekitMetadataHarvest"
     ANATOMY_TOOL = "anatomy_tool.AnatomyToolOAIPMH"
-    HANZE = "hanze.HanzeResearchObjectResource"
+    HANZE = "sources.HanzeResearchObjectResource"
     HAN = "sources.HanOAIPMHResource"
     HVA = "sources.HvaPureResource"
     HKU = "sources.HkuMetadataResource"
@@ -65,5 +65,24 @@ HIGHER_EDUCATION_LEVELS = {
 
 RESTRICTED_MATERIAL_SETS = {
     "l4l",
-    "edusourcesprivate"
+    "edusourcesprivate",
+    "edusourcesmboprivate",
+}
+
+MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN = {
+    "harvester.prod.surfedushare.nl": 2,
+    "harvester.mbo.prod.surfedushare.nl": 1,
+    "harvester.publinova.nl": 2,
+}
+
+SITE_SHORTHAND_BY_DOMAIN = {
+    "harvester.prod.surfedushare.nl": "edusources",
+    "harvester.mbo.prod.surfedushare.nl": "mbo",
+    "harvester.publinova.nl": "publinova",
+}
+
+EXCLUDED_COLLECTIONS_BY_DOMAIN = {
+    "harvester.prod.surfedushare.nl": ["edusourcesmbo", "edusourcesmboprivate"],
+    "harvester.mbo.prod.surfedushare.nl": [],
+    "harvester.publinova.nl": [],
 }

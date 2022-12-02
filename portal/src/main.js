@@ -53,14 +53,14 @@ async function mountApp() {
     i18n,
     vuetify: new Vuetify({
       icons: {
-        iconfont: "fa4",
+        iconfont: "fa",
       },
       theme: {
         themes: {
           light: {
             primary: "#2CA055",
-            secondary: "#0077c8",
-            accent: "#fedb00",
+            secondary: "#8C969F",
+            accent: "#F9C613",
             anchor: "#2CA055",
           },
         },

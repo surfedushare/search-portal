@@ -72,8 +72,8 @@ class MetadataValueAdmin(DraggableMPTTAdmin):
     autocomplete_fields = ("translation", "parent",)
     list_display = ('tree_actions', 'indented_title', 'is_hidden', 'is_manual', 'frequency', 'deleted_at',)
     list_display_links = ('indented_title',)
-    list_filter = ('is_hidden', 'field', TrashListFilter)
-    readonly_fields = ('frequency', 'deleted_at', 'value',)
+    list_filter = ('is_hidden', 'site', 'field', TrashListFilter)
+    readonly_fields = ('frequency', 'deleted_at', 'value', 'site',)
 
     actions = [unhide_filters, trash_nodes, restore_nodes]
 

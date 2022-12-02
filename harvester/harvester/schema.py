@@ -26,13 +26,36 @@ class HarvesterSchema(AutoSchema):
         elif path.startswith("/metadata"):
             operation["tags"] = ["Metadata"]
             if "tree" in path:
-                operation["parameters"] = [
+                operation["parameters"] += [
                     {
                         "name": "max_children",
                         "in": "query",
                         "required": False,
                         "description": "Limits the amount of children returned by this endpoint "
                                        "(mostly useful to speed up responses from the interactive documentation)",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    },
+                    {
+                        "name": "site_id",
+                        "in": "query",
+                        "required": False,
+                        "description": "Specifies which site to get filters for",
+                        "default": 1,
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
+            if "field-values" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "site_id",
+                        "in": "query",
+                        "required": False,
+                        "description": "Specifies which site to get filters for",
+                        "default": 1,
                         'schema': {
                             'type': 'string',
                         }

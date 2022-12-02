@@ -17,6 +17,7 @@ django:
     sharekit: "https://api.surfsharekit.nl"
     han: "https://repository.han.nl"
     hva: "https://accpure.hva.nl"
+    hanze: "https://hanzetest.azure-api.net"
   sentry:
     dsn: "https://13ca8b29c8384e57b7294280117728f1@o1143393.ingest.sentry.io/6208201"
 
@@ -24,11 +25,6 @@ postgres:
   database: "harvester"
   user: "harvester"
   application_user: "harvester"
-
-schedule:
-  harvest:
-    hour: 4  # uses UTC
-    minute: 0
 
 sharekit:
   webhook_allowed_ips:

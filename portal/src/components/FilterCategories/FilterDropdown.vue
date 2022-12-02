@@ -142,12 +142,12 @@ input[type="checkbox"]:checked:before {
     display: grid;
     grid-auto-flow: column;
     border-radius: 6px;
-    background-color: @grey;
+    background-color: @light-grey;
     max-height: 48px;
     cursor: pointer;
 
     &.active {
-      background-color: @darker-grey;
+      background-color: @light-grey;
     }
     span {
       text-overflow: ellipsis;

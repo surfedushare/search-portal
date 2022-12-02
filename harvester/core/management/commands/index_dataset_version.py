@@ -1,8 +1,10 @@
 from django.urls import reverse
+from django.contrib.sites.models import Site
 
-from core.models import Dataset, ElasticIndex
+from core.models import Dataset, ElasticIndex, EducationalLevels
 from core.management.base import PipelineCommand
 from core.utils.notifications import send_admin_notification
+from core.constants import SITE_SHORTHAND_BY_DOMAIN
 
 
 class Command(PipelineCommand):
@@ -14,6 +16,8 @@ class Command(PipelineCommand):
         parser.add_argument('-hv', '--harvester-version', type=str, default="")
         parser.add_argument('-np', '--no-promote', action="store_true")
         parser.add_argument('-se', '--skip-evaluation', action="store_true")
+        parser.add_argument('-si', '--site', type=int, default=1)
+        parser.add_argument('-el', '--educational-level', type=int, default=EducationalLevels.APPLIED_SCIENCE)
 
     def handle(self, *args, **options):
 
@@ -21,6 +25,8 @@ class Command(PipelineCommand):
         version = options["harvester_version"]
         should_promote = not options["no_promote"]
         skip_evaluation = options["skip_evaluation"] or version
+        site = Site.objects.get(id=options["site"])
+        educational_level = options["educational_level"]
 
         dataset = Dataset.objects.get(name=dataset_name)
         version_filter = {}
@@ -37,19 +43,22 @@ class Command(PipelineCommand):
             dataset_version.document_set.filter(collection__name=collection.name).update(dataset_version=None)
             dataset_version.copy_collection(collection)
 
-        self.logger.start("index")
+        self.logger.start(f"index.site.{SITE_SHORTHAND_BY_DOMAIN[site.domain]}")
+        self._create_indices(dataset_version, site, educational_level, should_promote)
+        self.logger.end(f"index.site.{SITE_SHORTHAND_BY_DOMAIN[site.domain]}")
 
-        lang_doc_dict = dataset_version.get_search_documents_by_language()
+    def _create_indices(self, dataset_version, site, educational_level, should_promote):
+        lang_doc_dict = dataset_version.get_search_documents_by_language(minimal_educational_level=educational_level)
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
         for lang in ["nl", "en", "unk"]:
-
             self.logger.start(f"index.{lang}")
-
             index, created = ElasticIndex.objects.get_or_create(
-                name=f"{dataset.name}-{dataset_version.version}-{dataset_version.id}",
+                name=f"{dataset_version.dataset.name}-{dataset_version.version}-{dataset_version.id}",
                 language=lang,
+                site=site,
+                educational_level=educational_level,
                 defaults={
                     "dataset_version": dataset_version,
                     "configuration": ElasticIndex.get_index_config(lang)
@@ -67,5 +76,3 @@ class Command(PipelineCommand):
 
         if should_promote:
             dataset_version.set_current()
-
-        self.logger.end("index")
