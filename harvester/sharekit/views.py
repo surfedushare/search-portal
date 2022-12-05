@@ -27,6 +27,7 @@ def edit_document_webhook(request, channel, secret):
     try:
         data = json.loads(request.body)
     except json.decoder.JSONDecodeError:
+        capture_message("edit_document_webhook received invalid JSON", level="warning")
         return HttpResponse(status=400, reason="Invalid JSON")
     # Patches data coming from Sharekit to be consistent
     if isinstance(data["attributes"], list):
@@ -37,7 +38,10 @@ def edit_document_webhook(request, channel, secret):
     })
     prc = SharekitMetadataExtraction(config=extract_config)
     seed = next(prc.extract("application/json", data))
-    seed["is_restricted"] = channel == "edusourcesprivate"
+    seed["is_restricted"] = "private" in channel
+    if seed["state"] != "deleted" and seed["language"] is None:
+        capture_message("edit_document_webhook received 'null' as a language for non-deleted document", level="warning")
+        return HttpResponse(status=400, reason="Invalid language")
     prepare_seed(seed)
     # Commit changes to the database
     dataset_version = DatasetVersion.objects.get_current_version()
@@ -45,5 +49,12 @@ def edit_document_webhook(request, channel, secret):
     collection.update([seed], "external_id")
     # Finish webhook request
     logger = HarvestLogger(dataset_version.dataset.name, "edit_document_webhook", {})
-    logger.report_material(seed["external_id"], title=seed["title"], url=seed["url"])
+    logger.report_material(
+        seed["external_id"],
+        state=seed["state"],
+        title=seed["title"],
+        url=seed["url"],
+        copyright=seed["copyright"],
+        lowest_educational_level=seed["lowest_educational_level"]
+    )
     return HttpResponse("ok")

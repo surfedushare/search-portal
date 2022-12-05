@@ -83,8 +83,11 @@ RUN export APPLICATION_MODE=localhost && python manage.py collectstatic --noinpu
 # There are some translations of Django packages that we want to use
 RUN export APPLICATION_MODE=localhost && python manage.py compilemessages
 
+# Entrypoint sets sites-enabled correctly
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+
 # The default command is to start a uWSGI server
 CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi/emperor.ini"]
 
-# EXPOSE port 8080 to allow communication to/from server
-EXPOSE 8080 8000
+# EXPOSE ports to allow communication to/from server
+EXPOSE 8080 8000 8001

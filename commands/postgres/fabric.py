@@ -1,7 +1,7 @@
 from invoke import Responder, Exit
 from fabric import task
 
-from commands.postgres.sql import insert_django_user_statement, setup_database_statements, insert_django_site_statements
+from commands.postgres.sql import insert_django_user_statement, setup_database_statements
 
 
 @task(name="setup_postgres")
@@ -58,8 +58,7 @@ def setup_postgres_remote(conn):
         admin_password = conn.config.secrets.django.admin_password
         harvester_key = conn.config.secrets.harvester.api_key
         insert_user = insert_django_user_statement("supersurf", admin_password, harvester_key, is_search_service)
-        site_statements = insert_django_site_statements(conn.config.env, is_search_service)
-        for statement in site_statements + [insert_user]:
+        for statement in [insert_user]:
             conn.local(
                 f'psql -h localhost -p 1111 -U {postgres_user} -d {conn.config.postgres.database} -W -c "{statement}"',
                 echo=True,

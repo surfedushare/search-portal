@@ -48,6 +48,7 @@ class BaseSearchResultSerializer(serializers.Serializer):
     language = serializers.CharField()
     copyright = serializers.CharField()
     video = serializers.DictField()
+    harvest_source = serializers.CharField()
 
 
 class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
@@ -62,7 +63,6 @@ class EdusourcesSearchResultSerializer(BaseSearchResultSerializer):
     studies = serializers.ListField(child=serializers.DictField())
     disciplines = serializers.ListField(child=serializers.CharField(), default=[],
                                         source="learning_material_disciplines_normalized")
-    source = serializers.CharField(source="harvest_source")
     ideas = serializers.ListField(child=serializers.CharField())
     technical_type = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     keywords = serializers.ListField(child=serializers.CharField())

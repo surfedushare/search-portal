@@ -16,6 +16,7 @@ django:
     sharekit: "https://api.acc.surfsharekit.nl"
     han: null
     hva: null
+    hanze: null
   sentry:
     dsn: null
 
@@ -23,9 +24,6 @@ postgres:
   database: "harvester"
   user: "harvester"
   application_user: "harvester"
-
-schedule:
-  harvest:
 
 sharekit:
   webhook_allowed_ips:

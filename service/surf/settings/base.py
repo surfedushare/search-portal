@@ -36,6 +36,7 @@ IS_AWS = environment.aws.is_aws
 SECRET_KEY = environment.secrets.django.secret_key
 
 SITE_ID = 1  # should be overridden by extending settings file
+SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
 BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
@@ -293,6 +294,10 @@ OPENSEARCH_HOST = environment.open_search.host
 OPENSEARCH_PROTOCOL = environment.open_search.protocol
 OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
+
+OPENSEARCH_NL_INDEX = "latest-nl"
+OPENSEARCH_EN_INDEX = "latest-en"
+OPENSEARCH_UNK_INDEX = "latest-unk"
 
 
 # Logging
