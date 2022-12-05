@@ -96,7 +96,7 @@ class ElasticIndex(models.Model):
         alias = f"{alias_prefix}-{self.language}"
         # The index pattern should target all datasets and versions,
         # but stay clear from targeting protected AWS indices to prevent errors
-        index_pattern = f"*-*-*-{self.language}-{alias_prefix}"
+        index_pattern = f"*-*-*-{alias_prefix}-{self.language}"
         try:
             self.client.indices.delete_alias(index=index_pattern, name=alias)
         except NotFoundError:
