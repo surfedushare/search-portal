@@ -6,7 +6,7 @@ from commands.aws.ecs import run_task
 from environments.project.configuration import create_configuration
 
 
-def run_harvester_task(ctx, mode, command, legacy_system=False, **kwargs):
+def run_harvester_task(ctx, mode, command, **kwargs):
     # On localhost we call the command directly and exit
     if ctx.config.env == "localhost":
         with ctx.cd(HARVESTER_DIR):
@@ -14,7 +14,7 @@ def run_harvester_task(ctx, mode, command, legacy_system=False, **kwargs):
         return
 
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command, is_harvester_command=True, legacy_system=legacy_system, **kwargs)
+    run_task(ctx, "harvester", mode, command, is_harvester_command=True, **kwargs)
 
 
 @task(help={
@@ -48,10 +48,8 @@ def load_data(ctx, mode, source, dataset, download_edurep=False):
     "mode": "Mode you want to migrate: localhost, development, acceptance or production. Must match APPLICATION_MODE",
     "reset": "Whether to reset the active datasets before harvesting",
     "no_promote": "Whether you want to create new indices without adjusting latest aliases",
-    "version": "Version of the harvester you want to harvest with. Defaults to latest version",
-    "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
 })
-def harvest(ctx, mode, reset=False, no_promote=False, version=None, legacy_system=False):
+def harvest(ctx, mode, reset=False, no_promote=False):
     """
     Starts a harvest tasks on the AWS container cluster or localhost
     """
@@ -61,19 +59,18 @@ def harvest(ctx, mode, reset=False, no_promote=False, version=None, legacy_syste
     if no_promote:
         command += ["--no-promote"]
 
-    run_harvester_task(ctx, mode, command, version=version, extra_workers=reset, legacy_system=legacy_system)
+    run_harvester_task(ctx, mode, command, extra_workers=reset)
 
 
 @task(help={
     "mode": "Mode you want to generate previews for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
-    "dataset": "Name of the dataset (a Greek letter) that you want to generate previews for",
-    "version": "Version of the harvester you want to use. Defaults to latest version"
+    "dataset": "Name of the dataset (a Greek letter) that you want to generate previews for"
 })
-def generate_previews(ctx, mode, dataset, version=None):
+def generate_previews(ctx, mode, dataset):
     command = ["python", "manage.py", "generate_previews", f"--dataset={dataset}"]
 
-    run_harvester_task(ctx, mode, command, version=version, extra_workers=True)
+    run_harvester_task(ctx, mode, command, extra_workers=True)
 
 
 @task(name="sync_preview_media", help={
@@ -130,10 +127,10 @@ def extend_resource_cache(ctx, mode):
     "mode": "Mode you want to create indices for: localhost, development, acceptance or production. "
             "Must match APPLICATION_MODE",
     "dataset": "Name of the dataset (a Greek letter) that you want to create indices for",
-    "version": "Version of the harvester you want to use. Defaults to latest version",
-    "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
+    "version": "Version of the harvester that created the dataset version you want to index. "
+               "Defaults to latest version",
 })
-def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=False, legacy_system=False):
+def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=False):
     """
     Starts a task on the AWS container cluster or localhost to create the ES indices for a DatasetVersion
     """
@@ -142,7 +139,7 @@ def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=Fals
         command += [f"--harvester-version={version}"]
     if skip_evaluation:
         command += ["--skip-evaluation"]
-    run_harvester_task(ctx, mode, command, version=version, legacy_system=legacy_system)
+    run_harvester_task(ctx, mode, command)
 
 
 @task(help={
@@ -150,12 +147,11 @@ def index_dataset_version(ctx, mode, dataset, version=None, skip_evaluation=Fals
             "Must match APPLICATION_MODE",
     "dataset": "Name of the dataset (a Greek letter) that you want to promote to latest index "
                "(ignored if version_id is specified)",
-    "version": "Version of the harvester you want to use. Defaults to latest version "
-               "(ignored if version_id is specified)",
-    "version_id": "Id of the DatasetVersion you want to promote",
-    "legacy_system": "Whether to deploy by creating a new task definition. For backward compatibility only."
+    "version": "Version of the harvester that created the dataset version you want to index "
+               "Defaults to latest version (ignored if version_id is specified)",
+    "version_id": "Id of the DatasetVersion you want to promote"
 })
-def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=None, legacy_system=False):
+def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=None):
     """
     Starts a task on the AWS container cluster or localhost to promote a DatasetVersion index to latest
     """
@@ -168,7 +164,7 @@ def promote_dataset_version(ctx, mode, dataset=None, version=None, version_id=No
             command += [f"--harvester-version={version}"]
     else:
         Exit("Either specify a dataset of a dataset version id")
-    run_harvester_task(ctx, mode, command, version=version, legacy_system=legacy_system)
+    run_harvester_task(ctx, mode, command)
 
 
 @task(help={
