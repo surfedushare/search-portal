@@ -235,7 +235,7 @@
     },
     "analyzer": {
         "name": "analyzer",
-        "image": "${REPOSITORY}/analyzer:latest",
+        "image": "apache/tika:latest",
         "essential": true,
         "portMappings": [
             {
