@@ -6,7 +6,7 @@ from commands.opensearch.tasks import create_decompound_dictionary, push_decompo
 from commands.aws.ecs import cleanup_ecs_artifacts
 from commands.aws.repository import sync_repository_state
 from commands.deploy import (prepare_builds, build, push, deploy, migrate, promote, print_available_images,
-                             print_running_containers, publish_runner_image)
+                             print_running_containers, publish_runner_image, publish_tika_image)
 from commands.test import test_collection
 from commands.services.service.invoke import (import_snapshot, sync_upload_media, make_translations)
 from commands.services.harvester.invoke import (load_data, harvest, clean_data, index_dataset_version,
@@ -20,7 +20,7 @@ service_collection = Collection("srv", setup_postgres_localhost, import_snapshot
                                 make_translations)
 service_collection.configure(service_environment)
 aws_collection = Collection("aws", build, push, migrate, promote, print_available_images, print_running_containers,
-                            sync_repository_state, publish_runner_image, cleanup_ecs_artifacts)
+                            sync_repository_state, publish_runner_image, cleanup_ecs_artifacts, publish_tika_image)
 aws_collection.configure(service_environment)
 test_collection.configure(service_environment)
 
