@@ -64,6 +64,7 @@ def publish_runner_image(ctx, docker_login=False):
     ctx.run(f"docker tag gitlab-runner:latest {REPOSITORY}/gitlab-runner:latest", echo=True)
     ctx.run(f"docker push {REPOSITORY}/gitlab-runner:latest", echo=True, pty=True)
 
+
 @task(help={
     "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
 })
@@ -73,7 +74,7 @@ def publish_tika_image(ctx, docker_login=False):
     """
 
     ctx.run("docker build --platform=linux/amd64 -f tika/Dockerfile-tika -t harvester-tika .", pty=True, echo=True)
-    
+
     # Login with Docker on AWS
     if docker_login:
         aws_docker_login(ctx)
@@ -119,6 +120,7 @@ def build(ctx, target, commit=None, docker_login=False):
         pty=True,
         echo=True
     )
+
 
 @task(help={
     "target": "Name of the project you want to push to AWS registry: service or harvester",
