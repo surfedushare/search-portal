@@ -21,7 +21,9 @@ class HttpTikaResource(HttpResource):
         super().handle_errors()
         _, data = self.content
         if (data):
-            for key in data[0]:
+            for key, value in data[0].items():
+                if "X-TIKA:content" in key and (value == None or value == ""):
+                    self.status = 1
                 if "X-TIKA:EXCEPTION:" in key:
                     self.status = 1
 
