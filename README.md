@@ -141,6 +141,8 @@ For more details see: [testing service](service/README.md#tests) and
 This section outlines the most common options for deployment.
 Use `invoke -h <command>` to learn more about any invoke command.
 
+The pipelines on gitlab use a [gitlab runner image](Dockerfile-runner) where all requirements are pre-installed, if you update a dependency you should run `invoke aws.publish-runner-image --docker-login`
+
 Before deploying you'll want to decide on a version number.
 It's best to talk to the team about which version number you want to use for a deploy.
 To see a list of all currently available images for a project and the versions they are tagged with you can run

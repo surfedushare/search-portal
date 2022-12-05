@@ -47,9 +47,9 @@ class Command(PipelineCommand):
                 "asynchronous": asynchronous,
                 "retrieve_data": {
                     "resource": "core.httptikaresource",
-                    "method": "post",
-                    "args": [],
-                    "kwargs": {"url": "$.url"},
+                    "method": "put",
+                    "args": ["$.url"],
+                    "kwargs": {},
                 },
                 "contribute_data": {
                     "objective": {

@@ -1,0 +1,1906 @@
+{
+    "count": 4965,
+    "pageInformation": {
+        "offset": 10,
+        "size": 10
+    },
+    "items": [
+        {
+            "typeDiscriminator": "ContributionToJournal",
+            "uuid": "ce3eb1bb-5295-4670-8c1a-d008b467a116",
+            "title": {
+                "value": "Building Community Online in Honors Education during the COVID-19 Pandemic"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "en_GB": "Article"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/academic",
+                "term": {
+                    "en_GB": "Academic"
+                }
+            },
+            "peerReview": true,
+            "publicationStatuses": [
+                {
+                    "pureId": 41661212,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2021
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/en_GB",
+                "term": {
+                    "en_GB": "English"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 41661200,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "8dee3ce6-d456-424b-b54e-82a6837552c7"
+                    },
+                    "name": {
+                        "firstName": "Annegien",
+                        "lastName": "Langeloo"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "2b00da37-9d4c-4b2b-b770-9d3981b81c6a"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 41661203,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "39b9e64e-1650-4931-b4d0-1f1985e50d15"
+                    },
+                    "name": {
+                        "firstName": "Wietske",
+                        "lastName": "de Vries"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "2b00da37-9d4c-4b2b-b770-9d3981b81c6a"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 41661206,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "0e7ebdcc-b45f-4648-9f5a-4bf69716f200"
+                    },
+                    "name": {
+                        "firstName": "Birte",
+                        "lastName": "Klusmann"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "2b00da37-9d4c-4b2b-b770-9d3981b81c6a"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 41661209,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "8fa0aa33-369d-42a8-9d44-c717cd803f87"
+                    },
+                    "name": {
+                        "firstName": "Marca",
+                        "lastName": "Wolfensberger"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "2b00da37-9d4c-4b2b-b770-9d3981b81c6a"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "2b00da37-9d4c-4b2b-b770-9d3981b81c6a"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "en_GB": "Indeterminate"
+                }
+            },
+            "electronicVersions": [
+                {
+                    "typeDiscriminator": "LinkElectronicVersion",
+                    "pureId": 41661189,
+                    "accessType": {
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "en_GB": "Open"
+                        }
+                    },
+                    "visibleOnPortalDate": "2022-01-14",
+                    "link": "https://digitalcommons.unl.edu/nchcjournal/694/"
+                }
+            ],
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 41661190,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 41661192,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "corona",
+                                "gemeenschapsvorming"
+                            ]
+                        },
+                        {
+                            "pureId": 41685295,
+                            "locale": "en_GB",
+                            "freeKeywords": [
+                                "community building",
+                                "blended learning",
+                                "covid-19",
+                                "honours education"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 41685293,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/3300/3304",
+                            "term": {
+                                "en_GB": "Education",
+                                "nl_NL": "Onderwijs"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 41661193,
+                    "logicalName": "research_focus_areas",
+                    "name": {
+                        "en_GB": "Research Focus Areas * (01 AND 02 mandatory by HG)",
+                        "nl_NL": "Onderzoekslijnen/Speerpunten"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "research_focus_areas/02g_no_research_line_applicable",
+                            "term": {
+                                "en_GB": "02g. No research line applicable"
+                            }
+                        },
+                        {
+                            "uri": "research_focus_areas/05/04",
+                            "term": {
+                                "en_GB": "Honours",
+                                "nl_NL": "Excellentie"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 41661196,
+                    "logicalName": "target_domain",
+                    "name": {
+                        "en_GB": "Target domain * (mandatory by HG)",
+                        "nl_NL": "Target domain"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "target_domain/education",
+                            "term": {
+                                "en_GB": "Education"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "en_GB": "Abstract: Face-to-face contact in higher education was greatly reduced during the<br/>global health pandemic. This study examines how honors educators experienced<br/>community building with both students and colleagues during the period of emergency remote teaching. A questionnaire was developed to assess both the quality and importance of contact with students and colleagues as experienced by teachers, as well as changes therein due to the pandemic. Thirty-seven honors educators from various disciplines at a single institution participated in the study. Quantitative analysis indicates that teachers found the contact with both their students and colleagues to be of good quality overall and that they did not experience much change in the quality of communication as a result of the pandemic despite the lack of inperson interaction. Authors consider the large variation underlying their results, observing that while some teachers experienced a great deal of improvement, others perceived a significant decrease in the quality of contact. Results indicate that honors educators feel that too little attention was paid to their needs during the pandemic, especially regarding their need for community building with colleagues. Authors argue that educational leaders must ensure that teachers’ contact with both students and colleagues is sufficiently supported, emphasizing that both are important for fostering a sense of community. Authors conclude that honors educators might especially benefit from a strong sense of community in the upcoming transition to more blended educational models, as it can stimulate their professional development and promote adaptive ways of effectively dealing with change."
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "BookAnthology",
+            "uuid": "11004f33-62c5-4126-82b9-9f311aff735e",
+            "title": {
+                "value": "Adorp maakt het Beter"
+            },
+            "subTitle": {
+                "value": "adviezen voor een dorpsvisie"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/bookanthology/commissioned",
+                "term": {
+                    "en_GB": "Report"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/professional",
+                "term": {
+                    "en_GB": "Professional"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3000376,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2013
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3000372,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "c9dfc7a2-8130-4d04-b6a8-8b478b9efbef"
+                    },
+                    "name": {
+                        "firstName": "Jannie",
+                        "lastName": "Rozema"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "7db6d434-df72-4de2-a1fa-31bc80dacf6c"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 3000374,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "53adfb73-e112-4b40-b8ba-1da9e4490726"
+                    },
+                    "name": {
+                        "firstName": "Marielle",
+                        "lastName": "Bovenhoff"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "7db6d434-df72-4de2-a1fa-31bc80dacf6c"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "7db6d434-df72-4de2-a1fa-31bc80dacf6c"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/open",
+                "term": {
+                    "en_GB": "Open"
+                }
+            },
+            "electronicVersions": [
+                {
+                    "typeDiscriminator": "FileElectronicVersion",
+                    "pureId": 5666880,
+                    "accessType": {
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "en_GB": "Open"
+                        }
+                    },
+                    "licenseType": {
+                        "uri": "/dk/atira/pure/core/document/licenses/cc_by_nc",
+                        "term": {
+                            "en_GB": "CC BY-NC"
+                        }
+                    },
+                    "visibleOnPortalDate": "2016-08-29",
+                    "creator": "Mark Hoge",
+                    "created": "2016-08-29T12:41:24.006+02:00",
+                    "title": "Adviesrapport_Adorp_DEF[1]",
+                    "file": {
+                        "pureId": 5666881,
+                        "fileId": "NTY3ODQx",
+                        "fileName": "Adviesrapport_Adorp_DEF_1_.pdf",
+                        "mimeType": "application/pdf",
+                        "size": 5779141,
+                        "url": "https://research-test.hanze.nl/ws/api/research-outputs/11004f33-62c5-4126-82b9-9f311aff735e/files/NTY3ODQx/Adviesrapport_Adorp_DEF_1_.pdf"
+                    },
+                    "versionType": {
+                        "uri": "/dk/atira/pure/researchoutput/electronicversion/versiontype/publishersversion",
+                        "term": {
+                            "en_GB": "Final published version"
+                        }
+                    }
+                }
+            ],
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3000366,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3000368,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "leefomgeving",
+                                "leefbaarheid",
+                                "dorpsvisie",
+                                "adorp"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3000369,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/3300",
+                            "term": {
+                                "en_GB": "Social Sciences(all)",
+                                "nl_NL": "Sociale wetenschappen (alles)"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "nl_NL": "Aan de Vereniging Dorpsbelangen Adorp is advies uitgebracht over hoe zij voor Adorp een dorpsvisie kan ontwikkelen. Er zijn adviezen gegeven over het proces om een dorpsvisie tot stand te brengen en over de mogelijke inhoud van de dorpsvisie. Een dorpsvisie wordt door de auteurs gezien als een document waarin de ambities van de dorpsgemeenschap staan verwoord, die langdurig houdbaar zijn. Als hoofdambitie wordt aanbevolen om Adorp te zien als een 'duurzaam dorp met een betrokken en actieve gemeenschap'. De adviezen gaan over de woonomgeving, het wonen, het sociale klimaat, voorzieningen en het organiserend vermogen. Aan de basis van de adviezen lagen interviews met inwoners, de lokale overheid en maatschappelijke organisaties en een inwonersonderzoek. Van het inwonersonderzoek is een onderzoeksrapport verschenen (Rozema, J. (2013). Adorp 2012. Hoe waarderen inwoners van Adorp hun leefomgeving? Kenniscentrum NoorderRuimte, Hanzehogeschool Groningen)."
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "ContributionToJournal",
+            "uuid": "3786d62c-11fa-445b-a299-cc79ea00d468",
+            "title": {
+                "value": "Power to the people"
+            },
+            "subTitle": {
+                "value": "local community initiatives and the transition to sustainable energy"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontojournal/article",
+                "term": {
+                    "en_GB": "Article"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/academic",
+                "term": {
+                    "en_GB": "Academic"
+                }
+            },
+            "peerReview": true,
+            "publicationStatuses": [
+                {
+                    "pureId": 35369688,
+                    "current": false,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/submitted",
+                        "term": {
+                            "en_GB": "Submitted"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2015,
+                        "month": 3,
+                        "day": 1
+                    }
+                },
+                {
+                    "pureId": 3000548,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2015
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/en_GB",
+                "term": {
+                    "en_GB": "English"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3000544,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "c62effb6-b244-489c-80f0-f36999274547"
+                    },
+                    "name": {
+                        "firstName": "Tineke",
+                        "lastName": "van der Schoor"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 3000546,
+                    "externalPerson": {
+                        "systemName": "ExternalPerson",
+                        "uuid": "cee9eac7-8acc-410f-811a-68da435c6110"
+                    },
+                    "name": {
+                        "firstName": "Bert",
+                        "lastName": "Scholtens"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontojournal/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "hidden": false,
+                    "country": {
+                        "uri": "/dk/atira/pure/core/countries/nl",
+                        "term": {
+                            "en_GB": "Netherlands"
+                        }
+                    },
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/closed",
+                "term": {
+                    "en_GB": "Closed"
+                }
+            },
+            "electronicVersions": [
+                {
+                    "typeDiscriminator": "DoiElectronicVersion",
+                    "pureId": 3000538,
+                    "accessType": {
+                        "uri": "/dk/atira/pure/core/openaccesspermission/restricted",
+                        "term": {
+                            "en_GB": "Restricted"
+                        }
+                    },
+                    "licenseType": {
+                        "uri": "/dk/atira/pure/core/document/licenses/unspecified",
+                        "term": {
+                            "en_GB": "Unspecified"
+                        }
+                    },
+                    "doi": "10.1016/j.rser.2014.10.089",
+                    "versionType": {
+                        "uri": "/dk/atira/pure/researchoutput/electronicversion/versiontype/publishersversion",
+                        "term": {
+                            "en_GB": "Final published version"
+                        }
+                    }
+                }
+            ],
+            "additionalFiles": [
+                {
+                    "pureId": 27775941,
+                    "accessType": {
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "en_GB": "Open"
+                        }
+                    },
+                    "licenseType": {
+                        "uri": "/dk/atira/pure/core/document/licenses/other",
+                        "term": {
+                            "en_GB": "Other"
+                        }
+                    },
+                    "visibleOnPortalDate": "2020-03-31",
+                    "creator": "r.k.preuter-van.kampen@pl.hanze.nl",
+                    "created": "2020-03-31T13:44:56.322+02:00",
+                    "title": "Power_to_the_people_accepted_version",
+                    "file": {
+                        "pureId": 27775942,
+                        "fileId": "MDAxYTdkM2M2",
+                        "fileName": "Power_to_the_people_accepted_version_1.pdf",
+                        "mimeType": "application/pdf",
+                        "size": 321834,
+                        "url": "https://research-test.hanze.nl/ws/api/research-outputs/3786d62c-11fa-445b-a299-cc79ea00d468/files/MDAxYTdkM2M2/Power_to_the_people_accepted_version_1.pdf"
+                    }
+                }
+            ],
+            "links": [
+                {
+                    "pureId": 3000542,
+                    "url": "http://www.sciencedirect.com/science/article/pii/S1364032114009149",
+                    "linkType": {
+                        "uri": "/dk/atira/pure/links/researchoutput/unspecified",
+                        "term": {
+                            "en_GB": "Unspecified"
+                        }
+                    }
+                }
+            ],
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3000539,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3000541,
+                            "locale": "en_GB",
+                            "freeKeywords": [
+                                "local initiatives",
+                                "decentralized energy production",
+                                "energy initiatives",
+                                "citizens",
+                                "energy neutrality",
+                                "sustainability",
+                                "prosumers"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3006862,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2200",
+                            "term": {
+                                "en_GB": "Engineering(all)",
+                                "nl_NL": "Techniek (alles)"
+                            }
+                        },
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2100/2105",
+                            "term": {
+                                "en_GB": "Renewable Energy, Sustainability and the Environment",
+                                "nl_NL": "Hernieuwbare energie, duurzaamheid en het milieu"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 26149071,
+                    "logicalName": "research_focus_areas",
+                    "name": {
+                        "en_GB": "Research Focus Areas * (01 AND 02 mandatory by HG)",
+                        "nl_NL": "Onderzoekslijnen/Speerpunten"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "research_focus_areas/05/01",
+                            "term": {
+                                "en_GB": "Energy",
+                                "nl_NL": "Energie"
+                            }
+                        },
+                        {
+                            "uri": "research_focus_areas/02/05",
+                            "term": {
+                                "en_GB": "Energy sustainable communities and local initiatives",
+                                "nl_NL": "Duurzame energie in de samenleving en lokale initiatieven"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 26149074,
+                    "logicalName": "target_domain",
+                    "name": {
+                        "en_GB": "Target domain * (mandatory by HG)",
+                        "nl_NL": "Target domain"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "target_domain/science",
+                            "term": {
+                                "en_GB": "Science"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "en_GB": "Abstract: The transition towards renewable and sustainable energy is being accompanied by a transformation of communities and neighbourhoods. This transition may have huge ramifications throughout society. Many cities, towns and villages are putting together ambitious visions about how to achieve 100% sustainable energy, energy neutrality, zero carbon emission or zero-impact of their communities. We investigate what is happening at the local community level towards realizing these ambitions from a social perspective. We use the case study approach to answer the following question: how do local community energy initiatives contribute to a decentralized sustainable energy system? We find that especially the development of a shared vision, the level of activities and the type of organisation are important factors of the strength of the ‘local network’.",
+                "nl_NL": "The transition towards renewable and sustainable energy is being accompanied by a transformation of communities and neighbourhoods. This transition may have huge ramifications throughout society. Many cities, towns and villages are putting together ambitious visions about how to achieve 100% sustainable energy, energy neutrality, zero carbon emission or zero-impact of their communities. We investigate what is happening at the local community level towards realizing these ambitions from a social perspective. We use the case study approach to answer the following question: how do local community energy initiatives contribute to a decentralized sustainable energy system? We find that especially the development of a shared vision, the level of activities and the type of organisation are important factors of the strength of the ‘local network’ "
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "ContributionToBookAnthology",
+            "uuid": "0d2be3f6-0bf2-43bb-b24c-2341d0e5a732",
+            "title": {
+                "value": "Andere zorgverdeling ziekenhuizen en eerstelijns zorg"
+            },
+            "subTitle": {
+                "value": "een veranderend zorglandschap in Noordoost-Groningen"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontobookanthology/chapter",
+                "term": {
+                    "en_GB": "Chapter"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/professional",
+                "term": {
+                    "en_GB": "Professional"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3000599,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2014
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3000595,
+                    "name": {
+                        "firstName": "Martin",
+                        "lastName": "Stijnenbosch"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontobookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "6899f046-9985-4305-bbfc-3cba5c50d79d"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 3000597,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "93abb411-3e28-41d8-98ed-a2a9c04cdf1f"
+                    },
+                    "name": {
+                        "firstName": "Wilma",
+                        "lastName": "Wolf"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontobookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "6899f046-9985-4305-bbfc-3cba5c50d79d"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "6899f046-9985-4305-bbfc-3cba5c50d79d"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/none",
+                "term": {
+                    "en_GB": "None"
+                }
+            },
+            "electronicVersions": [
+                {
+                    "typeDiscriminator": "FileElectronicVersion",
+                    "pureId": 3000586,
+                    "accessType": {
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "en_GB": "Open"
+                        }
+                    },
+                    "visibleOnPortalDate": "2017-01-18",
+                    "creator": "j.g.drent@pl.hanze.nl",
+                    "created": "2016-06-30T14:23:25.535+02:00",
+                    "title": "170.Andere zorgverdeling ziekenhuizen[1]",
+                    "file": {
+                        "pureId": 3000587,
+                        "fileId": "MmRjOTBi",
+                        "fileName": "170.Andere_zorgverdeling_ziekenhuizen_1_.pdf",
+                        "mimeType": "application/pdf",
+                        "size": 149320,
+                        "url": "https://research-test.hanze.nl/ws/api/research-outputs/0d2be3f6-0bf2-43bb-b24c-2341d0e5a732/files/MmRjOTBi/170.Andere_zorgverdeling_ziekenhuizen_1_.pdf"
+                    },
+                    "versionType": {
+                        "uri": "/dk/atira/pure/researchoutput/electronicversion/versiontype/preprint",
+                        "term": {
+                            "en_GB": "Submitted manuscript"
+                        }
+                    }
+                }
+            ],
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3000588,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3000590,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "vastgoed",
+                                "zorginstellingen",
+                                "zorg"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3000591,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2000",
+                            "term": {
+                                "en_GB": "Economics, Econometrics and Finance(all)",
+                                "nl_NL": "Economie, econometrie en financiën (alles)"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 15986404,
+                    "logicalName": "target_domain",
+                    "name": {
+                        "en_GB": "Target domain * (mandatory by HG)",
+                        "nl_NL": "Target domain"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "target_domain/professional_practice_society",
+                            "term": {
+                                "en_GB": "Professional practice & society"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostPublicationTitle": {
+                "value": "Barometer Maatschappelijk Vastgoed: Maatschappelijk Verantwoord Ondernemen"
+            },
+            "abstract": {
+                "nl_NL": "Het zorglandschap In Nederland is momenteel sterk aan het veranderen en dat heeft grote gevolgen voor het vastgoed en voor de locatie waar de zorg in de toekomst zal worden verleend. Zo moeten de zorginstellingen hun vastgoed verrekenen in hun bedrijfsvoering, wat voor die tijd niet het geval was. Tegelijkertijd krijgen de huisartsen steeds meer functies toebedeeld, wat er toe leidt dat zij steeds meer gezamenlijk vanuit centrale praktijken zullen moeten gaan werken, waar ook specialistische kennis en apparatuur aanwezig is.<br/>Om de concurrentiepositie van ziekenhuizen te verbeteren worden steeds meer onderdelen van de ziekenhuiszorg verplaatst naar de eerstelijnszorg. Dit vraagt om een nauwere samenwerking tussen het ziekenhuis en de eerstelijnszorg (huisartsen)."
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "BookAnthology",
+            "uuid": "f403b0e4-ccda-4019-82b3-8312b154378e",
+            "title": {
+                "value": "Argumentatie kansrijkheid autonoom vervoer voor regio Groningen-Assen"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/bookanthology/commissioned",
+                "term": {
+                    "en_GB": "Report"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/professional",
+                "term": {
+                    "en_GB": "Professional"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3000924,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2014,
+                        "month": 8,
+                        "day": 5
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3000921,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "f547d7c2-6785-46f0-9c48-6b1d25528b88"
+                    },
+                    "name": {
+                        "firstName": "Niels",
+                        "lastName": "van Steenis"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "9856a48f-545c-44ef-8747-eb84f8786713"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 4399069,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "e30dbb78-7b3d-4a74-bc0b-737ceb19d816"
+                    },
+                    "name": {
+                        "firstName": "Rutger",
+                        "lastName": "ten Have"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "9856a48f-545c-44ef-8747-eb84f8786713"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "en_GB": "Indeterminate"
+                }
+            },
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3000915,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3000917,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "vervoer",
+                                "capaciteit",
+                                "autonomiteit",
+                                "bereikbaarheid",
+                                "regio groningen-assen"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3000918,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/1400/1405",
+                            "term": {
+                                "en_GB": "Management of Technology and Innovation",
+                                "nl_NL": "Management van technologie en innovatie"
+                            }
+                        },
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/3300/3305",
+                            "term": {
+                                "en_GB": "Geography, Planning and Development",
+                                "nl_NL": "Geografie, planning en ontwikkeling"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 16046759,
+                    "logicalName": "research_focus_areas",
+                    "name": {
+                        "en_GB": "Research Focus Areas * (01 AND 02 mandatory by HG)",
+                        "nl_NL": "Onderzoekslijnen/Speerpunten"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "research_focus_areas/01/02",
+                            "term": {
+                                "en_GB": "Sustainability & Abundance",
+                                "nl_NL": "Duurzaamheid & Overvloed"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 16058861,
+                    "logicalName": "target_domain",
+                    "name": {
+                        "en_GB": "Target domain * (mandatory by HG)",
+                        "nl_NL": "Target domain"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "target_domain/professional_practice_society",
+                            "term": {
+                                "en_GB": "Professional practice & society"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "nl_NL": "De capaciteit van het vervoer in de regio Groningen-Assen loopt tegen zijn grenzen aan. Om te voorkomen dat bereikbaarheid van Assen, Groningen en de omliggende dorpen een knelpunt gaat vormen, zal actie moeten worden ondernomen. Nieuwe technologie (autonoom vervoer) kan echter een interessante oplossing bieden voor het vervoersvraagstuk van de regio Groningen-Assen. In dit document wordt aangegeven hoe autonoom vervoer aansluit bij de ambities van de regio Groningen Assen en welke werkzaamheden uitgevoerd moeten worden om hier invulling aan te geven.<br/>Notitie van de HG en de RUG."
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "ContributionToConference",
+            "uuid": "fbd4ad3b-6bd4-4dac-b889-c2db77a1398a",
+            "title": {
+                "value": "Atelier Energietransitie"
+            },
+            "subTitle": {
+                "value": "verslag reflectiebijeenkomst atelier 2013-2014"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontoconference/other",
+                "term": {
+                    "en_GB": "Other"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/other",
+                "term": {
+                    "en_GB": "Other research output"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3001022,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2014
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3001020,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "4c7eab48-7cd4-4d6d-83f5-448f194d1606"
+                    },
+                    "name": {
+                        "firstName": "Clemens",
+                        "lastName": "Bernardt"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontoconference/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "en_GB": "Indeterminate"
+                }
+            },
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3001014,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3001016,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "energietransitie",
+                                "architecten",
+                                "onderzoek"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3001017,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2100",
+                            "term": {
+                                "en_GB": "Energy(all)",
+                                "nl_NL": "Energie (alles)"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "nl_NL": "De AvB Groningen organiseert een vierjarig onderzoek- en ontwerpatelier rond de thema's energietransitie en healthy ageing. Het eerste atelier uit deze cyclus gaat uitsluitend over energietransitie. Het atelier wordt voorbereid en geevalueerd vanuit Kenniscentrum NoorderRuimte en het landelijke lectoraat Future Urban Regions. Dit document is een verslag van een reflectiebijeenkomst met externe betrokkenen bij het atelier Energietransitie 2013-2014. Het verslag vormt de opmaat voor de inhoudelijke voorbereiding van het atelier 2014-2015."
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "ContributionToConference",
+            "uuid": "fd676875-dbf1-4c0f-a085-9f8d157cb39e",
+            "title": {
+                "value": "Atelier Energietransitie - Healthy Ageing"
+            },
+            "subTitle": {
+                "value": "inhoudelijke voorbereiding atelier 2014-2015"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontoconference/other",
+                "term": {
+                    "en_GB": "Other"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/other",
+                "term": {
+                    "en_GB": "Other research output"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3001053,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2015
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3001051,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "4c7eab48-7cd4-4d6d-83f5-448f194d1606"
+                    },
+                    "name": {
+                        "firstName": "Clemens",
+                        "lastName": "Bernardt"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontoconference/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "en_GB": "Indeterminate"
+                }
+            },
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3001045,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3001047,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "energietransitie",
+                                "onderzoek",
+                                "ontwerpen"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3001048,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2100",
+                            "term": {
+                                "en_GB": "Energy(all)",
+                                "nl_NL": "Energie (alles)"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "nl_NL": "De AvB Groningen organiseert een vierjarig onderzoek- en ontwerpatelier rond de thema's energietransitie en healthy ageing. Het atelier wordt voorbereid en geevalueerd vanuit Kenniscentrum NoorderRuimte en het landelijke lectoraat Future Urban Regions. Dit document betreft de inhoudelijke voorbereiding van het atelier 2014-2015. Het is een vervolg op het verslag van de reflectiebijeenkomst met externe betrokkenen bij het atelier 2013-2014."
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "BookAnthology",
+            "uuid": "08677da5-5a71-4a61-9f86-c1b24e911993",
+            "title": {
+                "value": "Atelier P2MP"
+            },
+            "subTitle": {
+                "value": "power to empower - energie voor de participatie-samenleving"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/bookanthology/commissioned",
+                "term": {
+                    "en_GB": "Report"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/professional",
+                "term": {
+                    "en_GB": "Professional"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3001245,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2014
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3001241,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "c8b8f01e-5784-47c1-af41-e31457a26631"
+                    },
+                    "name": {
+                        "firstName": "Mieke",
+                        "lastName": "Oostra"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 3001243,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "3b1b8991-46ac-4d7c-8d5d-1a3dd2041715"
+                    },
+                    "name": {
+                        "firstName": "Heico",
+                        "lastName": "van der Blonk"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "f636e79d-4fd2-45d8-8355-6e734c4215f7"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "en_GB": "Indeterminate"
+                }
+            },
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3001233,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3001235,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "energieverbruik",
+                                "duurzaamheid",
+                                "participatie",
+                                "mkb"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3001236,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2200",
+                            "term": {
+                                "en_GB": "Engineering(all)",
+                                "nl_NL": "Techniek (alles)"
+                            }
+                        },
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2100",
+                            "term": {
+                                "en_GB": "Energy(all)",
+                                "nl_NL": "Energie (alles)"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "nl_NL": "Dit document bevat een onderzoeksvoorstel aan het programma RAAK-PRO. Het doel van het voorstel is binnen het ‘ATELIER P2MP: Power tot Empower’ een aanpak te ontwikkelen waarmee lokale duurzame energie initiatieven samen met een expertgroep van bedrijven tot een volledige behoefte-identificatie, oplossingsontwerp en uitgewerkte business cases kunnen komen. De centrale onderzoeksvraag is: <br/>Hoe kunnen MKB-bedrijven lokale duurzame energie-initiatieven versterken, zodat deze initiatieven verder kunnen professionaliseren en hun doelen kunnen verwezenlijken terwijl de transitie naar een participatiesamenleving kan worden versneld?<br/>Binnen deze onderzoeksvraag staat het mogelijk maken van lokale initiatieven met betrekking tot duurzaamheid centraal. Het realiseren van deze doelen kan worden ondersteund door de inbreng van kennis van bedrijven en experts.<br/>Binnen deze onderzoeksvraag kunnen drie deelvraagstukken worden onderscheiden:<br/>1. Hoe kan het proces van behoefte-indicatie en vraagformulering van een lokaal initiatief. verrijkt en versneld worden door de inbreng van MKB-bedrijven?<br/>2. Hoe zorg je ervoor dat concepten en ontwerpen die worden uitgedacht passen bij de behoeftes van deze specifieke lokale gemeenschap en wat is daarvoor nodig?<br/>3. Hoe kunnen de door de lokale gemeenschap gekozen concepten en ontwerpen worden doorontwikkeld tot een LDEI business case. <br/>Aan de hand van de ‘comperative case study’ methode (Yin 2004) worden verschillende eindresultaten beoogd:<br/>1. Een compleet geformuleerde behoefte en vraagstelling van het lokaal initiatief.<br/>2. Het in kaart in kaart brengen van het speelveld, de draagvlak en betrokkenheid.<br/>3. Een overzicht van het potentieel van verschillende bronnen van duurzame energie, inclusief een potentie van energiebesparing"
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "BookAnthology",
+            "uuid": "85790c06-c0a0-4a3c-b86f-3d91d71d60f5",
+            "title": {
+                "value": "Badgasten in een werelderfgoed"
+            },
+            "subTitle": {
+                "value": "de ontwikkeling van het toerisme in het Nederlandse waddengebied nader beschouwd"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/bookanthology/commissioned",
+                "term": {
+                    "en_GB": "Report"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/professional",
+                "term": {
+                    "en_GB": "Professional"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3001320,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2012
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3001317,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "eec39eec-cc28-4d52-9017-3bbb68f527bd"
+                    },
+                    "name": {
+                        "firstName": "Hans",
+                        "lastName": "Revier"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "e2ec1e28-1970-4f45-8b42-eedba3e58323"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 3001319,
+                    "externalPerson": {
+                        "systemName": "ExternalPerson",
+                        "uuid": "fb0e5bd4-3bac-465b-8fe4-4bcce4a2669c"
+                    },
+                    "name": {
+                        "firstName": "Albert",
+                        "lastName": "Postma"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/bookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "e2ec1e28-1970-4f45-8b42-eedba3e58323"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "en_GB": "Indeterminate"
+                }
+            },
+            "electronicVersions": [
+                {
+                    "typeDiscriminator": "FileElectronicVersion",
+                    "pureId": 3001309,
+                    "accessType": {
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "en_GB": "Open"
+                        }
+                    },
+                    "visibleOnPortalDate": "2016-06-30",
+                    "creator": "j.g.drent@pl.hanze.nl",
+                    "created": "2016-06-30T16:41:29.889+02:00",
+                    "title": "Badgasten in een werelderfgoed; de ontwikkeling van het toerisme in het Nederlandse, artikel  Vrijetijdskunde[1]",
+                    "file": {
+                        "pureId": 3001310,
+                        "fileId": "MmRjYmRl",
+                        "fileName": "Badgasten_in_een_werelderfgoed_de_ontwikkeling_van_het_toerisme_in_het_Nederlandse_artikel_Vrijetijdskunde_1_.pdf",
+                        "mimeType": "application/pdf",
+                        "size": 71051,
+                        "url": "https://research-test.hanze.nl/ws/api/research-outputs/85790c06-c0a0-4a3c-b86f-3d91d71d60f5/files/MmRjYmRl/Badgasten_in_een_werelderfgoed_de_ontwikkeling_van_het_toerisme_in_het_Nederlandse_artikel_Vrijetijdskunde_1_.pdf"
+                    }
+                }
+            ],
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3001311,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3001313,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "toerisme",
+                                "waddengebied"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3001314,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2000",
+                            "term": {
+                                "en_GB": "Economics, Econometrics and Finance(all)",
+                                "nl_NL": "Economie, econometrie en financiën (alles)"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 16400310,
+                    "logicalName": "research_focus_areas",
+                    "name": {
+                        "en_GB": "Research Focus Areas * (01 AND 02 mandatory by HG)",
+                        "nl_NL": "Onderzoekslijnen/Speerpunten"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "research_focus_areas/01/02",
+                            "term": {
+                                "en_GB": "Sustainability & Abundance",
+                                "nl_NL": "Duurzaamheid & Overvloed"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 16400312,
+                    "logicalName": "target_domain",
+                    "name": {
+                        "en_GB": "Target domain * (mandatory by HG)",
+                        "nl_NL": "Target domain"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "target_domain/professional_practice_society",
+                            "term": {
+                                "en_GB": "Professional practice & society"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "abstract": {
+                "nl_NL": "Elk jaar bezoeken tussen de een en twee miljoen mensen het waddengebied. Het toerisme is daar uitgegroeid tot een van de belangrijkste economische activiteiten. In Nederland zijn vooral de eilanden een populaire vakantiebestemming. Fietsen, wandelen en strandbezoek zijn populaire activiteiten. De authentieke atmosfeer, het strand en het duinlandschap<br/>worden het meest gewaardeerd. De natuurwaarden van de Waddenzee spelen een minder grote rol, hoewel uit onderzoek blijkt dat er een zekere relatie bestaat tussen natuurervaringen en de plaatsgebondenheid van de toerist. In tegenstelling tot Duitsland komt het toerisme op de vastelandskust van Noord-Holland, Friesland en Groningen nauwelijks op gang en kan niet profiteren van de stroom bezoekers naar de Waddeneilanden. De recente aanwijzing van de Waddenzee tot werelderfgoed wordt over het algemeen gezien als een belangrijke stimulans voor de ontwikkeling van het toerisme. In<br/>Nederland blijkt de werelderfgoedstatus echter nog relatief onbekend te zijn. In tegenstelling tot het Duitse kustgebied wordt door ondernemers deze status niet of nauwelijks benut. Met de werelderfgoedstatus van de Waddenzee en de voorgenomen uitbreiding van het vliegveld Eelde als nieuwe uitdagingen zijn met behulp van scenarioplanning een aantal richtingen voor de ontwikkeling van het toerisme in Noord-Nederland geïdentificeerd en uitgewerkt in 23 product-markt-partner-combinaties. Deze hebben het karakter van shortbreaks waarin<br/>een bezoek aan het waddengebied gekoppeld wordt aan andere highlights in Noord-Nederland"
+            },
+            "systemName": "ResearchOutput"
+        },
+        {
+            "typeDiscriminator": "ContributionToBookAnthology",
+            "uuid": "c5b02b5c-49c3-47b7-806c-9f0c54f962c1",
+            "title": {
+                "value": "Barometer gemeentelijk maatschappelijk vastgoed 2014"
+            },
+            "subTitle": {
+                "value": "gemeenten in beweging"
+            },
+            "type": {
+                "uri": "/dk/atira/pure/researchoutput/researchoutputtypes/contributiontobookanthology/chapter",
+                "term": {
+                    "en_GB": "Chapter"
+                }
+            },
+            "category": {
+                "uri": "/dk/atira/pure/researchoutput/category/professional",
+                "term": {
+                    "en_GB": "Professional"
+                }
+            },
+            "publicationStatuses": [
+                {
+                    "pureId": 3001349,
+                    "current": true,
+                    "publicationStatus": {
+                        "uri": "/dk/atira/pure/researchoutput/status/published",
+                        "term": {
+                            "en_GB": "Published"
+                        }
+                    },
+                    "publicationDate": {
+                        "year": 2014
+                    }
+                }
+            ],
+            "language": {
+                "uri": "/dk/atira/pure/core/languages/nl_NL",
+                "term": {
+                    "en_GB": "Dutch"
+                }
+            },
+            "contributors": [
+                {
+                    "pureId": 3001345,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "888b18e2-9627-4fa5-93c9-d0e7bfa5fbd1"
+                    },
+                    "name": {
+                        "firstName": "Annette",
+                        "lastName": "van den Beemt"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontobookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "78470ec0-bf0c-4efe-a997-a173ee6a7e1f"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                },
+                {
+                    "pureId": 3001347,
+                    "person": {
+                        "systemName": "Person",
+                        "uuid": "3a513d89-9bc0-4168-beef-10e67f7ae119"
+                    },
+                    "name": {
+                        "firstName": "Jan",
+                        "lastName": "Veuger"
+                    },
+                    "role": {
+                        "uri": "/dk/atira/pure/researchoutput/roles/contributiontobookanthology/author",
+                        "term": {
+                            "en_GB": "Author"
+                        }
+                    },
+                    "organisationalUnits": [
+                        {
+                            "systemName": "Organization",
+                            "uuid": "78470ec0-bf0c-4efe-a997-a173ee6a7e1f"
+                        }
+                    ],
+                    "hidden": false,
+                    "correspondingAuthor": false
+                }
+            ],
+            "organizations": [
+                {
+                    "systemName": "Organization",
+                    "uuid": "78470ec0-bf0c-4efe-a997-a173ee6a7e1f"
+                }
+            ],
+            "openAccessPermission": {
+                "uri": "/dk/atira/pure/researchoutput/openaccesspermission/indeterminate",
+                "term": {
+                    "en_GB": "Indeterminate"
+                }
+            },
+            "electronicVersions": [
+                {
+                    "typeDiscriminator": "FileElectronicVersion",
+                    "pureId": 3001336,
+                    "accessType": {
+                        "uri": "/dk/atira/pure/core/openaccesspermission/open",
+                        "term": {
+                            "en_GB": "Open"
+                        }
+                    },
+                    "visibleOnPortalDate": "2016-06-30",
+                    "creator": "j.g.drent@pl.hanze.nl",
+                    "created": "2016-06-30T16:49:18.579+02:00",
+                    "title": "14.Barometer Gemeentelijk Maatschappelijk Vastgoed[1]",
+                    "file": {
+                        "pureId": 3001337,
+                        "fileId": "MmRjYmY5",
+                        "fileName": "14.Barometer_Gemeentelijk_Maatschappelijk_Vastgoed_1_.pdf",
+                        "mimeType": "application/pdf",
+                        "size": 544213,
+                        "url": "https://research-test.hanze.nl/ws/api/research-outputs/c5b02b5c-49c3-47b7-806c-9f0c54f962c1/files/MmRjYmY5/14.Barometer_Gemeentelijk_Maatschappelijk_Vastgoed_1_.pdf"
+                    }
+                }
+            ],
+            "keywordGroups": [
+                {
+                    "typeDiscriminator": "FreeKeywordsKeywordGroup",
+                    "pureId": 3001338,
+                    "logicalName": "keywordContainers",
+                    "name": {
+                        "en_GB": "Keywords"
+                    },
+                    "keywords": [
+                        {
+                            "pureId": 3001340,
+                            "locale": "nl_NL",
+                            "freeKeywords": [
+                                "maatschappelijk vastgoed",
+                                "gemeenten overheid"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "typeDiscriminator": "ClassificationsKeywordGroup",
+                    "pureId": 3001341,
+                    "logicalName": "ASJCSubjectAreas",
+                    "name": {
+                        "en_GB": "ASJC Scopus subject areas"
+                    },
+                    "classifications": [
+                        {
+                            "uri": "/dk/atira/pure/subjectarea/asjc/2000",
+                            "term": {
+                                "en_GB": "Economics, Econometrics and Finance(all)",
+                                "nl_NL": "Economie, econometrie en financiën (alles)"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostPublicationTitle": {
+                "value": "Barometer maatschappelijk vastgoed"
+            },
+            "hostPublicationSubTitle": {
+                "value": "Maatschappelijk verantwoord ondernemen"
+            },
+            "abstract": {
+                "nl_NL": "Dit artikel bevat de resultaten van het onderzoek Barometer Gemeentelijk Maatschappelijk Vastgoed 2014. Het onderzoek is uitgevoerd door het lectoraat Maatschappelijk Vastgoed van het Kenniscentrum NoorderRuimte, Hanzehogeschool Groningen"
+            },
+            "systemName": "ResearchOutput"
+        }
+    ]
+}
