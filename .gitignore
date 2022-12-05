@@ -106,6 +106,7 @@ node_modules/
 /data
 /static
 service/surf/apps/materials/static/portal
+service/uwsgi/sites-enabled
 media/
 postgres/dumps/*.sql
 logs/

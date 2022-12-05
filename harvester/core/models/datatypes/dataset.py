@@ -12,13 +12,6 @@ from core.models.datatypes.extension import Extension
 from core.models.choices import EducationalLevels
 
 
-ALWAYS_APPROVED_COLLECTIONS = [
-    "edusourcesmbo",
-    "edusourcesmboprivate",
-    "edusourcesprivate",
-]
-
-
 class Dataset(DocumentCollectionMixin, CollectionBase):
     """
     The most overarching model for storing learning materials.
@@ -68,14 +61,14 @@ class Dataset(DocumentCollectionMixin, CollectionBase):
         new_aggregates = new_version.aggregate()
         for collection_name, collection_info in current_aggregates.items():
             document_count = collection_info["document_count"]
-            if not document_count or collection_name in ALWAYS_APPROVED_COLLECTIONS:
+            if not document_count:
                 continue
             if collection_name not in new_aggregates:
                 fallback_collections.append(collection_info["collection"])
                 continue
             new_count = new_aggregates[collection_name]["document_count"]
             count_diff = document_count - new_count
-            if count_diff and count_diff / document_count >= 0.05:
+            if count_diff and count_diff / document_count >= 0.05 and document_count > 50:
                 fallback_collections.append(collection_info["collection"])
         return fallback_collections
 

@@ -26,10 +26,10 @@ class TestPromoteDatasetVersion(TestCase):
         # Latest alias should update
         self.assertEqual(self.search_client.indices.put_alias.call_count, 2)
         for args, kwargs in self.search_client.indices.put_alias.call_args_list:
-            index_name, version, language, id = kwargs["index"].split("-")
+            index_name, version, version_id, site_name, language = kwargs["index"].split("-")
             self.assertEqual(index_name, "test")
             self.assertEqual(version, "001")
-            self.assertIn(kwargs["name"], ["latest-nl", "latest-en"])
+            self.assertIn(kwargs["name"], ["edusources-nl", "edusources-en", "publinova-nl", "publinova-en"])
 
     def assert_is_current(self, expected_is_current):
         self.assertEqual(DatasetVersion.objects.all().count(), 1,
