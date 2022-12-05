@@ -1,9 +1,9 @@
-from unittest.mock import patch, MagicMock
-import json 
+import json
 
 from django.test import TestCase
 
 from core.models import HttpTikaResource
+
 
 class TestTikaResource(TestCase):
 
@@ -30,14 +30,15 @@ class TestTikaResource(TestCase):
                 ],
                 "X-TIKA:parse_time_millis": "181",
                 "X-TIKA:embedded_depth": "0",
-                "X-TIKA:EXCEPTION:warn": "Something went wrong",                
+                "X-TIKA:EXCEPTION:warn": "Something went wrong",
                 "Content-Length": "0",
                 "http-header:content-type": "application/zip",
                 "Content-Type": "application/zip"
             },
         ]
         expected_content_type = "application/json"
-        resource = HttpTikaResource(status=200, head={ "content-type": expected_content_type }, body=json.dumps(expected_data))
+        resource = HttpTikaResource(
+            status=200, head={"content-type": expected_content_type}, body=json.dumps(expected_data))
         resource.handle_errors()
         self.assertEqual(resource.status, 1)
 
@@ -71,6 +72,7 @@ class TestTikaResource(TestCase):
             }
         ]
         expected_content_type = "application/json"
-        resource = HttpTikaResource(status=200, head={ "content-type": expected_content_type }, body=json.dumps(expected_data))
+        resource = HttpTikaResource(
+            status=200, head={"content-type": expected_content_type}, body=json.dumps(expected_data))
         resource.handle_errors()
-        self.assertEqual(resource.status, 1)        
+        self.assertEqual(resource.status, 1)

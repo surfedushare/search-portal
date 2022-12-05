@@ -22,7 +22,7 @@ class HttpTikaResource(HttpResource):
         _, data = self.content
         if (data):
             for key, value in data[0].items():
-                if "X-TIKA:content" in key and (value == None or value == ""):
+                if "X-TIKA:content" in key and (value is None or value == ""):
                     self.status = 1
                 if "X-TIKA:EXCEPTION:" in key:
                     self.status = 1
