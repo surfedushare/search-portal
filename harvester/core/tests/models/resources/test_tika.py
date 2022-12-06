@@ -7,7 +7,7 @@ from core.models import HttpTikaResource
 
 class TestTikaResource(TestCase):
 
-    def test_handle_error_with_exception(self):
+    def test_handle_error_with_content_and_exception(self):
         # for analyzing and optimization purposes we NOW set the status of the resource to 1 (failed)
         # in the future we should finetune this for specific use cases
         expected_data = [
@@ -30,6 +30,7 @@ class TestTikaResource(TestCase):
                 ],
                 "X-TIKA:parse_time_millis": "181",
                 "X-TIKA:embedded_depth": "0",
+                "X-TIKA:content": "I have content",
                 "X-TIKA:EXCEPTION:warn": "Something went wrong",
                 "Content-Length": "0",
                 "http-header:content-type": "application/zip",
@@ -40,9 +41,9 @@ class TestTikaResource(TestCase):
         resource = HttpTikaResource(
             status=200, head={"content-type": expected_content_type}, body=json.dumps(expected_data))
         resource.handle_errors()
-        self.assertEqual(resource.status, 1)
+        self.assertEqual(resource.status, 200)
 
-    def test_handle_error_with_no_content(self):
+    def test_handle_error_without_content_and_without_exception(self):
         # for analyzing and optimization purposes we NOW set the status of the resource to 1 (failed)
         # in the future we should finetune this for specific use cases
         expected_data = [
@@ -67,6 +68,42 @@ class TestTikaResource(TestCase):
                 "X-TIKA:embedded_depth": "0",
                 "X-TIKA:content": "",
                 "Content-Length": "129",
+                "http-header:content-type": "text/html",
+                "Content-Type": "text/html; charset=windows-1252"
+            }
+        ]
+        expected_content_type = "application/json"
+        resource = HttpTikaResource(
+            status=200, head={"content-type": expected_content_type}, body=json.dumps(expected_data))
+        resource.handle_errors()
+        self.assertEqual(resource.status, 204)
+
+    def test_handle_error_without_content_and_with_exception(self):
+        # for analyzing and optimization purposes we NOW set the status of the resource to 1 (failed)
+        # in the future we should finetune this for specific use cases
+        expected_data = [
+            {
+                "http-connection:target-ip-address": "151.101.38.217",
+                "http-header:status-code": "200",
+                "X-TIKA:Parsed-By-Full-Set": [
+                    "org.apache.tika.parser.DefaultParser",
+                    "org.apache.tika.parser.html.HtmlParser"
+                ],
+                "X-TIKA:content_handler": "ToTextContentHandler",
+                "resourceName": "apache-tika-14029765778009660889.tmp",
+                "http-connection:num-redirects": "0",
+                "http-connection:target-url": "https://www.webpagetest.org/blank.html",
+                "X-TIKA:Parsed-By": [
+                    "org.apache.tika.parser.DefaultParser",
+                    "org.apache.tika.parser.html.HtmlParser"
+                ],
+                "dc:title": "Blank",
+                "Content-Encoding": "windows-1252",
+                "X-TIKA:parse_time_millis": "165",
+                "X-TIKA:embedded_depth": "0",
+                "X-TIKA:content": "",
+                "X-TIKA:EXCEPTION:embedded_exception": "This should not happen",
+                "Content-Length": "0",
                 "http-header:content-type": "text/html",
                 "Content-Type": "text/html; charset=windows-1252"
             }

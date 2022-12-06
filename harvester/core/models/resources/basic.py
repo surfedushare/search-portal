@@ -20,12 +20,18 @@ class HttpTikaResource(HttpResource):
     def handle_errors(self):
         super().handle_errors()
         _, data = self.content
+
         if (data):
-            for key, value in data[0].items():
-                if "X-TIKA:content" in key and (value is None or value == ""):
-                    self.status = 1
-                if "X-TIKA:EXCEPTION:" in key:
-                    self.status = 1
+            first_tika_result = data[0]
+            has_content = first_tika_result["X-TIKA:content"] is not None and first_tika_result["X-TIKA:content"] != ""
+            has_exception = len(dict(filter(lambda item:  "X-TIKA:EXCEPTION:" in item[0], first_tika_result.items()))) > 0
+
+        if has_content and has_exception:
+            self.status = 200
+        elif not has_content and not has_exception:
+            self.status = 204
+        elif not has_content and has_exception:
+            self.status = 1
 
 
 class ExtructResource(URLResource):
