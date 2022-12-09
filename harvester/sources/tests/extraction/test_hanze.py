@@ -20,10 +20,6 @@ class TestGetHarvestSeedsHanze(TestCase):
     def test_get_record_state(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["state"], "active")
-        self.assertEqual(seeds[7]["state"], "inactive")
-        self.assertEqual(seeds[10]["state"], "inactive")
-        seeds = get_harvest_seeds(Repositories.HANZE, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 11, "Expected get_harvest_seeds to delete inactive states")
 
     def test_get_id(self):
         seeds = self.seeds

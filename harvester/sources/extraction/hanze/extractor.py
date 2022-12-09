@@ -17,14 +17,6 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_record_state(cls, node):
-        # Hanze wants to filter out products that have no research_focus_areas or research_line
-        for keywords in node.get("keywordGroups", []):
-            if keywords["logicalName"] == "research_focus_areas":
-                for classification in keywords["classifications"]:
-                    if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
-                        return "inactive"
-                    elif classification["uri"] == "research_focus_areas/02g_no_research_line_applicable":
-                        return "inactive"
         return "active"
 
     #############################
