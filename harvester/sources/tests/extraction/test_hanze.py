@@ -78,10 +78,22 @@ class TestGetHarvestSeedsHanze(TestCase):
 
     def test_keywords(self):
         seeds = self.seeds
-        self.assertEqual(
-            seeds[0]["keywords"],
-            ['regenwater', 'afvoer', 'ondergrond', 'infiltratie', 'stedelijke gebieden']
-        )
+        self.assertEqual(sorted(seeds[0]["keywords"]), [
+            'Engineering(all)', 'Entrepreneurship', 'afvoer', 'infiltratie', 'ondergrond', 'regenwater',
+            'stedelijke gebieden'
+        ])
+        self.assertEqual(sorted(seeds[1]["keywords"]), [
+            '3d', 'Civil and Structural Engineering', 'disasters', 'flooding', 'overstromingen', 'rampen', 'resilience',
+            'risk management', 'speerpunt energie', 'water'
+        ])
+        self.assertEqual(sorted(seeds[7]["keywords"]), [
+            'Geography, Planning and Development', 'Liveability', 'demografische ontwikkeling', 'demography',
+            'krimpgebieden', 'leefbaarheid', 'leefomgeving ', 'noord-nederland', 'northern netherlands'
+        ])
+        self.assertEqual(sorted(seeds[10]["keywords"]), [
+            'Education', 'Honours', 'blended learning', 'community building', 'corona', 'covid-19',
+            'gemeenschapsvorming', 'honours education'
+        ])
 
     def test_authors_property(self):
         seeds = self.seeds

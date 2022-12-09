@@ -99,6 +99,26 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         return next(iter(node["abstract"].values()), None)
 
     @classmethod
+    def get_keywords(cls, node):
+        results = []
+        for keywords in node.get("keywordGroups", []):
+            match keywords["logicalName"]:
+                case "keywordContainers":
+                    for free_keywords in keywords["keywords"]:
+                        results += free_keywords["freeKeywords"]
+                case "ASJCSubjectAreas":
+                    for classification in keywords["classifications"]:
+                        results.append(classification["term"]["en_GB"])
+                case "research_focus_areas":
+                    for classification in keywords["classifications"]:
+                        if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
+                            continue
+                        elif classification["uri"] == "research_focus_areas/02g_no_research_line_applicable":
+                            continue
+                        results.append(classification["term"]["en_GB"])
+        return list(set(results))
+
+    @classmethod
     def get_from_youtube(cls, node):
         url = cls.get_url(node)
         if not url:
@@ -187,7 +207,7 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     "copyright": HanzeResourceObjectExtraction.get_copyright,
     "title": "$.title.value",
     "language": HanzeResourceObjectExtraction.get_language,
-    "keywords": "$.keywordGroups.0.keywords.0.freeKeywords",
+    "keywords": HanzeResourceObjectExtraction.get_keywords,
     "description": HanzeResourceObjectExtraction.get_description,
     "mime_type": HanzeResourceObjectExtraction.get_mime_type,
     "authors": HanzeResourceObjectExtraction.get_authors,
