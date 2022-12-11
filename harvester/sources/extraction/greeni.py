@@ -1,4 +1,3 @@
-import os
 import re
 from hashlib import sha1
 from dateutil.parser import ParserError, parse as date_parser
