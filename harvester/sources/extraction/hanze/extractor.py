@@ -44,11 +44,12 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_files(cls, node):
-        if "electronicVersions" not in node:
+        electronic_versions = node.get("electronicVersions", []) + node.get("additionalFiles", [])
+        if not electronic_versions:
             return []
         return [
             cls._parse_electronic_version(electronic_version)
-            for electronic_version in node["electronicVersions"] if cls._parse_electronic_version(electronic_version)
+            for electronic_version in electronic_versions if cls._parse_electronic_version(electronic_version)
         ]
 
     @classmethod

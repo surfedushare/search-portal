@@ -38,6 +38,15 @@ class TestGetHarvestSeedsHanze(TestCase):
                          "_met_ondergrondse_infiltratievoorzieningen_20_jaar.pdf"
             }
         ])
+        self.assertEqual(seeds[12]["files"], [
+            {
+                "title": "Power_to_the_people_accepted_version_1.pdf",
+                "url": "https://research-test.hanze.nl/ws/api/research-outputs/3786d62c-11fa-445b-a299-cc79ea00d468/"
+                       "files/MDAxYTdkM2M2/Power_to_the_people_accepted_version_1.pdf",
+                "mime_type": "application/pdf",
+                "hash": "8a83314d543513cdcb43329ecd78145ff45134d3"
+            }
+        ])
 
     def test_get_url(self):
         seeds = self.seeds
