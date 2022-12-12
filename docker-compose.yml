@@ -49,7 +49,7 @@ services:
       - ./tika/tika-config.xml:/config/tika-config.xml
       - ./tika/tika-extras:/tika-extras
     ports:
-      - "9090:9998"
+      - "9998:9998"
 
 volumes:
   postgres_database:

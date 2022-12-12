@@ -82,7 +82,7 @@ class ResourcePipelineProcessor(PipelineProcessor):
                 extractor_class = Processor.get_processor_class(extractor_name)
                 extractor = extractor_class(config)
                 extractor_method = getattr(extractor, method_name)
-                contributions = list(extractor_method(result)) if self.resource_is_empty(result) else []
+                contributions = list(extractor_method(result)) if not self.resource_is_empty(result) else []
                 if not len(contributions):
                     continue
                 contribution = contributions.pop(0)
