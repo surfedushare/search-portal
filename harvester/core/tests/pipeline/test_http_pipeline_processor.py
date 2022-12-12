@@ -40,6 +40,7 @@ class TestHttpPipelineProcessor(TestCase):
                 }
             }
         })
+
         processor(self.collection.documents)
         self.assertEqual(Batch.objects.count(), 3)
         self.assertEqual(ProcessResult.objects.count(), 0)

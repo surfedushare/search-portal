@@ -20,11 +20,14 @@ class HttpTikaResource(HttpResource):
     def handle_errors(self):
         super().handle_errors()
         _, data = self.content
+        has_content = False
+        has_exception = False
 
         if (data):
             first_tika_result = data[0]
             has_content = first_tika_result["X-TIKA:content"] is not None and first_tika_result["X-TIKA:content"] != ""
-            has_exception = len(dict(filter(lambda item:  "X-TIKA:EXCEPTION:" in item[0], first_tika_result.items()))) > 0
+            has_exception = len(
+                dict(filter(lambda item:  "X-TIKA:EXCEPTION:" in item[0], first_tika_result.items()))) > 0
 
         if has_content and has_exception:
             self.status = 200
