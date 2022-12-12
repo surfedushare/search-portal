@@ -12,7 +12,7 @@ logger = logging.getLogger("harvester")
 
 class HttpTikaResource(HttpResource):
 
-    URI_TEMPLATE = "http://localhost:9090/rmeta/text?fetchKey={}"
+    URI_TEMPLATE = "http://localhost:9998/rmeta/text?fetchKey={}"
     PARAMETERS = {
         "fetcherName": "http"
     }
