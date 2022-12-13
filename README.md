@@ -174,9 +174,6 @@ These last deploy commands will wait until all containers in the AWS cluster hav
 This may take some time and the command will indicate that it is waiting to complete.
 If you do not want to wait you can `CTRL+C` in the terminal safely. This cancels the waiting, not the deploy itself.
 
-Also note that these commands will deploy the image with a version tag to whatever is in your package.py files.
-If you want to deploy a different version use the `--version` flag with the commands above.
-
 #### Release
 
 A special case of deploying is releasing. You should take the following steps during releasing:
@@ -215,27 +212,47 @@ As you can see the release may consist of many steps and release plans can becom
 Here is an overview of commands that are regularly used during a release and their relevant documentation:
 
 - [Database migration](#Migrate)
-
 - [Harvesting](harvester/README.md#Harvesting on AWS)
 - Index recreation. See: `invoke -h hrv.index-dataset-version`
   (this doesn't collect documents from sources like harvesting, but does recreate indices for a Dataset)
 - [Terraform](https://www.terraform.io/intro)
 
-#### Active containers/versions
-
-You can see which containers and which versions of a project are currently active for a particular environment by using:
-
-```bash
-APPLICATION_MODE=<environment> invoke aws.print-running-containers <target-project-name> <environment>
-```
-
 #### Rollback
 
-In order to rollback you can specify an existing Docker image to deploy command.
-For instance with the service:
+There are two ways to rollback. One is to revert changes in GIT and then push them to the remote.
+From there you can do a normal [release](#Release).
+This method is good because of its simplicity and it also permanently takes care of the problem.
+
+However sometimes you may want to keep your changes in GIT and rollback nonetheless.
+Or it can be hard to find the cause of a problem, while you do want to rollback fast to a previously working version.
+To facilitate this you can "promote" a previous version and then deploy it.
+The rest of this section explains how to achieve such a rollback.
+
+First of all you need to list all versions that are available with the following command
 
 ```bash
-APPLICATION_MODE=<environment> invoke srv.deploy <environment> -v <rollback-version>
+invoke aws.print-available-images <target-project-name>
+```
+
+Where `<target-project-name>` will be `harvester` or `service`.
+You can pick a `<rollback-version>` from the command output.
+Then depending on the `<environment>` you want to rollback for: `production`, `acceptance` or `development`.
+You can run the following commands to rollback to the version you want.
+
+```
+APPLICATION_MODE=<environment> invoke aws.promote <target-project-name> --version=<rollback-version>
+```
+
+And if `<target-project-name>` is `service`:
+
+```
+APPLICATION_MODE=<environment> invoke srv.deploy <environment>
+```
+
+Or when it is `harvester`:
+
+```
+APPLICATION_MODE=<environment> invoke hrv.deploy <environment>
 ```
 
 #### Migrate
