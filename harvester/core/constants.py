@@ -72,7 +72,7 @@ RESTRICTED_MATERIAL_SETS = {
 MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN = {
     "harvester.prod.surfedushare.nl": 2,
     "harvester.mbo.prod.surfedushare.nl": 1,
-    "harvester.publinova.nl": 2,
+    "harvester.publinova.nl": None,
 }
 
 SITE_SHORTHAND_BY_DOMAIN = {

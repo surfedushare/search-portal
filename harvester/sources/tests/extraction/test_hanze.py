@@ -20,10 +20,6 @@ class TestGetHarvestSeedsHanze(TestCase):
     def test_get_record_state(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["state"], "active")
-        self.assertEqual(seeds[7]["state"], "inactive")
-        self.assertEqual(seeds[10]["state"], "inactive")
-        seeds = get_harvest_seeds(Repositories.HANZE, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 11, "Expected get_harvest_seeds to delete inactive states")
 
     def test_get_id(self):
         seeds = self.seeds
@@ -40,6 +36,15 @@ class TestGetHarvestSeedsHanze(TestCase):
                 "hash": "b20e35dd499a92d02a435be018a267a0d9d3eb89",
                 "title": "wtnr2_verh1_p99_113_HR_v2_Inter_nationale_ervaringen"
                          "_met_ondergrondse_infiltratievoorzieningen_20_jaar.pdf"
+            }
+        ])
+        self.assertEqual(seeds[12]["files"], [
+            {
+                "title": "Power_to_the_people_accepted_version_1.pdf",
+                "url": "https://research-test.hanze.nl/ws/api/research-outputs/3786d62c-11fa-445b-a299-cc79ea00d468/"
+                       "files/MDAxYTdkM2M2/Power_to_the_people_accepted_version_1.pdf",
+                "mime_type": "application/pdf",
+                "hash": "8a83314d543513cdcb43329ecd78145ff45134d3"
             }
         ])
 
@@ -82,10 +87,22 @@ class TestGetHarvestSeedsHanze(TestCase):
 
     def test_keywords(self):
         seeds = self.seeds
-        self.assertEqual(
-            seeds[0]["keywords"],
-            ['regenwater', 'afvoer', 'ondergrond', 'infiltratie', 'stedelijke gebieden']
-        )
+        self.assertEqual(sorted(seeds[0]["keywords"]), [
+            'Engineering(all)', 'Entrepreneurship', 'afvoer', 'infiltratie', 'ondergrond', 'regenwater',
+            'stedelijke gebieden'
+        ])
+        self.assertEqual(sorted(seeds[1]["keywords"]), [
+            '3d', 'Civil and Structural Engineering', 'disasters', 'flooding', 'overstromingen', 'rampen', 'resilience',
+            'risk management', 'speerpunt energie', 'water'
+        ])
+        self.assertEqual(sorted(seeds[7]["keywords"]), [
+            'Geography, Planning and Development', 'Liveability', 'demografische ontwikkeling', 'demography',
+            'krimpgebieden', 'leefbaarheid', 'leefomgeving ', 'noord-nederland', 'northern netherlands'
+        ])
+        self.assertEqual(sorted(seeds[10]["keywords"]), [
+            'Education', 'Honours', 'blended learning', 'community building', 'corona', 'covid-19',
+            'gemeenschapsvorming', 'honours education'
+        ])
 
     def test_authors_property(self):
         seeds = self.seeds

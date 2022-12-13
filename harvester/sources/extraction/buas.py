@@ -103,8 +103,15 @@ class BuasMetadataExtraction(ExtractProcessor):
         authors = []
         for person in node["personAssociations"]:
             name = person.get('name', {})
+            match name:
+                case {"firstName": first_name}:
+                    full_name = f"{first_name} {name['lastName']}"
+                case {"lastName": last_name}:
+                    full_name = last_name
+                case _:
+                    full_name = None
             authors.append({
-                "name": f"{name['firstName']} {name['lastName']}" if name else None,
+                "name": full_name,
                 "email": None,
                 "external_id": person["pureId"],
                 "dai": None,

@@ -17,14 +17,6 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_record_state(cls, node):
-        # Hanze wants to filter out products that have no research_focus_areas or research_line
-        for keywords in node.get("keywordGroups", []):
-            if keywords["logicalName"] == "research_focus_areas":
-                for classification in keywords["classifications"]:
-                    if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
-                        return "inactive"
-                    elif classification["uri"] == "research_focus_areas/02g_no_research_line_applicable":
-                        return "inactive"
         return "active"
 
     #############################
@@ -52,11 +44,12 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_files(cls, node):
-        if "electronicVersions" not in node:
+        electronic_versions = node.get("electronicVersions", []) + node.get("additionalFiles", [])
+        if not electronic_versions:
             return []
         return [
             cls._parse_electronic_version(electronic_version)
-            for electronic_version in node["electronicVersions"] if cls._parse_electronic_version(electronic_version)
+            for electronic_version in electronic_versions if cls._parse_electronic_version(electronic_version)
         ]
 
     @classmethod
@@ -105,6 +98,26 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         if "abstract" not in node:
             return
         return next(iter(node["abstract"].values()), None)
+
+    @classmethod
+    def get_keywords(cls, node):
+        results = []
+        for keywords in node.get("keywordGroups", []):
+            match keywords["logicalName"]:
+                case "keywordContainers":
+                    for free_keywords in keywords["keywords"]:
+                        results += free_keywords["freeKeywords"]
+                case "ASJCSubjectAreas":
+                    for classification in keywords["classifications"]:
+                        results.append(classification["term"]["en_GB"])
+                case "research_focus_areas":
+                    for classification in keywords["classifications"]:
+                        if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
+                            continue
+                        elif classification["uri"] == "research_focus_areas/02g_no_research_line_applicable":
+                            continue
+                        results.append(classification["term"]["en_GB"])
+        return list(set(results))
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -195,7 +208,7 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     "copyright": HanzeResourceObjectExtraction.get_copyright,
     "title": "$.title.value",
     "language": HanzeResourceObjectExtraction.get_language,
-    "keywords": "$.keywordGroups.0.keywords.0.freeKeywords",
+    "keywords": HanzeResourceObjectExtraction.get_keywords,
     "description": HanzeResourceObjectExtraction.get_description,
     "mime_type": HanzeResourceObjectExtraction.get_mime_type,
     "authors": HanzeResourceObjectExtraction.get_authors,
