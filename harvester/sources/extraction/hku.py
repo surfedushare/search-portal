@@ -102,6 +102,8 @@ class HkuMetadataExtraction(ExtractProcessor):
     def get_copyright(cls, node):
         if node["licence"] == "Creative Commons Non-Commercial license":
             return "cc-by-nc-40"
+        elif node["licence"] == "Niet commerieel - geen afgeleide werken (CC BY-NC-ND)":
+            return "cc-by-nc-nd-40"
         return "yes"
 
     @classmethod

@@ -28,13 +28,13 @@ class TestGetHarvestSeedsGreeni(TestCase):
                 "mime_type": "application/pdf",
                 "url": "https://www.greeni.nl/iguana/CMS.MetaDataEditDownload.cls?file=2:121587:1",
                 "hash": "c75306b29041ba822c5310eb19d8582a9b07a585",
-                "title": "CMS.MetaDataEditDownload.cls?file=2:121587:1"
+                "title": "Attachment 1"
             },
             {
                 "mime_type": "text/html",
                 "url": "https://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId=2.121587",
                 "hash": "78570277381005bbbe9fff97c58bb4272aa18609",
-                "title": "www.main.cls?surl=greenisearch#RecordId=2.121587"
+                "title": "URL 1"
             }
         ])
 

@@ -59,7 +59,9 @@ def harvest(reset=False, no_promote=False, report_dataset_version=False):
         for site in Site.objects.all():
             site_index_command = copy(index_command)
             site_index_command.append(f"--site={site.id}")
-            site_index_command.append(f"--educational-level={MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN[site.domain]}")
+            educational_level = MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN[site.domain]
+            if educational_level:
+                site_index_command.append(f"--educational-level={educational_level}")
             call_command(*site_index_command)
 
     # When dealing with a harvest on AWS seeds need to get copied to S3.
