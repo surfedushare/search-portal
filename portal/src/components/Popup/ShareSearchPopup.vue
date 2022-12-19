@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <Popup :close="close" :is-show="showPopup">
+    <Popup v-if="showPopup" :close="close" :is-show="showPopup">
       <slot>
         <h2 class="popup__title">
           {{ $t("Share-search-popup-title") }}
@@ -29,18 +29,13 @@
           <v-select
             v-model="language"
             :items="[
-              {'text': $t('nl'), 'value': 'nl'},
-              {'text': $t('en'), 'value': 'en'}
+              { text: $t('nl'), value: 'nl' },
+              { text: $t('en'), value: 'en' },
             ]"
             :label="$t('Share-search-popup-language')"
             outlined
           ></v-select>
-          <v-sheet
-            color="grey lighten-4"
-            height="96"
-            width="100%"
-            rounded="rounded"
-          >
+          <v-sheet color="grey lighten-4" height="96" width="100%" rounded="rounded">
             <div class="iframe-code-block">{{ iframeCodeBlock }}</div>
           </v-sheet>
           <v-btn class="secondary button" x-large outlined @click.prevent="close()">
@@ -103,22 +98,22 @@ export default {
       ];
     },
     iframeCodeBlock() {
-      if(!this.valid) {
+      if (!this.valid) {
         return;
       }
       const width = this.width;
       const height = this.height;
       return `<iframe width="${width}" height="${height}" src="${this.shareUrl}"></iframe>`;
-    }
+    },
   },
   methods: {
     async copyIframeCodeBlock() {
-      if(!this.valid) {
+      if (!this.valid) {
         return;
       }
       await navigator.clipboard.writeText(this.iframeCodeBlock);
       this.isShow = false;
-    }
+    },
   },
 };
 </script>
