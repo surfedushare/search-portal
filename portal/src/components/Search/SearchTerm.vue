@@ -1,3 +1,4 @@
+<!-- eslint-disable quotes -->
 <template>
   <section class="search">
     <form action="/materials/search/" @submit.prevent="onSubmit">
@@ -46,7 +47,7 @@ export default {
   },
   data() {
     return {
-      searchText: this.value || this.$route.query?.search_text?.replaceAll("\"", "") || "",
+      searchText: this.value || this.$route.query?.search_text?.replaceAll("%20", "") || "",
       suggestions: [],
     };
   },
@@ -97,7 +98,7 @@ export default {
       this.$emit("search", text);
     },
     onSubmit() {
-      this.$emit("search", this.searchText);
+      this.$emit("search", this.searchText.replaceAll("%20", ""));
     },
   },
 };
