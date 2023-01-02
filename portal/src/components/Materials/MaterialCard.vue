@@ -118,6 +118,11 @@ export default {
 .v-card:hover .v-card__title {
   color: @green-hover-dark;
 }
+
+.v-card--link:before {
+  background: none;
+}
+
 .v-card {
   border-radius: 12px;
   &__title {
