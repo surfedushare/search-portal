@@ -118,9 +118,15 @@ class TestGetHarvestSeedsHanze(TestCase):
             {'name': 'Teefje Wentel', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
         ])
 
+    def test_publisher_date(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["publisher_date"], "2011-11-01")
+        self.assertEqual(seeds[9]["publisher_date"], "2021-02-01")
+
     def test_publisher_year(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["publisher_year"], 2011)
+        self.assertEqual(seeds[9]["publisher_year"], 2021)
 
     def test_research_object_type(self):
         seeds = self.seeds
