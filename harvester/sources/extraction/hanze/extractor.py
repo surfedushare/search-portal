@@ -146,6 +146,15 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
                 "orcid": None,
                 "isni": None
             })
+        # We'll put the first Hanze author as first author in the list
+        # Within Publinova this person will become the owner and contact person
+        is_hanze_author = [
+            "externalPerson" not in person  # means that we're dealing with a Hanze employee
+            for person in node["contributors"]
+        ]
+        first_hanze_person_index = is_hanze_author.index(True)
+        first_hanze_person = authors.pop(first_hanze_person_index)
+        authors = [first_hanze_person] + authors
         return authors
 
     @classmethod
