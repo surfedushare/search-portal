@@ -91,7 +91,8 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        return "open-access"
+        files = cls.get_files(node)
+        return "open-access" if len(files) else "closed-access"
 
     @classmethod
     def get_description(cls, node):
