@@ -471,5 +471,5 @@ class SearchApiClient:
         language_item = [filter_item for filter_item in filters if filter_item['external_id'] == 'language.keyword']
         if not language_item:
             return indices
-        language_indices = [f"latest-{language}" for language in language_item[0]['items']]
+        language_indices = [f"{settings.SITE_SLUG}-{language}" for language in language_item[0]['items']]
         return language_indices if len(language_indices) else indices
