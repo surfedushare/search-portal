@@ -104,6 +104,8 @@ class HkuMetadataExtraction(ExtractProcessor):
             return "cc-by-nc-40"
         elif node["licence"] == "Niet commerieel - geen afgeleide werken (CC BY-NC-ND)":
             return "cc-by-nc-nd-40"
+        elif node["licence"] == "Niet commercieel - geen afgeleide werken (CC BY-NC-ND)":
+            return "cc-by-nc-nd-40"
         return "yes"
 
     @classmethod
