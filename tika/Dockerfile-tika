@@ -1,0 +1,6 @@
+FROM apache/tika:latest
+
+COPY tika/tika-config.xml /config/tika-config.xml
+COPY tika/tika-extras /tika-extras
+
+CMD ["-c",  "/config/tika-config.xml"]

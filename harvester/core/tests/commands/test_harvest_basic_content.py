@@ -36,9 +36,9 @@ class TestBasicHarvest(TestCase):
                 "asynchronous": False,
                 "retrieve_data": {
                     "resource": "core.httptikaresource",
-                    "method": "post",
-                    "args": [],
-                    "kwargs": {"url": "$.url"},
+                    "method": "put",
+                    "args": ["$.url"],
+                    "kwargs": {},
                 },
                 "contribute_data": {
                     "objective": {
@@ -73,7 +73,7 @@ class TestBasicHarvest(TestCase):
         )
         self.assertEqual(processor_mock_result.call_count, 2)
         document_count_expectations = (
-            self.collection.documents.count(),
+            self.collection.documents.exclude(properties__url=None).count(),
             self.collection.documents.filter(properties__from_youtube=True).count(),
         )
         for arguments, expectation in zip(processor_mock_result.call_args_list, document_count_expectations):

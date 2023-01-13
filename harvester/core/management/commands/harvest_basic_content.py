@@ -47,9 +47,9 @@ class Command(PipelineCommand):
                 "asynchronous": asynchronous,
                 "retrieve_data": {
                     "resource": "core.httptikaresource",
-                    "method": "post",
-                    "args": [],
-                    "kwargs": {"url": "$.url"},
+                    "method": "put",
+                    "args": ["$.url"],
+                    "kwargs": {},
                 },
                 "contribute_data": {
                     "objective": {
@@ -58,7 +58,7 @@ class Command(PipelineCommand):
                     }
                 }
             })
-            results.append(tika_processor(collection.documents.all()))
+            results.append(tika_processor(collection.documents.exclude(properties__url=None)))
 
             extruct_processor = HttpPipelineProcessor({
                 "pipeline_app_label": "core",
