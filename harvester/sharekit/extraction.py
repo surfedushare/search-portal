@@ -180,6 +180,9 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_ideas(cls, node):
+        # TODO: structure changed to an object of lists. We should re-think how to extract from that, but now we ignore.
+        if not isinstance(node["attributes"].get("vocabularies", []), list):
+            return []
         compound_ideas = [vocabulary["value"] for vocabulary in node["attributes"].get("vocabularies", [])]
         if not compound_ideas:
             return []
