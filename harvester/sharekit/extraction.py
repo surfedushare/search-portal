@@ -2,6 +2,7 @@ import re
 from mimetypes import guess_type
 from hashlib import sha1
 from dateutil.parser import parse as date_parser
+from itertools import chain
 
 from django.conf import settings
 
@@ -180,10 +181,9 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_ideas(cls, node):
-        # TODO: structure changed to an object of lists. We should re-think how to extract from that, but now we ignore.
-        if not isinstance(node["attributes"].get("vocabularies", []), list):
-            return []
-        compound_ideas = [vocabulary["value"] for vocabulary in node["attributes"].get("vocabularies", [])]
+        vocabularies = node["attributes"].get("vocabularies", {})
+        terms = chain(*vocabularies.values())
+        compound_ideas = [term["value"] for term in terms]
         if not compound_ideas:
             return []
         ideas = []

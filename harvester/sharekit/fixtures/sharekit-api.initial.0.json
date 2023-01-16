@@ -66,12 +66,18 @@
         "aggregationlevel": "3",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [
-          {
-            "source": "http://purl.edustandaard.nl/concept/8f984395-e090-41be-96df-503f53ddaa09",
-            "value": "Informatievaardigheid vocabulaire 2020 - Publiceren en communiceren - Publiceren (van eindproduct)"
-          }
-        ],
+        "vocabularies": {
+          "vocabularyZiezo": [],
+          "vocabularyDas": [],
+          "vocabularyInformationLiteracy": [
+            {
+              "source": "http://purl.edustandaard.nl/concept/8f984395-e090-41be-96df-503f53ddaa09",
+              "value": "Informatievaardigheid vocabulaire 2020 - Publiceren en communiceren - Publiceren (van eindproduct)"
+            }
+          ],
+          "vocabularyVerpleegkunde": [],
+          "vocabularyVaktherapie": []
+    },
         "doi": null,
         "handle": null,
         "publishedIn": null,
@@ -130,7 +136,7 @@
         "aggregationlevel": "3",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [],
+        "vocabularies": {},
         "doi": null,
         "handle": null,
         "publishedIn": null,
@@ -254,7 +260,7 @@
         "aggregationlevel": "4",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [],
+        "vocabularies": {},
         "doi": null,
         "handle": null,
         "publishedIn": null,
@@ -331,7 +337,7 @@
         "aggregationlevel": "3",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [],
+        "vocabularies": {},
         "doi": null,
         "handle": null,
         "publishedIn": null,
@@ -404,7 +410,7 @@
         "aggregationlevel": "2",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [],
+        "vocabularies": {},
         "doi": null,
         "handle": null,
         "publishedIn": null,
@@ -490,7 +496,7 @@
         "aggregationlevel": "2",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [],
+        "vocabularies": {},
         "doi": null,
         "handle": null,
         "publishedIn": null,
@@ -563,7 +569,7 @@
         "aggregationlevel": "2",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [],
+        "vocabularies": {},
         "doi": null,
         "handle": null,
         "publishedIn": null,
@@ -647,7 +653,7 @@
         "aggregationlevel": "2",
         "intendedUser": null,
         "availability": null,
-        "vocabularies": [],
+        "vocabularies": {},
         "doi": null,
         "handle": null,
         "publishedIn": null,
