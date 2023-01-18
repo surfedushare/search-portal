@@ -17,6 +17,7 @@ django:
     han: "https://repository.han.nl"
     hva: "https://accpure.hva.nl"
     hanze: "https://hanzetest.azure-api.net"
+    publinova: "https://api.publinova.acc.surf.zooma.cloud"
   sentry:
     dsn: null
 
@@ -61,4 +62,6 @@ secrets:
   hva:
     api_key: null
   buas:
+    api_key: null
+  publinova:
     api_key: null

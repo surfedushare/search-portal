@@ -17,6 +17,7 @@ django:
     han: null
     hva: null
     hanze: null
+    publinova: null
   sentry:
     dsn: null
 
@@ -61,4 +62,6 @@ secrets:
   hva:
     api_key: null
   buas:
+    api_key: null
+  publinova:
     api_key: null

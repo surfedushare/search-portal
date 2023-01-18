@@ -8,6 +8,7 @@ class Repositories:
     HKU = "sources.HkuMetadataResource"
     GREENI = "sources.GreeniOAIPMHResource"
     BUAS = "sources.BuasPureResource"
+    PUBLINOVA = "sources.PublinovaMetadataResource"
 
 
 def get_repository_id(repository_resource):
