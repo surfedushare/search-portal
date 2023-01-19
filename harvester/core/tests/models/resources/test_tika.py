@@ -8,7 +8,7 @@ from core.models import HttpTikaResource
 class TestTikaResource(TestCase):
 
     def test_handle_error_with_content_and_exception(self):
-        # for analyzing and optimization purposes we NOW set the status of the resource to 1 (failed)
+        # for now we set the status of the resource to 200 (success)
         # in the future we should finetune this for specific use cases
         expected_data = [
             {
@@ -44,8 +44,6 @@ class TestTikaResource(TestCase):
         self.assertEqual(resource.status, 200)
 
     def test_handle_error_without_content_and_without_exception(self):
-        # for analyzing and optimization purposes we NOW set the status of the resource to 1 (failed)
-        # in the future we should finetune this for specific use cases
         expected_data = [
             {
                 "http-connection:target-ip-address": "151.101.38.217",
