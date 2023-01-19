@@ -91,7 +91,8 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        return "open-access"
+        files = cls.get_files(node)
+        return "open-access" if len(files) else "closed-access"
 
     @classmethod
     def get_description(cls, node):
@@ -146,11 +147,44 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
                 "orcid": None,
                 "isni": None
             })
+        # We'll put the first Hanze author as first author in the list
+        # Within Publinova this person will become the owner and contact person
+        first_hanze_author_index = next(
+            (ix for ix, person in enumerate(node["contributors"]) if "externalPerson" not in person),
+            None
+        )
+        if first_hanze_author_index is not None:
+            first_hanze_author = authors.pop(first_hanze_author_index)
+            authors = [first_hanze_author] + authors
         return authors
 
     @classmethod
     def get_publishers(cls, node):
         return ["Hanze"]
+
+    @classmethod
+    def get_publisher_date(cls, node):
+        current_publication = next(
+            (publication for publication in node["publicationStatuses"] if publication["current"]),
+            None
+        )
+        if not current_publication:
+            return
+        publication_date = current_publication["publicationDate"]
+        year = publication_date["year"]
+        month = publication_date.get("month", 1)
+        day = publication_date.get("day", 1)
+        return f"{year}-{month:02}-{day:02}"
+
+    @classmethod
+    def get_publisher_year(cls, node):
+        current_publication = next(
+            (publication for publication in node["publicationStatuses"] if publication["current"]),
+            None
+        )
+        if not current_publication:
+            return
+        return current_publication["publicationDate"]["year"]
 
     @classmethod
     def get_lom_educational_levels(cls, node):
@@ -213,8 +247,8 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     "mime_type": HanzeResourceObjectExtraction.get_mime_type,
     "authors": HanzeResourceObjectExtraction.get_authors,
     "publishers": HanzeResourceObjectExtraction.get_publishers,
-    "publisher_date": lambda node: None,
-    "publisher_year": "$.publicationStatuses.0.publicationDate.year",
+    "publisher_date": HanzeResourceObjectExtraction.get_publisher_date,
+    "publisher_year": HanzeResourceObjectExtraction.get_publisher_year,
 
     # Non-essential NPPO properties
     "technical_type": HanzeResourceObjectExtraction.get_technical_type,
