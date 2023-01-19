@@ -17,6 +17,9 @@ class ResourcePipelineProcessor(PipelineProcessor):
 
     resource_type = None
 
+    def resource_is_empty(self, resource):
+        return False
+
     def dispatch_resource(self, config, *args, **kwargs):
         return [], []
 
@@ -72,13 +75,14 @@ class ResourcePipelineProcessor(PipelineProcessor):
                     "resource": f"{result._meta.app_label}.{result._meta.model_name}",
                     "id": result.id
                 }
+
                 documents.append(process_result.document)
                 # Write data to the Document
                 extractor_name, method_name = Processor.get_processor_components(contribution_processor)
                 extractor_class = Processor.get_processor_class(extractor_name)
                 extractor = extractor_class(config)
                 extractor_method = getattr(extractor, method_name)
-                contributions = list(extractor_method(result))
+                contributions = list(extractor_method(result)) if not self.resource_is_empty(result) else []
                 if not len(contributions):
                     continue
                 contribution = contributions.pop(0)
@@ -113,6 +117,9 @@ class HttpPipelineProcessor(ResourcePipelineProcessor):
     def dispatch_resource(self, config, *args, **kwargs):
         return send(*args, **kwargs, config=config, method=config.method)
 
+    def resource_is_empty(self, resource):
+        return resource.status == 204
+
 
 class ShellPipelineProcessor(ResourcePipelineProcessor):
 
@@ -120,3 +127,6 @@ class ShellPipelineProcessor(ResourcePipelineProcessor):
 
     def dispatch_resource(self, config, *args, **kwargs):
         return run(*args, **kwargs, config=config)
+
+    def resource_is_empty(self, resource):
+        return False

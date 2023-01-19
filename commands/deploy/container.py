@@ -66,6 +66,24 @@ def publish_runner_image(ctx, docker_login=False):
 
 
 @task(help={
+    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"
+})
+def publish_tika_image(ctx, docker_login=False):
+    """
+    Uses Docker to build and push an image to use as tika image with configuration
+    """
+
+    ctx.run("docker build --platform=linux/amd64 -f tika/Dockerfile-tika -t harvester-tika .", pty=True, echo=True)
+
+    # Login with Docker on AWS
+    if docker_login:
+        aws_docker_login(ctx)
+
+    ctx.run(f"docker tag harvester-tika:latest {REPOSITORY}/harvester-tika:latest", echo=True)
+    ctx.run(f"docker push {REPOSITORY}/harvester-tika:latest", echo=True, pty=True)
+
+
+@task(help={
     "target": "Name of the project you want to build: service or harvester",
     "commit": "The commit hash a new build should include in its info.json. Will also be used to tag the new image.",
     "docker_login": "Specify this flag to login to AWS registry. Needed only once per session"

@@ -29,9 +29,9 @@ class TestHttpPipelineProcessor(TestCase):
             "asynchronous": False,
             "retrieve_data": {
                 "resource": resource,
-                "method": "post",
-                "args": [],
-                "kwargs": {"url": "$.url"},
+                "method": "put",
+                "args": ["$.url"],
+                "kwargs": {},
             },
             "contribute_data": {
                 "objective": {
@@ -40,7 +40,8 @@ class TestHttpPipelineProcessor(TestCase):
                 }
             }
         })
-        processor(self.collection.documents)
+
+        processor(self.collection.documents.exclude(properties__url=None))
         self.assertEqual(Batch.objects.count(), 3)
         self.assertEqual(ProcessResult.objects.count(), 0)
         self.assertEqual(self.collection.documents.count(), 13)
@@ -49,12 +50,15 @@ class TestHttpPipelineProcessor(TestCase):
                 self.assertEqual(document.id, self.ignored_document.id,
                                  "Expected documents without complete metadata phase to get ignored")
                 continue
+            if document.properties["url"] is None:
+                continue
             self.assertIn("tika", document.pipeline)
             tika_pipeline = document.pipeline["tika"]
             self.assertEqual(tika_pipeline["resource"], "core.httptikaresource")
             self.assertIsInstance(tika_pipeline["id"], int)
             self.assertIsInstance(tika_pipeline["success"], bool)
-        self.assertEqual(send_mock.call_count, 2, "Expected two erroneous resources to retry")
+
+        self.assertEqual(send_mock.call_count, 2, "Expected one erroneous resource to retry and one new resource")
 
     @patch("core.processors.pipeline.base.chord", return_value=chord_mock_result)
     def test_asynchronous_pipeline(self, chord_mock):
@@ -71,9 +75,9 @@ class TestHttpPipelineProcessor(TestCase):
             "asynchronous": True,
             "retrieve_data": {
                 "resource": resource,
-                "method": "post",
-                "args": [],
-                "kwargs": {"url": "$.url"},
+                "method": "put",
+                "args": ["$.url"],
+                "kwargs": {},
             },
             "contribute_data": {
                 "objective": {

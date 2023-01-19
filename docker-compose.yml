@@ -42,11 +42,13 @@ services:
     ports:
       - "6379:6379"
 
-  analyzer:
-    image: 017973353230.dkr.ecr.eu-central-1.amazonaws.com/analyzer:latest
+  tika:
+    image: 017973353230.dkr.ecr.eu-central-1.amazonaws.com/harvester-tika:latest
+    volumes:
+      - ./tika/tika-config.xml:/config/tika-config.xml
+      - ./tika/tika-extras:/tika-extras
     ports:
-      - "9090:9090"
-
+      - "9998:9998"
 
 volumes:
   postgres_database:

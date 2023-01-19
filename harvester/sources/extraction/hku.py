@@ -104,6 +104,8 @@ class HkuMetadataExtraction(ExtractProcessor):
             return "cc-by-nc-40"
         elif node["licence"] == "Niet commerieel - geen afgeleide werken (CC BY-NC-ND)":
             return "cc-by-nc-nd-40"
+        elif node["licence"] == "Niet commercieel - geen afgeleide werken (CC BY-NC-ND)":
+            return "cc-by-nc-nd-40"
         return "yes"
 
     @classmethod
@@ -146,10 +148,8 @@ class HkuMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = HkuMetadataExtraction.get_copyright(node)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        # As agreed upon with an email by Emile Bijk on 1 December 2022
+        return True
 
 
 HKU_EXTRACTION_OBJECTIVE = {

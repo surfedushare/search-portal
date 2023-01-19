@@ -58,7 +58,13 @@
                 "aggregationlevel": "3",
                 "intendedUser": null,
                 "availability": null,
-                "vocabularies": [],
+                "vocabularies": {
+                    "vocabularyZiezo": [],
+                    "vocabularyDas": [],
+                    "vocabularyInformationLiteracy": [],
+                    "vocabularyVerpleegkunde": [],
+                    "vocabularyVaktherapie": []
+                },
                 "doi": null,
                 "handle": null,
                 "publishedIn": null,
@@ -128,7 +134,13 @@
                 "aggregationlevel": "3",
                 "intendedUser": null,
                 "availability": null,
-                "vocabularies": [],
+                "vocabularies": {
+                    "vocabularyZiezo": [],
+                    "vocabularyDas": [],
+                    "vocabularyInformationLiteracy": [],
+                    "vocabularyVerpleegkunde": [],
+                    "vocabularyVaktherapie": []
+                },
                 "doi": null,
                 "handle": null,
                 "publishedIn": null,
@@ -188,7 +200,13 @@
                 "aggregationlevel": "3",
                 "intendedUser": null,
                 "availability": null,
-                "vocabularies": [],
+                "vocabularies": {
+                    "vocabularyZiezo": [],
+                    "vocabularyDas": [],
+                    "vocabularyInformationLiteracy": [],
+                    "vocabularyVerpleegkunde": [],
+                    "vocabularyVaktherapie": []
+                },
                 "doi": null,
                 "handle": null,
                 "publishedIn": null,
@@ -248,7 +266,13 @@
                 "hasParts": [],
                 "partOf": [],
                 "technicalFormat": null,
-                "vocabularies": [],
+                "vocabularies": {
+                    "vocabularyZiezo": [],
+                    "vocabularyDas": [],
+                    "vocabularyInformationLiteracy": [],
+                    "vocabularyVerpleegkunde": [],
+                    "vocabularyVaktherapie": []
+                },
                 "aggregationlevel": "3",
                 "intendedUser": null,
                 "doi": null,

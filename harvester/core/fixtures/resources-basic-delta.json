@@ -1,53 +1,42 @@
 [
     {
         "model": "core.httptikaresource",
-        "pk": 50,
+        "pk": 10,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fsurfsharekit.nl%2Fobjectstore%2F182216be-31a2-43c3-b7de-e5dd355b09f7&fetcherName=http",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
-            "created_at": "2021-06-30T08:30:22.095Z",
-            "modified_at": "2021-06-30T08:30:22.095Z",
-            "purge_at": "2021-07-30T08:30:16.924Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:56.538Z",
+            "modified_at": "2023-01-12T15:29:28.962Z",
+            "purge_at": "2023-02-11T15:26:55.249Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "ca55f24ea928ab30e756ab7c12f2673b77df0898",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fsurfsharekit.nl%2Fobjectstore%2F182216be-31a2-43c3-b7de-e5dd355b09f7&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
                 ],
-                "json": {
-                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
-                },
-                "kwargs": {
-                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Wed, 30 Jun 2021 08:30:16 GMT",
+                "date": "Thu, 12 Jan 2023 15:26:56 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"dc/subject\":[\"\"],\"dc/format\":[\"application/pdf; version=1.3\"],\"pdf.docinfo/creator-tool\":[\"PowerPoint\"],\"date\":[\"2015-05-15T18:25:39Z\"],\"pdf/charsperpage\":[\"125\",\"135\",\"363\",\"182\",\"412\",\"178\",\"97\",\"94\"],\"access-permission/extract-content\":[\"true\"],\"pdf/unmappedunicodecharsperpage\":[\"0\",\"0\",\"0\",\"2\",\"0\",\"2\",\"0\",\"0\"],\"producer\":[\"Mac OS X 10.10.2 Quartz PDFContext\"],\"access-permission/can-modify\":[\"true\"],\"pdf/pdfversion\":[\"1.3\"],\"pdf/hasxmp\":[\"false\"],\"dcterms/modified\":[\"2015-05-15T18:25:39Z\"],\"pdf/hasmarkedcontent\":[\"false\"],\"mime-type\":\"text/html\",\"pdf.docinfo/modified\":[\"2015-05-15T18:25:39Z\"],\"pdf.docinfo/producer\":[\"Mac OS X 10.10.2 Quartz PDFContext\"],\"access-permission/assemble-document\":[\"true\"],\"pdf/hasxfa\":[\"false\"],\"access-permission/extract-for-accessibility\":[\"true\"],\"created\":[\"2015-05-15T18:25:39Z\"],\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.pdf.PDFParser\"],\"access-permission/fill-in-form\":[\"true\"],\"last-save-date\":[\"2015-05-15T18:25:39Z\"],\"xmptpg/npages\":[\"8\"],\"modified\":[\"2015-05-15T18:25:39Z\"],\"keywords\":[\"\"],\"last-modified\":[\"2015-05-15T18:25:39Z\"],\"meta/keyword\":[\"\"],\"meta/creation-date\":[\"2015-05-15T18:25:39Z\"],\"meta/save-date\":[\"2015-05-15T18:25:39Z\"],\"pdf.docinfo/created\":[\"2015-05-15T18:25:39Z\"],\"dcterms/created\":[\"2015-05-15T18:25:39Z\"],\"creation-date\":[\"2015-05-15T18:25:39Z\"],\"pdf/encrypted\":[\"false\"],\"content-type\":[\"application/pdf\"],\"pdf.docinfo/keywords\":[\"\"],\"access-permission/can-print\":[\"true\"],\"xmp/creatortool\":[\"PowerPoint\"],\"access-permission/can-print-degraded\":[\"true\"],\"subject\":[\"\"],\"access-permission/modify-annotations\":[\"true\"],\"text\":\"\\nEconomics – Changes on the labour market \\nInternational Business School \\nHanze University of Applied Sciences, The Netherlands \\n\\n\\n\\nLearning objective \\n\\nExplain the effect of changes in the labour market on \\nthe real wage rate and quantity of labour in hours. \\n\\n2 15/5/15 \\n\\n\\n\\nLabour market \\n\\nSupply for labour represents workers’ willingness to work at a given \\n(real) wage rate. Any factor influencing the willingness of workers, \\nexcept a change in wages, will lead to a shift of the labour supply \\ncurve. \\n \\nPossible factors: \\n\\n•  level of social benefits \\n•  migration \\n•  opportunity cost of leisure time  \\n\\n - diagram outside scope course \\n\\n3 15/5/15 \\n\\n\\n\\nEffect on diagram \\n\\nreal\\n wages  \\n \\n\\nquantity of labour in hours \\n\\nlabour market \\n\\nSL \\n\\nDL \\n\\nAssume\\t\\r  government\\n\\t\\r  reduces\\t\\r  welfare\\t\\r  benefits\\t\\r  \\n\\n⇒ more\\t\\r  incen6ve\\t\\r  \\n\\t\\r  \\t\\r  \\t\\r  \\t\\r  \\t\\r  to\\t\\r  work\\t\\r   ⇒ SL\\t\\r  shi;s\\t\\r  to\\t\\r  right\\t\\r  Wages\\n\\n\\t\\r  falls\\t\\r  \\n\\n\\n\\nLabour market \\n\\nDemand for labour represents employers / firms willingness to \\nemploy workers at a given (real) wage rate. Any factor influencing \\nthe willingness of employers to employ workers, except a change in \\nwages, will lead to a shift of the labour demand curve. \\n \\nPossible factors: \\n\\n•  demand for a product  \\n•  productivity of labour \\n•  price and productivity of machinery and technology (substitution) \\n\\n5 15/5/15 \\n\\n\\n\\nWages\\n\\t\\r  increase\\t\\r  \\n\\nEffect on diagram \\n\\nreal\\n wages  \\n \\n\\nquantity of labour in hours \\n\\nlabour market \\n\\nSL \\n\\nDL \\n\\nAssume\\t\\r  demand\\t\\r  for\\t\\r  a\\n\\t\\r  product\\t\\r  increases\\t\\r  \\n\\n⇒ DL\\t\\r  shi;s\\t\\r  to\\t\\r  right\\t\\r  \\n⇒ firms\\t\\r  increase\\n\\n\\t\\r  produc6on\\t\\r  \\n\\n\\n\\nEffect on diagram \\n\\nreal\\n wages  \\n \\n\\nquantity of labour in hours \\n\\nlabour market \\n\\nK \\n\\nDL G \\n\\nH \\n\\nB \\n\\nC \\n\\nD \\n\\nA \\n\\nE \\n\\nF \\n\\nSL \\n\\n\\n\\n8 15/5/15 \\n\\nTo be continued \\n\\nYou will learn the “Labour Market in Practice” in the\\n coming part.  \\n\\n\\n\"}"
+            "body": "[{\"cp:revision\":\"2\",\"extended-properties:AppVersion\":\"16.0000\",\"http-connection:target-ip-address\":\"20.56.15.206\",\"meta:paragraph-count\":\"1\",\"meta:word-count\":\"25\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.microsoft.ooxml.OOXMLParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"dc:creator\":\"surf\",\"extended-properties:Company\":\"\",\"dcterms:created\":\"2017-12-11T12:48:00Z\",\"meta:line-count\":\"1\",\"dcterms:modified\":\"2017-12-11T12:48:00Z\",\"http-connection:target-url\":\"https://api.surfsharekit.nl/api/v1/files/repoItemFiles/182216be-31a2-43c3-b7de-e5dd355b09f7\",\"meta:character-count\":\"142\",\"meta:character-count-with-spaces\":\"166\",\"Content-Length\":\"0\",\"http-header:content-type\":\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\",\"Content-Type\":\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\",\"http-header:status-code\":\"200\",\"extended-properties:Application\":\"Microsoft Office Word\",\"meta:last-author\":\"surf\",\"xmpTPg:NPages\":\"1\",\"resourceName\":\"/api/v1/files/repoItemFiles/182216be-31a2-43c3-b7de-e5dd355b09f7\",\"http-connection:num-redirects\":\"1\",\"extended-properties:Template\":\"Normal.dotm\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.microsoft.ooxml.OOXMLParser\"],\"extended-properties:DocSecurityString\":\"None\",\"X-TIKA:parse_time_millis\":\"284\",\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nEXERCISES 5\\n· Sing both these pentatonic scales on the same beginning tone;\\n· Figure out how to write both these pentatonic scales, beginning on the other 6 basic tones.\\n\\n\",\"meta:page-count\":\"1\",\"dc:publisher\":\"\"}]"
         }
     }
 ]

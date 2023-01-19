@@ -1,454 +1,359 @@
 [
     {
         "model": "core.httptikaresource",
-        "pk": 52,
+        "pk": 1,
         "fields": {
-            "uri": "localhost:9090/analyze",
-            "status": 404,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
-            "created_at": "2021-07-14T08:17:31.529Z",
-            "modified_at": "2021-07-14T08:17:31.529Z",
-            "purge_at": "2021-08-13T08:17:18.665Z",
+            "uri": "localhost:9998/rmeta/text?fetchKey=http%3A%2F%2Fonline.codarts.nl%2Fmod%2Fpage%2Fview.php%3Fid%3D313&fetcherName=http",
+            "status": 500,
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:55.240Z",
+            "modified_at": "2023-01-12T15:26:55.240Z",
+            "purge_at": "2023-02-11T15:26:55.211Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "6328cda321c350ff1e3b63ecc94a0cc20e59d968",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=http%3A%2F%2Fonline.codarts.nl%2Fmod%2Fpage%2Fview.php%3Fid%3D313&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "http://online.codarts.nl/mod/page/view.php?id=313"
                 ],
-                "json": {
-                    "url": "http://online.codarts.nl/mod/page/view.php?id=313"
-                },
-                "kwargs": {
-                    "url": "http://online.codarts.nl/mod/page/view.php?id=313"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Wed, 14 Jul 2021 08:17:18 GMT",
-                "content-type": "text/plain",
+                "date": "Thu, 12 Jan 2023 15:26:55 GMT",
+                "server": "Jetty(9.4.49.v20220914)",
+                "content-length": "0"
+            },
+            "body": ""
+        }
+    },
+    {
+        "model": "core.httptikaresource",
+        "pk": 2,
+        "fields": {
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fsurfsharekit.nl%2Fobjectstore%2F182216be-31a2-43c3-b7de-e5dd355b09f7&fetcherName=http",
+            "status": 404,
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:56.538Z",
+            "modified_at": "2023-01-12T15:29:28.962Z",
+            "purge_at": "2023-02-11T15:26:55.249Z",
+            "retainer_type": null,
+            "retainer_id": null,
+            "data_hash": "",
+            "request": {
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fsurfsharekit.nl%2Fobjectstore%2F182216be-31a2-43c3-b7de-e5dd355b09f7&fetcherName=http",
+                "args": [
+                    "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
+                ],
+                "data": {},
+                "kwargs": {},
+                "method": "put",
+                "headers": {
+                    "Accept": "*/*",
+                    "Connection": "keep-alive",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
+                    "Accept-Encoding": "gzip, deflate"
+                },
+                "backoff_delay": false
+            },
+            "head": {
+                "date": "Thu, 12 Jan 2023 15:26:56 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
+                "content-type": "application/json",
+                "content-encoding": "gzip",
                 "transfer-encoding": "chunked"
             },
-            "body": "Not Found"
+            "body": "[{\"cp:revision\":\"2\",\"extended-properties:AppVersion\":\"16.0000\",\"http-connection:target-ip-address\":\"20.56.15.206\",\"meta:paragraph-count\":\"1\",\"meta:word-count\":\"25\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.microsoft.ooxml.OOXMLParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"dc:creator\":\"surf\",\"extended-properties:Company\":\"\",\"dcterms:created\":\"2017-12-11T12:48:00Z\",\"meta:line-count\":\"1\",\"dcterms:modified\":\"2017-12-11T12:48:00Z\",\"http-connection:target-url\":\"https://api.surfsharekit.nl/api/v1/files/repoItemFiles/182216be-31a2-43c3-b7de-e5dd355b09f7\",\"meta:character-count\":\"142\",\"meta:character-count-with-spaces\":\"166\",\"Content-Length\":\"0\",\"http-header:content-type\":\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\",\"Content-Type\":\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\",\"http-header:status-code\":\"200\",\"extended-properties:Application\":\"Microsoft Office Word\",\"meta:last-author\":\"surf\",\"xmpTPg:NPages\":\"1\",\"resourceName\":\"/api/v1/files/repoItemFiles/182216be-31a2-43c3-b7de-e5dd355b09f7\",\"http-connection:num-redirects\":\"1\",\"extended-properties:Template\":\"Normal.dotm\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.microsoft.ooxml.OOXMLParser\"],\"extended-properties:DocSecurityString\":\"None\",\"X-TIKA:parse_time_millis\":\"284\",\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nEXERCISES 5\\n· Sing both these pentatonic scales on the same beginning tone;\\n· Figure out how to write both these pentatonic scales, beginning on the other 6 basic tones.\\n\\n\",\"meta:page-count\":\"1\",\"dc:publisher\":\"\"}]"
         }
     },
     {
         "model": "core.httptikaresource",
-        "pk": 48,
+        "pk": 3,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DZl59P5ZNX3M&fetcherName=http",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
-            "created_at": "2021-06-30T06:38:35.701Z",
-            "modified_at": "2021-06-30T06:38:35.701Z",
-            "purge_at": "2021-07-30T06:38:16.703Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:57.146Z",
+            "modified_at": "2023-01-12T15:26:57.146Z",
+            "purge_at": "2023-02-11T15:26:56.540Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "c261126adbdc9f51900e5c8e72771105bd7cb60d",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DZl59P5ZNX3M&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://www.youtube.com/watch?v=Zl59P5ZNX3M"
                 ],
-                "json": {
-                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
-                },
-                "kwargs": {
-                    "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Wed, 30 Jun 2021 06:38:16 GMT",
+                "date": "Thu, 12 Jan 2023 15:26:57 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"page-count\":[\"1\"],\"extended-properties/application\":[\"Microsoft Office Word\"],\"meta/page-count\":[\"1\"],\"character-count-with-spaces\":[\"166\"],\"meta/paragraph-count\":[\"1\"],\"date\":[\"2017-12-11T12:48:00Z\"],\"dc/creator\":[\"surf\"],\"dc/publisher\":[\"\"],\"creator\":[\"surf\"],\"meta/line-count\":[\"1\"],\"meta/last-author\":[\"surf\"],\"publisher\":[\"\"],\"paragraph-count\":[\"1\"],\"extended-properties/template\":[\"Normal.dotm\"],\"meta/word-count\":[\"25\"],\"extended-properties/docsecuritystring\":[\"None\"],\"dcterms/modified\":[\"2017-12-11T12:48:00Z\"],\"application-name\":[\"Microsoft Office Word\"],\"mime-type\":\"text/html\",\"last-author\":[\"surf\"],\"revision-number\":[\"2\"],\"word-count\":[\"25\"],\"meta/author\":[\"surf\"],\"template\":[\"Normal.dotm\"],\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.microsoft.ooxml.OOXMLParser\"],\"last-save-date\":[\"2017-12-11T12:48:00Z\"],\"xmptpg/npages\":[\"1\"],\"modified\":[\"2017-12-11T12:48:00Z\"],\"last-modified\":[\"2017-12-11T12:48:00Z\"],\"author\":[\"surf\"],\"meta/creation-date\":[\"2017-12-11T12:48:00Z\"],\"meta/character-count\":[\"142\"],\"meta/save-date\":[\"2017-12-11T12:48:00Z\"],\"dcterms/created\":[\"2017-12-11T12:48:00Z\"],\"extended-properties/appversion\":[\"16.0000\"],\"creation-date\":[\"2017-12-11T12:48:00Z\"],\"application-version\":[\"16.0000\"],\"content-type\":[\"application/vnd.openxmlformats-officedocument.wordprocessingml.document\"],\"character count\":[\"142\"],\"cp/revision\":[\"2\"],\"extended-properties/company\":[\"\"],\"meta/character-count-with-spaces\":[\"166\"],\"line-count\":[\"1\"],\"text\":\"EXERCISES 5\\n· Sing both these pentatonic scales on the same beginning tone;\\n· Figure out how to write both these pentatonic scales, beginning on the other 6 basic tones.\\n\\n\"}"
+            "body": "[{\"og:image\":\"https://i.ytimg.com/vi/Zl59P5ZNX3M/maxresdefault.jpg\",\"og:image:width\":\"1280\",\"twitter:card\":\"player\",\"http-connection:target-ip-address\":\"142.250.179.174\",\"og:site_name\":\"YouTube\",\"keywords\":\"wageningen, wageningenur\",\"twitter:url\":\"https://www.youtube.com/watch?v=Zl59P5ZNX3M\",\"twitter:app:url:ipad\":\"vnd.youtube://www.youtube.com/watch?v=Zl59P5ZNX3M&feature=applinks\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"og:description\":\"Instruction on how to use a Vortex mixer\",\"twitter:player\":\"https://www.youtube.com/embed/Zl59P5ZNX3M\",\"dc:title\":\"Using a Vortex | Wageningen UR - YouTube\",\"Content-Encoding\":\"ISO-8859-1\",\"og:video:type\":\"text/html\",\"og:video:height\":\"720\",\"robots\":\"noindex\",\"http-header:content-type\":\"text/html; charset=utf-8\",\"origin-trial\":\"AlgsH67ctYlMR3JYAxEnGfvsoFo41AMqAg6wRHHXOpWAfD54ZCfTPBclxnFT4Gc8IUX4pq6Xfo0esDuOt+WH3wIAAABteyJvcmlnaW4iOiJodHRwczovL3lvdXR1YmUuY29tOjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2ODA2NTI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ==\",\"http-header:status-code\":\"200\",\"al:ios:app_name\":\"YouTube\",\"twitter:app:id:ipad\":\"544007664\",\"resourceName\":\"apache-tika-15577089225813168641.tmp\",\"og:video:width\":\"1280\",\"http-connection:num-redirects\":\"0\",\"twitter:app:name:ipad\":\"YouTube\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nUsing a Vortex | Wageningen UR - YouTube\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nOverPersAuteursrechtContactCreatorsAdverterenOntwikkelaarsVoorwaardenPrivacyBeleid en veiligheidZo werkt YouTubeNieuwe functies testen© 2023 Google LLC\\n YouTube, een bedrijf van Google\\n\\n\",\"Content-Language\":\"nl-NL\",\"al:android:app_name\":\"YouTube\",\"twitter:app:name:iphone\":\"YouTube\",\"twitter:app:url:iphone\":\"vnd.youtube://www.youtube.com/watch?v=Zl59P5ZNX3M&feature=applinks\",\"twitter:app:id:googleplay\":\"com.google.android.youtube\",\"theme-color\":\"rgba(255, 255, 255, 0.98)\",\"al:android:package\":\"com.google.android.youtube\",\"description\":\"Instruction on how to use a Vortex mixer\",\"twitter:app:name:googleplay\":\"YouTube\",\"title\":\"Using a Vortex | Wageningen UR\",\"al:ios:url\":\"vnd.youtube://www.youtube.com/watch?v=Zl59P5ZNX3M&feature=applinks\",\"twitter:app:id:iphone\":\"544007664\",\"http-connection:target-url\":\"https://www.youtube.com/watch?v=Zl59P5ZNX3M\",\"al:ios:app_store_id\":\"544007664\",\"twitter:image\":\"https://i.ytimg.com/vi/Zl59P5ZNX3M/maxresdefault.jpg\",\"twitter:player:height\":\"720\",\"twitter:site\":\"@youtube\",\"og:video:url\":\"https://www.youtube.com/embed/Zl59P5ZNX3M\",\"Content-Length\":\"0\",\"Content-Type\":\"text/html; charset=ISO-8859-1\",\"og:type\":\"video.other\",\"twitter:title\":\"Using a Vortex | Wageningen UR\",\"og:title\":\"Using a Vortex | Wageningen UR\",\"og:image:height\":\"720\",\"al:web:url\":\"http://www.youtube.com/watch?v=Zl59P5ZNX3M&feature=applinks\",\"og:video:secure_url\":\"https://www.youtube.com/embed/Zl59P5ZNX3M\",\"og:video:tag\":[\"wageningen\",\"wageningenur\"],\"al:android:url\":\"vnd.youtube://www.youtube.com/watch?v=Zl59P5ZNX3M&feature=applinks\",\"X-UA-Compatible\":\"IE=edge\",\"fb:app_id\":\"87741124305\",\"twitter:app:url:googleplay\":\"https://www.youtube.com/watch?v=Zl59P5ZNX3M\",\"twitter:description\":\"Instruction on how to use a Vortex mixer\",\"X-TIKA:parse_time_millis\":\"179\",\"og:url\":\"https://www.youtube.com/watch?v=Zl59P5ZNX3M\",\"twitter:player:width\":\"1280\"}]"
         }
     },
     {
         "model": "core.httptikaresource",
-        "pk": 45,
+        "pk": 4,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fmaken.wikiwijs.nl%2F94812%2FMacro_meso_micro&fetcherName=http#!page-2935729",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.HttpTikaResource\"}",
-            "created_at": "2021-06-25T12:48:42.918Z",
-            "modified_at": "2021-06-25T13:17:50.067Z",
-            "purge_at": "2021-07-25T12:48:42.893Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:57.318Z",
+            "modified_at": "2023-01-12T15:26:57.318Z",
+            "purge_at": "2023-02-11T15:26:57.149Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "ff0452aafda4db627a86d6ab747a5236138bb009",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fmaken.wikiwijs.nl%2F94812%2FMacro_meso_micro&fetcherName=http#!page-2935729",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729"
                 ],
-                "json": {
-                    "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M"
-                },
-                "kwargs": {
-                    "url": "https://www.youtube.com/watch?v=Zl59P5ZNX3M"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Fri, 25 Jun 2021 12:48:42 GMT",
+                "date": "Thu, 12 Jan 2023 15:26:57 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"content-language\":[\"de\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Bevor Sie zu YouTube weitergehen\"],\"title\":[\"Bevor Sie zu YouTube weitergehen\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Anmelden\\n ein Google-Unternehmen\\nBevor Sie zu YouTube weitergehen\\nGoogle verwendet Cookies und Daten für Folgendes:\\tDienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen\\n\\tDaten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden\\n\\nWenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:\\tQualität unserer Dienste verbessern und neue Dienste entwickeln\\n\\tWerbung ausliefern und die Effektivität von Werbung messen\\n\\tPersonalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen\\n\\tPersonalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen\\n\\nDie Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist.Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools.\\n\\nAnpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nDatenschutzerklärung Nutzungsbedingungen\\n\"}"
+            "body": "[{\"http-connection:target-ip-address\":\"145.97.38.108\",\"og:site_name\":\"wikiwijs\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"description\":\"Professionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\",\"og:description\":\"Professionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\",\"http-connection:target-url\":\"https://maken.wikiwijs.nl/94812/Macro_meso_micro\",\"dc:title\":\"Didactiek van macro-meso-micro denken bij scheikunde - Wikiwijs Maken\",\"Content-Encoding\":\"UTF-8\",\"Content-Type-Hint\":\"text/html; charset=utf-8\",\"Content-Length\":\"0\",\"http-header:content-type\":\"text/html; charset=UTF-8\",\"Content-Type\":\"text/html; charset=UTF-8\",\"http-header:status-code\":\"200\",\"og:title\":\"\",\"resourceName\":\"apache-tika-2899338615578669631.tmp\",\"http-connection:num-redirects\":\"0\",\"X-UA-Compatible\":\"IE=edge\",\"fragment\":\"!\",\"viewport\":\"width=device-width, initial-scale=1.0\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:parse_time_millis\":\"22\",\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nDidactiek van macro-meso-micro denken bij scheikunde - Wikiwijs Maken\\n\\n\\n\\n  \\n    \\n    \\n      \\n                    \\n            \\n            Didactiek van macro-meso-micro denken bij scheikunde\\n        \\n\\n      \\n\\n    \\n  \\n\\n\\n\\n\\n    \\n                Didactiek van macro-meso-micro denken bij scheikunde\\n        \\n          \\n    Ga naar\\n\\n    \\n                            \\n                        \\n                            Inleiding                            \\n                        \\n                    \\n                    \\n                        \\n                            Leerdoelen                            \\n                        \\n                    \\n                    \\n                        \\n                            Opdrachten                                                                \\n                        \\n                            \\n                                \\n                                    \\t\\n                                                1: Studieopdracht conceptuele analyse\\n                                                \\n                                            \\n\\t\\n                                                2. Onderzoeksopdracht Leerlingdenkbeelden\\n                                                \\n                                            \\n\\t\\n                                                3: Schrijfopdacht instructiemateriaal mesostructuur\\n                                                \\n                                            \\n\\n\\n                                \\n\\n                            \\n                    \\n                    \\n                        \\n                            Bronnen                            \\n                        \\n                    \\n                    \\n                        \\n                            Handleiding voor de opleider                            \\n                        \\n                    \\n            \\n                \\n                    \\n                        Colofon\\n                    \\n                \\n\\n            \\n\\n        \\n        \\n            \\n                \\n            \\n            \\t                        PDF                \\n\\t                        E-book                \\n\\t\\n                                \\n                                    Voor elektronische leeromgeving\\n                                \\n                            \\n\\t\\n                        \\n                            Kopieer arrangement\\n                        \\n                    \\n\\n\\n        \\n\\n    \\n\\n\\n\\n          \\n\\n          \\n\\n  \\n  \\n\\n\\n  \\n    \\n  \\n  \\n    \\n    Inleiding\\nBeste docent of docent-in-opleiding scheikunde,\\n\\n\\nDit arrangement bevat opdrachten op het gebied van de didactiek van macro-meso-micro-denken, een belangrijk nieuw onderwerp in de scheikunde in het voortgezet onderwijs.\\n\\n\\nHet is bedoeld voor zelfstudie of kan worden ingepast in het programma van de lerarenopleiding. De opdrachten bouwen op elkaar voort.\\n\\n\\nHet materiaal is ontwikkeld in het kader van het project online-bètadidactiek en kan vrij gebruikt worden voor opleidingsdoeleinden.\\n\\n\\nIn de onderstaande video wordt aangegeven wat het onderwerp macro-meso-micro inhoudt en waarom het van belang is in het voortgezet onderwijs:\\n\\n\\nhttps://drive.google.com/file/d/0B27or32IlB2bRTJXUERzbllxTmc/view?usp=sharing\\n\\n\\n \\n\\n\\nDit arrangement heeft drie onderdelen\\n\\n1. Studieopdracht gericht op conceptuele analyse\\n\\n2. Onderzoeksopdracht gericht op leerlingdenkbeelden\\n\\n3. Ontwerpopdracht gericht op instructiemateriaal\\n\\n\\n\\n\\nDit komt overeen met de hoekpunten van de zogenaamde vakdidactische driehoek: \\n\\n\\n\\n                                    Vakdidactische driehoek\\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\nDe opdrachten kosten circa 30 uur werk. Het is aan te raden een selectie te maken.\\n\\n\\n \\n\\n\\nVeel studieplezier,\\n\\n\\nRuud Kok, lerarenopleider scheikunde, Hogeschool van Amsterdam\\n\\n\\n​Hans Poorthuis, lerarenopleider natuurkunde Hogeschool Utrecht\\n\\n\\nAstrid Bulte, vakdidacticus scheikunde Universiteit Utrecht\\n\\n\\n    \\n\\n  \\n  \\n    \\n    \\n    \\n\\n  \\n  \\n    \\n    \\n    \\n\\n  \\n  \\n    \\n    \\n    \\n\\n  \\n  \\n    \\n    \\n    \\n\\n  \\n  \\n    \\n    \\n    \\n\\n  \\n  \\n    \\n    \\n    \\n\\n  \\n\\n  Colofon\\n\\n    \\n        \\n            \\n            Het arrangement Didactiek van macro-meso-micro denken bij scheikunde is gemaakt met\\n            Wikiwijs van\\n            Kennisnet. Wikiwijs is hét onderwijsplatform waar je leermiddelen zoekt,\\n            maakt en deelt.\\n        \\n\\n\\n        \\n            \\tAuteurs\\n\\tRuudKok\\n                        \\n                            \\n                                \\n                            \\n                            Je moet eerst inloggen om feedback aan de auteur te kunnen geven.\\n                                        \\n\\tLaatst gewijzigd\\n\\t2017-09-27 14:27:55\\n\\tLicentie\\n\\t\\n                    Dit lesmateriaal is gepubliceerd onder de Creative Commons Naamsvermelding-GelijkDelen 3.0 Nederland licentie. Dit houdt in dat je onder de voorwaarde van naamsvermelding en publicatie onder dezelfde licentie vrij bent om:\\n\\n\\thet werk te delen - te kopiëren, te verspreiden en door te geven via elk medium of bestandsformaat\\n\\thet werk te bewerken - te remixen, te veranderen en afgeleide werken te maken\\n\\tvoor alle doeleinden, inclusief commerciële doeleinden.\\n\\n                        Meer informatie over de CC Naamsvermelding-GelijkDelen 3.0 Nederland licentie.\\n                        \\n                \\n\\n\\n        \\n    \\n\\n\\n\\n\\nAanvullende informatie over dit lesmateriaal\\n\\n\\n    \\n        \\n            Van dit lesmateriaal is de volgende aanvullende informatie beschikbaar:\\n        \\n\\n        \\n            \\tToelichting\\n\\tProfessionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\\n\\tLeerniveau\\n\\tWO - Bachelor;WO - Master;HBO - Master;HBO - Bachelor;                    \\n\\tLeerinhoud en doelen\\n\\tScheikunde;                    \\n\\tEindgebruiker\\n\\tleerling/student\\n\\tMoeilijkheidsgraad\\n\\tmoeilijk\\n\\tStudiebelasting\\n\\t30 uur en 0 minuten\\n\\tTrefwoorden\\n\\tcorrespondentie, didactiek, eigenschappen, macro, macro-meso-micro, meso, micro, scheikunde, structuur\\n\\n\\n        \\n\\n    \\n\\n\\n\\n    Didactiek van macro-meso-micro denken bij scheikunde\\n\\n    nl\\n\\n    RuudKok\\n    2017-09-27 14:27:55\\n\\n    Professionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\\n            \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                WO - Bachelor\\n\\n                http://purl.edustandaard.nl/begrippenkader/18656a7c-95a5-4831-8085-020d3151aceb\\n\\n            \\n            \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                WO - Master\\n\\n                http://purl.edustandaard.nl/begrippenkader/2998f2e0-449d-4911-86a2-f4cbf1a20b56\\n\\n            \\n            \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                HBO - Master\\n\\n                http://purl.edustandaard.nl/begrippenkader/de952b8b-efa5-4395-92c0-193812130c67\\n\\n            \\n            \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                HBO - Bachelor\\n\\n                http://purl.edustandaard.nl/begrippenkader/f33b30ee-3c82-4ead-bc20-4255be9ece2d\\n\\n            \\n            \\n                educationalSubject\\n\\n                OnderwijsBegrippenKader\\n\\n                Scheikunde\\n\\n                http://purl.edustandaard.nl/begrippenkader/3aab168a-9b24-4aca-b0f1-4bfb12e7c288\\n\\n            \\n        \\n            leerling/student\\n\\n        \\n        PT30H\\n        correspondentie, didactiek, eigenschappen, macro, macro-meso-micro, meso, micro, scheikunde, structuur\\n\\n\\n  \\n\\n\\n\\n          \\n\\n        \\n\\n      \\n\\n    \\n\\n  \\n    \\n      \\n\\n      \\n        \\n          \\n\\n          \\n            \\n          \\n          \\n            \\n          \\n          \\n\\n      \\n\\n    \\n\\n    \\n\\n  \\n\\n\\n  \\n\\n  \\n      \\n      \\n        Gemaakt met\\n        Wikiwijs\\n        van\\n        \\n          \\n        \\n      \\n\\n      \\t Disclaimer \\n\\t Privacy \\n\\t Cookies \\n\\t\\n          \\n            \\n              \\n            \\n          \\n\\n        \\n\\n\\n    \\n\\n  \\n\\n  \\n\\n\\n            \\n    \\n\",\"og:url\":\"https://maken.wikiwijs.nl/94812/Didactiek_van_macro_meso_micro_denken_bij_scheikunde\"}]"
         }
     },
     {
         "model": "core.httptikaresource",
-        "pk": 46,
+        "pk": 5,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fyoutu.be%2FD6_p6y3dvXw&fetcherName=http",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.HttpTikaResource\"}",
-            "created_at": "2021-06-25T12:48:42.969Z",
-            "modified_at": "2021-06-25T13:17:50.072Z",
-            "purge_at": "2021-07-25T12:48:42.920Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:57.899Z",
+            "modified_at": "2023-01-12T15:26:57.899Z",
+            "purge_at": "2023-02-11T15:26:57.329Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "066f30099235a8c0882ec8b17efccec10381e022",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fyoutu.be%2FD6_p6y3dvXw&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://youtu.be/D6_p6y3dvXw"
                 ],
-                "json": {
-                    "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729"
-                },
-                "kwargs": {
-                    "url": "https://maken.wikiwijs.nl/94812/Macro_meso_micro#!page-2935729"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Fri, 25 Jun 2021 12:48:42 GMT",
+                "date": "Thu, 12 Jan 2023 15:26:57 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"description\":[\"Professionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\"],\"og/title\":[\"\"],\"mime-type\":\"text/html\",\"fragment\":[\"!\"],\"og/description\":[\"Professionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\"],\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"content-type-hint\":[\"text/html; charset=utf-8\"],\"dc/title\":[\"Didactiek van macro-meso-micro denken bij scheikunde - Lesmateriaal - Wikiwijs\"],\"og/url\":[\"https://maken.wikiwijs.nl/94812/Didactiek_van_macro_meso_micro_denken_bij_scheikunde\"],\"title\":[\"Didactiek van macro-meso-micro denken bij scheikunde - Lesmateriaal - Wikiwijs\"],\"og/site-name\":[\"wikiwijs\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"x-ua-compatible\":[\"IE=edge\"],\"viewport\":[\"width=device-width, initial-scale=1.0\"],\"text\":\"\\n              \\n\\n  \\n    \\n    \\n      \\n        \\n                      \\n            \\n\\n                                Didactiek van macro-meso-micro denken bij scheikunde\\n\\n                  \\n\\n      \\n\\n    \\n  \\n\\n\\n\\n    \\n    \\n      \\n                  Didactiek van macro-meso-micro denken bij scheikunde\\n\\n                \\n          \\n            \\n\\n    Ga naar\\n\\n    \\n\\n        \\n        \\n                                                                                \\n                        \\n                            \\n                                Inleiding\\n                                                            \\n                        \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Leerdoelen\\n                                                            \\n                        \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Opdrachten\\n                                                                    \\n                                                            \\n                        \\n\\n                                                    \\n                                \\n                                    \\t\\n                                                \\n                                                    1: Studieopdracht conceptuele analyse\\n                                                \\n                                            \\n\\t\\n                                                \\n                                                    2. Onderzoeksopdracht Leerlingdenkbeelden\\n                                                \\n                                            \\n\\t\\n                                                \\n                                                    3: Schrijfopdacht instructiemateriaal mesostructuur\\n                                                \\n                                            \\n\\n\\n                                \\n\\n                            \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Bronnen\\n                                                            \\n                        \\n\\n                                            \\n\\n                                                                                    \\n                        \\n                            \\n                                Handleiding voor de opleider\\n                                                            \\n                        \\n\\n                                            \\n\\n                                        \\n                \\n                    \\n                        Colofon\\n                    \\n                \\n\\n            \\n\\n        \\n\\n                \\n            \\n                \\n            \\n            \\t\\n                                                                        PDF\\n                                                            \\n\\t\\n                                                                        E-book\\n                                                            \\n\\t\\n                                \\n                                    Voor elektronische leeromgeving\\n                                \\n                            \\n\\t\\n                        \\n                            Kopieer arrangement\\n                        \\n                    \\n\\n\\n        \\n\\n    \\n\\n\\n\\n          \\n\\n          \\n            \\n\\n\\n    \\n    \\n  \\n\\n\\n  \\n    \\n  \\n\\n\\n    \\n    \\n    \\n      Inleiding\\nBeste docent of docent-in-opleiding scheikunde,\\n\\n\\nDit arrangement bevat opdrachten op het gebied van de didactiek van macro-meso-micro-denken, een belangrijk nieuw onderwerp in de scheikunde in het voortgezet onderwijs.\\n\\n\\nHet is bedoeld voor zelfstudie of kan worden ingepast in het programma van de lerarenopleiding. De opdrachten bouwen op elkaar voort.\\n\\n\\nHet materiaal is ontwikkeld in het kader van het project online-bètadidactiek en kan vrij gebruikt worden voor opleidingsdoeleinden.\\n\\n\\nIn de onderstaande video wordt aangegeven wat het onderwerp macro-meso-micro inhoudt en waarom het van belang is in het voortgezet onderwijs:\\n\\n\\nhttps://drive.google.com/file/d/0B27or32IlB2bRTJXUERzbllxTmc/view?usp=sharing\\n\\n\\n \\n\\n\\nDit arrangement heeft drie onderdelen\\n\\n1. Studieopdracht gericht op conceptuele analyse\\n\\n2. Onderzoeksopdracht gericht op leerlingdenkbeelden\\n\\n3. Ontwerpopdracht gericht op instructiemateriaal\\n\\n\\n\\n\\nDit komt overeen met de hoekpunten van de zogenaamde vakdidactische driehoek: \\n\\n\\n\\n                                    Vakdidactische driehoek\\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\n \\n\\n\\nDe opdrachten kosten circa 30 uur werk. Het is aan te raden een selectie te maken.\\n\\n\\n \\n\\n\\nVeel studieplezier,\\n\\n\\nRuud Kok, lerarenopleider scheikunde, Hogeschool van Amsterdam\\n\\n\\n​Hans Poorthuis, lerarenopleider natuurkunde Hogeschool Utrecht\\n\\n\\nAstrid Bulte, vakdidacticus scheikunde Universiteit Utrecht\\n\\n\\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n    \\n    \\n    \\n      \\n    \\n\\n  \\n\\n  \\n  \\n    Colofon\\n\\n\\n          \\n    \\n        \\n        Het arrangement Didactiek van macro-meso-micro denken bij scheikunde is gemaakt met\\n        Wikiwijs van\\n        Kennisnet. Wikiwijs is hét onderwijsplatform waar je leermiddelen zoekt,\\n        maakt en deelt.\\n    \\n\\n     \\n    \\tAuteurs\\n\\t\\n                    \\n               Ruud  Kok\\n            \\n                            ; \\n                Theo van den Bogaart\\n                            ; \\n                Astrid  Bulte\\n                            ; \\n                Hans Poorthuis\\n                          \\n\\tLaatst gewijzigd\\n\\t2017-09-27 14:27:55\\n\\tLicentie\\n\\t\\n          \\n          Dit lesmateriaal is gepubliceerd onder de Creative Commons Naamsvermelding-GelijkDelen 3.0 Nederland licentie. Dit houdt in dat je onder de voorwaarde van naamsvermelding en publicatie onder dezelfde licentie vrij bent om:\\n\\n\\thet werk te delen - te kopiëren, te verspreiden en door te geven via elk medium of bestandsformaat\\n\\thet werk te bewerken - te remixen, te veranderen en afgeleide werken te maken\\n\\tvoor alle doeleinden, inclusief commerciële doeleinden.\\n\\n\\n                        Meer informatie over de \\n               CC Naamsvermelding-GelijkDelen 3.0 Nederland licentie.\\n              \\n\\n                \\n\\n\\n  \\n\\n\\n    \\n\\n\\n\\n\\nAanvullende informatie over dit lesmateriaal\\n\\n\\n    \\n        \\n            Van dit lesmateriaal is de volgende aanvullende informatie beschikbaar:\\n        \\n\\n        \\n            \\tToelichting\\n\\tProfessionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\\n\\tLeerniveau\\n\\t\\n                                            WO - Bachelor;\\n                                            WO - Master;\\n                                            HBO - Master;\\n                                            HBO - Bachelor;\\n                                    \\n\\tLeerinhoud en doelen\\n\\t\\n                                            Scheikunde;\\n                                    \\n\\tEindgebruiker\\n\\tleerling/student\\n\\tMoeilijkheidsgraad\\n\\tmoeilijk\\n\\tStudiebelasting\\n\\t30 uur en 0 minuten\\n\\tTrefwoorden\\n\\tcorrespondentie, didactiek, eigenschappen, macro, macro-meso-micro, meso, micro, scheikunde, structuur\\n\\n\\n        \\n\\n    \\n\\n\\n\\n\\n\\n\\n\\n\\n    Didactiek van macro-meso-micro denken bij scheikunde\\n\\n    nl\\n\\n    Ruud Kok\\n\\n        2017-09-27 14:27:55\\n\\n    Professionaliseringsmodule voor leraren. Dit project is uitgevoerd in het kader van de stimuleringsregeling Open en online onderwijs 2016 van het ministerie van OCW en SURF. Samenstellers: Ruud Kok (HvA), Astrid Bulte (UU) en Hans Poorthuis (HU).\\n\\n                        \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                WO - Bachelor\\n\\n                http://purl.edustandaard.nl/begrippenkader/18656a7c-95a5-4831-8085-020d3151aceb\\n\\n            \\n\\n                    \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                WO - Master\\n\\n                http://purl.edustandaard.nl/begrippenkader/2998f2e0-449d-4911-86a2-f4cbf1a20b56\\n\\n            \\n\\n                    \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                HBO - Master\\n\\n                http://purl.edustandaard.nl/begrippenkader/de952b8b-efa5-4395-92c0-193812130c67\\n\\n            \\n\\n                    \\n                educationLevel\\n\\n                OnderwijsBegrippenKader\\n\\n                HBO - Bachelor\\n\\n                http://purl.edustandaard.nl/begrippenkader/f33b30ee-3c82-4ead-bc20-4255be9ece2d\\n\\n            \\n\\n                                    \\n                educationalSubject\\n\\n                OnderwijsBegrippenKader\\n\\n                Scheikunde\\n\\n                http://purl.edustandaard.nl/begrippenkader/3aab168a-9b24-4aca-b0f1-4bfb12e7c288\\n\\n            \\n\\n                        \\n            leerling/student\\n\\n        \\n\\n                PT30H\\n\\n                correspondentie, didactiek, eigenschappen, macro, macro-meso-micro, meso, micro, scheikunde, structuur\\n\\n    \\n\\n  \\n\\n\\n\\n          \\n\\n        \\n\\n      \\n\\n    \\n\\n\\n    \\n  \\n    \\n      \\n\\n      \\n        \\n          \\n\\n          \\n            \\n          \\n          \\n            \\n          \\n          \\n\\n      \\n\\n    \\n\\n    \\n\\n  \\n\\n\\n\\n  \\n\\n  \\n  \\n      \\n      \\n        Gemaakt met\\n        Wikiwijs\\n        van\\n        \\n          \\n        \\n      \\n\\n      \\t Disclaimer \\n\\t Privacy \\n\\t Cookies \\n\\t\\n          \\n            \\n              \\n            \\n          \\n\\n        \\n\\n\\n    \\n\\n  \\n\\n  \\n\\n\\n                            \\n                    \\n    \\n  \\n\"}"
+            "body": "[{\"og:image\":\"https://i.ytimg.com/vi/D6_p6y3dvXw/hqdefault.jpg\",\"og:image:width\":\"480\",\"twitter:card\":\"player\",\"http-connection:target-ip-address\":\"142.250.179.174\",\"og:site_name\":\"YouTube\",\"keywords\":\"video, delen, cameratelefoon, videotelefoon, gratis, uploaden\",\"twitter:url\":\"https://www.youtube.com/watch?v=D6_p6y3dvXw\",\"twitter:app:url:ipad\":\"vnd.youtube://www.youtube.com/watch?v=D6_p6y3dvXw&feature=youtu.be&feature=applinks\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"og:description\":\"\",\"twitter:player\":\"https://www.youtube.com/embed/D6_p6y3dvXw\",\"dc:title\":\"Trailer - YouTube\",\"Content-Encoding\":\"ISO-8859-1\",\"og:video:type\":\"text/html\",\"og:video:height\":\"360\",\"http-header:content-type\":\"text/html; charset=utf-8\",\"origin-trial\":\"AlgsH67ctYlMR3JYAxEnGfvsoFo41AMqAg6wRHHXOpWAfD54ZCfTPBclxnFT4Gc8IUX4pq6Xfo0esDuOt+WH3wIAAABteyJvcmlnaW4iOiJodHRwczovL3lvdXR1YmUuY29tOjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2ODA2NTI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ==\",\"http-header:status-code\":\"200\",\"al:ios:app_name\":\"YouTube\",\"twitter:app:id:ipad\":\"544007664\",\"resourceName\":\"/watch?v=D6_p6y3dvXw&feature=youtu.be\",\"og:video:width\":\"640\",\"http-connection:num-redirects\":\"1\",\"twitter:app:name:ipad\":\"YouTube\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nTrailer - YouTube\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nOverPersAuteursrechtContactCreatorsAdverterenOntwikkelaarsVoorwaardenPrivacyBeleid en veiligheidZo werkt YouTubeNieuwe functies testen© 2023 Google LLC\\n YouTube, een bedrijf van Google\\n\\n\",\"Content-Language\":\"nl-NL\",\"al:android:app_name\":\"YouTube\",\"twitter:app:name:iphone\":\"YouTube\",\"twitter:app:url:iphone\":\"vnd.youtube://www.youtube.com/watch?v=D6_p6y3dvXw&feature=youtu.be&feature=applinks\",\"twitter:app:id:googleplay\":\"com.google.android.youtube\",\"theme-color\":\"rgba(255, 255, 255, 0.98)\",\"al:android:package\":\"com.google.android.youtube\",\"description\":\"\",\"twitter:app:name:googleplay\":\"YouTube\",\"title\":\"Trailer\",\"al:ios:url\":\"vnd.youtube://www.youtube.com/watch?v=D6_p6y3dvXw&feature=youtu.be&feature=applinks\",\"twitter:app:id:iphone\":\"544007664\",\"http-connection:target-url\":\"https://www.youtube.com/watch?v=D6_p6y3dvXw&feature=youtu.be\",\"al:ios:app_store_id\":\"544007664\",\"twitter:image\":\"https://i.ytimg.com/vi/D6_p6y3dvXw/hqdefault.jpg\",\"twitter:player:height\":\"360\",\"twitter:site\":\"@youtube\",\"og:video:url\":\"https://www.youtube.com/embed/D6_p6y3dvXw\",\"Content-Length\":\"0\",\"Content-Type\":\"text/html; charset=ISO-8859-1\",\"og:type\":\"video.other\",\"twitter:title\":\"Trailer\",\"og:title\":\"Trailer\",\"og:image:height\":\"360\",\"al:web:url\":\"http://www.youtube.com/watch?v=D6_p6y3dvXw&feature=youtu.be&feature=applinks\",\"og:video:secure_url\":\"https://www.youtube.com/embed/D6_p6y3dvXw\",\"al:android:url\":\"vnd.youtube://www.youtube.com/watch?v=D6_p6y3dvXw&feature=youtu.be&feature=applinks\",\"X-UA-Compatible\":\"IE=edge\",\"fb:app_id\":\"87741124305\",\"twitter:app:url:googleplay\":\"https://www.youtube.com/watch?v=D6_p6y3dvXw\",\"twitter:description\":\"\",\"X-TIKA:parse_time_millis\":\"92\",\"og:url\":\"https://www.youtube.com/watch?v=D6_p6y3dvXw\",\"twitter:player:width\":\"640\"}]"
         }
     },
     {
         "model": "core.httptikaresource",
-        "pk": 49,
+        "pk": 6,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DwVxZDVriTZc&fetcherName=http",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
-            "created_at": "2021-06-30T07:35:40.260Z",
-            "modified_at": "2021-06-30T07:35:40.260Z",
-            "purge_at": "2021-07-30T07:35:32.295Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:58.453Z",
+            "modified_at": "2023-01-12T15:26:58.453Z",
+            "purge_at": "2023-02-11T15:26:57.900Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "a73d8e845c1a084ab3f6b52104a2474e620814b9",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DwVxZDVriTZc&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://www.youtube.com/watch?v=wVxZDVriTZc"
                 ],
-                "json": {
-                    "url": "https://youtu.be/D6_p6y3dvXw"
-                },
-                "kwargs": {
-                    "url": "https://youtu.be/D6_p6y3dvXw"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Wed, 30 Jun 2021 07:35:32 GMT",
+                "date": "Thu, 12 Jan 2023 15:26:58 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"content-language\":[\"nl\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Voordat je verdergaat naar YouTube\"],\"title\":[\"Voordat je verdergaat naar YouTube\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Inloggen\\n een bedrijf van Google\\nVoordat je verdergaat naar YouTube\\nGoogle gebruikt cookies en gegevens voor het volgende:\\tServices leveren en onderhouden (zoals uitval bijhouden en beschermen tegen spam, fraude en misbruik).\\n\\tBetrokkenheid van doelgroepen en sitestatistieken meten om inzicht te krijgen in hoe onze services worden gebruikt.\\n\\nAls je akkoord gaat, gebruiken we cookies en gegevens ook voor het volgende:\\tDe kwaliteit van onze services verbeteren en nieuwe services ontwikkelen.\\n\\tAdvertenties laten zien en de effectiviteit ervan meten.\\n\\tGepersonaliseerde content laten zien (afhankelijk van je instellingen).\\n\\tGepersonaliseerde of algemene advertenties laten zien (afhankelijk van je instellingen) op Google en het web.\\n\\nVoor niet-gepersonaliseerde content en advertenties kan wat je te zien krijgt, worden beïnvloed door factoren zoals de content die je op dat moment bekijkt en je locatie (voor advertenties wordt je algemene locatie gebruikt). Gepersonaliseerde content en advertenties kunnen ook worden gebaseerd op die factoren maar ook op je activiteit zoals Google-zoekopdrachten en de video's die je bekijkt op YouTube. Gepersonaliseerde content en advertenties zijn bijvoorbeeld relevantere resultaten en aanbevelingen, een aangepaste YouTube-homepage en advertenties die op je interesses zijn afgestemd.Klik op Aanpassen om de opties te bekijken, waaronder beheermogelijkheden om het gebruik van cookies voor personalisatie te weigeren, en informatie over browseropties waarmee je sommige of alle cookies kunt weigeren voor ander gebruik. Je kunt ook op elk moment naar g.co/privacytools gaan.\\n\\nAanpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nPrivacybeleid Servicevoorwaarden\\n\"}"
+            "body": "[{\"og:image\":\"https://i.ytimg.com/vi/wVxZDVriTZc/maxresdefault.jpg\",\"og:image:width\":\"1280\",\"twitter:card\":\"player\",\"http-connection:target-ip-address\":\"142.250.179.174\",\"og:site_name\":\"YouTube\",\"keywords\":\"video, delen, cameratelefoon, videotelefoon, gratis, uploaden\",\"twitter:url\":\"https://www.youtube.com/watch?v=wVxZDVriTZc\",\"twitter:app:url:ipad\":\"vnd.youtube://www.youtube.com/watch?v=wVxZDVriTZc&feature=applinks\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"og:description\":\"After watching the video, please note:The course structure of the YouTube version of this big history course is a bit different than outlined in this video s...\",\"twitter:player\":\"https://www.youtube.com/embed/wVxZDVriTZc\",\"dc:title\":\"How can we summarize 13.8 billion years in one brief course? - YouTube\",\"Content-Encoding\":\"ISO-8859-1\",\"og:video:type\":\"text/html\",\"og:video:height\":\"720\",\"http-header:content-type\":\"text/html; charset=utf-8\",\"origin-trial\":\"AlgsH67ctYlMR3JYAxEnGfvsoFo41AMqAg6wRHHXOpWAfD54ZCfTPBclxnFT4Gc8IUX4pq6Xfo0esDuOt+WH3wIAAABteyJvcmlnaW4iOiJodHRwczovL3lvdXR1YmUuY29tOjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2ODA2NTI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ==\",\"http-header:status-code\":\"200\",\"al:ios:app_name\":\"YouTube\",\"twitter:app:id:ipad\":\"544007664\",\"resourceName\":\"apache-tika-6000788819376530725.tmp\",\"og:video:width\":\"1280\",\"http-connection:num-redirects\":\"0\",\"twitter:app:name:ipad\":\"YouTube\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nHow can we summarize 13.8 billion years in one brief course? - YouTube\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nOverPersAuteursrechtContactCreatorsAdverterenOntwikkelaarsVoorwaardenPrivacyBeleid en veiligheidZo werkt YouTubeNieuwe functies testen© 2023 Google LLC\\n YouTube, een bedrijf van Google\\n\\n\",\"Content-Language\":\"nl-NL\",\"al:android:app_name\":\"YouTube\",\"twitter:app:name:iphone\":\"YouTube\",\"twitter:app:url:iphone\":\"vnd.youtube://www.youtube.com/watch?v=wVxZDVriTZc&feature=applinks\",\"twitter:app:id:googleplay\":\"com.google.android.youtube\",\"theme-color\":\"rgba(255, 255, 255, 0.98)\",\"al:android:package\":\"com.google.android.youtube\",\"description\":\"After watching the video, please note:The course structure of the YouTube version of this big history course is a bit different than outlined in this video s...\",\"twitter:app:name:googleplay\":\"YouTube\",\"title\":\"How can we summarize 13.8 billion years in one brief course?\",\"al:ios:url\":\"vnd.youtube://www.youtube.com/watch?v=wVxZDVriTZc&feature=applinks\",\"twitter:app:id:iphone\":\"544007664\",\"http-connection:target-url\":\"https://www.youtube.com/watch?v=wVxZDVriTZc\",\"al:ios:app_store_id\":\"544007664\",\"twitter:image\":\"https://i.ytimg.com/vi/wVxZDVriTZc/maxresdefault.jpg\",\"twitter:player:height\":\"720\",\"twitter:site\":\"@youtube\",\"og:video:url\":\"https://www.youtube.com/embed/wVxZDVriTZc\",\"Content-Length\":\"0\",\"Content-Type\":\"text/html; charset=ISO-8859-1\",\"og:type\":\"video.other\",\"twitter:title\":\"How can we summarize 13.8 billion years in one brief course?\",\"og:title\":\"How can we summarize 13.8 billion years in one brief course?\",\"og:image:height\":\"720\",\"al:web:url\":\"http://www.youtube.com/watch?v=wVxZDVriTZc&feature=applinks\",\"og:video:secure_url\":\"https://www.youtube.com/embed/wVxZDVriTZc\",\"al:android:url\":\"vnd.youtube://www.youtube.com/watch?v=wVxZDVriTZc&feature=applinks\",\"X-UA-Compatible\":\"IE=edge\",\"fb:app_id\":\"87741124305\",\"twitter:app:url:googleplay\":\"https://www.youtube.com/watch?v=wVxZDVriTZc\",\"twitter:description\":\"After watching the video, please note:The course structure of the YouTube version of this big history course is a bit different than outlined in this video s...\",\"X-TIKA:parse_time_millis\":\"61\",\"og:url\":\"https://www.youtube.com/watch?v=wVxZDVriTZc\",\"twitter:player:width\":\"1280\"}]"
         }
     },
     {
         "model": "core.httptikaresource",
-        "pk": 43,
+        "pk": 7,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DHx0kUX7MZ7g&fetcherName=http",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.HttpTikaResource\"}",
-            "created_at": "2021-06-25T12:48:42.868Z",
-            "modified_at": "2021-06-25T13:17:50.049Z",
-            "purge_at": "2021-07-25T12:48:42.841Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:58.950Z",
+            "modified_at": "2023-01-12T15:26:58.950Z",
+            "purge_at": "2023-02-11T15:26:58.464Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "e1e2b7834e1b7dd8d690b3018d694ee969be0bbd",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DHx0kUX7MZ7g&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://www.youtube.com/watch?v=Hx0kUX7MZ7g"
                 ],
-                "json": {
-                    "url": "https://www.youtube.com/watch?v=wVxZDVriTZc"
-                },
-                "kwargs": {
-                    "url": "https://www.youtube.com/watch?v=wVxZDVriTZc"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Fri, 25 Jun 2021 12:48:42 GMT",
+                "date": "Thu, 12 Jan 2023 15:26:58 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"content-language\":[\"de\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Bevor Sie zu YouTube weitergehen\"],\"title\":[\"Bevor Sie zu YouTube weitergehen\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Anmelden\\n ein Google-Unternehmen\\nBevor Sie zu YouTube weitergehen\\nGoogle verwendet Cookies und Daten für Folgendes:\\tDienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen\\n\\tDaten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden\\n\\nWenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:\\tQualität unserer Dienste verbessern und neue Dienste entwickeln\\n\\tWerbung ausliefern und die Effektivität von Werbung messen\\n\\tPersonalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen\\n\\tPersonalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen\\n\\nDie Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist.Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools.\\n\\nAnpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nDatenschutzerklärung Nutzungsbedingungen\\n\"}"
+            "body": "[{\"og:image\":\"https://i.ytimg.com/vi/Hx0kUX7MZ7g/maxresdefault.jpg\",\"og:image:width\":\"1280\",\"twitter:card\":\"player\",\"http-connection:target-ip-address\":\"142.250.179.174\",\"og:site_name\":\"YouTube\",\"keywords\":\"video, delen, cameratelefoon, videotelefoon, gratis, uploaden\",\"twitter:url\":\"https://www.youtube.com/watch?v=Hx0kUX7MZ7g\",\"twitter:app:url:ipad\":\"vnd.youtube://www.youtube.com/watch?v=Hx0kUX7MZ7g&feature=applinks\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"og:description\":\"\",\"twitter:player\":\"https://www.youtube.com/embed/Hx0kUX7MZ7g\",\"dc:title\":\"How big is big history? - YouTube\",\"Content-Encoding\":\"ISO-8859-1\",\"og:video:type\":\"text/html\",\"og:video:height\":\"720\",\"http-header:content-type\":\"text/html; charset=utf-8\",\"origin-trial\":\"AlgsH67ctYlMR3JYAxEnGfvsoFo41AMqAg6wRHHXOpWAfD54ZCfTPBclxnFT4Gc8IUX4pq6Xfo0esDuOt+WH3wIAAABteyJvcmlnaW4iOiJodHRwczovL3lvdXR1YmUuY29tOjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2ODA2NTI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ==\",\"http-header:status-code\":\"200\",\"al:ios:app_name\":\"YouTube\",\"twitter:app:id:ipad\":\"544007664\",\"resourceName\":\"apache-tika-11532554312965290213.tmp\",\"og:video:width\":\"1280\",\"http-connection:num-redirects\":\"0\",\"twitter:app:name:ipad\":\"YouTube\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nHow big is big history? - YouTube\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nOverPersAuteursrechtContactCreatorsAdverterenOntwikkelaarsVoorwaardenPrivacyBeleid en veiligheidZo werkt YouTubeNieuwe functies testen© 2023 Google LLC\\n YouTube, een bedrijf van Google\\n\\n\",\"Content-Language\":\"nl-NL\",\"al:android:app_name\":\"YouTube\",\"twitter:app:name:iphone\":\"YouTube\",\"twitter:app:url:iphone\":\"vnd.youtube://www.youtube.com/watch?v=Hx0kUX7MZ7g&feature=applinks\",\"twitter:app:id:googleplay\":\"com.google.android.youtube\",\"theme-color\":\"rgba(255, 255, 255, 0.98)\",\"al:android:package\":\"com.google.android.youtube\",\"description\":\"\",\"twitter:app:name:googleplay\":\"YouTube\",\"title\":\"How big is big history?\",\"al:ios:url\":\"vnd.youtube://www.youtube.com/watch?v=Hx0kUX7MZ7g&feature=applinks\",\"twitter:app:id:iphone\":\"544007664\",\"http-connection:target-url\":\"https://www.youtube.com/watch?v=Hx0kUX7MZ7g\",\"al:ios:app_store_id\":\"544007664\",\"twitter:image\":\"https://i.ytimg.com/vi/Hx0kUX7MZ7g/maxresdefault.jpg\",\"twitter:player:height\":\"720\",\"twitter:site\":\"@youtube\",\"og:video:url\":\"https://www.youtube.com/embed/Hx0kUX7MZ7g\",\"Content-Length\":\"0\",\"Content-Type\":\"text/html; charset=ISO-8859-1\",\"og:type\":\"video.other\",\"twitter:title\":\"How big is big history?\",\"og:title\":\"How big is big history?\",\"og:image:height\":\"720\",\"al:web:url\":\"http://www.youtube.com/watch?v=Hx0kUX7MZ7g&feature=applinks\",\"og:video:secure_url\":\"https://www.youtube.com/embed/Hx0kUX7MZ7g\",\"al:android:url\":\"vnd.youtube://www.youtube.com/watch?v=Hx0kUX7MZ7g&feature=applinks\",\"X-UA-Compatible\":\"IE=edge\",\"fb:app_id\":\"87741124305\",\"twitter:app:url:googleplay\":\"https://www.youtube.com/watch?v=Hx0kUX7MZ7g\",\"twitter:description\":\"\",\"X-TIKA:parse_time_millis\":\"58\",\"og:url\":\"https://www.youtube.com/watch?v=Hx0kUX7MZ7g\",\"twitter:player:width\":\"1280\"}]"
         }
     },
     {
         "model": "core.httptikaresource",
-        "pk": 42,
+        "pk": 8,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DD4w-EClY664&fetcherName=http&t=8s",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.HttpTikaResource\"}",
-            "created_at": "2021-06-25T12:48:42.840Z",
-            "modified_at": "2021-06-30T08:20:19.811Z",
-            "purge_at": "2021-07-25T12:48:42.812Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:26:59.537Z",
+            "modified_at": "2023-01-12T15:26:59.537Z",
+            "purge_at": "2023-02-11T15:26:58.953Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "2d7b29ff873f0c293523c77b7f5c2662a10ca176",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DD4w-EClY664&t=8s&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://www.youtube.com/watch?v=D4w-EClY664&t=8s"
                 ],
-                "json": {
-                    "url": "https://www.youtube.com/watch?v=Hx0kUX7MZ7g"
-                },
-                "kwargs": {
-                    "url": "https://www.youtube.com/watch?v=Hx0kUX7MZ7g"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Fri, 25 Jun 2021 12:48:42 GMT",
+                "date": "Thu, 12 Jan 2023 15:26:59 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"content-language\":[\"de\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Bevor Sie zu YouTube weitergehen\"],\"title\":[\"Bevor Sie zu YouTube weitergehen\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Anmelden\\n ein Google-Unternehmen\\nBevor Sie zu YouTube weitergehen\\nGoogle verwendet Cookies und Daten für Folgendes:\\tDienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen\\n\\tDaten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden\\n\\nWenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:\\tQualität unserer Dienste verbessern und neue Dienste entwickeln\\n\\tWerbung ausliefern und die Effektivität von Werbung messen\\n\\tPersonalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen\\n\\tPersonalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen\\n\\nDie Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist.Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools.\\n\\nAnpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nDatenschutzerklärung Nutzungsbedingungen\\n\"}"
+            "body": "[{\"og:image\":\"https://i.ytimg.com/vi/D4w-EClY664/maxresdefault.jpg\",\"og:image:width\":\"1280\",\"twitter:card\":\"player\",\"http-connection:target-ip-address\":\"142.250.179.174\",\"og:site_name\":\"YouTube\",\"keywords\":\"video, delen, cameratelefoon, videotelefoon, gratis, uploaden\",\"twitter:url\":\"https://www.youtube.com/watch?v=D4w-EClY664\",\"twitter:app:url:ipad\":\"vnd.youtube://www.youtube.com/watch?v=D4w-EClY664&feature=applinks\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"og:description\":\"In the YouTube version of this course, it is not possible to complete and submit a peer reviewed little big history assignment. But if you would like to give...\",\"twitter:player\":\"https://www.youtube.com/embed/D4w-EClY664\",\"dc:title\":\"What are little big histories? - YouTube\",\"Content-Encoding\":\"ISO-8859-1\",\"og:video:type\":\"text/html\",\"og:video:height\":\"720\",\"http-header:content-type\":\"text/html; charset=utf-8\",\"origin-trial\":\"AlgsH67ctYlMR3JYAxEnGfvsoFo41AMqAg6wRHHXOpWAfD54ZCfTPBclxnFT4Gc8IUX4pq6Xfo0esDuOt+WH3wIAAABteyJvcmlnaW4iOiJodHRwczovL3lvdXR1YmUuY29tOjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2ODA2NTI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ==\",\"http-header:status-code\":\"200\",\"al:ios:app_name\":\"YouTube\",\"twitter:app:id:ipad\":\"544007664\",\"resourceName\":\"apache-tika-10397627336921154474.tmp\",\"og:video:width\":\"1280\",\"http-connection:num-redirects\":\"0\",\"twitter:app:name:ipad\":\"YouTube\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nWhat are little big histories? - YouTube\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nOverPersAuteursrechtContactCreatorsAdverterenOntwikkelaarsVoorwaardenPrivacyBeleid en veiligheidZo werkt YouTubeNieuwe functies testen© 2023 Google LLC\\n YouTube, een bedrijf van Google\\n\\n\",\"Content-Language\":\"nl-NL\",\"al:android:app_name\":\"YouTube\",\"twitter:app:name:iphone\":\"YouTube\",\"twitter:app:url:iphone\":\"vnd.youtube://www.youtube.com/watch?v=D4w-EClY664&feature=applinks\",\"twitter:app:id:googleplay\":\"com.google.android.youtube\",\"theme-color\":\"rgba(255, 255, 255, 0.98)\",\"al:android:package\":\"com.google.android.youtube\",\"description\":\"In the YouTube version of this course, it is not possible to complete and submit a peer reviewed little big history assignment. But if you would like to give...\",\"twitter:app:name:googleplay\":\"YouTube\",\"title\":\"What are little big histories?\",\"al:ios:url\":\"vnd.youtube://www.youtube.com/watch?v=D4w-EClY664&feature=applinks\",\"twitter:app:id:iphone\":\"544007664\",\"http-connection:target-url\":\"https://www.youtube.com/watch?v=D4w-EClY664\",\"al:ios:app_store_id\":\"544007664\",\"twitter:image\":\"https://i.ytimg.com/vi/D4w-EClY664/maxresdefault.jpg\",\"twitter:player:height\":\"720\",\"twitter:site\":\"@youtube\",\"og:video:url\":\"https://www.youtube.com/embed/D4w-EClY664\",\"Content-Length\":\"0\",\"Content-Type\":\"text/html; charset=ISO-8859-1\",\"og:type\":\"video.other\",\"twitter:title\":\"What are little big histories?\",\"og:title\":\"What are little big histories?\",\"og:image:height\":\"720\",\"al:web:url\":\"http://www.youtube.com/watch?v=D4w-EClY664&feature=applinks\",\"og:video:secure_url\":\"https://www.youtube.com/embed/D4w-EClY664\",\"al:android:url\":\"vnd.youtube://www.youtube.com/watch?v=D4w-EClY664&feature=applinks\",\"X-UA-Compatible\":\"IE=edge\",\"fb:app_id\":\"87741124305\",\"twitter:app:url:googleplay\":\"https://www.youtube.com/watch?v=D4w-EClY664\",\"twitter:description\":\"In the YouTube version of this course, it is not possible to complete and submit a peer reviewed little big history assignment. But if you would like to give...\",\"X-TIKA:parse_time_millis\":\"31\",\"og:url\":\"https://www.youtube.com/watch?v=D4w-EClY664\",\"twitter:player:width\":\"1280\"}]"
         }
     },
     {
         "model": "core.httptikaresource",
-        "pk": 41,
+        "pk": 9,
         "fields": {
-            "uri": "localhost:9090/analyze",
+            "uri": "localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D21v9IYUcruI&fetcherName=http",
             "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"], \"resource\": \"core.HttpTikaResource\"}",
-            "created_at": "2021-06-25T12:48:42.810Z",
-            "modified_at": "2021-06-25T13:17:50.030Z",
-            "purge_at": "2021-07-25T12:48:42.323Z",
+            "config": "{\"_namespace\": \"global\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
+            "created_at": "2023-01-12T15:27:00.148Z",
+            "modified_at": "2023-01-12T15:27:00.148Z",
+            "purge_at": "2023-02-11T15:26:59.548Z",
             "retainer_type": null,
             "retainer_id": null,
-            "data_hash": "0e1b540cfb1458601c18ecfdbd8dee6f90f34973",
+            "data_hash": "",
             "request": {
-                "url": "http://localhost:9090/analyze",
+                "url": "http://localhost:9998/rmeta/text?fetchKey=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D21v9IYUcruI&fetcherName=http",
                 "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
+                    "https://www.youtube.com/watch?v=21v9IYUcruI"
                 ],
-                "json": {
-                    "url": "https://www.youtube.com/watch?v=D4w-EClY664&t=8s"
-                },
-                "kwargs": {
-                    "url": "https://www.youtube.com/watch?v=D4w-EClY664&t=8s"
-                },
-                "method": "post",
+                "data": {},
+                "kwargs": {},
+                "method": "put",
                 "headers": {
                     "Accept": "*/*",
                     "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
+                    "User-Agent": "DataGrowth (v0.18.2); python-requests/2.27.1",
                     "Accept-Encoding": "gzip, deflate"
                 },
                 "backoff_delay": false
             },
             "head": {
-                "date": "Fri, 25 Jun 2021 12:48:42 GMT",
+                "date": "Thu, 12 Jan 2023 15:27:00 GMT",
+                "vary": "Accept-Encoding",
+                "server": "Jetty(9.4.49.v20220914)",
                 "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
+                "content-encoding": "gzip",
+                "transfer-encoding": "chunked"
             },
-            "body": "{\"content-language\":[\"de\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Bevor Sie zu YouTube weitergehen\"],\"title\":[\"Bevor Sie zu YouTube weitergehen\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Anmelden\\n ein Google-Unternehmen\\nBevor Sie zu YouTube weitergehen\\nGoogle verwendet Cookies und Daten für Folgendes:\\tDienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen\\n\\tDaten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden\\n\\nWenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:\\tQualität unserer Dienste verbessern und neue Dienste entwickeln\\n\\tWerbung ausliefern und die Effektivität von Werbung messen\\n\\tPersonalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen\\n\\tPersonalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen\\n\\nDie Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist.Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools.\\n\\nAnpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nDatenschutzerklärung Nutzungsbedingungen\\n\"}"
-        }
-    },
-    {
-        "model": "core.httptikaresource",
-        "pk": 51,
-        "fields": {
-            "uri": "localhost:9090/analyze",
-            "status": 200,
-            "config": "{\"_namespace\": \"micro_service\", \"_private\": [\"_private\", \"_defaults\", \"_namespace\"]}",
-            "created_at": "2021-06-30T08:35:31.391Z",
-            "modified_at": "2021-06-30T08:35:31.391Z",
-            "purge_at": "2021-07-30T08:35:29.448Z",
-            "retainer_type": null,
-            "retainer_id": null,
-            "data_hash": "51174936484d0bd4fc7fa77bd7b8f56ff0501a8e",
-            "request": {
-                "url": "http://localhost:9090/analyze",
-                "args": [
-                    "http",
-                    "localhost:9090",
-                    "/analyze"
-                ],
-                "json": {
-                    "url": "https://www.youtube.com/watch?v=21v9IYUcruI"
-                },
-                "kwargs": {
-                    "url": "https://www.youtube.com/watch?v=21v9IYUcruI"
-                },
-                "method": "post",
-                "headers": {
-                    "Accept": "*/*",
-                    "Connection": "keep-alive",
-                    "User-Agent": "DataGrowth (v0.17.3); python-requests/2.24.0",
-                    "Content-Type": "application/json",
-                    "Accept-Encoding": "gzip, deflate"
-                },
-                "backoff_delay": false
-            },
-            "head": {
-                "date": "Wed, 30 Jun 2021 08:35:29 GMT",
-                "content-type": "application/json",
-                "x-frame-options": "DENY",
-                "x-xss-protection": "1; mode=block",
-                "transfer-encoding": "chunked",
-                "x-download-options": "noopen",
-                "x-content-type-options": "nosniff",
-                "content-security-policy": "object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https: http:;",
-                "strict-transport-security": "max-age=31536000; includeSubdomains",
-                "x-permitted-cross-domain-policies": "none"
-            },
-            "body": "{\"content-language\":[\"de\"],\"mime-type\":\"text/html\",\"x-parsed-by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"dc/title\":[\"Bevor Sie zu YouTube weitergehen\"],\"title\":[\"Bevor Sie zu YouTube weitergehen\"],\"content-type\":[\"text/html; charset=UTF-8\"],\"content-encoding\":[\"UTF-8\"],\"viewport\":[\"initial-scale=1, maximum-scale=5, width=device-width\"],\"text\":\"Anmelden\\n ein Google-Unternehmen\\nBevor Sie zu YouTube weitergehen\\nGoogle verwendet Cookies und Daten für Folgendes:\\tDienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen\\n\\tDaten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden\\n\\nWenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:\\tQualität unserer Dienste verbessern und neue Dienste entwickeln\\n\\tWerbung ausliefern und die Effektivität von Werbung messen\\n\\tPersonalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen\\n\\tPersonalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen\\n\\nDie Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist.Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools.\\n\\nAnpassen\\n\\n\\nAfrikaans\\nazərbaycan\\nbosanski\\ncatalà\\nČeština\\nCymraeg\\nDansk\\nDeutsch\\neesti\\nEnglish (United Kingdom)\\nEnglish (United States)\\nEspañol (España)\\nEspañol (Latinoamérica)\\neuskara\\nFilipino\\nFrançais (Canada)\\nFrançais (France)\\nGaeilge\\ngalego\\nHrvatski\\nIndonesia\\nisiZulu\\níslenska\\nItaliano\\nKiswahili\\nlatviešu\\nlietuvių\\nmagyar\\nMelayu\\nNederlands\\nnorsk\\no‘zbek\\npolski\\nPortuguês (Brasil)\\nPortuguês (Portugal)\\nromână\\nshqip\\nSlovenčina\\nslovenščina\\nsrpski (latinica)\\nSuomi\\nSvenska\\nTiếng Việt\\nTürkçe\\nΕλληνικά\\nбеларуская\\nбългарски\\nкыргызча\\nқазақ тілі\\nмакедонски\\nмонгол\\nРусский\\nсрпски\\nУкраїнська\\nქართული\\nհայերեն\\nעברית\\nاردو\\nالعربية\\nفارسی\\nአማርኛ\\nनेपाली\\nमराठी\\nहिन्दी\\nঅসমীয়া\\nবাংলা\\nਪੰਜਾਬੀ\\nગુજરાતી\\nଓଡ଼ିଆ\\nதமிழ்\\nతెలుగు\\nಕನ್ನಡ\\nമലയാളം\\nසිංහල\\nไทย\\nລາວ\\nမြန်မာ\\nខ្មែរ\\n한국어\\n日本語\\n简体中文\\n繁體中文\\n繁體中文 (香港)\\n\\n\\nDatenschutzerklärung Nutzungsbedingungen\\n\"}"
+            "body": "[{\"og:image\":\"https://i.ytimg.com/vi/21v9IYUcruI/maxresdefault.jpg\",\"og:image:width\":\"1280\",\"twitter:card\":\"player\",\"http-connection:target-ip-address\":\"142.250.179.174\",\"og:site_name\":\"YouTube\",\"keywords\":\"video, delen, cameratelefoon, videotelefoon, gratis, uploaden\",\"twitter:url\":\"https://www.youtube.com/watch?v=21v9IYUcruI\",\"twitter:app:url:ipad\":\"vnd.youtube://www.youtube.com/watch?v=21v9IYUcruI&feature=applinks\",\"X-TIKA:Parsed-By-Full-Set\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:content_handler\":\"ToTextContentHandler\",\"og:description\":\"\",\"twitter:player\":\"https://www.youtube.com/embed/21v9IYUcruI\",\"dc:title\":\"Can big history reunify all our knowledge? - YouTube\",\"Content-Encoding\":\"ISO-8859-1\",\"og:video:type\":\"text/html\",\"og:video:height\":\"720\",\"http-header:content-type\":\"text/html; charset=utf-8\",\"origin-trial\":\"AlgsH67ctYlMR3JYAxEnGfvsoFo41AMqAg6wRHHXOpWAfD54ZCfTPBclxnFT4Gc8IUX4pq6Xfo0esDuOt+WH3wIAAABteyJvcmlnaW4iOiJodHRwczovL3lvdXR1YmUuY29tOjQ0MyIsImZlYXR1cmUiOiJQcml2YWN5U2FuZGJveEFkc0FQSXMiLCJleHBpcnkiOjE2ODA2NTI3OTksImlzU3ViZG9tYWluIjp0cnVlfQ==\",\"http-header:status-code\":\"200\",\"al:ios:app_name\":\"YouTube\",\"twitter:app:id:ipad\":\"544007664\",\"resourceName\":\"apache-tika-4642848129859511230.tmp\",\"og:video:width\":\"1280\",\"http-connection:num-redirects\":\"0\",\"twitter:app:name:ipad\":\"YouTube\",\"X-TIKA:Parsed-By\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"X-TIKA:embedded_depth\":\"0\",\"X-TIKA:content\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nCan big history reunify all our knowledge? - YouTube\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nOverPersAuteursrechtContactCreatorsAdverterenOntwikkelaarsVoorwaardenPrivacyBeleid en veiligheidZo werkt YouTubeNieuwe functies testen© 2023 Google LLC\\n YouTube, een bedrijf van Google\\n\\n\",\"Content-Language\":\"nl-NL\",\"al:android:app_name\":\"YouTube\",\"twitter:app:name:iphone\":\"YouTube\",\"twitter:app:url:iphone\":\"vnd.youtube://www.youtube.com/watch?v=21v9IYUcruI&feature=applinks\",\"twitter:app:id:googleplay\":\"com.google.android.youtube\",\"theme-color\":\"rgba(255, 255, 255, 0.98)\",\"al:android:package\":\"com.google.android.youtube\",\"description\":\"\",\"twitter:app:name:googleplay\":\"YouTube\",\"title\":\"Can big history reunify all our knowledge?\",\"al:ios:url\":\"vnd.youtube://www.youtube.com/watch?v=21v9IYUcruI&feature=applinks\",\"twitter:app:id:iphone\":\"544007664\",\"http-connection:target-url\":\"https://www.youtube.com/watch?v=21v9IYUcruI\",\"al:ios:app_store_id\":\"544007664\",\"twitter:image\":\"https://i.ytimg.com/vi/21v9IYUcruI/maxresdefault.jpg\",\"twitter:player:height\":\"720\",\"twitter:site\":\"@youtube\",\"og:video:url\":\"https://www.youtube.com/embed/21v9IYUcruI\",\"Content-Length\":\"0\",\"Content-Type\":\"text/html; charset=ISO-8859-1\",\"og:type\":\"video.other\",\"twitter:title\":\"Can big history reunify all our knowledge?\",\"og:title\":\"Can big history reunify all our knowledge?\",\"og:image:height\":\"720\",\"al:web:url\":\"http://www.youtube.com/watch?v=21v9IYUcruI&feature=applinks\",\"og:video:secure_url\":\"https://www.youtube.com/embed/21v9IYUcruI\",\"al:android:url\":\"vnd.youtube://www.youtube.com/watch?v=21v9IYUcruI&feature=applinks\",\"X-UA-Compatible\":\"IE=edge\",\"fb:app_id\":\"87741124305\",\"twitter:app:url:googleplay\":\"https://www.youtube.com/watch?v=21v9IYUcruI\",\"twitter:description\":\"\",\"X-TIKA:parse_time_millis\":\"28\",\"og:url\":\"https://www.youtube.com/watch?v=21v9IYUcruI\",\"twitter:player:width\":\"1280\"}]"
         }
     }
 ]
