@@ -1921,6 +1921,33 @@ END:VCARD</czp:vcard></czp:centity>
                                     <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
                                 </czp:source>
                                 <czp:value>
+                                    <czp:langstring xml:lang="x-none">content provider</czp:langstring>
+                                </czp:value>
+                            </czp:role>
+                            <czp:centity>
+                                <czp:vcard>BEGIN:VCARD
+                                    VERSION:3.0
+                                    N:Bibliotheek Wageningen University &amp; Research
+                                    FN:Bibliotheek Wageningen University &amp; Research
+                                    ORG:Bibliotheek Wageningen University &amp; Research
+                                    END:VCARD
+                                </czp:vcard>
+                            </czp:centity>
+                            <czp:date>
+                                <czp:datetime>2020-09-21T13:09:34.0Z</czp:datetime>
+                                <czp:description>
+                                    <czp:langstring xml:lang="x-none">datum waarop het leerobject is toegevoegd aan de
+                                        collectie
+                                    </czp:langstring>
+                                </czp:description>
+                            </czp:date>
+                        </czp:contribute>
+                        <czp:contribute>
+                            <czp:role>
+                                <czp:source>
+                                    <czp:langstring xml:lang="x-none">LOMv1.0</czp:langstring>
+                                </czp:source>
+                                <czp:value>
                                     <czp:langstring xml:lang="x-none">educational validator</czp:langstring>
                                 </czp:value>
                             </czp:role>
