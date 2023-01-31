@@ -178,3 +178,4 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
         self.assertIsNone(seeds[1]["publisher_year"],
                           "Expected material without publication date to have no publication year")
         self.assertEqual(seeds[3]["publisher_year"], 2017)
+        self.assertEqual(seeds[8]["publisher_year"], 2020)
