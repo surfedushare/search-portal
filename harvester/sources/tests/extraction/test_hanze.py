@@ -35,7 +35,9 @@ class TestGetHarvestSeedsHanze(TestCase):
                        "_met_ondergrondse_infiltratievoorzieningen_20_jaar.pdf",
                 "hash": "b20e35dd499a92d02a435be018a267a0d9d3eb89",
                 "title": "wtnr2_verh1_p99_113_HR_v2_Inter_nationale_ervaringen"
-                         "_met_ondergrondse_infiltratievoorzieningen_20_jaar.pdf"
+                         "_met_ondergrondse_infiltratievoorzieningen_20_jaar.pdf",
+                "copyright": None,
+                "is_open_access": True
             }
         ])
         self.assertEqual(seeds[12]["files"], [
@@ -44,7 +46,9 @@ class TestGetHarvestSeedsHanze(TestCase):
                 "url": "https://research-test.hanze.nl/ws/api/research-outputs/3786d62c-11fa-445b-a299-cc79ea00d468/"
                        "files/MDAxYTdkM2M2/Power_to_the_people_accepted_version_1.pdf",
                 "mime_type": "application/pdf",
-                "hash": "8a83314d543513cdcb43329ecd78145ff45134d3"
+                "hash": "8a83314d543513cdcb43329ecd78145ff45134d3",
+                "copyright": None,
+                "is_open_access": True
             }
         ])
 
