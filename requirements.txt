@@ -1,16 +1,16 @@
 # Development
 gitpython==3.1.7
 flake8==4.0.1
-wheel==0.37.1
+wheel==0.38.1
 
 # Common
-django==3.2.14
+django==3.2.16
 djangorestframework==3.11.2
 django-cors-headers==3.4.0
 whitenoise==5.1.0
 psycopg2-binary==2.9.3
 requests==2.27.1
-Pillow==9.0.1
+Pillow==9.3.0
 opensearch-py==2.0.0
 python-dateutil==2.8.1
 uritemplate==3.0.1
