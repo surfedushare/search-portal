@@ -1,0 +1,14 @@
+version: 2
+updates:
+
+  # Repo root dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Maintain dependencies for npm
+  - package-ecosystem: "pip"
+    directory: "/harvester"
+    schedule:
+      interval: "weekly"
