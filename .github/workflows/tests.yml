@@ -47,7 +47,7 @@ jobs:
         pip install -r requirements.txt
     - name: Setup repository
       run: |
-        APPLICATION_PROJECT=nppo invoke aws.sync-repository-state --no-profile
+        invoke aws.sync-repository-state --no-profile --bucket-prefix=nppo-prod
     - name: Run tests
       run:
         invoke test.harvester
