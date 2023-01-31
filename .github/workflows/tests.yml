@@ -11,6 +11,9 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: ["3.10"]
+    env:
+      AWS_ACCESS_KEY_ID: AKIA4VLUZ2543W42M7M7
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     services:
       postgres:
