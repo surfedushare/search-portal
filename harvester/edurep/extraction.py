@@ -228,18 +228,27 @@ class EdurepDataExtraction(object):
                 publishers.append(publisher.fn.value)
         return publishers
 
-    @classmethod
-    def get_publisher_date(cls, soup, el):
-        publisher = el.find(string='publisher')
-        if not publisher:
+    @staticmethod
+    def find_role_datetime(role):
+        if not role:
             return
-        contribution = publisher.find_parent('czp:contribute')
+        contribution = role.find_parent('czp:contribute')
         if not contribution:
             return
         datetime = contribution.find('czp:datetime')
         if not datetime:
             return
         return datetime.text.strip()
+
+    @classmethod
+    def get_publisher_date(cls, soup, el):
+        publisher = el.find(string='publisher')
+        publisher_datetime = cls.find_role_datetime(publisher)
+        if publisher_datetime:
+            return publisher_datetime
+        provider = el.find(string='content provider')
+        provider_datetime = cls.find_role_datetime(provider)
+        return provider_datetime
 
     @classmethod
     def get_publisher_year(cls, soup, el):
