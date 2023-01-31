@@ -11,8 +11,6 @@ from sources.extraction.hanze.research_themes import ASJC_TO_RESEARCH_THEME
 
 class HanzeResourceObjectExtraction(ExtractProcessor):
 
-    OBJECTIVE = None
-
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
     @classmethod
@@ -35,11 +33,14 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
             mime_type = "text/html"
         else:
             return
+        access_type = electronic_version.get("accessType", {})
         return {
             "title": file_name,
             "url": url,
             "mime_type": mime_type,
-            "hash": sha1(url.encode("utf-8")).hexdigest()
+            "hash": sha1(url.encode("utf-8")).hexdigest(),
+            "copyright": None,
+            "is_open_access": access_type.get("uri", "").endswith("/open")
         }
 
     @classmethod
@@ -92,7 +93,9 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
     @classmethod
     def get_copyright(cls, node):
         files = cls.get_files(node)
-        return "open-access" if len(files) else "closed-access"
+        if not len(files):
+            return "closed-access"
+        return "open-access" if files[0]["is_open_access"] else "closed-access"
 
     @classmethod
     def get_description(cls, node):
@@ -198,19 +201,17 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_is_restricted(cls, node):
-        electronic_versions = node.get("electronicVersions", [])
-        if not electronic_versions:
+        files = cls.get_files(node)
+        if not len(files):
             return True
-        main_file = electronic_versions[0]
-        access = main_file.get("accessType", {}).get("term", {}).get("en_GB", None)
-        return access != "Open"
+        return not files[0]["is_open_access"]
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = HanzeResourceObjectExtraction.get_copyright(node)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        files = cls.get_files(node)
+        if not len(files):
+            return False
+        return files[0]["is_open_access"]
 
     @classmethod
     def get_doi(cls, node):
