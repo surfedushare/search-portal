@@ -4,7 +4,7 @@ flake8==4.0.1
 wheel==0.37.1
 
 # Common
-django==3.2.14
+django==3.2.17
 djangorestframework==3.11.2
 django-cors-headers==3.4.0
 whitenoise==5.1.0
