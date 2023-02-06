@@ -63,8 +63,8 @@ build-job:
   services:
     - name: docker:dind
   script:
-    - invoke aws.build harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.build service --commit $CI_COMMIT_SHA
+    - invoke aws.build harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.push harvester --commit $CI_COMMIT_SHA --push-latest
     - invoke aws.push service --commit $CI_COMMIT_SHA --push-latest
 
