@@ -25,6 +25,6 @@ tqdm==4.50.2
 invoke==1.7.0
 ipdb==0.13.3
 sentry-sdk==1.0.0
-beautifulsoup4==4.9.1
+beautifulsoup4==4.11.2
 
 -r dependencies.txt
