@@ -23,7 +23,7 @@ pymsteams==0.2.2
 django-admin-confirm==0.2.4
 
 # Datagrowth
-jsonschema==3.2.0
+jsonschema==4.17.3
 pytz==2021.3
 urlobject==2.4.3
 git+https://github.com/fako/django-json-field.git
