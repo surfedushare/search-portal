@@ -6,9 +6,15 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
-  # Maintain dependencies for npm
+  # Maintain dependencies for Harvester (Python)
   - package-ecosystem: "pip"
     directory: "/harvester"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
