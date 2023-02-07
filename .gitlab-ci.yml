@@ -61,7 +61,7 @@ build-job:
       when: manual
   extends: .setup-repository
   services:
-    - name: serversideup/docker-utility:latest
+    - name: docker:20.10-dind
   script:
     - invoke aws.build service --commit $CI_COMMIT_SHA
     - invoke aws.build harvester --commit $CI_COMMIT_SHA --docker-login
