@@ -1,0 +1,20 @@
+version: 2
+updates:
+
+  # Repo root dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Maintain dependencies for Harvester (Python)
+  - package-ecosystem: "pip"
+    directory: "/harvester"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
