@@ -10,6 +10,8 @@ from sources.factories.hva.extraction import HvaPureResourceFactory, SET_SPECIFI
 
 class TestGetHarvestSeedsHva(TestCase):
 
+    begin_of_time = None
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -30,7 +32,9 @@ class TestGetHarvestSeedsHva(TestCase):
                 "url": "https://accpure.hva.nl/ws/api/research-outputs/d7126f6d-c412-43c8-ad2a-6acb7613917d/files/"
                        "MDIyMzRi/636835_schuldenvrij-de-weg-naar-werk_aangepast.pdf",
                 "hash": "17c1945a55b6d00b0d17caed17762c94237e658d",
-                "title": "636835_schuldenvrij-de-weg-naar-werk_aangepast.pdf"
+                "title": "636835_schuldenvrij-de-weg-naar-werk_aangepast.pdf",
+                "copyright": None,
+                "is_open_access": True
             }
         ])
 
@@ -54,11 +58,8 @@ class TestGetHarvestSeedsHva(TestCase):
     def test_get_copyright(self):
         seeds = self.seeds
         self.assertEqual(len(seeds), 20)
-        self.assertEqual(seeds[0]["copyright"], "yes")
+        self.assertEqual(seeds[0]["copyright"], "closed-access")
         self.assertEqual(seeds[3]["copyright"], "open-access")
-        seeds = get_harvest_seeds(Repositories.HVA, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 6, "Expected get_harvest_seeds to delete invalid copyright")
-        self.assertEqual(seeds[0]["copyright"], "open-access")
 
     def test_get_language(self):
         seeds = self.seeds

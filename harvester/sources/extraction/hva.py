@@ -31,20 +31,24 @@ class HvaMetadataExtraction(ExtractProcessor):
             mime_type = "text/html"
         else:
             return
+        access_type = electronic_version.get("accessType", {})
         return {
             "title": file_name,
             "url": url,
             "mime_type": mime_type,
-            "hash": sha1(url.encode("utf-8")).hexdigest()
+            "hash": sha1(url.encode("utf-8")).hexdigest(),
+            "copyright": None,
+            "is_open_access": access_type.get("uri", "").endswith("/open")
         }
 
     @classmethod
     def get_files(cls, node):
-        if "electronicVersions" not in node:
+        electronic_versions = node.get("electronicVersions", []) + node.get("additionalFiles", [])
+        if not electronic_versions:
             return []
         return [
             cls._parse_electronic_version(electronic_version)
-            for electronic_version in node["electronicVersions"] if cls._parse_electronic_version(electronic_version)
+            for electronic_version in electronic_versions if cls._parse_electronic_version(electronic_version)
         ]
 
     @classmethod
@@ -86,8 +90,10 @@ class HvaMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        access = node["openAccessPermission"]["term"]["en_GB"]
-        return "open-access" if access == "Open" else "yes"
+        files = cls.get_files(node)
+        if not len(files):
+            return "closed-access"
+        return "open-access" if files[0]["is_open_access"] else "closed-access"
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -124,14 +130,17 @@ class HvaMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_is_restricted(cls, node):
-        return False
+        files = cls.get_files(node)
+        if not len(files):
+            return True
+        return not files[0]["is_open_access"]
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = HvaMetadataExtraction.get_copyright(node)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        files = cls.get_files(node)
+        if not len(files):
+            return False
+        return files[0]["is_open_access"]
 
     @classmethod
     def get_doi(cls, node):

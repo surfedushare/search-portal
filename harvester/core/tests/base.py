@@ -5,6 +5,9 @@ class SeedExtractionTestCase(TestCase):
 
     OBJECTIVE = {}
 
+    set_spec = None
+    begin_of_time = None
+
     def extract_seed_types(self, seeds):
         normal = next(
             (seed for seed in seeds

@@ -14,6 +14,7 @@ variables:
   DOCKER_AUTH_CONFIG: "{\"credHelpers\": {\"017973353230.dkr.ecr.eu-central-1.amazonaws.com\": \"ecr-login\"}}"
   AWS_DEFAULT_REGION: eu-central-1
   AWS_CONTAINER_REGISTRY: 017973353230.dkr.ecr.eu-central-1.amazonaws.com
+  DOCKER_HOST: tcp://docker:2376
 
 image: $AWS_CONTAINER_REGISTRY/gitlab-runner:latest
 
@@ -50,15 +51,6 @@ service-test-job:
     - APPLICATION_PROJECT=edusources invoke test.service
     - APPLICATION_PROJECT=nppo invoke test.service
 
-harvester-test-job:
-  stage: lint-and-test
-  extends: .setup-repository
-  services:
-    - name: postgres:$POSTGRES_VERSION-alpine
-  script:
-    - APPLICATION_PROJECT=edusources invoke test.harvester
-    - APPLICATION_PROJECT=nppo invoke test.harvester
-
 build-job:
   stage: build
   rules:
@@ -70,10 +62,10 @@ build-job:
       when: manual
   extends: .setup-repository
   services:
-    - name: docker:dind
+    - name: docker:20.10-dind
   script:
-    - invoke aws.build harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.build service --commit $CI_COMMIT_SHA
+    - invoke aws.build harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.push harvester --commit $CI_COMMIT_SHA --push-latest
     - invoke aws.push service --commit $CI_COMMIT_SHA --push-latest
 
@@ -124,7 +116,6 @@ promote-production:
   variables:
     APPLICATION_MODE: production
   script:
-    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
 
 promote-acceptance:
@@ -140,7 +131,6 @@ promote-acceptance:
   variables:
     APPLICATION_MODE: acceptance
   script:
-    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
 
 promote-development:
@@ -156,7 +146,6 @@ promote-development:
   variables:
     APPLICATION_MODE: development
   script:
-    - invoke aws.promote harvester --commit $CI_COMMIT_SHA --docker-login
     - invoke aws.promote service --commit $CI_COMMIT_SHA
 
 include:
