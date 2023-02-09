@@ -126,6 +126,19 @@ class BuasMetadataExtraction(ExtractProcessor):
         return authors
 
     @classmethod
+    def get_organizations(cls, node):
+        return {
+            "root": {
+                "id": None,
+                "slug": "buas",
+                "name": "Breda University of Applied Sciences",
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, node):
         return ["Breda University of Applied Sciences"]
 
@@ -155,6 +168,7 @@ BuasMetadataExtraction.OBJECTIVE = {
     "description": lambda node: None,
     "mime_type": BuasMetadataExtraction.get_mime_type,
     "authors": BuasMetadataExtraction.get_authors,
+    "organizations": BuasMetadataExtraction.get_organizations,
     "publishers": BuasMetadataExtraction.get_publishers,
     "publisher_date": lambda node: None,
     "publisher_year": "$.publicationStatuses.0.publicationDate.year",

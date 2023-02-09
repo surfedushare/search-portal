@@ -93,6 +93,10 @@ class TestGetHarvestSeedsSharekit(SeedExtractionTestCase):
         self.assertIsNone(seeds[1]['consortium'])
         self.assertEqual(seeds[2]['consortium'], 'Domain Applied Science')
 
+    def test_organizations(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["organizations"]["root"]["name"], "SURFnet")
+
     def test_is_restricted(self):
         seeds = self.seeds
         for seed in seeds:

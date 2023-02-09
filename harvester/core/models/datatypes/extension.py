@@ -52,6 +52,16 @@ class Extension(DocumentBase):
             'copyright': None,
             'doi': None,
             'files': [],
+            "organizations": {
+                "root": {
+                    "id": None,
+                    "slug": None,
+                    "name": None,
+                    "is_consortium": False
+                },
+                "departments": [],
+                "associates": []
+            },
             'publishers': [],
             'research_object_type': None,
             'technical_type': None,

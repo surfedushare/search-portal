@@ -207,6 +207,25 @@ class EdurepDataExtraction(object):
         return authors
 
     @classmethod
+    def get_organizations(cls, soup, el):
+        organization_id = None
+        organization_slug = None
+        organization_name = None
+        publishers = cls.get_publishers(soup, el)
+        if len(publishers):
+            organization_name = publishers[0]
+        return {
+            "root": {
+                "id": organization_id,
+                "slug": organization_slug,
+                "name": organization_name,
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_consortium(cls, soup, el):
         hbovpk_keywords = [keyword for keyword in cls.get_keywords(soup, el) if "hbovpk" in keyword.lower()]
         if hbovpk_keywords:
@@ -356,6 +375,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "copyright": EdurepDataExtraction.get_copyright,
     "aggregation_level": EdurepDataExtraction.get_aggregation_level,
     "authors": EdurepDataExtraction.get_authors,
+    "organizations": EdurepDataExtraction.get_organizations,
     "publishers": EdurepDataExtraction.get_publishers,
     "publisher_date": EdurepDataExtraction.get_publisher_date,
     "publisher_year": EdurepDataExtraction.get_publisher_year,

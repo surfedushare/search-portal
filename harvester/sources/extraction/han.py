@@ -178,6 +178,19 @@ class HanDataExtraction(object):
         return authors
 
     @classmethod
+    def get_organizations(cls, soup, el):
+        return {
+            "root": {
+                "id": None,
+                "slug": "han",
+                "name": "Hogeschool van Arnhem en Nijmegen",
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, soup, el):
         return ["Hogeschool van Arnhem en Nijmegen"]
 
@@ -237,6 +250,7 @@ HAN_EXTRACTION_OBJECTIVE = {
     "description": HanDataExtraction.get_description,
     "mime_type": HanDataExtraction.get_mime_type,
     "authors": HanDataExtraction.get_authors,
+    "organizations": HanDataExtraction.get_organizations,
     "publishers": HanDataExtraction.get_publishers,
     "publisher_date": lambda soup, el: None,
     "publisher_year": HanDataExtraction.get_publisher_year,
