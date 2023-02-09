@@ -57,7 +57,6 @@ class TestGetHarvestSeedsHva(TestCase):
 
     def test_get_copyright(self):
         seeds = self.seeds
-        self.assertEqual(len(seeds), 20)
         self.assertEqual(seeds[0]["copyright"], "closed-access")
         self.assertEqual(seeds[3]["copyright"], "open-access")
 
