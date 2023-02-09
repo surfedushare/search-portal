@@ -4,7 +4,7 @@ from django.core.management import CommandError
 from django.utils.timezone import now
 from django.apps import apps
 
-from core.constants import HarvestStages
+from core.constants import HarvestStages, Repositories
 from core.management.base import PipelineCommand
 from core.models import (Collection, DatasetVersion, Document, Extension,
                          Harvest)
@@ -129,8 +129,8 @@ class Command(PipelineCommand):
         dataset_name = options["dataset"]
         dataset_version = DatasetVersion.objects.get_latest_version(dataset_name=dataset_name)
         repository_resource = options["repository"]
-        repository, resource = repository_resource.split(".")
-        harvest_phase = f"seeds.{repository}"
+        repository_id = Repositories.get_repository_id(repository_resource)
+        harvest_phase = f"seeds.{repository_id}"
 
         self.logger.start(harvest_phase)
 
@@ -163,19 +163,21 @@ class Command(PipelineCommand):
         for info, seeds in self.preprocess_seeds(harvest_queryset).items():
             # Unpacking
             repository, spec_name = info
+            repository_id = Repositories.get_repository_id(repository)
             upserts, deletes = seeds
+            collection_name = f"{repository_id}:{spec_name}"
             # Get or create the collection these seeds belong to
             collection, created = Collection.objects.get_or_create(
-                name=spec_name,
+                name=collection_name,
                 dataset_version=dataset_version,
                 defaults={
                     "referee": "external_id"
                 }
             )
             if created:
-                self.logger.debug(f"Created collection '{spec_name}'")
+                self.logger.debug(f"Created collection '{collection_name}'")
             else:
-                self.logger.debug(f"Adding to existing collection '{spec_name}'")
+                self.logger.debug(f"Adding to existing collection '{collection_name}'")
 
             self.handle_upsert_seeds(collection, upserts)
             self.handle_deletion_seeds(collection, deletes)

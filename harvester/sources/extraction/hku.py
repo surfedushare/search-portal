@@ -139,6 +139,19 @@ class HkuMetadataExtraction(ExtractProcessor):
         return datetime.year
 
     @classmethod
+    def get_organizations(cls, node):
+        return {
+            "root": {
+                "id": None,
+                "slug": "hku",
+                "name": "Hogeschool voor de Kunsten Utrecht",
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, node):
         return ["Hogeschool voor de Kunsten Utrecht"]
 
@@ -163,6 +176,7 @@ HKU_EXTRACTION_OBJECTIVE = {
     "description": "$.description",
     "mime_type": HkuMetadataExtraction.get_mime_type,
     "authors": HkuMetadataExtraction.get_authors,
+    "organizations": HkuMetadataExtraction.get_organizations,
     "publishers": HkuMetadataExtraction.get_publishers,
     "publisher_date": lambda node: None,
     "publisher_year": HkuMetadataExtraction.get_publisher_year,

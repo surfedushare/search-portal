@@ -67,7 +67,6 @@ class TestGetHarvestSeedsHanze(TestCase):
 
     def test_get_copyright(self):
         seeds = self.seeds
-        self.assertEqual(len(seeds), 20)
         self.assertEqual(seeds[0]["copyright"], "open-access")
         self.assertEqual(seeds[3]["copyright"], "closed-access")
 

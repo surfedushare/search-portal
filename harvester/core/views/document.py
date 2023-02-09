@@ -8,6 +8,13 @@ from core.models import Document
 class DocumentSerializer(DocumentBaseSerializer):
 
     source = serializers.CharField(source="collection.name")
+    properties = serializers.SerializerMethodField()
+
+    def get_properties(self, document):
+        properties = document.properties
+        properties["owner"] = next(iter(properties["authors"]), None)
+        properties["contact"] = next(iter(properties["authors"]), None)
+        return properties
 
     class Meta:
         model = Document
