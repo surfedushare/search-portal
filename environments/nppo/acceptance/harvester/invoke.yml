@@ -6,7 +6,6 @@ django:
   directory: "harvester"
   fixtures:
     - "core/fixtures/initial-nppo.json"
-    - "core/fixtures/initial-nppo-admin.json"
     - "metadata/fixtures/initial-metadata-nppo.json"
   data_retention:
     purge_after:
