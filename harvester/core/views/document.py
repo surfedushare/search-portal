@@ -18,7 +18,7 @@ class DocumentSerializer(DocumentBaseSerializer):
 
     class Meta:
         model = Document
-        fields = DocumentBaseSerializer.default_fields + ("source",)
+        fields = DocumentBaseSerializer.default_fields + ("harvest_source",)
 
 
 class MetadataDocumentSerializer(DocumentBaseSerializer):
