@@ -7,7 +7,7 @@ from core.models import Document
 
 class DocumentSerializer(DocumentBaseSerializer):
 
-    source = serializers.CharField(source="collection.name")
+    harvest_source = serializers.CharField(source="collection.name")
     properties = serializers.SerializerMethodField()
 
     def get_properties(self, document):
