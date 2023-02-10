@@ -9,15 +9,15 @@ class Repositories:
     GREENI = "sources.GreeniOAIPMHResource"
     BUAS = "sources.BuasPureResource"
 
-    @staticmethod
-    def get_repository_id(repository_resource):
-        repository_id = next(
-            (choice[1] for choice in REPOSITORY_CHOICES if choice[0] == repository_resource),
-            None
-        )
-        if repository_id is None:
-            return
-        return repository_id.lower()
+
+def get_repository_id(repository_resource):
+    repository_id = next(
+        (choice[1] for choice in REPOSITORY_CHOICES if choice[0] == repository_resource),
+        None
+    )
+    if repository_id is None:
+        return
+    return repository_id.lower()
 
 
 REPOSITORY_CHOICES = [

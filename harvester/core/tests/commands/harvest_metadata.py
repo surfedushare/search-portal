@@ -8,7 +8,7 @@ from django.utils.timezone import make_aware
 from datagrowth.resources.http.tasks import send
 from core.management.commands.harvest_metadata import Command as DatasetCommand
 from core.models import DatasetVersion, Collection, Harvest
-from core.constants import HarvestStages, Repositories
+from core.constants import HarvestStages, get_repository_id
 from core.logging import HarvestLogger
 from harvester.utils.extraction import get_harvest_seeds
 
@@ -85,7 +85,7 @@ class TestMetadataHarvest(TestCase):
         # Only one set was eligible for a harvest
         self.assertEqual(Collection.objects.all().count(), 1)
         collection = Collection.objects.last()
-        repository_id = Repositories.get_repository_id(self.repository)
+        repository_id = get_repository_id(self.repository)
         self.assertEqual(collection.name, f"{repository_id}:{self.spec_set}")
         self.assertEqual(collection.dataset_version.version, "0.0.1")
         self.assertEqual(collection.referee, "external_id")
