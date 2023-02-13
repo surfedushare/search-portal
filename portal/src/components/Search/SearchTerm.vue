@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      searchText: this.value || this.$route.query?.search_text?.replaceAll("%20", "") || "",
+      searchText: this.value || this.$route.query?.search_text?.replace(/\\"/g, "") || "",
       suggestions: [],
     };
   },
@@ -98,7 +98,7 @@ export default {
       this.$emit("search", text);
     },
     onSubmit() {
-      this.$emit("search", this.searchText.replaceAll("%20", ""));
+      this.$emit("search", this.searchText.replace(/\\"/g, ""));
     },
   },
 };
