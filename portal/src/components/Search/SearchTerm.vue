@@ -42,12 +42,22 @@ export default {
     },
     value: {
       type: String,
-      default: "",
+      default: null,
     },
   },
   data() {
+    let text = "";
+    // eslint-disable-next-line quotes
+    if (this.$route.query?.search_text?.includes('"')) {
+      text = this.$route.query?.search_text?.replace(/"/g, " ").trim();
+    }
+    // eslint-disable-next-line quotes
+    if (this.$route.query?.search_text?.includes('\\"')) {
+      text = this.$route.query?.search_text?.replace(/\\"/g, "");
+    }
+
     return {
-      searchText: this.value || this.$route.query?.search_text?.replace(/\\"/g, "") || "",
+      searchText: this.value || text,
       suggestions: [],
     };
   },
@@ -98,7 +108,7 @@ export default {
       this.$emit("search", text);
     },
     onSubmit() {
-      this.$emit("search", this.searchText.replace(/\\"/g, ""));
+      this.$emit("search", this.searchText);
     },
   },
 };
