@@ -135,3 +135,12 @@ APPLICATION_MODE=<environment> fab -H <bastion-host-domain> srv.restore-snapshot
 ```
 
 The SQL file name is the file name as printed by [the create snapshot](README.md#installation) command described above
+
+# Deploy
+
+For manual deployment of the service project take the following steps
+
+- invoke aws.build service
+- invoke aws.push service --docker-login
+- APPLICATION_MODE=acceptance aws.promote service
+- APPLICATION_MODE=acceptance srv.deploy acceptance
