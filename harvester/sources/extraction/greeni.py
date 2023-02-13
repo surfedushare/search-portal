@@ -7,6 +7,16 @@ from django.conf import settings
 from django.utils.text import slugify
 
 
+SET_SPEC_TO_PROVIDER = {
+    "PUBVHL": {
+        "ror": None,
+        "external_id": None,
+        "slug": "PUBVHL",
+        "type": "institute"
+    }
+}
+
+
 class GreeniDataExtraction(object):
 
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
@@ -193,6 +203,13 @@ class GreeniDataExtraction(object):
         return authors
 
     @classmethod
+    def get_provider(cls, soup, el):
+        set_specs = [set_spec.text.strip() for set_spec in el.find_all("setspec")]
+        for set_spec in set_specs:
+            if set_spec in SET_SPEC_TO_PROVIDER:
+                return SET_SPEC_TO_PROVIDER[set_spec]
+
+    @classmethod
     def get_organizations(cls, soup, el):
         publisher = el.find("publisher")
         return {
@@ -270,6 +287,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "description": GreeniDataExtraction.get_description,
     "mime_type": GreeniDataExtraction.get_mime_type,
     "authors": GreeniDataExtraction.get_authors,
+    "provider": GreeniDataExtraction.get_provider,
     "organizations": GreeniDataExtraction.get_organizations,
     "publishers": GreeniDataExtraction.get_publishers,
     "publisher_date": lambda soup, el: None,
