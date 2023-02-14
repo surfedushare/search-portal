@@ -10,6 +10,8 @@ from sources.factories.buas.extraction import BuasPureResourceFactory, SET_SPECI
 
 class TestGetHarvestSeedsBuas(TestCase):
 
+    begin_of_time = None
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -29,7 +31,9 @@ class TestGetHarvestSeedsBuas(TestCase):
                 "title": None,
                 "url": "http://www.control-online.nl/gamesindustrie/2010/04/26/nieuw-column-op-maandag/",
                 "mime_type": "text/html",
-                "hash": "d42e0d5475f052d4fa0ef5216fd7dcbfc3a4374d"
+                "hash": "d42e0d5475f052d4fa0ef5216fd7dcbfc3a4374d",
+                "copyright": None,
+                "is_open_access": True
             }
         ])
         self.assertEqual(seeds[3]["files"], [
@@ -38,7 +42,9 @@ class TestGetHarvestSeedsBuas(TestCase):
                 "url": "https://pure.buas.nl/ws/files/15672869/"
                        "Peeters_tourismandclimatemitigation_peetersp_ed_nhtv2007.pdf",
                 "mime_type": "application/pdf",
-                "hash": "f8839eeea39968549dafe4075232074a15adcb63"
+                "hash": "f8839eeea39968549dafe4075232074a15adcb63",
+                "copyright": None,
+                "is_open_access": True
             }
         ])
 
@@ -60,13 +66,9 @@ class TestGetHarvestSeedsBuas(TestCase):
 
     def test_get_copyright(self):
         seeds = self.seeds
-        self.assertEqual(len(seeds), 20)
-        self.assertEqual(seeds[0]["copyright"], "yes")
+        self.assertEqual(seeds[0]["copyright"], "closed-access")
         self.assertEqual(seeds[1]["copyright"], "open-access")
         self.assertEqual(seeds[3]["copyright"], "open-access")
-        seeds = get_harvest_seeds(Repositories.BUAS, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 19, "Expected get_harvest_seeds to delete invalid copyright")
-        self.assertEqual(seeds[0]["copyright"], "open-access")
 
     def test_get_language(self):
         seeds = self.seeds

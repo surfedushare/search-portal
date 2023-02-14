@@ -62,6 +62,15 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
             {'name': 'Ruud Kok', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
         ])
 
+    def test_organizations_property(self):
+        seeds = self.seeds
+        self.assertIsNone(seeds[0]['organizations']['root']['name'])
+        self.assertEqual(
+            seeds[3]['organizations']['root']['name'],
+            'AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'
+        )
+        self.assertEqual(seeds[5]['organizations']['root']['name'], 'SURFnet')
+
     def test_publishers_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])
@@ -178,3 +187,4 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
         self.assertIsNone(seeds[1]["publisher_year"],
                           "Expected material without publication date to have no publication year")
         self.assertEqual(seeds[3]["publisher_year"], 2017)
+        self.assertEqual(seeds[8]["publisher_year"], 2020)

@@ -109,8 +109,8 @@ def build(ctx, target, commit=None, docker_login=False):
     name = target_info['name']
     latest_remote_image = f"{REPOSITORY}/{name}:latest"
     ctx.run(
-        f"DOCKER_BUILDKIT=1 docker build "
-        f"--build-arg BUILDKIT_INLINE_CACHE=1 --cache-from {latest_remote_image} --progress=plain "
+        f"docker build "
+        f"--progress=plain "
         f"--platform=linux/amd64 -f {target}/Dockerfile -t {name}:{commit} .",
         pty=True,
         echo=True

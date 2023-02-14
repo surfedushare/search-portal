@@ -1,3 +1,4 @@
+<!-- eslint-disable quotes -->
 <template>
   <section class="search">
     <form action="/materials/search/" @submit.prevent="onSubmit">
@@ -41,12 +42,22 @@ export default {
     },
     value: {
       type: String,
-      default: "",
+      default: null,
     },
   },
   data() {
+    let text = "";
+    // eslint-disable-next-line quotes
+    if (this.$route.query?.search_text?.includes('"')) {
+      text = this.$route.query?.search_text?.replace(/"/g, " ").trim();
+    }
+    // eslint-disable-next-line quotes
+    if (this.$route.query?.search_text?.includes('\\"')) {
+      text = this.$route.query?.search_text?.replace(/\\"/g, "");
+    }
+
     return {
-      searchText: this.value || this.$route.query?.search_text?.replaceAll("\"", "") || "",
+      searchText: this.value || text,
       suggestions: [],
     };
   },

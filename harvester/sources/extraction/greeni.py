@@ -1,4 +1,3 @@
-import os
 import re
 from hashlib import sha1
 from dateutil.parser import ParserError, parse as date_parser
@@ -84,25 +83,37 @@ class GreeniDataExtraction(object):
         return item.find("didl:resource")
 
     @classmethod
+    def _extract_file(cls, resource_type, resource, ix):
+        item = next((parent for parent in resource.parents if parent.name == "didl:item"), None)
+        if not item:
+            return
+        element = item.find("didl:resource")
+        if not element:
+            return
+        url = element["ref"]
+        match resource_type:
+            case "file":
+                title = f"Attachment {ix+1}"
+            case "link":
+                title = f"URL {ix+1}"
+            case _:
+                title = None
+        return {
+            "mime_type": element.get("mimetype", None),
+            "url": url,
+            "hash": sha1(url.encode("utf-8")).hexdigest(),
+            "title": title
+        }
+
+    @classmethod
     def get_files(cls, soup, el):
         file_resources = cls.find_resources(el, "file")
         link_resources = cls.find_resources(el, "link")
-        resources = file_resources + link_resources
         results = []
-        for resource in resources:
-            item = next((parent for parent in resource.parents if parent.name == "didl:item"), None)
-            if not item:
-                continue
-            element = item.find("didl:resource")
-            if element:
-                url = element["ref"]
-                tail, file_name = os.path.split(url)
-                results.append({
-                    "mime_type": element.get("mimetype", None),
-                    "url": url,
-                    "hash": sha1(url.encode("utf-8")).hexdigest(),
-                    "title": file_name
-                })
+        for ix, resource in enumerate(file_resources):
+            results.append(cls._extract_file("file", resource, ix))
+        for ix, resource in enumerate(link_resources):
+            results.append(cls._extract_file("link", resource, ix))
         return results
 
     @classmethod
@@ -182,6 +193,20 @@ class GreeniDataExtraction(object):
         return authors
 
     @classmethod
+    def get_organizations(cls, soup, el):
+        publisher = el.find("publisher")
+        return {
+            "root": {
+                "id": None,
+                "slug": None,
+                "name": publisher.text.strip() if publisher else None,
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, soup, el):
         publisher = el.find("publisher")
         return [publisher.text.strip()] if publisher else []
@@ -245,6 +270,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "description": GreeniDataExtraction.get_description,
     "mime_type": GreeniDataExtraction.get_mime_type,
     "authors": GreeniDataExtraction.get_authors,
+    "organizations": GreeniDataExtraction.get_organizations,
     "publishers": GreeniDataExtraction.get_publishers,
     "publisher_date": lambda soup, el: None,
     "publisher_year": GreeniDataExtraction.get_publisher_year,

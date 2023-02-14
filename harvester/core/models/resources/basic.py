@@ -23,9 +23,9 @@ class HttpTikaResource(HttpResource):
         has_content = False
         has_exception = False
 
-        if (data):
+        if data:
             first_tika_result = data[0]
-            has_content = first_tika_result["X-TIKA:content"] is not None and first_tika_result["X-TIKA:content"] != ""
+            has_content = first_tika_result.get("X-TIKA:content", None)
             has_exception = len(
                 dict(filter(lambda item:  "X-TIKA:EXCEPTION:" in item[0], first_tika_result.items()))) > 0
 

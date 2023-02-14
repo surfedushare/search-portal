@@ -41,7 +41,7 @@ class OpenSearchClientTestCase(TestCase):
             "analysis_allowed", "ideas", "copyright_description", "files", "doi", "technical_type", "material_types",
             "text", "suggest_phrase", "research_object_type", "research_themes", "parties", "video", "state",
             "extension", "learning_material_disciplines_normalized", "learning_material_disciplines", "consortium",
-            "disciplines", "learning_material_themes_normalized"
+            "disciplines", "learning_material_themes_normalized", "organizations"
         }
         has_text = document["url"] and "codarts" not in document["url"] and "youtu" not in document["url"]
         if not has_text:

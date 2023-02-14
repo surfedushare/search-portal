@@ -17,7 +17,7 @@ class Command(PipelineCommand):
         parser.add_argument('-np', '--no-promote', action="store_true")
         parser.add_argument('-se', '--skip-evaluation', action="store_true")
         parser.add_argument('-si', '--site', type=int, default=1)
-        parser.add_argument('-el', '--educational-level', type=int, default=EducationalLevels.APPLIED_SCIENCE)
+        parser.add_argument('-el', '--educational-level', type=int, required=False)
 
     def handle(self, *args, **options):
 
@@ -26,7 +26,7 @@ class Command(PipelineCommand):
         should_promote = not options["no_promote"]
         skip_evaluation = options["skip_evaluation"] or version
         site = Site.objects.get(id=options["site"])
-        educational_level = options["educational_level"]
+        educational_level = options.get("educational_level", None)
 
         dataset = Dataset.objects.get(name=dataset_name)
         version_filter = {}
@@ -48,7 +48,10 @@ class Command(PipelineCommand):
         self.logger.end(f"index.site.{SITE_SHORTHAND_BY_DOMAIN[site.domain]}")
 
     def _create_indices(self, dataset_version, site, educational_level, should_promote):
-        lang_doc_dict = dataset_version.get_search_documents_by_language(minimal_educational_level=educational_level)
+        filters = {}
+        if educational_level:
+            filters = {"properties__lowest_educational_level__gte": educational_level}
+        lang_doc_dict = dataset_version.get_search_documents_by_language(**filters)
         for lang in lang_doc_dict.keys():
             self.logger.info(f'{lang}:{len(lang_doc_dict[lang])}')
 
@@ -58,7 +61,7 @@ class Command(PipelineCommand):
                 name=f"{dataset_version.dataset.name}-{dataset_version.version}-{dataset_version.id}",
                 language=lang,
                 site=site,
-                educational_level=educational_level,
+                educational_level=educational_level if educational_level else EducationalLevels.APPLIED_SCIENCE,
                 defaults={
                     "dataset_version": dataset_version,
                     "configuration": ElasticIndex.get_index_config(lang)

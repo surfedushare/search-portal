@@ -19,8 +19,8 @@ service_environment, _ = create_configuration_and_session(service="service")
 service_collection = Collection("srv", setup_postgres_localhost, import_snapshot, deploy, sync_upload_media,
                                 make_translations)
 service_collection.configure(service_environment)
-aws_collection = Collection("aws", build, push, migrate, promote, print_available_images, sync_repository_state,
-                            publish_runner_image, cleanup_ecs_artifacts, publish_tika_image)
+aws_collection = Collection("aws", build, push, migrate, promote, print_available_images,
+                            sync_repository_state, publish_runner_image, cleanup_ecs_artifacts, publish_tika_image)
 aws_collection.configure(service_environment)
 test_collection.configure(service_environment)
 

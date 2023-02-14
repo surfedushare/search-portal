@@ -42,9 +42,8 @@ services:
     ports:
       - "6379:6379"
 
-  analyzer:
-    image: apache/tika:latest
-    command: -c ./config/tika-config.xml
+  tika:
+    image: 017973353230.dkr.ecr.eu-central-1.amazonaws.com/harvester-tika:latest
     volumes:
       - ./tika/tika-config.xml:/config/tika-config.xml
       - ./tika/tika-extras:/tika-extras

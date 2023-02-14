@@ -10,6 +10,16 @@ class Repositories:
     BUAS = "sources.BuasPureResource"
 
 
+def get_repository_id(repository_resource):
+    repository_id = next(
+        (choice[1] for choice in REPOSITORY_CHOICES if choice[0] == repository_resource),
+        None
+    )
+    if repository_id is None:
+        return
+    return repository_id.lower()
+
+
 REPOSITORY_CHOICES = [
     (value, attr.lower().capitalize())
     for attr, value in sorted(Repositories.__dict__.items()) if not attr.startswith("_")
@@ -72,7 +82,7 @@ RESTRICTED_MATERIAL_SETS = {
 MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN = {
     "harvester.prod.surfedushare.nl": 2,
     "harvester.mbo.prod.surfedushare.nl": 1,
-    "harvester.publinova.nl": 2,
+    "harvester.publinova.nl": None,
 }
 
 SITE_SHORTHAND_BY_DOMAIN = {

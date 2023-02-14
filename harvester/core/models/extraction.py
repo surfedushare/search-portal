@@ -14,7 +14,7 @@ OBJECTIVE_PROPERTIES = {
 }
 
 
-class ExtractionMethod(models.Model):
+class ExtractionMethod(object):
     method = models.CharField(max_length=256)
     processor = models.CharField(max_length=256)
 
@@ -22,25 +22,25 @@ class ExtractionMethod(models.Model):
         return f"{self.processor}.{self.method}"
 
 
-class MethodExtractionField(models.Model):
-    method = models.ForeignKey(ExtractionMethod, on_delete=models.CASCADE)
+class MethodExtractionField(object):
+    method = models.ForeignKey("ExtractionMethod", on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.method)
 
 
-class JSONExtractionField(models.Model):
+class JSONExtractionField(object):
     path = models.CharField(max_length=256)
 
     def __str__(self):
         return self.path
 
 
-class ObjectiveProperty(models.Model):
+class ObjectiveProperty(object):
 
     mapping = models.ForeignKey("ExtractionMapping", on_delete=models.CASCADE)
-    json_field = models.ForeignKey(JSONExtractionField, on_delete=models.PROTECT, null=True, blank=True)
-    method_field = models.ForeignKey(MethodExtractionField, on_delete=models.PROTECT, null=True, blank=True)
+    json_field = models.ForeignKey("JSONExtractionField", on_delete=models.PROTECT, null=True, blank=True)
+    method_field = models.ForeignKey("MethodExtractionField", on_delete=models.PROTECT, null=True, blank=True)
     property = models.CharField(choices=sorted([(prop, prop,) for prop in OBJECTIVE_PROPERTIES]), max_length=50)
     is_context = models.BooleanField(default=False)
     is_protected = models.BooleanField(default=False)
@@ -53,15 +53,15 @@ class ObjectiveProperty(models.Model):
         verbose_name_plural = "objective properties"
 
 
-class ExtractionMapping(models.Model):
+class ExtractionMapping(object):
 
     name = models.CharField(max_length=100, default="develop")
     repository = models.CharField(max_length=50, choices=REPOSITORY_CHOICES)
     root = models.CharField(max_length=256, default="$")
     is_active = models.BooleanField(default=True)
 
-    method_fields = models.ManyToManyField(MethodExtractionField, related_name="+", through=ObjectiveProperty)
-    json_fields = models.ManyToManyField(JSONExtractionField, related_name="+", through=ObjectiveProperty)
+    method_fields = models.ManyToManyField("MethodExtractionField", related_name="+", through="ObjectiveProperty")
+    json_fields = models.ManyToManyField("JSONExtractionField", related_name="+", through="ObjectiveProperty")
 
     def to_objective(self):
         methods = {}

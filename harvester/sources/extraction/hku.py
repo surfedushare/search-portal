@@ -102,6 +102,10 @@ class HkuMetadataExtraction(ExtractProcessor):
     def get_copyright(cls, node):
         if node["licence"] == "Creative Commons Non-Commercial license":
             return "cc-by-nc-40"
+        elif node["licence"] == "Niet commerieel - geen afgeleide werken (CC BY-NC-ND)":
+            return "cc-by-nc-nd-40"
+        elif node["licence"] == "Niet commercieel - geen afgeleide werken (CC BY-NC-ND)":
+            return "cc-by-nc-nd-40"
         return "yes"
 
     @classmethod
@@ -135,6 +139,19 @@ class HkuMetadataExtraction(ExtractProcessor):
         return datetime.year
 
     @classmethod
+    def get_organizations(cls, node):
+        return {
+            "root": {
+                "id": None,
+                "slug": "hku",
+                "name": "Hogeschool voor de Kunsten Utrecht",
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, node):
         return ["Hogeschool voor de Kunsten Utrecht"]
 
@@ -144,10 +161,8 @@ class HkuMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = HkuMetadataExtraction.get_copyright(node)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        # As agreed upon with an email by Emile Bijk on 1 December 2022
+        return True
 
 
 HKU_EXTRACTION_OBJECTIVE = {
@@ -161,6 +176,7 @@ HKU_EXTRACTION_OBJECTIVE = {
     "description": "$.description",
     "mime_type": HkuMetadataExtraction.get_mime_type,
     "authors": HkuMetadataExtraction.get_authors,
+    "organizations": HkuMetadataExtraction.get_organizations,
     "publishers": HkuMetadataExtraction.get_publishers,
     "publisher_date": lambda node: None,
     "publisher_year": HkuMetadataExtraction.get_publisher_year,

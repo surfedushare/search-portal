@@ -58,7 +58,7 @@ class Command(PipelineCommand):
                     }
                 }
             })
-            results.append(tika_processor(collection.documents.all()))
+            results.append(tika_processor(collection.documents.exclude(properties__url=None)))
 
             extruct_processor = HttpPipelineProcessor({
                 "pipeline_app_label": "core",

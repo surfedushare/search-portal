@@ -2,14 +2,14 @@ import re
 from mimetypes import guess_type
 from hashlib import sha1
 from dateutil.parser import parse as date_parser
+from itertools import chain
 
 from django.conf import settings
 
 from datagrowth.processors import ExtractProcessor
 from datagrowth.utils import reach
 
-from core.models import ExtractionMapping
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS, Repositories
+from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
 
 
 class SharekitMetadataExtraction(ExtractProcessor):
@@ -116,6 +116,27 @@ class SharekitMetadataExtraction(ExtractProcessor):
         ]
 
     @classmethod
+    def get_organizations(cls, node):
+        organization_id = None
+        organization_slug = None
+        organization_name = None
+        publishers = node["attributes"].get("publishers", [])
+        if isinstance(publishers, str):
+            organization_name = publishers
+        elif len(publishers):
+            organization_name = publishers[0]
+        return {
+            "root": {
+                "id": organization_id,
+                "slug": organization_slug,
+                "name": organization_name,
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_consortium(cls, node):
         consortium = node["attributes"].get("consortium", None)
         if consortium is None:
@@ -180,7 +201,9 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_ideas(cls, node):
-        compound_ideas = [vocabulary["value"] for vocabulary in node["attributes"].get("vocabularies", [])]
+        vocabularies = node["attributes"].get("vocabularies", {})
+        terms = chain(*vocabularies.values())
+        compound_ideas = [term["value"] for term in terms]
         if not compound_ideas:
             return []
         ideas = []
@@ -244,6 +267,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "copyright_description": SharekitMetadataExtraction.get_none,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
+    "organizations": SharekitMetadataExtraction.get_organizations,
     "publishers": SharekitMetadataExtraction.get_publishers,
     "publisher_date": "$.attributes.publishedAt",
     "publisher_year": SharekitMetadataExtraction.get_publisher_year,
@@ -266,17 +290,12 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
 
 
 def create_objective(root=None, include_is_restricted=True):
-    extraction_mapping_queryset = ExtractionMapping.objects.filter(is_active=True, repository=Repositories.SHAREKIT)
-    if extraction_mapping_queryset.exists():
-        extraction_mapping = extraction_mapping_queryset.last()
-        objective = extraction_mapping.to_objective()
-    else:
-        objective = {
-            "@": "$.data",
-            "external_id": "$.id",
-            "state": SharekitMetadataExtraction.get_record_state
-        }
-        objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
+    objective = {
+        "@": "$.data",
+        "external_id": "$.id",
+        "state": SharekitMetadataExtraction.get_record_state
+    }
+    objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
     if root:
         objective["@"] = root
     if not include_is_restricted:

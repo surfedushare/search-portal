@@ -129,5 +129,4 @@ class ShellPipelineProcessor(ResourcePipelineProcessor):
         return run(*args, **kwargs, config=config)
 
     def resource_is_empty(self, resource):
-        # TODO make this configurable
         return False

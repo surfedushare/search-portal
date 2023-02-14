@@ -11,7 +11,97 @@
         "is_active": true
     }
 },
-
+{
+    "model": "core.harvest",
+    "pk": 1,
+    "fields": {
+        "source": 1,
+        "dataset": 24,
+        "latest_update_at": "2023-02-07T01:01:55.658Z",
+        "harvested_at": "2023-02-08T01:01:53.521Z",
+        "purge_after": "2023-02-22T13:17:04.602Z",
+        "stage": "Complete",
+        "is_syncing": false
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 2,
+    "fields": {
+        "source": 2,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": "2023-02-08T01:04:03.428Z",
+        "purge_after": "2023-03-10T01:01:49.655Z",
+        "stage": "Complete",
+        "is_syncing": false
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 3,
+    "fields": {
+        "source": 3,
+        "dataset": 24,
+        "latest_update_at": "2023-02-07T01:03:30.747Z",
+        "harvested_at": "2023-02-08T01:03:24.991Z",
+        "purge_after": "2023-02-22T13:17:03.916Z",
+        "stage": "Complete",
+        "is_syncing": false
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 4,
+    "fields": {
+        "source": 4,
+        "dataset": 24,
+        "latest_update_at": "2023-02-07T01:04:12.836Z",
+        "harvested_at": "2023-02-08T01:04:03.866Z",
+        "purge_after": "2023-02-22T13:17:04.156Z",
+        "stage": "Complete",
+        "is_syncing": false
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 5,
+    "fields": {
+        "source": 5,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": "2023-02-08T01:04:10.283Z",
+        "purge_after": "2023-03-10T01:01:49.691Z",
+        "stage": "Complete",
+        "is_syncing": false
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 6,
+    "fields": {
+        "source": 6,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": "2023-02-08T01:06:14.085Z",
+        "purge_after": "2023-03-10T01:01:49.767Z",
+        "stage": "Complete",
+        "is_syncing": false
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 7,
+    "fields": {
+        "source": 7,
+        "dataset": 24,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": "2023-02-08T01:02:02.361Z",
+        "purge_after": "2023-03-10T01:01:49.931Z",
+        "stage": "Complete",
+        "is_syncing": false
+    }
+},
 {
     "model": "core.harvestsource",
     "pk": 1,
@@ -19,24 +109,102 @@
         "name": "Sharekit",
         "repository": "sharekit.SharekitMetadataHarvest",
         "spec": "nppo",
-        "delete_policy": "no",
+        "delete_policy": "transient",
         "purge_interval": {
             "days": 30
         },
         "created_at": "2021-04-14T13:54:20.742Z",
-        "modified_at": "2021-04-14T14:13:21.119Z"
+        "modified_at": "2022-08-05T06:18:31.402Z"
     }
 },
 {
-    "model": "core.harvest",
-    "pk": 1,
+    "model": "core.harvestsource",
+    "pk": 2,
     "fields": {
-        "source": 1,
-        "dataset": 24,
-        "latest_update_at": "1970-01-01T00:00:00Z",
-        "harvested_at": null,
-        "purge_after": null,
-        "stage": "New"
+        "name": "Hogeschool voor de Kunsten Utrecht",
+        "repository": "sources.HkuMetadataResource",
+        "spec": "hku",
+        "delete_policy": "no",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2022-04-27T07:45:27.248Z",
+        "modified_at": "2022-04-27T07:45:27.248Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 3,
+    "fields": {
+        "name": "Hogeschool van Arnhem en Nijmegen",
+        "repository": "sources.HanOAIPMHResource",
+        "spec": "col_20.500.12470_2",
+        "delete_policy": "transient",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2022-04-27T07:47:10.548Z",
+        "modified_at": "2022-04-27T07:47:10.548Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 4,
+    "fields": {
+        "name": "VHL",
+        "repository": "sources.GreeniOAIPMHResource",
+        "spec": "PUBVHL",
+        "delete_policy": "transient",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2022-04-27T07:48:03.742Z",
+        "modified_at": "2022-04-27T07:48:03.742Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 5,
+    "fields": {
+        "name": "Hogeschool van Amsterdam",
+        "repository": "sources.HvaPureResource",
+        "spec": "hva",
+        "delete_policy": "no",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2022-04-27T07:49:29.188Z",
+        "modified_at": "2022-04-27T07:49:29.188Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 6,
+    "fields": {
+        "name": "BUAS",
+        "repository": "sources.BuasPureResource",
+        "spec": "buas",
+        "delete_policy": "no",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2022-04-29T10:08:49.472Z",
+        "modified_at": "2022-04-29T10:08:49.472Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 7,
+    "fields": {
+        "name": "Hanze",
+        "repository": "sources.HanzeResearchObjectResource",
+        "spec": "hanze",
+        "delete_policy": "no",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2022-11-10T16:12:03.735Z",
+        "modified_at": "2022-11-11T07:59:11.438Z"
     }
 }
 ]

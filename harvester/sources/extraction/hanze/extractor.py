@@ -11,20 +11,10 @@ from sources.extraction.hanze.research_themes import ASJC_TO_RESEARCH_THEME
 
 class HanzeResourceObjectExtraction(ExtractProcessor):
 
-    OBJECTIVE = None
-
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
 
     @classmethod
     def get_record_state(cls, node):
-        # Hanze wants to filter out products that have no research_focus_areas or research_line
-        for keywords in node.get("keywordGroups", []):
-            if keywords["logicalName"] == "research_focus_areas":
-                for classification in keywords["classifications"]:
-                    if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
-                        return "inactive"
-                    elif classification["uri"] == "research_focus_areas/02g_no_research_line_applicable":
-                        return "inactive"
         return "active"
 
     #############################
@@ -43,20 +33,24 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
             mime_type = "text/html"
         else:
             return
+        access_type = electronic_version.get("accessType", {})
         return {
             "title": file_name,
             "url": url,
             "mime_type": mime_type,
-            "hash": sha1(url.encode("utf-8")).hexdigest()
+            "hash": sha1(url.encode("utf-8")).hexdigest(),
+            "copyright": None,
+            "is_open_access": access_type.get("uri", "").endswith("/open")
         }
 
     @classmethod
     def get_files(cls, node):
-        if "electronicVersions" not in node:
+        electronic_versions = node.get("electronicVersions", []) + node.get("additionalFiles", [])
+        if not electronic_versions:
             return []
         return [
             cls._parse_electronic_version(electronic_version)
-            for electronic_version in node["electronicVersions"] if cls._parse_electronic_version(electronic_version)
+            for electronic_version in electronic_versions if cls._parse_electronic_version(electronic_version)
         ]
 
     @classmethod
@@ -98,13 +92,36 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        return "open-access"
+        files = cls.get_files(node)
+        if not len(files):
+            return "closed-access"
+        return "open-access" if files[0]["is_open_access"] else "closed-access"
 
     @classmethod
     def get_description(cls, node):
         if "abstract" not in node:
             return
         return next(iter(node["abstract"].values()), None)
+
+    @classmethod
+    def get_keywords(cls, node):
+        results = []
+        for keywords in node.get("keywordGroups", []):
+            match keywords["logicalName"]:
+                case "keywordContainers":
+                    for free_keywords in keywords["keywords"]:
+                        results += free_keywords["freeKeywords"]
+                case "ASJCSubjectAreas":
+                    for classification in keywords["classifications"]:
+                        results.append(classification["term"]["en_GB"])
+                case "research_focus_areas":
+                    for classification in keywords["classifications"]:
+                        if classification["uri"] == "research_focus_areas/05/no_hanze_research_focus_area_applicable":
+                            continue
+                        elif classification["uri"] == "research_focus_areas/02g_no_research_line_applicable":
+                            continue
+                        results.append(classification["term"]["en_GB"])
+        return list(set(results))
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -133,11 +150,57 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
                 "orcid": None,
                 "isni": None
             })
+        # We'll put the first Hanze author as first author in the list
+        # Within Publinova this person will become the owner and contact person
+        first_hanze_author_index = next(
+            (ix for ix, person in enumerate(node["contributors"]) if "externalPerson" not in person),
+            None
+        )
+        if first_hanze_author_index is not None:
+            first_hanze_author = authors.pop(first_hanze_author_index)
+            authors = [first_hanze_author] + authors
         return authors
+
+    @classmethod
+    def get_organizations(cls, node):
+        return {
+            "root": {
+                "id": None,
+                "slug": "hanze",
+                "name": "Hanze",
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
 
     @classmethod
     def get_publishers(cls, node):
         return ["Hanze"]
+
+    @classmethod
+    def get_publisher_date(cls, node):
+        current_publication = next(
+            (publication for publication in node["publicationStatuses"] if publication["current"]),
+            None
+        )
+        if not current_publication:
+            return
+        publication_date = current_publication["publicationDate"]
+        year = publication_date["year"]
+        month = publication_date.get("month", 1)
+        day = publication_date.get("day", 1)
+        return f"{year}-{month:02}-{day:02}"
+
+    @classmethod
+    def get_publisher_year(cls, node):
+        current_publication = next(
+            (publication for publication in node["publicationStatuses"] if publication["current"]),
+            None
+        )
+        if not current_publication:
+            return
+        return current_publication["publicationDate"]["year"]
 
     @classmethod
     def get_lom_educational_levels(cls, node):
@@ -151,19 +214,17 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_is_restricted(cls, node):
-        electronic_versions = node.get("electronicVersions", [])
-        if not electronic_versions:
+        files = cls.get_files(node)
+        if not len(files):
             return True
-        main_file = electronic_versions[0]
-        access = main_file.get("accessType", {}).get("term", {}).get("en_GB", None)
-        return access != "Open"
+        return not files[0]["is_open_access"]
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = HanzeResourceObjectExtraction.get_copyright(node)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        files = cls.get_files(node)
+        if not len(files):
+            return False
+        return files[0]["is_open_access"]
 
     @classmethod
     def get_doi(cls, node):
@@ -195,13 +256,14 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     "copyright": HanzeResourceObjectExtraction.get_copyright,
     "title": "$.title.value",
     "language": HanzeResourceObjectExtraction.get_language,
-    "keywords": "$.keywordGroups.0.keywords.0.freeKeywords",
+    "keywords": HanzeResourceObjectExtraction.get_keywords,
     "description": HanzeResourceObjectExtraction.get_description,
     "mime_type": HanzeResourceObjectExtraction.get_mime_type,
     "authors": HanzeResourceObjectExtraction.get_authors,
+    "organizations": HanzeResourceObjectExtraction.get_organizations,
     "publishers": HanzeResourceObjectExtraction.get_publishers,
-    "publisher_date": lambda node: None,
-    "publisher_year": "$.publicationStatuses.0.publicationDate.year",
+    "publisher_date": HanzeResourceObjectExtraction.get_publisher_date,
+    "publisher_year": HanzeResourceObjectExtraction.get_publisher_year,
 
     # Non-essential NPPO properties
     "technical_type": HanzeResourceObjectExtraction.get_technical_type,
