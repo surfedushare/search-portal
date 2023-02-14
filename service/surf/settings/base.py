@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework',
     'django_filters',
+    'waffle',
 
     # SURF apps
     'surf',
@@ -131,6 +132,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'waffle.middleware.WaffleMiddleware',
 ]
 
 ROOT_URLCONF = 'surf.urls'

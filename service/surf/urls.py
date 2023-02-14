@@ -118,7 +118,7 @@ urlpatterns = [
     # Authentication
     # Catching frontend login endpoints before social auth handles "login" prefix
     url(r'^login/(permissions|success)/?', portal_single_page_application),
-    url('', include('social_django.urls', namespace='social')),
+    url('', include('social_django.urls', namespace='social'), include('waffle.urls')),
     url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
 
     # Admin interface
