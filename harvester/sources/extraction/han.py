@@ -1,3 +1,4 @@
+import os
 import re
 from hashlib import sha1
 
@@ -38,6 +39,13 @@ class HanDataExtraction(object):
     def parse_vcard_element(el):
         card = "\n".join(field.strip() for field in el.text.strip().split("\n"))
         return vobject.readOne(card)
+
+    @staticmethod
+    def _serialize_access_rights(access_rights):
+        access_rights = access_rights.replace("Access", "")
+        access_rights = access_rights.lower()
+        access_rights += "-access"
+        return access_rights
 
     @classmethod
     def get_oaipmh_records(cls, soup):
@@ -93,15 +101,21 @@ class HanDataExtraction(object):
         match resource_type:
             case "file":
                 title = f"Attachment {ix+1}"
+                access_rights_node = item.find("dcterms:accessrights")
+                _, access_rights = os.path.split(access_rights_node.text.strip())
             case "link":
                 title = f"URL {ix+1}"
+                access_rights = "OpenAccess"
             case _:
                 title = None
+                access_rights = None
         return {
             "mime_type": element.get("mimetype", None),
             "url": url,
             "hash": sha1(url.encode("utf-8")).hexdigest(),
-            "title": title
+            "title": title,
+            "copyright": None,
+            "access_rights": access_rights
         }
 
     @classmethod
@@ -131,13 +145,10 @@ class HanDataExtraction(object):
 
     @classmethod
     def get_copyright(cls, soup, el):
-        metadata = cls.find_metadata(el)
-        if not metadata:
-            return
-        copyright_element = metadata.find("mods:accesscondition")
-        if not copyright_element:
-            return
-        return "open-access" if "openAccess" in copyright_element["type"] else "yes"
+        files = cls.get_files(soup, el)
+        if not len(files):
+            return "closed-access"
+        return cls._serialize_access_rights(files[0]["access_rights"])
 
     @classmethod
     def get_language(cls, soup, el):
@@ -220,14 +231,16 @@ class HanDataExtraction(object):
 
     @classmethod
     def get_is_restricted(cls, soup, el):
-        return False
+        return not cls.get_analysis_allowed(soup, el)
 
     @classmethod
     def get_analysis_allowed(cls, soup, el):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = HanDataExtraction.get_copyright(soup, el)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        files = cls.get_files(soup, el)
+        if not len(files):
+            return False
+        file = files[0]
+        copyright_allows = file["copyright"] and file["copyright"] != "yes" and "nd" not in file["copyright"]
+        return file["access_rights"] == "OpenAccess" or copyright_allows
 
     @classmethod
     def get_research_object_type(cls, soup, el):

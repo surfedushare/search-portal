@@ -31,13 +31,17 @@ class TestGetHarvestSeedsHan(TestCase):
                 "url": "https://repository.han.nl/han/bitstream/handle/20.500.12470/7/"
                        "A-artikel_Webcare_en_reputatieschade.pdf",
                 "hash": "dfe656e9bdb0c1597ec44a74be46ac7eaa2dce3c",
-                "title": "Attachment 1"
+                "title": "Attachment 1",
+                "copyright": None,
+                "access_rights": "OpenAccess"
             },
             {
                 "mime_type": "text/html",
                 "url": "http://hdl.handle.net/20.500.12470/7",
                 "hash": "3f679086acfed2dddbb549dc24def669f59793ed",
-                "title": "URL 1"
+                "title": "URL 1",
+                "copyright": None,
+                "access_rights": "OpenAccess"
             }
         ])
         self.assertEqual(seeds[2]["files"], [], "Expected deleted record to have no files")
@@ -57,12 +61,11 @@ class TestGetHarvestSeedsHan(TestCase):
 
     def test_get_copyright(self):
         seeds = self.seeds
-        self.assertEqual(len(seeds), 200, "Expected get_harvest_seeds to filter differently based on copyright")
         self.assertEqual(seeds[0]["copyright"], "open-access")
-        self.assertIsNone(seeds[2]["copyright"], "Expected deleted record to have no copyright")
-        seeds = get_harvest_seeds(Repositories.HAN, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 67, "Expected get_harvest_seeds to delete invalid copyright")
-        self.assertEqual(seeds[1]["copyright"], "open-access")
+        self.assertEqual(
+            seeds[2]["copyright"], "closed-access",
+            "Expected deleted record to have closed access copyright"
+        )
 
     def test_get_language(self):
         self.skipTest("Not implemented yet, but seems essential for the system to function")

@@ -10,6 +10,8 @@ from sources.factories.hku.extraction import HkuMetadataResourceFactory, SET_SPE
 
 class TestGetHarvestSeedsHku(TestCase):
 
+    begin_of_time = None
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -33,11 +35,17 @@ class TestGetHarvestSeedsHku(TestCase):
                 "mime_type": "application/pdf",
                 "url": "https://octo.hku.nl/octo/repository/getfile?id=zZQC1ZBu8c4",
                 "hash": "9ac373e877133f0c00173bd02d82b1861c9934a2",
-                "title": "Budapest2005.pdf"
+                "title": "Budapest2005.pdf",
+                "copyright": "cc-by-nc-40",
+                "is_open_access": True
             }
         ])
         all_seeds = get_harvest_seeds(Repositories.HKU, SET_SPECIFICATION, self.begin_of_time, include_no_url=True)
         self.assertEqual(all_seeds[21]["files"], [])
+
+    def test_get_copyright(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["copyright"], "cc-by-nc-40")
 
     def test_get_url(self):
         seeds = self.seeds

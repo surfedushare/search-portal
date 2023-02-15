@@ -32,14 +32,26 @@ class HvaMetadataExtraction(ExtractProcessor):
         else:
             return
         access_type = electronic_version.get("accessType", {})
+        access_rights = "ClosedAccess"
+        if access_type.get("uri", "").endswith("/open"):
+            access_rights = "OpenAccess"
+        elif access_type.get("uri", "").endswith("/restricted"):
+            access_rights = "RestrictedAccess"
         return {
             "title": file_name,
             "url": url,
             "mime_type": mime_type,
             "hash": sha1(url.encode("utf-8")).hexdigest(),
             "copyright": None,
-            "is_open_access": access_type.get("uri", "").endswith("/open")
+            "access_rights": access_rights
         }
+
+    @staticmethod
+    def _serialize_access_rights(access_rights):
+        access_rights = access_rights.replace("Access", "")
+        access_rights = access_rights.lower()
+        access_rights += "-access"
+        return access_rights
 
     @classmethod
     def get_files(cls, node):
@@ -93,7 +105,7 @@ class HvaMetadataExtraction(ExtractProcessor):
         files = cls.get_files(node)
         if not len(files):
             return "closed-access"
-        return "open-access" if files[0]["is_open_access"] else "closed-access"
+        return cls._serialize_access_rights(files[0]["access_rights"])
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -149,17 +161,16 @@ class HvaMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_is_restricted(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return True
-        return not files[0]["is_open_access"]
+        return not cls.get_analysis_allowed(node)
 
     @classmethod
     def get_analysis_allowed(cls, node):
         files = cls.get_files(node)
         if not len(files):
             return False
-        return files[0]["is_open_access"]
+        file = files[0]
+        copyright_allows = file["copyright"] and file["copyright"] != "yes" and "nd" not in file["copyright"]
+        return file["access_rights"] == "OpenAccess" or copyright_allows
 
     @classmethod
     def get_doi(cls, node):

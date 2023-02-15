@@ -51,13 +51,16 @@ class HkuMetadataExtraction(ExtractProcessor):
         document = node["document"]
         if not document:
             return []
+        default_copyright = cls.get_copyright(node)
         file_object = document["file"]
         return [
             {
                 "title": file_object["title"],
                 "url": file_object["raw"],
                 "mime_type": FILE_TYPE_TO_MIME_TYPE.get(file_object["type"]),
-                "hash": sha1(file_object["raw"].encode("utf-8")).hexdigest()
+                "hash": sha1(file_object["raw"].encode("utf-8")).hexdigest(),
+                "copyright": default_copyright,
+                "is_open_access": True  # as agreed upon with an email by Emile Bijk on 1 December 2022
             }
         ]
 

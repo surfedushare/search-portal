@@ -14,14 +14,12 @@ def prepare_seed(seed):
         return
     if not seed["copyright"] or seed["copyright"] in ["yes", "unknown"]:
         seed["state"] = "inactive"
-    if seed["lowest_educational_level"] < 1 and settings.PROJECT == "edusources":  # lower level than MBO
+    if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HO
         seed["state"] = "inactive"
     if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "production":
         seed["state"] = "skipped"
     if settings.PROJECT == "nppo" and seed["copyright"] == "closed-access":
         seed["state"] = "inactive"
-    if seed.get("is_restricted", False):
-        seed["analysis_allowed"] = False
 
 
 def get_harvest_seeds(repository, set_specification, latest_update, include_deleted=True, include_no_url=False):
