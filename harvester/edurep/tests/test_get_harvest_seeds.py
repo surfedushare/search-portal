@@ -62,6 +62,15 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
             {'name': 'Ruud Kok', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
         ])
 
+    def test_organizations_property(self):
+        seeds = self.seeds
+        self.assertIsNone(seeds[0]['organizations']['root']['name'])
+        self.assertEqual(
+            seeds[3]['organizations']['root']['name'],
+            'AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'
+        )
+        self.assertEqual(seeds[5]['organizations']['root']['name'], 'SURFnet')
+
     def test_publishers_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[3]['publishers'], ['AERES Hogeschool; HAS Hogeschool; Van Hall Larenstein'])

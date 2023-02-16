@@ -76,6 +76,16 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             "lowest_educational_level": 3,
             "authors": [],
             "publishers": [],
+            "organizations": {
+                "root": {
+                    "id": None,
+                    "slug": None,
+                    "name": None,
+                    "is_consortium": False
+                },
+                "departments": [],
+                "associates": []
+            },
             "description": "Gedrag is zorgwekkend",
             "publisher_date": None,
             "copyright": "cc-by-40",

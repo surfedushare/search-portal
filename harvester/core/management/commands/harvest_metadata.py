@@ -4,7 +4,7 @@ from django.core.management import CommandError
 from django.utils.timezone import now
 from django.apps import apps
 
-from core.constants import HarvestStages
+from core.constants import HarvestStages, get_repository_id
 from core.management.base import PipelineCommand
 from core.models import (Collection, DatasetVersion, Document, Extension,
                          Harvest)
@@ -129,8 +129,8 @@ class Command(PipelineCommand):
         dataset_name = options["dataset"]
         dataset_version = DatasetVersion.objects.get_latest_version(dataset_name=dataset_name)
         repository_resource = options["repository"]
-        repository, resource = repository_resource.split(".")
-        harvest_phase = f"seeds.{repository}"
+        repository_id = get_repository_id(repository_resource)
+        harvest_phase = f"seeds.{repository_id}"
 
         self.logger.start(harvest_phase)
 

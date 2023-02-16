@@ -193,6 +193,20 @@ class GreeniDataExtraction(object):
         return authors
 
     @classmethod
+    def get_organizations(cls, soup, el):
+        publisher = el.find("publisher")
+        return {
+            "root": {
+                "id": None,
+                "slug": None,
+                "name": publisher.text.strip() if publisher else None,
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, soup, el):
         publisher = el.find("publisher")
         return [publisher.text.strip()] if publisher else []
@@ -256,6 +270,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "description": GreeniDataExtraction.get_description,
     "mime_type": GreeniDataExtraction.get_mime_type,
     "authors": GreeniDataExtraction.get_authors,
+    "organizations": GreeniDataExtraction.get_organizations,
     "publishers": GreeniDataExtraction.get_publishers,
     "publisher_date": lambda soup, el: None,
     "publisher_year": GreeniDataExtraction.get_publisher_year,

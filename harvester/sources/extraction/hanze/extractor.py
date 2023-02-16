@@ -162,6 +162,19 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         return authors
 
     @classmethod
+    def get_organizations(cls, node):
+        return {
+            "root": {
+                "id": None,
+                "slug": "hanze",
+                "name": "Hanze",
+                "is_consortium": False
+            },
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, node):
         return ["Hanze"]
 
@@ -247,6 +260,7 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     "description": HanzeResourceObjectExtraction.get_description,
     "mime_type": HanzeResourceObjectExtraction.get_mime_type,
     "authors": HanzeResourceObjectExtraction.get_authors,
+    "organizations": HanzeResourceObjectExtraction.get_organizations,
     "publishers": HanzeResourceObjectExtraction.get_publishers,
     "publisher_date": HanzeResourceObjectExtraction.get_publisher_date,
     "publisher_year": HanzeResourceObjectExtraction.get_publisher_year,
