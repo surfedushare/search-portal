@@ -43,7 +43,7 @@ class TestBasicHarvest(TestCase):
                 "contribute_data": {
                     "objective": {
                         "@": "$",
-                        "text": "$.text"
+                        "text": "$.0.X-TIKA:content"
                     }
                 }
             }
