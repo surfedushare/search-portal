@@ -1,3 +1,4 @@
+import os
 import re
 from mimetypes import guess_type
 from hashlib import sha1
@@ -54,12 +55,16 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         ]
 
     @classmethod
+    def get_locale(cls, node):
+        locale_uri = node["language"]["uri"]
+        _, locale = os.path.split(locale_uri)
+        return locale
+
+    @classmethod
     def get_language(cls, node):
-        language = node["language"]["term"]["en_GB"]
-        if language == "Dutch":
-            return "nl"
-        elif language == "English":
-            return "en"
+        locale = cls.get_locale(node)
+        if locale in ["en_GB", "nl_NL"]:
+            return locale[:2]
         return "unk"
 
     @classmethod
@@ -101,7 +106,8 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
     def get_description(cls, node):
         if "abstract" not in node:
             return
-        return next(iter(node["abstract"].values()), None)
+        locale = cls.get_locale(node)
+        return node["abstract"][locale]
 
     @classmethod
     def get_keywords(cls, node):
