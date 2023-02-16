@@ -148,10 +148,11 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
                     full_name = last_name
                 case _:
                     full_name = None
+            person_data = person.get("person", person.get("externalPerson", {}))
             authors.append({
                 "name": full_name,
                 "email": None,
-                "external_id": person.get("person", {}).get("uuid", None),
+                "external_id": person_data.get("uuid", None),
                 "dai": None,
                 "orcid": None,
                 "isni": None

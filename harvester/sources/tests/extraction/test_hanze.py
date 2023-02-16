@@ -118,7 +118,14 @@ class TestGetHarvestSeedsHanze(TestCase):
                 'orcid': None,
                 'isni': None
             },
-            {'name': 'Teefje Wentel', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
+            {
+                'name': 'Teefje Wentel',
+                'email': None,
+                'external_id': 'e5c04d5d-0f00-4586-9f89-42ccc81f850f',
+                'dai': None,
+                'orcid': None,
+                'isni': None
+            }
         ])
 
     def test_publisher_date(self):
