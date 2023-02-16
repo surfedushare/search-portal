@@ -193,14 +193,20 @@ class AnatomyToolExtraction(object):
         return authors
 
     @classmethod
-    def get_organizations(cls, soup, el):
+    def get_provider(cls, soup, el):
         return {
-            "root": {
-                "id": None,
-                "slug": None,
-                "name": "AnatomyTOOL",
-                "is_consortium": True
-            },
+            "ror": None,
+            "external_id": None,
+            "slug": "anatomy_tool",
+            "name": "AnatomyTOOL"
+        }
+
+    @classmethod
+    def get_organizations(cls, soup, el):
+        root = cls.get_provider(soup, el)
+        root["type"] = "consortium"
+        return {
+            "root": root,
             "departments": [],
             "associates": []
         }
@@ -296,6 +302,7 @@ ANATOMY_TOOL_EXTRACTION_OBJECTIVE = {
     "copyright": AnatomyToolExtraction.get_copyright,
     "aggregation_level": AnatomyToolExtraction.get_aggregation_level,
     "authors": AnatomyToolExtraction.get_authors,
+    "provider": AnatomyToolExtraction.get_provider,
     "organizations": AnatomyToolExtraction.get_organizations,
     "publishers": AnatomyToolExtraction.get_publishers,
     "publisher_date": AnatomyToolExtraction.get_publisher_date,

@@ -116,22 +116,26 @@ class SharekitMetadataExtraction(ExtractProcessor):
         ]
 
     @classmethod
-    def get_organizations(cls, node):
-        organization_id = None
-        organization_slug = None
-        organization_name = None
-        publishers = node["attributes"].get("publishers", [])
+    def get_provider(cls, node):
+        provider_name = None
+        publishers = cls.get_publishers(node)
         if isinstance(publishers, str):
-            organization_name = publishers
-        elif len(publishers):
-            organization_name = publishers[0]
+            provider_name = publishers
+        if len(publishers):
+            provider_name = publishers[0]
         return {
-            "root": {
-                "id": organization_id,
-                "slug": organization_slug,
-                "name": organization_name,
-                "is_consortium": False
-            },
+            "ror": None,
+            "external_id": None,
+            "slug": None,
+            "name": provider_name
+        }
+
+    @classmethod
+    def get_organizations(cls, node):
+        root = cls.get_provider(node)
+        root["type"] = "unknown"
+        return {
+            "root": root,
             "departments": [],
             "associates": []
         }
@@ -267,6 +271,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "copyright_description": SharekitMetadataExtraction.get_none,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
+    "provider": SharekitMetadataExtraction.get_provider,
     "organizations": SharekitMetadataExtraction.get_organizations,
     "publishers": SharekitMetadataExtraction.get_publishers,
     "publisher_date": "$.attributes.publishedAt",
