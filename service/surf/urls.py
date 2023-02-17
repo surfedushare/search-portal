@@ -90,6 +90,7 @@ router.register(r'stats', StatsViewSet, basename="stats")
 apipatterns = public_api_patterns + router.urls + [
     path('openapi', schema_view, name='openapi-schema'),
     path('docs/', swagger_view, name='docs'),
+    url(r'^', include('waffle.urls')),
     url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^users/delete-account/', DeleteAccountAPIView.as_view()),
     url(r'^users/obtain-token/', ObtainTokenAPIView.as_view()),
@@ -118,7 +119,7 @@ urlpatterns = [
     # Authentication
     # Catching frontend login endpoints before social auth handles "login" prefix
     url(r'^login/(permissions|success)/?', portal_single_page_application),
-    url('', include('social_django.urls', namespace='social'), include('waffle.urls')),
+    url('', include('social_django.urls', namespace='social')),
     url(r'^logout/?$', auth_views.LogoutView.as_view(success_url_allowed_hosts=settings.ALLOWED_REDIRECT_HOSTS)),
 
     # Admin interface
