@@ -8,6 +8,7 @@ from core.models import Document
 class DocumentSerializer(DocumentBaseSerializer):
 
     harvest_source = serializers.CharField(source="collection.name")
+    feed = serializers.CharField(source="collection.name")
     properties = serializers.SerializerMethodField()
 
     def get_properties(self, document):
@@ -18,7 +19,7 @@ class DocumentSerializer(DocumentBaseSerializer):
 
     class Meta:
         model = Document
-        fields = DocumentBaseSerializer.default_fields + ("harvest_source",)
+        fields = DocumentBaseSerializer.default_fields + ("harvest_source", "feed",)
 
 
 class MetadataDocumentSerializer(DocumentBaseSerializer):

@@ -125,14 +125,20 @@ class HvaMetadataExtraction(ExtractProcessor):
         return authors
 
     @classmethod
-    def get_organizations(cls, node):
+    def get_provider(cls, node):
         return {
-            "root": {
-                "id": None,
-                "slug": "hva",
-                "name": "Hogeschool van Amsterdam",
-                "is_consortium": False
-            },
+            "ror": None,
+            "external_id": None,
+            "slug": "hva",
+            "name": "Hogeschool van Amsterdam"
+        }
+
+    @classmethod
+    def get_organizations(cls, node):
+        root = cls.get_provider(node)
+        root["type"] = "institute"
+        return {
+            "root": root,
             "departments": [],
             "associates": []
         }

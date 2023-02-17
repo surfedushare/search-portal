@@ -79,6 +79,10 @@ class TestGetHarvestSeedsGreeni(TestCase):
             {'name': 'J. Jonkhof', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
         ])
 
+    def test_get_provider(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["provider"]["slug"], "PUBVHL")
+
     def test_get_organizations(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["organizations"]["root"]["name"], "VHL")

@@ -107,7 +107,7 @@ def build(ctx, target, commit=None, docker_login=False):
     # Gather necessary info and call Docker to build
     target_info = TARGETS[target]
     name = target_info['name']
-    latest_remote_image = f"{REPOSITORY}/{name}:latest"
+    # TODO: remove later: latest_remote_image = f"{REPOSITORY}/{name}:latest"
     ctx.run(
         f"docker build "
         f"--progress=plain "
