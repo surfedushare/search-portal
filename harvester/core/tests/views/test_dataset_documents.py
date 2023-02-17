@@ -30,7 +30,9 @@ class TestDatasetDocumentsAPI(TestCase):
         self.assertEqual(data["count"], 5)
         self.assertIsNotNone(data["next"])
         self.assertIsNone(data["previous"])
-        expected_keys = ["created_at", "id", "identity", "modified_at", "properties", "reference", "source"]
+        expected_keys = [
+            "created_at", "feed", "harvest_source", "id", "identity", "modified_at", "properties", "reference"
+        ]
         for doc in data["results"]:
             self.assertEqual(sorted(list(doc.keys())), expected_keys)
 

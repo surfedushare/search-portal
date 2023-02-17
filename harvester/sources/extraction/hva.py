@@ -125,6 +125,25 @@ class HvaMetadataExtraction(ExtractProcessor):
         return authors
 
     @classmethod
+    def get_provider(cls, node):
+        return {
+            "ror": None,
+            "external_id": None,
+            "slug": "hva",
+            "name": "Hogeschool van Amsterdam"
+        }
+
+    @classmethod
+    def get_organizations(cls, node):
+        root = cls.get_provider(node)
+        root["type"] = "institute"
+        return {
+            "root": root,
+            "departments": [],
+            "associates": []
+        }
+
+    @classmethod
     def get_publishers(cls, node):
         return ["Hogeschool van Amsterdam"]
 
@@ -164,6 +183,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     "description": "$.abstract.en_GB",
     "mime_type": HvaMetadataExtraction.get_mime_type,
     "authors": HvaMetadataExtraction.get_authors,
+    "organizations": HvaMetadataExtraction.get_organizations,
     "publishers": HvaMetadataExtraction.get_publishers,
     "publisher_date": lambda node: None,
     "publisher_year": "$.publicationStatuses.0.publicationDate.year",

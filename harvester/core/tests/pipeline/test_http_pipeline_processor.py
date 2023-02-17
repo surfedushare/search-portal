@@ -36,7 +36,7 @@ class TestHttpPipelineProcessor(TestCase):
             "contribute_data": {
                 "objective": {
                     "@": "$",
-                    "text": "$.text"
+                    "text": "$.0.X-TIKA:content"
                 }
             }
         })
@@ -82,7 +82,7 @@ class TestHttpPipelineProcessor(TestCase):
             "contribute_data": {
                 "objective": {
                     "@": "$",
-                    "text": "$.text"
+                    "text": "$.0.X-TIKA:content"
                 }
             }
         })

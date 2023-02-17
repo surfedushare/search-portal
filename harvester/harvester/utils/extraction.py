@@ -18,6 +18,8 @@ def prepare_seed(seed):
         seed["state"] = "inactive"
     if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "production":
         seed["state"] = "skipped"
+    if settings.PROJECT == "nppo" and seed["copyright"] == "closed-access":
+        seed["state"] = "inactive"
     if seed.get("is_restricted", False):
         seed["analysis_allowed"] = False
 

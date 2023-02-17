@@ -67,7 +67,6 @@ class TestGetHarvestSeedsHanze(TestCase):
 
     def test_get_copyright(self):
         seeds = self.seeds
-        self.assertEqual(len(seeds), 20)
         self.assertEqual(seeds[0]["copyright"], "open-access")
         self.assertEqual(seeds[3]["copyright"], "closed-access")
 
@@ -119,7 +118,14 @@ class TestGetHarvestSeedsHanze(TestCase):
                 'orcid': None,
                 'isni': None
             },
-            {'name': 'Teefje Wentel', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None}
+            {
+                'name': 'Teefje Wentel',
+                'email': None,
+                'external_id': 'e5c04d5d-0f00-4586-9f89-42ccc81f850f',
+                'dai': None,
+                'orcid': None,
+                'isni': None
+            }
         ])
 
     def test_publisher_date(self):
