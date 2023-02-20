@@ -37,7 +37,7 @@ class TestGetHarvestSeedsHku(TestCase):
                 "hash": "9ac373e877133f0c00173bd02d82b1861c9934a2",
                 "title": "Budapest2005.pdf",
                 "copyright": "cc-by-nc-40",
-                "is_open_access": True
+                "access_rights": "OpenAccess"
             }
         ])
         all_seeds = get_harvest_seeds(Repositories.HKU, SET_SPECIFICATION, self.begin_of_time, include_no_url=True)
