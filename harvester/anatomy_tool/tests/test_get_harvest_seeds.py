@@ -24,12 +24,12 @@ class TestGetHarvestSeedsAnatomyTool(SeedExtractionTestCase):
     def test_get_complete_set(self):
         seeds = self.seeds
         self.assertEqual(len(seeds), 10)
-        self.check_seed_integrity(seeds)
+        self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_complete_set_without_deletes(self):
         seeds = get_harvest_seeds(Repositories.ANATOMY_TOOL, self.set_spec, self.begin_of_time,
                                   include_deleted=False)
-        self.assertEqual(len(seeds), 8)
+        self.assertEqual(len(seeds), 10)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_from_youtube_property(self):
