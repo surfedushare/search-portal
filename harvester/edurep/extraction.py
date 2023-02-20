@@ -349,9 +349,9 @@ class EdurepDataExtraction(object):
         files = cls.get_files(soup, el)
         if not len(files):
             return False
-        file = files[0]
-        copyright_allows = file["copyright"] and file["copyright"] != "yes" and "nd" not in file["copyright"]
-        return file["access_rights"] == "OpenAccess" or copyright_allows
+        main = files[0]
+        copyright_allows = main["copyright"] and main["copyright"] != "yes" and "nd" not in main["copyright"]
+        return main["access_rights"] == "OpenAccess" or copyright_allows
 
     @classmethod
     def get_is_part_of(cls, soup, el):

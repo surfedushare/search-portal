@@ -166,12 +166,16 @@ class HkuMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_is_restricted(cls, node):
-        return False
+        return not cls.get_analysis_allowed(node)
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # As agreed upon with an email by Emile Bijk on 1 December 2022
-        return True
+        files = cls.get_files(node)
+        if not len(files):
+            return False
+        main = files[0]
+        copyright_allows = main["copyright"] and main["copyright"] != "yes" and "nd" not in main["copyright"]
+        return main["access_rights"] == "OpenAccess" or copyright_allows
 
 
 HKU_EXTRACTION_OBJECTIVE = {
