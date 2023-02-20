@@ -557,7 +557,7 @@
                                 </czp:langstring>
                             </czp:source>
                             <czp:taxon>
-                                <czp:id>OpenAccess</czp:id>
+                                <czp:id>RestrictedAccess</czp:id>
                                 <czp:entry>
                                     <czp:langstring xml:lang="nl">open toegang</czp:langstring>
                                 </czp:entry>

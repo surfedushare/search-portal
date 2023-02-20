@@ -33,7 +33,7 @@ class TestGetHarvestSeedsBuas(TestCase):
                 "mime_type": "text/html",
                 "hash": "d42e0d5475f052d4fa0ef5216fd7dcbfc3a4374d",
                 "copyright": None,
-                "is_open_access": True
+                "access_rights": "OpenAccess"
             }
         ])
         self.assertEqual(seeds[3]["files"], [
@@ -44,7 +44,7 @@ class TestGetHarvestSeedsBuas(TestCase):
                 "mime_type": "application/pdf",
                 "hash": "f8839eeea39968549dafe4075232074a15adcb63",
                 "copyright": None,
-                "is_open_access": True
+                "access_rights": "OpenAccess"
             }
         ])
 
@@ -68,7 +68,11 @@ class TestGetHarvestSeedsBuas(TestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["copyright"], "closed-access")
         self.assertEqual(seeds[1]["copyright"], "open-access")
-        self.assertEqual(seeds[3]["copyright"], "open-access")
+
+    def test_get_analysis_allowed(self):
+        seeds = self.seeds
+        self.assertFalse(seeds[0]["analysis_allowed"])
+        self.assertTrue(seeds[1]["analysis_allowed"])
 
     def test_get_language(self):
         seeds = self.seeds

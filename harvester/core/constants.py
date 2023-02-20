@@ -73,12 +73,6 @@ HIGHER_EDUCATION_LEVELS = {
 }
 
 
-RESTRICTED_MATERIAL_SETS = {
-    "l4l",
-    "edusourcesprivate",
-    "edusourcesmboprivate",
-}
-
 MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN = {
     "harvester.prod.surfedushare.nl": 2,
     "harvester.mbo.prod.surfedushare.nl": 1,

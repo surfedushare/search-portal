@@ -37,7 +37,7 @@ class TestGetHarvestSeedsHanze(TestCase):
                 "title": "wtnr2_verh1_p99_113_HR_v2_Inter_nationale_ervaringen"
                          "_met_ondergrondse_infiltratievoorzieningen_20_jaar.pdf",
                 "copyright": None,
-                "is_open_access": True
+                "access_rights": "OpenAccess"
             }
         ])
         self.assertEqual(seeds[12]["files"], [
@@ -48,7 +48,7 @@ class TestGetHarvestSeedsHanze(TestCase):
                 "mime_type": "application/pdf",
                 "hash": "8a83314d543513cdcb43329ecd78145ff45134d3",
                 "copyright": None,
-                "is_open_access": True
+                "access_rights": "OpenAccess"
             }
         ])
 
@@ -65,15 +65,14 @@ class TestGetHarvestSeedsHanze(TestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["mime_type"], "application/pdf")
 
-    def test_get_copyright(self):
+    def test_get_analysis_allowed(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["copyright"], "open-access")
-        self.assertEqual(seeds[3]["copyright"], "closed-access")
-
-    def test_get_is_restricted(self):
-        seeds = self.seeds
-        self.assertFalse(seeds[0]["is_restricted"])
-        self.assertTrue(seeds[2]["is_restricted"])
+        self.assertTrue(seeds[0]["analysis_allowed"], "Expected OpenAccess file to allow analysis")
+        self.assertFalse(
+            seeds[2]["analysis_allowed"],
+            "Expected RestrictedAccess file to disallow analysis, because copyright will be unknown"
+        )
+        self.assertFalse(seeds[3]["analysis_allowed"], "Expected ClosedAccess file to disallow analysis")
 
     def test_get_language(self):
         seeds = self.seeds
