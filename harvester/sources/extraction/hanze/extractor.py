@@ -119,7 +119,8 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         if "abstract" not in node:
             return
         locale = cls.get_locale(node)
-        return node["abstract"][locale]
+        fallback_description = next(iter(node["abstract"].values()), None)
+        return node["abstract"].get(locale, fallback_description)
 
     @classmethod
     def get_keywords(cls, node):
