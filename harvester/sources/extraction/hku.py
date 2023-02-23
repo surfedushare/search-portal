@@ -173,9 +173,13 @@ class HkuMetadataExtraction(ExtractProcessor):
         files = cls.get_files(node)
         if not len(files):
             return False
-        main = files[0]
-        copyright_allows = main["copyright"] and main["copyright"] != "yes" and "nd" not in main["copyright"]
-        return main["access_rights"] == "OpenAccess" or copyright_allows
+        match files[0]["access_rights"], files[0]["copyright"]:
+            case "OpenAccess", _:
+                return True
+            case "RestrictedAccess", copyright:
+                return copyright and copyright not in ["yes", "unknown"] and "nd" not in copyright
+            case "ClosedAccess", _:
+                return False
 
 
 HKU_EXTRACTION_OBJECTIVE = {
