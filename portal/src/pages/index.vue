@@ -79,10 +79,10 @@ export default {
   },
   mixins: [PageMixin],
   data() {
-    const headlineTranslationKeyPostfix = (this.$root.isMBOEnvironment()) ? "education": "higher-education";
+    const headlineTranslationKeyPostfix = this.$root.isMBOEnvironment() ? "education" : "higher-education";
     return {
       filters: {},
-      headline: this.$i18n.t(`open-learning-materials-from-${headlineTranslationKeyPostfix}`)
+      headline: this.$i18n.t(`open-learning-materials-from-${headlineTranslationKeyPostfix}`),
     };
   },
   computed: {
@@ -158,6 +158,7 @@ export default {
     padding: 120px 0 0;
     margin-bottom: 60px;
     position: relative;
+    margin-top: 70px;
     @media @mobile-ls {
       padding: 230px 0 0;
     }
