@@ -35,8 +35,8 @@ class TestHttpPipelineProcessor(TestCase):
             },
             "contribute_data": {
                 "objective": {
-                    "@": "$",
-                    "text": "$.0.X-TIKA:content"
+                    "@": "$.0",
+                    "text": "$.X-TIKA:content"
                 }
             }
         })
@@ -57,6 +57,11 @@ class TestHttpPipelineProcessor(TestCase):
             self.assertEqual(tika_pipeline["resource"], "core.httptikaresource")
             self.assertIsInstance(tika_pipeline["id"], int)
             self.assertIsInstance(tika_pipeline["success"], bool)
+            if tika_pipeline["success"]:
+                self.assertIsInstance(
+                    document.properties["text"], str,
+                    "Expected text to be extracted from Tika responses if they succeed"
+                )
 
         self.assertEqual(send_mock.call_count, 2, "Expected one erroneous resource to retry and one new resource")
 
@@ -81,8 +86,8 @@ class TestHttpPipelineProcessor(TestCase):
             },
             "contribute_data": {
                 "objective": {
-                    "@": "$",
-                    "text": "$.0.X-TIKA:content"
+                    "@": "$.0",
+                    "text": "$.X-TIKA:content"
                 }
             }
         })

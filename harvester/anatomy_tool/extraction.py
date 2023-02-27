@@ -25,6 +25,8 @@ class AnatomyToolExtraction(object):
             return
         elif description == "Public Domain":
             return "pdm-10"
+        elif description == "Copyrighted":
+            return "yes"
         url_match = cls.cc_url_regex.match(description)
         if url_match is None:
             code_match = cls.cc_code_regex.match(description)
@@ -77,12 +79,15 @@ class AnatomyToolExtraction(object):
     def get_files(cls, soup, el):
         mime_types = el.find_all('format')
         urls = el.find_all('location')
+        default_copyright = cls.get_copyright(soup, el)
         return [
             {
                 "mime_type": mime_type,
                 "url": url,
                 "hash": sha1(url.encode("utf-8")).hexdigest(),
-                "title": title
+                "title": title,
+                "copyright": default_copyright,
+                "access_rights": "OpenAccess" if default_copyright != "yes" else "RestrictedAccess"
             }
             for mime_type, url, title in zip(
                 [mime_node.text.strip() for mime_node in mime_types],
@@ -263,10 +268,16 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_analysis_allowed(cls, soup, el):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = AnatomyToolExtraction.get_copyright(soup, el)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        files = cls.get_files(soup, el)
+        if not len(files):
+            return False
+        match files[0]["access_rights"], files[0]["copyright"]:
+            case "OpenAccess", _:
+                return True
+            case "RestrictedAccess", copyright:
+                return copyright and copyright not in ["yes", "unknown"] and "nd" not in copyright
+            case "ClosedAccess", _:
+                return False
 
     @classmethod
     def get_is_part_of(cls, soup, el):

@@ -3,7 +3,7 @@ from hashlib import sha1
 from mimetypes import guess_type
 
 import vobject
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
+from core.constants import HIGHER_EDUCATION_LEVELS
 from dateutil.parser import parse as date_parser
 from django.conf import settings
 from django.utils.text import slugify
@@ -73,6 +73,11 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_files(cls, soup, el):
+        default_copyright = cls.get_copyright(soup, el)
+        default_access_rights = "ClosedAccess"
+        access_rights_blocks = cls.find_all_classification_blocks(el, "access rights", "czp:id")
+        if len(access_rights_blocks):
+            default_access_rights = access_rights_blocks[0].text.strip()
         mime_types = el.find_all('czp:format')
         urls = el.find_all('czp:location')
         return [
@@ -80,7 +85,9 @@ class EdurepDataExtraction(object):
                 "mime_type": mime_type,
                 "url": url,
                 "hash": sha1(url.encode("utf-8")).hexdigest(),
-                "title": title
+                "title": title,
+                "copyright": default_copyright,
+                "access_rights": default_access_rights
             }
             for mime_type, url, title in zip(
                 [mime_node.text.strip() for mime_node in mime_types],
@@ -218,6 +225,7 @@ class EdurepDataExtraction(object):
             "slug": None,
             "name": provider_name
         }
+
     @classmethod
     def get_organizations(cls, soup, el):
         root = cls.get_provider(soup, el)
@@ -334,19 +342,20 @@ class EdurepDataExtraction(object):
 
     @classmethod
     def get_is_restricted(cls, soup, el):
-        # We don't have access to restricted materials so we disallow analysis for them
-        external_id = cls.get_oaipmh_external_id(soup, el)
-        for restricted_set in RESTRICTED_MATERIAL_SETS:
-            if external_id.startswith(restricted_set + ":"):
-                return True
-        return False
+        return not cls.get_analysis_allowed(soup, el)
 
     @classmethod
     def get_analysis_allowed(cls, soup, el):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = EdurepDataExtraction.get_copyright(soup, el)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        files = cls.get_files(soup, el)
+        if not len(files):
+            return False
+        match files[0]["access_rights"], files[0]["copyright"]:
+            case "OpenAccess", _:
+                return True
+            case "RestrictedAccess", copyright:
+                return copyright and copyright not in ["yes", "unknown"] and "nd" not in copyright
+            case "ClosedAccess", _:
+                return False
 
     @classmethod
     def get_is_part_of(cls, soup, el):

@@ -18,7 +18,7 @@ class TestEditDocumentWebhook(TestCase):
 
     @classmethod
     def load_sharekit_test_data(cls):
-        delta_response = SharekitMetadataHarvestFactory.create(is_initial=False, number=0, is_restricted=False)
+        delta_response = SharekitMetadataHarvestFactory.create(is_initial=False, number=0)
         content_type, delta = delta_response.content
         delta_records = delta["data"]
         return {

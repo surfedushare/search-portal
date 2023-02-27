@@ -97,16 +97,11 @@ class TestGetHarvestSeedsSharekit(SeedExtractionTestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["organizations"]["root"]["name"], "SURFnet")
 
-    def test_is_restricted(self):
-        seeds = self.seeds
-        for seed in seeds:
-            self.assertFalse(seed["is_restricted"])
-
     def test_analysis_allowed_property(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]['analysis_allowed'], True, "Expected standard material to allow analysis")
-        self.assertEqual(seeds[12]['analysis_allowed'], False, "Expexted nd copyright material to disallow analysis")
-        self.assertEqual(seeds[13]['analysis_allowed'], False, "Expexted yes copyright material to disallow analysis")
+        self.assertTrue(seeds[0]['analysis_allowed'], "Expected standard material to allow analysis")
+        self.assertFalse(seeds[12]['analysis_allowed'], "Expected deleted document to disallow analysis")
+        self.assertTrue(seeds[13]['analysis_allowed'], "Expected open document with yes copyright to allow analysis")
 
     def test_is_part_of_property(self):
         seeds = self.seeds
@@ -196,25 +191,3 @@ class TestGetHarvestSeedsSharekit(SeedExtractionTestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["publisher_year"], 1970)
         self.assertIsNone(seeds[8]["publisher_year"], "Expected deleted material to have no publisher year")
-
-
-class TestGetHarvestSeedsSharekitRestricted(SeedExtractionTestCase):
-
-    OBJECTIVE = SHAREKIT_EXTRACTION_OBJECTIVE
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.set_spec = "edusourcesprivate"
-        cls.begin_of_time = make_aware(datetime(year=1970, month=1, day=1))
-        SharekitMetadataHarvestFactory.create_common_sharekit_responses(include_delta=True, is_restricted=True)
-
-    def test_is_restricted(self):
-        seeds = get_harvest_seeds(Repositories.SHAREKIT, "edusourcesprivate", self.begin_of_time)
-        for seed in seeds:
-            self.assertTrue(seed["is_restricted"])
-
-    def test_analysis_allowed_property(self):
-        seeds = get_harvest_seeds(Repositories.SHAREKIT, "edusourcesprivate", self.begin_of_time)
-        for seed in seeds:
-            self.assertFalse(seed["analysis_allowed"])
