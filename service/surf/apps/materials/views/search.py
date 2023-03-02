@@ -91,8 +91,9 @@ class MaterialSearchAPIView(CreateAPIView):
         records = res["records"]
         records = add_extra_parameters_to_materials(filters_app.metadata, records)
 
+        partial_tree = bool(int(request.GET.get("limit_filter_categories", kwargs.get("limit_filter_categories", "0"))))
         filter_categories = MpttFilterItemSerializer(
-            filters_app.metadata.tree,
+            filters_app.metadata.tree if not partial_tree else filters_app.metadata.partial_tree,
             many=True,
             context={'drilldowns': res["drilldowns"]}
         )

@@ -65,6 +65,20 @@ class SearchSchema(AutoSchema):
                     }
                 }
             ]
+        if path.endswith("search/"):
+            return [
+                {
+                    "name": "limit_filter_categories",
+                    "in": "query",
+                    "required": False,
+                    "default": 1,
+                    "description": "Whether to return a partial or full metadata value tree "
+                                   "inside the filter_categories property.",
+                    'schema': {
+                        'type': 'integer',
+                    }
+                }
+            ]
         if "author" in path:
             return [
                 {
