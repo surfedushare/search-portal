@@ -1,7 +1,7 @@
 from opensearchpy import OpenSearch, RequestsHttpConnection
 
 
-def get_search_client(conn, silent=False):
+def get_remote_search_client(conn, silent=False):
     """
     Returns the Open Search client connected through port forwarding settings
     """

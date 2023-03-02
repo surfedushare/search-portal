@@ -38,6 +38,12 @@ invoke srv.import-snapshot -s pol-dev -n <sql-file-name>
 (uses a specific snapshot)
 ```
 
+To create Open Search indices with test materials you can execute the following:
+
+```
+invoke srv.recreate-test-indices
+```
+
 ## Getting started
 
 There are three ways to get the `service` component started.

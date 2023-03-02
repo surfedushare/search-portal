@@ -93,7 +93,7 @@ integration-test-job:
   before_script:
     - invoke srv.setup-postgres --host postgres
     - invoke hrv.setup-postgres --host postgres
-    - invoke hrv.index-dataset-version localhost -d test
+    - invoke srv.recreate-test-indices
   script:
     - APPLICATION_PROJECT=edusources invoke test.e2e
   artifacts:
