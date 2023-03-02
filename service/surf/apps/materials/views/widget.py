@@ -8,7 +8,7 @@ from django.views.decorators.gzip import gzip_page
 from django.views.decorators.clickjacking import xframe_options_exempt
 from rest_framework.exceptions import ValidationError
 
-from surf.vendor.search.api import SearchApiClient
+from surf.apps.core.search import get_search_client
 from surf.apps.materials.serializers import SearchSerializer
 from surf.apps.materials.utils import add_extra_parameters_to_materials
 
@@ -37,7 +37,7 @@ def widget_iframe_content(request):
         for external_id, items in data["filters"].items()
     ]
     data["drilldown_names"] = filters_app.metadata.get_filter_field_names()
-    client = SearchApiClient()
+    client = get_search_client()
     res = client.search(**data)
     records = res["records"]
     for record in records:

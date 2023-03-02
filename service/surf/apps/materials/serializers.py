@@ -1,7 +1,7 @@
 """
 This module contains API view serializers for materials app.
 """
-
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from rest_framework import serializers
@@ -10,7 +10,11 @@ from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.models import (RESOURCE_TYPE_COLLECTION, Collection,
                                         Material, PublishStatus,
                                         SharedResourceCounter)
-from surf.vendor.search.serializers import SearchResultSerializer
+from search_client.serializers import LearningMaterialResultSerializer, ResearchProductResultSerializer
+
+
+SearchResultSerializer = LearningMaterialResultSerializer if settings.PROJECT == "edusources" else \
+    ResearchProductResultSerializer
 
 
 class SharedResourceCounterSerializer(serializers.ModelSerializer):

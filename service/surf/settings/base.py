@@ -300,10 +300,6 @@ OPENSEARCH_ALIAS_PREFIX = environment.open_search.alias_prefix
 OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
-OPENSEARCH_NL_INDEX = "latest-nl"
-OPENSEARCH_EN_INDEX = "latest-en"
-OPENSEARCH_UNK_INDEX = "latest-unk"
-
 
 # Logging
 # https://docs.djangoproject.com/en/2.2/topics/logging/

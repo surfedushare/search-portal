@@ -1,45 +1,21 @@
-from django.conf import settings
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import TestCase, override_settings
-from opensearchpy import OpenSearch
-from project.configuration import create_open_search_index_configuration
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from opensearchpy import OpenSearch
+
+from django.conf import settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import TestCase
+
+from search_client import SearchClient
+from search_client.constants import LANGUAGES, DocumentTypes
+from search_client.open_search.configuration import create_open_search_index_configuration
 
 
-class BaseOpenSearchMixin(object):
+class BaseLiveServerTestCase(StaticLiveServerTestCase):
 
-    @classmethod
-    def index_body(cls, language):
-        return create_open_search_index_configuration(language)
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.search = OpenSearch(
-            [settings.OPENSEARCH_HOST]
-        )
-        cls.search.indices.create(settings.OPENSEARCH_NL_INDEX, ignore=400, body=cls.index_body('nl'))
-        cls.search.indices.create(settings.OPENSEARCH_EN_INDEX, ignore=400, body=cls.index_body('en'))
-        cls.search.indices.create(settings.OPENSEARCH_UNK_INDEX, ignore=400, body=cls.index_body('unk'))
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.search.indices.delete(settings.OPENSEARCH_NL_INDEX)
-        cls.search.indices.delete(settings.OPENSEARCH_EN_INDEX)
-        cls.search.indices.delete(settings.OPENSEARCH_UNK_INDEX)
-        super().tearDownClass()
-
-
-@override_settings(
-    OPENSEARCH_NL_INDEX="test-nl",
-    OPENSEARCH_EN_INDEX="test-en",
-    OPENSEARCH_UNK_INDEX="test-unk"
-)
-class BaseLiveServerTestCase(BaseOpenSearchMixin, StaticLiveServerTestCase):
-
+    selenium = None
     fixtures = ['locales-edusources', 'privacy_statements']
 
     @classmethod
@@ -60,11 +36,46 @@ class BaseLiveServerTestCase(BaseOpenSearchMixin, StaticLiveServerTestCase):
         super().tearDownClass()
 
 
-@override_settings(
-    OPENSEARCH_NL_INDEX="test-nl",
-    OPENSEARCH_EN_INDEX="test-en",
-    OPENSEARCH_UNK_INDEX="test-unk"
-)
-class BaseOpenSearchTestCase(BaseOpenSearchMixin, TestCase):
+class BaseOpenSearchTestCase(TestCase):
+
+    search = None
+    instance = None
+    alias_prefix = None
+
+    @classmethod
+    def index_body(cls, language):
+        return create_open_search_index_configuration(language, DocumentTypes.LEARNING_MATERIAL)
+
+    @classmethod
+    def get_alias(cls, language):
+        return f"{cls.alias_prefix}-{language}"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.search = OpenSearch(
+            [settings.OPENSEARCH_HOST]
+        )
+        for language in LANGUAGES:
+            cls.search.indices.create(
+                cls.get_alias(language),
+                ignore=400,
+                body=cls.index_body('nl')
+            )
+        cls.instance = SearchClient(
+            f"{settings.PROTOCOL}://{settings.OPENSEARCH_HOST}",
+            DocumentTypes.LEARNING_MATERIAL,
+            cls.alias_prefix
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        for language in LANGUAGES:
+            cls.search.indices.delete(
+                cls.get_alias(language)
+            )
+        cls.search.close()
+        cls.instance.client.close()
+        super().tearDownClass()
 
     fixtures = ['locales-edusources', 'privacy_statements']

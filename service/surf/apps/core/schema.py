@@ -1,7 +1,7 @@
 from rest_framework.schemas.openapi import AutoSchema
 from rest_framework import serializers
 
-from surf.vendor.search.serializers import RelationSerializer
+from search_client.serializers import RelationSerializer
 from surf.apps.materials.serializers import KeywordsRequestSerializer
 
 

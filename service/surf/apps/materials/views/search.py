@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
 
-from surf.vendor.search.api import SearchApiClient
+from surf.apps.core.search import get_search_client
 from surf.apps.core.schema import SearchSchema
 from surf.apps.filters.serializers import MpttFilterItemSerializer
 from surf.apps.materials.models import Material, SharedResourceCounter, RESOURCE_TYPE_MATERIAL
@@ -85,7 +85,7 @@ class MaterialSearchAPIView(CreateAPIView):
         data = serializer.validated_data
         data["drilldown_names"] = filters_app.metadata.get_filter_field_names()
 
-        client = SearchApiClient()
+        client = get_search_client()
 
         res = client.search(**data)
         records = res["records"]
@@ -130,7 +130,7 @@ class KeywordsAPIView(ListAPIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        client = SearchApiClient()
+        client = get_search_client()
 
         res = client.autocomplete(**data)
         return Response(res)
@@ -169,7 +169,7 @@ class MaterialAPIView(APIView):
 
         else:
             # return overview of newest Materials
-            client = SearchApiClient()
+            client = get_search_client()
             res = client.search(
                 search_text='',
                 ordering="-publisher_date",
@@ -252,6 +252,6 @@ class MaterialSetAPIView(APIView):
         results = _get_material_by_external_id(request, data['external_id'])
         parts = results[0]['has_parts']
 
-        client = SearchApiClient()
+        client = get_search_client()
         api_response = client.get_materials_by_id(parts, page_size=100)
         return Response(api_response)
