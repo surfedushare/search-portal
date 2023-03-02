@@ -13,7 +13,7 @@ django:
   domain: "localhost"
   logging:
     level: "DEBUG"
-    is_open_search: false
+    is_opensearch: false
   send_admin_notifications: false
 
 postgres:
@@ -23,9 +23,8 @@ postgres:
 redis:
   host: "redis:6379"
 
-open_search:
-  host: "opensearch:9200"
-  protocol: "http"
+opensearch:
+  host: "http://opensearch:9200"
   verify_certs: true  # ignored as long as protocol is http
   enable_decompound_analyzers: true
   alias_prefix: "test"

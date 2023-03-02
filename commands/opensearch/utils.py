@@ -5,7 +5,7 @@ def get_remote_search_client(conn, silent=False):
     """
     Returns the Open Search client connected through port forwarding settings
     """
-    host = conn.config.open_search.host
+    host = conn.config.opensearch.host
     protocol_config = {
         "scheme": "https",
         "port": 443,

@@ -40,6 +40,7 @@ RUN pip install -U --no-cache-dir --user pip
 RUN pip install wheel
 RUN pip install --no-cache-dir --user uwsgi==2.0.20
 RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir --user git+https://github.com/surfedushare/search-client.git@v0.1.2
 
 # Copy application
 COPY harvester /usr/src/app

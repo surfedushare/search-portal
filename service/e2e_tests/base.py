@@ -10,7 +10,7 @@ from django.test import TestCase
 
 from search_client import SearchClient
 from search_client.constants import LANGUAGES, DocumentTypes
-from search_client.open_search.configuration import create_open_search_index_configuration
+from search_client.opensearch.configuration import create_open_search_index_configuration
 
 
 class BaseLiveServerTestCase(StaticLiveServerTestCase):

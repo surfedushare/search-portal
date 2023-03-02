@@ -9,7 +9,7 @@ django:
   domain: "edusources.nl"
   logging:
     level: "DEBUG"
-    is_open_search: true
+    is_opensearch: true
   send_admin_notifications: true
 
 postgres:
@@ -19,9 +19,8 @@ postgres:
 redis:
   host: "harvester.o1edd0.0001.euc1.cache.amazonaws.com:6379"
 
-open_search:
-  host: "search-surfpol-main-u7aqh4lrt6glkmkrpjg3a64jhq.eu-central-1.es.amazonaws.com"
-  protocol: "https"
+opensearch:
+  host: "https://search-surfpol-main-u7aqh4lrt6glkmkrpjg3a64jhq.eu-central-1.es.amazonaws.com"
   verify_certs: true
   alias_prefix: "edusources"
   enable_decompound_analyzers: true

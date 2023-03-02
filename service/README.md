@@ -62,6 +62,27 @@ Start a container with a UWSGI production server with:
 make run-service-container
 ```
 
+#### Using Opensearch from acceptance
+
+It's possible to connect to the Opensearch instance in the AWS acceptance environment.
+This can be useful to test locally with real data to solve bugs.
+In order to do this you need to add the following to your ``.env`` file
+
+```
+POL_OPENSEARCH_HOST=https://search-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com
+POL_OPENSEARCH_ALIAS_PREFIX=edusources
+POL_SECRETS_OPENSEARCH_PASSWORD=<password>
+```
+
+Where <password> should get replaced with the password of the acceptance Opensearch superuser.
+After this you should re-start containers in order to load these variables.
+If you're working in a shell you should also run ``source activate.sh`` again to load the variables.
+
+If you want to disconnect from the acceptance instance
+you can set all the variables above to nothing like in ``.env.example``.
+Once you restart the docker containers and reload variables in shells
+everything should be connected to your local Opensearch again.
+
 #### Available apps
 
 Either way the Django admin and API endpoints become available under:

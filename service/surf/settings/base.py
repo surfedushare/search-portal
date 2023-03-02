@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import OpensearchHandler, create_opensearch_handler
+from search_client.opensearch.logging import create_opensearch_handler, OpensearchHandler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -294,10 +294,9 @@ WEBPACK_LOADER = {
 
 # Search
 
-OPENSEARCH_HOST = environment.open_search.host
-OPENSEARCH_PROTOCOL = environment.open_search.protocol
-OPENSEARCH_ALIAS_PREFIX = environment.open_search.alias_prefix
-OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_HOST = environment.opensearch.host
+OPENSEARCH_ALIAS_PREFIX = environment.opensearch.alias_prefix
+OPENSEARCH_VERIFY_CERTS = environment.opensearch.verify_certs  # ignored when protocol != https
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
@@ -325,15 +324,16 @@ LOGGING = {
             'formatter': 'standard'
         },
         'search_service': create_opensearch_handler(
+            OPENSEARCH_HOST,
             'service-logs',
             OpensearchHandler.IndexNameFrequency.WEEKLY,
-            environment,
+            environment.container.id,
             OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
         'service': {
-            'handlers': ['search_service'] if environment.django.logging.is_open_search else ['console'],
+            'handlers': ['search_service'] if environment.django.logging.is_opensearch else ['console'],
             'level': _log_level,
             'propagate': True,
         }
