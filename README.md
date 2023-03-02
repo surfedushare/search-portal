@@ -38,7 +38,6 @@ To install the basic environment and tooling you'll need to first setup a local 
 ```bash
 python3 -m venv venv --copies --upgrade-deps
 source activate.sh
-pip install setuptools==58
 pip install -r requirements.txt
 ```
 
