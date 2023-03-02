@@ -296,6 +296,7 @@ WEBPACK_LOADER = {
 
 OPENSEARCH_HOST = environment.open_search.host
 OPENSEARCH_PROTOCOL = environment.open_search.protocol
+OPENSEARCH_ALIAS_PREFIX = environment.open_search.alias_prefix
 OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 

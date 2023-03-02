@@ -39,6 +39,7 @@ To install the basic environment and tooling you'll need to first setup a local 
 python3 -m venv venv --copies --upgrade-deps
 source activate.sh
 pip install -r requirements.txt
+pip install git+https://github.com/surfedushare/search-client.git@master
 ```
 
 Then copy the `.env.example` file to `.env` and update the variable values to fit your system.

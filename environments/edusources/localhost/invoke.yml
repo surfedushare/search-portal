@@ -28,6 +28,7 @@ open_search:
   protocol: "http"
   verify_certs: true  # ignored as long as protocol is http
   enable_decompound_analyzers: true
+  alias_prefix: "test"
   decompound_word_lists:
     dutch: "decompound_word_list.nl.txt"
   domain_name: null
