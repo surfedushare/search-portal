@@ -50,6 +50,7 @@ class Command(BaseCommand):
             "value": "verpleegkunde"
         }
     }
+
     def handle(self, **options):
 
         vocabulary_list = []
@@ -85,12 +86,24 @@ class Command(BaseCommand):
         for vocab in vocabulary_list:
             vocab_frame = pd.DataFrame.from_records(vocab).fillna("root")
             vocab_groups = vocab_frame.groupby("parent_id").groups
-
-            import ipdb; ipdb.set_trace()
-            #toDo: Instead of a for loop for the vocabs, implement depth first sorting algorithm
-            for term in vocab:
-                to_add_vocabulary.append(create_metadata_value(term=term, field=field))
+            vocab_groups.get()
+            import ipdb;
+            ipdb.set_trace()
+            for sub_root in vocab_groups["root"].tolist():
+                # toDo: Add values described in domain dictionary here as root.
+                self.depth_first_algorithm(sub_root)
 
         MetadataValue.objects.bulk_create(to_add_vocabulary)
         logger.info('Done with study vocabulary harvest')
+
+    def depth_first_algorithm(self, value, parent, field, groups, frame, output_list):
+        new_term = create_metadata_value(term=frame.iloc[value], field=field, parent=parent)
+        output_list.append(new_term)
+        try:
+            for sub_values in groups.get(value).tolist():
+                output_list = self.depth_first_algorithm(sub_values, new_term, field, groups, frame, output_list)
+        finally:
+            return output_list
+
+
 
