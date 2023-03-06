@@ -8,6 +8,20 @@ from datagrowth.processors import ExtractProcessor
 logger = logging.getLogger("harvester")
 
 
+def create_metadata_value(term, field, parent):
+    if not MetadataValue.objects.filter(value=term["name"]).exists():
+        vocabulary = MetadataValue(value=term["value"])
+        if term["language"] == "nl":
+            vocabulary.translation = MetadataTranslation(
+                nl=term["name"],
+                en=translate_with_deepl(term["name"])
+            ).save()
+        vocabulary.field = field
+        vocabulary.name = str(term["name"])
+        vocabulary.parent = parent
+        return vocabulary
+
+
 class Command(BaseCommand):
 
     domain_dictionary = {
@@ -53,10 +67,7 @@ class Command(BaseCommand):
         extractor = ExtractProcessor(config=config)
 
         for key in self.domain_dictionary:
-            raw_source = StudyVocabularyResource().get(self.domain_dictionary[key])
-            if key == "verpleegkunde":
-                content_type, data = raw_source.content
-                from pprint import pprint;pprint(list(filter(lambda node: node["@id"] == "urn:uuid:379e64f5-b618-4f3c-b037-f2684311c384", data["@graph"])))
+            raw_source = StudyVocabularyResource().get(self.domain_dictionary[key]["path"])
             searched_source = extractor.extract(*raw_source.content)
             vocabulary_list.append(searched_source)
 
@@ -78,21 +89,8 @@ class Command(BaseCommand):
             import ipdb; ipdb.set_trace()
             #toDo: Instead of a for loop for the vocabs, implement depth first sorting algorithm
             for term in vocab:
-                #toDo: refactor, extract this as private function
-                if not MetadataValue.objects.filter(value=term["name"]).exists():
-                    # toDo: add check for duplicates in to_add_vocabulary
-                    new_vocabulary = MetadataValue(value=term["value"])
-                    if term["language"] == "nl":
-                        new_vocabulary.translation = MetadataTranslation(
-                            nl=term["name"],
-                            en=translate_with_deepl(term["name"])
-                        ).save()
-                    else:
-                        from pprint import pprint; pprint(term)
-                    new_vocabulary.field = field
-                    new_vocabulary.name = str(term["name"])
-                    new_vocabulary.parent = term["parent_id"]
-                    to_add_vocabulary.append(new_vocabulary)
+                to_add_vocabulary.append(create_metadata_value(term=term, field=field))
 
         MetadataValue.objects.bulk_create(to_add_vocabulary)
         logger.info('Done with study vocabulary harvest')
+
