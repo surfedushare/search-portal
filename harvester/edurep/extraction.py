@@ -1,12 +1,16 @@
+import logging
 import re
 from hashlib import sha1
 from mimetypes import guess_type
 
-import vobject
+from vobject.base import ParseError, readOne
 from core.constants import HIGHER_EDUCATION_LEVELS
 from dateutil.parser import parse as date_parser
 from django.conf import settings
 from django.utils.text import slugify
+
+
+logger = logging.getLogger("harvester")
 
 
 class EdurepDataExtraction(object):
@@ -37,10 +41,15 @@ class EdurepDataExtraction(object):
             license = "cc-" + license
         return slugify(f"{license}-{url_match.group('version')}")
 
-    @staticmethod
-    def parse_vcard_element(el):
+    @classmethod
+    def parse_vcard_element(cls, el, record):
         card = "\n".join(field.strip() for field in el.text.strip().split("\n"))
-        return vobject.readOne(card)
+        try:
+            return readOne(card)
+        except ParseError:
+            external_id = cls.get_oaipmh_external_id(None, record)
+            logger.warning(f"Can't parse vCard for material with id: {external_id}")
+            return
 
     @classmethod
     def get_oaipmh_records(cls, soup):
@@ -201,7 +210,7 @@ class EdurepDataExtraction(object):
 
         authors = []
         for node in nodes:
-            author = cls.parse_vcard_element(node)
+            author = cls.parse_vcard_element(node, el)
             if hasattr(author, "fn"):
                 authors.append({
                     "name": author.fn.value.strip(),
@@ -253,7 +262,7 @@ class EdurepDataExtraction(object):
             return publishers
         nodes = contribution_element.find_all('czp:vcard')
         for node in nodes:
-            publisher = cls.parse_vcard_element(node)
+            publisher = cls.parse_vcard_element(node, el)
             if hasattr(publisher, "fn"):
                 publishers.append(publisher.fn.value)
         return publishers
