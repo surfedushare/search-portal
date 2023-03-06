@@ -15,7 +15,7 @@ django-redis-cache==3.0.1
 
 # AWS
 awscli==1.25.97
-boto3==1.24.96
+boto3==1.26.84
 requests-aws4auth==1.0
 django-storages==1.12.3
 
