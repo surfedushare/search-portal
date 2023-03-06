@@ -176,11 +176,11 @@ class EdurepDataExtraction(object):
     def get_copyright(cls, soup, el):
         node = el.find('czp:copyrightandotherrestrictions')
         if node is None:
-            return
+            return "yes"
         copyright = node.find('czp:value').find('czp:langstring').text.strip()
         if copyright == "yes":
             copyright = cls.parse_copyright_description(cls.get_copyright_description(soup, el))
-        return copyright
+        return copyright or "yes"
 
     @classmethod
     def get_aggregation_level(cls, soup, el):
