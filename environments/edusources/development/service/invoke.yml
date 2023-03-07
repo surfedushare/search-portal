@@ -20,7 +20,8 @@ postgres:
 surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
-  client_id: "acc.surfedushare.nl"
+  client_id: "dev.use.edusources.nl"
+  use_api_endpoint: "https://dev.use.edusources.nl"
 
 aws:
   image_upload_bucket: "search-portal-media-uploads-dev"

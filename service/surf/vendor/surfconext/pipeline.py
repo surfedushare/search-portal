@@ -52,13 +52,24 @@ def get_groups(strategy, details, response, *args, **kwargs):
     if community_permission is None or not community_permission["is_allowed"]:
         details["groups"] = []
         return
+    if response.get("edumember_is_member_of"):
+        groups = response["edumember_is_member_of"]
+    else:
+        groups = []
+    
+    details["groups"] = groups
+    strategy.request.session["email"] = details["email"]
+    strategy.request.session["name"] = details["fullname"]
+    strategy.request.session["institution_id"] = response["schac_home_organization"].replace('.','-')
     # Retrieve team data from Voot service to connect communities later
-    vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
-    groups = vac.get_groups(response.get("access_token"))
+    # vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
+    # groups = vac.get_groups(response.get("access_token"))
+
     if not isinstance(groups, list):
         capture_message(f"VootApiClient didn't return a list but returned \"{groups}\" instead.")
         groups = []
-    details["groups"] = groups
+
+
 
 
 def assign_communities(strategy, details, user, *args, **kwargs):

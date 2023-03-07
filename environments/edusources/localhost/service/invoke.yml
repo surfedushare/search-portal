@@ -20,9 +20,10 @@ postgres:
   application_user: "edushare"
 
 surfconext:
-  oidc_endpoint: none
+  oidc_endpoint: "https://connect.test.surfconext.nl"
   voot_api_endpoint: "https://voot.test.surfconext.nl"
-  client_id: "https@//front-test.surfcatalog.nl/"
+  client_id: "dev.use.edusources.nl"
+  use_api_endpoint: "https://dev.use.edusources.nl"
 
 aws:
   image_upload_bucket: null
@@ -38,6 +39,6 @@ secrets:
     secret_key: "development-secret-key--do-not-use"
     admin_password: "qwerty"
   surfconext:
-    secret_key: "development-secret-key--ignored"
+    secret_key: "WKValAutTzvfHX6xV2Fc"
   harvester:
     api_key: "123abc"

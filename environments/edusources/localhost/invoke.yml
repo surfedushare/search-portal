@@ -9,6 +9,7 @@ env: "localhost"
 django:
   debug: true
   protocol: "http"
+  port: 8000
   domain: "localhost"
   logging:
     level: "DEBUG"

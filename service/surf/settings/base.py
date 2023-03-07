@@ -39,7 +39,10 @@ SITE_ID = 1  # should be overridden by extending settings file
 SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
+PORT = environment.django.port
 BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
+if (PORT):
+    BASE_URL  = "{}://{}:{}".format(PROTOCOL, DOMAIN, PORT)
 try:
     response = requests.get("https://api.ipify.org/?format=json")
     IP = response.json()["ip"]
@@ -404,6 +407,7 @@ LOGIN_REDIRECT_URL = BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
+USE_API_ENDPOINT = environment.surfconext.use_api_endpoint
 
 
 # CKEditor
