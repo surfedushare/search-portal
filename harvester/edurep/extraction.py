@@ -312,8 +312,13 @@ class EdurepDataExtraction(object):
         return list(set(educational_levels))
 
     @classmethod
+    def get_educational_levels(cls, soup, el):
+        blocks = cls.find_all_classification_blocks(el, "educational level", "czp:entry")
+        return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
+
+    @classmethod
     def get_lowest_educational_level(cls, soup, el):
-        educational_levels = cls.get_lom_educational_levels(soup, el)
+        educational_levels = cls.get_educational_levels(soup, el)
         current_numeric_level = 3 if len(educational_levels) else -1
         for education_level in educational_levels:
             for higher_education_level, numeric_level in HIGHER_EDUCATION_LEVELS.items():
@@ -401,7 +406,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "publishers": EdurepDataExtraction.get_publishers,
     "publisher_date": EdurepDataExtraction.get_publisher_date,
     "publisher_year": EdurepDataExtraction.get_publisher_year,
-    "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
+    "lom_educational_levels": EdurepDataExtraction.get_educational_levels,
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
     "studies": EdurepDataExtraction.get_studies,
     "ideas": EdurepDataExtraction.get_ideas,
