@@ -37,7 +37,7 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
 
     def test_get_complete_set_without_deletes(self):
         seeds = get_harvest_seeds(Repositories.EDUREP, self.set_spec, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 14)
+        self.assertEqual(len(seeds), 9)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set_without_deletes(self):
@@ -84,16 +84,22 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
 
     def test_is_restricted(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]['is_restricted'], False, "Expected deleted material to have no restriction")
+        self.assertEqual(seeds[0]['is_restricted'], True, "Expected deleted material to indicate restriction")
         self.assertEqual(seeds[1]['is_restricted'], False, "Expected standard material to have no restriction")
-        self.assertEqual(seeds[8]['is_restricted'], True, "Expected restricted material to indicate restriction")
+        self.assertEqual(seeds[15]['is_restricted'], True, "Expected restricted material to indicate restriction")
 
     def test_analysis_allowed_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]['analysis_allowed'], False, "Expected deleted material to disallow analysis")
         self.assertEqual(seeds[1]['analysis_allowed'], True, "Expected standard material to allow analysis")
-        self.assertEqual(seeds[8]['analysis_allowed'], False, "Expected restricted material to disallow analysis")
-        self.assertEqual(seeds[15]['analysis_allowed'], False, "Expected nd copyright material to disallow analysis")
+        self.assertEqual(
+            seeds[14]['analysis_allowed'], True,
+            "Expected (open) nd copyright material to allow analysis"
+        )
+        self.assertEqual(
+            seeds[15]['analysis_allowed'], False,
+            "Expected (restricted) nd copyright material to disallow analysis"
+        )
 
     def test_ideas_property(self):
         seeds = self.seeds
@@ -113,9 +119,9 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["lom_educational_levels"], [],
                          "Expected deleted materials to have no educational level")
-        self.assertEqual(seeds[1]["lom_educational_levels"], ["HBO"],
+        self.assertEqual(seeds[1]["lom_educational_levels"], ["HBO", "HBO - Bachelor"],
                          "Expected HBO materials to have an educational level")
-        self.assertEqual(seeds[2]["lom_educational_levels"], ["WO"],
+        self.assertEqual(seeds[2]["lom_educational_levels"], ["WO", "WO - Bachelor"],
                          "Expected HBO materials to have an educational level")
 
     def test_lowest_educational_level(self):
@@ -131,11 +137,17 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["files"], [], "Expected deleted material to have no files")
         self.assertEqual(len(seeds[1]["files"]), 1)
-        file = seeds[1]["files"][0]
-        self.assertEqual(file["mime_type"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        self.assertEqual(file["url"], "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7")
-        self.assertEqual(file["hash"], "0ed38cdc914e5e8a6aa1248438a1e2032a14b0de")
-        self.assertEqual(file["title"], "URL 1")
+
+        self.assertEqual(seeds[1]["files"], [
+            {
+                "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "url": "https://surfsharekit.nl/objectstore/182216be-31a2-43c3-b7de-e5dd355b09f7",
+                "hash": "0ed38cdc914e5e8a6aa1248438a1e2032a14b0de",
+                "title": "URL 1",
+                "access_rights": "OpenAccess",
+                "copyright": "cc-by-nc-40"
+            }
+        ])
 
     def test_parse_copyright_description(self):
         descriptions = {

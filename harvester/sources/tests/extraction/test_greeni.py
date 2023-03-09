@@ -28,13 +28,17 @@ class TestGetHarvestSeedsGreeni(TestCase):
                 "mime_type": "application/pdf",
                 "url": "https://www.greeni.nl/iguana/CMS.MetaDataEditDownload.cls?file=2:121587:1",
                 "hash": "c75306b29041ba822c5310eb19d8582a9b07a585",
-                "title": "Attachment 1"
+                "title": "Attachment 1",
+                "copyright": None,
+                "access_rights": "OpenAccess"
             },
             {
                 "mime_type": "text/html",
                 "url": "https://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId=2.121587",
                 "hash": "78570277381005bbbe9fff97c58bb4272aa18609",
-                "title": "URL 1"
+                "title": "URL 1",
+                "copyright": None,
+                "access_rights": "OpenAccess"
             }
         ])
 
@@ -57,12 +61,13 @@ class TestGetHarvestSeedsGreeni(TestCase):
 
     def test_get_copyright(self):
         seeds = self.seeds
-        self.assertEqual(len(seeds), 100, "Expected get_harvest_seeds to filter differently based on copyright")
         self.assertEqual(seeds[0]["copyright"], "open-access")
-        self.assertEqual(seeds[1]["copyright"], "yes")
-        seeds = get_harvest_seeds(Repositories.GREENI, SET_SPECIFICATION, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 97, "Expected get_harvest_seeds to delete invalid copyright")
-        self.assertEqual(seeds[1]["copyright"], "open-access")
+        self.assertEqual(seeds[1]["copyright"], "closed-access")
+
+    def test_get_analysis_allowed(self):
+        seeds = self.seeds
+        self.assertTrue(seeds[0]["analysis_allowed"], "OpenAccess document should allow analysis")
+        self.assertFalse(seeds[1]["analysis_allowed"], "ClosedAccess document shouldn't allow analysis")
 
     def test_get_title(self):
         seeds = self.seeds
@@ -78,6 +83,10 @@ class TestGetHarvestSeedsGreeni(TestCase):
             {'name': 'W. Timmermans', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
             {'name': 'J. Jonkhof', 'email': None, 'external_id': None, 'dai': None, 'orcid': None, 'isni': None},
         ])
+
+    def test_get_provider(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["provider"]["slug"], "PUBVHL")
 
     def test_get_organizations(self):
         seeds = self.seeds

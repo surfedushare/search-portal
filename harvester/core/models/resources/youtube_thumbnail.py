@@ -60,7 +60,7 @@ class YoutubeThumbnailResource(ShellResource):
         if "youtu" in args[0]:
             youtube_url = URLObject(args[0])
             youtube_url = youtube_url.del_query_param("list").del_query_param("index")
-            args = tuple(str(youtube_url))
+            args = (str(youtube_url),)
         resource = super().run(*args, **kwargs)
         thumbnail_url = resource.stdout.strip()
         if not thumbnail_url:

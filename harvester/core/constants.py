@@ -69,15 +69,13 @@ PLAIN_TEXT_MIME_TYPES = [
 HIGHER_EDUCATION_LEVELS = {
     "BVE": 1,
     "HBO": 2,
-    "WO": 3
+    "HBO - Bachelor": 2,
+    "HBO - Master": 2,
+    "WO": 3,
+    "WO - Bachelor": 3,
+    "WO - Master": 3,
 }
 
-
-RESTRICTED_MATERIAL_SETS = {
-    "l4l",
-    "edusourcesprivate",
-    "edusourcesmboprivate",
-}
 
 MINIMAL_EDUCATIONAL_LEVEL_BY_DOMAIN = {
     "harvester.prod.surfedushare.nl": 2,

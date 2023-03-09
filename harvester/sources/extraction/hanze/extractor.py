@@ -1,3 +1,4 @@
+import os
 import re
 from mimetypes import guess_type
 from hashlib import sha1
@@ -34,14 +35,26 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         else:
             return
         access_type = electronic_version.get("accessType", {})
+        access_rights = "ClosedAccess"
+        if access_type.get("uri", "").endswith("/open"):
+            access_rights = "OpenAccess"
+        elif access_type.get("uri", "").endswith("/restricted"):
+            access_rights = "RestrictedAccess"
         return {
             "title": file_name,
             "url": url,
             "mime_type": mime_type,
             "hash": sha1(url.encode("utf-8")).hexdigest(),
             "copyright": None,
-            "is_open_access": access_type.get("uri", "").endswith("/open")
+            "access_rights": access_rights
         }
+
+    @staticmethod
+    def _serialize_access_rights(access_rights):
+        access_rights = access_rights.replace("Access", "")
+        access_rights = access_rights.lower()
+        access_rights += "-access"
+        return access_rights
 
     @classmethod
     def get_files(cls, node):
@@ -54,12 +67,16 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         ]
 
     @classmethod
+    def get_locale(cls, node):
+        locale_uri = node["language"]["uri"]
+        _, locale = os.path.split(locale_uri)
+        return locale
+
+    @classmethod
     def get_language(cls, node):
-        language = node["language"]["term"]["en_GB"]
-        if language == "Dutch":
-            return "nl"
-        elif language == "English":
-            return "en"
+        locale = cls.get_locale(node)
+        if locale in ["en_GB", "nl_NL"]:
+            return locale[:2]
         return "unk"
 
     @classmethod
@@ -95,13 +112,15 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         files = cls.get_files(node)
         if not len(files):
             return "closed-access"
-        return "open-access" if files[0]["is_open_access"] else "closed-access"
+        return cls._serialize_access_rights(files[0]["access_rights"])
 
     @classmethod
     def get_description(cls, node):
         if "abstract" not in node:
             return
-        return next(iter(node["abstract"].values()), None)
+        locale = cls.get_locale(node)
+        fallback_description = next(iter(node["abstract"].values()), None)
+        return node["abstract"].get(locale, fallback_description)
 
     @classmethod
     def get_keywords(cls, node):
@@ -142,10 +161,11 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
                     full_name = last_name
                 case _:
                     full_name = None
+            person_data = person.get("person", person.get("externalPerson", {}))
             authors.append({
                 "name": full_name,
                 "email": None,
-                "external_id": person.get("person", {}).get("uuid", None),
+                "external_id": person_data.get("uuid", None),
                 "dai": None,
                 "orcid": None,
                 "isni": None
@@ -162,14 +182,20 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         return authors
 
     @classmethod
-    def get_organizations(cls, node):
+    def get_provider(cls, node):
         return {
-            "root": {
-                "id": None,
-                "slug": "hanze",
-                "name": "Hanze",
-                "is_consortium": False
-            },
+            "ror": None,
+            "external_id": None,
+            "slug": "hanze",
+            "name": "Hanze",
+        }
+
+    @classmethod
+    def get_organizations(cls, node):
+        root = cls.get_provider(node)
+        root["type"] = "institute"
+        return {
+            "root": root,
             "departments": [],
             "associates": []
         }
@@ -214,17 +240,20 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
 
     @classmethod
     def get_is_restricted(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return True
-        return not files[0]["is_open_access"]
+        return not cls.get_analysis_allowed(node)
 
     @classmethod
     def get_analysis_allowed(cls, node):
         files = cls.get_files(node)
         if not len(files):
             return False
-        return files[0]["is_open_access"]
+        match files[0]["access_rights"], files[0]["copyright"]:
+            case "OpenAccess", _:
+                return True
+            case "RestrictedAccess", copyright:
+                return copyright and copyright not in ["yes", "unknown"] and "nd" not in copyright
+            case "ClosedAccess", _:
+                return False
 
     @classmethod
     def get_doi(cls, node):
@@ -260,6 +289,7 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     "description": HanzeResourceObjectExtraction.get_description,
     "mime_type": HanzeResourceObjectExtraction.get_mime_type,
     "authors": HanzeResourceObjectExtraction.get_authors,
+    "provider": HanzeResourceObjectExtraction.get_provider,
     "organizations": HanzeResourceObjectExtraction.get_organizations,
     "publishers": HanzeResourceObjectExtraction.get_publishers,
     "publisher_date": HanzeResourceObjectExtraction.get_publisher_date,

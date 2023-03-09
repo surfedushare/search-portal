@@ -142,5 +142,5 @@ For manual deployment of the service project take the following steps
 
 - invoke aws.build service
 - invoke aws.push service --docker-login
-- APPLICATION_MODE=acceptance aws.promote service
-- APPLICATION_MODE=acceptance srv.deploy acceptance
+- APPLICATION_MODE=acceptance invoke aws.promote service
+- APPLICATION_MODE=acceptance invoke srv.deploy acceptance

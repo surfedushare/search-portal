@@ -34,11 +34,10 @@ def edit_document_webhook(request, channel, secret):
         data["attributes"] = {}
     # Processing of incoming data
     extract_config = create_config("extract_processor", {
-        "objective": create_objective(root="$", include_is_restricted=False)
+        "objective": create_objective(root="$")
     })
     prc = SharekitMetadataExtraction(config=extract_config)
     seed = next(prc.extract("application/json", data))
-    seed["is_restricted"] = "private" in channel
     if seed["state"] != "deleted" and seed["language"] is None:
         capture_message("edit_document_webhook received 'null' as a language for non-deleted document", level="warning")
         return HttpResponse(status=400, reason="Invalid language")

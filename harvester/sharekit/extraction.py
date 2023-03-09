@@ -9,7 +9,7 @@ from django.conf import settings
 from datagrowth.processors import ExtractProcessor
 from datagrowth.utils import reach
 
-from core.constants import HIGHER_EDUCATION_LEVELS, RESTRICTED_MATERIAL_SETS
+from core.constants import HIGHER_EDUCATION_LEVELS
 
 
 class SharekitMetadataExtraction(ExtractProcessor):
@@ -25,7 +25,15 @@ class SharekitMetadataExtraction(ExtractProcessor):
     #############################
 
     @classmethod
+    def parse_access_rights(cls, access_rights):
+        access_rights = access_rights.replace("access", "")
+        access_rights = access_rights.capitalize()
+        access_rights += "Access"
+        return access_rights
+
+    @classmethod
     def get_files(cls, node):
+        default_copyright = SharekitMetadataExtraction.get_copyright(node)
         files = node["attributes"].get("files", []) or []
         links = node["attributes"].get("links", []) or []
         output = [
@@ -33,7 +41,9 @@ class SharekitMetadataExtraction(ExtractProcessor):
                 "mime_type": file["resourceMimeType"],
                 "url": file["url"],
                 "hash": sha1(file["url"].encode("utf-8")).hexdigest(),
-                "title": file["fileName"]
+                "title": file["fileName"],
+                "copyright": default_copyright,
+                "access_rights": cls.parse_access_rights(file["accessRight"])
             }
             for file in files if file["resourceMimeType"] and file["url"]
         ]
@@ -42,7 +52,9 @@ class SharekitMetadataExtraction(ExtractProcessor):
                 "mime_type": "text/html",
                 "url": link["url"],
                 "hash": sha1(link["url"].encode("utf-8")).hexdigest(),
-                "title": link.get("urlName", None) or f"URL {ix+1}"
+                "title": link.get("urlName", None) or f"URL {ix+1}",
+                "copyright": default_copyright,
+                "access_rights": cls.parse_access_rights(link["accessRight"])
             }
             for ix, link in enumerate(links)
         ]
@@ -116,22 +128,26 @@ class SharekitMetadataExtraction(ExtractProcessor):
         ]
 
     @classmethod
-    def get_organizations(cls, node):
-        organization_id = None
-        organization_slug = None
-        organization_name = None
-        publishers = node["attributes"].get("publishers", [])
+    def get_provider(cls, node):
+        provider_name = None
+        publishers = cls.get_publishers(node)
         if isinstance(publishers, str):
-            organization_name = publishers
-        elif len(publishers):
-            organization_name = publishers[0]
+            provider_name = publishers
+        if len(publishers):
+            provider_name = publishers[0]
         return {
-            "root": {
-                "id": organization_id,
-                "slug": organization_slug,
-                "name": organization_name,
-                "is_consortium": False
-            },
+            "ror": None,
+            "external_id": None,
+            "slug": None,
+            "name": provider_name
+        }
+
+    @classmethod
+    def get_organizations(cls, node):
+        root = cls.get_provider(node)
+        root["type"] = "unknown"
+        return {
+            "root": root,
             "departments": [],
             "associates": []
         }
@@ -212,19 +228,21 @@ class SharekitMetadataExtraction(ExtractProcessor):
         return list(set(ideas))
 
     @classmethod
-    def get_is_restricted(cls, data):
-        link = data["links"]["self"]
-        for restricted_set in RESTRICTED_MATERIAL_SETS:
-            if restricted_set in link:
-                return True
-        return False
+    def get_is_restricted(cls, node):
+        return not cls.get_analysis_allowed(node)
 
     @classmethod
     def get_analysis_allowed(cls, node):
-        # We disallow analysis for non-derivative materials as we'll create derivatives in that process
-        # NB: any material that is_restricted will also have analysis_allowed set to False
-        copyright = SharekitMetadataExtraction.get_copyright(node)
-        return (copyright is not None and "nd" not in copyright) and copyright != "yes"
+        files = cls.get_files(node)
+        if not len(files):
+            return False
+        match files[0]["access_rights"], files[0]["copyright"]:
+            case "OpenAccess", _:
+                return True
+            case "RestrictedAccess", copyright:
+                return copyright and copyright not in ["yes", "unknown"] and "nd" not in copyright
+            case "ClosedAccess", _:
+                return False
 
     @classmethod
     def get_is_part_of(cls, node):
@@ -267,6 +285,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "copyright_description": SharekitMetadataExtraction.get_none,
     "aggregation_level": "$.attributes.aggregationlevel",
     "authors": SharekitMetadataExtraction.get_authors,
+    "provider": SharekitMetadataExtraction.get_provider,
     "organizations": SharekitMetadataExtraction.get_organizations,
     "publishers": SharekitMetadataExtraction.get_publishers,
     "publisher_date": "$.attributes.publishedAt",
@@ -276,7 +295,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "studies": SharekitMetadataExtraction.get_empty_list,
     "ideas": SharekitMetadataExtraction.get_ideas,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
-    "#is_restricted": SharekitMetadataExtraction.get_is_restricted,
+    "is_restricted": SharekitMetadataExtraction.get_is_restricted,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
     "is_part_of": SharekitMetadataExtraction.get_is_part_of,
     "has_parts": "$.attributes.hasParts",
@@ -289,7 +308,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
 }
 
 
-def create_objective(root=None, include_is_restricted=True):
+def create_objective(root=None):
     objective = {
         "@": "$.data",
         "external_id": "$.id",
@@ -298,6 +317,4 @@ def create_objective(root=None, include_is_restricted=True):
     objective.update(SHAREKIT_EXTRACTION_OBJECTIVE)
     if root:
         objective["@"] = root
-    if not include_is_restricted:
-        objective.pop("#is_restricted")
     return objective
