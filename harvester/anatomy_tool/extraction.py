@@ -167,7 +167,7 @@ class AnatomyToolExtraction(object):
 
     @classmethod
     def get_copyright(cls, soup, el):
-        return cls.parse_copyright_description(cls.get_copyright_description(soup, el))
+        return cls.parse_copyright_description(cls.get_copyright_description(soup, el)) or "yes"
 
     @classmethod
     def get_aggregation_level(cls, soup, el):

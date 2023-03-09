@@ -69,7 +69,11 @@ PLAIN_TEXT_MIME_TYPES = [
 HIGHER_EDUCATION_LEVELS = {
     "BVE": 1,
     "HBO": 2,
-    "WO": 3
+    "HBO - Bachelor": 2,
+    "HBO - Master": 2,
+    "WO": 3,
+    "WO - Bachelor": 3,
+    "WO - Master": 3,
 }
 
 

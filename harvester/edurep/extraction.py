@@ -1,12 +1,16 @@
+import logging
 import re
 from hashlib import sha1
 from mimetypes import guess_type
 
-import vobject
+from vobject.base import ParseError, readOne
 from core.constants import HIGHER_EDUCATION_LEVELS
 from dateutil.parser import parse as date_parser
 from django.conf import settings
 from django.utils.text import slugify
+
+
+logger = logging.getLogger("harvester")
 
 
 class EdurepDataExtraction(object):
@@ -37,10 +41,15 @@ class EdurepDataExtraction(object):
             license = "cc-" + license
         return slugify(f"{license}-{url_match.group('version')}")
 
-    @staticmethod
-    def parse_vcard_element(el):
+    @classmethod
+    def parse_vcard_element(cls, el, record):
         card = "\n".join(field.strip() for field in el.text.strip().split("\n"))
-        return vobject.readOne(card)
+        try:
+            return readOne(card)
+        except ParseError:
+            external_id = cls.get_oaipmh_external_id(None, record)
+            logger.warning(f"Can't parse vCard for material with id: {external_id}")
+            return
 
     @classmethod
     def get_oaipmh_records(cls, soup):
@@ -176,11 +185,11 @@ class EdurepDataExtraction(object):
     def get_copyright(cls, soup, el):
         node = el.find('czp:copyrightandotherrestrictions')
         if node is None:
-            return
+            return "yes"
         copyright = node.find('czp:value').find('czp:langstring').text.strip()
         if copyright == "yes":
             copyright = cls.parse_copyright_description(cls.get_copyright_description(soup, el))
-        return copyright
+        return copyright or "yes"
 
     @classmethod
     def get_aggregation_level(cls, soup, el):
@@ -201,7 +210,7 @@ class EdurepDataExtraction(object):
 
         authors = []
         for node in nodes:
-            author = cls.parse_vcard_element(node)
+            author = cls.parse_vcard_element(node, el)
             if hasattr(author, "fn"):
                 authors.append({
                     "name": author.fn.value.strip(),
@@ -253,7 +262,7 @@ class EdurepDataExtraction(object):
             return publishers
         nodes = contribution_element.find_all('czp:vcard')
         for node in nodes:
-            publisher = cls.parse_vcard_element(node)
+            publisher = cls.parse_vcard_element(node, el)
             if hasattr(publisher, "fn"):
                 publishers.append(publisher.fn.value)
         return publishers
@@ -303,8 +312,13 @@ class EdurepDataExtraction(object):
         return list(set(educational_levels))
 
     @classmethod
+    def get_educational_levels(cls, soup, el):
+        blocks = cls.find_all_classification_blocks(el, "educational level", "czp:entry")
+        return list(set([block.find('czp:langstring').text.strip() for block in blocks]))
+
+    @classmethod
     def get_lowest_educational_level(cls, soup, el):
-        educational_levels = cls.get_lom_educational_levels(soup, el)
+        educational_levels = cls.get_educational_levels(soup, el)
         current_numeric_level = 3 if len(educational_levels) else -1
         for education_level in educational_levels:
             for higher_education_level, numeric_level in HIGHER_EDUCATION_LEVELS.items():
@@ -392,7 +406,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "publishers": EdurepDataExtraction.get_publishers,
     "publisher_date": EdurepDataExtraction.get_publisher_date,
     "publisher_year": EdurepDataExtraction.get_publisher_year,
-    "lom_educational_levels": EdurepDataExtraction.get_lom_educational_levels,
+    "lom_educational_levels": EdurepDataExtraction.get_educational_levels,
     "lowest_educational_level": EdurepDataExtraction.get_lowest_educational_level,
     "studies": EdurepDataExtraction.get_studies,
     "ideas": EdurepDataExtraction.get_ideas,

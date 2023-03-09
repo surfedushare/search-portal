@@ -7,6 +7,11 @@ from project.configuration import SEARCH_FIELDS
 from surf.vendor.search.serializers import SearchResultSerializer
 
 
+EDUREP_LEGACY_ID_PREFIXES = {
+    "edurep_delen:": "WikiwijsDelen:urn:uuid:"
+}
+
+
 class SearchApiClient:
 
     def __init__(self, host=settings.OPENSEARCH_HOST):
@@ -266,20 +271,20 @@ class SearchApiClient:
         """
         start_record = page_size * (page - 1)
 
-        normalized_external_ids = []
+        corrected_external_ids = []
         for external_id in external_ids:
-            if not external_id.startswith("surf"):
-                normalized_external_ids.append(external_id)
-            else:
-                external_id_parts = external_id.split(":")
-                normalized_external_ids.append(external_id_parts[-1])
+            for legacy_prefix, prefix in EDUREP_LEGACY_ID_PREFIXES.items():
+                if external_id.startswith(legacy_prefix):
+                    external_id = external_id.replace(legacy_prefix, prefix, 1)
+                break
+            corrected_external_ids.append(external_id)
 
         result = self.client.search(
             index=[self.index_nl, self.index_en, self.index_unk],
             body={
                 "query": {
                     "bool": {
-                        "must": [{"terms": {"external_id": normalized_external_ids}}]
+                        "must": [{"terms": {"external_id": corrected_external_ids}}]
                     }
                 },
                 'from': start_record,
@@ -292,7 +297,7 @@ class SearchApiClient:
             for material in results["records"]
         }
         records = []
-        for external_id in normalized_external_ids:
+        for external_id in corrected_external_ids:
             if external_id not in materials:
                 continue
             records.append(materials[external_id])
