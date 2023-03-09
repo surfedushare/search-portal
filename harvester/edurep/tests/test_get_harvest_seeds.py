@@ -119,9 +119,9 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["lom_educational_levels"], [],
                          "Expected deleted materials to have no educational level")
-        self.assertEqual(seeds[1]["lom_educational_levels"], ["HBO", "HBO - Bachelor"],
+        self.assertEqual(sorted(seeds[1]["lom_educational_levels"]), ["HBO", "HBO - Bachelor"],
                          "Expected HBO materials to have an educational level")
-        self.assertEqual(seeds[2]["lom_educational_levels"], ["WO", "WO - Bachelor"],
+        self.assertEqual(sorted(seeds[2]["lom_educational_levels"]), ["WO", "WO - Bachelor"],
                          "Expected HBO materials to have an educational level")
 
     def test_lowest_educational_level(self):
