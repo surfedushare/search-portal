@@ -5,7 +5,8 @@
         <NewMainHeader v-if="isNewHeader" />
         <MainHeader v-else />
         <router-view />
-        <MainFooter />
+        <NewMainFooter v-if="isNewHeader" />
+        <MainFooter v-else />
       </div>
     </v-app>
   </div>
@@ -16,6 +17,7 @@ import { mapGetters } from "vuex";
 import { setLanguage } from "~/axios";
 import MainFooter from "~/components/MainFooter/MainFooter.vue";
 import NewMainHeader from "~/components/NewMainHeader.vue";
+import NewMainFooter from "~/components/NewMainFooter.vue";
 import MainHeader from "~/components/MainHeader/MainHeader.vue";
 
 const DEFAULT_TITLE = "Edusources";
@@ -26,6 +28,7 @@ export default {
     MainHeader,
     MainFooter,
     NewMainHeader,
+    NewMainFooter,
   },
   computed: {
     ...mapGetters(["isNewHeader"]),

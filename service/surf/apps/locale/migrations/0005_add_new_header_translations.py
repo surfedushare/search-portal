@@ -9,6 +9,9 @@ def add_asset_data(apps, schema_editor):
     Asset.objects.create(asset='navigation.signin', en='Sign in', nl='Inloggen')
     Asset.objects.create(asset='navigation.signout', en='Sign out', nl='Uitloggen')
     Asset.objects.create(asset='navigation.my-institution', en='My institution', nl='Mijn instelling')
+    Asset.objects.create(asset='footer.about', en='About edusources', nl='Over edusources')
+    Asset.objects.create(asset='footer.institutions', en='Participating institutions', nl='Deelnemende instellingen')
+    Asset.objects.create(asset='footer.privacy', en='Privacy', nl='Privacy')
 
 class Migration(migrations.Migration):
 

@@ -8,6 +8,8 @@ django:
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
     - "surf/apps/materials/fixtures/initial.json"
     - "surf/apps/communities/fixtures/initial.json"
+    - "surf/apps/core/fixtures/initial.json"
+
   matomo_id: null
   administrative_emails: true
   harvester_api: "http://harvester:8888/api/v1/"
