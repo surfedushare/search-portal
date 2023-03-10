@@ -82,7 +82,6 @@ export default {
       return await axios.post("users/delete-account/");
     },
     async authenticate({ commit }, { token }) {
-      console.log("TTTTOOOKEN", token);
       if (!token) {
         return;
       }

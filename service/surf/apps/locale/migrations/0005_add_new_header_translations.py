@@ -7,6 +7,8 @@ def add_asset_data(apps, schema_editor):
     Asset.objects.create(asset='navigation.services', en='Services', nl='Services')
     Asset.objects.create(asset='navigation.upload', en='Upload', nl='Upload')
     Asset.objects.create(asset='navigation.signin', en='Sign in', nl='Inloggen')
+    Asset.objects.create(asset='navigation.signout', en='Sign out', nl='Uitloggen')
+    Asset.objects.create(asset='navigation.my-institution', en='My institution', nl='Mijn instelling')
 
 class Migration(migrations.Migration):
 

@@ -1,21 +1,8 @@
 <template>
-  <div class="edusources-container">
-    <router-link
-      v-if="$i18n.locale === 'en'"
-      class="lang"
-      :to="switchLocalePath('nl')"
-      @click.native="switchLanguage('nl')"
-    >
-      NL
-    </router-link>
-    <router-link
-      v-if="$i18n.locale === 'nl'"
-      class="lang"
-      :to="switchLocalePath('en')"
-      @click.native="switchLanguage('en')"
-    >
-      EN
-    </router-link>
+  <div class="buttons">
+    <v-btn plain elevation="0" :class="{ preferred: $i18n.locale === 'nl' }" @click="switchLanguage('nl')">NL</v-btn>
+    |
+    <v-btn plain elevation="0" :class="{ preferred: $i18n.locale === 'en' }" @click="switchLanguage('en')"> EN </v-btn>
   </div>
 </template>
 
@@ -33,21 +20,35 @@ export default {
 <style scoped lang="less">
 @import "./../../../variables";
 
-.edusources-container {
-  align-self: center;
-  flex-shrink: 0;
+.buttons {
+  display: flex !important;
+  align-items: baseline;
+  margin-left: -8px;
 }
 
-.lang {
-  border: none;
-  height: 20px;
-  padding: 0;
-  font-family: @second-font;
-  font-size: 16px;
-  font-weight: bold;
+.v-btn {
+  border-radius: 0px !important;
+  text-transform: none !important;
+  min-width: 0 !important;
+}
+.v-btn__content {
+  padding: 0 !important;
+}
 
-  @media @mobile {
-    margin: 0;
-  }
+.v-btn:hover,
+.active {
+  color: @green;
+}
+
+.v-btn--plain {
+  padding: 8px !important;
+}
+
+.preferred {
+  color: @green;
+}
+
+@media @mobile {
+  margin: 0;
 }
 </style>

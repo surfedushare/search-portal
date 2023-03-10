@@ -5,9 +5,9 @@ export default {
     waffle_status: null,
   },
   getters: {
-    isMergedHeader(state) {
-      const mergedHeader = state.waffle_status.flags["merged-header"];
-      return mergedHeader ? mergedHeader["is_active"] : false;
+    isNewHeader(state) {
+      const newHeader = state.waffle_status.flags["new-header"];
+      return newHeader ? newHeader["is_active"] : false;
     },
   },
   actions: {

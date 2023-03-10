@@ -62,10 +62,12 @@ class UserDetailsAPIView(APIView):
         json_data = json.loads(r.text)
         try:
             institution_name = json_data['data']['institutions'][0]['translations'][0]['name']
+            institution_link = json_data['data']['institutions'][0]['name']
         except (IndexError, NameError, AttributeError):
             institution_name = institution_id
 
         data["institution_name"]= institution_name
+        data["institution_link"]= institution_link
         request.session.modified = True  # this extends expiry
         return Response(data)
 

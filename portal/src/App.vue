@@ -2,7 +2,7 @@
   <div id="app">
     <v-app>
       <div class="main_block">
-        <NewMainHeader v-if="isMergedHeader" />
+        <NewMainHeader v-if="isNewHeader" />
         <MainHeader v-else />
         <router-view />
         <MainFooter />
@@ -28,7 +28,7 @@ export default {
     NewMainHeader,
   },
   computed: {
-    ...mapGetters(["isMergedHeader"]),
+    ...mapGetters(["isNewHeader"]),
   },
   watch: {
     "$i18n.locale"(newLocale) {
