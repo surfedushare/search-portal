@@ -376,6 +376,7 @@ SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = environment.surfconext.oidc_endpoint
 SOCIAL_AUTH_LOGIN_ERROR_URL = BASE_URL
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = environment.surfconext.login_redirect
 SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
 SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
 

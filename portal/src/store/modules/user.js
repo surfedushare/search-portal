@@ -47,8 +47,11 @@ export default {
     getLoginLink() {
       return (route) => {
         let currentUrl = route.path + window.location.search;
-        if (process.env.VUE_APP_SURFCONEXT_BYPASS) {
-          return "/" + "login/success?continue=" + currentUrl;
+        if (window.location.origin.includes("8080")) {
+          let nextUrl = encodeURIComponent(
+            "http://localhost:8080/login/success?continue=" + encodeURIComponent(currentUrl)
+          );
+          return "http://localhost:8000/login/surf-conext/?next=" + nextUrl;
         }
         let nextUrl = encodeURIComponent("/login/success?continue=" + encodeURIComponent(currentUrl));
         return "/login/surf-conext/?next=" + nextUrl;
@@ -79,6 +82,7 @@ export default {
       return await axios.post("users/delete-account/");
     },
     async authenticate({ commit }, { token }) {
+      console.log("TTTTOOOKEN", token);
       if (!token) {
         return;
       }

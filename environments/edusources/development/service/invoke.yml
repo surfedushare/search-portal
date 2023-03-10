@@ -22,7 +22,7 @@ surfconext:
   voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "dev.use.edusources.nl"
   use_api_endpoint: "https://dev.use.edusources.nl"
-
+  
 aws:
   image_upload_bucket: "search-portal-media-uploads-dev"
   task_role_arn: "arn:aws:iam::322480324822:role/ecsTaskExecutionRole"
