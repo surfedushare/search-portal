@@ -34,7 +34,7 @@ class TestGetHarvestSeedsHva(TestCase):
                 "hash": "17c1945a55b6d00b0d17caed17762c94237e658d",
                 "title": "636835_schuldenvrij-de-weg-naar-werk_aangepast.pdf",
                 "copyright": None,
-                "is_open_access": True
+                "access_rights": "OpenAccess"
             }
         ])
 
@@ -59,6 +59,11 @@ class TestGetHarvestSeedsHva(TestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["copyright"], "closed-access")
         self.assertEqual(seeds[3]["copyright"], "open-access")
+
+    def test_get_analysis_allowed(self):
+        seeds = self.seeds
+        self.assertFalse(seeds[0]["analysis_allowed"], "Expected closed-access to disallow analysis")
+        self.assertTrue(seeds[3]["analysis_allowed"], "Expected open-access to allow analysis")
 
     def test_get_language(self):
         seeds = self.seeds

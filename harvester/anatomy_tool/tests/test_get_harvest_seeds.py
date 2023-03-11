@@ -24,12 +24,12 @@ class TestGetHarvestSeedsAnatomyTool(SeedExtractionTestCase):
     def test_get_complete_set(self):
         seeds = self.seeds
         self.assertEqual(len(seeds), 10)
-        self.check_seed_integrity(seeds)
+        self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_complete_set_without_deletes(self):
         seeds = get_harvest_seeds(Repositories.ANATOMY_TOOL, self.set_spec, self.begin_of_time,
                                   include_deleted=False)
-        self.assertEqual(len(seeds), 8)
+        self.assertEqual(len(seeds), 10)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_from_youtube_property(self):
@@ -56,12 +56,26 @@ class TestGetHarvestSeedsAnatomyTool(SeedExtractionTestCase):
 
     def test_get_files(self):
         seeds = self.seeds
-        self.assertEqual(len(seeds[0]["files"]), 1)
-        file = seeds[0]["files"][0]
-        self.assertEqual(file["mime_type"], "image/png")
-        self.assertEqual(file["url"], "https://anatomytool.org/node/56055")
-        self.assertEqual(file["hash"], "2d49dee36ce2965cd9e03d91dbd4f9ac54de770a")
-        self.assertEqual(file["title"], "URL 1")
+        self.assertEqual(seeds[0]["files"], [
+            {
+                "mime_type": "image/png",
+                "url": "https://anatomytool.org/node/56055",
+                "hash": "2d49dee36ce2965cd9e03d91dbd4f9ac54de770a",
+                "title": "URL 1",
+                "copyright": "cc-by-nc-sa-40",
+                "access_rights": "OpenAccess"
+            }
+        ])
+        self.assertEqual(seeds[6]["files"], [
+            {
+                "mime_type": "image/jpeg",
+                "url": "https://anatomytool.org/node/56176",
+                "hash": "62c2493141fd745099b4b5a4d875c67d2103a964",
+                "title": "URL 1",
+                "copyright": "yes",
+                "access_rights": "RestrictedAccess"
+            }
+        ])
 
     def test_parse_copyright_description(self):
         descriptions = {
@@ -78,6 +92,7 @@ class TestGetHarvestSeedsAnatomyTool(SeedExtractionTestCase):
             "CC BY NC SA": "cc-by-nc-sa",
             "CC BY-NC-SA": "cc-by-nc-sa",
             "cc by": "cc-by",
+            "Copyrighted": "yes",
             "invalid": None,
             None: None
         }
@@ -88,6 +103,7 @@ class TestGetHarvestSeedsAnatomyTool(SeedExtractionTestCase):
         seeds = self.seeds
         self.assertEqual(len(seeds), 10, "Expected get_harvest_seeds to filter differently based on copyright")
         self.assertEqual(seeds[0]["copyright"], "cc-by-nc-sa-40")
+        self.assertEqual(seeds[6]["copyright"], "yes")
 
     def test_get_technical_type(self):
         seeds = self.seeds
