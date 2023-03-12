@@ -21,6 +21,8 @@ surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "acc.surfedushare.nl"
+  use_api_endpoint: "https://acc.use.edusources.nl"
+  login_redirect: null
 
 aws:
   image_upload_bucket: "search-portal-media-uploads-acc"

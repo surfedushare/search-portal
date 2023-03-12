@@ -42,6 +42,6 @@ secrets:
     secret_key: "development-secret-key--do-not-use"
     admin_password: "qwerty"
   surfconext:
-    secret_key: "WKValAutTzvfHX6xV2Fc"
+    secret_key: "development-secret-key--ignored"
   harvester:
     api_key: "123abc"
