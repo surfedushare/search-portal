@@ -6,7 +6,7 @@
         <v-btn plain @click="openUseLink('/instellingen')">{{ $t("footer.institutions") }}</v-btn>
         <v-btn plain @click="openUseLink('/privacy')">{{ $t("footer.privacy") }}</v-btn>
       </div>
-      <LanguageSwitch class="main-header__language_switch" />
+      <NewLanguageSwitch class="main-header__language_switch" />
       <div class="logos">
         <a @click="openUseLink('/over-edusources#copyright')"><div class="ccby"></div></a>
         <a href="https://www.surf.nl" target="_blank"><div class="surf-logo"></div></a>
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import LanguageSwitch from "./MainHeader/LanguageSwitch";
+import NewLanguageSwitch from "./NewLanguageSwitch";
 
 export default {
   name: "NewMainFooter",
   components: {
-    LanguageSwitch,
+    NewLanguageSwitch,
   },
   props: [],
   data() {

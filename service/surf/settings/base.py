@@ -17,7 +17,6 @@ import requests
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
@@ -39,8 +38,8 @@ SITE_ID = 1  # should be overridden by extending settings file
 SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
-try: 
-    BASE_URL  = "{}://{}:{}".format(PROTOCOL, DOMAIN, environment.django.port)
+try:
+    BASE_URL = "{}://{}:{}".format(PROTOCOL, DOMAIN, environment.django.port)
 except Exception:
     BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
 try:
@@ -375,7 +374,9 @@ SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = environment.surfconext.oidc_endpoint
 SOCIAL_AUTH_LOGIN_ERROR_URL = BASE_URL
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = environment.surfconext.login_redirect
 SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
-SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
+SOCIAL_AUTH_SURF_CONEXT_SECRET = os.environ.get('SURFCONEXT')
+if not SOCIAL_AUTH_SURF_CONEXT_SECRET:
+    SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',

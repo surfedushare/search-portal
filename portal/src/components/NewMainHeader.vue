@@ -16,7 +16,7 @@
         <v-btn elevation="0" class="bg-yellow mr-4" @click="toInstitution()">{{ $t("navigation.upload") }}</v-btn>
         <div v-if="!isAuthenticated" class="buttons">
           <v-btn outlined class="mr-4" :href="getLoginLink()">{{ $t("navigation.signin") }}</v-btn>
-          <LanguageSwitch class="main-header__language_switch" />
+          <NewLanguageSwitch class="main-header__language_switch" />
         </div>
 
         <v-menu v-else>
@@ -39,7 +39,7 @@
           </template>
           <v-list>
             <v-list-item>
-              <LanguageSwitch class="main-header__language_switch" />
+              <NewLanguageSwitch class="main-header__language_switch" />
               <v-divider></v-divider>
             </v-list-item>
             <v-list-item @click="toInstitution()">
@@ -61,12 +61,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import LanguageSwitch from "./MainHeader/LanguageSwitch";
+import NewLanguageSwitch from "./NewLanguageSwitch";
 
 export default {
   name: "NewMainHeader",
   components: {
-    LanguageSwitch,
+    NewLanguageSwitch,
   },
   props: [],
   data() {
