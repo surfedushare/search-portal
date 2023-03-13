@@ -55,7 +55,6 @@ def get_groups(strategy, details, response, *args, **kwargs):
         return
     if response.get("edumember_is_member_of"):
         groups = response["edumember_is_member_of"]
-        
     else:
         groups = []
 
@@ -63,7 +62,7 @@ def get_groups(strategy, details, response, *args, **kwargs):
     strategy.request.session["email"] = details["email"]
     strategy.request.session["name"] = details["fullname"]
     strategy.request.session["institution_id"] = response["schac_home_organization"].replace('.', '-')
-    
+
     # Retrieve team data from Voot service to connect communities later
     # vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
     # groups = vac.get_groups(response.get("access_token"))
