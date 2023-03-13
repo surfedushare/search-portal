@@ -39,9 +39,10 @@ SITE_ID = 1  # should be overridden by extending settings file
 SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
-BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
-if environment.django.port:
+try: 
     BASE_URL  = "{}://{}:{}".format(PROTOCOL, DOMAIN, environment.django.port)
+except Exception:
+    BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
 try:
     response = requests.get("https://api.ipify.org/?format=json")
     IP = response.json()["ip"]
